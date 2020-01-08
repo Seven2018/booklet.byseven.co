@@ -18,7 +18,7 @@ gem 'uglifier'
 gem 'webpacker'
 gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor'
 gem 'material-sass', git: 'https://github.com/bricechapuis/material-sass'
-gem 'bootstrap',     '4.1.1'
+gem 'bootstrap',     '4.3.1'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
