@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_07_163355) do
+ActiveRecord::Schema.define(version: 2020_01_15_125732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attendees", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "training_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["training_id"], name: "index_attendees_on_training_id"
+    t.index ["user_id"], name: "index_attendees_on_user_id"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "title", default: "", null: false
@@ -32,6 +41,26 @@ ActiveRecord::Schema.define(version: 2020_01_07_163355) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "program_workshops", force: :cascade do |t|
+    t.bigint "training_program_id"
+    t.bigint "workshop_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["training_program_id"], name: "index_program_workshops_on_training_program_id"
+    t.index ["workshop_id"], name: "index_program_workshops_on_workshop_id"
+  end
+
+  create_table "requests", force: :cascade do |t|
+    t.string "status", default: "", null: false
+    t.bigint "user_id"
+    t.bigint "training_program_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["training_program_id"], name: "index_requests_on_training_program_id"
+    t.index ["user_id"], name: "index_requests_on_user_id"
+  end
+
   create_table "skills", force: :cascade do |t|
     t.string "title", default: "", null: false
     t.string "description", default: "", null: false
@@ -39,20 +68,48 @@ ActiveRecord::Schema.define(version: 2020_01_07_163355) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "training_programs", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.date "start_date"
-    t.date "end_date"
-    t.integer "participant_number", default: 0, null: false
+  create_table "training_program_skills", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "training_programs", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.text "description", default: "", null: false
+    t.string "image", default: "", null: false
+    t.integer "participant_number", default: 0, null: false
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_training_programs_on_company_id"
+  end
+
+  create_table "training_workshops", force: :cascade do |t|
+    t.bigint "training_id"
+    t.bigint "workshop_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["training_id"], name: "index_training_workshops_on_training_id"
+    t.index ["workshop_id"], name: "index_training_workshops_on_workshop_id"
+  end
+
   create_table "trainings", force: :cascade do |t|
     t.string "title", default: "", null: false
+    t.text "description"
     t.date "start_date"
     t.date "end_date"
+    t.string "image", default: "", null: false
     t.integer "participant_number", default: 0, null: false
+    t.bigint "training_program_id"
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_trainings_on_company_id"
+    t.index ["training_program_id"], name: "index_trainings_on_training_program_id"
+  end
+
+  create_table "user_skills", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -84,5 +141,34 @@ ActiveRecord::Schema.define(version: 2020_01_07_163355) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "workshop_skills", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "workshops", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.integer "duration", default: 0, null: false
+    t.text "description", default: "", null: false
+    t.text "content", default: "", null: false
+    t.string "image"
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_workshops_on_company_id"
+  end
+
+  add_foreign_key "attendees", "trainings"
+  add_foreign_key "attendees", "users"
+  add_foreign_key "program_workshops", "training_programs"
+  add_foreign_key "program_workshops", "workshops"
+  add_foreign_key "requests", "training_programs"
+  add_foreign_key "requests", "users"
+  add_foreign_key "training_programs", "companies"
+  add_foreign_key "training_workshops", "trainings"
+  add_foreign_key "training_workshops", "workshops"
+  add_foreign_key "trainings", "companies"
+  add_foreign_key "trainings", "training_programs"
   add_foreign_key "users", "companies"
+  add_foreign_key "workshops", "companies"
 end

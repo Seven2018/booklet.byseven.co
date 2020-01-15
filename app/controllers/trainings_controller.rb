@@ -1,0 +1,70 @@
+class TrainingsController < ApplicationController
+  before_action :set_training, only: [:show, :edit, :update, :destroy]
+
+  def index
+    # Index with 'search' option and global visibility for SEVEN Users
+    if current_user.access_level == 'Super Admin'
+      @trainings = policy_scope(Training)
+      if params[:search]
+        @trainings = ((Training.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)) + (Training.joins(:company).where("lower(companies.name) LIKE ?", "%#{params[:search][:title].downcase}%"))).flatten(1).uniq
+      end
+    # Index for other Users, with visibility limited to programs proposed by their company only
+    else
+      @trainings = policy_scope(Training)
+      @trainings = Training.where(company: current_user.company.id)
+      if params[:search]
+        @trainings = @training.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+      end
+    end
+  end
+
+  def show
+    authorize @training
+  end
+
+  def new
+    @training = Training.new
+    authorize @training
+  end
+
+  def create
+    @training = Training.new(training_params)
+    authorize @training
+    @training.company_id = current_user.company.id
+    if @training.save
+      redirect_to training_path(@training)
+    else
+      render :new
+    end
+  end
+
+  def edit
+    authorize @training
+  end
+
+  def update
+    authorize @training
+    @training.update(training_params)
+    if @training.save
+      redirect_to training_path(@training)
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @training.destroy
+    authorize @training
+    redirect_to training_path
+  end
+
+  private
+
+  def set_training
+    @training = Training.find(params[:id])
+  end
+
+  def training_params
+    params.require(:training).permit(:title, :description, :participant_number, :image, :start_date, :end_date, :category_id)
+  end
+end

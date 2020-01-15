@@ -1,0 +1,56 @@
+<div id="container-show">
+  <div id="show-controls">
+    <%= link_to workshops_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+    <div id='show-buttons'>
+      <% if ['Super Admin', 'HR'].include? current_user.access_level %>
+        <a data-toggle='modal' data-target='#editWorkshop'><button class='btn-edit-white btn-edit-pen'><i class='fas fa-pen'></i></button></a>
+        <%= link_to workshop_path(@workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+          <button class='btn-edit-white btn-edit-pen'><i class="far fa-trash-alt"></i></button>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class='workshop-show-card'>
+    <div class='workshop-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @workshop.image %>');background-position: center center;
+  background-repeat: no-repeat;">
+      <h2><%= @workshop.title %></h2>
+    </div>
+    <div class="workshop-show-card-footer flex-row-beetwen-centered">
+      <div class="workshop-show-card-footer-description centered-item">
+        <p><%= @workshop.description %></p>
+      </div>
+      <div class="workshop-show-card-footer-infos centered-item">
+        <div>
+          <p><i class="far fa-clock"></i><%= " #{@workshop.duration} minutes" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if @workshop.content.present? %>
+    <a data-toggle='modal' data-target='#editWorkshopContent'>
+      <div class="workshop-show-content">
+        <%= @workshop.content.html_safe %>
+      </div>
+    </a>
+  <% else %>
+    <a data-toggle='modal' data-target='#editWorkshopContent'>
+      <div class="workshop-show-content-empty centered-item">
+        <h3>Click to add content</h3>
+      </div>
+    </a>
+  <% end %>
+</div>
+
+
+<!-- Modal -->
+<div class='modal fade' id='editWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'edit', workshop: @workshop %>
+  </div>
+</div>
+
+<div class='modal fade' id='editWorkshopContent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'edit_content', workshop: @workshop %>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="left-navbar left-navbar-builder">
+  <div class="dropdown">
+    <div class="left-navbar-top">
+      <% if user_signed_in? %>
+        <img src='<%= "#{current_user.picture}" %>' class="avatar dropdown-toggle" data-toggle="dropdown">
+        <p><%= "#{current_user.firstname.capitalize} #{current_user.lastname.capitalize}" %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="left-navbar-middle">
+    <% if user_signed_in? %>
+      <%= link_to trainings_path, style: 'color: white;', class: 'left-buttons' do %>
+        <div class="left-menu-list">
+          <i class="far fa-calendar-times"></i> <div class="left-menu-title"><h4>Trainings</h4></div>
+        </div>
+      <% end %>
+      <%= link_to training_programs_path, style: 'color: white;', class: 'left-buttons' do %>
+        <div class="left-menu-list">
+          <i class="fas fa-tasks"></i> <div class="left-menu-title"><h4>Programs</h4></div>
+        </div>
+      <% end %>
+      <%= link_to workshops_path, style: 'color: white;', class: 'left-buttons' do %>
+        <div class="left-menu-list">
+          <i class="fas fa-tools"></i> <div class="left-menu-title"><h4>Workshops</h4></div>
+        </div>
+      <% end %>
+      <% if ['Super Admin', 'HR'].include?(current_user.access_level) %>
+        <%= link_to users_path, style: 'color: white;', class: 'left-buttons' do %>
+          <div class="left-menu-list">
+            <i class="fas fa-users"></i> <div class="left-menu-title"><h4>Users</h4></div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="left-navbar-bottom">
+    <%= link_to root_path, class: "left-navbar-logo" do %>
+      <img src="<%= current_user.company.logo %>" alt="" width='150'>
+    <% end %>
+  </div>
+</div>

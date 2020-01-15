@@ -1,8 +1,8 @@
 <div class="container-seven container-seven-centered">
   <div id='client-company-index'>
-    <div id="client-company-controls">
+    <div id="index-controls">
       <h3>Users list</h3>
-      <div id="client-company-buttons">
+      <div id="index-buttons">
         <%= simple_form_for :search, url: users_path, method: 'GET' do |f| %>
           <%= f.input :name, placeholder: 'Search', label: false %>
           <% if params[:search] %>
@@ -18,18 +18,17 @@
         <% end %>
       </div>
     </div>
-    <ul class="client-contact-list">
+    <ul class="users-list">
       <% @users.each do |user| %>
         <li>
           <%= link_to user_path(user) do %>
-            <div class="client-contact-card user-contact-card">
-              <img class='client-company-logo-index' src='<%= "#{user.picture}" %>'>
-              <div class="client-company-type-address">
+            <div class="user-index-card">
+              <img class='user-picture-index' src='<%= "#{user.picture}" %>'>
+              <div class="user-infos">
                 <p><%= "#{user.firstname} #{user.lastname}" %></p>
-                <div>
-                  <p><%= user.email %></p>
-                  <p><%= user.access_level.capitalize %></p>
-                </div>
+                <p><%= user.email %></p>
+                <p><%= user.job_description %></p>
+                <p><%= user.access_level %></p>
               </div>
             </div>
           <% end %>

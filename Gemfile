@@ -16,9 +16,11 @@ gem 'sassc-rails'
 gem 'simple_form'
 gem 'uglifier'
 gem 'webpacker'
+gem 'jquery-rails'
 gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor'
 gem 'material-sass', git: 'https://github.com/bricechapuis/material-sass'
-gem 'bootstrap',     '4.1.1'
+gem 'sprockets-rails', :require => 'sprockets/railtie'
+gem 'bootstrap', '~> 4.4.1'
 
 group :development do
   gem 'web-console', '>= 3.3.0'

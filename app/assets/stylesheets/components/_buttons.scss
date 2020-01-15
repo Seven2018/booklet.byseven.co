@@ -1,0 +1,106 @@
+.return-arrow {
+  min-width: 0 !important;
+  padding: 1.575rem 1.7rem !important;
+  box-shadow: none !important;
+
+  i {
+    font-size: 1.4rem;
+  }
+}
+
+input.btn {
+  margin-bottom: 1.0rem !important;
+}
+
+.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-white {
+  opacity: 0.8;
+  width: auto;
+  max-width: none;
+  padding: 0.45rem 2rem;
+  border-radius: 0.22rem;
+  box-sizing: border-box;
+  font-weight: 800 !important;
+  color: white !important;
+  text-align: center;
+  transition: all 0.1s;
+  outline: none !important;
+  margin-right: 0.5rem !important;
+  i {
+    color: white;
+  }
+  &:hover{
+    opacity: 1;
+    text-decoration: none !important;
+  }
+}
+
+.btn-edit {
+  background-color: $yellow !important;
+}
+
+.btn-edit-red {
+    background-color: #E64259 !important;
+}
+
+.btn-edit-green {
+    background-color: #4AC2C7 !important;
+}
+
+.btn-edit-grey {
+    background-color: #23282E !important;
+}
+
+.btn-edit-white {
+    background-color: rgba(255,255,255,0) !important;
+    border: 0.01rem solid rgba(0,0,0,0.3) !important;
+
+    i {
+      color: rgba(0,0,0,0.3) !important;
+    }
+
+    &:hover {
+      border: 0.01rem solid rgba(0,0,0,1) !important;
+
+      i {
+        color: rgba(0,0,0,1) !important;
+      }
+    }
+}
+
+.btn-edit-pen, .btn-edit-menu {
+  padding: 0.7rem 1.1rem !important;
+  min-width: 0 !important;
+}
+
+.btn-edit-round {
+  min-width: 0 !important;
+  padding: 0.55rem !important;
+  border-radius: 50% !important;
+  background-color: #23282E !important;
+  color: white !important;
+
+  &:hover {
+    background-color: #23282E !important;
+  }
+}
+
+.btn-edit-disk, .btn-edit-trash, .btn-edit-copy {
+  padding: 0.7rem 1.2rem !important;
+  min-width: 0 !important;
+  color: white !important;
+}
+
+.btn-edit-eye {
+  padding: 6.75rem 10rem !important;
+  min-width: 0 !important;
+}
+
+.btn-edit-cross {
+  padding: 0.675rem 1.4rem !important;
+  min-width: 0 !important;
+  box-shadow: none !important;
+
+  i {
+    font-size: 1.4rem;
+  }
+}

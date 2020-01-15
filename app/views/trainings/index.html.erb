@@ -1,0 +1,34 @@
+<div class="training-index">
+  <div id="index-controls">
+    <h3>Training List</h3>
+    <div id="index-buttons">
+      <%= simple_form_for :search, url: trainings_path, method: 'GET' do |f| %>
+        <%= f.input :name, placeholder: 'Search', label: false %>
+        <% if params[:search] %>
+          <%= link_to trainings_path, class: 'training-index-search-close' do %>
+            <i class="far fa-times-circle"></i>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <%= link_to new_training_path do %>
+          <button class="btn btn-edit">New Program</button>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class='training-index-list'>
+    <% @trainings.each do |training| %>
+      <%= link_to training_path(training) do %>
+        <div class='training-index-card'>
+          <div class='training-index-image' style="background-image:url('<%= training.image %>');">
+          </div>
+          <div class="training-index-infos">
+            <p><%= training.title %></p>
+            <p><%= "From #{training.start_date.strftime('%d/%m/%y')} to #{training.end_date.strftime('%d/%m/%y')}" %></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

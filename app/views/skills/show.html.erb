@@ -1,0 +1,22 @@
+<%= link_to skills_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+<div class='centered-card-show'>
+  <div class='skill-show-card'>
+    <div>
+      <div class='training-info-headers-buttons'>
+        <% if ['Super Admin', 'HR'].include? current_user.access_level %>
+          <a class='edit-fafa btn btn-edit btn-edit-pen' data-toggle='modal' data-target='#editSkill'><i class='fas fa-pen'></i></a>
+        <% end %>
+      </div>
+    </div>
+    <p><%= @skill.title %></p>
+    <p><%= @skill.description %></p>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class='modal fade' id='editSkill' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'edit', skill: @skill %>
+  </div>
+</div>

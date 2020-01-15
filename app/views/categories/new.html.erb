@@ -1,0 +1,17 @@
+<div class="container-seven">
+  <div class="training-info-headers">
+    <%= link_to categories_path, class: 'btn return-arrow' do %>
+      <i class="fas fa-arrow-left"></i>
+    <% end %>
+  </div>
+  <h3>Add a category</h3>
+  <%= simple_form_for @category do |f| %>
+    <%= f.input :title %>
+    <%= f.input :description %>
+    <div class="center-button">
+      <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-disk' do %>
+        <i class="fas fa-save"></i>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -5,18 +5,18 @@
     <% end %>
   </div>
   <h3>Add a user</h3>
-
   <%= simple_form_for @user do |f| %>
     <%= f.input :firstname %>
     <%= f.input :lastname %>
     <%= f.input :email %>
     <% if current_user.access_level == 'Super Admin' %>
       <%= f.input :access_level, collection: ['Super Admin', 'Admin', 'HR', 'Employee'], include_blank: false %>
-      <%= f.association :company, collection: Company.all %>
+      <%= f.association :company, collection: Company.all, include_blank: false %>
     <% elsif current_user.access_level == 'HR' %>
       <%= f.input :access_level, collection: ['HR', 'Employee'], include_blank: false %>
       <%= f.association :company, collection: Company.where(id: current_user.client_company.id), include_blank: false; %>
     <% end %>
+    <%= f.input :password %>
     <%= f.input :linkedin %>
     <%= f.input :picture, label: 'Photo URL' %>
     <div class="center-button">

@@ -1,0 +1,18 @@
+<div class="container-new-form">
+  <div class="training-info-headers">
+    <%= link_to trainings_path, class: 'btn return-arrow' do %>
+      <i class="fas fa-arrow-left"></i>
+    <% end %>
+  </div>
+  <h3>Add a new training</h3>
+
+  <%= simple_form_for @training do |f| %>
+    <%= f.input :title %>
+    <%= f.input :description %>
+    <%= f.input :participant_number %>
+    <%= f.input :start_date, as: :string, required: true, input_html: { value: Date.today, class: "datepicker" }, label: 'Start date' %>
+    <%= f.input :end_date, as: :string, input_html: { value: (Date.today + 1.months), class: "datepicker" }, label: 'End date' %>
+    <%= f.input :image, label: 'Image URL' %>
+    <p class="center-button"> <%= f.button :submit, 'Save', class: 'btn btn-edit' %> </p>
+  <% end %>
+</div>
