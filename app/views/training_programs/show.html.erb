@@ -1,11 +1,11 @@
 <div id="container-show">
   <div id="show-controls">
-    <%= link_to training_programs_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+    <%= link_to url_for(:back), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
     <div id='show-buttons'>
       <% if ['Super Admin', 'HR'].include? current_user.access_level %>
         <a data-toggle='modal' data-target='#editTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
         <%= link_to training_program_path(@training_program), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
+          <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
         <% end %>
       <% end %>
     </div>

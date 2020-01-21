@@ -21,6 +21,7 @@ gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor'
 gem 'material-sass', git: 'https://github.com/bricechapuis/material-sass'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'bootstrap', '~> 4.4.1'
+gem "simple_calendar", "~> 2.0"
 
 group :development do
   gem 'web-console', '>= 3.3.0'

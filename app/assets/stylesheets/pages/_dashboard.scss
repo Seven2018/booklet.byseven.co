@@ -1,5 +1,5 @@
 .dashboard-tabs {
-  margin: 3rem 0;
+  margin-top: 3rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -7,4 +7,31 @@
   h3 {
     margin: 0;
   }
+}
+
+.dashboard-tabs-secondary {
+  padding-left: 3rem;
+  margin-top: 0;
+}
+
+.training-index-list-dashboard {
+  width: 48%;
+  height: 50rem;
+  padding: 2rem;
+  overflow-y: scroll;
+  background-color: white;
+  margin-bottom: 5rem;
+}
+
+.training-index-infos-dashboard {
+  flex-grow: 1;
+  text-align: center;
+
+  p {
+    width: 100%;
+  }
+}
+
+.training-index-list-dashboard-title {
+  margin-bottom: 2rem;
 }

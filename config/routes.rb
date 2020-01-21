@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, path: 'u'
   resources :users
+  resources :teams
   resources :companies
   resources :categories
   resources :skills
@@ -21,5 +22,7 @@ Rails.application.routes.draw do
   resources :requests, only: %i[index show create update destroy]
   root to: 'pages#home'
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
+  get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
+  get 'catalogue-filter', to: 'pages#filter_catalogue', as: 'filter_catalogue'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

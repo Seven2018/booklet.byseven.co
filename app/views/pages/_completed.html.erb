@@ -8,8 +8,8 @@
           <div class="training-index-infos">
             <p><%= training_workshop.training.title %></p>
             <p><%= training_workshop.title %></p>
-            <% if training_workshop.start_time.present? && training_workshop.end_time.present? %>
-              <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')} | #{training_workshop.start_time.strftime('%H:%M')} - #{training_workshop.end_time.strftime('%H:%M')}" %></p>
+            <% if training_workshop.starts_at.present? && training_workshop.ends_at.present? %>
+              <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')} | #{training_workshop.starts_at.strftime('%H:%M')} - #{training_workshop.ends_at.strftime('%H:%M')}" %></p>
             <% else %>
               <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')}" %></p>
             <% end %>

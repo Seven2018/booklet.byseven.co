@@ -2,7 +2,16 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
 
   def index
+    # Index with 'search' option and global visibility for SEVEN Users
     index_function(policy_scope(User))
+    # Index for other Users, with visibility limited to programs proposed by their company only
+    if current_user.access_level == 'HR'
+      @teams = Team.joins(:company).where(companies: { name: current_user.company.name })
+      if params[:search]
+        @teams = @teams.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc)
+      end
+    end
+    @training = Training.new
   end
 
   def show

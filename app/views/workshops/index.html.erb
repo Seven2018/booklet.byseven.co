@@ -17,7 +17,7 @@
         <% end %>
       <% else %>
         <a>
-          <button class="btn btn-edit-white btn-edit-icon btn-search"><i class="fas fa-search"></i></button>
+          <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
         </a>
         <%= simple_form_for :search, url: workshops_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
           <%= f.input :title, placeholder: 'Search', label: false %>

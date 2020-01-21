@@ -1,10 +1,10 @@
 <div class="container-new-form">
   <div class="training-info-headers">
-    <%= link_to training_programs_path, class: 'btn return-arrow' do %>
+    <%= link_to url_for(:back), class: 'btn return-arrow' do %>
       <i class="fas fa-arrow-left"></i>
     <% end %>
   </div>
-  <h3>Add a new training program</h3>
+  <h3>Add a new program</h3>
 
   <%= simple_form_for @training_program do |f| %>
     <%= f.input :title %>

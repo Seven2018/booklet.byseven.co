@@ -8,5 +8,6 @@ class User < ApplicationRecord
   has_many :requests, dependent: :destroy
   has_many :attendees, dependent: :destroy
   belongs_to :company, optional: true
+  belongs_to :team, optional: true
   # validates :gender, inclusion: { in: ['M', 'F'] }
 end

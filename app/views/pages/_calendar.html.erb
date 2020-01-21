@@ -1,0 +1,14 @@
+<div class="workshop-index">
+  <%= month_calendar events: @workshops do |date, workshops| %>
+    <%= date.day %>
+    <% workshops.each do |workshop| %>
+      <div class="workshop-card-calendar">
+        <% if workshop.training.attendee_ids.include?(current_user.id) %>
+          <div class="workshop-card-calendar-indicator"><i class="fas fa-circle"></i></div>
+        <% end %>
+        <h6><%= workshop.title %></h6>
+        <h6><%= "#{workshop.starts_at.strftime('%H:%M')} - #{workshop.ends_at.strftime('%H:%M')}" %></h6>
+      </div>
+    <% end %>
+  <% end %>
+</div>

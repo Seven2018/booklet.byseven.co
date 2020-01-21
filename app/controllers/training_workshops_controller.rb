@@ -39,6 +39,6 @@ class TrainingWorkshopsController < ApplicationController
   private
 
   def training_workshop_params
-    params.require(:training_workshop).permit(:title, :date, :start_time, :end_time)
+    params.require(:training_workshop).permit(:title, :date, :starts_at, :ends_at)
   end
 end

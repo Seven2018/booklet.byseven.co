@@ -5,7 +5,7 @@
       <% if ['Super Admin', 'HR'].include? current_user.access_level %>
         <a data-toggle='modal' data-target='#editTraining'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
         <%= link_to training_path(@training), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
+          <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
         <% end %>
       <% end %>
     </div>
@@ -39,7 +39,7 @@
           <% if Attendee.where(training_id: @training.id, user_id: current_user.id).empty? %>
             <%= link_to "Register", attendees_path(training_id: @training.id, user_id: current_user.id), method: :post, class: 'btn btn-edit-green' %>
           <% else %>
-            <%= link_to "Unregister", attendee_path(Attendee.where(training_id: @training.id, user_id: current_user.id).first), method: :post, class: 'btn btn-edit-red' %>
+            <%= link_to "Unregister", attendee_path(Attendee.where(training_id: @training.id, user_id: current_user.id).first), method: :delete, class: 'btn btn-edit-red' %>
           <% end %>
         </div>
       </div>
@@ -69,13 +69,13 @@
                 <% if training_workshop.date.present? %>
                   <h6><%= training_workshop.date.strftime("%d/%m/%Y") %></h6>
                 <% end %>
-                <% if training_workshop.start_time.present? && training_workshop.end_time.present? %>
-                  <h6><%= "#{training_workshop.start_time.strftime("%H:%M")} - #{training_workshop.end_time.strftime("%H:%M")}" %></h6>
+                <% if training_workshop.starts_at.present? && training_workshop.ends_at.present? %>
+                  <h6><%= "#{training_workshop.starts_at.strftime("%H:%M")} - #{training_workshop.ends_at.strftime("%H:%M")}" %></h6>
                 <% end %>
               </div>
-              <div>
+              <div class='training-program-index-workshop-show-card-footer-buttons'>
                 <a data-toggle='modal' data-target='#editTrainingWorkshop<%= training_workshop.id %>'><button class='btn-edit-white btn-edit-icon-small'><i class='fas fa-pen'></i></button></a>
-                <a data-toggle='modal' data-target='#copyTrainingWorkshop<%= training_workshop.id %>'><button class='btn-edit-white btn-edit-icon-small'><i class="fas fa-copy"></i></button></a>
+                <a data-toggle='modal' data-target='#copyTrainingWorkshop<%= training_workshop.id %>'><button class='btn-edit-white btn-edit-icon-small btn-last'><i class="fas fa-copy"></i></button></a>
               </div>
             </div>
           </div>

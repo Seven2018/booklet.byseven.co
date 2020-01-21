@@ -1,0 +1,63 @@
+<div class="training-index-dashboard flex-row-between-start">
+  <div class='training-index-list-dashboard'>
+    <p class='training-index-list-dashboard-title'>Your next workshops</p>
+    <% @my_workshops.where("date >= ?", Date.today).order(date: :asc).each do |training_workshop| %>
+      <%= link_to training_path(training_workshop.training) do %>
+        <div class='training-index-card'>
+          <div class='training-index-image' style="background-image:url('<%= training_workshop.workshop.image %>');">
+          </div>
+          <div class="training-index-infos-dashboard">
+            <p><%= training_workshop.title %></p>
+            <% if training_workshop.starts_at.present? && training_workshop.ends_at.present? %>
+              <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')} | #{training_workshop.starts_at.strftime('%H:%M')} - #{training_workshop.ends_at.strftime('%H:%M')}" %></p>
+            <% else %>
+              <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')}" %></p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class='training-index-list-dashboard'>
+    <p class='training-index-list-dashboard-title'>Available workshops</p>
+    <% @available_workshops = @available_workshops.select { |el| el.date >= Date.today } %>
+    <% @available_workshops = @available_workshops.sort_by { |el| el.date } %>
+    <% @available_workshops.each do |training_workshop| %>
+      <%= link_to training_path(training_workshop.training) do %>
+        <div class='training-index-card'>
+          <div class='training-index-image' style="background-image:url('<%= training_workshop.workshop.image %>');">
+          </div>
+          <div class="training-index-infos-dashboard">
+            <p><%= training_workshop.title %></p>
+            <% if training_workshop.starts_at.present? && training_workshop.ends_at.present? %>
+              <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')} | #{training_workshop.starts_at.strftime('%H:%M')} - #{training_workshop.ends_at.strftime('%H:%M')}" %></p>
+            <% else %>
+              <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')}" %></p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div class="training-index-dashboard flex-row-between-start">
+  <div class='training-index-list-dashboard'>
+    <p class='training-index-list-dashboard-title'>Completed workshops</p>
+    <% @my_workshops.where("date < ?", Date.today).order(date: :asc).each do |training_workshop| %>
+      <%= link_to training_path(training_workshop.training) do %>
+        <div class='training-index-card'>
+          <div class='training-index-image' style="background-image:url('<%= training_workshop.workshop.image %>');">
+          </div>
+          <div class="training-index-infos-dashboard">
+            <p><%= training_workshop.title %></p>
+            <% if training_workshop.starts_at.present? && training_workshop.ends_at.present? %>
+              <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')} | #{training_workshop.starts_at.strftime('%H:%M')} - #{training_workshop.ends_at.strftime('%H:%M')}" %></p>
+            <% else %>
+              <p><%= "#{training_workshop.date.strftime('%d/%m/%Y')}" %></p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -76,6 +76,15 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
     t.index ["skill_group_id"], name: "index_skills_on_skill_group_id"
   end
 
+  create_table "teams", force: :cascade do |t|
+    t.string "firstname", default: "", null: false
+    t.string "image", default: "", null: false
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_teams_on_company_id"
+  end
+
   create_table "training_programs", force: :cascade do |t|
     t.string "title", default: "", null: false
     t.text "description", default: "", null: false
@@ -90,8 +99,8 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
   create_table "training_workshops", force: :cascade do |t|
     t.string "title", default: "", null: false
     t.date "date"
-    t.time "start_time"
-    t.time "end_time"
+    t.time "starts_at"
+    t.time "ends_at"
     t.bigint "training_id"
     t.bigint "workshop_id"
     t.datetime "created_at", precision: 6, null: false
@@ -138,11 +147,13 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
     t.string "picture", default: "", null: false
     t.string "access_level", default: "Employee", null: false
     t.bigint "company_id"
+    t.bigint "team_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["team_id"], name: "index_users_on_team_id"
   end
 
   create_table "workshop_categories", force: :cascade do |t|
@@ -182,12 +193,14 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
   add_foreign_key "requests", "training_programs"
   add_foreign_key "requests", "users"
   add_foreign_key "skills", "skill_groups"
+  add_foreign_key "teams", "companies"
   add_foreign_key "training_programs", "companies"
   add_foreign_key "training_workshops", "trainings"
   add_foreign_key "training_workshops", "workshops"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "training_programs"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "teams"
   add_foreign_key "workshop_categories", "categories"
   add_foreign_key "workshop_categories", "workshops"
   add_foreign_key "workshop_skills", "skills"

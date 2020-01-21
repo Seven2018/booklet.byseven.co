@@ -1,1 +1,105 @@
-<%= render 'index', users: @users %>
+<div class="training-program-index">
+  <div id="index-controls">
+    <h3>Organisation</h3>
+    <div id="index-buttons">
+      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <%= link_to 'New Team', new_team_path, class: 'dropdown-item' %>
+          <%= link_to 'New User', new_user_path, class: 'dropdown-item' %>
+        </div>
+      <% end %>
+      <% if params[:search] %>
+        <%= simple_form_for :search, url: users_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
+          <%= f.input :name, placeholder: params[:search][:name], label: false %>
+          <%= link_to users_path, class: 'search-close' do %>
+            <i class="far fa-times-circle"></i>
+          <% end %>
+        <% end %>
+      <% else %>
+        <a>
+          <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
+        </a>
+        <%= simple_form_for :search, url: users_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
+          <%= f.input :name, placeholder: 'Search', label: false %>
+            <a class='search-close'>
+              <i class="far fa-times-circle"></i>
+            </a>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class='catalogue-index-list'>
+    <h3>Teams List</h3>
+    <% if @teams.present? %>
+      <% @teams.each do |team| %>
+        <%= link_to team_path(team) do %>
+          <div class='training-program-index-card'>
+            <div class='training-program-index-image' style="background-image:url('<%= team.image %>');">
+            </div>
+            <div class="training-program-index-infos">
+              <p><%= team.name %></p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div class="workshop-index">
+  <div class='catalogue-index-list'>
+    <h3>Users List</h3>
+    <% team_array = [] %>
+    <% @users.each do |user| %>
+      <% team_array << user.team unless user.team.nil? %>
+    <% end %>
+    <% team_array = team_array.uniq.reject { |c| c.empty? } %>
+    <% team_array.each do |team| %>
+      <p class='workshop-index-list-category-title'><%= team.first.name %></p>
+      <% @users.where(team_id: team.first.id).each do |user| %>
+        <%= link_to user_path(user) do %>
+          <div class='workshop-index-card'>
+            <div class='workshop-index-image' style="background-image:url('<%= user.picture %>');">
+            </div>
+            <div class="workshop-index-infos">
+              <p><%= "#{user.firstname} #{user.lastname}" %></p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if @users.where(team_id: nil).present? %>
+      <p class='workshop-index-list-category-title'>Others</p>
+      <% @users.where(team_id: nil).each do |user| %>
+        <%= link_to user_path(user) do %>
+          <div class='workshop-index-card'>
+            <div class='workshop-index-image' style="background-image:url('<%= user.picture %>');">
+            </div>
+            <div class="workshop-index-infos">
+              <p><%= "#{user.firstname} #{user.lastname}" %></p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  searchButton = document.querySelector('.btn-search');
+  searchBar = document.querySelector('.search-bar');
+  searchClose = document.querySelector('.search-close');
+  searchButton.addEventListener('click', (event) => {
+    searchButton.classList.toggle('hidden');
+    searchBar.classList.toggle('hidden');
+  })
+  searchClose.addEventListener('click', (event) => {
+    searchButton.classList.toggle('hidden');
+    searchBar.classList.toggle('hidden');
+  })
+</script>
+
+
+
+
+<%# render 'index', users: @users %>

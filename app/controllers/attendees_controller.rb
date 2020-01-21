@@ -10,7 +10,7 @@ class AttendeesController < ApplicationController
   end
 
   def destroy
-    @attendee = Attendee.where(training_id: params[:training_id], user_id: params[:user_id]).first
+    @attendee = Attendee.find(params[:id])
     authorize @attendee
     @attendee.destroy
     redirect_back(fallback_location: root_path)
