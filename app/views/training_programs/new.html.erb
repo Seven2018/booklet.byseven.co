@@ -11,6 +11,10 @@
     <%= f.input :description %>
     <%= f.input :participant_number %>
     <%= f.input :image, label: 'Image URL' %>
-    <p class="center-button"> <%= f.button :submit, 'Save', class: 'btn btn-edit' %> </p>
+    <div style="display:flex;justify-content:center;margin-top:30px;">
+      <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
+        <i class="fas fa-save"></i>
+      <% end %>
+    </div>
   <% end %>
 </div>

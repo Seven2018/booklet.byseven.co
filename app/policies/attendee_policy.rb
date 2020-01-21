@@ -6,10 +6,10 @@ class AttendeePolicy < ApplicationPolicy
   end
 
   def create?
-    user_signed_in?
+    true
   end
 
   def destroy?
-    user_signed_in?
+    true
   end
 end

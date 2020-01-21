@@ -29,6 +29,10 @@ class TrainingProgramPolicy < ApplicationPolicy
     check_access_admin_hr
   end
 
+  def filter?
+    true
+  end
+
   private
 
   def check_access

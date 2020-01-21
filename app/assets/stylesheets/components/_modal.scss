@@ -1,3 +1,71 @@
 .modal-header {
   align-items: center !important;
 }
+
+.mod-date {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  @include from-large {
+    flex-direction: row;
+  }
+}
+
+#modal-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+#modal-title-consult {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+#modal-title button {
+  border: none;
+  font-size: 24px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row-reverse;
+}
+
+.modal-body {
+
+  p {
+    font-size: 16px !important;
+    font-weight: 300;
+  }
+}
+
+.modal-lg {
+  z-index: 9500 !important;
+}
+
+.modal {
+ overflow-y: auto !important;
+ padding-right: 0 !important;
+}
+
+.modal-open {
+ overflow: auto !important;
+}
+
+.modal-seven {
+  width: auto !important;
+}
+
+.modal-image {
+
+  img {
+    max-width: 100%;
+  }
+}

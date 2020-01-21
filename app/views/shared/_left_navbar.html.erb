@@ -9,6 +9,11 @@
   </div>
   <div class="left-navbar-middle">
     <% if user_signed_in? %>
+      <%= link_to dashboard_path, style: 'color: white;', class: 'left-buttons' do %>
+        <div class="left-menu-list">
+          <i class="fas fa-home"></i> <div class="left-menu-title"><h4>Dashboard</h4></div>
+        </div>
+      <% end %>
       <%= link_to trainings_path, style: 'color: white;', class: 'left-buttons' do %>
         <div class="left-menu-list">
           <i class="far fa-calendar-times"></i> <div class="left-menu-title"><h4>Trainings</h4></div>

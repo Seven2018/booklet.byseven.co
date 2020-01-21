@@ -1,0 +1,51 @@
+.nav-tabs {
+  border-bottom: none;
+  list-style-type: none !important;
+  box-shadow: none !important;
+  margin-bottom: 15px !important;
+}
+
+.nav-tabs > li {
+  margin-bottom: 10px;
+  margin-right: 12px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.nav-tabs > li > a {
+  padding-left: 0;
+  padding-right: 0;
+  color: black;
+  text-decoration: none;
+
+  @include from-large {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+
+.nav-tabs > li > a.active {
+  background-color: transparent;
+  border-bottom: 4px solid #ffc15c;
+  font-weight: 500;
+}
+
+.nav-tabs > li > a:hover {
+  border-bottom: 4px solid rgba(255, 193, 92, 0.7);
+}
+
+@media screen and (max-width: 600px) {
+  .calendar-tabs {
+
+    &:first-child {
+      margin-right: 10px;
+    }
+  }
+
+  .calendar-tabs-div {
+    justify-content: center !important;
+    margin-bottom: 20px;
+  }
+}

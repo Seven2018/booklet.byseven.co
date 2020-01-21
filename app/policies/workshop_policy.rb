@@ -25,6 +25,10 @@ class WorkshopPolicy < ApplicationPolicy
     check_access_hr
   end
 
+  def filter?
+    true
+  end
+
   private
 
   def check_access

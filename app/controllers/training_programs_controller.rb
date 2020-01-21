@@ -16,10 +16,12 @@ class TrainingProgramsController < ApplicationController
         @training_programs = @training_programs.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
       end
     end
+    @training = Training.new
   end
 
   def show
     authorize @training_program
+    @program_workshop = ProgramWorkshop.new
   end
 
   def new
@@ -31,6 +33,7 @@ class TrainingProgramsController < ApplicationController
     @training_program = TrainingProgram.new(training_program_params)
     authorize @training_program
     @training_program.company_id = current_user.company.id
+
     if @training_program.save
       redirect_to training_program_path(@training_program)
     else
@@ -56,6 +59,13 @@ class TrainingProgramsController < ApplicationController
     @training_program.destroy
     authorize @training_program
     redirect_to training_programs_path
+  end
+
+  def filter
+    @training_programs = TrainingProgram.where(company_id: current_user.company.id)
+    authorize @training_programs
+    category_ids = params[:workshop][:category_ids].drop(1).map(&:to_i)
+    redirect_to training_programs_path(filter: category_ids)
   end
 
   private

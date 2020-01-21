@@ -3,7 +3,7 @@
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
       <h3 class="modal-title" id="myModalLabel"><%= training_program.title %></h3>
     </div>
-    <button type="button" class="btn btn-edit-cross" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for training_program do |f| %>
@@ -11,12 +11,12 @@
       <%= f.input :description %>
       <%= f.input :participant_number %>
       <%= f.input :image, label: 'Image URL' %>
-      <div style=" display: flex; justify-content: space-between;">
-        <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-disk' do %>
+      <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
+        <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
           <i class="fas fa-save"></i>
         <% end %>
         <%= link_to training_program_path(training_program), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <button class="btn btn-edit-red btn-edit-trash">
+          <button class="btn btn-edit-red btn-edit-icon">
             <i class="fas fa-trash-alt"></i>
           </button>
         <% end %>

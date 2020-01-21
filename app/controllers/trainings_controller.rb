@@ -20,6 +20,7 @@ class TrainingsController < ApplicationController
 
   def show
     authorize @training
+    @training_workshop = TrainingWorkshop.new
   end
 
   def new
@@ -28,10 +29,13 @@ class TrainingsController < ApplicationController
   end
 
   def create
-    @training = Training.new(training_params)
+    @training_program = TrainingProgram.find(params[:training_program_id])
+    @training = Training.new(title: params[:training][:title], description: @training_program.description, participant_number: params[:training][:participant_number].to_i, image: @training_program.image, training_program_id: @training_program.id, company_id: current_user.company.id)
     authorize @training
-    @training.company_id = current_user.company.id
     if @training.save
+      @training_program.program_workshops.each do |program_workshop|
+        TrainingWorkshop.create(title: program_workshop.workshop.title, training_id: @training.id, workshop_id: program_workshop.workshop.id)
+      end
       redirect_to training_path(@training)
     else
       render :new
@@ -65,6 +69,6 @@ class TrainingsController < ApplicationController
   end
 
   def training_params
-    params.require(:training).permit(:title, :description, :participant_number, :image, :start_date, :end_date, :category_id)
+    params.require(:training).permit(:title, :description, :participant_number, :image)
   end
 end

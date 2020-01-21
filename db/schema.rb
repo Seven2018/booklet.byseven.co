@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_15_125732) do
+ActiveRecord::Schema.define(version: 2020_01_16_160638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,16 +61,19 @@ ActiveRecord::Schema.define(version: 2020_01_15_125732) do
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
 
-  create_table "skills", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.string "description", default: "", null: false
+  create_table "skill_groups", force: :cascade do |t|
+    t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "training_program_skills", force: :cascade do |t|
+  create_table "skills", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.string "description", default: "", null: false
+    t.bigint "skill_group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["skill_group_id"], name: "index_skills_on_skill_group_id"
   end
 
   create_table "training_programs", force: :cascade do |t|
@@ -85,9 +88,12 @@ ActiveRecord::Schema.define(version: 2020_01_15_125732) do
   end
 
   create_table "training_workshops", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.date "date"
+    t.time "start_time"
+    t.time "end_time"
     t.bigint "training_id"
     t.bigint "workshop_id"
-    t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["training_id"], name: "index_training_workshops_on_training_id"
@@ -97,8 +103,6 @@ ActiveRecord::Schema.define(version: 2020_01_15_125732) do
   create_table "trainings", force: :cascade do |t|
     t.string "title", default: "", null: false
     t.text "description"
-    t.date "start_date"
-    t.date "end_date"
     t.string "image", default: "", null: false
     t.integer "participant_number", default: 0, null: false
     t.bigint "training_program_id"
@@ -141,9 +145,22 @@ ActiveRecord::Schema.define(version: 2020_01_15_125732) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "workshop_skills", force: :cascade do |t|
+  create_table "workshop_categories", force: :cascade do |t|
+    t.bigint "workshop_id"
+    t.bigint "category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_workshop_categories_on_category_id"
+    t.index ["workshop_id"], name: "index_workshop_categories_on_workshop_id"
+  end
+
+  create_table "workshop_skills", force: :cascade do |t|
+    t.bigint "skill_id"
+    t.bigint "workshop_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["skill_id"], name: "index_workshop_skills_on_skill_id"
+    t.index ["workshop_id"], name: "index_workshop_skills_on_workshop_id"
   end
 
   create_table "workshops", force: :cascade do |t|
@@ -151,7 +168,7 @@ ActiveRecord::Schema.define(version: 2020_01_15_125732) do
     t.integer "duration", default: 0, null: false
     t.text "description", default: "", null: false
     t.text "content", default: "", null: false
-    t.string "image"
+    t.string "image", default: "", null: false
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -164,11 +181,16 @@ ActiveRecord::Schema.define(version: 2020_01_15_125732) do
   add_foreign_key "program_workshops", "workshops"
   add_foreign_key "requests", "training_programs"
   add_foreign_key "requests", "users"
+  add_foreign_key "skills", "skill_groups"
   add_foreign_key "training_programs", "companies"
   add_foreign_key "training_workshops", "trainings"
   add_foreign_key "training_workshops", "workshops"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "training_programs"
   add_foreign_key "users", "companies"
+  add_foreign_key "workshop_categories", "categories"
+  add_foreign_key "workshop_categories", "workshops"
+  add_foreign_key "workshop_skills", "skills"
+  add_foreign_key "workshop_skills", "workshops"
   add_foreign_key "workshops", "companies"
 end

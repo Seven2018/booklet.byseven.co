@@ -1,6 +1,6 @@
 html {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: scroll !important;
   font-size: 62.5%;
 }
 
@@ -8,6 +8,7 @@ body {
   margin: 0 auto;
   max-width: 1440px;
   min-height: 100%;
+  padding: 0 !important;
 }
 
 #booklet-wrapper {}
@@ -68,10 +69,24 @@ body {
   align-items: center;
 }
 
-.flex-row-beetwen-centered {
+.flex-row-between-centered {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.flex-column-between-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-column-between-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .hidden {

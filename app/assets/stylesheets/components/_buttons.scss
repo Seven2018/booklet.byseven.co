@@ -24,7 +24,7 @@ input.btn {
   text-align: center;
   transition: all 0.1s;
   outline: none !important;
-  margin-right: 0.5rem !important;
+  margin-right: 0.5rem;
   i {
     color: white;
   }
@@ -67,40 +67,29 @@ input.btn {
     }
 }
 
-.btn-edit-pen, .btn-edit-menu {
-  padding: 0.7rem 1.1rem !important;
-  min-width: 0 !important;
-}
-
-.btn-edit-round {
-  min-width: 0 !important;
-  padding: 0.55rem !important;
-  border-radius: 50% !important;
-  background-color: #23282E !important;
-  color: white !important;
-
-  &:hover {
-    background-color: #23282E !important;
-  }
-}
-
-.btn-edit-disk, .btn-edit-trash, .btn-edit-copy {
-  padding: 0.7rem 1.2rem !important;
+.btn-edit-icon {
+  height: 4rem;
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
   min-width: 0 !important;
   color: white !important;
 }
 
-.btn-edit-eye {
-  padding: 6.75rem 10rem !important;
+.btn-edit-icon-small {
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
   min-width: 0 !important;
-}
-
-.btn-edit-cross {
-  padding: 0.675rem 1.4rem !important;
-  min-width: 0 !important;
-  box-shadow: none !important;
+  color: white !important;
 
   i {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 }
+

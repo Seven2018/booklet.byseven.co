@@ -3,7 +3,10 @@
     <%= link_to training_programs_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
     <div id='show-buttons'>
       <% if ['Super Admin', 'HR'].include? current_user.access_level %>
-        <a class='edit-fafa btn btn-edit btn-edit-pen' data-toggle='modal' data-target='#editTrainingProgram'><i class='fas fa-pen'></i></a>
+        <a data-toggle='modal' data-target='#editTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+        <%= link_to training_program_path(@training_program), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+          <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -12,7 +15,7 @@
   background-repeat: no-repeat;">
       <h2><%= @training_program.title %></h2>
     </div>
-    <div class="training-program-show-card-footer flex-row-beetwen-centered">
+    <div class="training-program-show-card-footer flex-row-between-centered">
       <div class="training-program-show-card-footer-description centered-item">
         <p><%= @training_program.description %></p>
       </div>
@@ -28,7 +31,33 @@
           <% end %>
         </div>
       </div>
-
+    </div>
+  </div>
+  <div class='training-program-workshop-index'>
+    <h2><i class="fas fa-tools"></i> Workshops</h2>
+    <div class="row">
+      <div class="col-sm-4 centered-item">
+        <a data-toggle='modal' data-target='#addWorkshop'>
+          <div class="training-program-index-workshop-show-card">
+            <div class='training-program-index-workshop-show-card-main-empty centered-item'>
+              <h2>Click to add Workshops</h2>
+            </div>
+          </div>
+        </a>
+      </div>
+      <% @training_program.workshops.each do |workshop| %>
+        <div class="col-sm-4 centered-item">
+          <div class="training-program-index-workshop-show-card">
+            <div class='training-program-index-workshop-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= workshop.image %>');background-position: center center;
+          background-repeat: no-repeat;">
+              <h2><%= workshop.title %></h2>
+            </div>
+            <div class="training-program-index-workshop-show-card-footer centered-item">
+               <p><i class="far fa-clock"></i><%= " #{workshop.duration} minutes" %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
@@ -38,5 +67,11 @@
 <div class='modal fade' id='editTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'edit', training_program: @training_program %>
+  </div>
+</div>
+
+<div class='modal fade' id='addWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'program_workshops/new', training_program: @training_program %>
   </div>
 </div>

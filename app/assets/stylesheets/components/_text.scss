@@ -1,4 +1,4 @@
-h1, h2, h3, h4, h5, p, a {
+h1, h2, h3, h4, h5, h6, p, a {
   font-family: 'Open Sans' !important;
 }
 
@@ -12,6 +12,10 @@ h4 {
   @include from-large {
     font-size: 2rem !important;
   }
+}
+
+h6 {
+  font-size: 1.2rem;
 }
 
 p, i {
@@ -32,7 +36,7 @@ a {
 
 button {
     @include from-large {
-    font-size: 1.6rem !important;
+    font-size: 1.6rem;
   }
 }
 
@@ -44,9 +48,15 @@ ul {
   list-style-type: none;
 }
 
-input {
-  height: 4rem !important;
+input, select {
   font-size: 1.6rem !important;
+}
+
+.search-bar {
+
+  input {
+    height: 4rem !important;
+  }
 }
 
 input[type='checkbox']:checked + label {

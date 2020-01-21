@@ -1,15 +1,87 @@
-<%= link_to trainings_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
-<div class='centered-card-show'>
-  <div class='training-show-card'>
-    <div>
-      <div class='training-info-headers-buttons'>
-        <% if ['Super Admin', 'HR'].include? current_user.access_level %>
-          <a class='edit-fafa btn btn-edit btn-edit-pen' data-toggle='modal' data-target='#editTraining'><i class='fas fa-pen'></i></a>
+<div id="container-show">
+  <div id="show-controls">
+    <%= link_to trainings_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+    <div id='show-buttons'>
+      <% if ['Super Admin', 'HR'].include? current_user.access_level %>
+        <a data-toggle='modal' data-target='#editTraining'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+        <%= link_to training_path(@training), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+          <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
         <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class='training-program-show-card'>
+    <div class='training-program-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @training.image %>');background-position: center center;
+  background-repeat: no-repeat;">
+      <h2><%= @training.title %></h2>
+    </div>
+    <div class="training-program-show-card-footer flex-row-between-centered">
+      <div class="training-program-show-card-footer-description centered-item">
+        <p><%= @training.description %></p>
+      </div>
+      <div class="training-program-show-card-footer-infos flex-row-between-centered">
+        <div>
+          <% if @training.workshops.present? %>
+            <p><%= "#{@training.workshops.count} Workshops" %></p>
+            <% duration = 0 %>
+            <% @training.workshops.each do |workshop| %>
+              <% duration += workshop.duration %>
+            <% end %>
+            <p><%= "#{duration/60} hour long training" %></p>
+            <% if ['Super Admin', 'HR'].include?(current_user.access_level) %>
+              <p><%= "#{Attendee.where(training_id: @training.id).count}/#{@training.participant_number} seats reserved" %></p>
+            <% else %>
+              <p><%= "#{@training.participant_number - Attendee.where(training_id: @training.id).count} seats left" %></p>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="training-show-card-footer-buttons centered-item">
+          <% if Attendee.where(training_id: @training.id, user_id: current_user.id).empty? %>
+            <%= link_to "Register", attendees_path(training_id: @training.id, user_id: current_user.id), method: :post, class: 'btn btn-edit-green' %>
+          <% else %>
+            <%= link_to "Unregister", attendee_path(Attendee.where(training_id: @training.id, user_id: current_user.id).first), method: :post, class: 'btn btn-edit-red' %>
+          <% end %>
+        </div>
       </div>
     </div>
-    <p><%= @training.title %></p>
-    <p><%= @training.description %></p>
+  </div>
+  <div class='training-program-workshop-index'>
+    <h2><i class="fas fa-tools"></i> Workshops</h2>
+    <div class="row">
+      <div class="col-sm-4 centered-item">
+        <a data-toggle='modal' data-target='#addWorkshop' style='cursor:pointer;'>
+          <div class="training-program-index-workshop-show-card">
+            <div class='training-program-index-workshop-show-card-main-empty centered-item'>
+              <h2>Click to add Workshops</h2>
+            </div>
+          </div>
+        </a>
+      </div>
+      <% @training.training_workshops.order(date: :asc).each do |training_workshop| %>
+        <div class="col-sm-4 centered-item">
+          <div class="training-program-index-workshop-show-card">
+            <div class='training-program-index-workshop-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= training_workshop.workshop.image %>');background-position: center center;
+          background-repeat: no-repeat;">
+              <h2><%= training_workshop.title %></h2>
+            </div>
+            <div class="training-program-index-workshop-show-card-footer flex-row-between-centered">
+              <div>
+                <% if training_workshop.date.present? %>
+                  <h6><%= training_workshop.date.strftime("%d/%m/%Y") %></h6>
+                <% end %>
+                <% if training_workshop.start_time.present? && training_workshop.end_time.present? %>
+                  <h6><%= "#{training_workshop.start_time.strftime("%H:%M")} - #{training_workshop.end_time.strftime("%H:%M")}" %></h6>
+                <% end %>
+              </div>
+              <div>
+                <a data-toggle='modal' data-target='#editTrainingWorkshop<%= training_workshop.id %>'><button class='btn-edit-white btn-edit-icon-small'><i class='fas fa-pen'></i></button></a>
+                <a data-toggle='modal' data-target='#copyTrainingWorkshop<%= training_workshop.id %>'><button class='btn-edit-white btn-edit-icon-small'><i class="fas fa-copy"></i></button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
 
@@ -20,3 +92,23 @@
     <%= render 'edit', training: @training %>
   </div>
 </div>
+
+<div class='modal fade' id='addWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'training_workshops/new', training: @training %>
+  </div>
+</div>
+
+
+<% @training.training_workshops.each do |training_workshop| %>
+  <div class='modal fade' id='editTrainingWorkshop<%= training_workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+    <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+      <%= render 'training_workshops/edit', training_workshop: training_workshop %>
+    </div>
+  </div>
+  <div class='modal fade' id='copyTrainingWorkshop<%= training_workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+    <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+      <%= render 'training_workshops/copy', training_workshop: training_workshop %>
+    </div>
+  </div>
+<% end %>
