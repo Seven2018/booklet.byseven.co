@@ -18,6 +18,7 @@ class CategoriesController < ApplicationController
   def create
     @category = Category.new(category_params)
     authorize @category
+    @category.company_id = current_user.company_id
     @category.save ? (redirect_to category_path(@category)) : (render :new)
   end
 

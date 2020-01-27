@@ -10,25 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_16_160638) do
+ActiveRecord::Schema.define(version: 2020_01_27_133912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "attendees", force: :cascade do |t|
+    t.string "status", default: "Not completed", null: false
     t.bigint "user_id"
-    t.bigint "training_id"
+    t.bigint "training_workshop_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["training_id"], name: "index_attendees_on_training_id"
+    t.index ["training_workshop_id"], name: "index_attendees_on_training_workshop_id"
     t.index ["user_id"], name: "index_attendees_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|
     t.string "title", default: "", null: false
     t.string "description", default: "", null: false
+    t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_categories_on_company_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -39,6 +42,35 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
     t.string "logo"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mods", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.integer "duration", default: 0, null: false
+    t.text "content", default: "", null: false
+    t.string "document", default: "", null: false
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_mods_on_company_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "content"
+    t.string "status"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "program_categories", force: :cascade do |t|
+    t.bigint "training_program_id"
+    t.bigint "category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_program_categories_on_category_id"
+    t.index ["training_program_id"], name: "index_program_categories_on_training_program_id"
   end
 
   create_table "program_workshops", force: :cascade do |t|
@@ -76,8 +108,17 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
     t.index ["skill_group_id"], name: "index_skills_on_skill_group_id"
   end
 
+  create_table "team_categories", force: :cascade do |t|
+    t.bigint "team_id"
+    t.bigint "category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_team_categories_on_category_id"
+    t.index ["team_id"], name: "index_team_categories_on_team_id"
+  end
+
   create_table "teams", force: :cascade do |t|
-    t.string "firstname", default: "", null: false
+    t.string "name", default: "", null: false
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
@@ -96,15 +137,34 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
     t.index ["company_id"], name: "index_training_programs_on_company_id"
   end
 
+  create_table "training_workshop_mods", force: :cascade do |t|
+    t.integer "position", default: 0, null: false
+    t.bigint "mod_id"
+    t.bigint "training_workshop_id"
+    t.string "comments", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mod_id"], name: "index_training_workshop_mods_on_mod_id"
+    t.index ["training_workshop_id"], name: "index_training_workshop_mods_on_training_workshop_id"
+  end
+
   create_table "training_workshops", force: :cascade do |t|
     t.string "title", default: "", null: false
-    t.date "date"
+    t.integer "duration", default: 0, null: false
+    t.integer "participant_number", default: 0, null: false
+    t.text "description", default: "", null: false
+    t.string "workshop_type", default: "", null: false
+    t.string "image", default: "", null: false
+    t.bigint "company_id"
+    t.datetime "available_date"
+    t.datetime "date"
     t.time "starts_at"
     t.time "ends_at"
     t.bigint "training_id"
     t.bigint "workshop_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_training_workshops_on_company_id"
     t.index ["training_id"], name: "index_training_workshops_on_training_id"
     t.index ["workshop_id"], name: "index_training_workshops_on_workshop_id"
   end
@@ -123,8 +183,21 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
   end
 
   create_table "user_skills", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "skill_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["skill_id"], name: "index_user_skills_on_skill_id"
+    t.index ["user_id"], name: "index_user_skills_on_user_id"
+  end
+
+  create_table "user_teams", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "team_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_id"], name: "index_user_teams_on_team_id"
+    t.index ["user_id"], name: "index_user_teams_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -147,13 +220,11 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
     t.string "picture", default: "", null: false
     t.string "access_level", default: "Employee", null: false
     t.bigint "company_id"
-    t.bigint "team_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["team_id"], name: "index_users_on_team_id"
   end
 
   create_table "workshop_categories", force: :cascade do |t|
@@ -163,6 +234,16 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["category_id"], name: "index_workshop_categories_on_category_id"
     t.index ["workshop_id"], name: "index_workshop_categories_on_workshop_id"
+  end
+
+  create_table "workshop_mods", force: :cascade do |t|
+    t.integer "position", default: 0, null: false
+    t.bigint "mod_id"
+    t.bigint "workshop_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mod_id"], name: "index_workshop_mods_on_mod_id"
+    t.index ["workshop_id"], name: "index_workshop_mods_on_workshop_id"
   end
 
   create_table "workshop_skills", force: :cascade do |t|
@@ -178,31 +259,48 @@ ActiveRecord::Schema.define(version: 2020_01_16_160638) do
     t.string "title", default: "", null: false
     t.integer "duration", default: 0, null: false
     t.text "description", default: "", null: false
-    t.text "content", default: "", null: false
+    t.string "workshop_type", default: "", null: false
     t.string "image", default: "", null: false
     t.bigint "company_id"
+    t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_workshops_on_author_id"
     t.index ["company_id"], name: "index_workshops_on_company_id"
   end
 
-  add_foreign_key "attendees", "trainings"
+  add_foreign_key "attendees", "training_workshops"
   add_foreign_key "attendees", "users"
+  add_foreign_key "categories", "companies"
+  add_foreign_key "mods", "companies"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "program_categories", "categories"
+  add_foreign_key "program_categories", "training_programs"
   add_foreign_key "program_workshops", "training_programs"
   add_foreign_key "program_workshops", "workshops"
   add_foreign_key "requests", "training_programs"
   add_foreign_key "requests", "users"
   add_foreign_key "skills", "skill_groups"
+  add_foreign_key "team_categories", "categories"
+  add_foreign_key "team_categories", "teams"
   add_foreign_key "teams", "companies"
   add_foreign_key "training_programs", "companies"
+  add_foreign_key "training_workshop_mods", "mods"
+  add_foreign_key "training_workshop_mods", "training_workshops"
+  add_foreign_key "training_workshops", "companies"
   add_foreign_key "training_workshops", "trainings"
   add_foreign_key "training_workshops", "workshops"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "training_programs"
+  add_foreign_key "user_skills", "skills"
+  add_foreign_key "user_skills", "users"
+  add_foreign_key "user_teams", "teams"
+  add_foreign_key "user_teams", "users"
   add_foreign_key "users", "companies"
-  add_foreign_key "users", "teams"
   add_foreign_key "workshop_categories", "categories"
   add_foreign_key "workshop_categories", "workshops"
+  add_foreign_key "workshop_mods", "mods"
+  add_foreign_key "workshop_mods", "workshops"
   add_foreign_key "workshop_skills", "skills"
   add_foreign_key "workshop_skills", "workshops"
   add_foreign_key "workshops", "companies"

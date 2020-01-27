@@ -45,7 +45,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :picture, null: false, default: ""
       t.string :access_level, null: false, inclusion: { in: ['Admin', 'Super Admin', 'HR', 'Employee'] }, default: "Employee"
       t.references :company, foreign_key: true
-      t.references :team, foreign_key: true
 
       t.timestamps null: false
     end

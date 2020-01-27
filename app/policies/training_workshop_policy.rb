@@ -9,6 +9,10 @@ class TrainingWorkshopPolicy < ApplicationPolicy
     end
   end
 
+  def show?
+    true
+  end
+
   def create?
     check_access
   end
@@ -18,6 +22,10 @@ class TrainingWorkshopPolicy < ApplicationPolicy
   end
 
   def copy?
+    check_access
+  end
+
+  def book_training_workshop?
     check_access
   end
 

@@ -4,6 +4,7 @@
     <div id='show-buttons'>
       <% if ['Super Admin', 'HR'].include? current_user.access_level %>
         <a data-toggle='modal' data-target='#editTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+        <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a>
         <%= link_to training_program_path(@training_program), method: :delete, data: { confirm: 'Are you sure ?'} do %>
           <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
         <% end %>
@@ -33,6 +34,13 @@
       </div>
     </div>
   </div>
+  <div class="training-program-show-categories">
+    <% if @training_program.categories.present? %>
+      <% @training_program.categories.each do |category| %>
+        <h6 class="training-program-show-category-card"><%= category.title %></h6>
+      <% end %>
+    <% end %>
+  </div>
   <div class='training-program-workshop-index'>
     <h2><i class="fas fa-tools"></i> Workshops</h2>
     <div class="row">
@@ -40,7 +48,7 @@
         <a data-toggle='modal' data-target='#addWorkshop'>
           <div class="training-program-index-workshop-show-card">
             <div class='training-program-index-workshop-show-card-main-empty centered-item'>
-              <h2>Click to add Workshops</h2>
+              <h2>Manage Workshops</h2>
             </div>
           </div>
         </a>
@@ -64,14 +72,20 @@
 
 
 <!-- Modal -->
-<div class='modal fade' id='editTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+<div class='modal fade' id='editTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'edit', training_program: @training_program %>
   </div>
 </div>
 
-<div class='modal fade' id='addWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+<div class='modal fade' id='addWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'program_workshops/new', training_program: @training_program %>
+  </div>
+</div>
+
+<div class='modal fade' id='editCategory' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'program_categories/new', workshop: @workshop %>
   </div>
 </div>

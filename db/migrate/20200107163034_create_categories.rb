@@ -3,6 +3,7 @@ class CreateCategories < ActiveRecord::Migration[6.0]
     create_table :categories do |t|
       t.string :title, null: false, default: ""
       t.string :description, null: false, default: ""
+      t.references :company, foreign_key: true
       t.timestamps
     end
   end

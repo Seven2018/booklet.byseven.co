@@ -5,20 +5,24 @@
       <% if ['Super Admin', 'HR'].include? current_user.access_level %>
         <a data-toggle='modal' data-target='#editWorkshop'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
         <a data-toggle='modal' data-target='#editSkills'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-info"></i></button></a>
-        <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-flag"></i></button></a>
+        <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a>
         <%= link_to workshop_path(@workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
+          <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
         <% end %>
       <% end %>
     </div>
   </div>
   <div class='workshop-show-card'>
-    <div class='workshop-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @workshop.image %>');background-position: center center;
+    <div class='workshop-show-card-main flex-column-centered' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @workshop.image %>');background-position: center center;
   background-repeat: no-repeat;">
       <h2><%= @workshop.title %></h2>
+      <h6><%= @workshop.workshop_type %></h6>
     </div>
     <div class="workshop-show-card-footer flex-row-between-centered">
       <div class="workshop-show-card-footer-description centered-item">
+        <% if @workshop.author.present? %>
+          <p><%= "Author: #{@workshop.author.fullname}" %></p>
+        <% end %>
         <p><%= @workshop.description %></p>
       </div>
       <div class="workshop-show-card-footer-infos centered-item">
@@ -28,42 +32,51 @@
       </div>
     </div>
   </div>
-  <% if @workshop.content.present? %>
-    <a data-toggle='modal' data-target='#editWorkshopContent'>
-      <div class="workshop-show-content">
-        <%= @workshop.content.html_safe %>
-      </div>
-    </a>
-  <% else %>
+  <div class="workshop-show-categories">
+    <% if @workshop.categories.present? %>
+      <% @workshop.categories.each do |category| %>
+        <h6 class="workshop-show-category-card"><%= category.title %></h6>
+      <% end %>
+    <% end %>
+  </div>
+  <% if @workshop.mods.present? %>
+    <% @workshop.mods.each do |mod| %>
+      <%= link_to mod_path(mod) do %>
+        <div class="workshop-show-content">
+          <p><%= mod.title %></p>
+          <%= mod.content.html_safe %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
     <a data-toggle='modal' data-target='#editWorkshopContent'>
       <div class="workshop-show-content-empty centered-item">
         <h3>Click to add content</h3>
       </div>
     </a>
-  <% end %>
 </div>
 
 
 <!-- Modal -->
-<div class='modal fade' id='editWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+<div class='modal fade' id='editWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'edit', workshop: @workshop %>
   </div>
 </div>
 
-<div class='modal fade' id='editSkills' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+<div class='modal fade' id='editSkills' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'workshop_skills/new', workshop: @workshop %>
   </div>
 </div>
 
-<div class='modal fade' id='editCategory' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+<div class='modal fade' id='editCategory' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'workshop_categories/new', workshop: @workshop %>
   </div>
 </div>
 
-<div class='modal fade' id='editWorkshopContent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+<div class='modal fade' id='editWorkshopContent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'edit_content', workshop: @workshop %>
   </div>

@@ -6,18 +6,20 @@
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
-    <%= simple_form_for workshop do |f| %>
-      <%= f.cktext_area :content, label: 'Add content' %>
-      <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
-        <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
-        <%= link_to workshop_path(workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <button class="btn btn-edit-red btn-edit-icon">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        <% end %>
-      </div>
-    <% end %>
+    <a data-toggle='modal' data-target='#newModule'><button class="btn btn-edit-white">New Module</button></a>
+    <a data-toggle='modal' data-target='#loadModule'><button class="btn btn-edit-white">Add existing Module</button></a>
+  </div>
+</div>
+
+<!-- Modals -->
+<div class='modal fade' id='newModule' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/new', workshop: @workshop %>
+  </div>
+</div>
+
+<div class='modal fade' id='loadModule' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/library', workshop: @workshop %>
   </div>
 </div>

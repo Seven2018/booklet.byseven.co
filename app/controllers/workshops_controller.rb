@@ -36,6 +36,7 @@ class WorkshopsController < ApplicationController
     @workshop = Workshop.new(workshop_params)
     authorize @workshop
     @workshop.company_id = current_user.company.id
+    @workshop.author_id = current_user.id
     if @workshop.save
 
       # Links Workshop to Categories through joined table
@@ -75,7 +76,7 @@ class WorkshopsController < ApplicationController
   def destroy
     @workshop.destroy
     authorize @workshop
-    redirect_to workshop_path
+    redirect_to workshops_path
   end
 
   def filter
@@ -92,6 +93,6 @@ class WorkshopsController < ApplicationController
   end
 
   def workshop_params
-    params.require(:workshop).permit(:title, :description, :duration, :image, :content)
+    params.require(:workshop).permit(:title, :description, :duration, :image, :content, :workshop_type)
   end
 end

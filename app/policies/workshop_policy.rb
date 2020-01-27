@@ -14,7 +14,7 @@ class WorkshopPolicy < ApplicationPolicy
   end
 
   def show?
-    check_access
+    true
   end
 
   def update?
@@ -36,6 +36,6 @@ class WorkshopPolicy < ApplicationPolicy
   end
 
   def check_access_hr
-    ['Super Admin', 'HR'].include? user.access_level
+    ['Super Admin', 'Admin', 'HR'].include? user.access_level
   end
 end

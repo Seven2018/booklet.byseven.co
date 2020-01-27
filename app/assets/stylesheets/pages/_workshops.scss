@@ -44,7 +44,7 @@
 .workshop-show-card-main {
   height: 40rem;
 
-  h2 {
+  h2, h6 {
     color: white;
   }
 }
@@ -60,16 +60,24 @@
   width: 50%;
 }
 
+.workshop-show-category-card {
+  background-color: #FF8E66;
+  padding: 1rem;
+  color: white;
+  border-radius: 0.5rem;
+}
+
 .workshop-show-content {
   width: 90rem;
   padding: 5rem;
+  margin: 2rem 0;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
 }
 
 .workshop-show-content-empty {
   width: 90rem;
   height: 10rem;
+  margin: 2rem 0;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }

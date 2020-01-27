@@ -81,10 +81,23 @@ body {
   align-items: flex-start;
 }
 
+.flex-row-around-centered {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .flex-column-between-centered {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
+}
+
+.flex-column-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 

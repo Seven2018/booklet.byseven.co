@@ -6,7 +6,7 @@
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
-    <%= simple_form_for [@training, training_workshop] do |f| %>
+    <%= simple_form_for training_workshop do |f| %>
       <div class="mod-date">
         <%= f.input :title, input_html: {value: training_workshop.title} %>
         <%= f.input :date, as: :string, input_html: { class: 'datepicker'} %>
@@ -19,7 +19,7 @@
         <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
           <i class="fas fa-save"></i>
         <% end %>
-        <%= link_to training_training_workshop_path(@training, training_workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+        <%= link_to training_workshop_path(training_workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
           <button class="btn btn-edit-red btn-edit-icon">
             <i class="fas fa-trash-alt"></i>
           </button>

@@ -34,7 +34,11 @@ class TrainingsController < ApplicationController
     authorize @training
     if @training.save
       @training_program.program_workshops.each do |program_workshop|
-        TrainingWorkshop.create(title: program_workshop.workshop.title, training_id: @training.id, workshop_id: program_workshop.workshop.id)
+        new_training_workshop = TrainingWorkshop.create(program_workshop.workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
+        new_training_workshop.update(training_id: @training.id, workshop_id: program_workshop.workshop_id)
+        program_workshop.workshop.workshop_mods.each do |workshop_mod|
+          new_training_workshop_mod = TrainingWorkshopMod.create(mod_id: workshop_mod.mod_id, training_workshop_id: new_training_workshop.id)
+        end
       end
       redirect_to training_path(@training)
     else
@@ -59,7 +63,7 @@ class TrainingsController < ApplicationController
   def destroy
     @training.destroy
     authorize @training
-    redirect_to training_path
+    redirect_to trainings_path
   end
 
   private

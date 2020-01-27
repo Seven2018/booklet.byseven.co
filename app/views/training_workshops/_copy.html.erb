@@ -6,7 +6,7 @@
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
-    <%= simple_form_for :copy, url: training_copy_training_workshop_path(training_workshop.training, training_workshop), method: 'GET' do |f| %>
+    <%= simple_form_for :copy, url: copy_training_workshop_path(training_workshop.training, training_workshop), method: 'GET' do |f| %>
       <div class="mod-date">
         <%= f.input :title, input_html: {value: training_workshop.workshop.title} %>
         <%= f.input :date, as: :string, input_html: { class: 'datepicker'} %>

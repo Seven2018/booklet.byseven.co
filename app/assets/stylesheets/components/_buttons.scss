@@ -12,7 +12,7 @@ input.btn {
   margin-bottom: 1.0rem !important;
 }
 
-.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-white {
+.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-white {
   opacity: 0.8;
   width: auto;
   max-width: none;
@@ -20,7 +20,6 @@ input.btn {
   border-radius: 0.22rem;
   box-sizing: border-box;
   font-weight: 800 !important;
-  color: white !important;
   text-align: center;
   transition: all 0.1s;
   outline: none !important;
@@ -34,20 +33,28 @@ input.btn {
   }
 }
 
+.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange {
+  color: white !important;
+}
+
 .btn-edit {
   background-color: $yellow !important;
 }
 
 .btn-edit-red {
-    background-color: #E64259 !important;
+  background-color: #E64259 !important;
 }
 
 .btn-edit-green {
-    background-color: #4AC2C7 !important;
+  background-color: #4AC2C7 !important;
 }
 
 .btn-edit-grey {
-    background-color: #23282E !important;
+  background-color: #23282E !important;
+}
+
+.btn-edit-orange {
+  background-color: orange !important;
 }
 
 .btn-edit-white {
@@ -75,7 +82,6 @@ input.btn {
   align-items: center;
   padding: 0 !important;
   min-width: 0 !important;
-  color: white !important;
 }
 
 .btn-edit-icon-small {

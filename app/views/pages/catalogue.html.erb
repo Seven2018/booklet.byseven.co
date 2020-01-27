@@ -3,7 +3,7 @@
     <h3>Catalogue</h3>
     <div id="index-buttons">
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
+        <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <%= link_to 'New Program', new_training_program_path, class: 'dropdown-item' %>
           <%= link_to 'New Workshop', new_workshop_path, class: 'dropdown-item' %>
@@ -71,7 +71,7 @@
             <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
 
             <!-- Modal -->
-            <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+            <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
               <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
                 <%= render 'trainings/new', training_program: program %>
               </div>
@@ -99,6 +99,14 @@
             </div>
             <div class="workshop-index-infos">
               <p><%= workshop.title %></p>
+              <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
+
+              <!-- Modal -->
+              <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+                <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+                  <%= render 'training_workshops/new', workshop: workshop %>
+                </div>
+              </div>
             </div>
           </div>
         <% end %>
@@ -113,6 +121,14 @@
             </div>
             <div class="workshop-index-infos">
               <p><%= workshop.title %></p>
+              <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
+
+              <!-- Modal -->
+              <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+                <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+                  <%= render 'training_workshops/new', workshop: workshop %>
+                </div>
+              </div>
             </div>
           </div>
         <% end %>

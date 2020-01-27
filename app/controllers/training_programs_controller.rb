@@ -22,6 +22,7 @@ class TrainingProgramsController < ApplicationController
   def show
     authorize @training_program
     @program_workshop = ProgramWorkshop.new
+    @program_category = ProgramCategory.new
   end
 
   def new

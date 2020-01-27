@@ -9,6 +9,7 @@
   <%= simple_form_for @workshop do |f| %>
     <%= f.input :title %>
     <%= f.input :description %>
+    <%= f.input :workshop_type, collection: ['Synchronous', 'Asynchronous'], include_blank: false %>
     <%= f.input :duration, label: 'Duration (min)' %>
     <%= f.input :image, label: 'Image URL' %>
     <div id='checkbox' style=" display:flex;justify-content:space-between;flex-direction:column;">

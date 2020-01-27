@@ -8,6 +8,12 @@ class User < ApplicationRecord
   has_many :requests, dependent: :destroy
   has_many :attendees, dependent: :destroy
   belongs_to :company, optional: true
-  belongs_to :team, optional: true
+  has_many :user_teams, dependent: :destroy
+  has_many :teams, through: :user_teams
+  has_many :notifications, dependent: :destroy
   # validates :gender, inclusion: { in: ['M', 'F'] }
+
+  def fullname
+    "#{firstname} #{lastname}"
+  end
 end
