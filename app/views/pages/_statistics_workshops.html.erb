@@ -1,6 +1,6 @@
 <div class="training-index-dashboard flex-row-between-centered">
   <div class='training-index-list-dashboard'>
-    <% upcoming_workshops = TrainingWorkshop.where(training_id: nil).where.not('date < ?', Date.today).sort_by(&:date) %>
+    <% upcoming_workshops = TrainingWorkshop.where(training_id: nil).where('date >= ?', Date.today).sort_by(&:date) %>
     <p class='training-index-list-dashboard-title'><%= "Upcoming Workshops (#{upcoming_workshops.count})" %></p>
     <% upcoming_workshops.each do |workshop| %>
       <div class='training-index-card'>
@@ -18,7 +18,7 @@
     <% end %>
   </div>
   <div class='training-index-list-dashboard'>
-    <% completed_workshops = TrainingWorkshop.where(training_id: nil).where.not('date >= ?', Date.today).sort_by(&:date) %>
+    <% completed_workshops = TrainingWorkshop.where(training_id: nil).where('date < ?', Date.today).sort_by(&:date) %>
     <p class='training-index-list-dashboard-title'><%= "Completed Workshops (#{completed_workshops.count})" %></p>
     <% completed_workshops.each do |workshop| %>
       <div class='training-index-card'>

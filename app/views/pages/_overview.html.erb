@@ -66,7 +66,7 @@
 <div class="training-index-dashboard flex-row-between-start">
   <div class='training-index-list-dashboard'>
     <p class='training-index-list-dashboard-title'>Completed workshops</p>
-    <% @my_workshops.where("date < ?", Date.today).order(date: :asc).each do |training_workshop| %>
+    <% @completed_workshops.where("date < ?", Date.today).order(date: :asc).each do |training_workshop| %>
       <%= link_to training_path(training_workshop.training) do %>
         <div class='training-index-card'>
           <div class='training-index-image' style="background-image:url('<%= training_workshop.workshop.image %>');">

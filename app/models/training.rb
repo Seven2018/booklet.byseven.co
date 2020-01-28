@@ -37,6 +37,10 @@ class Training < ApplicationRecord
     date_array.sort.last
   end
 
+  def date
+    self.last_date
+  end
+
   def first_date
     date_array =[]
     self.training_workshops.each do |workshop|

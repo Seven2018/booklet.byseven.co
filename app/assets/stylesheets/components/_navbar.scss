@@ -5,7 +5,8 @@
   margin-left: 220px;
   display: flex;
   justify-content: space-between;
-  background-color: #23282e;
+  // background-color: #23282e;
+  background-color: white;
   z-index: 1000;
 }
 
@@ -71,7 +72,6 @@
 
 .nav-link {
   height: auto;
-  color: white !important;
 }
 
 .notification-show, .notification-show-undead {
@@ -80,4 +80,18 @@
 
 .notification-show-link {
   margin-left: 1rem;
+}
+
+.navbar-user-card {
+  border: 1px solid #d2e3fc;
+  border-radius: 0.8rem;
+  padding: 0.5rem;
+
+  div {
+    margin: 0 2rem 0 0;
+  }
+
+  h6 {
+    margin: 0;
+  }
 }

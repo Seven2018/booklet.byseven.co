@@ -12,6 +12,13 @@ input.btn {
   margin-bottom: 1.0rem !important;
 }
 
+.btn {
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
 .btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-white {
   opacity: 0.8;
   width: auto;
@@ -101,4 +108,27 @@ input.btn {
 
 .btn-last {
   margin-right: 0 !important;
+}
+
+.btn-edit-navbar {
+  border-radius: 2rem;
+  width: 12rem;
+  margin: 0;
+  position: absolute;
+  top: 8rem;
+
+  i, p {
+    color: rgba(0, 0, 0, 0.3) !important;
+
+  }
+
+  &:hover, &:focus {
+    border: none !important;
+    background-color: #FDC553 !important;
+
+    i, p {
+      // color: black !important;
+      color: white !important;
+    }
+  }
 }

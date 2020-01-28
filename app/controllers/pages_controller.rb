@@ -7,6 +7,7 @@ class PagesController < ApplicationController
   def dashboard
     @my_trainings = Training.includes(:training_workshops).joins(training_workshops: :attendees).where(attendees: {user_id: current_user.id}).where.not('date < ?', Date.today).uniq
     @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
+    @completed_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Completed'})
     @my_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not('date < ?', Date.today)
     if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
       @available_workshops = TrainingWorkshop.joins(:workshop).where(training_id: nil, workshops: {company_id: current_user.company_id}).where.not(date: nil).where.not('date < ?', Date.today)

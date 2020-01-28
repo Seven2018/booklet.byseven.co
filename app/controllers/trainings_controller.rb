@@ -40,7 +40,7 @@ class TrainingsController < ApplicationController
         team_ids.each do |ind|
           TeamWorkshop.create(team_id: ind, training_workshop_id: new_training_workshop.id)
           Team.find(ind).users.each do |user|
-            Attendee.create(user_id: user.id, training_workshop_id: new_training_workshop.id)
+            Attendee.create(user_id: user.id, training_workshop_id: new_training_workshop.id, status: 'Invited')
           end
         end
         program_workshop.workshop.workshop_mods.each do |workshop_mod|
