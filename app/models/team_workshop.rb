@@ -1,0 +1,2 @@
+class TeamWorkshop < ApplicationRecord
+end

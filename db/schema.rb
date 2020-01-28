@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_27_133912) do
+ActiveRecord::Schema.define(version: 2020_01_28_085828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,8 +56,8 @@ ActiveRecord::Schema.define(version: 2020_01_27_133912) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.string "content"
-    t.string "status"
+    t.string "content", default: "", null: false
+    t.string "status", default: "Unread", null: false
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -115,6 +115,15 @@ ActiveRecord::Schema.define(version: 2020_01_27_133912) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["category_id"], name: "index_team_categories_on_category_id"
     t.index ["team_id"], name: "index_team_categories_on_team_id"
+  end
+
+  create_table "team_workshops", force: :cascade do |t|
+    t.bigint "team_id"
+    t.bigint "training_workshop_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_id"], name: "index_team_workshops_on_team_id"
+    t.index ["training_workshop_id"], name: "index_team_workshops_on_training_workshop_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -283,6 +292,8 @@ ActiveRecord::Schema.define(version: 2020_01_27_133912) do
   add_foreign_key "skills", "skill_groups"
   add_foreign_key "team_categories", "categories"
   add_foreign_key "team_categories", "teams"
+  add_foreign_key "team_workshops", "teams"
+  add_foreign_key "team_workshops", "training_workshops"
   add_foreign_key "teams", "companies"
   add_foreign_key "training_programs", "companies"
   add_foreign_key "training_workshop_mods", "mods"

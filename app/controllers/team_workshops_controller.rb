@@ -1,0 +1,2 @@
+class TeamWorkshopsController < ApplicationController
+end

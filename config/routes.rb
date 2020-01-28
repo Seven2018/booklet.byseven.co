@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   post 'attendee-invite-to-training', to: 'attendees#invite_user_to_training', as: 'invite_to_training_attendees'
   post 'attendee-mark-as-completed', to: 'attendees#mark_as_completed', as: 'mark_as_completed_attendees'
   resources :requests, only: %i[index show create update destroy]
-  root to: 'pages#home'
+  root to: 'pages#dashboard'
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
   get 'statistics', to: 'pages#statistics', as: 'statistics'

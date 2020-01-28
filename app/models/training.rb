@@ -3,6 +3,7 @@ class Training < ApplicationRecord
   belongs_to :training_program, optional: true
   has_many :training_workshops, dependent: :destroy
   has_many :workshops, through: :training_workshops
+  accepts_nested_attributes_for :training_workshops
 
   def attendees
     attendees = []

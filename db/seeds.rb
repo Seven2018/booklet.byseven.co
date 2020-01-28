@@ -15,6 +15,7 @@ User.create(firstname: "Brice", lastname: "Chapuis", company_id: 1, email: "bric
 User.create(firstname: "Yahya", lastname: "Fallah", company_id: 1, email: "yahya.fallah@byseven.co", password: "tititoto", access_level: "Super Admin", gender: 'M', picture: 'https://media-exp1.licdn.com/dms/image/C5603AQFc5Cf9X4gL_w/profile-displayphoto-shrink_200_200/0?e=1585180800&v=beta&t=eJBIoMSgMxXKenQr7PrWixQSFBpIvcjhme-cQ5hjOm4')
 User.create(firstname: "Jorick", lastname: "Roustan", company_id: 1, email: "jorick.roustan@byseven.co", password: "tititoto", access_level: "Manager", gender: 'M', picture: 'http://static8.viadeo-static.com/_Z-gjrDmn0yPKoiw9P481xLMzs0=/300x300/member/00223346scu6m79w%3Fts%3D1449006810000')
 User.create(firstname: "Mathilde", lastname: "Meurer", company_id: 1, email: "mathilde.meurer@byseven.co", password: "tititoto", access_level: "HR", gender: 'F', picture: 'https://www.tedxbordeaux.com/wp-content/uploads/2018/07/equipe_mathilde_meurer.jpg')
+User.create(firstname: "Camille", lastname: "Briand", company_id: 1, email: "camille.briand@byseven.co", password: "tititoto", access_level: "Employee", gender: 'F', picture: 'https://media-exp1.licdn.com/dms/image/C4D03AQGVTVVGpfqGXw/profile-displayphoto-shrink_200_200/0?e=1585785600&v=beta&t=Eev63R-VlwxDKXjhXAfLTCUDXb5PhJj9FV_zaOr-_g0')
 
 Team.create(name: 'Team SEVEN', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBnUro-wUXAyxHcFgUpyE3mYacHTifjn1-7dxonThmaWdMOoq8Mw&s', company_id: 1)
 

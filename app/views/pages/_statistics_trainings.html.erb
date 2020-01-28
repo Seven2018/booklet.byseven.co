@@ -14,15 +14,15 @@
     <% end %>
   </div>
   <div class='training-index-list-dashboard'>
-    <% completed_trainings = Training.includes(:training_workshops).joins(:training_workshops).where(company_id: current_user.company_id).where.not('date >= ?', Date.today).uniq %>
-    <p class='training-index-list-dashboard-title'><%= "Completed Traingins (#{completed_trainings.count})" %></p>
+    <% completed_trainings = Training.includes(:training_workshops).joins(:training_workshops).where(company_id: current_user.company_id).where('date < ?', Date.today).uniq - Training.includes(:training_workshops).joins(:training_workshops).where(company_id: current_user.company_id).where('date >= ?', Date.today).uniq %>
+    <p class='training-index-list-dashboard-title'><%= "Completed Trainings (#{completed_trainings.count})" %></p>
     <% completed_trainings.each do |training| %>
       <div class='training-index-card'>
         <div class='training-index-image' style="background-image:url('<%= training.image %>');">
         </div>
         <div class="training-index-infos-dashboard">
           <p><%= training.title %></p>
-          <p><%= "Next workshop: #{training.next_date.strftime('%d/%m/%Y')}" %></p>
+          <p><%= "Ended on: #{training.last_date.strftime('%d/%m/%Y')}" %></p>
         </div>
       </div>
     <% end %>
