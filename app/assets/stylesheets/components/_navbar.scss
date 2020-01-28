@@ -1,12 +1,97 @@
-.navbar-lewagon {
+.navbar {
+  position: sticky;
+  top: 0;
+  height: 50px;
+  margin-left: 220px;
+  display: flex;
   justify-content: space-between;
-  background: white;
+  // background-color: #23282e;
+  background-color: white;
+  z-index: 1000;
 }
 
-.navbar-lewagon .navbar-collapse {
+.navbar .navbar-collapse {
   flex-grow: 0;
 }
 
-.navbar-lewagon .navbar-brand img {
+.navbar .navbar-brand img {
   width: 40px;
+}
+
+.navbar-controls {
+  height: 100%;
+  margin-right: 30px;
+  display: inherit;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.navbar-controls-left {
+  position: relative;
+}
+
+.navbar-notification-indicator {
+  position: absolute;
+  top: -0.7rem;
+  right: 0;
+
+  i {
+    color: red;
+    font-size: 1rem;
+  }
+}
+
+.navbar-icon {
+  color: #cccccc;
+
+  i {
+    font-size: 20px !important;
+    margin-right: 5px;
+    border: 1px solid #cccccc;
+  }
+
+  .fa-envelope {
+    padding: 5px;
+  }
+
+  .fa-bell {
+    padding: 5px 6.25px;
+  }
+
+  &:hover {
+    color: white;
+
+    i {
+      border: 1px solid white;
+    }
+  }
+}
+
+.nav-item {
+}
+
+.nav-link {
+  height: auto;
+}
+
+.notification-show, .notification-show-undead {
+  min-width: 10rem;
+}
+
+.notification-show-link {
+  margin-left: 1rem;
+}
+
+.navbar-user-card {
+  border: 1px solid #d2e3fc;
+  border-radius: 0.8rem;
+  padding: 0.5rem;
+
+  div {
+    margin: 0 2rem 0 0;
+  }
+
+  h6 {
+    margin: 0;
+  }
 }

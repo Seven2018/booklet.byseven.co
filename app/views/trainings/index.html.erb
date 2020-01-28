@@ -1,0 +1,58 @@
+<div class="training-index">
+  <div id="index-controls">
+    <h3>Training List</h3>
+    <div id="index-buttons">
+      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <%= link_to new_training_path do %>
+          <button class="btn btn-edit-white btn-edit-icon"><i class="fas fa-plus"></i></button>
+        <% end %>
+      <% end %>
+      <a><button class="btn btn-edit-white btn-edit-icon"><i class="fas fa-sliders-h"></i></button></a>
+      <% if params[:search] %>
+        <%= simple_form_for :search, url: trainings_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
+          <%= f.input :title, placeholder: params[:search][:title], label: false %>
+          <%= link_to trainings_path, class: 'search-close' do %>
+            <i class="far fa-times-circle"></i>
+          <% end %>
+        <% end %>
+      <% else %>
+        <a>
+          <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
+        </a>
+        <%= simple_form_for :search, url: trainings_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
+          <%= f.input :title, placeholder: 'Search', label: false %>
+            <a class='search-close'>
+              <i class="far fa-times-circle"></i>
+            </a>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class='training-index-list'>
+    <% @trainings.each do |training| %>
+      <%= link_to training_path(training) do %>
+        <div class='training-index-card'>
+          <div class='training-index-image' style="background-image:url('<%= training.image %>');">
+          </div>
+          <div class="training-index-infos">
+            <p><%= training.title %></p>
+            <p><%# "From #{training.start_date.strftime('%d/%m/%y')} to #{training.end_date.strftime('%d/%m/%y')}" %></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<script>
+  searchButton = document.querySelector('.btn-search');
+  searchBar = document.querySelector('.search-bar');
+  searchClose = document.querySelector('.search-close');
+  searchButton.addEventListener('click', (event) => {
+    searchButton.classList.toggle('hidden');
+    searchBar.classList.toggle('hidden');
+  })
+  searchClose.addEventListener('click', (event) => {
+    searchButton.classList.toggle('hidden');
+    searchBar.classList.toggle('hidden');
+  })
+</script>

@@ -1,0 +1,35 @@
+<div id='skill-index'>
+  <div id="skill-index-controls">
+    <h3>Skills List</h3>
+    <div id="skill-index-buttons">
+      <%= simple_form_for :search, url: skills_path, method: 'GET' do |f| %>
+        <%= f.input :title, placeholder: 'Search', label: false %>
+        <% if params[:search] %>
+          <%= link_to skills_path, class: 'skill-index-search-close' do %>
+            <i class="far fa-times-circle"></i>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if ['Super Admin', 'HR'].include?(current_user.access_level) %>
+        <%= link_to new_skill_path do %>
+          <button class="btn btn-edit">New Skill</button>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <ul class='skill-index-list'>
+    <% @skills.each do |skill| %>
+      <li>
+        <%= link_to skill_path(skill) do %>
+          <div class="skill-index-card">
+            <div class="skill-index-infos">
+              <div>
+                <p><%= skill.title %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>

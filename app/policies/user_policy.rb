@@ -32,6 +32,6 @@ class UserPolicy < ApplicationPolicy
   private
 
   def check_access
-    ['Super Admin', 'HR'].include? user.access_level
+    ['Super Admin', 'Admin', 'HR'].include? user.access_level
   end
 end

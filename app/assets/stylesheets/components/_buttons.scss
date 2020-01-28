@@ -1,0 +1,134 @@
+.return-arrow {
+  min-width: 0 !important;
+  padding: 1.575rem 1.7rem !important;
+  box-shadow: none !important;
+
+  i {
+    font-size: 1.4rem;
+  }
+}
+
+input.btn {
+  margin-bottom: 1.0rem !important;
+}
+
+.btn {
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-white {
+  opacity: 0.8;
+  width: auto;
+  max-width: none;
+  padding: 0.45rem 2rem;
+  border-radius: 0.22rem;
+  box-sizing: border-box;
+  font-weight: 800 !important;
+  text-align: center;
+  transition: all 0.1s;
+  outline: none !important;
+  margin-right: 0.5rem;
+  i {
+    color: white;
+  }
+  &:hover{
+    opacity: 1;
+    text-decoration: none !important;
+  }
+}
+
+.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange {
+  color: white !important;
+}
+
+.btn-edit {
+  background-color: $yellow !important;
+}
+
+.btn-edit-red {
+  background-color: #E64259 !important;
+}
+
+.btn-edit-green {
+  background-color: #4AC2C7 !important;
+}
+
+.btn-edit-grey {
+  background-color: #23282E !important;
+}
+
+.btn-edit-orange {
+  background-color: orange !important;
+}
+
+.btn-edit-white {
+    background-color: rgba(255,255,255,0) !important;
+    border: 0.01rem solid rgba(0,0,0,0.3) !important;
+
+    i {
+      color: rgba(0,0,0,0.3) !important;
+    }
+
+    &:hover {
+      border: 0.01rem solid rgba(0,0,0,1) !important;
+
+      i {
+        color: rgba(0,0,0,1) !important;
+      }
+    }
+}
+
+.btn-edit-icon {
+  height: 4rem;
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+  min-width: 0 !important;
+}
+
+.btn-edit-icon-small {
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+  min-width: 0 !important;
+  color: white !important;
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+.btn-last {
+  margin-right: 0 !important;
+}
+
+.btn-edit-navbar {
+  border-radius: 2rem;
+  width: 12rem;
+  margin: 0;
+  position: absolute;
+  top: 8rem;
+
+  i, p {
+    color: rgba(0, 0, 0, 0.3) !important;
+
+  }
+
+  &:hover, &:focus {
+    border: none !important;
+    background-color: #FDC553 !important;
+
+    i, p {
+      // color: black !important;
+      color: white !important;
+    }
+  }
+}

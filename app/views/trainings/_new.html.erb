@@ -1,0 +1,33 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel"><%= "Create a training for '#{training_program.title}'" %></h3>
+    </div>
+    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body" id="modalNewBookinBody">
+    <%= simple_form_for @training do |f| %>
+      <%= f.input :title, input_html: {value: training_program.title} %>
+      <%= f.input :participant_number, input_html: {value: training_program.participant_number} %>
+      <p><%= "Select Teams (optional)" %></p>
+      <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
+        <%= collection_check_boxes(:training_workshop, :team_ids, Team.where(company_id: current_user.company_id), :id, :name) do |b| %>
+          <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+            <%= b.check_box + b.text %>
+          <% end %>
+        <% end %>
+      </div>
+      <script>
+        $('#checkbox2 input:checkbox:checked').parent().toggleClass('checked-box');
+        $('#checkbox2 input:checkbox').change(function () {
+          $(this).parent().toggleClass('checked-box');
+        });
+      </script>
+      <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
+        <%= button_tag type: 'submit', name: 'training_program_id', value: "#{training_program.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
+          <i class="fas fa-save"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<p><%= "Hours of completed trainings: #{TrainingWorkshop.where(company_id: current_user.company_id).where("date < ?", Date.today).map(&:duration).sum.fdiv(60)} h" %></p>
+<br>
+<p>Hours of completed trainings, by team:</p>
+<div>
+  <% Team.where(company_id: current_user.company_id).each do |team| %>
+    <h6><%= "#{team.name}: #{TrainingWorkshop.joins(:team_workshops).where(team_workshops: {team_id: team.id}).where("date < ?", Date.today).map(&:duration).sum.fdiv(60)} h" %></h6>
+  <% end %>
+</div>
+<br>
+<p>Hours of completed_trainings, by employee:</p>
+<div>
+  <% User.where(company_id: current_user.company_id).each do |user| %>
+    <h6><%= "#{user.fullname}: #{TrainingWorkshop.joins(:attendees).where(attendees: {user_id: user.id}).where("date < ?", Date.today).map(&:duration).sum.fdiv(60)} h" %></h6>
+  <% end %>
+</div>
+<br>
+<p><%= "Programs in Catalogue: #{TrainingProgram.where(company_id: current_user.company_id).count}" %></p>
+<p><%= "Workshops in Catalogue: #{Workshop.where(company_id: current_user.company_id).count}" %></p>
+<p><%= "Hours of trainings in Catalogue: #{Workshop.where(company_id: current_user.company_id).map(&:duration).sum.fdiv(60)} h"  %></p>
+  <% Category.where(company_id: current_user.company_id).each do |category| %>
+    <h6><%= "#{category.title}: #{Workshop.joins(:workshop_categories).where(company_id: current_user.company_id, workshop_categories: {category_id: category.id}).map(&:duration).sum.fdiv(60)} h" %></h6>
+  <% end %>
+  <h6><%= "Others: #{Workshop.left_joins(:workshop_categories).where(company_id: current_user.company_id, workshop_categories: {category_id: nil}).map(&:duration).sum.fdiv(60)} h" %></h6>

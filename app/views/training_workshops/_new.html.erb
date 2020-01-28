@@ -1,0 +1,36 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel"><%= "Booking options for '#{workshop.title}'" %></h3>
+    </div>
+    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body" id="modalNewBookinBody">
+    <%= simple_form_for :training_workshop, url: book_training_workshop_path do |f| %>
+      <%= f.input :title, input_html: {value: workshop.title} %>
+      <% if workshop.workshop_type == 'Synchronous' %>
+        <div class="mod-date">
+          <%= f.input :date, as: :string, input_html: { class: 'datepicker'} %>
+        </div>
+        <div class="mod-date">
+          <%= f.input :starts_at, label: 'Start time', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
+          <%= f.input :ends_at, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
+        </div>
+      <% else %>
+        <div class="mod-date">
+          <%= f.input :available_date, as: :string, input_html: { class: 'datepicker', value: Date.today}, label: 'Available from' %>
+          <%= f.input :starts_at, label: 'at', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
+        </div>
+        <div class="mod-date">
+          <%= f.input :date, as: :string, input_html: { class: 'datepicker' }, label: 'Available until (optional)' %>
+          <%= f.input :ends_at, label: 'at', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
+        </div>
+      <% end %>
+      <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
+        <%= button_tag type: 'submit', name: "workshop_id", value: workshop.id, class: 'btn btn-edit-green btn-edit-icon' do %>
+          <i class="fas fa-save"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+.user-picture-index {
+  height:50px;
+  width:50px;
+  background-color: rgba(0,0,0,0);
+  object-fit: cover;
+}
+
+.user-search-close {
+  position: absolute;
+  top: 7px;
+  right: 157px;
+  color: black;
+
+  &:hover {
+    color: black;
+  }
+}
+
+.users-list {
+  list-style-type: none;
+
+  a {
+
+  }
+}
+
+.user-index-card {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  margin: 5px 0;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-infos {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    width: 10rem;
+  }
+}

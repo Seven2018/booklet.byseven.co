@@ -17,13 +17,13 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # def after_sign_in_path_for(resource)
-  #   if ['Super Admin', 'Admin', 'training manager', 'sevener'].include?(current_user.access_level)
-  #     trainings_path
-  #   else
-  #     booklet_trainings_path
-  #   end
-  # end
+  def after_sign_in_path_for(resource)
+    if ['Super Admin', 'Admin'].include?(current_user.access_level)
+      dashboard_path
+    else
+      dashboard_path
+    end
+  end
 
   # def after_sign_out_path_for(resource)
   #   request.referrer

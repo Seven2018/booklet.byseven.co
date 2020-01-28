@@ -1,0 +1,26 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel"><%= workshop.title %></h3>
+    </div>
+    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body" id="modalNewBookinBody">
+    <%= simple_form_for workshop do |f| %>
+      <%= f.input :title %>
+      <%= f.input :description %>
+      <%= f.input :duration, label: 'Duration (min)' %>
+      <%= f.input :image, label: 'Image URL' %>
+      <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
+        <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
+          <i class="fas fa-save"></i>
+        <% end %>
+        <%= link_to workshop_path(workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+          <button class="btn btn-edit-red btn-edit-icon">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

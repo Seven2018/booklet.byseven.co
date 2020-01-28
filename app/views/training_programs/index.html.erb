@@ -1,0 +1,94 @@
+<div class="training-program-index">
+  <div id="index-controls">
+    <h3>Programs List</h3>
+    <div id="index-buttons">
+      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <%= link_to new_training_program_path do %>
+          <button class="btn btn-edit-white btn-edit-icon"><i class="fas fa-plus"></i></button>
+        <% end %>
+      <% end %>
+      <a><button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon"><i class="fas fa-sliders-h"></i></button></a>
+      <% if params[:search] %>
+        <%= simple_form_for :search, url: training_programs_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
+          <%= f.input :title, placeholder: params[:search][:title], label: false %>
+          <%= link_to training_programs_path, class: 'search-close' do %>
+            <i class="far fa-times-circle"></i>
+          <% end %>
+        <% end %>
+      <% else %>
+        <a>
+          <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
+        </a>
+        <%= simple_form_for :search, url: training_programs_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
+          <%= f.input :title, placeholder: 'Search', label: false %>
+            <a class='search-close'>
+              <i class="far fa-times-circle"></i>
+            </a>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div id="training-program-index-list-filters" class='hidden'>
+    <%= simple_form_for :filter, url: filter_training_programs_path, method: 'GET' do |f| %>
+      <div id="checkbox">
+        <%= collection_check_boxes(:workshop, :category_ids, Category.all, :id, :title) do |b| %>
+          <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+            <%= b.check_box + b.text %>
+          <% end %>
+        <% end %>
+      </div>
+      <script>
+        $('#checkbox input:checkbox:checked').parent().toggleClass('checked-box');
+        $('#checkbox input:checkbox').change(function () {
+          $(this).parent().toggleClass('checked-box');
+        });
+      </script>
+      <div style="display:flex;justify-content:center;margin-top:30px;">
+        <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
+          <i class="fas fa-save"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <script>
+    filterButton = document.getElementById('btn-edit-filter');
+    filterDiv = document.getElementById('training-program-index-list-filters');
+    filterButton.addEventListener('click', (event) => {
+      filterDiv.classList.toggle('hidden');
+    })
+  </script>
+  <div class='training-program-index-list'>
+    <% @training_programs.each do |program| %>
+      <%= link_to training_program_path(program) do %>
+        <div class='training-program-index-card'>
+          <div class='training-program-index-image' style="background-image:url('<%= program.image %>');">
+          </div>
+          <div class="training-program-index-infos">
+            <p><%= program.title %></p>
+            <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
+
+            <!-- Modal -->
+            <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+              <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+                <%= render 'trainings/new', training_program: program %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<script>
+  searchButton = document.querySelector('.btn-search');
+  searchBar = document.querySelector('.search-bar');
+  searchClose = document.querySelector('.search-close');
+  searchButton.addEventListener('click', (event) => {
+    searchButton.classList.toggle('hidden');
+    searchBar.classList.toggle('hidden');
+  })
+  searchClose.addEventListener('click', (event) => {
+    searchButton.classList.toggle('hidden');
+    searchBar.classList.toggle('hidden');
+  })
+</script>
