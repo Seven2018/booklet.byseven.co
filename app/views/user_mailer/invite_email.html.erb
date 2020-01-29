@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hello, <%= @user.fullname %></h1>
+    <br>
+    <% if @training.present? %>
+      <p>You've been invited to the following training: <%= @training.title %>, via Booklet</p>
+    <% else %>
+      <p>You've been invited to the following workshop: <%= @attendee.training_workshop.title %>, via Booklet</p>
+    <% end %>
+    <p>Thanks you and have a great day!</p>
+  </body>
+</html>

@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
 
   create_table "attendees", force: :cascade do |t|
     t.string "status", default: "Not completed", null: false
+    t.string "calendar_uuid"
     t.bigint "user_id"
     t.bigint "training_workshop_id"
     t.datetime "created_at", precision: 6, null: false

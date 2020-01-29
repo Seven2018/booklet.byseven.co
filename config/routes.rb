@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, path: 'u'
+  devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :users
   resources :teams, only: %i[create show update destroy]
   resources :team_categories, only: %i[create]
@@ -41,4 +41,7 @@ Rails.application.routes.draw do
   get 'organisation', to: 'pages#organisation', as: 'organisation'
   get 'notification-mark-as-read', to: 'notifications#mark_as_read', as: 'mark_as_read_notifications'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get '/redirect', to: 'attendees#redirect', as: 'redirect'
+  get '/callback', to: 'attendees#callback', as: 'callback'
+  get '/calendars', to: 'attendees#calendars', as: 'calendars'
 end
