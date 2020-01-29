@@ -31,8 +31,15 @@
       <div class="workshop-show-card-footer-infos flex-row-around-centered">
         <div>
           <% if @training_workshop.date.present? && @training_workshop.starts_at.present? && @training_workshop.ends_at.present? %>
-            <p><%= @training_workshop.date.strftime('%d/%m/%Y') %></p>
-            <p><%= "#{@training_workshop.starts_at.strftime('%H:%M')} - #{@training_workshop.ends_at.strftime('%H:%M')}" %></p>
+            <% if @training_workshop.workshop.workshop_type == 'Synchronous' %>
+              <p><%= @training_workshop.date.strftime('%d/%m/%Y') %></p>
+              <p><%= "#{@training_workshop.starts_at.strftime('%H:%M')} - #{@training_workshop.ends_at.strftime('%H:%M')}" %></p>
+            <% else %>
+              <p><%= "From #{@training_workshop.date.strftime('%d/%m/%Y')} at #{@training_workshop.starts_at.strftime('%H:%M')}" %></p>
+              <% if @training_workshop.available_date.present? && @training_workshop.ends_at.present? %>
+                <p><%= "To #{@training_workshop.available_date.strftime('%d/%m/%Y')} at #{@training_workshop.ends_at.strftime('%H:%M')}" %></p>
+              <% end %>
+            <% end %>
           <% else %>
             <p><i class="far fa-clock"></i><%= " #{@training_workshop.duration} minutes" %></p>
           <% end %>

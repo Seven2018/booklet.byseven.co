@@ -3,8 +3,10 @@
     <% if user_signed_in? %>
       <p>Booklet for <img src='<%= "#{current_user.company.logo}" %>' class="left-navbar-logo" height='24px'></p>
     <% end %>
+  </div>
+  <div class="left-navbar-middle">
     <button class="btn btn-edit-white btn-edit-navbar dropdown-toggle" type="button" id="dropdownMenuNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <div class="flex-row-around-centered">
+      <div class="flex-row-between-centered">
         <i class="fas fa-plus"></i>
         <p>New</p>
       </div>
@@ -13,8 +15,6 @@
       <%= link_to 'Program', new_training_program_path, class: 'dropdown-item' %>
       <%= link_to 'Workshop', new_workshop_path, class: 'dropdown-item' %>
     </div>
-  </div>
-  <div class="left-navbar-middle">
     <% if user_signed_in? %>
       <%= link_to dashboard_path, class: 'left-buttons' do %>
         <% if request.original_url.split('/')[3] == 'dashboard' %>

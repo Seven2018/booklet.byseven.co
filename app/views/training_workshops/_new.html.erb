@@ -18,11 +18,11 @@
         </div>
       <% else %>
         <div class="mod-date">
-          <%= f.input :available_date, as: :string, input_html: { class: 'datepicker', value: Date.today}, label: 'Available from' %>
+          <%= f.input :date, as: :string, input_html: { class: 'datepicker', value: Date.today}, label: 'Available from' %>
           <%= f.input :starts_at, label: 'at', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
         </div>
         <div class="mod-date">
-          <%= f.input :date, as: :string, input_html: { class: 'datepicker' }, label: 'Available until (optional)' %>
+          <%= f.input :available_date, as: :string, input_html: { class: 'datepicker' }, label: 'Available until (optional)' %>
           <%= f.input :ends_at, label: 'at', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
         </div>
       <% end %>

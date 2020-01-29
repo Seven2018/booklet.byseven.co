@@ -29,15 +29,17 @@
       <% end %>
     </div>
   </div>
-  <div class='catalogue-index-list'>
-    <h3>Teams List</h3>
+</div>
+<div class="training-index-dashboard flex-row-between-start">
+  <div class='training-index-list-dashboard-sm'>
+    <p class='training-index-list-dashboard-title'>Teams</p>
     <% if @teams.present? %>
       <% @teams.each do |team| %>
         <%= link_to team_path(team) do %>
           <div class='training-program-index-card'>
-            <div class='training-program-index-image' style="background-image:url('<%= team.image %>');">
+            <div class='training-program-index-image' style="background-image:url('<%= team.image %>');background-size:cover;">
             </div>
-            <div class="training-program-index-infos">
+            <div class="training-index-infos-dashboard">
               <p><%= team.name %></p>
             </div>
           </div>
@@ -45,43 +47,40 @@
       <% end %>
     <% end %>
   </div>
-</div>
-<div class="workshop-index">
-  <div class='catalogue-index-list'>
-    <h3>Users List</h3>
-    <% team_array = [] %>
-    <% @users.each do |user| %>
-      <% team_array << user.teams unless user.teams.nil? %>
-    <% end %>
-    <% team_array = team_array.flatten.uniq %>
-    <% team_array.each do |team| %>
-      <p class='workshop-index-list-category-title'><%= team.name %></p>
-      <% @users.joins(:user_teams).where(user_teams: {team_id: team.id}).each do |user| %>
-        <%= link_to user_path(user) do %>
-          <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= user.picture %>');">
+  <div class='training-index-list-dashboard-md'>
+      <p class='training-index-list-dashboard-title'>Users</p>
+      <% team_array = [] %>
+      <% @users.each do |user| %>
+        <% team_array << user.teams unless user.teams.nil? %>
+      <% end %>
+      <% team_array = team_array.flatten.uniq %>
+      <% team_array.each do |team| %>
+        <p class='workshop-index-list-category-title'><%= team.name %></p>
+        <% @users.joins(:user_teams).where(user_teams: {team_id: team.id}).each do |user| %>
+          <%= link_to user_path(user) do %>
+            <div class='workshop-index-card'>
+              <img src="<%= user.picture %>" alt="" class='avatar-sm'>
+              <div class="training-index-infos-dashboard">
+                <p><%= user.fullname %></p>
+              </div>
             </div>
-            <div class="workshop-index-infos">
-              <p><%= user.fullname %></p>
-            </div>
-          </div>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
-    <% unless @users.left_joins(:user_teams).where(user_teams: {team_id: nil}).empty? %>
-      <p class='workshop-index-list-category-title'>Others</p>
-      <% @users.left_joins(:user_teams).where(user_teams: {team_id: nil}).each do |user| %>
-        <%= link_to user_path(user) do %>
-          <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= user.picture %>');">
+      <% unless @users.left_joins(:user_teams).where(user_teams: {team_id: nil}).empty? %>
+        <p class='workshop-index-list-category-title'>Others</p>
+        <% @users.left_joins(:user_teams).where(user_teams: {team_id: nil}).each do |user| %>
+          <%= link_to user_path(user) do %>
+            <div class='workshop-index-card'>
+              <img src="<%= user.picture %>" alt="" class='avatar-sm'>
+              <div class="training-index-infos-dashboard">
+                <p><%= user.fullname %></p>
+              </div>
             </div>
-            <div class="workshop-index-infos">
-              <p><%= user.fullname %></p>
-            </div>
-          </div>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
+    </div>
   </div>
 </div>
 

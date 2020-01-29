@@ -17,7 +17,7 @@ class TrainingWorkshop < ApplicationRecord
     status = true
     return status if available_date.blank?
 
-    if available_date > date
+    if available_date.present? && available_date < date
       errors.add(:available_date, "must be after the start date")
       status = false
     end

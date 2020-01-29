@@ -60,80 +60,64 @@
     })
   </script>
   <div class='catalogue-index-list'>
-    <h3>Programs List</h3>
+    <h3>Programs</h3>
     <% @training_programs.each do |program| %>
-      <%= link_to training_program_path(program) do %>
-        <div class='training-program-index-card'>
-          <div class='training-program-index-image' style="background-image:url('<%= program.image %>');">
-          </div>
-          <div class="training-program-index-infos">
+      <div class='workshop-index-card'>
+        <%= link_to '', training_program_path(program), class:'stretched-link' %>
+        <div class='training-program-index-image' style="background-image:url('<%= program.image %>');">
+        </div>
+        <div class="training-program-index-infos">
+          <div class="training-index-infos-dashboard">
             <p><%= program.title %></p>
-            <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
+          </div>
+          <div class="training-index-infos-dashboard">
+            <p><%= "#{program.workshops.count} workshops" %></p>
+          </div>
+          <div class="training-index-infos-dashboard">
+            <p><i class="fas fa-hourglass"></i><%= " #{program.workshops.map(&:duration).sum}min" %></p>
+          </div>
+          <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
 
-            <!-- Modal -->
-            <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-              <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-                <%= render 'trainings/new', training_program: program %>
-              </div>
+          <!-- Modal -->
+          <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+              <%= render 'trainings/new', training_program: program %>
             </div>
           </div>
         </div>
-      <% end %>
+      </div>
     <% end %>
   </div>
 </div>
 <div class="workshop-index">
   <div class='catalogue-index-list'>
-    <h3>Workshops List</h3>
-    <% category_array = [] %>
-    <% @workshops.each do |workshop| %>
-      <% category_array << workshop.categories %>
-    <% end %>
-    <% category_array = category_array.uniq.reject { |c| c.empty? } %>
-    <% category_array.each do |category| %>
-      <p class='workshop-index-list-category-title'><%= category.first.title %></p>
-      <% @workshops.joins(:workshop_categories).where(workshop_categories: {category_id: category.first.id}).each do |workshop| %>
-        <%= link_to workshop_path(workshop) do %>
-          <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= workshop.image %>');">
-            </div>
-            <div class="workshop-index-infos">
+    <h3>Workshops</h3>
+      <% @workshops.order(title: :asc).each do |workshop| %>
+        <div class='workshop-index-card'>
+          <%= link_to '', workshop_path(workshop), class:'stretched-link' %>
+          <div class='workshop-index-image' style="background-image:url('<%= workshop.image %>');">
+          </div>
+          <div class="workshop-index-infos flex-row-between-centered">
+            <div class="training-index-infos-dashboard">
               <p><%= workshop.title %></p>
-              <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
+            </div>
+            <div class="training-index-infos-dashboard">
+              <p><%= workshop.workshop_type %></p>
+            </div>
+            <div class="training-index-infos-dashboard">
+              <p><i class="fas fa-hourglass"></i><%= " #{workshop.duration}min" %></p>
+            </div>
+            <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
 
-              <!-- Modal -->
-              <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-                <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-                  <%= render 'training_workshops/new', workshop: workshop %>
-                </div>
+            <!-- Modal -->
+            <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+              <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+                <%= render 'training_workshops/new', workshop: workshop %>
               </div>
             </div>
           </div>
-        <% end %>
+        </div>
       <% end %>
-    <% end %>
-    <% if @workshops.left_joins(:workshop_categories).where(workshop_categories: {id: nil}).present? && params[:filter].nil?%>
-      <p class='workshop-index-list-category-title'>Others</p>
-      <% @workshops.left_joins(:workshop_categories).where(workshop_categories: {id: nil}).each do |workshop| %>
-        <%= link_to workshop_path(workshop) do %>
-          <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= workshop.image %>');">
-            </div>
-            <div class="workshop-index-infos">
-              <p><%= workshop.title %></p>
-              <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
-
-              <!-- Modal -->
-              <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-                <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-                  <%= render 'training_workshops/new', workshop: workshop %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
   </div>
 </div>
 
