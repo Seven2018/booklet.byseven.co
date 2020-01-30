@@ -57,7 +57,7 @@ class AttendeesController < ApplicationController
       training.training_workshops.each do |training_workshop|
         new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
         Notification.create(content: "You have been invited to the following training: #{training.title}", user_id: user.id)
-        UserMailer.with(attendee_id: new_attendee.id).invite_email(user).deliver
+        UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
       end
     end
     (User.joins(:attendees).where(attendees: {training_workshop_id: [training.training_workshops.ids]}).uniq - users).each do |user|
@@ -76,7 +76,7 @@ class AttendeesController < ApplicationController
     users.each do |user|
       new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
       Notification.create(content: "You have been invited to the following workshop: #{training_workshop.title}", user_id: user.id)
-      UserMailer.with(attendee_id: new_attendee.id).invite_email(user).deliver
+      UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
     end
     (User.joins(:attendees).where(attendees: {training_workshop_id: training_workshop.id}) - users).each do |user|
       Attendee.find_by(user_id: user.id, training_workshop_id: training_workshop.id).destroy
