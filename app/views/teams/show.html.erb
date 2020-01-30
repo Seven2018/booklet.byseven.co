@@ -1,38 +1,56 @@
-<div id="container-show">
-  <div id="show-controls">
-    <%= link_to organisation_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
-    <div id='show-buttons'>
-      <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
-        <a data-toggle='modal' data-target='#editTeam'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
-        <a data-toggle='modal' data-target='#editUserTeams'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-users-cog"></i></button></a>
-        <a data-toggle='modal' data-target='#editTeamCategories'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a>
-        <%= link_to team_path(@team), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
-        <% end %>
+<div id="show-controls" class='flex-row-between-centered'>
+  <%= link_to organisation_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <div id='show-buttons'>
+    <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+      <a data-toggle='modal' data-target='#editTeam'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+      <a data-toggle='modal' data-target='#editUserTeams'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-users-cog"></i></button></a>
+      <a data-toggle='modal' data-target='#editTeamCategories'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a>
+      <%= link_to team_path(@team), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+        <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
       <% end %>
+    <% end %>
+  </div>
+</div>
+<div id="container-show">
+  <div class="user-show-card flex-column-between-centered">
+    <% if @team.image.present? %>
+      <div class="center-cropped" style='background-image: url(<%= @team.image %>);'>
+      </div>
+    <% else %>
+      <a data-toggle='modal' data-target='#editImage' class="avatar-xlarge-empty centered-item">
+        <h6>Add picture</h6>
+      </a>
+    <% end %>
+    <div class="user-show-card-info">
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Name:</p>
+        <p><strong><%=  @team.team_name %></strong></p>
+      </div>
     </div>
   </div>
-  <div class='team-show-card'>
-    <div class='team-show-card-main flex-column-centered' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @team.image %>');background-position: center center;
-  background-repeat: no-repeat;">
-      <h2><%= @team.name %></h2>
-    </div>
-    <div class="team-show-card-footer flex-row-between-centered">
-      <div class="team-show-card-footer-description centered-item">
-      </div>
-      <div class="team-show-card-footer-infos centered-item">
-      </div>
-    </div>
-  </div>
-  <div class="team-show-users">
+</div>
+<div id="container-show">
+  <div class='training-index-list-dashboard-md'>
     <% if @team.users.present? %>
       <% @team.users.each do |user| %>
         <%= link_to user_path(user) do %>
           <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= user.picture %>');">
-            </div>
-            <div class="workshop-index-infos">
-              <p><%= "#{user.firstname} #{user.lastname}" %></p>
+            <img src="<%= user.picture %>" alt="" class='avatar-sm'>
+            <div class="training-index-infos-group-dashboard flex-row-around-centered">
+              <div class="training-index-infos-dashboard">
+                <% if user.fullname.length < 23 %>
+                  <p><%= user.fullname %></p>
+                <% else %>
+                  <p><%= "#{user.fullname[0..19]}..." %><span><%= user.fullname %></span></p>
+                <% end %>
+              </div>
+              <div class="training-index-infos-dashboard">
+                <% if user.email.length < 26 %>
+                  <p><%= user.email %></p>
+                <% else %>
+                  <p><%= "#{user.email[0..22]}..." %><span><%= user.email %></span></p>
+                <% end %>
+              </div>
             </div>
           </div>
         <% end %>
@@ -58,5 +76,11 @@
 <div class='modal fade' id='editTeamCategories' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'team_categories/edit', team: @team %>
+  </div>
+</div>
+
+<div class="modal fade" id="editImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="border-radius: 20px">
+    <%= render 'edit_image', team: @team %>
   </div>
 </div>

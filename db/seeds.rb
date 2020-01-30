@@ -17,7 +17,7 @@ User.create(firstname: "Jorick", lastname: "Roustan", company_id: 1, email: "jor
 User.create(firstname: "Mathilde", lastname: "Meurer", company_id: 1, email: "mathilde.meurer@byseven.co", password: "tititoto", access_level: "HR", gender: 'F', picture: 'https://www.tedxbordeaux.com/wp-content/uploads/2018/07/equipe_mathilde_meurer.jpg')
 User.create(firstname: "Camille", lastname: "Briand", company_id: 1, email: "camille.briand@byseven.co", password: "tititoto", access_level: "Employee", gender: 'F', picture: 'https://media-exp1.licdn.com/dms/image/C4D03AQGVTVVGpfqGXw/profile-displayphoto-shrink_200_200/0?e=1585785600&v=beta&t=Eev63R-VlwxDKXjhXAfLTCUDXb5PhJj9FV_zaOr-_g0')
 
-Team.create(name: 'Team SEVEN', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBnUro-wUXAyxHcFgUpyE3mYacHTifjn1-7dxonThmaWdMOoq8Mw&s', company_id: 1)
+Team.create(team_name: 'Team SEVEN', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBnUro-wUXAyxHcFgUpyE3mYacHTifjn1-7dxonThmaWdMOoq8Mw&s', company_id: 1)
 
 Category.create(title: 'Négociation', description: "L'art de calmer sa femme.", company_id: 1)
 Category.create(title: 'Business Development', description: "L'art de trouver des clients.", company_id: 1)

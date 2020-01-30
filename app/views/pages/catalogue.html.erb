@@ -1,5 +1,5 @@
 <div class="training-program-index">
-  <div id="index-controls">
+  <div id="index-controls" class='flex-row-between-centered'>
     <h3>Catalogue</h3>
     <div id="index-buttons">
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
@@ -62,30 +62,31 @@
   <div class='catalogue-index-list'>
     <h3>Programs</h3>
     <% @training_programs.each do |program| %>
-      <div class='workshop-index-card'>
-        <%= link_to '', training_program_path(program), class:'stretched-link' %>
-        <div class='training-program-index-image' style="background-image:url('<%= program.image %>');">
-        </div>
-        <div class="training-program-index-infos">
-          <div class="training-index-infos-dashboard">
-            <p><%= program.title %></p>
+      <%= link_to training_program_path(program) do %>
+        <div class='workshop-index-card'>
+          <div class='training-program-index-image' style="background-image:url('<%= program.image %>');">
           </div>
-          <div class="training-index-infos-dashboard">
-            <p><%= "#{program.workshops.count} workshops" %></p>
-          </div>
-          <div class="training-index-infos-dashboard">
-            <p><i class="fas fa-hourglass"></i><%= " #{program.workshops.map(&:duration).sum}min" %></p>
-          </div>
-          <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
+          <div class="training-program-index-infos">
+            <div class="training-index-infos-dashboard">
+              <p><%= program.title %></p>
+            </div>
+            <div class="training-index-infos-dashboard">
+              <p><%= "#{program.workshops.count} workshops" %></p>
+            </div>
+            <div class="training-index-infos-dashboard">
+              <p><i class="fas fa-hourglass"></i><%= " #{program.workshops.map(&:duration).sum}min" %></p>
+            </div>
+            <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-calendar-alt"></i></button></a>
 
-          <!-- Modal -->
-          <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-            <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-              <%= render 'trainings/new', training_program: program %>
+            <!-- Modal -->
+            <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+              <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+                <%= render 'trainings/new', training_program: program %>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
 </div>
@@ -93,30 +94,31 @@
   <div class='catalogue-index-list'>
     <h3>Workshops</h3>
       <% @workshops.order(title: :asc).each do |workshop| %>
-        <div class='workshop-index-card'>
-          <%= link_to '', workshop_path(workshop), class:'stretched-link' %>
-          <div class='workshop-index-image' style="background-image:url('<%= workshop.image %>');">
-          </div>
-          <div class="workshop-index-infos flex-row-between-centered">
-            <div class="training-index-infos-dashboard">
-              <p><%= workshop.title %></p>
+        <%= link_to workshop_path(workshop) do %>
+          <div class='workshop-index-card'>
+            <div class='workshop-index-image' style="background-image:url('<%= workshop.image %>');">
             </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= workshop.workshop_type %></p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><i class="fas fa-hourglass"></i><%= " #{workshop.duration}min" %></p>
-            </div>
-            <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
+            <div class="workshop-index-infos flex-row-between-centered">
+              <div class="training-index-infos-dashboard">
+                <p><%= workshop.title %></p>
+              </div>
+              <div class="training-index-infos-dashboard">
+                <p><%= workshop.workshop_type %></p>
+              </div>
+              <div class="training-index-infos-dashboard">
+                <p><i class="fas fa-hourglass"></i><%= " #{workshop.duration}min" %></p>
+              </div>
+              <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-calendar-alt"></i></button></a>
 
-            <!-- Modal -->
-            <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-              <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-                <%= render 'training_workshops/new', workshop: workshop %>
+              <!-- Modal -->
+              <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+                <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+                  <%= render 'training_workshops/new', workshop: workshop %>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
   </div>
 </div>

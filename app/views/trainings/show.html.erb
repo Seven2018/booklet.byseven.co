@@ -1,8 +1,7 @@
-<div id="container-show">
-  <div id="show-controls">
+  <div id="show-controls" class='flex-row-between-centered'>
     <%= link_to trainings_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
     <div id='show-buttons'>
-      <% if ['Super Admin', 'HR'].include? current_user.access_level %>
+      <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
         <a data-toggle='modal' data-target='#editTraining'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
         <%= link_to training_path(@training), method: :delete, data: { confirm: 'Are you sure ?'} do %>
           <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
@@ -11,6 +10,7 @@
       <% end %>
     </div>
   </div>
+<div id="container-show">
   <div class='training-program-show-card'>
     <div class='training-program-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @training.image %>');background-position: center center;
   background-repeat: no-repeat;">
@@ -29,7 +29,7 @@
               <% duration += workshop.duration %>
             <% end %>
             <p><%= "#{duration/60} hour long training" %></p>
-            <% if ['Super Admin', 'HR'].include?(current_user.access_level) %>
+            <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
               <p><%= "#{Attendee.where(training_workshop_id: [@training.training_workshops.ids]).count/@training.training_workshops.count}/#{@training.participant_number} seats reserved" %></p>
             <% else %>
               <p><%= "#{@training.participant_number - (Attendee.where(training_workshop_id: [@training.training_workshops.ids]).count/@training.training_workshops.count)} seats left" %></p>

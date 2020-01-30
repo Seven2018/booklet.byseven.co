@@ -34,6 +34,11 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     authorize @user
     if @user.save
+      if params[:user][:team_ids].present?
+        params[:user][:team_ids].drop(1).map(&:to_i).each do |team_id|
+          UserTeam.create(team_id: team_id, user_id: @user.id)
+        end
+      end
       redirect_to user_path(@user)
     else
       render :new

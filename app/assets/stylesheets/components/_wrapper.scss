@@ -15,7 +15,8 @@ body {
 
 #booklet-container {
   margin-left: 22rem;
-  padding: 3rem;
+  padding: 0 3rem 3rem 3rem;
+  position: relative;
 }
 
 #container-show {
@@ -29,11 +30,16 @@ body {
 
 #index-controls, #show-controls {
   width: 100%;
-  height: 5rem;
-  display: flex;
-  justify-content: space-between;
+  height: 8rem;
   position: relative;
   margin-bottom: 1rem;
+  padding-top: 3rem;
+  border-bottom: 1px solid #DADCE0;
+  position: sticky;
+  top: 5rem;
+  right: 3rem;
+  z-index: 10;
+  background-color: white;
 }
 
 #index-buttons, #show-buttons {
@@ -42,8 +48,8 @@ body {
 
 .search-close {
   position: absolute;
-  top: 7px;
-  right: 10px;
+  top: 3.7rem;
+  right: 1rem;
   color: black;
 
   &:hover {
@@ -81,6 +87,12 @@ body {
   align-items: flex-start;
 }
 
+.flex-row-start-centered {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .flex-row-around-centered {
   display: flex;
   justify-content: space-around;
@@ -110,4 +122,12 @@ body {
 
 .hidden {
   display: none !important;
+}
+
+.center-cropped {
+  width: 200px;
+  height: 200px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
 }

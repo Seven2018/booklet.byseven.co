@@ -89,20 +89,27 @@ input.btn {
   align-items: center;
   padding: 0 !important;
   min-width: 0 !important;
+
+  &::after {
+    z-index: 100;
+  }
 }
 
 .btn-edit-icon-small {
-  height: 3rem;
-  width: 3rem;
+  height: 2rem;
+  width: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 !important;
   min-width: 0 !important;
-  color: white !important;
 
   i {
     font-size: 1.2rem;
+  }
+
+  &::after {
+    z-index: 100;
   }
 }
 
@@ -111,17 +118,28 @@ input.btn {
 }
 
 .btn-edit-navbar {
+  padding: 0.45rem 2rem;
+  border-radius: 0.22rem;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.1s;
+  outline: none !important;
+  margin-right: 0.5rem;
   border-radius: 2rem;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302),0 1px 3px 1px rgba(60,64,67,0.149);
   width: 12rem;
   margin: 2.4rem 2.4rem 2.4rem 0.4rem;
 
-  i, p {
-    color: rgba(0, 0, 0, 0.3) !important;
+  p {
     font-size: 2rem !important;
   }
 
+  i {
+    font-size: 2rem !important;
+    color: #FDC553;
+  }
+
   &:hover, &:focus {
-    border: none !important;
     background-color: #FDC553 !important;
 
     i, p {

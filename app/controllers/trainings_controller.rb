@@ -35,7 +35,7 @@ class TrainingsController < ApplicationController
     if @training.save
       @training_program.program_workshops.each do |program_workshop|
         new_training_workshop = TrainingWorkshop.create(program_workshop.workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
-        new_training_workshop.update(training_id: @training.id, workshop_id: program_workshop.workshop_id)
+        new_training_workshop.update(training_id: @training.id, workshop_id: program_workshop.workshop_id, date: Date.today, starts_at: Time.now, ends_at: Time.now)
         team_ids = params[:training_workshop][:team_ids].drop(1).map(&:to_i)
         team_ids.each do |ind|
           TeamWorkshop.create(team_id: ind, training_workshop_id: new_training_workshop.id)

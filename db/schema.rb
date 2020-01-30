@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
   end
 
   create_table "teams", force: :cascade do |t|
-    t.string "name", default: "", null: false
+    t.string "team_name", default: "", null: false
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false

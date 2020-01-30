@@ -1,38 +1,81 @@
-<div class="container-seven">
+<div id="show-controls" class='flex-row-between-centered'>
   <%= link_to organisation_path, class: 'btn return-arrow' do %><i class="fas fa-arrow-left"></i><% end %>
-  <div class='centered-card-show'>
-    <div class="user-contact-card-show">
-      <div style='display:flex;flex-direction:row;'>
-        <div class='user-picture-show'>
-          <img src='<%= @user.picture %>' alt="" class='client-company-logo-show'>
-        </div>
-        <div class="show-control-links" style='display:flex;flex-direction:row;'>
-          <% if current_user.access_level == 'Super Admin' || @user == current_user || (['Admin', 'HR'].include?(current_user.access_level) && current_user.company == @user.company) %>
-            <a class="button edit-fafa" data-toggle='modal' data-target='#editUser'><button class='btn btn-edit'>Edit Profile</button></a>
-            <a class="button edit-fafa" data-toggle='modal' data-target='#editPassword'><button class='btn btn-edit btn-last'>Change Password</button></a>
-          <% end %>
-        </div>
+  <div id='show-buttons'>
+    <% if current_user.access_level == 'Super Admin' || @user == current_user || (['Admin', 'HR'].include?(current_user.access_level) && current_user.company == @user.company) %>
+      <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+      <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-edit-icon btn-last'><i class="fas fa-key"></i></button></a>
+    <% end %>
+  </div>
+</div>
+<div id='container-show'>
+  <div class="user-show-card flex-column-between-centered">
+    <% if @user.picture.present? %>
+      <img src='<%= @user.picture %>' alt="" class='avatar-xlarge'>
+    <% else %>
+      <a data-toggle='modal' data-target='#editPicture' class="avatar-xlarge-empty centered-item">
+        <h6>Add picture</h6>
+      </a>
+    <% end %>
+    <div class="user-show-card-info">
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Lastname:</p>
+        <p><strong><%=  @user.lastname %></strong></p>
       </div>
-      <div class="user-info">
-        <p>Lastname: <strong><%=  @user.lastname %></strong></p>
-        <p>Firstname: <strong><%=  @user.firstname %></strong></p>
-        <p>Email: <%= @user.email %></p>
-        <p>Access Level: <%= @user.access_level.capitalize %></p>
-        <p>LinkedIn: <%= link_to @user.linkedin do %><i class="fab fa-linkedin-in"></i><% end %></p>
-        </div>
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Firstname:</p>
+        <p><strong><%=  @user.firstname %></strong></p>
+      </div>
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Access Level:</p>
+        <p><strong><%=  @user.access_level %></strong></p>
+      </div>
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Position:</p>
+        <p><strong><%=  @user.job_description if @user.job_description.present? %></strong></p>
+      </div>
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Email:</p>
+        <p><strong><%=  @user.email %></strong></p>
+      </div>
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Phone number:</p>
+        <p><strong><%=  @user.phone_number if @user.phone_number.present? %></strong></p>
+      </div>
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Linkedin:</p>
+        <p>
+          <% if @user.linkedin.present? %>
+            <%= link_to @user.linkedin do %><i class="fab fa-linkedin-in"></i><% end %>
+          <% end %>
+        </p>
+      </div>
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Birth date:</p>
+        <p><strong><%=  @user.birth_date.strftime('%d/%m/%Y') if @user.birth_date.present? %></strong></p>
+      </div>
+      <div class='user-show-card-info-line flex-row-between-centered'>
+        <p>Hire date:</p>
+        <p><strong><%=  @user.hire_date.strftime('%d/%m/%Y') if @user.hire_date.present? %></strong></p>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document" style="border-radius: 20px">
+  <div class="modal-dialog" role="document" style="border-radius: 20px">
     <%= render 'edit', user: @user %>
   </div>
 </div>
 
+<div class="modal fade" id="editPicture" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="border-radius: 20px">
+    <%= render 'edit_picture', user: @user %>
+  </div>
+</div>
+
 <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document" style="border-radius: 20px">
+  <div class="modal-dialog" role="document" style="border-radius: 20px">
     <%= render 'changepassword', user: @user %>
   </div>
 </div>

@@ -1,86 +1,152 @@
-<div class="training-program-index">
-  <div id="index-controls">
-    <h3>Organisation</h3>
-    <div id="index-buttons">
-      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-        <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a data-toggle='modal' data-target='#newTeam' class='dropdown-item'>New Team</a>
-          <%= link_to 'New User', new_user_path, class: 'dropdown-item' %>
-        </div>
+<div id="index-controls" class='flex-row-between-centered'>
+  <h3>Organisation</h3>
+  <div id="index-buttons">
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a data-toggle='modal' data-target='#newTeam' class='dropdown-item'>New Team</a>
+        <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
+      </div>
+    <% end %>
+    <% if params[:search] %>
+      <%= simple_form_for :search, url: organisation_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
+        <%= f.input :name, placeholder: params[:search][:name], label: false %>
+        <%= link_to organisation_path, class: 'search-close' do %>
+          <i class="far fa-times-circle"></i>
+        <% end %>
       <% end %>
-      <% if params[:search] %>
-        <%= simple_form_for :search, url: users_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
-          <%= f.input :name, placeholder: params[:search][:name], label: false %>
-          <%= link_to users_path, class: 'search-close' do %>
+    <% else %>
+      <a>
+        <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
+      </a>
+      <%= simple_form_for :search, url: organisation_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
+        <%= f.input :name, placeholder: 'Search', label: false %>
+          <a class='search-close'>
             <i class="far fa-times-circle"></i>
-          <% end %>
-        <% end %>
-      <% else %>
-        <a>
-          <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
-        </a>
-        <%= simple_form_for :search, url: users_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
-          <%= f.input :name, placeholder: 'Search', label: false %>
-            <a class='search-close'>
-              <i class="far fa-times-circle"></i>
-            </a>
-        <% end %>
+          </a>
       <% end %>
-    </div>
+    <% end %>
   </div>
 </div>
 <div class="training-index-dashboard flex-row-between-start">
   <div class='training-index-list-dashboard-sm'>
-    <p class='training-index-list-dashboard-title'>Teams</p>
+    <% unless params[:team_id].present? %>
+      <div class='training-index-list-dashboard-controls flex-row-start-centered'>
+        <p class='training-index-list-dashboard-title'>Teams</p>
+      </div>
+    <% else %>
+      <div class='training-index-list-dashboard-controls flex-row-between-centered'>
+        <p class='training-index-list-dashboard-title'>Teams</p>
+        <%= link_to organisation_path, class: 'btn btn-edit-white btn-edit-icon btn-last' do %>
+          <i class="fas fa-redo-alt"></i>
+        <% end %>
+      </div>
+    <% end %>
+    <% if params[:team_id].nil? %>
+      <div class='team-index-card active'>
+        <div class="training-index-infos-dashboard-lg">
+          <p>All</p>
+        </div>
+        <div class="training-index-infos-dashboard-lg">
+          <p><%= "#{current_user.company.users.count} members" %></p>
+        </div>
+      </div>
+    <% else %>
+      <%= link_to organisation_path do %>
+        <div class='team-index-card'>
+          <div class="training-index-infos-dashboard-lg">
+            <p>All</p>
+          </div>
+          <div class="training-index-infos-dashboard-lg">
+            <p><%= "#{current_user.company.users.count} members" %></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
     <% if @teams.present? %>
-      <% @teams.each do |team| %>
-        <%= link_to team_path(team) do %>
-          <div class='training-program-index-card'>
-            <div class='training-program-index-image' style="background-image:url('<%= team.image %>');background-size:cover;">
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= team.name %></p>
-            </div>
+      <% @teams.sort_by(&:team_name).each do |team| %>
+        <% if params[:team_id] == team.id.to_s %>
+          <div class='team-index-card active'>
+            <%= link_to team_path(team), class: 'flex-row-between-centered', style: 'width:100%' do %>
+              <div class="training-index-infos-dashboard-lg">
+                <% if team.team_name.length < 15 %>
+                  <p><%= team.team_name %></p>
+                <% else %>
+                  <p><%= "#{team.team_name[0..10]}..." %><span><%= team.team_name %></span></p>
+                <% end %>
+              </div>
+              <div class="training-index-infos-dashboard-lg">
+                <p><%= "#{team.users.count} members" %></p>
+              </div>
+            <% end %>
+            <%= link_to organisation_path(team_id: team.id), class: 'team-index-card-link' do %>
+              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-sliders-h"></i></button>
+            <% end %>
+          </div>
+        <% else %>
+          <div class='team-index-card'>
+            <%= link_to team_path(team), class: 'flex-row-between-centered', style: 'width:100%' do %>
+              <div class="training-index-infos-dashboard-lg">
+                <% if team.team_name.length < 15 %>
+                  <p><%= team.team_name %></p>
+                <% else %>
+                  <p><%= "#{team.team_name[0..10]}..." %><span><%= team.team_name %></span></p>
+                <% end %>
+              </div>
+              <div class="training-index-infos-dashboard-lg">
+                <p><%= "#{team.users.count} members" %></p>
+              </div>
+            <% end %>
+            <%= link_to organisation_path(team_id: team.id), class: 'team-index-card-link' do %>
+              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-sliders-h"></i></button>
+            <% end %>
           </div>
         <% end %>
       <% end %>
     <% end %>
   </div>
   <div class='training-index-list-dashboard-md'>
+    <div class='training-index-list-dashboard-controls flex-row-start-centered'>
       <p class='training-index-list-dashboard-title'>Users</p>
-      <% team_array = [] %>
-      <% @users.each do |user| %>
-        <% team_array << user.teams unless user.teams.nil? %>
-      <% end %>
-      <% team_array = team_array.flatten.uniq %>
-      <% team_array.each do |team| %>
-        <p class='workshop-index-list-category-title'><%= team.name %></p>
-        <% @users.joins(:user_teams).where(user_teams: {team_id: team.id}).each do |user| %>
-          <%= link_to user_path(user) do %>
-            <div class='workshop-index-card'>
-              <img src="<%= user.picture %>" alt="" class='avatar-sm'>
-              <div class="training-index-infos-dashboard">
-                <p><%= user.fullname %></p>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
-      <% end %>
-      <% unless @users.left_joins(:user_teams).where(user_teams: {team_id: nil}).empty? %>
-        <p class='workshop-index-list-category-title'>Others</p>
-        <% @users.left_joins(:user_teams).where(user_teams: {team_id: nil}).each do |user| %>
-          <%= link_to user_path(user) do %>
-            <div class='workshop-index-card'>
-              <img src="<%= user.picture %>" alt="" class='avatar-sm'>
-              <div class="training-index-infos-dashboard">
-                <p><%= user.fullname %></p>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
-      <% end %>
     </div>
+    <% @users.each do |user| %>
+      <%= link_to user_path(user) do %>
+        <div class='workshop-index-card'>
+          <img src="<%= user.picture %>" alt="" class='avatar-sm'>
+          <div class="training-index-infos-group-dashboard flex-row-between-centered">
+            <div class="training-index-infos-dashboard">
+              <% if user.fullname.length < 23 %>
+                <p><%= user.fullname %></p>
+              <% else %>
+                <p><%= "#{user.fullname[0..19]}..." %><span><%= user.fullname %></span></p>
+              <% end %>
+            </div>
+            <div class="training-index-infos-dashboard">
+              <% if user.email.length < 26 %>
+                <p><%= user.email %></p>
+              <% else %>
+                <p><%= "#{user.email[0..22]}..." %><span><%= user.email %></span></p>
+              <% end %>
+            </div>
+            <div class="training-index-infos-dashboard">
+              <% teams = '' %>
+              <% user.teams.each do |team| %>
+                <% if team == user.teams.last %>
+                  <% teams += "#{team.team_name}" %>
+                <% else %>
+                  <% teams += "#{team.team_name}, " %>
+                <% end %>
+              <% end %>
+              <% if teams.length < 15 %>
+                <p><%= teams %></p>
+              <% else %>
+                <p><%= "#{teams[0..11]}..." %><span><%= teams %></span></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 </div>
 
@@ -88,6 +154,12 @@
 <div class='modal fade' id='newTeam' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'teams/new', team: Team.new %>
+  </div>
+</div>
+
+<div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'users/new', team: User.new %>
   </div>
 </div>
 

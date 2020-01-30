@@ -2,7 +2,7 @@
   <div id="index-controls">
     <h3>Request List</h3>
     <div id="index-buttons">
-      <% if ['Super Admin', 'HR'].include?(current_user.access_level) %>
+      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
         <%= simple_form_for :search, default: {input_html: { class: 'request-index-search' }}, url: requests_path, method: 'GET' do |f| %>
           <%= f.input :name, placeholder: 'Search', label: false %>
           <% if params[:search] %>
