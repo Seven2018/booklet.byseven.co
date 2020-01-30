@@ -30,38 +30,33 @@
 </div>
 <div class="training-index-dashboard flex-row-between-start">
   <div class='training-index-list-dashboard-sm'>
-    <% unless params[:team_id].present? %>
-      <div class='training-index-list-dashboard-controls flex-row-start-centered'>
-        <p class='training-index-list-dashboard-title'>Teams</p>
-      </div>
-    <% else %>
-      <div class='training-index-list-dashboard-controls flex-row-between-centered'>
-        <p class='training-index-list-dashboard-title'>Teams</p>
-        <%= link_to organisation_path, class: 'btn btn-edit-white btn-edit-icon btn-last' do %>
-          <i class="fas fa-redo-alt"></i>
-        <% end %>
-      </div>
-    <% end %>
+    <div class='training-index-list-dashboard-controls flex-row-start-centered'>
+      <p class='training-index-list-dashboard-title'>Teams</p>
+    </div>
     <% if params[:team_id].nil? %>
-      <div class='team-index-card active'>
+      <div class='team-index-card flex-row-between-centered active'>
         <div class="training-index-infos-dashboard-lg">
           <p>All</p>
         </div>
         <div class="training-index-infos-dashboard-lg">
           <p><%= "#{current_user.company.users.count} members" %></p>
         </div>
+        <%= link_to organisation_path, class: 'team-index-card-link' do %>
+          <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-angle-right"></i></button>
+        <% end %>
       </div>
     <% else %>
-      <%= link_to organisation_path do %>
-        <div class='team-index-card'>
-          <div class="training-index-infos-dashboard-lg">
-            <p>All</p>
-          </div>
-          <div class="training-index-infos-dashboard-lg">
-            <p><%= "#{current_user.company.users.count} members" %></p>
-          </div>
+      <div class='team-index-card flex-row-between-centered'>
+        <div class="training-index-infos-dashboard-lg">
+          <p>All</p>
         </div>
-      <% end %>
+        <div class="training-index-infos-dashboard-lg">
+          <p><%= "#{current_user.company.users.count} members" %></p>
+        </div>
+        <%= link_to organisation_path, class: 'team-index-card-link' do %>
+          <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-angle-right"></i></button>
+        <% end %>
+      </div>
     <% end %>
     <% if @teams.present? %>
       <% @teams.sort_by(&:team_name).each do |team| %>
@@ -80,7 +75,7 @@
               </div>
             <% end %>
             <%= link_to organisation_path(team_id: team.id), class: 'team-index-card-link' do %>
-              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-sliders-h"></i></button>
+              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-angle-right"></i></button>
             <% end %>
           </div>
         <% else %>
@@ -98,7 +93,7 @@
               </div>
             <% end %>
             <%= link_to organisation_path(team_id: team.id), class: 'team-index-card-link' do %>
-              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-sliders-h"></i></button>
+              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-angle-right"></i></i></button>
             <% end %>
           </div>
         <% end %>
