@@ -7,9 +7,6 @@
   <div class="navbar-controls-right flex-row-between-centered">
     <div class="dropdown show">
       <a class="navbar-icon dropdown-toggle dropdown-notification-menu" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-bell"></i></a>
-      <% unless Notification.where(user_id: current_user.id, status: 'Unread').empty? %>
-        <div class="navbar-notification-indicator"><i class="fas fa-circle"></i></div>
-      <% end %>
       <div class="dropdown-menu dropdown-menu-right" id='dropdown-notification-list' aria-labelledby="dropdownMenuLink">
         <%= render 'shared/notifications' %>
       </div>

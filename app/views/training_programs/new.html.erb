@@ -8,8 +8,8 @@
 
   <%= simple_form_for @training_program do |f| %>
     <%= f.input :title %>
-    <%= f.input :description %>
     <%= f.input :participant_number %>
+    <%= f.input :description %>
     <%# f.input :image, label: 'Image URL' %>
     <div style="display:flex;justify-content:center;margin-top:30px;">
       <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>

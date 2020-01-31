@@ -11,14 +11,14 @@
     <%= f.input :workshop_type, collection: ['Synchronous', 'Asynchronous'], include_blank: false %>
     <%= f.input :duration, label: 'Duration (min)' %>
     <%# f.input :image, label: 'Image URL' %>
-    <ffn class="_ffn_textNode" data-ffn-css-id="5" style="border-bottom-color: rgba(0, 0, 0, 0);">Categories</ffn>
+    <!-- <ffn class="_ffn_textNode" data-ffn-css-id="5" style="border-bottom-color: rgba(0, 0, 0, 0);">Categories</ffn>
     <div id='checkbox' class='flex-column-centered'>
-      <%= collection_check_boxes(:workshop, :category_ids, Category.all, :id, :title) do |b| %>
-        <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-          <%= b.check_box + b.text %>
-        <% end %>
-      <% end %>
-    </div>
+      <%# collection_check_boxes(:workshop, :category_ids, Category.all, :id, :title) do |b| %>
+        <%# b.label class: 'label-checkbox', style: 'color:black;' do %>
+          <%# b.check_box + b.text %>
+        <%# end %>
+      <%# end %>
+    </div> -->
     <%= f.label :description %>
     <%= f.text_area :description, style: 'width: 100%; height: 300px;' %>
     <script>

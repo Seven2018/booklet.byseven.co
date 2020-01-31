@@ -9,7 +9,7 @@
           <%= link_to 'New Workshop', new_workshop_path, class: 'dropdown-item' %>
         </div>
       <% end %>
-      <a><button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon"><i class="fas fa-sliders-h"></i></button></a>
+      <!-- <a><button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon"><i class="fas fa-sliders-h"></i></button></a> -->
       <% if params[:search] %>
         <%= simple_form_for :search, url: catalogue_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
           <%= f.input :title, placeholder: params[:search][:title], label: false %>
