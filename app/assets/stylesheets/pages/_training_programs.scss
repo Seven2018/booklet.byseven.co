@@ -82,6 +82,7 @@
 }
 
 .training-program-index-workshop-show-card {
+  height: 30rem;
   width: 25rem;
   margin: 2rem 0;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
@@ -95,15 +96,23 @@
   }
 }
 
-.training-program-index-workshop-show-card-main-empty {
-  height: 15rem;
+.training-program-index-workshop-show-card-empty {
+  height: 30rem;
+  width: 25rem;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
 
-  h2 {
-    text-align: center;
+  h1 > i {
+    font-size: 5rem !important;
+    color: rgba(0,0,0,0.5);
+  }
+
+  h3 {
+    color: rgba(0,0,0,0.5);
   }
 }
 
 .training-program-index-workshop-show-card-footer {
+  height: 5rem;
   padding: 2rem;
   border-top: 1px solid #DADCE0;
 }

@@ -1,100 +1,55 @@
-  <div id="show-controls" class='flex-row-between-centered'>
-    <%= link_to trainings_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
-    <div id='show-buttons'>
-      <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
-        <a data-toggle='modal' data-target='#editTraining'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
-        <%= link_to training_path(@training), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
-        <% end %>
-        <a data-toggle='modal' data-target='#inviteUsers'><button class='btn-edit-white btn-edit-icon btn-last'><i class="fas fa-users"></i></button></a>
-      <% end %>
-    </div>
-  </div>
-<div id="container-show">
-  <div class='training-program-show-card'>
-    <div class='training-program-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @training.image %>');background-position: center center;
-  background-repeat: no-repeat;">
-      <h2><%= @training.title %></h2>
-    </div>
-    <div class="training-program-show-card-footer flex-row-between-centered">
-      <div class="training-program-show-card-footer-description centered-item">
-        <p><%= @training.description %></p>
-      </div>
-      <div class="training-program-show-card-footer-infos flex-row-between-centered">
-        <div>
-          <% if @training.training_workshops.present? %>
-            <p><%= "#{@training.training_workshops.count} Workshops" %></p>
-            <% duration = 0 %>
-            <% @training.training_workshops.each do |workshop| %>
-              <% duration += workshop.duration %>
-            <% end %>
-            <p><%= "#{duration/60} hour long training" %></p>
-            <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-              <p><%= "#{Attendee.where(training_workshop_id: [@training.training_workshops.ids]).count/@training.training_workshops.count}/#{@training.participant_number} seats reserved" %></p>
-            <% else %>
-              <p><%= "#{@training.participant_number - (Attendee.where(training_workshop_id: [@training.training_workshops.ids]).count/@training.training_workshops.count)} seats left" %></p>
-              <% raise %>
-            <% end %>
-          <% end %>
-        </div>
-        <div class="training-show-card-footer-buttons centered-item">
-          <% if Attendee.where(training_workshop_id: [@training.training_workshops.ids], user_id: current_user.id).empty? %>
-            <%= link_to "Register", create_all_attendees_path(training_id: @training.id, user_id: current_user.id), class: 'btn btn-edit-green' %>
-          <% else %>
-            <%= link_to "Unregister", destroy_all_attendees_path(training_id: @training.id, user_id: current_user.id), class: 'btn btn-edit-red' %>
-          <% end %>
-          <% if Attendee.where(training_workshop_id: [@training.training_workshops.ids], user_id: current_user.id, status: 'Invited').count == @training.training_workshops.count %>
-            <%= link_to "Confirm Invitation", confirm_training_attendees_path(training_id: @training.id, user_id: current_user.id), class: 'btn btn-edit-orange' %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="training-program-show-categories">
-    <% if @training.training_program.categories.present? %>
-      <% @training.training_program.categories.each do |category| %>
-        <h6 class="training-program-show-category-card"><%= category.title %></h6>
+<div id="show-controls" class='flex-row-between-centered'>
+  <%= link_to trainings_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <div id='show-buttons'>
+    <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
+      <a data-toggle='modal' data-target='#editTraining'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+      <%= link_to training_path(@training), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+        <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
       <% end %>
     <% end %>
   </div>
-  <div class='training-program-workshop-index'>
-    <h2><i class="fas fa-tools"></i> Workshops</h2>
-    <div class="row">
-<!--       <div class="col-sm-4 centered-item">
-        <a data-toggle='modal' data-target='#addWorkshop' style='cursor:pointer;'>
-          <div class="training-program-index-workshop-show-card">
-            <div class='training-program-index-workshop-show-card-main-empty centered-item'>
-              <h2>Manage Workshops</h2>
-            </div>
-          </div>
-        </a>
-      </div> -->
-      <% @training.training_workshops.order(date: :asc).each do |training_workshop| %>
-        <div class="col-sm-4 centered-item">
-          <%= link_to training_workshop_path(training_workshop) do %>
-            <div class="training-program-index-workshop-show-card">
-              <div class='training-program-index-workshop-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= training_workshop.image %>');background-position: center center;
-            background-repeat: no-repeat;">
-                <h2><%= training_workshop.title %></h2>
-              </div>
-              <div class="training-program-index-workshop-show-card-footer flex-row-between-centered">
-                <div>
-                  <% if training_workshop.date.present? %>
-                    <h6><%= training_workshop.date.strftime("%d/%m/%Y") %></h6>
-                  <% end %>
-                  <% if training_workshop.starts_at.present? && training_workshop.ends_at.present? %>
-                    <h6><%= "#{training_workshop.starts_at.strftime("%H:%M")} - #{training_workshop.ends_at.strftime("%H:%M")}" %></h6>
-                  <% end %>
-                </div>
-                <div class='training-program-index-workshop-show-card-footer-buttons'>
-                  <a data-toggle='modal' data-target='#editTrainingWorkshop<%= training_workshop.id %>'><button class='btn-edit-white btn-edit-icon-small'><i class='fas fa-pen'></i></button></a>
-                  <a data-toggle='modal' data-target='#copyTrainingWorkshop<%= training_workshop.id %>'><button class='btn-edit-white btn-edit-icon-small btn-last'><i class="fas fa-copy"></i></button></a>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
+</div>
+<div id="container-workshop-booked" class='flex-row-between-start'>
+  <div id="workshop-booked-infos" class='flex-column-between-left'>
+    <h3 id="workshop-booked-infos-main" class='btn btn-edit'>Program Booked</h3>
+  </div>
+  <div id="workshop-booked-participants">
+    <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-invite-users'>Manage Users</button></a>
+    <ul id='workshop-booked-attendee-list'>
+      <% ind = 0 %>
+      <% @training_workshop.attendees.each do |attendee| %>
+        <% unless ind >= 10 %>
+          <li><img src="<%= attendee.user.picture %>" alt="" class='avatar-sm'></li>
+          <% ind += 1 %>
+        <% end %>
       <% end %>
+    </ul>
+  </div>
+</div>
+<div id="container-show">
+  <div class='workshop-show-type'>
+    <h3>Program</h3>
+  </div>
+  <div class='training-program-show-card'>
+    <div class='training-program-show-card-main flex-column-between-left'>
+      <h1><%= @training.title %></h1>
+      <p>By <%= @training.training_program.author.firstname %></p>
+      <p><%= @training.description %></p>
+    </div>
+  </div>
+  <div class='training-program-workshop-index'>
+    <div>
+      <% duration = @training.workshops.map(&:duration).sum %>
+      <% if duration >= 60 %>
+        <% duration_hour = duration/60 %>
+        <% duration_min = duration%60 %>
+        <h3><%= "#{@training.workshops.count} workshops for a total of #{duration_hour} hours and #{duration_min} minutes" %></h3>
+      <% else %>
+        <h3><%= "#{@training.workshops.count} workshops for a total of #{duration} minutes" %></h3>
+      <% end %>
+    </div>
+    <div id="workshops">
+      <%= render 'training_workshops/index', training_program: @training %>
     </div>
   </div>
 </div>

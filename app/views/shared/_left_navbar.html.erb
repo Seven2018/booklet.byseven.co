@@ -3,12 +3,14 @@
     <div class="left-navbar-top">
     </div>
     <div class="left-navbar-middle">
-      <button class="btn btn-edit-navbar dropdown-toggle" type="button" id="dropdownMenuNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <div class="flex-row-between-centered">
-          <i class="fas fa-plus"></i>
-          <p>New</p>
-        </div>
-      </button>
+      <div class="centered-item">
+        <button class="btn btn-edit-navbar dropdown-toggle" type="button" id="dropdownMenuNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="flex-row-between-centered">
+            <i class="fas fa-plus"></i>
+            <p>New</p>
+          </div>
+        </button>
+      </div>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuNavbar">
         <%= link_to 'Program', new_training_program_path, class: 'dropdown-item' %>
         <%= link_to 'Workshop', new_workshop_path, class: 'dropdown-item' %>

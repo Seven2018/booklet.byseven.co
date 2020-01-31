@@ -10,7 +10,7 @@
       <% unless Notification.where(user_id: current_user.id, status: 'Unread').empty? %>
         <div class="navbar-notification-indicator"><i class="fas fa-circle"></i></div>
       <% end %>
-      <div class="dropdown-menu" id='dropdown-notification-list' aria-labelledby="dropdownMenuLink">
+      <div class="dropdown-menu dropdown-menu-right" id='dropdown-notification-list' aria-labelledby="dropdownMenuLink">
         <%= render 'shared/notifications' %>
       </div>
     </div>

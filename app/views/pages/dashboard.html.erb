@@ -1,83 +1,8 @@
-<div id="index-controls" class="flex-row-start-centered">
-  <h3>My Booklet</h3>
-</div>
-<div class="training-index-dashboard flex-row-between-start">
-  <div class='training-index-list-dashboard'>
-    <p class='training-index-list-dashboard-title'>My trainings</p>
-    <h6><%= "To come: #{TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where('date > ?', Date.today).count}" %></h6>
-    <h6><%= "Pending: #{TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where('date <= ?', Date.today).where(available_date: nil).or(TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where('date <= ?', Date.today).where('available_date > ?', Date.today)).count}" %></h6>
-    <h6><%= "Completed: #{TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id, status: 'Completed'}).count}" %></h6>
-    <h6><%= "Available: #{((TrainingWorkshop.where(company_id: current_user.company_id))-(TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}))).count}" %></h6>
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="Personal">
+    <%= render 'dashboard_personal' %>
   </div>
-  <div class='training-index-list-dashboard'>
-    <p class='training-index-list-dashboard-title'>Available Trainings</p>
-    <% @available_trainings.each do |training| %>
-      <%= link_to training_path(training) do %>
-        <div class='training-index-card'>
-          <div class='training-index-image' style="background-image:url('<%= training.image %>');">
-          </div>
-          <div class="training-index-infos-dashboard">
-              <p><%= training.title %></p>
-              <p><%= "Starts #{training.next_date.strftime('%d/%m/%Y')}" %></p>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+  <div role="tabpanel" class="tab-pane" id="All">
+    <%= render 'dashboard_all' %>
   </div>
 </div>
-<div class="training-index-dashboard flex-row-between-start">
-  <div class='training-index-list-dashboard-large'>
-    <p class='training-index-list-dashboard-title'>Trainings Overview</p>
-    <% ((@my_trainings + @my_workshops).sort_by &:date).each do |element| %>
-      <% if (element.instance_of? TrainingWorkshop) && element.training_id.nil?%>
-        <%= link_to training_workshop_path(element) do %>
-          <div class='training-index-card'>
-            <% if element.attendees.where(user_id: current_user.id, status: 'Invited').empty? %>
-              <div class="training-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
-            <% else %>
-              <div class="training-card-calendar-indicator-orange"><i class="fas fa-circle"></i></div>
-            <% end %>
-            <div class='training-index-image' style="background-image:url('<%= element.image %>');background-size:cover;">
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p>Workshop</p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= element.title %></p>
-              <% if element.starts_at.present? && element.ends_at.present? %>
-                <p><%= "#{element.date.strftime('%d/%m/%Y')} | #{element.starts_at.strftime('%H:%M')} - #{element.ends_at.strftime('%H:%M')}" %></p>
-              <% else %>
-                <p><%= "#{element.date.strftime('%d/%m/%Y')}" %></p>
-              <% end %>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= element.workshop_type %></p>
-            </div>
-          </div>
-        <% end %>
-      <% elsif element.instance_of? Training %>
-        <%= link_to training_path(element) do %>
-          <div class='training-index-card'>
-            <% if element.training_workshops.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).empty? %>
-              <div class="training-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
-            <% else %>
-              <div class="training-card-calendar-indicator-orange"><i class="fas fa-circle"></i></div>
-            <% end %>
-            <div class='training-index-image' style="background-image:url('<%= element.image %>');background-size:cover;">
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p>Program</p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= element.title %></p>
-              <p><%= "Next workshop #{element.next_date.strftime('%d/%m/%Y')}" %></p>
-            </div>
-            <div class="training-index-infos-dashboard">
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
-</div>
-

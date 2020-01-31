@@ -1,9 +1,23 @@
 .dashboard-tabs {
-  margin-top: 3rem;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  ul {
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 0;
+    border-radius: 8px;
+  }
+
+  li > a {
+    padding: 1rem;
+  }
+
   h3 {
     margin: 0;
   }
@@ -23,6 +37,23 @@
   margin-bottom: 5rem;
 }
 
+.dashboard-label {
+  display: inline-flex;
+  background-color: #F1F3F4;
+  border-radius: 8px;
+  margin-right: 3rem;
+
+  h3 {
+    margin: 0;
+    padding: 2rem;
+    font-size: 3rem;
+  }
+
+  h3:first-of-type {
+    padding: 2rem 0 2rem 2rem;
+    color: #FDC553;
+  }
+}
 
 .training-index-list-dashboard {
   width: 48%;
@@ -45,7 +76,6 @@
 
 .training-index-list-dashboard-large {
   width: 100%;
-  height: 50rem;
   padding: 2rem;
   overflow-y: scroll;
   background-color: white;
@@ -111,5 +141,5 @@
 }
 
 .training-index-list-dashboard-title {
-
+  margin-bottom: 3rem;
 }

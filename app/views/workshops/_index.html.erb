@@ -25,4 +25,20 @@
       </div>
     </div>
   <% end %>
+    <div class="col-sm-4 centered-item">
+      <a data-toggle='modal' data-target='#addWorkshop'>
+        <div class="training-program-index-workshop-show-card-empty flex-column-centered">
+          <h1><i class="fas fa-plus"></i></h1>
+          <h3><strong>Add workshop</strong></h3>
+        </div>
+      </a>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class='modal fade' id='addWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'program_workshops/new', training_program: @training_program %>
+  </div>
 </div>
