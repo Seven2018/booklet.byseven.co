@@ -19,9 +19,7 @@
         <%= f.input :access_level, collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
       <% end %>
       <% if current_user.access_level == 'Super Admin' %>
-        <%= f.association :company, collection: Company.all, allow_blank: false, include_blank: false, label: 'Company' %>
-      <% else %>
-        <%= f.association :company, collection: @current_user.company, allow_blank: false, include_blank: false, label: 'Company' %>
+        <%= f.association :company, collection: Company.all, include_blank: false, label: 'Company' %>
       <% end %>
       <%= f.input :phone_number, label: 'Phone number' %>
       <%= f.input :linkedin %>
