@@ -32,6 +32,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.company_id = current_user.company_id
     authorize @user
     if @user.save
       if params[:user][:team_ids].present?
@@ -41,7 +42,7 @@ class UsersController < ApplicationController
       end
       redirect_to user_path(@user)
     else
-      render :new
+      raise
     end
   end
 

@@ -34,7 +34,7 @@ class TrainingProgramsController < ApplicationController
     @training_program = TrainingProgram.new(training_program_params)
     authorize @training_program
     @training_program.company_id = current_user.company.id
-
+    @training_program.author_id = current_user.id
     if @training_program.save
       redirect_to training_program_path(@training_program)
     else
