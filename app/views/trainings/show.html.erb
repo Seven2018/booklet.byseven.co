@@ -60,7 +60,7 @@
   <div class='training-program-workshop-index'>
     <h2><i class="fas fa-tools"></i> Workshops</h2>
     <div class="row">
-      <div class="col-sm-4 centered-item">
+<!--       <div class="col-sm-4 centered-item">
         <a data-toggle='modal' data-target='#addWorkshop' style='cursor:pointer;'>
           <div class="training-program-index-workshop-show-card">
             <div class='training-program-index-workshop-show-card-main-empty centered-item'>
@@ -68,7 +68,7 @@
             </div>
           </div>
         </a>
-      </div>
+      </div> -->
       <% @training.training_workshops.order(date: :asc).each do |training_workshop| %>
         <div class="col-sm-4 centered-item">
           <%= link_to training_workshop_path(training_workshop) do %>

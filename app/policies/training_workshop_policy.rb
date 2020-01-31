@@ -13,11 +13,19 @@ class TrainingWorkshopPolicy < ApplicationPolicy
     true
   end
 
+  def view_mode?
+    true
+  end
+
   def create?
     check_access
   end
 
   def update?
+    check_access
+  end
+
+  def destroy?
     check_access
   end
 
@@ -32,6 +40,6 @@ class TrainingWorkshopPolicy < ApplicationPolicy
   private
 
   def check_access
-    ['Super Admin', 'Admin', 'HR'].include? user.access_level
+    ['Super Admin', 'Admin', 'HR', 'Manager'].include? user.access_level
   end
 end

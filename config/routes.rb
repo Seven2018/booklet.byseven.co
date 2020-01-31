@@ -16,11 +16,13 @@ Rails.application.routes.draw do
   resources :training_workshops, only: %i[show create update destroy]
   get 'training_workshop/:id/copy', to: 'training_workshops#copy', as: 'copy_training_workshop'
   post 'training_workshops/book', to: 'training_workshops#book_training_workshop', as: 'book_training_workshop'
+  get 'training_workshops/:id/viewmode', to: 'training_workshops#view_mode', as: 'view_training_workshop'
   resources :workshops do
     resources :workshop_skills, only: %i[create]
     resources :workshop_categories, only: %i[create]
   end
   get 'workshops-filter', to: 'workshops#filter', as: 'filter_workshops'
+  get 'workshops/:id/viewmode', to: 'workshops#view_mode', as: 'view_workshop'
   resources :mods, only: %i[show create update destroy]
   resources :workshop_mods, only: %i[create destroy]
   resources :training_workshop_mods, only: %i[create destroy]

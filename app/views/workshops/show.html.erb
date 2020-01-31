@@ -1,8 +1,14 @@
 <div id="show-controls" class='flex-row-between-centered'>
   <%= link_to url_for(:back), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
   <div id='show-buttons'>
-    <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
-      <a data-toggle='modal' data-target='#editWorkshop'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+    <%= link_to view_workshop_path(@workshop), class: 'btn btn-edit-white btn-edit-icon' do %>
+      <i class="far fa-eye"></i>
+    <% end %>
+    <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+      <!-- <a data-toggle='modal' data-target='#editWorkshop'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a> -->
+      <%= link_to edit_workshop_path(@workshop) do %>
+        <button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button>
+      <% end %>
       <a data-toggle='modal' data-target='#editSkills'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-info"></i></button></a>
       <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a>
       <%= link_to workshop_path(@workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
@@ -41,19 +47,32 @@
   </div>
   <% if @workshop.mods.present? %>
     <% @workshop.mods.each do |mod| %>
-      <%= link_to mod_path(mod) do %>
+      <a data-toggle='modal' data-target='#editModule<%= mod.id %>'>
         <div class="workshop-show-content">
-          <p><%= mod.title %></p>
-          <%= mod.content.html_safe %>
+          <div class="workshop-show-content-header flex-row-between-centered">
+            <p><%= mod.title %></p>
+            <p><%= "#{mod.duration}min" %></p>
+          </div>
+          <div class="workshop-show-content-main">
+            <%= mod.content.html_safe %>
+          </div>
         </div>
-      <% end %>
+      </a>
+
+      <div class='modal fade' id='editModule<%= mod.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+        <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+          <%= render 'mods/edit', mod: mod %>
+        </div>
+      </div>
     <% end %>
   <% end %>
+  <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
     <a data-toggle='modal' data-target='#editWorkshopContent'>
       <div class="workshop-show-content-empty centered-item">
         <h3>Click to add content</h3>
       </div>
     </a>
+  <% end %>
 </div>
 
 

@@ -1,93 +1,129 @@
 <div class="left-navbar left-navbar-builder">
-  <div class="left-navbar-top">
-  </div>
-  <div class="left-navbar-middle">
-    <button class="btn btn-edit-navbar dropdown-toggle" type="button" id="dropdownMenuNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <div class="flex-row-between-centered">
-        <i class="fas fa-plus"></i>
-        <p>New</p>
-      </div>
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuNavbar">
-      <%= link_to 'Program', new_training_program_path, class: 'dropdown-item' %>
-      <%= link_to 'Workshop', new_workshop_path, class: 'dropdown-item' %>
+  <% unless ['workshops', 'training_workshops'].include?(params[:controller]) && params[:action] == "view_mode" %>
+    <div class="left-navbar-top">
     </div>
-    <% if user_signed_in? %>
-      <%= link_to dashboard_path, class: 'left-buttons' do %>
-        <% if request.original_url.split('/')[3].split('?').first == 'dashboard' %>
-          <div class="left-menu-list active">
-          <i class="fas fa-home"></i> <div class="left-menu-title"><h4>My Booklet</h4></div>
+    <div class="left-navbar-middle">
+      <button class="btn btn-edit-navbar dropdown-toggle" type="button" id="dropdownMenuNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="flex-row-between-centered">
+          <i class="fas fa-plus"></i>
+          <p>New</p>
         </div>
-        <% else %>
-          <div class="left-menu-list">
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuNavbar">
+        <%= link_to 'Program', new_training_program_path, class: 'dropdown-item' %>
+        <%= link_to 'Workshop', new_workshop_path, class: 'dropdown-item' %>
+      </div>
+      <% if user_signed_in? %>
+        <%= link_to dashboard_path, class: 'left-buttons' do %>
+          <% if request.original_url.split('/')[3].split('?').first == 'dashboard' %>
+            <div class="left-menu-list active">
             <i class="fas fa-home"></i> <div class="left-menu-title"><h4>My Booklet</h4></div>
           </div>
+          <% else %>
+            <div class="left-menu-list">
+              <i class="fas fa-home"></i> <div class="left-menu-title"><h4>My Booklet</h4></div>
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
-      <%= link_to dashboard_calendar_path, class: 'left-buttons' do %>
-        <% if request.original_url.split('/')[3].split('?').first == 'dashboard-calendar' %>
-          <div class="left-menu-list active">
-          <i class="far fa-calendar-alt"></i> <div class="left-menu-title"><h4>Calendar</h4></div>
-        </div>
-        <% else %>
-          <div class="left-menu-list">
+        <%= link_to dashboard_calendar_path, class: 'left-buttons' do %>
+          <% if request.original_url.split('/')[3].split('?').first == 'dashboard-calendar' %>
+            <div class="left-menu-list active">
             <i class="far fa-calendar-alt"></i> <div class="left-menu-title"><h4>Calendar</h4></div>
           </div>
+          <% else %>
+            <div class="left-menu-list">
+              <i class="far fa-calendar-alt"></i> <div class="left-menu-title"><h4>Calendar</h4></div>
+            </div>
+          <% end %>
+        <% end %>
+  <!--       <%# link_to training_programs_path, class: 'left-buttons' do %>
+          <div class="left-menu-list">
+            <i class="fas fa-tasks"></i> <div class="left-menu-title"><h4>Programs</h4></div>
+          </div>
+        <%# end %>
+        <%# link_to workshops_path, class: 'left-buttons' do %>
+          <div class="left-menu-list">
+            <i class="fas fa-tools"></i> <div class="left-menu-title"><h4>Workshops</h4></div>
+          </div>
+        <%# end %> -->
+        <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
+          <% if request.original_url.split('/')[3].split('?').first == 'catalogue' %>
+            <%= link_to catalogue_path, class: 'left-buttons' do %>
+              <div class="left-menu-list active">
+                <i class="fas fa-book"></i> <div class="left-menu-title"><h4>Catalogue</h4></div>
+              </div>
+            <% end %>
+          <% else %>
+            <%= link_to catalogue_path, class: 'left-buttons' do %>
+              <div class="left-menu-list">
+                <i class="fas fa-book"></i> <div class="left-menu-title"><h4>Catalogue</h4></div>
+              </div>
+            <% end %>
+          <% end %>
+          <% if request.original_url.split('/')[3].split('?').first == 'statistics' %>
+            <%= link_to statistics_path, class: 'left-buttons' do %>
+              <div class="left-menu-list active">
+                <i class="fas fa-chart-pie"></i> <div class="left-menu-title"><h4>Statistics</h4></div>
+              </div>
+            <% end %>
+          <% else %>
+            <%= link_to statistics_path, class: 'left-buttons' do %>
+              <div class="left-menu-list">
+                <i class="fas fa-chart-pie"></i> <div class="left-menu-title"><h4>Statistics</h4></div>
+              </div>
+            <% end %>
+          <% end %>
+          <% if request.original_url.split('/')[3].split('?').first == 'organisation' %>
+            <%= link_to organisation_path, class: 'left-buttons' do %>
+              <div class="left-menu-list active">
+                <i class="fas fa-users"></i> <div class="left-menu-title"><h4>Organisation</h4></div>
+              </div>
+            <% end %>
+          <% else %>
+            <%= link_to organisation_path, class: 'left-buttons' do %>
+              <div class="left-menu-list">
+                <i class="fas fa-users"></i> <div class="left-menu-title"><h4>Organisation</h4></div>
+              </div>
+            <% end %>
+          <% end %>
         <% end %>
       <% end %>
-<!--       <%# link_to training_programs_path, class: 'left-buttons' do %>
-        <div class="left-menu-list">
-          <i class="fas fa-tasks"></i> <div class="left-menu-title"><h4>Programs</h4></div>
-        </div>
-      <%# end %>
-      <%# link_to workshops_path, class: 'left-buttons' do %>
-        <div class="left-menu-list">
-          <i class="fas fa-tools"></i> <div class="left-menu-title"><h4>Workshops</h4></div>
-        </div>
-      <%# end %> -->
-      <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
-        <% if request.original_url.split('/')[3].split('?').first == 'catalogue' %>
-          <%= link_to catalogue_path, class: 'left-buttons' do %>
-            <div class="left-menu-list active">
-              <i class="fas fa-book"></i> <div class="left-menu-title"><h4>Catalogue</h4></div>
-            </div>
-          <% end %>
-        <% else %>
-          <%= link_to catalogue_path, class: 'left-buttons' do %>
+    </div>
+  <% else %>
+    <% if params[:controller] == 'workshops' %>
+      <div class="left-navbar-top-view-mode centered-item">
+        <%= link_to 'Exit view mode', workshop_path(@workshop), class: 'btn btn-invite-users' %>
+      </div>
+      <div class="left-navbar-middle-view-mode">
+        <% @workshop.mods.each do |mod| %>
+          <a href="#<%= mod.id %>">
             <div class="left-menu-list">
-              <i class="fas fa-book"></i> <div class="left-menu-title"><h4>Catalogue</h4></div>
+              <div class="left-menu-title-view-mode flex-column-centered">
+                <p><%= mod.title %></p>
+                <p><%= mod.duration %> min</p>
+              </div>
             </div>
-          <% end %>
+          </a>
         <% end %>
-        <% if request.original_url.split('/')[3].split('?').first == 'statistics' %>
-          <%= link_to statistics_path, class: 'left-buttons' do %>
-            <div class="left-menu-list active">
-              <i class="fas fa-chart-pie"></i> <div class="left-menu-title"><h4>Statistics</h4></div>
-            </div>
-          <% end %>
-        <% else %>
-          <%= link_to statistics_path, class: 'left-buttons' do %>
+      </div>
+    <% else %>
+      <div class="left-navbar-top-view-mode centered-item">
+        <%= link_to 'Exit view mode', training_workshop_path(@training_workshop), class: 'btn btn-invite-users' %>
+      </div>
+      <div class="left-navbar-middle-view-mode">
+        <% @training_workshop.mods.each do |mod| %>
+          <a href="#<%= mod.id %>">
             <div class="left-menu-list">
-              <i class="fas fa-chart-pie"></i> <div class="left-menu-title"><h4>Statistics</h4></div>
+              <div class="left-menu-title-view-mode flex-column-centered">
+                <p><%= mod.title %></p>
+                <p><%= mod.duration %> min</p>
+              </div>
             </div>
-          <% end %>
+          </a>
         <% end %>
-        <% if request.original_url.split('/')[3].split('?').first == 'organisation' %>
-          <%= link_to organisation_path, class: 'left-buttons' do %>
-            <div class="left-menu-list active">
-              <i class="fas fa-users"></i> <div class="left-menu-title"><h4>Organisation</h4></div>
-            </div>
-          <% end %>
-        <% else %>
-          <%= link_to organisation_path, class: 'left-buttons' do %>
-            <div class="left-menu-list">
-              <i class="fas fa-users"></i> <div class="left-menu-title"><h4>Organisation</h4></div>
-            </div>
-          <% end %>
-        <% end %>
-      <% end %>
+      </div>
     <% end %>
-  </div>
+  <% end %>
   <div class="left-navbar-bottom">
   </div>
 </div>

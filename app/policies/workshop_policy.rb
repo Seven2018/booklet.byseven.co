@@ -17,6 +17,10 @@ class WorkshopPolicy < ApplicationPolicy
     true
   end
 
+  def view_mode?
+    true
+  end
+
   def update?
     check_access_hr
   end

@@ -1,7 +1,12 @@
 class TrainingWorkshopsController < ApplicationController
+  before_action :set_training_workshop, only: [:show, :view_mode, :update, :destroy]
 
   def show
     @training_workshop = TrainingWorkshop.find(params[:id])
+    authorize @training_workshop
+  end
+
+  def view_mode
     authorize @training_workshop
   end
 
@@ -59,6 +64,10 @@ class TrainingWorkshopsController < ApplicationController
   end
 
   private
+
+  def set_training_workshop
+    @training_workshop = TrainingWorkshop.find(params[:id])
+  end
 
   def training_workshop_params
     params.require(:training_workshop).permit(:title, :duration, :participant_number, :description, :content, :image, :date, :available_date, :starts_at, :ends_at)

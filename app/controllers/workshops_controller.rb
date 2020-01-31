@@ -1,5 +1,5 @@
 class WorkshopsController < ApplicationController
-  before_action :set_workshop, only: [:show, :edit, :update, :destroy]
+  before_action :set_workshop, only: [:show, :view_mode, :edit, :update, :destroy]
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
@@ -24,6 +24,10 @@ class WorkshopsController < ApplicationController
     authorize @workshop
     @workshop_skill = WorkshopSkill.new
     @workshop_category = WorkshopCategory.new
+  end
+
+  def view_mode
+    authorize @workshop
   end
 
   def new

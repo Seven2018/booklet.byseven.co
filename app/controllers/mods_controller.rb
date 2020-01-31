@@ -21,6 +21,18 @@ class ModsController < ApplicationController
     end
   end
 
+  def update
+    @mod = Mod.find(params[:id])
+    authorize @mod
+    workshop = Workshop.find(params[:workshop_id])
+    @mod.update(mod_params)
+    if @mod.save
+      redirect_to workshop_path(workshop)
+    else
+      raise
+    end
+  end
+
   private
 
   def mod_params

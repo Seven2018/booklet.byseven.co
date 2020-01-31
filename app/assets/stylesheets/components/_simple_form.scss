@@ -2,6 +2,8 @@ form {
 
   div#checkbox, div#checkbox2, div#checkbox3 {
     display: inline-block !important;
+    width: 100%;
+    margin: 2rem 0;
 
     label {
       padding: 8px 12px;
@@ -59,5 +61,37 @@ form {
     .checked-box:focus {
       border: 2px solid #e9a1ff;
     }
+  }
+}
+
+.label-checkbox {
+  display: flex;
+  font-size: 1.6rem;
+
+  input {
+    margin-right: 10px;
+  }
+}
+
+.form-control:focus {
+  border-color: black;
+  box-shadow: none;
+}
+
+.form-control.is-valid {
+  border-color: #ced4da;
+
+  &:focus {
+    border-color: black;
+    box-shadow: none;
+  }
+}
+
+input {
+  border: 1px solid #ced4da;
+
+  &:focus {
+    border: 1px solid black;
+    outline: none !important;
   }
 }

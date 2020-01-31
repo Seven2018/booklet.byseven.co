@@ -19,7 +19,7 @@ input.btn {
   }
 }
 
-.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-white {
+.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-white, .btn-invite-users {
   opacity: 0.8;
   width: auto;
   max-width: none;
@@ -146,5 +146,15 @@ input.btn {
       // color: black !important;
       color: white !important;
     }
+  }
+}
+
+.btn-invite-users {
+  font-size: 1.6rem;
+  background-color: #E95F48;
+  color: white !important;
+
+  &:hover {
+    color: white;
   }
 }

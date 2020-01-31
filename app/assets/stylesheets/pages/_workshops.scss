@@ -72,7 +72,6 @@
 
 .workshop-show-content {
   width: 90rem;
-  padding: 5rem;
   margin: 2rem 0;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
 }
@@ -83,4 +82,37 @@
   margin: 2rem 0;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+}
+
+.workshop-show-content-header {
+  height: 5rem;
+  width: 100%;
+  border-bottom: 1px solid black;
+  padding: 0 3rem;
+  position: relative;
+}
+
+.workshop-show-view-mode-anchor {
+  position: absolute;
+  top: -15rem;
+}
+
+.workshop-show-content-main {
+  max-height: 50rem;
+  overflow-y: scroll;
+  width: 100%;
+  padding: 3rem;
+
+  ul {
+    list-style-type: disc;
+  }
+}
+
+.workshop-show-content-main-view-mode {
+  width: 100%;
+  padding: 3rem;
+
+  ul {
+    list-style-type: disc;
+  }
 }

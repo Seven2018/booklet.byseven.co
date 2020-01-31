@@ -1,0 +1,40 @@
+<div class="container-new-form">
+  <div class="training-info-headers">
+    <%= link_to url_for(:back), class: 'btn return-arrow' do %>
+      <i class="fas fa-arrow-left"></i>
+    <% end %>
+  </div>
+  <h3>Edit: <%= @workshop.title %></h3>
+
+  <%= simple_form_for @workshop do |f| %>
+    <%= f.input :title %>
+    <%= f.input :workshop_type, collection: ['Synchronous', 'Asynchronous'], include_blank: false %>
+    <%= f.input :duration, label: 'Duration (min)' %>
+    <%# f.input :image, label: 'Image URL' %>
+    <ffn class="_ffn_textNode" data-ffn-css-id="5" style="border-bottom-color: rgba(0, 0, 0, 0);">Categories</ffn>
+    <div id='checkbox' class='flex-column-centered'>
+      <%= collection_check_boxes(:workshop, :category_ids, Category.all, :id, :title) do |b| %>
+        <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+          <%= b.check_box + b.text %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= f.label :description %>
+    <%= f.text_area :description, style: 'width: 100%; height: 300px;' %>
+    <script>
+      $('#checkbox input:checkbox:checked').parent().toggleClass('checked-box');
+      $('#checkbox input:checkbox').change(function () {
+        $(this).parent().toggleClass('checked-box');
+      });
+    </script>
+    <div style="display:flex;justify-content:center;margin-top:30px;">
+      <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
+        <i class="fas fa-save"></i>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+
+
+

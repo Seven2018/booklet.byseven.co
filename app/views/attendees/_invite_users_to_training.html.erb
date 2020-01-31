@@ -7,7 +7,7 @@
   </div>
   <div class="modal-body" id="modalNewBookinBody" style='display:flex;flex-direction:column;align-items:center;'>
     <%= simple_form_for :invite, url: invite_to_training_attendees_path do |f| %>
-      <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
+      <div style=" display:flex;justify-content:space-between;flex-direction:column;">
         <%= collection_check_boxes(:training, :user_ids, User.where(company_id: current_user.company_id).order(lastname: :asc), :id, :fullname) do |b| %>
           <% if Attendee.where(training_workshop_id: [@training.training_workshops.ids], user_id: User.find_by(firstname: b.text.split(' ').first, lastname: b.text.split(' ').last).id).empty? %>
             <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
@@ -20,12 +20,6 @@
           <% end %>
         <% end %>
       </div>
-      <script>
-        $('#checkbox2 input:checkbox:checked').parent().toggleClass('checked-box');
-        $('#checkbox2 input:checkbox').change(function () {
-          $(this).parent().toggleClass('checked-box');
-        });
-      </script>
       <div style="display:flex;justify-content:center;margin-top:30px;">
         <%= button_tag :submit, name: 'training_id', value: "#{@training.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
           <i class="fas fa-save"></i>

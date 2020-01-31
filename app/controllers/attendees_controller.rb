@@ -55,7 +55,8 @@ class AttendeesController < ApplicationController
     users = User.where(id: [user_ids])
     users.each do |user|
       training.training_workshops.each do |training_workshop|
-        new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
+        # new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
+        new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Confirmed')
         Notification.create(content: "You have been invited to the following training: #{training.title}", user_id: user.id)
         UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
       end
@@ -74,7 +75,8 @@ class AttendeesController < ApplicationController
     user_ids = params[:training_workshop][:user_ids].drop(1).map(&:to_i)
     users = User.where(id: [user_ids])
     users.each do |user|
-      new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
+      # new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
+      new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Confirmed')
       Notification.create(content: "You have been invited to the following workshop: #{training_workshop.title}", user_id: user.id)
       UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
     end
