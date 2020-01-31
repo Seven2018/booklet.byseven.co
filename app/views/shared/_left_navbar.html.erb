@@ -60,19 +60,19 @@
               </div>
             <% end %>
           <% end %>
-          <% if request.original_url.split('/')[3].split('?').first == 'statistics' %>
-            <%= link_to statistics_path, class: 'left-buttons' do %>
+<!--           <%# if request.original_url.split('/')[3].split('?').first == 'statistics' %>
+            <%# link_to statistics_path, class: 'left-buttons' do %>
               <div class="left-menu-list active">
                 <i class="fas fa-chart-pie"></i> <div class="left-menu-title"><h4>Statistics</h4></div>
               </div>
-            <% end %>
-          <% else %>
-            <%= link_to statistics_path, class: 'left-buttons' do %>
+            <%# end %>
+          <%# else %>
+            <%# link_to statistics_path, class: 'left-buttons' do %>
               <div class="left-menu-list">
                 <i class="fas fa-chart-pie"></i> <div class="left-menu-title"><h4>Statistics</h4></div>
               </div>
-            <% end %>
-          <% end %>
+            <%# end %>
+          <%# end %> -->
           <% if request.original_url.split('/')[3].split('?').first == 'organisation' %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
               <div class="left-menu-list active">

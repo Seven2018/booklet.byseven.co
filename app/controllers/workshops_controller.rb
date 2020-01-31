@@ -80,7 +80,7 @@ class WorkshopsController < ApplicationController
   def destroy
     @workshop.destroy
     authorize @workshop
-    redirect_to workshops_path
+    redirect_back(fallback_location: root_path)
   end
 
   def filter

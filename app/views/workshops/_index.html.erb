@@ -1,0 +1,28 @@
+<div class="row">
+  <% @training_program.program_workshops.order(position: :asc).map(&:workshop).each do |workshop| %>
+    <% program_workshop = ProgramWorkshop.find_by(workshop_id: workshop.id, training_program_id: @training_program.id) %>
+    <div class="col-sm-4 centered-item">
+      <div class="training-program-index-workshop-show-card">
+        <div class='training-program-index-workshop-show-card-main flex-column-centered'>
+          <h3><strong><%= workshop.title %></strong></h3>
+          <p>By <%= workshop.author.firstname %></p>
+          <p><%= workshop.workshop_type %></p>
+          <p><i class="far fa-clock"></i> <%= "#{workshop.duration} min" %></p>
+        </div>
+        <div class="training-program-index-workshop-show-card-footer flex-row-between-centered">
+          <div class='flex-row-between-centered'>
+            <%= link_to training_program_move_up_program_workshop_path(program_workshop, program_workshop_id: program_workshop.id), remote: true do %>
+              <button class="btn-edit-white btn-edit-icon-small"><i class="fas fa-arrow-left"></i></button>
+            <% end %>
+            <%= link_to training_program_move_down_program_workshop_path(program_workshop, program_workshop_id: program_workshop.id), remote: true do %>
+              <button class="btn-edit-white btn-edit-icon-small"><i class="fas fa-arrow-right"></i></button>
+            <% end %>
+          </div>
+          <%= link_to workshop_path(workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+            <button class="btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-trash-alt"></i></button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -142,8 +142,10 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.string "image", default: "", null: false
     t.integer "participant_number", default: 0, null: false
     t.bigint "company_id"
+    t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_training_programs_on_author_id"
     t.index ["company_id"], name: "index_training_programs_on_company_id"
   end
 
@@ -220,7 +222,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.string "lastname", default: "", null: false
     t.date "birth_date"
     t.date "hire_date"
-    t.date "termination_date"
     t.string "address", default: "", null: false
     t.string "phone_number", default: "", null: false
     t.string "social_security", default: "", null: false

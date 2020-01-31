@@ -18,44 +18,43 @@
   </div>
 </div>
 <div id="container-show">
+  <div class='workshop-show-type'>
+    <h3>Workshop</h3>
+  </div>
   <div class='workshop-show-card'>
-    <div class='workshop-show-card-main flex-column-centered' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @workshop.image %>');background-position: center center;
-  background-repeat: no-repeat;">
-      <h2><%= @workshop.title %></h2>
-      <h6><%= @workshop.workshop_type %></h6>
+    <div class='workshop-show-card-main flex-column-centered'>
+      <h1><%= @workshop.title %></h1>
+      <h3>By <%= @workshop.author.firstname %></h3>
+      <img src='<%= @workshop.author.picture %>' alt="" class='avatar-large-workshop-card'>
+      <p><%= @workshop.workshop_type %></p>
+      <p><%= "#{@workshop.duration} min" %></p>
     </div>
-    <div class="workshop-show-card-footer flex-row-between-centered">
-      <div class="workshop-show-card-footer-description centered-item">
-        <% if @workshop.author.present? %>
-          <p><%= "Author: #{@workshop.author.fullname}" %></p>
-        <% end %>
-        <p><%= @workshop.description %></p>
-      </div>
-      <div class="workshop-show-card-footer-infos centered-item">
-        <div>
-          <p><i class="far fa-clock"></i><%= " #{@workshop.duration} minutes" %></p>
-        </div>
-      </div>
+    <div class="workshop-show-card-footer centered-item">
+      <p><%= @workshop.description %></p>
     </div>
   </div>
-  <div class="workshop-show-categories">
-    <% if @workshop.categories.present? %>
-      <% @workshop.categories.each do |category| %>
-        <h6 class="workshop-show-category-card"><%= category.title %></h6>
-      <% end %>
-    <% end %>
-  </div>
+  <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+    <div class="workshop-show-module-controls flex-row-between-centered">
+      <h3>Modules</h3>
+      <a data-toggle='modal' data-target='#editWorkshopContent'>
+        <button class='btn btn-edit'><p>Add Module</p></button>
+      </a>
+    </div>
+  <% else %>
+    <div class="workshop-show-module-controls flex-row-start-centered">
+      <h3>Modules</h3>
+    </div>
+  <% end %>
   <% if @workshop.mods.present? %>
+    <% ind = 1 %>
     <% @workshop.mods.each do |mod| %>
       <a data-toggle='modal' data-target='#editModule<%= mod.id %>'>
-        <div class="workshop-show-content">
-          <div class="workshop-show-content-header flex-row-between-centered">
-            <p><%= mod.title %></p>
-            <p><%= "#{mod.duration}min" %></p>
+        <div class="workshop-show-content flex-row-start-centered">
+          <div class="workshop-show-content-index centered-item">
+            <p><%= ind %></p>
           </div>
-          <div class="workshop-show-content-main">
-            <%= mod.content.html_safe %>
-          </div>
+          <p><%= "#{mod.title} - #{mod.duration} min" %></p>
+          <% ind += 1 %>
         </div>
       </a>
 
@@ -65,13 +64,9 @@
         </div>
       </div>
     <% end %>
-  <% end %>
-  <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
-    <a data-toggle='modal' data-target='#editWorkshopContent'>
-      <div class="workshop-show-content-empty centered-item">
-        <h3>Click to add content</h3>
-      </div>
-    </a>
+    <%= link_to view_workshop_path(@workshop) do %>
+      <button class='btn btn-edit-red'><p>Start</p></button>
+    <% end %>
   <% end %>
 </div>
 

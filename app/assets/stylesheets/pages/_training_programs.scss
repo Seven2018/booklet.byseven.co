@@ -38,36 +38,36 @@
 }
 
 .training-program-show-card {
-  height: 50rem;
   width: 90rem;
   margin: 2rem 0;
 }
 
 .training-program-show-card-main {
-  height: 40rem;
 
-  h2 {
-    color: white;
+  h1 {
+    margin-bottom: 1rem;
   }
-}
 
-.training-program-show-card-footer {
-  height: 10rem;
-  width: 100%;
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
-}
+  p {
+    margin-bottom: 1rem;
 
-.training-program-show-card-footer-description, .training-program-show-card-footer-infos {
-  height: 100%;
-  width: 50%;
-  padding: 2rem;
-}
+    &:first-of-type {
+      color: rgba(0,0,0,0.5);
+    }
 
-.training-program-show-category-card {
-  background-color: #FF8E66;
-  padding: 1rem;
-  color: white;
-  border-radius: 0.5rem;
+    &:nth-of-type(2) {
+      text-indent: 2rem;
+      color: black;
+    }
+  }
+
+  h3 {
+    margin-bottom: 1rem;
+  }
+
+  img {
+    margin-bottom: 3rem;
+  }
 }
 
 .training-program-workshop-index {
@@ -77,17 +77,20 @@
   text-align: center;
 }
 
+.training-program-workshop-index {
+  text-align: left;
+}
+
 .training-program-index-workshop-show-card {
-  height: 20rem;
   width: 25rem;
   margin: 2rem 0;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
 }
 
 .training-program-index-workshop-show-card-main {
-  height: 15rem;
+  height: 25rem;
 
   h2 {
-    color: white;
     text-align: center;
   }
 }
@@ -101,18 +104,8 @@
 }
 
 .training-program-index-workshop-show-card-footer {
-  height: 5rem;
-  width: 100%;
-  padding: 1rem;
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
-
-  div > h6 {
-    text-align: left;
-
-    &:last-child {
-      margin: 0;
-    }
-  }
+  padding: 2rem;
+  border-top: 1px solid #DADCE0;
 }
 
 .training-program-index-workshop-show-card-footer-buttons {

@@ -13,9 +13,17 @@ class ProgramWorkshopPolicy < ApplicationPolicy
     check_access
   end
 
+  def move_up?
+    check_access
+  end
+
+  def move_down?
+    check_access
+  end
+
   private
 
   def check_access
-    ['Super Admin', 'Admin', 'HR'].include? user.access_level
+    ['Super Admin', 'Admin', 'HR', 'Manager'].include? user.access_level
   end
 end
