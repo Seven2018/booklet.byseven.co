@@ -64,8 +64,6 @@
     <% @training_programs.each do |program| %>
       <%= link_to training_program_path(program) do %>
         <div class='workshop-index-card'>
-          <div class='training-program-index-image' style="background-image:url('<%= program.image %>');">
-          </div>
           <div class="training-program-index-infos">
             <div class="training-index-infos-dashboard">
               <p><%= program.title %></p>
@@ -96,8 +94,6 @@
       <% @workshops.order(title: :asc).each do |workshop| %>
         <%= link_to workshop_path(workshop) do %>
           <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= workshop.image %>');">
-            </div>
             <div class="workshop-index-infos flex-row-between-centered">
               <div class="training-index-infos-dashboard">
                 <p><%= workshop.title %></p>
