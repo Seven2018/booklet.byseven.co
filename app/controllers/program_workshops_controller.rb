@@ -8,7 +8,7 @@ class ProgramWorkshopsController < ApplicationController
     array = params[:training_program][:workshop_ids].uniq.drop(1).map(&:to_i)
     array.each do |ind|
       if ProgramWorkshop.where(training_program_id: @training_program.id, workshop_id: ind).empty?
-        ProgramWorkshop.create(training_program_id: @training_program.id, workshop_id: ind)
+        ProgramWorkshop.create(training_program_id: @training_program.id, workshop_id: ind, position: ProgramWorkshop.where(training_program_id: @training_program.id).count + 1)
       end
     end
     # Select all Workshops whose checkbox is unchecked and destroy their ProgramWorkshop, if existing
