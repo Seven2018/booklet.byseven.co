@@ -8,11 +8,9 @@
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for training_workshop do |f| %>
         <%= f.input :title, input_html: {value: training_workshop.title} %>
-        <% if training_workshop.workshop_type == 'Synchronous' %>
+        <% if training_workshop.workshop.workshop_type == 'Synchronous' %>
           <div class="mod-date">
-            <%= f.input :date, as: :string, input_html: { class: 'datepicker'} %>
-          </div>
-          <div class="mod-date">
+            <%= f.input :date, as: :string, input_html: { class: 'datepicker', value: Date.today } %>
             <%= f.input :starts_at, label: 'Start time', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
             <%= f.input :ends_at, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
           </div>
@@ -25,7 +23,8 @@
             <%= f.input :available_date, as: :string, input_html: { class: 'datepicker' }, label: 'Available until (optional)' %>
             <%= f.input :ends_at, label: 'at', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
           </div>
-      <% end %>
+        <% end %>
+        <%= f.input :open, collection: [[true, 'Yes'], [false, 'No']], label_method: :last, value_method: :first, as: :radio_buttons, label: 'Open for booking ?' %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
           <i class="fas fa-save"></i>

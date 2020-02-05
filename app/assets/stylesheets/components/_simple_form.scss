@@ -95,3 +95,26 @@ input {
     outline: none !important;
   }
 }
+
+.training_workshop_open {
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    padding-left: 2.25rem;
+
+    input {
+      margin-top: 0;
+    }
+
+    label {
+      font-size: 1.6rem;
+      margin-left: 1rem;
+    }
+  }
+
+  .form-check-input.is-valid ~ .form-check-label {
+    color: #212529;
+  }
+}
+

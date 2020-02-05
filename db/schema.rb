@@ -172,6 +172,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.datetime "date"
     t.time "starts_at"
     t.time "ends_at"
+    t.boolean "open", default: false, null: false
     t.bigint "training_id"
     t.bigint "workshop_id"
     t.datetime "created_at", precision: 6, null: false
