@@ -9,7 +9,6 @@
           <%= link_to 'New Workshop', new_workshop_path, class: 'dropdown-item' %>
         </div>
       <% end %>
-      <!-- <a><button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon"><i class="fas fa-sliders-h"></i></button></a> -->
       <% if params[:search] %>
         <%= simple_form_for :search, url: catalogue_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
           <%= f.input :title, placeholder: params[:search][:title], label: false %>
@@ -59,63 +58,19 @@
       filterDiv.classList.toggle('hidden');
     })
   </script>
-  <div class='catalogue-index-list'>
-    <h3>Programs</h3>
-    <% @training_programs.each do |program| %>
-      <%= link_to training_program_path(program) do %>
-        <div class='workshop-index-card'>
-          <div class="training-program-index-infos">
-            <div class="training-index-infos-dashboard">
-              <p><%= program.title %></p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= "#{program.workshops.count} workshops" %></p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><i class="fas fa-hourglass"></i><%= " #{program.workshops.map(&:duration).sum}min" %></p>
-            </div>
-            <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-calendar-alt"></i></button></a>
-
-            <!-- Modal -->
-            <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-              <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-                <%= render 'trainings/new', training_program: program %>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+  <div class="dashboard-tabs">
+    <ul class="nav nav-tabs">
+      <li role="presentation"><a href="#Programs" data-toggle="tab">Programs</a></li>
+      <li role="presentation"><a href="#Workshops" data-toggle="tab">Workshops</a></li>
+    </ul>
   </div>
-</div>
-<div class="workshop-index">
-  <div class='catalogue-index-list'>
-    <h3>Workshops</h3>
-      <% @workshops.order(title: :asc).each do |workshop| %>
-        <%= link_to workshop_path(workshop) do %>
-          <div class='workshop-index-card'>
-            <div class="workshop-index-infos flex-row-between-centered">
-              <div class="training-index-infos-dashboard">
-                <p><%= workshop.title %></p>
-              </div>
-              <div class="training-index-infos-dashboard">
-                <p><%= workshop.workshop_type %></p>
-              </div>
-              <div class="training-index-infos-dashboard">
-                <p><i class="fas fa-hourglass"></i><%= " #{workshop.duration}min" %></p>
-              </div>
-              <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-calendar-alt"></i></button></a>
-
-              <!-- Modal -->
-              <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-                <div class='modal-dialog' role='document' style='border-radius: 20px'>
-                  <%= render 'training_workshops/new', workshop: workshop %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="Programs">
+      <%= render 'catalogue_programs', training_programs: @training_programs %>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="Workshops">
+      <%= render 'catalogue_workshops', workshops: @workshops.order(title: :asc) %>
+    </div>
   </div>
 </div>
 

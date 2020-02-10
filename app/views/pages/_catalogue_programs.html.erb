@@ -1,0 +1,73 @@
+<div class='catalogue-index-list'>
+  <h3>Programs</h3>
+  <div class="workshop-index-card">
+    <div class="training-index-infos-title flex-row-between-centered">
+      <div class="training-index-infos-dashboard">
+      </div>
+      <div class="training-index-infos-dashboard">
+        <p>Title</p>
+        <div class="flex-column-centered">
+          <%= link_to catalogue_programs_title_order_asc_path, remote: true do %>
+            <i class="fas fa-caret-up"></i>
+          <% end %>
+          <%= link_to catalogue_programs_title_order_desc_path, remote: true do %>
+            <i class="fas fa-caret-down"></i>
+          <% end %>
+        </div>
+      </div>
+      <div class="training-index-infos-dashboard">
+        <p>Total workshops</p>
+      </div>
+      <div class="training-index-infos-dashboard">
+        <p>Duration</p>
+        <div class="flex-column-centered">
+          <%= link_to catalogue_programs_duration_order_asc_path, remote: true do %>
+            <i class="fas fa-caret-up"></i>
+          <% end %>
+          <%= link_to catalogue_programs_duration_order_desc_path, remote: true do %>
+            <i class="fas fa-caret-down"></i>
+          <% end %>
+        </div>
+      </div>
+      <div class="training-index-infos-dashboard">
+        <p>Theme</p>
+        <a><button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon"><i class="fas fa-sliders-h"></i></button></a>
+      </div>
+    </div>
+  </div>
+  <% training_programs.each do |program| %>
+    <%= link_to training_program_path(program) do %>
+      <div class='workshop-index-card'>
+        <div class="training-program-index-infos">
+          <div class="training-index-infos-dashboard">
+            <h3>P</h3>
+          </div>
+          <div class="training-index-infos-dashboard">
+            <p><%= program.title %></p>
+          </div>
+          <div class="training-index-infos-dashboard">
+            <p><%= "#{program.workshops.count} workshops" %><span><%= "#{program.workshops.map(&:title).join(', ')}" %></span></p>
+          </div>
+          <div class="training-index-infos-dashboard">
+            <p><i class="fas fa-hourglass"></i><%= " #{program.workshops.map(&:duration).sum}min" %></p>
+          </div>
+          <div class="training-index-infos-dashboard">
+            <% if program.categories.count > 1 %>
+              <p><%= program.categories.first.title %> +<span><%= "#{program.categories.map(&:title).join(', ')}" %></span></p>
+            <% else %>
+              <p><%= program.categories.first&.title %></p>
+            <% end %>
+          </div>
+          <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-calendar-alt"></i></button></a>
+
+          <!-- Modal -->
+          <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+              <%= render 'trainings/new', training_program: program %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

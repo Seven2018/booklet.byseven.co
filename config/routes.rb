@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :users
+  post 'users/import', to: 'users#import', as: 'import_users'
   resources :teams, only: %i[create show update destroy]
   resources :team_categories, only: %i[create]
   resources :user_teams, only: %i[create]
@@ -28,7 +29,7 @@ Rails.application.routes.draw do
   resources :mods, only: %i[show new create update destroy]
   resources :workshop_mods, only: %i[create destroy]
   resources :training_workshop_mods, only: %i[create destroy]
-  resources :attendees, only: %i[create destroy]
+  resources :attendees, only: %i[create update destroy]
   get 'attendee-create-all', to: 'attendees#create_all', as: 'create_all_attendees'
   get 'attendee-destroy-all', to: 'attendees#destroy_all', as: 'destroy_all_attendees'
   get 'attendee-confirm-training', to: 'attendees#confirm_training', as: 'confirm_training_attendees'
@@ -41,8 +42,18 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
   get 'dashboard-calendar', to: 'pages#calendar', as: 'dashboard_calendar'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
-  get 'statistics', to: 'pages#statistics', as: 'statistics'
   get 'catalogue-filter', to: 'pages#filter_catalogue', as: 'filter_catalogue'
+  get 'catalogue_workshops_title_order_asc', to: 'pages#catalogue_workshops_title_order_asc', as: 'catalogue_workshops_title_order_asc'
+  get 'catalogue_workshops_title_order_desc', to: 'pages#catalogue_workshops_title_order_desc', as: 'catalogue_workshops_title_order_desc'
+  get 'catalogue_workshops_type_order_asc', to: 'pages#catalogue_workshops_type_order_asc', as: 'catalogue_workshops_type_order_asc'
+  get 'catalogue_workshops_type_order_desc', to: 'pages#catalogue_workshops_type_order_desc', as: 'catalogue_workshops_type_order_desc'
+  get 'catalogue_workshops_duration_order_asc', to: 'pages#catalogue_workshops_duration_order_asc', as: 'catalogue_workshops_duration_order_asc'
+  get 'catalogue_workshops_duration_order_desc', to: 'pages#catalogue_workshops_duration_order_desc', as: 'catalogue_workshops_duration_order_desc'
+  get 'catalogue_programs_title_order_asc', to: 'pages#catalogue_programs_title_order_asc', as: 'catalogue_programs_title_order_asc'
+  get 'catalogue_programs_title_order_desc', to: 'pages#catalogue_programs_title_order_desc', as: 'catalogue_programs_title_order_desc'
+  get 'catalogue_programs_duration_order_asc', to: 'pages#catalogue_programs_duration_order_asc', as: 'catalogue_programs_duration_order_asc'
+  get 'catalogue_programs_duration_order_desc', to: 'pages#catalogue_programs_duration_order_desc', as: 'catalogue_programs_duration_order_desc'
+  get 'statistics', to: 'pages#statistics', as: 'statistics'
   get 'organisation', to: 'pages#organisation', as: 'organisation'
   get 'notification-mark-as-read', to: 'notifications#mark_as_read', as: 'mark_as_read_notifications'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -6,23 +6,68 @@
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody" style='display:flex;flex-direction:column;align-items:center;'>
-    <%= simple_form_for :invite, url: invite_to_training_attendees_path do |f| %>
-      <div style=" display:flex;justify-content:space-between;flex-direction:column;">
-        <%= collection_check_boxes(:training, :user_ids, User.where(company_id: current_user.company_id).order(lastname: :asc), :id, :fullname) do |b| %>
-          <% if Attendee.where(training_workshop_id: [@training.training_workshops.ids], user_id: User.find_by(firstname: b.text.split(' ').first, lastname: b.text.split(' ').last).id).empty? %>
-            <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-              <%= b.check_box + b.text %>
-            <% end %>
-          <% else %>
-            <%= b.label class: 'label-checkbox checked-box', style: 'color:black;' do %>
-              <%= b.check_box + b.text %>
-            <% end %>
-          <% end %>
+    <%= simple_form_for :invite, url: invite_to_training_attendees_path(training_id: @training.id) do |f| %>
+      <div>
+        <%= collection_check_boxes(:training, :team_ids, @teams.order(team_name: :asc), :id, :team_name) do |b| %>
+          <% team = @teams.find_by(team_name: b.text) %>
+          <div class="invite-form-team">
+            <div class="invite-form-team-name flex-row-between-centered">
+              <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+                <%= b.check_box + b.text %>
+              <% end %>
+              <a class="simple-form-toggle-collapse"><i class="fas fa-angle-down"></i></a>
+            </div>
+            <div class="invite-form-users-list">
+              <%= collection_check_boxes(:training, :user_ids, User.joins(:user_teams).where(company_id: current_user.company_id, user_teams: {team_id: team.id}).order(lastname: :asc), :id, :fullname) do |c| %>
+                <% user = @users.find_by(firstname: c.text.split(' ').first, lastname: c.text.split(' ')[1..-1].join(' ')) %>
+                <% user_status = Attendee.find_by(user_id: user.id, training_workshop_id: @training.training_workshops.ids)&.status %>
+                <% if Attendee.where(training_workshop_id: [@training.training_workshops.ids], user_id: user).empty? %>
+                  <%= c.label class: 'label-checkbox', style: 'color:black;' do %>
+                    <%= c.check_box + c.text %>
+                  <% end %>
+                <% else %>
+                  <%= c.label class: 'label-checkbox checked-box', style: 'color:black;' do %>
+                    <%= c.check_box + c.text %>
+                    <% if user_status.present? %>
+                      <p style='margin-left: 1rem;'><%= "(#{user_status})" %></p>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         <% end %>
       </div>
+      <div class='invite-form-users-list-transform?'>
+        <%= f.label :transform, label: 'Transform checked invited to registered ?' %>
+        <%= f.input_field :transform, as: :radio_buttons, checked: false %>
+      </div>
+      <script>
+        const allCarets = document.querySelectorAll('.simple-form-toggle-collapse');
+        allCarets.forEach(element => {
+          element.addEventListener('click', (event) => {
+            let target = element.parentNode.parentNode.querySelector('.invite-form-users-list')
+            target.classList.toggle('invite-form-users-list-expanded');
+            element.classList.toggle('rotated');
+          })
+        })
+      </script>
+      <script>
+        $('.invite-form-team-name input:checkbox').change(function () {
+          var target = $(this).parents().eq(2).find(".invite-form-users-list > .label-checkbox input:checkbox")
+          if ($(this).is(':checked')) {
+            target.prop('checked', true);
+          } else {
+            target.prop('checked', false);
+          }
+        })
+      </script>
       <div style="display:flex;justify-content:center;margin-top:30px;">
-        <%= button_tag :submit, name: 'training_id', value: "#{@training.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
+        <%= button_tag :submit, name: 'status', value: "Invited", class: 'btn btn-edit btn-edit-icon' do %>
+          <i class="fas fa-user-clock"></i>
+        <% end %>
+        <%= button_tag :submit, name: 'status', value: "Registered", class: 'btn btn-edit-red btn-edit-icon' do %>
+          <i class="fas fa-user-lock"></i>
         <% end %>
       </div>
     <% end %>

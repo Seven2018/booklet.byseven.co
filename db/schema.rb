@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_28_085828) do
+ActiveRecord::Schema.define(version: 2020_02_07_170349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,11 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.string "zipcode"
     t.string "city"
     t.string "logo"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "currents", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -109,15 +114,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.index ["skill_group_id"], name: "index_skills_on_skill_group_id"
   end
 
-  create_table "team_categories", force: :cascade do |t|
-    t.bigint "team_id"
-    t.bigint "category_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_team_categories_on_category_id"
-    t.index ["team_id"], name: "index_team_categories_on_team_id"
-  end
-
   create_table "team_workshops", force: :cascade do |t|
     t.bigint "team_id"
     t.bigint "training_workshop_id"
@@ -172,7 +168,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.datetime "date"
     t.time "starts_at"
     t.time "ends_at"
-    t.boolean "open", default: false, null: false
     t.bigint "training_id"
     t.bigint "workshop_id"
     t.datetime "created_at", precision: 6, null: false
@@ -293,8 +288,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
   add_foreign_key "requests", "training_programs"
   add_foreign_key "requests", "users"
   add_foreign_key "skills", "skill_groups"
-  add_foreign_key "team_categories", "categories"
-  add_foreign_key "team_categories", "teams"
   add_foreign_key "team_workshops", "teams"
   add_foreign_key "team_workshops", "training_workshops"
   add_foreign_key "teams", "companies"

@@ -21,6 +21,8 @@ class TrainingsController < ApplicationController
   def show
     authorize @training
     @training_workshop = TrainingWorkshop.new
+    ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) ? @teams = Team.where(company_id: current_user.company_id) : @teams = current_user.teams
+    @users = User.where(company_id: current_user.company_id)
   end
 
   def new

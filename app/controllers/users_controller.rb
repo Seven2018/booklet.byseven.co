@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
+  before_action :set_current_user, only: [:import]
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
@@ -66,6 +67,14 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  # Creates new Users from an imported list
+  def import
+    @users = User.import(params[:file])
+    skip_authorization
+    flash[:notice] = 'Import terminé'
+    redirect_back(fallback_location: root_path)
+  end
+
   # Allows to scrape data from the current user Linkedin profile
   # def linkedin_scrape
   #   skip_authorization
@@ -91,6 +100,10 @@ class UsersController < ApplicationController
   # end
 
   private
+
+  def set_current_user
+    Current.user = current_user
+  end
 
   def set_user
     @user = User.find(params[:id])

@@ -4,7 +4,6 @@
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
       <a data-toggle='modal' data-target='#editTeam'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
       <a data-toggle='modal' data-target='#editUserTeams'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-users-cog"></i></button></a>
-      <a data-toggle='modal' data-target='#editTeamCategories'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a>
       <%= link_to team_path(@team), method: :delete, data: { confirm: 'Are you sure ?'} do %>
         <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
       <% end %>
@@ -70,12 +69,6 @@
 <div class='modal fade' id='editUserTeams' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'user_teams/edit', team: @team %>
-  </div>
-</div>
-
-<div class='modal fade' id='editTeamCategories' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-    <%= render 'team_categories/edit', team: @team %>
   </div>
 </div>
 

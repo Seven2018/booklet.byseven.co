@@ -13,6 +13,10 @@ class AttendeePolicy < ApplicationPolicy
     true
   end
 
+  def update?
+    true
+  end
+
   def create_all?
     true
   end

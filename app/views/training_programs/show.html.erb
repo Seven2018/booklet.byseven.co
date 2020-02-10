@@ -3,7 +3,7 @@
   <div id='show-buttons'>
     <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
       <a data-toggle='modal' data-target='#editTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
-      <!-- <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a> -->
+      <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a>
       <%= link_to training_program_path(@training_program), method: :delete, data: { confirm: 'Are you sure ?'} do %>
         <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
       <% end %>

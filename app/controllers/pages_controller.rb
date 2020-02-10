@@ -65,6 +65,42 @@ class PagesController < ApplicationController
     redirect_to catalogue_path(filter: category_ids)
   end
 
+  %w(catalogue_workshops_title_order_asc catalogue_workshops_title_order_desc catalogue_workshops_type_order_asc catalogue_workshops_type_order_desc catalogue_workshops_duration_order_asc catalogue_workshops_duration_order_desc ).each do |name|
+    def name
+      respond_to do |format|
+        format.html {redirect_to catalogue_path}
+        format.js
+      end
+    end
+  end
+
+  def catalogue_programs_title_order_asc
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+
+  def catalogue_programs_title_order_desc
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+def catalogue_programs_duration_order_asc
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+
+  def catalogue_programs_duration_order_desc
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+
   private
 
   def index_function(parameter)

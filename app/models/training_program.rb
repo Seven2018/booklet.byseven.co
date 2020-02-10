@@ -7,4 +7,8 @@ class TrainingProgram < ApplicationRecord
   has_many :requests, dependent: :destroy
   has_many :program_categories, dependent: :destroy
   has_many :categories, through: :program_categories
+
+  def duration
+    self.workshops.map(&:duration).sum
+  end
 end

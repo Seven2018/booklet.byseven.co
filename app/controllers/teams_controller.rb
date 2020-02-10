@@ -3,7 +3,6 @@ class TeamsController < ApplicationController
 
   def show
     authorize @team
-    @team_category = TeamCategory.new
   end
 
   def create

@@ -31,6 +31,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &:first-of-type {
+      flex-grow: 1;
+    }
   }
 
   p {
@@ -148,12 +152,17 @@
 
   h3:last-of-type {
     text-indent: 2rem;
+    margin-top: 2rem;
   }
 }
 
 #container-workshop-booked {
   padding: 3rem 0;
   border-bottom: 1px solid #DADCE0;
+}
+
+#workshop-booked-infos-main {
+    text-align: center;
 }
 
 #workshop-booked-infos-main.btn-edit {

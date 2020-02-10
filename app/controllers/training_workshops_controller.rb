@@ -4,6 +4,8 @@ class TrainingWorkshopsController < ApplicationController
   def show
     @training_workshop = TrainingWorkshop.find(params[:id])
     authorize @training_workshop
+    ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) ? @teams = Team.where(company_id: current_user.company_id) : @teams = current_user.teams
+    @users = User.where(company_id: current_user.company_id)
   end
 
   def view_mode
@@ -70,6 +72,6 @@ class TrainingWorkshopsController < ApplicationController
   end
 
   def training_workshop_params
-    params.require(:training_workshop).permit(:title, :duration, :participant_number, :description, :content, :image, :date, :available_date, :starts_at, :ends_at, :open)
+    params.require(:training_workshop).permit(:title, :duration, :participant_number, :description, :content, :image, :date, :available_date, :starts_at, :ends_at)
   end
 end

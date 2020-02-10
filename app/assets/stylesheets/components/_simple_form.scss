@@ -118,3 +118,27 @@ input {
   }
 }
 
+.invite-form-team {
+  label {
+    margin-bottom: 0;
+  }
+}
+
+.invite-form-users-list {
+  max-height: 0;
+  margin-left: 2rem;
+  overflow-y: hidden;
+}
+
+.invite-form-users-list-expanded {
+  max-height: 30rem;
+}
+
+.simple-form-toggle-collapse {
+  transition: transform 0.3s linear;
+}
+
+.rotated {
+  transform: rotate(180deg);
+  transition: transform 0.3s linear;
+}

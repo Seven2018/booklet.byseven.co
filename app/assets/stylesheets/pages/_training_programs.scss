@@ -30,11 +30,40 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &:first-of-type {
+      flex-grow: 1;
+    }
   }
 
   p {
     width: 24rem;
   }
+}
+
+.training-index-infos-title {
+  width: calc(100% - 4rem);
+
+  .training-index-infos-dashboard {
+    width: 24rem;
+    display: flex;
+    // justify-content: left;
+    align-items: center;
+
+    &:first-of-type {
+      width: 6.8rem;
+    }
+
+    p {
+      width: auto;
+      margin-right: 1rem;
+    }
+
+    a {
+      line-height: 0;
+    }
+  }
+
 }
 
 .training-program-show-card {

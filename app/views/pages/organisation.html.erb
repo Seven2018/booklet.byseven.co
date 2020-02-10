@@ -6,6 +6,7 @@
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a data-toggle='modal' data-target='#newTeam' class='dropdown-item'>New Team</a>
         <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
+        <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
       </div>
     <% end %>
     <% if params[:search] %>
@@ -155,6 +156,12 @@
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'users/new', team: User.new %>
+  </div>
+</div>
+
+<div class='modal fade' id='importUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'users/import', team: User.new %>
   </div>
 </div>
 

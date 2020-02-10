@@ -24,7 +24,6 @@
             <%= f.input :ends_at, label: 'at', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
           </div>
         <% end %>
-        <%= f.input :open, collection: [[true, 'Yes'], [false, 'No']], label_method: :last, value_method: :first, as: :radio_buttons, label: 'Open for booking ?' %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
           <i class="fas fa-save"></i>

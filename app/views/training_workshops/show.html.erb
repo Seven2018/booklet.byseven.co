@@ -14,13 +14,18 @@
 </div>
 <div id="container-workshop-booked" class='flex-row-between-start'>
   <div id="workshop-booked-infos" class='flex-column-between-left'>
-    <% if Attendee.find_by(training_workshop_id: @training_workshop.id, user_id: current_user.id)&.status == 'Invited' %>
-      <h3 id="workshop-booked-infos-main" class='btn btn-edit-green btn-disabled'>Session Available</h3>
-    <% elsif Attendee.find_by(training_workshop_id: @training_workshop.id, user_id: current_user.id)&.status == 'Completed' %>
-      <h3 id="workshop-booked-infos-main" class='btn btn-edit-red btn-disabled'>Session Completed</h3>
-    <% else %>
-      <h3 id="workshop-booked-infos-main" class='btn btn-edit-red btn-disabled'>Session Booked</h3>
-    <% end %>
+    <div class="flex-row-between-centered">
+      <% if Attendee.find_by(training_workshop_id: @training_workshop.id, user_id: current_user.id)&.status == 'Invited' %>
+        <button id="workshop-booked-infos-main" class='btn btn-edit-green btn-disabled'>Session Available</button>
+        <%= link_to attendee_path(status: 'Registered'), method: :patch do %>
+          <button class="btn btn-edit-green">Register Now!</button>
+        <% end %>
+      <% elsif Attendee.find_by(training_workshop_id: @training_workshop.id, user_id: current_user.id)&.status == 'Completed' %>
+        <button id="workshop-booked-infos-main" class='btn btn-edit-red btn-disabled'>Session Completed</button>
+      <% elsif Attendee.find_by(training_workshop_id: @training_workshop.id, user_id: current_user.id)&.status == 'Registered' %>
+        <button id="workshop-booked-infos-main" class='btn btn-edit-red btn-disabled'>Session Booked</button>
+      <% end %>
+    </div>
     <% if @training_workshop.workshop.workshop_type == 'Synchronous' %>
       <h3><%= "#{@training_workshop.date.strftime('%d/%m/%Y')} From #{@training_workshop.starts_at.strftime('%H:%M')} to #{@training_workshop.ends_at.strftime('%H:%M')}" %></h3>
     <% elsif @training_workshop.workshop.workshop_type == 'Synchronous' && @training_workshop.available_date.present? %>

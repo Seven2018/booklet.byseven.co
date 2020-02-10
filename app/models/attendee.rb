@@ -2,7 +2,6 @@ class Attendee < ApplicationRecord
   belongs_to :user
   belongs_to :training_workshop
   validates :training_workshop_id, uniqueness: { scope: :user_id }
-  accepts_nested_attributes_for :user
 
   def mark_as_completed
     self.update(status: 'Completed')
