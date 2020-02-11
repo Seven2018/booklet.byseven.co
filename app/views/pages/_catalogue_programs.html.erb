@@ -6,7 +6,7 @@
       </div>
       <div class="training-index-infos-dashboard">
         <p>Title</p>
-        <div class="flex-column-centered">
+        <div class="training-index-infos-dashboard-order flex-column-centered">
           <%= link_to catalogue_programs_title_order_asc_path, remote: true do %>
             <i class="fas fa-caret-up"></i>
           <% end %>
@@ -20,7 +20,7 @@
       </div>
       <div class="training-index-infos-dashboard">
         <p>Duration</p>
-        <div class="flex-column-centered">
+        <div class="training-index-infos-dashboard-order flex-column-centered">
           <%= link_to catalogue_programs_duration_order_asc_path, remote: true do %>
             <i class="fas fa-caret-up"></i>
           <% end %>
@@ -31,7 +31,25 @@
       </div>
       <div class="training-index-infos-dashboard">
         <p>Theme</p>
-        <a><button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon"><i class="fas fa-sliders-h"></i></button></a>
+        <div class="training-index-infos-dashboard-order flex-column-centered dropdown show">
+          <a class="dropdown-toggle" href="#" role="button" id="catalogueFilterPrograms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="catalogueFilterPrograms">
+            <div class="dropdown-item dropdown-form">
+              <%= simple_form_for :filter, url: filter_program_catalogue_path, method: 'GET', remote: true do |f| %>
+                <div class="label-checkbox check-box-all">
+                  <%= f.check_box :all %>
+                  <%= f.label :all, 'All' %>
+                </div>
+                <%= collection_check_boxes(:training_program, :category_ids, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
+                  <%= b.label class: 'label-checkbox check-box-child', style: 'color:black;' do %>
+                    <%= b.check_box + b.text %>
+                  <% end %>
+                <% end %>
+                <%= f.button :submit, 'Filter', class: 'btn' %>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

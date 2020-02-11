@@ -29,35 +29,6 @@
       <% end %>
     </div>
   </div>
-  <div id="training-program-index-list-filters" class='hidden'>
-    <%= simple_form_for :filter, url: filter_catalogue_path, method: 'GET' do |f| %>
-      <div id="checkbox">
-        <%= collection_check_boxes(:workshop, :category_ids, Category.all, :id, :title) do |b| %>
-          <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-            <%= b.check_box + b.text %>
-          <% end %>
-        <% end %>
-      </div>
-      <script>
-        $('#checkbox input:checkbox:checked').parent().toggleClass('checked-box');
-        $('#checkbox input:checkbox').change(function () {
-          $(this).parent().toggleClass('checked-box');
-        });
-      </script>
-      <div style="display:flex;justify-content:center;margin-top:30px;">
-        <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <script>
-    filterButton = document.getElementById('btn-edit-filter');
-    filterDiv = document.getElementById('training-program-index-list-filters');
-    filterButton.addEventListener('click', (event) => {
-      filterDiv.classList.toggle('hidden');
-    })
-  </script>
   <div class="dashboard-tabs">
     <ul class="nav nav-tabs">
       <li role="presentation"><a href="#Programs" data-toggle="tab" class='active'>Programs</a></li>
@@ -73,7 +44,6 @@
     </div>
   </div>
 </div>
-
 <script>
   searchButton = document.querySelector('.btn-search');
   searchBar = document.querySelector('.search-bar');

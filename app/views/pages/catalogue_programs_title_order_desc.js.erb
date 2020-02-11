@@ -1,1 +1,1 @@
-document.getElementById('Workshops').innerHTML = '<%= j (render("pages/catalogue_programs", training_programs: TrainingProgram.where(company_id: current_user.company_id).order(title: :desc))) %>';
+document.getElementById('Programs').innerHTML = '<%= j (render("pages/catalogue_programs", training_programs: TrainingProgram.where(company_id: current_user.company_id).order(title: :desc))) %>';

@@ -6,9 +6,8 @@
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
-    <%= simple_form_for @training do |f| %>
+    <%= simple_form_for Training.new do |f| %>
       <%= f.input :title, input_html: {value: training_program.title} %>
-      <%# f.input :participant_number, input_html: {value: training_program.participant_number} %>
       <%= f.input :participant_number, label: 'Max number of participants (optional)', input_html: {value: nil} %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <%= button_tag type: 'submit', name: 'training_program_id', value: "#{training_program.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
