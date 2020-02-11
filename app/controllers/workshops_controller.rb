@@ -1,24 +1,24 @@
 class WorkshopsController < ApplicationController
   before_action :set_workshop, only: [:show, :view_mode, :edit, :update, :destroy]
 
-  def index
-    # Index with 'search' option and global visibility for SEVEN Users
-    if current_user.access_level == 'Super Admin'
-      @workshops = policy_scope(Workshop)
-      if params[:search]
-        @workshops = ((Workshop.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)) + (Workshop.joins(:company).where("lower(companies.name) LIKE ?", "%#{params[:search][:title].downcase}%"))).flatten(1).uniq
-      elsif params[:filter]
-        @workshops = Workshop.joins(:workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)})
-      end
-    # Index for other Users, with visibility limited to programs proposed by their company only
-    else
-      @workshops = policy_scope(Workshop)
-      @workshops = Workshop.where(company_id: current_user.company.id)
-      if params[:search]
-        @workshops = @workshops.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
-      end
-    end
-  end
+  # def index
+  #   # Index with 'search' option and global visibility for SEVEN Users
+  #   if current_user.access_level == 'Super Admin'
+  #     @workshops = policy_scope(Workshop)
+  #     if params[:search]
+  #       @workshops = ((Workshop.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)) + (Workshop.joins(:company).where("lower(companies.name) LIKE ?", "%#{params[:search][:title].downcase}%"))).flatten(1).uniq
+  #     elsif params[:filter]
+  #       @workshops = Workshop.joins(:workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)})
+  #     end
+  #   # Index for other Users, with visibility limited to programs proposed by their company only
+  #   else
+  #     @workshops = policy_scope(Workshop)
+  #     @workshops = Workshop.where(company_id: current_user.company.id)
+  #     if params[:search]
+  #       @workshops = @workshops.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+  #     end
+  #   end
+  # end
 
   def show
     authorize @workshop

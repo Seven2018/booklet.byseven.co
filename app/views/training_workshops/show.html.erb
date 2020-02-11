@@ -1,5 +1,5 @@
 <div id="show-controls" class='flex-row-between-centered'>
-  <%= link_to url_for(:back), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <%= link_to dashboard_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
   <div id='show-buttons'>
     <%= link_to view_training_workshop_path(@training_workshop), class: 'btn btn-edit-white btn-edit-icon' do %>
       <i class="far fa-eye"></i>
@@ -37,8 +37,10 @@
   <div id="workshop-booked-participants">
     <% if @training_workshop.training.present? %>
       <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-invite-users' disabled>Manage Users</button></a>
-    <% else %>
+    <% elsif @training_workshop.date > Date.today %>
       <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-invite-users'>Manage Users</button></a>
+    <% else %>
+      <a data-toggle='modal' data-target='#confirmPresence'><button class='btn btn-invite-users'>Confirm Presence</button></a>
     <% end %>
     <ul id='workshop-booked-attendee-list'>
       <% ind = 0 %>

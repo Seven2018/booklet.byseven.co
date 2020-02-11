@@ -18,6 +18,8 @@ input.btn {
   &:focus {
     box-shadow: none;
   }
+
+
 }
 
 .btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-white, .btn-invite-users {
@@ -35,7 +37,7 @@ input.btn {
   i {
     color: white;
   }
-  &:hover{
+  &:hover:enabled{
     opacity: 1;
     text-decoration: none !important;
   }

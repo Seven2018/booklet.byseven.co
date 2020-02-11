@@ -1,6 +1,6 @@
 <div class="training-program-index">
   <div id="index-controls" class='flex-row-between-centered'>
-    <h3>Catalogue</h3>
+    <h1>Catalogue</h1>
     <div id="index-buttons">
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
         <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
@@ -60,7 +60,7 @@
   </script>
   <div class="dashboard-tabs">
     <ul class="nav nav-tabs">
-      <li role="presentation"><a href="#Programs" data-toggle="tab">Programs</a></li>
+      <li role="presentation"><a href="#Programs" data-toggle="tab" class='active'>Programs</a></li>
       <li role="presentation"><a href="#Workshops" data-toggle="tab">Workshops</a></li>
     </ul>
   </div>

@@ -2,7 +2,7 @@ class AttendeesController < ApplicationController
   before_action :set_attendee, only: [:update, :destroy]
 
   def create
-    @attendee = Attendee.new(training_workshop_id: params[:training_workshop_id], user_id: params[:user_id], status: 'Confirmed')
+    @attendee = Attendee.new(training_workshop_id: params[:training_workshop_id], user_id: params[:user_id], status: 'Confirmed', creator_id: current_user.id)
     authorize @attendee
     if @attendee.save
       redirect_to redirect_path(list: "#{params[:user_id]} ", training_workshop_id: "|#{params[:training_workshop_id]}|", to_delete: " ")
@@ -17,7 +17,7 @@ class AttendeesController < ApplicationController
     authorize @attendees
     unless training.training_workshops.nil?
       training.training_workshops.each do |workshop|
-        Attendee.create(training_workshop_id: workshop.id, user_id: params[:user_id], status: 'Confirmed')
+        Attendee.create(training_workshop_id: workshop.id, user_id: params[:user_id], status: 'Confirmed', creator_id: current_user.id)
       end
     end
     redirect_to redirect_path(list: "#{params[:user_id]} ", training_workshop_id: "|#{training.training_workshops.ids}|", to_delete: " ")
@@ -59,11 +59,12 @@ class AttendeesController < ApplicationController
     params.permit
     user_ids = params[:training][:user_ids].drop(1).map(&:to_i)
     users = User.where(id: [user_ids])
+    set_current_user
     event_to_delete = ''
     users.each do |user|
       training.training_workshops.each do |training_workshop|
         # new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
-        new_attendee = Attendee.new(training_workshop_id: training_workshop.id, user_id: user.id, status: params[:status])
+        new_attendee = Attendee.new(training_workshop_id: training_workshop.id, user_id: user.id, status: params[:status], creator_id: current_user.id)
         if !new_attendee.save && params[:invite][:transform] == 'true'
           Attendee.find_by(training_workshop_id: training_workshop.id, user_id: user.id).update(status: 'Registered')
         elsif new_attendee.save
@@ -88,15 +89,16 @@ class AttendeesController < ApplicationController
     authorize @attendees
     user_ids = params[:training_workshop][:user_ids].drop(1).map(&:to_i)
     users = User.where(id: [user_ids])
+    set_current_user
     event_to_delete = ''
     users.each do |user|
       # new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
-      new_attendee = Attendee.new(training_workshop_id: training_workshop.id, user_id: user.id, status: params[:status])
+      new_attendee = Attendee.new(training_workshop_id: training_workshop.id, user_id: user.id, status: params[:status], creator_id: current_user.id)
       if !new_attendee.save && params[:invite][:transform] == 'true'
         Attendee.find_by(training_workshop_id: training_workshop.id, user_id: user.id).update(status: 'Registered')
       elsif new_attendee.save
         Notification.create(content: "You have been invited to the following workshop: #{training_workshop.title}", user_id: user.id)
-        # UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
+        UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
       end
     end
     (User.joins(:attendees).where(attendees: {training_workshop_id: training_workshop.id}) - users).each do |user|
@@ -241,6 +243,10 @@ class AttendeesController < ApplicationController
 
   def set_attendee
     @attendee = Attendee.find(params[:id])
+  end
+
+  def set_current_user
+    Current.user = current_user
   end
 
   def client_options

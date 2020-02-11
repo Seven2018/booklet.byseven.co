@@ -20,8 +20,10 @@ ActiveRecord::Schema.define(version: 2020_02_07_170349) do
     t.string "calendar_uuid"
     t.bigint "user_id"
     t.bigint "training_workshop_id"
+    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_attendees_on_creator_id"
     t.index ["training_workshop_id"], name: "index_attendees_on_training_workshop_id"
     t.index ["user_id"], name: "index_attendees_on_user_id"
   end

@@ -2,22 +2,23 @@
   <% @training.training_workshops.order(date: :asc).each do |workshop| %>
     <% program_workshop = ProgramWorkshop.find_by(workshop_id: workshop.id, training_program_id: @training.training_program.id) %>
     <div class="col-sm-4 centered-item">
-      <div class="training-program-index-workshop-show-card">
-        <div class='training-program-index-workshop-show-card-main flex-column-centered'>
-          <%= link_to '', training_workshop_path(workshop), class: 'stretched-link' %>
-          <h3><strong><%= workshop.title %></strong></h3>
-          <p>By <%= workshop.workshop.author.firstname %></p>
-          <p><%= workshop.workshop_type %></p>
-          <p><i class="far fa-clock"></i> <%= "#{workshop.duration} min" %></p>
-        </div>
-        <div class="training-program-index-workshop-show-card-footer flex-row-between-centered">
-          <div class='flex-column-between-left'>
-            <p><%= workshop.date.strftime('%d/%m/%Y') %></p>
-            <p><%= "#{workshop.starts_at.strftime('%H:%M')} - #{workshop.starts_at.strftime('%H:%M')}" %></p>
+      <%= link_to training_workshop_path(workshop) do %>
+        <div class="training-program-index-workshop-show-card">
+          <div class='training-program-index-workshop-show-card-main flex-column-centered'>
+            <h3><strong><%= workshop.title %></strong></h3>
+            <p>By <%= workshop.workshop.author.firstname %></p>
+            <p><%= workshop.workshop_type %></p>
+            <p><i class="far fa-clock"></i> <%= "#{workshop.duration} min" %></p>
           </div>
-          <a data-toggle='modal' data-target='#editTraining<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon-small btn-last'><i class='fas fa-pen'></i></button></a>
+          <div class="training-program-index-workshop-show-card-footer flex-row-between-centered">
+            <div class='flex-column-between-left'>
+              <p><%= workshop.date.strftime('%d/%m/%Y') %></p>
+              <p><%= "#{workshop.starts_at.strftime('%H:%M')} - #{workshop.ends_at.strftime('%H:%M')}" %></p>
+            </div>
+            <a data-toggle='modal' data-target='#editTraining<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon-small btn-last'><i class='fas fa-pen'></i></button></a>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
 
     <div class='modal fade' id='editTraining<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">

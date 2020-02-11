@@ -1,5 +1,5 @@
 <div id="show-controls" class='flex-row-between-centered'>
-  <%= link_to trainings_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <%= link_to dashboard_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
   <div id='show-buttons'>
     <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
       <a data-toggle='modal' data-target='#editTraining'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
@@ -11,7 +11,18 @@
 </div>
 <div id="container-workshop-booked" class='flex-row-between-start'>
   <div id="workshop-booked-infos" class='flex-column-between-left'>
-    <button id="workshop-booked-infos-main" class='btn btn-edit-red btn-disabled'>Program Booked</button>
+    <div class="flex-row-between-centered">
+      <% if Attendee.find_by(training_workshop_id: [@training.training_workshops.ids], user_id: current_user.id)&.status == 'Invited' %>
+        <button id="workshop-booked-infos-main" class='btn btn-edit-green btn-disabled'>Program Available</button>
+        <%= link_to attendee_path(status: 'Registered'), method: :patch do %>
+          <button class="btn btn-edit-green">Register Now!</button>
+        <% end %>
+      <% elsif Attendee.find_by(training_workshop_id: @training_workshop.id, user_id: current_user.id)&.status == 'Completed' %>
+        <button id="workshop-booked-infos-main" class='btn btn-edit-red btn-disabled'>Program Completed</button>
+      <% elsif Attendee.find_by(training_workshop_id: @training_workshop.id, user_id: current_user.id)&.status == 'Registered' %>
+        <button id="workshop-booked-infos-main" class='btn btn-edit-red btn-disabled'>Program Booked</button>
+      <% end %>
+    </div>
   </div>
   <div id="workshop-booked-participants">
     <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-invite-users'>Manage Users</button></a>

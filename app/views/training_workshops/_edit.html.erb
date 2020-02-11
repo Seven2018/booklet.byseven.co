@@ -10,7 +10,7 @@
         <%= f.input :title, input_html: {value: training_workshop.title} %>
         <% if training_workshop.workshop.workshop_type == 'Synchronous' %>
           <div class="mod-date">
-            <%= f.input :date, as: :string, input_html: { class: 'datepicker', value: Date.today } %>
+            <%= f.input :date, as: :string, input_html: { class: 'datepicker' } %>
             <%= f.input :starts_at, label: 'Start time', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
             <%= f.input :ends_at, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
           </div>
