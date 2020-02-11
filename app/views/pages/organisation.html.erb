@@ -36,10 +36,10 @@
     </div>
     <% if params[:team_id].nil? %>
       <div class='team-index-card flex-row-between-centered active'>
-        <div class="training-index-infos-dashboard-lg">
+        <div class="team-index-card-teamname">
           <p>All</p>
         </div>
-        <div class="training-index-infos-dashboard-lg">
+        <div class="team-index-card-infos">
           <p><%= "#{current_user.company.users.count} members" %></p>
         </div>
         <%= link_to organisation_path, class: 'team-index-card-link' do %>
@@ -48,10 +48,10 @@
       </div>
     <% else %>
       <div class='team-index-card flex-row-between-centered'>
-        <div class="training-index-infos-dashboard-lg">
+        <div class="team-index-card-teamname">
           <p>All</p>
         </div>
-        <div class="training-index-infos-dashboard-lg">
+        <div class="team-index-card-infos">
           <p><%= "#{current_user.company.users.count} members" %></p>
         </div>
         <%= link_to organisation_path, class: 'team-index-card-link' do %>
@@ -64,14 +64,14 @@
         <% if params[:team_id] == team.id.to_s %>
           <div class='team-index-card active'>
             <%= link_to team_path(team), class: 'flex-row-between-centered', style: 'width:100%' do %>
-              <div class="training-index-infos-dashboard-lg">
+              <div class="team-index-card-teamname">
                 <% if team.team_name.length < 15 %>
                   <p><%= team.team_name %></p>
                 <% else %>
                   <p><%= "#{team.team_name[0..10]}..." %><span><%= team.team_name %></span></p>
                 <% end %>
               </div>
-              <div class="training-index-infos-dashboard-lg">
+              <div class="team-index-card-infos">
                 <p><%= "#{team.users.count} members" %></p>
               </div>
             <% end %>
@@ -82,14 +82,14 @@
         <% else %>
           <div class='team-index-card'>
             <%= link_to team_path(team), class: 'flex-row-between-centered', style: 'width:100%' do %>
-              <div class="training-index-infos-dashboard-lg">
+              <div class="team-index-card-teamname">
                 <% if team.team_name.length < 15 %>
                   <p><%= team.team_name %></p>
                 <% else %>
                   <p><%= "#{team.team_name[0..10]}..." %><span><%= team.team_name %></span></p>
                 <% end %>
               </div>
-              <div class="training-index-infos-dashboard-lg">
+              <div class="team-index-card-infos">
                 <p><%= "#{team.users.count} members" %></p>
               </div>
             <% end %>
@@ -107,24 +107,24 @@
     </div>
     <% @users.each do |user| %>
       <%= link_to user_path(user) do %>
-        <div class='workshop-index-card'>
+        <div class='user-index-card'>
           <img src="<%= user.picture %>" alt="" class='avatar-sm'>
-          <div class="training-index-infos-group-dashboard flex-row-between-centered">
-            <div class="training-index-infos-dashboard">
-              <% if user.fullname.length < 23 %>
+          <div class="user-index-infos flex-row-between-centered">
+            <div class="user-index-info">
+              <% if user.fullname.length < 20 %>
                 <p><%= user.fullname %></p>
               <% else %>
-                <p><%= "#{user.fullname[0..19]}..." %><span><%= user.fullname %></span></p>
+                <p><%= user.fullname %><span><%= user.fullname %></span></p>
               <% end %>
             </div>
-            <div class="training-index-infos-dashboard">
-              <% if user.email.length < 26 %>
+            <div class="user-index-info">
+              <% if user.email.length < 20 %>
                 <p><%= user.email %></p>
               <% else %>
-                <p><%= "#{user.email[0..22]}..." %><span><%= user.email %></span></p>
+                <p><%= user.email %><span><%= user.email %></span></p>
               <% end %>
             </div>
-            <div class="training-index-infos-dashboard">
+            <div class="user-index-info">
               <% teams = '' %>
               <% user.teams.each do |team| %>
                 <% if team == user.teams.last %>
@@ -133,10 +133,10 @@
                   <% teams += "#{team.team_name}, " %>
                 <% end %>
               <% end %>
-              <% if teams.length < 15 %>
+              <% if teams.length < 20 %>
                 <p><%= teams %></p>
               <% else %>
-                <p><%= "#{teams[0..11]}..." %><span><%= teams %></span></p>
+                <p><%= teams %><span><%= teams %></span></p>
               <% end %>
             </div>
           </div>

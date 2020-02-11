@@ -70,8 +70,11 @@ class PagesController < ApplicationController
   end
 
   def catalogue_filter_program
-    @program_categories = params[:training_program][:category_ids].drop(1).map(&:to_i)
-    @program_categories = Category.where(company_id: current_user.company_id).map(&:id) if params[:filter][:all] == '1'
+    if params[:filter][:all] == '1'
+      @program_categories = Category.where(company_id: current_user.company_id).map(&:id)
+    else
+      @program_categories = params[:training_program][:category_ids].drop(1).map(&:to_i)
+    end
     respond_to do |format|
       format.html {redirect_to catalogue_path}
       format.js

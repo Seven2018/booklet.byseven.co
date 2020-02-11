@@ -10,7 +10,7 @@
         <% unless workshop.attendees.where(user_id: current_user.id).empty? %>
           <% if workshop.attendees.where(user_id: current_user.id).first.status == 'Invited' %>
             <div class="workshop-card-calendar-indicator-orange"><i class="fas fa-circle"></i></div>
-          <% else %>
+          <% elsif workshop.attendees.where(user_id: current_user.id).first.status == 'Registered' %>
             <div class="workshop-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
           <% end %>
         <% end %>

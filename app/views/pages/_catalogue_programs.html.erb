@@ -1,82 +1,93 @@
 <div class='catalogue-index-list'>
-  <h3>Programs</h3>
-  <div class="workshop-index-card">
-    <div class="training-index-infos-title flex-row-between-centered">
-      <div class="training-index-infos-dashboard">
+  <div class="catalogue-index-card">
+    <div class="catalogue-index-infos-title">
+      <div class="catalogue-index-info">
       </div>
-      <div class="training-index-infos-dashboard">
+      <div class="catalogue-index-info">
         <p>Title</p>
-        <div class="training-index-infos-dashboard-order flex-column-centered">
-          <%= link_to catalogue_programs_title_order_asc_path, remote: true do %>
-            <i class="fas fa-caret-up"></i>
-          <% end %>
-          <%= link_to catalogue_programs_title_order_desc_path, remote: true do %>
-            <i class="fas fa-caret-down"></i>
-          <% end %>
+        <div class="catalogue-index-info-order flex-column-centered">
+            <i class="fas fa-caret-up">
+              <%= link_to '',catalogue_programs_title_order_asc_path, remote: true, class: 'stretched-link' %>
+            </i>
+            <i class="fas fa-caret-down">
+              <%= link_to '',catalogue_programs_title_order_desc_path, remote: true, class: 'stretched-link' %>
+            </i>
         </div>
       </div>
-      <div class="training-index-infos-dashboard">
+      <div class="catalogue-index-info">
         <p>Total workshops</p>
       </div>
-      <div class="training-index-infos-dashboard">
+      <div class="catalogue-index-info">
         <p>Duration</p>
-        <div class="training-index-infos-dashboard-order flex-column-centered">
-          <%= link_to catalogue_programs_duration_order_asc_path, remote: true do %>
-            <i class="fas fa-caret-up"></i>
-          <% end %>
-          <%= link_to catalogue_programs_duration_order_desc_path, remote: true do %>
-            <i class="fas fa-caret-down"></i>
-          <% end %>
+        <div class="catalogue-index-info-order flex-column-centered">
+            <i class="fas fa-caret-up">
+              <%= link_to '',catalogue_programs_duration_order_asc_path, remote: true, class: 'stretched-link' %>
+            </i>
+            <i class="fas fa-caret-down">
+              <%= link_to '',catalogue_programs_duration_order_desc_path, remote: true, class: 'stretched-link' %>
+            </i>
         </div>
       </div>
-      <div class="training-index-infos-dashboard">
+      <div class="catalogue-index-info">
         <p>Theme</p>
-        <div class="training-index-infos-dashboard-order flex-column-centered dropdown show">
+        <div class="catalogue-index-info-order flex-column-centered dropdown show">
           <a class="dropdown-toggle" href="#" role="button" id="catalogueFilterPrograms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="catalogueFilterPrograms">
             <div class="dropdown-item dropdown-form">
               <%= simple_form_for :filter, url: filter_program_catalogue_path, method: 'GET', remote: true do |f| %>
-                <div class="label-checkbox check-box-all">
-                  <%= f.check_box :all %>
-                  <%= f.label :all, 'All' %>
-                </div>
+                <label for="filter_all" class="label-checkbox check-box-all" >
+                  <%= f.check_box :all, id: 'checkbox-all' %>
+                  All
+                </label>
                 <%= collection_check_boxes(:training_program, :category_ids, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
                   <%= b.label class: 'label-checkbox check-box-child', style: 'color:black;' do %>
                     <%= b.check_box + b.text %>
                   <% end %>
                 <% end %>
-                <%= f.button :submit, 'Filter', class: 'btn' %>
+                <%= f.button :submit, 'Filter', class: 'btn-edit-white btn-filter-submit' %>
               <% end %>
             </div>
           </div>
         </div>
+        <script>
+          const submit = document.querySelector('.btn-filter-submit');
+          const filterAll = document.getElementById('checkbox-all');
+          const icon = document.getElementById('catalogueFilterPrograms');
+          submit.addEventListener('click', (event) => {
+            if (filterAll.checked == true) {
+              icon.classList.add('btn-red');
+            } else {
+              icon.classList.remove('btn-red');
+            }
+          })
+        </script>
       </div>
     </div>
   </div>
   <% training_programs.each do |program| %>
     <%= link_to training_program_path(program) do %>
-      <div class='workshop-index-card'>
-        <div class="training-program-index-infos">
-          <div class="training-index-infos-dashboard">
+      <div class='catalogue-index-card'>
+        <div class="catalogue-index-infos">
+          <div class="catalogue-index-info">
             <h3>P</h3>
           </div>
-          <div class="training-index-infos-dashboard">
+          <div class="catalogue-index-info">
             <p><%= program.title %></p>
           </div>
-          <div class="training-index-infos-dashboard">
+          <div class="catalogue-index-info">
             <p><%= "#{program.workshops.count} workshops" %><span><%= "#{program.workshops.map(&:title).join(', ')}" %></span></p>
           </div>
-          <div class="training-index-infos-dashboard">
+          <div class="catalogue-index-info">
             <p><i class="fas fa-hourglass"></i><%= " #{program.workshops.map(&:duration).sum}min" %></p>
           </div>
-          <div class="training-index-infos-dashboard">
+          <div class="catalogue-index-info">
             <% if program.categories.count > 1 %>
               <p><%= program.categories.first.title %> +<span><%= "#{program.categories.map(&:title).join(', ')}" %></span></p>
             <% else %>
               <p><%= program.categories.first&.title %></p>
             <% end %>
           </div>
-          <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-calendar-alt"></i></button></a>
+          <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-last'>Book</button></a>
 
           <!-- Modal -->
           <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
