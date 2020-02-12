@@ -17,7 +17,7 @@
       </div>
       <% if user_signed_in? %>
         <%= link_to dashboard_path, class: 'left-buttons' do %>
-          <% if request.original_url.split('/')[3].split('?').first == 'dashboard' %>
+          <% if request.original_url&.split('/')[3]&.split('?').first == 'dashboard' %>
             <div class="left-menu-list active">
             <i class="fas fa-home"></i> <div class="left-menu-title"><h4>My Booklet</h4></div>
           </div>
@@ -28,7 +28,7 @@
           <% end %>
         <% end %>
         <%= link_to dashboard_calendar_path, class: 'left-buttons' do %>
-          <% if request.original_url.split('/')[3].split('?').first == 'dashboard-calendar' %>
+          <% if request.original_url&.split('/')[3]&.split('?').first == 'dashboard-calendar' %>
             <div class="left-menu-list active">
             <i class="far fa-calendar-alt"></i> <div class="left-menu-title"><h4>Calendar</h4></div>
           </div>
@@ -49,7 +49,7 @@
           </div>
         <%# end %> -->
         <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
-          <% if request.original_url.split('/')[3].split('?').first == 'catalogue' %>
+          <% if request.original_url&.split('/')[3]&.split('?').first == 'catalogue' %>
             <%= link_to catalogue_path, class: 'left-buttons' do %>
               <div class="left-menu-list active">
                 <i class="fas fa-book"></i> <div class="left-menu-title"><h4>Catalogue</h4></div>
@@ -62,7 +62,7 @@
               </div>
             <% end %>
           <% end %>
-<!--           <%# if request.original_url.split('/')[3].split('?').first == 'statistics' %>
+<!--           <%# if request.original_url&.split('/')[3]&.split('?').first == 'statistics' %>
             <%# link_to statistics_path, class: 'left-buttons' do %>
               <div class="left-menu-list active">
                 <i class="fas fa-chart-pie"></i> <div class="left-menu-title"><h4>Statistics</h4></div>
@@ -75,7 +75,7 @@
               </div>
             <%# end %>
           <%# end %> -->
-          <% if request.original_url.split('/')[3].split('?').first == 'organisation' %>
+          <% if request.original_url&.split('/')[3]&.split('?').first == 'organisation' %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
               <div class="left-menu-list active">
                 <i class="fas fa-users"></i> <div class="left-menu-title"><h4>Organisation</h4></div>
