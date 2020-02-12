@@ -21,28 +21,28 @@
   <div class='catalogue-index-list'>
     <h3 class='training-index-list-dashboard-title'>Trainings Overview</h3>
     <% ((Training.where(company_id: current_user.company_id) + TrainingWorkshop.where(company_id: current_user.company_id)).sort_by(&:date)).each do |element| %>
-      <% if (element.instance_of? TrainingWorkshop) && element.training_id.nil?%>
+      <% if (element&.instance_of? TrainingWorkshop) && element&.training_id.nil?%>
         <%= link_to training_workshop_path(element) do %>
           <div class='training-index-card'>
-            <% if element.attendees.where(user_id: current_user.id, status: 'Invited').present? %>
+            <% if element&.attendees.where(user_id: current_user.id, status: 'Invited').present? %>
               <div class="training-card-calendar-indicator-orange"><i class="fas fa-circle"></i></div>
-            <% elsif element.attendees.where(user_id: current_user.id, status: 'Registered').present? %>
+            <% elsif element&.attendees.where(user_id: current_user.id, status: 'Registered').present? %>
               <div class="training-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
             <% end %>
             <div class="training-index-infos-dashboard">
               <h3>W</h3>
             </div>
             <div class="training-index-infos-dashboard">
-              <p><%= element.title %></p>
+              <p><%= element&.title %></p>
             </div>
             <div class="training-index-infos-dashboard">
-              <p><%= element.workshop_type %></p>
+              <p><%= element&.workshop_type %></p>
             </div>
             <div class="training-index-infos-dashboard">
-              <% if element.starts_at.present? && element.ends_at.present? %>
-                <p><%= "#{element.date.strftime('%d/%m/%Y')} | #{element.starts_at.strftime('%H:%M')} - #{element.ends_at.strftime('%H:%M')}" %></p>
+              <% if element&.starts_at.present? && element&.ends_at.present? %>
+                <p><%= "#{element&.date.strftime('%d/%m/%Y')} | #{element&.starts_at.strftime('%H:%M')} - #{element&.ends_at.strftime('%H:%M')}" %></p>
               <% else %>
-                <p><%= "#{element.date.strftime('%d/%m/%Y')}" %></p>
+                <p><%= "#{element&.date.strftime('%d/%m/%Y')}" %></p>
               <% end %>
             </div>
           </div>
@@ -50,7 +50,7 @@
       <% elsif element.instance_of? Training %>
         <%= link_to training_path(element) do %>
           <div class='training-index-card'>
-            <% if element.training_workshops.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).empty? %>
+            <% if element&.training_workshops.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).empty? %>
               <div class="training-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
             <% else %>
               <div class="training-card-calendar-indicator-orange"><i class="fas fa-circle"></i></div>
@@ -59,13 +59,13 @@
               <h3>P</h3>
             </div>
             <div class="training-index-infos-dashboard">
-              <p><%= element.title %></p>
+              <p><%= element&.title %></p>
             </div>
             <div class="training-index-infos-dashboard">
               <p> </p>
             </div>
             <div class="training-index-infos-dashboard">
-              <p><%= "Next workshop #{element.next_date.strftime('%d/%m/%Y')}" %></p>
+              <p><%= "Next workshop #{element&.next_date.strftime('%d/%m/%Y')}" %></p>
             </div>
           </div>
         <% end %>
