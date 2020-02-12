@@ -22,25 +22,11 @@
         <%= f.association :company, collection: Company.all, include_blank: false, label: 'Company' %>
       <% end %>
       <%= f.input :phone_number, label: 'Phone number' %>
-      <%= f.input :linkedin %>
+      <%= f.input :linkedin, label: 'Linkedin (url)' %>
       <%= f.input :birth_date, as: :date, label: 'Birth date', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
                               end_year: Date.today.year - 12 %>
       <%= f.input :hire_date, as: :date, label: 'Hire date', start_year: Date.today.year - 70,
                               end_year: Date.today.year %>
-      <p><%= "Select Teams (optional)" %></p>
-      <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
-        <%= collection_check_boxes(:user, :team_ids, Team.where(company_id: current_user.company_id), :id, :team_name) do |b| %>
-          <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-            <%= b.check_box + b.text %>
-          <% end %>
-        <% end %>
-      </div>
-      <script>
-        $('#checkbox2 input:checkbox:checked').parent().toggleClass('checked-box');
-        $('#checkbox2 input:checkbox').change(function () {
-          $(this).parent().toggleClass('checked-box');
-        });
-      </script>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
           <i class="fas fa-save"></i>

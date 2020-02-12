@@ -74,11 +74,11 @@
             <p><%= workshop.workshop_type %></p>
           </div>
           <div class="catalogue-index-info">
-            <p><i class="fas fa-hourglass"></i><%= " #{workshop.duration}min" %></p>
+            <p><%= " #{workshop.duration} min" %></p>
           </div>
           <div class="catalogue-index-info">
             <% if workshop&.categories.count > 1 %>
-              <p><%= workshop&.categories.first&.title %> +<span><%= "#{workshop&.categories.map(&:title).join(', ')}" %></span></p>
+              <p data-toggle="tooltip" title='<%= "#{workshop.categories.map(&:title).join(', ')}" %>'><%= workshop&.categories.first&.title %> +</p>
             <% else %>
               <p><%= workshop&.categories.first&.title %></p>
             <% end %>

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
-  resources :users, only: %i[create show update destroy]
+  resources :users, only: %i[new create show update destroy]
   post 'users/import', to: 'users#import', as: 'import_users'
   resources :teams, only: %i[create show update destroy]
   resources :team_categories, only: %i[create]

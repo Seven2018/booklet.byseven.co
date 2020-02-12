@@ -1,0 +1,33 @@
+<div id="container-new">
+  <h3>Add a new user</h3>
+  <div>
+  <%= simple_form_for @user do |f| %>
+    <%= f.input :firstname %>
+    <%= f.input :lastname %>
+    <%= f.input :email %>
+    <%= f.input :password %>
+    <% if current_user.access_level == 'Super Admin' %>
+      <%= f.input :access_level, collection: ['Super Admin', 'Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
+    <% elsif current_user.access_level == 'Admin' %>
+      <%= f.input :access_level, collection: ['Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
+    <% elsif current_user.access_level == 'HR' %>
+      <%= f.input :access_level, collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
+    <% end %>
+    <% if current_user.access_level == 'Super Admin' %>
+      <%= f.association :company, collection: Company.all, include_blank: false, label: 'Company' %>
+    <% end %>
+    <%= f.input :phone_number, label: 'Phone number' %>
+    <%= f.input :linkedin, label: 'Linkedin (url)' %>
+    <%= f.input :birth_date, as: :date, label: 'Birth date', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
+                            end_year: Date.today.year - 12 %>
+    <%= f.input :hire_date, as: :date, label: 'Hire date', start_year: Date.today.year - 70,
+                            end_year: Date.today.year %>
+    <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
+      <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
+        <i class="fas fa-save"></i>
+      <% end %>
+    </div>
+  <% end %>
+  </div>
+</div>
+

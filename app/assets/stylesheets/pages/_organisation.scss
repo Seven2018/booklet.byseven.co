@@ -26,6 +26,8 @@
 .team-index-card-teamname, .team-index-card-infos {
   width: 40%;
   text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .user-index-card {
@@ -51,26 +53,5 @@
   p {
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-
-  p > span {
-    position: absolute;
-    margin-top: 3rem;
-    margin-left: -20rem;
-    padding: 0.5rem;
-    color: black;
-    background: #EDF6FF;
-    opacity: 0;
-    box-shadow:0 0 2px rgba(0,0,0,.5);
-    transition: all .25s;
-    font-family: "InfoText Normal";
-    font-size: 1.6rem;
-    display: inline;
-    overflow-wrap: anywhere;
-    white-space: nowrap;
-  }
-
-  p:hover span, p:focus span {
-    opacity: 1;
   }
 }

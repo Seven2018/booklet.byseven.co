@@ -11,45 +11,22 @@
   </div>
 </div>
 <div id="container-show">
-  <div class="user-show-card flex-column-between-centered">
-    <% if @team.image.present? %>
-      <div class="center-cropped" style='background-image: url(<%= @team.image %>);'>
-      </div>
-    <% else %>
-      <a data-toggle='modal' data-target='#editImage' class="avatar-xlarge-empty centered-item">
-        <h6>Add picture</h6>
-      </a>
-    <% end %>
-    <div class="user-show-card-info">
-      <div class='user-show-card-info-line flex-row-between-centered'>
-        <p>Name:</p>
-        <p><strong><%=  @team.team_name %></strong></p>
-      </div>
-    </div>
-  </div>
+  <h1><%= @team.team_name %></h1>
 </div>
 <div id="container-show">
   <div class='team-show-users-index'>
     <% if @team.users.present? %>
       <% @team.users.each do |user| %>
         <%= link_to user_path(user) do %>
-          <div class='team-show-user-card'>
-            <img src="<%= user.picture %>" alt="" class='avatar-sm'>
-            <div class="training-index-infos-group-dashboard flex-row-around-centered">
-              <div class="training-index-infos-dashboard">
-                <% if user.fullname.length < 23 %>
-                  <p><%= user.fullname %></p>
-                <% else %>
-                  <p><%= "#{user.fullname[0..19]}..." %><span><%= user.fullname %></span></p>
-                <% end %>
-              </div>
-              <div class="training-index-infos-dashboard">
-                <% if user.email.length < 26 %>
-                  <p><%= user.email %></p>
-                <% else %>
-                  <p><%= "#{user.email[0..22]}..." %><span><%= user.email %></span></p>
-                <% end %>
-              </div>
+          <div class='team-show-user-card flex-row-between-centered'>
+            <div class="team-show-users-info">
+              <img src="<%= user.picture %>" alt="" class='avatar-sm'>
+            </div>
+            <div class="team-show-users-info">
+                <p><%= user.fullname %>
+            </div>
+            <div class="team-show-users-info">
+              <p><%= user.email %></p>
             </div>
           </div>
         <% end %>
@@ -61,13 +38,13 @@
 
 <!-- Modal -->
 <div class='modal fade' id='editTeam' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'edit', team: @team %>
   </div>
 </div>
 
 <div class='modal fade' id='editUserTeams' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'user_teams/edit', team: @team %>
   </div>
 </div>

@@ -3,10 +3,19 @@
     <h1>Catalogue</h1>
     <div id="index-buttons">
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-        <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <%= link_to 'New Program', new_training_program_path, class: 'dropdown-item' %>
-          <%= link_to 'New Workshop', new_workshop_path, class: 'dropdown-item' %>
+        <div>
+          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <%= link_to 'New Program', new_training_program_path, class: 'dropdown-item' %>
+            <%= link_to 'New Workshop', new_workshop_path, class: 'dropdown-item' %>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-swatchbook"></i></button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <a data-toggle='modal' data-target='#indexTheme' class='dropdown-item'>View Themes</a>
+            <a data-toggle='modal' data-target='#newTheme' class='dropdown-item'>New Theme</a>
+          </div>
         </div>
       <% end %>
       <% if params[:search] %>
@@ -31,8 +40,8 @@
   </div>
   <div class="dashboard-tabs">
     <ul class="nav nav-tabs">
-      <li role="presentation"><a href="#Programs" data-toggle="tab" class='active'>Programs</a></li>
-      <li role="presentation"><a href="#Workshops" data-toggle="tab">Workshops</a></li>
+      <li role="presentation"><a href="#Workshops" data-toggle="tab" class='active'>Workshops</a></li>
+      <li role="presentation"><a href="#Programs" data-toggle="tab">Programs</a></li>
     </ul>
   </div>
   <div class="tab-content">
@@ -44,6 +53,20 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class='modal fade' id='indexTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'categories/index' %>
+  </div>
+</div>
+
+<div class='modal fade' id='newTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'categories/new' %>
+  </div>
+</div>
+
 <script>
   searchButton = document.querySelector('.btn-search');
   searchBar = document.querySelector('.search-bar');

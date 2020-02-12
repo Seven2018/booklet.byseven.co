@@ -75,14 +75,14 @@
             <p><%= program.title %></p>
           </div>
           <div class="catalogue-index-info">
-            <p><%= "#{program.workshops.count} workshops" %><span><%= "#{program.workshops.map(&:title).join(', ')}" %></span></p>
+            <p data-toggle="tooltip" title='<%= "#{program.workshops.map(&:title).join(', ')}" %>'><%= "#{program.workshops.count} workshops" %></p>
           </div>
           <div class="catalogue-index-info">
-            <p><i class="fas fa-hourglass"></i><%= " #{program.workshops.map(&:duration).sum}min" %></p>
+            <p><%= " #{program.workshops.map(&:duration).sum} min" %></p>
           </div>
           <div class="catalogue-index-info">
             <% if program.categories.count > 1 %>
-              <p><%= program.categories.first.title %> +<span><%= "#{program.categories.map(&:title).join(', ')}" %></span></p>
+              <p data-toggle="tooltip" title='<%= "#{program.categories.map(&:title).join(', ')}" %>'><%= program.categories.first.title %> +</p>
             <% else %>
               <p><%= program.categories.first&.title %></p>
             <% end %>

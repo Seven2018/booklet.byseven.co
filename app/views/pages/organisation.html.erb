@@ -35,66 +35,56 @@
       <p class='training-index-list-dashboard-title'>Teams</p>
     </div>
     <% if params[:team_id].nil? %>
-      <div class='team-index-card flex-row-between-centered active'>
-        <div class="team-index-card-teamname">
-          <p>All</p>
+      <%= link_to organisation_path do %>
+        <div class='team-index-card flex-row-between-centered active'>
+          <div class="team-index-card-teamname">
+            <p>All</p>
+          </div>
+          <div class="team-index-card-infos">
+            <p><%= "#{current_user.company.users.count} members" %></p>
+          </div>
         </div>
-        <div class="team-index-card-infos">
-          <p><%= "#{current_user.company.users.count} members" %></p>
-        </div>
-        <%= link_to organisation_path, class: 'team-index-card-link' do %>
-          <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-angle-right"></i></button>
-        <% end %>
-      </div>
+      <% end %>
     <% else %>
-      <div class='team-index-card flex-row-between-centered'>
-        <div class="team-index-card-teamname">
-          <p>All</p>
+      <%= link_to organisation_path do %>
+        <div class='team-index-card flex-row-between-centered'>
+          <div class="team-index-card-teamname">
+            <p>All</p>
+          </div>
+          <div class="team-index-card-infos">
+            <p><%= "#{current_user.company.users.count} members" %></p>
+          </div>
         </div>
-        <div class="team-index-card-infos">
-          <p><%= "#{current_user.company.users.count} members" %></p>
-        </div>
-        <%= link_to organisation_path, class: 'team-index-card-link' do %>
-          <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-angle-right"></i></button>
-        <% end %>
-      </div>
+      <% end %>
     <% end %>
     <% if @teams.present? %>
       <% @teams.sort_by(&:team_name).each do |team| %>
         <% if params[:team_id] == team.id.to_s %>
           <div class='team-index-card active'>
-            <%= link_to team_path(team), class: 'flex-row-between-centered', style: 'width:100%' do %>
+            <%= link_to organisation_path(team_id: team.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
               <div class="team-index-card-teamname">
-                <% if team.team_name.length < 15 %>
-                  <p><%= team.team_name %></p>
-                <% else %>
-                  <p><%= "#{team.team_name[0..10]}..." %><span><%= team.team_name %></span></p>
-                <% end %>
+                <p data-toggle="tooltip" title="<%= team.team_name %>"><%= team.team_name %></p>
               </div>
               <div class="team-index-card-infos">
                 <p><%= "#{team.users.count} members" %></p>
               </div>
             <% end %>
-            <%= link_to organisation_path(team_id: team.id), class: 'team-index-card-link' do %>
-              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-angle-right"></i></button>
+            <%= link_to team_path(team), class: 'team-index-card-link' do %>
+              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-eye"></i></button>
             <% end %>
           </div>
         <% else %>
           <div class='team-index-card'>
-            <%= link_to team_path(team), class: 'flex-row-between-centered', style: 'width:100%' do %>
+            <%= link_to organisation_path(team_id: team.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
               <div class="team-index-card-teamname">
-                <% if team.team_name.length < 15 %>
-                  <p><%= team.team_name %></p>
-                <% else %>
-                  <p><%= "#{team.team_name[0..10]}..." %><span><%= team.team_name %></span></p>
-                <% end %>
+                <p data-toggle="tooltip" title="<%= team.team_name %>"><%= team.team_name %></p>
               </div>
               <div class="team-index-card-infos">
                 <p><%= "#{team.users.count} members" %></p>
               </div>
             <% end %>
-            <%= link_to organisation_path(team_id: team.id), class: 'team-index-card-link' do %>
-              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="fas fa-angle-right"></i></i></button>
+            <%= link_to team_path(team), class: 'team-index-card-link' do %>
+              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-eye"></i></button>
             <% end %>
           </div>
         <% end %>
@@ -111,18 +101,10 @@
           <img src="<%= user.picture %>" alt="" class='avatar-sm'>
           <div class="user-index-infos flex-row-between-centered">
             <div class="user-index-info">
-              <% if user.fullname.length < 20 %>
-                <p><%= user.fullname %></p>
-              <% else %>
-                <p><%= user.fullname %><span><%= user.fullname %></span></p>
-              <% end %>
+              <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.fullname %></p>
             </div>
             <div class="user-index-info">
-              <% if user.email.length < 20 %>
-                <p><%= user.email %></p>
-              <% else %>
-                <p><%= user.email %><span><%= user.email %></span></p>
-              <% end %>
+              <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
             </div>
             <div class="user-index-info">
               <% teams = '' %>
@@ -133,11 +115,7 @@
                   <% teams += "#{team.team_name}, " %>
                 <% end %>
               <% end %>
-              <% if teams.length < 20 %>
-                <p><%= teams %></p>
-              <% else %>
-                <p><%= teams %><span><%= teams %></span></p>
-              <% end %>
+              <p data-toggle="tooltip" title="<%= teams %>"><%= teams %></p>
             </div>
           </div>
         </div>
