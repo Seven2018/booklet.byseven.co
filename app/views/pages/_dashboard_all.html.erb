@@ -40,9 +40,9 @@
             </div>
             <div class="training-index-infos-dashboard">
               <% if element&.starts_at.present? && element&.ends_at.present? %>
-                <p><%= "#{element&.date.strftime('%d/%m/%Y')} | #{element&.starts_at.strftime('%H:%M')} - #{element&.ends_at.strftime('%H:%M')}" %></p>
+                <p><%= "#{element&.date&.strftime('%d/%m/%Y')} | #{element&.starts_at&.strftime('%H:%M')} - #{element&.ends_at&.strftime('%H:%M')}" %></p>
               <% else %>
-                <p><%= "#{element&.date.strftime('%d/%m/%Y')}" %></p>
+                <p><%= "#{element&.date&.strftime('%d/%m/%Y')}" %></p>
               <% end %>
             </div>
           </div>
@@ -65,7 +65,7 @@
               <p> </p>
             </div>
             <div class="training-index-infos-dashboard">
-              <p><%= "Next workshop #{element&.next_date.strftime('%d/%m/%Y')}" %></p>
+              <p><%= "Next workshop #{element&.next_date&.strftime('%d/%m/%Y')}" %></p>
             </div>
           </div>
         <% end %>
