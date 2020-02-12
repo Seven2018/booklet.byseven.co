@@ -29,11 +29,11 @@
   </div>
 </div>
 <div id="container-show">
-  <div class='training-index-list-dashboard-md'>
+  <div class='team-show-users-index'>
     <% if @team.users.present? %>
       <% @team.users.each do |user| %>
         <%= link_to user_path(user) do %>
-          <div class='workshop-index-card'>
+          <div class='team-show-user-card'>
             <img src="<%= user.picture %>" alt="" class='avatar-sm'>
             <div class="training-index-infos-group-dashboard flex-row-around-centered">
               <div class="training-index-infos-dashboard">

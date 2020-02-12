@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
-  resources :users
+  resources :users, only: %i[create show update destroy]
   post 'users/import', to: 'users#import', as: 'import_users'
   resources :teams, only: %i[create show update destroy]
   resources :team_categories, only: %i[create]
@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :companies
   resources :categories
   resources :skills
-  resources :training_programs do
+  resources :training_programs, only: %i[new create show update destroy] do
     resources :program_workshops, only: %i[create]
     get 'program_workshop/:id/move_up', to: "program_workshops#move_up", as: "move_up_program_workshop"
     get 'program_workshop/:id/move_down', to: "program_workshops#move_down", as: "move_down_program_workshop"
