@@ -60,7 +60,7 @@ class UsersController < ApplicationController
   def destroy
     authorize @user
     @user.destroy
-    redirect_to users_path
+    redirect_to organisation_path
   end
 
   # Creates new Users from an imported list
