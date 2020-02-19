@@ -22,9 +22,13 @@
         <%= render 'shared/left_navbar' %>
       <% end %>
       <%= render 'shared/flashes' %>
-      <div id="booklet-container">
+      <% if user_signed_in? %>
+        <div id="booklet-container">
+          <%= yield %>
+        </div>
+      <% else %>
         <%= yield %>
-      </div>
+      <% end %>
     </div>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>

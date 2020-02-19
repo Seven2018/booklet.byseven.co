@@ -65,7 +65,8 @@
         <h2>Hello, <%= @user.fullname %></h2>
         <br>
         <p>Your account has been created by <%= @host.firstname %>!</p>
-        <p>You can now connect to <a href='http://booklet.byseven.co'>booklet.byseven.co</a>, using this email address.</p>
+        <p>Please click <%= link_to 'here', edit_password_url(@user, reset_password_token: @token) %>  to set your password.</p>
+        <p>You will then be able to connect to <a href='http://booklet.byseven.co'>booklet.byseven.co</a>, using this email address.</p>
         <p>Thank you and have a great day!</p>
       </div>
     </div>

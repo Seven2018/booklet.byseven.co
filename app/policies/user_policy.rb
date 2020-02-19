@@ -18,7 +18,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def edit?
-    check_access
+    true
   end
 
   def update?

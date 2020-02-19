@@ -36,7 +36,12 @@ class UsersController < ApplicationController
     @user.company_id = current_user.company_id
     authorize @user
     if @user.save
-      UserMailer.account_created(@user).deliver
+      raw, token = Devise.token_generator.generate(User, :reset_password_token)
+      @user.reset_password_token = token
+      @user.reset_password_sent_at = Time.now.utc
+      @user.save(validate: false)
+      # @user.send_reset_password_instructions
+      UserMailer.account_created(@user, raw).deliver
       redirect_to user_path(@user)
     else
       render :new
