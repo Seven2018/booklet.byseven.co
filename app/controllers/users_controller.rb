@@ -64,10 +64,15 @@ class UsersController < ApplicationController
 
   # Creates new Users from an imported list
   def import
-    @users = User.import(params[:file])
     skip_authorization
-    flash[:notice] = 'Import terminé'
-    redirect_back(fallback_location: root_path)
+    begin
+      @users = User.import(params[:file])
+      flash[:notice] = 'Import terminé'
+      redirect_back(fallback_location: root_path)
+    rescue
+      redirect_back(fallback_location: root_path)
+      flash[:error] = "An error has occured. Please check your csv file."
+    end
   end
 
   # Allows to scrape data from the current user Linkedin profile

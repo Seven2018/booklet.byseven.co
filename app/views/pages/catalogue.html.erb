@@ -45,10 +45,10 @@
     </ul>
   </div>
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="Programs">
+    <div role="tabpanel" class="tab-pane" id="Programs">
       <%= render 'catalogue_programs', training_programs: @training_programs %>
     </div>
-    <div role="tabpanel" class="tab-pane" id="Workshops">
+    <div role="tabpanel" class="tab-pane active" id="Workshops">
       <%= render 'catalogue_workshops', workshops: @workshops.order(title: :asc) %>
     </div>
   </div>
