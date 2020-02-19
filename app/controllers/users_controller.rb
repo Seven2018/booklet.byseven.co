@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
-  before_action :set_current_user, only: [:import]
+  before_action :set_current_user, only: [:import, :create]
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
@@ -36,6 +36,7 @@ class UsersController < ApplicationController
     @user.company_id = current_user.company_id
     authorize @user
     if @user.save
+      UserMailer.account_created(@user).deliver
       redirect_to user_path(@user)
     else
       render :new
@@ -67,6 +68,9 @@ class UsersController < ApplicationController
     skip_authorization
     begin
       @users = User.import(params[:file])
+      @users.each do |user|
+        UserMailer.account_created(user, params[:password]).deliver
+      end
       flash[:notice] = 'Import terminé'
       redirect_back(fallback_location: root_path)
     rescue

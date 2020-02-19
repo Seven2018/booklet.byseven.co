@@ -64,14 +64,8 @@
       <div class="mailer-text">
         <h2>Hello, <%= @user.fullname %></h2>
         <br>
-        <% if @training.present? %>
-          <p><%= @host&.firstname %> has invited  you to the following training: <%= @training.title %></p>
-          <%= link_to 'See details', training_url(@training) %>
-        <% else %>
-          <p><%= @host&.firstname %> has invited you to the following workshop: <%= @attendee.training_workshop.title %></p>
-          <p><%= @attendee.training_workshop.date.strftime('%d/%m/%Y') %> | <%= @attendee.training_workshop.starts_at.strftime('%H:%M') %> - <%= @attendee.training_workshop.ends_at.strftime('%H:%M') %></p>
-          <%= link_to 'See details', training_workshop_url(@attendee.training_workshop) %>
-        <% end %>
+        <p>Your account has been created by <%= @host.firstname %>!</p>
+        <p>You can now connect to <a href='booklet.byseven.co'>booklet.byseven.co</a>, using this email address.</p>
         <p>Thank you and have a great day!</p>
       </div>
     </div>
