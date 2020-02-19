@@ -33,7 +33,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
     @user.company_id = current_user.company_id
+    raise
     authorize @user
     if @user.save
       raw, token = Devise.token_generator.generate(User, :reset_password_token)

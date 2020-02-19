@@ -28,6 +28,7 @@ class User < ApplicationRecord
     CSV.foreach(file.path, headers: true) do |row|
       user = User.new(row.to_hash)
       user.company_id = Current.user.company_id
+      user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
       user.save
       raw, token = Devise.token_generator.generate(User, :reset_password_token)
       user.reset_password_token = token

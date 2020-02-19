@@ -46,7 +46,7 @@
       <% ind = 0 %>
       <% @training_workshop.attendees.each do |attendee| %>
         <% unless ind >= 10 %>
-          <li><img src="<%= attendee.user.picture %>" alt="" class='avatar-sm'></li>
+          <li><img src="<%= attendee.user.picture %>" alt="" class='avatar-sm' onerror="this.onerror=null;this.src='https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png';"></li>
           <% ind += 1 %>
         <% end %>
       <% end %>
@@ -61,7 +61,7 @@
     <div class='workshop-show-card-main flex-column-centered'>
       <h1><%= @training_workshop.workshop.title %></h1>
       <h3>By <%= @training_workshop.workshop.author.firstname %></h3>
-      <img src='<%= @training_workshop.workshop.author.picture %>' alt="" class='avatar-large-workshop-card'>
+      <img src='<%= @training_workshop.workshop.author.picture %>' alt="" class='avatar-large-workshop-card' onerror="this.onerror=null;this.src='https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png';">
       <p><%= @training_workshop.workshop.workshop_type %></p>
       <p><%= "#{@training_workshop.workshop.duration} min" %></p>
     </div>
