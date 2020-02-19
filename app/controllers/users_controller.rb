@@ -73,9 +73,6 @@ class UsersController < ApplicationController
     skip_authorization
     begin
       @users = User.import(params[:file])
-      @users.each do |user|
-        UserMailer.account_created(user, params[:password]).deliver
-      end
       flash[:notice] = 'Import terminé'
       redirect_back(fallback_location: root_path)
     rescue

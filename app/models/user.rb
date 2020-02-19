@@ -29,6 +29,11 @@ class User < ApplicationRecord
       user = User.new(row.to_hash)
       user.company_id = Current.user.company_id
       user.save
+      raw, token = Devise.token_generator.generate(User, :reset_password_token)
+      user.reset_password_token = token
+      user.reset_password_sent_at = Time.now.utc
+      user.save(validate: false)
+      UserMailer.account_created(user, raw).deliver
     end
   end
 end
