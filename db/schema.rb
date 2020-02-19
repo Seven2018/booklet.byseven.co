@@ -10,17 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_28_085828) do
+ActiveRecord::Schema.define(version: 2020_02_12_123410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "attendees", force: :cascade do |t|
     t.string "status", default: "Not completed", null: false
+    t.string "calendar_uuid"
     t.bigint "user_id"
     t.bigint "training_workshop_id"
+    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_attendees_on_creator_id"
     t.index ["training_workshop_id"], name: "index_attendees_on_training_workshop_id"
     t.index ["user_id"], name: "index_attendees_on_user_id"
   end
@@ -42,6 +45,26 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.string "logo"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "currents", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "letsencrypt_certificates", force: :cascade do |t|
+    t.string "domain"
+    t.text "certificate"
+    t.text "intermediaries"
+    t.text "key"
+    t.datetime "expires_at"
+    t.datetime "renew_after"
+    t.string "verification_path"
+    t.string "verification_string"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["domain"], name: "index_letsencrypt_certificates_on_domain"
+    t.index ["renew_after"], name: "index_letsencrypt_certificates_on_renew_after"
   end
 
   create_table "mods", force: :cascade do |t|
@@ -108,15 +131,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.index ["skill_group_id"], name: "index_skills_on_skill_group_id"
   end
 
-  create_table "team_categories", force: :cascade do |t|
-    t.bigint "team_id"
-    t.bigint "category_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_team_categories_on_category_id"
-    t.index ["team_id"], name: "index_team_categories_on_team_id"
-  end
-
   create_table "team_workshops", force: :cascade do |t|
     t.bigint "team_id"
     t.bigint "training_workshop_id"
@@ -127,7 +141,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
   end
 
   create_table "teams", force: :cascade do |t|
-    t.string "name", default: "", null: false
+    t.string "team_name", default: "", null: false
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
@@ -141,8 +155,10 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.string "image", default: "", null: false
     t.integer "participant_number", default: 0, null: false
     t.bigint "company_id"
+    t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_training_programs_on_author_id"
     t.index ["company_id"], name: "index_training_programs_on_company_id"
   end
 
@@ -219,7 +235,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
     t.string "lastname", default: "", null: false
     t.date "birth_date"
     t.date "hire_date"
-    t.date "termination_date"
     t.string "address", default: "", null: false
     t.string "phone_number", default: "", null: false
     t.string "social_security", default: "", null: false
@@ -290,8 +305,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_085828) do
   add_foreign_key "requests", "training_programs"
   add_foreign_key "requests", "users"
   add_foreign_key "skills", "skill_groups"
-  add_foreign_key "team_categories", "categories"
-  add_foreign_key "team_categories", "teams"
   add_foreign_key "team_workshops", "teams"
   add_foreign_key "team_workshops", "training_workshops"
   add_foreign_key "teams", "companies"

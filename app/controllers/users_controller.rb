@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
+  before_action :set_current_user, only: [:import]
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
@@ -32,6 +33,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.company_id = current_user.company_id
     authorize @user
     if @user.save
       redirect_to user_path(@user)
@@ -60,6 +62,19 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  # Creates new Users from an imported list
+  def import
+    skip_authorization
+    begin
+      @users = User.import(params[:file])
+      flash[:notice] = 'Import terminé'
+      redirect_back(fallback_location: root_path)
+    rescue
+      redirect_back(fallback_location: root_path)
+      flash[:error] = "An error has occured. Please check your csv file."
+    end
+  end
+
   # Allows to scrape data from the current user Linkedin profile
   # def linkedin_scrape
   #   skip_authorization
@@ -85,6 +100,10 @@ class UsersController < ApplicationController
   # end
 
   private
+
+  def set_current_user
+    Current.user = current_user
+  end
 
   def set_user
     @user = User.find(params[:id])

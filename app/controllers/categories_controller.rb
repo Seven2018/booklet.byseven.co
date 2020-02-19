@@ -19,7 +19,7 @@ class CategoriesController < ApplicationController
     @category = Category.new(category_params)
     authorize @category
     @category.company_id = current_user.company_id
-    @category.save ? (redirect_to category_path(@category)) : (render :new)
+    @category.save ? (redirect_to catalogue_path) : (render :new)
   end
 
   def edit
@@ -29,13 +29,13 @@ class CategoriesController < ApplicationController
   def update
     authorize @category
     @category.update(category_params)
-    @category.save ? (redirect_to category_path(@category)) : (render '_edit')
+    @category.save ? (redirect_to catalogue_path) : (render '_edit')
   end
 
   def destroy
     @category.destroy
     authorize @category
-    redirect_to categories_path
+    redirect_to catalogue_path
   end
 
   private

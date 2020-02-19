@@ -1,26 +1,28 @@
 class TrainingsController < ApplicationController
   before_action :set_training, only: [:show, :edit, :update, :destroy]
 
-  def index
-    # Index with 'search' option and global visibility for SEVEN Users
-    if current_user.access_level == 'Super Admin'
-      @trainings = policy_scope(Training)
-      if params[:search]
-        @trainings = ((Training.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)) + (Training.joins(:company).where("lower(companies.name) LIKE ?", "%#{params[:search][:title].downcase}%"))).flatten(1).uniq
-      end
-    # Index for other Users, with visibility limited to programs proposed by their company only
-    else
-      @trainings = policy_scope(Training)
-      @trainings = Training.where(company: current_user.company.id)
-      if params[:search]
-        @trainings = @training.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
-      end
-    end
-  end
+  # def index
+  #   # Index with 'search' option and global visibility for SEVEN Users
+  #   if current_user.access_level == 'Super Admin'
+  #     @trainings = policy_scope(Training)
+  #     if params[:search]
+  #       @trainings = ((Training.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)) + (Training.joins(:company).where("lower(companies.name) LIKE ?", "%#{params[:search][:title].downcase}%"))).flatten(1).uniq
+  #     end
+  #   # Index for other Users, with visibility limited to programs proposed by their company only
+  #   else
+  #     @trainings = policy_scope(Training)
+  #     @trainings = Training.where(company: current_user.company.id)
+  #     if params[:search]
+  #       @trainings = @training.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+  #     end
+  #   end
+  # end
 
   def show
     authorize @training
     @training_workshop = TrainingWorkshop.new
+    ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) ? @teams = Team.where(company_id: current_user.company_id) : @teams = current_user.teams
+    @users = User.where(company_id: current_user.company_id)
   end
 
   def new
@@ -35,14 +37,8 @@ class TrainingsController < ApplicationController
     if @training.save
       @training_program.program_workshops.each do |program_workshop|
         new_training_workshop = TrainingWorkshop.create(program_workshop.workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
-        new_training_workshop.update(training_id: @training.id, workshop_id: program_workshop.workshop_id)
-        team_ids = params[:training_workshop][:team_ids].drop(1).map(&:to_i)
-        team_ids.each do |ind|
-          TeamWorkshop.create(team_id: ind, training_workshop_id: new_training_workshop.id)
-          Team.find(ind).users.each do |user|
-            Attendee.create(user_id: user.id, training_workshop_id: new_training_workshop.id, status: 'Invited')
-          end
-        end
+        new_training_workshop.update(workshop_id: program_workshop.workshop_id)
+        new_training_workshop.update(training_id: @training.id, date: Date.today, starts_at: Time.now, ends_at: (Time.now + new_training_workshop.duration*60))
         program_workshop.workshop.workshop_mods.each do |workshop_mod|
           new_training_workshop_mod = TrainingWorkshopMod.create(mod_id: workshop_mod.mod_id, training_workshop_id: new_training_workshop.id)
         end
@@ -70,7 +66,7 @@ class TrainingsController < ApplicationController
   def destroy
     @training.destroy
     authorize @training
-    redirect_to trainings_path
+    redirect_to dashboard_path
   end
 
   private

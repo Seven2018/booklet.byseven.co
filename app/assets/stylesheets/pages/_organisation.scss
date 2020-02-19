@@ -1,0 +1,57 @@
+.team-index-card {
+  width: 100%;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem 4rem 1rem 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.team-index-card.active {
+  background-color: #FDC553;
+
+  p {
+      color: white;
+  }
+}
+
+.team-index-card-link {
+  position: absolute;
+  right: 1rem;
+  top: 2rem;
+}
+
+.team-index-card-teamname, .team-index-card-infos {
+  width: 40%;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.user-index-card {
+  width: 100%;
+  height: 6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.user-index-infos {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-index-info {
+  width: 30%;
+
+  p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

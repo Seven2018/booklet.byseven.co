@@ -22,6 +22,10 @@ gem 'material-sass', git: 'https://github.com/bricechapuis/material-sass'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'bootstrap', '~> 4.4.1'
 gem "simple_calendar", "~> 2.0"
+gem 'google-api-client', require: 'google/apis/calendar_v3'
+gem 'oauth2'
+gem 'omniauth-google-oauth2'
+
 
 group :development do
   gem 'web-console', '>= 3.3.0'

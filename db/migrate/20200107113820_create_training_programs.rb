@@ -6,6 +6,7 @@ class CreateTrainingPrograms < ActiveRecord::Migration[6.0]
       t.string :image, null: false, default: ""
       t.integer :participant_number, null: false, default: 0
       t.references :company, foreign_key: true
+      t.belongs_to :author
       t.timestamps
     end
   end

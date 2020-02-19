@@ -1,24 +1,43 @@
 <div class="navbar navbar-expand-sm navbar-light">
-  <div class="navbar-controls-left dropdown show">
-    <a class="navbar-icon dropdown-toggle dropdown-notification-menu" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-bell"></i></a>
-    <% unless Notification.where(user_id: current_user.id, status: 'Unread').empty? %>
-      <div class="navbar-notification-indicator"><i class="fas fa-circle"></i></div>
+  <div class="navbar-controls-left centered-item">
+    <% if user_signed_in? %>
+      <p>Booklet for <img src='<%= "#{current_user.company.logo}" %>' class="left-navbar-logo" height='24px'></p>
     <% end %>
-    <div class="dropdown-menu" id='dropdown-notification-list' aria-labelledby="dropdownMenuLink">
-      <%= render 'shared/notifications' %>
-    </div>
   </div>
   <div class="navbar-controls-right flex-row-between-centered">
     <div class="dropdown show">
+      <a class="navbar-icon dropdown-toggle dropdown-notification-menu" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-bell"></i></a>
+      <div class="dropdown-menu dropdown-menu-right" id='dropdown-notification-list' aria-labelledby="dropdownMenuLink">
+        <%= render 'shared/notifications' %>
+      </div>
+    </div>
+    <div class="dropdown show">
       <a class="navbar-user-card dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <div>
-          <h6><%= current_user.firstname %></h6>
-          <h6><%= current_user.lastname %></h6>
+          <h6><%= current_user.fullname %></h6>
         </div>
         <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm'>
       </a>
-      <div class="dropdown-menu" id='dropdown-notification-list' aria-labelledby="dropdownMenuLogout">
-        <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+      <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+        <div class="dropdown-card dropdown-item flex-row-between-centered">
+          <p>Account</p>
+        </div>
+        <%= link_to user_path(current_user) do %>
+          <div class="dropdown-card dropdown-item flex-row-between-centered">
+            <i class="fas fa-user"></i>
+            <div class='dropdown-card-text'>
+              <h6>Profile</h6>
+            </div>
+          </div>
+        <% end %>
+        <%= link_to destroy_user_session_path, method: :delete do %>
+          <div class="dropdown-card dropdown-item flex-row-between-centered">
+            <i class="fas fa-sign-out-alt"></i>
+            <div class='dropdown-card-text'>
+              <h6>Log out</h6>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

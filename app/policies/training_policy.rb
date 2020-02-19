@@ -36,6 +36,6 @@ class TrainingPolicy < ApplicationPolicy
   end
 
   def check_access_hr
-    ['Super Admin', 'HR'].include? user.access_level
+    ['Super Admin', 'Admin', 'HR'].include? user.access_level
   end
 end

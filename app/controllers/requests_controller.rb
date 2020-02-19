@@ -6,7 +6,7 @@ class RequestsController < ApplicationController
     @requests = policy_scope(Request)
     @requests = Request.joins(:user).where(users.company.id == current_user.company.id) if current_user.access_level == 'HR'
     @requests = Request.where(user_id: current_user.id) if current_user.access_level == 'Employee'
-    @requests = @requests.joins(:user).where("lower(users.firstname) LIKE ?", "%#{params[:search][:name].downcase}%").order(lastname: :asc) + @requests.joins(:user).where("lower(users.lastname) LIKE ?", "%#{params[:search][:name].downcase}%").order(lastname: :asc) if params[:search] && ['Super Admin', 'HR'].include?(current_user.access_level)
+    @requests = @requests.joins(:user).where("lower(users.firstname) LIKE ?", "%#{params[:search][:name].downcase}%").order(lastname: :asc) + @requests.joins(:user).where("lower(users.lastname) LIKE ?", "%#{params[:search][:name].downcase}%").order(lastname: :asc) if params[:search] && ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
   end
 
   def show

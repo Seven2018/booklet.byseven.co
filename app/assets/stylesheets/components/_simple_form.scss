@@ -2,6 +2,8 @@ form {
 
   div#checkbox, div#checkbox2, div#checkbox3 {
     display: inline-block !important;
+    width: 100%;
+    margin: 2rem 0;
 
     label {
       padding: 8px 12px;
@@ -60,4 +62,85 @@ form {
       border: 2px solid #e9a1ff;
     }
   }
+}
+
+.label-checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+
+  input {
+    margin-right: 10px;
+  }
+}
+
+.form-control:focus {
+  border-color: black;
+  box-shadow: none;
+}
+
+.form-control.is-valid {
+  border-color: #ced4da;
+  background-image: none;
+
+  &:focus {
+    border-color: black;
+    box-shadow: none;
+  }
+}
+
+input {
+  border: 1px solid #ced4da;
+
+  &:focus {
+    border: 1px solid black;
+    outline: none !important;
+  }
+}
+
+.training_workshop_open {
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    padding-left: 2.25rem;
+
+    input {
+      margin-top: 0;
+    }
+
+    label {
+      font-size: 1.6rem;
+      margin-left: 1rem;
+    }
+  }
+
+  .form-check-input.is-valid ~ .form-check-label {
+    color: #212529;
+  }
+}
+
+.invite-form-team {
+  label {
+    margin-bottom: 0;
+  }
+}
+
+.invite-form-users-list {
+  max-height: 0;
+  margin-left: 2rem;
+  overflow-y: hidden;
+}
+
+.invite-form-users-list-expanded {
+  max-height: 30rem;
+}
+
+.simple-form-toggle-collapse {
+  transition: transform 0.3s linear;
+}
+
+.rotated {
+  transform: rotate(180deg);
+  transition: transform 0.3s linear;
 }

@@ -1,6 +1,7 @@
 class Attendee < ApplicationRecord
   belongs_to :user
   belongs_to :training_workshop
+  belongs_to :creator, class_name: 'User', optional: true
   validates :training_workshop_id, uniqueness: { scope: :user_id }
 
   def mark_as_completed

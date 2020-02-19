@@ -1,85 +1,124 @@
-<div class="training-program-index">
-  <div id="index-controls">
-    <h3>Organisation</h3>
-    <div id="index-buttons">
-      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-        <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a data-toggle='modal' data-target='#newTeam' class='dropdown-item'>New Team</a>
-          <%= link_to 'New User', new_user_path, class: 'dropdown-item' %>
-        </div>
+<div id="index-controls" class='flex-row-between-centered'>
+  <h1>Organisation</h1>
+  <div id="index-buttons">
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a data-toggle='modal' data-target='#newTeam' class='dropdown-item'>New Team</a>
+        <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
+        <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
+      </div>
+    <% end %>
+    <% if params[:search] %>
+      <%= simple_form_for :search, url: organisation_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
+        <%= f.input :name, placeholder: params[:search][:name], label: false %>
+        <%= link_to organisation_path, class: 'search-close' do %>
+          <i class="far fa-times-circle"></i>
+        <% end %>
       <% end %>
-      <% if params[:search] %>
-        <%= simple_form_for :search, url: users_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
-          <%= f.input :name, placeholder: params[:search][:name], label: false %>
-          <%= link_to users_path, class: 'search-close' do %>
+    <% else %>
+      <a>
+        <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
+      </a>
+      <%= simple_form_for :search, url: organisation_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
+        <%= f.input :name, placeholder: 'Search', label: false %>
+          <a class='search-close'>
             <i class="far fa-times-circle"></i>
-          <% end %>
-        <% end %>
-      <% else %>
-        <a>
-          <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
-        </a>
-        <%= simple_form_for :search, url: users_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
-          <%= f.input :name, placeholder: 'Search', label: false %>
-            <a class='search-close'>
-              <i class="far fa-times-circle"></i>
-            </a>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-  <div class='catalogue-index-list'>
-    <h3>Teams List</h3>
-    <% if @teams.present? %>
-      <% @teams.each do |team| %>
-        <%= link_to team_path(team) do %>
-          <div class='training-program-index-card'>
-            <div class='training-program-index-image' style="background-image:url('<%= team.image %>');">
-            </div>
-            <div class="training-program-index-infos">
-              <p><%= team.name %></p>
-            </div>
-          </div>
-        <% end %>
+          </a>
       <% end %>
     <% end %>
   </div>
 </div>
-<div class="workshop-index">
-  <div class='catalogue-index-list'>
-    <h3>Users List</h3>
-    <% team_array = [] %>
-    <% @users.each do |user| %>
-      <% team_array << user.teams unless user.teams.nil? %>
+<div class="training-index-dashboard flex-row-between-start">
+  <div class='training-index-list-dashboard-sm'>
+    <div class='training-index-list-dashboard-controls flex-row-start-centered'>
+      <p class='training-index-list-dashboard-title'>Teams</p>
+    </div>
+    <% if params[:team_id].nil? %>
+      <%= link_to organisation_path do %>
+        <div class='team-index-card flex-row-between-centered active'>
+          <div class="team-index-card-teamname">
+            <p>All</p>
+          </div>
+          <div class="team-index-card-infos">
+            <p><%= "#{current_user.company.users.count} members" %></p>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <%= link_to organisation_path do %>
+        <div class='team-index-card flex-row-between-centered'>
+          <div class="team-index-card-teamname">
+            <p>All</p>
+          </div>
+          <div class="team-index-card-infos">
+            <p><%= "#{current_user.company.users.count} members" %></p>
+          </div>
+        </div>
+      <% end %>
     <% end %>
-    <% team_array = team_array.flatten.uniq %>
-    <% team_array.each do |team| %>
-      <p class='workshop-index-list-category-title'><%= team.name %></p>
-      <% @users.joins(:user_teams).where(user_teams: {team_id: team.id}).each do |user| %>
-        <%= link_to user_path(user) do %>
-          <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= user.picture %>');">
-            </div>
-            <div class="workshop-index-infos">
-              <p><%= user.fullname %></p>
-            </div>
+    <% if @teams.present? %>
+      <% @teams.sort_by(&:team_name).each do |team| %>
+        <% if params[:team_id] == team.id.to_s %>
+          <div class='team-index-card active'>
+            <%= link_to organisation_path(team_id: team.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
+              <div class="team-index-card-teamname">
+                <p data-toggle="tooltip" title="<%= team.team_name %>"><%= team.team_name %></p>
+              </div>
+              <div class="team-index-card-infos">
+                <p><%= "#{team.users.count} members" %></p>
+              </div>
+            <% end %>
+            <%= link_to team_path(team), class: 'team-index-card-link' do %>
+              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-eye"></i></button>
+            <% end %>
+          </div>
+        <% else %>
+          <div class='team-index-card'>
+            <%= link_to organisation_path(team_id: team.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
+              <div class="team-index-card-teamname">
+                <p data-toggle="tooltip" title="<%= team.team_name %>"><%= team.team_name %></p>
+              </div>
+              <div class="team-index-card-infos">
+                <p><%= "#{team.users.count} members" %></p>
+              </div>
+            <% end %>
+            <%= link_to team_path(team), class: 'team-index-card-link' do %>
+              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-eye"></i></button>
+            <% end %>
           </div>
         <% end %>
       <% end %>
     <% end %>
-    <% unless @users.left_joins(:user_teams).where(user_teams: {team_id: nil}).empty? %>
-      <p class='workshop-index-list-category-title'>Others</p>
-      <% @users.left_joins(:user_teams).where(user_teams: {team_id: nil}).each do |user| %>
-        <%= link_to user_path(user) do %>
-          <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= user.picture %>');">
+  </div>
+  <div class='training-index-list-dashboard-md'>
+    <div class='training-index-list-dashboard-controls flex-row-start-centered'>
+      <p class='training-index-list-dashboard-title'>Users</p>
+    </div>
+    <% @users.each do |user| %>
+      <%= link_to user_path(user) do %>
+        <div class='user-index-card'>
+          <img src="<%= user.picture %>" alt="" class='avatar-sm'>
+          <div class="user-index-infos flex-row-between-centered">
+            <div class="user-index-info">
+              <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.fullname %></p>
             </div>
-            <div class="workshop-index-infos">
-              <p><%= user.fullname %></p>
+            <div class="user-index-info">
+              <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+            </div>
+            <div class="user-index-info">
+              <% teams = '' %>
+              <% user.teams.each do |team| %>
+                <% if team == user.teams.last %>
+                  <% teams += "#{team.team_name}" %>
+                <% else %>
+                  <% teams += "#{team.team_name}, " %>
+                <% end %>
+              <% end %>
+              <p data-toggle="tooltip" title="<%= teams %>"><%= teams %></p>
             </div>
           </div>
-        <% end %>
+        </div>
       <% end %>
     <% end %>
   </div>
@@ -89,6 +128,18 @@
 <div class='modal fade' id='newTeam' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'teams/new', team: Team.new %>
+  </div>
+</div>
+
+<div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'users/new', team: User.new %>
+  </div>
+</div>
+
+<div class='modal fade' id='importUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'users/import', team: User.new %>
   </div>
 </div>
 

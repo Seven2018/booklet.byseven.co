@@ -6,7 +6,6 @@ class PagesController < ApplicationController
 
   def dashboard
     @my_trainings = Training.includes(:training_workshops).joins(training_workshops: :attendees).where(attendees: {user_id: current_user.id}).where.not('date < ?', Date.today).uniq
-    @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
     @completed_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Completed'})
     @my_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not('date < ?', Date.today)
     if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
@@ -18,22 +17,26 @@ class PagesController < ApplicationController
     end
   end
 
+  def calendar
+    @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
+  end
+
   def catalogue
     # Index with 'search' option and global visibility for SEVEN Users
     if current_user.access_level == 'Super Admin'
-      @training_programs = TrainingProgram.all
-      @workshops = Workshop.all
+      @training_programs = TrainingProgram.all.order(title: :asc)
+      @workshops = Workshop.all.order(title: :asc)
       if params[:search]
         @training_programs = ((TrainingProgram.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)) + (TrainingProgram.joins(program_workshops: :workshop).where("lower(workshops.title) LIKE ?", "%#{params[:search][:title].downcase}%"))).flatten(1).uniq
         @workshops = Workshop.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
       elsif params[:filter]
-        @training_programs = TrainingProgram.joins(workshops: :workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)})
-        @workshops = Workshop.joins(:workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)})
+        @training_programs = TrainingProgram.joins(workshops: :workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
+        @workshops = Workshop.joins(:workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
       end
     # Index for other Users, with visibility limited to programs proposed by their company only
     else
-      @training_programs = TrainingProgram.joins(:company).where(companies: { name: current_user.company.name })
-      @workshops = Workshop.where(company_id: current_user.company.id)
+      @training_programs = TrainingProgram.joins(:company).where(companies: { name: current_user.company.name }).order(title: :asc)
+      @workshops = Workshop.where(company_id: current_user.company.id).order(title: :asc)
       if params[:search]
         @training_programs = @training_programs.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
       end
@@ -45,18 +48,73 @@ class PagesController < ApplicationController
     # Index with 'search' option and global visibility for SEVEN Users
     index_function(User.all)
     # Index for other Users, with visibility limited to programs proposed by their company only
-    if current_user.access_level == 'Super Admin'
-      @teams = Team.joins(:company).where(companies: { name: current_user.company.name })
-      if params[:search]
-        @teams = @teams.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc)
-      end
+    @teams = Team.joins(:company).where(companies: {id: current_user.company_id})
+    @users = User.joins(:company).where(companies: {id: current_user.company_id})
+    @users_without_teams = User.left_joins(:user_teams).where(user_teams: {team_id: nil})
+    if params[:search].present?
+      @teams = (@teams.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc) + @teams.joins(user_teams: :user).where("lower(firstname) LIKE ?", "%#{params[:search][:name].downcase}%") + @teams.joins(user_teams: :user).where("lower(lastname) LIKE ?", "%#{params[:search][:name].downcase}%"))
+      @users = (@users.where("lower(firstname) LIKE ?", "%#{params[:search][:name].downcase}%") + @users.where("lower(lastname) LIKE ?", "%#{params[:search][:name].downcase}%") + @users.joins(user_teams: :team).where("lower(team_name) LIKE ?", "%#{params[:search][:name].downcase}%"))
+    elsif params[:team_id]
+      # @teams = @teams.where(id: params[:team_id])
+      @users = @users.joins(user_teams: :team).where(teams: {id: params[:team_id]})
     end
-    @training = Training.new
   end
 
-  def filter_catalogue
-    category_ids = params[:workshop][:category_ids].drop(1).map(&:to_i)
-    redirect_to catalogue_path(filter: category_ids)
+  def catalogue_filter_workshop
+    @workshop_categories = params[:workshop][:category_ids].drop(1).map(&:to_i)
+    @workshop_categories = Category.where(company_id: current_user.company_id).map(&:id) if params[:filter][:all] == '1'
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+
+  def catalogue_filter_program
+    if params[:filter][:all] == '1'
+      @program_categories = Category.where(company_id: current_user.company_id).map(&:id)
+    else
+      @program_categories = params[:training_program][:category_ids].drop(1).map(&:to_i)
+    end
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+
+  %w(catalogue_workshops_title_order_asc catalogue_workshops_title_order_desc catalogue_workshops_type_order_asc catalogue_workshops_type_order_desc catalogue_workshops_duration_order_asc catalogue_workshops_duration_order_desc ).each do |name|
+    def name
+      respond_to do |format|
+        format.html {redirect_to catalogue_path}
+        format.js
+      end
+    end
+  end
+
+  def catalogue_programs_title_order_asc
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+
+  def catalogue_programs_title_order_desc
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+def catalogue_programs_duration_order_asc
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+
+  def catalogue_programs_duration_order_desc
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
   end
 
   private

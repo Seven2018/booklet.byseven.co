@@ -1,71 +1,39 @@
-<div id="container-show">
-  <div id="show-controls">
-    <%= link_to url_for(:back), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
-    <div id='show-buttons'>
-      <% if ['Super Admin', 'HR'].include? current_user.access_level %>
-        <a data-toggle='modal' data-target='#editTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
-        <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="far fa-flag"></i></button></a>
-        <%= link_to training_program_path(@training_program), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-  <div class='training-program-show-card'>
-    <div class='training-program-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= @training_program.image %>');background-position: center center;
-  background-repeat: no-repeat;">
-      <h2><%= @training_program.title %></h2>
-    </div>
-    <div class="training-program-show-card-footer flex-row-between-centered">
-      <div class="training-program-show-card-footer-description centered-item">
-        <p><%= @training_program.description %></p>
-      </div>
-      <div class="training-program-show-card-footer-infos centered-item">
-        <div>
-          <% if @training_program.workshops.present? %>
-            <p><%= "#{@training_program.workshops.count} Workshops" %></p>
-            <% duration = 0 %>
-            <% @training_program.workshops.each do |workshop| %>
-              <% duration += workshop.duration %>
-            <% end %>
-            <p><%= "#{duration/60} hour long training" %></p>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="training-program-show-categories">
-    <% if @training_program.categories.present? %>
-      <% @training_program.categories.each do |category| %>
-        <h6 class="training-program-show-category-card"><%= category.title %></h6>
+<div id="show-controls"  class='flex-row-between-centered'>
+  <%= link_to catalogue_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <div id='show-buttons'>
+    <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
+      <a data-toggle='modal' data-target='#editTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+      <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-swatchbook"></i></button></a>
+      <%= link_to training_program_path(@training_program), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+        <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
       <% end %>
     <% end %>
   </div>
+</div>
+<div id="container-show">
+  <div class='workshop-show-type'>
+    <h3>Program</h3>
+  </div>
+  <div class='training-program-show-card'>
+    <div class='training-program-show-card-main flex-column-between-left'>
+      <h1><%= @training_program.title %></h1>
+      <p>By <%= @training_program.author.firstname %></p>
+      <p><%= @training_program.description %></p>
+    </div>
+  </div>
   <div class='training-program-workshop-index'>
-    <h2><i class="fas fa-tools"></i> Workshops</h2>
-    <div class="row">
-      <div class="col-sm-4 centered-item">
-        <a data-toggle='modal' data-target='#addWorkshop'>
-          <div class="training-program-index-workshop-show-card">
-            <div class='training-program-index-workshop-show-card-main-empty centered-item'>
-              <h2>Manage Workshops</h2>
-            </div>
-          </div>
-        </a>
-      </div>
-      <% @training_program.workshops.each do |workshop| %>
-        <div class="col-sm-4 centered-item">
-          <div class="training-program-index-workshop-show-card">
-            <div class='training-program-index-workshop-show-card-main centered-item' style="background-image: linear-gradient(to top, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.5)), url('<%= workshop.image %>');background-position: center center;
-          background-repeat: no-repeat;">
-              <h2><%= workshop.title %></h2>
-            </div>
-            <div class="training-program-index-workshop-show-card-footer centered-item">
-               <p><i class="far fa-clock"></i><%= " #{workshop.duration} minutes" %></p>
-            </div>
-          </div>
-        </div>
+    <div>
+      <% duration = @training_program.workshops.map(&:duration).sum %>
+      <% if duration >= 60 %>
+        <% duration_hour = duration/60 %>
+        <% duration_min = duration%60 %>
+        <h3><%= "#{@training_program.workshops.count} workshops for a total of #{duration_hour} hours and #{duration_min} minutes" %></h3>
+      <% else %>
+        <h3><%= "#{@training_program.workshops.count} workshops for a total of #{duration} minutes" %></h3>
       <% end %>
+    </div>
+    <div id="workshops">
+      <%= render 'workshops/index', training_program: @training_program %>
     </div>
   </div>
 </div>
@@ -75,12 +43,6 @@
 <div class='modal fade' id='editTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'edit', training_program: @training_program %>
-  </div>
-</div>
-
-<div class='modal fade' id='addWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-    <%= render 'program_workshops/new', training_program: @training_program %>
   </div>
 </div>
 

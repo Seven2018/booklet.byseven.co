@@ -1,0 +1,11 @@
+    Hello, <%= @user.name %>
+    =======================================================
+
+    <% if @training.present? %>
+      You have been invited to the following training: <%= @training.title %>
+      <%= link_to 'Link', training_path(@training) %>
+    <% else %>
+      You have been invited to the following workshop: <%= @attendee.training_workshop.title %>
+      <%= link_to 'Link', training_workshop_path(@attendee.training_workshop) %>
+    <% end %>
+    Thanks you and have a great day!

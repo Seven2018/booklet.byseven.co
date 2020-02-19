@@ -1,15 +1,23 @@
 <div class="training-program-index">
-  <div id="index-controls">
-    <h3>Catalogue</h3>
+  <div id="index-controls" class='flex-row-between-centered'>
+    <h1>Catalogue</h1>
     <div id="index-buttons">
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-        <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <%= link_to 'New Program', new_training_program_path, class: 'dropdown-item' %>
-          <%= link_to 'New Workshop', new_workshop_path, class: 'dropdown-item' %>
+        <div>
+          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <%= link_to 'New Program', new_training_program_path, class: 'dropdown-item' %>
+            <%= link_to 'New Workshop', new_workshop_path, class: 'dropdown-item' %>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-swatchbook"></i></button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <a data-toggle='modal' data-target='#indexTheme' class='dropdown-item'>View Themes</a>
+            <a data-toggle='modal' data-target='#newTheme' class='dropdown-item'>New Theme</a>
+          </div>
         </div>
       <% end %>
-      <a><button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon"><i class="fas fa-sliders-h"></i></button></a>
       <% if params[:search] %>
         <%= simple_form_for :search, url: catalogue_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
           <%= f.input :title, placeholder: params[:search][:title], label: false %>
@@ -30,110 +38,32 @@
       <% end %>
     </div>
   </div>
-  <div id="training-program-index-list-filters" class='hidden'>
-    <%= simple_form_for :filter, url: filter_catalogue_path, method: 'GET' do |f| %>
-      <div id="checkbox">
-        <%= collection_check_boxes(:workshop, :category_ids, Category.all, :id, :title) do |b| %>
-          <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-            <%= b.check_box + b.text %>
-          <% end %>
-        <% end %>
-      </div>
-      <script>
-        $('#checkbox input:checkbox:checked').parent().toggleClass('checked-box');
-        $('#checkbox input:checkbox').change(function () {
-          $(this).parent().toggleClass('checked-box');
-        });
-      </script>
-      <div style="display:flex;justify-content:center;margin-top:30px;">
-        <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
-      </div>
-    <% end %>
+  <div class="dashboard-tabs">
+    <ul class="nav nav-tabs">
+      <li role="presentation"><a href="#Workshops" data-toggle="tab" class='active'>Workshops</a></li>
+      <li role="presentation"><a href="#Programs" data-toggle="tab">Programs</a></li>
+    </ul>
   </div>
-  <script>
-    filterButton = document.getElementById('btn-edit-filter');
-    filterDiv = document.getElementById('training-program-index-list-filters');
-    filterButton.addEventListener('click', (event) => {
-      filterDiv.classList.toggle('hidden');
-    })
-  </script>
-  <div class='catalogue-index-list'>
-    <h3>Programs List</h3>
-    <% @training_programs.each do |program| %>
-      <%= link_to training_program_path(program) do %>
-        <div class='training-program-index-card'>
-          <div class='training-program-index-image' style="background-image:url('<%= program.image %>');">
-          </div>
-          <div class="training-program-index-infos">
-            <p><%= program.title %></p>
-            <a data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
-
-            <!-- Modal -->
-            <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-              <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-                <%= render 'trainings/new', training_program: program %>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="Programs">
+      <%= render 'catalogue_programs', training_programs: @training_programs %>
+    </div>
+    <div role="tabpanel" class="tab-pane active" id="Workshops">
+      <%= render 'catalogue_workshops', workshops: @workshops.order(title: :asc) %>
+    </div>
   </div>
 </div>
-<div class="workshop-index">
-  <div class='catalogue-index-list'>
-    <h3>Workshops List</h3>
-    <% category_array = [] %>
-    <% @workshops.each do |workshop| %>
-      <% category_array << workshop.categories %>
-    <% end %>
-    <% category_array = category_array.uniq.reject { |c| c.empty? } %>
-    <% category_array.each do |category| %>
-      <p class='workshop-index-list-category-title'><%= category.first.title %></p>
-      <% @workshops.joins(:workshop_categories).where(workshop_categories: {category_id: category.first.id}).each do |workshop| %>
-        <%= link_to workshop_path(workshop) do %>
-          <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= workshop.image %>');">
-            </div>
-            <div class="workshop-index-infos">
-              <p><%= workshop.title %></p>
-              <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
 
-              <!-- Modal -->
-              <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-                <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-                  <%= render 'training_workshops/new', workshop: workshop %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
-    <% if @workshops.left_joins(:workshop_categories).where(workshop_categories: {id: nil}).present? && params[:filter].nil?%>
-      <p class='workshop-index-list-category-title'>Others</p>
-      <% @workshops.left_joins(:workshop_categories).where(workshop_categories: {id: nil}).each do |workshop| %>
-        <%= link_to workshop_path(workshop) do %>
-          <div class='workshop-index-card'>
-            <div class='workshop-index-image' style="background-image:url('<%= workshop.image %>');">
-            </div>
-            <div class="workshop-index-infos">
-              <p><%= workshop.title %></p>
-              <a data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-edit-icon'><i class="far fa-calendar-alt"></i></button></a>
+<!-- Modal -->
+<div class='modal fade' id='indexTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'categories/index' %>
+  </div>
+</div>
 
-              <!-- Modal -->
-              <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-                <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-                  <%= render 'training_workshops/new', workshop: workshop %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
+<div class='modal fade' id='newTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'categories/new' %>
   </div>
 </div>
 

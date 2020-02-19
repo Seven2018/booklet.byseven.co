@@ -3,7 +3,6 @@ class TeamsController < ApplicationController
 
   def show
     authorize @team
-    @team_category = TeamCategory.new
   end
 
   def create
@@ -35,6 +34,6 @@ class TeamsController < ApplicationController
   end
 
   def team_params
-    params.require(:team).permit(:name, :image)
+    params.require(:team).permit(:team_name, :image)
   end
 end

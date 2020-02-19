@@ -9,6 +9,16 @@ class TrainingWorkshop < ApplicationRecord
   has_many :mods, through: :training_workshop_mods
   validate :end_date_after_start_date
 
+  def team_ids
+    teams = []
+    self.users.map(&:teams).each do |team|
+      if team.first.users.count == self.users.joins(:user_teams).where(user_teams: {team_id: team}).count
+        teams << team
+      end
+    end
+    teams.flatten(1).uniq.map(&:id)
+  end
+
   def start_time
     self.date
   end
@@ -17,7 +27,7 @@ class TrainingWorkshop < ApplicationRecord
     status = true
     return status if available_date.blank?
 
-    if available_date > date
+    if available_date.present? && available_date < date
       errors.add(:available_date, "must be after the start date")
       status = false
     end

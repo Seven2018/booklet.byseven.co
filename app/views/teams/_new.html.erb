@@ -8,8 +8,7 @@
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for team do |f| %>
       <div class="mod-date">
-        <%= f.input :name %>
-        <%= f.input :image %>
+        <%= f.input :team_name %>
       </div>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>

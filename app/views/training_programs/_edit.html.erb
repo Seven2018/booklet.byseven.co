@@ -8,9 +8,9 @@
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for training_program do |f| %>
       <%= f.input :title %>
-      <%= f.input :description %>
       <%= f.input :participant_number %>
-      <%= f.input :image, label: 'Image URL' %>
+      <%= f.input :description %>
+      <%# f.input :image, label: 'Image URL' %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
           <i class="fas fa-save"></i>

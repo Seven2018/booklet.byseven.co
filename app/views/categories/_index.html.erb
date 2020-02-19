@@ -1,0 +1,18 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Themes Index</h3>
+    </div>
+    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body" id="modalNewBookinBody">
+    <% Category.where(company_id: current_user.company_id).order(title: :asc).each do |theme| %>
+      <a data-toggle='modal' data-target='#editTheme<%= theme.id %>' class='dropdown-item'><%= theme.title %></a>
+          <div class='modal fade' id='editTheme<%= theme.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+      <div class='modal-dialog' role='document' style='border-radius: 20px'>
+        <%= render 'categories/edit', category: theme %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

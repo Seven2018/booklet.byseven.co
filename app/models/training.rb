@@ -29,6 +29,18 @@ class Training < ApplicationRecord
     users.flatten(1).uniq.map(&:id)
   end
 
+  def team_ids
+    teams = []
+    self.training_workshops.each do |workshop|
+      workshop.users.map(&:teams).each do |team|
+        if team.first.users.count == workshop.users.joins(:user_teams).where(user_teams: {team_id: team}).count
+          teams << team
+        end
+      end
+    end
+    teams.flatten(1).uniq.map(&:id)
+  end
+
   def last_date
     date_array =[]
     self.training_workshops.each do |workshop|

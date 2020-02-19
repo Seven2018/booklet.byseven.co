@@ -1,36 +1,17 @@
-<h3>My Booklet</h3>
+<div id="index-controls" class="flex-row-start-centered">
+  <h1>My Booklet</h1>
+</div>
 <div class="dashboard-tabs">
   <ul class="nav nav-tabs">
-    <% if params[:search] %>
-      <li role="presentation"><a href="#overview" data-toggle="tab">Overview</a></li>
-      <li role="presentation"><a href="#calendar" data-toggle="tab">Calendar</a></li>
-    <% elsif params[:tab] == 'calendar' || params[:start_date].present? %>
-      <li role="presentation"><a href="#overview" data-toggle="tab">Overview</a></li>
-      <li role="presentation"><a href="#calendar" data-toggle="tab" class="active">Calendar</a></li>
-    <% elsif params[:tab].nil? || params[:tab] == 'overview' %>
-      <li role="presentation"><a href="#overview" data-toggle="tab" class="active">Overview</a></li>
-      <li role="presentation"><a href="#calendar" data-toggle="tab">Calendar</a></li>
-    <% end %>
+    <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>Me</a></li>
+    <li role="presentation"><a href="#All" data-toggle="tab">People</a></li>
   </ul>
 </div>
 <div class="tab-content">
-  <% if params[:search] %>
-    <div class="tab-pane active">
-      <%= render 'search', trainings: @my_trainings %>
-    </div>
-  <% elsif params[:tab] == 'calendar' || params[:start_date].present? %>
-    <div role="tabpanel" class="tab-pane" id="overview">
-      <%= render 'overview', trainings: @my_trainings %>
-    </div>
-    <div role="tabpanel" class="tab-pane active" id="calendar">
-      <%= render 'calendar', trainings: @my_trainings %>
-    </div>
-  <% elsif params[:tab].nil? || params[:tab] == 'overview' %>
-    <div role="tabpanel" class="tab-pane active" id="overview">
-      <%= render 'overview', trainings: @my_trainings %>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="calendar">
-      <%= render 'calendar', trainings: @my_trainings %>
-    </div>
-  <% end %>
+  <div role="tabpanel" class="tab-pane active" id="Personal">
+    <%= render 'dashboard_personal' %>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="All">
+    <%= render 'dashboard_all' %>
+  </div>
 </div>

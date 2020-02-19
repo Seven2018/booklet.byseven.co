@@ -1,21 +1,16 @@
 .left-navbar {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  // background-color: #23282e;
-  background-color: white;
+  justify-content: flex-start;
+  background-color: #F1F3F4;
   position: fixed;
-  top: 0px;
-  width: 220px;
+  top: 0;
+  width: 22rem;
   height: 100vh;
-  min-height: 600px;
+  min-height: 60rem;
+  margin-top: 5rem;
   z-index: 1;
-
   text-align: left;
-
-  // @include from-large {
-  //   display: flex;
-  // }
 
   p, a {
     color: black;
@@ -30,7 +25,7 @@
   position: fixed;
   top: 0px;
   width: 100vw;
-  height: 50px;
+  height: 5rem;
   z-index: 2;
 
   text-align: left;
@@ -45,7 +40,6 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  position: relative;
 
   .avatar {
     margin-bottom: 15px;
@@ -55,6 +49,16 @@
 .left-navbar-middle {
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.left-navbar-top-view-mode {
+  height: 7.9rem;
+}
+
+.left-navbar-middle-view-mode {
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-top: 1px solid black;
 }
 
 .left-navbar-middle::-webkit-scrollbar {
@@ -146,6 +150,14 @@
   }
 }
 
+.left-menu-list-view-mode {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  width: 220px;
+  border-bottom: 2px solid black;
+}
+
 .left-navbar ul {
   list-style: none;
 }
@@ -171,6 +183,15 @@
 .left-menu-title {
   text-align: left;
   margin-left: 20px;
+  h4 {
+    font-weight: 400;
+    margin: 0;
+  }
+}
+
+.left-menu-title-view-mode {
+  width: 100%;
+  text-align: left;
   h4 {
     font-weight: 400;
     margin: 0;
