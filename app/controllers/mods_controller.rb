@@ -21,11 +21,11 @@ class ModsController < ApplicationController
     if @module.save
       if params[:workshop_id].present?
         workshop = Workshop.find(params[:workshop_id])
-        WorkshopMod.create(mod_id: @module.id, workshop_id: workshop.id, position: WorkshopMod.where(workshop_id: params[:workshop_id]).count)
+        WorkshopMod.create(mod_id: @module.id, workshop_id: workshop.id, position: WorkshopMod.where(workshop_id: params[:workshop_id]).count + 1)
         redirect_to workshop_path(workshop)
       elsif params[:training_workshop_id].present?
         training_workshop = TrainingWorkshop.find(params[:training_workshop_id])
-        TrainingWorkshopMod.create(mod_id: @module.id, training_workshop_id: training_workshop.id, position: TrainingWorkshopMod.where(training_workshop_id: params[:training_workshop_id]).count)
+        TrainingWorkshopMod.create(mod_id: @module.id, training_workshop_id: training_workshop.id, position: TrainingWorkshopMod.where(training_workshop_id: params[:training_workshop_id]).count + 1)
         redirect_to training_workshop_path(training_workshop)
       end
     end
