@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   resources :skills
   resources :training_programs, only: %i[new create show update destroy] do
     resources :program_workshops, only: %i[create]
-    get 'program_workshop/:id/move_up', to: "program_workshops#move_up", as: "move_up_program_workshop"
-    get 'program_workshop/:id/move_down', to: "program_workshops#move_down", as: "move_down_program_workshop"
+    get 'program_workshops/:id/move_up', to: "program_workshops#move_up", as: "move_up_program_workshop"
+    get 'program_workshops/:id/move_down', to: "program_workshops#move_down", as: "move_down_program_workshop"
     resources :program_categories, only: %i[create]
   end
   get 'training_programs-filter', to: 'training_programs#filter', as: 'filter_training_programs'
@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   get 'workshops/:id/viewmode', to: 'workshops#view_mode', as: 'view_workshop'
   resources :mods, only: %i[show new create update destroy]
   resources :workshop_mods, only: %i[create destroy]
+  get 'workshop_mods/:id/move_up', to: 'workshop_mods#move_up', as: 'move_up_workshop_mod'
+  get 'workshop_mods/:id/move_down', to: 'workshop_mods#move_down', as: 'move_down_workshop_mod'
   resources :training_workshop_mods, only: %i[create destroy]
   resources :attendees, only: %i[create update destroy]
   get 'attendee-create-all', to: 'attendees#create_all', as: 'create_all_attendees'

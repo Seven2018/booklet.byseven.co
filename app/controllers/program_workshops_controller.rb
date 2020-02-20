@@ -40,7 +40,7 @@ class ProgramWorkshopsController < ApplicationController
     @program_workshop = ProgramWorkshop.find(params[:program_workshop_id])
     authorize @program_workshop
     @training_program = @program_workshop.training_program
-    unless @program_workshop.position == array.compact.count
+    unless @program_workshop.position == @training_program.program_workshops.count
       next_workshop = @training_program.program_workshops.where(position: @program_workshop.position + 1).first
       next_workshop.update(position: @program_workshop.position)
       @program_workshop.update(position: (@program_workshop.position + 1))
