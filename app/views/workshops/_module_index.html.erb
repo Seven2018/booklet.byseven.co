@@ -1,6 +1,5 @@
 <% if @workshop.mods.present? %>
   <% @workshop.workshop_mods.order(position: :asc).each do |workshop_mod| %>
-    <a data-toggle='modal' data-target='#editModule<%= workshop_mod.id %>'>
       <div class="workshop-show-content flex-row-start-centered">
         <div class="workshop-show-content-controls flex-column-centered">
           <% if workshop_mod.position == 1 %>
@@ -21,9 +20,10 @@
         <div class="workshop-show-content-index centered-item">
           <p><%= workshop_mod.position %></p>
         </div>
-        <p><%= "#{workshop_mod.mod.title} - #{workshop_mod.mod.duration} min" %></p>
+        <a data-toggle='modal' data-target='#editModule<%= workshop_mod.id %>'>
+          <p><%= "#{workshop_mod.mod.title} - #{workshop_mod.mod.duration} min" %></p>
+        </a>
       </div>
-    </a>
     <div class='modal fade' id='editModule<%= workshop_mod.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
       <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
         <%= render 'mods/edit', mod: workshop_mod.mod %>

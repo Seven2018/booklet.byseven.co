@@ -2,7 +2,7 @@
   <h3><%= "#{@workshop.title}" %></h3>
 </div>
 <div class='flex-column-centered'>
-  <% @workshop.mods.each do |mod| %>
+  <% @workshop.mods.order(position: :asc).each do |mod| %>
     <div class="workshop-show-content">
       <div class="workshop-show-content-header flex-row-between-centered">
         <a name="<%= mod.id %>" class="workshop-show-view-mode-anchor"></a>

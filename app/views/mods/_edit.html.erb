@@ -11,7 +11,8 @@
       <%= f.input :duration %>
       <%= f.input :document, label: 'Document (url)' %>
       <%= f.input :media, label: 'Media (url)' %>
-      <%= f.cktext_area :content %>
+      <%= f.label :content %>
+      <%= f.cktext_area :content, id: "ckeditor#{mod.id}" %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <% if @workshop.present? %>
           <%= button_tag type: 'submit', name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
