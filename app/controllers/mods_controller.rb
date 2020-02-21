@@ -17,6 +17,7 @@ class ModsController < ApplicationController
   def create
     @module = Mod.new(mod_params)
     authorize @module
+    @module.document = params[:mod][:document]&.gsub(/edit/, 'present')
     @module.company_id = current_user.company_id
     if @module.save
       if params[:workshop_id].present?
@@ -46,6 +47,6 @@ class ModsController < ApplicationController
   private
 
   def mod_params
-    params.require(:mod).permit(:title, :duration, :content, :document)
+    params.require(:mod).permit(:title, :duration, :content, :document, :media)
   end
 end

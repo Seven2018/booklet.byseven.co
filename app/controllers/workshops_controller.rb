@@ -1,5 +1,6 @@
 class WorkshopsController < ApplicationController
   before_action :set_workshop, only: [:show, :view_mode, :edit, :update, :destroy]
+  helper VideoHelper
 
   # def index
   #   # Index with 'search' option and global visibility for SEVEN Users

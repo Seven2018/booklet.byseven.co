@@ -20,7 +20,7 @@
         <%= link_to user_path(user) do %>
           <div class='team-show-user-card flex-row-between-centered'>
             <div class="team-show-users-info">
-              <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror="this.onerror=null;this.src='https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png';">
+              <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
             </div>
             <div class="team-show-users-info">
                 <p><%= user.fullname %>

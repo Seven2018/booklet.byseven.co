@@ -98,7 +98,7 @@
     <% @users.each do |user| %>
       <%= link_to user_path(user) do %>
         <div class='user-index-card'>
-          <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror="this.onerror=null;this.src='https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png';">
+          <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           <div class="user-index-infos flex-row-between-centered">
             <div class="user-index-info">
               <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.fullname %></p>

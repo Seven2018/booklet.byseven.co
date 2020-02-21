@@ -9,6 +9,18 @@
         <p><%= mod.title %></p>
         <p><%= "#{mod.duration}min" %></p>
       </div>
+      <div class="workshop-show-content-attached flex-row-between-centered">
+        <a href="<%= mod.document %>"><i class="fas fa-paperclip"></i> Attachment</a>
+        <% if mod.media.present? %>
+          <div class="workshop-show-content-attached-video">
+            <%= embed_video(mod.media) %>
+          </div>
+        <% else %>
+          <div class="workshop-show-content-attached-video">
+            <img src="<%= asset_url('no-video.gif', type: :image) %>" alt="" width='300px' height='150px'>
+          </div>
+        <% end %>
+      </div>
       <div class="workshop-show-content-main-view-mode">
         <%= mod.content.html_safe %>
       </div>

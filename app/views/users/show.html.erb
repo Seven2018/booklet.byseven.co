@@ -10,7 +10,7 @@
 <div id='container-show'>
   <div class="user-show-card flex-column-between-centered">
     <% if @user.picture.present? %>
-      <img src='<%= @user.picture %>' alt="" class='avatar-xlarge' onerror="this.onerror=null;this.src='https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png';">
+      <img src='<%= @user.picture %>' alt="" class='avatar-xlarge' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
     <% else %>
       <a data-toggle='modal' data-target='#editPicture' class="avatar-xlarge-empty centered-item">
         <h6>Add picture</h6>

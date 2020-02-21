@@ -9,6 +9,8 @@
     <%= simple_form_for mod do |f| %>
       <%= f.input :title %>
       <%= f.input :duration %>
+      <%= f.input :document, label: 'Document (url)' %>
+      <%= f.input :media, label: 'Media (url)' %>
       <%= f.cktext_area :content %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <% if @workshop.present? %>
