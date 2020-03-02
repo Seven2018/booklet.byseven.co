@@ -84,7 +84,6 @@
   <% if @training_workshop.workshop.mods.present? %>
     <% ind = 1 %>
     <% @training_workshop.workshop.mods.each do |mod| %>
-      <a data-toggle='modal' data-target='#editModule<%= mod.id %>'>
         <div class="workshop-show-content flex-row-start-centered">
           <div class="workshop-show-content-index centered-item">
             <p><%= ind %></p>
@@ -92,13 +91,6 @@
           <p><%= "#{mod.title} - #{mod.duration} min" %></p>
           <% ind += 1 %>
         </div>
-      </a>
-
-      <div class='modal fade' id='editModule<%= mod.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-        <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-          <%= render 'mods/edit', mod: mod %>
-        </div>
-      </div>
     <% end %>
     <%= link_to view_training_workshop_path(@training_workshop) do %>
       <button class='btn btn-edit-red' style='margin-top: 5rem;'><p>Start</p></button>

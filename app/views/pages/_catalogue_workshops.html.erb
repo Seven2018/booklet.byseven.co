@@ -40,7 +40,7 @@
         <p>Theme</p>
         <div class="catalogue-index-info-order flex-column-centered dropdown show">
           <a class="dropdown-toggle" href="#" role="button" id="catalogueFilterWorkshops" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="catalogueFilterWorkshops">
+          <div class="dropdown-menu dropdown-menu-filter" aria-labelledby="catalogueFilterWorkshops">
             <div class="dropdown-item dropdown-form">
               <%= simple_form_for :filter, url: filter_workshop_catalogue_path, method: 'GET', remote: true do |f| %>
                 <label for="filter_all" class="label-checkbox check-box-all">

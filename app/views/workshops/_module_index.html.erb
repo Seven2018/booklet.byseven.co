@@ -24,7 +24,7 @@
           <p><%= "#{workshop_mod.mod.title} - #{workshop_mod.mod.duration} min" %></p>
         </a>
       </div>
-    <div class='modal fade' id='editModule<%= workshop_mod.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+    <div class='modal fade' id='editModule<%= workshop_mod.id %>' tabindex='-1' role='dialog' aria-labelledby='editModule<%= workshop_mod.id %>'  data-backdrop="static" data-keyboard="false" data-focus='false'>
       <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
         <%= render 'mods/edit', mod: workshop_mod.mod %>
       </div>

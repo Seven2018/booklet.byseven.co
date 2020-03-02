@@ -1,6 +1,7 @@
 class ModsController < ApplicationController
+  before_action :set_mod, only: [:show, :update, :destroy]
+
   def show
-    @module = Mod.find(params[:id])
     authorize @module
   end
 
@@ -33,18 +34,27 @@ class ModsController < ApplicationController
   end
 
   def update
-    @mod = Mod.find(params[:id])
-    authorize @mod
+    authorize @module
     workshop = Workshop.find(params[:workshop_id])
-    @mod.update(mod_params)
-    if @mod.save
+    @module.update(mod_params)
+    if @module.save
       redirect_to workshop_path(workshop)
     else
       raise
     end
   end
 
+  def destroy
+    authorize @module
+    @module.destroy
+    redirect_back(fallback_location: root_path)
+  end
+
   private
+
+  def set_mod
+    @module = Mod.find(params[:id])
+  end
 
   def mod_params
     params.require(:mod).permit(:title, :duration, :content, :document, :media)

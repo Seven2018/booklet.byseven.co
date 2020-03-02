@@ -30,7 +30,7 @@
       <p><%= "#{@workshop.duration} min" %></p>
     </div>
     <div class="workshop-show-card-footer centered-item">
-      <p><%= @workshop.description %></p>
+      <p><%= @workshop.description.html_safe %></p>
     </div>
   </div>
   <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
