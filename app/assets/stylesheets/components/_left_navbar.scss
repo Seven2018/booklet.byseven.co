@@ -53,6 +53,7 @@
 
 .left-navbar-top-view-mode {
   height: 7.9rem;
+  min-height: 7.9rem;
 }
 
 .left-navbar-middle-view-mode {
@@ -192,9 +193,14 @@
 .left-menu-title-view-mode {
   width: 100%;
   text-align: left;
+
   h4 {
     font-weight: 400;
     margin: 0;
+  }
+
+  p:last-of-type {
+    color: #a8a8a8;
   }
 }
 

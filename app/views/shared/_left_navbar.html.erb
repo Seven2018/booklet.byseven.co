@@ -79,7 +79,7 @@
         <% @workshop.mods.order(position: :asc).each do |mod| %>
           <a href="#<%= mod.id %>">
             <div class="left-menu-list">
-              <div class="left-menu-title-view-mode flex-column-centered">
+              <div class="left-menu-title-view-mode">
                 <p><%= mod.title %></p>
                 <p><%= mod.duration %> min</p>
               </div>
@@ -95,7 +95,7 @@
         <% @training_workshop.mods.each do |mod| %>
           <a href="#<%= mod.id %>">
             <div class="left-menu-list">
-              <div class="left-menu-title-view-mode flex-column-centered">
+              <div class="left-menu-title-view-mode">
                 <p><%= mod.title %></p>
                 <p><%= mod.duration %> min</p>
               </div>
