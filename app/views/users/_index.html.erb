@@ -23,7 +23,7 @@
         <li>
           <%= link_to user_path(user) do %>
             <div class="user-index-card">
-              <img class='user-picture-index' src='<%= "#{user.picture}" %>'>
+              <img class='user-picture-index' src='<%= "#{user.picture}" %>' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
               <div class="user-infos">
                 <p><%= "#{user.firstname} #{user.lastname}" %></p>
                 <p><%= user.email %></p>

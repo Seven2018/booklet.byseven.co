@@ -19,6 +19,48 @@ body {
   position: relative;
 }
 
+#container-login {
+  width: 100%;
+  padding: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  #login-div {
+    width: 30rem;
+
+    .login-title {
+      padding: 0 4rem;
+      margin-bottom: 3rem;
+    }
+
+    .form-check {
+      height: 3rem;
+      display: flex;
+      align-items: center;
+
+      label {
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  .form-sign-in-options {
+
+    fieldset {
+      margin: 0 !important;
+    }
+
+    a {
+      font-size: 10px;
+    }
+  }
+
+  .form-actions {
+    margin-top: 2rem;
+  }
+}
+
 #container-new {
   display: flex;
   flex-direction: column;

@@ -11,7 +11,9 @@
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
-    <script src="https://cdn.ckeditor.com/4.13.0/full/ckeditor.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/4.13.0/full/ckeditor.js"></script> -->
+    <script src="https://embed.typeform.com/embed.js"></script>
+    <%= javascript_include_tag Ckeditor.cdn_url %>
     <%= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
     <%= javascript_pack_tag 'application' %>
   </head>
@@ -22,9 +24,13 @@
         <%= render 'shared/left_navbar' %>
       <% end %>
       <%= render 'shared/flashes' %>
-      <div id="booklet-container">
+      <% if user_signed_in? %>
+        <div id="booklet-container">
+          <%= yield %>
+        </div>
+      <% else %>
         <%= yield %>
-      </div>
+      <% end %>
     </div>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>

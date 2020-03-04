@@ -16,14 +16,35 @@ class ApplicationController < ActionController::Base
   #   redirect_to(root_path)
   # end
 
+  module VideoHelper
+    def embed_video(video_url)
+      if video_url =~ /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/
+        video_id = video_url.split("=").last
+        content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen")
+      elsif video_url =~ /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]loom+)\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+        video_id = video_url.split("/").last
+        content_tag(:iframe, nil, src: "//www.loom.com/embed/#{video_id}", allowfullscreen: "allowfullscreen")
+      end
+    end
+
+    # def embed_video(youtube_url)
+    #   if youtube_url[/youtu\.be\/([^\?]*)/]
+    #     youtube_id = $1
+    #   else
+    #     # Regex from # http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url/4811367#4811367
+    #     youtube_url[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
+    #     youtube_id = $5
+    #   end
+
+    #   %Q{<iframe title="YouTube video player" width="640" height="390" src="http://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe>}
+    # end
+  end
+
+
   protected
 
   def after_sign_in_path_for(resource)
-    if ['Super Admin', 'Admin'].include?(current_user.access_level)
       dashboard_path
-    else
-      dashboard_path
-    end
   end
 
   # def after_sign_out_path_for(resource)

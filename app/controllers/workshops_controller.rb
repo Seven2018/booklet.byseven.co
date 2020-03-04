@@ -1,5 +1,6 @@
 class WorkshopsController < ApplicationController
   before_action :set_workshop, only: [:show, :view_mode, :edit, :update, :destroy]
+  helper VideoHelper
 
   # def index
   #   # Index with 'search' option and global visibility for SEVEN Users
@@ -80,7 +81,7 @@ class WorkshopsController < ApplicationController
   def destroy
     @workshop.destroy
     authorize @workshop
-    redirect_back(fallback_location: root_path)
+    redirect_to catalogue_path
   end
 
   def filter

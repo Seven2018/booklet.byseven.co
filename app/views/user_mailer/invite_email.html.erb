@@ -65,7 +65,7 @@
         <h2>Hello, <%= @user.fullname %></h2>
         <br>
         <% if @training.present? %>
-          <p><%= @host&.firsname %> has invited  you to the following training: <%= @training.title %></p>
+          <p><%= @host&.firstname %> has invited  you to the following training: <%= @training.title %></p>
           <%= link_to 'See details', training_url(@training) %>
         <% else %>
           <p><%= @host&.firstname %> has invited you to the following workshop: <%= @attendee.training_workshop.title %></p>

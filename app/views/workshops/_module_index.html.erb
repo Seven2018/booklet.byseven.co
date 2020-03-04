@@ -1,0 +1,38 @@
+<% if @workshop.mods.present? %>
+  <% @workshop.workshop_mods.order(position: :asc).each do |workshop_mod| %>
+      <div class="workshop-show-content flex-row-start-centered">
+        <div class="workshop-show-content-controls flex-column-centered">
+          <% if workshop_mod.position == 1 %>
+            <i class="fas fa-caret-up" style='color:grey;cursor:default;'></i>
+          <% else %>
+            <%= link_to move_up_workshop_mod_path(workshop_mod), remote: true do %>
+              <i class="fas fa-caret-up"></i>
+            <% end %>
+          <% end %>
+          <% if workshop_mod.position == @workshop.workshop_mods.count %>
+            <i class="fas fa-caret-down" style='color:grey;cursor:default;'></i>
+          <% else %>
+            <%= link_to move_down_workshop_mod_path(workshop_mod), remote: true do %>
+              <i class="fas fa-caret-down"></i>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="workshop-show-content-index centered-item">
+          <p><%= workshop_mod.position %></p>
+        </div>
+        <a data-toggle='modal' data-target='#editModule<%= workshop_mod.id %>'>
+          <p><%= "#{workshop_mod.mod.title} - #{workshop_mod.mod.duration} min" %></p>
+        </a>
+      </div>
+    <div class='modal fade' id='editModule<%= workshop_mod.id %>' tabindex='-1' role='dialog' aria-labelledby='editModule<%= workshop_mod.id %>'  data-backdrop="static" data-keyboard="false" data-focus='false'>
+      <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+        <%= render 'mods/edit', mod: workshop_mod.mod %>
+      </div>
+    </div>
+  <% end %>
+  <div class='centered-item'>
+    <%= link_to view_workshop_path(@workshop) do %>
+      <button class='btn btn-edit-red' style='margin-top: 5rem;'><p>Start</p></button>
+    <% end %>
+  </div>
+<% end %>
