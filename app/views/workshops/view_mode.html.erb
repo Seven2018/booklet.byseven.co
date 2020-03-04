@@ -9,21 +9,30 @@
         <p><%= mod.title %></p>
         <p><%= "#{mod.duration}min" %></p>
       </div>
-      <div class="workshop-show-content-attached flex-row-between-centered">
-        <a href="<%= mod.document %>" target="_blank"><i class="fas fa-paperclip"></i> Attachment</a>
-        <% if mod.media.present? %>
-          <div class="workshop-show-content-attached-video">
-            <%= embed_video(mod.media) %>
-          </div>
-        <% else %>
-          <div class="workshop-show-content-attached-video">
-            <img src="<%= asset_url('no-video.gif', type: :image) %>" alt="" width='300px' height='150px'>
-          </div>
-        <% end %>
-      </div>
+      <% unless mod.document.empty? && mod.media.empty? %>
+        <div class="workshop-show-content-attached flex-row-between-start">
+          <% if mod.document.include?('presentation/d/e') %>
+            <iframe src="<%= mod.document.gsub(/pub/, 'embed') %>" frameborder="0" width="500" height="250" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+          <% elsif mod.document.present? %>
+            <a href="<%= mod.document %>" target="_blank"><i class="fas fa-paperclip"></i> Document</a>
+          <% else %>
+            <a href=""></a>
+          <% end %>
+          <% if mod.media.present? %>
+            <div class="workshop-show-content-attached-video">
+              <%= embed_video(mod.media) %>
+            </div>
+          <% else %>
+            <div class="workshop-show-content-attached-video">
+              <img src="">
+            </div>
+          <% end %>
+        </div>
+      <% end %>
       <div class="workshop-show-content-main-view-mode">
         <%= mod.content.html_safe %>
       </div>
     </div>
   <% end %>
 </div>
+

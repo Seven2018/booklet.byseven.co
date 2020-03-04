@@ -25,6 +25,7 @@ gem "simple_calendar", "~> 2.0"
 gem 'google-api-client', require: 'google/apis/calendar_v3'
 gem 'oauth2'
 gem 'omniauth-google-oauth2'
+gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 
 
 group :development do
