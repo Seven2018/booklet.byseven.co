@@ -20,7 +20,7 @@
       <%# end %>
     </div> -->
     <%= f.label :description %>
-    <%= f.text_area :description, style: 'width: 100%; height: 300px;' %>
+    <%= f.cktext_area :description %>
     <script>
       $('#checkbox input:checkbox:checked').parent().toggleClass('checked-box');
       $('#checkbox input:checkbox').change(function () {

@@ -18,4 +18,36 @@ class WorkshopModsController < ApplicationController
     end
     redirect_to workshop_path(@workshop)
   end
+
+  def move_up
+    @workshop_mod = WorkshopMod.find(params[:id])
+    authorize @workshop_mod
+    @workshop = @workshop_mod.workshop
+    unless @workshop_mod.position == 1
+      previous_workshop_mod = @workshop.workshop_mods.where(position: @workshop_mod.position - 1).first
+      previous_workshop_mod.update(position: @workshop_mod.position)
+      @workshop_mod.update(position: (@workshop_mod.position - 1))
+    end
+    @workshop_mod.save
+    respond_to do |format|
+      format.html {redirect_to workshop_path(@workshop_mod.workshop)}
+      format.js
+    end
+  end
+
+  def move_down
+    @workshop_mod = WorkshopMod.find(params[:id])
+    authorize @workshop_mod
+    @workshop = @workshop_mod.workshop
+    unless @workshop_mod.position == @workshop.workshop_mods.count
+      next_workshop_mod = @workshop.workshop_mods.where(position: @workshop_mod.position + 1).first
+      next_workshop_mod.update(position: @workshop_mod.position)
+      @workshop_mod.update(position: (@workshop_mod.position + 1))
+    end
+    @workshop_mod.save
+    respond_to do |format|
+      format.html {redirect_to workshop_path(@workshop_mod.workshop)}
+      format.js
+    end
+  end
 end

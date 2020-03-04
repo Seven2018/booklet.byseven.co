@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
-  before_action :set_current_user, only: [:import]
+  before_action :set_current_user, only: [:import, :create]
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
@@ -33,9 +33,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
     @user.company_id = current_user.company_id
     authorize @user
     if @user.save
+      raw, token = Devise.token_generator.generate(User, :reset_password_token)
+      @user.reset_password_token = token
+      @user.reset_password_sent_at = Time.now.utc
+      @user.save(validate: false)
+      # @user.send_reset_password_instructions
+      UserMailer.account_created(@user, raw).deliver
       redirect_to user_path(@user)
     else
       render :new
@@ -59,7 +66,7 @@ class UsersController < ApplicationController
   def destroy
     authorize @user
     @user.destroy
-    redirect_to users_path
+    redirect_to organisation_path
   end
 
   # Creates new Users from an imported list

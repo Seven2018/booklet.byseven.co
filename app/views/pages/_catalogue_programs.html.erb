@@ -32,7 +32,7 @@
         <p>Theme</p>
         <div class="catalogue-index-info-order flex-column-centered dropdown show">
           <a class="dropdown-toggle" href="#" role="button" id="catalogueFilterPrograms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="catalogueFilterPrograms">
+          <div class="dropdown-menu dropdown-menu-filter" aria-labelledby="catalogueFilterPrograms">
             <div class="dropdown-item dropdown-form">
               <%= simple_form_for :filter, url: filter_program_catalogue_path, method: 'GET', remote: true do |f| %>
                 <label for="filter_all" class="label-checkbox check-box-all" >
@@ -72,7 +72,7 @@
             <h3>P</h3>
           </div>
           <div class="catalogue-index-info">
-            <p><%= program.title %></p>
+            <p data-toggle="tooltip" title="<%= program.title %>"><%= program.title %></p>
           </div>
           <div class="catalogue-index-info">
             <p data-toggle="tooltip" title='<%= "#{program.workshops.map(&:title).join(', ')}" %>'><%= "#{program.workshops.count} workshops" %></p>

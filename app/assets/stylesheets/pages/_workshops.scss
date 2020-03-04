@@ -61,6 +61,7 @@
   height: 10rem;
   width: 100%;
   border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding-bottom: 2rem;
 }
 
 
@@ -79,6 +80,14 @@
 .workshop-show-content {
   width: 90rem;
   margin: 2rem 0;
+}
+
+.workshop-show-content-controls {
+  margin-right: 1rem;
+
+  a {
+    font-size: 0;
+  }
 }
 
 .workshop-show-content-index {
@@ -110,6 +119,15 @@
   top: -15rem;
 }
 
+.workshop-show-content-attached {
+  margin: 2rem 0 5rem 0;
+  padding: 3rem;
+
+  a {
+    color: blue;
+  }
+}
+
 .workshop-show-content-main {
   max-height: 50rem;
   overflow-y: scroll;
@@ -127,6 +145,10 @@
 
   ul {
     list-style-type: disc;
+  }
+
+  a {
+    color: blue !important;
   }
 }
 

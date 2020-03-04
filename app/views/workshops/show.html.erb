@@ -30,7 +30,7 @@
       <p><%= "#{@workshop.duration} min" %></p>
     </div>
     <div class="workshop-show-card-footer centered-item">
-      <p><%= @workshop.description %></p>
+      <p><%= @workshop.description.html_safe %></p>
     </div>
   </div>
   <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
@@ -45,29 +45,9 @@
       <h3>Modules</h3>
     </div>
   <% end %>
-  <% if @workshop.mods.present? %>
-    <% ind = 1 %>
-    <% @workshop.mods.each do |mod| %>
-      <a data-toggle='modal' data-target='#editModule<%= mod.id %>'>
-        <div class="workshop-show-content flex-row-start-centered">
-          <div class="workshop-show-content-index centered-item">
-            <p><%= ind %></p>
-          </div>
-          <p><%= "#{mod.title} - #{mod.duration} min" %></p>
-          <% ind += 1 %>
-        </div>
-      </a>
-
-      <div class='modal fade' id='editModule<%= mod.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-        <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-          <%= render 'mods/edit', mod: mod %>
-        </div>
-      </div>
-    <% end %>
-    <%= link_to view_workshop_path(@workshop) do %>
-      <button class='btn btn-edit-red' style='margin-top: 5rem;'><p>Start</p></button>
-    <% end %>
-  <% end %>
+  <div id="workshop-show-module-index">
+    <%= render 'module_index' %>
+  </div>
 </div>
 
 

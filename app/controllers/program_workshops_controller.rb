@@ -24,18 +24,10 @@ class ProgramWorkshopsController < ApplicationController
     @program_workshop = ProgramWorkshop.find(params[:program_workshop_id])
     authorize @program_workshop
     @training_program = @program_workshop.training_program
-    # Creates an array of Workshops, ordered by position
-    array = []
-    @training_program.program_workshops.order(position: :asc).each do |program_workshop|
-      array << program_workshop
-    end
-    # Moves a WorkshopModule in the array by switching indexes
     unless @program_workshop.position == 1
-      array.insert((@program_workshop.position - 2), array.delete_at(@program_workshop.position - 1))
-    end
-    # Uses the array to update the WorkshopModules positions
-    array.compact.each do |program_workshop|
-      program_workshop.update(position: array.index(program_workshop) + 1)
+      previous_workshop = @training_program.program_workshops.where(position: @program_workshop.position - 1).first
+      previous_workshop.update(position: @program_workshop.position)
+      @program_workshop.update(position: (@program_workshop.position - 1))
     end
     @program_workshop.save
     respond_to do |format|
@@ -48,18 +40,10 @@ class ProgramWorkshopsController < ApplicationController
     @program_workshop = ProgramWorkshop.find(params[:program_workshop_id])
     authorize @program_workshop
     @training_program = @program_workshop.training_program
-    # Creates an array of Workshops, ordered by position
-    array = []
-    @training_program.program_workshops.order(position: :asc).each do |program_workshop|
-      array << program_workshop
-    end
-    # Moves a WorkshopModule in the array by switching indexes
-    unless @program_workshop.position == array.compact.count
-      array.insert((@program_workshop.position), array.delete_at(@program_workshop.position - 1))
-    end
-    # Uses the array to update the WorkshopModules positions
-    array.compact.each do |program_workshop|
-      program_workshop.update(position: array.index(program_workshop) + 1)
+    unless @program_workshop.position == @training_program.program_workshops.count
+      next_workshop = @training_program.program_workshops.where(position: @program_workshop.position + 1).first
+      next_workshop.update(position: @program_workshop.position)
+      @program_workshop.update(position: (@program_workshop.position + 1))
     end
     @program_workshop.save
     respond_to do |format|

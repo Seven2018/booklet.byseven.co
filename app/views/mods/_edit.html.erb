@@ -9,11 +9,19 @@
     <%= simple_form_for mod do |f| %>
       <%= f.input :title %>
       <%= f.input :duration %>
-      <%= f.cktext_area :content %>
+      <%= f.input :document, label: 'Document (url)' %>
+      <%= f.input :media, label: 'Media (url)' %>
+      <%= f.label :content %>
+      <%= f.cktext_area :content, id: "ckeditor#{mod.id}" %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <% if @workshop.present? %>
           <%= button_tag type: 'submit', name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
             <i class="fas fa-save"></i>
+          <% end %>
+          <%= link_to mod_path(mod), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+            <button class="btn btn-edit-red btn-edit-trash btn-edit-icon btn-last">
+              <i class="fas fa-trash-alt"></i>
+            </button>
           <% end %>
         <% elsif @training_workshop.present? %>
           <%= button_tag type: 'submit', name: 'training_workshop_id', value: "#{@training_workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
@@ -24,3 +32,10 @@
     <% end %>
   </div>
 </div>
+<script>
+  $( '.cke_button__link' ).click(function( event ) {
+    event.preventDefault();
+    console.log('toto');
+  });
+</script>
+

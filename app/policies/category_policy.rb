@@ -6,28 +6,28 @@ class CategoryPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_super
+    check_access
   end
 
   def show?
-    check_access_super
+    check_access
   end
 
   def edit?
-    check_access_super
+    check_access
   end
 
   def update?
-    check_access_super
+    check_access
   end
 
   def destroy?
-    check_access_super
+    check_access
   end
 
   private
 
-  def check_access_super
-    user.access_level == 'Super Admin'
+  def check_access
+    ['Super Admin', 'Admin', 'HR', 'Manager'].include? user.access_level
   end
 end

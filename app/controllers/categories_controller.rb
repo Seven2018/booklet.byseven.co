@@ -19,6 +19,7 @@ class CategoriesController < ApplicationController
     @category = Category.new(category_params)
     authorize @category
     @category.company_id = current_user.company_id
+    @category.title = 'Sans titre' if @category.title == ''
     @category.save ? (redirect_to catalogue_path) : (render :new)
   end
 
