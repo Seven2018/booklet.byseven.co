@@ -1,0 +1,24 @@
+<div id='mod-assessment-questions-list'>
+  <% @form.assessment_questions.each do |question| %>
+    <div class="mod-assessment-questions-card">
+      <p class='mod-assessment-questions-position'>Question n°<%= question&.position %></p>
+      <p><%= question&.question %></p>
+      <% if question.answer.present? %>
+        <p class='mod-assessment-questions-answer'>Correct answer :</p>
+        <p><%= question&.answer %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<a href="javascript:;" id='addQuestion' class='btn btn-edit'>Add Question</a>
+
+<div class="hidden" id="add_questions_form">
+  <%= render 'add_questions', form: @form %>
+</div>
+
+<script>
+  $("#addQuestion").click(function(){
+    $(this).hide();
+    $("#assessment-show-content").append($("#add_questions_form").html());
+  });
+</script>

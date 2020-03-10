@@ -10,10 +10,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_21_123006) do
+ActiveRecord::Schema.define(version: 2020_03_04_160625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assessment_answers", force: :cascade do |t|
+    t.string "answer", default: "", null: false
+    t.boolean "correct"
+    t.bigint "assessment_question_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["assessment_question_id"], name: "index_assessment_answers_on_assessment_question_id"
+    t.index ["user_id"], name: "index_assessment_answers_on_user_id"
+  end
+
+  create_table "assessment_options", force: :cascade do |t|
+    t.string "answer"
+    t.bigint "assessment_question_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["assessment_question_id"], name: "index_assessment_options_on_assessment_question_id"
+  end
+
+  create_table "assessment_questions", force: :cascade do |t|
+    t.string "question"
+    t.string "answer"
+    t.string "question_type"
+    t.integer "position"
+    t.boolean "logic_jump", default: false
+    t.boolean "active", default: false
+    t.bigint "assessment_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["assessment_id"], name: "index_assessment_questions_on_assessment_id"
+  end
+
+  create_table "assessments", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.bigint "mod_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mod_id"], name: "index_assessments_on_mod_id"
+  end
 
   create_table "attendees", force: :cascade do |t|
     t.string "status", default: "Not completed", null: false
@@ -50,21 +90,6 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
   create_table "currents", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "letsencrypt_certificates", force: :cascade do |t|
-    t.string "domain"
-    t.text "certificate"
-    t.text "intermediaries"
-    t.text "key"
-    t.datetime "expires_at"
-    t.datetime "renew_after"
-    t.string "verification_path"
-    t.string "verification_string"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["domain"], name: "index_letsencrypt_certificates_on_domain"
-    t.index ["renew_after"], name: "index_letsencrypt_certificates_on_renew_after"
   end
 
   create_table "mods", force: :cascade do |t|
@@ -294,6 +319,11 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
     t.index ["company_id"], name: "index_workshops_on_company_id"
   end
 
+  add_foreign_key "assessment_answers", "assessment_questions"
+  add_foreign_key "assessment_answers", "users"
+  add_foreign_key "assessment_options", "assessment_questions"
+  add_foreign_key "assessment_questions", "assessments"
+  add_foreign_key "assessments", "mods"
   add_foreign_key "attendees", "training_workshops"
   add_foreign_key "attendees", "users"
   add_foreign_key "categories", "companies"

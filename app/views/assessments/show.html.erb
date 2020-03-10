@@ -1,0 +1,21 @@
+<div id="show-controls" class='flex-row-between-centered'>
+  <%= link_to url_for(:back), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <div id='show-buttons'>
+    <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+      <!-- <a data-toggle='modal' data-target='#editWorkshop'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a> -->
+      <%= link_to edit_mod_assessment_path(@form.mod, @form) do %>
+        <button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button>
+      <% end %>
+      <%= link_to mod_assessment_path(@form.mod, @form), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+        <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div id="container-show">
+  <h3><%= @form.title %></h3>
+  <div id="assessment-show-content">
+    <%= render 'content', form: @form %>
+  </div>
+</div>
+

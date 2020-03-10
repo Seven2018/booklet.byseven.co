@@ -5,7 +5,7 @@
     </div>
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
-  <div class="modal-body" id="modalNewBookinBody">
+  <div class="modal-body modal-body<%= mod.id %>" id="modalNewBookinBody">
     <%= simple_form_for mod do |f| %>
       <%= f.input :title %>
       <%= f.input :duration %>
@@ -14,28 +14,45 @@
       <%= f.label :content %>
       <%= f.cktext_area :content, id: "ckeditor#{mod.id}" %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
-        <% if @workshop.present? %>
-          <%= button_tag type: 'submit', name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
-            <i class="fas fa-save"></i>
+        <div class='flex-row-between-centered'>
+          <% if @workshop.present? %>
+            <%= button_tag type: 'submit', name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
+            <%= link_to mod_path(mod), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+              <button class="btn btn-edit-red btn-edit-trash btn-edit-icon btn-last">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            <% end %>
+          <% elsif @training_workshop.present? %>
+            <%= button_tag type: 'submit', name: 'training_workshop_id', value: "#{@training_workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
           <% end %>
-          <%= link_to mod_path(mod), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-            <button class="btn btn-edit-red btn-edit-trash btn-edit-icon btn-last">
-              <i class="fas fa-trash-alt"></i>
-            </button>
+        </div>
+      <% end %>
+      <div id='mod-create-assessment-div' class='centered-item'>
+        <button id='mod-create-assessment-button' class='btn btn-edit'>
+          Create Form
+        </button>
+        <div id='mod-create-assessment-form' style='display: none;'>
+          <%= simple_form_for [mod, Assessment.new] do |f| %>
+            <div class='flex-row-between-centered'>
+              <%= f.text_field :title, placeholder: 'Form title', style: 'height: 100%;' %>
+              <%= button_tag type: 'submit', class: 'btn btn-edit btn-edit-icon' do %>
+                <i class="fas fa-save"></i>
+              <% end %>
+            </div>
           <% end %>
-        <% elsif @training_workshop.present? %>
-          <%= button_tag type: 'submit', name: 'training_workshop_id', value: "#{@training_workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
-            <i class="fas fa-save"></i>
-          <% end %>
-        <% end %>
+        </div>
+        <script>
+          $('#mod-create-assessment-button').click(function(event){
+            event.preventDefault();
+            $(this).hide();
+            $(this).parent().children('#mod-create-assessment-form').show();
+          });
+        </script>
       </div>
-    <% end %>
+    </div>
   </div>
 </div>
-<script>
-  $( '.cke_button__link' ).click(function( event ) {
-    event.preventDefault();
-    console.log('toto');
-  });
-</script>
-

@@ -26,7 +26,10 @@ Rails.application.routes.draw do
   end
   get 'workshops-filter', to: 'workshops#filter', as: 'filter_workshops'
   get 'workshops/:id/viewmode', to: 'workshops#view_mode', as: 'view_workshop'
-  resources :mods, only: %i[show new create update destroy]
+  resources :mods, only: %i[show new create update destroy] do
+    resources :assessments, only: %i[show new create edit update destroy]
+    post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
+  end
   resources :workshop_mods, only: %i[create destroy]
   get 'workshop_mods/:id/move_up', to: 'workshop_mods#move_up', as: 'move_up_workshop_mod'
   get 'workshop_mods/:id/move_down', to: 'workshop_mods#move_down', as: 'move_down_workshop_mod'
