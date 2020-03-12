@@ -1,0 +1,15 @@
+<div id="show-controls" class='flex-row-between-centered'>
+  <% if @question.position != 1 %>
+    <%= link_to assessment_view_mode_assessment_question_path(@question.mod, @previous_question), class: 'btn-edit-icon return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% else %>
+    <%= link_to '', class: 'btn-edit-icon return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% end %>
+  <div id='show-buttons'>
+  </div>
+</div>
+<div id="container-show">
+  <h3><%= @form.title %></h3>
+  <div id="assessment-show-content">
+    <%= render 'content_view_mode', form: @form %>
+  </div>
+</div>

@@ -35,10 +35,10 @@ class ModsController < ApplicationController
 
   def update
     authorize @module
-    workshop = Workshop.find(params[:workshop_id])
+    workshop = Workshop.find(params[:workshop_id]) if params[:workshop_id].present?
     @module.update(mod_params)
     if @module.save
-      redirect_to workshop_path(workshop)
+      params[:workshop_id].present? ? (redirect_to workshop_path(workshop)) : (redirect_to mod_path(@module))
     else
       raise
     end

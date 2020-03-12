@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :user_teams, dependent: :destroy
   has_many :teams, through: :user_teams
   has_many :notifications, dependent: :destroy
+  has_many :user_forms, dependent: :destroy
+  has_many :mods, through: :user_forms
   validates :firstname, :lastname, :email, :access_level, presence: true
   # validates :gender, inclusion: { in: ['M', 'F'] }
   require 'csv'

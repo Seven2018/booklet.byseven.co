@@ -60,9 +60,30 @@
   }
 }
 
-#new_assessment_question {
-  margin: 25px 0 0 0;
+.mod-assessment-questions-card-view {
+  padding: 2rem;
+
+  .mod-assessment-questions-position {
+    padding-bottom: 2rem;
+  }
+
+  .mod-assessment-questions-answer {
+    margin-top: 2rem;
+  }
+}
+
+
+.mod-create-assessment-form {
+
+  html {
+    height: 50rem !important;
+  }
+}
+
+.mod-assessment-questions-radio-buttons {
+  margin: 25px 0 1rem 0;
   padding: 0;
+  height: 4rem;
 
   span {
     float: left;
@@ -118,4 +139,35 @@
   .assessment_question_question {
     padding-top: 45px;
   }
+}
+
+.mod-assessment-questions-options-mcq {
+
+  div > div {
+    margin-bottom: 0 !important;
+  }
+
+  div > input {
+    margin-bottom: 1rem;
+  }
+}
+
+.addOption {
+  margin-top: 1rem;
+}
+
+.edit_assessment_answer, .new_assessment_answer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 2rem 0;
+
+  span > input {
+    margin-right: 1rem;
+  }
+}
+
+.edit_assessment_answer > input:last-of-type, .new_assessment_answer > input:last-of-type {
+  margin-top: 2rem;
 }

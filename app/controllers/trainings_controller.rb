@@ -38,7 +38,7 @@ class TrainingsController < ApplicationController
       @training_program.program_workshops.each do |program_workshop|
         new_training_workshop = TrainingWorkshop.create(program_workshop.workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
         new_training_workshop.update(workshop_id: program_workshop.workshop_id)
-        new_training_workshop.update(training_id: @training.id, date: Date.today, starts_at: Time.now, ends_at: (Time.now + new_training_workshop.duration*60))
+        new_training_workshop.update(training_id: @training.id, date: Date.today, starts_at: Time.now.change({hour: 9, min: 0, sec: 0}), ends_at: (Time.now.change({hour: 9, min: 0, sec: 0}) + new_training_workshop.duration*60))
         program_workshop.workshop.workshop_mods.each do |workshop_mod|
           new_training_workshop_mod = TrainingWorkshopMod.create(mod_id: workshop_mod.mod_id, training_workshop_id: new_training_workshop.id)
         end

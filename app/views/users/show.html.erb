@@ -60,6 +60,12 @@
     </div>
   </div>
 </div>
+<div>
+  <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
+   <p><%= form.title %></p>
+   <p>Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%</p>
+  <% end %>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

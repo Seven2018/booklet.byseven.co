@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_04_160625) do
+ActiveRecord::Schema.define(version: 2020_03_12_161708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,33 +26,17 @@ ActiveRecord::Schema.define(version: 2020_03_04_160625) do
     t.index ["user_id"], name: "index_assessment_answers_on_user_id"
   end
 
-  create_table "assessment_options", force: :cascade do |t|
-    t.string "answer"
-    t.bigint "assessment_question_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["assessment_question_id"], name: "index_assessment_options_on_assessment_question_id"
-  end
-
   create_table "assessment_questions", force: :cascade do |t|
     t.string "question"
-    t.string "answer"
+    t.text "options"
     t.string "question_type"
     t.integer "position"
     t.boolean "logic_jump", default: false
-    t.boolean "active", default: false
-    t.bigint "assessment_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["assessment_id"], name: "index_assessment_questions_on_assessment_id"
-  end
-
-  create_table "assessments", force: :cascade do |t|
-    t.string "title", default: "", null: false
+    t.boolean "active", default: true
     t.bigint "mod_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["mod_id"], name: "index_assessments_on_mod_id"
+    t.index ["mod_id"], name: "index_assessment_questions_on_mod_id"
   end
 
   create_table "attendees", force: :cascade do |t|
@@ -101,6 +85,7 @@ ActiveRecord::Schema.define(version: 2020_03_04_160625) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "media"
+    t.string "type"
     t.index ["company_id"], name: "index_mods_on_company_id"
   end
 
@@ -233,6 +218,16 @@ ActiveRecord::Schema.define(version: 2020_03_04_160625) do
     t.index ["training_program_id"], name: "index_trainings_on_training_program_id"
   end
 
+  create_table "user_forms", force: :cascade do |t|
+    t.integer "grade"
+    t.bigint "user_id"
+    t.bigint "mod_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mod_id"], name: "index_user_forms_on_mod_id"
+    t.index ["user_id"], name: "index_user_forms_on_user_id"
+  end
+
   create_table "user_skills", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "skill_id"
@@ -321,9 +316,7 @@ ActiveRecord::Schema.define(version: 2020_03_04_160625) do
 
   add_foreign_key "assessment_answers", "assessment_questions"
   add_foreign_key "assessment_answers", "users"
-  add_foreign_key "assessment_options", "assessment_questions"
-  add_foreign_key "assessment_questions", "assessments"
-  add_foreign_key "assessments", "mods"
+  add_foreign_key "assessment_questions", "mods"
   add_foreign_key "attendees", "training_workshops"
   add_foreign_key "attendees", "users"
   add_foreign_key "categories", "companies"
@@ -347,6 +340,8 @@ ActiveRecord::Schema.define(version: 2020_03_04_160625) do
   add_foreign_key "training_workshops", "workshops"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "training_programs"
+  add_foreign_key "user_forms", "mods"
+  add_foreign_key "user_forms", "users"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
   add_foreign_key "user_teams", "teams"

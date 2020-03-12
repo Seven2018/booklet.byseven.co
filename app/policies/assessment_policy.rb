@@ -17,6 +17,10 @@ class AssessmentPolicy < ApplicationPolicy
     check_access
   end
 
+  def add_answers?
+    check_access
+  end
+
   def destroy?
     check_access
   end

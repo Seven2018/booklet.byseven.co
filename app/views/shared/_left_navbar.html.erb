@@ -73,7 +73,7 @@
   <% else %>
     <% if params[:controller] == 'workshops' %>
       <div class="left-navbar-top-view-mode centered-item">
-        <%= link_to 'Exit view mode', workshop_path(@workshop), class: 'btn btn-invite-users' %>
+        <%= link_to 'Exit Lecture', workshop_path(@workshop), class: 'btn btn-invite-users' %>
       </div>
       <div class="left-navbar-middle-view-mode">
         <% @workshop.mods.order(position: :asc).each do |mod| %>
@@ -89,7 +89,7 @@
       </div>
     <% else %>
       <div class="left-navbar-top-view-mode centered-item">
-        <%= link_to 'Exit view mode', training_workshop_path(@training_workshop), class: 'btn btn-invite-users' %>
+        <%= link_to 'Exit Lecture', training_workshop_path(@training_workshop), class: 'btn btn-invite-users' %>
       </div>
       <div class="left-navbar-middle-view-mode">
         <% @training_workshop.mods.each do |mod| %>

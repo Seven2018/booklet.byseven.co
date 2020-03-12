@@ -24,12 +24,19 @@ Rails.application.routes.draw do
     resources :workshop_skills, only: %i[create]
     resources :workshop_categories, only: %i[create]
   end
+
+  # Assessments
+  resources :assessments, only: %i[show new create edit update destroy] do
+    resources :assessment_questions, only: %i[update destroy]
+    get 'question/:id/view_mode', to: 'assessment_questions#view_mode', as: 'view_mode_assessment_question'
+  end
+  post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
+  # get 'assessments/:id/view_mode', to: 'assessments#view_mode', as: 'view_mode_assessment'
+  post 'assessments/:id/add_answers', to: 'assessments#add_answers', as: 'add_answers_assessment'
+
   get 'workshops-filter', to: 'workshops#filter', as: 'filter_workshops'
   get 'workshops/:id/viewmode', to: 'workshops#view_mode', as: 'view_workshop'
-  resources :mods, only: %i[show new create update destroy] do
-    resources :assessments, only: %i[show new create edit update destroy]
-    post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
-  end
+  resources :mods, only: %i[show new create update destroy]
   resources :workshop_mods, only: %i[create destroy]
   get 'workshop_mods/:id/move_up', to: 'workshop_mods#move_up', as: 'move_up_workshop_mod'
   get 'workshop_mods/:id/move_down', to: 'workshop_mods#move_down', as: 'move_down_workshop_mod'

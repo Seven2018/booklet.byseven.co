@@ -11,8 +11,10 @@
       <%= f.input :duration %>
       <%= f.input :document, label: 'Document (url)' %>
       <%= f.input :media, label: 'Media (url)' %>
-      <%= f.label :content %>
-      <%= f.cktext_area :content, id: "ckeditor#{mod.id}" %>
+      <% unless mod.type == 'Assessment'  %>
+        <%= f.label :content %>
+        <%= f.cktext_area :content, id: "ckeditor#{mod.id}" %>
+      <% end %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <div class='flex-row-between-centered'>
           <% if @workshop.present? %>
@@ -28,31 +30,13 @@
             <%= button_tag type: 'submit', name: 'training_workshop_id', value: "#{@training_workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
               <i class="fas fa-save"></i>
             <% end %>
+          <% else %>
+            <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
           <% end %>
         </div>
       <% end %>
-      <div id='mod-create-assessment-div' class='centered-item'>
-        <button id='mod-create-assessment-button' class='btn btn-edit'>
-          Create Form
-        </button>
-        <div id='mod-create-assessment-form' style='display: none;'>
-          <%= simple_form_for [mod, Assessment.new] do |f| %>
-            <div class='flex-row-between-centered'>
-              <%= f.text_field :title, placeholder: 'Form title', style: 'height: 100%;' %>
-              <%= button_tag type: 'submit', class: 'btn btn-edit btn-edit-icon' do %>
-                <i class="fas fa-save"></i>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-        <script>
-          $('#mod-create-assessment-button').click(function(event){
-            event.preventDefault();
-            $(this).hide();
-            $(this).parent().children('#mod-create-assessment-form').show();
-          });
-        </script>
-      </div>
     </div>
   </div>
 </div>

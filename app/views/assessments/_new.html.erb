@@ -6,7 +6,7 @@
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
-    <%= simple_form_for [mod, Assessment.new] do |f| %>
+    <%= simple_form_for Assessment.new do |f| %>
       <%= f.input :title %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>

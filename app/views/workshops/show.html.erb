@@ -30,15 +30,41 @@
       <p><%= "#{@workshop.duration} min" %></p>
     </div>
     <div class="workshop-show-card-footer centered-item">
-      <p><%= @workshop.description.html_safe %></p>
+      <div>
+        <p><%= @workshop.description.html_safe %></p>
+      </div>
     </div>
   </div>
   <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
     <div class="workshop-show-module-controls flex-row-between-centered">
       <h3>Modules</h3>
-      <a data-toggle='modal' data-target='#editWorkshopContent'>
-        <button class='btn btn-edit'><p>Add Module</p></button>
-      </a>
+      <div class="flex-row-between-centered">
+        <a data-toggle='modal' data-target='#editWorkshopContent'>
+          <button class='btn btn-edit'><p>Add Module</p></button>
+        </a>
+        <div id='mod-create-assessment-div' class='centered-item'>
+          <button id='mod-create-assessment-button' class='btn btn-edit-green'>
+            Create Form
+          </button>
+          <div id='mod-create-assessment-form' style='display: none;'>
+            <%= simple_form_for Assessment.new do |f| %>
+              <div class='flex-row-between-centered'>
+                <%= f.text_field :title, placeholder: 'Form title', style: 'height: 100%;' %>
+                <%= button_tag :submit, name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit btn-edit-icon' do %>
+                  <i class="fas fa-save"></i>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <script>
+            $('#mod-create-assessment-button').click(function(event){
+              event.preventDefault();
+              $(this).hide();
+              $(this).parent().children('#mod-create-assessment-form').show();
+            });
+          </script>
+        </div>
+      </div>
     </div>
   <% else %>
     <div class="workshop-show-module-controls flex-row-start-centered">

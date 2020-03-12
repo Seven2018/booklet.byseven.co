@@ -1,0 +1,48 @@
+<div id="show-controls" class='flex-row-between-centered'>
+  <%= link_to workshop_path(Workshop.joins(:workshop_mods).find_by(workshop_mods: {mod_id: @module.id})), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <div id='show-buttons'>
+    <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+      <!-- <a data-toggle='modal' data-target='#editWorkshop'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a> -->
+      <a data-toggle='modal' data-target='#editModule'>
+        <button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button>
+      </a>
+      <%= link_to mod_path(@module), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+        <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div id="container-show">
+  <h3><%= @module.title %></h3>
+  <p><%= "#{@module.duration}min" %></p>
+</div>
+<% unless @module.document.empty? && @module.media.empty? %>
+  <div class="workshop-show-content-attached flex-row-between-start">
+    <% if @module.document.include?('presentation/d/e') %>
+      <iframe src="<%= @module.document.gsub(/pub/, 'embed') %>" frameborder="0" width="500" height="250" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+    <% elsif @module.document.present? %>
+      <a href="<%= @module.document %>" target="_blank"><i class="fas fa-paperclip"></i> Document</a>
+    <% else %>
+      <a href=""></a>
+    <% end %>
+    <% if @module.media.present? %>
+      <div class="workshop-show-content-attached-video">
+        <%= embed_video(@module.media) %>
+      </div>
+    <% else %>
+      <div class="workshop-show-content-attached-video">
+        <img src="">
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<div class="workshop-show-content-main-view-mode">
+  <%= @module.content.html_safe %>
+</div>
+
+<!-- Modals -->
+<div class='modal fade' id='editModule' tabindex='-1' role='dialog' aria-labelledby='editModule'  data-backdrop="static" data-keyboard="false" data-focus='false'>
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/edit', mod: @module %>
+  </div>
+</div>

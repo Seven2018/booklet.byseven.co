@@ -1,0 +1,71 @@
+<div id='mod-assessment-questions-list'>
+  <div class="mod-assessment-questions-card-view">
+    <p class='mod-assessment-questions-position'>Question n°<%= @question&.position %></p>
+    <p style="white-space: pre-line"><%= @question&.question %></p>
+    <% if @question.options.present? && @question.question_type == 'MCQ' %>
+      <% array = [] %>
+      <% @question.options.each do |key, value| %>
+        <% array << [key, key] %>
+      <% end %>
+      <%= simple_form_for @answer, url: add_answers_assessment_path(@form, question_id: @question.id), method: :post do |f| %>
+        <%= f.collection_radio_buttons :answer, array, :first, :last %>
+        <% if @question.position != @form.assessment_questions.count %>
+          <div class="centered-item" style='width: 100%;'>
+            <%= f.submit 'Next question', class: 'btn btn-edit' %>
+          </div>
+        <%# elsif AssessmentAnswer.joins(:assessment_question).where(user_id: current_user.id, assessment_questions: {assessment_id: @form.id}).count == @question.assessment.assessment_questions.count %>
+          <!-- <p>Form submitted, thank you</p> -->
+        <% else %>
+          <div class="centered-item" style='width: 100%;'>
+            <%= f.submit 'Submit Form', id: 'form_close', class: 'btn btn-edit' %>
+            <p id='submit-message'>Form submitted, thank you</p>
+          </div>
+        <% end %>
+      <% end %>
+    <% elsif @question.options.present? && @question.question_type == 'rating' %>
+      <% array = (@question.options[:start]..@question.options[:end]).to_a %>
+      <% array.each_with_index do |word, index| %>
+        <% a = [word, word] %>
+        <% array[index] = a %>
+      <% end %>
+      <%= simple_form_for @answer, url: add_answers_assessment_path(@form, question_id: @question.id), method: :post do |f| %>
+        <%= f.collection_radio_buttons :answer, array, :first, :last %>
+        <% if @question.position != @form.assessment_questions.count %>
+          <div class="centered-item" style='width: 100%;'>
+            <%= f.submit 'Next question', class: 'btn btn-edit' %>
+          </div>
+        <%# elsif AssessmentAnswer.joins(:assessment_question).where(user_id: current_user.id, assessment_questions: {assessment_id: @form.id}).count == @question.assessment.assessment_questions.count %>
+          <!-- <p>Form submitted, thank you</p> -->
+        <% else %>
+          <div class="centered-item" style='width: 100%;'>
+            <%= f.submit 'Submit Form', id: 'form_close', class: 'btn btn-edit' %>
+            <p id='submit-message'>Form submitted, thank you</p>
+          </div>
+        <% end %>
+      <% end %>
+    <% elsif @question.question_type == 'open question' %>
+      <%= simple_form_for @answer, url: mod_add_answers_assessment_path(@form.mod, @form, question_id: @question.id), method: :post do |f| %>
+        <%= f.input :answer, as: :text %>
+        <% if @question.position != @form.assessment_questions.count %>
+          <div class="centered-item" style='width: 100%;'>
+            <%= f.submit 'Next question', class: 'btn btn-edit' %>
+          </div>
+        <%# elsif AssessmentAnswer.joins(:assessment_question).where(user_id: current_user.id, assessment_questions: {assessment_id: @form.id}).count == @question.assessment.assessment_questions.count %>
+          <!-- <p>Form submitted, thank you</p> -->
+        <% else %>
+          <div class="centered-item" style='width: 100%;'>
+            <%= f.submit 'Submit Form', id: 'form_close', class: 'btn btn-edit' %>
+            <p id='submit-message'>Form submitted, thank you</p>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<script>
+  $('#submit-message').hide();
+  $('#form_close').click(function() {
+    $(this).hide();
+    $('#submit-message').show();
+  });
+</script>
