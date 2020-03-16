@@ -1,5 +1,5 @@
 <div id='mod-assessment-questions-list'>
-  <% @form.assessment_questions.each do |question| %>
+  <% @form.assessment_questions.order(position: :asc).each do |question| %>
     <div class="mod-assessment-questions-card">
       <div class='flex-row-between-start'>
         <p class='mod-assessment-questions-position'>Question n°<%= question&.position %></p>
