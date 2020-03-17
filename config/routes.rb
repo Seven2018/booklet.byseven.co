@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   resources :assessments, only: %i[show new create edit update destroy] do
     resources :assessment_questions, only: %i[update destroy]
     get 'question/:id/view_mode', to: 'assessment_questions#view_mode', as: 'view_mode_assessment_question'
+    get 'question/:id/move_up', to: 'assessment_questions#move_up', as: 'move_up_assessment_question'
+    get 'question/:id/move_down', to: 'assessment_questions#move_down', as: 'move_down_assessment_question'
   end
   post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
   # get 'assessments/:id/view_mode', to: 'assessments#view_mode', as: 'view_mode_assessment'

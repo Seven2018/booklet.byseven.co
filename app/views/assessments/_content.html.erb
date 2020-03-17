@@ -3,12 +3,30 @@
     <div class="mod-assessment-questions-card">
       <div class='flex-row-between-start'>
         <p class='mod-assessment-questions-position'>Question n°<%= question&.position %></p>
-        <div class='flex-row-between-start'>
+        <div class='mod-assessment-questions-controls flex-column-between-centered'>
           <a data-toggle='modal' data-target='#editQuestion<%= question.id %>'>
             <button class="btn btn-edit-icon"><i class='fas fa-pen'></i></button>
           </a>
           <%= link_to assessment_assessment_question_path(question.mod, question), method: :delete, data: { confirm: 'Are you sure ?'} do %>
             <button class="btn btn-edit-icon"><i class="far fa-trash-alt"></i></button>
+          <% end %>
+          <% if question.position == 1 %>
+            <%= link_to assessment_move_up_assessment_question_path(question.mod, question), remote: true do %>
+              <i class="fas fa-caret-up" style='color:grey;cursor:default;'></i>
+            <% end %>
+          <% else %>
+            <%= link_to assessment_move_up_assessment_question_path(question.mod, question), remote: true do %>
+              <i class="fas fa-caret-up"></i>
+            <% end %>
+          <% end %>
+          <% if question.position == question.mod.assessment_questions.count %>
+            <%= link_to assessment_move_down_assessment_question_path(question.mod, question), remote: true do %>
+              <i class="fas fa-caret-down" style='color:grey;cursor:default;'></i>
+            <% end %>
+          <% else %>
+            <%= link_to assessment_move_down_assessment_question_path(question.mod, question), remote: true do %>
+              <i class="fas fa-caret-down"></i>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -35,15 +53,4 @@
     </div>
   <% end %>
 </div>
-<a href="javascript:;" id='addQuestion' class='btn btn-edit'>Add Question</a>
 
-<div class="hidden" id="add_questions_form">
-  <%= render 'add_questions', form: @form %>
-</div>
-
-<script>
-  $("#addQuestion").click(function(){
-    $(this).hide();
-    $("#assessment-show-content").append($("#add_questions_form").html());
-  });
-</script>

@@ -17,6 +17,18 @@
   <div id="assessment-show-content">
     <%= render 'content', form: @form %>
   </div>
+  <a href="javascript:;" id='addQuestion' class='btn btn-edit'>Add Question</a>
+
+  <div class="hidden" id="add_questions_form">
+    <%= render 'add_questions', form: @form %>
+  </div>
+
+  <script>
+    $("#addQuestion").click(function(){
+      $(this).hide();
+      $("#assessment-show-content").append($("#add_questions_form").html());
+    });
+  </script>
 </div>
 
 <!-- Modals -->

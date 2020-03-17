@@ -50,6 +50,8 @@
 .mod-assessment-questions-card {
   padding: 2rem;
   border: 1px solid rgba(0,0,0,0.3);
+  position: relative;
+  min-height: 16.8rem;
 
   .mod-assessment-questions-position {
     padding-bottom: 2rem;
@@ -57,6 +59,12 @@
 
   .mod-assessment-questions-answer {
     margin-top: 2rem;
+  }
+
+  .mod-assessment-questions-controls {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
   }
 }
 
