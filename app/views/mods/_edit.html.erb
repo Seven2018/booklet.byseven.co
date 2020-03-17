@@ -21,7 +21,7 @@
             <%= button_tag type: 'submit', name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
               <i class="fas fa-save"></i>
             <% end %>
-            <%= link_to mod_path(mod), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+            <%= link_to mod_path(mod, workshop_id: @workshop.id), method: :delete, data: { confirm: 'Are you sure ?'} do %>
               <button class="btn btn-edit-red btn-edit-trash btn-edit-icon btn-last">
                 <i class="fas fa-trash-alt"></i>
               </button>

@@ -78,6 +78,12 @@ class AssessmentsController < ApplicationController
   def destroy
     authorize @form
     @form.destroy
+    @workshop = Workshop.find(params[:workshop_id])
+    i = 1
+    @workshop.workshop_mods.order(position: :asc).each do |workshop_mod|
+      workshop_mod.update(position: i)
+      i += 1
+    end
     redirect_back(fallback_location: root_path)
   end
 
