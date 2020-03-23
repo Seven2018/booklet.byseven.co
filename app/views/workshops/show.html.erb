@@ -5,11 +5,9 @@
       <i class="far fa-eye"></i>
     <% end %>
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
-      <!-- <a data-toggle='modal' data-target='#editWorkshop'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a> -->
       <%= link_to edit_workshop_path(@workshop) do %>
         <button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button>
       <% end %>
-      <!-- <a data-toggle='modal' data-target='#editSkills'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-info"></i></button></a> -->
       <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-swatchbook"></i></button></a>
       <%= link_to workshop_path(@workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
         <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
@@ -18,7 +16,8 @@
   </div>
 </div>
 <div id="container-show">
-  <div class='workshop-show-type'>
+  <div class='workshop-show-type flex-row-between-centered'>
+    <a data-toggle='modal' data-target='#transformTrainingWorkshop'><button class='btn btn-edit-blue'>Book</button></a>
     <h3>Workshop</h3>
   </div>
   <div class='workshop-show-card'>
@@ -39,9 +38,6 @@
     <div class="workshop-show-module-controls flex-row-between-centered">
       <h3>Modules</h3>
       <div class="flex-row-between-centered">
-        <!-- <a data-toggle='modal' data-target='#editWorkshopContent'>
-          <button class='btn btn-edit'><p>Add Module</p></button>
-        </a> -->
         <%= link_to new_mod_path(workshop_id: @workshop.id) do %>
           <button class='btn btn-edit'><p>Add Module</p></button>
         <% end %>
@@ -81,12 +77,6 @@
 
 
 <!-- Modal -->
-<div class='modal fade' id='editWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-    <%= render 'edit', workshop: @workshop %>
-  </div>
-</div>
-
 <div class='modal fade' id='editSkills' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'workshop_skills/new', workshop: @workshop %>
@@ -102,5 +92,12 @@
 <div class='modal fade' id='editWorkshopContent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'mods/new', workshop: @workshop %>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class='modal fade' id='transformTrainingWorkshop' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'training_workshops/new', workshop: @workshop %>
   </div>
 </div>
