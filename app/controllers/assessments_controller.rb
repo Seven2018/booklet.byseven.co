@@ -60,7 +60,12 @@ class AssessmentsController < ApplicationController
         end
       end
       grade = correct_answers.fdiv(correct_answers + wrong_answers)
-      UserForm.create(grade: (grade*100).round, user_id: current_user.id, mod_id: @form.id)
+      form = UserForm.find_by(user_id: current_user.id, mod_id: @form.id)
+      if form.present?
+        form.update(grade: (grade*100))
+      else
+        UserForm.create(grade: (grade*100).round, user_id: current_user.id, mod_id: @form.id)
+      end
       redirect_to view_workshop_path(Workshop.joins(:workshop_mods).find_by(workshop_mods: {mod_id: @form.id}))
     end
   end

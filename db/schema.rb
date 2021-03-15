@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(version: 2020_03_12_161708) do
 
   create_table "user_forms", force: :cascade do |t|
     t.integer "grade"
+    t.boolean "validated", default: false
     t.bigint "user_id"
     t.bigint "mod_id"
     t.datetime "created_at", precision: 6, null: false

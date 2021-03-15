@@ -38,9 +38,9 @@
     <div class="workshop-show-module-controls flex-row-between-centered">
       <h3>Modules</h3>
       <div class="flex-row-between-centered">
-        <%= link_to new_mod_path(workshop_id: @workshop.id) do %>
-          <button class='btn btn-edit'><p>Add Module</p></button>
-        <% end %>
+        <a data-toggle='modal' data-target='#editWorkshopContent'>
+        <button class='btn btn-edit'><p>Add Module</p></button>
+      </a>
         <div id='mod-create-assessment-div' class='centered-item'>
           <button id='mod-create-assessment-button' class='btn btn-edit-green'>
             Create Form
@@ -91,7 +91,7 @@
 
 <div class='modal fade' id='editWorkshopContent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-    <%= render 'mods/new', workshop: @workshop %>
+    <%= render 'edit_content', workshop: @workshop %>
   </div>
 </div>
 

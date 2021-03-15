@@ -7,6 +7,7 @@ class TrainingWorkshopModsController < ApplicationController
     array = params[:training_workshop][:mod_ids].drop(1).map(&:to_i)
     array.each do |ind|
       if TrainingWorkshopMod.where(training_workshop_id: @training_workshop.id, mod_id: ind).empty?
+    raise
         TrainingWorkshopMod.create(training_workshop_id: @training_workshop.id, mod_id: ind)
       end
     end

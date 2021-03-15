@@ -1,5 +1,6 @@
 class TrainingWorkshopsController < ApplicationController
   before_action :set_training_workshop, only: [:show, :view_mode, :update, :destroy]
+  helper VideoHelper
 
   def show
     @training_workshop = TrainingWorkshop.find(params[:id])
@@ -10,6 +11,7 @@ class TrainingWorkshopsController < ApplicationController
 
   def view_mode
     authorize @training_workshop
+    @workshop = Workshop.find(@training_workshop.workshop_id)
   end
 
   # Allows management of TrainingWorkshops through a checkbox collection
@@ -63,6 +65,12 @@ class TrainingWorkshopsController < ApplicationController
       redirect_back(fallback_location: root_path)
       flash[:notice] = 'Ending date must be after starting date'
     end
+  end
+
+  def destroy
+    authorize @training_workshop
+    @training_workshop.destroy
+    redirect_to dashboard_path
   end
 
   private
