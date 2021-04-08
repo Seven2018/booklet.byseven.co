@@ -1,17 +1,56 @@
 <div id="index-controls" class="flex-row-start-centered">
-  <h3><%= "#{@training_workshop.title}" %></h3>
+  <h3><%= "#{@workshop.title}" %></h3>
 </div>
 <div class='flex-column-centered'>
-  <% @training_workshop.mods.each do |mod| %>
+  <% @workshop.mods.order(position: :asc).each do |mod| %>
     <div class="workshop-show-content">
       <div class="workshop-show-content-header flex-row-between-centered">
         <a name="<%= mod.id %>" class="workshop-show-view-mode-anchor"></a>
-        <p><%= mod.title %></p>
+        <% if mod.type == 'Assessment' %>
+          <div class="flex-row-between-centered">
+            <i class="fas fa-question-circle" style='margin-right: 1rem;font-size:2rem;'></i>
+            <p><%= mod.title %></p>
+          </div>
+        <% else %>
+          <p><%= mod.title %></p>
+        <% end %>
         <p><%= "#{mod.duration}min" %></p>
       </div>
+      <% unless mod.document.empty? && mod.media.empty? %>
+        <div class="workshop-show-content-attached flex-row-between-start">
+          <% if mod.document.include?('presentation/d/e') %>
+            <iframe src="<%= mod.document.gsub(/pub/, 'embed') %>" frameborder="0" width="500" height="250" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+          <% elsif mod.document.present? %>
+            <a href="<%= mod.document %>" target="_blank"><i class="fas fa-paperclip"></i> Document</a>
+          <% else %>
+            <a href=""></a>
+          <% end %>
+          <% if mod.media.present? %>
+            <div class="workshop-show-content-attached-video">
+              <%= embed_video(mod.media) %>
+            </div>
+          <% else %>
+            <div class="workshop-show-content-attached-video">
+              <img src="">
+            </div>
+          <% end %>
+        </div>
+      <% end %>
       <div class="workshop-show-content-main-view-mode">
-        <%= mod.content.html_safe %>
+        <% if mod.type == 'Assessment' %>
+          <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? %>
+            <%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+          <% else %>
+            <div class="flex-row-between-centered">
+              <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+              <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
+            </div>
+          <% end %>
+        <% else %>
+          <%= mod.content.html_safe %>
+        <% end %>
       </div>
     </div>
   <% end %>
 </div>
+

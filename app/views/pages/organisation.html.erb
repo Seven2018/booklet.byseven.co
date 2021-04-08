@@ -4,7 +4,7 @@
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
       <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a data-toggle='modal' data-target='#newTeam' class='dropdown-item'>New Team</a>
+        <a data-toggle='modal' data-target='#newTag' class='dropdown-item'>New Tag</a>
         <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
         <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
       </div>
@@ -32,58 +32,58 @@
 <div class="training-index-dashboard flex-row-between-start">
   <div class='training-index-list-dashboard-sm'>
     <div class='training-index-list-dashboard-controls flex-row-start-centered'>
-      <p class='training-index-list-dashboard-title'>Teams</p>
+      <p class='training-index-list-dashboard-title'>Tags</p>
     </div>
-    <% if params[:team_id].nil? %>
+    <% if params[:tag_id].nil? %>
       <%= link_to organisation_path do %>
-        <div class='team-index-card flex-row-between-centered active'>
-          <div class="team-index-card-teamname">
+        <div class='tag-index-card flex-row-between-centered active'>
+          <div class="tag-index-card-tagname">
             <p>All</p>
           </div>
-          <div class="team-index-card-infos">
+          <div class="tag-index-card-infos">
             <p><%= "#{current_user.company.users.count} members" %></p>
           </div>
         </div>
       <% end %>
     <% else %>
       <%= link_to organisation_path do %>
-        <div class='team-index-card flex-row-between-centered'>
-          <div class="team-index-card-teamname">
+        <div class='tag-index-card flex-row-between-centered'>
+          <div class="tag-index-card-tagname">
             <p>All</p>
           </div>
-          <div class="team-index-card-infos">
+          <div class="tag-index-card-infos">
             <p><%= "#{current_user.company.users.count} members" %></p>
           </div>
         </div>
       <% end %>
     <% end %>
-    <% if @teams.present? %>
-      <% @teams.sort_by(&:team_name).each do |team| %>
-        <% if params[:team_id] == team.id.to_s %>
-          <div class='team-index-card active'>
-            <%= link_to organisation_path(team_id: team.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
-              <div class="team-index-card-teamname">
-                <p data-toggle="tooltip" title="<%= team.team_name %>"><%= team.team_name %></p>
+    <% if @tags.present? %>
+      <% @tags.sort_by(&:tag_name).each do |tag| %>
+        <% if params[:tag_id] == tag.id.to_s %>
+          <div class='tag-index-card active'>
+            <%= link_to organisation_path(tag_id: tag.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
+              <div class="tag-index-card-tagname">
+                <p data-toggle="tooltip" title="<%= tag.tag_name %>"><%= tag.tag_name %></p>
               </div>
-              <div class="team-index-card-infos">
-                <p><%= "#{team.users.count} members" %></p>
+              <div class="tag-index-card-infos">
+                <p><%= "#{tag.users.count} members" %></p>
               </div>
             <% end %>
-            <%= link_to team_path(team), class: 'team-index-card-link' do %>
+            <%= link_to tag_path(tag), class: 'tag-index-card-link' do %>
               <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-eye"></i></button>
             <% end %>
           </div>
         <% else %>
-          <div class='team-index-card'>
-            <%= link_to organisation_path(team_id: team.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
-              <div class="team-index-card-teamname">
-                <p data-toggle="tooltip" title="<%= team.team_name %>"><%= team.team_name %></p>
+          <div class='tag-index-card'>
+            <%= link_to organisation_path(tag_id: tag.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
+              <div class="tag-index-card-tagname">
+                <p data-toggle="tooltip" title="<%= tag.tag_name %>"><%= tag.tag_name %></p>
               </div>
-              <div class="team-index-card-infos">
-                <p><%= "#{team.users.count} members" %></p>
+              <div class="tag-index-card-infos">
+                <p><%= "#{tag.users.count} members" %></p>
               </div>
             <% end %>
-            <%= link_to team_path(team), class: 'team-index-card-link' do %>
+            <%= link_to tag_path(tag), class: 'tag-index-card-link' do %>
               <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-eye"></i></button>
             <% end %>
           </div>
@@ -107,15 +107,15 @@
               <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
             </div>
             <div class="user-index-info">
-              <% teams = '' %>
-              <% user.teams.each do |team| %>
-                <% if team == user.teams.last %>
-                  <% teams += "#{team.team_name}" %>
+              <% tags = '' %>
+              <% user.tags.each do |tag| %>
+                <% if tag == user.tags.last %>
+                  <% tags += "#{tag.tag_name}" %>
                 <% else %>
-                  <% teams += "#{team.team_name}, " %>
+                  <% tags += "#{tag.tag_name}, " %>
                 <% end %>
               <% end %>
-              <p data-toggle="tooltip" title="<%= teams %>"><%= teams %></p>
+              <p data-toggle="tooltip" title="<%= tags %>"><%= tags %></p>
             </div>
           </div>
         </div>
@@ -125,21 +125,21 @@
 </div>
 
 <!-- Modals -->
-<div class='modal fade' id='newTeam' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<div class='modal fade' id='newTag' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'teams/new', team: Team.new %>
+    <%= render 'tags/new', tag: Tag.new %>
   </div>
 </div>
 
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'users/new', team: User.new %>
+    <%= render 'users/new', tag: User.new %>
   </div>
 </div>
 
 <div class='modal fade' id='importUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'users/import', team: User.new %>
+    <%= render 'users/import', tag: User.new %>
   </div>
 </div>
 

@@ -35,11 +35,10 @@
     <% end %>
   </div>
   <div id="workshop-booked-participants">
-    <% if @training_workshop.training.present? %>
-      <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-invite-users' disabled>Manage Users</button></a>
-    <% elsif @training_workshop.date > Date.today %>
-      <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-invite-users'>Manage Users</button></a>
-    <% else %>
+    <% if @training_workshop.training.present? && (['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level) %>
+      <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-green' disabled>Manage Users</button></a>
+    <% elsif ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+      <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-green'>Manage Users</button></a>
       <a data-toggle='modal' data-target='#confirmPresence'><button class='btn btn-invite-users'>Confirm Presence</button></a>
     <% end %>
     <ul id='workshop-booked-attendee-list'>
@@ -66,13 +65,15 @@
       <p><%= "#{@training_workshop.workshop.duration} min" %></p>
     </div>
     <div class="workshop-show-card-footer centered-item">
-      <p><%= @training_workshop.workshop.description %></p>
+      <div>
+        <p><%= @training_workshop.workshop.description.html_safe %></p>
+      </div>
     </div>
   </div>
   <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
     <div class="workshop-show-module-controls flex-row-between-centered">
       <h3>Modules</h3>
-      <a data-toggle='modal' data-target='#editWorkshopContent'>
+      <a data-toggle='modal' data-target='#editTrainingWorkshopContent'>
         <button class='btn btn-edit'><p>Add Module</p></button>
       </a>
     </div>

@@ -1,0 +1,56 @@
+<div id='mod-assessment-questions-list'>
+  <% @form.assessment_questions.order(position: :asc).each do |question| %>
+    <div class="mod-assessment-questions-card">
+      <div class='flex-row-between-start'>
+        <p class='mod-assessment-questions-position'>Question n°<%= question&.position %></p>
+        <div class='mod-assessment-questions-controls flex-column-between-centered'>
+          <a data-toggle='modal' data-target='#editQuestion<%= question.id %>'>
+            <button class="btn btn-edit-icon"><i class='fas fa-pen'></i></button>
+          </a>
+          <%= link_to assessment_assessment_question_path(question.mod, question), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+            <button class="btn btn-edit-icon"><i class="far fa-trash-alt"></i></button>
+          <% end %>
+          <% if question.position == 1 %>
+            <%= link_to assessment_move_up_assessment_question_path(question.mod, question), remote: true do %>
+              <i class="fas fa-caret-up" style='color:grey;cursor:default;'></i>
+            <% end %>
+          <% else %>
+            <%= link_to assessment_move_up_assessment_question_path(question.mod, question), remote: true do %>
+              <i class="fas fa-caret-up"></i>
+            <% end %>
+          <% end %>
+          <% if question.position == question.mod.assessment_questions.count %>
+            <%= link_to assessment_move_down_assessment_question_path(question.mod, question), remote: true do %>
+              <i class="fas fa-caret-down" style='color:grey;cursor:default;'></i>
+            <% end %>
+          <% else %>
+            <%= link_to assessment_move_down_assessment_question_path(question.mod, question), remote: true do %>
+              <i class="fas fa-caret-down"></i>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class='modal fade' id='editQuestion<%= question.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+        <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+          <%= render 'assessment_questions/edit', question: question %>
+        </div>
+      </div>
+      <p style="white-space: pre-line"><%= question&.question %></p>
+      <% if question.options.present? && question.question_type == 'MCQ' %>
+        <% i = 1 %>
+        <% question.options.each do |key, value| %>
+          <% if question.options[key] == 'true' %>
+            <p style='color: #4AC2C7;'><%= i %> - <%= key %></p>
+          <% else %>
+            <p style='color: #E64259;'><%= i %> - <%= key %></p>
+          <% end %>
+          <% i += 1 %>
+        <% end %>
+      <% elsif question.options.present? && question.question_type == 'rating' %>
+        <p class='mod-assessment-questions-answer'>Rating values :</p>
+        <p><%= question.options[:start] %> => <%= question.options[:end] %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+

@@ -35,10 +35,10 @@ class ModsController < ApplicationController
 
   def update
     authorize @module
-    workshop = Workshop.find(params[:workshop_id])
+    workshop = Workshop.find(params[:workshop_id]) if params[:workshop_id].present?
     @module.update(mod_params)
     if @module.save
-      redirect_to workshop_path(workshop)
+      params[:workshop_id].present? ? (redirect_to workshop_path(workshop)) : (redirect_to mod_path(@module))
     else
       raise
     end
@@ -47,6 +47,12 @@ class ModsController < ApplicationController
   def destroy
     authorize @module
     @module.destroy
+    @workshop = Workshop.find(params[:workshop_id])
+    i = 1
+    @workshop.workshop_mods.order(position: :asc).each do |workshop_mod|
+      workshop_mod.update(position: i)
+      i += 1
+    end
     redirect_back(fallback_location: root_path)
   end
 

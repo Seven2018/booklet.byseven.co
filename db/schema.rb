@@ -10,10 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_21_123006) do
+ActiveRecord::Schema.define(version: 2020_03_12_161708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assessment_answers", force: :cascade do |t|
+    t.string "answer", default: "", null: false
+    t.boolean "correct"
+    t.bigint "assessment_question_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["assessment_question_id"], name: "index_assessment_answers_on_assessment_question_id"
+    t.index ["user_id"], name: "index_assessment_answers_on_user_id"
+  end
+
+  create_table "assessment_questions", force: :cascade do |t|
+    t.string "question"
+    t.text "options"
+    t.string "question_type"
+    t.integer "position"
+    t.boolean "logic_jump", default: false
+    t.boolean "active", default: true
+    t.bigint "mod_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mod_id"], name: "index_assessment_questions_on_mod_id"
+  end
 
   create_table "attendees", force: :cascade do |t|
     t.string "status", default: "Not completed", null: false
@@ -52,21 +76,6 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "letsencrypt_certificates", force: :cascade do |t|
-    t.string "domain"
-    t.text "certificate"
-    t.text "intermediaries"
-    t.text "key"
-    t.datetime "expires_at"
-    t.datetime "renew_after"
-    t.string "verification_path"
-    t.string "verification_string"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["domain"], name: "index_letsencrypt_certificates_on_domain"
-    t.index ["renew_after"], name: "index_letsencrypt_certificates_on_renew_after"
-  end
-
   create_table "mods", force: :cascade do |t|
     t.string "title", default: "", null: false
     t.integer "duration", default: 0, null: false
@@ -76,6 +85,7 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "media"
+    t.string "type"
     t.index ["company_id"], name: "index_mods_on_company_id"
   end
 
@@ -132,22 +142,32 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
     t.index ["skill_group_id"], name: "index_skills_on_skill_group_id"
   end
 
-  create_table "team_workshops", force: :cascade do |t|
-    t.bigint "team_id"
-    t.bigint "training_workshop_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["team_id"], name: "index_team_workshops_on_team_id"
-    t.index ["training_workshop_id"], name: "index_team_workshops_on_training_workshop_id"
-  end
-
-  create_table "teams", force: :cascade do |t|
-    t.string "team_name", default: "", null: false
-    t.string "image", default: "", null: false
+  create_table "tag_categories", force: :cascade do |t|
+    t.string "name"
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_teams_on_company_id"
+    t.index ["company_id"], name: "index_tag_categories_on_company_id"
+  end
+
+  create_table "tag_workshops", force: :cascade do |t|
+    t.bigint "tag_id"
+    t.bigint "training_workshop_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tag_id"], name: "index_tag_workshops_on_tag_id"
+    t.index ["training_workshop_id"], name: "index_tag_workshops_on_training_workshop_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "tag_name", default: "", null: false
+    t.string "image", default: "", null: false
+    t.bigint "company_id"
+    t.bigint "tag_category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_tags_on_company_id"
+    t.index ["tag_category_id"], name: "index_tags_on_tag_category_id"
   end
 
   create_table "training_programs", force: :cascade do |t|
@@ -208,6 +228,17 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
     t.index ["training_program_id"], name: "index_trainings_on_training_program_id"
   end
 
+  create_table "user_forms", force: :cascade do |t|
+    t.integer "grade"
+    t.boolean "validated", default: false
+    t.bigint "user_id"
+    t.bigint "mod_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mod_id"], name: "index_user_forms_on_mod_id"
+    t.index ["user_id"], name: "index_user_forms_on_user_id"
+  end
+
   create_table "user_skills", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "skill_id"
@@ -217,13 +248,13 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
     t.index ["user_id"], name: "index_user_skills_on_user_id"
   end
 
-  create_table "user_teams", force: :cascade do |t|
+  create_table "user_tags", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "team_id"
+    t.bigint "tag_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["team_id"], name: "index_user_teams_on_team_id"
-    t.index ["user_id"], name: "index_user_teams_on_user_id"
+    t.index ["tag_id"], name: "index_user_tags_on_tag_id"
+    t.index ["user_id"], name: "index_user_tags_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -294,6 +325,9 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
     t.index ["company_id"], name: "index_workshops_on_company_id"
   end
 
+  add_foreign_key "assessment_answers", "assessment_questions"
+  add_foreign_key "assessment_answers", "users"
+  add_foreign_key "assessment_questions", "mods"
   add_foreign_key "attendees", "training_workshops"
   add_foreign_key "attendees", "users"
   add_foreign_key "categories", "companies"
@@ -306,9 +340,11 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
   add_foreign_key "requests", "training_programs"
   add_foreign_key "requests", "users"
   add_foreign_key "skills", "skill_groups"
-  add_foreign_key "team_workshops", "teams"
-  add_foreign_key "team_workshops", "training_workshops"
-  add_foreign_key "teams", "companies"
+  add_foreign_key "tag_categories", "companies"
+  add_foreign_key "tag_workshops", "tags"
+  add_foreign_key "tag_workshops", "training_workshops"
+  add_foreign_key "tags", "companies"
+  add_foreign_key "tags", "tag_categories"
   add_foreign_key "training_programs", "companies"
   add_foreign_key "training_workshop_mods", "mods"
   add_foreign_key "training_workshop_mods", "training_workshops"
@@ -317,10 +353,12 @@ ActiveRecord::Schema.define(version: 2020_02_21_123006) do
   add_foreign_key "training_workshops", "workshops"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "training_programs"
+  add_foreign_key "user_forms", "mods"
+  add_foreign_key "user_forms", "users"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
-  add_foreign_key "user_teams", "teams"
-  add_foreign_key "user_teams", "users"
+  add_foreign_key "user_tags", "tags"
+  add_foreign_key "user_tags", "users"
   add_foreign_key "users", "companies"
   add_foreign_key "workshop_categories", "categories"
   add_foreign_key "workshop_categories", "workshops"

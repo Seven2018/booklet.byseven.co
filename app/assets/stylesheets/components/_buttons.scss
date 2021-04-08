@@ -1,6 +1,6 @@
 .return-arrow {
   min-width: 0 !important;
-  padding: 1.575rem 1.7rem !important;
+  padding: 1.575rem 1.3rem !important;
   box-shadow: none !important;
 
   i {
@@ -18,11 +18,9 @@ input.btn {
   &:focus {
     box-shadow: none;
   }
-
-
 }
 
-.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-white, .btn-invite-users {
+.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-blue, .btn-invite-users {
   opacity: 0.8;
   width: auto;
   max-width: none;
@@ -34,10 +32,37 @@ input.btn {
   transition: all 0.1s;
   outline: none !important;
   margin-right: 0.5rem;
+  color: white !important;
+
+  a {
+    color: white !important;
+  }
+
   i {
     color: white;
   }
-  &:hover:enabled{
+
+  &:hover, &:hover:enabled{
+    opacity: 1;
+    text-decoration: none !important;
+    color: white !important;
+  }
+}
+
+.btn-edit-white {
+  opacity: 0.8;
+  width: auto;
+  max-width: none;
+  padding: 0.45rem 2rem;
+  border-radius: 0.22rem;
+  box-sizing: border-box;
+  font-weight: 800 !important;
+  text-align: center;
+  transition: all 0.1s;
+  outline: none !important;
+  margin-right: 0.5rem;
+
+  &:hover, &:hover:enabled{
     opacity: 1;
     text-decoration: none !important;
   }
@@ -57,6 +82,10 @@ input.btn {
 
 .btn-edit-green {
   background-color: #4AC2C7 !important;
+}
+
+.btn-edit-blue {
+  background-color: #779DBF !important;
 }
 
 .btn-edit-grey {

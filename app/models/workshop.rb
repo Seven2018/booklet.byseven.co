@@ -11,5 +11,6 @@ class Workshop < ApplicationRecord
   has_many :categories, through: :workshop_categories
   has_many :workshop_mods, dependent: :destroy
   has_many :mods, through: :workshop_mods
+  has_many :assessments, dependent: :destroy
   accepts_nested_attributes_for :workshop_categories
 end

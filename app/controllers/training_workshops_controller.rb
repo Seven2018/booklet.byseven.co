@@ -1,15 +1,17 @@
 class TrainingWorkshopsController < ApplicationController
   before_action :set_training_workshop, only: [:show, :view_mode, :update, :destroy]
+  helper VideoHelper
 
   def show
     @training_workshop = TrainingWorkshop.find(params[:id])
     authorize @training_workshop
-    ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) ? @teams = Team.where(company_id: current_user.company_id) : @teams = current_user.teams
+    ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) ? @Tags = Tag.where(company_id: current_user.company_id) : @Tags = current_user.Tags
     @users = User.where(company_id: current_user.company_id)
   end
 
   def view_mode
     authorize @training_workshop
+    @workshop = Workshop.find(@training_workshop.workshop_id)
   end
 
   # Allows management of TrainingWorkshops through a checkbox collection
@@ -63,6 +65,12 @@ class TrainingWorkshopsController < ApplicationController
       redirect_back(fallback_location: root_path)
       flash[:notice] = 'Ending date must be after starting date'
     end
+  end
+
+  def destroy
+    authorize @training_workshop
+    @training_workshop.destroy
+    redirect_to dashboard_path
   end
 
   private

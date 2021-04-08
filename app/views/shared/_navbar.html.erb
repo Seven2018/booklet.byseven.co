@@ -1,7 +1,9 @@
 <div class="navbar navbar-expand-sm navbar-light">
   <div class="navbar-controls-left centered-item">
     <% if user_signed_in? %>
-      <p>Booklet for <img src='<%= "#{current_user.company.logo}" %>' class="left-navbar-logo" height='24px'></p>
+      <%= link_to root_path do %>
+        Booklet for <img src='<%= "#{current_user.company.logo}" %>' class="left-navbar-logo" height='24px'>
+      <% end %>
     <% end %>
   </div>
   <div class="navbar-controls-right flex-row-between-centered">

@@ -1,10 +1,10 @@
 <p><%= "Hours of completed trainings: #{TrainingWorkshop.where(company_id: current_user.company_id).where("date < ?", Date.today).map(&:duration).sum.fdiv(60)} h" %></p>
 <br>
-<p>Hours of completed trainings, by team:</p>
+<p>Hours of completed trainings, by Tag:</p>
 <div>
-  <% unless Team.all.empty? %>
-    <% Team.where(company_id: current_user.company_id).each do |team| %>
-      <h6><%= "#{team.team_name}: #{TrainingWorkshop.joins(:team_workshops).where(team_workshops: {team_id: team.id}).where("date < ?", Date.today).map(&:duration).sum.fdiv(60)} h" %></h6>
+  <% unless Tag.all.empty? %>
+    <% Tag.where(company_id: current_user.company_id).each do |Tag| %>
+      <h6><%= "#{Tag.Tag_name}: #{TrainingWorkshop.joins(:Tag_workshops).where(Tag_workshops: {Tag_id: Tag.id}).where("date < ?", Date.today).map(&:duration).sum.fdiv(60)} h" %></h6>
     <% end %>
   <% end %>
 </div>

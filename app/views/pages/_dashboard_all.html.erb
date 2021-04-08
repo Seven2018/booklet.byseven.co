@@ -11,7 +11,7 @@
         <h3>Pending</h3>
       </div>
       <div class='dashboard-label'>
-        <h3><strong><%= TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id).where('date < ?', Date.today).count %></strong></h3>
+        <h3><strong><%= TrainingWorkshop.where(company_id: current_user.company_id).where('date < ?', Date.today).count %></strong></h3>
         <h3>Completed</h3>
       </div>
     </div>

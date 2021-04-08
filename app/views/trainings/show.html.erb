@@ -24,18 +24,20 @@
       <% end %>
     </div>
   </div>
-  <div id="workshop-booked-participants">
-    <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-invite-users'>Manage Users</button></a>
-    <ul id='workshop-booked-attendee-list'>
-      <% ind = 0 %>
-      <% @training_workshop.attendees.each do |attendee| %>
-        <% unless ind >= 10 %>
-          <li><img src="<%= attendee.user.picture %>" alt="" class='avatar-sm'></li>
-          <% ind += 1 %>
+  <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+    <div id="workshop-booked-participants">
+      <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-green'>Manage Users</button></a>
+      <ul id='workshop-booked-attendee-list'>
+        <% ind = 0 %>
+        <% @training_workshop.attendees.each do |attendee| %>
+          <% unless ind >= 10 %>
+            <li><img src="<%= attendee.user.picture %>" alt="" class='avatar-sm'></li>
+            <% ind += 1 %>
+          <% end %>
         <% end %>
-      <% end %>
-    </ul>
-  </div>
+      </ul>
+    </div>
+  <% end %>
 </div>
 <div id="container-show">
   <div class='workshop-show-type'>

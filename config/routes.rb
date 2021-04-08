@@ -2,9 +2,9 @@ Rails.application.routes.draw do
   devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :users, only: %i[new create show update destroy]
   post 'users/import', to: 'users#import', as: 'import_users'
-  resources :teams, only: %i[create show update destroy]
-  resources :team_categories, only: %i[create]
-  resources :user_teams, only: %i[create]
+  resources :tags, only: %i[create show update destroy]
+  resources :tag_categories, only: %i[create]
+  resources :user_tags, only: %i[create]
   resources :companies
   resources :categories
   resources :skills
@@ -24,6 +24,18 @@ Rails.application.routes.draw do
     resources :workshop_skills, only: %i[create]
     resources :workshop_categories, only: %i[create]
   end
+
+  # Assessments
+  resources :assessments, only: %i[show new create edit update destroy] do
+    resources :assessment_questions, only: %i[update destroy]
+    get 'question/:id/view_mode', to: 'assessment_questions#view_mode', as: 'view_mode_assessment_question'
+    get 'question/:id/move_up', to: 'assessment_questions#move_up', as: 'move_up_assessment_question'
+    get 'question/:id/move_down', to: 'assessment_questions#move_down', as: 'move_down_assessment_question'
+  end
+  post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
+  # get 'assessments/:id/view_mode', to: 'assessments#view_mode', as: 'view_mode_assessment'
+  post 'assessments/:id/add_answers', to: 'assessments#add_answers', as: 'add_answers_assessment'
+
   get 'workshops-filter', to: 'workshops#filter', as: 'filter_workshops'
   get 'workshops/:id/viewmode', to: 'workshops#view_mode', as: 'view_workshop'
   resources :mods, only: %i[show new create update destroy]

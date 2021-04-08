@@ -1,0 +1,56 @@
+<div id="show-controls" class='flex-row-between-centered'>
+  <%= link_to organisation_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <div id='show-buttons'>
+    <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+      <a data-toggle='modal' data-target='#editTag'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+      <a data-toggle='modal' data-target='#editUserTags'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-users-cog"></i></button></a>
+      <%= link_to tag_path(@tag), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+        <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div id="container-show">
+  <h1><%= @tag.tag_name %></h1>
+</div>
+<div id="container-show">
+  <div class='Tag-show-users-index'>
+    <% if @tag.users.present? %>
+      <% @tag.users.each do |user| %>
+        <%= link_to user_path(user) do %>
+          <div class='tag-show-user-card flex-row-between-centered'>
+            <div class="tag-show-users-info">
+              <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            </div>
+            <div class="tag-show-users-info">
+                <p><%= user.fullname %>
+            </div>
+            <div class="tag-show-users-info">
+              <p><%= user.email %></p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class='modal fade' id='editTag' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'edit', tag: @tag %>
+  </div>
+</div>
+
+<div class='modal fade' id='editUserTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'user_tags/edit', tag: @tag %>
+  </div>
+</div>
+
+<div class="modal fade" id="editImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="border-radius: 20px">
+    <%= render 'edit_image', tag: @tag %>
+  </div>
+</div>
