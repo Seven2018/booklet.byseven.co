@@ -106,6 +106,9 @@ class UsersController < ApplicationController
   #   redirect_to user_path(current_user)
   # end
 
+  def filter
+  end
+
   private
 
   def set_current_user
