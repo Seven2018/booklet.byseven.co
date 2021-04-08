@@ -48,15 +48,15 @@ class PagesController < ApplicationController
     # Index with 'search' option and global visibility for SEVEN Users
     index_function(User.all)
     # Index for other Users, with visibility limited to programs proposed by their company only
-    @teams = Team.joins(:company).where(companies: {id: current_user.company_id})
+    @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
     @users = User.joins(:company).where(companies: {id: current_user.company_id})
-    @users_without_teams = User.left_joins(:user_teams).where(user_teams: {team_id: nil})
+    @users_without_tags = User.left_joins(:user_tags).where(user_tags: {tag_id: nil})
     if params[:search].present?
-      @teams = (@teams.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc) + @teams.joins(user_teams: :user).where("lower(firstname) LIKE ?", "%#{params[:search][:name].downcase}%") + @teams.joins(user_teams: :user).where("lower(lastname) LIKE ?", "%#{params[:search][:name].downcase}%"))
-      @users = (@users.where("lower(firstname) LIKE ?", "%#{params[:search][:name].downcase}%") + @users.where("lower(lastname) LIKE ?", "%#{params[:search][:name].downcase}%") + @users.joins(user_teams: :team).where("lower(team_name) LIKE ?", "%#{params[:search][:name].downcase}%"))
-    elsif params[:team_id]
-      # @teams = @teams.where(id: params[:team_id])
-      @users = @users.joins(user_teams: :team).where(teams: {id: params[:team_id]})
+      @tags = (@tags.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc) + @tags.joins(user_tags: :user).where("lower(firstname) LIKE ?", "%#{params[:search][:name].downcase}%") + @tags.joins(user_tags: :user).where("lower(lastname) LIKE ?", "%#{params[:search][:name].downcase}%"))
+      @users = (@users.where("lower(firstname) LIKE ?", "%#{params[:search][:name].downcase}%") + @users.where("lower(lastname) LIKE ?", "%#{params[:search][:name].downcase}%") + @users.joins(user_tags: :tag).where("lower(tag_name) LIKE ?", "%#{params[:search][:name].downcase}%"))
+    elsif params[:tag_id]
+      # @tags = @tags.where(id: params[:tag_id])
+      @users = @users.joins(user_tags: :tag).where(tags: {id: params[:tag_id]})
     end
   end
 

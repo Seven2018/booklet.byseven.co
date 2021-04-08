@@ -7,9 +7,9 @@ class UsersController < ApplicationController
     index_function(policy_scope(User))
     # Index for other Users, with visibility limited to programs proposed by their company only
     if current_user.access_level == 'HR'
-      @teams = Team.joins(:company).where(companies: { name: current_user.company.name })
+      @Tags = Tag.joins(:company).where(companies: { name: current_user.company.name })
       if params[:search]
-        @teams = @teams.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc)
+        @Tags = @Tags.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc)
       end
     end
     @training = Training.new

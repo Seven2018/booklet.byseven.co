@@ -7,8 +7,8 @@ class User < ApplicationRecord
   has_many :requests, dependent: :destroy
   has_many :attendees, dependent: :destroy
   belongs_to :company, optional: true
-  has_many :user_teams, dependent: :destroy
-  has_many :teams, through: :user_teams
+  has_many :user_tags, dependent: :destroy
+  has_many :tags, through: :user_tags
   has_many :notifications, dependent: :destroy
   has_many :user_forms, dependent: :destroy
   has_many :mods, through: :user_forms
@@ -28,15 +28,41 @@ class User < ApplicationRecord
 
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
-      user = User.new(row.to_hash)
-      user.company_id = Current.user.company_id
+      company_id = Current.user.company_id
+      user_row = row.to_hash
+      main_attr = "firstname,lastname,email,password,birth_date,hire_date,address,phone_number,social_security,gender,job_description".split(',')
+      tag_attr = row.to_hash.keys - main_attr
+      tag_attr.each do |tag|
+        user_row.delete(tag)
+      end
+      user = User.new(user_row)
+      user.company_id = company_id
       user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
       user.save
       raw, token = Devise.token_generator.generate(User, :reset_password_token)
       user.reset_password_token = token
       user.reset_password_sent_at = Time.now.utc
       user.save(validate: false)
-      UserMailer.account_created(user, raw).deliver
+
+      tag_attr.each do |x|
+        category = TagCategory.where(company_id: company_id, name: x).first
+        unless category.present?
+          category = TagCategory.create(company_id: company_id, name: x)
+        end
+        tag = Tag.where(company_id: company_id, tag_category_id: category.id, tag_name: row[x]).first
+        unless tag.present?
+          tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row[x])
+        end
+        UserTag.create(user_id: user.id, tag_id: tag.id)
+      end
+      # tag = row['tag']
+      # existing_Tag = Tag.where(company_id: user.company_id, tag_name: row['tag'])
+      # if existing_tag.present?
+      #   UserTag.create(tag_id: existing_tag.first.id, user_id: user.id)
+      # else
+      #   Tag.create(tag_name: row['tag'], company_id: user.company_id)
+      # end
+      # UserMailer.account_created(user, raw).deliver
     end
   end
 end
