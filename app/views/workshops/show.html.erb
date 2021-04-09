@@ -16,8 +16,7 @@
   </div>
 </div>
 <div id="container-show">
-  <div class='workshop-show-type flex-row-between-centered'>
-    <a data-toggle='modal' data-target='#transformTrainingWorkshop'><button class='btn btn-edit-blue'>Book</button></a>
+  <div class='workshop-show-type'>
     <h3>Workshop</h3>
   </div>
   <div class='workshop-show-card'>
@@ -28,10 +27,13 @@
       <p><%= @workshop.workshop_type %></p>
       <p><%= "#{@workshop.duration} min" %></p>
     </div>
-    <div class="workshop-show-card-footer centered-item">
+    <div class="workshop-show-card centered-item">
       <div>
         <p><%= @workshop.description.html_safe %></p>
       </div>
+    </div>
+    <div class="workshop-show-card-footer  centered-item">
+      <a data-toggle='modal' data-target='#transformTrainingWorkshop'><button class='btn btn-edit-orange'>Book</button></a>
     </div>
   </div>
   <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
@@ -42,14 +44,14 @@
         <button class='btn btn-edit'><p>Add Module</p></button>
       </a>
         <div id='mod-create-assessment-div' class='centered-item'>
-          <button id='mod-create-assessment-button' class='btn btn-edit-green'>
-            Create Form
+          <button id='mod-create-assessment-button' class='btn btn-edit-white'>
+            Create Quiz
           </button>
           <div id='mod-create-assessment-form' style='display: none;'>
             <%= simple_form_for Assessment.new do |f| %>
               <div class='flex-row-between-centered'>
-                <%= f.text_field :title, placeholder: 'Form title', style: 'height: 100%;' %>
-                <%= button_tag :submit, name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit btn-edit-icon' do %>
+                <%= f.text_field :title, placeholder: 'Quiz title', style: 'height: 100%;' %>
+                <%= button_tag :submit, name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-white btn-edit-icon' do %>
                   <i class="fas fa-save"></i>
                 <% end %>
               </div>

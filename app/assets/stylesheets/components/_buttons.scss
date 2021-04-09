@@ -14,6 +14,7 @@ input.btn {
 
 .btn {
   font-size: 1.6rem;
+  color: #F26419 !important;
 
   &:focus {
     box-shadow: none;
@@ -21,7 +22,6 @@ input.btn {
 }
 
 .btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-blue, .btn-invite-users {
-  opacity: 0.8;
   width: auto;
   max-width: none;
   padding: 0.45rem 2rem;
@@ -43,11 +43,15 @@ input.btn {
   }
 
   &:hover, &:hover:enabled{
-    opacity: 1;
+    opacity: 0.8;
     text-decoration: none !important;
     color: white !important;
   }
 }
+
+
+
+
 
 .btn-edit-white {
   opacity: 0.8;
@@ -73,15 +77,15 @@ input.btn {
 }
 
 .btn-edit {
-  background-color: $yellow !important;
+  background-color: #E9C46A !important;
 }
 
 .btn-edit-red {
-  background-color: #E64259 !important;
+  background-color: #E76F51!important;
 }
 
 .btn-edit-green {
-  background-color: #4AC2C7 !important;
+  background-color: #8FA078 !important;
 }
 
 .btn-edit-blue {
@@ -93,22 +97,22 @@ input.btn {
 }
 
 .btn-edit-orange {
-  background-color: orange !important;
+  background-color: #F26419 !important;
 }
 
 .btn-edit-white {
-  background-color: rgba(255,255,255,0) !important;
-  border: 0.01rem solid rgba(0,0,0,0.3) !important;
+  background-color: #F8D9C8 !important;
+
 
   i {
-    color: rgba(0,0,0,0.3) !important;
+    color: #F26419  !important;
   }
 
   &:hover {
-    border: 0.01rem solid rgba(0,0,0,1) !important;
+    border: 0.01rem solid #F26419 !important;
 
     i {
-      color: rgba(0,0,0,1) !important;
+      color: #F26419  !important;
     }
   }
 }
@@ -214,4 +218,48 @@ input.btn {
 
 .btn-red {
   color: red;
+}
+
+button {
+  border-color: transparent;
+  color: #F26419 !important;
+}
+
+#mod-create-assessment-button {
+  color: #F26419;
+}
+
+.booking-btn {
+  width: auto;
+  max-width: none;
+  padding: 0.45rem 2rem;
+  border-radius: 0.22rem;
+  box-sizing: border-box;
+  font-weight: 800 !important;
+  text-align: center;
+  transition: all 0.1s;
+  outline: none !important;
+  margin-right: 0.5rem;
+  color: #F26419;
+  border: 2px solid #F26419;
+}
+
+  .booking-btn:hover {
+    color: white;
+    background-color: #F26419;
+  }
+
+.btn-filter-submit {
+  opacity: 0.8;
+  width: auto;
+  max-width: none;
+  padding: 0.45rem 2rem;
+  border-radius: 0.22rem;
+  box-sizing: border-box;
+  font-weight: 800 !important;
+  text-align: center;
+  transition: all 0.1s;
+  outline: none !important;
+  margin-right: 0.5rem;
+  color: #F26419 !important;
 }

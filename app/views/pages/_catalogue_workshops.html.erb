@@ -15,17 +15,6 @@
         </div>
       </div>
       <div class="catalogue-index-info flex-row-start-centered">
-        <p>A/S</p>
-        <div class="catalogue-index-info-order flex-column-centered">
-            <i class="fas fa-caret-up">
-              <%= link_to '',catalogue_workshops_type_order_asc_path, remote: true, class: 'stretched-link' %>
-            </i>
-            <i class="fas fa-caret-down">
-              <%= link_to '',catalogue_workshops_type_order_desc_path, remote: true, class: 'stretched-link' %>
-            </i>
-        </div>
-      </div>
-      <div class="catalogue-index-info flex-row-start-centered">
         <p>Duration</p>
         <div class="catalogue-index-info-order flex-column-centered">
             <i class="fas fa-caret-up">
@@ -70,9 +59,7 @@
           <div class="catalogue-index-info">
             <p data-toggle="tooltip" title="<%= workshop.title %>"><%= workshop.title %></p>
           </div>
-          <div class="catalogue-index-info">
-            <p><%= workshop.workshop_type %></p>
-          </div>
+
           <div class="catalogue-index-info">
             <p><%= " #{workshop.duration} min" %></p>
           </div>
@@ -83,7 +70,7 @@
               <p><%= workshop&.categories.first&.title %></p>
             <% end %>
           </div>
-          <a class='booking-button' data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='btn-edit-white btn-last'>Book</button></a>
+          <a class='booking-button' data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='booking-btn btn-last'>Book</button></a>
 
           <!-- Modal -->
           <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
