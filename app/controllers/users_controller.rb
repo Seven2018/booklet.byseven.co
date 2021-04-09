@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
+    raise
     index_function(policy_scope(User))
     # Index for other Users, with visibility limited to programs proposed by their company only
     if current_user.access_level == 'HR'
@@ -106,9 +107,6 @@ class UsersController < ApplicationController
   #   redirect_to user_path(current_user)
   # end
 
-  def filter
-  end
-
   private
 
   def set_current_user
@@ -124,17 +122,13 @@ class UsersController < ApplicationController
   end
 
   def index_function(parameter)
-    if current_user.access_level == 'Super Admin'
-      if params[:search]
-        @users = (parameter.where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
-        @users = @users.sort_by{ |user| user.lastname } if @users.present?
-      else
-        @users = parameter.order('lastname ASC')
-      end
-    elsif current_user.access_level == 'HR'
-      if params[:search]
+    if ['super admin', 'HR'].includes?(current_user.access_level)
+      raise
+      if params[:search].present?
         @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
+      elsif params[:filter].present?
+        @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}))
       else
         @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')
       end
