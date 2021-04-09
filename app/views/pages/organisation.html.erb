@@ -1,7 +1,26 @@
 <div id="index-controls" class='flex-row-between-centered'>
   <h1>Organisation</h1>
-  <div id="index-buttons">
-    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+</div>
+
+<div class='organization-buttons'>
+  <div class="filter-dropdown">
+    <div onclick="myFunction()" class="filter-dropbtn">Filter By<i class="fas fa-sliders-h"></i></div>
+      <div id="myDropdown" class="filter-dropdown-content">
+        <div class='filter-dropdown-form'>
+          <%= simple_form_for :filter, input_html: { class: "filter-form" }, url: users_filter_path do |f| %>
+            <div class="filter-form-input"><%= f.input :tag1, label: 'Restaurant', collection: ['Pink Mamma', 'Ober Mamma', 'East Mamma','Ober Mamma', 'East Mamma','Ober Mamma', 'East Mamma'], as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
+            <div class="filter-form-input"><%= f.input :tag2, label: 'Country', collection: ['France', 'London', 'Spain'], as: :check_boxes, input_html: { class: "tag-selector" }, required: false %></div>
+            <div class="filter-form-input"><%= f.input :tag3, label: 'City', collection: ['Paris', 'Lille', 'Bordeaux'], as: :check_boxes, input_html: { class: "tag-selector" }, required: false %></div>
+            <div class="filter-form-input"><%= f.input :tag4, label: 'Job Title', collection: ['Chef de Rang', 'Directeur', 'Manager'], as: :check_boxes, input_html: { class: "tag-selector" }, required: false%></div>
+          <% end %>
+          <div class=filter-text>
+            <button class='final-filter-btn'>Filter</button>
+            <p>Clear All</p>
+          </div>
+        </div>
+      </div>
+  </div>
+<% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
       <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a data-toggle='modal' data-target='#newTag' class='dropdown-item'>New Tag</a>
@@ -9,92 +28,7 @@
         <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
       </div>
     <% end %>
-    <% if params[:search] %>
-      <%= simple_form_for :search, url: organisation_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
-        <%= f.input :name, placeholder: params[:search][:name], label: false %>
-        <%= link_to organisation_path, class: 'search-close' do %>
-          <i class="far fa-times-circle"></i>
-        <% end %>
-      <% end %>
-    <% else %>
-      <a>
-        <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
-      </a>
-      <%= simple_form_for :search, url: organisation_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
-        <%= f.input :name, placeholder: 'Search', label: false %>
-          <a class='search-close'>
-            <i class="far fa-times-circle"></i>
-          </a>
-      <% end %>
-    <% end %>
-  </div>
 </div>
-<div class="training-index-dashboard flex-row-between-start">
-  <div class='training-index-list-dashboard-sm'>
-    <div class='training-index-list-dashboard-controls flex-row-start-centered'>
-      <p class='training-index-list-dashboard-title'>Tags</p>
-    </div>
-    <% if params[:tag_id].nil? %>
-      <%= link_to organisation_path do %>
-        <div class='tag-index-card flex-row-between-centered active'>
-          <div class="tag-index-card-tagname">
-            <p>All</p>
-          </div>
-          <div class="tag-index-card-infos">
-            <p><%= "#{current_user.company.users.count} members" %></p>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <%= link_to organisation_path do %>
-        <div class='tag-index-card flex-row-between-centered'>
-          <div class="tag-index-card-tagname">
-            <p>All</p>
-          </div>
-          <div class="tag-index-card-infos">
-            <p><%= "#{current_user.company.users.count} members" %></p>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
-    <% if @tags.present? %>
-      <% @tags.sort_by(&:tag_name).each do |tag| %>
-        <% if params[:tag_id] == tag.id.to_s %>
-          <div class='tag-index-card active'>
-            <%= link_to organisation_path(tag_id: tag.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
-              <div class="tag-index-card-tagname">
-                <p data-toggle="tooltip" title="<%= tag.tag_name %>"><%= tag.tag_name %></p>
-              </div>
-              <div class="tag-index-card-infos">
-                <p><%= "#{tag.users.count} members" %></p>
-              </div>
-            <% end %>
-            <%= link_to tag_path(tag), class: 'tag-index-card-link' do %>
-              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-eye"></i></button>
-            <% end %>
-          </div>
-        <% else %>
-          <div class='tag-index-card'>
-            <%= link_to organisation_path(tag_id: tag.id), class: 'flex-row-between-centered', style: 'width:100%' do %>
-              <div class="tag-index-card-tagname">
-                <p data-toggle="tooltip" title="<%= tag.tag_name %>"><%= tag.tag_name %></p>
-              </div>
-              <div class="tag-index-card-infos">
-                <p><%= "#{tag.users.count} members" %></p>
-              </div>
-            <% end %>
-            <%= link_to tag_path(tag), class: 'tag-index-card-link' do %>
-              <button id='btn-edit-filter' class="btn btn-edit-white btn-edit-icon-small btn-last"><i class="far fa-eye"></i></button>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
-  <div class='training-index-list-dashboard-md'>
-    <div class='training-index-list-dashboard-controls flex-row-start-centered'>
-      <p class='training-index-list-dashboard-title'>Users</p>
-    </div>
     <% @users.each do |user| %>
       <%= link_to user_path(user) do %>
         <div class='user-index-card'>
@@ -122,8 +56,8 @@
       <% end %>
     <% end %>
   </div>
-</div>
-
+<!-- </div>
+ -->
 <!-- Modals -->
 <div class='modal fade' id='newTag' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
@@ -155,4 +89,28 @@
     searchButton.classList.toggle('hidden');
     searchBar.classList.toggle('hidden');
   })
+
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.filter-dropbtn')) {
+    var dropdowns = document.getElementsByClassName("filter-dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+
+
 </script>

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :users, only: %i[new create show update destroy]
+  get 'users/filter', to: 'users#filter', as: 'users_filter'
   post 'users/import', to: 'users#import', as: 'import_users'
   resources :tags, only: %i[create show update destroy]
   resources :tag_categories, only: %i[create]
