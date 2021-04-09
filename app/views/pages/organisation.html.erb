@@ -15,16 +15,17 @@
     <div onclick="myFunction()" class="filter-dropbtn">Filter By<i class="fas fa-sliders-h"></i></div>
       <div id="myDropdown" class="filter-dropdown-content">
         <div class='filter-dropdown-form'>
-          <%= simple_form_for :filter, input_html: { class: "filter-form" }, url: users_filter_path do |f| %>
-            <div class="filter-form-input"><%= f.input :tag1, label: 'Restaurant', collection: ['Pink Mamma', 'Ober Mamma', 'East Mamma','Ober Mamma', 'East Mamma','Ober Mamma', 'East Mamma'], as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
-            <div class="filter-form-input"><%= f.input :tag2, label: 'Country', collection: ['France', 'London', 'Spain'], as: :check_boxes, input_html: { class: "tag-selector" }, required: false %></div>
-            <div class="filter-form-input"><%= f.input :tag3, label: 'City', collection: ['Paris', 'Lille', 'Bordeaux'], as: :check_boxes, input_html: { class: "tag-selector" }, required: false %></div>
-            <div class="filter-form-input"><%= f.input :tag4, label: 'Job Title', collection: ['Chef de Rang', 'Directeur', 'Manager'], as: :check_boxes, input_html: { class: "tag-selector" }, required: false%></div>
+          <% i = 1 %>
+          <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
+            <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
+              <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
+            <% end %>
+            <div class=filter-text>
+              <%= f.submit 'Filter', class: 'final-filter-btn' %>
+              <!-- <button class='final-filter-btn'>Filter</button> -->
           <% end %>
-          <div class=filter-text>
-            <button class='final-filter-btn'>Filter</button>
-            <p>Clear All</p>
-          </div>
+              <a class='final-filter-clear'>Clear All</a>
+            </div>
         </div>
       </div>
   </div>
@@ -92,29 +93,38 @@
   })
 
 
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
+  /* When the user clicks on the button,
+  toggle between hiding and showing the dropdown content */
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.filter-dropbtn')) {
-    var dropdowns = document.getElementsByClassName("filter-dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.filter-dropbtn')) {
+      var dropdowns = document.getElementsByClassName("filter-dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
       }
     }
   }
-}
 
-$('.filter-dropbtn').click(function(){
-  $(this).parent().toggleClass('open');
-});
+  $('.filter-dropbtn').click(function(){
+    $(this).parent().toggleClass('open');
+  });
+</script>
 
-
+<script>
+  clear_button = document.querySelector('.final-filter-clear');
+  check_boxes = document.querySelectorAll('.check_boxes');
+  clear_button.addEventListener('click', (event) => {
+    event.preventDefault();
+    check_boxes.forEach(element => {
+      element.checked = false;
+    })
+  })
 </script>

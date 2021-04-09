@@ -49,15 +49,6 @@ class PagesController < ApplicationController
     index_function(User.all)
     # Index for other Users, with visibility limited to programs proposed by their company only
     @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
-    @users = User.joins(:company).where(companies: {id: current_user.company_id})
-    @users_without_tags = User.left_joins(:user_tags).where(user_tags: {tag_id: nil})
-    if params[:search].present?
-      @tags = (@tags.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc) + @tags.joins(user_tags: :user).where("lower(firstname) LIKE ?", "%#{params[:search][:name].downcase}%") + @tags.joins(user_tags: :user).where("lower(lastname) LIKE ?", "%#{params[:search][:name].downcase}%"))
-      @users = (@users.where("lower(firstname) LIKE ?", "%#{params[:search][:name].downcase}%") + @users.where("lower(lastname) LIKE ?", "%#{params[:search][:name].downcase}%") + @users.joins(user_tags: :tag).where("lower(tag_name) LIKE ?", "%#{params[:search][:name].downcase}%"))
-    elsif params[:tag_id]
-      # @tags = @tags.where(id: params[:tag_id])
-      @users = @users.joins(user_tags: :tag).where(tags: {id: params[:tag_id]})
-    end
   end
 
   def catalogue_filter_workshop
@@ -120,17 +111,12 @@ def catalogue_programs_duration_order_asc
   private
 
   def index_function(parameter)
-    if current_user.access_level == 'Super Admin'
-    #   if params[:search]
-    #     @users = (parameter.where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
-    #     @users = @users.sort_by{ |user| user.lastname } if @users.present?
-    #   else
-    #     @users = parameter.order('lastname ASC')
-    #   end
-    # elsif current_user.access_level == 'HR'
-      if params[:search]
+    if ['Super Admin', 'HR'].include?(current_user.access_level)
+      if params[:search].present?
         @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
+      elsif params[:filter].present?
+        @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
       else
         @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')
       end
