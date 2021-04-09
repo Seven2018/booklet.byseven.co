@@ -43,7 +43,7 @@ class UsersController < ApplicationController
       @user.reset_password_sent_at = Time.now.utc
       @user.save(validate: false)
       # @user.send_reset_password_instructions
-      UserMailer.account_created(@user, raw).deliver
+      # UserMailer.account_created(@user, raw).deliver
       redirect_to user_path(@user)
     else
       render :new

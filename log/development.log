@@ -3310,3 +3310,22 @@ Processing by PagesController#organisation as HTML
 Completed 200 OK in 116ms (Views: 108.6ms | ActiveRecord: 3.4ms | Allocations: 74219)
 
 
+  [1m[36mTrainingWorkshop Load (0.5ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mAttendee Load (0.2ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" = $1[0m  [["training_workshop_id", 1]]
+  [1m[36mTagWorkshop Load (2.3ms)[0m  [1m[34mSELECT "tag_workshops".* FROM "tag_workshops" WHERE "tag_workshops"."training_workshop_id" = $1[0m  [["training_workshop_id", 1]]
+  [1m[36mTrainingWorkshopMod Load (0.4ms)[0m  [1m[34mSELECT "training_workshop_mods".* FROM "training_workshop_mods" WHERE "training_workshop_mods"."training_workshop_id" = $1[0m  [["training_workshop_id", 1]]
+  [1m[36mTrainingWorkshop Destroy (0.8ms)[0m  [1m[31mDELETE FROM "training_workshops" WHERE "training_workshops"."id" = $1[0m  [["id", 1]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mAttendee Load (0.2ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" = $1[0m  [["training_workshop_id", 2]]
+  [1m[36mTagWorkshop Load (0.1ms)[0m  [1m[34mSELECT "tag_workshops".* FROM "tag_workshops" WHERE "tag_workshops"."training_workshop_id" = $1[0m  [["training_workshop_id", 2]]
+  [1m[36mTrainingWorkshopMod Load (0.1ms)[0m  [1m[34mSELECT "training_workshop_mods".* FROM "training_workshop_mods" WHERE "training_workshop_mods"."training_workshop_id" = $1[0m  [["training_workshop_id", 2]]
+  [1m[36mTrainingWorkshop Destroy (0.3ms)[0m  [1m[31mDELETE FROM "training_workshops" WHERE "training_workshops"."id" = $1[0m  [["id", 2]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mAttendee Load (0.2ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" = $1[0m  [["training_workshop_id", 3]]
+  [1m[36mTagWorkshop Load (0.1ms)[0m  [1m[34mSELECT "tag_workshops".* FROM "tag_workshops" WHERE "tag_workshops"."training_workshop_id" = $1[0m  [["training_workshop_id", 3]]
+  [1m[36mTrainingWorkshopMod Load (0.1ms)[0m  [1m[34mSELECT "training_workshop_mods".* FROM "training_workshop_mods" WHERE "training_workshop_mods"."training_workshop_id" = $1[0m  [["training_workshop_id", 3]]
+  [1m[36mTrainingWorkshop Destroy (0.4ms)[0m  [1m[31mDELETE FROM "training_workshops" WHERE "training_workshops"."id" = $1[0m  [["id", 3]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m

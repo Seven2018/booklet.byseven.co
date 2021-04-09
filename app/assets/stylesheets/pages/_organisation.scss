@@ -62,8 +62,12 @@
 }
 
 /// filter dropdown ///
-
-
+.organization-page {
+  display: flex;
+}
+.organization-users {
+  padding-left: 10px;
+}
 
 .filter-form-input {
    .form-group {
@@ -74,8 +78,8 @@
   }
     .col-form-label {
     font-family: 'Montserrat';
-    font-weight: 800;
-    font-size: 18px;
+    font-weight: 400;
+    font-size: 16px;
   }
 
   .form-check {
@@ -85,48 +89,9 @@
 }
 
 
-
-.filter-dropbtn {
-  color: black;
-  font-size: 16px;
-  padding-bottom: 15px;
-  border: none;
-  cursor: pointer;
-}
-
-.filter-dropbtn:hover, .filter-dropbtn:focus {
-  background-color: #F3F3F3;
-}
-
-
-
-.filter-dropdown-content {
-  display: none;
-  overflow: auto;
-  max-width: 100%;
-  background-color: white;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  padding: 10px;
-  transition: all 0.5s;
-}
-
-.filter-dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-}
-
-.filter-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-
-.filter-dropdown a:hover {background-color: #ddd;}
-
-.show {
-  display: block;
+.filter-dropdown-form {
+  max-width: 400px;
+  border-right: 2px solid;
 }
 
 .tag-selector {
@@ -136,15 +101,16 @@
 
 .tag-selector + label {
   cursor: pointer;
-  display: inline-block;
-  font-size: 1.5rem;
-  border-radius: 50rem;
-  padding: 0.3rem 0.8rem;
-  background-color: #C4C4C4;
-  color: black;
-  border: 1px solid #C4C4C4;
-  margin-right: 0.6rem;
-  margin-bottom: 0.4rem;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 1.5rem;
+    border-radius: 50rem;
+    padding: .5rem 0.8rem;
+    background-color: #f9e6db;
+    color: #F26419;
+    border: 1px solid #F26419;
+    margin-right: 0.6rem;
+    margin-bottom: 1rem;
 }
 
 .tag-selector:checked + label {
@@ -160,8 +126,7 @@
 
 .filter-text{
   display: flex;
-  justify-content: flex-end;
-  padding: 5px 10px;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -176,11 +141,15 @@
 }
 
 .final-filter-btn:hover {
-  background-color: #f9e6db;
-  color: #F26419;
-  font-size: 1.8rem;
-  margin-right: 20px;
-  border-radius: 5px;
-  padding: 0.2rem 0.6rem;
-  border: 1px solid #F26419;
+opacity: 0.8;
+}
+
+.category-title {
+  margin-bottom: 10px;
+}
+
+.staff-members {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
