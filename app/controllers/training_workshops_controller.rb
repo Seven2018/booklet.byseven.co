@@ -5,7 +5,7 @@ class TrainingWorkshopsController < ApplicationController
   def show
     @training_workshop = TrainingWorkshop.find(params[:id])
     authorize @training_workshop
-    ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) ? @Tags = Tag.where(company_id: current_user.company_id) : @Tags = current_user.Tags
+    ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) ? @tags = Tag.where(company_id: current_user.company_id) : @tags = current_user.tags
     @users = User.where(company_id: current_user.company_id)
   end
 

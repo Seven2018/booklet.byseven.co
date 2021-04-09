@@ -6,7 +6,7 @@
       <a data-toggle='modal' data-target='#editModule'>
         <button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button>
       </a>
-      <%= link_to assessment_path(@form), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+      <%= link_to assessment_path(@form, workshop_id: Workshop.joins(:workshop_mods).find_by(workshop_mods: {mod_id: @form.id}).id), method: :delete, data: { confirm: 'Are you sure ?'} do %>
         <button class='btn-edit-white btn-edit-icon btn-last'><i class="far fa-trash-alt"></i></button>
       <% end %>
     <% end %>

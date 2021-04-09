@@ -116,7 +116,16 @@ def catalogue_programs_duration_order_asc
         @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter].present?
-        @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+        tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
+        if params[:filter][:job].present?
+          if tags.present?
+            @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?), user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+          else
+            @users = (parameter.where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?)))
+          end
+        else
+          @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+        end
       else
         @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')
       end

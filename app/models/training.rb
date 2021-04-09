@@ -38,7 +38,7 @@ class Training < ApplicationRecord
         end
       end
     end
-    Tags.flatten(1).uniq.map(&:id)
+    tags.flatten(1).uniq.map(&:id)
   end
 
   def last_date
