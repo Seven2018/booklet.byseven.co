@@ -2,14 +2,13 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: #F1F3F4;
+  background-color: white;
   position: fixed;
   top: 0;
-  width: 22rem;
+  width: 25rem;
   height: 100vh;
   min-height: 60rem;
-  margin-top: 5rem;
-  z-index: 1;
+  z-index: 50;
   text-align: left;
 
   p, a {
@@ -36,10 +35,12 @@
 }
 
 .left-navbar-top {
-  height: 10rem;
+  height: 12rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 1rem;
+  margin-bottom: 5rem;
 
   .avatar {
     margin-bottom: 15px;
@@ -49,6 +50,11 @@
 .left-navbar-middle {
   overflow-x: hidden;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-items: center;
+  height: calc(100vh - 275px)
 }
 
 .left-navbar-top-view-mode {
@@ -75,8 +81,7 @@
 .left-navbar-bottom {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
-  margin-top: 38px;
+  margin: 3rem 0;
 }
 
 .left-buttons {
@@ -111,21 +116,26 @@
   margin-bottom: 38px;
 }
 
-.left-navbar-logo img {
-  width: 100px;
+.left-navbar-logo {
+  width: 200px;
+  height: 100%;
+  object-fit: cover;
 }
 
 .left-menu-list {
   display: flex;
   align-items: center;
-  padding: 24px;
-  width: 220px;
+  height: 47px;
+  width: 200px;
+  padding: 0 1rem;
+  border-radius: 5px;
+  margin-bottom: 3rem;
 
   &:hover {
-    background-color: #FDC553;
+    background: rgba(242,100,25,0.24);
 
     i, h4 {
-    color: white;
+    color: #F26419;
     }
   }
 }
@@ -133,12 +143,15 @@
 .left-menu-list.active {
   display: flex;
   align-items: center;
-  padding: 24px;
-  width: 220px;
-  background-color: #FDC553;
+  height: 47px;
+  width: 200px;
+  padding: 0 1rem;
+  background: rgba(242,100,25,0.24);
+  border-radius: 5px;
+  margin-bottom: 3rem;
 
   i, h4 {
-    color: white;
+    color: #F26419;
   }
 }
 
@@ -183,7 +196,7 @@
 
 .left-menu-title {
   text-align: left;
-  margin-left: 20px;
+  margin-left: 4rem;
   h4 {
     font-weight: 400;
     margin: 0;
@@ -205,7 +218,7 @@
 }
 
 .active-menu {
-  background-color: #FFC552;
+  background: rgba(242,100,25,0.24);
 }
 
 .left-navbar-active {

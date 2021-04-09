@@ -1,19 +1,8 @@
 <div class="left-navbar left-navbar-builder">
   <% unless ['workshops', 'training_workshops'].include?(params[:controller]) && params[:action] == "view_mode" %>
     <div class="left-navbar-top">
-      <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
-        <div class="centered-item">
-          <button class="btn btn-edit-navbar dropdown-toggle" type="button" id="dropdownMenuNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <div class="flex-row-between-centered">
-              <i class="fas fa-plus"></i>
-              <p>New</p>
-            </div>
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuNavbar">
-            <%= link_to 'Program', new_training_program_path, class: 'dropdown-item' %>
-            <%= link_to 'Workshop', new_workshop_path, class: 'dropdown-item' %>
-          </div>
-        </div>
+      <% if user_signed_in? %>
+        <img src='<%= "#{current_user.company.logo}" %>' class="left-navbar-logo" height='24px'>
       <% end %>
     </div>
     <div class="left-navbar-middle">
@@ -70,6 +59,37 @@
         <% end %>
       <% end %>
     </div>
+    <div class="left-navbar-bottom">
+      <div class="dropdown show">
+        <a class="navbar-user-card dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div>
+            <h6><%= current_user.fullname %></h6>
+          </div>
+          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+        </a>
+        <div class="dropdown-menu" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+          <div class="dropdown-card dropdown-item flex-row-between-centered">
+            <p>Account</p>
+          </div>
+          <%= link_to user_path(current_user) do %>
+            <div class="dropdown-card dropdown-item flex-row-between-centered">
+              <i class="fas fa-user"></i>
+              <div class='dropdown-card-text'>
+                <h6>Profile</h6>
+              </div>
+            </div>
+          <% end %>
+          <%= link_to destroy_user_session_path, method: :delete do %>
+            <div class="dropdown-card dropdown-item flex-row-between-centered">
+              <i class="fas fa-sign-out-alt"></i>
+              <div class='dropdown-card-text'>
+                <h6>Log out</h6>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% else %>
     <% if params[:controller] == 'workshops' %>
       <div class="left-navbar-top-view-mode centered-item">
@@ -105,6 +125,4 @@
       </div>
     <% end %>
   <% end %>
-  <div class="left-navbar-bottom">
-  </div>
 </div>

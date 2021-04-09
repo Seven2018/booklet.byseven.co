@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.7.3'
 
 gem 'bootsnap', require: false
-gem 'devise'
+gem 'devise', :git => "https://github.com/heartcombo/devise.git", ref: '8bb358cf80a632d3232c3f548ce7b95fd94b6eb2'
 gem 'pundit'
 gem 'jbuilder', '~> 2.0'
 gem 'pg', '~> 0.21'
@@ -24,6 +24,7 @@ gem 'bootstrap', '~> 4.4.1'
 gem "simple_calendar", "~> 2.0"
 gem 'google-api-client', require: 'google/apis/calendar_v3'
 gem 'oauth2'
+gem "omniauth-rails_csrf_protection"
 gem 'omniauth-google-oauth2'
 gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 
