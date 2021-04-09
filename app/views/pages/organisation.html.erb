@@ -1,5 +1,13 @@
 <div id="index-controls" class='flex-row-between-centered'>
   <h1>Organisation</h1>
+  <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        <a data-toggle='modal' data-target='#newTag' class='dropdown-item'>New Tag</a>
+        <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
+        <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
+      </div>
+    <% end %>
 </div>
 
 <div class='organization-buttons'>
@@ -20,14 +28,7 @@
         </div>
       </div>
   </div>
-<% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-      <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a data-toggle='modal' data-target='#newTag' class='dropdown-item'>New Tag</a>
-        <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
-        <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
-      </div>
-    <% end %>
+
 </div>
     <% @users.each do |user| %>
       <%= link_to user_path(user) do %>
@@ -111,6 +112,9 @@ window.onclick = function(event) {
   }
 }
 
+$('.filter-dropbtn').click(function(){
+  $(this).parent().toggleClass('open');
+});
 
 
 </script>
