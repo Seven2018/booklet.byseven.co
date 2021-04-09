@@ -1,16 +1,15 @@
 <div class="training-index-dashboard flex-row-between-centered">
   <div class='training-index-list-dashboard-large' style='margin-top:5rem'>
-    <h3 class='training-index-list-dashboard-title' style='font-weight: 800'>Trainings</h3>
     <div class="flex-row-start-centered">
-      <div class='dashboard-label'>
+      <div class='dashboard-label dashboard-label-green'>
         <h3><strong><%= TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where('date > ?', Date.today).count %></strong></h3>
         <h3>To Come</h3>
       </div>
-      <div class='dashboard-label'>
+      <div class='dashboard-label dashboard-label-orange'>
         <h3><strong><%= TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where('date <= ?', Date.today).where(available_date: nil).or(TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where('date <= ?', Date.today).where('available_date > ?', Date.today)).count %></strong></h3>
         <h3>Pending</h3>
       </div>
-      <div class='dashboard-label'>
+      <div class='dashboard-label dashboard-label-blue'>
         <h3><strong><%= TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id, status: 'Completed'}).count %></strong></h3>
         <h3>Completed</h3>
       </div>
