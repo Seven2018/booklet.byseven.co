@@ -6,7 +6,7 @@
       <div class="catalogue-index-info">
         <p>Title</p>
         <div class="catalogue-index-info-order flex-column-centered">
-            <i class="fas fa-caret-up">
+            <i class="fas fa-sort-alpha-down-alt">
               <%= link_to '',catalogue_programs_title_order_asc_path, remote: true, class: 'stretched-link' %>
             </i>
             <i class="fas fa-caret-down">
@@ -44,7 +44,7 @@
                     <%= b.check_box + b.text %>
                   <% end %>
                 <% end %>
-                <%= f.button :submit, 'Filter', class: 'btn-edit-white btn-filter-submit' %>
+                <%= f.button :submit, 'Filter', class: 'btn-filter-submit' %>
               <% end %>
             </div>
           </div>
@@ -68,7 +68,7 @@
     <%= link_to training_program_path(program) do %>
       <div class='catalogue-index-card'>
         <div class="catalogue-index-infos">
-          <div class="catalogue-index-info">
+          <div class="catalogue-index-info-">
             <h3>P</h3>
           </div>
           <div class="catalogue-index-info">
@@ -87,7 +87,7 @@
               <p><%= program.categories.first&.title %></p>
             <% end %>
           </div>
-          <a class='booking-button' data-toggle='modal' data-target='#transformTrainingProgram'><button class='btn-edit-white btn-last'>Book</button></a>
+          <a class='booking-button' data-toggle='modal' data-target='#transformTrainingProgram'><button class='booking-btn'>Book</button></a>
 
           <!-- Modal -->
           <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
