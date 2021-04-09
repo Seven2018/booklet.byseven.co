@@ -4,13 +4,25 @@
 
 .dropdown-menu {
   a {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
   }
+}
+
+.dropdown-item {
+  padding: 1.25rem 1.5rem im !important;
 }
 
 .dropdown-menu-right {
   right: 0;
   left: auto;
+}
+
+.dropdown-menu-left {
+  left: 0 !important;
+  right: auto !important;
+  .show {
+    left:-60px;
+  }
 }
 
 #dropdown-user-menu {

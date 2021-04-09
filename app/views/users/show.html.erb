@@ -8,7 +8,7 @@
   </div>
 </div>
 <div id='container-show'>
-  <div class="user-show-card flex-column-between-centered">
+  <div class=" flex-column-between-centered">
     <% if @user.picture.present? %>
       <img src='<%= @user.picture %>' alt="" class='avatar-xlarge' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
     <% else %>
@@ -17,25 +17,20 @@
       </a>
     <% end %>
     <div class="user-show-card-info">
-      <div class='user-show-card-info-line flex-row-between-centered'>
-        <p>Lastname:</p>
+      <div class='user-show-card-info-line-name'>
+        <p><strong><%=  @user.firstname %></strong></p>
         <p><strong><%=  @user.lastname %></strong></p>
       </div>
-      <div class='user-show-card-info-line flex-row-between-centered'>
-        <p>Firstname:</p>
-        <p><strong><%=  @user.firstname %></strong></p>
+      <div class='user-show-card-info-line-email flex-row-between-centered'>
+        <p><%=  @user.email %></p>
       </div>
       <div class='user-show-card-info-line flex-row-between-centered'>
         <p>Access Level:</p>
         <p><strong><%=  @user.access_level %></strong></p>
       </div>
       <div class='user-show-card-info-line flex-row-between-centered'>
-        <p>Position:</p>
+        <p>Job Title:</p>
         <p><strong><%=  @user.job_description if @user.job_description.present? %></strong></p>
-      </div>
-      <div class='user-show-card-info-line flex-row-between-centered'>
-        <p>Email:</p>
-        <p><strong><%=  @user.email %></strong></p>
       </div>
       <div class='user-show-card-info-line flex-row-between-centered'>
         <p>Phone number:</p>
