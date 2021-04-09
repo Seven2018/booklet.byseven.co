@@ -16,7 +16,7 @@ class TrainingWorkshop < ApplicationRecord
         tags << tag
       end
     end
-    Tags.flatten(1).uniq.map(&:id)
+    tags.flatten(1).uniq.map(&:id)
   end
 
   def start_time

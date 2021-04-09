@@ -37,7 +37,7 @@
         </div>
       <% end %>
       <div class="workshop-show-content-main-view-mode">
-        <% if mod.type == 'Assessment' %>
+        <% if mod.type == 'Assessment' && mod.assessment_questions.present? %>
           <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? %>
             <%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
           <% else %>

@@ -17,6 +17,7 @@
         <div class='filter-dropdown-form'>
           <% i = 1 %>
           <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
+            <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
             <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
               <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
             <% end %>

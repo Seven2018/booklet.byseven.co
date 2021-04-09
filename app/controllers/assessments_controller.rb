@@ -89,7 +89,7 @@ class AssessmentsController < ApplicationController
       workshop_mod.update(position: i)
       i += 1
     end
-    redirect_back(fallback_location: root_path)
+    redirect_to workshop_path(@workshop)
   end
 
   private
