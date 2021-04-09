@@ -1,8 +1,26 @@
 <div class="navbar navbar-expand-sm navbar-light">
-  <div class="navbar-controls-left centered-item">
-    <% if user_signed_in? %>
-      <%= link_to root_path do %>
-        Booklet for <img src='<%= "#{current_user.company.logo}" %>' class="left-navbar-logo" height='24px'>
+  <div id="navbar-search">
+    <% if params[:action] == 'organisation' %>
+      <%= simple_form_for :search, url: organisation_path, method: 'GET' do |f| %>
+        <% if params[:search] %>
+          <%= f.input :name, placeholder: params[:search][:name], label: false %>
+          <%= link_to organisation_path, class: 'search-close' do %>
+            <i class="far fa-times-circle"></i>
+          <% end %>
+        <% else %>
+          <%= f.input :name, placeholder: 'Search', label: false %>
+        <% end %>
+      <% end %>
+    <% elsif params[:action] == 'catalogue' %>
+      <%= simple_form_for :search, url: catalogue_path, method: 'GET' do |f| %>
+        <% if params[:search] %>
+          <%= f.input :title, placeholder: params[:search][:title], label: false %>
+          <%= link_to catalogue_path, class: 'search-close' do %>
+            <i class="far fa-times-circle"></i>
+          <% end %>
+        <% else %>
+          <%= f.input :title, placeholder: 'Search', label: false %>
+        <% end %>
       <% end %>
     <% end %>
   </div>
