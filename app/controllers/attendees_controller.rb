@@ -98,7 +98,7 @@ class AttendeesController < ApplicationController
         Attendee.find_by(training_workshop_id: training_workshop.id, user_id: user.id).update(status: 'Registered')
       elsif new_attendee.save
         Notification.create(content: "You have been invited to the following workshop: #{training_workshop.title}", user_id: user.id)
-        UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
+        # UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
       end
     end
     (User.joins(:attendees).where(attendees: {training_workshop_id: training_workshop.id}) - users).each do |user|
