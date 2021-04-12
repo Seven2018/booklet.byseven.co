@@ -1,0 +1,92 @@
+<h3>New question</h3>
+<%= simple_form_for :questions, method: :post do |f| %>
+  <div class='mod-assessment-questions-radio-buttons'>
+    <%# f.collection_radio_buttons :question_type, [['MCQ', 'MCQ'] ,['open question', 'Open question'], ['rating', 'Rating']], :first, :last, :checked => 'MCQ' do |b| %>
+    <%= f.collection_radio_buttons :question_type, [['MCQ', 'MCQ']], :first, :last, :checked => 'MCQ' do |b| %>
+      <%= b.radio_button(class: b.value) %>
+      <%= b.label %>
+    <% end %>
+  </div>
+  <div class='mod-assessment-questions-form'>
+    <%= f.input :question, as: :text %>
+    <div class='mod-assessment-questions-options-mcq'>
+      <div class='flex-column-between-left'>
+      </div>
+      <a href="javascript:;" class='addOption btn btn-edit-white'>Add Option</a>
+    </div>
+    <div class="hidden" id="add_options_form">
+      <%= label_tag 'Option' %>
+      <%= text_field_tag 'options[]' %>
+      <%= label_tag 'Correct Answer' %>
+      <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
+      <%= hidden_field_tag 'answer[]', false %>
+      <script>
+        $('input[type="checkbox"]').on('change', function(e){
+              if($(this).prop('checked'))
+              {
+                  $(this).next().val(true);
+              } else {
+                  $(this).next().val(false);
+              }
+        });
+      </script>
+    </div>
+    <div class='mod-assessment-questions-options-rating'>
+      <%= label_tag 'Min value' %>
+      <%= text_field_tag 'rating[]' %>
+      <%= label_tag 'Max value' %>
+      <%= text_field_tag 'rating[]' %>
+    </div>
+  </div>
+  <div style=" display: flex; justify-content: flex-start;margin-top:3rem;">
+    <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
+      <i class="fas fa-save"></i>
+    <% end %>
+
+  </div>
+<% end %>
+<script>
+  // $('.mod-assessment-questions-options-mcq').hide();
+  $('.mod-assessment-questions-options-rating').hide();
+  $('input[type=radio]').change(function() {
+    if (this.value == 'MCQ') {
+      $('.mod-assessment-questions-options-rating').hide();
+      $('.mod-assessment-questions-options-mcq').show();
+    } else if (this.value == 'rating') {
+      $('.mod-assessment-questions-options-mcq').hide();
+      $('.mod-assessment-questions-options-rating').show();
+    } else {
+      $('.mod-assessment-questions-options-mcq').hide();
+      $('.mod-assessment-questions-options-rating').hide();
+    }
+  });
+</script>
+<script>
+  $(".addOption").click(function(){
+    $(this).parent().children('div').append($("#add_options_form").html());
+  });
+  // $(".btn-close").click(function(e){
+  //   e.preventDefault();
+  // });
+</script>
+<!-- <script>
+  $('.checkbox').change(function() {
+    if ($(this).is(':checked')) {
+      var target = $(this).parent().children('.checkbox:checked');
+      target.prop('checked', false);
+    } else {
+      var target = $(this).parent().children('.checkbox:not(:checked)');
+      target.prop('checked', true);
+    }
+  });
+</script> -->
+<script>
+  $('input[type="checkbox"]').on('change', function(e){
+        if($(this).prop('checked'))
+        {
+            $(this).next().val(1);
+        } else {
+            $(this).next().val(0);
+        }
+});
+</script>
