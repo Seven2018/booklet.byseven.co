@@ -247,7 +247,7 @@ body {
     justify-content: space-between;
 
     .prev, .next {
-      height: 3vw;
+      height: 2vw;
       padding: 0 10px;
       margin: .5vw;
       background: #F26419;
@@ -273,41 +273,6 @@ body {
 
       &.submission {
         background: green;
-      }
-
-      &:after {
-        // position: absolute;
-        // top: 50%;
-        // left: 50%;
-        // transform: translate(-50%, -50%);
-        // color: #F26419;
-        // font-size: 30px;
-        // transition: transform .15s linear, opacity .15s linear;
-        // will-change: transform, opacity;
-        // z-index: -1;
-        // opacity: 0;
-      }
-    }
-
-    .prev {
-      // &:after {
-      //   content: '\21E6';
-      // }
-
-      &:hover:not(.disabled):after {
-        transform: translate(-60px, -50%);
-        opacity: 1;
-      }
-    }
-
-    .next {
-      // &:after {
-      //   content: '\21E8';
-      // }
-
-      &:hover:not(.submission):after {
-        transform: translate(32px, -50%);
-        opacity: 1;
       }
     }
   }
@@ -413,7 +378,7 @@ body {
 }
 
 #move-on {
-  height: 3vw;
+  height: 2vw;
   padding: 0 10px;
   margin: .5vw;
   background: #8FA078;
@@ -432,11 +397,10 @@ body {
 }
 
 #submit {
-  height: 3vw;
+  height: 2vw;
   padding: 0 10px;
   margin: .5vw;
   background: #8FA078;
-  border:3px solid #687854;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -453,10 +417,11 @@ body {
 
 
 .accordion {
-  background-color: #eee;
+  margin-bottom: 10px;
+  background-color: #F8D9C8;
   color: #444;
   cursor: pointer;
-  padding: 18px;
+  padding: 10px;
   width: 100%;
   border: none;
   text-align: left;
@@ -489,4 +454,163 @@ body {
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 20px;
+}
+
+.mod-btn {
+  margin: 20px 0px;
+  font-size: 15px;
+  text-align: center;
+  width: 150px;
+  padding: 5px 12px;
+  border-radius: 30px;
+  cursor: pointer;
+  display: inline-block;
+  color: #ff8244;
+  font-weight: 700;
+  border: 2px solid #ff8244;
+  background-color: #F8D9C8;
+}
+
+.hidden {
+  display:none;
+}
+
+.booking {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  #book-now, #book-later {
+    height: 2vw;
+    padding: 0 10px;
+    margin: .5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 7.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+  }
+  #book-now {
+    background: #8FA078;
+    border: 2px solid #8FA078;
+    color: white;
+  }
+  #book-later {
+    color: #8FA078;
+    border: 2px solid #8FA078;
+  }
+}
+
+.start-time {
+  display: flex;
+  .form-group {
+    margin-right: 20px;
+  }
+}
+
+.booking-containter {
+  margin-top: 30px;
+    h4 {
+    padding: 20px 0px;
+    font-style: italic;
+  }
+}
+
+.mod-date {
+  padding-bottom: 20px;
+  label {
+    font-size: 15px;
+  }
+  abbr {
+    display: none;
+  }
+}
+
+// custom checkbox //
+.checkbox,
+.radio {
+  margin-bottom:6px;
+
+  &.inline {
+    display:inline-block;
+    vertical-align:top;
+    margin-right:18px;
+    &:last-child { margin-right:0; }
+  }
+
+  label {
+    display:block;
+    position:relative;
+    cursor: pointer;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    position:absolute;
+    top:0;
+    left:0;
+    visibility:hidden;
+  }
+
+  // .custom-checkbox and .custom-radio must come immediately after the input element
+  .custom-checkbox,
+  .custom-radio {
+    display:inline-block;
+    vertical-align:top;
+    margin:0 6px 0 0;
+    width:18px;
+    height:18px;
+    background:#fff;
+    border:1px solid #ddd;
+    position:relative;
+  }
+}
+
+.checkbox {
+  .custom-checkbox {
+    border-radius:2px;
+    background:#F26419;
+    transition:box-shadow 180ms ease;
+    box-shadow:inset 0 0 0 12px #fff;
+    top:-2px;
+  }
+
+  .icon-check {
+    width:12px;
+    height:12px;
+    background-size:cover;
+    position:absolute;
+    top:2px;
+    left:2px;
+    transform:scale(0);
+    transition:all 180ms ease;
+  }
+
+  input[type="checkbox"]:checked + .custom-checkbox {
+    border-color:#F26419;
+    box-shadow:none;
+    .icon-check { transform:scale(1); }
+  }
+}
+
+
+
+
+// SVG check icon
+.icon-check {
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20baseProfile%3D%22tiny%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2216%22%20height%3D%2216%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M13.483%201.992l-7.186%207.066-3.778-3.715-2.518%202.475%205.037%204.954%201.259%201.237%209.704-9.541-2.518-2.476z%22/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+}
+
+// Disable text selection (useful thing to have in your mixins!)
+.no-select {
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
 }

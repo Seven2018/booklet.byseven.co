@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resources :workshop_skills, only: %i[create]
     resources :workshop_categories, only: %i[create]
   end
-
+  get 'workshops/:id/book', to: 'workshops#book', as: 'book_workshop'
   # Assessments
   resources :assessments, only: %i[show new create edit update destroy] do
     resources :assessment_questions, only: %i[update destroy]

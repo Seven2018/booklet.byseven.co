@@ -91,6 +91,12 @@ class WorkshopsController < ApplicationController
     redirect_to workshops_path(filter: category_ids)
   end
 
+  def book
+    @workshop = Workshop.find(params[:id])
+    skip_authorization
+    @training_workshop = TrainingWorkshop.new
+  end
+
   private
 
   def set_workshop
