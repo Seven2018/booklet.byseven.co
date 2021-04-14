@@ -4,17 +4,20 @@
       <i class="fas fa-arrow-left"></i>
     <% end %>
   </div>
-  <h3>Add a new program</h3>
-
-  <%= simple_form_for @training_program do |f| %>
-    <%= f.input :title %>
-    <%= f.input :participant_number %>
-    <%= f.input :description %>
-    <%# f.input :image, label: 'Image URL' %>
-    <div style="display:flex;justify-content:center;margin-top:30px;">
-      <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
-        <i class="fas fa-save"></i>
-      <% end %>
+ <div class="interactive-form">
+  <div class="form-wrapper">
+    <h2>Create a new program</h2>
+    <%= simple_form_for @training_program do |f| %>
+      <%= f.input :title %>
+      <%= f.input :participant_number %>
+      <%= f.input :description %>
+      <%# f.input :image, label: 'Image URL' %>
+      <div style="display:flex;justify-content:center;margin-top:30px;">
+        <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
+          <i class="fas fa-save"></i>
+        <% end %>
+      </div>
+    <% end %>
     </div>
-  <% end %>
+  </div>
 </div>

@@ -4,24 +4,28 @@
       <i class="fas fa-arrow-left"></i>
     <% end %>
   </div>
-  <h3>Create a new module</h3>
-  <%= simple_form_for Mod.new do |f| %>
-    <%= f.input :title %>
-    <%= f.input :duration %>
-    <%= f.input :document, label: 'Document (url)' %>
-    <%= f.input :media, label: 'Media (url)' %>
-    <%= f.label :content %>
-    <%= f.cktext_area :content %>
-    <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
-      <% if @workshop.present? %>
-        <%= button_tag type: 'submit', name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
-      <% elsif @training_workshop.present? %>
-        <%= button_tag type: 'submit', name: 'training_workshop_id', value: "#{@training_workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
+   <div class="interactive-form">
+    <div class="form-wrapper">
+      <h2>Create a new module</h2>
+      <%= simple_form_for Mod.new do |f| %>
+        <%= f.input :title %>
+        <%= f.input :duration %>
+        <%= f.input :document, label: 'Document (url)' %>
+        <%= f.input :media, label: 'Media (url)' %>
+        <%= f.label :content %>
+        <%= f.cktext_area :content %>
+        <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
+          <% if @workshop.present? %>
+            <%= button_tag type: 'submit', name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
+          <% elsif @training_workshop.present? %>
+            <%= button_tag type: 'submit', name: 'training_workshop_id', value: "#{@training_workshop.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
+          <% end %>
+        </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
 </div>

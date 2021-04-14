@@ -4,34 +4,309 @@
       <i class="fas fa-arrow-left"></i>
     <% end %>
   </div>
-  <h3>Add a new workshop</h3>
-
-  <%= simple_form_for @workshop do |f| %>
-    <%= f.input :title %>
-    <%= f.input :workshop_type, collection: ['Synchronous', 'Asynchronous'], include_blank: false %>
-    <%= f.input :duration, label: 'Duration (min)' %>
-    <%# f.input :image, label: 'Image URL' %>
-    <!-- <ffn class="_ffn_textNode" data-ffn-css-id="5" style="border-bottom-color: rgba(0, 0, 0, 0);">Categories</ffn>
-    <div id='checkbox' class='flex-column-centered'>
-      <%# collection_check_boxes(:workshop, :category_ids, Category.all, :id, :title) do |b| %>
-        <%# b.label class: 'label-checkbox', style: 'color:black;' do %>
-          <%# b.check_box + b.text %>
-        <%# end %>
-      <%# end %>
-    </div> -->
-    <%= f.label :description %>
-    <%= f.cktext_area :description %>
-    <script>
-      $('#checkbox input:checkbox:checked').parent().toggleClass('checked-box');
-      $('#checkbox input:checkbox').change(function () {
-        $(this).parent().toggleClass('checked-box');
-      });
-    </script>
-    <div style="display:flex;justify-content:center;margin-top:30px;">
-      <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
-        <i class="fas fa-save"></i>
-      <% end %>
-    </div>
-  <% end %>
 </div>
+ <section class="temp">
+  <div class="interactive-form">
+    <div class="form-wrapper">
+      <form class="submission-handler">
+        <div class="modules">
+          <div class="module_zero active" data-map="greet">
+            <h2>Create a new workshop</h2>
+            <%= simple_form_for @workshop do |f| %>
+              <%= f.input :title, placeholder:'Upselling' %>
+              <%= f.input :category_ids, placeholder:'Business Development' %>
+              <%= f.label :description %>
+              <%= f.cktext_area :description, placeholder: 'A 3 module workshop focused on the right language and tools to use when upselling'%>
+            <% end %>
+            <div class="controls">
+              <a class="prev disabled" id='back-zero'>Back</a>
+              <a class="next" id='next-zero'>Next</a>
+            </div>
+          </div>
+          <div class="module_first" data-map="who are you?">
+            <h2>Congrats you've created a workshop. You can now populate your workshop with either a module or a quiz.</h2>
+            <div class='form-choices'>
+              <div class='new-module' id='new-module'>
+                <a><i class="far fa-clipboard fa-5x"></i>
+                <h1>Module</h1></a>
+              </div>
+              <div class='new-module'>
+                <a><i class="fas fa-tasks fa-5x" id='new-quiz'></i>
+                <h1>Quiz</h1></a>
+              </div>
+            </div>
+            <div class="controls">
+              <a class="prev" id='back-first'>Back</a>
+              <a class="next" id='move-on'>Move on</a>
+            </div>
+          </div>
+          <div class="module_second" data-map="your business">
+            <h2>Create a new Module</h2>
+            <div id='moduleadd'>
+              <div id='allmods' class="hidden">
+                <div class="accordion" onclick='openMod(this);'>Mod title</div>
+                <div class="panel">
+                  <%= simple_form_for Mod.new do |f| %>
+                    <%= f.input :title %>
+                    <%= f.input :duration %>
+                    <%= f.input :document, label: 'Document (url)' %>
+                    <%= f.input :media, label: 'Media (url)' %>
+                    <%= f.label :content %>
+                    <%= f.cktext_area :content %>
+                    <div class='validate-btn-flex'>
+                      <div class='validate-btn' id='validate' onclick='closeMod(this);'>
+                        <p>Save Module</p>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class='mod-btn' id='modbut' onclick='addModule();'>Add a Module</div>
+            <div class='pre-existing'>
+              <h2>or select a pre-existing one</h2>
+              <%= simple_form_for WorkshopMod.new do |f| %>
+                <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
+                  <%= collection_check_boxes(:workshop, :mod_ids, Mod.where(company_id: current_user.company_id), :id, :title) do |b| %>
+                  <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+                  <%= b.check_box + b.text %>
+                  <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <div class="controls">
+              <a class="prev" id='back-second'>Back</a>
+              <a class="next" id='next-second'>Next</a>
+            </div>
+          </div>
+          <div class="module_third" data-map="your target">
+            <h2>Create a quiz</h2>
+            <h5>*Quizzes are in MCQ format</h5>
+            <%= simple_form_for Assessment.new do |f| %>
+              <%= f.input :title %>
+            <% end %>
+            <div id='quizadd'>
+              <div class='quiz-questions' id='quiz'>
+                <%= simple_form_for :questions, method: :post do |f| %>
+                  <div class='mod-assessment-questions-form'>
+                    <%= f.input :question, as: :text%>
+                    <div class='mod-assessment-questions-options-mcq'>
+                      <div class='flex-column-between-left'>
+                      </div>
+                      <a href="javascript:;" class='addOption btn btn-edit-white'>Add Response</a>
+                    </div>
+                    <div class="hidden" id="add_options_form">
+                      <%= label_tag 'Response' %>
+                      <%= text_field_tag 'options[]' %>
+                      <%= label_tag 'Correct Answer' %>
+                      <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
+                      <%= hidden_field_tag 'answer[]', false %>
+                    </div>
+                    <div class='mod-assessment-questions-options-rating'>
+                      <%= label_tag 'Min value' %>
+                      <%= text_field_tag 'rating[]' %>
+                      <%= label_tag 'Max value' %>
+                      <%= text_field_tag 'rating[]' %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <div class='add-questions' onclick='addQuestion();'>Add Question</div>
+            <div class="controls">
+              <a class="prev" id='back-quiz'>Back</a>
+              <a class="next" id='next-quiz'>Next</a>
+            </div>
+          </div>
+          <div class="module_fourth" data-map="your added value">
+            <h2>Here is an overview of the workshop you created and populated.</h2>
+            <div class="mod-content-submit">
+              <div class="mod">
+                <h4>This is an example of a module title</h4>
+                <p>this would be the content of the module or quiz. not sure how </p>
+              </div>
+            </div>
+            <div class="controls">
+              <a class="prev" id='back-last'>Back</a>
+              <a class="next" id='submit'>Submit</a>
+            </div>
+          </div>
+          <div class="module_book" data-map="your added value">
+            <h2>Congrats, Your workshop has been created! <br>Would you like to book a date for this workshop? </h2>
+            <div class="booking">
+              <a class="prev" id='book-later'>Book Later</a>
+              <a class="next" id='book-now'>Book Now</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 
+<script>
+  // quiz //
+$('input[type="checkbox"]').on('change', function(e){
+        if($(this).prop('checked'))
+        {
+            $(this).next().val(true);
+        } else {
+            $(this).next().val(false);
+        }
+  });
+  // $('.mod-assessment-questions-options-mcq').hide();
+  $('.mod-assessment-questions-options-rating').hide();
+  $('input[type=radio]').change(function() {
+  $('.mod-assessment-questions-options-rating').hide();
+  $('.mod-assessment-questions-options-mcq').show();
+  });
+
+  $(".addOption").click(function(){
+    console.log('mescouilles');
+    $(this).parent().children('div').append($("#add_options_form").html());
+  });
+
+
+  $('input[type="checkbox"]').on('change', function(e){
+        if($(this).prop('checked'))
+        {
+            $(this).next().val(1);
+        } else {
+            $(this).next().val(0);
+        }
+});
+  // pre-existing modules //
+    $('#checkbox3 input:checkbox:checked').parent().toggleClass('checked-box');
+  $('#checkbox3 input:checkbox').change(function () {
+  $(this).parent().toggleClass('checked-box');
+  });
+  // first page //
+  modzero = document.querySelector('.module_zero');
+  nextzero = document.getElementById('next-zero');
+  modfirst = document.querySelector('.module_first');
+  newmodule = document.getElementById('new-module');
+  backfirst = document.getElementById('back-first');
+  modthird = document.querySelector('.module_third');
+  modsecond = document.querySelector('.module_second');
+  backquiz = document.getElementById('back-quiz');
+  newquiz = document.getElementById('new-quiz');
+  nextquiz = document.getElementById('next-quiz');
+  backsecond = document.getElementById('back-second');
+  nextsecond = document.getElementById('next-second');
+  modfourth = document.querySelector('.module_fourth');
+  moveon = document.getElementById('move-on');
+  backlast = document.getElementById('back-last');
+  submit = document.getElementById('submit');
+  booknow = document.getElementById('book-now');
+  booklater = document.getElementById('book-later');
+  modbook = document.querySelector('.module_book');
+
+  nextzero.addEventListener('click', event => {
+    modzero.classList.remove('active');
+    modfirst.classList.add('active');
+  })
+// second page //
+
+  backfirst.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    modzero.classList.add('active');
+  })
+
+   newmodule.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    modsecond.classList.add('active');
+  })
+
+  nextsecond.addEventListener('click', event => {
+    modsecond.classList.remove('active');
+    modfirst.classList.add('active');
+  })
+
+  backsecond.addEventListener('click', event => {
+    modsecond.classList.remove('active');
+    modfirst.classList.add('active');
+  })
+
+   newquiz.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    modthird.classList.add('active');
+  })
+
+  backquiz.addEventListener('click', event => {
+    modthird.classList.remove('active');
+    modfirst.classList.add('active');
+  })
+
+  nextquiz.addEventListener('click', event => {
+    modthird.classList.remove('active');
+    modfirst.classList.add('active');
+  })
+
+moveon.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    modfourth.classList.add('active');
+  })
+
+backlast.addEventListener('click', event => {
+    modfirst.classList.add('active');
+    modfourth.classList.remove('active');
+  })
+
+submit.addEventListener('click', event => {
+    modbook.classList.add('active');
+    modfourth.classList.remove('active');
+  })
+// open close of each module //
+
+function openMod (element) {
+  // acc = document.getElementsByClassName("accordion");
+  // acc.forEach(element => {
+      element.classList.add('active-accor');
+      var panel = element.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+  };
+
+function closeMod (element) {
+  // var validate = document.getElementsByClassName("validate-btn");
+  // validate.forEach(element => {
+    element.parentNode.parentNode.parentNode.parentNode.querySelector('.accordion').classList.remove('active-accor');
+    console.log(element.parentNode.parentNode.parentNode.parentNode.querySelector('.accordion'));
+    var panel = element.parentNode.parentNode.parentNode.parentNode.querySelector('.accordion').nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+ };
+
+// creating new div on each module //
+
+function addModule () {
+  content = document.getElementById('allmods').innerHTML;
+  // create a new div element
+  modadd = document.getElementById('moduleadd');
+
+  var newDiv = document.createElement("div");
+  // and give it some content
+  newDiv.innerHTML = content;
+  // add the text node to the newly created div
+  modadd.appendChild(newDiv);
+  // add the newly created element and its content into the DOM
+};
+
+// add question //
+function addQuestion () {
+  question = document.getElementById('quiz').innerHTML;
+  quizadd = document.getElementById('quizadd');
+  var newQuiz = document.createElement("div");
+  // and give it some content
+  newQuiz.innerHTML = question;
+  // add the text node to the newly created div
+ quizadd.appendChild(newQuiz);
+};
+</script>
