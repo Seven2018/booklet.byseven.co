@@ -17,7 +17,11 @@ class PagesController < ApplicationController
     end
   end
 
-  def calendar
+  def calendar_month
+    @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
+  end
+
+  def calendar_week
     @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
   end
 
