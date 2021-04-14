@@ -58,8 +58,6 @@
 
 .workshop-show-card-footer {
   width: 100%;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  padding-bottom: 5rem;
 }
 
 
@@ -150,18 +148,15 @@
   }
 }
 
-#workshop-booked-infos {
-  width: 50%;
-
-  h3:last-of-type {
-    text-indent: 2rem;
-    margin-top: 2rem;
-  }
-}
 
 #container-workshop-booked {
-  padding: 3rem 0;
-  border-bottom: 1px solid #DADCE0;
+  margin-top: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 5rem;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #workshop-booked-infos-main {

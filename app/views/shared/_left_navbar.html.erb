@@ -1,9 +1,9 @@
 <div class="left-navbar left-navbar-builder">
   <% unless ['workshops', 'training_workshops'].include?(params[:controller]) && params[:action] == "view_mode" %>
     <div class="left-navbar-top">
-      <% if user_signed_in? %>
+<!--       <% if user_signed_in? %>
         <img src='<%= "#{current_user.company.logo}" %>' class="left-navbar-logo" height='24px'>
-      <% end %>
+      <% end %> -->
     </div>
     <div class="left-navbar-middle">
       <% if user_signed_in? %>
@@ -46,24 +46,32 @@
           <% if request.original_url&.split('/')[3]&.split('?')&.first == 'organisation' %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
               <div class="left-menu-list active">
-                <div class="left-menu-icon"><i class="fas fa-users"></i></div> <div class="left-menu-title"><h4>Organisation</h4></div>
+                <div class="left-menu-icon"><i class="fas fa-users"></i></div> <div class="left-menu-title"><h4>Employees</h4></div>
               </div>
             <% end %>
           <% else %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
               <div class="left-menu-list">
-                <div class="left-menu-icon"><i class="fas fa-users"></i></div> <div class="left-menu-title"><h4>Organisation</h4></div>
+                <div class="left-menu-icon"><i class="fas fa-users"></i></div> <div class="left-menu-title"><h4>Employees</h4></div>
               </div>
             <% end %>
           <% end %>
         <% end %>
       <% end %>
+      <div class="sidebar-arrow">
+      <div class="btn-icon left-navbar-control-open">
+        <i class="fas fa-arrow-right"></i>
+      </div>
+      <div class="btn-icon hidden left-navbar-control-close">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
     </div>
     <div class="left-navbar-bottom">
       <div class="dropdown show">
-        <a class="navbar-user-card dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="navbar-user-card userhidden dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <div>
-            <h6><%= current_user.fullname %></h6>
+            <h6 class='user-name' ><%= current_user.fullname%></h6>
           </div>
           <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
         </a>
@@ -126,3 +134,45 @@
     <% end %>
   <% end %>
 </div>
+
+
+<script>
+  open = document.querySelector('.left-navbar-control-open');
+  close = document.querySelector('.left-navbar-control-close');
+  left_navbar = document.querySelector('.left-navbar');
+  logo = document.querySelector('.left-navbar-logo');
+  logo_small = document.querySelector('.left-navbar-logo-small')
+  user = document.querySelector('.navbar-user-card');
+  open.addEventListener('click', (event) => {
+    user.classList.remove('userhidden');
+    container = document.querySelector('#booklet-container');
+    left_navbar.style.width = '220px';
+    setTimeout(function(){logo.classList.toggle('hidden');}, 250);
+    setTimeout(function(){logo_small.classList.toggle('hiddenname');}, 250);
+    open.classList.toggle('hidden');
+    close.classList.toggle('hidden');
+    if (window.innerWidth > 1440) {
+      container.style.width = (1440 - 220).toString() + 'px';
+      container.style.marginLeft = '220px';
+    } else {
+      container.style.width = (window.innerWidth - 220).toString() + 'px';
+      container.style.marginLeft = '220px';
+    }
+  });
+
+  close.addEventListener('click', (event) => {
+    user.classList.add('userhidden');
+    container = document.querySelector('#booklet-container');
+    left_navbar.style.width = '60px';
+    open.classList.toggle('hidden');
+    close.classList.toggle('hidden');
+    if (window.innerWidth >= 1440) {
+      container.style.width = (1440 - 60).toString() + 'px';
+      container.style.marginLeft = '60px';
+    } else {
+      container.style.width = (window.innerWidth - 60).toString() + 'px';
+      container.style.marginLeft = '60px';
+    }
+  });
+
+</script>
