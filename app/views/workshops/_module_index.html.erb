@@ -21,7 +21,7 @@
           <div class="workshop-show-content-index centered-item">
             <p><%= workshop_mod.position %></p>
           </div>
-          <% if workshop_mod.mod.type == 'Assessment' %>
+          <% if workshop_mod.mod.mod_type == 'Assessment' %>
             <%= link_to assessment_path(workshop_mod.mod) do %>
               <div class="flex-row-between-centered">
                 <i class="fas fa-question-circle" style='margin-right: 1rem;font-size:2rem;'></i>

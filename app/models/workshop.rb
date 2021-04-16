@@ -13,4 +13,5 @@ class Workshop < ApplicationRecord
   has_many :mods, through: :workshop_mods
   has_many :assessments, dependent: :destroy
   accepts_nested_attributes_for :workshop_categories
+  has_rich_text :description
 end

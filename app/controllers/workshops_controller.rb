@@ -1,5 +1,5 @@
 class WorkshopsController < ApplicationController
-  before_action :set_workshop, only: [:show, :view_mode, :edit, :update, :destroy]
+  before_action :set_workshop, only: [:show, :view_mode, :edit, :update, :update_workshop, :destroy]
   helper VideoHelper
 
   # def index
@@ -64,6 +64,20 @@ class WorkshopsController < ApplicationController
     end
   end
 
+  def create_workshop
+    @new_workshop = Workshop.new(title: params[:new_workshop][:title], description: params[:new_workshop][:description], company_id: current_user.company_id, author_id: current_user.id)
+    skip_authorization
+    if @new_workshop.save
+      params[:new_workshop][:categories].reject!(&:empty?).each do |category_id|
+        WorkshopCategory.create(workshop_id: @new_workshop.id, category_id: category_id.to_i)
+      end
+    end
+    respond_to do |format|
+      format.html {redirect_to new_workshop_path}
+      format.js
+    end
+  end
+
   def edit
     authorize @workshop
   end
@@ -75,6 +89,24 @@ class WorkshopsController < ApplicationController
       redirect_to workshop_path(@workshop)
     else
       render :edit
+    end
+  end
+
+  def update_workshop
+    skip_authorization
+    @workshop.update(title: params[:new_workshop][:title], description: params[:new_workshop][:description])
+    if @workshop.save
+      params[:new_workshop][:categories].reject!(&:empty?).each do |category_id|
+        unless WorkshopCategory.where(workshop_id: @workshop.id, category_id: category_id.to_i).present?
+          WorkshopCategory.create(workshop_id: @workshop.id, category_id: category_id.to_i)
+        end
+      end
+      to_destroy = Category.where(company_id: current_user.company_id).map(&:id) - params[:new_workshop][:categories].map{|x| x.to_i}
+      WorkshopCategory.where(workshop_id: @workshop.id, category_id: to_destroy).destroy_all
+    end
+    respond_to do |format|
+      format.html {redirect_to new_workshop_path}
+      format.js
     end
   end
 

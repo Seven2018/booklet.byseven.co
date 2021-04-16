@@ -7,15 +7,17 @@
     <h3 class="category-title"><b>Filter</b></h3>
     <% i = 1 %>
     <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
-      <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
+      <% job_checked = params[:filter][:job] if params[:filter].present? %>
+          <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
+      <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: job_checked%></div>
       <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
-        <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
+        <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: tag_checked %></div>
       <% end %>
       <div class=filter-text>
         <%= f.submit 'Filter', class: 'final-filter-btn' %>
-        <!-- <button class='final-filter-btn'>Filter</button> -->
     <% end %>
-        <a class='final-filter-clear'>Clear All</a>
+        <!-- <a class='final-filter-clear'>Clear All</a> -->
+        <%= link_to 'Clear All', organisation_path, class: 'final-filter-clear' %>
       </div>
   </div>
   <div class='organisation-users'>
@@ -122,7 +124,7 @@
   });
 </script>
 
-<script>
+<!-- <script>
   clear_button = document.querySelector('.final-filter-clear');
   check_boxes = document.querySelectorAll('.check_boxes');
   clear_button.addEventListener('click', (event) => {
@@ -131,4 +133,4 @@
       element.checked = false;
     })
   })
-</script>
+</script> -->

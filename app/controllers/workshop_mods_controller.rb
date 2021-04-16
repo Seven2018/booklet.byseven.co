@@ -14,7 +14,7 @@ class WorkshopModsController < ApplicationController
     reorder = false
     (Mod.ids - array).each do |ind|
       workshop_mod = WorkshopMod.where(workshop_id: @workshop.id, mod_id: ind).first
-      if workshop_mod.present? && workshop_mod&.mod&.type != 'Assessment'
+      if workshop_mod.present? && workshop_mod&.mod&.mod_type != 'Assessment'
         WorkshopMod.where(workshop_id: @workshop.id, mod_id: ind).first.destroy
         reorder = true
       end
