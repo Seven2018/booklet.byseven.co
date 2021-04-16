@@ -33,6 +33,27 @@ class ModsController < ApplicationController
     end
   end
 
+  def create_mod
+    @new_mod = Mod.new(title: params[:new_mod][:title], duration: params[:new_mod][:duration].to_i, document: params[:new_mod][:document], media: params[:new_mod][:media], content: params[:new_mod][:content])
+    skip_authorization
+    @new_workshop = Workshop.find(params[:new_mod][:workshop_id].to_i)
+    if @new_mod.save
+      WorkshopMod.create(workshop_id: @new_workshop.id, mod_id: @new_mod.id)
+    end
+    respond_to do |format|
+      format.html {redirect_to new_workshop_path}
+      format.js
+    end
+  end
+
+  def update_mod
+    skip_authorization
+    respond_to do |format|
+      format.html {redirect_to new_workshop_path}
+      format.js
+    end
+  end
+
   def update
     authorize @module
     workshop = Workshop.find(params[:workshop_id]) if params[:workshop_id].present?

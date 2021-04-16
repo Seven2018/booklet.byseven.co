@@ -119,7 +119,7 @@ def catalogue_programs_duration_order_asc
       if params[:search].present?
         @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
-      elsif params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag] != ["",""])
+      elsif params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
         tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
         if params[:filter][:job] != [""]
           if tags.present?

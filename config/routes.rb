@@ -24,6 +24,8 @@ Rails.application.routes.draw do
     resources :workshop_skills, only: %i[create]
     resources :workshop_categories, only: %i[create]
   end
+  post 'workshops/create_workshop', to: 'workshops#create_workshop', as: 'create_workshop'
+  patch 'workshops/:id/update_workshop', to: 'workshops#update_workshop', as: 'update_workshop'
   get 'workshops/:id/book', to: 'workshops#book', as: 'book_workshop'
   # Assessments
   resources :assessments, only: %i[show new create edit update destroy] do
@@ -39,6 +41,8 @@ Rails.application.routes.draw do
   get 'workshops-filter', to: 'workshops#filter', as: 'filter_workshops'
   get 'workshops/:id/viewmode', to: 'workshops#view_mode', as: 'view_workshop'
   resources :mods, only: %i[show new create update destroy]
+  post 'mods/create_mod', to: 'mods#create_mod', as: 'create_mod'
+  post 'mods/:id/update_mod', to: 'mods#update_mod', as: 'update_mod'
   resources :workshop_mods, only: %i[create destroy]
   get 'workshop_mods/:id/move_up', to: 'workshop_mods#move_up', as: 'move_up_workshop_mod'
   get 'workshop_mods/:id/move_down', to: 'workshop_mods#move_down', as: 'move_down_workshop_mod'

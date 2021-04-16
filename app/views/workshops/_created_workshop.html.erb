@@ -1,0 +1,13 @@
+<h2>Update a new workshop</h2>
+<%= simple_form_for :new_workshop, url: update_workshop_path(@new_workshop), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+  <%= f.input :title, input_html: {value: @new_workshop.title }%>
+  <% checked = @new_workshop.categories.map(&:id) %>
+  <%= f.input :categories, collection: Category.where(company_id:current_user.company_id), as: :check_boxes, checked: checked %>
+  <%= f.label :description %>
+  <%= f.rich_text_area :description, input_html: {value: @new_workshop.description } %>
+  <p class="hidden" id='workshop_id'><%= @new_workshop.id %></p>
+<div class="controls">
+  <a class="prev disabled" id='back-zero'>Back</a>
+  <%= button_tag 'Next', type: 'submit', class: 'next', id: 'next-zero'%>
+</div>
+<% end %>

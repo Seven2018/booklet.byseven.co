@@ -8,6 +8,7 @@ class TrainingWorkshop < ApplicationRecord
   has_many :training_workshop_mods, dependent: :destroy
   has_many :mods, through: :training_workshop_mods
   validate :end_date_after_start_date
+  has_rich_text :description
 
   def tag_ids
     tags = []
