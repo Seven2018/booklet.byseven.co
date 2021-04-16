@@ -54,7 +54,8 @@ Rails.application.routes.draw do
   resources :requests, only: %i[index show create update destroy]
   root to: 'pages#dashboard'
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
-  get 'dashboard-calendar', to: 'pages#calendar', as: 'dashboard_calendar'
+  get 'dashboard_calendar_month', to: 'pages#calendar_month', as: 'dashboard_calendar_month'
+  get 'dashboard_calendar_week', to: 'pages#calendar_week', as: 'dashboard_calendar_week'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
   get 'catalogue-filter-workshop', to: 'pages#catalogue_filter_workshop', as: 'filter_workshop_catalogue'
   get 'catalogue-filter-program', to: 'pages#catalogue_filter_program', as: 'filter_program_catalogue'
