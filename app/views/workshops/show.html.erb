@@ -6,7 +6,7 @@
     <% end %>
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
       <%= link_to edit_workshop_path(@workshop) do %>
-        <button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button>
+        <button class='btn-edit-white'><p><b>>SAVE </b><i class='fas fa-pen'></i></button></p>
       <% end %>
       <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-swatchbook"></i></button></a>
       <%= link_to workshop_path(@workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
@@ -38,14 +38,14 @@
   </div>
   <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
     <div class="workshop-show-module-controls flex-row-between-centered">
-      <h3>Modules</h3>
+      <h3><b>Modules</b></h3>
       <div class="flex-row-between-centered">
         <a data-toggle='modal' data-target='#editWorkshopContent'>
-        <button class='btn btn-edit'><p>Add Module</p></button>
+        <button class='icon-btn'><i class="far fa-clipboard"></i></button>
       </a>
         <div id='mod-create-assessment-div' class='centered-item'>
-          <button id='mod-create-assessment-button' class='btn btn-edit-white'>
-            Create Quiz
+          <button id='mod-create-assessment-button' class='icon-btn'>
+            <i class="fas fa-tasks"></i>
           </button>
           <div id='mod-create-assessment-form' style='display: none;'>
             <%= simple_form_for Assessment.new do |f| %>

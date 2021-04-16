@@ -10,7 +10,18 @@
   position: relative;
 
   .training-index-infos-dashboard {
+    width: auto;
+    p {
+      font-size: 12px;
+      margin-left: 10px;
+    }
+  }
+  @include from-medium {
     width: 20%;
+    p {
+      font-size: 16px;
+      margin-left: 0px;
+    }
   }
 }
 

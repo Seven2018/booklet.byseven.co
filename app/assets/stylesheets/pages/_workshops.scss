@@ -1,3 +1,17 @@
+.container-new-form {
+  margin-bottom: 100px;
+  @include from-medium {
+    margin-bottom: 0px;
+  }
+}
+
+#assessment_title {
+  width: 130px;
+  @include from-medium {
+    width: auto;
+  }
+}
+
 .workshop-index-image {
   width: 6rem;
   height: 4rem;
@@ -32,12 +46,18 @@
 
 .workshop-show-card {
   // height: 50rem;
-  width: 90rem;
+  width: 35rem;
   margin: 2rem 0;
+  @include from-medium-high {
+    width: 90rem;
+  }    @include from-medium {
+    width: 70rem;
+  }
+
 }
 
 .workshop-show-card-main {
-
+  text-align: center;
   h1 {
     margin-bottom: 5rem;
   }
@@ -58,8 +78,6 @@
 
 .workshop-show-card-footer {
   width: 100%;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  padding-bottom: 5rem;
 }
 
 
@@ -71,13 +89,31 @@
 }
 
 .workshop-show-module-controls {
-  width: 90rem;
+  width: 35rem;
   margin-bottom: 3rem;
+  @include from-medium {
+    width:70rem;
+  }
+   @include from-medium-high {
+    width: 90rem;
+  }
 }
 
 .workshop-show-content {
-  width: 90rem;
+  width: 35rem;
   margin: 2rem 0;
+  p {
+    font-size: 13px;
+  }
+  @include from-medium-high {
+    width: 90rem;
+  }
+    @include from-medium {
+    width: 70rem;
+    p {
+      font-size: 16px;
+    }
+  }
 }
 
 .workshop-show-content-controls {
@@ -91,9 +127,18 @@
 .workshop-show-content-index {
   width: 2rem;
   height: 2rem;
-  border: 1px solid black;
+  border: none;
   border-radius: 50%;
   margin-right: 1rem;
+  p {
+    font-size: 13px;
+  }
+  @include from-medium {
+    border: 1px solid black;
+    p {
+    font-size: 16px;
+  }
+  }
 }
 
 .workshop-show-content-empty {
@@ -150,18 +195,15 @@
   }
 }
 
-#workshop-booked-infos {
-  width: 50%;
-
-  h3:last-of-type {
-    text-indent: 2rem;
-    margin-top: 2rem;
-  }
-}
 
 #container-workshop-booked {
-  padding: 3rem 0;
-  border-bottom: 1px solid #DADCE0;
+  margin-top: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 5rem;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #workshop-booked-infos-main {

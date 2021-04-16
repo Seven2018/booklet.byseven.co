@@ -12,8 +12,8 @@
       <%= f.input :description %>
       <%# f.input :image, label: 'Image URL' %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
-        <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
+        <%= button_tag type: 'submit', class: 'btn btn-edit-green' do %>
+           <p><b>SAVE <i class="fas fa-save"></i></p>
         <% end %>
         <%= link_to training_program_path(training_program), method: :delete, data: { confirm: 'Are you sure ?'} do %>
           <button class="btn btn-edit-red btn-edit-icon">
@@ -24,3 +24,4 @@
     <% end %>
   </div>
 </div>
+

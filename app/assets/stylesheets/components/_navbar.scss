@@ -44,7 +44,7 @@
 
   i {
     font-size: 20px !important;
-    margin-right: 20px;
+    margin-right: 0px;
   }
 
   .fa-envelope {
@@ -62,10 +62,13 @@
       border: 1px solid white;
     }
   }
+  @include from-medium {
+    i {
+      margin-right: 20px;
+    }
+  }
 }
 
-.nav-item {
-}
 
 .nav-link {
   height: auto;
@@ -82,13 +85,12 @@
 .navbar-user-card {
   border-radius: 0.8rem;
   padding: 0.5rem;
-  background-color: #f7f7f7;
+  background-color: #F1F3F4;
   width: 200px;
   height: 45px;
   display: flex;
   justify-content: space-around;
   align-items: center;
-
   div {
     margin: 0 2rem 0 0;
   }
@@ -98,7 +100,29 @@
   }
 
   &:hover {
-    background-color: #F1F3F4;
+    background-color: rgba(242,100,25,0.24);
+  }
+}
+.userhidden {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-radius: 0.8rem;
+  padding: 0.5rem;
+  width: 60px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    margin:0;
+  }
+
+  h6 {
+    display: none;
+  }
+
+  &:hover {
+    background-color: rgba(242,100,25,0.24);
   }
 }
 
@@ -111,7 +135,7 @@
 }
 
 #navbar-search {
-  margin-left: 24rem;
+  margin-left: 0;
   display: flex;
   align-items: center;
   position: relative;
@@ -121,7 +145,7 @@
   }
 
   form {
-    width: 40rem;
+    width: 15rem;
   }
 
   input {
@@ -133,5 +157,11 @@
     position: absolute;
     top: 5px;
     right: 10px;
+  }
+  @include from-medium {
+    margin-left: 24rem;
+    form {
+      width: 40rem;
+    }
   }
 }

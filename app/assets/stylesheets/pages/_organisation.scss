@@ -38,6 +38,14 @@
   align-items: center;
   padding: 1rem;
   border-bottom: 1px solid rgba(0,0,0,0.1);
+  img {
+    display:none;
+  }
+  @include from-medium {
+    img {
+      display: inherit;
+    }
+  }
 }
 
 .user-index-infos {
@@ -49,10 +57,15 @@
 
 .user-index-info {
   width: 30%;
-
   p {
+    font-size: 12px;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+  @include from-medium {
+    p {
+      font-size: 16px;
+    }
   }
 }
 
@@ -68,6 +81,10 @@
 .organisation-users {
   padding-left: 10px;
   flex-grow: 1;
+  width: 80%;
+  @include from-medium {
+    width: 100%;
+  }
 }
 
 .filter-form-input {
@@ -91,8 +108,17 @@
 
 
 .filter-dropdown-form {
+  position: absolute;
+  overflow: hidden;
+  width:0;
+  left: 0;
+  top:0;
+  @include from-large {
+  position: inherit;
+  width: auto;
   max-width: 400px;
   border-right: 2px solid;
+  }
 }
 
 .tag-selector {
@@ -153,4 +179,21 @@ opacity: 0.8;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.mobile-btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .fa-sliders-h {
+    color: #F26419;
+    margin-right: 20px;
+  }
+}
+
+.mobile-filter-btn {
+  display:block;
+  @include from-medium {
+    display: none;
+  }
 }
