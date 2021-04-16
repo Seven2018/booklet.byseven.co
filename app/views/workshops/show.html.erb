@@ -6,7 +6,7 @@
     <% end %>
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
       <%= link_to edit_workshop_path(@workshop) do %>
-        <button class='btn-edit-white'><p><b>>SAVE </b><i class='fas fa-pen'></i></button></p>
+        <button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button>
       <% end %>
       <a data-toggle='modal' data-target='#editCategory'><button class='btn-edit-white btn-edit-icon'><i class="fas fa-swatchbook"></i></button></a>
       <%= link_to workshop_path(@workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>

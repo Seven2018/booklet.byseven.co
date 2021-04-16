@@ -1,25 +1,23 @@
 .catalogue-index-list {
-  margin-top: 5rem;
-  overflow-y: scroll;
-  padding: 3rem;
-
+  padding: 0rem;
+  margin-bottom: 100px;
   h3 {
     font-weight: 800;
     margin-bottom: 3rem;
   }
-}
-
-.catalogue-index-card {
-  padding-left: 2rem;
+  @include from-medium {
+    padding: 3rem;
+  }
 }
 
 .catalogue-index-card, .catalogue-index-infos, .catalogue-index-infos a:first-of-type, .catalogue-index-infos-title {
-  width: calc(100% - 8rem);
-  height: 6rem;
+  width: calc(100% - 10rem);
+  height: 10rem;
   display: flex;
   position: relative;
   align-items: center;
 }
+
 
 .booking-button {
   position: absolute;
@@ -33,36 +31,31 @@
 
 .catalogue-index-card {
   border-bottom: 1px solid rgba(0,0,0,0.1);
-  min-width: 100rem;
 
   h3,  {
     display:none;
     margin: 0;
   }
+  @include from-medium-high {
+    h3 {
+      display: inherit;
+    }
+  }
 }
 
 .catalogue-index-info {
-  min-width: 25rem;
-  margin-right: 30px;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
   white-space: nowrap;
+  flex-direction: column;
   text-overflow: ellipsis;
-
-  &:first-of-type {
-    width: 5rem;
-    position: absolute;
-    left: -5rem;
-    top: 1.8rem;
-  }
-
   p {
     padding-right: 1rem;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
 }
 
 .catalogue-index-info-order {
@@ -71,4 +64,22 @@
   .fas {
     position: relative;
   }
+}
+
+.title, .theme, .duration {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.workshop-title-cat {
+  width:200px;
+    @include from-medium-high {
+    width: auto;
+  }
+}
+
+.centerbtn {
+  display: contents;
 }
