@@ -24,7 +24,7 @@ input.btn {
 .btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-blue, .btn-invite-users {
   width: auto;
   max-width: none;
-  padding: 0.45rem 2rem;
+  padding: 0.7rem 2rem;
   border-radius: 0.22rem;
   box-sizing: border-box;
   font-weight: 800 !important;
@@ -82,6 +82,10 @@ input.btn {
 
 .btn-edit-green {
   background-color: #8FA078 !important;
+  p {
+    font-weight: 700 !important;
+  }
+
 }
 
 .btn-edit-blue {
@@ -260,4 +264,21 @@ button {
   outline: none !important;
   margin-right: 0.5rem;
   color: #F26419 !important;
+}
+
+.icon-btn {
+  background-color: #F7F7F7;
+  i {
+    color: #F26419 !important;
+    font-size: 22px;
+    margin-right: 10px;
+
+  }
+}
+
+.pencil-btn {
+   background-color: #F7F7F7;
+  i {
+    color:#8C8B8A;
+  }
 }

@@ -6,26 +6,31 @@
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody" style='display:flex;flex-direction:column;align-items:center;'>
-    <%= simple_form_for [@training_program, @program_category] do |f| %>
-      <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
-        <%= collection_check_boxes(:training_program, :category_ids, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
-          <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-            <%= b.check_box + b.text %>
+    <% if Category.where(company_id:current_user.company_id).present? %>
+      <%= simple_form_for [@training_program, @program_category] do |f| %>
+        <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
+          <%= collection_check_boxes(:training_program, :category_ids, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
+            <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+              <%= b.check_box + b.text %>
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:30px;">
+          <%= button_tag :submit, class: 'btn btn-edit-green' do %>
+            <p><b>SAVE </b><i class="fas fa-save"></i></p>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <%= 'Sorry there are no categories.' %>
+    <% end %>
+  </div>
+</div>
+
+
       <script>
         $('#checkbox2 input:checkbox:checked').parent().toggleClass('checked-box');
         $('#checkbox2 input:checkbox').change(function () {
           $(this).parent().toggleClass('checked-box');
         });
       </script>
-      <div style="display:flex;justify-content:center;margin-top:30px;">
-        <%= button_tag :submit, class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</div>
-
