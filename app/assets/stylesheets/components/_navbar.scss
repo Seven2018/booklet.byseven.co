@@ -44,7 +44,7 @@
 
   i {
     font-size: 20px !important;
-    margin-right: 20px;
+    margin-right: 0px;
   }
 
   .fa-envelope {
@@ -60,6 +60,11 @@
 
     i {
       border: 1px solid white;
+    }
+  }
+  @include from-medium {
+    i {
+      margin-right: 20px;
     }
   }
 }
@@ -130,7 +135,7 @@
 }
 
 #navbar-search {
-  margin-left: 24rem;
+  margin-left: 0;
   display: flex;
   align-items: center;
   position: relative;
@@ -140,7 +145,7 @@
   }
 
   form {
-    width: 40rem;
+    width: 15rem;
   }
 
   input {
@@ -152,5 +157,11 @@
     position: absolute;
     top: 5px;
     right: 10px;
+  }
+  @include from-medium {
+    margin-left: 24rem;
+    form {
+      width: 40rem;
+    }
   }
 }

@@ -3,7 +3,7 @@
   min-width: 27rem;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 
   ul {
@@ -21,6 +21,9 @@
 
   h3 {
     margin: 0;
+  }
+  @include from-medium {
+    justify-content: space-between;
   }
 }
 
@@ -42,6 +45,7 @@
   display: inline-flex;
   border-radius: 8px;
   margin-right: 3rem;
+  margin-bottom: 20px;
 
   h3 {
     margin: 0;
@@ -52,6 +56,9 @@
   h3:first-of-type {
     padding: 2rem 0 2rem 2rem;
     color: white;
+  }
+  @include from-medium {
+    margin-bottom: 0px;
   }
 }
 
@@ -100,8 +107,10 @@
 
 .training-index-list-dashboard-large {
   width: 100%;
-  min-width: 82rem;
   padding: 2rem;
+  @include from-medium {
+    min-width: 82rem;
+  }
 }
 
 .training-index-infos-group-dashboard {
@@ -139,4 +148,17 @@
 
 .training-index-list-dashboard-title {
   margin-bottom: 3rem;
+}
+
+.dashboard-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  @include from-medium {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
 }

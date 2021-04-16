@@ -40,7 +40,8 @@
   }
 
   th {
-    padding: 6px;
+    padding: 8px;
+    font-size: 15px;
     border-bottom: 2px solid rgb(221, 221, 221);
     border-collapse: collapse;
     border-left: 1px solid rgb(221, 221, 221);
@@ -55,24 +56,10 @@
     vertical-align: top;
     width: 14%;
     border: 1px solid black !important
-
-    // border: 1px solid #ddd !important;
-    // border-top-color: rgb(221, 221, 221);
-    // border-top-style: solid;
-    // border-top-width: 1px;
-    // border-right-color: rgb(221, 221, 221);
-    // border-right-style: solid;
-    // border-right-width: 1px;
-    // border-bottom-color: rgb(221, 221, 221);
-    // border-bottom-style: solid;
-    // border-bottom-width: 1px;
-    // border-left-color: rgb(221, 221, 221);
-    // border-left-style: solid;
-    // border-left-width: 1px;
   }
 
   .day {
-    height: 80px;
+    height: 100px;
   }
 
   .wday-0 {}
@@ -84,7 +71,7 @@
   .wday-6 {}
 
   .today {
-    background: #FFFFC0
+    background: #EFB08E !important;
   }
 
   .past {}
@@ -139,6 +126,7 @@
   border: 1px solid black;
   padding: 0.5rem;
   margin-top: 0.5rem;
+  border-radius: 5px;
 }
 
 .workshop-card-calendar-indicator-green {

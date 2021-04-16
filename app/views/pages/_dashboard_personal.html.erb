@@ -1,6 +1,6 @@
 <div class="training-index-dashboard flex-row-between-centered">
   <div class='training-index-list-dashboard-large' style='margin-top:5rem'>
-    <div class="flex-row-start-centered">
+    <div class="dashboard-cards">
       <div class='dashboard-label dashboard-label-green'>
         <h3><strong><%= TrainingWorkshop.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where('date > ?', Date.today).count %></strong></h3>
         <h3>To Come</h3>
@@ -33,9 +33,6 @@
             </div>
             <div class="training-index-infos-dashboard">
               <p><%= element.title %></p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= element.workshop_type %></p>
             </div>
             <div class="training-index-infos-dashboard">
               <% if element.starts_at.present? && element.ends_at.present? %>

@@ -14,14 +14,18 @@ body {
 #booklet-wrapper {}
 
 #booklet-container {
-  margin: 0 3rem 3rem 6rem;
-  padding: 0 3rem 3rem 3rem;
+  margin: 0;
+  padding: 0 1rem 1rem 1rem;
   position: relative;
   background-color: #f7f7f7;
   border-radius: 10px;
   min-height: calc(100vh - 110px);
   overflow: hidden;
   transition: all 0.25s ease-in-out;
+  @include from-medium {
+    margin: 0 3rem 3rem 6rem;
+    padding: 0 3rem 3rem 3rem;
+  }
 }
 
 #container-login {
@@ -79,6 +83,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 100px;
+  @include from-medium {
+    margin-bottom: 0px;
+  }
 }
 
 #index-controls, #show-controls {
