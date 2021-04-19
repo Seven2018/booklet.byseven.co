@@ -77,7 +77,6 @@
             <% else %>
               <p style='color: #F26419'><%= program.categories.first&.title %></p>
             <% end %>
-          <a class='booking-button' data-toggle='modal' data-target='#transformTrainingProgram'><button class='booking-btn'>Book</button></a>
 
           <!-- Modal -->
           <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
@@ -86,6 +85,8 @@
             </div>
           </div>
         </div>
+          <a class='booking-button' data-toggle='modal' data-target='#transformTrainingProgram'><button class='booking-btn'>Book</button></a>
+
       </div>
     <% end %>
   <% end %>
