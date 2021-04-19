@@ -2,47 +2,51 @@
   <div class="catalogue-index-card">
     <div class="catalogue-index-infos-title">
       <div class="catalogue-index-info">
-      </div>
-      <div class="catalogue-index-info">
-        <p>Title</p>
-        <div class="catalogue-index-info-order flex-column-centered">
-            <i class="fas fa-caret-up">
-              <%= link_to '',catalogue_workshops_title_order_asc_path, remote: true, class: 'stretched-link' %>
-            </i>
-            <i class="fas fa-caret-down">
-              <%= link_to '',catalogue_workshops_title_order_desc_path, remote: true, class: 'stretched-link' %>
-            </i>
+        <div class="title">
+          <p>Title</p>
+          <div class="catalogue-index-info-order flex-column-centered">
+              <i class="fas fa-caret-up">
+                <%= link_to '',catalogue_workshops_title_order_asc_path, remote: true, class: 'stretched-link' %>
+              </i>
+              <i class="fas fa-caret-down">
+                <%= link_to '',catalogue_workshops_title_order_desc_path, remote: true, class: 'stretched-link' %>
+              </i>
+          </div>
         </div>
       </div>
       <div class="catalogue-index-info flex-row-start-centered">
-        <p>Duration</p>
-        <div class="catalogue-index-info-order flex-column-centered">
-            <i class="fas fa-caret-up">
-              <%= link_to '', catalogue_workshops_duration_order_asc_path, remote: true, class: 'stretched-link' %>
-            </i>
-            <i class="fas fa-caret-down">
-              <%= link_to '', catalogue_workshops_duration_order_desc_path, remote: true, class: 'stretched-link' %>
-            </i>
+        <div class="duration">
+          <p>Duration</p>
+          <div class="catalogue-index-info-order flex-column-centered">
+              <i class="fas fa-caret-up">
+                <%= link_to '', catalogue_workshops_duration_order_asc_path, remote: true, class: 'stretched-link' %>
+              </i>
+              <i class="fas fa-caret-down">
+                <%= link_to '', catalogue_workshops_duration_order_desc_path, remote: true, class: 'stretched-link' %>
+              </i>
+          </div>
         </div>
       </div>
       <div class="catalogue-index-info flex-row-start-centered">
-        <p>Theme</p>
-        <div class="catalogue-index-info-order flex-column-centered dropdown show">
-          <a class="dropdown-toggle" href="#" role="button" id="catalogueFilterWorkshops" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></a>
-          <div class="dropdown-menu" aria-labelledby="catalogueFilterWorkshops">
-            <div class="dropdown-item dropdown-form">
-              <%= simple_form_for :filter, url: filter_workshop_catalogue_path, method: 'GET', remote: true do |f| %>
-                <label for="filter_all" class="label-checkbox check-box-all">
-                  <%= f.check_box :all %>
-                  All
-                </label>
-                <%= collection_check_boxes(:workshop, :category_ids, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
-                  <%= b.label class: 'label-checkbox check-box-child', style: 'color:black;' do %>
-                    <%= b.check_box + b.text %>
+        <div class="theme">
+          <p>Theme</p>
+          <div class="catalogue-index-info-order flex-column-centered dropdown show">
+            <a class="dropdown-toggle" href="#" role="button" id="catalogueFilterWorkshops" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></a>
+            <div class="dropdown-menu" aria-labelledby="catalogueFilterWorkshops">
+              <div class="dropdown-item dropdown-form">
+                <%= simple_form_for :filter, url: filter_workshop_catalogue_path, method: 'GET', remote: true do |f| %>
+                  <label for="filter_all" class="label-checkbox check-box-all">
+                    <%= f.check_box :all %>
+                    All
+                  </label>
+                  <%= collection_check_boxes(:workshop, :category_ids, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
+                    <%= b.label class: 'label-checkbox check-box-child', style: 'color:black;' do %>
+                      <%= b.check_box + b.text %>
+                    <% end %>
                   <% end %>
+                  <%= f.button :submit, 'Filter', class: 'btn-edit-white' %>
                 <% end %>
-                <%= f.button :submit, 'Filter', class: 'btn-edit-white' %>
-              <% end %>
+              </div>
             </div>
           </div>
         </div>
@@ -52,34 +56,16 @@
   <% workshops.each do |workshop| %>
     <%= link_to workshop_path(workshop) do %>
       <div class='catalogue-index-card'>
-        <div class="catalogue-index-infos flex-row-between-centered">
-          <div class="catalogue-index-info">
-            <h3>W</h3>
-          </div>
-          <div class="catalogue-index-info">
-            <p data-toggle="tooltip" title="<%= workshop.title %>"><%= workshop.title %></p>
-          </div>
-
-          <div class="catalogue-index-info">
-            <p><%= " #{workshop.duration} min" %></p>
-          </div>
-          <div class="catalogue-index-info">
+        <div class="catalogue-index-info">
+            <p data-toggle="tooltip" title="<%= workshop.title %>" class='workshop-title-cat'><b><%= workshop.title %></b></p>
+            <p><i><%= " #{workshop.duration} min" %></i></p>
             <% if workshop&.categories.count > 1 %>
               <p data-toggle="tooltip" title='<%= "#{workshop.categories.map(&:title).join(', ')}" %>'><%= workshop&.categories.first&.title %> +</p>
             <% else %>
-              <p><%= workshop&.categories.first&.title %></p>
+              <p style='color: #F26419'><%= workshop&.categories.first&.title %></p>
             <% end %>
-          </div>
-          <a class='booking-button' data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='booking-btn btn-last'>Book</button></a>
-
-          <!-- Modal -->
-          <div class='modal fade' id='transformTrainingWorkshop<%= workshop.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-            <div class='modal-dialog' role='document' style='border-radius: 20px'>
-              <%= render 'training_workshops/new', workshop: workshop %>
-            </div>
-          </div>
+              <div class="centerbtn"><a class='booking-button' data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='booking-btn btn-last'>Book</button></a></div>
         </div>
       </div>
     <% end %>
-  <% end %>
-</div>
+  <% end  %>
