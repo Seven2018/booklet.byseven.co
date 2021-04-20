@@ -25,15 +25,9 @@
           <% end %>
         <% end %>
       </div>
-      <script>
-        $('#checkbox input:checkbox:checked').parent().toggleClass('checked-box');
-        $('#checkbox input:checkbox').change(function () {
-          $(this).parent().toggleClass('checked-box');
-        });
-      </script>
       <div style="display:flex;justify-content:center;margin-top:30px;">
         <%= button_tag :submit, name: 'training_id', value: "#{@training.id}", class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
+          <div><p><b>SAVE<i class="fas fa-save"></i></b></p></div>
         <% end %>
       </div>
     <% end %>
