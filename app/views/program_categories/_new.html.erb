@@ -10,14 +10,14 @@
       <%= simple_form_for [@training_program, @program_category] do |f| %>
         <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
           <%= collection_check_boxes(:training_program, :category_ids, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
-            <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+            <%= b.label class: 'label-checkbox', style: 'color:black; font-weight:400 !important;' do %>
               <%= b.check_box + b.text %>
             <% end %>
           <% end %>
         </div>
         <div style="display:flex;justify-content:center;margin-top:30px;">
           <%= button_tag :submit, class: 'btn btn-edit-green' do %>
-            <p><b>SAVE </b><i class="fas fa-save"></i></p>
+            <p><b>SAVE</b> <i class="fas fa-save"></i></p>
           <% end %>
         </div>
       <% end %>
@@ -28,9 +28,9 @@
 </div>
 
 
-      <script>
-        $('#checkbox2 input:checkbox:checked').parent().toggleClass('checked-box');
-        $('#checkbox2 input:checkbox').change(function () {
-          $(this).parent().toggleClass('checked-box');
-        });
-      </script>
+<script>
+  $('#checkbox2 input:checkbox:checked').parent().toggleClass('checked-box');
+  $('#checkbox2 input:checkbox').change(function () {
+    $(this).parent().toggleClass('checked-box');
+  });
+</script>
