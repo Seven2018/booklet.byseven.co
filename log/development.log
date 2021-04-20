@@ -32697,3 +32697,1620 @@ Processing by PagesController#organisation as HTML
 Completed 200 OK in 1908ms (Views: 1702.2ms | ActiveRecord: 200.2ms | Allocations: 1117420)
 
 
+Started GET "/" for ::1 at 2021-04-20 14:29:55 +0200
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by PagesController#dashboard as HTML
+Completed 401 Unauthorized in 12ms (ActiveRecord: 0.0ms | Allocations: 1474)
+
+
+Started GET "/u/sign_in" for ::1 at 2021-04-20 14:29:55 +0200
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 37.3ms | Allocations: 13649)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_flashes.html.erb (Duration: 1.0ms | Allocations: 244)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 3367ms (Views: 3309.7ms | ActiveRecord: 29.5ms | Allocations: 235973)
+
+
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCompany Load (12.3ms)[0m  [1m[34mSELECT "companies".* FROM "companies"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCompany Destroy (32.8ms)[0m  [1m[31mDELETE FROM "companies" WHERE "companies"."id" = $1[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (55.2ms)[0m  [1m[35mDROP DATABASE IF EXISTS "booklet_byseven_co_development"[0m
+  [1m[35m (33.2ms)[0m  [1m[35mDROP DATABASE IF EXISTS "booklet_byseven_co_test"[0m
+  [1m[35m (245.5ms)[0m  [1m[35mCREATE DATABASE "booklet_byseven_co_development" ENCODING = 'unicode'[0m
+  [1m[35m (71.2ms)[0m  [1m[35mCREATE DATABASE "booklet_byseven_co_test" ENCODING = 'unicode'[0m
+  [1m[35m (8.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.7ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8037951185941554780)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateCompanies (20200107110001)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (25.0ms)[0m  [1m[35mCREATE TABLE "companies" ("id" bigserial primary key, "name" character varying, "address" character varying, "zipcode" character varying, "city" character varying, "logo" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200107110001"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTrainingPrograms (20200107113820)
+  [1m[35m (5.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (22.5ms)[0m  [1m[35mCREATE TABLE "training_programs" ("id" bigserial primary key, "title" character varying DEFAULT '' NOT NULL, "description" text DEFAULT '' NOT NULL, "image" character varying DEFAULT '' NOT NULL, "participant_number" integer DEFAULT 0 NOT NULL, "company_id" bigint, "author_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_c246d4ebd6"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+)[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE  INDEX  "index_training_programs_on_company_id" ON "training_programs"  ("company_id")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX  "index_training_programs_on_author_id" ON "training_programs"  ("author_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200107113820"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTrainings (20200107113821)
+  [1m[35m (6.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (21.3ms)[0m  [1m[35mCREATE TABLE "trainings" ("id" bigserial primary key, "title" character varying DEFAULT '' NOT NULL, "description" text, "image" character varying DEFAULT '' NOT NULL, "participant_number" integer DEFAULT 0 NOT NULL, "training_program_id" bigint, "company_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_415cf9c781"
+FOREIGN KEY ("training_program_id")
+  REFERENCES "training_programs" ("id")
+, CONSTRAINT "fk_rails_2131102492"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+)[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX  "index_trainings_on_training_program_id" ON "trainings"  ("training_program_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_trainings_on_company_id" ON "trainings"  ("company_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200107113821"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCategories (20200107163034)
+  [1m[35m (5.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (13.6ms)[0m  [1m[35mCREATE TABLE "categories" ("id" bigserial primary key, "title" character varying DEFAULT '' NOT NULL, "description" character varying DEFAULT '' NOT NULL, "company_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_5740af41d8"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+)[0m
+  [1m[35m (6.2ms)[0m  [1m[35mCREATE  INDEX  "index_categories_on_company_id" ON "categories"  ("company_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200107163034"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTagCategories (20200107163352)
+  [1m[35m (5.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (15.5ms)[0m  [1m[35mCREATE TABLE "tag_categories" ("id" bigserial primary key, "name" character varying, "company_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_a3e7444da3"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_tag_categories_on_company_id" ON "tag_categories"  ("company_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200107163352"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTags (20200107163353)
+  [1m[35m (6.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (16.0ms)[0m  [1m[35mCREATE TABLE "tags" ("id" bigserial primary key, "tag_name" character varying DEFAULT '' NOT NULL, "image" character varying DEFAULT '' NOT NULL, "company_id" bigint, "tag_category_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_cd310945e7"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+, CONSTRAINT "fk_rails_1c4ed8dfc0"
+FOREIGN KEY ("tag_category_id")
+  REFERENCES "tag_categories" ("id")
+)[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_tags_on_company_id" ON "tags"  ("company_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_tags_on_tag_category_id" ON "tags"  ("tag_category_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200107163353"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DeviseCreateUsers (20200107163355)
+  [1m[35m (6.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (15.2ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "firstname" character varying DEFAULT '' NOT NULL, "lastname" character varying DEFAULT '' NOT NULL, "birth_date" date, "hire_date" date, "address" character varying DEFAULT '' NOT NULL, "phone_number" character varying DEFAULT '' NOT NULL, "social_security" character varying DEFAULT '' NOT NULL, "gender" character varying DEFAULT '' NOT NULL, "job_description" character varying DEFAULT '' NOT NULL, "linkedin" character varying DEFAULT '' NOT NULL, "picture" character varying DEFAULT '' NOT NULL, "access_level" character varying DEFAULT 'Employee' NOT NULL, "company_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_7682a3bdfe"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_company_id" ON "users"  ("company_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200107163355"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateRequests (20200113114049)
+  [1m[35m (5.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (15.5ms)[0m  [1m[35mCREATE TABLE "requests" ("id" bigserial primary key, "status" character varying DEFAULT '' NOT NULL, "user_id" bigint, "training_program_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_8ead8b1e6b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_7dfa391516"
+FOREIGN KEY ("training_program_id")
+  REFERENCES "training_programs" ("id")
+)[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_requests_on_user_id" ON "requests"  ("user_id")[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_requests_on_training_program_id" ON "requests"  ("training_program_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200113114049"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateWorkshops (20200114173323)
+  [1m[35m (5.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (16.3ms)[0m  [1m[35mCREATE TABLE "workshops" ("id" bigserial primary key, "title" character varying DEFAULT '' NOT NULL, "duration" integer DEFAULT 0 NOT NULL, "description" text DEFAULT '' NOT NULL, "workshop_type" character varying DEFAULT '' NOT NULL, "image" character varying DEFAULT '' NOT NULL, "company_id" bigint, "author_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_42ed2095b4"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_workshops_on_company_id" ON "workshops"  ("company_id")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_workshops_on_author_id" ON "workshops"  ("author_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200114173323"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateProgramWorkshops (20200115101558)
+  [1m[35m (6.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.2ms)[0m  [1m[35mCREATE TABLE "program_workshops" ("id" bigserial primary key, "training_program_id" bigint, "workshop_id" bigint, "position" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_eae9583beb"
+FOREIGN KEY ("training_program_id")
+  REFERENCES "training_programs" ("id")
+, CONSTRAINT "fk_rails_93f249aa64"
+FOREIGN KEY ("workshop_id")
+  REFERENCES "workshops" ("id")
+)[0m
+  [1m[35m (5.8ms)[0m  [1m[35mCREATE  INDEX  "index_program_workshops_on_training_program_id" ON "program_workshops"  ("training_program_id")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX  "index_program_workshops_on_workshop_id" ON "program_workshops"  ("workshop_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200115101558"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTrainingWorkshops (20200115101727)
+  [1m[35m (6.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (17.7ms)[0m  [1m[35mCREATE TABLE "training_workshops" ("id" bigserial primary key, "title" character varying DEFAULT '' NOT NULL, "duration" integer DEFAULT 0 NOT NULL, "participant_number" integer DEFAULT 0 NOT NULL, "description" text DEFAULT '' NOT NULL, "workshop_type" character varying DEFAULT '' NOT NULL, "image" character varying DEFAULT '' NOT NULL, "company_id" bigint, "available_date" timestamp, "date" timestamp, "starts_at" time, "ends_at" time, "training_id" bigint, "workshop_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_bf92f276db"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+, CONSTRAINT "fk_rails_24570f4255"
+FOREIGN KEY ("training_id")
+  REFERENCES "trainings" ("id")
+, CONSTRAINT "fk_rails_c27341421b"
+FOREIGN KEY ("workshop_id")
+  REFERENCES "workshops" ("id")
+)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_training_workshops_on_company_id" ON "training_workshops"  ("company_id")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_training_workshops_on_training_id" ON "training_workshops"  ("training_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_training_workshops_on_workshop_id" ON "training_workshops"  ("workshop_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200115101727"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateAttendees (20200115101728)
+  [1m[35m (5.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (16.6ms)[0m  [1m[35mCREATE TABLE "attendees" ("id" bigserial primary key, "status" character varying DEFAULT 'Not completed' NOT NULL, "calendar_uuid" character varying, "user_id" bigint, "training_workshop_id" bigint, "creator_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_bce6bb1481"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_d7064f3a3c"
+FOREIGN KEY ("training_workshop_id")
+  REFERENCES "training_workshops" ("id")
+)[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX  "index_attendees_on_user_id" ON "attendees"  ("user_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_attendees_on_training_workshop_id" ON "attendees"  ("training_workshop_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_attendees_on_creator_id" ON "attendees"  ("creator_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200115101728"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateSkillGroups (20200116140835)
+  [1m[35m (5.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (15.7ms)[0m  [1m[35mCREATE TABLE "skill_groups" ("id" bigserial primary key, "title" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200116140835"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateSkills (20200116140836)
+  [1m[35m (5.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (14.2ms)[0m  [1m[35mCREATE TABLE "skills" ("id" bigserial primary key, "title" character varying DEFAULT '' NOT NULL, "description" character varying DEFAULT '' NOT NULL, "skill_group_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_026350ab95"
+FOREIGN KEY ("skill_group_id")
+  REFERENCES "skill_groups" ("id")
+)[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_skills_on_skill_group_id" ON "skills"  ("skill_group_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200116140836"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateWorkshopSkills (20200116140837)
+  [1m[35m (6.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.9ms)[0m  [1m[35mCREATE TABLE "workshop_skills" ("id" bigserial primary key, "skill_id" bigint, "workshop_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_5699065a34"
+FOREIGN KEY ("skill_id")
+  REFERENCES "skills" ("id")
+, CONSTRAINT "fk_rails_0d20189ddf"
+FOREIGN KEY ("workshop_id")
+  REFERENCES "workshops" ("id")
+)[0m
+  [1m[35m (6.8ms)[0m  [1m[35mCREATE  INDEX  "index_workshop_skills_on_skill_id" ON "workshop_skills"  ("skill_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_workshop_skills_on_workshop_id" ON "workshop_skills"  ("workshop_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200116140837"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateUserSkills (20200116140839)
+  [1m[35m (6.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.1ms)[0m  [1m[35mCREATE TABLE "user_skills" ("id" bigserial primary key, "user_id" bigint, "skill_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_fe61b6a893"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_59acb6e327"
+FOREIGN KEY ("skill_id")
+  REFERENCES "skills" ("id")
+)[0m
+  [1m[35m (5.6ms)[0m  [1m[35mCREATE  INDEX  "index_user_skills_on_user_id" ON "user_skills"  ("user_id")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX  "index_user_skills_on_skill_id" ON "user_skills"  ("skill_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200116140839"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateWorkshopCategories (20200116160638)
+  [1m[35m (5.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.6ms)[0m  [1m[35mCREATE TABLE "workshop_categories" ("id" bigserial primary key, "workshop_id" bigint, "category_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_749b2b9f2c"
+FOREIGN KEY ("workshop_id")
+  REFERENCES "workshops" ("id")
+, CONSTRAINT "fk_rails_e96f713235"
+FOREIGN KEY ("category_id")
+  REFERENCES "categories" ("id")
+)[0m
+  [1m[35m (6.8ms)[0m  [1m[35mCREATE  INDEX  "index_workshop_categories_on_workshop_id" ON "workshop_categories"  ("workshop_id")[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_workshop_categories_on_category_id" ON "workshop_categories"  ("category_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200116160638"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateUserTags (20200122083018)
+  [1m[35m (5.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.3ms)[0m  [1m[35mCREATE TABLE "user_tags" ("id" bigserial primary key, "user_id" bigint, "tag_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_ea0382482a"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_7156651ad8"
+FOREIGN KEY ("tag_id")
+  REFERENCES "tags" ("id")
+)[0m
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE  INDEX  "index_user_tags_on_user_id" ON "user_tags"  ("user_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_user_tags_on_tag_id" ON "user_tags"  ("tag_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200122083018"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMods (20200122145547)
+  [1m[35m (5.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (14.6ms)[0m  [1m[35mCREATE TABLE "mods" ("id" bigserial primary key, "title" character varying DEFAULT '' NOT NULL, "duration" integer DEFAULT 0 NOT NULL, "content" text DEFAULT '' NOT NULL, "document" character varying DEFAULT '' NOT NULL, "company_id" bigint, "mod_type" character varying DEFAULT '', "workshop_id" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_9a582b4f7d"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_mods_on_company_id" ON "mods"  ("company_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200122145547"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateWorkshopMods (20200122145738)
+  [1m[35m (5.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.8ms)[0m  [1m[35mCREATE TABLE "workshop_mods" ("id" bigserial primary key, "position" integer DEFAULT 0 NOT NULL, "mod_id" bigint, "workshop_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_500b234a8d"
+FOREIGN KEY ("mod_id")
+  REFERENCES "mods" ("id")
+, CONSTRAINT "fk_rails_957c7cf77a"
+FOREIGN KEY ("workshop_id")
+  REFERENCES "workshops" ("id")
+)[0m
+  [1m[35m (5.8ms)[0m  [1m[35mCREATE  INDEX  "index_workshop_mods_on_mod_id" ON "workshop_mods"  ("mod_id")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX  "index_workshop_mods_on_workshop_id" ON "workshop_mods"  ("workshop_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200122145738"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTrainingWorkshopMods (20200122145749)
+  [1m[35m (6.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (21.1ms)[0m  [1m[35mCREATE TABLE "training_workshop_mods" ("id" bigserial primary key, "position" integer DEFAULT 0 NOT NULL, "mod_id" bigint, "training_workshop_id" bigint, "comments" character varying DEFAULT '' NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_2f6c22f83d"
+FOREIGN KEY ("mod_id")
+  REFERENCES "mods" ("id")
+, CONSTRAINT "fk_rails_a4311acfa9"
+FOREIGN KEY ("training_workshop_id")
+  REFERENCES "training_workshops" ("id")
+)[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX  "index_training_workshop_mods_on_mod_id" ON "training_workshop_mods"  ("mod_id")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_training_workshop_mods_on_training_workshop_id" ON "training_workshop_mods"  ("training_workshop_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200122145749"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateProgramCategories (20200124112727)
+  [1m[35m (5.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.1ms)[0m  [1m[35mCREATE TABLE "program_categories" ("id" bigserial primary key, "training_program_id" bigint, "category_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_bfde3affaf"
+FOREIGN KEY ("training_program_id")
+  REFERENCES "training_programs" ("id")
+, CONSTRAINT "fk_rails_2d4bb971ba"
+FOREIGN KEY ("category_id")
+  REFERENCES "categories" ("id")
+)[0m
+  [1m[35m (6.8ms)[0m  [1m[35mCREATE  INDEX  "index_program_categories_on_training_program_id" ON "program_categories"  ("training_program_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_program_categories_on_category_id" ON "program_categories"  ("category_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200124112727"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateNotifications (20200127133912)
+  [1m[35m (5.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (15.1ms)[0m  [1m[35mCREATE TABLE "notifications" ("id" bigserial primary key, "content" character varying DEFAULT '' NOT NULL, "status" character varying DEFAULT 'Unread' NOT NULL, "user_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_b080fb4855"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE  INDEX  "index_notifications_on_user_id" ON "notifications"  ("user_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200127133912"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTagWorkshops (20200128085828)
+  [1m[35m (5.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (9.6ms)[0m  [1m[35mCREATE TABLE "tag_workshops" ("id" bigserial primary key, "tag_id" bigint, "training_workshop_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_5120ff7fb6"
+FOREIGN KEY ("tag_id")
+  REFERENCES "tags" ("id")
+, CONSTRAINT "fk_rails_66ed3976f9"
+FOREIGN KEY ("training_workshop_id")
+  REFERENCES "training_workshops" ("id")
+)[0m
+  [1m[35m (5.9ms)[0m  [1m[35mCREATE  INDEX  "index_tag_workshops_on_tag_id" ON "tag_workshops"  ("tag_id")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX  "index_tag_workshops_on_training_workshop_id" ON "tag_workshops"  ("training_workshop_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200128085828"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCurrents (20200207170349)
+  [1m[35m (6.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.4ms)[0m  [1m[35mCREATE TABLE "currents" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200207170349"]]
+  [1m[35m (6.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddMediaToMods (20200221123006)
+  [1m[35m (5.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "mods" ADD "media" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200221123006"]]
+  [1m[35m (6.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateAssessmentQuestions (20200304160605)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (15.6ms)[0m  [1m[35mCREATE TABLE "assessment_questions" ("id" bigserial primary key, "question" character varying, "options" text, "question_type" character varying, "position" integer, "logic_jump" boolean DEFAULT FALSE, "active" boolean DEFAULT TRUE, "mod_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_9c94dfd1b6"
+FOREIGN KEY ("mod_id")
+  REFERENCES "mods" ("id")
+)[0m
+  [1m[35m (5.7ms)[0m  [1m[35mCREATE  INDEX  "index_assessment_questions_on_mod_id" ON "assessment_questions"  ("mod_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200304160605"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateAssessmentAnswers (20200304160625)
+  [1m[35m (5.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (17.6ms)[0m  [1m[35mCREATE TABLE "assessment_answers" ("id" bigserial primary key, "answer" character varying DEFAULT '' NOT NULL, "correct" boolean, "assessment_question_id" bigint, "user_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_3752ba113e"
+FOREIGN KEY ("assessment_question_id")
+  REFERENCES "assessment_questions" ("id")
+, CONSTRAINT "fk_rails_ba58134429"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_assessment_answers_on_assessment_question_id" ON "assessment_answers"  ("assessment_question_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_assessment_answers_on_user_id" ON "assessment_answers"  ("user_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200304160625"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateUserForms (20200312161708)
+  [1m[35m (6.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (14.2ms)[0m  [1m[35mCREATE TABLE "user_forms" ("id" bigserial primary key, "grade" integer, "validated" boolean DEFAULT FALSE, "user_id" bigint, "mod_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_a0f04749a3"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_5eafd17a3b"
+FOREIGN KEY ("mod_id")
+  REFERENCES "mods" ("id")
+)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_user_forms_on_user_id" ON "user_forms"  ("user_id")[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE  INDEX  "index_user_forms_on_mod_id" ON "user_forms"  ("mod_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200312161708"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateActiveStorageTables (20210414141535)
+  [1m[35m (6.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (19.4ms)[0m  [1m[35mCREATE TABLE "active_storage_blobs" ("id" bigserial primary key, "key" character varying NOT NULL, "filename" character varying NOT NULL, "content_type" character varying, "metadata" text, "byte_size" bigint NOT NULL, "checksum" character varying NOT NULL, "created_at" timestamp NOT NULL)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_active_storage_blobs_on_key" ON "active_storage_blobs"  ("key")[0m
+  [1m[35m (3.7ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" bigserial primary key, "name" character varying NOT NULL, "record_type" character varying NOT NULL, "record_id" bigint NOT NULL, "blob_id" bigint NOT NULL, "created_at" timestamp NOT NULL, CONSTRAINT "fk_rails_c3b3935057"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments"  ("blob_id")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_active_storage_attachments_uniqueness" ON "active_storage_attachments"  ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210414141535"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateActionTextTables (20210414141536)
+  [1m[35m (11.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (13.3ms)[0m  [1m[35mCREATE TABLE "action_text_rich_texts" ("id" bigserial primary key, "name" character varying NOT NULL, "body" text, "record_type" character varying NOT NULL, "record_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_action_text_rich_texts_uniqueness" ON "action_text_rich_texts"  ("record_type", "record_id", "name")[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210414141536"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2021-04-20 12:34:41.928755"], ["updated_at", "2021-04-20 12:34:41.928755"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(8037951185941554780)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCompany Load (0.5ms)[0m  [1m[34mSELECT "companies".* FROM "companies"[0m
+  [1m[36mTraining Load (0.5ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings"[0m
+  [1m[36mTrainingProgram Load (0.6ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs"[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mCategory Load (0.5ms)[0m  [1m[34mSELECT "categories".* FROM "categories"[0m
+  [1m[36mSkill Load (0.7ms)[0m  [1m[34mSELECT "skills".* FROM "skills"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCompany Create (0.6ms)[0m  [1m[32mINSERT INTO "companies" ("name", "address", "zipcode", "city", "logo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "SEVEN"], ["address", "5 rue Moret"], ["zipcode", "75011"], ["city", "Paris"], ["logo", "https://seven-builder.herokuapp.com/assets/logo-seven-navbar-51a163c33ccd651fbb26210144a68af7f941f90131d3a359d8e1cb59a24ac375.png"], ["created_at", "2021-04-20 12:34:42.230787"], ["updated_at", "2021-04-20 12:34:42.230787"]]
+  [1m[35m (5.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCompany Create (0.2ms)[0m  [1m[32mINSERT INTO "companies" ("name", "address", "zipcode", "city", "logo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "SIDE"], ["address", "40 Rue de la Folie-Regnault"], ["zipcode", "75011"], ["city", "Paris"], ["logo", "https://d2hqc0017d4cuc.cloudfront.net/assets/logo.svg"], ["created_at", "2021-04-20 12:34:42.240918"], ["updated_at", "2021-04-20 12:34:42.240918"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "brice.chapuis@byseven.co"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.9ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "firstname", "lastname", "gender", "picture", "access_level", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["email", "brice.chapuis@byseven.co"], ["encrypted_password", "$2a$11$C91icr5Z8rROBbs5Ov6mW.ERikf.T/.4F5zA.0zhViHz6aB5DH7d."], ["firstname", "Brice"], ["lastname", "Chapuis"], ["gender", "M"], ["picture", "https://media-exp1.licdn.com/dms/image/C4D03AQH76liGuqaaMA/profile-displayphoto-shrink_200_200/0?e=1583971200&v=beta&t=sXSYg68rJ2YBIzs5NrgrgJZf_CkmdMkiuIEuZ2nRU0A"], ["access_level", "Super Admin"], ["company_id", 1], ["created_at", "2021-04-20 12:34:42.394663"], ["updated_at", "2021-04-20 12:34:42.394663"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yahya.fallah@byseven.co"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "firstname", "lastname", "gender", "picture", "access_level", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["email", "yahya.fallah@byseven.co"], ["encrypted_password", "$2a$11$mkms0lrLhseyh/EMhYtNNeo9b6wl3TFBQy2R0.YTC967OcCwpWOpi"], ["firstname", "Yahya"], ["lastname", "Fallah"], ["gender", "M"], ["picture", "https://media-exp1.licdn.com/dms/image/C5603AQFc5Cf9X4gL_w/profile-displayphoto-shrink_200_200/0?e=1585180800&v=beta&t=eJBIoMSgMxXKenQr7PrWixQSFBpIvcjhme-cQ5hjOm4"], ["access_level", "Super Admin"], ["company_id", 1], ["created_at", "2021-04-20 12:34:42.529128"], ["updated_at", "2021-04-20 12:34:42.529128"]]
+  [1m[35m (1.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "marie.decamps@side.co"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "firstname", "lastname", "gender", "picture", "access_level", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["email", "marie.decamps@side.co"], ["encrypted_password", "$2a$11$S12qIgB2LSbQNiDIQJdi4eE/JSa4jmu7.WyfNDBVEA8S9HSMibGrS"], ["firstname", "Marie"], ["lastname", "Decamps"], ["gender", "F"], ["picture", "https://media-exp1.licdn.com/dms/image/C5603AQFD2rfkeOFN4w/profile-displayphoto-shrink_200_200/0?e=1585785600&v=beta&t=tqxqxQ7HsjpsQBhxWf98ZwSDTSD1fPvicOhEczEuQAY"], ["access_level", "Admin"], ["company_id", 2], ["created_at", "2021-04-20 12:34:42.658468"], ["updated_at", "2021-04-20 12:34:42.658468"]]
+  [1m[35m (1.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "jorick.roustan@byseven.co"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "firstname", "lastname", "gender", "picture", "access_level", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["email", "jorick.roustan@byseven.co"], ["encrypted_password", "$2a$11$M2vcPuvcHRRSa86DujtU4u59t/Ythv0FI.C3OA5Ex3KX/NVr2/hDu"], ["firstname", "Jorick"], ["lastname", "Roustan"], ["gender", "M"], ["picture", "http://static8.viadeo-static.com/_Z-gjrDmn0yPKoiw9P481xLMzs0=/300x300/member/00223346scu6m79w%3Fts%3D1449006810000"], ["access_level", "Manager"], ["company_id", 1], ["created_at", "2021-04-20 12:34:42.794113"], ["updated_at", "2021-04-20 12:34:42.794113"]]
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "mathilde.meurer@byseven.co"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "firstname", "lastname", "gender", "picture", "access_level", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["email", "mathilde.meurer@byseven.co"], ["encrypted_password", "$2a$11$zJSUd49s5b1K6MjkLdPZ6uUONRaLFt02Wydmf8JV/DpvCMN1N6Ode"], ["firstname", "Mathilde"], ["lastname", "Meurer"], ["gender", "F"], ["picture", "https://www.tedxbordeaux.com/wp-content/uploads/2018/07/equipe_mathilde_meurer.jpg"], ["access_level", "HR"], ["company_id", 1], ["created_at", "2021-04-20 12:34:42.918754"], ["updated_at", "2021-04-20 12:34:42.918754"]]
+  [1m[35m (1.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "marie.leleu@byseven.co"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "firstname", "lastname", "gender", "picture", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["email", "marie.leleu@byseven.co"], ["encrypted_password", "$2a$11$uJ6DNqpkxhZdE4X6UVyWaOxDjrfhQxr8weRpzVstGxgvjTR4Uojfi"], ["firstname", "Marie"], ["lastname", "Leleu"], ["gender", "F"], ["picture", "https://media-exp1.licdn.com/dms/image/C4D03AQGVTVVGpfqGXw/profile-displayphoto-shrink_200_200/0?e=1585785600&v=beta&t=Eev63R-VlwxDKXjhXAfLTCUDXb5PhJj9FV_zaOr-_g0"], ["company_id", 1], ["created_at", "2021-04-20 12:34:43.043442"], ["updated_at", "2021-04-20 12:34:43.043442"]]
+  [1m[35m (1.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTag Create (1.0ms)[0m  [1m[32mINSERT INTO "tags" ("tag_name", "image", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag_name", "Tag SEVEN"], ["image", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBnUro-wUXAyxHcFgUpyE3mYacHTifjn1-7dxonThmaWdMOoq8Mw&s"], ["company_id", 1], ["created_at", "2021-04-20 12:34:43.077100"], ["updated_at", "2021-04-20 12:34:43.077100"]]
+  [1m[35m (5.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCategory Create (0.6ms)[0m  [1m[32mINSERT INTO "categories" ("title", "description", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Négociation"], ["description", "L'art de calmer sa femme."], ["company_id", 1], ["created_at", "2021-04-20 12:34:43.092776"], ["updated_at", "2021-04-20 12:34:43.092776"]]
+  [1m[35m (6.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCategory Create (0.3ms)[0m  [1m[32mINSERT INTO "categories" ("title", "description", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Business Development"], ["description", "L'art de trouver des clients."], ["company_id", 1], ["created_at", "2021-04-20 12:34:43.103040"], ["updated_at", "2021-04-20 12:34:43.103040"]]
+  [1m[35m (5.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTrainingProgram Create (0.7ms)[0m  [1m[32mINSERT INTO "training_programs" ("title", "description", "image", "participant_number", "company_id", "author_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Négociation"], ["description", "Apprendre à négocier en finesse."], ["image", "https://images.unsplash.com/photo-1467664631004-58beab1ece0d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"], ["participant_number", 10], ["company_id", 1], ["author_id", 2], ["created_at", "2021-04-20 12:34:43.121491"], ["updated_at", "2021-04-20 12:34:43.121491"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mWorkshop Create (1.2ms)[0m  [1m[32mINSERT INTO "workshops" ("title", "duration", "workshop_type", "image", "company_id", "author_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Trust Challenge"], ["duration", 60], ["workshop_type", "Synchronous"], ["image", "https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"], ["company_id", 1], ["author_id", 2], ["created_at", "2021-04-20 12:34:43.200109"], ["updated_at", "2021-04-20 12:34:43.200109"]]
+  [1m[36mActionText::RichText Create (1.2ms)[0m  [1m[32mINSERT INTO "action_text_rich_texts" ("name", "body", "record_type", "record_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "description"], ["body", "Blah blahblah"], ["record_type", "Workshop"], ["record_id", 1], ["created_at", "2021-04-20 12:34:43.246317"], ["updated_at", "2021-04-20 12:34:43.246317"]]
+  [1m[36mActiveStorage::Attachment Load (0.8ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = $1 AND "active_storage_attachments"."record_type" = $2 AND "active_storage_attachments"."name" = $3[0m  [["record_id", 1], ["record_type", "ActionText::RichText"], ["name", "embeds"]]
+  [1m[36mWorkshop Update (0.8ms)[0m  [1m[33mUPDATE "workshops" SET "updated_at" = $1 WHERE "workshops"."id" = $2[0m  [["updated_at", "2021-04-20 12:34:43.251186"], ["id", 1]]
+  [1m[35m (6.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mWorkshop Create (0.4ms)[0m  [1m[32mINSERT INTO "workshops" ("title", "duration", "workshop_type", "image", "company_id", "author_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Intelligence économique"], ["duration", 90], ["workshop_type", "Asynchronous"], ["image", "https://images.unsplash.com/photo-1507007246334-2a2ec227f2e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"], ["company_id", 1], ["author_id", 2], ["created_at", "2021-04-20 12:34:43.280433"], ["updated_at", "2021-04-20 12:34:43.280433"]]
+  [1m[36mActionText::RichText Create (0.2ms)[0m  [1m[32mINSERT INTO "action_text_rich_texts" ("name", "body", "record_type", "record_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "description"], ["body", "Analyse et influence"], ["record_type", "Workshop"], ["record_id", 2], ["created_at", "2021-04-20 12:34:43.283773"], ["updated_at", "2021-04-20 12:34:43.283773"]]
+  [1m[36mActiveStorage::Attachment Load (0.2ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = $1 AND "active_storage_attachments"."record_type" = $2 AND "active_storage_attachments"."name" = $3[0m  [["record_id", 2], ["record_type", "ActionText::RichText"], ["name", "embeds"]]
+  [1m[36mWorkshop Update (0.3ms)[0m  [1m[33mUPDATE "workshops" SET "updated_at" = $1 WHERE "workshops"."id" = $2[0m  [["updated_at", "2021-04-20 12:34:43.285956"], ["id", 2]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTrainingProgram Load (0.3ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mProgramWorkshop Create (1.0ms)[0m  [1m[32mINSERT INTO "program_workshops" ("training_program_id", "workshop_id", "position", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["training_program_id", 1], ["workshop_id", 1], ["position", 1], ["created_at", "2021-04-20 12:34:43.308644"], ["updated_at", "2021-04-20 12:34:43.308644"]]
+  [1m[35m (6.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTrainingProgram Load (0.2ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mProgramWorkshop Create (0.4ms)[0m  [1m[32mINSERT INTO "program_workshops" ("training_program_id", "workshop_id", "position", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["training_program_id", 1], ["workshop_id", 2], ["position", 2], ["created_at", "2021-04-20 12:34:43.323295"], ["updated_at", "2021-04-20 12:34:43.323295"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mSkillGroup Create (0.6ms)[0m  [1m[32mINSERT INTO "skill_groups" ("title", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["title", "Code"], ["created_at", "2021-04-20 12:34:43.336103"], ["updated_at", "2021-04-20 12:34:43.336103"]]
+  [1m[35m (5.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mSkillGroup Create (0.4ms)[0m  [1m[32mINSERT INTO "skill_groups" ("title", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["title", "Sales"], ["created_at", "2021-04-20 12:34:43.347092"], ["updated_at", "2021-04-20 12:34:43.347092"]]
+  [1m[35m (4.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mSkillGroup Load (0.2ms)[0m  [1m[34mSELECT "skill_groups".* FROM "skill_groups" WHERE "skill_groups"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mSkill Create (0.7ms)[0m  [1m[32mINSERT INTO "skills" ("title", "description", "skill_group_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Ruby"], ["description", "Maitrise de Ruby on Rails"], ["skill_group_id", 1], ["created_at", "2021-04-20 12:34:43.366943"], ["updated_at", "2021-04-20 12:34:43.366943"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mSkillGroup Load (0.2ms)[0m  [1m[34mSELECT "skill_groups".* FROM "skill_groups" WHERE "skill_groups"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mSkill Create (0.3ms)[0m  [1m[32mINSERT INTO "skills" ("title", "description", "skill_group_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "HTML/CSS"], ["description", "Talent de Front-end Developper"], ["skill_group_id", 1], ["created_at", "2021-04-20 12:34:43.373701"], ["updated_at", "2021-04-20 12:34:43.373701"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mSkillGroup Load (0.2ms)[0m  [1m[34mSELECT "skill_groups".* FROM "skill_groups" WHERE "skill_groups"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mSkill Create (0.3ms)[0m  [1m[32mINSERT INTO "skills" ("title", "skill_group_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Vente à domicile"], ["skill_group_id", 2], ["created_at", "2021-04-20 12:34:43.387256"], ["updated_at", "2021-04-20 12:34:43.387256"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Started GET "/u/sign_in" for ::1 at 2021-04-20 14:37:00 +0200
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 33.7ms | Allocations: 16304)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_flashes.html.erb (Duration: 1.0ms | Allocations: 234)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 274ms (Views: 237.1ms | ActiveRecord: 6.8ms | Allocations: 88119)
+
+
+Started POST "/u/sign_in" for ::1 at 2021-04-20 14:37:41 +0200
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"rUlRP83SQPm3k8HWrQ4plf7KTWSjidc5kPLHtIzlk7vzekSMs+YiER2ZTEugtjxSmQbZqgnOgQEf3C56oGx0eA==", "user"=>{"email"=>"marie.leleu@byseven.co", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Sign in"}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "marie.leleu@byseven.co"], ["LIMIT", 1]]
+Redirected to http://localhost:3000/dashboard
+Completed 302 Found in 157ms (ActiveRecord: 1.0ms | Allocations: 6227)
+
+
+Started GET "/dashboard" for ::1 at 2021-04-20 14:37:41 +0200
+Processing by PagesController#dashboard as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[36mTraining Load (1.6ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" INNER JOIN "training_workshops" ON "training_workshops"."training_id" = "trainings"."id" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Registered"]]
+  ↳ app/controllers/pages_controller.rb:8:in `uniq'
+  [1m[36mTraining Load (0.4ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" INNER JOIN "training_workshops" ON "training_workshops"."training_id" = "trainings"."id" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Invited"]]
+  ↳ app/controllers/pages_controller.rb:16:in `uniq'
+  Rendering pages/dashboard.html.erb within layouts/application
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date > '2021-04-20')[0m  [["company_id", 1], ["user_id", 6]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:5
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date <= '2021-04-20') AND ("training_workshops"."available_date" IS NULL OR (available_date > '2021-04-20'))[0m  [["company_id", 1], ["user_id", 6]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:9
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND "attendees"."status" = $3[0m  [["company_id", 1], ["user_id", 6], ["status", "Completed"]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:13
+  [1m[36mTrainingWorkshop Load (0.3ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Registered"]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:22:in `+'
+  Rendered pages/_dashboard_personal.html.erb (Duration: 8.4ms | Allocations: 4196)
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date > '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:5
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."workshop_type" = $2 AND (date <= '2021-04-20') AND (available_date > '2021-04-20')[0m  [["company_id", 1], ["workshop_type", "Asynchronous"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."date" = $2[0m  [["company_id", 1], ["date", "2021-04-20"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date < '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:13
+  [1m[36mTraining Load (0.2ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  [1m[36mTrainingWorkshop Load (0.1ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  Rendered pages/_dashboard_all.html.erb (Duration: 8.5ms | Allocations: 4900)
+  Rendered pages/dashboard.html.erb within layouts/application (Duration: 18.8ms | Allocations: 9623)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.4ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 6.8ms | Allocations: 1652)
+  Rendered shared/_navbar.html.erb (Duration: 8.9ms | Allocations: 2424)
+  [1m[36mCompany Load (0.3ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 20.5ms | Allocations: 9653)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 1.4ms | Allocations: 641)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 36)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 144ms (Views: 76.7ms | ActiveRecord: 18.0ms | Allocations: 56849)
+
+
+Started GET "/dashboard_calendar_week" for ::1 at 2021-04-20 14:37:51 +0200
+Processing by PagesController#calendar_week as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  Rendering pages/calendar_week.html.erb within layouts/application
+  [1m[36mTrainingWorkshop Load (0.6ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "workshops" ON "workshops"."id" = "training_workshops"."workshop_id" WHERE "workshops"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/calendar_week.html.erb:6
+  Rendered simple_calendar/_week_calendar.html.erb (Duration: 3.9ms | Allocations: 2967)
+  Rendered pages/calendar_week.html.erb within layouts/application (Duration: 9.8ms | Allocations: 4534)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.3ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.5ms | Allocations: 682)
+  Rendered shared/_navbar.html.erb (Duration: 1.7ms | Allocations: 763)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.9ms | Allocations: 1385)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.4ms | Allocations: 203)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 62ms (Views: 42.3ms | ActiveRecord: 4.6ms | Allocations: 33232)
+
+
+Started GET "/users/6" for ::1 at 2021-04-20 14:38:00 +0200
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"6"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  Rendering users/show.html.erb within layouts/application
+  [1m[36mAssessment Load (0.8ms)[0m  [1m[34mSELECT "mods".* FROM "mods" INNER JOIN "user_forms" ON "user_forms"."mod_id" = "mods"."id" WHERE "user_forms"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/users/show.html.erb:59
+  Rendered users/_edit.html.erb (Duration: 36.2ms | Allocations: 22424)
+  Rendered users/_edit_picture.html.erb (Duration: 17.2ms | Allocations: 4242)
+  Rendered users/_changepassword.html.erb (Duration: 17.8ms | Allocations: 8652)
+  Rendered users/show.html.erb within layouts/application (Duration: 95.7ms | Allocations: 43344)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.3ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.9ms | Allocations: 682)
+  Rendered shared/_navbar.html.erb (Duration: 2.1ms | Allocations: 761)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.1ms | Allocations: 1177)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 203)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 140ms (Views: 126.7ms | ActiveRecord: 6.1ms | Allocations: 65533)
+
+
+Started GET "/dashboard" for ::1 at 2021-04-20 14:38:04 +0200
+Processing by PagesController#dashboard as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[36mTraining Load (0.5ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" INNER JOIN "training_workshops" ON "training_workshops"."training_id" = "trainings"."id" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Registered"]]
+  ↳ app/controllers/pages_controller.rb:8:in `uniq'
+  [1m[36mTraining Load (0.5ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" INNER JOIN "training_workshops" ON "training_workshops"."training_id" = "trainings"."id" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Invited"]]
+  ↳ app/controllers/pages_controller.rb:16:in `uniq'
+  Rendering pages/dashboard.html.erb within layouts/application
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date > '2021-04-20')[0m  [["company_id", 1], ["user_id", 6]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:5
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date <= '2021-04-20') AND ("training_workshops"."available_date" IS NULL OR (available_date > '2021-04-20'))[0m  [["company_id", 1], ["user_id", 6]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:9
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND "attendees"."status" = $3[0m  [["company_id", 1], ["user_id", 6], ["status", "Completed"]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:13
+  [1m[36mTrainingWorkshop Load (0.3ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Registered"]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:22:in `+'
+  Rendered pages/_dashboard_personal.html.erb (Duration: 6.3ms | Allocations: 3540)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date > '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:5
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."workshop_type" = $2 AND (date <= '2021-04-20') AND (available_date > '2021-04-20')[0m  [["company_id", 1], ["workshop_type", "Asynchronous"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."date" = $2[0m  [["company_id", 1], ["date", "2021-04-20"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date < '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:13
+  [1m[36mTraining Load (0.2ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  Rendered pages/_dashboard_all.html.erb (Duration: 6.7ms | Allocations: 4303)
+  Rendered pages/dashboard.html.erb within layouts/application (Duration: 13.4ms | Allocations: 7958)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.3ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.4ms | Allocations: 682)
+  Rendered shared/_navbar.html.erb (Duration: 1.6ms | Allocations: 760)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.6ms | Allocations: 1399)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 203)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 56ms (Views: 45.3ms | ActiveRecord: 4.3ms | Allocations: 31546)
+
+
+Started GET "/dashboard_calendar_week" for ::1 at 2021-04-20 14:38:54 +0200
+Processing by PagesController#calendar_week as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  Rendering pages/calendar_week.html.erb within layouts/application
+  [1m[36mTrainingWorkshop Load (0.4ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "workshops" ON "workshops"."id" = "training_workshops"."workshop_id" WHERE "workshops"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/calendar_week.html.erb:6
+  Rendered simple_calendar/_week_calendar.html.erb (Duration: 1.6ms | Allocations: 1006)
+  Rendered pages/calendar_week.html.erb within layouts/application (Duration: 4.0ms | Allocations: 1989)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.3ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.5ms | Allocations: 682)
+  Rendered shared/_navbar.html.erb (Duration: 1.7ms | Allocations: 762)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.8ms | Allocations: 1380)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 27)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 44ms (Views: 39.7ms | ActiveRecord: 1.3ms | Allocations: 23180)
+
+
+Started GET "/dashboard" for ::1 at 2021-04-20 14:38:56 +0200
+Processing by PagesController#dashboard as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[36mTraining Load (0.5ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" INNER JOIN "training_workshops" ON "training_workshops"."training_id" = "trainings"."id" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Registered"]]
+  ↳ app/controllers/pages_controller.rb:8:in `uniq'
+  [1m[36mTraining Load (0.4ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" INNER JOIN "training_workshops" ON "training_workshops"."training_id" = "trainings"."id" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Invited"]]
+  ↳ app/controllers/pages_controller.rb:16:in `uniq'
+  Rendering pages/dashboard.html.erb within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date > '2021-04-20')[0m  [["company_id", 1], ["user_id", 6]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:5
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date <= '2021-04-20') AND ("training_workshops"."available_date" IS NULL OR (available_date > '2021-04-20'))[0m  [["company_id", 1], ["user_id", 6]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:9
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND "attendees"."status" = $3[0m  [["company_id", 1], ["user_id", 6], ["status", "Completed"]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:13
+  [1m[36mTrainingWorkshop Load (0.4ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 6], ["status", "Registered"]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:22:in `+'
+  Rendered pages/_dashboard_personal.html.erb (Duration: 6.4ms | Allocations: 3534)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date > '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:5
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."workshop_type" = $2 AND (date <= '2021-04-20') AND (available_date > '2021-04-20')[0m  [["company_id", 1], ["workshop_type", "Asynchronous"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."date" = $2[0m  [["company_id", 1], ["date", "2021-04-20"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date < '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:13
+  [1m[36mTraining Load (0.2ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  Rendered pages/_dashboard_all.html.erb (Duration: 6.8ms | Allocations: 4303)
+  Rendered pages/dashboard.html.erb within layouts/application (Duration: 13.5ms | Allocations: 7951)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.3ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.6ms | Allocations: 681)
+  Rendered shared/_navbar.html.erb (Duration: 1.8ms | Allocations: 759)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.8ms | Allocations: 1388)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 27)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 62ms (Views: 51.5ms | ActiveRecord: 4.2ms | Allocations: 31188)
+
+
+Started DELETE "/u/sign_out" for ::1 at 2021-04-20 14:40:18 +0200
+Processing by Devise::SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"m6pdaVVKNMUmRYVH1CXYDTMn3QhSgk15xWW7Jh+wlPt+o8H6bBcEO7ajhA6Y6zl01g/az0ekw8SvS/WxDoxnnA=="}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Redirected to http://localhost:3000/
+Completed 302 Found in 21ms (ActiveRecord: 0.4ms | Allocations: 5516)
+
+
+Started GET "/" for ::1 at 2021-04-20 14:40:18 +0200
+Processing by PagesController#dashboard as HTML
+Completed 401 Unauthorized in 1ms (ActiveRecord: 0.0ms | Allocations: 290)
+
+
+Started GET "/u/sign_in" for ::1 at 2021-04-20 14:40:18 +0200
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 19.3ms | Allocations: 11857)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 37)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 50ms (Views: 49.4ms | ActiveRecord: 0.0ms | Allocations: 29426)
+
+
+Started POST "/u/sign_in" for ::1 at 2021-04-20 14:40:21 +0200
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"5Qv8p2SpA39taCG+YYg/S+3eXO61hEV0ourKHe8rp7tccIaco/7SmJ+v9CT3tEyunxRqJMRxX+padOdXhq8mbQ==", "user"=>{"email"=>"brice.chapuis@byseven.co", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Sign in"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "brice.chapuis@byseven.co"], ["LIMIT", 1]]
+Redirected to http://localhost:3000/dashboard
+Completed 302 Found in 128ms (ActiveRecord: 0.4ms | Allocations: 2700)
+
+
+Started GET "/dashboard" for ::1 at 2021-04-20 14:40:21 +0200
+Processing by PagesController#dashboard as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTraining Load (0.5ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" INNER JOIN "training_workshops" ON "training_workshops"."training_id" = "trainings"."id" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 1], ["status", "Registered"]]
+  ↳ app/controllers/pages_controller.rb:8:in `uniq'
+  [1m[36mTrainingWorkshop Load (0.4ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "workshops" ON "workshops"."id" = "training_workshops"."workshop_id" WHERE "training_workshops"."training_id" IS NULL AND "workshops"."company_id" = $1 AND "training_workshops"."date" IS NOT NULL AND NOT (date < '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/controllers/pages_controller.rb:12:in `dashboard'
+  [1m[36mTrainingWorkshop Load (0.4ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 1], ["status", "Registered"]]
+  ↳ app/controllers/pages_controller.rb:12:in `dashboard'
+  [1m[36mTraining Load (0.2ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/controllers/pages_controller.rb:13:in `sort_by'
+  Rendering pages/dashboard.html.erb within layouts/application
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date > '2021-04-20')[0m  [["company_id", 1], ["user_id", 1]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:5
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date <= '2021-04-20') AND ("training_workshops"."available_date" IS NULL OR (available_date > '2021-04-20'))[0m  [["company_id", 1], ["user_id", 1]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:9
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND "attendees"."status" = $3[0m  [["company_id", 1], ["user_id", 1], ["status", "Completed"]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:13
+  Rendered pages/_dashboard_personal.html.erb (Duration: 4.9ms | Allocations: 2782)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date > '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:5
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."workshop_type" = $2 AND (date <= '2021-04-20') AND (available_date > '2021-04-20')[0m  [["company_id", 1], ["workshop_type", "Asynchronous"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."date" = $2[0m  [["company_id", 1], ["date", "2021-04-20"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date < '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:13
+  [1m[36mCACHE Training Load (0.0ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  Rendered pages/_dashboard_all.html.erb (Duration: 6.9ms | Allocations: 4220)
+  Rendered pages/dashboard.html.erb within layouts/application (Duration: 12.1ms | Allocations: 7116)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.4ms | Allocations: 682)
+  Rendered shared/_navbar.html.erb (Duration: 1.8ms | Allocations: 827)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.7ms | Allocations: 1480)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 33)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 60ms (Views: 47.0ms | ActiveRecord: 4.3ms | Allocations: 31938)
+
+
+Started GET "/workshops/new" for ::1 at 2021-04-20 14:40:24 +0200
+Processing by WorkshopsController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering workshops/new.html.erb within layouts/application
+  [1m[36mCategory Load (0.5ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/workshops/new.html.erb:16
+  [1m[36mMod Load (0.2ms)[0m  [1m[34mSELECT "mods".* FROM "mods" WHERE "mods"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/workshops/new.html.erb:71
+  Rendered workshops/new.html.erb within layouts/application (Duration: 102.7ms | Allocations: 45858)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.6ms | Allocations: 684)
+  Rendered shared/_navbar.html.erb (Duration: 1.9ms | Allocations: 818)
+  [1m[36mCompany Load (0.1ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.7ms | Allocations: 1493)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 166ms (Views: 135.5ms | ActiveRecord: 8.8ms | Allocations: 75429)
+
+
+Started GET "/dashboard" for ::1 at 2021-04-20 14:40:26 +0200
+Processing by PagesController#dashboard as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTraining Load (0.5ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" INNER JOIN "training_workshops" ON "training_workshops"."training_id" = "trainings"."id" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 1], ["status", "Registered"]]
+  ↳ app/controllers/pages_controller.rb:8:in `uniq'
+  [1m[36mTrainingWorkshop Load (0.4ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "workshops" ON "workshops"."id" = "training_workshops"."workshop_id" WHERE "training_workshops"."training_id" IS NULL AND "workshops"."company_id" = $1 AND "training_workshops"."date" IS NOT NULL AND NOT (date < '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/controllers/pages_controller.rb:12:in `dashboard'
+  [1m[36mTrainingWorkshop Load (0.4ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "attendees"."user_id" = $1 AND "attendees"."status" = $2 AND NOT (date < '2021-04-20')[0m  [["user_id", 1], ["status", "Registered"]]
+  ↳ app/controllers/pages_controller.rb:12:in `dashboard'
+  [1m[36mTraining Load (0.2ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/controllers/pages_controller.rb:13:in `sort_by'
+  Rendering pages/dashboard.html.erb within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date > '2021-04-20')[0m  [["company_id", 1], ["user_id", 1]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:5
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND (date <= '2021-04-20') AND ("training_workshops"."available_date" IS NULL OR (available_date > '2021-04-20'))[0m  [["company_id", 1], ["user_id", 1]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:9
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" INNER JOIN "attendees" ON "attendees"."training_workshop_id" = "training_workshops"."id" WHERE "training_workshops"."company_id" = $1 AND "attendees"."user_id" = $2 AND "attendees"."status" = $3[0m  [["company_id", 1], ["user_id", 1], ["status", "Completed"]]
+  ↳ app/views/pages/_dashboard_personal.html.erb:13
+  Rendered pages/_dashboard_personal.html.erb (Duration: 5.1ms | Allocations: 2783)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date > '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:5
+  [1m[36mTrainingWorkshop Load (0.4ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."workshop_type" = $2 AND (date <= '2021-04-20') AND (available_date > '2021-04-20')[0m  [["company_id", 1], ["workshop_type", "Asynchronous"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND "training_workshops"."date" = $2[0m  [["company_id", 1], ["date", "2021-04-20"]]
+  ↳ app/views/pages/_dashboard_all.html.erb:9
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "training_workshops" WHERE "training_workshops"."company_id" = $1 AND (date < '2021-04-20')[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:13
+  [1m[36mCACHE Training Load (0.0ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/pages/_dashboard_all.html.erb:22
+  Rendered pages/_dashboard_all.html.erb (Duration: 7.9ms | Allocations: 4224)
+  Rendered pages/dashboard.html.erb within layouts/application (Duration: 13.5ms | Allocations: 7121)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.6ms | Allocations: 681)
+  Rendered shared/_navbar.html.erb (Duration: 2.0ms | Allocations: 828)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.8ms | Allocations: 1484)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 63ms (Views: 50.7ms | ActiveRecord: 4.5ms | Allocations: 31536)
+
+
+Started GET "/training_programs/new" for ::1 at 2021-04-20 14:40:30 +0200
+Processing by TrainingProgramsController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering training_programs/new.html.erb within layouts/application
+  Rendered training_programs/new.html.erb within layouts/application (Duration: 21.3ms | Allocations: 12309)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.3ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 2.0ms | Allocations: 683)
+  Rendered shared/_navbar.html.erb (Duration: 2.4ms | Allocations: 818)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 3.5ms | Allocations: 1492)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 93ms (Views: 67.8ms | ActiveRecord: 3.4ms | Allocations: 42323)
+
+
+Started POST "/training_programs" for ::1 at 2021-04-20 14:40:40 +0200
+Processing by TrainingProgramsController#create as HTML
+  Parameters: {"authenticity_token"=>"QE45iBR8RhAX+amXSoTkst6AwEOH6dxBPs2HEUfFkj9zebRRgWp5+RmjRULd1PIHqMIc4K+XBZnIw/Zs896paw==", "training_program"=>{"title"=>"Test", "participant_number"=>"0", "description"=>""}, "button"=>""}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/training_programs_controller.rb:36:in `create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/training_programs_controller.rb:38:in `create'
+  [1m[36mTrainingProgram Create (0.9ms)[0m  [1m[32mINSERT INTO "training_programs" ("title", "company_id", "author_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Test"], ["company_id", 1], ["author_id", 1], ["created_at", "2021-04-20 12:40:40.344198"], ["updated_at", "2021-04-20 12:40:40.344198"]]
+  ↳ app/controllers/training_programs_controller.rb:38:in `create'
+  [1m[35m (5.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/training_programs_controller.rb:38:in `create'
+Redirected to http://localhost:3000/training_programs/2
+Completed 302 Found in 15ms (ActiveRecord: 6.4ms | Allocations: 5122)
+
+
+Started GET "/training_programs/2" for ::1 at 2021-04-20 14:40:40 +0200
+Processing by TrainingProgramsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTrainingProgram Load (0.3ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/training_programs_controller.rb:75:in `set_training_program'
+  Rendering training_programs/show.html.erb within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_programs/show.html.erb:20
+  [1m[36mWorkshop Load (0.7ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/training_programs/show.html.erb:26:in `map'
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/training_programs/show.html.erb:32
+  [1m[36mProgramWorkshop Load (0.2ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."training_program_id" = $1 ORDER BY "program_workshops"."position" ASC[0m  [["training_program_id", 2]]
+  ↳ app/views/workshops/_index.html.erb:2:in `map'
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories"[0m
+  ↳ app/views/program_workshops/_new.html.erb:11
+  [1m[36mWorkshop Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "workshops" INNER JOIN "workshop_categories" ON "workshops"."id" = "workshop_categories"."workshop_id" WHERE "workshop_categories"."category_id" = $1 LIMIT $2[0m  [["category_id", 1], ["LIMIT", 1]]
+  ↳ app/views/program_workshops/_new.html.erb:12
+  [1m[36mWorkshop Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "workshops" INNER JOIN "workshop_categories" ON "workshops"."id" = "workshop_categories"."workshop_id" WHERE "workshop_categories"."category_id" = $1 LIMIT $2[0m  [["category_id", 2], ["LIMIT", 1]]
+  ↳ app/views/program_workshops/_new.html.erb:12
+  [1m[36mWorkshop Load (0.3ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" LEFT OUTER JOIN "workshop_categories" ON "workshop_categories"."workshop_id" = "workshops"."id" WHERE "workshop_categories"."id" IS NULL[0m
+  ↳ app/views/program_workshops/_new.html.erb:22
+  Rendered program_workshops/_new.html.erb (Duration: 10.5ms | Allocations: 7078)
+  Rendered workshops/_index.html.erb (Duration: 14.0ms | Allocations: 8495)
+  Rendered training_programs/_edit.html.erb (Duration: 24.6ms | Allocations: 12249)
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/program_categories/_new.html.erb:9
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/program_categories/_new.html.erb:12
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "categories"."id" FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/program_categories/_new.html.erb:14
+  Rendered program_categories/_new.html.erb (Duration: 9.4ms | Allocations: 6004)
+  Rendered training_programs/show.html.erb within layouts/application (Duration: 66.2ms | Allocations: 34931)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.3ms | Allocations: 683)
+  Rendered shared/_navbar.html.erb (Duration: 1.6ms | Allocations: 817)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.6ms | Allocations: 1491)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 126ms (Views: 96.8ms | ActiveRecord: 9.9ms | Allocations: 63179)
+
+
+Started POST "/training_programs/2/program_workshops" for ::1 at 2021-04-20 14:40:44 +0200
+Processing by ProgramWorkshopsController#create as HTML
+  Parameters: {"authenticity_token"=>"CPmsvS+tqYse+/mmsQbzQfs9yWf1Qi51hxo0Sq/a7ug7ziFkuruWYhChFXMmVuX0jX8VxN08961xFEU3G8HVvA==", "training_program"=>{"workshop_ids"=>["", "2", "1"]}, "button"=>"", "training_program_id"=>"2"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTrainingProgram Load (0.3ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/program_workshops_controller.rb:6:in `create'
+  [1m[36mProgramWorkshop Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "program_workshops" WHERE "program_workshops"."training_program_id" = $1 AND "program_workshops"."workshop_id" = $2 LIMIT $3[0m  [["training_program_id", 2], ["workshop_id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/program_workshops_controller.rb:10:in `block in create'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "program_workshops" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[36mTrainingProgram Load (0.2ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[36mProgramWorkshop Create (0.6ms)[0m  [1m[32mINSERT INTO "program_workshops" ("training_program_id", "workshop_id", "position", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["training_program_id", 2], ["workshop_id", 2], ["position", 1], ["created_at", "2021-04-20 12:40:44.213434"], ["updated_at", "2021-04-20 12:40:44.213434"]]
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[35m (6.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[36mProgramWorkshop Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "program_workshops" WHERE "program_workshops"."training_program_id" = $1 AND "program_workshops"."workshop_id" = $2 LIMIT $3[0m  [["training_program_id", 2], ["workshop_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/program_workshops_controller.rb:10:in `block in create'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "program_workshops" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[36mTrainingProgram Load (0.2ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[36mProgramWorkshop Create (0.5ms)[0m  [1m[32mINSERT INTO "program_workshops" ("training_program_id", "workshop_id", "position", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["training_program_id", 2], ["workshop_id", 1], ["position", 2], ["created_at", "2021-04-20 12:40:44.229764"], ["updated_at", "2021-04-20 12:40:44.229764"]]
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/program_workshops_controller.rb:11:in `block in create'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "workshops"."id" FROM "workshops"[0m
+  ↳ app/controllers/program_workshops_controller.rb:15:in `create'
+Redirected to http://localhost:3000/training_programs/2
+Completed 302 Found in 39ms (ActiveRecord: 10.4ms | Allocations: 15120)
+
+
+Started GET "/training_programs/2" for ::1 at 2021-04-20 14:40:44 +0200
+Processing by TrainingProgramsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTrainingProgram Load (0.3ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/training_programs_controller.rb:75:in `set_training_program'
+  Rendering training_programs/show.html.erb within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_programs/show.html.erb:20
+  [1m[36mWorkshop Load (0.4ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/training_programs/show.html.erb:26:in `map'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/training_programs/show.html.erb:30
+  [1m[36mProgramWorkshop Load (0.2ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."training_program_id" = $1 ORDER BY "program_workshops"."position" ASC[0m  [["training_program_id", 2]]
+  ↳ app/views/workshops/_index.html.erb:2:in `map'
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/workshops/_index.html.erb:2:in `map'
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/workshops/_index.html.erb:2:in `map'
+  [1m[36mProgramWorkshop Load (0.2ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."workshop_id" = $1 AND "program_workshops"."training_program_id" = $2 LIMIT $3[0m  [["workshop_id", 2], ["training_program_id", 2], ["LIMIT", 1]]
+  ↳ app/views/workshops/_index.html.erb:3
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/workshops/_index.html.erb:9
+  [1m[36mProgramWorkshop Load (0.2ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."workshop_id" = $1 AND "program_workshops"."training_program_id" = $2 LIMIT $3[0m  [["workshop_id", 1], ["training_program_id", 2], ["LIMIT", 1]]
+  ↳ app/views/workshops/_index.html.erb:3
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/workshops/_index.html.erb:9
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories"[0m
+  ↳ app/views/program_workshops/_new.html.erb:11
+  [1m[36mWorkshop Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "workshops" INNER JOIN "workshop_categories" ON "workshops"."id" = "workshop_categories"."workshop_id" WHERE "workshop_categories"."category_id" = $1 LIMIT $2[0m  [["category_id", 1], ["LIMIT", 1]]
+  ↳ app/views/program_workshops/_new.html.erb:12
+  [1m[36mWorkshop Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "workshops" INNER JOIN "workshop_categories" ON "workshops"."id" = "workshop_categories"."workshop_id" WHERE "workshop_categories"."category_id" = $1 LIMIT $2[0m  [["category_id", 2], ["LIMIT", 1]]
+  ↳ app/views/program_workshops/_new.html.erb:12
+  [1m[36mWorkshop Load (0.3ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" LEFT OUTER JOIN "workshop_categories" ON "workshop_categories"."workshop_id" = "workshops"."id" WHERE "workshop_categories"."id" IS NULL[0m
+  ↳ app/views/program_workshops/_new.html.erb:22
+  Rendered program_workshops/_new.html.erb (Duration: 6.9ms | Allocations: 3928)
+  Rendered workshops/_index.html.erb (Duration: 17.0ms | Allocations: 10263)
+  Rendered training_programs/_edit.html.erb (Duration: 17.6ms | Allocations: 11879)
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/program_categories/_new.html.erb:9
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/program_categories/_new.html.erb:12
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "categories"."id" FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/program_categories/_new.html.erb:14
+  Rendered program_categories/_new.html.erb (Duration: 5.3ms | Allocations: 2899)
+  Rendered training_programs/show.html.erb within layouts/application (Duration: 45.5ms | Allocations: 27702)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.4ms | Allocations: 683)
+  Rendered shared/_navbar.html.erb (Duration: 1.7ms | Allocations: 815)
+  [1m[36mCompany Load (0.1ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.8ms | Allocations: 1484)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 27)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 86ms (Views: 77.6ms | ActiveRecord: 4.8ms | Allocations: 49592)
+
+
+Started GET "/catalogue" for ::1 at 2021-04-20 14:40:56 +0200
+Processing by PagesController#catalogue as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering pages/catalogue.html.erb within layouts/application
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:42
+  [1m[36mTrainingProgram Load (0.2ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" ORDER BY "training_programs"."title" ASC[0m
+  ↳ app/views/pages/_catalogue_programs.html.erb:68
+  [1m[36mWorkshop Load (0.4ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73:in `map'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:75
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["training_program_id", 1], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:78
+  Rendered trainings/_new.html.erb (Duration: 15.1ms | Allocations: 8544)
+  [1m[36mWorkshop Load (0.4ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73:in `map'
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:75
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["training_program_id", 2], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:78
+  Rendered trainings/_new.html.erb (Duration: 12.8ms | Allocations: 8012)
+  Rendered pages/_catalogue_programs.html.erb (Duration: 47.5ms | Allocations: 26540)
+  [1m[36mCACHE Category Load (0.0ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:42
+  [1m[36mWorkshop Load (0.3ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" ORDER BY "workshops"."title" ASC[0m
+  ↳ app/views/pages/_catalogue_workshops.html.erb:56
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:62
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["workshop_id", 2], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:65
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1[0m  [["workshop_id", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:62
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["workshop_id", 1], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:65
+  Rendered pages/_catalogue_workshops.html.erb (Duration: 10.8ms | Allocations: 7251)
+  [1m[36mCACHE Category Load (0.0ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/categories/_index.html.erb:9
+  Rendered categories/_edit.html.erb (Duration: 13.4ms | Allocations: 5538)
+  Rendered categories/_edit.html.erb (Duration: 7.3ms | Allocations: 4815)
+  Rendered categories/_index.html.erb (Duration: 23.6ms | Allocations: 11477)
+  Rendered categories/_new.html.erb (Duration: 7.9ms | Allocations: 4883)
+  Rendered pages/catalogue.html.erb within layouts/application (Duration: 100.0ms | Allocations: 55397)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.3ms | Allocations: 683)
+  Rendered shared/_navbar.html.erb (Duration: 7.3ms | Allocations: 4513)
+  [1m[36mCompany Load (0.1ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.6ms | Allocations: 1485)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 154ms (Views: 137.2ms | ActiveRecord: 5.4ms | Allocations: 84297)
+
+
+Started POST "/trainings" for ::1 at 2021-04-20 14:41:04 +0200
+Processing by TrainingsController#create as HTML
+  Parameters: {"authenticity_token"=>"CH8Wms8j5HrDHqhvGUF1ntqPUrZMzjUA2Kxcd5eViyk7SJtDWjXbk81ERLqOEWMrrM2OFWSw7Nguoi0KI46wfQ==", "training"=>{"title"=>"Négociation", "participant_number"=>"2"}, "training_program_id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTrainingProgram Load (0.3ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:34:in `create'
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:35:in `create'
+  [1m[36mCACHE Company Load (0.0ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:37:in `create'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:37:in `create'
+  [1m[36mTraining Create (1.1ms)[0m  [1m[32mINSERT INTO "trainings" ("title", "description", "image", "participant_number", "training_program_id", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Négociation"], ["description", "Apprendre à négocier en finesse."], ["image", "https://images.unsplash.com/photo-1467664631004-58beab1ece0d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"], ["participant_number", 2], ["training_program_id", 1], ["company_id", 1], ["created_at", "2021-04-20 12:41:04.197493"], ["updated_at", "2021-04-20 12:41:04.197493"]]
+  ↳ app/controllers/trainings_controller.rb:37:in `create'
+  [1m[35m (5.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:37:in `create'
+  [1m[36mProgramWorkshop Load (0.2ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/controllers/trainings_controller.rb:38:in `create'
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:39:in `block in create'
+  [1m[36mCACHE Workshop Load (0.0ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mTrainingWorkshop Create (1.0ms)[0m  [1m[32mINSERT INTO "training_workshops" ("title", "duration", "workshop_type", "image", "company_id", "workshop_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Trust Challenge"], ["duration", 60], ["workshop_type", "Synchronous"], ["image", "https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"], ["company_id", 1], ["workshop_id", 1], ["created_at", "2021-04-20 12:41:04.244538"], ["updated_at", "2021-04-20 12:41:04.244538"]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mActionText::RichText Create (0.5ms)[0m  [1m[32mINSERT INTO "action_text_rich_texts" ("name", "body", "record_type", "record_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "description"], ["body", ""], ["record_type", "TrainingWorkshop"], ["record_id", 1], ["created_at", "2021-04-20 12:41:04.251173"], ["updated_at", "2021-04-20 12:41:04.251173"]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mTrainingWorkshop Update (0.5ms)[0m  [1m[33mUPDATE "training_workshops" SET "updated_at" = $1 WHERE "training_workshops"."id" = $2[0m  [["updated_at", "2021-04-20 12:41:04.253606"], ["id", 1]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[36mTrainingWorkshop Update (0.7ms)[0m  [1m[33mUPDATE "training_workshops" SET "date" = $1, "starts_at" = $2, "ends_at" = $3, "training_id" = $4, "updated_at" = $5 WHERE "training_workshops"."id" = $6[0m  [["date", "2021-04-20 00:00:00"], ["starts_at", "08:00:00"], ["ends_at", "09:00:00"], ["training_id", 1], ["updated_at", "2021-04-20 12:41:04.257149"], ["id", 1]]
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[36mWorkshopMod Load (0.4ms)[0m  [1m[34mSELECT "workshop_mods".* FROM "workshop_mods" WHERE "workshop_mods"."workshop_id" = $1[0m  [["workshop_id", 1]]
+  ↳ app/controllers/trainings_controller.rb:42:in `block in create'
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:39:in `block in create'
+  [1m[36mCACHE Workshop Load (0.0ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mTrainingWorkshop Create (0.4ms)[0m  [1m[32mINSERT INTO "training_workshops" ("title", "duration", "workshop_type", "image", "company_id", "workshop_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Intelligence économique"], ["duration", 90], ["workshop_type", "Asynchronous"], ["image", "https://images.unsplash.com/photo-1507007246334-2a2ec227f2e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"], ["company_id", 1], ["workshop_id", 2], ["created_at", "2021-04-20 12:41:04.267865"], ["updated_at", "2021-04-20 12:41:04.267865"]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mActionText::RichText Create (0.2ms)[0m  [1m[32mINSERT INTO "action_text_rich_texts" ("name", "body", "record_type", "record_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "description"], ["body", ""], ["record_type", "TrainingWorkshop"], ["record_id", 2], ["created_at", "2021-04-20 12:41:04.270990"], ["updated_at", "2021-04-20 12:41:04.270990"]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mTrainingWorkshop Update (0.3ms)[0m  [1m[33mUPDATE "training_workshops" SET "updated_at" = $1 WHERE "training_workshops"."id" = $2[0m  [["updated_at", "2021-04-20 12:41:04.272656"], ["id", 2]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[36mTrainingWorkshop Update (0.3ms)[0m  [1m[33mUPDATE "training_workshops" SET "date" = $1, "starts_at" = $2, "ends_at" = $3, "training_id" = $4, "updated_at" = $5 WHERE "training_workshops"."id" = $6[0m  [["date", "2021-04-20 00:00:00"], ["starts_at", "08:00:00"], ["ends_at", "09:30:00"], ["training_id", 1], ["updated_at", "2021-04-20 12:41:04.275582"], ["id", 2]]
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[36mWorkshopMod Load (0.2ms)[0m  [1m[34mSELECT "workshop_mods".* FROM "workshop_mods" WHERE "workshop_mods"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/controllers/trainings_controller.rb:42:in `block in create'
+Redirected to http://localhost:3000/trainings/1
+Completed 302 Found in 94ms (ActiveRecord: 17.6ms | Allocations: 44552)
+
+
+Started GET "/trainings/1" for ::1 at 2021-04-20 14:41:04 +0200
+Processing by TrainingsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTraining Load (0.2ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:75:in `set_training'
+  Rendering trainings/show.html.erb within layouts/application
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "training_workshops"."id" FROM "training_workshops" WHERE "training_workshops"."training_id" = $1[0m  [["training_id", 1]]
+  ↳ app/views/trainings/show.html.erb:15
+  [1m[36mAttendee Load (0.3ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" IN ($1, $2) AND "attendees"."user_id" = $3 LIMIT $4[0m  [["training_workshop_id", 1], ["training_workshop_id", 2], ["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:15
+  [1m[36mAttendee Load (0.2ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" IS NULL AND "attendees"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:20
+  [1m[36mCACHE Attendee Load (0.0ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" IS NULL AND "attendees"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:22
+  [1m[36mTrainingProgram Load (0.2ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:49
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:49
+  [1m[36mWorkshop Load (0.3ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "training_workshops" ON "workshops"."id" = "training_workshops"."workshop_id" WHERE "training_workshops"."training_id" = $1[0m  [["training_id", 1]]
+  ↳ app/views/trainings/show.html.erb:55:in `map'
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "training_workshops" ON "workshops"."id" = "training_workshops"."workshop_id" WHERE "training_workshops"."training_id" = $1[0m  [["training_id", 1]]
+  ↳ app/views/trainings/show.html.erb:59
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."training_id" = $1 ORDER BY "training_workshops"."date" ASC[0m  [["training_id", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:2
+  [1m[36mProgramWorkshop Load (0.2ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."workshop_id" = $1 AND "program_workshops"."training_program_id" = $2 LIMIT $3[0m  [["workshop_id", 1], ["training_program_id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:3
+  [1m[36mWorkshop Load (0.1ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:9
+  Rendered training_workshops/_edit.html.erb (Duration: 18.3ms | Allocations: 11034)
+  [1m[36mProgramWorkshop Load (0.4ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."workshop_id" = $1 AND "program_workshops"."training_program_id" = $2 LIMIT $3[0m  [["workshop_id", 2], ["training_program_id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:3
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:9
+  Rendered training_workshops/_edit.html.erb (Duration: 17.6ms | Allocations: 10390)
+  Rendered training_workshops/_index.html.erb (Duration: 54.9ms | Allocations: 27649)
+  [1m[36mTag Load (0.5ms)[0m  [1m[34mSELECT "tags".* FROM "tags" WHERE "tags"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/trainings/_edit.html.erb:14
+  Rendered trainings/_edit.html.erb (Duration: 29.4ms | Allocations: 16411)
+  Rendered trainings/show.html.erb within layouts/application (Duration: 103.9ms | Allocations: 53528)
+Completed 500 Internal Server Error in 118ms (ActiveRecord: 8.9ms | Allocations: 59726)
+
+
+  
+ActionView::Template::Error (undefined method `Tag_name' for #<Tag:0x00007fee0cb9fad0>
+Did you mean?  tag_name=
+               tag_name?):
+    11:       <%= f.input :participant_number, input_html: {value: training.participant_number} %>
+    12:       <p><%= "Select Tags (optional)" %></p>
+    13:       <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
+    14:         <%= collection_check_boxes(:training_workshop, :Tag_ids, Tag.where(company_id: current_user.company_id), :id, :Tag_name) do |b| %>
+    15:           <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+    16:             <%= b.check_box + b.text %>
+    17:           <% end %>
+  
+app/views/trainings/_edit.html.erb:14
+app/views/trainings/_edit.html.erb:9
+app/views/trainings/show.html.erb:74
+Started GET "/catalogue" for ::1 at 2021-04-20 14:41:25 +0200
+Processing by PagesController#catalogue as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering pages/catalogue.html.erb within layouts/application
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:42
+  [1m[36mTrainingProgram Load (0.2ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" ORDER BY "training_programs"."title" ASC[0m
+  ↳ app/views/pages/_catalogue_programs.html.erb:68
+  [1m[36mWorkshop Load (0.3ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73:in `map'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:75
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["training_program_id", 1], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:78
+  Rendered trainings/_new.html.erb (Duration: 18.6ms | Allocations: 8058)
+  [1m[36mWorkshop Load (0.4ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73:in `map'
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:75
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["training_program_id", 2], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:78
+  Rendered trainings/_new.html.erb (Duration: 13.1ms | Allocations: 8030)
+  Rendered pages/_catalogue_programs.html.erb (Duration: 49.4ms | Allocations: 25173)
+  [1m[36mCACHE Category Load (0.0ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:42
+  [1m[36mWorkshop Load (0.3ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" ORDER BY "workshops"."title" ASC[0m
+  ↳ app/views/pages/_catalogue_workshops.html.erb:56
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:62
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["workshop_id", 2], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:65
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1[0m  [["workshop_id", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:62
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["workshop_id", 1], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:65
+  Rendered pages/_catalogue_workshops.html.erb (Duration: 9.3ms | Allocations: 5476)
+  [1m[36mCACHE Category Load (0.0ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/categories/_index.html.erb:9
+  Rendered categories/_edit.html.erb (Duration: 7.2ms | Allocations: 4842)
+  Rendered categories/_edit.html.erb (Duration: 7.4ms | Allocations: 4804)
+  Rendered categories/_index.html.erb (Duration: 15.9ms | Allocations: 10415)
+  Rendered categories/_new.html.erb (Duration: 7.2ms | Allocations: 4678)
+  Rendered pages/catalogue.html.erb within layouts/application (Duration: 89.0ms | Allocations: 49857)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.5ms | Allocations: 683)
+  Rendered shared/_navbar.html.erb (Duration: 7.8ms | Allocations: 4513)
+  [1m[36mCompany Load (0.1ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.5ms | Allocations: 1485)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 134ms (Views: 125.6ms | ActiveRecord: 5.1ms | Allocations: 74955)
+
+
+Started POST "/trainings" for ::1 at 2021-04-20 14:41:31 +0200
+Processing by TrainingsController#create as HTML
+  Parameters: {"authenticity_token"=>"9YS4ZXUK0bKrCDhIg+3F1sWxxSk8vsZAlP3OSdwsBlfGszW84BzuW6VS1J0UvdNjs/MZihTAH5hi8780aDc9Aw==", "training"=>{"title"=>"Négociation", "participant_number"=>""}, "training_program_id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTrainingProgram Load (0.2ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:34:in `create'
+  [1m[36mCompany Load (0.1ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:35:in `create'
+  [1m[36mCACHE Company Load (0.0ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:37:in `create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:37:in `create'
+  [1m[36mTraining Create (0.5ms)[0m  [1m[32mINSERT INTO "trainings" ("title", "description", "image", "training_program_id", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["title", "Négociation"], ["description", "Apprendre à négocier en finesse."], ["image", "https://images.unsplash.com/photo-1467664631004-58beab1ece0d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"], ["training_program_id", 1], ["company_id", 1], ["created_at", "2021-04-20 12:41:31.939804"], ["updated_at", "2021-04-20 12:41:31.939804"]]
+  ↳ app/controllers/trainings_controller.rb:37:in `create'
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:37:in `create'
+  [1m[36mProgramWorkshop Load (0.2ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/controllers/trainings_controller.rb:38:in `create'
+  [1m[36mWorkshop Load (0.1ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:39:in `block in create'
+  [1m[36mCACHE Workshop Load (0.0ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mTrainingWorkshop Create (0.4ms)[0m  [1m[32mINSERT INTO "training_workshops" ("title", "duration", "workshop_type", "image", "company_id", "workshop_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Trust Challenge"], ["duration", 60], ["workshop_type", "Synchronous"], ["image", "https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"], ["company_id", 1], ["workshop_id", 1], ["created_at", "2021-04-20 12:41:31.951108"], ["updated_at", "2021-04-20 12:41:31.951108"]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mActionText::RichText Create (0.2ms)[0m  [1m[32mINSERT INTO "action_text_rich_texts" ("name", "body", "record_type", "record_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "description"], ["body", ""], ["record_type", "TrainingWorkshop"], ["record_id", 3], ["created_at", "2021-04-20 12:41:31.954546"], ["updated_at", "2021-04-20 12:41:31.954546"]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mTrainingWorkshop Update (0.4ms)[0m  [1m[33mUPDATE "training_workshops" SET "updated_at" = $1 WHERE "training_workshops"."id" = $2[0m  [["updated_at", "2021-04-20 12:41:31.956499"], ["id", 3]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[36mTrainingWorkshop Update (0.3ms)[0m  [1m[33mUPDATE "training_workshops" SET "date" = $1, "starts_at" = $2, "ends_at" = $3, "training_id" = $4, "updated_at" = $5 WHERE "training_workshops"."id" = $6[0m  [["date", "2021-04-20 00:00:00"], ["starts_at", "08:00:00"], ["ends_at", "09:00:00"], ["training_id", 2], ["updated_at", "2021-04-20 12:41:31.959914"], ["id", 3]]
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[35m (0.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[36mWorkshopMod Load (0.2ms)[0m  [1m[34mSELECT "workshop_mods".* FROM "workshop_mods" WHERE "workshop_mods"."workshop_id" = $1[0m  [["workshop_id", 1]]
+  ↳ app/controllers/trainings_controller.rb:42:in `block in create'
+  [1m[36mWorkshop Load (0.1ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:39:in `block in create'
+  [1m[36mCACHE Workshop Load (0.0ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mTrainingWorkshop Create (0.4ms)[0m  [1m[32mINSERT INTO "training_workshops" ("title", "duration", "workshop_type", "image", "company_id", "workshop_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Intelligence économique"], ["duration", 90], ["workshop_type", "Asynchronous"], ["image", "https://images.unsplash.com/photo-1507007246334-2a2ec227f2e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"], ["company_id", 1], ["workshop_id", 2], ["created_at", "2021-04-20 12:41:31.970367"], ["updated_at", "2021-04-20 12:41:31.970367"]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mActionText::RichText Create (0.2ms)[0m  [1m[32mINSERT INTO "action_text_rich_texts" ("name", "body", "record_type", "record_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "description"], ["body", ""], ["record_type", "TrainingWorkshop"], ["record_id", 4], ["created_at", "2021-04-20 12:41:31.973704"], ["updated_at", "2021-04-20 12:41:31.973704"]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[36mTrainingWorkshop Update (0.3ms)[0m  [1m[33mUPDATE "training_workshops" SET "updated_at" = $1 WHERE "training_workshops"."id" = $2[0m  [["updated_at", "2021-04-20 12:41:31.975379"], ["id", 4]]
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:40:in `block in create'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[36mTrainingWorkshop Update (0.3ms)[0m  [1m[33mUPDATE "training_workshops" SET "date" = $1, "starts_at" = $2, "ends_at" = $3, "training_id" = $4, "updated_at" = $5 WHERE "training_workshops"."id" = $6[0m  [["date", "2021-04-20 00:00:00"], ["starts_at", "08:00:00"], ["ends_at", "09:30:00"], ["training_id", 2], ["updated_at", "2021-04-20 12:41:31.978447"], ["id", 4]]
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/trainings_controller.rb:41:in `block in create'
+  [1m[36mWorkshopMod Load (0.2ms)[0m  [1m[34mSELECT "workshop_mods".* FROM "workshop_mods" WHERE "workshop_mods"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/controllers/trainings_controller.rb:42:in `block in create'
+Redirected to http://localhost:3000/trainings/2
+Completed 302 Found in 51ms (ActiveRecord: 8.0ms | Allocations: 28427)
+
+
+Started GET "/trainings/2" for ::1 at 2021-04-20 14:41:31 +0200
+Processing by TrainingsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTraining Load (0.2ms)[0m  [1m[34mSELECT "trainings".* FROM "trainings" WHERE "trainings"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/trainings_controller.rb:75:in `set_training'
+  Rendering trainings/show.html.erb within layouts/application
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "training_workshops"."id" FROM "training_workshops" WHERE "training_workshops"."training_id" = $1[0m  [["training_id", 2]]
+  ↳ app/views/trainings/show.html.erb:15
+  [1m[36mAttendee Load (0.3ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" IN ($1, $2) AND "attendees"."user_id" = $3 LIMIT $4[0m  [["training_workshop_id", 3], ["training_workshop_id", 4], ["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:15
+  [1m[36mAttendee Load (0.2ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" IS NULL AND "attendees"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:20
+  [1m[36mCACHE Attendee Load (0.0ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" IS NULL AND "attendees"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:22
+  [1m[36mTrainingProgram Load (0.1ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" WHERE "training_programs"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:49
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/trainings/show.html.erb:49
+  [1m[36mWorkshop Load (0.3ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "training_workshops" ON "workshops"."id" = "training_workshops"."workshop_id" WHERE "training_workshops"."training_id" = $1[0m  [["training_id", 2]]
+  ↳ app/views/trainings/show.html.erb:55:in `map'
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "training_workshops" ON "workshops"."id" = "training_workshops"."workshop_id" WHERE "training_workshops"."training_id" = $1[0m  [["training_id", 2]]
+  ↳ app/views/trainings/show.html.erb:59
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."training_id" = $1 ORDER BY "training_workshops"."date" ASC[0m  [["training_id", 2]]
+  ↳ app/views/training_workshops/_index.html.erb:2
+  [1m[36mProgramWorkshop Load (0.2ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."workshop_id" = $1 AND "program_workshops"."training_program_id" = $2 LIMIT $3[0m  [["workshop_id", 3], ["training_program_id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:3
+  [1m[36mWorkshop Load (0.1ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:9
+  Rendered training_workshops/_edit.html.erb (Duration: 15.8ms | Allocations: 10292)
+  [1m[36mProgramWorkshop Load (0.4ms)[0m  [1m[34mSELECT "program_workshops".* FROM "program_workshops" WHERE "program_workshops"."workshop_id" = $1 AND "program_workshops"."training_program_id" = $2 LIMIT $3[0m  [["workshop_id", 4], ["training_program_id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:3
+  [1m[36mWorkshop Load (0.1ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/_index.html.erb:9
+  Rendered training_workshops/_edit.html.erb (Duration: 15.8ms | Allocations: 10363)
+  Rendered training_workshops/_index.html.erb (Duration: 41.0ms | Allocations: 25714)
+  [1m[36mTag Load (0.3ms)[0m  [1m[34mSELECT "tags".* FROM "tags" WHERE "tags"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/trainings/_edit.html.erb:14
+  Rendered trainings/_edit.html.erb (Duration: 20.9ms | Allocations: 13040)
+  Rendered trainings/show.html.erb within layouts/application (Duration: 75.4ms | Allocations: 44915)
+Completed 500 Internal Server Error in 80ms (ActiveRecord: 3.5ms | Allocations: 47514)
+
+
+  
+ActionView::Template::Error (undefined method `Tag_name' for #<Tag:0x00007fee12399358>
+Did you mean?  tag_name=
+               tag_name?):
+    11:       <%= f.input :participant_number, input_html: {value: training.participant_number} %>
+    12:       <p><%= "Select Tags (optional)" %></p>
+    13:       <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
+    14:         <%= collection_check_boxes(:training_workshop, :Tag_ids, Tag.where(company_id: current_user.company_id), :id, :Tag_name) do |b| %>
+    15:           <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+    16:             <%= b.check_box + b.text %>
+    17:           <% end %>
+  
+app/views/trainings/_edit.html.erb:14
+app/views/trainings/_edit.html.erb:9
+app/views/trainings/show.html.erb:74
+Started GET "/catalogue" for ::1 at 2021-04-20 14:45:38 +0200
+Processing by PagesController#catalogue as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering pages/catalogue.html.erb within layouts/application
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:42
+  [1m[36mTrainingProgram Load (0.2ms)[0m  [1m[34mSELECT "training_programs".* FROM "training_programs" ORDER BY "training_programs"."title" ASC[0m
+  ↳ app/views/pages/_catalogue_programs.html.erb:68
+  [1m[36mWorkshop Load (0.1ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73:in `map'
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1[0m  [["training_program_id", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:75
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["training_program_id", 1], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:78
+  Rendered trainings/_new.html.erb (Duration: 14.5ms | Allocations: 8049)
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73:in `map'
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "workshops" INNER JOIN "program_workshops" ON "workshops"."id" = "program_workshops"."workshop_id" WHERE "program_workshops"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:73
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1[0m  [["training_program_id", 2]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:75
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "program_categories" ON "categories"."id" = "program_categories"."category_id" WHERE "program_categories"."training_program_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["training_program_id", 2], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_programs.html.erb:78
+  Rendered trainings/_new.html.erb (Duration: 19.1ms | Allocations: 8024)
+  Rendered pages/_catalogue_programs.html.erb (Duration: 52.3ms | Allocations: 25152)
+  [1m[36mCACHE Category Load (0.0ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:42
+  [1m[36mWorkshop Load (0.4ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" ORDER BY "workshops"."title" ASC[0m
+  ↳ app/views/pages/_catalogue_workshops.html.erb:56
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:62
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["workshop_id", 2], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:65
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1[0m  [["workshop_id", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:62
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1 ORDER BY "categories"."id" ASC LIMIT $2[0m  [["workshop_id", 1], ["LIMIT", 1]]
+  ↳ app/views/pages/_catalogue_workshops.html.erb:65
+  Rendered pages/_catalogue_workshops.html.erb (Duration: 20.9ms | Allocations: 5470)
+  [1m[36mCACHE Category Load (0.0ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/categories/_index.html.erb:9
+  Rendered categories/_edit.html.erb (Duration: 15.7ms | Allocations: 4841)
+  Rendered categories/_edit.html.erb (Duration: 14.3ms | Allocations: 4804)
+  Rendered categories/_index.html.erb (Duration: 32.2ms | Allocations: 10414)
+  Rendered categories/_new.html.erb (Duration: 14.1ms | Allocations: 4677)
+  Rendered pages/catalogue.html.erb within layouts/application (Duration: 126.5ms | Allocations: 49820)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 2.1ms | Allocations: 683)
+  Rendered shared/_navbar.html.erb (Duration: 13.2ms | Allocations: 4513)
+  [1m[36mCompany Load (0.1ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 3.3ms | Allocations: 1480)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.6ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.0ms | Allocations: 27)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 206ms (Views: 197.0ms | ActiveRecord: 5.7ms | Allocations: 74905)
+
+
+Started GET "/workshops/2" for ::1 at 2021-04-20 14:45:46 +0200
+Processing by WorkshopsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/workshops_controller.rb:135:in `set_workshop'
+  Rendering workshops/show.html.erb within layouts/application
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/workshops/show.html.erb:25
+  [1m[36mActionText::RichText Load (0.3ms)[0m  [1m[34mSELECT "action_text_rich_texts".* FROM "action_text_rich_texts" WHERE "action_text_rich_texts"."record_id" = $1 AND "action_text_rich_texts"."record_type" = $2 AND "action_text_rich_texts"."name" = $3 LIMIT $4[0m  [["record_id", 2], ["record_type", "Workshop"], ["name", "description"], ["LIMIT", 1]]
+  ↳ app/views/workshops/show.html.erb:32
+  Rendered /Users/marieleleu/.rbenv/versions/2.7.3/lib/ruby/gems/2.7.0/gems/actiontext-6.0.0/app/views/action_text/content/_layout.html.erb (Duration: 1.1ms | Allocations: 290)
+  [1m[36mMod Load (0.3ms)[0m  [1m[34mSELECT "mods".* FROM "mods" INNER JOIN "workshop_mods" ON "mods"."id" = "workshop_mods"."mod_id" WHERE "workshop_mods"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/views/workshops/_module_index.html.erb:1
+  Rendered workshops/_module_index.html.erb (Duration: 5.1ms | Allocations: 3421)
+  [1m[36mSkillGroup Load (0.5ms)[0m  [1m[34mSELECT "skill_groups".* FROM "skill_groups"[0m
+  ↳ app/views/workshop_skills/_new.html.erb:11
+  [1m[36mSkill Load (0.4ms)[0m  [1m[34mSELECT "skills".* FROM "skills" WHERE "skills"."skill_group_id" = $1[0m  [["skill_group_id", 1]]
+  ↳ app/views/workshop_skills/_new.html.erb:13
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "skills"."id" FROM "skills" INNER JOIN "workshop_skills" ON "skills"."id" = "workshop_skills"."skill_id" WHERE "workshop_skills"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/views/workshop_skills/_new.html.erb:15
+  [1m[36mSkill Load (0.2ms)[0m  [1m[34mSELECT "skills".* FROM "skills" WHERE "skills"."skill_group_id" = $1[0m  [["skill_group_id", 2]]
+  ↳ app/views/workshop_skills/_new.html.erb:13
+  Rendered workshop_skills/_new.html.erb (Duration: 33.0ms | Allocations: 14263)
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/workshop_categories/_new.html.erb:9
+  [1m[36mCategory Load (0.2ms)[0m  [1m[34mSELECT "categories".* FROM "categories" WHERE "categories"."company_id" = $1 ORDER BY "categories"."title" ASC[0m  [["company_id", 1]]
+  ↳ app/views/workshop_categories/_new.html.erb:12
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "categories"."id" FROM "categories" INNER JOIN "workshop_categories" ON "categories"."id" = "workshop_categories"."category_id" WHERE "workshop_categories"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/views/workshop_categories/_new.html.erb:14
+  Rendered workshop_categories/_new.html.erb (Duration: 6.7ms | Allocations: 3354)
+  [1m[36mMod Load (0.2ms)[0m  [1m[34mSELECT "mods".* FROM "mods" WHERE "mods"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/mods/_library.html.erb:12
+  Rendered mods/_library.html.erb (Duration: 3.0ms | Allocations: 1529)
+  Rendered workshops/_edit_content.html.erb (Duration: 4.5ms | Allocations: 1986)
+  Rendered training_workshops/_new.html.erb (Duration: 16.2ms | Allocations: 10556)
+  Rendered workshops/show.html.erb within layouts/application (Duration: 79.6ms | Allocations: 40153)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.6ms | Allocations: 683)
+  Rendered shared/_navbar.html.erb (Duration: 2.2ms | Allocations: 818)
+  [1m[36mCompany Load (0.1ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 2.6ms | Allocations: 1493)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.3ms | Allocations: 201)
+  Rendered shared/_flashes.html.erb (Duration: 0.1ms | Allocations: 30)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 132ms (Views: 108.8ms | ActiveRecord: 11.4ms | Allocations: 64858)
+
+
+Started POST "/training_workshops/book" for ::1 at 2021-04-20 14:45:50 +0200
+Processing by TrainingWorkshopsController#book_training_workshop as HTML
+  Parameters: {"authenticity_token"=>"ktLRQI9I+ztYdWvAL0QFBFFuhWIaVZzAUZiTfPG2SLCh5VyZGl7E0lYvhxW4FBOxJyxZwTIrRRinluIBRa1z5A==", "training_workshop"=>{"title"=>"Intelligence économique", "date"=>"2021-04-20", "starts_at(1i)"=>"2021", "starts_at(2i)"=>"4", "starts_at(3i)"=>"20", "starts_at(4i)"=>"09", "starts_at(5i)"=>"00", "available_date"=>"", "ends_at(1i)"=>"2021", "ends_at(2i)"=>"4", "ends_at(3i)"=>"20", "ends_at(4i)"=>"17", "ends_at(5i)"=>"00"}, "workshop_id"=>"2"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mWorkshop Load (0.1ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/training_workshops_controller.rb:57:in `book_training_workshop'
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/training_workshops_controller.rb:61:in `book_training_workshop'
+  [1m[36mWorkshop Load (0.1ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/training_workshops_controller.rb:61:in `book_training_workshop'
+  [1m[36mTrainingWorkshop Create (0.4ms)[0m  [1m[32mINSERT INTO "training_workshops" ("title", "duration", "workshop_type", "image", "company_id", "date", "starts_at", "ends_at", "workshop_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING "id"[0m  [["title", "Intelligence économique"], ["duration", 90], ["workshop_type", "Asynchronous"], ["image", "https://images.unsplash.com/photo-1507007246334-2a2ec227f2e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"], ["company_id", 1], ["date", "2021-04-20 00:00:00"], ["starts_at", "09:00:00"], ["ends_at", "17:00:00"], ["workshop_id", 2], ["created_at", "2021-04-20 12:45:50.438015"], ["updated_at", "2021-04-20 12:45:50.438015"]]
+  ↳ app/controllers/training_workshops_controller.rb:61:in `book_training_workshop'
+  [1m[36mActionText::RichText Create (0.3ms)[0m  [1m[32mINSERT INTO "action_text_rich_texts" ("name", "body", "record_type", "record_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "description"], ["body", ""], ["record_type", "TrainingWorkshop"], ["record_id", 5], ["created_at", "2021-04-20 12:45:50.440898"], ["updated_at", "2021-04-20 12:45:50.440898"]]
+  ↳ app/controllers/training_workshops_controller.rb:61:in `book_training_workshop'
+  [1m[36mTrainingWorkshop Update (0.3ms)[0m  [1m[33mUPDATE "training_workshops" SET "updated_at" = $1 WHERE "training_workshops"."id" = $2[0m  [["updated_at", "2021-04-20 12:45:50.442813"], ["id", 5]]
+  ↳ app/controllers/training_workshops_controller.rb:61:in `book_training_workshop'
+  [1m[35m (5.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/training_workshops_controller.rb:61:in `book_training_workshop'
+Redirected to http://localhost:3000/training_workshops/5
+Completed 302 Found in 25ms (ActiveRecord: 7.6ms | Allocations: 10137)
+
+
+Started GET "/training_workshops/5" for ::1 at 2021-04-20 14:45:50 +0200
+Processing by TrainingWorkshopsController#show as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTrainingWorkshop Load (0.2ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/training_workshops_controller.rb:79:in `set_training_workshop'
+  [1m[36mCACHE TrainingWorkshop Load (0.0ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/training_workshops_controller.rb:6:in `show'
+  Rendering training_workshops/show.html.erb within layouts/application
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:21
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:22
+  [1m[36mActionText::RichText Load (0.3ms)[0m  [1m[34mSELECT "action_text_rich_texts".* FROM "action_text_rich_texts" WHERE "action_text_rich_texts"."record_id" = $1 AND "action_text_rich_texts"."record_type" = $2 AND "action_text_rich_texts"."name" = $3 LIMIT $4[0m  [["record_id", 2], ["record_type", "Workshop"], ["name", "description"], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:29
+  Rendered /Users/marieleleu/.rbenv/versions/2.7.3/lib/ruby/gems/2.7.0/gems/actiontext-6.0.0/app/views/action_text/content/_layout.html.erb (Duration: 0.4ms | Allocations: 197)
+  Rendered training_workshops/show.html.erb within layouts/application (Duration: 21.3ms | Allocations: 8866)
+Completed 500 Internal Server Error in 30ms (ActiveRecord: 1.1ms | Allocations: 12841)
+
+
+  
+ActionView::Template::Error (undefined method `html_safe' for #<ActionText::RichText:0x00007fee0db776b0>
+Did you mean?  html_safe?):
+    26:     </div>
+    27:     <div class="workshop-show-card-footer centered-item">
+    28:       <div>
+    29:         <p><%= @training_workshop.workshop.description.html_safe %></p>
+    30:       </div>
+    31:     </div>
+    32:           <div id="container-workshop-booked">
+  
+app/views/training_workshops/show.html.erb:29
+Started GET "/training_workshops/5" for ::1 at 2021-04-20 14:47:04 +0200
+Processing by TrainingWorkshopsController#show as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTrainingWorkshop Load (0.5ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/training_workshops_controller.rb:79:in `set_training_workshop'
+  [1m[36mCACHE TrainingWorkshop Load (0.0ms)[0m  [1m[34mSELECT "training_workshops".* FROM "training_workshops" WHERE "training_workshops"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/training_workshops_controller.rb:6:in `show'
+  Rendering training_workshops/show.html.erb within layouts/application
+  [1m[36mWorkshop Load (0.2ms)[0m  [1m[34mSELECT "workshops".* FROM "workshops" WHERE "workshops"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:21
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:22
+  [1m[36mActionText::RichText Load (0.2ms)[0m  [1m[34mSELECT "action_text_rich_texts".* FROM "action_text_rich_texts" WHERE "action_text_rich_texts"."record_id" = $1 AND "action_text_rich_texts"."record_type" = $2 AND "action_text_rich_texts"."name" = $3 LIMIT $4[0m  [["record_id", 2], ["record_type", "Workshop"], ["name", "description"], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:29
+  Rendered /Users/marieleleu/.rbenv/versions/2.7.3/lib/ruby/gems/2.7.0/gems/actiontext-6.0.0/app/views/action_text/content/_layout.html.erb (Duration: 0.7ms | Allocations: 287)
+  [1m[36mAttendee Load (0.2ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" = $1 AND "attendees"."user_id" = $2 LIMIT $3[0m  [["training_workshop_id", 5], ["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:35
+  [1m[36mCACHE Attendee Load (0.0ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" = $1 AND "attendees"."user_id" = $2 LIMIT $3[0m  [["training_workshop_id", 5], ["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:40
+  [1m[36mCACHE Attendee Load (0.0ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" = $1 AND "attendees"."user_id" = $2 LIMIT $3[0m  [["training_workshop_id", 5], ["user_id", 1], ["LIMIT", 1]]
+  ↳ app/views/training_workshops/show.html.erb:42
+  [1m[36mAttendee Load (0.2ms)[0m  [1m[34mSELECT "attendees".* FROM "attendees" WHERE "attendees"."training_workshop_id" = $1[0m  [["training_workshop_id", 5]]
+  ↳ app/views/training_workshops/show.html.erb:65
+  [1m[36mMod Load (0.3ms)[0m  [1m[34mSELECT "mods".* FROM "mods" INNER JOIN "workshop_mods" ON "mods"."id" = "workshop_mods"."mod_id" WHERE "workshop_mods"."workshop_id" = $1[0m  [["workshop_id", 2]]
+  ↳ app/views/training_workshops/show.html.erb:87
+  Rendered training_workshops/_edit.html.erb (Duration: 16.2ms | Allocations: 10853)
+  Rendered mods/_new.html.erb (Duration: 16.3ms | Allocations: 9684)
+  [1m[36mMod Load (0.3ms)[0m  [1m[34mSELECT "mods".* FROM "mods" WHERE "mods"."company_id" = $1[0m  [["company_id", 1]]
+  ↳ app/views/mods/_library.html.erb:33
+  Rendered mods/_library.html.erb (Duration: 26.3ms | Allocations: 8020)
+  Rendered training_workshops/_edit_content.html.erb (Duration: 45.7ms | Allocations: 18298)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "attendees" ON "attendees"."user_id" = "users"."id" WHERE "attendees"."training_workshop_id" = $1[0m  [["training_workshop_id", 5]]
+  ↳ app/views/attendees/_confirm_presence.html.erb:11
+  Rendered attendees/_confirm_presence.html.erb (Duration: 4.4ms | Allocations: 1956)
+  Rendered training_workshops/show.html.erb within layouts/application (Duration: 85.6ms | Allocations: 40960)
+[Webpacker] Everything's up-to-date. Nothing to do
+  [1m[36mNotification Load (0.2ms)[0m  [1m[34mSELECT "notifications".* FROM "notifications" WHERE "notifications"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/shared/_notifications.html.erb:1
+  Rendered shared/_notifications.html.erb (Duration: 1.9ms | Allocations: 941)
+  Rendered shared/_navbar.html.erb (Duration: 3.4ms | Allocations: 1757)
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shared/_left_navbar.html.erb:5
+  Rendered shared/_left_navbar.html.erb (Duration: 3.8ms | Allocations: 2562)
+  Rendered shared/_left_navbar-mobile.html.erb (Duration: 0.9ms | Allocations: 623)
+  Rendered shared/_flashes.html.erb (Duration: 0.4ms | Allocations: 226)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 136ms (Views: 124.9ms | ActiveRecord: 5.9ms | Allocations: 67803)
+
+
