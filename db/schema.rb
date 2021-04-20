@@ -113,10 +113,11 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.text "content", default: "", null: false
     t.string "document", default: "", null: false
     t.bigint "company_id"
+    t.string "mod_type", default: ""
+    t.integer "workshop_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "media"
-    t.string "type"
     t.index ["company_id"], name: "index_mods_on_company_id"
   end
 

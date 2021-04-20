@@ -11,7 +11,6 @@
 }
 
 .catalogue-index-card, .catalogue-index-infos, .catalogue-index-infos a:first-of-type, .catalogue-index-infos-title {
-  width: calc(100% - 10rem);
   height: 10rem;
   display: flex;
   position: relative;
@@ -20,8 +19,6 @@
 
 
 .booking-button {
-  position: absolute;
-  right: -8rem;
   color: #F26419 !important;
 }
 
@@ -31,6 +28,9 @@
 
 .catalogue-index-card {
   border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
   h3,  {
     display:none;
