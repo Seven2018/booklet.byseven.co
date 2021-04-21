@@ -34,7 +34,7 @@ class ModsController < ApplicationController
   end
 
   def create_mod
-    @new_mod = Mod.new(title: params[:new_mod][:title], duration: params[:new_mod][:duration].to_i, document: params[:new_mod][:document], media: params[:new_mod][:media], content: params[:new_mod][:content])
+    @new_mod = Mod.new(title: params[:new_mod][:title], duration: params[:new_mod][:duration].to_i, document: params[:new_mod][:document], media: params[:new_mod][:media], content: params[:new_mod][:content], company_id: current_user.company_id)
     skip_authorization
     @new_workshop = Workshop.find(params[:new_mod][:workshop_id].to_i)
     if @new_mod.save

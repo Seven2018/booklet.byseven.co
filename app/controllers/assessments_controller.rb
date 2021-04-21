@@ -7,12 +7,38 @@ class AssessmentsController < ApplicationController
 
   def create
     @form = Assessment.new(assessment_params)
+    @form.company_id = current_user.company_id
     authorize @form
     @form.media = ''
     @workshop = Workshop.find(params[:workshop_id])
     if @form.save
       WorkshopMod.create(workshop_id: @workshop.id, mod_id: @form.id, position: @workshop.workshop_mods.count + 1)
       redirect_to assessment_path(@form)
+    end
+  end
+
+  def create_ajax
+    skip_authorization
+    @workshop = Workshop.find(params[:new_assessment][:workshop_id])
+    @form = Assessment.new(title: params[:new_assessment][:title], mod_type: 'Assessment', company_id: current_user.company_id)
+    if @form.save
+      WorkshopMod.create(workshop_id: @workshop.id, mod_id: @form.id, position: @workshop.workshop_mods.count + 1)
+      respond_to do |format|
+        format.html {redirect_to new_workshop_path}
+        format.js
+      end
+    end
+  end
+
+  def update_ajax
+    skip_authorization
+    @form = Assessment.find(params[:id])
+    @form.update(title: params[:update_assessment][:title])
+    if @form.save
+      respond_to do |format|
+        format.html {redirect_to new_workshop_path}
+        format.js
+      end
     end
   end
 
@@ -33,6 +59,11 @@ class AssessmentsController < ApplicationController
       format.html {redirect_to assessment_path(@form)}
       format.js
     end
+  end
+
+  def add_questions_ajax
+    raise
+    skip_authorization
   end
 
   def add_answers

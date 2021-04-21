@@ -23,16 +23,16 @@
           <% end %>
         </div>
         <div class="module_first" data-map="who are you?">
-          <h2>Congrats you've created a workshop. You can now populate your workshop with either a module or a quiz.</h2>
+          <h2>Congrats you've created a workshop. You can now populate your workshop with modules.</h2>
           <div class='form-choices'>
             <div class='new-module' id='new-module'>
               <a><i class="far fa-clipboard fa-5x"></i>
               <h1>Module</h1></a>
             </div>
-            <div class='new-module'>
+           <!--  <div class='new-module'>
               <a><i class="fas fa-tasks fa-5x" id='new-quiz'></i>
               <h1>Quiz</h1></a>
-            </div>
+            </div> -->
           </div>
           <div class="controls">
             <a class="prev" id='back-first'>Back</a>
@@ -42,79 +42,45 @@
         <div class="module_second" data-map="your business">
           <h2>Create a new Module</h2>
           <div id='moduleadd'>
-            <div id='allmods' class="hidden">
-              <div class="accordion" onclick='openMod(this);'>Mod title</div>
-              <div class="panel">
-                <%= simple_form_for :new_mod, url: create_mod_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
-                  <%= f.input :title %>
-                  <%= f.hidden_field :workshop_id %>
-                  <%= f.input :duration %>
-                  <%= f.input :document, label: 'Document (url)' %>
-                  <%= f.input :media, label: 'Media (url)' %>
-                  <%= f.label :content %>
-                  <%= f.cktext_area :content %>
-                  <div class='validate-btn-flex'>
-                    <!-- <div class='validate-btn' id='validate' onclick='closeMod(this);'>
-                      <p>Save Module</p>
-                    </div> -->
-                    <%= f.submit 'Save Module', class: 'validate-btn-flex', id: 'validate' %>
-                  </div>
-                <% end %>
-              </div>
+            <div id='allmods'>
             </div>
           </div>
           <div class='mod-btn' id='modbut' onclick='addModule();'>Add a Module</div>
           <div class='pre-existing'>
             <h2>or select a pre-existing one</h2>
-            <%= simple_form_for WorkshopMod.new do |f| %>
+            <%= simple_form_for :link_mod, url: create_ajax_workshop_mods_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
+              <%= f.hidden_field :workshop_id %>
               <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
-                <%= collection_check_boxes(:workshop, :mod_ids, Mod.where(company_id: current_user.company_id), :id, :title) do |b| %>
-                <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-                <%= b.check_box + b.text %>
+                <% workshop_list = Mod.where(company_id: current_user.company_id) %>
+                <%= f.hidden_field :workshop_list, value: workshop_list.ids %>
+                <%= collection_check_boxes(:workshop, :mod_ids, workshop_list, :id, :title) do |b| %>
+                  <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+                  <%= b.check_box + b.text %>
+                  <% end %>
                 <% end %>
+              </div>
+              <div style="display:flex;justify-content:center;margin-top:30px;">
+                <%= button_tag :submit, name: 'workshop_id', value: "#{@workshop.id}", class: 'hidden', id: 'mod_checkbox_save' do %>
+                  <p><b>SAVE</b><i class="fas fa-save"></i></p>
                 <% end %>
               </div>
             <% end %>
           </div>
           <div class="controls">
             <a class="prev" id='back-second'>Back</a>
-            <a class="next" id='next-second'>Next</a>
+            <a class="next" id='next-second' onclick='document.getElementById("mod_checkbox_save").click();'>Next</a>
           </div>
         </div>
         <div class="module_third" data-map="your target">
           <h2>Create a quiz</h2>
           <h5>*Quizzes are in MCQ format</h5>
-          <%= simple_form_for Assessment.new do |f| %>
-            <%= f.input :title %>
-          <% end %>
-          <div id='quizadd'>
-            <div class='quiz-questions' id='quiz'>
-              <%= simple_form_for :questions, method: :post do |f| %>
-                <div class='mod-assessment-questions-form'>
-                  <%= f.input :question, as: :text%>
-                  <div class='mod-assessment-questions-options-mcq'>
-                    <div class='flex-column-between-left'>
-                    </div>
-                    <a href="javascript:;" class='addOption btn btn-edit-white'>Add Response</a>
-                  </div>
-                  <div class="hidden" id="add_options_form">
-                    <%= label_tag 'Response' %>
-                    <%= text_field_tag 'options[]' %>
-                    <%= label_tag 'Correct Answer' %>
-                    <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
-                    <%= hidden_field_tag 'answer[]', false %>
-                  </div>
-                  <div class='mod-assessment-questions-options-rating'>
-                    <%= label_tag 'Min value' %>
-                    <%= text_field_tag 'rating[]' %>
-                    <%= label_tag 'Max value' %>
-                    <%= text_field_tag 'rating[]' %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
+          <div id="new_assessment_container">
+            <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
+              <%= f.hidden_field :workshop_id %>
+              <%= f.input :title %>
+              <%= f.submit 'Save' %>
+            <% end %>
           </div>
-          <div class='add-questions' onclick='addQuestion();'>Add Question</div>
           <div class="controls">
             <a class="prev" id='back-quiz'>Back</a>
             <a class="next" id='next-quiz'>Next</a>
@@ -123,7 +89,7 @@
         <div class="module_fourth" data-map="your added value">
           <h2>Here is an overview of the workshop you created and populated.</h2>
           <div class="mod-content-submit">
-            <div class="mod">
+            <div class="mod" id='workshop_summary'>
               <h4>This is an example of a module title</h4>
               <p>this would be the content of the module or quiz. not sure how </p>
             </div>
@@ -135,15 +101,76 @@
         </div>
         <div class="module_book" data-map="your added value">
           <h2>Congrats, Your workshop has been created! <br>Would you like to book a date for this workshop? </h2>
-          <div class="booking">
-            <a class="prev" id='book-later'>Book Later</a>
-            <a class="next" id='book-now'>Book Now</a>
+          <div id="booking">
+            <%= link_to 'Book Later', catalogue_path, class: 'prev', id: 'book-later' %>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+
+<!-- Module Template -->
+<div id='accordion_template' class='hidden'>
+  <div class="accordion" onclick='openMod(this);'>Mod title</div>
+  <div class="panel">
+    <%= simple_form_for :new_mod, url: create_mod_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
+      <%= f.input :title %>
+      <%= f.hidden_field :workshop_id %>
+      <%= f.input :duration %>
+      <%= f.input :document, label: 'Document (url)' %>
+      <%= f.input :media, label: 'Media (url)' %>
+      <%= f.label :content %>
+      <%= f.cktext_area :content %>
+      <div class='validate-btn-flex'>
+        <!-- <div class='validate-btn' id='validate' onclick='closeMod(this);'>
+          <p>Save Module</p>
+        </div> -->
+        <%= f.submit 'Save Module', class: 'validate-btn-flex', id: 'validate' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Question Template -->
+<%= simple_form_for :questions, method: :post do |f| %>
+  <div class='quiz-questions hidden' id='quiz_template'>
+    <div class='mod-assessment-questions-form'>
+      <%= f.input :question, as: :text%>
+      <div class="answer_add">
+
+      </div>
+      <a href="javascript:;" class='addOption btn btn-edit-white' onclick='addAnswer(this)'>Add Response</a>
+      <!-- Answer Template -->
+      <div class= 'hidden' id="answer_template">
+        <div class='mod-assessment-questions-options-mcq'>
+          <div class='flex-column-between-left'>
+          </div>
+        </div>
+        <div id="add_options_form">
+          <%= label_tag 'Response' %>
+          <%= text_field_tag 'options[]' %>
+          <%= label_tag 'Correct Answer' %>
+          <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
+          <%= hidden_field_tag 'answer[]', false %>
+          <script>
+            $('input[type="checkbox"]').on('change', function(e){
+                  if($(this).prop('checked'))
+                  {
+                      $(this).next().val(true);
+                  } else {
+                      $(this).next().val(false);
+                  }
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 
 <script>
   // quiz //
@@ -162,11 +189,6 @@ $('input[type="checkbox"]').on('change', function(e){
   $('.mod-assessment-questions-options-mcq').show();
   });
 
-  $(".addOption").click(function(){
-    console.log('mescouilles');
-    $(this).parent().children('div').append($("#add_options_form").html());
-  });
-
 
   $('input[type="checkbox"]').on('change', function(e){
         if($(this).prop('checked'))
@@ -177,9 +199,9 @@ $('input[type="checkbox"]').on('change', function(e){
         }
 });
   // pre-existing modules //
-    $('#checkbox3 input:checkbox:checked').parent().toggleClass('checked-box');
+  $('#checkbox3 input:checkbox:checked').parent().toggleClass('checked-box');
   $('#checkbox3 input:checkbox').change(function () {
-  $(this).parent().toggleClass('checked-box');
+    $(this).parent().toggleClass('checked-box');
   });
   // first page //
   modzero = document.querySelector('.module_zero');
@@ -189,9 +211,9 @@ $('input[type="checkbox"]').on('change', function(e){
   backfirst = document.getElementById('back-first');
   modthird = document.querySelector('.module_third');
   modsecond = document.querySelector('.module_second');
-  backquiz = document.getElementById('back-quiz');
-  newquiz = document.getElementById('new-quiz');
-  nextquiz = document.getElementById('next-quiz');
+  // backquiz = document.getElementById('back-quiz');
+  // newquiz = document.getElementById('new-quiz');
+  // nextquiz = document.getElementById('next-quiz');
   backsecond = document.getElementById('back-second');
   nextsecond = document.getElementById('next-second');
   modfourth = document.querySelector('.module_fourth');
@@ -216,8 +238,10 @@ $('input[type="checkbox"]').on('change', function(e){
    newmodule.addEventListener('click', event => {
     modfirst.classList.remove('active');
     id = parseInt(document.getElementById('workshop_id').innerHTML, 10);
-    input = document.getElementById('new_mod_workshop_id');
-    input.value = id;
+    input1 = document.getElementById('new_mod_workshop_id');
+    input2 = document.getElementById('link_mod_workshop_id');
+    input1.value = id;
+    input2.value = id;
     modsecond.classList.add('active');
   })
 
@@ -231,20 +255,23 @@ $('input[type="checkbox"]').on('change', function(e){
     modfirst.classList.add('active');
   })
 
-   newquiz.addEventListener('click', event => {
-    modfirst.classList.remove('active');
-    modthird.classList.add('active');
-  })
+  //  newquiz.addEventListener('click', event => {
+  //   id = parseInt(document.getElementById('workshop_id').innerHTML, 10);
+  //   input3 = document.getElementById('new_assessment_workshop_id');
+  //   input3.value = id;
+  //   modfirst.classList.remove('active');
+  //   modthird.classList.add('active');
+  // })
 
-  backquiz.addEventListener('click', event => {
-    modthird.classList.remove('active');
-    modfirst.classList.add('active');
-  })
+  // backquiz.addEventListener('click', event => {
+  //   modthird.classList.remove('active');
+  //   modfirst.classList.add('active');
+  // })
 
-  nextquiz.addEventListener('click', event => {
-    modthird.classList.remove('active');
-    modfirst.classList.add('active');
-  })
+  // nextquiz.addEventListener('click', event => {
+  //   modthird.classList.remove('active');
+  //   modfirst.classList.add('active');
+  // })
 
 moveon.addEventListener('click', event => {
     modfirst.classList.remove('active');
@@ -259,6 +286,9 @@ backlast.addEventListener('click', event => {
 submit.addEventListener('click', event => {
     modbook.classList.add('active');
     modfourth.classList.remove('active');
+    // id = parseInt(document.getElementById('workshop_id').innerHTML, 10);
+    // input3 = document.getElementById('training_workshop_id');
+    // input3.value = id;
   })
 // open close of each module //
 
@@ -290,9 +320,9 @@ function closeMod (element) {
 // creating new div on each module //
 
 function addModule () {
-  content = document.getElementById('allmods').innerHTML;
+  content = document.getElementById('accordion_template').innerHTML;
   // create a new div element
-  modadd = document.getElementById('moduleadd');
+  modadd = document.getElementById('allmods');
 
   var newDiv = document.createElement("div");
   // and give it some content
@@ -302,14 +332,27 @@ function addModule () {
   // add the newly created element and its content into the DOM
 };
 
+question_count = 0;
+
 // add question //
 function addQuestion () {
-  question = document.getElementById('quiz').innerHTML;
+  question = document.getElementById('quiz_template').innerHTML;
+  console.log(question);
   quizadd = document.getElementById('quizadd');
+  save_button = document.querySelector('.question-save');
   var newQuiz = document.createElement("div");
   // and give it some content
   newQuiz.innerHTML = question;
   // add the text node to the newly created div
- quizadd.appendChild(newQuiz);
+  quizadd.appendChild(newQuiz);
+  save_button.classList.remove('hidden');
 };
+
+function addAnswer (element) {
+  answer = element.parentNode.querySelector('#answer_template').innerHTML;
+  answeradd = element.parentNode.querySelector('.answer_add');
+  var newAnswer = document.createElement("div");
+  newAnswer.innerHTML = answer;
+  answeradd.appendChild(newAnswer);
+}
 </script>

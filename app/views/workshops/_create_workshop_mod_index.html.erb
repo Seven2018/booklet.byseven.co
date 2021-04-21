@@ -1,40 +1,18 @@
-<h2>Create a new Module</h2>
-<div id='moduleadd'>
-  <div id='allmods'>
-    <%= @new_workshop.mods.each do |mod| %>
-      <div class="accordion" onclick='openMod(this);'><%= mod.title %></div>
-      <div class="panel">
-        <%= simple_form_for :new_mod, url: update_mod_path(@new_workshop), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-          <%= f.input :title, value: mod.title %>
-          <%= f.hidden_field :workshop_id, value: @new_workshop.id %>
-          <%= f.input :duration, value: mod.duration %>
-          <%= f.input :document, label: 'Document (url)', value: mod.document %>
-          <%= f.input :media, label: 'Media (url)', value: mod.media %>
-          <div class='validate-btn-flex'>
-            <!-- <div class='validate-btn' id='validate' onclick='closeMod(this);'>
-              <p>Save Module</p>
-            </div> -->
-            <%= f.submit 'Save Module', class: 'validate-btn-flex', id: 'validate' %>
-          </div>
-        <% end %>
+<% @new_workshop.mods.each do |mod| %>
+  <div class="accordion" onclick='openMod(this);'><%= mod.title %></div>
+  <div class="panel">
+    <%= simple_form_for :new_mod, url: update_mod_path(@new_workshop), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+      <%= f.input :title, value: mod.title %>
+      <%= f.hidden_field :workshop_id, value: @new_workshop.id %>
+      <%= f.input :duration, value: mod.duration %>
+      <%= f.input :document, label: 'Document (url)', value: mod.document %>
+      <%= f.input :media, label: 'Media (url)', value: mod.media %>
+      <div class='validate-btn-flex'>
+        <!-- <div class='validate-btn' id='validate' onclick='closeMod(this);'>
+          <p>Save Module</p>
+        </div> -->
+        <%= f.submit 'Save Module', class: 'validate-btn-flex', id: 'validate' %>
       </div>
     <% end %>
   </div>
-</div>
-<div class='mod-btn' id='modbut' onclick='addModule();'>Add a Module</div>
-  <div class='pre-existing'>
-    <h2>or select a pre-existing one</h2>
-    <%= simple_form_for WorkshopMod.new do |f| %>
-      <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
-        <%= collection_check_boxes(:workshop, :mod_ids, Mod.where(company_id: current_user.company_id), :id, :title) do |b| %>
-        <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-        <%= b.check_box + b.text %>
-        <% end %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <div class="controls">
-    <a class="prev" id='back-second'>Back</a>
-    <a class="next" id='next-second'>Next</a>
-  </div>
+<% end %>

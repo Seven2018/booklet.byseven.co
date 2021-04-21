@@ -54,11 +54,19 @@ class TrainingWorkshopsController < ApplicationController
   end
 
   def book_training_workshop
-    workshop = Workshop.find(params[:workshop_id])
-    @training_workshop = TrainingWorkshop.new(workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
-    @training_workshop.workshop_id = params[:workshop_id]
-    authorize @training_workshop
-    @training_workshop.update(training_workshop_params)
+    if params[:training_workshop].present? && params[:training_workshop][:id].present?
+      workshop = Workshop.find(params[:training_workshop][:id].to_i)
+      @training_workshop = TrainingWorkshop.new(workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
+      @training_workshop.workshop_id = params[:training_workshop][:id].to_i
+      authorize @training_workshop
+      @training_workshop.update(training_workshop_params)
+    else
+      workshop = Workshop.find(params[:workshop_id])
+      @training_workshop = TrainingWorkshop.new(workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
+      @training_workshop.workshop_id = params[:workshop_id]
+      authorize @training_workshop
+      @training_workshop.update(training_workshop_params)
+    end
     if @training_workshop.end_date_after_start_date && @training_workshop.save
       redirect_to training_workshop_path(@training_workshop)
     else

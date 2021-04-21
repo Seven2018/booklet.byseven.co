@@ -29,6 +29,20 @@ class WorkshopModsController < ApplicationController
     redirect_to workshop_path(@workshop)
   end
 
+  def create_ajax
+    @workshop = Workshop.find(params[:link_mod][:workshop_id])
+    skip_authorization
+    mods_list = params[:workshop][:mod_ids].reject{|x|x.empty?}.map{|x| x.to_i}
+    mods_list.each do |mod_id|
+      WorkshopMod.create(workshop_id: @workshop.id, mod_id: mod_id)
+    end
+    WorkshopMod.where(workshop_id: @workshop.id, mod_id: params[:link_mod][:workshop_list].split(' ').map{|c|c.to_i} - mods_list).each{|x| x.destroy}
+    respond_to do |format|
+      format.html {redirect_to new_workshop_path}
+      format.js
+    end
+  end
+
   def move_up
     @workshop_mod = WorkshopMod.find(params[:id])
     authorize @workshop_mod
