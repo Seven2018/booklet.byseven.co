@@ -4,4 +4,5 @@ class Tag < ApplicationRecord
   has_many :tag_workshops, dependent: :destroy
   has_many :training_workshops, through: :tag_workshops
   belongs_to :company
+  belongs_to :tag_category
 end

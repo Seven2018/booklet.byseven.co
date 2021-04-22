@@ -78,16 +78,16 @@
               <p style='color: #F26419'><%= program.categories.first&.title %></p>
             <% end %>
 
-          <!-- Modal -->
-          <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-            <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-              <%= render 'trainings/new', training_program: program %>
-            </div>
-          </div>
         </div>
           <a class='booking-button' data-toggle='modal' data-target='#transformTrainingProgram'><button class='booking-btn'>Book</button></a>
 
       </div>
     <% end %>
+    <!-- Modal -->
+    <div class='modal fade' id='transformTrainingProgram' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+      <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+        <%= render 'trainings/new', training_program: program %>
+      </div>
+    </div>
   <% end %>
 </div>

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :users, only: %i[new create show update destroy]
   post 'users/import', to: 'users#import', as: 'import_users'
   resources :tags, only: %i[create show update destroy]
-  resources :tag_categories, only: %i[create]
+  resources :tag_categories, only: %i[create destroy]
   resources :user_tags, only: %i[create]
   resources :companies
   resources :categories

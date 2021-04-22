@@ -58,7 +58,7 @@
           <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-white' disabled>Manage Users</button></a>
         <% elsif ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
           <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-white'>Manage Users</button></a>
-          <a data-toggle='modal' data-target='#confirmPresence'><button class='btn btn-invite-users'>Confirm Presence</button></a>
+          <!-- <a data-toggle='modal' data-target='#confirmPresence'><button class='btn btn-invite-users'>Confirm Presence</button></a> -->
         <% end %>
         <ul id='workshop-booked-attendee-list'>
           <% ind = 0 %>
@@ -112,8 +112,8 @@
   </div>
 </div>
 
-<div class='modal fade' id='confirmPresence' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<!-- <div class='modal fade' id='confirmPresence' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-    <%= render 'attendees/confirm_presence', training_workshop: @training_workshop %>
+    <%# render 'attendees/confirm_presence', training_workshop: @training_workshop %>
   </div>
-</div>
+</div> -->
