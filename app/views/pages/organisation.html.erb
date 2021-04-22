@@ -1,10 +1,14 @@
 <div id="index-controls" class='flex-row-between-centered'>
-  <h1>Organisation</h1>
+  <h1>Employees</h1>
 </div>
 
 <div class='organization-page'>
   <div class='filter-dropdown-form'>
-    <h3 class="category-title"><b>Filter</b></h3>
+    <div class="hidden-form">
+    <div class="fil">
+      <h3 class="category-title"><b>Filter</b></h3>
+      <i class="fas fa-times" id='close-btn'></i>
+    </div>
     <% i = 1 %>
     <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
       <% job_checked = params[:filter][:job] if params[:filter].present? %>
@@ -19,6 +23,7 @@
         <!-- <a class='final-filter-clear'>Clear All</a> -->
         <%= link_to 'Clear All', organisation_path, class: 'final-filter-clear' %>
       </div>
+    </div>
   </div>
   <div class='organisation-users'>
     <div class='staff-members'>
@@ -141,13 +146,21 @@
 
 <script>
 filter_btn = document.querySelector('.mobile-filter-btn')
+close_btn = document.querySelector('#close-btn')
 bookletcontainer = document.getElementById('booklet-container')
 filter_slider = document.querySelector('.filter-dropdown-form')
 filter_btn.addEventListener('click', (event) => {
-  filter_slider.style.width = "375px";
-  filter_slider.style.top = "130px";
-  filter_slider.style.zindex = "100";
-  filter_slider.style.background = "white";
-  filter_slider.style.padding = "20px";
+    filter_slider.style.width = "375px";
+    filter_slider.style.zindex = "100";
+    filter_slider.style.background = "white";
   })
+
+close_btn.addEventListener('click', (event) => {
+    filter_slider.style.width = "0px";
+    filter_slider.style.zindex = "100";
+    filter_slider.style.background = "transparent";
+    filter_slider.style.padding = "0px";
+  })
+
+
 </script>
