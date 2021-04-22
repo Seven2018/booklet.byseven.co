@@ -1,0 +1,19 @@
+<h2>or select a pre-existing one</h2>
+<%= simple_form_for :link_mod, url: create_ajax_workshop_mods_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
+  <%= f.hidden_field :workshop_id, value: @workshop.id %>
+  <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
+    <% checked = Mod.joins(:workshop_mods.where(workshop_mods: {workshop_id: @workshop.id}).map(&:id) %>
+    <% workshop_list = Mod.where(company_id: current_user.company_id) %>
+    <%= f.hidden_field :workshop_list, value: workshop_list.ids %>
+    <%= collection_check_boxes(:workshop, :mod_ids, workshop_list, :id, :title), checked: checked do |b| %>
+      <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+      <%= b.check_box + b.text %>
+      <% end %>
+    <% end %>
+  </div>
+  <div style="display:flex;justify-content:center;margin-top:30px;">
+    <%= button_tag :submit, name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green ' do %>
+      <p><b>SAVE</b><i class="fas fa-save"></i></p>
+    <% end %>
+  </div>
+<% end %>

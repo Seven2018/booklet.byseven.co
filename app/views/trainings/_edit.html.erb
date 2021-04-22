@@ -11,7 +11,7 @@
       <%= f.input :participant_number, input_html: {value: training.participant_number} %>
       <p><%= "Select Tags (optional)" %></p>
       <div id='checkbox2' style=" display:flex;justify-content:space-between;flex-direction:column;">
-        <%= collection_check_boxes(:training_workshop, :Tag_ids, Tag.where(company_id: current_user.company_id), :id, :Tag_name) do |b| %>
+        <%= collection_check_boxes(:training_workshop, :tag_ids, Tag.where(company_id: current_user.company_id), :id, :tag_name) do |b| %>
           <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
             <%= b.check_box + b.text %>
           <% end %>

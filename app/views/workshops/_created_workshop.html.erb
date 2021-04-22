@@ -6,8 +6,8 @@
   <%= f.label :description %>
   <%= f.rich_text_area :description, input_html: {value: @new_workshop.description } %>
   <p class="hidden" id='workshop_id'><%= @new_workshop.id %></p>
-<div class="controls">
-  <a class="prev disabled" id='back-zero'>Back</a>
-  <%= button_tag 'Next', type: 'submit', class: 'next', id: 'next-zero'%>
-</div>
+  <div class="controls">
+    <a class="prev disabled" id='back-zero'>Back</a>
+    <%= button_tag 'Next', type: 'submit', class: 'next', id: 'next-zero-bis', :onclick => "document.querySelector('.module_zero').classList.remove('active');document.querySelector('.module_first').classList.add('active');"%>
+  </div>
 <% end %>

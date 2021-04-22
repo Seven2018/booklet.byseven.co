@@ -37,6 +37,9 @@ Rails.application.routes.draw do
   post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
   # get 'assessments/:id/view_mode', to: 'assessments#view_mode', as: 'view_mode_assessment'
   post 'assessments/:id/add_answers', to: 'assessments#add_answers', as: 'add_answers_assessment'
+  post 'assessments/create_ajax', to: 'assessments#create_ajax', as: 'create_ajax_assessment'
+  patch 'assessments/:id/update_ajax', to: 'assessments#update_ajax', as: 'update_ajax_assessment'
+  post 'assessments/:id/add_questions_ajax', to: 'assessments#add_questions_ajax', as: 'add_questions_ajax_assessment'
 
   get 'workshops-filter', to: 'workshops#filter', as: 'filter_workshops'
   get 'workshops/:id/viewmode', to: 'workshops#view_mode', as: 'view_workshop'
@@ -46,6 +49,7 @@ Rails.application.routes.draw do
   resources :workshop_mods, only: %i[create destroy]
   get 'workshop_mods/:id/move_up', to: 'workshop_mods#move_up', as: 'move_up_workshop_mod'
   get 'workshop_mods/:id/move_down', to: 'workshop_mods#move_down', as: 'move_down_workshop_mod'
+  post 'workshop_mods/create_ajax', to: 'workshop_mods#create_ajax', as: 'create_ajax_workshop_mods'
   resources :training_workshop_mods, only: %i[create destroy]
   resources :attendees, only: %i[create update destroy]
   get 'attendee-create-all', to: 'attendees#create_all', as: 'create_all_attendees'
