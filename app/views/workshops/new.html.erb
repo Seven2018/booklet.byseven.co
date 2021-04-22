@@ -13,7 +13,7 @@
           <h2>Create a new workshop</h2>
           <%= simple_form_for :new_workshop, url: create_workshop_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
             <%= f.input :title, placeholder:'Upselling' %>
-            <%= f.input :categories, collection: Category.where(company_id:current_user.company_id), as: :check_boxes %>
+            <%# f.input :categories, collection: Category.where(company_id:current_user.company_id), as: :check_boxes %>
             <%= f.label :description %>
             <%= f.rich_text_area :description %>
           <div class="controls">
@@ -90,8 +90,7 @@
           <h2>Here is an overview of the workshop you created and populated.</h2>
           <div class="mod-content-submit">
             <div class="mod" id='workshop_summary'>
-              <h4>This is an example of a module title</h4>
-              <p>this would be the content of the module or quiz. not sure how </p>
+              <p>error</p>
             </div>
           </div>
           <div class="controls">
@@ -103,7 +102,6 @@
           <h2>Congrats, Your workshop has been created! <br>Would you like to book a date for this workshop? </h2>
           <div id="booking">
             <%= link_to 'Book Later', catalogue_path, class: 'prev', id: 'book-later' %>
-
           </div>
         </div>
       </div>
@@ -114,7 +112,7 @@
 
 <!-- Module Template -->
 <div id='accordion_template' class='hidden'>
-  <div class="accordion" onclick='openMod(this);'>Mod title</div>
+  <div class="accordion" onclick='openMod(this);'>Title of Module</div>
   <div class="panel">
     <%= simple_form_for :new_mod, url: create_mod_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
       <%= f.input :title %>
