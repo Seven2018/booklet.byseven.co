@@ -33,7 +33,8 @@
       </div>
     </div>
     <div class="workshop-show-card-footer  centered-item">
-      <a data-toggle='modal' data-target='#transformTrainingWorkshop' class='booking-button'><button class='booking-btn btn-last'>Book</button></a>
+      <!-- <a data-toggle='modal' data-target='#transformTrainingWorkshop' class='booking-button'><button class='booking-btn btn-last'>Book</button></a> -->
+      <%= link_to 'Book', book_workshop_path(@workshop), class: 'booking-btn btn-last' %>
     </div>
   </div>
   <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>

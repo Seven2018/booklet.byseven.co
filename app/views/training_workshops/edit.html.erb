@@ -1,17 +1,16 @@
 <div class="booking-containter">
   <div class="booktimes">
-    <h2><b>Book Date for <%= @workshop.title %></b></h2>
-    <%= simple_form_for :training_workshop, url: book_training_workshop_path(id: @workshop.id), method: :post, remote: true, input_html: {multipart: true} do |f| %>
-      <h4>1. Select Date and Time</h4>
-      <div class="mod-date">
-        <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
-        <div class="start-time">
-        <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
-        <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
-        </div>
+    <h2><b>Book Date for <%= @training_workshop.title %></b></h2>
+    <%= simple_form_for :training_workshop, url: book_training_workshop_path do |f| %>
+    <h4>1. Select Date and Time</h4>
+    <div class="mod-date">
+      <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
+      <div class="start-time">
+      <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
+      <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
       </div>
-      <%= f.submit 'Save Date', id: 'submit-date' %>
-    <% end %>
+    </div>
+  <% end %>
   </div>
   <h4>2. Select Participants</h4>
   <div class='organization-page'>

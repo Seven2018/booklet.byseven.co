@@ -8,8 +8,8 @@
     <% i = 1 %>
     <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
       <% job_checked = params[:filter][:job] if params[:filter].present? %>
-          <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
-      <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: job_checked%></div>
+      <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
+      <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: job_checked %></div>
       <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
         <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: tag_checked %></div>
       <% end %>

@@ -65,7 +65,10 @@
               <p style='color: #F26419'><%= workshop&.categories.first&.title %></p>
             <% end %>
         </div>
-        <div class="centerbtn"><a class='booking-button' data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='booking-btn btn-last'>Book</button></a></div>
+        <div class="centerbtn">
+          <!-- <a class='booking-button' data-toggle='modal' data-target='#transformTrainingWorkshop<%= workshop.id %>'><button class='booking-btn btn-last'>Book</button></a> -->
+          <%= link_to 'Book', book_workshop_path(workshop), class: 'booking-btn btn-last' %>
+        </div>
       </div>
     <% end %>
   <% end  %>

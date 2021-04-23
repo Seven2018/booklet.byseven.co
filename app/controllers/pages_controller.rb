@@ -10,7 +10,7 @@ class PagesController < ApplicationController
     @my_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Registered'}).where.not('date < ?', Date.today)
     if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
       @available_workshops = TrainingWorkshop.joins(:workshop).where(training_id: nil, workshops: {company_id: current_user.company_id}).where.not(date: nil).where.not('date < ?', Date.today) - @my_workshops
-      @available_trainings = Training.where(company_id: current_user.company_id).sort_by(&:first_date) - @my_trainings
+      @available_trainings = Training.where(company_id: current_user.company_id) - @my_trainings
     else
       @available_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).where.not('date < ?', Date.today)
       @available_trainings = Training.includes(:training_workshops).joins(training_workshops: :attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).where.not('date < ?', Date.today).uniq
