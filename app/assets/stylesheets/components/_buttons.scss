@@ -243,12 +243,14 @@ button {
   transition: all 0.1s;
   outline: none !important;
   margin-right: 0.5rem;
-  color: #F26419;
+  a {
+    color: #F26419;
+  }
   border: 2px solid #F26419;
 }
 
   .booking-btn:hover {
-    color: white !important;
+    a {color: white !important;}
     background-color: #F26419;
   }
 

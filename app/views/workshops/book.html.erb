@@ -1,59 +1,88 @@
 <div class="booking-containter">
-  <div class="booktimes">
-    <h2><b>Book Date for <%= @workshop.title %></b></h2>
-    <%= simple_form_for :training_workshop, url: book_training_workshop_path do |f| %>
-    <h4>1. Select Date and Time</h4>
-    <div class="mod-date">
-      <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
-      <div class="start-time">
-      <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
-      <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
-      </div>
-    </div>
-  <% end %>
-  </div>
-  <h4>2. Select Participants</h4>
-  <div class='organization-page'>
-    <div class='filter-dropdown-form'>
-      <h3 class="category-title"><b>Filter</b></h3>
-      <% i = 1 %>
-      <%= simple_form_for :filter, url: book_workshop_path(@workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
-        <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
-        <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
-          <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
-        <% end %>
-        <div class=filter-text>
-          <%= f.submit 'Filter', class: 'final-filter-btn' %>
-          <!-- <button class='final-filter-btn'>Filter</button> -->
-      <% end %>
-          <a class='final-filter-clear'>Clear All</a>
+      <div class="booktimes">
+        <h2><b>Book Date for <%= @workshop.title %></b></h2>
+        <%= simple_form_for :training_workshop, url: book_training_workshop_path do |f| %>
+        <h4>1. Select Date and Time</h4>
+        <div class="mod-date">
+          <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
+          <div class="start-time">
+          <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
+          <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
+          </div>
         </div>
-    </div>
-    <div class='organization-users'>
-      <div class='staff-members'>
-        <h3 class="category-title"><b>Staff Members</b></h3>
+      <% end %>
       </div>
-
-      <% User.where(company_id: current_user.company_id).each do |user| %>
-          <div class='user-index-card'>
-            <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-            <div class="user-index-infos flex-row-between-centered">
-              <div class="user-index-info">
-                <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.fullname %></p>
-              </div>
-              <div class="user-index-info">
-                <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
-              </div>
-                 <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="" id="" checked>
-                    <span class="custom-checkbox"><i class="icon-check"></i></span>
-                  </label>
-                </div>
+      <h4>2. Select Participants</h4>
+      <div class='organization-page'>
+        <div class='filter-dropdown-form'>
+          <div class="hidden-form">
+          <div class="fil">
+            <h3 class="category-title"><b>Filter</b></h3>
+            <i class="fas fa-times" id='close-btn'></i>
+          </div>
+          <% i = 1 %>
+          <%= simple_form_for :filter, url: book_workshop_path(@workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
+            <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
+            <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
+              <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
+            <% end %>
+            <div class=filter-text>
+              <%= f.submit 'Filter', class: 'final-filter-btn' %>
+              <!-- <button class='final-filter-btn'>Filter</button> -->
+          <% end %>
+              <a class='fi</div>nal-filter-clear'>Clear All</a>
             </div>
           </div>
-      <% end %>
-    </div>
-  </div>
-  <div class="booking"><a class="next" id='book-now'>Book Now</a></div>
+        </div>
+        <div class='organisation-users'>
+          <div class='staff-members'>
+            <h3 class="category-title"><b>Staff Members</b></h3>
+            <div class='mobile-btns'>
+               <div class="mobile-filter-btn" id="filter-book">
+                <i class="fas fa-sliders-h fa-2x"></i>
+              </div>
+            </div>
+          </div>
+
+          <% User.where(company_id: current_user.company_id).each do |user| %>
+              <div class='user-index-card'>
+                <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+                <div class="user-index-infos flex-row-between-centered">
+                  <div class="user-index-info">
+                    <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.fullname %></p>
+                  </div>
+                  <div class="user-index-info">
+                    <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+                  </div>
+                     <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="" id="" checked>
+                        <span class="custom-checkbox"><i class="icon-check"></i></span>
+                      </label>
+                    </div>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="booking"><a class="next" id='book-now'>Book Now</a></div>
+
 </div>
+
+<script>
+filter_btn = document.querySelector('.mobile-filter-btn')
+close_btn = document.querySelector('#close-btn')
+bookletcontainer = document.getElementById('booklet-container')
+filter_slider = document.querySelector('.filter-dropdown-form')
+filter_btn.addEventListener('click', (event) => {
+    filter_slider.style.width = "375px";
+    filter_slider.style.zindex = "100";
+    filter_slider.style.background = "white";
+  })
+
+close_btn.addEventListener('click', (event) => {
+    filter_slider.style.width = "0px";
+    filter_slider.style.zindex = "100";
+    filter_slider.style.background = "transparent";
+  })
+</script>
