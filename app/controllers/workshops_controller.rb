@@ -68,9 +68,9 @@ class WorkshopsController < ApplicationController
     @new_workshop = Workshop.new(title: params[:new_workshop][:title], description: params[:new_workshop][:description], company_id: current_user.company_id, author_id: current_user.id)
     skip_authorization
     if @new_workshop.save
-      params[:new_workshop][:categories].reject!(&:empty?).each do |category_id|
-        WorkshopCategory.create(workshop_id: @new_workshop.id, category_id: category_id.to_i)
-      end
+      # params[:new_workshop][:categories].reject!(&:empty?).each do |category_id|
+      #   WorkshopCategory.create(workshop_id: @new_workshop.id, category_id: category_id.to_i)
+      # end
     end
     respond_to do |format|
       format.html {redirect_to new_workshop_path}
@@ -127,6 +127,20 @@ class WorkshopsController < ApplicationController
     @workshop = Workshop.find(params[:id])
     skip_authorization
     @training_workshop = TrainingWorkshop.new
+    if params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
+      tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
+      if params[:filter][:job] != [""]
+        if tags.present?
+          @users = (User.joins(:user_tags).where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?), user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+        else
+          @users = (User.where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?)))
+        end
+      else
+        @users = (User.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+      end
+    else
+      @users = User.where(company_id: current_user.company_id)
+    end
   end
 
   private

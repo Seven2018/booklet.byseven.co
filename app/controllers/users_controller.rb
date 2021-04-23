@@ -37,11 +37,15 @@ class UsersController < ApplicationController
     @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
     @user.company_id = current_user.company_id
     authorize @user
+    tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
     if @user.save
       raw, token = Devise.token_generator.generate(User, :reset_password_token)
       @user.reset_password_token = token
       @user.reset_password_sent_at = Time.now.utc
       @user.save(validate: false)
+      tags.each do |tag|
+        UserTag.create(user_id: @user.id, tag_id: tag)
+      end
       # @user.send_reset_password_instructions
       # UserMailer.account_created(@user, raw).deliver
       redirect_to user_path(@user)
@@ -57,7 +61,13 @@ class UsersController < ApplicationController
   def update
     authorize @user
     @user.update(user_params)
+    tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
+    del_tags = Tag.where(company_id: current_user.id).map(&:id) - tags
     if @user.save
+      tags.each do |tag|
+        UserTag.create(user_id: @user.id, tag_id: tag)
+        UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
+      end
       redirect_to user_path(@user)
     else
       render "_edit"

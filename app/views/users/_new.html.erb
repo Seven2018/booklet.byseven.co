@@ -27,6 +27,13 @@
                               end_year: Date.today.year - 12 %>
       <%= f.input :hire_date, as: :date, label: 'Hire date', start_year: Date.today.year - 70,
                               end_year: Date.today.year %>
+      <%= f.input :picture, label: 'Photo URL' %>
+      <div class="new_user_tags">
+        <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
+          <p><%= category.name %></p>
+          <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes %>
+        <% end %>
+      </div>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
         <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
           <i class="fas fa-save"></i>
