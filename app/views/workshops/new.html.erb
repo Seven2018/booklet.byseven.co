@@ -26,17 +26,17 @@
           <h2>Congrats you've created a workshop. You can now populate your workshop with modules.</h2>
           <div class='form-choices'>
             <div class='new-module' id='new-module'>
-              <a><i class="far fa-clipboard fa-5x"></i>
+              <a><i class="fas fa-clipboard-check fa-5x"></i>
               <h1>Module</h1></a>
             </div>
-           <!--  <div class='new-module'>
-              <a><i class="fas fa-tasks fa-5x" id='new-quiz'></i>
-              <h1>Quiz</h1></a>
-            </div> -->
+            <div class='new-module'>
+              <a><i class="far fa-clipboard fa-5x" id='new-quiz'></i>
+              <h1>No Module</h1></a>
+            </div>
           </div>
           <div class="controls">
             <a class="prev" id='back-first'>Back</a>
-            <a class="next" id='move-on'>Move on</a>
+            <a class="next" id='move-on'>Next</a>
           </div>
         </div>
         <div class="module_second" data-map="your business">
@@ -71,7 +71,7 @@
             <a class="next" id='next-second' onclick='document.getElementById("mod_checkbox_save").click();'>Next</a>
           </div>
         </div>
-        <div class="module_third" data-map="your target">
+<!--         <div class="module_third" data-map="your target">
           <h2>Create a quiz</h2>
           <h5>*Quizzes are in MCQ format</h5>
           <div id="new_assessment_container">
@@ -85,12 +85,12 @@
             <a class="prev" id='back-quiz'>Back</a>
             <a class="next" id='next-quiz'>Next</a>
           </div>
-        </div>
+        </div> -->
         <div class="module_fourth" data-map="your added value">
           <h2>Here is an overview of the workshop you created and populated.</h2>
           <div class="mod-content-submit">
             <div class="mod" id='workshop_summary'>
-              <p>error</p>
+              <p>You chose not to add modules</p>
             </div>
           </div>
           <div class="controls">
@@ -210,7 +210,7 @@ $('input[type="checkbox"]').on('change', function(e){
   modthird = document.querySelector('.module_third');
   modsecond = document.querySelector('.module_second');
   // backquiz = document.getElementById('back-quiz');
-  // newquiz = document.getElementById('new-quiz');
+  newquiz = document.getElementById('new-quiz');
   // nextquiz = document.getElementById('next-quiz');
   backsecond = document.getElementById('back-second');
   nextsecond = document.getElementById('next-second');
@@ -253,13 +253,10 @@ $('input[type="checkbox"]').on('change', function(e){
     modfirst.classList.add('active');
   })
 
-  //  newquiz.addEventListener('click', event => {
-  //   id = parseInt(document.getElementById('workshop_id').innerHTML, 10);
-  //   input3 = document.getElementById('new_assessment_workshop_id');
-  //   input3.value = id;
-  //   modfirst.classList.remove('active');
-  //   modthird.classList.add('active');
-  // })
+   newquiz.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    modbook.classList.add('active');
+  })
 
   // backquiz.addEventListener('click', event => {
   //   modthird.classList.remove('active');
