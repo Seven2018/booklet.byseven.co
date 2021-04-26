@@ -5,11 +5,19 @@
   }
 }
 
+#new_workshop_description{
+  font-size: 1.6rem !important;
+}
+
 #assessment_title {
   width: 130px;
   @include from-medium {
     width: auto;
   }
+}
+
+label {
+  font-size: 1.2rem;
 }
 
 .workshop-index-image {
@@ -195,6 +203,9 @@
   }
 }
 
+.trix-content {
+  font-size: 1.4rem !important;
+}
 
 #container-workshop-booked {
   margin-top: 20px;
@@ -390,6 +401,7 @@ body {
   border-radius: 10px;
   width: 200px;
   height: 200px;
+  margin: 0px;
   background-color: #F8D9C8;
   color: #F26419;
   display: flex;
@@ -398,6 +410,9 @@ body {
   align-items: center;
   text-align: center;
   border: 3px solid #F8D9C8;
+  @include from-medium {
+    margin: 10px;
+  }
 }
 
 .new-module:hover {
@@ -422,7 +437,7 @@ body {
   height: 40px;
   padding: 0 10px;
   margin: .5vw;
-  background: #8FA078;
+  background: #F26419;
   display: flex;
   justify-content: center;
   align-items: center;
