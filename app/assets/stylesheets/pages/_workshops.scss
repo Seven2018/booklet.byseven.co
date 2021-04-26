@@ -401,6 +401,7 @@ body {
   border-radius: 10px;
   width: 200px;
   height: 200px;
+  margin: 0px;
   background-color: #F8D9C8;
   color: #F26419;
   display: flex;
@@ -409,6 +410,9 @@ body {
   align-items: center;
   text-align: center;
   border: 3px solid #F8D9C8;
+  @include from-medium {
+    margin: 10px;
+  }
 }
 
 .new-module:hover {
