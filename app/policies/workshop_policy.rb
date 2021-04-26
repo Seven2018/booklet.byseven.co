@@ -33,6 +33,10 @@ class WorkshopPolicy < ApplicationPolicy
     true
   end
 
+  def book?
+    check_access_hr
+  end
+
   private
 
   def check_access

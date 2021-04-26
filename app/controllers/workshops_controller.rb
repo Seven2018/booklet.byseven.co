@@ -125,9 +125,25 @@ class WorkshopsController < ApplicationController
 
   def book
     @workshop = Workshop.find(params[:id])
-    skip_authorization
+    authorize @workshop
+    if params[:commit] == 'Clear'
+      redirect_to url_for(filter: params[:filter].except(:tag, :job).permit!.merge(only_path: true))
+    elsif params[:commit] == 'Book Now'
+      params.permit!
+      participants = params[:participant][:user_ids].reject{|x| x.empty?}.map{|c| c.to_i}
+      workshop = Workshop.find(params[:id].to_i)
+      @training_workshop = TrainingWorkshop.create(workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
+      @training_workshop.workshop_id = workshop.id
+      if @training_workshop.save
+        @training_workshop.update(date: Date.strptime(params[:filter][:date], '%Y-%m-%d'), starts_at: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M'))
+        participants.each do |participant|
+          Attendee.create(training_workshop_id: @training_workshop.id, user_id: participant)
+        end
+        redirect_to training_workshop_path(@training_workshop)
+      end
+    end
     @training_workshop = TrainingWorkshop.new
-    if params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
+    if params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != []) && params[:filter][:tag].present?
       tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
       if params[:filter][:job] != [""]
         if tags.present?
@@ -136,7 +152,7 @@ class WorkshopsController < ApplicationController
           @users = (User.where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?)))
         end
       else
-        @users = (User.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+        @users = (User.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: tags}).uniq)
       end
     else
       @users = User.where(company_id: current_user.company_id)
