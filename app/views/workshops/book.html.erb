@@ -37,8 +37,6 @@
         <div class=filter-text>
           <%= f.submit 'Filter', class: 'final-filter-btn' %>
           <%= f.submit 'Clear', class: 'final-filter-clear' %>
-          <!-- <button class='final-filter-btn'>Filter</button> -->
-
         </div>
       </div>
     </div>
@@ -79,8 +77,10 @@
         <% end %>
     </div>
   </div>
-  <%= f.submit 'Book Now', class: 'next', id: 'book-now' %>
-  <% end %>
+  <div class="centered-item">
+    <%= f.submit 'Book Now', class: 'workshop-book-now'%>
+    <% end %>
+  </div>
 </div>
 
 <script>
