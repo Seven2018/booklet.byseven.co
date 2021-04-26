@@ -1,5 +1,5 @@
 class TrainingWorkshopsController < ApplicationController
-  before_action :set_training_workshop, only: [:show, :view_mode, :update, :destroy]
+  before_action :set_training_workshop, only: [:show, :view_mode, :update, :update_book, :destroy]
   helper VideoHelper
 
   def show
@@ -50,33 +50,40 @@ class TrainingWorkshopsController < ApplicationController
     new_training_workshop = TrainingWorkshop.new(@training_workshop.attributes.except("id", "created_at", "updated_at"))
     new_training_workshop.title = params[:copy][:title]
     new_training_workshop.date = params[:copy][:date]
-    redirect_to training_path(@training_workshop.training) if new_training_workshop.save
+    redirect_to training_path(@training_workshop.tpararaining) if new_training_workshop.save
   end
 
-  def book_training_workshop
-    workshop = Workshop.find(params[:id].to_i)
-    @training_workshop = TrainingWorkshop.create(workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
-    @training_workshop.workshop_id = workshop.id
-    skip_authorization
-    if @training_workshop.save
-      @training_workshop.update(training_workshop_params)
-      respond_to do |format|
-        format.html {redirect_to training_workshop_path(@training_workshop)}
-        format.js
+  def update_book
+    authorize @training_workshop
+    if params[:commit] == 'Clear'
+      redirect_to url_for(clear: true)
+    elsif params[:commit] == 'Update'
+      params.permit!
+      participants = params[:participant][:user_ids].reject{|x| x.empty?}.map{|c| c.to_i}
+      @training_workshop.update(date: Date.strptime(params[:filter][:date], '%Y-%m-%d'), starts_at: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M'))
+      if @training_workshop.save
+        Attendee.where(training_workshop_id: @training_workshop.id).where.not(user_id: participants).map{|x| x.destroy}
+        participants.each do |participant|
+          Attendee.create(training_workshop_id: @training_workshop.id, user_id: participant)
+        end
+        redirect_to training_workshop_path(@training_workshop)
       end
     end
-  end
-
-  def update_book_training_workshop
-    skip_authorization
-    @training_workshop = TrainingWorkshop.find(params[:id])
-    @training_workshop.update(training_workshop_params)
-    if @training_workshop.save
-      @training_workshop.update(training_workshop_params)
-      respond_to do |format|
-        format.html {redirect_to training_workshop_path(@training_workshop)}
-        format.js
+    if params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != []) && params[:filter][:tag].present?
+      tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
+      if params[:filter][:job] != [""]
+        if tags.present?
+          @users = (User.joins(:user_tags).where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?), user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+        else
+          @users = (User.where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?)))
+        end
+      else
+        @users = (User.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: tags}).uniq)
       end
+    elsif params[:clear].present?
+      @users = User.where(company_id: current_user.company_id)
+    else
+      @users = User.joins(:attendees).where(attendees: {training_workshop_id: @training_workshop.id})
     end
   end
 

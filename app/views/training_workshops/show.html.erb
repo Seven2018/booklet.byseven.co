@@ -5,7 +5,9 @@
       <i class="far fa-eye"></i>
     <% end %>
     <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
-      <a data-toggle='modal' data-target='#editTrainingWorkshop'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
+      <%= link_to update_book_training_workshop_path(@training_workshop) do %>
+        <button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button>
+      <% end %>
       <%= link_to training_workshop_path(@training_workshop), method: :delete, data: { confirm: 'Are you sure ?'} do %>
         <button class='btn-edit-white btn-edit-icon'><i class="far fa-trash-alt"></i></button>
       <% end %>
@@ -57,8 +59,7 @@
         <% if @training_workshop.training.present? && (['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level) %>
           <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-white' disabled>Manage Users</button></a>
         <% elsif ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
-          <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-white'>Manage Users</button></a>
-          <!-- <a data-toggle='modal' data-target='#confirmPresence'><button class='btn btn-invite-users'>Confirm Presence</button></a> -->
+          <%= link_to 'Manage Users', update_book_training_workshop_path(@training_workshop), class: 'btn btn-edit-white' %>
         <% end %>
         <ul id='workshop-booked-attendee-list'>
           <% ind = 0 %>

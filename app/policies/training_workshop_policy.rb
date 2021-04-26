@@ -25,6 +25,10 @@ class TrainingWorkshopPolicy < ApplicationPolicy
     check_access
   end
 
+  def update_book?
+    check_access
+  end
+
   def destroy?
     check_access
   end

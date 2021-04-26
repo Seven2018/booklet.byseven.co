@@ -1,14 +1,14 @@
 <div class="booking-containter">
   <div class="booktimes">
-    <h2><b>Book Date for <%= @workshop.title %></b></h2>
+    <h2><b>Book Date for <%= @training_workshop.title %></b></h2>
     <%# simple_form_for :training_workshop, url: book_training_workshop_path do |f| %>
-    <%= simple_form_for :filter, url: book_workshop_path(@workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
+    <%= simple_form_for :filter, url: update_book_training_workshop_path(@training_workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
     <h4>1. Select Date and Time</h4>
     <div class="mod-date">
-      <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
+      <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: @training_workshop.date } %>
       <div class="start-time">
-      <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
-      <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
+      <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: @training_workshop.starts_at %>
+      <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: @training_workshop.ends_at %>
       </div>
     </div>
   <%# end %>
@@ -56,7 +56,8 @@
       <% else %>
         <% users = @users.order(lastname: :asc) %>
       <% end %>
-        <%= collection_check_boxes(:participant, :user_ids, users, :id, :email) do |b| %>
+        <% checked = User.joins(:attendees).where(attendees: {training_workshop_id: @training_workshop.id}).map(&:id) %>
+        <%= collection_check_boxes(:participant, :user_ids, users, :id, :email, checked: checked) do |b| %>
           <% user = User.find_by(email: b.text) %>
           <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
             <div class='user-index-card'>
@@ -79,7 +80,7 @@
         <% end %>
     </div>
   </div>
-  <%= f.submit 'Book Now', class: 'btn' %>
+  <%= f.submit 'Update', class: 'btn' %>
   <% end %>
 </div>
 
@@ -89,16 +90,16 @@ close_btn = document.querySelector('#close-btn')
 bookletcontainer = document.getElementById('booklet-container')
 filter_slider = document.querySelector('.filter-dropdown-form')
 filter_btn.addEventListener('click', (event) => {
-    filter_slider.style.width = "375px";
-    filter_slider.style.zindex = "100";
-    filter_slider.style.background = "white";
-  })
+  filter_slider.style.width = "375px";
+  filter_slider.style.zindex = "100";
+  filter_slider.style.background = "white";
+})
 
 close_btn.addEventListener('click', (event) => {
-    filter_slider.style.width = "0px";
-    filter_slider.style.zindex = "100";
-    filter_slider.style.background = "transparent";
-  })
+  filter_slider.style.width = "0px";
+  filter_slider.style.zindex = "100";
+  filter_slider.style.background = "transparent";
+})
 
 function toggle(source) {
   checkboxes = document.getElementsByName('participant[user_ids][]');
@@ -112,6 +113,3 @@ select_button.addEventListener('click', event => {
 
 })
 </script>
-
-
-

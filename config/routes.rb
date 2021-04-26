@@ -17,9 +17,8 @@ Rails.application.routes.draw do
   get 'training_programs-filter', to: 'training_programs#filter', as: 'filter_training_programs'
   resources :trainings, only: %i[show create update destroy]
   resources :training_workshops, only: %i[show create update destroy]
-  get 'training_workshop/:id/copy', to: 'training_workshops#copy', as: 'copy_training_workshop'
-  post 'training_workshops/book', to: 'training_workshops#book_training_workshop', as: 'book_training_workshop'
-  patch 'training_workshops/:id/update_book', to: 'training_workshops#update_book_training_workshop', as: 'update_book_training_workshop'
+  get 'training_workshops/:id/copy', to: 'training_workshops#copy', as: 'copy_training_workshop'
+  get 'training_workshops/:id/update_book', to: 'training_workshops#update_book', as: 'update_book_training_workshop'
   get 'training_workshops/:id/viewmode', to: 'training_workshops#view_mode', as: 'view_training_workshop'
   resources :workshops, only: %i[show new create edit update destroy] do
     resources :workshop_skills, only: %i[create]
