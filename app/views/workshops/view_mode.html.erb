@@ -1,5 +1,5 @@
 <div id="index-controls" class="flex-row-start-centered">
-  <h3><%= "#{@workshop.title}" %></h3>
+  <h3><b><%= "#{@workshop.title}" %></b></h3>
 </div>
 <div class='flex-column-centered'>
   <% @workshop.mods.order(position: :asc).each do |mod| %>
@@ -9,7 +9,7 @@
         <% if mod.mod_type == 'Assessment' %>
           <div class="flex-row-between-centered">
             <i class="fas fa-question-circle" style='margin-right: 1rem;font-size:2rem;'></i>
-            <p><%= mod.title %></p>
+            <p><b><%= mod.title %></b></p>
           </div>
         <% else %>
           <p><%= mod.title %></p>
