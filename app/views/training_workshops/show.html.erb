@@ -80,21 +80,33 @@
         <i class="fas fa-plus fa-1x" style='color:#F26419'></i>
       </a>
     </div>
+    <% if @training_workshop.mods.present? %>
+      <% @training_workshop.training_workshop_mods.each do |mod| %>
+          <div class="workshop-show-content flex-row-start-centered">
+            <div class="workshop-show-content-index centered-item">
+              <p><%= mod.position %></p>
+            </div>
+            <p><%= "#{mod.mod.title} - #{mod.mod.duration} min" %></p>
+          </div>
+      <% end %>
+    <% end %>
   <% else %>
     <div class="workshop-show-module-controls flex-row-start-centered">
       <h3>Modules</h3>
     </div>
-  <% end %>
-  <% if @training_workshop.workshop.mods.present? %>
-    <% ind = 1 %>
-    <% @training_workshop.workshop.mods.each do |mod| %>
-        <div class="workshop-show-content flex-row-start-centered">
-          <div class="workshop-show-content-index centered-item">
-            <p><%= ind %></p>
+    <% if @training_workshop.date > Date.today %>
+      <p>Modules will be available on <%= @training_workshop.date.strftime('%d/%m/%Y') %></p>
+    <% else %>
+      <% if @training_workshop.training_workshop_mods.present? %>
+        <% @training_workshop.training_workshop_mods.each do |mod| %>
+          <div class="workshop-show-content flex-row-start-centered">
+            <div class="workshop-show-content-index centered-item">
+              <p><%= mod.position %></p>
+            </div>
+            <p><%= "#{mod.mod.title} - #{mod.mod.duration} min" %></p>
           </div>
-          <p><%= "#{mod.title} - #{mod.duration} min" %></p>
-          <% ind += 1 %>
-        </div>
+      <% end %>
+      <% end %>
     <% end %>
   <% end %>
 </div>

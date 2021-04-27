@@ -33,10 +33,15 @@ class WorkshopModsController < ApplicationController
     @workshop = Workshop.find(params[:link_mod][:workshop_id])
     skip_authorization
     mods_list = params[:workshop][:mod_ids].reject{|x|x.empty?}.map{|x| x.to_i}
+    last_position = WorkshopMod.where(workshop_id: @workshop.id)&.order(position: :asc)&.last&.position
+    last_position = 1 unless last_position.present?
     mods_list.each do |mod_id|
-      WorkshopMod.create(workshop_id: @workshop.id, mod_id: mod_id)
+      WorkshopMod.create(workshop_id: @workshop.id, mod_id: mod_id, position: last_position)
+      last_position += 1
     end
     WorkshopMod.where(workshop_id: @workshop.id, mod_id: params[:link_mod][:workshop_list].split(' ').map{|c|c.to_i} - mods_list).each{|x| x.destroy}
+    i = 1
+    @workshop.workshop_mods.each{|c| c.update(position: i); i += 1;}
     respond_to do |format|
       format.html {redirect_to new_workshop_path}
       format.js

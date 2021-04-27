@@ -5,11 +5,19 @@
     <%= simple_form_for :filter, url: book_workshop_path(@workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
     <h4>1. Select Date and Time</h4>
     <div class="mod-date">
-      <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
-      <div class="start-time">
-      <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
-      <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
-      </div>
+      <% if params[:filter].present? %>
+        <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.strptime(params[:filter][:date], '%Y-%m-%d') } %>
+        <div class="start-time">
+          <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M') %>
+          <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M') %>
+        </div>
+      <% else %>
+        <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
+        <div class="start-time">
+          <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
+          <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
+        </div>
+      <% end %>
     </div>
   <%# end %>
   </div>
