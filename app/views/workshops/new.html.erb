@@ -46,46 +46,33 @@
             </div>
           </div>
           <div class='mod-btn' id='modbut' onclick='addModule();'>Add a Module</div>
-          <div class='pre-existing'>
-            <h2>or select a pre-existing one</h2>
-            <%= simple_form_for :link_mod, url: create_ajax_workshop_mods_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
-              <%= f.hidden_field :workshop_id %>
-              <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
-                <% workshop_list = Mod.where(company_id: current_user.company_id) %>
-                <%= f.hidden_field :workshop_list, value: workshop_list.ids %>
-                <%= collection_check_boxes(:workshop, :mod_ids, workshop_list, :id, :title) do |b| %>
-                  <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
-                  <%= b.check_box + b.text %>
+          <% if Mod.where(company_id: current_user.company_id).present? %>
+            <div class='pre-existing'>
+              <h2>or select a pre-existing one</h2>
+              <%= simple_form_for :link_mod, url: create_ajax_workshop_mods_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
+                <%= f.hidden_field :workshop_id %>
+                <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
+                  <% workshop_list = Mod.where(company_id: current_user.company_id) %>
+                  <%= f.hidden_field :workshop_list, value: workshop_list.ids %>
+                  <%= collection_check_boxes(:workshop, :mod_ids, workshop_list, :id, :title) do |b| %>
+                    <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+                    <%= b.check_box + b.text %>
+                    <% end %>
                   <% end %>
-                <% end %>
-              </div>
-              <div style="display:flex;justify-content:center;margin-top:30px;">
-                <%= button_tag :submit, name: 'workshop_id', value: "#{@workshop.id}", class: 'hidden', id: 'mod_checkbox_save' do %>
-                  <p><b>SAVE</b><i class="fas fa-save"></i></p>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
+                </div>
+                <div style="display:flex;justify-content:center;margin-top:30px;">
+                  <%= button_tag :submit, name: 'workshop_id', value: "#{@workshop.id}", class: 'hidden', id: 'mod_checkbox_save' do %>
+                    <p><b>SAVE</b><i class="fas fa-save"></i></p>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
           <div class="controls">
             <a class="prev" id='back-second'>Back</a>
             <a class="next" id='next-second' onclick='document.getElementById("mod_checkbox_save").click();'>Next</a>
           </div>
         </div>
-<!--         <div class="module_third" data-map="your target">
-          <h2>Create a quiz</h2>
-          <h5>*Quizzes are in MCQ format</h5>
-          <div id="new_assessment_container">
-            <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
-              <%= f.hidden_field :workshop_id %>
-              <%= f.input :title %>
-              <%= f.submit 'Save' %>
-            <% end %>
-          </div>
-          <div class="controls">
-            <a class="prev" id='back-quiz'>Back</a>
-            <a class="next" id='next-quiz'>Next</a>
-          </div>
-        </div> -->
         <div class="module_fourth" data-map="your added value">
           <h2>Here is an overview of the workshop you created and populated.</h2>
           <div class="mod-content-submit">
@@ -195,7 +182,7 @@ $('input[type="checkbox"]').on('change', function(e){
         } else {
             $(this).next().val(0);
         }
-});
+  });
   // pre-existing modules //
   $('#checkbox3 input:checkbox:checked').parent().toggleClass('checked-box');
   $('#checkbox3 input:checkbox').change(function () {
@@ -233,7 +220,7 @@ $('input[type="checkbox"]').on('change', function(e){
     modzero.classList.add('active');
   })
 
-   newmodule.addEventListener('click', event => {
+  newmodule.addEventListener('click', event => {
     modfirst.classList.remove('active');
     id = parseInt(document.getElementById('workshop_id').innerHTML, 10);
     input1 = document.getElementById('new_mod_workshop_id');
@@ -241,6 +228,18 @@ $('input[type="checkbox"]').on('change', function(e){
     input1.value = id;
     input2.value = id;
     modsecond.classList.add('active');
+    $('input[type="checkbox"]').on('change', function(e){
+        if($(this).prop('checked'))
+        {
+            $(this).next().val(1);
+        } else {
+            $(this).next().val(0);
+        }
+    });
+    $('#checkbox2 input:checkbox:checked').parent().toggleClass('checked-box');
+    $('#checkbox2 input:checkbox').change(function () {
+      $(this).parent().toggleClass('checked-box');
+    });
   })
 
   nextsecond.addEventListener('click', event => {

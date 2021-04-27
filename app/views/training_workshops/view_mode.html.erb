@@ -16,7 +16,7 @@
         <% end %>
         <p><%= "#{mod.duration}min" %></p>
       </div>
-      <% unless mod.document.empty? && mod.media.empty? %>
+      <% if mod.document.present? && mod.media.present? %>
         <div class="workshop-show-content-attached flex-row-between-start">
           <% if mod.document.include?('presentation/d/e') %>
             <iframe src="<%= mod.document.gsub(/pub/, 'embed') %>" frameborder="0" width="500" height="250" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
@@ -39,7 +39,11 @@
       <div class="workshop-show-content-main-view-mode">
         <% if mod.mod_type == 'Assessment' %>
           <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? %>
-            <%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+            <% if mod.assessment_questions.present? %>
+              <%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+            <% else %>
+              <p>Empty Quizz</p>
+            <% end %>
           <% else %>
             <div class="flex-row-between-centered">
               <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>

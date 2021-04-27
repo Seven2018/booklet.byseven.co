@@ -1,5 +1,5 @@
-<h4><%= @new_workshop.title %></h4>
-<% @new_workshop.mods.each do |mod| %>
+<h4><%= workshop.title %></h4>
+<% workshop.mods.each do |mod| %>
   <p><%= mod.title %></p>
-  <p><%= mod.description %></p>
+  <p><%= mod.content %></p>
 <% end %>
