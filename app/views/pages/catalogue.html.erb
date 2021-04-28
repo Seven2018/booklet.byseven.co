@@ -4,13 +4,6 @@
     <div id="index-buttons">
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
         <div>
-          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <%= link_to 'New Program', new_training_program_path, class: 'dropdown-item' %>
-            <%= link_to 'New Workshop', new_workshop_path, class: 'dropdown-item' %>
-          </div>
-        </div>
-        <div>
           <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-swatchbook"></i></button>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
             <a data-toggle='modal' data-target='#indexTheme' class='dropdown-item'>View Themes</a>
@@ -18,36 +11,19 @@
           </div>
         </div>
       <% end %>
-      <% if params[:search] %>
-        <%= simple_form_for :search, url: catalogue_path, html: { class: 'search-bar' }, method: 'GET' do |f| %>
-          <%= f.input :title, placeholder: params[:search][:title], label: false %>
-          <%= link_to catalogue_path, class: 'search-close' do %>
-            <i class="far fa-times-circle"></i>
-          <% end %>
-        <% end %>
-      <% else %>
-        <a>
-          <button class="btn btn-edit-white btn-edit-icon btn-search btn-last"><i class="fas fa-search"></i></button>
-        </a>
-        <%= simple_form_for :search, url: catalogue_path, html: { class: 'search-bar hidden' }, method: 'GET' do |f| %>
-          <%= f.input :title, placeholder: 'Search', label: false %>
-            <a class='search-close'>
-              <i class="far fa-times-circle"></i>
-            </a>
-        <% end %>
-      <% end %>
+
     </div>
   </div>
   <div class="dashboard-tabs">
     <ul class="nav nav-tabs">
       <li role="presentation"><a href="#Workshops" data-toggle="tab" class='active'>Workshops</a></li>
-      <li role="presentation"><a href="#Programs" data-toggle="tab">Programs</a></li>
+<!--       <li role="presentation"><a href="#Programs" data-toggle="tab">Programs</a></li> -->
     </ul>
   </div>
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" id="Programs">
-      <%= render 'catalogue_programs', training_programs: @training_programs %>
-    </div>
+<!--     <div role="tabpanel" class="tab-pane" id="Programs">
+      <%# render 'catalogue_programs', training_programs: @training_programs %>
+    </div> -->
     <div role="tabpanel" class="tab-pane active" id="Workshops">
       <%= render 'catalogue_workshops', workshops: @workshops.order(title: :asc) %>
     </div>

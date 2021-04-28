@@ -26,25 +26,56 @@
   </div>
   <div class="navbar-controls-right flex-row-between-centered">
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
-      <div class="centered-item dropdown">
-        <button class="btn btn-edit-navbar dropdown-toggle" type="button" id="dropdownMenuNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <div class="centered-item">
+        <button class="btn btn-edit-navbar" type="button" >
           <div class="flex-row-between-centered">
-            <i class="fas fa-plus"></i>
-            <p>New</p>
+            <div class="new-workshop-btn">
+              <i class="fas fa-plus"></i>
+              <%= link_to 'New', new_workshop_path, class:'stretched-link'%>
+            </div>
           </div>
         </button>
-        <div class="dropdown-menu dropdown-menu-new" aria-labelledby="dropdownMenuNavbar">
-          <%= link_to 'Program', new_training_program_path, class: 'dropdown-item' %>
-          <%= link_to 'Workshop', new_workshop_path, class: 'dropdown-item' %>
+<!--         <div class="dropdown-menu dropdown-menu-new" aria-labelledby="dropdownMenuNavbar">
+          <%# link_to 'Program', new_training_program_path, class: 'dropdown-item' %>
+          <%# link_to 'Workshop', new_workshop_path, class: 'dropdown-item' %>
+        </div> -->
+      </div>
+    <% end %>
+  <div class="user-top-nav">
+    <div class="dropdown show">
+      <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+    <div class="dropdown-card flex-row-between-centered">
+      <div class="user-info">
+        <p><%= current_user.fullname%></p>
+        <h6><%= current_user.email%></h6>
+      </div>
+    </div>
+    <%= link_to user_path(current_user) do %>
+      <div class="dropdown-card dropdown-item ">
+        <div class='dropdown-card-text'>
+          <h6>Profile</h6>
         </div>
       </div>
     <% end %>
-    <div class="dropdown show">
+    <%= link_to destroy_user_session_path, method: :delete do %>
+      <div class="dropdown-card dropdown-item flex-row-between-centered">
+        <div class='dropdown-card-text'>
+          <h6>Log out</h6>
+        </div>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>
+<!--     <div class="dropdown show">
       <a class="navbar-icon dropdown-toggle dropdown-notification-menu" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell"></i></a>
       <div class="dropdown-menu dropdown-menu-notification" id='dropdown-notification-list' aria-labelledby="dropdownMenuLink">
-        <%= render 'shared/notifications' %>
+        <%# render 'shared/notifications' %>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 <!-- <script>
