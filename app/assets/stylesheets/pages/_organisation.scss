@@ -41,6 +41,9 @@
   img {
     display:none;
   }
+  &:hover {
+    opacity: 65%;
+  }
   @include from-medium {
     img {
       display: inherit;
@@ -150,6 +153,9 @@
 
   .hidden-form-category-ajax {
     position: absolute;
+    i {
+      background-color: transparent;
+    }
   }
 }
 
@@ -186,16 +192,30 @@
   height: 2.8rem;
 
   .tag-new-button {
+    display:none;
     margin-left: 1rem;
   }
 
   i {
     font-size: 100% !important;
+    background-color: transparent;
   }
 
   legend {
     width: auto;
     margin: 0;
+    font-size: 1.6rem;
+  }
+}
+
+  .hidden-submit {
+    background-color: transparent !important;
+  }
+
+.category-name:hover {
+  .tag-new-button {
+    display:block;
+    margin-left: 1rem;
   }
 }
 
