@@ -4,25 +4,62 @@
 
 <div class='organization-page'>
   <div class='filter-dropdown-form'>
-    <div class="hidden-form">
-    <div class="fil">
-      <h3 class="category-title"><b>Filter</b></h3>
-      <i class="fas fa-times" id='close-btn'></i>
-    </div>
-    <% i = 1 %>
-    <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
-      <% job_checked = params[:filter][:job] if params[:filter].present? %>
-      <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
-      <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: job_checked %></div>
-      <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
-        <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: tag_checked %></div>
-      <% end %>
-      <div class=filter-text>
-        <%= f.submit 'Filter', class: 'final-filter-btn' %>
-    <% end %>
-        <!-- <a class='final-filter-clear'>Clear All</a> -->
-        <%= link_to 'Clear All', organisation_path, class: 'final-filter-clear' %>
+    <div class="hidden-form" id='filter-block'>
+      <div class="fil">
+        <div class="flex-row-between-centered">
+          <h3 class="category-title"><b>Filter</b></h3>
+          <div id='tag-category-new'>
+            <div id='tag-category-new-button' class='icon-btn' onclick='openForm(this);'>
+              <i class="fas fa-plus"></i>
+            </div>
+            <div id='tag-category-new-form' class='hidden hidden-form-ajax'>
+              <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
+                <div class='flex-row-between-centered'>
+                  <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;' %>
+                  <%= button_tag :submit, class: 'hidden hidden-submit' do %>
+                    <i class="fas fa-save"></i>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <i class="fas fa-times" id='close-btn'></i>
       </div>
+      <% i = 1 %>
+      <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
+        <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
+        <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
+          <div class="filter-form-input">
+            <div class="category-name flex-row-start-centered">
+              <legend><%= category.name.capitalize %></legend>
+              <div class='tag-new'>
+                <div data-target="#category-<%= category.id %>" class='tag-new-button icon-btn' onclick='fetchCategoryForm(this);'>
+                  <i class="fas fa-plus"></i>
+                </div>
+              </div>
+            </div>
+            <%= f.input :tag, label: false, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: tag_checked, legend_tag: false %>
+          </div>
+        <% end %>
+        <div class=filter-text>
+          <%= f.submit 'Filter', class: 'final-filter-btn' %>
+      <% end %>
+      <%= link_to 'Clear All', organisation_path, class: 'final-filter-clear' %>
+      </div>
+      <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
+        <div class='hidden-form-category-ajax hidden' id="category-<%= category.id %>">
+          <%= simple_form_for :tag, url: tags_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
+            <div class='flex-row-between-centered'>
+              <%= f.text_field :tag_name, placeholder: 'New Tag', style: 'height: 100%;' %>
+              <%= f.hidden_field :tag_category_id, value: category.id %>
+              <%= button_tag :submit, class: 'hidden-submit' do %>
+                <i class="fas fa-save"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class='organisation-users'>
@@ -35,8 +72,8 @@
         <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
         <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-          <a data-toggle='modal' data-target='#newTagCategory' class='dropdown-item'>New Tag Category</a>
-          <a data-toggle='modal' data-target='#newTag' class='dropdown-item'>New Tag</a>
+          <!-- <a data-toggle='modal' data-target='#newTagCategory' class='dropdown-item'>New Tag Category</a>
+          <a data-toggle='modal' data-target='#newTag' class='dropdown-item'>New Tag</a> -->
           <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
           <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
         </div>
@@ -102,6 +139,26 @@
 </div>
 
 <script>
+  /* When the user clicks on the button,
+  toggle between hiding and showing the dropdown content */
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  function openForm(element) {
+    element.classList.toggle('hidden');
+    element.parentNode.querySelector('.hidden-form-ajax').classList.toggle('hidden');
+  }
+
+  function fetchCategoryForm(element) {
+    form = document.querySelector(element.getAttribute('data-target'));
+    console.log(element.offsetTop);
+    console.log(element.offsetLeft);
+    form.style.top = (element.offsetTop - 7).toString() + 'px';
+    form.style.left = element.offsetLeft.toString() + 'px';
+    form.classList.toggle('hidden');
+  }
+
   searchButton = document.querySelector('.btn-search');
   searchBar = document.querySelector('.search-bar');
   searchClose = document.querySelector('.search-close');
@@ -113,13 +170,6 @@
     searchButton.classList.toggle('hidden');
     searchBar.classList.toggle('hidden');
   })
-
-
-  /* When the user clicks on the button,
-  toggle between hiding and showing the dropdown content */
-  function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-  }
 
   // Close the dropdown if the user clicks outside of it
   window.onclick = function(event) {
@@ -138,36 +188,21 @@
   $('.filter-dropbtn').click(function(){
     $(this).parent().toggleClass('open');
   });
-</script>
 
-<!-- <script>
-  clear_button = document.querySelector('.final-filter-clear');
-  check_boxes = document.querySelectorAll('.check_boxes');
-  clear_button.addEventListener('click', (event) => {
-    event.preventDefault();
-    check_boxes.forEach(element => {
-      element.checked = false;
-    })
-  });
-</script> -->
-
-<script>
-filter_btn = document.querySelector('.mobile-filter-btn')
-close_btn = document.querySelector('#close-btn')
-bookletcontainer = document.getElementById('booklet-container')
-filter_slider = document.querySelector('.filter-dropdown-form')
-filter_btn.addEventListener('click', (event) => {
+  filter_btn = document.querySelector('.mobile-filter-btn')
+  close_btn = document.querySelector('#close-btn')
+  bookletcontainer = document.getElementById('booklet-container')
+  filter_slider = document.querySelector('.filter-dropdown-form')
+  filter_btn.addEventListener('click', (event) => {
     filter_slider.style.width = "375px";
     filter_slider.style.zindex = "100";
     filter_slider.style.background = "white";
   })
 
-close_btn.addEventListener('click', (event) => {
+  close_btn.addEventListener('click', (event) => {
     filter_slider.style.width = "0px";
     filter_slider.style.zindex = "100";
     filter_slider.style.background = "transparent";
     filter_slider.style.padding = "0px";
   })
-
-
 </script>

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
   before_action :set_current_user, only: [:import, :create]
+  skip_before_action :verify_authenticity_token, only: [:update]
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
@@ -61,16 +62,25 @@ class UsersController < ApplicationController
   def update
     authorize @user
     @user.update(user_params)
-    tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
-    del_tags = Tag.where(company_id: current_user.id).map(&:id) - tags
+    if params[:user][:tags].present?
+      tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
+      del_tags = Tag.where(company_id: current_user.id).map(&:id) - tags
+    end
     if @user.save
-      tags.each do |tag|
-        UserTag.create(user_id: @user.id, tag_id: tag)
-        UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
+      if tags.present?
+        tags.each do |tag|
+          UserTag.create(user_id: @user.id, tag_id: tag)
+          UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
+        end
       end
-      redirect_to user_path(@user)
-    else
-      render "_edit"
+      respond_to do |format|
+        if params[:page] != 'show'
+          format.html {redirect_to user_path(@user)}
+        else
+          format.html {redirect_to user_path(@user)}
+          format.js
+        end
+      end
     end
   end
 

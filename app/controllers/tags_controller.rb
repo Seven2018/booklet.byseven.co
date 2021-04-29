@@ -10,9 +10,14 @@ class TagsController < ApplicationController
     authorize @tag
     @tag.company_id = current_user.company_id
     if @tag.save
-      redirect_back(fallback_location: root_path)
-    else
-      raise
+      if params[:ajax].present?
+        respond_to do |format|
+          format.html {redirect_to organisation_path}
+          format.js
+        end
+      else
+        redirect_back(fallback_location: root_path)
+      end
     end
   end
 
