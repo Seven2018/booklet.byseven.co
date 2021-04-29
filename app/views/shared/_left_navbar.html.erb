@@ -68,7 +68,7 @@
     </div>
     </div>
     <div class="left-navbar-bottom">
-      <div class="dropdown show">
+<!--       <div class="dropdown show">
         <a class="navbar-user-card userhidden dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <div>
             <h6 class='user-name' ><%= current_user.fullname%></h6>
@@ -96,7 +96,7 @@
             </div>
           <% end %>
         </div>
-      </div>
+      </div> -->
     </div>
   <% end %>
 </div>
@@ -108,9 +108,9 @@
   left_navbar = document.querySelector('.left-navbar');
   logo = document.querySelector('.left-navbar-logo');
   logo_small = document.querySelector('.left-navbar-logo-small')
-  user = document.querySelector('.navbar-user-card');
+  // user = document.querySelector('.navbar-user-card');
   open.addEventListener('click', (event) => {
-    user.classList.remove('userhidden');
+    // user.classList.remove('userhidden');
     container = document.querySelector('#booklet-container');
     left_navbar.style.width = '220px';
     setTimeout(function(){logo.classList.toggle('hidden');}, 250);
@@ -127,7 +127,7 @@
   });
 
   close.addEventListener('click', (event) => {
-    user.classList.add('userhidden');
+    // user.classList.add('userhidden');
     container = document.querySelector('#booklet-container');
     left_navbar.style.width = '60px';
     open.classList.toggle('hidden');

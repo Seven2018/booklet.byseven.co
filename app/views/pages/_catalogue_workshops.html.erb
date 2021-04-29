@@ -1,8 +1,8 @@
 <div class='catalogue-index-list'>
-  <div class="catalogue-index-card">
-    <div class="catalogue-index-infos-title">
-      <div class="catalogue-index-info">
-        <div class="title">
+  <div class="workshop-filter-desktop">
+    <div class="catalogue-index-card">
+      <div class="catalogue-index-infos-title">
+        <div class="catalogue-index-info">
           <p>Title</p>
           <div class="catalogue-index-info-order flex-column-centered">
               <i class="fas fa-caret-up">
@@ -13,9 +13,7 @@
               </i>
           </div>
         </div>
-      </div>
-      <div class="catalogue-index-info flex-row-start-centered">
-        <div class="duration">
+        <div class="catalogue-index-info flex-row-start-centered">
           <p>Duration</p>
           <div class="catalogue-index-info-order flex-column-centered">
               <i class="fas fa-caret-up">
@@ -26,13 +24,11 @@
               </i>
           </div>
         </div>
-      </div>
-      <div class="catalogue-index-info flex-row-start-centered">
-        <div class="theme">
+        <div class="catalogue-index-info flex-row-start-centered">
           <p>Theme</p>
           <div class="catalogue-index-info-order flex-column-centered dropdown show">
             <a class="dropdown-toggle" href="#" role="button" id="catalogueFilterWorkshops" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></a>
-            <div class="dropdown-menu" aria-labelledby="catalogueFilterWorkshops">
+            <div class="dropdown-menu dropdown-menu-filter" aria-labelledby="catalogueFilterWorkshops">
               <div class="dropdown-item dropdown-form">
                 <%= simple_form_for :filter, url: filter_workshop_catalogue_path, method: 'GET', remote: true do |f| %>
                   <label for="filter_all" class="label-checkbox check-box-all">
@@ -53,19 +49,58 @@
       </div>
     </div>
   </div>
+  <div class="workshop-filter-mobile">
+    <div class="catalogue-index-card">
+      <div class="catalogue-index-infos-title">
+         <button class="btn btn-edit-white dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By:</button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
+            <%= link_to 'Title: Asc Order',catalogue_workshops_title_order_asc_path, remote: true, class: 'dropdown-item' %>
+            <%= link_to 'Title: Desc Order',catalogue_workshops_title_order_desc_path, remote: true, class: 'dropdown-item' %>
+            <%= link_to 'Duration: Low to High', catalogue_workshops_duration_order_asc_path, remote: true, class: 'dropdown-item' %>
+            <%= link_to 'Duration: High to Low', catalogue_workshops_duration_order_desc_path, remote: true, class: 'dropdown-item' %>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="workshop-catalogue-desktop">
   <% workshops.each do |workshop| %>
     <%= link_to workshop_path(workshop) do %>
       <div class='catalogue-index-card'>
-        <div class="catalogue-index-info">
-            <p data-toggle="tooltip" title="<%= workshop.title %>" class='workshop-title-cat'><b><%= workshop.title %></b></p>
-            <p><i><%= " #{workshop.duration} min" %></i></p>
+        <div class="catalogue-index-infos flex-row-between-centered">
+          <div class="catalogue-index-info">
+            <p data-toggle="tooltip" title="<%= workshop.title %>"><%= workshop.title %></p>
+          </div>
+          <div class="catalogue-index-info">
+            <p class='work-duration'><%= " #{workshop.duration} min" %></p>
+          </div>
+          <div class="catalogue-index-info">
             <% if workshop&.categories.count > 1 %>
-              <p data-toggle="tooltip" title='<%= "#{workshop.categories.map(&:title).join(', ')}" %>'><%= workshop&.categories.first&.title %> +</p>
-            <% else %>
-              <p style='color: #F26419'><%= workshop&.categories.first&.title %></p>
-            <% end %>
+                <p data-toggle="tooltip" title='<%= "#{workshop.categories.map(&:title).join(', ')}" %>'><%= workshop&.categories.first&.title %> +</p>
+              <% elsif workshop&.categories.count == 1 %>
+                <p style='color: #F26419'><%= workshop&.categories.first&.title %></p>
+              <% else workshop&.categories.count < 1 %>
+                <p>No Theme</p>
+              <% end %>
+          </div>
         </div>
-        <div class="centerbtn"><button class='booking-btn btn-last'><%= link_to 'Book', book_workshop_path(workshop) %></button></div>
+       <button class='booking-btn btn-last'><%= link_to 'Book', book_workshop_path(workshop) %></button>
       </div>
     <% end %>
-  <% end  %>
+  <% end %>
+  </div>
+  <div class="workshop-catalogue-mobile">
+    <% workshops.each do |workshop| %>
+      <%= link_to workshop_path(workshop) do %>
+        <div class='catalogue-index-card-mobile'>
+          <div class="catalogue-index-info-mobile">
+              <p data-toggle="tooltip" title="<%= workshop.title %>" class='workshop-title-cat'><b><%= workshop.title %></b></p>
+              <p><i><%= " #{workshop.duration} min" %></i></p>
+          </div>
+          <div class="centerbtn"><button class='booking-btn btn-last'><%= link_to 'Book', book_workshop_path(workshop) %></button></div>
+        </div>
+      <% end %>
+    <% end  %>
+  </div>
+</div>
+
+

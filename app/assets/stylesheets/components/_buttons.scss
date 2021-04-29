@@ -175,10 +175,10 @@ input.btn {
   box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302),0 1px 3px 1px rgba(60,64,67,0.149);
   width: 115px;
   height: 35px;
-  margin: 0 2.4rem;
+  margin: 0;
   background-color: #F26419;
 
-  p {
+  a {
     font-size: 2rem !important;
     color: white;
   }
@@ -192,10 +192,13 @@ input.btn {
   &:hover, &:focus {
     background-color: #F8D9C8 !important;
 
-    i, p {
+    i, a {
       // color: black !important;
       color: #F26419 !important;
     }
+  }
+  @include from-medium-high {
+      margin: 0 2.4rem;
   }
 }
 
