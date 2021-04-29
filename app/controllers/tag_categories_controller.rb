@@ -4,7 +4,14 @@ class TagCategoriesController < ApplicationController
     authorize @tag_category
     @tag_category.company_id = current_user.company_id
     if @tag_category.save
-      redirect_back(fallback_location: root_path)
+      if params[:ajax].present?
+        respond_to do |format|
+          format.html {redirect_to organisation_path}
+          format.js
+        end
+      else
+        redirect_back(fallback_location: root_path)
+      end
     else
       raise
     end

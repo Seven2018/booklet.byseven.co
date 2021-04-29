@@ -1,6 +1,9 @@
 import "bootstrap";
-import "../plugins/flatpickr";
+require("../plugins/flatpickr")
 
-
-require("trix")
-require("@rails/actiontext")
+try {
+  require("trix")
+  require("@rails/actiontext")
+}
+catch(err) {
+}
