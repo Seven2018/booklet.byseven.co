@@ -57,7 +57,8 @@ class PagesController < ApplicationController
 
   def catalogue_filter_workshop
     @workshop_categories = params[:workshop][:category_ids].drop(1).map(&:to_i)
-    @workshop_categories = Category.where(company_id: current_user.company_id).map(&:id) if params[:filter][:all] == '1'
+    # @workshop_categories = Category.where(company_id: current_user.company_id).map(&:id) if params[:filter][:all] == '1'
+    @all = 'true' if params[:filter][:all] == '1'
     respond_to do |format|
       format.html {redirect_to catalogue_path}
       format.js
