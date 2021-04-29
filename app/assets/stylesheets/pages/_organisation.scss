@@ -110,10 +110,18 @@
 }
 
 .hidden-form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   width: 375px;
-  padding: 20px;
+  margin-left: 2rem;
+
   @include from-large {
     width: auto;
+  }
+
+  .form-group {
+    margin: 0;
   }
 }
 
