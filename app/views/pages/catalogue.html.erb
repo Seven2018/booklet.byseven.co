@@ -4,11 +4,7 @@
     <div id="index-buttons">
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
         <div>
-          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-swatchbook"></i></button>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
-            <a data-toggle='modal' data-target='#indexTheme' class='dropdown-item'>View Themes</a>
-            <a data-toggle='modal' data-target='#newTheme' class='dropdown-item'>New Theme</a>
-          </div>
+          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" name='show-modal' type="button"  data-toggle="modal" data-target='#indexTheme' aria-haspopup="true" aria-expanded="false"><i class="fas fa-swatchbook"></i></button>
         </div>
       <% end %>
 
@@ -37,11 +33,11 @@
   </div>
 </div>
 
-<div class='modal fade' id='newTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<!-- <div class='modal fade' id='newTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'categories/new' %>
+    <%# render 'categories/new' %>
   </div>
-</div>
+</div> -->
 
 <script>
   searchButton = document.querySelector('.btn-search');
@@ -56,3 +52,6 @@
     searchBar.classList.toggle('hidden');
   })
 </script>
+<script>$('button[name="show-modal"]').click(function(){
+  $('.modal').modal('show');
+});</script>

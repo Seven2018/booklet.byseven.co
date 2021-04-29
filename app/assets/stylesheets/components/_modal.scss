@@ -88,3 +88,43 @@
 .module-description {
   padding: 1rem 1rem;
 }
+
+.accordion-module {
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion-module:hover {
+  background-color: #f7f7f7;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel-module {
+  padding: 0 18px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+}
+
+.theme-title {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  i {
+    color: #F26419;
+  }
+}
+
+.new-theme {
+  i {
+    color: #F26419;
+  }
+  margin-bottom: 50px;
+}
