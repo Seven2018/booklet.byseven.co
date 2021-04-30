@@ -39,7 +39,16 @@ class CategoriesController < ApplicationController
   def update
     authorize @category
     @category.update(category_params)
-    @category.save ? (redirect_to catalogue_path) : (render '_edit')
+    if @category.save
+      if params[:category][:ajax].present?
+        respond_to do |format|
+          format.html {redirect_to catalogue_path}
+          format.js
+        end
+      else
+        redirect_to catalogue_path
+      end
+    end
   end
 
   def destroy

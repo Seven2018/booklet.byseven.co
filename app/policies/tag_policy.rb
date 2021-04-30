@@ -25,6 +25,10 @@ class TagPolicy < ApplicationPolicy
     check_access
   end
 
+  def delete_tag?
+    check_access
+  end
+
   private
 
   def check_access

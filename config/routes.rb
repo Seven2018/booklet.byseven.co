@@ -9,9 +9,11 @@ Rails.application.routes.draw do
 
   # TAG CATEGORIES
   resources :tag_categories, only: %i[create destroy]
+  get :delete_tag_category, controller: :tag_categories
 
   # TAGS
   resources :tags, only: %i[create show update destroy]
+  get :delete_tag, controller: :tags
 
   # USER TAGS
   resources :user_tags, only: %i[create]
