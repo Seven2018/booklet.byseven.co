@@ -7,21 +7,23 @@
   </div>
   <div class="modal-body" id="modalNewBookinBody">
     <div id="themes-block">
+      <h3 style='color: #F26419; font-weight: 700;'>New Theme</h3>
       <div class="new-theme">
-        <p>New Theme</p>
-        <i class="fas fa-plus" onclick='openForm(this);'></i>
-        <div class='hidden hidden-form-ajax'>
+        <div class=' hidden-form-ajax'>
           <%= simple_form_for :category, url: categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
-            <div class='flex-row-between-centered'>
-              <%= f.text_field :title, placeholder: 'New Theme', style: 'height: 100%;' %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
+            <div class='new-theme-form'>
+              <%= f.text_field :title, placeholder: '+ Theme Title', style: 'height: 100%;' %>
+              <div>
+              <%= f.text_field :description, placeholder: '+ Description', style: 'height: 100%;' %>
+              <%= button_tag :submit, class: 'hidden-submit save-btn-mobile' do %>
                 <i class="fas fa-save"></i>
               <% end %>
+              </div>
             </div>
           <% end %>
         </div>
       </div>
-      <h3 style='color: #F26419;'>Existing Themes</h3>
+      <h3 style='color: #F26419; font-weight: 700;'>Existing Themes</h3>
       <% Category.where(company_id: current_user.company_id).order(title: :asc).each do |theme| %>
         <div class="accordion-module">
           <div class="theme-title">
