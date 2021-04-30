@@ -17,6 +17,16 @@ class TagCategoriesController < ApplicationController
     end
   end
 
+  def delete_tag_category
+    @tag_category = TagCategory.find(params[:tag_category][:id])
+    authorize @tag_category
+    @tag_category.destroy
+    respond_to do |format|
+      format.html {redirect_to organisation_path}
+      format.js
+    end
+  end
+
   private
 
   def set_tag

@@ -29,7 +29,9 @@
           <p class="data" id='phone' onclick='openForm(this)'><%=  @user.phone_number if @user.phone_number.present? %></p>
           <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'phone'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
             <%= f.input :phone_number, label: false, input_html: {value: @user.phone_number} %>
-            <%= button_tag type: 'submit', class: 'hidden hidden-submit' %>
+            <%= button_tag :submit, class: 'hidden-submit' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -42,31 +44,37 @@
         <p class="data" id='job' onclick='openForm(this)'><%=  @user.job_description if @user.job_description.present? %></p>
         <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'job'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
           <%= f.input :job_description, label: false, input_html: {value: @user.job_description} %>
-          <%= button_tag type: 'submit', class: 'hidden hidden-submit' %>
+          <%= button_tag :submit, class: 'hidden-submit' do %>
+            <i class="fas fa-save"></i>
+          <% end %>
         <% end %>
       </div>
-<!--       <div class="user-linkedin">
-        <p>Linkedin:</p>
-        <p>
-          <% if @user.linkedin.present? %>
-            <%= link_to @user.linkedin do %><i class="fab fa-linkedin-in"></i><% end %>
-          <% end %>
-        </p>
-      </div> -->
       <div class="user-birth">
         <p>Birth date:</p>
-        <p class="data" id='birth_date' onclick='openForm(this)'><%=  @user&.birth_date %></p>
+        <% if @user.birth_date.present? %>
+          <p class="data" id='birth_date' onclick='openForm(this)'><%=  @user&.birth_date %></p>
+        <% else %>
+          <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
+        <% end %>
         <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'birth_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-          <%= f.input :birth_date, label: false, input_html: {class: 'datepicker'}, default: @user.birth_date %>
-          <%= button_tag type: 'submit', class: 'hidden hidden-submit' %>
+          <%= f.input :birth_date, label: false, input_html: {class: 'datepicker'}, value: @user.birth_date %>
+          <%= button_tag :submit, class: 'hidden-submit' do %>
+            <i class="fas fa-save"></i>
+          <% end %>
         <% end %>
       </div>
       <div class="user-hire">
         <p>Hire date:</p>
-        <p class="data" id='hire_date' onclick='openForm(this)'><%=  @user.hire_date if @user.hire_date.present? %></p>
+        <% if @user.hire_date.present? %>
+          <p class="data" id='hire_date' onclick='openForm(this)'><%=  @user.hire_date %></p>
+        <% else %>
+          <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
+        <% end %>
         <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'hire_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-          <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, default: @user.hire_date %>
-          <%= button_tag type: 'submit', class: 'hidden hidden-submit' %>
+          <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, value: @user.hire_date %>
+          <%= button_tag :submit, class: 'hidden-submit' do %>
+                <i class="fas fa-save"></i>
+              <% end %>
         <% end %>
       </div>
     </div>
@@ -123,9 +131,19 @@
 <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
   <script>
     function openForm(element) {
-      form = element.parentNode.querySelector('.hidden-form');
-      element.classList.toggle('hidden');
-      form.classList.toggle('hidden');
+      if (document.querySelector('.opened') == null) {
+        form = element.parentNode.querySelector('.hidden-form');
+        element.classList.toggle('hidden');
+        form.classList.toggle('hidden');
+        form.classList.toggle('opened');
+      }
+    };
+
+    function fireDatePicker() {
+      flatpickr(".datepicker", {
+        disableMobile: true,
+        dateFormat: "d/m/Y",
+      })
     };
   </script>
 <% end %>

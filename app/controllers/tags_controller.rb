@@ -32,6 +32,16 @@ class TagsController < ApplicationController
     end
   end
 
+  def delete_tag
+    @tag = Tag.find(params[:tag][:id])
+    authorize @tag
+    @tag.destroy
+    respond_to do |format|
+      format.html {redirect_to organisation_path}
+      format.js
+    end
+  end
+
   private
 
   def set_tag
