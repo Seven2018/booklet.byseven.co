@@ -103,29 +103,17 @@ class UsersController < ApplicationController
     end
   end
 
-  # Allows to scrape data from the current user Linkedin profile
-  # def linkedin_scrape
-  #   skip_authorization
-  #   oauth = LinkedIn::OAuth2.new
-  #   url = oauth.auth_code_url
-  #   redirect_to "#{url}"
-  # end
-
-  # def linkedin_scrape_callback
-  #   skip_authorization
-  #   oauth = LinkedIn::OAuth2.new
-  #   code = params[:code]
-  #   access_token = oauth.get_access_token(code)
-  #   api = LinkedIn::API.new(access_token)
-  #   client = RestClient
-  #   # Updates User picture with his(her) Linkedin profile picture.
-  #   url = 'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))'
-  #   res = RestClient.get(url, Authorization: "Bearer #{access_token.token}")
-  #   picture_url = res.body.split('"').select{ |i| i[/https:\/\/media\.licdn\.com\/dms\/image\/.*/]}.last
-  #   current_user.update(picture: picture_url)
-
-  #   redirect_to user_path(current_user)
-  # end
+  def users_search
+    skip_authorization
+    @users = User.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
+    respond_to do |format|
+      format.html{}
+      format.json {
+        # render json: @users
+        @users = @users.limit(5)
+      }
+    end
+  end
 
   private
 
