@@ -86,7 +86,7 @@ label {
 .workshop-show-card-main {
   text-align: center;
   h1 {
-    margin-bottom: 5rem;
+    margin-bottom: 1.5rem;
   }
 
   p {
@@ -118,6 +118,11 @@ label {
 .workshop-show-module-controls {
   width: 35rem;
   margin-bottom: 3rem;
+  .fa-clipboard {
+    &:hover {
+      opacity: 65%;
+    }
+  }
   @include from-medium {
     width:60rem;
   }
@@ -161,9 +166,9 @@ label {
     font-size: 13px;
   }
   @include from-medium {
-    border: 1px solid black;
     p {
     font-size: 16px;
+    font-weight: 600;
   }
   }
 }
@@ -714,5 +719,13 @@ body {
   input {
     margin-left: 1rem;
     margin-right: 2rem;
+  }
+}
+
+#mod-create-assessment-div {
+  &:hover {
+    i {
+      opacity: 65%;
+    }
   }
 }
