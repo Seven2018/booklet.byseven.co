@@ -1,5 +1,6 @@
 class WorkshopsController < ApplicationController
   before_action :set_workshop, only: [:show, :view_mode, :edit, :update, :update_workshop, :destroy]
+  before_action :force_json, only: [:change_author]
   helper VideoHelper
 
   # def index
@@ -110,6 +111,23 @@ class WorkshopsController < ApplicationController
     end
   end
 
+  def change_author
+    skip_authorization
+    if params[:ajax].present?
+      @workshop = Workshop.find(params[:workshop_id])
+      @workshop.update(author_id: params[:user_id])
+      redirect_to workshop_path(@workshop)
+    else
+      @users = User.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
+      respond_to do |format|
+        format.json {
+          # render json: @users
+          @users = @users.limit(5)
+        }
+      end
+    end
+  end
+
   def destroy
     @workshop.destroy
     authorize @workshop
@@ -167,5 +185,9 @@ class WorkshopsController < ApplicationController
 
   def workshop_params
     params.require(:workshop).permit(:title, :description, :duration, :image, :content, :workshop_type)
+  end
+
+  def force_json
+    request.format = :json
   end
 end

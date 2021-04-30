@@ -1,12 +1,25 @@
 Rails.application.routes.draw do
+  # COMPANIES
+  resources :companies
+
+  # USERS
   devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :users, only: %i[new create show update destroy]
   post 'users/import', to: 'users#import', as: 'import_users'
-  resources :tags, only: %i[create show update destroy]
+
+  # TAG CATEGORIES
   resources :tag_categories, only: %i[create destroy]
+
+  # TAGS
+  resources :tags, only: %i[create show update destroy]
+
+  # USER TAGS
   resources :user_tags, only: %i[create]
-  resources :companies
+
+  # CATEGORIES
   resources :categories
+
+  # SKILLS
   resources :skills
   resources :training_programs, only: %i[new create show update destroy] do
     resources :program_workshops, only: %i[create]
@@ -20,6 +33,8 @@ Rails.application.routes.draw do
   get 'training_workshops/:id/copy', to: 'training_workshops#copy', as: 'copy_training_workshop'
   get 'training_workshops/:id/update_book', to: 'training_workshops#update_book', as: 'update_book_training_workshop'
   get 'training_workshops/:id/viewmode', to: 'training_workshops#view_mode', as: 'view_training_workshop'
+
+  # WORKSHOPS
   resources :workshops, only: %i[show new create edit update destroy] do
     resources :workshop_skills, only: %i[create]
     resources :workshop_categories, only: %i[create]
@@ -27,7 +42,10 @@ Rails.application.routes.draw do
   post 'workshops/create_workshop', to: 'workshops#create_workshop', as: 'create_workshop'
   patch 'workshops/:id/update_workshop', to: 'workshops#update_workshop', as: 'update_workshop'
   get 'workshops/:id/book', to: 'workshops#book', as: 'book_workshop'
-  # Assessments
+  get :users_search, controller: :users
+  get :change_author, controller: :workshops
+
+  # ASSESSMENTS
   resources :assessments, only: %i[show new create edit update destroy] do
     resources :assessment_questions, only: %i[update destroy]
     get 'question/:id/view_mode', to: 'assessment_questions#view_mode', as: 'view_mode_assessment_question'
@@ -60,6 +78,8 @@ Rails.application.routes.draw do
   post 'attendee-invite-to-training', to: 'attendees#invite_user_to_training', as: 'invite_to_training_attendees'
   post 'attendee-mark-as-completed', to: 'attendees#mark_as_completed', as: 'mark_as_completed_attendees'
   resources :requests, only: %i[index show create update destroy]
+
+  # PAGES
   root to: 'pages#dashboard'
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
   get 'dashboard_calendar_month', to: 'pages#calendar_month', as: 'dashboard_calendar_month'
@@ -79,8 +99,12 @@ Rails.application.routes.draw do
   get 'catalogue_programs_duration_order_desc', to: 'pages#catalogue_programs_duration_order_desc', as: 'catalogue_programs_duration_order_desc'
   get 'statistics', to: 'pages#statistics', as: 'statistics'
   get 'organisation', to: 'pages#organisation', as: 'organisation'
+
+  # NOTIFICATIONS
   get 'notification-mark-as-read', to: 'notifications#mark_as_read', as: 'mark_as_read_notifications'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+
+  # CALENDAR
   get '/redirect', to: 'attendees#redirect', as: 'redirect'
   get '/callback', to: 'attendees#callback', as: 'callback'
   get '/calendars', to: 'attendees#calendars', as: 'calendars'

@@ -1,0 +1,10 @@
+<h3>By <%= @workshop.author.firstname %></h3>
+<% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+  <div class='icon-btn'>
+    <i class="fas fa-pencil-alt"></i>
+  </div>
+  <%= form_with url: change_author_path, local: true, method: :get do |f| %>
+    <%= f.hidden_field :ajax, value: true %>
+    <%= f.text_field :search, placeholder: 'Search', label: false, id: 'test' %>
+  <% end %>
+<% end %>
