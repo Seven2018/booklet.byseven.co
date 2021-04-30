@@ -122,7 +122,7 @@ def catalogue_programs_duration_order_asc
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
         tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
-        if params[:filter][:job] != [""]
+        if params[:filter][:job] != [""] && params[:filter][:job].present?
           if tags.present?
             @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?), user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
           else

@@ -122,34 +122,11 @@
 
 <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
   <script>
-    function outsideClick(event, notelem) {
-      notelem = $(notelem); // jquerize (optional)
-      // check outside click for multiple elements
-      var clickedOut = true, i, len = notelem.length;
-      for (i = 0;i < len;i++)  {
-          if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-              clickedOut = false;
-          }
-      }
-      if (clickedOut) return true;
-      else return false;
-    }
     function openForm(element) {
       form = element.parentNode.querySelector('.hidden-form');
       element.classList.toggle('hidden');
       form.classList.toggle('hidden');
       form.classList.toggle('active');
-      if (form.querySelector('.datepicker') != null) {
-        flatpickr(".datepicker", {
-          disableMobile: true,
-          dateFormat: "d/m/Y"
-        });
-      }
-      window.addEventListener('click', function(e) {
-         if (outsideClick(e, form.parentNode)) {
-            form.querySelector('.hidden-submit').click();
-         }
-      });
     };
   </script>
 <% end %>

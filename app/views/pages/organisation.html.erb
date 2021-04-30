@@ -16,7 +16,7 @@
               <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
                 <div class='flex-row-between-centered'>
                   <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;' %>
-                  <%= button_tag :submit, class: 'hidden hidden-submit' do %>
+                  <%= button_tag :submit, class: 'hidden-submit' do %>
                     <i class="fas fa-save"></i>
                   <% end %>
                 </div>
@@ -159,18 +159,6 @@
     form.classList.toggle('hidden');
   }
 
-  searchButton = document.querySelector('.btn-search');
-  searchBar = document.querySelector('.search-bar');
-  searchClose = document.querySelector('.search-close');
-  searchButton.addEventListener('click', (event) => {
-    searchButton.classList.toggle('hidden');
-    searchBar.classList.toggle('hidden');
-  })
-  searchClose.addEventListener('click', (event) => {
-    searchButton.classList.toggle('hidden');
-    searchBar.classList.toggle('hidden');
-  })
-
   // Close the dropdown if the user clicks outside of it
   window.onclick = function(event) {
     if (!event.target.matches('.filter-dropbtn')) {
@@ -194,15 +182,14 @@
   bookletcontainer = document.getElementById('booklet-container')
   filter_slider = document.querySelector('.filter-dropdown-form')
   filter_btn.addEventListener('click', (event) => {
+    console.log('mesballs');
     filter_slider.style.width = "375px";
     filter_slider.style.zindex = "100";
-    filter_slider.style.background = "white";
   })
 
   close_btn.addEventListener('click', (event) => {
     filter_slider.style.width = "0px";
     filter_slider.style.zindex = "100";
-    filter_slider.style.background = "transparent";
     filter_slider.style.padding = "0px";
   })
 </script>
