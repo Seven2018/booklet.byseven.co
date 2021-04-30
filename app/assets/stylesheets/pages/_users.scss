@@ -16,13 +16,6 @@
   }
 }
 
-.users-list {
-  list-style-type: none;
-
-  a {
-
-  }
-}
 
 .user-show-card {
   width: 50%;
@@ -49,14 +42,12 @@
 }
 .user-show-card-info-line-email {
   margin-bottom: 20px;
-  border-bottom: 4px solid #e8621c;
+  border-bottom: 4px solid #F26419;
 }
 
 .user-show-card-info-line {
-  height: 33.5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  height: 3.5rem;
+  margin-top: 20px;
 
   p {
     text-align: right;
@@ -65,5 +56,151 @@
 
   p:last-of-type {
     flex-grow: 1;
+  }
+}
+
+.user-information {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+#container-show-user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  @include from-medium {
+    flex-direction: column;
+    align-items: inherit;
+    justify-content:flex-start;
+  }
+}
+
+.user-trainings {
+  padding: 20px;
+  h3 {
+    text-decoration: underline;
+    text-decoration-color: #F26419;
+  }
+    h2 {
+    margin-top: 20px;
+  }
+  margin-left: 0px;
+  margin-top: 30px;
+  border-top: 2px solid lightgrey;
+  display: flex;
+  flex-direction: column;
+}
+
+.upcoming-trainings {
+  height: 50%;
+  margin: 20px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+    @include from-medium-high {
+    justify-content: flex-start;
+  }
+}
+
+.completed-trainings {
+  height: 50%;
+  margin: 20px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  @include from-medium-high {
+    justify-content: flex-start;
+  }
+}
+
+
+.upcoming-trainings-card {
+  text-align: center;
+  h3 {
+    text-decoration: none;
+  }
+ color: #8FA078;
+ background-color: rgba(143, 160, 120, 0.36);
+ padding: 20px;
+ border-radius: 5px;
+ width: 30rem;
+ height: 25rem;
+ margin: 10px;
+}
+
+.completed-trainings-card {
+  text-align: center;
+   h3 {
+    text-decoration: none;
+  }
+  color: #264653;
+  background-color: rgba(38, 70, 83, 0.58);
+  padding: 20px;
+  border-radius: 5px;
+  width: 30rem;
+  height: 25rem;
+  margin: 10px;
+}
+
+.user-top {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  @include from-medium-low {
+    flex-direction: row;
+  }
+}
+
+.user-name {
+  display: flex;
+  p {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+}
+
+.user-photo {
+  margin-bottom: 20px;
+}
+
+.user-hire, .user-job, .user-hire, .user-birth {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  p {
+    margin-right: 5px;
+  }
+  @include from-medium-low {
+    flex-direction: row;
+  }
+}
+
+.user-access {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  p {
+    margin-right: 5px;
+  }
+    @include from-medium-low {
+    flex-direction: row;
+  }
+}
+
+.user-top-info {
+  border-bottom: 3px solid #F26419;
+}
+
+.user-training-title {
+    height: 133px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre-line;
+  h3 {
+    font-size: 18px;
+    font-weight: 700px !important;
   }
 }
