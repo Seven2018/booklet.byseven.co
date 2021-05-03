@@ -11,7 +11,6 @@
 
 .tag-index-card.active {
   background-color: #FDC553;
-
   p {
       color: white;
   }
@@ -110,15 +109,18 @@
 }
 
 .hidden-form {
-  width: 375px;
-
+  // width: 375px;
   @include from-large {
     width: auto;
   }
-
   .form-group {
     margin: 0;
   }
+}
+
+#filter-block {
+  width: 375px;
+  padding: 20px;
 }
 
 .filter-dropdown-form {
@@ -226,23 +228,22 @@
 
 .tag-selector + label {
   cursor: pointer;
-    display: inline-block;
-    font-weight: 600;
-    font-size: 1.5rem;
-    border-radius: 50rem;
-    padding: .5rem 0.8rem;
-    background-color: #f9e6db;
-    color: #F26419;
-    border: 1px solid #F26419;
-    margin-right: 0.6rem;
-    margin-bottom: 1rem;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.5rem;
+  border-radius: 50rem;
+  padding: .5rem 0.8rem;
+  background-color: #f9e6db;
+  color: #F26419;
+  border: 1px solid #F26419;
+  margin-right: 0.6rem;
+  margin-bottom: 1rem;
 }
 
 .tag-selector:checked + label {
   background-color: #F26419;
   color: white !important;
   border-color: #F26419;
-
 }
 
 .fa-sliders-h {
@@ -305,4 +306,53 @@ opacity: 0.8;
     align-items: center;
     margin: 1rem 0;
   }
+}
+
+.filter-twitter-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.5rem;
+  border-radius: 50rem;
+  padding: .5rem 0.8rem;
+  background-color: #f9e6db;
+  color: #F26419;
+  border: 1px solid #F26419;
+  margin-right: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.filter-checked {
+  background-color: #F26419;
+  color: white !important;
+  border-color: #F26419;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.5rem;
+  border-radius: 50rem;
+  padding: .5rem 0.8rem;
+}
+
+.filter-twitter-btn-check {
+  border-right: 1px solid grey;
+  display: flex;
+  align-items: center;
+  i {
+    margin: 0 10px;
+  }
+}
+
+.filter-twitter-btn-x {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  i {
+    color: grey;
+  }
+}
+
+.flex-filter {
+  display: flex;
+  flex-wrap: wrap;
 }

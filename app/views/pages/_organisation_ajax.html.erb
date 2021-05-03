@@ -52,8 +52,11 @@
           </div>
         </div>
       </div>
-      <%= f.input :tag, label: false, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: tag_checked, legend_tag: false %>
-    </div>
+      </div>
+      <%= f.collection_check_boxes :tag, Tag.all.where(tag_category_id: category.id), :id, :tag_name  do |b| %>
+         <%= b.check_box %>
+         <%= b.label %>
+      <% end %>
   <% end %>
   <div class=filter-text>
     <%= f.submit 'Filter', class: 'final-filter-btn' %>

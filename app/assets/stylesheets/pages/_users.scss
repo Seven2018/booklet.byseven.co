@@ -63,6 +63,16 @@
   display: flex;
   flex-direction: column;
   margin-left: 20px;
+  width: 350px;
+  input {
+    padding: 0px !important;
+    height: auto !important;
+    border: none;
+    background-color: #e9ecef;
+  }
+  @include from-medium {
+    width:350px;
+  }
 }
 
 #container-show-user {
@@ -163,30 +173,34 @@
 
 .user-photo {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.user-hire, .user-job, .user-hire, .user-birth {
+.user-hire, .user-job, .user-birth {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+  flex-direction: row;
+  padding-bottom: 20px;
+  justify-content: space-between;
+  height: 35px;
   p {
     margin-right: 5px;
   }
-  @include from-medium-low {
-    flex-direction: row;
+  form {
+    display:flex;
   }
 }
+
 
 .user-access {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   margin-top: 20px;
-  margin-bottom: 20px;
+  height: 35px;
   p {
     margin-right: 5px;
-  }
-    @include from-medium-low {
-    flex-direction: row;
   }
 }
 
@@ -203,4 +217,9 @@
     font-size: 18px;
     font-weight: 700px !important;
   }
+}
+
+.fa-save {
+  margin: 0px;
+  padding: 0px;
 }
