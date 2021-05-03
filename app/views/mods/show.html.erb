@@ -1,5 +1,9 @@
 <div id="show-controls" class='flex-row-between-centered'>
-  <%= link_to workshop_path(Workshop.joins(:workshop_mods).find_by(workshop_mods: {mod_id: @module.id})), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% if params[:workshop_id].present? %>
+    <%= link_to workshop_path(Workshop.find(params[:workshop_id])), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% elsif params[:training_workshop_id].present? %>
+    <%= link_to training_workshop_path(TrainingWorkshop.find(params[:training_workshop_id])), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% end %>
   <div id='show-buttons'>
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
       <!-- <a data-toggle='modal' data-target='#editWorkshop'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a> -->

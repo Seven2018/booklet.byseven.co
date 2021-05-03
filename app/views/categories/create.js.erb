@@ -1,1 +1,8 @@
+function refreshInput() {
+  inputs = document.getElementById('themes-block').querySelectorAll('input');
+  inputs.forEach((element) => {
+    element.value = '';
+  })
+}
 document.getElementById('themes-block').innerHTML = '<%= j (render("themes_block", categories: @categories)) %>';
+refreshInput();

@@ -21,16 +21,8 @@
     <h3 class='training-index-list-dashboard-title'>Trainings Overview</h3>
     <% (Training.where(company_id: current_user.company_id) + TrainingWorkshop.where(company_id: current_user.company_id).order(date: :asc)).each do |element| %>
       <% if (element&.instance_of? TrainingWorkshop) && element&.training_id.nil?%>
-        <%= link_to training_workshop_path(element) do %>
+        <%= link_to training_workshop_path(element, dashboard: 'all') do %>
           <div class='training-index-card'>
-            <%# if element&.attendees.where(user_id: current_user.id, status: 'Invited').present? %>
-              <!-- <div class="training-card-calendar-indicator-orange"><i class="fas fa-circle"></i></div> -->
-            <%# elsif element&.attendees.where(user_id: current_user.id, status: 'Registered').present? %>
-              <!-- <div class="training-card-calendar-indicator-green"><i class="fas fa-circle"></i></div> -->
-            <%# end %>
-<!--             <div class="training-index-infos-dashboard">
-              <h3>W</h3>
-            </div> -->
             <div class="training-index-infos-dashboard">
               <p class='worktitle'><%= element&.title %></p>
             </div>
@@ -50,23 +42,6 @@
             </div>
           </div>
         <% end %>
-      <%# elsif element.instance_of? Training %>
-        <%# link_to training_path(element) do %>
-<!--           <div class='training-index-card'>
-            <%# if element&.training_workshops.joins(:attendees).where(attendees: {user_id: current_user.id}).present? %>
-              <div class="training-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
-            <%# end %>
-            <div class="training-index-infos-dashboard">
-              <h3>P</h3>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= element&.title %></p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%# "Next workshop #{element&.next_date&.strftime('%d/%m/%Y')}" %></p>
-            </div>
-          </div> -->
-        <%# end %>
       <% end %>
     <% end %>
   </div>

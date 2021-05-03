@@ -51,6 +51,7 @@
           </div>
         </div>
       </div>
+      <% @users = User.where(company_id: current_user.company_id) unless @users.present? %>
       <% if @users.class == Array %>
         <% users = @users.sort_by{|x| x.lastname} %>
       <% else %>
