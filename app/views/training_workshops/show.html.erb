@@ -1,5 +1,5 @@
 <div id="show-controls" class='flex-row-between-centered'>
-  <%= link_to dashboard_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <%= link_to dashboard_path(dashboard: params[:dashboard]), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
   <div id='show-buttons'>
     <%= link_to view_training_workshop_path(@training_workshop), class: 'btn btn-edit-white btn-edit-icon' do %>
       <i class="far fa-eye"></i>

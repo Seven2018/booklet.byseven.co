@@ -22,14 +22,14 @@
             <p><%= workshop_mod.position %></p>
           </div>
           <% if workshop_mod.mod.mod_type == 'Assessment' %>
-            <%= link_to assessment_path(workshop_mod.mod) do %>
+            <%= link_to assessment_path(workshop_mod.mod, workshop_id: @workshop.id) do %>
               <div class="flex-row-between-centered">
                 <i class="fas fa-question-circle" style='margin-right: 1rem;font-size:2rem;'></i>
                 <p><%= "#{workshop_mod.mod.title} - #{workshop_mod.mod.duration} min" %></p>
               </div>
             <% end %>
           <% else %>
-            <%= link_to mod_path(workshop_mod.mod) do %>
+            <%= link_to mod_path(workshop_mod.mod, workshop_id: @workshop.id) do %>
               <p><%= "#{workshop_mod.mod.title} - #{workshop_mod.mod.duration} min" %></p>
             <% end %>
           <% end %>

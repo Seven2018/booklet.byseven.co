@@ -3,15 +3,29 @@
 </div>
 <div class="dashboard-tabs">
   <ul class="nav nav-tabs">
-    <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
-    <li role="presentation"><a href="#All" data-toggle="tab">Staff Trainings</a></li>
+    <% if params[:dashboard] == 'personal' %>
+      <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
+      <li role="presentation"><a href="#All" data-toggle="tab">Staff Trainings</a></li>
+    <% else %>
+      <li role="presentation"><a href="#Personal" data-toggle="tab">My Trainings</a></li>
+      <li role="presentation"><a href="#All" data-toggle="tab" class='active'>Staff Trainings</a></li>
+    <% end %>
   </ul>
 </div>
 <div class="tab-content">
-  <div role="tabpanel" class="tab-pane active" id="Personal">
-    <%= render 'dashboard_personal' %>
-  </div>
-  <div role="tabpanel" class="tab-pane" id="All">
-    <%= render 'dashboard_all' %>
-  </div>
+  <% if params[:dashboard] == 'personal' %>
+    <div role="tabpanel" class="tab-pane active" id="Personal">
+      <%= render 'dashboard_personal' %>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="All">
+      <%= render 'dashboard_all' %>
+    </div>
+  <% else %>
+    <div role="tabpanel" class="tab-pane" id="Personal">
+      <%= render 'dashboard_personal' %>
+    </div>
+    <div role="tabpanel" class="tab-pane active" id="All">
+      <%= render 'dashboard_all' %>
+    </div>
+  <% end %>
 </div>

@@ -20,7 +20,7 @@ class TrainingWorkshopModsController < ApplicationController
       end
     end
     i = 1
-    TrainingWorkshop.where(training_workshop_id: @training_workshop.id).order(position: :asc).each{|c| c.update(position: i); i += 1;}
+    TrainingWorkshopMod.where(training_workshop_id: @training_workshop.id).order(position: :asc).each{|c| c.update(position: i); i += 1;}
     redirect_to training_workshop_path(@training_workshop)
   end
 end
