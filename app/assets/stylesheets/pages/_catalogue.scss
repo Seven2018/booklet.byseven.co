@@ -106,20 +106,13 @@
 
 .catalogue-index-card {
   border-bottom: 1px solid rgba(0,0,0,0.1);
-
-
   h3,  {
     margin: 0;
-  }
-  @include from-medium-high {
-    &:hover {
-    opacity: 65%;
-  }
   }
 }
 
 .catalogue-index-info {
-  width: 27rem;
+  width: 22rem;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -146,28 +139,32 @@
 
 .workshop-catalogue-mobile {
   display:block;
-  @include from-medium-high {
+  @include from-medium-low {
     display:none;
   }
 }
 
 .workshop-catalogue-desktop {
   display: none;
-  @include from-medium-high {
+  @include from-medium-low {
     display:block;
   }
 }
 
 .workshop-filter-mobile {
   display: block;
-  @include from-medium-high {
+  @include from-medium-low {
     display: none;
   }
 }
 
 .workshop-filter-desktop {
   display: none;
-  @include from-medium-high {
+  @include from-medium-low {
     display:block;
   }
+}
+
+.catalogue-index-infos:hover {
+  opacity: 65%;
 }
