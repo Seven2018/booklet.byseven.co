@@ -42,7 +42,7 @@
             <% if mod.assessment_questions.present? %>
               <%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
             <% else %>
-              <p>Empty Quizz</p>
+              <p>Empty Quiz</p>
             <% end %>
           <% else %>
             <div class="flex-row-between-centered">
