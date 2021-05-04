@@ -1,10 +1,13 @@
 <div id="show-controls" class='flex-row-between-centered'>
-  <%= link_to url_for(:back), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% if params[:workshop_id].present? %>
+    <%= link_to workshop_path(Workshop.find(params[:workshop_id])), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% else %>
+    <%= link_to catalogue_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% end %>
 </div>
 <div class="booking-containter">
   <div class="booktimes">
     <h2><b>Book Date for <%= @workshop.title %></b></h2>
-    <%# simple_form_for :training_workshop, url: book_training_workshop_path do |f| %>
     <%= simple_form_for :filter, url: book_workshop_path(@workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
     <h4>1. Select Date and Time</h4>
     <div class="mod-date">

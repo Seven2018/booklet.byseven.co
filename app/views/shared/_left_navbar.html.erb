@@ -68,77 +68,51 @@
     </div>
     </div>
     <div class="left-navbar-bottom">
-<!--       <div class="dropdown show">
-        <a class="navbar-user-card userhidden dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <div>
-            <h6 class='user-name' ><%= current_user.fullname%></h6>
-          </div>
-          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-        </a>
-        <div class="dropdown-menu" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-          <div class="dropdown-card dropdown-item flex-row-between-centered">
-            <p>Account</p>
-          </div>
-          <%= link_to user_path(current_user) do %>
-            <div class="dropdown-card dropdown-item flex-row-between-centered">
-              <i class="fas fa-user"></i>
-              <div class='dropdown-card-text'>
-                <h6>Profile</h6>
-              </div>
-            </div>
-          <% end %>
-          <%= link_to destroy_user_session_path, method: :delete do %>
-            <div class="dropdown-card dropdown-item flex-row-between-centered">
-              <i class="fas fa-sign-out-alt"></i>
-              <div class='dropdown-card-text'>
-                <h6>Log out</h6>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div> -->
+
     </div>
   <% end %>
 </div>
 
 
 <script>
+  function resizeShow() {
+    container = document.querySelector('#booklet-container');
+    open = document.querySelector('.left-navbar-control-open');
+    close = document.querySelector('.left-navbar-control-close');
+    left_navbar = document.querySelector('.left-navbar');
+    if ($(window).width() < 1024) {
+      container.style.marginLeft = '0px';
+      open.classList.remove('hidden');
+      close.classList.add('hidden');
+    } else {
+      container.style.marginLeft = '60px';
+      left_navbar.style.width = '60px';
+      container.style.marginLeft = '60px';
+    }
+  }
+
   open = document.querySelector('.left-navbar-control-open');
   close = document.querySelector('.left-navbar-control-close');
   left_navbar = document.querySelector('.left-navbar');
   logo = document.querySelector('.left-navbar-logo');
   logo_small = document.querySelector('.left-navbar-logo-small')
-  // user = document.querySelector('.navbar-user-card');
   open.addEventListener('click', (event) => {
-    // user.classList.remove('userhidden');
     container = document.querySelector('#booklet-container');
     left_navbar.style.width = '220px';
     setTimeout(function(){logo.classList.toggle('hidden');}, 250);
     setTimeout(function(){logo_small.classList.toggle('hiddenname');}, 250);
     open.classList.toggle('hidden');
     close.classList.toggle('hidden');
-    if (window.innerWidth > 1440) {
-      container.style.width = (1440 - 220).toString() + 'px';
-      container.style.marginLeft = '220px';
-    } else {
-      container.style.width = (window.innerWidth - 220).toString() + 'px';
-      container.style.marginLeft = '220px';
-    }
+    container.style.marginLeft = '220px';
   });
 
   close.addEventListener('click', (event) => {
-    // user.classList.add('userhidden');
     container = document.querySelector('#booklet-container');
     left_navbar.style.width = '60px';
     open.classList.toggle('hidden');
     close.classList.toggle('hidden');
-    if (window.innerWidth >= 1440) {
-      container.style.width = (1440 - 60).toString() + 'px';
-      container.style.marginLeft = '60px';
-    } else {
-      container.style.width = (window.innerWidth - 60).toString() + 'px';
-      container.style.marginLeft = '60px';
-    }
+    container.style.marginLeft = '60px';
   });
 
+  window.addEventListener('resize', resizeShow);
 </script>

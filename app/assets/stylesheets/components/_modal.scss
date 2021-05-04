@@ -110,22 +110,44 @@
 
 /* Style the accordion panel. Note: hidden by default */
 .panel-module {
-  padding: 0 18px;
+  padding: 0 18px 0 28px;
   background-color: white;
   display: none;
   overflow: hidden;
 }
 
-.theme-title {
+.theme-title, .theme-description {
   display:flex;
   justify-content: space-between;
   align-items: center;
   i {
     color: #F26419;
-    margin-left: 1rem;
   }
+}
+
+.theme-title {
   p {
     font-weight: 700;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+
+  }
+}
+
+.theme-description {
+
+  & > div {
+    margin-top: 1rem;
+  }
+
+  .description, form {
+    margin-bottom: 1rem;
+  }
+
+  .hidden-form-ajax {
+    margin: 0;
   }
 }
 

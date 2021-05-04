@@ -22,24 +22,25 @@
   <div class='workshop-show-card'>
     <div class='workshop-show-card-main flex-column-centered'>
       <h1><%= @workshop.title %></h1>
-      <div id='workshop-show-author' class="flex-row-between-centered">
-        <h3>By <%= @workshop.author.firstname %></h3>
+      <div id='workshop-show-author'>
         <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
-          <div class='icon-btn' onclick="openForm(this);">
+          <h3 onclick="openForm(this);">By <%= @workshop.author.firstname %></h3>
+          <!-- <div class='icon-btn' onclick="openForm(this);">
             <i class="fas fa-pencil-alt"></i>
-          </div>
+          </div> -->
           <div class='hidden hidden-form-ajax'>
             <%= form_with url: change_author_path, id: 'author_form', local: true, method: :get do |f| %>
               <%= f.hidden_field :ajax, value: true %>
               <%= f.hidden_field :user_id %>
               <%= f.hidden_field :workshop_id, value: @workshop.id %>
-              <%= f.text_field :search, placeholder: 'Search', label: false, data: {behavior: 'autocomplete'} %>
+              <%= f.text_field :search, placeholder: 'Search Users', label: false, data: {behavior: 'autocomplete'} %>
             <% end %>
           </div>
+        <% else %>
+          <h3>By <%= @workshop.author.firstname %></h3>
         <% end %>
       </div>
-      <img src='<%= @workshop.author.picture %>' alt="" class='avatar-large-workshop-card'>
-
+      <img src='<%= @workshop.author.picture %>' alt="" class='avatar-large-workshop-card' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
       <p><%= "#{@workshop.duration} min" %></p>
     </div>
     <div class="workshop-show-card centered-item">
@@ -48,7 +49,7 @@
       </div>
     </div>
     <div class="workshop-show-card-footer  centered-item">
-      <button class='booking-btn btn-last'><%= link_to 'Book', book_workshop_path(@workshop) %></button>
+      <button class='booking-btn btn-last'><%= link_to 'Book', book_workshop_path(@workshop, workshop_id: @workshop.id) %></button>
     </div>
   </div>
   <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
