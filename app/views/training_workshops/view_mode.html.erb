@@ -1,8 +1,8 @@
 <div id="index-controls" class="flex-row-start-centered">
-  <h3><%= "#{@workshop.title}" %></h3>
+  <h3><b><%= "#{@training_workshop.title}" %></b></h3>
 </div>
 <div class='flex-column-centered'>
-  <% @workshop.mods.order(position: :asc).each do |mod| %>
+  <% @training_workshop.mods.order(position: :asc).each do |mod| %>
     <div class="workshop-show-content">
       <div class="workshop-show-content-header flex-row-between-centered">
         <a name="<%= mod.id %>" class="workshop-show-view-mode-anchor"></a>
@@ -56,5 +56,7 @@
       </div>
     </div>
   <% end %>
+  <%= link_to 'Exit Lecture', training_workshop_path(@training_workshop), class: 'btn btn-invite-users' %>
+
 </div>
 

@@ -153,7 +153,7 @@ class WorkshopsController < ApplicationController
       @training_workshop = TrainingWorkshop.create(workshop.attributes.except("id", "created_at", "updated_at", "author_id"))
       @training_workshop.workshop_id = workshop.id
       if @training_workshop.save
-        @training_workshop.update(date: Date.strptime(params[:filter][:date], '%Y-%m-%d'), starts_at: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M'))
+        @training_workshop.update(date: Date.strptime(params[:filter][:date], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M'))
         participants.each do |participant|
           Attendee.create(training_workshop_id: @training_workshop.id, user_id: participant)
         end
