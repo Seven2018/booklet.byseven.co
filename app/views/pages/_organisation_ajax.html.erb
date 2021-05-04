@@ -52,7 +52,24 @@
           </div>
         </div>
       </div>
-      <%= f.input :tag, label: false, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: tag_checked, legend_tag: false %>
+    </div>
+    <div class="flex-filter">
+    <%= f.collection_check_boxes :tag, Tag.all.where(tag_category_id: category.id), :id, :tag_name  do |b| %>
+      <div class="filter-twitter-btn" id='pillfilter'>
+        <div class="filter-twitter-btn-check" id='check-filter'>
+          <p><%= b.label { b.check_box(class: 'tag-selector') + b.text }  %></p>
+          <div class='icon' id="icon">
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class='icon hidden' id="icon2">
+            <i class="fas fa-check"></i>
+          </div>
+        </div>
+        <div class="filter-twitter-btn-x" id='delete-filter'>
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+    <% end %>
     </div>
   <% end %>
   <div class=filter-text>
