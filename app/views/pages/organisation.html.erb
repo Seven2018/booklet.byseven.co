@@ -63,7 +63,7 @@
           <%= f.collection_check_boxes :tag, Tag.all.where(tag_category_id: category.id), :id, :tag_name  do |b| %>
             <div class="filter-twitter-btn" id='pillfilter'>
               <div class="filter-twitter-btn-check" id='check-filter'>
-                <p><%= b.label %></p>
+                <p><%= b.label { b.check_box + b.text }  %></p>
                 <div class='icon' id="icon">
                   <i class="fas fa-plus"></i>
                 </div>
@@ -75,7 +75,6 @@
                 <i class="fas fa-times"></i>
               </div>
             </div>
-           <%= b.check_box class: 'tag-selector' %>
           <% end %>
           </div>
         <% end %>
@@ -239,26 +238,29 @@
     filter_slider.style.padding = "0px";
   })
 
-
+  var checkboxes = document.getElementsByName('filter[tag]');
   checkfilter = document.getElementById('check-filter')
   pillfilter = document.getElementById('pillfilter')
   icon = document.getElementById('icon')
   icon2 = document.getElementById('icon2')
   deletefilter = document.getElementById('delete-filter')
   checkfilter.addEventListener('click', (event) => {
-    if (pillfilter.classList.value.split(' ')[1] == 'filter-checked'){
-      deletefilter.style.display = 'inherit';
-      checkfilter.style.borderRight = '1px solid grey';
-      pillfilter.classList.remove('filter-checked')
-      icon2.classList.add('hidden')
-      icon.classList.remove('hidden')
-    } else {
-    deletefilter.style.display = 'none';
-    checkfilter.style.borderRight = 'none';
-    pillfilter.classList.add('filter-checked')
-    icon2.classList.remove('hidden')
-    icon.classList.add('hidden')
-    }
-  })
+    for (var i=0; i<checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        deletefilter.style.display = 'inherit';
+        checkfilter.style.borderRight = '1px solid grey';
+        pillfilter.classList.remove('filter-checked')
+        icon2.classList.add('hidden')
+        icon.classList.remove('hidden')
+      } else {
+      deletefilter.style.display = 'none';
+      checkfilter.style.borderRight = 'none';
+      pillfilter.classList.add('filter-checked')
+      icon2.classList.remove('hidden')
+      icon.classList.add('hidden')
+      }
+  }
+})
+
 
 </script>

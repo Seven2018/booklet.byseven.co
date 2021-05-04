@@ -119,8 +119,12 @@
 }
 
 #filter-block {
-  width: 375px;
   padding: 20px;
+  width:375px;
+  @include from-medium-low {
+  width: auto;
+
+  }
 }
 
 .filter-dropdown-form {
@@ -149,7 +153,9 @@
 #filter-block {
   position: relative;
   display: block;
-
+  i {
+      background-color: transparent;
+    }
   .hidden-form-category-ajax {
     position: absolute;
     i {
