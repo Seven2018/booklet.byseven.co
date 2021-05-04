@@ -53,15 +53,32 @@ label {
 }
 
 #workshop-show-author {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   height: 3.8rem;
 
   h3 {
     margin: 0;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .7;
+    }
   }
 
   i {
     font-size: 100%;
     margin-left: 1rem;
+  }
+
+  .hidden-form-ajax {
+    margin: 0;
+  }
+
+  .easy-autocomplete {
+    width: auto !important;
   }
 }
 

@@ -3,9 +3,9 @@
   <div class=' hidden-form-ajax'>
     <%= simple_form_for :category, url: categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
       <div class='new-theme-form'>
-        <%= f.text_field :title, placeholder: '+ Theme Title', style: 'height: 100%;' %>
+        <%= f.text_field :title, placeholder: '+ Theme Title', style: 'height: 100%;', class: 'reset' %>
         <div>
-        <%= f.text_field :description, placeholder: '+ Description', style: 'height: 100%;' %>
+        <%= f.text_field :description, placeholder: '+ Description', style: 'height: 100%;', class: 'reset' %>
         <%= button_tag :submit, class: 'hidden-submit save-btn-mobile' do %>
           <i class="fas fa-save"></i>
         <% end %>
@@ -18,43 +18,45 @@
 <% Category.where(company_id: current_user.company_id).order(title: :asc).each do |theme| %>
   <div class="accordion-module">
     <div class="theme-title">
-      <p onclick='openAccordion(this);'><%= theme.title %></p>
-      <div class=flex-row-between-centered>
-        <i class="fas fa-pen" onclick='openForm(this);'></i>
-        <div class='hidden hidden-form-ajax'>
-          <%= simple_form_for theme, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-            <div class='flex-row-between-centered'>
-              <%= f.hidden_field :ajax, value: true %>
-              <%= f.text_field :title, style: 'height: 100%;' %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
-                <i class="fas fa-save"></i>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-        <%= link_to category_path(theme, ajax: true), method: :delete, remote: true, input_html: {multipart: true}, data: {confirm: 'Are you sure ?'} do %>
-          <i class="fas fa-trash-alt"></i>
+      <p ondblclick='openForm(this);'><%= theme.title %></b> - <%= theme.workshops.count %></p>
+      <div class='hidden hidden-form-ajax'>
+        <%= simple_form_for theme, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+          <div class='flex-row-between-centered'>
+            <%= f.hidden_field :ajax, value: true %>
+            <%= f.text_field :title, style: 'height: 100%;' %>
+            <%= button_tag :submit, class: 'hidden-submit' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
+          </div>
         <% end %>
+      </div>
+      <div onclick='openAccordion(this);'>
+        <i class="fas fa-caret-down"></i>
       </div>
     </div>
   </div>
   <div class="panel-module">
-    <div class="theme-title">
-      <p><%= theme.description %></p>
+    <div class="theme-description">
       <div>
-        <i class="fas fa-pen" onclick='openForm(this);'></i>
+        <p class='description' ondblclick='openForm(this);'><%= theme.description %></p>
         <div class='hidden hidden-form-ajax'>
-          <%= simple_form_for theme, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-            <div class='flex-row-between-centered'>
-              <%= f.hidden_field :ajax, value: true %>
-              <%= f.text_field :description, style: 'height: 100%;' %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
-                <i class="fas fa-save"></i>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
+        <%= simple_form_for theme, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+          <div class='flex-row-between-centered'>
+            <%= f.hidden_field :ajax, value: true %>
+            <%= f.text_field :description, style: 'height: 100%;' %>
+            <%= button_tag :submit, class: 'hidden-submit' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
+          </div>
+        <% end %>
       </div>
+        <% theme.workshops.map(&:title).each do |title| %>
+          <p><i><%= title %></i></p>
+        <% end %>
+      </div>
+      <%= link_to category_path(theme, ajax: true), method: :delete, remote: true, input_html: {multipart: true}, data: {confirm: 'Are you sure ?'} do %>
+        <i class="fas fa-trash-alt"></i>
+      <% end %>
     </div>
   </div>
 <% end %>

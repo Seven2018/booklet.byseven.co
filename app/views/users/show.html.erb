@@ -81,25 +81,29 @@
   </div>
   <div class="user-trainings">
     <h2>Upcoming Trainings</h2>
-    <div class="upcoming-trainings">
-      <div class="upcoming-trainings-card">
-        <div class="user-training-title">
-          <h3><b>Just a test to see what would happen if the title was absurdly long maybe this isnt long enough</b></h3>
+    <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: 1}).where('date >= ?', Date.today).each do |workshop| %>
+      <div class="upcoming-trainings">
+        <div class="upcoming-trainings-card">
+          <div class="user-training-title">
+            <h3><b><%= workshop.title %></b></h3>
+          </div>
+          <p><%= workshop.date.strftime('%d/%m/%Y') %></p>
+          <p><%= workshop.duration %> min</p>
         </div>
-        <p>Workshop Date</p>
-        <p>Workshop Duration</p>
       </div>
-    </div>
+    <% end %>
     <h2>Completed Trainings</h2>
-    <div class="completed-trainings">
-      <div class="completed-trainings-card">
-        <div class="user-training-title">
-          <h3><b>Just a test to see what would happen if the title was absurdly long maybe this isnt long enough</b></h3>
+    <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: 1}).where('date < ?', Date.today).each do |workshop| %>
+      <div class="upcoming-trainings">
+        <div class="upcoming-trainings-card">
+          <div class="user-training-title">
+            <h3><b><%= workshop.title %></b></h3>
+          </div>
+          <p><%= workshop.date.strftime('%d/%m/%Y') %></p>
+          <p><%= workshop.duration %></p>
         </div>
-        <p>Workshop Date</p>
-        <p>Workshop Duration</p>
       </div>
-    </div>
+    <% end %>
   </div>
 <div>
   <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
