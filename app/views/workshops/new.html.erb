@@ -12,9 +12,9 @@
         <div class="module_zero active" data-map="greet">
           <h2>Create a new workshop</h2>
           <%= simple_form_for :new_workshop, url: create_workshop_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
-            <%= f.input :title, placeholder:'Upselling' %>
+            <%= f.input :title, label: 'Title:', placeholder:'Upselling' %>
             <%# f.input :categories, collection: Category.where(company_id:current_user.company_id), as: :check_boxes %>
-            <%= f.label :description %>
+            <%= f.label :description, label: 'Description:' %>
             <%= f.rich_text_area :description %>
           <div class="controls">
             <a class="prev disabled" id='back-zero'>Back</a>
