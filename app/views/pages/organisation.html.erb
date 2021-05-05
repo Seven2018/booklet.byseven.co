@@ -125,7 +125,8 @@
   bookletcontainer = document.getElementById('booklet-container')
   filter_slider = document.querySelector('.filter-dropdown-form')
   filter_btn.addEventListener('click', (event) => {
-    filter_slider.style.width = "375px";
+    console.log('mesballs');
+    filter_slider.style.width = "100%";
     filter_slider.style.zindex = "100";
   })
 
@@ -133,55 +134,5 @@
     filter_slider.style.width = "0px";
     filter_slider.style.zindex = "100";
     filter_slider.style.padding = "0px";
-  })
-
-  isClicked = false;
-
-  function toggleCheckbox(element) {
-    if(!isClicked) {
-      isClicked = true;
-      checkbox = element.querySelector('input');
-      checkfilter = element;
-      deletefilter = element.parentNode.querySelector('.filter-twitter-btn-x');
-      pillfilter = element.parentNode;
-      icon = element.querySelector('#icon');
-      icon2 = element.querySelector('#icon2');
-
-      if (checkbox.checked) {
-        deletefilter.style.display = 'inherit';
-        checkfilter.style.borderRight = '1px solid grey';
-        pillfilter.classList.remove('filter-checked')
-        icon2.classList.add('hidden')
-        icon.classList.remove('hidden')
-        checkbox.checked = false
-      } else {
-        deletefilter.style.display = 'none';
-        checkfilter.style.borderRight = 'none';
-        pillfilter.classList.add('filter-checked')
-        icon2.classList.remove('hidden')
-        icon.classList.add('hidden')
-        checkbox.checked = true
-      }
-    }
-    setTimeout(function(){
-      isClicked = false;
-    },10);
-  }
-
-  document.querySelectorAll('.tag-selector').forEach((el) => {
-    if (el.checked) {
-      element = el.parentNode;
-      checkfilter = element;
-      deletefilter = element.parentNode.querySelector('.filter-twitter-btn-x');
-      pillfilter = element.parentNode;
-      icon = element.querySelector('#icon');
-      icon2 = element.querySelector('#icon2');
-      deletefilter.style.display = 'none';
-      checkfilter.style.borderRight = 'none';
-      pillfilter.classList.add('filter-checked')
-      icon2.classList.remove('hidden')
-      icon.classList.add('hidden')
-      el.checked = true
-    }
   })
 </script>
