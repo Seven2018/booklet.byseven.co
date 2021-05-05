@@ -14,9 +14,6 @@
   color: #F26419 !important;
 }
 
-// .catalogue-index-infos-title {
-//   min-width: 100rem;
-// }
 
 .catalogue-index-card-mobile {
   height: 10rem;
@@ -100,10 +97,6 @@
   align-items: center;
 }
 
-// .catalogue-index-infos-title {
-//   min-width: 110rem;
-// }
-
 .catalogue-index-card {
   border-bottom: 1px solid rgba(0,0,0,0.1);
   position: relative;
@@ -113,7 +106,7 @@
 }
 
 .catalogue-index-info {
-  width: 22rem;
+  width: 20rem;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -125,8 +118,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  @include from-xlarge {
-    width: 35rem;
+  @include from-medium-low {
+    width: 24rem;
+  }
+  @include from-large {
+    width: 30rem;
   }
 
   &:last-of-type {
