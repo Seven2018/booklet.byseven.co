@@ -20,10 +20,18 @@
   </div>
   <div class='workshop-show-card'>
     <div class='workshop-show-card-main flex-column-centered'>
+      <div class="book-time">
+        <% if @training_workshop.workshop.workshop_type == 'Synchronous' %>
+          <h3><%= "#{@training_workshop.date.strftime('%d/%m/%Y')} From #{@training_workshop.starts_at.strftime('%H:%M')} to #{@training_workshop.ends_at.strftime('%H:%M')}" %></h3>
+        <% elsif @training_workshop.workshop.workshop_type == 'Synchronous' && @training_workshop.available_date.present? %>
+          <h3><%= "From #{@training_workshop.date.strftime('%d/%m/%Y')} at #{@training_workshop.starts_at.strftime('%H:%M')} to #{@training_workshop.available_date.strftime('%d/%m/%Y')} at #{@training_workshop.ends_at.strftime('%H:%M')}" %></h3>
+        <% else %>
+          <h3><%= "From #{@training_workshop.date.strftime('%d/%m/%Y')} at #{@training_workshop.starts_at.strftime('%H:%M')}" %></h3>
+        <% end %>
+      </div>
       <h1><%= @training_workshop.workshop.title %></h1>
       <h3>By <%= @training_workshop.workshop.author.firstname %></h3>
       <img src='<%= @training_workshop.workshop.author.picture %>' alt="" class='avatar-large-workshop-card' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-      <p><%= @training_workshop.workshop.workshop_type %></p>
       <p><%= "#{@training_workshop.workshop.duration} min" %></p>
     </div>
     <div class="workshop-show-card-footer centered-item">
@@ -31,7 +39,7 @@
         <p><%= @training_workshop.workshop.description %></p>
       </div>
     </div>
-          <div id="container-workshop-booked">
+    <div id="container-workshop-booked">
       <div id="workshop-booked-infos">
         <div class="flex-row-between-centered">
           <% if Attendee.find_by(training_workshop_id: @training_workshop.id, user_id: current_user.id)&.status == 'Invited' %>
@@ -45,31 +53,16 @@
             <button id="workshop-booked-infos-main" class='btn btn-edit-red btn-disabled'>Session Booked</button>
           <% end %>
         </div>
-        <div class="book-time">
-          <% if @training_workshop.workshop.workshop_type == 'Synchronous' %>
-            <h3><b>Booked:</b> <%= "#{@training_workshop.date.strftime('%d/%m/%Y')} From #{@training_workshop.starts_at.strftime('%H:%M')} to #{@training_workshop.ends_at.strftime('%H:%M')}" %></h3>
-          <% elsif @training_workshop.workshop.workshop_type == 'Synchronous' && @training_workshop.available_date.present? %>
-            <h3><%= "From #{@training_workshop.date.strftime('%d/%m/%Y')} at #{@training_workshop.starts_at.strftime('%H:%M')} to #{@training_workshop.available_date.strftime('%d/%m/%Y')} at #{@training_workshop.ends_at.strftime('%H:%M')}" %></h3>
-          <% else %>
-            <h3><%= "From #{@training_workshop.date.strftime('%d/%m/%Y')} at #{@training_workshop.starts_at.strftime('%H:%M')}" %></h3>
-          <% end %>
-        </div>
+
       </div>
       <div id="workshop-booked-participants">
-        <% if @training_workshop.training.present? && (['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level) %>
-          <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-white' disabled>Manage Users</button></a>
-        <% elsif ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
-          <%= link_to 'Manage Users', update_book_training_workshop_path(@training_workshop), class: 'btn btn-edit-white' %>
-        <% end %>
-        <ul id='workshop-booked-attendee-list'>
-          <% ind = 0 %>
-          <% @training_workshop.attendees.each do |attendee| %>
-            <% unless ind >= 10 %>
-              <li><img src="<%= attendee.user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'></li>
-              <% ind += 1 %>
-            <% end %>
+        <div class="manage-users-btn">
+          <% if @training_workshop.training.present? && (['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level) %>
+            <a data-toggle='modal' data-target='#inviteUsers'><button class='btn btn-edit-white' disabled>Manage Booking</button></a>
+          <% elsif ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+            <%= link_to 'Manage Booking', update_book_training_workshop_path(@training_workshop), class: 'btn btn-edit-white' %>
           <% end %>
-        </ul>
+        </div>
       </div>
     </div>
   </div>

@@ -81,29 +81,47 @@
   </div>
   <div class="user-trainings">
     <h2>Upcoming Trainings</h2>
-    <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: 1}).where('date >= ?', Date.today).each do |workshop| %>
-      <div class="upcoming-trainings">
-        <div class="upcoming-trainings-card">
-          <div class="user-training-title">
-            <h3><b><%= workshop.title %></b></h3>
+    <div class="trainings-row">
+      <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |workshop| %>
+        <%= link_to training_workshop_path(workshop) do %>
+          <div class="training-card-main">
+            <div class="upcoming-trainings-card">
+              <div class="user-training-title">
+                <% if workshop.title.length > 60 %>
+                  <h3><b><%= workshop.title.first(60)+'...' %></b></h3>
+                <% else %>
+                  <h3><b><%= workshop.title %></b></h3>
+                <% end %>
+              </div>
+              <p><i class="fas fa-calendar-alt"></i> <%= workshop.date.strftime('%d/%m/%Y') %></p>
+              <div class='workshop-time'><p><i class="fas fa-clock"></i> <%= workshop.duration %> min</p></div>
+            </div>
           </div>
-          <p><%= workshop.date.strftime('%d/%m/%Y') %></p>
-          <p><%= workshop.duration %> min</p>
-        </div>
-      </div>
-    <% end %>
+        <% end %>
+      <% end %>
+    </div>
     <h2>Completed Trainings</h2>
-    <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: 1}).where('date < ?', Date.today).each do |workshop| %>
-      <div class="upcoming-trainings">
-        <div class="upcoming-trainings-card">
-          <div class="user-training-title">
-            <h3><b><%= workshop.title %></b></h3>
+    <div class="trainings-row">
+      <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |workshop| %>
+        <%= link_to training_workshop_path(workshop) do %>
+          <div class="training-card-main">
+            <div class="completed-trainings-card">
+              <div class="user-training-title">
+                <% if workshop.title.length > 60 %>
+                  <h3><b><%= workshop.title.first(60)+'...' %></b></h3>
+                <% else %>
+                  <h3><b><%= workshop.title %></b></h3>
+                <% end %>
+              </div>
+              <div class="user-training-bottom">
+                <p><i class="fas fa-calendar-alt"></i> <%= workshop.date.strftime('%d/%m/%Y') %></p>
+                <p><i class="fas fa-clock"></i> <%= workshop.duration %> min</p>
+              </div>
+            </div>
           </div>
-          <p><%= workshop.date.strftime('%d/%m/%Y') %></p>
-          <p><%= workshop.duration %></p>
-        </div>
-      </div>
-    <% end %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 <div>
   <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
@@ -150,4 +168,35 @@
       })
     };
   </script>
+  <script>
+  sliders = document.querySelectorAll('.trainings-row');
+  sliders.forEach((slider) => {
+    isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true;
+      slider.classList.add('active');
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => {
+      isDown = false;
+      slider.classList.remove('active');
+    });
+    slider.addEventListener('mouseup', () => {
+      isDown = false;
+      slider.classList.remove('active');
+    });
+    slider.addEventListener('mousemove', (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 3; //scroll-fast
+      slider.scrollLeft = scrollLeft - walk;
+      console.log(walk);
+    });
+  })
+</script>
 <% end %>
