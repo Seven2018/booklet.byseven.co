@@ -2,12 +2,12 @@
   <div class="modal-header">
     <div id="modal-title" style=" display: flex; justify-content: flex-start; align-items: center;">
       <h3 class="modal-title" id="myModalLabel"><%= "#{@user.firstname} #{@user.lastname}" %></h3>
-    <button class="dropdown-toggle btn-icon-grey" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-    <%= link_to user_path(@user), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-      <p data-toggle='modal' data-target='#newUser' class='dropdown-item'>Delete User</p>
-    </div>
-  <% end %>
+      <button class="dropdown-toggle btn-icon-grey" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        <%= link_to user_path(@user), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+          <p data-toggle='modal' data-target='#newUser' class='dropdown-item'>Delete User</p>
+        <% end %>
+      </div>
     </div>
     <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>

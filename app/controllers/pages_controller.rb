@@ -49,7 +49,6 @@ class PagesController < ApplicationController
   end
 
   def organisation
-
     # Index with 'search' option and global visibility for SEVEN Users
     index_function(User.all)
     # Index for other Users, with visibility limited to programs proposed by their company only

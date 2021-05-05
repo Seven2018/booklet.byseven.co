@@ -33,7 +33,7 @@ class TagsController < ApplicationController
   end
 
   def delete_tag
-    @tag = Tag.find(params[:id])
+    @tag = Tag.find(params[:tag][:id])
     authorize @tag
     @tag.destroy
     respond_to do |format|
