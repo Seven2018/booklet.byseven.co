@@ -4,109 +4,7 @@
 <div class='organization-page'>
   <div class='filter-dropdown-form'>
     <div class="hidden-form" id='filter-block'>
-      <div class="fil">
-        <div class="flex-row-between-centered">
-          <h3 class="category-title"><b>Filter</b></h3>
-          <div id='tag-category-new'>
-            <div id='tag-category-new-button' class='icon-btn' onclick='openForm(this);'>
-              <i class="fas fa-plus"></i>
-            </div>
-            <div id='tag-category-new-form' class='hidden hidden-form-ajax'>
-              <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
-                <div class='flex-row-between-centered'>
-                  <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;' %>
-                  <%= button_tag :submit, class: 'hidden-submit' do %>
-                    <i class="fas fa-save"></i>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <div id="tag-category-delete">
-            <div id='tag-category-new-button' class='icon-btn' onclick='openForm(this);'>
-              <i class="fas fa-minus"></i>
-            </div>
-            <div id='tag-category-new-form' class='hidden hidden-form-ajax'>
-              <%= simple_form_for :tag_category, url: delete_tag_category_path(ajax: true), method: :get, remote: true, input_html: {multipart: true} do |f| %>
-                <div class='flex-row-between-centered'>
-                  <%= f.input :id, collection: TagCategory.where(company_id: current_user.company_id).order(name: :asc), required: false, style: 'height: 100%;' %>
-                  <%= button_tag :submit, class: 'hidden-submit' do %>
-                    <i class="fas fa-save"></i>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <i class="fas fa-times" id='close-btn'></i>
-      </div>
-      <% i = 1 %>
-      <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
-        <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
-        <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
-          <div class="filter-form-input">
-            <div class="category-name flex-row-start-centered">
-              <legend><%= category.name.capitalize %></legend>
-              <div class='tag-new'>
-                <div data-target="#category-<%= category.id %>" class='tag-new-button icon-btn' onclick='fetchCategoryForm(this);'>
-                  <i class="fas fa-plus"></i>
-                </div>
-              </div>
-              <div class='tag-new'>
-                <div data-target="#delete-category-<%= category.id %>" class='tag-new-button icon-btn' onclick='fetchCategoryForm(this);'>
-                  <i class="fas fa-minus"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="flex-filter">
-          <%= f.collection_check_boxes :tag, Tag.all.where(tag_category_id: category.id), :id, :tag_name  do |b| %>
-            <div class="filter-twitter-btn" id='pillfilter'>
-              <div class="filter-twitter-btn-check" id='check-filter'>
-                <p><%= b.label { b.check_box + b.text }  %></p>
-                <div class='icon' id="icon">
-                  <i class="fas fa-plus"></i>
-                </div>
-                <div class='icon hidden' id="icon2">
-                  <i class="fas fa-check"></i>
-                </div>
-              </div>
-              <div class="filter-twitter-btn-x" id='delete-filter'>
-                <i class="fas fa-times"></i>
-              </div>
-            </div>
-          <% end %>
-          </div>
-        <% end %>
-        <div class=filter-text>
-          <%= f.submit 'Filter', class: 'final-filter-btn' %>
-      <% end %>
-      <%= link_to 'Clear All', organisation_path, class: 'final-filter-clear' %>
-      </div>
-      <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
-        <div class='hidden-form-category-ajax hidden' id="category-<%= category.id %>">
-          <%= simple_form_for :tag, url: tags_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
-            <div class='flex-row-between-centered'>
-              <%= f.text_field :tag_name, placeholder: 'New Tag', style: 'height: 100%;' %>
-              <%= f.hidden_field :tag_category_id, value: category.id %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
-                <i class="fas fa-save"></i>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-        <div class='hidden-form-category-ajax hidden' id="delete-category-<%= category.id %>">
-          <%= simple_form_for :tag, url: delete_tag_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
-            <div class='flex-row-between-centered'>
-              <%= f.input :id, collection: Tag.where(company_id: current_user.company_id, tag_category_id: category.id).order(tag_name: :asc), label_method: :tag_name, required: false, label: false, style: 'height: 100%;' %>
-              <%= f.hidden_field :tag_category_id, value: category.id %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
-                <i class="fas fa-save"></i>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+      <%= render 'organisation_ajax' %>
     </div>
   </div>
   <div class='organisation-users'>
@@ -227,7 +125,6 @@
   bookletcontainer = document.getElementById('booklet-container')
   filter_slider = document.querySelector('.filter-dropdown-form')
   filter_btn.addEventListener('click', (event) => {
-    console.log('mesballs');
     filter_slider.style.width = "375px";
     filter_slider.style.zindex = "100";
   })
@@ -238,29 +135,53 @@
     filter_slider.style.padding = "0px";
   })
 
-  var checkboxes = document.getElementsByName('filter[tag]');
-  checkfilter = document.getElementById('check-filter')
-  pillfilter = document.getElementById('pillfilter')
-  icon = document.getElementById('icon')
-  icon2 = document.getElementById('icon2')
-  deletefilter = document.getElementById('delete-filter')
-  checkfilter.addEventListener('click', (event) => {
-    for (var i=0; i<checkboxes.length; i++) {
-      if (checkboxes[i].checked) {
+  isClicked = false;
+
+  function toggleCheckbox(element) {
+    if(!isClicked) {
+      isClicked = true;
+      checkbox = element.querySelector('input');
+      checkfilter = element;
+      deletefilter = element.parentNode.querySelector('.filter-twitter-btn-x');
+      pillfilter = element.parentNode;
+      icon = element.querySelector('#icon');
+      icon2 = element.querySelector('#icon2');
+
+      if (checkbox.checked) {
         deletefilter.style.display = 'inherit';
         checkfilter.style.borderRight = '1px solid grey';
         pillfilter.classList.remove('filter-checked')
         icon2.classList.add('hidden')
         icon.classList.remove('hidden')
+        checkbox.checked = false
       } else {
+        deletefilter.style.display = 'none';
+        checkfilter.style.borderRight = 'none';
+        pillfilter.classList.add('filter-checked')
+        icon2.classList.remove('hidden')
+        icon.classList.add('hidden')
+        checkbox.checked = true
+      }
+    }
+    setTimeout(function(){
+      isClicked = false;
+    },10);
+  }
+
+  document.querySelectorAll('.tag-selector').forEach((el) => {
+    if (el.checked) {
+      element = el.parentNode;
+      checkfilter = element;
+      deletefilter = element.parentNode.querySelector('.filter-twitter-btn-x');
+      pillfilter = element.parentNode;
+      icon = element.querySelector('#icon');
+      icon2 = element.querySelector('#icon2');
       deletefilter.style.display = 'none';
       checkfilter.style.borderRight = 'none';
       pillfilter.classList.add('filter-checked')
       icon2.classList.remove('hidden')
       icon.classList.add('hidden')
-      }
-  }
-})
-
-
+      el.checked = true
+    }
+  })
 </script>

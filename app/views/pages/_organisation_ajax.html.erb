@@ -36,7 +36,7 @@
 </div>
 <% i = 1 %>
 <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
-  <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
+  <% tag_checked = params[:filter][:tag].reject{|x| x.empty?} if params[:filter].present? %>
   <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
     <div class="filter-form-input">
       <div class="category-name flex-row-start-centered">
@@ -46,18 +46,19 @@
             <i class="fas fa-plus"></i>
           </div>
         </div>
-        <div class='tag-new'>
+        <!-- <div class='tag-new'>
           <div data-target="#delete-category-<%= category.id %>" class='tag-new-button icon-btn' onclick='fetchCategoryForm(this);'>
             <i class="fas fa-minus"></i>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="flex-filter">
-    <%= f.collection_check_boxes :tag, Tag.all.where(tag_category_id: category.id), :id, :tag_name  do |b| %>
-      <div class="filter-twitter-btn" id='pillfilter'>
-        <div class="filter-twitter-btn-check" id='check-filter'>
-          <p><%= b.label { b.check_box(class: 'tag-selector') + b.text }  %></p>
+    <%= f.collection_check_boxes :tag, Tag.all.where(tag_category_id: category.id), :id, :tag_name, checked: tag_checked do |b| %>
+      <div class="filter-twitter-btn">
+        <div class="filter-twitter-btn-check" onclick='toggleCheckbox(this);'>
+          <%= b.check_box(class: 'tag-selector') %>
+          <p><%= b.text %></p>
           <div class='icon' id="icon">
             <i class="fas fa-plus"></i>
           </div>
@@ -65,9 +66,11 @@
             <i class="fas fa-check"></i>
           </div>
         </div>
-        <div class="filter-twitter-btn-x" id='delete-filter'>
-          <i class="fas fa-times"></i>
-        </div>
+        <%= link_to delete_tag_path(id: b.object.id), method: :get, remote: true, input_html: {multipart: true}, data: {confirm: "Delete '#{b.text}' tag ?"} do %>
+          <div class="filter-twitter-btn-x">
+            <i class="fas fa-times"></i>
+          </div>
+        <% end %>
       </div>
     <% end %>
     </div>

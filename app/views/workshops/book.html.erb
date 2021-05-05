@@ -10,20 +10,25 @@
     <h2><b>Book Date for <%= @workshop.title %></b></h2>
     <%= simple_form_for :filter, url: book_workshop_path(@workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
     <h4>1. Select Date and Time</h4>
-    <div class="mod-date">
-      <% if params[:filter].present? %>
-        <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.strptime(params[:filter][:date], '%Y-%m-%d') } %>
+    <% if params[:filter].present? %>
+      <div class="mod-date">
+        <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.strptime(params[:filter][:date], '%d/%m/%Y') } %>
         <div class="start-time">
           <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M') %>
           <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M') %>
         </div>
-      <% else %>
+      </div>
+    <% else %>
+      <div class="mod-date">
         <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
         <div class="start-time">
           <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
           <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
         </div>
-      <% end %>
+      </div>
+    <% end %>
+    <div class="btn" onclick='addDate(this);'>
+      <p>Add Date</p>
     </div>
   <%# end %>
   </div>
@@ -120,12 +125,28 @@ function toggle(source) {
     checkboxes[i].checked = source.checked;
   }
 }
-
-select_button = document.getElementById('select_all');
-select_button.addEventListener('click', event => {
-
-})
 </script>
 
+<script>
+  i = 1;
+
+  function addDate(source) {
+    template = source.parentNode.querySelectorAll('.mod-date')[source.parentNode.querySelectorAll('.mod-date').length - 1];
+    content = template.innerHTML;
+    new_date = document.createElement('div');
+    new_date.innerHTML = content;
+    new_date.classList.add('mod-date');
+    new_date.querySelector('input').name = 'filter[date-' + i.toString() + ']';
+    new_date.querySelectorAll('select').forEach((element) => {
+      element.name = element.name.slice(0, element.name.length - 1) + '-' + i.toString() + ']';
+    })
+    i = i + 1;
+    template.parentNode.insertBefore(new_date, source);
+    flatpickr(new_date.querySelector('input'), {
+      disableMobile: true,
+      dateFormat: "d/m/Y",
+    })
+  }
+</script>
 
 

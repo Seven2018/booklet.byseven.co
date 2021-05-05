@@ -99,6 +99,7 @@
 
 .catalogue-index-card {
   border-bottom: 1px solid rgba(0,0,0,0.1);
+  position: relative;
   h3,  {
     margin: 0;
   }
@@ -124,6 +125,10 @@
     width: 30rem;
   }
 
+  &:last-of-type {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 
 .catalogue-index-info-order {
