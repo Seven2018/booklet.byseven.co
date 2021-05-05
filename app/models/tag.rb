@@ -5,4 +5,5 @@ class Tag < ApplicationRecord
   has_many :training_workshops, through: :tag_workshops
   belongs_to :company
   belongs_to :tag_category
+  validates :tag_name, presence: true
 end

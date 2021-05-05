@@ -49,6 +49,7 @@ class PagesController < ApplicationController
   end
 
   def organisation
+
     # Index with 'search' option and global visibility for SEVEN Users
     index_function(User.all)
     # Index for other Users, with visibility limited to programs proposed by their company only
@@ -74,15 +75,6 @@ class PagesController < ApplicationController
     respond_to do |format|
       format.html {redirect_to catalogue_path}
       format.js
-    end
-  end
-
-  %w(catalogue_workshops_title_order_asc catalogue_workshops_title_order_desc catalogue_workshops_type_order_asc catalogue_workshops_type_order_desc catalogue_workshops_duration_order_asc catalogue_workshops_duration_order_desc ).each do |name|
-    def name
-      respond_to do |format|
-        format.html {redirect_to catalogue_path}
-        format.js
-      end
     end
   end
 
@@ -121,7 +113,7 @@ def catalogue_programs_duration_order_asc
         @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
-        tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
+        tags = Tag.where(id: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
         if params[:filter][:job] != [""] && params[:filter][:job].present?
           if tags.present?
             @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?), user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
@@ -129,7 +121,7 @@ def catalogue_programs_duration_order_asc
             @users = (parameter.where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?)))
           end
         else
-          @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+          @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(id: tags)}).uniq)
         end
       else
         @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')

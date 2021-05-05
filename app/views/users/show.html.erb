@@ -81,7 +81,7 @@
   </div>
   <div class="user-trainings">
     <h2>Upcoming Trainings</h2>
-    <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: 1}).where('date >= ?', Date.today).each do |workshop| %>
+    <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |workshop| %>
       <div class="upcoming-trainings">
         <div class="upcoming-trainings-card">
           <div class="user-training-title">
@@ -93,7 +93,7 @@
       </div>
     <% end %>
     <h2>Completed Trainings</h2>
-    <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: 1}).where('date < ?', Date.today).each do |workshop| %>
+    <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |workshop| %>
       <div class="upcoming-trainings">
         <div class="upcoming-trainings-card">
           <div class="user-training-title">

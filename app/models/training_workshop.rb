@@ -7,6 +7,7 @@ class TrainingWorkshop < ApplicationRecord
   has_many :Tags, through: :Tag_workshops
   has_many :training_workshop_mods, dependent: :destroy
   has_many :mods, through: :training_workshop_mods
+  validates :date, :starts_at, :ends_at, presence: true
   validate :end_date_after_start_date
   has_rich_text :description
 

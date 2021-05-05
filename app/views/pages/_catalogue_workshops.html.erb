@@ -46,6 +46,7 @@
             </div>
           </div>
         </div>
+        <div class="catalogue-index-info"></div>
       </div>
     </div>
   </div>
@@ -64,28 +65,29 @@
   </div>
   <div class="workshop-catalogue-desktop">
   <% workshops.each do |workshop| %>
-    <%= link_to workshop_path(workshop) do %>
-      <div class='catalogue-index-card'>
-        <div class="catalogue-index-infos flex-row-between-centered">
-          <div class="catalogue-index-info">
-            <p data-toggle="tooltip" title="<%= workshop.title %>"><%= workshop.title %></p>
-          </div>
-          <div class="catalogue-index-info">
-            <p class='work-duration'><%= " #{workshop.duration} min" %></p>
-          </div>
-          <div class="catalogue-index-info">
-            <% if workshop&.categories.count > 1 %>
-                <p data-toggle="tooltip" title='<%= "#{workshop.categories.map(&:title).join(', ')}" %>'><%= workshop&.categories.first&.title %> +</p>
-              <% elsif workshop&.categories.count == 1 %>
-                <p style='color: #F26419'><%= workshop&.categories.first&.title %></p>
-              <% else workshop&.categories.count < 1 %>
-                <p style='color: #8C8B8A'>No Theme</p>
-              <% end %>
-          </div>
+    <div class='catalogue-index-card'>
+      <%= link_to '', workshop_path(workshop), class: 'stretched-link' %>
+      <div class="catalogue-index-infos flex-row-between-centered">
+        <div class="catalogue-index-info">
+          <p data-toggle="tooltip" title="<%= workshop.title %>"><%= workshop.title %></p>
         </div>
-       <button class='booking-btn btn-last'><%= link_to 'Book', book_workshop_path(workshop) %></button>
+        <div class="catalogue-index-info">
+          <p class='work-duration'><%= " #{workshop.duration} min" %></p>
+        </div>
+        <div class="catalogue-index-info">
+          <% if workshop&.categories.count > 1 %>
+              <p data-toggle="tooltip" title='<%= "#{workshop.categories.map(&:title).join(', ')}" %>'><%= workshop&.categories.first&.title %> +</p>
+            <% elsif workshop&.categories.count == 1 %>
+              <p style='color: #F26419'><%= workshop&.categories.first&.title %></p>
+            <% else workshop&.categories.count < 1 %>
+              <p style='color: #8C8B8A'>No Theme</p>
+            <% end %>
+        </div>
+        <div class="catalogue-index-info">
+          <button class='booking-btn btn-last'><%= link_to 'Book', book_workshop_path(workshop) %></button>
+        </div>
       </div>
-    <% end %>
+    </div>
   <% end %>
   </div>
   <div class="workshop-catalogue-mobile">
