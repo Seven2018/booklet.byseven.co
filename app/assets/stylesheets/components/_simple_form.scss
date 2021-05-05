@@ -74,18 +74,15 @@ form {
   }
 }
 
-.form-control:focus {
-  border-color: black;
-  box-shadow: none;
-}
+
 
 .form-control.is-valid {
   border-color: #ced4da;
   background-image: none;
 
   &:focus {
-    border-color: black;
-    box-shadow: none;
+    border-color: #93c4fd;
+    box-shadow: 0 0 0 0.2rem rgba(22, 127, 251, .25);
   }
 }
 
