@@ -159,13 +159,14 @@ class WorkshopsController < ApplicationController
           i = 1
           while true
             if params[:filter]["date-#{i}"].present?
-              new_training_workshop = TrainingWorkshop.create(workshop.attributes.except("id", "created_at", "updated_at", "author_id").merge(date: Date.strptime(params[:filter]["date-#{i}"], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]["starts_at(1i)"]+'-'+params[:filter]["starts_at(2i)"]+'-'+params[:filter]["starts_at(3i)"]+'-'+params[:filter]["starts_at(4i)-#{i}"]+'-'+params[:filter]["starts_at(5i)-#{i}"], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]["ends_at(4i)-#{i}"]+'-'+params[:filter]["ends_at(5i)-#{i}"], '%Y-%m-%d-%H-%M'), workshop_id: workshop.id))
+              new_training_workshop = TrainingWorkshop.create(workshop.attributes.except("title", "id", "created_at", "updated_at", "author_id").merge(title: workshop.title + " #{i}/#{training_workshops.count + 1}",date: Date.strptime(params[:filter]["date-#{i}"], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]["starts_at(1i)"]+'-'+params[:filter]["starts_at(2i)"]+'-'+params[:filter]["starts_at(3i)"]+'-'+params[:filter]["starts_at(4i)-#{i}"]+'-'+params[:filter]["starts_at(5i)-#{i}"], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]["ends_at(4i)-#{i}"]+'-'+params[:filter]["ends_at(5i)-#{i}"], '%Y-%m-%d-%H-%M'), workshop_id: workshop.id))
               training_workshops << new_training_workshop
               i += 1
             else
               break
             end
           end
+          @training_workshop.update(title: workshop.title + " 1/#{training_workshops.count}")
         end
         participants.each do |participant|
           training_workshops.each do |training_workshop|
