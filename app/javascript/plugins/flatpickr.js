@@ -7,12 +7,12 @@ flatpickr(".datepicker", {
   dateFormat: "d/m/Y",
 })
 
-flatpickr(".timepicker", {
-  enableTime: true,
-  noCalendar: true,
-  dateFormat: "H:i",
-  time_24hr: true,
-  defaultHour: 9,
-  minuteIncrement: 10
-})
+// flatpickr(".timepicker", {
+//   enableTime: true,
+//   noCalendar: true,
+//   dateFormat: "H:i",
+//   time_24hr: true,
+//   defaultHour: 9,
+//   minuteIncrement: 10
+// })
 

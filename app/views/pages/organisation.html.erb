@@ -90,16 +90,66 @@
     document.getElementById("myDropdown").classList.toggle("show");
   }
 
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
   function openForm(element) {
-    element.classList.toggle('hidden');
-    element.parentNode.querySelector('.hidden-form-ajax').classList.toggle('hidden');
+    control_buttons = element.parentNode.parentNode.querySelectorAll('.icon-btn');
+    target_form = element.parentNode.querySelector('.hidden-form-ajax');
+    form_container = element.parentNode.parentNode
+    control_buttons.forEach((el) => {
+      el.classList.add('hidden');
+    })
+    target_form.classList.remove('hidden');
+    isClicked = false;
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, form_container)) {
+        if(!isClicked){
+          form_container.querySelectorAll('.icon-btn').forEach((el) => {
+            el.classList.remove('hidden');
+          })
+          target_form.classList.add('hidden');
+          if (target_form.querySelector('input') != null) {
+            target_form.querySelector('input').value = '';
+          }
+          isClicked = true;
+          setTimeout(function(){
+            isClicked = false;
+          },10);
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      }
+    });
   }
 
   function fetchCategoryForm(element) {
     form = document.querySelector(element.getAttribute('data-target'));
+    initial_top = form.offsetTop
+    initial_left = form.offsetLeft
     form.style.top = (element.offsetTop - 7).toString() + 'px';
     form.style.left = element.offsetLeft.toString() + 'px';
     form.classList.toggle('hidden');
+    setTimeout(function(){
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, form) && outsideClick(e, element.parentNode)) {
+          form.style.top = initial_top + 'px';
+          form.style.left = initial_left + 'px';
+          form.classList.toggle('hidden');
+          form.querySelector('input').value = '';
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      })
+    },10);
   }
 
   // Close the dropdown if the user clicks outside of it

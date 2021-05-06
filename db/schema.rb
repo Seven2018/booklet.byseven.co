@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_14_141536) do
+ActiveRecord::Schema.define(version: 2021_05_05_154442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -242,6 +242,18 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.bigint "workshop_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "date1"
+    t.datetime "date2"
+    t.datetime "date3"
+    t.datetime "date4"
+    t.time "starts_at1"
+    t.time "starts_at2"
+    t.time "starts_at3"
+    t.time "starts_at4"
+    t.time "ends_at1"
+    t.time "ends_at2"
+    t.time "ends_at3"
+    t.time "ends_at4"
     t.index ["company_id"], name: "index_training_workshops_on_company_id"
     t.index ["training_id"], name: "index_training_workshops_on_training_id"
     t.index ["workshop_id"], name: "index_training_workshops_on_workshop_id"

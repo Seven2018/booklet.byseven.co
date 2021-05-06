@@ -23,9 +23,9 @@
       <div id='tag-category-new-form' class='hidden hidden-form-ajax'>
         <%= simple_form_for :tag_category, url: delete_tag_category_path(ajax: true), method: :get, remote: true, input_html: {multipart: true} do |f| %>
           <div class='flex-row-between-centered'>
-            <%= f.input :id, collection: TagCategory.where(company_id: current_user.company_id).order(name: :asc), required: false, style: 'height: 100%;' %>
+            <%= f.input :id, collection: TagCategory.where(company_id: current_user.company_id).order(name: :asc), required: false, label: false, style: 'height: 100%;', prompt: 'Delete Category' %>
             <%= button_tag :submit, class: 'hidden-submit' do %>
-              <i class="fas fa-save"></i>
+              <i class="far fa-trash-alt"></i>
             <% end %>
           </div>
         <% end %>

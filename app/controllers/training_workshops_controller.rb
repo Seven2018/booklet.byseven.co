@@ -60,7 +60,8 @@ class TrainingWorkshopsController < ApplicationController
     elsif params[:commit] == 'Update'
       params.permit!
       participants = params[:participant][:user_ids].reject{|x| x.empty?}.map{|c| c.to_i}
-      @training_workshop.update(date: Date.strptime(params[:filter][:date], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M'))
+      # @training_workshop.update(date: Date.strptime(params[:filter][:date], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M'))
+      @training_workshop.update(training_workshop_params)
       if @training_workshop.save
         Attendee.where(training_workshop_id: @training_workshop.id).where.not(user_id: participants).map{|x| x.destroy}
         participants.each do |participant|
@@ -81,9 +82,9 @@ class TrainingWorkshopsController < ApplicationController
         @users = (User.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: tags}).uniq)
       end
     elsif params[:clear].present?
-      @users = User.where(company_id: current_user.company_id)
+      @users = User.where(company_id: current_user.company_id).order(lastname: :asc)
     else
-      @users = User.joins(:attendees).where(attendees: {training_workshop_id: @training_workshop.id})
+      @users = (User.joins(:attendees).where(attendees: {training_workshop_id: @training_workshop.id}).order(lastname: :asc) + User.where(company_id: current_user.company_id).order(lastname: :asc)).uniq
     end
   end
 
@@ -100,6 +101,6 @@ class TrainingWorkshopsController < ApplicationController
   end
 
   def training_workshop_params
-    params.require(:training_workshop).permit(:title, :duration, :participant_number, :description, :content, :image, :date, :available_date, :starts_at, :ends_at)
+    params.require(:filter).permit(:title, :duration, :participant_number, :description, :content, :image, :date, :available_date, :starts_at, :ends_at, :date1, :starts_at1, :ends_at1, :date2, :starts_at2, :ends_at2, :date3, :starts_at3, :ends_at3, :date4, :starts_at4, :ends_at4)
   end
 end

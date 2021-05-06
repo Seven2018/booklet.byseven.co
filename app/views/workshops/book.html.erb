@@ -20,7 +20,15 @@
       </div>
     <% else %>
       <div class="mod-date">
-        <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.today } %>
+        <div>
+          <div class="flex-row-start-centered">
+            <%= f.label 'Date:' %>
+            <div class="icon-btn hidden" onclick='removeDate(this);'>
+              <i class="fas fa-times"></i>
+            </div>
+          </div>
+          <%= f.input :date, label: false, input_html: { class: 'datepicker', value: Date.today } %>
+        </div>
         <div class="start-time">
           <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
           <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
@@ -136,16 +144,41 @@ function toggle(source) {
     new_date = document.createElement('div');
     new_date.innerHTML = content;
     new_date.classList.add('mod-date');
-    new_date.querySelector('input').name = 'filter[date-' + i.toString() + ']';
+    new_date.querySelector('input').name = 'filter[date' + i.toString() + ']';
     new_date.querySelectorAll('select').forEach((element) => {
-      element.name = element.name.slice(0, element.name.length - 1) + '-' + i.toString() + ']';
+      if (i == 1) {
+        element.name = element.name.split('(')[0] + i.toString() + '(' + element.name.split('(')[1]
+      } else {
+        element.name = element.name.split('(')[0].slice(0, element.name.split('(')[0].length - 1) + i.toString() + '(' + element.name.split('(')[1]
+      }
     })
     i = i + 1;
     template.parentNode.insertBefore(new_date, source);
+    new_date.querySelector('label').innerHTML = 'Date ' + i.toString() + ':';
+    document.querySelectorAll('.icon-btn').forEach((element) => {
+      element.classList.add('hidden');
+    })
+    new_date.querySelector('.icon-btn').classList.toggle('hidden');
     flatpickr(new_date.querySelector('input'), {
       disableMobile: true,
       dateFormat: "d/m/Y",
     })
+    if (i == 5) {
+      source.classList.toggle('hidden');
+    }
+  }
+
+  function removeDate(source) {
+    div = source.parentNode.parentNode.parentNode;
+    div.parentNode.removeChild(div);
+    del_buttons = document.querySelectorAll('.icon-btn');
+    del_buttons.forEach((element) => {
+      element.classList.add('hidden');
+    })
+    i = i - 1;
+    if (i > 1) {
+      del_buttons[del_buttons.length - 1].classList.remove('hidden');
+    }
   }
 </script>
 

@@ -21,12 +21,10 @@
   <div class='workshop-show-card'>
     <div class='workshop-show-card-main flex-column-centered'>
       <div class="book-time">
-        <% if @training_workshop.workshop.workshop_type == 'Synchronous' %>
-          <h3><%= "#{@training_workshop.date.strftime('%d/%m/%Y')} From #{@training_workshop.starts_at.strftime('%H:%M')} to #{@training_workshop.ends_at.strftime('%H:%M')}" %></h3>
-        <% elsif @training_workshop.workshop.workshop_type == 'Synchronous' && @training_workshop.available_date.present? %>
-          <h3><%= "From #{@training_workshop.date.strftime('%d/%m/%Y')} at #{@training_workshop.starts_at.strftime('%H:%M')} to #{@training_workshop.available_date.strftime('%d/%m/%Y')} at #{@training_workshop.ends_at.strftime('%H:%M')}" %></h3>
-        <% else %>
-          <h3><%= "From #{@training_workshop.date.strftime('%d/%m/%Y')} at #{@training_workshop.starts_at.strftime('%H:%M')}" %></h3>
+        <% @training_workshop.dates.each do |key, value| %>
+          <% if value[:date].present? %>
+            <p><%= value[:date].strftime('%d/%m/%Y') + ' from ' + value[:starts_at].strftime('%H:%M') + ' to ' + value[:ends_at].strftime('%H:%M') %></p>
+          <% end %>
         <% end %>
       </div>
       <h1><%= @training_workshop.workshop.title %></h1>
