@@ -119,8 +119,13 @@ body {
   }
 
   .index-controls-buttons {
-    div {
+
+    & > div {
       margin-left: 1rem;
+    }
+
+    .dropdown-menu {
+      min-width: 15rem;
     }
   }
 }

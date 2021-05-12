@@ -57,12 +57,12 @@ class PagesController < ApplicationController
         end
       end
     end
-    if params[:filter].present?
+    # if params[:filter].present?
       respond_to do |format|
         format.html {organisation_path}
         format.js
       end
-    end
+    # end
   end
 
   def catalogue_filter_workshop
@@ -126,8 +126,16 @@ def catalogue_programs_duration_order_asc
         end
         @filter_jobs = params[:filter][:job].reject{|c| c.empty?}
         @filter_tags = params[:filter][:tag].reject{|c| c.empty?}
+      elsif params[:order].present?
+        if params[:order] == 'tag_category'
+          test = Tag.where(tag_category_id: params[:tag_category_id])
+          params[:mode] == 'asc' ? @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :asc)) : @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :desc))
+          @users = (@users + User.where(company_id: current_user.company.id).order(lastname: :asc)).uniq
+        else
+          params[:mode] == 'asc' ? @users = User.where(id: params[:users].split(',')).order(params[:order]) : @users = User.where(id: params[:users].split(',')).order(params[:order]).reverse
+        end
       else
-        @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')
+        @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
       end
     end
   end

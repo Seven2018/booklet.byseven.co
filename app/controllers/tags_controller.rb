@@ -12,6 +12,7 @@ class TagsController < ApplicationController
     if @tag.save
       @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
       @users = User.where(id: params[:tag][:users].split(' '))
+      @opened = params[:button]
       if params[:ajax].present?
         respond_to do |format|
           format.html {redirect_to organisation_path}
@@ -38,6 +39,9 @@ class TagsController < ApplicationController
     @tag = Tag.find(params[:tag][:id])
     authorize @tag
     @tag.destroy
+    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+    @users = User.where(id: params[:tag][:users].split(' '))
+    @opened = params[:button]
     respond_to do |format|
       format.html {redirect_to organisation_path}
       format.js
