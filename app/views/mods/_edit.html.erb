@@ -3,7 +3,7 @@
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
       <h3 class="modal-title" id="myModalLabel"><%= "Edit #{mod.title}" %></h3>
     </div>
-    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body modal-body<%= mod.id %>" id="modalNewBookinBody">
     <%= simple_form_for mod do |f| %>
@@ -22,7 +22,7 @@
               <p><b>SAVE</b> <i class="fas fa-save"></i></p>
             <% end %>
             <%= link_to mod_path(mod, workshop_id: @workshop.id), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-              <button class="btn btn-edit-red btn-edit-trash btn-edit-icon btn-last">
+              <button class="btn btn-edit-red btn-edit-trash btn-icon btn-last">
                 <i class="fas fa-trash-alt"></i>
               </button>
             <% end %>

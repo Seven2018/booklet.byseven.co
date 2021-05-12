@@ -18,7 +18,6 @@ class RequestsController < ApplicationController
     @request = Request.new
     authorize @request
     @request.user_id = current_user.id
-    @request.training_program_id = params[:training_program_id]
     @request.status = 'Pending'
     @request.save ? (redirect_to request_path(@request)) : (render :new)
   end

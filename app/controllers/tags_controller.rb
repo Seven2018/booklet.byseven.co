@@ -10,6 +10,8 @@ class TagsController < ApplicationController
     authorize @tag
     @tag.company_id = current_user.company_id
     if @tag.save
+      @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+      @users = User.where(id: params[:tag][:users].split(' '))
       if params[:ajax].present?
         respond_to do |format|
           format.html {redirect_to organisation_path}

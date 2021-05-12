@@ -3,7 +3,7 @@
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
       <h3 class="modal-title" id="myModalLabel"><%= "Edit #{question.question}" %></h3>
     </div>
-    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body modal-body" id="modalNewBookinBody">
     <%= simple_form_for [question.mod, question] do |f| %>
@@ -63,7 +63,7 @@
         </div>
       </div>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
-        <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
+        <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-icon' do %>
           <i class="fas fa-save"></i>
         <% end %>
       </div>

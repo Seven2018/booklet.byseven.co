@@ -1,2 +1,0 @@
-document.getElementById('Programs').innerHTML = '<%= j (render("pages/catalogue_programs", training_programs: TrainingProgram.joins(:program_categories).where(company_id: current_user.company_id, program_categories: {category_id: @program_categories}))) %>';
-

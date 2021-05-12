@@ -11,18 +11,6 @@ class AttendeesController < ApplicationController
     end
   end
 
-  def create_all
-    training = Training.find(params[:training_id])
-    @attendees = Attendee.where(training_workshop_id: [training.training_workshops.ids], user_id: params[:user_id])
-    authorize @attendees
-    unless training.training_workshops.nil?
-      training.training_workshops.each do |workshop|
-        Attendee.create(training_workshop_id: workshop.id, user_id: params[:user_id], status: 'Confirmed', creator_id: current_user.id)
-      end
-    end
-    redirect_to redirect_path(list: "#{params[:user_id]} ", training_workshop_id: "|#{training.training_workshops.ids}|", to_delete: " ")
-  end
-
   def update
     authorize @attendee
     @attendee.update(status: params[:status])
@@ -34,53 +22,6 @@ class AttendeesController < ApplicationController
     @attendee.destroy
     event_to_delete = @attendee.user_id.to_s+':'+@attendee.calendar_uuid+',' if @attendee.calendar_uuid.present?
     redirect_to redirect_path(list: "#{@attendee.user_id} ", training_workshop_id: "|#{@attendee.training_workshop.id}|", to_delete: "#{event_to_delete} ")
-  end
-
-  def destroy_all
-    @attendees = Attendee.joins(:training_workshop).where(training_workshops: {training_id: params[:training_id]}, user_id: params[:user_id])
-    authorize @attendees
-    training = Training.find(params[:training_id])
-    event_to_delete = ''
-    @attendees.each do |attendee|
-      event_to_delete+=attendee.user_id.to_s+':'+attendee.calendar_uuid+',' if attendee.calendar_uuid.present?
-    end
-    unless training.training_workshops.nil?
-      training.training_workshops.each do |workshop|
-        Attendee.find_by(user_id: params[:user_id], training_workshop_id: workshop.id).destroy
-      end
-    end
-    redirect_to redirect_path(list: "#{params[:user_id]} ", training_workshop_id: "|#{training.training_workshops.ids}|", to_delete: "#{event_to_delete} ")
-  end
-
-  def invite_user_to_training
-    training = Training.find(params[:training_id])
-    @attendees = Attendee.where(training_workshop_id: [training.training_workshops.ids])
-    authorize @attendees
-    params.permit
-    user_ids = params[:training][:user_ids].drop(1).map(&:to_i)
-    users = User.where(id: [user_ids])
-    set_current_user
-    event_to_delete = ''
-    users.each do |user|
-      training.training_workshops.each do |training_workshop|
-        # new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
-        new_attendee = Attendee.new(training_workshop_id: training_workshop.id, user_id: user.id, status: params[:status], creator_id: current_user.id)
-        if !new_attendee.save && params[:invite][:transform] == 'true'
-          Attendee.find_by(training_workshop_id: training_workshop.id, user_id: user.id).update(status: 'Registered')
-        elsif new_attendee.save
-          Notification.create(content: "You have been invited to the following training: #{training.title}", user_id: user.id)
-          # UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
-        end
-      end
-    end
-    (User.joins(:attendees).where(attendees: {training_workshop_id: [training.training_workshops.ids]}).uniq - users).each do |user|
-      Attendee.where(training_workshop_id: [training.training_workshops.ids], user_id: user.id).each do |attendee|
-        event_to_delete+=user.id.to_s+':'+attendee.calendar_uuid+',' if attendee.calendar_uuid.present?
-        attendee.destroy
-      end
-      Notification.create(content: "Invitation cancelled: #{training.title}", user_id: user.id)
-    end
-    redirect_to redirect_path(list: "#{user_ids.join(',')}", training_workshop_id: "|#{training.training_workshops.ids}|", to_delete: "#{event_to_delete}")
   end
 
   def invite_user_to_workshop
@@ -119,14 +60,6 @@ class AttendeesController < ApplicationController
     @attendees.each do |attendee|
       attendee.mark_as_completed if user_ids.include?(attendee.user_id)
     end
-    redirect_back(fallback_location: root_path)
-  end
-
-  def confirm_training
-    training = Training.find(params[:training_id])
-    @attendees = Attendee.where(training_workshop_id: [training.training_workshops.ids], user_id: current_user.id)
-    authorize @attendees
-    @attendees.update_all(status: 'Confirmed')
     redirect_back(fallback_location: root_path)
   end
 

@@ -28,6 +28,7 @@ gem "omniauth-rails_csrf_protection"
 gem 'omniauth-google-oauth2'
 gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 gem 'ransack'
+gem 'bullet', group: 'development'
 
 
 group :development do

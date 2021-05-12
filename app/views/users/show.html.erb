@@ -2,8 +2,8 @@
   <%= link_to organisation_path, class: 'btn return-arrow' do %><i class="fas fa-arrow-left"></i><% end %>
   <div id='show-buttons'>
     <% if current_user.access_level == 'Super Admin' || @user == current_user || (['Admin', 'HR'].include?(current_user.access_level) && current_user.company == @user.company) %>
-      <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-edit-icon'><i class='fas fa-pen'></i></button></a>
-      <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-edit-icon btn-last'><i class="fas fa-key"></i></button></a>
+      <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon'><i class='fas fa-pen'></i></button></a>
+      <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last'><i class="fas fa-key"></i></button></a>
     <% end %>
   </div>
 </div>
@@ -41,9 +41,9 @@
       </div>
       <div class="user-job">
         <p>Job Title:</p>
-        <p class="data" id='job' onclick='openForm(this)'><%=  @user.job_description if @user.job_description.present? %></p>
+        <p class="data" id='job' onclick='openForm(this)'><%=  @user.job_title if @user.job_title.present? %></p>
         <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'job'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-          <%= f.input :job_description, label: false, input_html: {value: @user.job_description} %>
+          <%= f.input :job_title, label: false, input_html: {value: @user.job_title} %>
           <%= button_tag :submit, class: 'hidden-submit' do %>
             <i class="fas fa-save"></i>
           <% end %>

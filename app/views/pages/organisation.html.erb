@@ -1,63 +1,73 @@
-<div id="index-controls" class='flex-row-between-centered'>
-  <h1>Employees</h1>
+<div class="organisation-main-container">
+  <%= render 'organisation_ajax' %>
 </div>
-<div class='organization-page'>
-  <div class='filter-dropdown-form'>
-    <div class="hidden-form" id='filter-block'>
-      <%= render 'organisation_ajax' %>
-    </div>
-  </div>
-  <div class='organisation-users'>
-    <div class='staff-members'>
-      <h3 class="category-title"><b>Staff Members</b></h3>
-      <div class='mobile-btns'>
-        <div class="mobile-filter-btn">
-          <i class="fas fa-sliders-h fa-2x"></i>
+<div class="organisation-filter-container">
+  <div class="organisation-filter-background" onclick='closeFilter();'></div>
+  <div class="organisation-filter-dropright">
+    <div class="organisation-filter-controls">
+      <div class='organisation-filter-controls-title'>
+        <i class="fas fa-filter"></i>
+        <p>Filter options</p>
+      </div>
+      <div class="organisation-filter-controls-buttons">
+        <div class="btn-icon" onclick='closeFilter();'>
+          <i class="fas fa-times"></i>
         </div>
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-        <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-          <!-- <a data-toggle='modal' data-target='#newTagCategory' class='dropdown-item'>New Tag Category</a>
-          <a data-toggle='modal' data-target='#newTag' class='dropdown-item'>New Tag</a> -->
-          <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
-          <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
-        </div>
-      <% end %>
       </div>
     </div>
-    <% @users.each do |user| %>
-      <%= link_to user_path(user) do %>
-        <div class='user-index-card'>
-          <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          <div class="user-index-infos flex-row-between-centered">
-            <div class="user-index-info">
-              <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.fullname %></p>
-            </div>
-            <div class="user-index-info">
-              <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
-            </div>
-            <div class="user-index-info">
-              <% tags = '' %>
-              <% user.tags.each do |tag| %>
-                <% if tag == user.tags.last %>
-                  <% tags += "#{tag.tag_name}" %>
-                <% else %>
-                  <% tags += "#{tag.tag_name}, " %>
-                <% end %>
-              <% end %>
-              <p data-toggle="tooltip" title="<%= tags %>"><%= tags %></p>
+    <%= simple_form_for :filter, url: organisation_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
+      <div class="organisation-filter-block">
+        <div class="organisation-filter-block-title">
+          <div>
+            <p>Job Title</p>
+            <div class="organisation-filter-block-title-buttons">
+              <p onclick='clearFilter(this);'>Clear</p>
+              <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+                <i class="fas fa-angle-down"></i>
+              </div>
             </div>
           </div>
         </div>
+        <div class="organisation-filter-block-checkboxes">
+            <%= f.input :job, collection: User.where(company_id: current_user.company_id).map(&:job_title).uniq.reject{|x| x.empty?}.sort, as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
+        </div>
+      </div>
+      <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+        <div class="organisation-filter-block">
+          <div class="organisation-filter-block-title">
+            <div>
+              <p><%= tag_category.name %></p>
+              <div class="organisation-filter-block-title-buttons">
+                <p onclick='clearFilter(this);'>Clear</p>
+                <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="organisation-filter-block-checkboxes">
+              <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
+          </div>
+        </div>
       <% end %>
+      <%= f.submit 'Filter', class: 'hidden hidden-submit' %>
     <% end %>
+    <div class="centered-item" style='margin-top: 2rem;'>
+      <div class="btn-white" onclick='resetFilter()'>
+        <i class="fas fa-times-circle"></i>
+        <p>Reset Filter</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="organisation-manage-users-container">
+  <div class="organisation-manage-users-background" onclick='closeManager();'></div>
+  <div class="organisation-manage-users-dropright">
+    <%= render 'organisation_manage_users_dropright' %>
   </div>
 </div>
 
 
-
-<!-- </div>
- -->
 <!-- Modals -->
 <div class='modal fade' id='newTagCategory' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
@@ -84,105 +94,155 @@
 </div>
 
 <script>
-  /* When the user clicks on the button,
-  toggle between hiding and showing the dropdown content */
-  function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-  }
-
-  function outsideClick(event, notelem) {
-    notelem = $(notelem); // jquerize (optional)
-    // check outside click for multiple elements
-    var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
-    }
-    if (clickedOut) return true;
-    else return false;
-  }
-
   function openForm(element) {
-    control_buttons = element.parentNode.parentNode.querySelectorAll('.icon-btn');
-    target_form = element.parentNode.querySelector('.hidden-form-ajax');
-    form_container = element.parentNode.parentNode
-    control_buttons.forEach((el) => {
-      el.classList.add('hidden');
-    })
-    target_form.classList.remove('hidden');
-    isClicked = false;
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, form_container)) {
-        if(!isClicked){
-          form_container.querySelectorAll('.icon-btn').forEach((el) => {
-            el.classList.remove('hidden');
-          })
-          target_form.classList.add('hidden');
-          if (target_form.querySelector('input') != null) {
-            target_form.querySelector('input').value = '';
-          }
-          isClicked = true;
-          setTimeout(function(){
-            isClicked = false;
-          },10);
-          this.removeEventListener('click', arguments.callee, false);
+    element.classList.toggle('hidden');
+    element.parentNode.querySelector('.hidden-form-category-ajax').classList.toggle('hidden');
+  }
+
+  function openFilter() {
+    filter_container = document.querySelector('.organisation-filter-container');
+    filter_dropright = document.querySelector('.organisation-filter-dropright');
+    filter_container.style.display = 'flex';
+    setTimeout(function(){
+      filter_dropright.style.width = '400px';
+    }, 1);
+  }
+
+  function closeFilter() {
+    filter_container = document.querySelector('.organisation-filter-container');
+    filter_dropright = document.querySelector('.organisation-filter-dropright');
+    filter_dropright.style.width = '0px';
+    setTimeout(function(){
+      filter_container.style.display = 'none';
+    }, 250);
+  }
+
+  function openManager() {
+    manage_users_container = document.querySelector('.organisation-manage-users-container');
+    manage_users_dropright = document.querySelector('.organisation-manage-users-dropright');
+    manage_users_container.style.display = 'flex';
+    setTimeout(function(){
+      manage_users_dropright.style.width = '400px';
+    }, 1);
+  }
+
+  function closeManager() {
+    filter_container = document.querySelector('.organisation-manage-users-container');
+    filter_dropright = document.querySelector('.organisation-manage-users-dropright');
+    filter_dropright.style.width = '0px';
+    setTimeout(function(){
+      filter_container.style.display = 'none';
+    }, 250);
+  }
+
+  rotated = 0;
+
+  function toggleTagCategoryDropdown(element) {
+    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
+    rotated = rotated + 180;
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '1000px';
+    } else {
+      block.style.maxHeight = '61px';
+    }
+  }
+
+
+  function autoSubmit(element) {
+    element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
+    hideClearButton();
+    document.querySelector('.filter').querySelector('.hidden-submit').click();
+  }
+
+  function hideClearButton() {
+    form = document.querySelector('.filter');
+    form.querySelectorAll('.organisation-filter-block').forEach((element) => {
+      checked = false;
+      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.checked == true) {
+          checked = true;
         }
+      })
+      if (checked == false) {
+        element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
       }
-    });
+    })
+  }
+
+  function clearFilter(element) {
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    block.querySelectorAll('input.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearButton();
+    document.querySelector('.filter').querySelector('.hidden-submit').click();
+  }
+
+  function resetFilter() {
+    form = document.querySelector('.filter');
+    form.querySelectorAll('.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearButton();
+    form.querySelector('.hidden-submit').click();
+  }
+
+  function removeJob(element) {
+    form = document.querySelector('.filter');
+    job = element.parentNode.getAttribute("name");
+    form.querySelector('.filter_job').querySelectorAll('input.check_boxes').forEach((checkbox) => {
+      if (checkbox.value == job) {
+        checkbox.checked = false;
+        form.querySelector('.hidden-submit').click();
+      }
+    })
+  }
+
+  function removeTag(element) {
+    form = document.querySelector('.filter');
+    job = element.parentNode.getAttribute("name");
+    form.querySelectorAll('.filter_tag').forEach((category) => {
+      category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.value == job) {
+          checkbox.checked = false;
+          form.querySelector('.hidden-submit').click();
+        }
+      })
+    })
+  }
+
+  function selectUser() {
+    ids = []
+    check_boxes = document.querySelectorAll('.select-user')
+    check_boxes.forEach((checkbox) => {
+      if (checkbox.checked == true) {
+        ids.push(checkbox.value);
+      }
+    })
+    document.querySelector('#add_tags_users').value = ids.join();
+  }
+
+  function clearInput(element) {
+    form = element.parentNode.parentNode;
+    form.querySelector('.hidden-submit').click();
+    form.querySelector('input').value = '';
   }
 
   function fetchCategoryForm(element) {
     form = document.querySelector(element.getAttribute('data-target'));
-    initial_top = form.offsetTop
-    initial_left = form.offsetLeft
+    console.log(element.offsetTop);
+    console.log(element.offsetLeft);
     form.style.top = (element.offsetTop - 7).toString() + 'px';
     form.style.left = element.offsetLeft.toString() + 'px';
     form.classList.toggle('hidden');
-    setTimeout(function(){
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, form) && outsideClick(e, element.parentNode)) {
-          form.style.top = initial_top + 'px';
-          form.style.left = initial_left + 'px';
-          form.classList.toggle('hidden');
-          form.querySelector('input').value = '';
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      })
-    },10);
   }
-
-  // Close the dropdown if the user clicks outside of it
-  window.onclick = function(event) {
-    if (!event.target.matches('.filter-dropbtn')) {
-      var dropdowns = document.getElementsByClassName("filter-dropdown-content");
-      var i;
-      for (i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
-        }
-      }
-    }
-  }
-
-  $('.filter-dropbtn').click(function(){
-    $(this).parent().toggleClass('open');
-  });
-
-  filter_btn = document.querySelector('.mobile-filter-btn')
-  close_btn = document.querySelector('#close-btn')
-  bookletcontainer = document.getElementById('booklet-container')
-  filter_slider = document.querySelector('.filter-dropdown-form')
-  filter_btn.addEventListener('click', (event) => {
-    console.log('mesballs');
-    filter_slider.style.width = "100%";
-    filter_slider.style.zindex = "100";
-  })
-
-  close_btn.addEventListener('click', (event) => {
-    filter_slider.style.width = "0px";
-    filter_slider.style.zindex = "100";
-    filter_slider.style.padding = "0px";
-  })
 </script>

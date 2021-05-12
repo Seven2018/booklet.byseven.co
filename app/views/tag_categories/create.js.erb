@@ -1,1 +1,2 @@
-document.getElementById('filter-block').innerHTML = '<%= j (render("pages/organisation_ajax", tag_category: @tag_category)) %>';
+document.querySelector('.organisation-main-container').innerHTML = '<%= j render("pages/organisation_ajax", users: @users) %>';
+document.querySelector('.organisation-manage-users-dropright').innerHTML = '<%= j render("pages/organisation_manage_users_dropright", tag_categories: @tag_categories) %>';

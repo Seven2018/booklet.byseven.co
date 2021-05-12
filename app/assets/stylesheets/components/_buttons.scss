@@ -11,8 +11,6 @@
   }
 }
 
-
-
 .btn {
   font-size: 1.6rem;
   color: #F26419 !important;
@@ -22,80 +20,35 @@
   }
 }
 
-.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-blue, .btn-invite-users {
+.btn-white {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: auto;
-  max-width: none;
-  padding: 0.45rem 2rem;
-  border-radius: 0.22rem;
-  box-sizing: border-box;
-  font-weight: 800 !important;
-  text-align: center;
-  transition: all 0.1s;
-  outline: none !important;
-  margin-right: 0.5rem;
-  color: white !important;
+  padding: 0 1rem;
+  height: 4rem;
+  background-color: white;
+  border-radius: 4px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
 
-  a {
-    color: white !important;
+  i, p {
+    color: #F26419;
   }
 
   i {
-    color: white;
+    margin-right: 1rem;
   }
 
-  &:hover, &:hover:enabled{
-    opacity: 0.8;
-    text-decoration: none !important;
-    color: white !important;
-  }
-}
+  &:hover {
+    background-color: #F26419;
 
-.btn-edit-white {
-  opacity: 0.8;
-  width: auto;
-  max-width: none;
-  padding: 0.45rem 2rem;
-  border-radius: 0.22rem;
-  box-sizing: border-box;
-  font-weight: 800 !important;
-  text-align: center;
-  transition: all 0.1s;
-  outline: none !important;
-  margin-right: 0.5rem;
-
-  &:hover, &:hover:enabled{
-    opacity: 1;
-    text-decoration: none !important;
+    i, p {
+      color: white;
+    }
   }
 }
 
-.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange {
-  color: white;
-}
-
-.btn-edit {
-  background-color: #E9C46A !important;
-}
-
-.btn-edit-red {
-  background-color: #E76F51!important;
-}
-
-.btn-edit-green {
-  background-color: #8FA078 !important;
-  p {
-    font-weight: 700 !important;
-  }
-
-}
-
-.btn-edit-blue {
-  background-color: #779DBF !important;
-}
-
-.btn-edit-grey {
-  background-color: #23282E !important;
-}
 
 .btn-edit-orange {
   background-color: #F26419 !important;
@@ -125,7 +78,7 @@
   box-shadow: 0 3px 4px 0 rgba(0,0,0,.25);
 }
 
-.btn-edit-icon {
+.btn-icon {
   height: 4rem;
   width: 4rem;
   display: flex;
@@ -134,14 +87,12 @@
   padding: 0 !important;
   min-width: 0 !important;
 
-  &::after {
-    z-index: 100;
+  i {
+    margin: 0;
   }
 }
 
-
-
-.btn-edit-icon-small {
+.btn-icon-small {
   height: 2rem;
   width: 2rem;
   display: flex;

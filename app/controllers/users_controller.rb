@@ -5,7 +5,6 @@ class UsersController < ApplicationController
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
-    raise
     index_function(policy_scope(User))
     # Index for other Users, with visibility limited to programs proposed by their company only
     if current_user.access_level == 'HR'
@@ -14,7 +13,6 @@ class UsersController < ApplicationController
         @Tags = @Tags.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc)
       end
     end
-    @training = Training.new
   end
 
   def show

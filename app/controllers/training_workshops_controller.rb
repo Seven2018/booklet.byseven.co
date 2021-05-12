@@ -14,29 +14,6 @@ class TrainingWorkshopsController < ApplicationController
     @workshop = Workshop.find(@training_workshop.workshop_id)
   end
 
-  # Allows management of TrainingWorkshops through a checkbox collection
-  def create
-    @training_workshop = TrainingWorkshop.new
-    authorize @training_workshop
-    @training = Training.find(params[:training_id])
-    # Select all Workshops whose checkbox is checked and create a TrainingWorkshop
-    array = params[:training][:workshop_ids].uniq.drop(1).map(&:to_i)
-    array.each do |ind|
-      workshop = Workshop.find(ind)
-      if TrainingWorkshop.where(workshop_id: ind).empty?
-        new_training_workshop = TrainingWorkshop.create(workshop.attributes.except("id", "created_at", "updated_at"))
-        new_training_workshop.update(training_id: @training.id, workshop_id: ind)
-      end
-    end
-    # Select all Workshops whose checkbox is unchecked and destroy their TrainingWorkshop, if existing
-    (Workshop.ids - array).each do |ind|
-      unless TrainingWorkshop.where(training_id: @training.id, workshop_id: ind).empty?
-        TrainingWorkshop.where(training_id: @training.id, workshop_id: ind).first.destroy
-      end
-    end
-    redirect_to training_path(@training)
-  end
-
   def update
     @training_workshop = TrainingWorkshop.find(params[:id])
     authorize @training_workshop

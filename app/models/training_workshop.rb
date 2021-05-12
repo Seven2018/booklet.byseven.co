@@ -1,5 +1,4 @@
 class TrainingWorkshop < ApplicationRecord
-  belongs_to :training, optional: true
   belongs_to :workshop
   has_many :attendees, dependent: :destroy
   has_many :users, through: :attendees

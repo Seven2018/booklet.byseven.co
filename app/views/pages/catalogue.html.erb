@@ -4,7 +4,7 @@
     <div id="index-buttons">
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
         <div>
-          <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" name='show-modal' type="button"  data-toggle="modal" data-target='#indexTheme' aria-haspopup="true" aria-expanded="false"><i class="fas fa-swatchbook"></i></button>
+          <button class="btn btn-edit-white btn-icon dropdown-toggle" name='show-modal' type="button"  data-toggle="modal" data-target='#indexTheme' aria-haspopup="true" aria-expanded="false"><i class="fas fa-swatchbook"></i></button>
         </div>
       <% end %>
 
@@ -13,13 +13,9 @@
   <div class="dashboard-tabs">
     <ul class="nav nav-tabs">
       <li role="presentation"><a href="#Workshops" data-toggle="tab" class='active'>Workshops</a></li>
-<!--       <li role="presentation"><a href="#Programs" data-toggle="tab">Programs</a></li> -->
     </ul>
   </div>
   <div class="tab-content">
-<!--     <div role="tabpanel" class="tab-pane" id="Programs">
-      <%# render 'catalogue_programs', training_programs: @training_programs %>
-    </div> -->
     <div role="tabpanel" class="tab-pane active" id="Workshops">
       <%= render 'catalogue_workshops', workshops: @workshops.order(title: :asc) %>
     </div>

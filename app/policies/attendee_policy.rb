@@ -17,28 +17,12 @@ class AttendeePolicy < ApplicationPolicy
     true
   end
 
-  def create_all?
-    true
-  end
-
-  def destroy_all?
-    true
-  end
-
   def invite_user_to_workshop?
-    check_access_hr
-  end
-
-  def invite_user_to_training?
     check_access_hr
   end
 
   def mark_as_completed?
     check_access_hr
-  end
-
-  def confirm_training?
-    true
   end
 
   def confirm_training_workshop?

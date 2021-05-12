@@ -130,32 +130,13 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "program_categories", force: :cascade do |t|
-    t.bigint "training_program_id"
-    t.bigint "category_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_program_categories_on_category_id"
-    t.index ["training_program_id"], name: "index_program_categories_on_training_program_id"
-  end
-
-  create_table "program_workshops", force: :cascade do |t|
-    t.bigint "training_program_id"
-    t.bigint "workshop_id"
-    t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["training_program_id"], name: "index_program_workshops_on_training_program_id"
-    t.index ["workshop_id"], name: "index_program_workshops_on_workshop_id"
-  end
-
   create_table "requests", force: :cascade do |t|
     t.string "status", default: "", null: false
     t.bigint "user_id"
-    t.bigint "training_program_id"
+    t.bigint "training_workshop_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["training_program_id"], name: "index_requests_on_training_program_id"
+    t.index ["training_workshop_id"], name: "index_requests_on_training_workshop_id"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
 
@@ -176,6 +157,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
 
   create_table "tag_categories", force: :cascade do |t|
     t.string "name"
+    t.integer "position"
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -202,19 +184,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
     t.index ["tag_category_id"], name: "index_tags_on_tag_category_id"
   end
 
-  create_table "training_programs", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.text "description", default: "", null: false
-    t.string "image", default: "", null: false
-    t.integer "participant_number", default: 0, null: false
-    t.bigint "company_id"
-    t.bigint "author_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_id"], name: "index_training_programs_on_author_id"
-    t.index ["company_id"], name: "index_training_programs_on_company_id"
-  end
-
   create_table "training_workshop_mods", force: :cascade do |t|
     t.integer "position", default: 0, null: false
     t.bigint "mod_id"
@@ -238,7 +207,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
     t.datetime "date"
     t.time "starts_at"
     t.time "ends_at"
-    t.bigint "training_id"
     t.bigint "workshop_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -255,21 +223,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
     t.time "ends_at3"
     t.time "ends_at4"
     t.index ["company_id"], name: "index_training_workshops_on_company_id"
-    t.index ["training_id"], name: "index_training_workshops_on_training_id"
     t.index ["workshop_id"], name: "index_training_workshops_on_workshop_id"
-  end
-
-  create_table "trainings", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.text "description"
-    t.string "image", default: "", null: false
-    t.integer "participant_number", default: 0, null: false
-    t.bigint "training_program_id"
-    t.bigint "company_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_trainings_on_company_id"
-    t.index ["training_program_id"], name: "index_trainings_on_training_program_id"
   end
 
   create_table "user_forms", force: :cascade do |t|
@@ -315,7 +269,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
     t.string "phone_number", default: "", null: false
     t.string "social_security", default: "", null: false
     t.string "gender", default: "", null: false
-    t.string "job_description", default: "", null: false
+    t.string "job_title", default: "", null: false
     t.string "linkedin", default: "", null: false
     t.string "picture", default: "", null: false
     t.string "access_level", default: "Employee", null: false
@@ -378,11 +332,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
   add_foreign_key "categories", "companies"
   add_foreign_key "mods", "companies"
   add_foreign_key "notifications", "users"
-  add_foreign_key "program_categories", "categories"
-  add_foreign_key "program_categories", "training_programs"
-  add_foreign_key "program_workshops", "training_programs"
-  add_foreign_key "program_workshops", "workshops"
-  add_foreign_key "requests", "training_programs"
+  add_foreign_key "requests", "training_workshops"
   add_foreign_key "requests", "users"
   add_foreign_key "skills", "skill_groups"
   add_foreign_key "tag_categories", "companies"
@@ -390,14 +340,10 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
   add_foreign_key "tag_workshops", "training_workshops"
   add_foreign_key "tags", "companies"
   add_foreign_key "tags", "tag_categories"
-  add_foreign_key "training_programs", "companies"
   add_foreign_key "training_workshop_mods", "mods"
   add_foreign_key "training_workshop_mods", "training_workshops"
   add_foreign_key "training_workshops", "companies"
-  add_foreign_key "training_workshops", "trainings"
   add_foreign_key "training_workshops", "workshops"
-  add_foreign_key "trainings", "companies"
-  add_foreign_key "trainings", "training_programs"
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
   add_foreign_key "user_skills", "skills"

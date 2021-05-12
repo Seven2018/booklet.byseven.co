@@ -1,86 +1,116 @@
-<div class="fil">
-  <div class="flex-row-between-centered">
-    <h3 class="category-title"><b>Filter</b></h3>
-    <div id='tag-category-new'>
-      <div id='tag-category-new-button' class='icon-btn' onclick='openForm(this);'>
-        <i class="fas fa-plus"></i>
-      </div>
-      <div id='tag-category-new-form' class='hidden hidden-form-ajax'>
-        <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
-          <div class='flex-row-between-centered'>
-            <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;' %>
-            <%= button_tag :submit, class: 'hidden-submit' do %>
-              <i class="fas fa-save"></i>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    <div id="tag-category-delete">
-      <div id='tag-category-new-button' class='icon-btn' onclick='openForm(this);'>
-        <i class="fas fa-minus"></i>
-      </div>
-      <div id='tag-category-new-form' class='hidden hidden-form-ajax'>
-        <%= simple_form_for :tag_category, url: delete_tag_category_path(ajax: true), method: :get, remote: true, input_html: {multipart: true} do |f| %>
-          <div class='flex-row-between-centered'>
-            <%= f.input :id, collection: TagCategory.where(company_id: current_user.company_id).order(name: :asc), required: false, label: false, style: 'height: 100%;', prompt: 'Delete Category' %>
-            <%= button_tag :submit, class: 'hidden-submit' do %>
-              <i class="far fa-trash-alt"></i>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <i class="fas fa-times" id='close-btn'></i>
-</div>
-<% i = 1 %>
-<%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
-  <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
-  <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
-    <div class="filter-form-input">
-      <div class="category-name flex-row-start-centered">
-        <legend><%= category.name.capitalize %></legend>
-        <div class='tag-new'>
-          <div data-target="#category-<%= category.id %>" class='tag-new-button icon-btn' onclick='fetchCategoryForm(this);'>
-            <i class="fas fa-plus"></i>
-          </div>
+<div id="index-controls" class='flex-row-between-centered'>
+  <% if @filter_tags.present? || @filter_jobs.present? %>
+    <div class="filter-selected-tags">
+      <h1><%= @users.count %> result(s) for</h1>
+      <% @filter_jobs.each do |job| %>
+        <div class="selected-tags" name='<%= job %>'>
+          <p><%= job %></p>
+          <i class="fas fa-times" onclick='removeJob(this);'></i>
         </div>
-        <div class='tag-new'>
-          <div data-target="#delete-category-<%= category.id %>" class='tag-new-button icon-btn' onclick='fetchCategoryForm(this);'>
-            <i class="fas fa-minus"></i>
-          </div>
+      <% end %>
+      <% @filter_tags.each do |tag| %>
+        <div class="selected-tags" name='<%= tag %>'>
+          <p><%= tag %></p>
+          <i class="fas fa-times" onclick='removeTag(this);'></i>
         </div>
-      </div>
-      <%= f.input :tag, label: false, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: tag_checked, legend_tag: false %>
+      <% end %>
     </div>
+  <% else %>
+    <h1>Employees (<%= @users.count %>)</h1>
   <% end %>
-  <div class=filter-text>
-    <%= f.submit 'Filter', class: 'final-filter-btn' %>
-<% end %>
-<%= link_to 'Clear All', organisation_path, class: 'final-filter-clear' %>
+  <div class="index-controls-buttons flex-row-between-centered">
+    <div class="btn-white" onclick='openFilter();'>
+      <i class="fas fa-filter"></i>
+      <p>Filter</p>
+    </div>
+    <div class="btn-white" onclick='openManager();'>
+      <i class="fas fa-user-tag"></i>
+      <p>Manage Tags</p>
+    </div>
+    <div class="btn-white btn-icon">
+      <i class="fas fa-ellipsis-h"></i>
+    </div>
+  </div>
 </div>
-<% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
-  <div class='hidden-form-category-ajax hidden' id="category-<%= category.id %>">
-    <%= simple_form_for :tag, url: tags_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
-      <div class='flex-row-between-centered'>
-        <%= f.text_field :tag_name, placeholder: 'New Tag', style: 'height: 100%;' %>
-        <%= f.hidden_field :tag_category_id, value: category.id %>
-        <%= button_tag :submit, class: 'hidden-submit' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
+<div class='organisation-page'>
+  <div class='organisation-users'>
+    <div class='user-index-headers'>
+      <div class="headers-div">
+        <input type="checkbox">
       </div>
+      <div class="headers-div">
+        <p>Name</p>
+        <div class="headers-div-order">
+          <a><i class="fas fa-caret-up"></i></a>
+          <a><i class="fas fa-caret-down"></i></a>
+        </div>
+      </div>
+      <div class="headers-div">
+        <p>Email</p>
+        <div class="headers-div-order">
+          <a><i class="fas fa-caret-up"></i></a>
+          <a><i class="fas fa-caret-down"></i></a>
+        </div>
+      </div>
+      <div class="headers-div">
+        <p>Job Title</p>
+        <div class="headers-div-order">
+          <a><i class="fas fa-caret-up"></i></a>
+          <a><i class="fas fa-caret-down"></i></a>
+        </div>
+      </div>
+      <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+        <div class="headers-div">
+          <p><%= tag_category.name %></p>
+          <div class="headers-div-order">
+            <a><i class="fas fa-caret-up"></i></a>
+            <a><i class="fas fa-caret-down"></i></a>
+          </div>
+        </div>
+      <% end %>
+      <div class="headers-div">
+        <i class="fas fa-plus" onclick="openForm(this);"></i>
+        <div class='hidden-form-category-ajax hidden'>
+          <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
+            <div class='flex-row-between-centered'>
+              <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;width:200px;' %>
+              <%= f.hidden_field :users, value: @users.map(&:id) %>
+              <%= f.submit '', class: 'hidden hidden-submit' %>
+              <div class="btn-white btn-icon" onclick='clearInput(this);'>
+                <i class="fas fa-save"></i>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <% @users.each do |user| %>
+        <div class='user-index-card'>
+          <div class="user-index-info">
+            <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
+            <%= link_to user_path(user) do %>
+              <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <% end %>
+          </div>
+          <div class="user-index-info">
+            <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.fullname %></p>
+          </div>
+          <div class="user-index-info">
+            <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+          </div>
+          <div class="user-index-info">
+            <p data-toggle="tooltip" title="<%= user.job_title %>"><%= user.job_title %></p>
+          </div>
+          <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+            <div class="user-index-info">
+              <% tags = '' %>
+              <% Tag.joins(:user_tags).where(tag_category_id: tag_category.id, user_tags: {user_id: user}).order(tag_name: :asc).each do |tag| %>
+                <% tags += tag.tag_name + ', ' %>
+              <% end %>
+              <p><%= tags[0..-3] %></p>
+            </div>
+          <% end %>
+        </div>
     <% end %>
   </div>
-  <div class='hidden-form-category-ajax hidden' id="delete-category-<%= category.id %>">
-    <%= simple_form_for :tag, url: delete_tag_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
-      <div class='flex-row-between-centered'>
-        <%= f.input :id, collection: Tag.where(company_id: current_user.company_id, tag_category_id: category.id).order(tag_name: :asc), label_method: :tag_name, required: false, label: false, style: 'height: 100%;' %>
-        <%= f.hidden_field :tag_category_id, value: category.id %>
-        <%= button_tag :submit, class: 'hidden-submit' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-<% end %>
+</div>
