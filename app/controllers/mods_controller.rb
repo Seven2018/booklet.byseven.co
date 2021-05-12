@@ -1,5 +1,6 @@
 class ModsController < ApplicationController
   before_action :set_mod, only: [:show, :update, :destroy]
+  helper VideoHelper
 
   def show
     authorize @module
@@ -19,6 +20,7 @@ class ModsController < ApplicationController
     @module = Mod.new(mod_params)
     authorize @module
     @module.document = params[:mod][:document]&.gsub(/edit/, 'present')
+    @module.document = '' if @module.document == nil
     @module.company_id = current_user.company_id
     if @module.save
       if params[:workshop_id].present?

@@ -23,14 +23,6 @@ Rails.application.routes.draw do
 
   # SKILLS
   resources :skills
-  resources :training_programs, only: %i[new create show update destroy] do
-    resources :program_workshops, only: %i[create]
-    get 'program_workshops/:id/move_up', to: "program_workshops#move_up", as: "move_up_program_workshop"
-    get 'program_workshops/:id/move_down', to: "program_workshops#move_down", as: "move_down_program_workshop"
-    resources :program_categories, only: %i[create]
-  end
-  get 'training_programs-filter', to: 'training_programs#filter', as: 'filter_training_programs'
-  resources :trainings, only: %i[show create update destroy]
   resources :training_workshops, only: %i[show create update destroy]
   get 'training_workshops/:id/copy', to: 'training_workshops#copy', as: 'copy_training_workshop'
   get 'training_workshops/:id/update_book', to: 'training_workshops#update_book', as: 'update_book_training_workshop'

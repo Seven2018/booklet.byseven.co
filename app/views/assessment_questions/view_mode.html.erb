@@ -1,8 +1,8 @@
 <div id="show-controls" class='flex-row-between-centered'>
   <% if @question.position != 1 %>
-    <%= link_to assessment_view_mode_assessment_question_path(@question.mod, @previous_question), class: 'btn-edit-icon return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+    <%= link_to assessment_view_mode_assessment_question_path(@question.mod, @previous_question), class: 'btn-icon return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
   <% else %>
-    <%= link_to '', class: 'btn-edit-icon return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+    <%= link_to '', class: 'btn-icon return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
   <% end %>
   <div id='show-buttons'>
   </div>

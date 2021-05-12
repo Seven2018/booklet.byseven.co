@@ -19,7 +19,7 @@
 <div class="training-index-dashboard">
   <div class='catalogue-index-list'>
     <h3 class='training-index-list-dashboard-title'>Trainings Overview</h3>
-    <% (@my_trainings + @my_workshops).sort_by(&:date).each do |element| %>
+    <% @my_workshops.order(date: :asc).each do |element| %>
       <% if (element.instance_of? TrainingWorkshop) && element.training_id.nil?%>
         <%= link_to training_workshop_path(element, dashboard: 'personal') do %>
           <div class='training-index-card'>

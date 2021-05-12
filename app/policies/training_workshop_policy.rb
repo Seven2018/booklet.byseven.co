@@ -17,10 +17,6 @@ class TrainingWorkshopPolicy < ApplicationPolicy
     true
   end
 
-  def create?
-    check_access
-  end
-
   def update?
     check_access
   end

@@ -150,28 +150,27 @@ class WorkshopsController < ApplicationController
       params.permit!
       participants = params[:participant][:user_ids].reject{|x| x.empty?}.map{|c| c.to_i}
       workshop = Workshop.find(params[:id].to_i)
-      training_workshops = []
-      @training_workshop = TrainingWorkshop.new(workshop.attributes.except("id", "created_at", "updated_at", "author_id").merge(date: Date.strptime(params[:filter][:date], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M')))
-      training_workshops << @training_workshop
+      # training_workshops = []
+      # @training_workshop = TrainingWorkshop.new(workshop.attributes.except("id", "created_at", "updated_at", "author_id").merge(date: Date.strptime(params[:filter][:date], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'] + ' CET', '%H-%M %Z'), ends_at: DateTime.strptime(params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'] + ' CET', '%H-%M %Z'), date1: Date.strptime(params[:filter][:date1], '%d/%m/%Y'), starts_at1: Time.strptime(params[:filter]["starts_at(4i)1"] + '-' + params[:filter]["starts_at(5i)1"] + ' CET', '%H-%M %Z'), ends_at1: Time.strptime(params[:filter]["ends_at(4i)1"] + '-' + params[:filter]["ends_at(5i)1"] + ' CET', '%H-%M %Z'), date2: Date.strptime(params[:filter][:date2], '%d/%m/%Y'), starts_at2: Time.strptime(params[:filter]["starts_at(4i)12"] + '-' + params[:filter]["starts_at(5i)12"] + ' CET', '%H-%M %Z'), ends_at2: Time.strptime(params[:filter]["ends_at(4i)12"] + '-' + params[:filter]["ends_at(5i)12"] + ' CET', '%H-%M %Z'), date3: Date.strptime(params[:filter][:date3], '%d/%m/%Y'), starts_at3: Time.strptime(params[:filter]["starts_at(4i)123"] + '-' + params[:filter]["starts_at(5i)123"] + ' CET', '%H-%M %Z'), ends_at3: Time.strptime(params[:filter]["ends_at(4i)123"] + '-' + params[:filter]["ends_at(5i)123"] + ' CET', '%H-%M %Z'), date4: Date.strptime(params[:filter][:date4], '%d/%m/%Y'), starts_at4: Time.strptime(params[:filter]["starts_at(4i)1234"] + '-' + params[:filter]["starts_at(5i)1234"] + ' CET', '%H-%M %Z'), ends_at4: Time.strptime(params[:filter]["ends_at(4i)1234"] + '-' + params[:filter]["ends_at(5i)1234"] + ' CET', '%H-%M %Z')))
+      @training_workshop = TrainingWorkshop.new(workshop.attributes.except("id", "created_at", "updated_at", "author_id").merge(params.require(:filter).permit(:title, :duration, :participant_number, :description, :content, :image, :date, :available_date, :starts_at, :ends_at, :date1, :starts_at1, :ends_at1, :date2, :starts_at2, :ends_at2, :date3, :starts_at3, :ends_at3, :date4, :starts_at4, :ends_at4)))
+      # training_workshops << @training_workshop
       @training_workshop.workshop_id = workshop.id
       if @training_workshop.save
-        if params[:filter]['date-1'].present?
-          i = 1
-          while true
-            if params[:filter]["date-#{i}"].present?
-              new_training_workshop = TrainingWorkshop.create(workshop.attributes.except("title", "id", "created_at", "updated_at", "author_id").merge(title: workshop.title + " #{i}/#{training_workshops.count + 1}",date: Date.strptime(params[:filter]["date-#{i}"], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]["starts_at(1i)"]+'-'+params[:filter]["starts_at(2i)"]+'-'+params[:filter]["starts_at(3i)"]+'-'+params[:filter]["starts_at(4i)-#{i}"]+'-'+params[:filter]["starts_at(5i)-#{i}"], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]["ends_at(4i)-#{i}"]+'-'+params[:filter]["ends_at(5i)-#{i}"], '%Y-%m-%d-%H-%M'), workshop_id: workshop.id))
-              training_workshops << new_training_workshop
-              i += 1
-            else
-              break
-            end
-          end
-          @training_workshop.update(title: workshop.title + " 1/#{training_workshops.count}")
-        end
+        # if params[:filter]['date-1'].present?
+        #   i = 1
+        #   while true
+        #     if params[:filter]["date-#{i}"].present?
+        #       new_training_workshop = TrainingWorkshop.create(workshop.attributes.except("title", "id", "created_at", "updated_at", "author_id").merge(title: workshop.title + " #{i}/#{training_workshops.count + 1}",date: Date.strptime(params[:filter]["date-#{i}"], '%d/%m/%Y'), starts_at: DateTime.strptime(params[:filter]["starts_at(1i)"]+'-'+params[:filter]["starts_at(2i)"]+'-'+params[:filter]["starts_at(3i)"]+'-'+params[:filter]["starts_at(4i)-#{i}"]+'-'+params[:filter]["starts_at(5i)-#{i}"], '%Y-%m-%d-%H-%M'), ends_at: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]["ends_at(4i)-#{i}"]+'-'+params[:filter]["ends_at(5i)-#{i}"], '%Y-%m-%d-%H-%M'), workshop_id: workshop.id))
+        #       training_workshops << new_training_workshop
+        #       i += 1
+        #     else
+        #       break
+        #     end
+        #   end
+        #   @training_workshop.update(title: workshop.title + " 1/#{training_workshops.count}")
+        # end
         participants.each do |participant|
-          training_workshops.each do |training_workshop|
-            Attendee.create(training_workshop_id: training_workshop.id, user_id: participant)
-          end
+          Attendee.create(training_workshop_id: @training_workshop.id, user_id: participant)
         end
         redirect_to training_workshop_path(@training_workshop)
       end

@@ -16,7 +16,7 @@
         <% end %>
         <p><%= "#{mod.duration}min" %></p>
       </div>
-      <% if mod.document.present? && mod.media.present? %>
+      <% unless mod.document.empty? && mod.media.empty? %>
         <div class="workshop-show-content-attached flex-row-between-start">
           <% if mod.document.include?('presentation/d/e') %>
             <iframe src="<%= mod.document.gsub(/pub/, 'embed') %>" frameborder="0" width="500" height="250" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

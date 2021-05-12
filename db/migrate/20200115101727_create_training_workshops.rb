@@ -12,7 +12,6 @@ class CreateTrainingWorkshops < ActiveRecord::Migration[6.0]
       t.datetime :date
       t.time :starts_at
       t.time :ends_at
-      t.references :training, foreign_key: true
       t.references :workshop, foreign_key: true
       t.timestamps
     end

@@ -1,0 +1,69 @@
+<div class="organisation-manage-users-controls">
+  <div class='organisation-manage-users-controls-title'>
+    <i class="fas fa-user-tag"></i>
+    <p>Manage Users</p>
+  </div>
+  <div class="organisation-manage-users-controls-buttons">
+    <div class="btn-icon" onclick='closeManager();'>
+      <i class="fas fa-times"></i>
+    </div>
+  </div>
+</div>
+<div class="organisation-manage-users-block">
+  <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
+    <div class='flex-row-between-centered'>
+      <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;' %>
+      <%= f.hidden_field :users, value: @users.map(&:id) %>
+      <%= f.submit '', class: 'hidden hidden-submit' %>
+      <div class="btn-white btn-icon" onclick='clearInput(this);'>
+        <i class="fas fa-save"></i>
+      </div>
+    </div>
+  <% end %>
+</div>
+<%= simple_form_for :add_tags, url: organisation_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
+  <% @tag_categories.each do |tag_category| %>
+    <div class="organisation-manage-users-block">
+      <div class="organisation-manage-users-block-title">
+        <div>
+          <p><%= tag_category.name %></p>
+          <div class="organisation-manage-users-block-title-buttons">
+            <p onclick='clearFilter(this);'>Clear</p>
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="organisation-manage-users-block-checkboxes">
+        <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false%>
+        <div class="new-tag" data-target="#category-<%= tag_category.id %>" onclick='fetchCategoryForm(this);'>
+          <i class="fas fa-plus"></i>
+          <p>Tag</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <%= f.hidden_field :users %>
+  <div class="centered-item" style='margin-top: 2rem;'>
+    <%= button_tag :submit, class: 'btn-white' do %>
+      <p>Apply to Users</p>
+    <% end %>
+  </div>
+<% end %>
+<div class="organisation-manage-users-tags-form">
+  <% @tag_categories.each do |tag_category| %>
+    <div class='hidden-form-category-ajax hidden' id="category-<%= tag_category.id %>">
+      <%= simple_form_for :tag, url: tags_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
+        <div class='flex-row-between-centered'>
+          <%= f.text_field :tag_name, placeholder: 'New Tag', style: 'height: 100%;' %>
+          <%= f.hidden_field :tag_category_id, value: tag_category.id %>
+          <%= f.hidden_field :users, value: @users.map(&:id) %>
+          <%= button_tag :submit, class: 'hidden-submit' do %>
+            <i class="fas fa-save"></i>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

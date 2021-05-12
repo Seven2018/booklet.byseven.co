@@ -1,17 +1,32 @@
 <div class="booking-containter">
   <div class="booktimes">
     <h2><b>Book Date for <%= @training_workshop.title %></b></h2>
-    <%# simple_form_for :training_workshop, url: book_training_workshop_path do |f| %>
     <%= simple_form_for :filter, url: update_book_training_workshop_path(@training_workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
     <h4>1. Select Date and Time</h4>
-    <div class="mod-date">
-      <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: @training_workshop.date } %>
-      <div class="start-time">
-      <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: @training_workshop.starts_at %>
-      <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: @training_workshop.ends_at %>
-      </div>
+    <% i = 0 %>
+    <% @training_workshop.dates.each do |key,value| %>
+      <% if i == 0 %>
+        <div class="mod-date">
+          <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: value[:date]} %>
+          <div class="start-time">
+            <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker' }, default: value[:starts_at] %>
+            <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker' }, default: value[:ends_at] %>
+          </div>
+        </div>
+      <% elsif value[:date].present? %>
+        <div class="mod-date">
+          <%= f.input ('date' + i.to_s), label: 'Date:', input_html: { class: 'datepicker', value: value[:date]} %>
+          <div class="start-time">
+            <%= f.input ('starts_at' + i.to_s), label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker' }, default: value[:starts_at] %>
+            <%= f.input ('ends_at' + i.to_s), label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker' }, default: value[:ends_at] %>
+          </div>
+        </div>
+      <% end %>
+      <% i += 1 %>
+    <% end %>
+    <div class="btn" onclick='addDate(this);'>
+      <p>Add Date</p>
     </div>
-  <%# end %>
   </div>
   <div class="flex-row-between-centered">
     <h4>2. Select Participants</h4>
@@ -23,12 +38,11 @@
   <div class='organization-page'>
     <div class='filter-dropdown-form'>
       <div class="hidden-form">
-      <div class="fil">
-        <h3 class="category-title"><b>Filter</b></h3>
-        <i class="fas fa-times" id='close-btn'></i>
-      </div>
-      <% i = 1 %>
-      <%# simple_form_for :filter, url: book_workshop_path(@workshop), input_html: { class: "filter-form" }, method: :get do |f| %>
+        <div class="fil">
+          <h3 class="category-title"><b>Filter</b></h3>
+          <i class="fas fa-times" id='close-btn'></i>
+        </div>
+        <% i = 1 %>
         <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
         <% checked = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.tag_name} if params[:filter].present? && params[:filter][:tag].present? %>
         <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
@@ -37,8 +51,6 @@
         <div class=filter-text>
           <%= f.submit 'Filter', class: 'final-filter-btn' %>
           <%= f.submit 'Clear', class: 'final-filter-clear' %>
-          <!-- <button class='final-filter-btn'>Filter</button> -->
-
         </div>
       </div>
     </div>
@@ -88,31 +100,61 @@
 </div>
 
 <script>
-filter_btn = document.querySelector('.mobile-filter-btn')
-close_btn = document.querySelector('#close-btn')
-bookletcontainer = document.getElementById('booklet-container')
-filter_slider = document.querySelector('.filter-dropdown-form')
-filter_btn.addEventListener('click', (event) => {
-  filter_slider.style.width = "375px";
-  filter_slider.style.zindex = "100";
-  filter_slider.style.background = "white";
-})
+  filter_btn = document.querySelector('.mobile-filter-btn')
+  close_btn = document.querySelector('#close-btn')
+  bookletcontainer = document.getElementById('booklet-container')
+  filter_slider = document.querySelector('.filter-dropdown-form')
+  filter_btn.addEventListener('click', (event) => {
+    filter_slider.style.width = "375px";
+    filter_slider.style.zindex = "100";
+    filter_slider.style.background = "white";
+  })
 
-close_btn.addEventListener('click', (event) => {
-  filter_slider.style.width = "0px";
-  filter_slider.style.zindex = "100";
-  filter_slider.style.background = "transparent";
-})
+  close_btn.addEventListener('click', (event) => {
+    filter_slider.style.width = "0px";
+    filter_slider.style.zindex = "100";
+    filter_slider.style.background = "transparent";
+  })
 
-function toggle(source) {
-  checkboxes = document.getElementsByName('participant[user_ids][]');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
+  function toggle(source) {
+    checkboxes = document.getElementsByName('participant[user_ids][]');
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      checkboxes[i].checked = source.checked;
+    }
   }
-}
 
-select_button = document.getElementById('select_all');
-select_button.addEventListener('click', event => {
+  select_button = document.getElementById('select_all');
+  select_button.addEventListener('click', event => {
 
-})
+  })
+</script>
+
+<script>
+  i = document.querySelectorAll('.mod-date').length;
+
+  function addDate(source) {
+    template = source.parentNode.querySelectorAll('.mod-date')[source.parentNode.querySelectorAll('.mod-date').length - 1];
+    content = template.innerHTML;
+    new_date = document.createElement('div');
+    new_date.innerHTML = content;
+    new_date.classList.add('mod-date');
+    new_date.querySelector('input').name = 'filter[date' + i.toString() + ']';
+    new_date.querySelectorAll('select').forEach((element) => {
+      if (i == 1) {
+        element.name = element.name.split('(')[0] + i.toString() + '(' + element.name.split('(')[1]
+      } else {
+        element.name = element.name.split('(')[0].slice(0, element.name.split('(')[0].length - 1) + i.toString() + '(' + element.name.split('(')[1]
+      }
+    })
+    i = i + 1;
+    template.parentNode.insertBefore(new_date, source);
+    new_date.querySelector('label').innerHTML = 'Date ' + i.toString();
+    flatpickr(new_date.querySelector('input'), {
+      disableMobile: true,
+      dateFormat: "d/m/Y",
+    })
+    if (i == 5) {
+      source.classList.toggle('hidden');
+    }
+  }
 </script>

@@ -1,5 +1,4 @@
 class TrainingWorkshop < ApplicationRecord
-  belongs_to :training, optional: true
   belongs_to :workshop
   has_many :attendees, dependent: :destroy
   has_many :users, through: :attendees
@@ -34,5 +33,9 @@ class TrainingWorkshop < ApplicationRecord
       status = false
     end
     status
+  end
+
+  def dates
+    return {session0: {date: self.date, starts_at: self.starts_at, ends_at: self.ends_at}, session1: {date: self.date1, starts_at: self.starts_at1, ends_at: self.ends_at1}, session2: {date: self.date2, starts_at: self.starts_at2, ends_at: self.ends_at2}, session3: {date: self.date3, starts_at: self.starts_at3, ends_at: self.ends_at3}, session4: {date: self.date4, starts_at: self.starts_at4, ends_at: self.ends_at4}}
   end
 end

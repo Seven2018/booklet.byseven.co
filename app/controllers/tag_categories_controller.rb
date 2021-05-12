@@ -3,7 +3,10 @@ class TagCategoriesController < ApplicationController
     @tag_category = TagCategory.new(tag_category_params)
     authorize @tag_category
     @tag_category.company_id = current_user.company_id
+    @tag_category.position = TagCategory.where(company_id: current_user.company_id).count + 1
+    @users = User.where(id: params[:tag_category][:users].split(' '))
     if @tag_category.save
+      @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
       if params[:ajax].present?
         respond_to do |format|
           format.html {redirect_to organisation_path}
@@ -20,6 +23,7 @@ class TagCategoriesController < ApplicationController
   def delete_tag_category
     @tag_category = TagCategory.find(params[:tag_category][:id])
     authorize @tag_category
+    TagCategory.where(company_id: current_user.company_id).where('position > ?', @tag_category.position).each{|x| x.update(position: x.position - 1)}
     @tag_category.destroy
     respond_to do |format|
       format.html {redirect_to organisation_path}
