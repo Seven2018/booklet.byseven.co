@@ -107,32 +107,37 @@
       </div>
     </div>
     <% @users.each do |user| %>
-        <div class='user-index-card'>
-          <div class="user-index-info">
-            <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
-            <%= link_to user_path(user) do %>
-              <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-            <% end %>
-          </div>
-          <div class="user-index-info">
-            <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
-          </div>
-          <div class="user-index-info">
-            <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
-          </div>
-          <div class="user-index-info">
-            <p data-toggle="tooltip" title="<%= user.job_title %>"><%= user.job_title %></p>
-          </div>
-          <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
-            <div class="user-index-info">
-              <% tags = '' %>
-              <% Tag.joins(:user_tags).where(tag_category_id: tag_category.id, user_tags: {user_id: user}).order(tag_name: :asc).each do |tag| %>
-                <% tags += tag.tag_name + ', ' %>
-              <% end %>
-              <p><%= tags[0..-3] %></p>
-            </div>
-          <% end %>
+      <div class='user-index-card'>
+        <div class="user-index-info">
+          <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
+          <a data-toggle='modal' data-target='#showUser-<%= user.id %>'>
+            <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          </a>
         </div>
+        <div class="user-index-info">
+          <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
+        </div>
+        <div class="user-index-info">
+          <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+        </div>
+        <div class="user-index-info">
+          <p data-toggle="tooltip" title="<%= user.job_title %>"><%= user.job_title %></p>
+        </div>
+        <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+          <div class="user-index-info">
+            <% tags = '' %>
+            <% Tag.joins(:user_tags).where(tag_category_id: tag_category.id, user_tags: {user_id: user}).order(tag_name: :asc).each do |tag| %>
+              <% tags += tag.tag_name + ', ' %>
+            <% end %>
+            <p><%= tags[0..-3] %></p>
+          </div>
+        <% end %>
+      </div>
+      <div class='modal fade' id='showUser-<%= user.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+        <div class='modal-dialog' role='document' style='border-radius: 20px'>
+          <%= render 'users/show', user: user %>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>

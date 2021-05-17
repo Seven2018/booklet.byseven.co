@@ -1,0 +1,27 @@
+<div class="modal-content">
+  <div class="modal-body">
+    <div class="flex-row-between-start">
+      <div class="user-show-modal-left">
+        <img src="<%= user.picture %>" onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+      </div>
+      <div class="user-show-modal-right">
+        <h4><strong><%= user.fullname %></strong></h4>
+        <p><%= user.phone_number %></p>
+        <p><%= user.email %></p>
+        <div class="user-show-modal-right-stats">
+          <div class="flex-column-between-centered">
+            <p>Upcoming</p>
+            <p>2</p>
+          </div>
+          <div class="flex-column-between-centered">
+            <p>Completed</p>
+            <p>8</p>
+          </div>
+        </div>
+        <div class="user-show-modal-right-tags">
+          div
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

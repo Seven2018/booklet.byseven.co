@@ -69,18 +69,6 @@
 
 
 <!-- Modals -->
-<div class='modal fade' id='newTagCategory' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'tag_categories/new', tag_category: TagCategory.new %>
-  </div>
-</div>
-
-<div class='modal fade' id='newTag' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'tags/new', tag: Tag.new %>
-  </div>
-</div>
-
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'users/new', tag: User.new %>
