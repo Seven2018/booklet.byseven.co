@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_154442) do
 
   create_table "categories", force: :cascade do |t|
     t.string "title", default: "", null: false
-    t.string "description", default: "", null: false
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

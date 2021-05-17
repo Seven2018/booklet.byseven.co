@@ -1,40 +1,76 @@
 <div class="navbar navbar-expand-sm navbar-light">
-  <div id="navbar-search">
-    <% if params[:action] == 'organisation' %>
-      <%= simple_form_for :search, url: organisation_path, method: 'GET' do |f| %>
-        <% if params[:search] %>
-          <%= f.input :name, placeholder: params[:search][:name], label: false %>
-          <%= link_to organisation_path, class: 'search-close' do %>
-            <i class="far fa-times-circle"></i>
+  <div class="top-left-nav">
+    <ul>
+    <% if user_signed_in? %>
+      <li>
+        <% if request.original_url&.split('/')[3]&.split('?')&.first == 'dashboard' %>
+          <%= link_to dashboard_path, class: 'left-buttons' do %>
+          <div class="isactive"></div>
+            <div class="left-menu-title" style='color: #F26419;'><h4>Dashboard</h4></div>
           <% end %>
         <% else %>
-          <%= f.input :name, placeholder: 'Search', label: false %>
-        <% end %>
-      <% end %>
-    <% elsif params[:action] == 'catalogue' %>
-      <%= simple_form_for :search, url: catalogue_path, method: 'GET' do |f| %>
-        <% if params[:search] %>
-          <%= f.input :title, placeholder: params[:search][:title], label: false %>
-          <%= link_to catalogue_path, class: 'search-close' do %>
-            <i class="far fa-times-circle"></i>
+          <%= link_to dashboard_path, class: 'left-buttons' do %>
+            <div class="left-menu-title"><h4>Dashboard</h4></div>
           <% end %>
-        <% else %>
-          <%= f.input :title, placeholder: 'Search', label: false %>
         <% end %>
+      </li>
+      <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
+        <li>
+          <% if request.original_url&.split('/')[3]&.split('?')&.first == 'catalogue' %>
+            <%= link_to catalogue_path, class: 'left-buttons' do %>
+              <div class="isactive"></div>
+              <div class="left-menu-title" style='color: #F26419;'><h4>Catalogue</h4></div>
+            <% end %>
+          <% else %>
+            <%= link_to catalogue_path, class: 'left-buttons' do %>
+              <div class="left-menu-title"><h4>Catalogue</h4></div>
+            <% end %>
+          <% end %>
+        </li>
+        <li>
+          <% if request.original_url&.split('/')[3]&.split('?')&.first == 'organisation' %>
+            <%= link_to organisation_path, class: 'left-buttons' do %>
+              <div class="isactive"></div>
+              <div class="left-menu-title" style='color: #F26419;'><h4>Employees</h4></div>
+            <% end %>
+          <% else %>
+            <%= link_to organisation_path, class: 'left-buttons' do %>
+              <div class="left-menu-title"><h4>Employees</h4></div>
+            <% end %>
+          <% end %>
+        </li>
       <% end %>
     <% end %>
+    </ul>
   </div>
   <div class="navbar-controls-right flex-row-between-centered">
+    <div id="navbar-search">
+      <% if params[:action] == 'organisation' %>
+        <%= simple_form_for :search, url: organisation_path, method: 'GET' do |f| %>
+          <% if params[:search] %>
+            <%= f.input :name, placeholder: params[:search][:name], label: false %>
+            <%= link_to organisation_path, class: 'search-close' do %>
+              <i class="far fa-times-circle"></i>
+            <% end %>
+          <% else %>
+            <%= f.input :name, placeholder: 'Search', label: false %>
+          <% end %>
+        <% end %>
+      <% elsif params[:action] == 'catalogue' %>
+        <%= simple_form_for :search, url: catalogue_path, method: 'GET' do |f| %>
+          <% if params[:search] %>
+            <%= f.input :title, placeholder: params[:search][:title], label: false %>
+            <%= link_to catalogue_path, class: 'search-close' do %>
+              <i class="far fa-times-circle"></i>
+            <% end %>
+          <% else %>
+            <%= f.input :title, placeholder: 'Search', label: false %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
       <div class="centered-item">
-        <button class="btn btn-edit-navbar" type="button" >
-          <div class="flex-row-between-centered">
-            <div class="new-workshop-btn">
-              <i class="fas fa-plus"></i>
-              <%= link_to 'New', new_workshop_path, class:'stretched-link'%>
-            </div>
-          </div>
-        </button>
       </div>
     <% end %>
   <div class="user-top-nav">
@@ -81,3 +117,4 @@
     event.stopPropagation();
 });
 </script> -->
+
