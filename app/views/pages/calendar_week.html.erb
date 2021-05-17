@@ -2,26 +2,6 @@
   <h1>Calendar</h1>
   <%= link_to 'Month', dashboard_calendar_month_path, class: 'btn btn-edit-white' %>
 </div>
-<div class="workshop-index">
-  <%= week_calendar events: @workshops do |date, workshops| %>
-    <%= date.day %>
-    <% workshops.each do |workshop| %>
-      <div class="workshop-card-calendar">
-        <%= link_to '', training_workshop_path(workshop), class: 'stretched-link' %>
-        <% unless workshop.attendees.where(user_id: current_user.id).empty? %>
-          <% if workshop.attendees.where(user_id: current_user.id).first.status == 'Invited' %>
-            <div class="workshop-card-calendar-indicator-orange"><i class="fas fa-circle"></i></div>
-          <% elsif workshop.attendees.where(user_id: current_user.id).first.status == 'Registered' %>
-            <div class="workshop-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
-          <% end %>
-        <% end %>
-        <h6><%= workshop.title %></h6>
-        <% if workshop.workshop_type == 'Asynchronous' && workshop.ends_at.present? %>
-          <h6><%= "Complete before #{workshop.ends_at.strftime('%H:%M')}"%></h6>
-        <% elsif workshop.starts_at.present? && workshop.ends_at.present? %>
-          <h6><%= "#{workshop.starts_at.strftime('%H:%M')} - #{workshop.ends_at.strftime('%H:%M')}" %></h6>
-        <% end %>
-      </div>
-    <% end %>
-  <% end %>
+<div class="content-index">
+
 </div>

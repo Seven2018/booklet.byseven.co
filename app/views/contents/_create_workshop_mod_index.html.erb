@@ -1,0 +1,20 @@
+<% @new_content.mods.each do |mod| %>
+  <div class="accordion" onclick='openMod(this);'><%= mod.title %></div>
+  <div class="panel">
+    <%= simple_form_for :new_mod, url: update_mod_path(@new_content), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+      <%= f.input :title, value: mod.title %>
+      <%= f.hidden_field :content_id, value: @new_content.id %>
+      <%= f.input :duration, value: mod.duration %>
+      <%= f.input :document, label: 'Document (url)', value: mod.document %>
+      <%= f.input :media, label: 'Media (url)', value: mod.media %>
+      <%= f.label :content %>
+      <%= f.cktext_area :content %>
+      <div class='validate-btn-flex'>
+        <!-- <div class='validate-btn' id='validate' onclick='closeMod(this);'>
+          <p>Save Module</p>
+        </div> -->
+        <%= f.submit 'Saved', class: 'validate-btn-flex', id: 'validate' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

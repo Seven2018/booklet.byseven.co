@@ -29,6 +29,7 @@ gem 'omniauth-google-oauth2'
 gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 gem 'ransack'
 gem 'bullet', group: 'development'
+gem "acts_as_tree"
 
 
 group :development do

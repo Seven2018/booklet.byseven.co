@@ -2,15 +2,15 @@
   <div class='training-index-list-dashboard-large' style='margin-top:5rem'> -->
     <!-- <div class="dashboard-cards">
       <div class='dashboard-label dashboard-label-green'>
-        <h3><strong><%# TrainingWorkshop.where(company_id: current_user.company_id).where('date > ?', Date.today).count %></strong></h3>
+        <h3><strong></strong></h3>
         <h3>To Come</h3>
       </div>
       <div class='dashboard-label dashboard-label-orange'>
-        <h3><strong><%# (TrainingWorkshop.where(company_id: current_user.company_id, workshop_type: 'Asynchronous').where('date <= ?', Date.today).where('available_date > ?', Date.today) + TrainingWorkshop.where(company_id: current_user.company_id).where(date: Date.today)).count %></strong></h3>
+        <h3><strong></strong></h3>
         <h3>Pending</h3>
       </div>
       <div class='dashboard-label dashboard-label-blue'>
-        <h3><strong><%# TrainingWorkshop.where(company_id: current_user.company_id).where('date < ?', Date.today).count %></strong></h3>
+        <h3><strong></strong></h3>
         <h3>Completed</h3>
       </div>
     </div>
@@ -19,9 +19,9 @@
 <div class="training-index-dashboard">
   <div class='catalogue-index-list'>
     <h3 class='training-index-list-dashboard-title'>Trainings Overview</h3>
-    <%# TrainingWorkshop.where(company_id: current_user.company_id).order(date: :asc).each do |element| %>
-      <%# if (element&.instance_of? TrainingWorkshop) && element&.training_id.nil?%>
-        <%# link_to training_workshop_path(element, dashboard: 'all') do %>
+    <% Session.where(company_id: current_user.company_id).order(date: :asc).each do |element| %>
+      <% if (element&.instance_of? Session) && element&.training_id.nil?%>
+        <%= link_to training_content_path(element, dashboard: 'all') do %>
           <div class='training-index-card'>
             <div class="training-index-infos-dashboard">
               <p class='worktitle'><%= element&.title %></p>

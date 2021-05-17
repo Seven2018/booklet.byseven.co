@@ -50,6 +50,22 @@
   }
 }
 
+.btn-white.flashing_button {
+  -webkit-animation: glowing 1300ms infinite;
+  -moz-animation: glowing 1300ms infinite;
+  -o-animation: glowing 1300ms infinite;
+  animation: glowing 1300ms infinite;
+
+  i, p {
+    color: white;
+  }
+}
+
+@keyframes glowing {
+  0% { background-color: #F26419; box-shadow: 0 0 3px #F26419; }
+  50% { background-color: #F26419; box-shadow: 0 0 10px #F26419; }
+  100% { background-color: #F26419; box-shadow: 0 0 3px #F26419; }
+}
 
 .btn-edit-orange {
   background-color: #F26419 !important;

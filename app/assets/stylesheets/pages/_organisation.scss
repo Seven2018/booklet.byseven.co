@@ -28,6 +28,7 @@
 
 .headers-div {
   min-width: 20rem;
+  max-width: 20rem;
   margin-right: 3rem;
   display: flex;
   justify-content: flex-start;
@@ -48,14 +49,18 @@
 
     a {
       position: absolute;
+
+      i {
+        font-size: 1.6rem;
+      }
     }
 
     a:first-of-type {
-      top: 0;
+      top: -0.4rem;
     }
 
     a:last-of-type {
-      top: 1rem;
+      top: 1.2rem;
     }
   }
 }
@@ -75,9 +80,11 @@
   justify-content: space-between;
   align-items: center;
   min-width: 20rem;
+  max-width: 20rem;
   margin-right: 3rem;
+  height: 2.4rem;
 
-  &:first-of-type, &:last-of-type {
+  &:first-of-type {
     min-width: 7rem;
   }
 
@@ -306,7 +313,14 @@
 
     i {
       color: #F26419;
+    }
+
+    .fa-plus {
       margin-right: 1rem;
+    }
+
+    .fa-minus {
+      margin-left: 1rem;
     }
 
     p {

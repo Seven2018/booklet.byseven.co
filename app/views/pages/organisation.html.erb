@@ -69,18 +69,6 @@
 
 
 <!-- Modals -->
-<div class='modal fade' id='newTagCategory' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'tag_categories/new', tag_category: TagCategory.new %>
-  </div>
-</div>
-
-<div class='modal fade' id='newTag' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'tags/new', tag: Tag.new %>
-  </div>
-</div>
-
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'users/new', tag: User.new %>
@@ -147,19 +135,14 @@
     block = element.parentNode.parentNode.parentNode.parentNode;
     if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
       block.style.maxHeight = '1000px';
+      block.classList.add('active');
     } else {
       block.style.maxHeight = '61px';
+      block.classList.remove('active');
     }
   }
 
-
-  function autoSubmit(element) {
-    element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
-    hideClearButton();
-    document.querySelector('.filter').querySelector('.hidden-submit').click();
-  }
-
-  function hideClearButton() {
+  function hideClearFilterButton() {
     form = document.querySelector('.filter');
     form.querySelectorAll('.organisation-filter-block').forEach((element) => {
       checked = false;
@@ -174,6 +157,29 @@
     })
   }
 
+  function hideClearManagerButton() {
+    form = document.querySelector('.add_tags');
+    form.querySelectorAll('.organisation-manage-users-block').forEach((element) => {
+      checked = false;
+      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.checked == true) {
+          checked = true;
+        }
+      })
+      if (checked == false) {
+        element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '0';
+      } else {
+        element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '1';
+      }
+    })
+  }
+
+  function autoSubmit(element) {
+    element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
+    hideClearFilterButton();
+    document.querySelector('.filter').querySelector('.hidden-submit').click();
+  }
+
   function clearFilter(element) {
     block = element.parentNode.parentNode.parentNode.parentNode;
     block.querySelectorAll('input.check_boxes').forEach((element) => {
@@ -181,8 +187,18 @@
         element.checked = false;
       }
     })
-    hideClearButton();
+    hideClearFilterButton();
     document.querySelector('.filter').querySelector('.hidden-submit').click();
+  }
+
+  function clearFilterManager(element) {
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    block.querySelectorAll('input.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearManagerButton();
   }
 
   function resetFilter() {
@@ -192,7 +208,7 @@
         element.checked = false;
       }
     })
-    hideClearButton();
+    hideClearFilterButton();
     form.querySelector('.hidden-submit').click();
   }
 
@@ -229,6 +245,12 @@
       }
     })
     document.querySelector('#add_tags_users').value = ids.join();
+    console.log(ids);
+    if (ids.length == 0) {
+      document.querySelector('#manage-users-button').classList.remove('flashing_button');
+    } else {
+      document.querySelector('#manage-users-button').classList.add('flashing_button');
+    }
   }
 
   function clearInput(element) {
@@ -239,10 +261,28 @@
 
   function fetchCategoryForm(element) {
     form = document.querySelector(element.getAttribute('data-target'));
-    console.log(element.offsetTop);
-    console.log(element.offsetLeft);
-    form.style.top = (element.offsetTop - 7).toString() + 'px';
-    form.style.left = element.offsetLeft.toString() + 'px';
+    console.log(element.getAttribute('data-target'));
+    opened_blocks = []
+    document.querySelectorAll('.organisation-manage-users-block.active').forEach((block) => {
+      opened_blocks.push(block.getAttribute('data-category'));
+    })
+    form.querySelector('.hidden-submit').value = opened_blocks.join(',');
+    if (element.getAttribute('data-target').split('-')[0] == '#delete') {
+      form.style.top = (element.offsetTop - 7).toString() + 'px';
+      form.style.left = (element.offsetLeft.toString() - 100) + 'px'
+    } else {
+      form.style.top = (element.offsetTop - 7).toString() + 'px';
+      form.style.left = element.offsetLeft.toString() + 'px'
+    }
+    element.parentNode.style.opacity = '0';
     form.classList.toggle('hidden');
+  }
+
+  function toggle(source) {
+    checkboxes = document.querySelectorAll('.select-user');
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      checkboxes[i].checked = source.checked;
+    }
+    selectUser();
   }
 </script>

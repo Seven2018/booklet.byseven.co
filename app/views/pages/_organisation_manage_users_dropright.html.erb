@@ -23,12 +23,12 @@
 </div>
 <%= simple_form_for :add_tags, url: organisation_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
   <% @tag_categories.each do |tag_category| %>
-    <div class="organisation-manage-users-block">
+    <div class="organisation-manage-users-block" data-category='<%= tag_category.id %>'>
       <div class="organisation-manage-users-block-title">
         <div>
           <p><%= tag_category.name %></p>
           <div class="organisation-manage-users-block-title-buttons">
-            <p onclick='clearFilter(this);'>Clear</p>
+            <p onclick='clearFilterManager(this);'>Clear</p>
             <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
               <i class="fas fa-angle-down"></i>
             </div>
@@ -36,10 +36,16 @@
         </div>
       </div>
       <div class="organisation-manage-users-block-checkboxes">
-        <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false%>
-        <div class="new-tag" data-target="#category-<%= tag_category.id %>" onclick='fetchCategoryForm(this);'>
-          <i class="fas fa-plus"></i>
-          <p>Tag</p>
+        <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).order(tag_name: :asc).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'hideClearManagerButton();'} %>
+        <div class="flex-row-between-centered">
+          <div class="new-tag" data-target="#category-<%= tag_category.id %>" onclick='fetchCategoryForm(this);'>
+            <i class="fas fa-plus"></i>
+            <p>Tag</p>
+          </div>
+          <div class="new-tag" data-target="#delete-category-<%= tag_category.id %>" onclick='fetchCategoryForm(this);'>
+            <p>Tag</p>
+            <i class="fas fa-minus"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -59,8 +65,20 @@
           <%= f.text_field :tag_name, placeholder: 'New Tag', style: 'height: 100%;' %>
           <%= f.hidden_field :tag_category_id, value: tag_category.id %>
           <%= f.hidden_field :users, value: @users.map(&:id) %>
-          <%= button_tag :submit, class: 'hidden-submit' do %>
+          <%= button_tag :submit, class: 'hidden-submit', value: '' do %>
             <i class="fas fa-save"></i>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div class='hidden-form-category-ajax hidden' id="delete-category-<%= tag_category.id %>">
+      <%= simple_form_for :tag, url: delete_tag_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
+        <div class='flex-row-between-centered'>
+          <%= f.input :id, collection: Tag.where(company_id: current_user.company_id, tag_category_id: tag_category.id).order(tag_name: :asc), label_method: :tag_name, required: false, label: false %>
+          <%= f.hidden_field :tag_category_id, value: tag_category.id %>
+          <%= f.hidden_field :users, value: @users.map(&:id) %>
+          <%= button_tag :submit, class: 'hidden-submit', value: '' do %>
+            <i class="fas fa-skull-crossbones"></i>
           <% end %>
         </div>
       <% end %>
