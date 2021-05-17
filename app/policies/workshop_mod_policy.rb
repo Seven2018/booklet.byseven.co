@@ -1,4 +1,4 @@
-class WorkshopModPolicy < ApplicationPolicy
+class ContentModPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if ['Super Admin', 'Admin', 'HR', 'Employee'].include? user.access_level

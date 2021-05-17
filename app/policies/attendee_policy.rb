@@ -17,7 +17,7 @@ class AttendeePolicy < ApplicationPolicy
     true
   end
 
-  def invite_user_to_workshop?
+  def invite_user_to_content?
     check_access_hr
   end
 
@@ -25,7 +25,7 @@ class AttendeePolicy < ApplicationPolicy
     check_access_hr
   end
 
-  def confirm_training_workshop?
+  def confirm_training_content?
     true
   end
 

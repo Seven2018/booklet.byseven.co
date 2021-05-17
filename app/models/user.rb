@@ -4,12 +4,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
-  has_many :requests, dependent: :destroy
   has_many :attendees, dependent: :destroy
   belongs_to :company, optional: true
   has_many :user_tags, dependent: :destroy
   has_many :tags, through: :user_tags
-  has_many :notifications, dependent: :destroy
   has_many :user_forms, dependent: :destroy
   has_many :mods, through: :user_forms
   validates :firstname, :lastname, :email, :access_level, presence: true

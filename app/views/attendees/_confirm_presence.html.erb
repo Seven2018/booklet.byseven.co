@@ -8,14 +8,14 @@
   <div class="modal-body" id="modalNewBookinBody" style='display:flex;flex-direction:column;align-items:center;'>
     <%= simple_form_for :confirm_presence, url: mark_as_completed_attendees_path do |f| %>
       <div style=" display:flex;justify-content:space-between;flex-direction:column;">
-        <%= collection_check_boxes(:training_workshop, :user_ids, User.joins(:attendees).where(attendees: {training_workshop_id: training_workshop.id}), :id, :fullname) do |b| %>
+        <%= collection_check_boxes(:training_content, :user_ids, User.joins(:attendees).where(attendees: {training_content_id: training_content.id}), :id, :fullname) do |b| %>
           <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
             <%= b.check_box + b.text %>
           <% end %>
         <% end %>
       </div>
       <div style="display:flex;justify-content:center;margin-top:30px;">
-        <%= button_tag :submit, name: 'training_workshop_id', value: "#{training_workshop.id}", class: 'btn btn-edit-green btn-icon' do %>
+        <%= button_tag :submit, name: 'training_content_id', value: "#{training_content.id}", class: 'btn btn-edit-green btn-icon' do %>
           <i class="fas fa-save"></i>
         <% end %>
       </div>

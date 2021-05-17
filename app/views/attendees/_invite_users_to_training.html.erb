@@ -20,8 +20,8 @@
             <div class="invite-form-users-list">
               <%= collection_check_boxes(:training, :user_ids, User.joins(:user_teams).where(company_id: current_user.company_id, user_teams: {team_id: team.id}).order(lastname: :asc), :id, :fullname) do |c| %>
                 <% user = @users.find_by(firstname: c.text.split(' ').first, lastname: c.text.split(' ')[1..-1].join(' ')) %>
-                <% user_status = Attendee.find_by(user_id: user.id, training_workshop_id: @training.training_workshops.ids)&.status %>
-                <% if Attendee.where(training_workshop_id: [@training.training_workshops.ids], user_id: user).empty? %>
+                <% user_status = Attendee.find_by(user_id: user.id, training_content_id: @training.training_contents.ids)&.status %>
+                <% if Attendee.where(training_content_id: [@training.training_contents.ids], user_id: user).empty? %>
                   <%= c.label class: 'label-checkbox', style: 'color:black;' do %>
                     <%= c.check_box + c.text %>
                   <% end %>

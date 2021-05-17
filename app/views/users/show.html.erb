@@ -82,19 +82,19 @@
   <div class="user-trainings">
     <h2>Upcoming Trainings</h2>
     <div class="trainings-row">
-      <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |workshop| %>
-        <%= link_to training_workshop_path(workshop) do %>
+      <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |content| %>
+        <%= link_to training_content_path(content) do %>
           <div class="training-card-main">
             <div class="upcoming-trainings-card">
               <div class="user-training-title">
-                <% if workshop.title.length > 60 %>
-                  <h3><b><%= workshop.title.first(60)+'...' %></b></h3>
+                <% if content.title.length > 60 %>
+                  <h3><b><%= content.title.first(60)+'...' %></b></h3>
                 <% else %>
-                  <h3><b><%= workshop.title %></b></h3>
+                  <h3><b><%= content.title %></b></h3>
                 <% end %>
               </div>
-              <p><i class="fas fa-calendar-alt"></i> <%= workshop.date.strftime('%d/%m/%Y') %></p>
-              <div class='workshop-time'><p><i class="fas fa-clock"></i> <%= workshop.duration %> min</p></div>
+              <p><i class="fas fa-calendar-alt"></i> <%= content.date.strftime('%d/%m/%Y') %></p>
+              <div class='content-time'><p><i class="fas fa-clock"></i> <%= content.duration %> min</p></div>
             </div>
           </div>
         <% end %>
@@ -102,20 +102,20 @@
     </div>
     <h2>Completed Trainings</h2>
     <div class="trainings-row">
-      <% TrainingWorkshop.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |workshop| %>
-        <%= link_to training_workshop_path(workshop) do %>
+      <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |content| %>
+        <%= link_to training_content_path(content) do %>
           <div class="training-card-main">
             <div class="completed-trainings-card">
               <div class="user-training-title">
-                <% if workshop.title.length > 60 %>
-                  <h3><b><%= workshop.title.first(60)+'...' %></b></h3>
+                <% if content.title.length > 60 %>
+                  <h3><b><%= content.title.first(60)+'...' %></b></h3>
                 <% else %>
-                  <h3><b><%= workshop.title %></b></h3>
+                  <h3><b><%= content.title %></b></h3>
                 <% end %>
               </div>
               <div class="user-training-bottom">
-                <p><i class="fas fa-calendar-alt"></i> <%= workshop.date.strftime('%d/%m/%Y') %></p>
-              <div class='workshop-time'><p><i class="fas fa-clock"></i> <%= workshop.duration %> min</p></div>
+                <p><i class="fas fa-calendar-alt"></i> <%= content.date.strftime('%d/%m/%Y') %></p>
+              <div class='content-time'><p><i class="fas fa-clock"></i> <%= content.duration %> min</p></div>
               </div>
             </div>
           </div>

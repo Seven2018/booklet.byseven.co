@@ -1,5 +1,5 @@
 <div class="left-navbar left-navbar-builder">
-  <% unless ['workshops', 'training_workshops'].include?(params[:controller]) && params[:action] == "view_mode" %>
+  <% unless ['contents', 'training_contents'].include?(params[:controller]) && params[:action] == "view_mode" %>
     <div class="left-navbar-top">
 <!--       <% if user_signed_in? %>
         <img src='<%= "#{current_user.company.logo}" %>' class="left-navbar-logo" height='24px'>

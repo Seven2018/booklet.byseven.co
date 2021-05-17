@@ -2,10 +2,10 @@ class AttendeesController < ApplicationController
   before_action :set_attendee, only: [:update, :destroy]
 
   def create
-    @attendee = Attendee.new(training_workshop_id: params[:training_workshop_id], user_id: params[:user_id], status: 'Confirmed', creator_id: current_user.id)
+    @attendee = Attendee.new(training_content_id: params[:training_content_id], user_id: params[:user_id], status: 'Confirmed', creator_id: current_user.id)
     authorize @attendee
     if @attendee.save
-      redirect_to redirect_path(list: "#{params[:user_id]} ", training_workshop_id: "|#{params[:training_workshop_id]}|", to_delete: " ")
+      redirect_to redirect_path(list: "#{params[:user_id]} ", training_content_id: "|#{params[:training_content_id]}|", to_delete: " ")
     else
       raise
     end
@@ -21,51 +21,51 @@ class AttendeesController < ApplicationController
     authorize @attendee
     @attendee.destroy
     event_to_delete = @attendee.user_id.to_s+':'+@attendee.calendar_uuid+',' if @attendee.calendar_uuid.present?
-    redirect_to redirect_path(list: "#{@attendee.user_id} ", training_workshop_id: "|#{@attendee.training_workshop.id}|", to_delete: "#{event_to_delete} ")
+    redirect_to redirect_path(list: "#{@attendee.user_id} ", training_content_id: "|#{@attendee.training_content.id}|", to_delete: "#{event_to_delete} ")
   end
 
-  def invite_user_to_workshop
-    training_workshop = TrainingWorkshop.find(params[:training_workshop_id])
-    @attendees = Attendee.where(training_workshop_id: training_workshop.id)
+  def invite_user_to_content
+    training_content = Session.find(params[:training_content_id])
+    @attendees = Attendee.where(training_content_id: training_content.id)
     authorize @attendees
-    user_ids = params[:training_workshop][:user_ids].drop(1).map(&:to_i)
+    user_ids = params[:training_content][:user_ids].drop(1).map(&:to_i)
     users = User.where(id: [user_ids])
     set_current_user
     event_to_delete = ''
     users.each do |user|
-      # new_attendee = Attendee.create(training_workshop_id: training_workshop.id, user_id: user.id, status: 'Invited')
-      new_attendee = Attendee.new(training_workshop_id: training_workshop.id, user_id: user.id, status: params[:status], creator_id: current_user.id)
+      # new_attendee = Attendee.create(training_content_id: training_content.id, user_id: user.id, status: 'Invited')
+      new_attendee = Attendee.new(training_content_id: training_content.id, user_id: user.id, status: params[:status], creator_id: current_user.id)
       if !new_attendee.save && params[:invite][:transform] == 'true'
-        Attendee.find_by(training_workshop_id: training_workshop.id, user_id: user.id).update(status: 'Registered')
+        Attendee.find_by(training_content_id: training_content.id, user_id: user.id).update(status: 'Registered')
       elsif new_attendee.save
-        Notification.create(content: "You have been invited to the following workshop: #{training_workshop.title}", user_id: user.id)
+        Notification.create(content: "You have been invited to the following content: #{training_content.title}", user_id: user.id)
         # UserMailer.with(attendee_id: new_attendee.id).invite_email(user, new_attendee).deliver
       end
     end
-    (User.joins(:attendees).where(attendees: {training_workshop_id: training_workshop.id}) - users).each do |user|
-      attendee = Attendee.find_by(user_id: user.id, training_workshop_id: training_workshop.id)
+    (User.joins(:attendees).where(attendees: {training_content_id: training_content.id}) - users).each do |user|
+      attendee = Attendee.find_by(user_id: user.id, training_content_id: training_content.id)
       event_to_delete+=user.id.to_s+':'+attendee.calendar_uuid+',' if attendee.calendar_uuid.present?
       attendee.destroy
-      Notification.create(content: "Invitation cancelled: #{training_workshop.title}", user_id: user.id)
+      Notification.create(content: "Invitation cancelled: #{training_content.title}", user_id: user.id)
     end
     # Lists all pre-existing SessionTrainers, to be deleted
     event_to_delete = event_to_delete[0...-1]
-    redirect_to redirect_path(list: "#{user_ids.join(',')}", training_workshop_id: "|#{training_workshop.id}|", to_delete: "#{event_to_delete}")
+    redirect_to redirect_path(list: "#{user_ids.join(',')}", training_content_id: "|#{training_content.id}|", to_delete: "#{event_to_delete}")
   end
 
   def mark_as_completed
-    @attendees = Attendee.where(training_workshop_id: params[:training_workshop_id])
+    @attendees = Attendee.where(training_content_id: params[:training_content_id])
     authorize @attendees
-    user_ids = params[:training_workshop][:user_ids].drop(1).map(&:to_i)
+    user_ids = params[:training_content][:user_ids].drop(1).map(&:to_i)
     @attendees.each do |attendee|
       attendee.mark_as_completed if user_ids.include?(attendee.user_id)
     end
     redirect_back(fallback_location: root_path)
   end
 
-  def confirm_training_workshop
-    training_workshop = TrainingWorkshop.find(params[:training_workshop_id])
-    @attendee = Attendee.where(training_workshop_id: training_workshop.id, user_id: current_user.id).first
+  def confirm_training_content
+    training_content = Session.find(params[:training_content_id])
+    @attendee = Attendee.where(training_content_id: training_content.id, user_id: current_user.id).first
     authorize @attendee
     @attendee.update(status: 'Confirmed')
     redirect_back(fallback_location: root_path)
@@ -75,7 +75,7 @@ class AttendeesController < ApplicationController
     skip_authorization
     client = Signet::OAuth2::Client.new(client_options)
     # Allows to pass informations through the Google Auth as a complex string
-    client.update!(state: Base64.encode64(params[:list]+params[:training_workshop_id]+params[:to_delete]))
+    client.update!(state: Base64.encode64(params[:list]+params[:training_content_id]+params[:to_delete]))
     redirect_to client.authorization_uri.to_s
   end
 
@@ -103,12 +103,12 @@ class AttendeesController < ApplicationController
     list.each do |ind|
       calendars_ids << User.find(ind).email
     end
-    # Get the targeted workshops
-    workshop_array = Base64.decode64(params[:state]).split('|')[1]
-    if workshop_array.length == 1
-      workshops_ids = workshop_array.split(',')
+    # Get the targeted contents
+    content_array = Base64.decode64(params[:state]).split('|')[1]
+    if content_array.length == 1
+      contents_ids = content_array.split(',')
     else
-      workshops_ids = workshop_array[1..-2].split(', ')
+      contents_ids = content_array[1..-2].split(', ')
     end
 
     # Lists the users and the events ids of the events to be deleted
@@ -148,28 +148,28 @@ class AttendeesController < ApplicationController
 
     begin
       # Creates the events into calendars
-      workshops_ids.each do |index|
-        workshop = TrainingWorkshop.find(index.to_i)
-        day = workshop.date.strftime('%Y-%m-%d')
+      contents_ids.each do |index|
+        content = Session.find(index.to_i)
+        day = content.date.strftime('%Y-%m-%d')
         event = Google::Apis::CalendarV3::Event.new({
           start: {
-            date_time: day+'T'+workshop.starts_at.strftime('%H:%M:%S'),
+            date_time: day+'T'+content.starts_at.strftime('%H:%M:%S'),
             time_zone: 'Europe/Paris',
           },
           end: {
-            date_time: day+'T'+workshop.ends_at.strftime('%H:%M:%S'),
+            date_time: day+'T'+content.ends_at.strftime('%H:%M:%S'),
             time_zone: 'Europe/Paris',
           },
-          summary: "Formation - " + workshop.title
+          summary: "Formation - " + content.title
         })
         # Creates the event in all the targeted calendars
         list.each do |ind|
-          create_calendar_id(ind, workshop.id, event, service, calendars_ids)
+          create_calendar_id(ind, content.id, event, service, calendars_ids)
         end
       end
     rescue
     end
-    workshops_ids.count == 1 ? (redirect_to training_workshop_path(TrainingWorkshop.find(workshops_ids[0].to_i))) : (redirect_to training_path(Training.joins(:training_workshops).find_by(training_workshops: {id: workshops_ids})))
+    contents_ids.count == 1 ? (redirect_to training_content_path(Session.find(contents_ids[0].to_i))) : (redirect_to training_path(Training.joins(:training_contents).find_by(training_contents: {id: contents_ids})))
   end
 
   private
@@ -193,9 +193,9 @@ class AttendeesController < ApplicationController
     }
   end
 
-  def create_calendar_id(user_id, training_workshop_id, event, service, array)
+  def create_calendar_id(user_id, training_content_id, event, service, array)
     event.id = SecureRandom.hex(32)
-    attendee = Attendee.where(user_id: user_id, training_workshop_id: training_workshop_id).first
+    attendee = Attendee.where(user_id: user_id, training_content_id: training_content_id).first
     unless attendee.calendar_uuid.present?
       attendee.update(calendar_uuid: event.id)
       service.insert_event(array[user_id.to_i - 1], event)

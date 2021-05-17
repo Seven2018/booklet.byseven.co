@@ -27,7 +27,7 @@
       <% Category.where(company_id: current_user.company_id).order(title: :asc).each do |theme| %>
         <div class="accordion-module">
           <div class="theme-title">
-            <p ondblclick='openForm(this);'><%= theme.title %></b> - <%= theme.workshops.count %></p>
+            <p ondblclick='openForm(this);'><%= theme.title %></b> - <%= theme.contents.count %></p>
             <div class='hidden hidden-form-ajax'>
               <%= simple_form_for theme, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
                 <div class='flex-row-between-centered'>
@@ -59,7 +59,7 @@
                 </div>
               <% end %>
             </div>
-              <% theme.workshops.map(&:title).each do |title| %>
+              <% theme.contents.map(&:title).each do |title| %>
                 <p><i><%= title %></i></p>
               <% end %>
             </div>
