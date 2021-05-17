@@ -256,11 +256,21 @@
   padding: 0px;
 }
 
+
+
+// USER SHOW MODULE //
+
 .user-show-modal-left {
 
   img {
     height: 15rem;
   }
+}
+
+.user-show-modal-username {
+  margin: 2rem 0;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #E5E5E5;
 }
 
 .user-show-modal-right {
@@ -271,6 +281,46 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 1rem 0;
+    margin: 2rem 0;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #E5E5E5;
+    p {
+      color: #888888;
+    }
   }
+}
+
+.user-tag-association {
+  margin: 2rem 0;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #E5E5E5;
+  h3 {
+    color: #888888;
+  }
+  .user-tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    background-color: #F8D9C8;
+    color: #E8621C;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin: 10px 5px;
+  }
+}
+
+.user-tag-important-infos {
+  margin-top: 10px;
+}
+
+.user-tag-info {
+  color: #888888;
+}
+
+.modal-body-user-show {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
 }

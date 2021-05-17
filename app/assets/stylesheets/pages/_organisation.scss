@@ -155,16 +155,20 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(0,0,0,0.1);
-      padding: 1rem;
+      padding: 2rem;
 
       .organisation-filter-controls-title {
         display: inherit;
         justify-content: space-between;
         align-items: center;
         height: 4rem;
-
+        h2 {
+          font-size: 20px !important;
+          margin-bottom: 0;
+        }
         i {
           margin-right: 1rem;
+          margin-left: 1rem;
         }
       }
     }
@@ -178,6 +182,7 @@
       .organisation-filter-block-title {
         height: 4rem;
         margin-bottom: 1rem;
+
 
         & > div {
           display: flex;
@@ -245,16 +250,20 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(0,0,0,0.1);
-      padding: 1rem;
+      padding: 2rem;
 
       .organisation-manage-users-controls-title {
         display: inherit;
         justify-content: space-between;
         align-items: center;
         height: 4rem;
-
+        h2 {
+          font-size: 20px !important;
+          margin-bottom: 0;
+        }
         i {
-          margin-right: 1rem;
+          margin-right: 2rem;
+          margin-left: 1rem;
         }
       }
     }
@@ -305,6 +314,11 @@
       }
     }
   }
+
+
+.organisation-manage-users-controls-buttons {
+  margin-right: 3px;
+}
 
   .new-tag {
     display: flex;
