@@ -1,0 +1,185 @@
+<div id="show-controls" class='flex-row-between-centered'>
+  <% if params[:content_id].present? %>
+    <%= link_to content_path(Content.find(params[:content_id])), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% else %>
+    <%= link_to catalogue_path, class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
+  <% end %>
+</div>
+<div class="booking-containter">
+  <div class="booktimes">
+    <h2><b>Book Date for <%= @content.title %></b></h2>
+    <%= simple_form_for :filter, url: book_content_path(@content), input_html: { class: "filter-form" }, method: :get do |f| %>
+    <h4>1. Select Date and Time</h4>
+    <% if params[:filter].present? %>
+      <div class="mod-date">
+        <%= f.input :date, label: 'Date:', input_html: { class: 'datepicker', value: Date.strptime(params[:filter][:date], '%d/%m/%Y') } %>
+        <div class="start-time">
+          <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: DateTime.strptime(params[:filter]['starts_at(1i)']+'-'+params[:filter]['starts_at(2i)']+'-'+params[:filter]['starts_at(3i)']+'-'+params[:filter]['starts_at(4i)']+'-'+params[:filter]['starts_at(5i)'], '%Y-%m-%d-%H-%M') %>
+          <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: DateTime.strptime(params[:filter]['ends_at(1i)']+'-'+params[:filter]['ends_at(2i)']+'-'+params[:filter]['ends_at(3i)']+'-'+params[:filter]['ends_at(4i)']+'-'+params[:filter]['ends_at(5i)'], '%Y-%m-%d-%H-%M') %>
+        </div>
+      </div>
+    <% else %>
+      <div class="mod-date">
+        <div>
+          <div class="flex-row-start-centered">
+            <%= f.label 'Date:' %>
+            <div class="icon-btn hidden" onclick='removeDate(this);'>
+              <i class="fas fa-times"></i>
+            </div>
+          </div>
+          <%= f.input :date, label: false, input_html: { class: 'datepicker', value: Date.today } %>
+        </div>
+        <div class="start-time">
+          <%= f.input :starts_at, label: 'Start time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('9:00') %>
+          <%= f.input :ends_at, label: 'End time:', as: :time, minute_step: 15, input_html: { class: 'timepicker'}, default: Time.parse('17:00') %>
+        </div>
+      </div>
+    <% end %>
+    <div class="btn" onclick='addDate(this);'>
+      <p>Add Date</p>
+    </div>
+  <%# end %>
+  </div>
+  <div class="flex-row-between-centered">
+    <h4>2. Select Participants</h4>
+    <div class="flex-row-between-centered" id='select_all'>
+      <p>All</p>
+      <input type="checkbox" onClick="toggle(this)">
+    </div>
+  </div>
+  <div class='organization-page'>
+    <div class='filter-dropdown-form'>
+      <div class="hidden-form">
+      <div class="fil">
+        <h3 class="category-title"><b>Filter</b></h3>
+        <i class="fas fa-times" id='close-btn'></i>
+      </div>
+      <% i = 1 %>
+      <%# simple_form_for :filter, url: book_content_path(@content), input_html: { class: "filter-form" }, method: :get do |f| %>
+        <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false;%></div>
+        <% checked = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.tag_name} if params[:filter].present? && params[:filter][:tag].present? %>
+        <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
+          <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: checked %></div>
+        <% end %>
+        <div class=filter-text>
+          <%= f.submit 'Filter', class: 'final-filter-btn' %>
+          <%= f.submit 'Clear', class: 'final-filter-clear' %>
+        </div>
+      </div>
+    </div>
+    <div class='organisation-users'>
+      <div class='staff-members'>
+        <h3 class="category-title"><b>Staff Members</b></h3>
+        <div class='mobile-btns'>
+           <div class="mobile-filter-btn" id="filter-book">
+            <i class="fas fa-sliders-h fa-2x"></i>
+          </div>
+        </div>
+      </div>
+      <% if @users.class == Array %>
+        <% users = @users.sort_by{|x| x.lastname} %>
+      <% else %>
+        <% users = @users.order(lastname: :asc) %>
+      <% end %>
+        <%= collection_check_boxes(:participant, :user_ids, users, :id, :email) do |b| %>
+          <% user = User.find_by(email: b.text) %>
+          <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+            <div class='user-index-card'>
+              <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+              <div class="user-index-infos flex-row-between-centered">
+                <div class="user-index-info">
+                  <p data-toggle="tooltip" title="<%= b.text %>"><%= user.fullname %></p>
+                </div>
+                <div class="user-index-info">
+                  <p data-toggle="tooltip" title="<%= user.email %>"><%= b.text %></p>
+                </div>
+                <div class="centered-item">
+                  <label>
+                      <%= b.check_box %>
+                  </label>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+    </div>
+  </div>
+  <div class="centered-item">
+    <%= f.submit 'Book Now', class: 'content-book-now'%>
+    <% end %>
+  </div>
+</div>
+
+<script>
+filter_btn = document.querySelector('.mobile-filter-btn')
+close_btn = document.querySelector('#close-btn')
+bookletcontainer = document.getElementById('booklet-container')
+filter_slider = document.querySelector('.filter-dropdown-form')
+filter_btn.addEventListener('click', (event) => {
+    filter_slider.style.width = "375px";
+    filter_slider.style.zindex = "100";
+    filter_slider.style.background = "white";
+  })
+
+close_btn.addEventListener('click', (event) => {
+    filter_slider.style.width = "0px";
+    filter_slider.style.zindex = "100";
+    filter_slider.style.background = "transparent";
+  })
+
+function toggle(source) {
+  checkboxes = document.getElementsByName('participant[user_ids][]');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+
+<script>
+  i = 1;
+
+  function addDate(source) {
+    template = source.parentNode.querySelectorAll('.mod-date')[source.parentNode.querySelectorAll('.mod-date').length - 1];
+    content = template.innerHTML;
+    new_date = document.createElement('div');
+    new_date.innerHTML = content;
+    new_date.classList.add('mod-date');
+    new_date.querySelector('input').name = 'filter[date' + i.toString() + ']';
+    new_date.querySelectorAll('select').forEach((element) => {
+      if (i == 1) {
+        element.name = element.name.split('(')[0] + i.toString() + '(' + element.name.split('(')[1]
+      } else {
+        element.name = element.name.split('(')[0].slice(0, element.name.split('(')[0].length - 1) + i.toString() + '(' + element.name.split('(')[1]
+      }
+    })
+    i = i + 1;
+    template.parentNode.insertBefore(new_date, source);
+    new_date.querySelector('label').innerHTML = 'Date ' + i.toString() + ':';
+    document.querySelectorAll('.icon-btn').forEach((element) => {
+      element.classList.add('hidden');
+    })
+    new_date.querySelector('.icon-btn').classList.toggle('hidden');
+    flatpickr(new_date.querySelector('input'), {
+      disableMobile: true,
+      dateFormat: "d/m/Y",
+    })
+    if (i == 5) {
+      source.classList.toggle('hidden');
+    }
+  }
+
+  function removeDate(source) {
+    div = source.parentNode.parentNode.parentNode;
+    div.parentNode.removeChild(div);
+    del_buttons = document.querySelectorAll('.icon-btn');
+    del_buttons.forEach((element) => {
+      element.classList.add('hidden');
+    })
+    i = i - 1;
+    if (i > 1) {
+      del_buttons[del_buttons.length - 1].classList.remove('hidden');
+    }
+  }
+</script>
+
+

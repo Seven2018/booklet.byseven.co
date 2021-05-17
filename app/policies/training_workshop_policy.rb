@@ -1,4 +1,4 @@
-class TrainingWorkshopPolicy < ApplicationPolicy
+class SessionPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if ['Super Admin', 'Admin', 'HR', 'Employee'].include? user.access_level
@@ -33,7 +33,7 @@ class TrainingWorkshopPolicy < ApplicationPolicy
     check_access
   end
 
-  def book_training_workshop?
+  def book_training_content?
     check_access
   end
 

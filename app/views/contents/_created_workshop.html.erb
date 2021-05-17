@@ -1,0 +1,13 @@
+<h2>Update a new content</h2>
+<%= simple_form_for :new_content, url: update_content_path(@new_content), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+  <%= f.input :title, input_html: {value: @new_content.title }%>
+  <% checked = @new_content.categories.map(&:id) %>
+  <%= f.input :categories, collection: Category.where(company_id:current_user.company_id), as: :check_boxes, checked: checked %>
+  <%= f.label :description %>
+  <%= f.rich_text_area :description, input_html: {value: @new_content.description } %>
+  <p class="hidden" id='content_id'><%= @new_content.id %></p>
+  <div class="controls">
+    <a class="prev disabled" id='back-zero'>Back</a>
+    <%= button_tag 'Next', type: 'submit', class: 'next', id: 'next-zero-bis', :onclick => "document.querySelector('.module_zero').classList.remove('active');document.querySelector('.module_first').classList.add('active');"%>
+  </div>
+<% end %>

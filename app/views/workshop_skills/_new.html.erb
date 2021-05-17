@@ -6,11 +6,11 @@
     <button type="button" class="btn btn-icon btn-reset" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody" style='display:flex;flex-direction:column;align-items:center;'>
-    <%= simple_form_for [@workshop, @workshop_skill] do |f| %>
+    <%= simple_form_for [@content, @content_skill] do |f| %>
       <div id='checkbox' style=" display:flex;justify-content:space-between;flex-direction:column;">
         <% SkillGroup.all.each do |group| %>
           <p><%= group.title %></p>
-          <%= collection_check_boxes(:workshop, :skill_ids, Skill.where(skill_group_id: group.id), :id, :title) do |b| %>
+          <%= collection_check_boxes(:content, :skill_ids, Skill.where(skill_group_id: group.id), :id, :title) do |b| %>
             <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
               <%= b.check_box + b.text %>
             <% end %>

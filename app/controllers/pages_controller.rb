@@ -5,39 +5,39 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-    @completed_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Completed'})
-    @my_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Registered'}).where.not('date < ?', Date.today)
+    @completed_contents = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.id, status: 'Completed'})
+    @my_contents = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.id, status: 'Registered'}).where.not('date < ?', Date.today)
     if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
-      @available_workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id}).where.not(date: nil).where.not('date < ?', Date.today) - @my_workshops
+      @available_contents = Training.joins(:sessions).where(company_id: current_user.company_id).where.not('date < ?', Date.today) - @my_contents
     else
-      @available_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).where.not('date < ?', Date.today)
+      @available_contents = Session.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).where.not('date < ?', Date.today)
     end
   end
 
   def calendar_month
-    @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
+    @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
   end
 
   def calendar_week
-    @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
+    @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
   end
 
   def catalogue
     # Index with 'search' option and global visibility for SEVEN Users
     if current_user.access_level == 'Super Admin'
-      @workshops = Workshop.all.order(title: :asc)
+      @contents = Content.all.order(title: :asc)
       if params[:search]
-        @workshops = Workshop.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+        @contents = Content.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
       elsif params[:filter]
-        @workshops = Workshop.joins(:workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
+        @contents = Content.joins(:content_categories).where(content_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
       end
     # Index for other Users, with visibility limited to programs proposed by their company only
     else
-      @workshops = Workshop.where(company_id: current_user.company.id).order(title: :asc)
+      @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
       if params[:search]
-        @workshops = Workshop.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+        @contents = Content.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
       elsif params[:filter]
-        @workshops = Workshop.joins(:workshop_categories).where(company_id: current_user.company.id, workshop_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
+        @contents = Content.joins(:content_categories).where(company_id: current_user.company.id, content_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
       end
     end
   end
@@ -65,9 +65,9 @@ class PagesController < ApplicationController
     # end
   end
 
-  def catalogue_filter_workshop
-    @workshop_categories = params[:workshop][:category_ids].drop(1).map(&:to_i)
-    # @workshop_categories = Category.where(company_id: current_user.company_id).map(&:id) if params[:filter][:all] == '1'
+  def catalogue_filter_content
+    @content_categories = params[:content][:category_ids].drop(1).map(&:to_i)
+    # @content_categories = Category.where(company_id: current_user.company_id).map(&:id) if params[:filter][:all] == '1'
     @all = 'true' if params[:filter][:all] == '1'
     respond_to do |format|
       format.html {redirect_to catalogue_path}

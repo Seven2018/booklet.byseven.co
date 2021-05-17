@@ -1,0 +1,352 @@
+<div class="container-new-form">
+  <div class="training-info-headers">
+    <%= link_to url_for(:back), class: 'btn return-arrow' do %>
+      <i class="fas fa-arrow-left"></i>
+    <% end %>
+  </div>
+</div>
+ <section class="temp">
+  <div class="interactive-form">
+    <div class="form-wrapper">
+      <div class="modules">
+        <div class="module_zero active" data-map="greet">
+          <h2>Create a new content</h2>
+          <%= simple_form_for :new_content, url: create_content_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
+            <%= f.input :title, label: 'Title:', placeholder:'Upselling' %>
+            <%# f.input :categories, collection: Category.where(company_id:current_user.company_id), as: :check_boxes %>
+            <%= f.label :description, label: 'Description:' %>
+            <%= f.rich_text_area :description %>
+          <div class="controls">
+            <a class="prev disabled" id='back-zero'>Back</a>
+            <%= button_tag 'Next', type: 'submit', class: 'next', id: 'next-zero' %>
+          </div>
+          <% end %>
+        </div>
+        <div class="module_first" data-map="who are you?">
+          <h2>Congrats you've created a content. You can now populate your content with modules.</h2>
+          <div class='form-choices'>
+            <div class='new-module' id='new-module'>
+              <a><i class="fas fa-clipboard-check fa-5x"></i>
+              <h1>Module</h1></a>
+            </div>
+            <div class='new-module'>
+              <a><i class="far fa-clipboard fa-5x" id='new-quiz'></i>
+              <h1>No Module</h1></a>
+            </div>
+          </div>
+          <div class="controls">
+            <a class="prev" id='back-first'>Back</a>
+            <a class="next" id='move-on'>Next</a>
+          </div>
+        </div>
+        <div class="module_second" data-map="your business">
+          <h2>Create a new Module</h2>
+          <div id='moduleadd'>
+            <div id='allmods'>
+            </div>
+          </div>
+          <div class='mod-btn' id='modbut' onclick='addModule();'>Add a Module</div>
+          <% if Mod.where(company_id: current_user.company_id).present? %>
+            <div class='pre-existing'>
+              <h2>or select a pre-existing one</h2>
+              <%= simple_form_for :link_mod, url: create_ajax_content_mods_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
+                <%= f.hidden_field :content_id %>
+                <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
+                  <% content_list = Mod.where(company_id: current_user.company_id) %>
+                  <%= f.hidden_field :content_list, value: content_list.ids %>
+                  <%= collection_check_boxes(:content, :mod_ids, content_list, :id, :title) do |b| %>
+                    <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
+                    <%= b.check_box + b.text %>
+                    <% end %>
+                  <% end %>
+                </div>
+                <div style="display:flex;justify-content:center;margin-top:30px;">
+                  <%= button_tag :submit, name: 'content_id', value: "#{@content.id}", class: 'hidden', id: 'mod_checkbox_save' do %>
+                    <p><b>SAVE</b><i class="fas fa-save"></i></p>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="controls">
+            <a class="prev" id='back-second'>Back</a>
+            <a class="next" id='next-second' onclick='document.getElementById("mod_checkbox_save").click();'>Next</a>
+          </div>
+        </div>
+        <div class="module_fourth" data-map="your added value">
+          <h2>Here is an overview of the content you created and populated.</h2>
+          <div class="mod-content-submit">
+            <div class="mod" id='content_summary'>
+              <p>You chose not to add modules</p>
+            </div>
+          </div>
+          <div class="controls">
+            <a class="prev" id='back-last'>Back</a>
+            <a class="next" id='submit'>Submit</a>
+          </div>
+        </div>
+        <div class="module_book" data-map="your added value">
+          <h2>Congrats, Your content has been created! <br>Would you like to book a date for this content? </h2>
+          <div id="booking">
+            <%= link_to 'Book Later', catalogue_path, class: 'prev', id: 'book-later' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Module Template -->
+<div id='accordion_template' class='hidden'>
+  <div class="accordion" onclick='openMod(this);'>Title of Module</div>
+  <div class="panel">
+    <%= simple_form_for :new_mod, url: create_mod_path, method: :post, remote: true, input_html: {multipart: true} do |f| %>
+      <%= f.input :title %>
+      <%= f.hidden_field :content_id %>
+      <%= f.input :duration %>
+      <%= f.input :document, label: 'Document (url)' %>
+      <%= f.input :media, label: 'Media (url)' %>
+      <%= f.label :content %>
+      <%= f.cktext_area :content %>
+      <div class='validate-btn-flex'>
+        <!-- <div class='validate-btn' id='validate' onclick='closeMod(this);'>
+          <p>Save Module</p>
+        </div> -->
+        <%= f.submit 'Save Module', class: 'validate-btn-flex', id: 'validate' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Question Template -->
+<%= simple_form_for :questions, method: :post do |f| %>
+  <div class='quiz-questions hidden' id='quiz_template'>
+    <div class='mod-assessment-questions-form'>
+      <%= f.input :question, as: :text%>
+      <div class="answer_add">
+
+      </div>
+      <a href="javascript:;" class='addOption btn btn-edit-white' onclick='addAnswer(this)'>Add Response</a>
+      <!-- Answer Template -->
+      <div class= 'hidden' id="answer_template">
+        <div class='mod-assessment-questions-options-mcq'>
+          <div class='flex-column-between-left'>
+          </div>
+        </div>
+        <div id="add_options_form">
+          <%= label_tag 'Response' %>
+          <%= text_field_tag 'options[]' %>
+          <%= label_tag 'Correct Answer' %>
+          <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
+          <%= hidden_field_tag 'answer[]', false %>
+          <script>
+            $('input[type="checkbox"]').on('change', function(e){
+                  if($(this).prop('checked'))
+                  {
+                      $(this).next().val(true);
+                  } else {
+                      $(this).next().val(false);
+                  }
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+<script>
+  // quiz //
+$('input[type="checkbox"]').on('change', function(e){
+        if($(this).prop('checked'))
+        {
+            $(this).next().val(true);
+        } else {
+            $(this).next().val(false);
+        }
+  });
+  // $('.mod-assessment-questions-options-mcq').hide();
+  $('.mod-assessment-questions-options-rating').hide();
+  $('input[type=radio]').change(function() {
+  $('.mod-assessment-questions-options-rating').hide();
+  $('.mod-assessment-questions-options-mcq').show();
+  });
+
+
+  $('input[type="checkbox"]').on('change', function(e){
+        if($(this).prop('checked'))
+        {
+            $(this).next().val(1);
+        } else {
+            $(this).next().val(0);
+        }
+  });
+  // pre-existing modules //
+  $('#checkbox3 input:checkbox:checked').parent().toggleClass('checked-box');
+  $('#checkbox3 input:checkbox').change(function () {
+    $(this).parent().toggleClass('checked-box');
+  });
+  // first page //
+  modzero = document.querySelector('.module_zero');
+  nextzero = document.getElementById('next-zero');
+  modfirst = document.querySelector('.module_first');
+  newmodule = document.getElementById('new-module');
+  backfirst = document.getElementById('back-first');
+  modthird = document.querySelector('.module_third');
+  modsecond = document.querySelector('.module_second');
+  // backquiz = document.getElementById('back-quiz');
+  newquiz = document.getElementById('new-quiz');
+  // nextquiz = document.getElementById('next-quiz');
+  backsecond = document.getElementById('back-second');
+  nextsecond = document.getElementById('next-second');
+  modfourth = document.querySelector('.module_fourth');
+  moveon = document.getElementById('move-on');
+  backlast = document.getElementById('back-last');
+  submit = document.getElementById('submit');
+  booknow = document.getElementById('book-now');
+  booklater = document.getElementById('book-later');
+  modbook = document.querySelector('.module_book');
+
+  nextzero.addEventListener('click', event => {
+    modzero.classList.remove('active');
+    modfirst.classList.add('active');
+  })
+// second page //
+
+  backfirst.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    modzero.classList.add('active');
+  })
+
+  newmodule.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    id = parseInt(document.getElementById('content_id').innerHTML, 10);
+    input1 = document.getElementById('new_mod_content_id');
+    input2 = document.getElementById('link_mod_content_id');
+    input1.value = id;
+    input2.value = id;
+    modsecond.classList.add('active');
+    $('input[type="checkbox"]').on('change', function(e){
+        if($(this).prop('checked'))
+        {
+            $(this).next().val(1);
+        } else {
+            $(this).next().val(0);
+        }
+    });
+    $('#checkbox2 input:checkbox:checked').parent().toggleClass('checked-box');
+    $('#checkbox2 input:checkbox').change(function () {
+      $(this).parent().toggleClass('checked-box');
+    });
+  })
+
+  nextsecond.addEventListener('click', event => {
+    modsecond.classList.remove('active');
+    modfirst.classList.add('active');
+  })
+
+  backsecond.addEventListener('click', event => {
+    modsecond.classList.remove('active');
+    modfirst.classList.add('active');
+  })
+
+   newquiz.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    modbook.classList.add('active');
+  })
+
+  // backquiz.addEventListener('click', event => {
+  //   modthird.classList.remove('active');
+  //   modfirst.classList.add('active');
+  // })
+
+  // nextquiz.addEventListener('click', event => {
+  //   modthird.classList.remove('active');
+  //   modfirst.classList.add('active');
+  // })
+
+moveon.addEventListener('click', event => {
+    modfirst.classList.remove('active');
+    modfourth.classList.add('active');
+  })
+
+backlast.addEventListener('click', event => {
+    modfirst.classList.add('active');
+    modfourth.classList.remove('active');
+  })
+
+submit.addEventListener('click', event => {
+    modbook.classList.add('active');
+    modfourth.classList.remove('active');
+    // id = parseInt(document.getElementById('content_id').innerHTML, 10);
+    // input3 = document.getElementById('training_content_id');
+    // input3.value = id;
+  })
+// open close of each module //
+
+function openMod (element) {
+  // acc = document.getElementsByClassName("accordion");
+  // acc.forEach(element => {
+      element.classList.add('active-accor');
+      var panel = element.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+  };
+
+function closeMod (element) {
+  // var validate = document.getElementsByClassName("validate-btn");
+  // validate.forEach(element => {
+    element.parentNode.parentNode.parentNode.parentNode.querySelector('.accordion').classList.remove('active-accor');
+    console.log(element.parentNode.parentNode.parentNode.parentNode.querySelector('.accordion'));
+    var panel = element.parentNode.parentNode.parentNode.parentNode.querySelector('.accordion').nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+ };
+
+// creating new div on each module //
+
+function addModule () {
+  content = document.getElementById('accordion_template').innerHTML;
+  // create a new div element
+  modadd = document.getElementById('allmods');
+
+  var newDiv = document.createElement("div");
+  // and give it some content
+  newDiv.innerHTML = content;
+  // add the text node to the newly created div
+  modadd.appendChild(newDiv);
+  // add the newly created element and its content into the DOM
+};
+
+question_count = 0;
+
+// add question //
+function addQuestion () {
+  question = document.getElementById('quiz_template').innerHTML;
+  console.log(question);
+  quizadd = document.getElementById('quizadd');
+  save_button = document.querySelector('.question-save');
+  var newQuiz = document.createElement("div");
+  // and give it some content
+  newQuiz.innerHTML = question;
+  // add the text node to the newly created div
+  quizadd.appendChild(newQuiz);
+  save_button.classList.remove('hidden');
+};
+
+function addAnswer (element) {
+  answer = element.parentNode.querySelector('#answer_template').innerHTML;
+  answeradd = element.parentNode.querySelector('.answer_add');
+  var newAnswer = document.createElement("div");
+  newAnswer.innerHTML = answer;
+  answeradd.appendChild(newAnswer);
+}
+</script>
