@@ -56,6 +56,8 @@ form {
     input[type="checkbox"] {
       position: absolute;
       opacity: 0;
+      width: 1.6rem;
+      height: 1.6rem;
     }
 
     .checked-box:focus {
@@ -63,6 +65,12 @@ form {
     }
   }
 }
+
+input[type="checkbox"] {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+
 
 .label-checkbox {
   display: flex;
@@ -76,7 +84,7 @@ form {
 
 .simple_form {
   label {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
   abbr {
   display:none;

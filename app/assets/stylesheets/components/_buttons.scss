@@ -50,6 +50,40 @@
   }
 }
 
+.btn-white-border {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  padding: 0 1rem;
+  height: 4rem;
+  background-color: white;
+  border-radius: 4px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border: 1px solid #F26419;
+
+  i, p {
+    color: #F26419;
+  }
+
+  i {
+    margin-right: 1rem;
+  }
+
+  &:hover {
+    background-color: #F26419;
+    border: 1px solid #F26419;
+
+
+    i, p {
+      color: white;
+    }
+  }
+}
+
+
 .btn-white.flashing_button {
   -webkit-animation: glowing 1300ms infinite;
   -moz-animation: glowing 1300ms infinite;
