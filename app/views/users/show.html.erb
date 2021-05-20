@@ -52,18 +52,34 @@
           <div class="user-access">
             <p>Access Level: <%=  @user.access_level %></p>
           </div>
-          <div class="user-job">
-            <p class="data" id='job' onclick='openForm(this)'> Job Title: <%=  @user.job_title if @user.job_title.present? %></p>
-            <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'job'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-              <%= f.input :job_title, label: false, input_html: {value: @user.job_title} %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
-                <i class="fas fa-save"></i>
+          <div class="user-work-info">
+              <p> <i class="fas fa-briefcase"></i> <%= @user.company.name %></p>
+            <div class="user-job">
+              <p class="data" id='job' onclick='openForm(this)'> <%=  @user.job_title if @user.job_title.present? %></p>
+              <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'job'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+                <%= f.input :job_title, label: false, input_html: {value: @user.job_title} %>
+                <%= button_tag :submit, class: 'hidden-submit' do %>
+                  <i class="fas fa-save"></i>
+                <% end %>
               <% end %>
-            <% end %>
+            </div>
+            <div class="user-hire">
+              <% if @user.hire_date.present? %>
+                <p class="data" id='hire_date' onclick='openForm(this)'> <%=  @user.hire_date %></p>
+              <% else %>
+                <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
+              <% end %>
+              <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'hire_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+                <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, value: @user.hire_date %>
+                <%= button_tag :submit, class: 'hidden-submit' do %>
+                      <i class="fas fa-save"></i>
+                    <% end %>
+              <% end %>
+            </div>
           </div>
           <div class="user-birth">
             <% if @user.birth_date.present? %>
-              <p class="data" id='birth_date' onclick='openForm(this)'>Birth date: <%=  @user&.birth_date %></p>
+              <p class="data" id='birth_date' onclick='openForm(this)'><i class="fas fa-birthday-cake"></i> <%=  @user&.birth_date %></p>
             <% else %>
               <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
             <% end %>
@@ -72,19 +88,6 @@
               <%= button_tag :submit, class: 'hidden-submit' do %>
                 <i class="fas fa-save"></i>
               <% end %>
-            <% end %>
-          </div>
-          <div class="user-hire">
-            <% if @user.hire_date.present? %>
-              <p class="data" id='hire_date' onclick='openForm(this)'>Hire date: <%=  @user.hire_date %></p>
-            <% else %>
-              <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
-            <% end %>
-            <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'hire_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-              <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, value: @user.hire_date %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
-                    <i class="fas fa-save"></i>
-                  <% end %>
             <% end %>
           </div>
           <div class="user-tags">
