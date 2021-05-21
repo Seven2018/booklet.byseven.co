@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :tag_categories, only: %i[create destroy]
   get :delete_tag_category, controller: :tag_categories
 
+
   # TAGS
   resources :tags, only: %i[create show update destroy]
   get :delete_tag, controller: :tags
@@ -27,7 +28,6 @@ Rails.application.routes.draw do
   resources :skills
   resources :training_contents, only: %i[show create update destroy]
   get 'training_contents/:id/copy', to: 'training_contents#copy', as: 'copy_training_content'
-  get 'training_contents/:id/update_book', to: 'training_contents#update_book', as: 'update_book_training_content'
   get 'training_contents/:id/viewmode', to: 'training_contents#view_mode', as: 'view_training_content'
 
   # CONTENTS
@@ -36,7 +36,6 @@ Rails.application.routes.draw do
   end
   post 'contents/create_content', to: 'contents#create_content', as: 'create_content'
   patch 'contents/:id/update_content', to: 'contents#update_content', as: 'update_content'
-  get 'contents/:id/book', to: 'contents#book', as: 'book_content'
   get :change_author, controller: :contents
   get :add_category, controller: :contents
 
@@ -80,6 +79,7 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
   get 'organisation', to: 'pages#organisation', as: 'organisation'
+  get 'book', to: 'pages#book', as: 'book'
 
   # CALENDAR
   get '/redirect', to: 'attendees#redirect', as: 'redirect'

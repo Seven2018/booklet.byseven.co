@@ -2,13 +2,14 @@
   position: sticky;
   top: 0;
   height: 50px;
-  display: flex;
+  display: none;
   justify-content: space-between;
   background-color: white;
   z-index: 40;
   padding: 0.5rem .5rem;
-  @include from-large {
+  @include from-medium {
     padding: 0.5rem 3rem;
+    display: flex;
   }
 }
 

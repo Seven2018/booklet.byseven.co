@@ -1,9 +1,8 @@
 .dashboard-tabs {
-  height: 100%;
   min-width: 27rem;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: inherit;
   align-items: center;
   padding-top: 30px;
 
@@ -63,93 +62,93 @@
   }
 }
 
-.dashboard-label-green {
-  background-color: rgba(143, 160, 120, 0.36);
+// .dashboard-label-green {
+//   background-color: rgba(143, 160, 120, 0.36);
 
-  h3:last-of-type {
-    color: #8FA078;
+//   h3:last-of-type {
+//     color: #8FA078;
 
-  }
-}
+//   }
+// }
 
-.dashboard-label-orange {
-  background-color: rgba(231, 111, 81, 0.6);
+// .dashboard-label-orange {
+//   background-color: rgba(231, 111, 81, 0.6);
 
-  h3:last-of-type {
-    color: #E76F51;
-  }
-}
+//   h3:last-of-type {
+//     color: #E76F51;
+//   }
+// }
 
-.dashboard-label-blue {
-  background-color: rgba(38, 70, 83, 0.58);
+// .dashboard-label-blue {
+//   background-color: rgba(38, 70, 83, 0.58);
 
-  h3:last-of-type {
-    color: #264653;
-  }
-}
+//   h3:last-of-type {
+//     color: #264653;
+//   }
+// }
 
-.training-index-list-dashboard {
-  width: 48%;
-  height: 50rem;
-  padding: 2rem;
-  overflow-y: scroll;
-  background-color: white;
-  margin-bottom: 5rem;
-}
+// .training-index-list-dashboard {
+//   width: 48%;
+//   height: 50rem;
+//   padding: 2rem;
+//   overflow-y: scroll;
+//   background-color: white;
+//   margin-bottom: 5rem;
+// }
 
-.training-index-list-dashboard-md {
-  width: 65%;
-  padding: 1rem;
-  overflow-y: scroll;
-  background-color: white;
-  margin-bottom: 5rem;
-}
+// .training-index-list-dashboard-md {
+//   width: 65%;
+//   padding: 1rem;
+//   overflow-y: scroll;
+//   background-color: white;
+//   margin-bottom: 5rem;
+// }
 
 
-.training-index-list-dashboard-large {
-  width: 100%;
-  padding: 2rem;
-  @include from-medium-high {
-    min-width: 82rem;
-  }
-}
+// .training-index-list-dashboard-large {
+//   width: 100%;
+//   padding: 2rem;
+//   @include from-medium-high {
+//     min-width: 82rem;
+//   }
+// }
 
-.training-index-infos-group-dashboard {
-  flex-grow: 1;
-  padding-left: 3rem;
-}
+// .training-index-infos-group-dashboard {
+//   flex-grow: 1;
+//   padding-left: 3rem;
+// }
 
-.training-index-infos-dashboard {
-  width: 20rem;
-  text-align: left;
+// .training-index-infos-dashboard {
+//   width: 20rem;
+//   text-align: left;
 
-  &:first-of-type {
-    width: 5rem;
-    min-width: 2rem;
-  }
+//   &:first-of-type {
+//     width: 5rem;
+//     min-width: 2rem;
+//   }
 
-  h3 {
-    margin: 0 !important;
-  }
-}
+//   h3 {
+//     margin: 0 !important;
+//   }
+// }
 
-.training-index-infos-dashboard-lg {
-  width: 40%;
-  text-align: left;
+// .training-index-infos-dashboard-lg {
+//   width: 40%;
+//   text-align: left;
 
-  p {
-    width: 100%;
-  }
-}
+//   p {
+//     width: 100%;
+//   }
+// }
 
-.training-index-list-dashboard-controls {
-  height: 4rem;
-  margin-bottom: 2rem;
-}
+// .training-index-list-dashboard-controls {
+//   height: 4rem;
+//   margin-bottom: 2rem;
+// }
 
-.training-index-list-dashboard-title {
-  margin-bottom: 3rem;
-}
+// .training-index-list-dashboard-title {
+//   margin-bottom: 3rem;
+// }
 
 .dashboard-cards {
   display: flex;
@@ -162,4 +161,116 @@
     justify-content: flex-start;
     align-items: center;
   }
+}
+
+// DASHBOARD GRID //
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+@include from-medium-low {
+  grid-template-columns: 3fr 1fr;
+}
+}
+
+// DASHBOARD
+.dashboard-right-schedule {
+  height: 900px;
+  border-left: none;
+  padding: 0;
+  @include from-medium-low {
+    border-left: 1px solid gray;
+    padding: 10px;
+  }
+}
+
+.dashboard-calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 15px;
+}
+
+.schedule {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule-title {
+  font-size: 2.5rem;
+  margin-top: 30px;
+  color: #F26419;
+  margin-left: 20px;
+}
+
+
+.calendar-schedule-card-sync {
+    margin: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #F8D9C8;
+    border-radius: 10px;
+    color: #F26419;
+    height: 80px;
+    width: 350px;
+    .calendar-card-time {
+      p {
+      font-size: 15px;
+      }
+    }
+    .calendar-card-info {
+      width: 80%;
+      padding: 15px;
+      .calendar-card-time {
+        display: flex;
+        justify-content: space-between;
+        p {
+          font-size: 13px;
+        }
+      }
+    }
+    .calendar-card-date {
+      border-right: 1px solid #F26419;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20%;
+      h2 {
+        font-size: 3rem !important;
+      }
+    }
+}
+
+.calendar-schedule-card-async {
+    margin: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #EEEEEE;
+    border-radius: 10px;
+    height: 80px;
+    width: 350px;
+
+    .calendar-card-info {
+      width: 80%;
+      padding: 15px;
+      .calendar-card-time {
+        p {
+          font-size: 13px;
+        }
+      }
+    }
+    .calendar-card-date {
+      width: 20%;
+      border-right: 1px solid black;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h2 {
+        font-size: 3rem !important;
+      }
+    }
 }
