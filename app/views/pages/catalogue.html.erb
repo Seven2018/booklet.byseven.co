@@ -1,41 +1,73 @@
-<div class="training-program-index">
+<div class="catalogue-container">
   <div id="index-controls" class='flex-row-between-centered'>
-    <h1>Catalogue</h1>
-    <div id="index-buttons">
-      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-        <div>
-          <button class="btn btn-edit-white btn-icon dropdown-toggle" name='show-modal' type="button"  data-toggle="modal" data-target='#indexTheme' aria-haspopup="true" aria-expanded="false"><i class="fas fa-swatchbook"></i></button>
+    <div class="index-controls-filter-bar">
+      <%= form_with url: add_category_path, id: 'add_category_form', local: true, method: :get do |f| %>
+        <div class="index-controls-filter-bar-block">
+          <h6>Theme</h6>
+          <p>Attached to related Workshop</p>
+        </div>
+        <div class="index-controls-filter-bar-block">
+          <h6>Participants</h6>
+          <p>Number of Participants interested</p>
+        </div>
+        <div class="index-controls-filter-bar-block-last">
+          <h6>Duration</h6>
+          <p>Length of Workshop in minutes</p>
+        </div>
+        <div class="index-controls-filter-bar-button btn-orange btn-icon">
+          <i class="fas fa-search"></i>
         </div>
       <% end %>
-
+    </div>
+    <div class="btn-orange">
+      <p>Create</p>
     </div>
   </div>
-  <div class="dashboard-tabs">
-    <ul class="nav nav-tabs">
-      <li role="presentation"><a href="#Contents" data-toggle="tab" class='active'>Contents</a></li>
-    </ul>
-  </div>
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="Contents">
-
-    </div>
+  <div id="catalogue-index">
+    <% Content.where(company_id: current_user.company_id).each do |content| %>
+      <div class="catalogue-content-card" id="content-<%= content.id %>">
+        <%= render 'catalogue_content_card', content: content %>
+      </div>
+    <% end %>
   </div>
 </div>
 
-<!-- Modal -->
-<div class='modal fade' id='indexTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'categories/index' %>
-  </div>
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
 
-<!-- <div class='modal fade' id='newTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%# render 'categories/new' %>
-  </div>
-</div> -->
+<script>
+  function openContentMenu(element) {
+    dropdown = element.parentNode.querySelector('.content-dropdown');
+    dropdown.classList.toggle('hidden');
+  }
+
+  function openAddCategoryForm(element) {
+    form = element.parentNode.querySelector('.hidden-form-ajax');
+    element.classList.toggle('hidden');
+    form.classList.toggle('hidden');
+
+  }
+
+  $input = $("[data-behavior='autocomplete']");
+
+  var options = {
+    listLocation: "categories",
+    getValue: 'title',
+    url: function(phrase) {
+      return "/categories_search.json?search=" + phrase
+    },
+    list: {
+      onChooseEvent: function() {
+        var id = $input.getSelectedItemData().id;
+        $('#category_id').val(id);
+        $('#add_category_form').submit();
+      },
+      match: {
+        enabled: true
+      }
+    }
+  }
 
 
-<script>$('button[name="show-modal"]').click(function(){
-  $('.modal').modal('show');
-});</script>
+  $input.easyAutocomplete(options);
+
+</script>

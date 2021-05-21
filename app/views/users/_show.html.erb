@@ -24,7 +24,7 @@
           <div class="user-tag-association">
             <h3>Associated Tags (<%= user.tags.count %>) </h3>
             <div class="user-tags">
-              <% user.tags.each do |tag| %>
+              <% User.includes(user_tags: :tag).find(user.id).tags.each do |tag| %>
                 <div class="tag"><p><%= tag.tag_name %></p></div>
               <% end %>
             </div>

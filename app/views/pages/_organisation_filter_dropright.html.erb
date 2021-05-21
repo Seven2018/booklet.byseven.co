@@ -1,0 +1,54 @@
+<div class="organisation-filter-controls">
+  <div class='organisation-filter-controls-title'>
+    <i class="fas fa-filter fa-2x"></i>
+    <h2>Filter options</h2>
+  </div>
+  <div class="organisation-filter-controls-buttons">
+    <div class="btn-icon" onclick='closeFilter();'>
+      <i class="fas fa-times"></i>
+    </div>
+  </div>
+</div>
+<%= simple_form_for :filter, url: organisation_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
+  <div class="organisation-filter-block">
+    <div class="organisation-filter-block-title">
+      <div>
+        <p>Job Title</p>
+        <div class="organisation-filter-block-title-buttons">
+          <p onclick='clearFilter(this);'>Clear</p>
+          <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="organisation-filter-block-checkboxes">
+        <%= f.input :job, collection: User.where(company_id: current_user.company_id).map(&:job_title).uniq.reject{|x| x.empty?}.sort, as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
+    </div>
+  </div>
+  <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+    <div class="organisation-filter-block">
+      <div class="organisation-filter-block-title">
+        <div>
+          <p><%= tag_category.name %></p>
+          <div class="organisation-filter-block-title-buttons">
+            <p onclick='clearFilter(this);'>Clear</p>
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="organisation-filter-block-checkboxes">
+          <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
+      </div>
+    </div>
+  <% end %>
+  <%= f.submit 'Filter', class: 'hidden hidden-submit' %>
+<% end %>
+<div class="centered-item" style='margin-top: 2rem;'>
+  <div class="btn-white-border" onclick='resetFilter()'>
+    <i class="fas fa-times-circle"></i>
+    <p>Reset Filter</p>
+  </div>
+</div>

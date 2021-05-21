@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :users, only: %i[new create show update destroy]
   post 'users/import', to: 'users#import', as: 'import_users'
+  get :users_search, controller: :users
 
   # TAG CATEGORIES
   resources :tag_categories, only: %i[create destroy]
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
 
   # CATEGORIES
   resources :categories
+  get :categories_search, controller: :categories
 
   # SKILLS
   resources :skills
@@ -28,16 +30,18 @@ Rails.application.routes.draw do
   get 'training_contents/:id/update_book', to: 'training_contents#update_book', as: 'update_book_training_content'
   get 'training_contents/:id/viewmode', to: 'training_contents#view_mode', as: 'view_training_content'
 
-  # WORKSHOPS
+  # CONTENTS
   resources :contents, only: %i[show new create edit update destroy] do
     resources :content_skills, only: %i[create]
-    resources :content_categories, only: %i[create]
   end
   post 'contents/create_content', to: 'contents#create_content', as: 'create_content'
   patch 'contents/:id/update_content', to: 'contents#update_content', as: 'update_content'
   get 'contents/:id/book', to: 'contents#book', as: 'book_content'
-  get :users_search, controller: :users
   get :change_author, controller: :contents
+  get :add_category, controller: :contents
+
+  # USER_INTERESTS
+  resources :user_interests, only: %i[create destroy]
 
   # ASSESSMENTS
   resources :assessments, only: %i[show new create edit update destroy] do
@@ -62,7 +66,6 @@ Rails.application.routes.draw do
   get 'content_mods/:id/move_up', to: 'content_mods#move_up', as: 'move_up_content_mod'
   get 'content_mods/:id/move_down', to: 'content_mods#move_down', as: 'move_down_content_mod'
   post 'content_mods/create_ajax', to: 'content_mods#create_ajax', as: 'create_ajax_content_mods'
-  resources :training_content_mods, only: %i[create destroy]
   resources :attendees, only: %i[create update destroy]
   get 'attendee-create-all', to: 'attendees#create_all', as: 'create_all_attendees'
   get 'attendee-destroy-all', to: 'attendees#destroy_all', as: 'destroy_all_attendees'
@@ -71,32 +74,12 @@ Rails.application.routes.draw do
   post 'attendee-invite-to-content', to: 'attendees#invite_user_to_content', as: 'invite_to_content_attendees'
   post 'attendee-invite-to-training', to: 'attendees#invite_user_to_training', as: 'invite_to_training_attendees'
   post 'attendee-mark-as-completed', to: 'attendees#mark_as_completed', as: 'mark_as_completed_attendees'
-  resources :requests, only: %i[index show create update destroy]
 
   # PAGES
   root to: 'pages#dashboard'
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
-  get 'dashboard_calendar_month', to: 'pages#calendar_month', as: 'dashboard_calendar_month'
-  get 'dashboard_calendar_week', to: 'pages#calendar_week', as: 'dashboard_calendar_week'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
-  get 'catalogue-filter-content', to: 'pages#catalogue_filter_content', as: 'filter_content_catalogue'
-  get 'catalogue-filter-program', to: 'pages#catalogue_filter_program', as: 'filter_program_catalogue'
-  get 'catalogue_contents_title_order_asc', to: 'pages#catalogue_contents_title_order_asc', as: 'catalogue_contents_title_order_asc'
-  get 'catalogue_contents_title_order_desc', to: 'pages#catalogue_contents_title_order_desc', as: 'catalogue_contents_title_order_desc'
-  get 'catalogue_contents_type_order_asc', to: 'pages#catalogue_contents_type_order_asc', as: 'catalogue_contents_type_order_asc'
-  get 'catalogue_contents_type_order_desc', to: 'pages#catalogue_contents_type_order_desc', as: 'catalogue_contents_type_order_desc'
-  get 'catalogue_contents_duration_order_asc', to: 'pages#catalogue_contents_duration_order_asc', as: 'catalogue_contents_duration_order_asc'
-  get 'catalogue_contents_duration_order_desc', to: 'pages#catalogue_contents_duration_order_desc', as: 'catalogue_contents_duration_order_desc'
-  get 'catalogue_programs_title_order_asc', to: 'pages#catalogue_programs_title_order_asc', as: 'catalogue_programs_title_order_asc'
-  get 'catalogue_programs_title_order_desc', to: 'pages#catalogue_programs_title_order_desc', as: 'catalogue_programs_title_order_desc'
-  get 'catalogue_programs_duration_order_asc', to: 'pages#catalogue_programs_duration_order_asc', as: 'catalogue_programs_duration_order_asc'
-  get 'catalogue_programs_duration_order_desc', to: 'pages#catalogue_programs_duration_order_desc', as: 'catalogue_programs_duration_order_desc'
-  get 'statistics', to: 'pages#statistics', as: 'statistics'
   get 'organisation', to: 'pages#organisation', as: 'organisation'
-
-  # NOTIFICATIONS
-  get 'notification-mark-as-read', to: 'notifications#mark_as_read', as: 'mark_as_read_notifications'
-
 
   # CALENDAR
   get '/redirect', to: 'attendees#redirect', as: 'redirect'

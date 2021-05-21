@@ -109,6 +109,26 @@ class ContentsController < ApplicationController
     end
   end
 
+  def add_category
+    skip_authorization
+    # if params[:ajax].present?
+    content = Content.find(params[:content_id])
+    category = Category.find(params[:category_id])
+    ContentCategory.create(content_id: content.id, category_id: category.id)
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
+    # else
+    #   @categories = Category.where(company_id: current_user.company_id).ransack(title_cont: params[:search]).result(distinct: true)
+    #   respond_to do |format|
+    #     format.json {
+    #       @users = @categories.limit(5)
+    #     }
+    #   end
+    # end
+  end
+
   def change_author
     skip_authorization
     if params[:ajax].present?

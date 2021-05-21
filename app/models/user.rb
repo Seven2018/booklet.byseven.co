@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :tags, through: :user_tags
   has_many :user_forms, dependent: :destroy
   has_many :mods, through: :user_forms
+  has_many :user_interests, dependent: :destroy
+  has_many :interests, through: :user_interests, source: :content
   validates :firstname, :lastname, :email, :access_level, presence: true
   # validates :gender, inclusion: { in: ['M', 'F'] }
   require 'csv'

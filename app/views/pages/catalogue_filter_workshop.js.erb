@@ -1,5 +1,0 @@
-if ('<%= @all %>' == 'true') {
-  document.getElementById('Contents').innerHTML = '<%= j (render("pages/catalogue_contents", contents: Content.where(company_id: current_user.company_id).order(title: :asc))) %>';
-} else {
-  document.getElementById('Contents').innerHTML = '<%= j (render("pages/catalogue_contents", contents: Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: @content_categories}).order(title: :asc))) %>';
-}
