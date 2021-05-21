@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_14_141536) do
+ActiveRecord::Schema.define(version: 2021_05_20_121429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,15 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "content_categories", force: :cascade do |t|
+    t.bigint "content_id"
+    t.bigint "category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_content_categories_on_category_id"
+    t.index ["content_id"], name: "index_content_categories_on_content_id"
+  end
+
   create_table "content_skills", force: :cascade do |t|
     t.bigint "skill_id"
     t.bigint "content_id"
@@ -114,6 +123,7 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.string "title", default: "", null: false
     t.integer "duration", default: 0, null: false
     t.text "description", default: "", null: false
+    t.string "content_type"
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.bigint "folder_id"
@@ -143,9 +153,11 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.string "title", default: "", null: false
     t.integer "duration", default: 0, null: false
     t.text "content", default: "", null: false
-    t.string "document", default: "", null: false
-    t.bigint "company_id"
+    t.string "link"
+    t.string "document"
+    t.string "video"
     t.string "mod_type", default: ""
+    t.bigint "company_id"
     t.integer "content_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -224,6 +236,16 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.index ["user_id"], name: "index_user_forms_on_user_id"
   end
 
+  create_table "user_interests", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "content_id"
+    t.string "interest_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_id"], name: "index_user_interests_on_content_id"
+    t.index ["user_id"], name: "index_user_interests_on_user_id"
+  end
+
   create_table "user_skills", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "skill_id"
@@ -275,6 +297,8 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
   add_foreign_key "attendees", "sessions"
   add_foreign_key "attendees", "users"
   add_foreign_key "categories", "companies"
+  add_foreign_key "content_categories", "categories"
+  add_foreign_key "content_categories", "contents"
   add_foreign_key "content_skills", "contents"
   add_foreign_key "content_skills", "skills"
   add_foreign_key "contents", "companies"
@@ -293,6 +317,8 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
   add_foreign_key "trainings", "folders"
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
+  add_foreign_key "user_interests", "contents"
+  add_foreign_key "user_interests", "users"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
   add_foreign_key "user_tags", "tags"

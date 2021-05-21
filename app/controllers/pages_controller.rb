@@ -65,43 +65,6 @@ class PagesController < ApplicationController
     # end
   end
 
-  def catalogue_filter_content
-    @content_categories = params[:content][:category_ids].drop(1).map(&:to_i)
-    # @content_categories = Category.where(company_id: current_user.company_id).map(&:id) if params[:filter][:all] == '1'
-    @all = 'true' if params[:filter][:all] == '1'
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-
-  def catalogue_programs_title_order_asc
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-
-  def catalogue_programs_title_order_desc
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-def catalogue_programs_duration_order_asc
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-
-  def catalogue_programs_duration_order_desc
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-
   private
 
   def index_function(parameter)
@@ -111,7 +74,15 @@ def catalogue_programs_duration_order_asc
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
         # tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
-        tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
+        tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?))
+        tags_hash = {}
+        tags.each do |tag|
+          if tags_hash[tag.tag_category_id].present?
+            tags_hash[tag.tag_category_id] << tag
+          else
+            tags_hash[tag.tag_category_id] = [tag]
+          end
+        end
         if params[:filter][:job] != [""] && params[:filter][:job].present?
           if tags.present?
             @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_title: params[:filter][:job].reject(&:blank?), user_tags: {tag_id: tags}).uniq)
@@ -122,13 +93,17 @@ def catalogue_programs_duration_order_asc
           @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')
         else
           # @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: tags}).uniq).select{|x| x.tags.map(&:id) & tags == tags}
-          @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: tags}).uniq)
+          # @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: tags}).uniq)
+          @users = parameter.joins(:user_tags).where(company_id: current_user.company_id)
+          tags_hash.each do |key, value|
+            @users = @users.select{|x| (x.tags & value).present?}.uniq
+          end
+          @users = @users.uniq
         end
         @filter_jobs = params[:filter][:job].reject{|c| c.empty?}
         @filter_tags = params[:filter][:tag].reject{|c| c.empty?}
       elsif params[:order].present?
         if params[:order] == 'tag_category'
-          test = Tag.where(tag_category_id: params[:tag_category_id])
           params[:mode] == 'asc' ? @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :asc)) : @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :desc))
           @users = (@users + User.where(company_id: current_user.company.id).order(lastname: :asc)).uniq
         else

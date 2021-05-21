@@ -4,60 +4,7 @@
 <div class="organisation-filter-container">
   <div class="organisation-filter-background" onclick='closeFilter();'></div>
   <div class="organisation-filter-dropright">
-    <div class="organisation-filter-controls">
-      <div class='organisation-filter-controls-title'>
-        <i class="fas fa-filter fa-2x"></i>
-        <h2>Filter options</h2>
-      </div>
-      <div class="organisation-filter-controls-buttons">
-        <div class="btn-icon" onclick='closeFilter();'>
-          <i class="fas fa-times"></i>
-        </div>
-      </div>
-    </div>
-    <%= simple_form_for :filter, url: organisation_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
-      <div class="organisation-filter-block">
-        <div class="organisation-filter-block-title">
-          <div>
-            <p>Job Title</p>
-            <div class="organisation-filter-block-title-buttons">
-              <p onclick='clearFilter(this);'>Clear</p>
-              <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
-                <i class="fas fa-angle-down"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="organisation-filter-block-checkboxes">
-            <%= f.input :job, collection: User.where(company_id: current_user.company_id).map(&:job_title).uniq.reject{|x| x.empty?}.sort, as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
-        </div>
-      </div>
-      <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
-        <div class="organisation-filter-block">
-          <div class="organisation-filter-block-title">
-            <div>
-              <p><%= tag_category.name %></p>
-              <div class="organisation-filter-block-title-buttons">
-                <p onclick='clearFilter(this);'>Clear</p>
-                <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
-                  <i class="fas fa-angle-down"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="organisation-filter-block-checkboxes">
-              <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
-          </div>
-        </div>
-      <% end %>
-      <%= f.submit 'Filter', class: 'hidden hidden-submit' %>
-    <% end %>
-    <div class="centered-item" style='margin-top: 2rem;'>
-      <div class="btn-white-border" onclick='resetFilter()'>
-        <i class="fas fa-times-circle"></i>
-        <p>Reset Filter</p>
-      </div>
-    </div>
+    <%= render 'organisation_filter_dropright' %>
   </div>
 </div>
 <div class="organisation-manage-users-container">
@@ -82,6 +29,22 @@
 </div>
 
 <script>
+  formGuardian = false;
+  doubleClickGuardian = false;
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
   function openForm(element) {
     element.classList.toggle('hidden');
     element.parentNode.querySelector('.hidden-form-category-ajax').classList.toggle('hidden');
@@ -245,7 +208,6 @@
       }
     })
     document.querySelector('#add_tags_users').value = ids.join();
-    console.log(ids);
     if (ids.length == 0) {
       document.querySelector('#manage-users-button').classList.remove('flashing_button');
     } else {
@@ -256,26 +218,44 @@
   function clearInput(element) {
     form = element.parentNode.parentNode;
     form.querySelector('.hidden-submit').click();
-    form.querySelector('input').value = '';
+    console.log(form.querySelectorAll('input')[0]);
   }
 
   function fetchCategoryForm(element) {
-    form = document.querySelector(element.getAttribute('data-target'));
-    console.log(element.getAttribute('data-target'));
-    opened_blocks = []
-    document.querySelectorAll('.organisation-manage-users-block.active').forEach((block) => {
-      opened_blocks.push(block.getAttribute('data-category'));
-    })
-    form.querySelector('.hidden-submit').value = opened_blocks.join(',');
-    if (element.getAttribute('data-target').split('-')[0] == '#delete') {
-      form.style.top = (element.offsetTop - 7).toString() + 'px';
-      form.style.left = (element.offsetLeft.toString() - 100) + 'px'
-    } else {
-      form.style.top = (element.offsetTop - 7).toString() + 'px';
-      form.style.left = element.offsetLeft.toString() + 'px'
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      form = document.querySelector(element.getAttribute('data-target'));
+      initial_top = form.offsetTop
+      initial_left = form.offsetLeft
+      opened_blocks = []
+      document.querySelectorAll('.organisation-manage-users-block.active').forEach((block) => {
+        opened_blocks.push(block.getAttribute('data-category'));
+      })
+      form.querySelector('.hidden-submit').value = opened_blocks.join(',');
+      if (element.getAttribute('data-target').split('-')[0] == '#delete') {
+        form.style.top = (element.offsetTop - 3).toString() + 'px';
+        form.style.left = (element.offsetLeft.toString() - 100) + 'px'
+      } else {
+        form.style.top = (element.offsetTop - 3).toString() + 'px';
+        form.style.left = element.offsetLeft.toString() + 'px'
+      }
+      element.parentNode.style.opacity = '0';
+      form.classList.toggle('hidden');
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 1);
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, form) && doubleClickGuardian == false) {
+          form.style.top = initial_top.toString() + 'px';
+          form.style.left = initial_left.toString() + 'px';
+          element.parentNode.style.opacity = '1';
+          form.classList.toggle('hidden');
+          form.querySelector('input').value = '';
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
     }
-    element.parentNode.style.opacity = '0';
-    form.classList.toggle('hidden');
   }
 
   function toggle(source) {

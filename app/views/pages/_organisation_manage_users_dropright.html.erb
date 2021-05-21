@@ -42,7 +42,7 @@
       </div>
       <div class="organisation-manage-users-block-checkboxes">
         <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).order(tag_name: :asc).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'hideClearManagerButton();'} %>
-        <div class="flex-row-between-centered">
+        <div class="flex-row-between-centered" style="height:27px;">
           <div class="new-tag" data-target="#category-<%= tag_category.id %>" onclick='fetchCategoryForm(this);'>
             <i class="fas fa-plus"></i>
             <p>Tag</p>

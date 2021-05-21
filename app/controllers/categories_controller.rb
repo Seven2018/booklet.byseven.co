@@ -64,6 +64,16 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def categories_search
+    skip_authorization
+    @categories = Category.where(company_id: current_user.company_id).ransack(title_cont: params[:search]).result(distinct: true)
+      respond_to do |format|
+        format.json {
+          @users = @categories.limit(5)
+        }
+      end
+  end
+
   private
 
   def set_category

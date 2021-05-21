@@ -50,6 +50,36 @@
   }
 }
 
+.btn-orange {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  padding: 0 1rem;
+  height: 4rem;
+  background-color: #F26419;
+  border-radius: 4px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+
+  i, p {
+    color: white;
+  }
+
+  i {
+    margin-right: 1rem;
+  }
+
+  &:hover {
+    background-color: white;
+
+    i, p {
+      color: #F26419;
+    }
+  }
+}
+
 .btn-white-border {
   display: flex;
   justify-content: space-between;
