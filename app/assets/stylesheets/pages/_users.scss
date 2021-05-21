@@ -86,6 +86,111 @@ background: #F8D9C8;
   background-color: #F8D9C8;
   border-radius: 5px;
 }
+
+.user-overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+// INTERESTED IN //
+
+.interested-in {
+  margin-top: 35px;
+  border-left: 1px solid grey;
+    padding-left: 30px;
+    i {
+    color: #F26419;
+  }
+}
+
+.card-interest {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  i {
+    margin-right: 0px;
+  }
+}
+
+.card-interest-left {
+  background-color: white;
+  padding: 15px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px 0px 0px 10px;
+  width: 75%;
+  .card-interest-title {
+    h2 {font-weight: 800;}
+    margin-bottom: 5px;
+  }
+  .card-interest-duration {
+    p {font-size: 14px;}
+    margin-bottom: 5px;
+  }
+  .card-interest-objective {
+    margin-bottom: 5px;
+  }
+  .card-interest-left-themes {
+    p {
+      margin-right: 5px;
+    }
+  }
+  .card-interest-themes {
+    display: flex;
+    margin-right: 10px;
+    padding: 2px 10px;
+    color: #F26419;
+    background-color: #F8D9C8;
+    border-radius: 5px;
+    p {
+      font-size: 12px;
+    }
+  }
+}
+
+.card-interest-synch-right {
+  background-color: #EEEEEE;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 10px 10px 0px;
+  width: 25%;
+    i {
+    color: #888888;
+  }
+  .card-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: center;
+    margin: 30px;
+  }
+    .card-heart-interest {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.card-interest-asynch-right {
+  background-color: #F8D9C8;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 10px 10px 0px;
+  width: 25%;
+  i {
+    color: #F26419;
+  }
+  .card-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: center;
+    margin: 30px;
+  }
+  .card-heart-interest {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+
 // .user-picture-index {
 //   height:50px;
 //   width:50px;
@@ -175,21 +280,20 @@ background: #F8D9C8;
 //   }
 // }
 
-// .user-trainings {
-//   padding: 20px;
-//   h3 {
-//     text-decoration: underline;
-//     text-decoration-color: #F26419;
-//   }
-//     h2 {
-//     margin-top: 20px;
-//   }
-//   margin-left: 0px;
-//   margin-top: 30px;
-//   border-top: 2px solid lightgrey;
-//   display: flex;
-//   flex-direction: column;
-// }
+.user-trainings {
+  padding: 20px;
+  h3 {
+    text-decoration: underline;
+    text-decoration-color: #F26419;
+  }
+    h2 {
+    margin-top: 20px;
+  }
+  margin-left: 0px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
 
 // .trainings-row {
 //   min-height: 20rem;

@@ -47,107 +47,152 @@
     </div>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Overview">
-        <div class="user-information">
-          <p><b>Personal Info</b></p>
-          <div class="user-access">
-            <p>Access Level: <%=  @user.access_level %></p>
-          </div>
-          <div class="user-work-info">
-              <p> <i class="fas fa-briefcase"></i> <%= @user.company.name %></p>
-            <div class="user-job">
-              <p class="data" id='job' onclick='openForm(this)'> <%=  @user.job_title if @user.job_title.present? %></p>
-              <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'job'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-                <%= f.input :job_title, label: false, input_html: {value: @user.job_title} %>
+        <div class="user-overview-grid">
+          <div class="user-information">
+            <p><b>Personal Info</b></p>
+            <div class="user-access">
+              <p><i class="fas fa-universal-access"></i> <%=  @user.access_level %></p>
+            </div>
+            <div class="user-work-info">
+                <p> <i class="fas fa-briefcase"></i> <%= @user.company.name %></p>
+              <div class="user-job">
+                <p class="data" id='job' onclick='openForm(this)'> <%=  @user.job_title if @user.job_title.present? %></p>
+                <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'job'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+                  <%= f.input :job_title, label: false, input_html: {value: @user.job_title} %>
+                  <%= button_tag :submit, class: 'hidden-submit' do %>
+                    <i class="fas fa-save"></i>
+                  <% end %>
+                <% end %>
+              </div>
+              <div class="user-hire">
+                <% if @user.hire_date.present? %>
+                  <p class="data" id='hire_date' onclick='openForm(this)'> <%=  @user.hire_date %></p>
+                <% else %>
+                  <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
+                <% end %>
+                <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'hire_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+                  <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, value: @user.hire_date %>
+                  <%= button_tag :submit, class: 'hidden-submit' do %>
+                        <i class="fas fa-save"></i>
+                      <% end %>
+                <% end %>
+              </div>
+            </div>
+            <div class="user-birth">
+              <% if @user.birth_date.present? %>
+                <p class="data" id='birth_date' onclick='openForm(this)'><i class="fas fa-birthday-cake"></i> <%=  @user&.birth_date %></p>
+              <% else %>
+                <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
+              <% end %>
+              <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'birth_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+                <%= f.input :birth_date, label: false, input_html: {class: 'datepicker'}, value: @user.birth_date %>
                 <%= button_tag :submit, class: 'hidden-submit' do %>
                   <i class="fas fa-save"></i>
                 <% end %>
               <% end %>
             </div>
-            <div class="user-hire">
-              <% if @user.hire_date.present? %>
-                <p class="data" id='hire_date' onclick='openForm(this)'> <%=  @user.hire_date %></p>
-              <% else %>
-                <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
-              <% end %>
-              <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'hire_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-                <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, value: @user.hire_date %>
-                <%= button_tag :submit, class: 'hidden-submit' do %>
-                      <i class="fas fa-save"></i>
-                    <% end %>
+            <div class="user-tags">
+              <i class="fas fa-user-tag"></i>
+              <% @user.tags.each do |tag| %>
+                <div class='user-tag-name'><p><%= tag.tag_name %></p></div>
               <% end %>
             </div>
           </div>
-          <div class="user-birth">
-            <% if @user.birth_date.present? %>
-              <p class="data" id='birth_date' onclick='openForm(this)'><i class="fas fa-birthday-cake"></i> <%=  @user&.birth_date %></p>
-            <% else %>
-              <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
-            <% end %>
-            <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'birth_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-              <%= f.input :birth_date, label: false, input_html: {class: 'datepicker'}, value: @user.birth_date %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
-                <i class="fas fa-save"></i>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="user-tags">
-            <i class="fas fa-user-tag"></i>
-            <% @user.tags.each do |tag| %>
-              <div class='user-tag-name'><p><%= tag.tag_name %></p></div>
-            <% end %>
+          <div class="interested-in">
+            <p><b>Interested In <i class="fas fa-heart"></i></b></p>
+            <div class="card-interest">
+              <div class="card-interest-left">
+                <div class="card-interest-title"><h2>Title</h2></div>
+                <div class="card-interest-duration"><p>Duration</p></div>
+                <div class="card-interest-objective"><p>This would be the objective of the card.</p></div>
+                <div class="card-interest-left-themes">
+                  <div class='card-interest-themes'>
+                    <p>Web Design</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-interest-synch-right">
+                <div class="card-type">
+                  <i class="fas fa-laptop fa-5x"></i>
+                </div>
+                <div class="card-heart-interest">
+                  <p><i class="fas fa-heart"></i> 12 Interested</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-interest">
+              <div class="card-interest-left">
+                <div class="card-interest-title"><h2>Title</h2></div>
+                <div class="card-interest-duration"><p>Duration</p></div>
+                <div class="card-interest-objective"><p>This would be the objective of the card.</p></div>
+                <div class="card-interest-left-themes">
+                  <div class='card-interest-themes'>
+                    <p>Web Design</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-interest-asynch-right">
+                <div class="card-type">
+                  <i class="fas fa-chalkboard-teacher fa-5x"></i>
+                </div>
+                <div class="card-heart-interest">
+                  <p><i class="fas fa-heart"></i> 12 Interested</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Trainings">
+        <div class="user-trainings">
+          <p>Upcoming Trainings</p>
+          <div class="trainings-row">
+            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |content| %>
+              <%= link_to training_content_path(content) do %>
+                <div class="training-card-main">
+                  <div class="upcoming-trainings-card">
+                    <div class="user-training-title">
+                      <% if content.title.length > 60 %>
+                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
+                      <% else %>
+                        <h3><b><%= content.title %></b></h3>
+                      <% end %>
+                    </div>
+                    <p><i class="fas fa-calendar-alt"></i> <%= content.date.strftime('%d/%m/%Y') %></p>
+                    <div class='content-time'><p><i class="fas fa-clock"></i> <%= content.duration %> min</p></div>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+          <p>Completed Trainings</p>
+          <div class="trainings-row">
+            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |content| %>
+              <%= link_to training_content_path(content) do %>
+                <div class="training-card-main">
+                  <div class="completed-trainings-card">
+                    <div class="user-training-title">
+                      <% if content.title.length > 60 %>
+                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
+                      <% else %>
+                        <h3><b><%= content.title %></b></h3>
+                      <% end %>
+                    </div>
+                    <div class="user-training-bottom">
+                      <p><i class="fas fa-calendar-alt"></i> <%= content.date.strftime('%d/%m/%Y') %></p>
+                    <div class='content-time'><p><i class="fas fa-clock"></i> <%= content.duration %> min</p></div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
 
       </div>
     </div>
   </div>
 </div>
-  <!-- <div class="user-trainings">
-    <h2>Upcoming Trainings</h2>
-    <div class="trainings-row">
-      <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |content| %>
-        <%= link_to training_content_path(content) do %>
-          <div class="training-card-main">
-            <div class="upcoming-trainings-card">
-              <div class="user-training-title">
-                <% if content.title.length > 60 %>
-                  <h3><b><%= content.title.first(60)+'...' %></b></h3>
-                <% else %>
-                  <h3><b><%= content.title %></b></h3>
-                <% end %>
-              </div>
-              <p><i class="fas fa-calendar-alt"></i> <%= content.date.strftime('%d/%m/%Y') %></p>
-              <div class='content-time'><p><i class="fas fa-clock"></i> <%= content.duration %> min</p></div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-    <h2>Completed Trainings</h2>
-    <div class="trainings-row">
-      <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |content| %>
-        <%= link_to training_content_path(content) do %>
-          <div class="training-card-main">
-            <div class="completed-trainings-card">
-              <div class="user-training-title">
-                <% if content.title.length > 60 %>
-                  <h3><b><%= content.title.first(60)+'...' %></b></h3>
-                <% else %>
-                  <h3><b><%= content.title %></b></h3>
-                <% end %>
-              </div>
-              <div class="user-training-bottom">
-                <p><i class="fas fa-calendar-alt"></i> <%= content.date.strftime('%d/%m/%Y') %></p>
-              <div class='content-time'><p><i class="fas fa-clock"></i> <%= content.duration %> min</p></div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  </div> -->
 <div>
   <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
    <p><%= form.title %></p>

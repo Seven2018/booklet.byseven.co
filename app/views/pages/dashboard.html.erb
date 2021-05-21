@@ -1,8 +1,14 @@
-<div id="index-controls" class="flex-row-start-centered">
-  <h1>My Booklet</h1>
-</div>
 <div class="dashboard-tabs">
   <ul class="nav nav-tabs">
+    <% if params[:dashboard] == 'personal' %>
+      <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
+      <li role="presentation"><a href="#All" data-toggle="tab">Staff Trainings</a></li>
+    <% else %>
+      <li role="presentation"><a href="#Personal" data-toggle="tab">My Trainings</a></li>
+      <li role="presentation"><a href="#All" data-toggle="tab" class='active'>Staff Trainings</a></li>
+    <% end %>
+  </ul>
+    <ul class="nav nav-tabs">
     <% if params[:dashboard] == 'personal' %>
       <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
       <li role="presentation"><a href="#All" data-toggle="tab">Staff Trainings</a></li>
