@@ -17,3 +17,27 @@
   padding: 20px;
   height: 900px;
 }
+
+
+#workshop-card-list {
+  list-style: none;
+  padding-left: 0;
+  li {
+    cursor: grab !important;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.card-interest {
+  cursor: all-scroll;
+}
+
+
+.dragged {
+  opacity: .8;
+}

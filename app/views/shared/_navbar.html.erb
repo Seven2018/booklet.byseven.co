@@ -5,9 +5,9 @@
       <li>
         <% if request.original_url&.split('/')[3]&.split('?')&.first == 'dashboard' %>
           <%= link_to dashboard_path, class: 'left-buttons' do %>
-          <div class="isactive"></div>
             <div class="left-menu-title" style='color: #F26419;'><h4>Dashboard</h4></div>
           <% end %>
+            <div class="isactive"></div>
         <% else %>
           <%= link_to dashboard_path, class: 'left-buttons' do %>
             <div class="left-menu-title"><h4>Dashboard</h4></div>
@@ -18,9 +18,9 @@
         <li>
           <% if request.original_url&.split('/')[3]&.split('?')&.first == 'catalogue' %>
             <%= link_to catalogue_path, class: 'left-buttons' do %>
-              <div class="isactive"></div>
               <div class="left-menu-title" style='color: #F26419;'><h4>Catalogue</h4></div>
             <% end %>
+              <div class="isactive"></div>
           <% else %>
             <%= link_to catalogue_path, class: 'left-buttons' do %>
               <div class="left-menu-title"><h4>Catalogue</h4></div>
@@ -30,9 +30,9 @@
         <li>
           <% if request.original_url&.split('/')[3]&.split('?')&.first == 'organisation' %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
-              <div class="isactive"></div>
               <div class="left-menu-title" style='color: #F26419;'><h4>Employees</h4></div>
             <% end %>
+              <div class="isactive"></div>
           <% else %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
               <div class="left-menu-title"><h4>Employees</h4></div>
@@ -42,9 +42,9 @@
         <li>
            <% if request.original_url&.split('/')[3]&.split('?')&.first == 'book' %>
             <%= link_to book_path, class: 'left-buttons' do %>
-              <div class="isactive"></div>
               <div class="left-menu-title" style='color: #F26419;'><h4>Book</h4></div>
             <% end %>
+              <div class="isactive"></div>
           <% else %>
             <%= link_to book_path, class: 'left-buttons' do %>
               <div class="left-menu-title"><h4>Book</h4></div>
