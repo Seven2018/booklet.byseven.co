@@ -116,7 +116,7 @@
     element.parentNode.querySelector('.hidden-submit').click();
   }
 
-  search_input = document.getElementById('search_title');
+  search_input = document.querySelector('.search').querySelector('input');
   clear_button = document.getElementById('navbar-search-clear');
   search_input.addEventListener('keyup', event => {
     if (search_input.value != '' && clear_button.classList.contains('hidden')) {

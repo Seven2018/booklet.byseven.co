@@ -1,0 +1,7 @@
+if ('<%= @modal %>' == 'true') {
+  console.log('modal');
+  document.querySelector('#addTheme-<%= @content.id %>').querySelector('.modal-dialog').innerHTML = '<%= j render("manage_categories", content: @content) %>';
+} else {
+  console.log('test');
+  document.querySelector('#content-<%= @content.id %>').innerHTML = '<%= j render("catalogue_content_card", content: @content) %>';
+}

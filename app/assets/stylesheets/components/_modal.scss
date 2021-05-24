@@ -201,3 +201,40 @@ input:focus {
     }
   }
 }
+
+.categories-form {
+  position: relative;
+
+  .categories-form-checkboxes {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    .category-delete {
+      opacity: 0;
+      margin-left: 2rem;
+      transition: all .75s ease-in-out;
+    }
+  }
+
+  label {
+    margin-left: 1rem;
+  }
+
+  p {
+    background: none !important;
+    color: black !important;
+    padding: 0 !important;
+    margin: 0 0 0 1rem !important;
+  }
+
+  .hidden-form-category-ajax {
+    position: absolute;
+  }
+
+  .btn {
+    margin-top: 1rem;
+  }
+}

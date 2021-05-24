@@ -79,6 +79,7 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
   get 'organisation', to: 'pages#organisation', as: 'organisation'
+  get :catalogue_content_link_category, controller: :pages
   get :catalogue_filter_add_category, controller: :pages
   get 'book', to: 'pages#book', as: 'book'
 

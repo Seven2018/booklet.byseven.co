@@ -6,18 +6,15 @@
     <p><%= content.description %></p>
   </div>
   <div class="catalogue-content-card-categories">
-    <% content.categories.each do |category| %>
+    <% content.categories.order(title: :asc).each do |category| %>
       <p><%= category.title %></p>
     <% end %>
-    <!-- <i class="fas fa-plus" onclick="openHiddenForm(this);"></i>
-    <div class='hidden hidden-form-ajax'>
-      <%# form_with url: add_category_path, id: 'add_category_form', local: true, method: :get do |f| %>
-        <%# f.hidden_field :ajax, value: true %>
-        <%# f.hidden_field :category_id %>
-        <%# f.hidden_field :content_id, value: content.id %>
-        <%# f.text_field :search, placeholder: 'Search Categories', label: false, data: {behavior: 'autocomplete'} %>
-      <%# end %>
-    </div> -->
+    <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus"></i></a>
+    <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+      <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+        <%= render 'manage_categories', content: content %>
+      </div>
+    </div>
   </div>
   <div class="type-icon">
     <% if content.content_type == 'Synchronous' %>
