@@ -1,0 +1,68 @@
+<div class="book-container">
+  <div class="booking-title">
+    <h2>Select Workshop to Book</h2>
+  </div>
+  <div class="workshop-grid">
+    <div class="workshop-cards-book" ondrop="drop(event)" ondragover="allowDrop(event)" id='div1'>
+      <div class="card-interest" draggable="true" ondragstart="drag(event)" id='drag1'>
+        <div class="card-interest-left">
+          <div class="card-interest-title"><h2>Title</h2></div>
+          <div class="card-interest-duration"><p>Duration</p></div>
+          <div class="card-interest-objective"><p>This would be the objective of the card.</p></div>
+          <div class="card-interest-left-themes">
+            <div class='card-interest-themes'>
+              <p>Web Design</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-interest-synch-right">
+          <div class="card-type">
+            <i class="fas fa-laptop fa-5x"></i>
+          </div>
+          <div class="card-heart-interest">
+            <p><i class="fas fa-heart"></i> 12 Interested</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-interest" draggable="true" ondragstart="drag(event)" id='drag1'>
+        <div class="card-interest-left">
+          <div class="card-interest-title"><h2>Title</h2></div>
+          <div class="card-interest-duration"><p>Duration</p></div>
+          <div class="card-interest-objective"><p>This would be the objective of the card.</p></div>
+          <div class="card-interest-left-themes">
+            <div class='card-interest-themes'>
+              <p>Web Design</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-interest-asynch-right">
+          <div class="card-type">
+            <i class="fas fa-chalkboard-teacher fa-5x"></i>
+          </div>
+          <div class="card-heart-interest">
+            <p><i class="fas fa-heart"></i> 12 Interested</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="workshop-cards-selected"  ondrop="drop(event)" ondragover="allowDrop(event)" id='div2'>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
+</script>

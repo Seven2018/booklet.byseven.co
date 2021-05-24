@@ -1,22 +1,53 @@
-<div class="dashboard-tabs">
-  <ul class="nav nav-tabs">
-    <% if params[:dashboard] == 'personal' %>
-      <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
-      <li role="presentation"><a href="#All" data-toggle="tab">Staff Trainings</a></li>
-    <% else %>
-      <li role="presentation"><a href="#Personal" data-toggle="tab">My Trainings</a></li>
-      <li role="presentation"><a href="#All" data-toggle="tab" class='active'>Staff Trainings</a></li>
-    <% end %>
-  </ul>
-    <ul class="nav nav-tabs">
-    <% if params[:dashboard] == 'personal' %>
-      <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
-      <li role="presentation"><a href="#All" data-toggle="tab">Staff Trainings</a></li>
-    <% else %>
-      <li role="presentation"><a href="#Personal" data-toggle="tab">My Trainings</a></li>
-      <li role="presentation"><a href="#All" data-toggle="tab" class='active'>Staff Trainings</a></li>
-    <% end %>
-  </ul>
+<div class="dashboard-grid">
+  <div class="dashboard-navigation">
+    <div class="dashboard-tabs">
+      <ul class="nav nav-tabs">
+        <% if params[:dashboard] == 'personal' %>
+          <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
+          <li role="presentation"><a href="#All" data-toggle="tab">Staff Trainings</a></li>
+        <% else %>
+          <li role="presentation"><a href="#Personal" data-toggle="tab">My Trainings</a></li>
+          <li role="presentation"><a href="#All" data-toggle="tab" class='active'>Staff Trainings</a></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="trainings-nav">
+     <ul class="nav nav-tabs-trainings">
+        <li role="presentation"><a href="#Upcoming" data-toggle="tab" class='active'>Upcoming</a></li>
+        <li role="presentation"><a href="#Completed" data-toggle="tab">Completed</a></li>
+        <li role="presentation"><a href="#All" data-toggle="tab">All</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="dashboard-right-schedule">
+    <div class="dashboard-calendar">
+      <%= month_calendar do |date| %>
+      <%= date.day %>
+      <% end %>
+    </div>
+    <div class="schedule">
+      <div class="calendar-schedule">
+      <div class="schedule-title">Schedule</div>
+        <div class="calendar-schedule-card-sync">
+          <div class="calendar-card-date"><h2>18</h2></div>
+          <div class="calendar-card-info">
+            <div class="calendar-card-title"><p>UX/UI Workshop</p></div>
+            <div class="calendar-card-time"><p>10:00 - 15:00</p>
+              <div class="calendar-card-title-sessions"><p>1/4</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="calendar-schedule-card-async">
+          <div class="calendar-card-date"><h2>22</h2></div>
+          <div class="calendar-card-info">
+            <div class="calendar-card-title"><p>Design Thinking</p></div>
+            <div class="calendar-card-time"><p>15:00 - 18:00</p></div>
+          </div>
+           <div class="calendar-card-title-sessions"><p></p></div>
+        </div>
+      </div>
+     </div>
+  </div>
 </div>
 <div class="tab-content">
   <% if params[:dashboard] == 'personal' %>
@@ -35,3 +66,4 @@
     </div>
   <% end %>
 </div>
+

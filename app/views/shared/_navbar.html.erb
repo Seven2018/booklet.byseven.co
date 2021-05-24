@@ -39,6 +39,18 @@
             <% end %>
           <% end %>
         </li>
+        <li>
+           <% if request.original_url&.split('/')[3]&.split('?')&.first == 'book' %>
+            <%= link_to book_path, class: 'left-buttons' do %>
+              <div class="isactive"></div>
+              <div class="left-menu-title" style='color: #F26419;'><h4>Book</h4></div>
+            <% end %>
+          <% else %>
+            <%= link_to book_path, class: 'left-buttons' do %>
+              <div class="left-menu-title"><h4>Book</h4></div>
+            <% end %>
+          <% end %>
+        </li>
       <% end %>
     <% end %>
     </ul>
