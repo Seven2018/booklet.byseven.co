@@ -1,34 +1,16 @@
 <div class="catalogue-container">
   <div id="index-controls" class='flex-row-between-centered'>
     <div class="index-controls-filter-bar">
-      <%= form_with url: add_category_path, id: 'add_category_form', local: true, method: :get do |f| %>
-        <div class="index-controls-filter-bar-block">
-          <h6>Theme</h6>
-          <p>Attached to related Workshop</p>
-        </div>
-        <div class="index-controls-filter-bar-block">
-          <h6>Participants</h6>
-          <p>Number of Participants interested</p>
-        </div>
-        <div class="index-controls-filter-bar-block-last">
-          <h6>Duration</h6>
-          <p>Length of Workshop in minutes</p>
-        </div>
-        <div class="index-controls-filter-bar-button btn-orange btn-icon">
-          <i class="fas fa-search"></i>
-        </div>
-      <% end %>
-    </div>
-    <div class="btn-orange">
-      <p>Create</p>
+      <div class="index-controls-filter-bar-block">
+        <%= render 'catalogue_filter' %>
+      </div>
+      <div class="btn-orange">
+        <p>Create</p>
+      </div>
     </div>
   </div>
   <div id="catalogue-index">
-    <% Content.where(company_id: current_user.company_id).each do |content| %>
-      <div class="catalogue-content-card" id="content-<%= content.id %>">
-        <%= render 'catalogue_content_card', content: content %>
-      </div>
-    <% end %>
+    <%= render 'catalogue_index', contents: @contents %>
   </div>
 </div>
 
@@ -40,11 +22,28 @@
     dropdown.classList.toggle('hidden');
   }
 
-  function openAddCategoryForm(element) {
+  function openHiddenForm(element) {
     form = element.parentNode.querySelector('.hidden-form-ajax');
     element.classList.toggle('hidden');
     form.classList.toggle('hidden');
+  }
 
+  function openFilter(element) {
+    filter = element.parentNode.querySelector('.index-controls-filter-bar-block-filter')
+    element.classList.toggle('hidden');
+    filter.classList.toggle('hidden');
+  }
+
+  function removeFilter(element) {
+    filter_tag = element.parentNode;
+    storage = document.querySelector('#filter_themes')
+    array = storage.value.split(',');
+    array = array.filter(function(value, index, arr){
+        return value != element.getAttribute('data-id');
+    });
+    storage.value = array.join(',');
+    filter_tag.remove();
+    storage.parentNode.querySelector('.hidden-submit').click();
   }
 
   $input = $("[data-behavior='autocomplete']");
@@ -58,15 +57,25 @@
     list: {
       onChooseEvent: function() {
         var id = $input.getSelectedItemData().id;
-        $('#category_id').val(id);
-        $('#add_category_form').submit();
+        var title = $input.getSelectedItemData().title;
+        container = document.querySelector('.filtered_themes');
+        new_category = document.createElement("div");
+        new_category.innerHTML = "<p>" + title + "</p><i class='fas fa-times' data-id="+ id +" onclick='removeFilter(this);'></i>";
+        container.appendChild(new_category);
+        storage = document.querySelector('#filter_themes')
+        if (storage.value != '') {
+          storage.value = storage.value + ',' + id;
+        } else {
+          storage.value = id;
+        }
+        $input[0].value = '';
+        storage.parentNode.querySelector('.hidden-submit').click();
       },
       match: {
         enabled: true
       }
     }
   }
-
 
   $input.easyAutocomplete(options);
 

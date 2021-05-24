@@ -6,35 +6,78 @@
 
 // FILTER BAR
 
+#index-controls {
+
+  & > form {
+    min-height: 6.4rem;
+    width: 100%;
+  }
+}
+
 .index-controls-filter-bar {
-  height: 6.4rem;
-  flex-grow: 1;
+  min-height: 4rem;
+  width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
-  background: white;
   position: relative;
   margin-right: 2rem;
 
-  .index-controls-filter-bar-block, .index-controls-filter-bar-block-last {
-    width: 30%;
+  .index-controls-filter-bar-block {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: white;
+    height: 4rem;
+    min-width: 40rem;
     padding: 0 2rem;
-    border-right: 1px solid #9E9B9B;
+    margin-right: 2rem;
+
+    i {
+      margin-right: 1rem;
+    }
 
     h6 {
       font-weight: 600;
     }
-  }
 
-  .index-controls-filter-bar-block-last {
-    border: none;
-  }
-}
+    .index-controls-filter-bar-block-filter {
+      min-height: 6.4rem;
+    }
 
-.index-controls-filter-bar-button {
-  position: absolute;
-  right: 1rem;
-  top: 1.2rem;
+    input {
+      border: none !important;
+      box-shadow: none !important;
+      padding: .6rem !important;
+
+      &:focus {
+        background-color: white;
+      }
+    }
+
+    .filtered_themes {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      div {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        background: #F8D9C8;
+        padding: .5rem;
+        margin-right: 1rem;
+
+        p {
+          margin-right: 1rem;
+        }
+
+        i {
+          margin: 0;
+        }
+      }
+    }
+  }
 }
 
 // WORKSHOP INDEX
