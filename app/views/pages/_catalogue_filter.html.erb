@@ -1,0 +1,12 @@
+<i class="fas fa-search"></i>
+<div class="filtered_themes">
+</div>
+<%= form_with url: categories_search_path, local: true, method: :get do |f| %>
+  <%= f.text_field :search, placeholder: 'Themes', label: false, data: {behavior: 'autocomplete'} %>
+<% end %>
+<div class="hidden-form-ajax hidden">
+  <%= simple_form_for :filter, url: catalogue_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
+    <%= f.hidden_field :themes %>
+    <%= f.submit class: 'hidden-submit' %>
+  <% end %>
+</div>

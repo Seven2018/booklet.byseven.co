@@ -9,15 +9,15 @@
     <% content.categories.each do |category| %>
       <p><%= category.title %></p>
     <% end %>
-    <i class="fas fa-plus" onclick="openAddCategoryForm(this);"></i>
+    <!-- <i class="fas fa-plus" onclick="openHiddenForm(this);"></i>
     <div class='hidden hidden-form-ajax'>
-      <%= form_with url: add_category_path, id: 'add_category_form', local: true, method: :get do |f| %>
+      <%# form_with url: add_category_path, id: 'add_category_form', local: true, method: :get do |f| %>
         <%# f.hidden_field :ajax, value: true %>
-        <%= f.hidden_field :category_id %>
-        <%= f.hidden_field :content_id, value: content.id %>
-        <%= f.text_field :search, placeholder: 'Search Categories', label: false, data: {behavior: 'autocomplete'} %>
-      <% end %>
-    </div>
+        <%# f.hidden_field :category_id %>
+        <%# f.hidden_field :content_id, value: content.id %>
+        <%# f.text_field :search, placeholder: 'Search Categories', label: false, data: {behavior: 'autocomplete'} %>
+      <%# end %>
+    </div> -->
   </div>
   <div class="type-icon">
     <% if content.content_type == 'Synchronous' %>

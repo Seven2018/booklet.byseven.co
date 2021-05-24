@@ -23,22 +23,44 @@ class PagesController < ApplicationController
   end
 
   def catalogue
+    if params[:filter].present?
+      if params[:filter][:themes].split(',').uniq.present?
+        @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter][:themes].split(',')}).order(title: :asc).uniq
+      else
+        @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+      end
+      respond_to do |format|
+        format.html {catalogue_path}
+        format.js
+      end
     # Index with 'search' option and global visibility for SEVEN Users
-    if current_user.access_level == 'Super Admin'
+    elsif current_user.access_level == 'Super Admin'
       @contents = Content.all.order(title: :asc)
-      if params[:search]
+      if params[:search].present?
         @contents = Content.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
-      elsif params[:filter]
-        @contents = Content.joins(:content_categories).where(content_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
+        respond_to do |format|
+          format.html {catalogue_path}
+          format.js
+        end
       end
     # Index for other Users, with visibility limited to programs proposed by their company only
     else
       @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
-      if params[:search]
+      if params[:search].present?
         @contents = Content.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
-      elsif params[:filter]
-        @contents = Content.joins(:content_categories).where(company_id: current_user.company.id, content_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
+        respond_to do |format|
+          format.html {catalogue_path}
+          format.js
+        end
       end
+    end
+  end
+
+  def catalogue_filter_add_category
+    skip_authorization
+    params[:categories].present? ? @filtered_themes = Category.where(id: (params[:categories].split(',') + params[:category_id].split())) : @filtered_themes = Category.where(id: params[:category_id])
+    respond_to do |format|
+      format.js
     end
   end
 

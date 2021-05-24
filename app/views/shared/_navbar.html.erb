@@ -58,75 +58,71 @@
   <div class="navbar-controls-right flex-row-between-centered">
     <div id="navbar-search">
       <% if params[:action] == 'organisation' %>
-        <%= simple_form_for :search, url: organisation_path, method: 'GET' do |f| %>
-          <% if params[:search] %>
-            <%= f.input :name, placeholder: params[:search][:name], label: false %>
-            <%= link_to organisation_path, class: 'search-close' do %>
-              <i class="far fa-times-circle"></i>
-            <% end %>
-          <% else %>
-            <%= f.input :name, placeholder: 'Search', label: false %>
-          <% end %>
+        <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
+          <%= f.input :name, placeholder: 'Search', label: false %>
+          <%= f.submit class: 'hidden hidden-submit' %>
         <% end %>
       <% elsif params[:action] == 'catalogue' %>
-        <%= simple_form_for :search, url: catalogue_path, method: 'GET' do |f| %>
-          <% if params[:search] %>
-            <%= f.input :title, placeholder: params[:search][:title], label: false %>
-            <%= link_to catalogue_path, class: 'search-close' do %>
-              <i class="far fa-times-circle"></i>
-            <% end %>
-          <% else %>
-            <%= f.input :title, placeholder: 'Search', label: false %>
-          <% end %>
+        <%= simple_form_for :search, url: catalogue_path, method: :get, remote: true do |f| %>
+          <%= f.input :title, placeholder: 'Search', label: false %>
+          <%= f.submit class: 'hidden hidden-submit' %>
         <% end %>
       <% end %>
+      <div class="hidden" id="navbar-search-clear" onclick='clearSearch(this);'>
+        <p>Clear</p>
+      </div>
     </div>
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
       <div class="centered-item">
       </div>
     <% end %>
-  <div class="user-top-nav">
-    <div class="dropdown show">
-      <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-    </a>
-    <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-    <div class="dropdown-card flex-row-between-centered">
-      <div class="user-info">
-        <p><%= current_user.fullname%></p>
-        <h6><%= current_user.email%></h6>
-      </div>
-    </div>
-    <%= link_to user_path(current_user) do %>
-      <div class="dropdown-card dropdown-item ">
-        <div class='dropdown-card-text'>
-          <h6>Profile</h6>
+    <div class="user-top-nav">
+      <div class="dropdown show">
+        <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+        <div class="dropdown-card flex-row-between-centered">
+          <div class="user-info">
+            <p><%= current_user.fullname%></p>
+            <h6><%= current_user.email%></h6>
+          </div>
+        </div>
+        <%= link_to user_path(current_user) do %>
+          <div class="dropdown-card dropdown-item ">
+            <div class='dropdown-card-text'>
+              <h6>Profile</h6>
+            </div>
+          </div>
+        <% end %>
+        <%= link_to destroy_user_session_path, method: :delete do %>
+          <div class="dropdown-card dropdown-item flex-row-between-centered">
+            <div class='dropdown-card-text'>
+              <h6>Log out</h6>
+            </div>
+          </div>
+        <% end %>
         </div>
       </div>
-    <% end %>
-    <%= link_to destroy_user_session_path, method: :delete do %>
-      <div class="dropdown-card dropdown-item flex-row-between-centered">
-        <div class='dropdown-card-text'>
-          <h6>Log out</h6>
-        </div>
-      </div>
-    <% end %>
     </div>
   </div>
 </div>
-<!--     <div class="dropdown show">
-      <a class="navbar-icon dropdown-toggle dropdown-notification-menu" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell"></i></a>
-      <div class="dropdown-menu dropdown-menu-notification" id='dropdown-notification-list' aria-labelledby="dropdownMenuLink">
-        <%# render 'shared/notifications' %>
-      </div>
-    </div> -->
-  </div>
-</div>
-<!-- <script>
-  $('.dropdown-menu').on('click', function(event){
-    // The event won't be propagated up to the document NODE and
-    // therefore delegated events won't be fired
-    event.stopPropagation();
-});
-</script> -->
 
+<script>
+  function clearSearch(element) {
+    search_input = element.parentNode.querySelector('input');
+    search_input.value = '';
+    element.classList.add('hidden');
+    element.parentNode.querySelector('.hidden-submit').click();
+  }
+
+  search_input = document.getElementById('search_title');
+  clear_button = document.getElementById('navbar-search-clear');
+  search_input.addEventListener('keyup', event => {
+    if (search_input.value != '' && clear_button.classList.contains('hidden')) {
+      clear_button.classList.remove('hidden');
+    } else if (search_input.value == '') {
+      clear_button.classList.add('hidden');
+    }
+  })
+</script>
