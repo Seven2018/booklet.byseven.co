@@ -56,6 +56,33 @@ class PagesController < ApplicationController
     end
   end
 
+  def catalogue_content_link_category
+    skip_authorization
+    if params[:new_category].present?
+      Category.create(company_id: current_user.company_id, title: params[:new_category][:title])
+      @content = Content.find(params[:new_category][:content_id])
+      @modal = 'true'
+    elsif params[:delete].present?
+      Category.find(params[:category_id]).destroy
+      @content = Content.find(params[:content_id])
+      @modal = 'true'
+    elsif params[:add_categories].present?
+      @content = Content.find(params[:add_categories][:content_id])
+      ids = params[:content][:categories].reject{|x| x.empty?}
+      ids.each do |category_id|
+        unless ContentCategory.find_by(content_id: @content.id, category_id: category_id).present?
+          ContentCategory.create(content_id: @content.id, category_id: category_id)
+        end
+      end
+      ContentCategory.where(content_id: @content.id).where.not(category_id: ids).each do |content_category|
+        content_category.destroy
+      end
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def catalogue_filter_add_category
     skip_authorization
     params[:categories].present? ? @filtered_themes = Category.where(id: (params[:categories].split(',') + params[:category_id].split())) : @filtered_themes = Category.where(id: params[:category_id])
@@ -79,12 +106,10 @@ class PagesController < ApplicationController
         end
       end
     end
-    # if params[:filter].present?
-      respond_to do |format|
-        format.html {organisation_path}
-        format.js
-      end
-    # end
+    respond_to do |format|
+      format.html {organisation_path}
+      format.js
+    end
   end
 
   def book
@@ -95,7 +120,11 @@ class PagesController < ApplicationController
   def index_function(parameter)
     if ['Super Admin', 'HR'].include?(current_user.access_level)
       if params[:search].present?
-        @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
+        if params[:filter][:themes].split(',').uniq.present?
+          @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
+        else
+          @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
+        end
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
         # tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
