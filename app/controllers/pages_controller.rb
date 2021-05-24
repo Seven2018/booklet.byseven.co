@@ -65,6 +65,9 @@ class PagesController < ApplicationController
     # end
   end
 
+  def book
+  end
+
   private
 
   def index_function(parameter)
