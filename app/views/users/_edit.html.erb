@@ -9,7 +9,6 @@
         <% end %>
       </div>
     </div>
-    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body form-group">
     <%= simple_form_for @user, class:'form-group' do |f| %>
@@ -41,8 +40,9 @@
         <% end %>
       </div>
       <div style=" display: flex; justify-content: center;margin-top:3rem;">
-        <%= button_tag type: 'submit', class: 'btn btn-edit-green' do %>
-          <p>SAVE <i class="fas fa-save"></i></p>
+        <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <%= button_tag type: 'submit', class: 'btn-orange' do %>
+          <p>SAVE</p>
         <% end %>
       </div>
     <% end %>

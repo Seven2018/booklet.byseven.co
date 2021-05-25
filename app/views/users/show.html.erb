@@ -19,19 +19,21 @@
           </a>
         <% end %>
       </div>
-      <div class='user-name'>
-        <p><strong><%=  @user.firstname %> <%=  @user.lastname %></strong></p>
-      </div>
-      <div class="user-top-info">
-        <div class='user-contact-info'>
-          <p><i class="fas fa-envelope"></i> <%=  @user.email %></p>
-          <p class="data" id='phone' onclick='openForm(this)'><i class="fas fa-phone"></i> <%=  @user.phone_number if @user.phone_number.present? %></p>
-          <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'phone'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-            <%= f.input :phone_number, label: false, input_html: {value: @user.phone_number} %>
-            <%= button_tag :submit, class: 'hidden-submit' do %>
-              <i class="fas fa-save"></i>
+      <div class="user-contant">
+        <div class='user-name'>
+          <p><strong><%=  @user.firstname %> <%=  @user.lastname %></strong></p>
+        </div>
+        <div class="user-top-info">
+          <div class='user-contact-info'>
+            <p><i class="fas fa-envelope"></i> <%=  @user.email %></p>
+            <p class="data" id='phone' onclick='openForm(this)'><i class="fas fa-phone"></i> <%=  @user.phone_number if @user.phone_number.present? %></p>
+            <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'phone'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+              <%= f.input :phone_number, label: false, input_html: {value: @user.phone_number} %>
+              <%= button_tag :submit, class: 'hidden-submit' do %>
+                <i class="fas fa-save"></i>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
       </div>
     </div>
@@ -68,7 +70,7 @@
                 <% if @user.hire_date.present? %>
                   <p class="data" id='hire_date' onclick='openForm(this)'> <%=  @user.hire_date %></p>
                 <% else %>
-                  <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
+                  <p class="data" id='birth_date' onclick='openForm(this)'>Hire Date</p>
                 <% end %>
                 <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'hire_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
                   <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, value: @user.hire_date %>
@@ -79,10 +81,11 @@
               </div>
             </div>
             <div class="user-birth">
+              <i class="fas fa-birthday-cake"></i>
               <% if @user.birth_date.present? %>
-                <p class="data" id='birth_date' onclick='openForm(this)'><i class="fas fa-birthday-cake"></i> <%=  @user&.birth_date %></p>
+                <p class="data" id='birth_date' onclick='openForm(this)'><%=  @user&.birth_date %></p>
               <% else %>
-                <p class="data" id='birth_date' onclick='openForm(this)'>empty</p>
+                <p class="data" id='birth_date' onclick='openForm(this)'>Birth Date</p>
               <% end %>
               <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'birth_date'), html: { class: "hidden hidden-form" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
                 <%= f.input :birth_date, label: false, input_html: {class: 'datepicker'}, value: @user.birth_date %>
@@ -94,52 +97,60 @@
             <div class="user-tags">
               <i class="fas fa-user-tag"></i>
               <% @user.tags.each do |tag| %>
+              <% if tag.tag_name.present? %>
                 <div class='user-tag-name'><p><%= tag.tag_name %></p></div>
+              <% else %>
+                <p>No associated tags</p>
+              <% end %>
               <% end %>
             </div>
           </div>
           <div class="interested-in">
             <p><b>Interested In <i class="fas fa-heart"></i></b></p>
-            <div class="card-interest">
-              <div class="card-interest-left">
-                <div class="card-interest-title"><h2>Title</h2></div>
-                <div class="card-interest-duration"><p>Duration</p></div>
-                <div class="card-interest-objective"><p>This would be the objective of the card.</p></div>
-                <div class="card-interest-left-themes">
-                  <div class='card-interest-themes'>
-                    <p>Web Design</p>
+            <% @user.user_interests.includes([:content]).where(interest_type: 'Interested').each do |interest| %>
+             <% content = interest.content  %>
+              <div class='user-card-interest'>
+                <div class="user-card">
+                  <div class="catalogue-content-card-left-user">
+                    <div>
+                      <% if content.title.length > 60 %>
+                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
+                      <% else %>
+                        <h3><b><%= content.title %></b></h3>
+                      <% end %>
+                      <p><%= content.duration %> Minutes</p>
+                    </div>
+                    <div class="type-icon">
+                      <% if content.content_type == 'Synchronous' %>
+                        <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                      <% else %>
+                        <i class="fas fa-laptop" style='color:black;'></i>
+                      <% end %>
+                    </div>
                   </div>
+                  <% if content.content_type == 'Synchronous' %>
+                    <div class="catalogue-content-card-right-syn-user">
+                  <% else %>
+                    <div class="catalogue-content-card-right-asyn-user">
+                  <% end %>
+                      <div class="catalogue-content-card-right-interest">
+                        <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
+                        <% if interest.present? %>
+                          <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
+                            <i class="fas fa-heart"></i>
+                          <% end %>
+                        <% else %>
+                          <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
+                            <i class="far fa-heart"></i>
+                          <% end %>
+                        <% end %>
+                        <p><%= content.interested.count %> Interested</p>
+                      </div>
+                    </div>
+                    </div>
+                <% end %>
                 </div>
               </div>
-              <div class="card-interest-synch-right">
-                <div class="card-type">
-                  <i class="fas fa-laptop fa-5x"></i>
-                </div>
-                <div class="card-heart-interest">
-                  <p><i class="fas fa-heart"></i> 12 Interested</p>
-                </div>
-              </div>
-            </div>
-            <div class="card-interest">
-              <div class="card-interest-left">
-                <div class="card-interest-title"><h2>Title</h2></div>
-                <div class="card-interest-duration"><p>Duration</p></div>
-                <div class="card-interest-objective"><p>This would be the objective of the card.</p></div>
-                <div class="card-interest-left-themes">
-                  <div class='card-interest-themes'>
-                    <p>Web Design</p>
-                  </div>
-                </div>
-              </div>
-              <div class="card-interest-asynch-right">
-                <div class="card-type">
-                  <i class="fas fa-chalkboard-teacher fa-5x"></i>
-                </div>
-                <div class="card-heart-interest">
-                  <p><i class="fas fa-heart"></i> 12 Interested</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -188,11 +199,11 @@
             <% end %>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </div>
+
 <div>
   <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
    <p><%= form.title %></p>
