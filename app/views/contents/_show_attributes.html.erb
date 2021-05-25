@@ -1,15 +1,19 @@
-<%= simple_form_for content do |f| %>
-  <div class="content-show-infos" onclick="openInput(this);">
-    <p><%= content.title %></p>
-    <div class="content-show-input hidden">
-      <%= f.input :title, label: false, input_html: { autocomplete: "off" } %>
+<%= simple_form_for content, remote: true do |f| %>
+  <div class="flex-row-between-centered">
+    <div class="content-show-infos" onclick="openInput(this);">
+      <p><%= content.title %></p>
+      <div class="content-show-input hidden">
+        <%= f.input :title, label: false, input_html: { autocomplete: "off" } %>
+      </div>
     </div>
   </div>
   <div class="flex-row-between-centered">
-    <div class="content-show-infos">
+    <div class="content-show-infos content-show-infos-duration" onclick="openInput(this);">
       <p>Duration: <%= content.duration %> min</p>
-      <div class="content-show-input hidden">
-        <%= f.input :duration, label: false, min: 0, input_html: { autocomplete: "off" } %>
+      <div class="content-show-input content-show-input-duration hidden">
+        <p>Duration: </p>
+        <p><%= f.input :duration, label: false, min: 0, input_html: { autocomplete: "off" } %></p>
+        <p>min</p>
       </div>
     </div>
     <div class="content-show-infos">
@@ -18,13 +22,17 @@
       <% end %>
     </div>
   </div>
-  <div class="content-show-infos">
-    <p>Objectives :</p>
-    <br>
-    <p><%= content.description %></p>
-    <div class="content-show-input hidden">
-      <%= f.rich_text_area :description, label: false, input_html: { autocomplete: "off" } %>
+  <div>
+    <div class="content-show-infos content-show-infos-trix" onclick="openInputTrix(this);">
+      <p>Objectives :
+        <br>
+        <%= content.description %>
+      </p>
+    </div>
+    <div class="content-show-input-trix hidden">
+      <%= f.rich_text_area :description, label: false, input_html: { autocomplete: "off"}, placeholder: 'Objectives' %>
     </div>
   </div>
-  <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], label_method: :second, value_method: :first, legend_tag: false %>
+  <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'} %>
+  <%= f.submit '', class: 'hidden-submit hidden' %>
 <% end %>

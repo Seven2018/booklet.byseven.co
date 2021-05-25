@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   module VideoHelper
     def embed_video(video_url)
       if video_url =~ /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/
-        video_id = video_url.split("=").last
+        video_id = video_url.split("=")[1]
         content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen")
       elsif video_url =~ /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]loom+)\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
         video_id = video_url.split("/").last

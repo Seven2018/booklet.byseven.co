@@ -16,35 +16,38 @@ class ModsController < ApplicationController
     end
   end
 
-  def create
-    @module = Mod.new(mod_params)
-    authorize @module
-    @module.document = params[:mod][:document]&.gsub(/edit/, 'present')
-    @module.document = '' if @module.document == nil
-    @module.company_id = current_user.company_id
-    if @module.save
-      if params[:content_id].present?
-        content = Content.find(params[:content_id])
-        ContentMod.create(mod_id: @module.id, content_id: content.id, position: ContentMod.where(content_id: params[:content_id]).count + 1)
-        redirect_to content_path(content)
-      elsif params[:training_content_id].present?
-        training_content = Session.find(params[:training_content_id])
-        SessionMod.create(mod_id: @module.id, training_content_id: training_content.id, position: SessionMod.where(training_content_id: params[:training_content_id]).count + 1)
-        redirect_to training_content_path(training_content)
-      end
-    end
-  end
+  # def create
+  #   @module = Mod.new(mod_params)
+  #   authorize @module
+  #   @module.document = params[:mod][:document]&.gsub(/edit/, 'present')
+  #   @module.document = '' if @module.document == nil
+  #   @module.company_id = current_user.company_id
+  #   if @module.save
+  #     if params[:content_id].present?
+  #       content = Content.find(params[:content_id])
+  #       ContentMod.create(mod_id: @module.id, content_id: content.id, position: ContentMod.where(content_id: params[:content_id]).count + 1)
+  #       redirect_to content_path(content)
+  #     elsif params[:training_content_id].present?
+  #       training_content = Session.find(params[:training_content_id])
+  #       SessionMod.create(mod_id: @module.id, training_content_id: training_content.id, position: SessionMod.where(training_content_id: params[:training_content_id]).count + 1)
+  #       redirect_to training_content_path(training_content)
+  #     end
+  #   end
+  # end
 
-  def create_mod
-    @new_mod = Mod.new(title: params[:new_mod][:title], duration: params[:new_mod][:duration].to_i, document: params[:new_mod][:document], media: params[:new_mod][:media], content: params[:new_mod][:content], company_id: current_user.company_id)
-    skip_authorization
-    @new_content = Content.find(params[:new_mod][:content_id].to_i)
+  def create
+    @new_mod = Mod.new(mod_params)
+    authorize @new_mod
+    @content = Content.find(params[:mod][:content_id])
+    @new_mod.company_id = current_user.company_id
+    @new_mod.content_id = params[:mod][:content_id]
+    @new_mod.mod_type = params[:mod][:mod_type]
+    @new_mod.position = @content.mods.order(position: :asc).count + 1
     if @new_mod.save
-      ContentMod.create(content_id: @new_content.id, mod_id: @new_mod.id)
-    end
-    respond_to do |format|
-      format.html {redirect_to new_content_path}
-      format.js
+      respond_to do |format|
+        format.html {redirect_to content_path(@content)}
+        format.js
+      end
     end
   end
 
@@ -86,6 +89,6 @@ class ModsController < ApplicationController
   end
 
   def mod_params
-    params.require(:mod).permit(:title, :duration, :content, :document, :media)
+    params.require(:mod).permit(:title, :position, :content_id, :document, :video, :image, :mod_type, :text)
   end
 end
