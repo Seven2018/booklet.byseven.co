@@ -27,20 +27,6 @@ class ContentsController < ApplicationController
     end
   end
 
-  def create_content
-    @new_content = Content.new(title: params[:new_content][:title], description: params[:new_content][:description], company_id: current_user.company_id, author_id: current_user.id)
-    skip_authorization
-    if @new_content.save
-      # params[:new_content][:categories].reject!(&:empty?).each do |category_id|
-      #   ContentCategory.create(content_id: @new_content.id, category_id: category_id.to_i)
-      # end
-    end
-    respond_to do |format|
-      format.html {redirect_to new_content_path}
-      format.js
-    end
-  end
-
   def edit
     authorize @content
   end
@@ -50,8 +36,10 @@ class ContentsController < ApplicationController
     @content.update(content_params)
     if @content.save
       redirect_to content_path(@content)
-    else
-      render :edit
+      respond_to do |format|
+        format.html {content_path(@content)}
+        format.js
+      end
     end
   end
 

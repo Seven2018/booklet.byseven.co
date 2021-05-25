@@ -27,6 +27,7 @@
   margin-bottom: 2rem;
   flex-grow: 1;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  overflow: hidden;
 
   &:nth-of-type(2) {
     margin-left: 2rem;
@@ -34,6 +35,29 @@
 
   p {
     flex-grow: 1;
+  }
+
+  .content-show-input {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+
+    div {
+      margin: 0;
+      width: 100%;
+    }
+
+    input {
+      border: none;
+      padding: 0 !important;
+      width: 100%;
+
+      &:focus {
+        border: none;
+        box-shadow: none;
+      }
+    }
   }
 }
 
