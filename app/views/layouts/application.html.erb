@@ -27,9 +27,13 @@
       <% end %>
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
-        <div id="booklet-container">
+        <% if params[:controller] == 'users' && params[:action] == 'show' %>
           <%= yield %>
-        </div>
+        <% else %>
+          <div id="booklet-container">
+            <%= yield %>
+          </div>
+        <% end %>
       <% else %>
         <%= yield %>
       <% end %>

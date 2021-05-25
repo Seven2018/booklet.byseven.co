@@ -4,6 +4,7 @@ class UserInterestsController < ApplicationController
     user = current_user
     @content = Content.find(params[:content_id])
     user_interest = UserInterest.new(content_id: @content.id, user_id: user.id)
+    user_interest.interest_type = 'Interested'
     authorize user_interest
     if user_interest.save
       respond_to do |format|

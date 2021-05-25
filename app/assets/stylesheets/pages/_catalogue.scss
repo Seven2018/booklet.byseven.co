@@ -1,4 +1,11 @@
 // CONTAINER
+.catalogue-container {
+  padding: 0;
+  @include from-medium-high {
+  padding: 0rem 8rem 0rem 8rem;
+  }
+}
+
 .save-btn {
   p {
   margin: 0 !important;
@@ -26,6 +33,7 @@
   align-items: center;
   position: relative;
   margin-right: 2rem;
+  flex-wrap: wrap;
 
   .index-controls-filter-bar-block {
     display: flex;
@@ -35,8 +43,9 @@
     height: 4rem;
     min-width: 40rem;
     padding: 0 2rem;
-    margin-left: 1.5rem;
+    margin-left: 0rem;
     border-radius: 5px;
+    margin-bottom: 10px;
 
     i {
       margin-right: 1rem;
@@ -82,6 +91,13 @@
         }
       }
     }
+    @include from-medium {
+      margin-left: 1.5rem;
+      margin-bottom: 0px;
+    }
+  }
+  @include from-medium {
+
   }
 }
 
@@ -92,16 +108,22 @@
 }
 
 .catalogue-content-card {
-  height: 20rem;
+  height: auto;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  @include from-medium-high {
+    height: 20rem;
+    flex-direction: row;
+  }
 }
 
 .catalogue-content-card-left {
   height: 100%;
-  flex-grow: 1;
   background: white;
   padding: 1rem;
   display: flex;
@@ -109,6 +131,7 @@
   justify-content: space-between;
   align-items: flex-start;
   position: relative;
+  width: 100%;
 
   h4 {
     font-weight: 600;
@@ -122,6 +145,10 @@
     color: #5B5959;
   }
 
+  p {
+    font-size: 1.3rem;
+  }
+
   .type-icon {
     position: absolute;
     right: 1rem;
@@ -132,13 +159,15 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap:wrap;
 
     p {
       background: #F8D9C8;
       color: #F26419;
       padding: 0 .5rem;
-      margin: 0 1rem 0 0;
+      margin: 0 1rem 0.5rem 0;
       border-radius: 5px;
+      font-size: 1.3rem;
     }
 
     i {
@@ -152,10 +181,16 @@
       }
     }
   }
+  @include from-medium-high {
+    width: 85%;
+    p {
+      font-size: 1.6rem !important;
+    }
+  }
 }
 
 .catalogue-content-card-right-syn, .catalogue-content-card-right-asyn {
-  width: 20rem;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -174,6 +209,9 @@
     background: white;
     padding: 0 1rem;
   }
+  @include from-medium-high {
+    width: 15%;
+  }
 }
 
 .catalogue-content-card-right-syn {
@@ -186,15 +224,25 @@
 
 .catalogue-content-card-right-asyn {
   background: #EEEEEE;
+  i {
+    color: black;
+  }
 }
 
 .catalogue-content-card-right-interest {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  p {
+    font-size: 1.3rem;
+  }
   i {
     margin-right: 1rem;
+  }
+  @include from-medium-high {
+    p {
+      font-size: 1.6rem;
+    }
   }
 }
 

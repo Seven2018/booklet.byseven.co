@@ -26,6 +26,10 @@
   }
 }
 
+.user-index-headers {
+  background-color: #F3F2F2;
+}
+
 .headers-div {
   min-width: 20rem;
   max-width: 20rem;
@@ -358,10 +362,10 @@
 .organisation-users {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   flex-grow: 1;
-  width: 80%;
-  @include from-medium {
-    width: 100%;
-  }
+  width: auto;
+  // @include from-medium-high {
+  //   width: 100%;
+  // }
 }
 
 .filter-form-input {
@@ -636,4 +640,18 @@ opacity: 0.8;
 .flex-filter {
   display: flex;
   flex-wrap: wrap;
+}
+
+.employee-tag {
+  flex-direction: column;
+  margin-bottom: 50px !important;
+  h1 {
+    margin-bottom: 20px;
+  }
+  @include from-medium {
+    flex-direction: row;
+    h1 {
+      margin-bottom: 0;
+    }
+  }
 }
