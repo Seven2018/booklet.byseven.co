@@ -3,7 +3,13 @@
   <div>
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
-    <p><%= content.description %></p>
+    <div class="content-description">
+      <% if content.description.length >= (200) %>
+        <p><%= content.description.first(200) + '...' %></p>
+      <% else %>
+        <p><%= content.description %></p>
+      <% end %>
+    </div>
   </div>
   <div class="catalogue-content-card-categories">
     <% content.categories.order(title: :asc).each do |category| %>
@@ -12,7 +18,7 @@
     <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus"></i></a>
     <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
       <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-        <%= render 'manage_categories', content: content %>
+        <%= render 'pages/manage_categories', content: content %>
       </div>
     </div>
   </div>

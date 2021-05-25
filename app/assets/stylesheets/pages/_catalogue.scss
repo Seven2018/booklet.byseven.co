@@ -1,8 +1,12 @@
 // CONTAINER
+.save-btn {
+  p {
+  margin: 0 !important;
+  color: white !important;
 
-.catalogue-container {
-
+  }
 }
+
 
 // FILTER BAR
 
@@ -18,7 +22,7 @@
   min-height: 4rem;
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   position: relative;
   margin-right: 2rem;
@@ -31,7 +35,8 @@
     height: 4rem;
     min-width: 40rem;
     padding: 0 2rem;
-    margin-right: 2rem;
+    margin-left: 1.5rem;
+    border-radius: 5px;
 
     i {
       margin-right: 1rem;
@@ -91,6 +96,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 20px;
 }
 
 .catalogue-content-card-left {
@@ -132,6 +138,7 @@
       color: #F26419;
       padding: 0 .5rem;
       margin: 0 1rem 0 0;
+      border-radius: 5px;
     }
 
     i {
@@ -200,4 +207,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.theme-save-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin: 30px 20px 10px 20px;
+}
+
+.content-description {
+  width: 85%;
 }
