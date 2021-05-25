@@ -3,25 +3,6 @@ class ContentsController < ApplicationController
   before_action :force_json, only: [:change_author]
   helper VideoHelper
 
-  # def index
-  #   # Index with 'search' option and global visibility for SEVEN Users
-  #   if current_user.access_level == 'Super Admin'
-  #     @contents = policy_scope(Content)
-  #     if params[:search]
-  #       @contents = ((Content.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)) + (Content.joins(:company).where("lower(companies.name) LIKE ?", "%#{params[:search][:title].downcase}%"))).flatten(1).uniq
-  #     elsif params[:filter]
-  #       @contents = Content.joins(:content_categories).where(content_categories: {category_id: params[:filter].map(&:to_i)})
-  #     end
-  #   # Index for other Users, with visibility limited to programs proposed by their company only
-  #   else
-  #     @contents = policy_scope(Content)
-  #     @contents = Content.where(company_id: current_user.company.id)
-  #     if params[:search]
-  #       @contents = @contents.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
-  #     end
-  #   end
-  # end
-
   def show
     authorize @content
     @content_skill = ContentSkill.new
@@ -42,24 +23,7 @@ class ContentsController < ApplicationController
     @content.company_id = current_user.company.id
     @content.author_id = current_user.id
     if @content.save
-
-      # # Links Content to Categories through joined table
-      # array = params[:content][:category_ids].drop(1).map(&:to_i)
-      # array.each do |ind|
-      #   if ContentCategory.where(content_id: @content.id, category_id: ind).empty?
-      #     ContentCategory.create(content_id: @content.id, category_id: ind)
-      #   end
-      # end
-      # # Select all Categories whose checkbox is unchecked and destroy their ContentCategory, if existing
-      # (Category.ids - array).each do |ind|
-      #   unless ContentCategory.where(content_id: @content.id, category_id: ind).empty?
-      #     ContentCategory.where(content_id: @content.id, category_id: ind).first.destroy
-      #   end
-      # end
-
       redirect_to content_path(@content)
-    else
-      render :new
     end
   end
 
