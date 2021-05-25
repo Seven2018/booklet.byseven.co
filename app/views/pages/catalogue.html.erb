@@ -4,9 +4,10 @@
       <div class="index-controls-filter-bar-block">
         <%= render 'catalogue_filter' %>
       </div>
+
       <div class='index-controls-create-content'>
         <div class="btn-orange" onclick='openHiddenForm(this);'>
-          <p>Create</p>
+          <p><i class="fas fa-plus"></i> Create</p>
         </div>
         <div class="hidden-form-ajax hidden">
           <%= simple_form_for Content.new do |f| %>
@@ -18,6 +19,7 @@
             </div>
           <% end %>
         </div>
+
       </div>
     </div>
   </div>

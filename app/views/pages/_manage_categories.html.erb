@@ -1,9 +1,8 @@
 <div class="modal-content">
   <div class="modal-header">
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Manage Categories for <%= content.title %></h3>
+      <h3 class="modal-title" id="myModalLabel">Manage Themes for <em><%= content.title %></em></h3>
     </div>
-    <button type="button" class="btn btn-icon close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
     <div class="categories-form">
@@ -25,10 +24,13 @@
         </div>
         <i class="fas fa-plus" onclick='fetchCategoryForm(this);'></i>
         <%= f.hidden_field :content_id, value: content.id %>
-        <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn btn-orange btn-icon', onclick: 'dismissModal(this);' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
+        <div class="theme-save-btn">
+          <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'dismissModal(this);' do %>
+            <p class='save-btn'>select skills</p>
+          <% end %>
       <% end %>
+          <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+        </div>
       <div class='hidden-form-category-ajax hidden'>
         <%= simple_form_for :new_category, url: catalogue_content_link_category_path, method: :get, remote: true do |f| %>
           <%= f.text_field :title, placeholder: 'New Category', style: 'height: 100%;' %>
