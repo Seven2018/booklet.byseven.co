@@ -59,7 +59,7 @@ Rails.application.routes.draw do
   get 'contents-filter', to: 'contents#filter', as: 'filter_contents'
   get 'contents/:id/viewmode', to: 'contents#view_mode', as: 'view_content'
   resources :mods, only: %i[show new create update destroy]
-  post 'mods/create_mod', to: 'mods#create_mod', as: 'create_mod'
+  post :create_mod, controller: :mods
   post 'mods/:id/update_mod', to: 'mods#update_mod', as: 'update_mod'
   resources :content_mods, only: %i[create destroy]
   get 'content_mods/:id/move_up', to: 'content_mods#move_up', as: 'move_up_content_mod'

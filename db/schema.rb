@@ -150,12 +150,14 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
   end
 
   create_table "mods", force: :cascade do |t|
-    t.text "content", default: "", null: false
+    t.string "title"
+    t.text "text", default: ""
     t.string "link"
     t.string "document"
     t.string "video"
     t.string "image"
     t.string "mod_type", default: ""
+    t.integer "position"
     t.bigint "company_id"
     t.integer "content_id"
     t.datetime "created_at", precision: 6, null: false

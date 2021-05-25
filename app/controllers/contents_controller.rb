@@ -35,7 +35,7 @@ class ContentsController < ApplicationController
     authorize @content
     @content.update(content_params)
     if @content.save
-      redirect_to content_path(@content)
+      @content = @content
       respond_to do |format|
         format.html {content_path(@content)}
         format.js

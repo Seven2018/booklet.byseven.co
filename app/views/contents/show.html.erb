@@ -1,51 +1,126 @@
 <div id="content-show-container">
-  <div id="content-show-container-left"></div>
+  <div id="content-show-container-left">
+    <% @content.mods.order(position: :asc).each do |mod| %>
+      <a href="#anchor-<%= mod.id %>"><%= mod.title %></a>
+    <% end %>
+  </div>
   <div id="content-show-container-right">
     <div class="content-show-attributes">
       <%= render 'show_attributes', content: @content %>
     </div>
     <div class="content-show-mods-container">
       <div class="content-show-mods-controls">
-        <div class="content-show-mods-controls-block">
+        <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModText'>
           <i class="far fa-file-alt"></i>
           <p>Text</p>
-          <div class="hidden-mod-form hidden">
-            <%= simple_form_for Mod.new do |f| %>
-              <%= f.text_field :content, placeholder: 'Content' %>
-            <% end %>
-          </div>
-        </div>
-        <div class="content-show-mods-controls-block">
+        </a>
+        <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModVideo'>
           <i class="fas fa-video"></i>
           <p>Video</p>
-          <div class="hidden-mod-form hidden">
-            <%= simple_form_for Mod.new do |f| %>
-              <%= f.text_field :video, placeholder: 'Youtube link' %>
-            <% end %>
-          </div>
-        </div>
-        <div class="content-show-mods-controls-block">
+        </a>
+        <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModImage'>
           <i class="fas fa-image"></i>
           <p>Image</p>
-          <div class="hidden-mod-form hidden">
-            <%= simple_form_for Mod.new do |f| %>
-              <%= f.text_field :image, placeholder: 'Image link' %>
-            <% end %>
-          </div>
-        </div>
+        </a>
         <div class="content-show-mods-controls-block">
           <i class="fas fa-star-half-alt"></i>
           <p>Quiz</p>
         </div>
       </div>
+      <div class="content-show-mods-index">
+        <%= render 'mods/content_show_mods_index', content: @content %>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- Modals -->
+<div class='modal fade' id='newModText' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/new_mod_text' %>
+  </div>
+</div>
+
+<div class='modal fade' id='newModVideo' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/new_mod_video' %>
+  </div>
+</div>
+
+<div class='modal fade' id='newModImage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/new_mod_image' %>
+  </div>
+</div>
+
 <script>
+  doubleClickGuardian = false;
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
   function openInput(element) {
-    input = element.parentNode.querySelector('.content-show-input');
-    element.querySelector('p').classList.add('hidden');
-    input.classList.remove('hidden');
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      input = element.parentNode.querySelector('.content-show-input');
+      initial_value = input.querySelector('input').value;
+      element.querySelector('p').classList.add('hidden');
+      input.classList.remove('hidden');
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 1);
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, input) && doubleClickGuardian == false) {
+          if (input.value != initial_value) {
+            document.querySelector('.edit_content').querySelector('.hidden-submit').click();
+            // input.classList.add('hidden');
+            // element.querySelector('p').classList.remove('hidden');
+          } else {
+            input.classList.add('hidden');
+            element.querySelector('p').classList.remove('hidden');
+          }
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    }
+  }
+  function openInputTrix(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      input = element.parentNode.querySelector('.content-show-input-trix');
+      initial_value = input.querySelector('input').value;
+      element.classList.add('hidden');
+      input.classList.remove('hidden');
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 1);
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, input) && doubleClickGuardian == false) {
+          document.querySelector('.edit_content').querySelector('.hidden-submit').click();
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    }
+  }
+
+  function saveOnSelect(element) {
+    document.querySelector('.edit_content').querySelector('.hidden-submit').click();
+  }
+
+  function closeModalOnSubmit(element) {
+    document.querySelector('.modal.show').querySelector('.close').click();
+    document.querySelector('.modal.show').querySelector('hidden-submit').click();
   }
 </script>
