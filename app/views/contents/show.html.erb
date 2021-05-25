@@ -1,43 +1,37 @@
 <div id="content-show-container">
   <div id="content-show-container-left"></div>
   <div id="content-show-container-right">
-    <%= simple_form_for @content do |f| %>
-      <div class="content-show-infos">
-        <p><%= @content.title %></p>
-        <div class="content-show-input hidden">
-          <%= f.input :title, label: false %>
-        </div>
-      </div>
-      <div class="flex-row-between-centered">
-        <div class="content-show-infos">
-          <p>Duration: <%= @content.duration %> min</p>
-        </div>
-        <div class="content-show-infos">
-          <% @content.categories.each do |category| %>
-            <p><%= category %></p>
-          <% end %>
-        </div>
-      </div>
-      <div class="content-show-infos">
-        <p>Objectives :</p>
-        <br>
-        <p><%= @content.description %></p>
-      </div>
-      <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], label_method: :second, value_method: :first, legend_tag: false %>
-    <% end %>
+    <div class="content-show-attributes">
+      <%= render 'show_attributes', content: @content %>
+    </div>
     <div class="content-show-mods-container">
       <div class="content-show-mods-controls">
         <div class="content-show-mods-controls-block">
           <i class="far fa-file-alt"></i>
           <p>Text</p>
+          <div class="hidden-mod-form hidden">
+            <%= simple_form_for Mod.new do |f| %>
+              <%= f.text_field :content, placeholder: 'Content' %>
+            <% end %>
+          </div>
         </div>
         <div class="content-show-mods-controls-block">
           <i class="fas fa-video"></i>
           <p>Video</p>
+          <div class="hidden-mod-form hidden">
+            <%= simple_form_for Mod.new do |f| %>
+              <%= f.text_field :video, placeholder: 'Youtube link' %>
+            <% end %>
+          </div>
         </div>
         <div class="content-show-mods-controls-block">
           <i class="fas fa-image"></i>
           <p>Image</p>
+          <div class="hidden-mod-form hidden">
+            <%= simple_form_for Mod.new do |f| %>
+              <%= f.text_field :image, placeholder: 'Image link' %>
+            <% end %>
+          </div>
         </div>
         <div class="content-show-mods-controls-block">
           <i class="fas fa-star-half-alt"></i>
@@ -51,7 +45,7 @@
 <script>
   function openInput(element) {
     input = element.parentNode.querySelector('.content-show-input');
-    element.classList.add('hidden');
+    element.querySelector('p').classList.add('hidden');
     input.classList.remove('hidden');
   }
 </script>
