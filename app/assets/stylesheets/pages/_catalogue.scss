@@ -202,12 +202,16 @@
   .content-dropdown {
     position: absolute;
     right: 1rem;
-    top: 3rem;
+    top: 3.5rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     background: white;
     padding: 0 1rem;
+    z-index: 100;
+    a {
+      padding: 5px 20px;
+    }
   }
   @include from-medium-high {
     width: 15%;
@@ -220,6 +224,22 @@
   p, i {
     color: #F26419;
   }
+  .catalogue-content-card-right-menu {
+  height: 1.6rem;
+  width: 1.6rem;
+  position: absolute;
+  padding: 15px;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background-color: #f7c0a3;
+    padding: 15px;
+    border-radius: 50%;
+  }
+}
 }
 
 .catalogue-content-card-right-asyn {
@@ -227,6 +247,22 @@
   i {
     color: black;
   }
+  .catalogue-content-card-right-menu {
+  height: 1.6rem;
+  width: 1.6rem;
+  position: absolute;
+  padding: 15px;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background-color: #c1c1c1;
+    padding: 15px;
+    border-radius: 50%;
+  }
+}
 }
 
 .catalogue-content-card-right-interest {
@@ -246,16 +282,7 @@
   }
 }
 
-.catalogue-content-card-right-menu {
-  height: 1.6rem;
-  width: 1.6rem;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 .theme-save-btn {
     display: flex;
@@ -265,4 +292,8 @@
 
 .content-description {
   width: 85%;
+  font-size: 1.3rem;
+  @include from-medium {
+    font-size: 1.6rem;
+  }
 }

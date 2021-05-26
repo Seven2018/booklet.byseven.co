@@ -113,6 +113,7 @@ class PagesController < ApplicationController
   end
 
   def book
+    index_function(User.all)
   end
 
   private
