@@ -1,1 +1,6 @@
-document.querySelector('#catalogue-index').innerHTML = '<%= j render("pages/catalogue_index", contents: @contents) %>';
+console.log("<% @action %>");
+if ("<% @action %>" == 'show') {
+  document.querySelector('.content-show-attributes').innerHTML = '<%= j render("contents/show_attributes", content: @content) %>';
+} else {
+  document.querySelector('#catalogue-index').innerHTML = '<%= j render("pages/catalogue_index", contents: @contents) %>';
+}

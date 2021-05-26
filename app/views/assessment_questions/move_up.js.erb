@@ -1,1 +1,1 @@
-document.getElementById('assessment-show-content').innerHTML = '<%= j (render("assessments/content", assessment: @form)) %>';
+document.getElementById('assessment-<%= @form.id %>').innerHTML = '<%= j (render("assessments/show", form: @form)) %>';

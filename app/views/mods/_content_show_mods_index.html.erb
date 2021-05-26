@@ -13,5 +13,9 @@
     <div class="content-show-mods-card-image">
       <img src="<%= mod.image %>" alt="<%= mod.title %>">
     </div>
+  <% elsif mod.mod_type == 'assessment' %>
+    <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
+      <%= render 'assessments/show', form: mod %>
+    </div>
   <% end %>
 <% end %>

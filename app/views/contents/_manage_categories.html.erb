@@ -7,7 +7,7 @@
   <div class="modal-body" id="modalNewBookinBody">
     <div class="categories-form">
       <% checked = content.categories.ids %>
-      <%= simple_form_for :add_categories, url: catalogue_content_link_category_path, method: :get, remote: true do |f| %>
+      <%= simple_form_for :add_categories, url: content_link_category_path, method: :get, remote: true do |f| %>
         <div class="categories-form-checkboxes">
           <%# f.input :categories, collection: Category.where(company_id: current_user.company_id).order(title: :asc), as: :check_boxes, legend_tag: false, label: false %>
           <%= collection_check_boxes(:content, :categories, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title, checked: checked) do |b| %>
@@ -15,7 +15,7 @@
               <%= b.check_box %>
               <div class="flex-row-between-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
                 <p class='category-title'><%= b.text %></p>
-                <%= link_to catalogue_content_link_category_path(delete: true, category_id: b.value, content_id: content.id), data: {confirm: 'Are you sure ?'}, class: 'category-delete', remote: true do %>
+                <%= link_to content_link_category_path(delete: true, category_id: b.value, content_id: content.id, page: params[:action]), data: {confirm: 'Are you sure ?'}, class: 'category-delete', remote: true do %>
                   <i class="fas fa-trash"></i>
                 <% end %>
               </div>
@@ -33,7 +33,7 @@
       <% end %>
         </div>
       <div class='hidden-form-category-ajax hidden'>
-        <%= simple_form_for :new_category, url: catalogue_content_link_category_path, method: :get, remote: true do |f| %>
+        <%= simple_form_for :new_category, url: content_link_category_path, method: :get, remote: true do |f| %>
           <%= f.text_field :title, placeholder: 'New Category', style: 'height: 100%;' %>
           <%= f.hidden_field :content_id, value: content.id %>
           <%= f.hidden_field :page, value: params[:action] %>
