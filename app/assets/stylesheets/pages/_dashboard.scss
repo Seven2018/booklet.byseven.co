@@ -27,128 +27,42 @@
   }
 }
 
-.dashboard-tabs-secondary {
-  padding-left: 3rem;
-  margin-top: 0;
-}
-
-.training-index-list-dashboard-sm {
-  width: 38%;
-  height: 50rem;
-  padding: 1rem;
-  overflow-y: scroll;
-  background-color: white;
-  margin-bottom: 5rem;
-}
-
-.dashboard-label {
-  display: inline-flex;
-  border-radius: 8px;
-  margin-right: 3rem;
-  margin-bottom: 20px;
-
-  h3 {
-    margin: 0;
-    padding: 2rem;
-    font-size: 3rem;
-  }
-
-  h3:first-of-type {
-    padding: 2rem 0 2rem 2rem;
-    color: white;
-  }
-  @include from-medium-high {
-    margin-bottom: 0px;
-  }
-}
-
-// .dashboard-label-green {
-//   background-color: rgba(143, 160, 120, 0.36);
-
-//   h3:last-of-type {
-//     color: #8FA078;
-
-//   }
+// .dashboard-tabs-secondary {
+//   padding-left: 3rem;
+//   margin-top: 0;
 // }
 
-// .dashboard-label-orange {
-//   background-color: rgba(231, 111, 81, 0.6);
-
-//   h3:last-of-type {
-//     color: #E76F51;
-//   }
-// }
-
-// .dashboard-label-blue {
-//   background-color: rgba(38, 70, 83, 0.58);
-
-//   h3:last-of-type {
-//     color: #264653;
-//   }
-// }
-
-// .training-index-list-dashboard {
-//   width: 48%;
+// .training-index-list-dashboard-sm {
+//   width: 38%;
 //   height: 50rem;
-//   padding: 2rem;
-//   overflow-y: scroll;
-//   background-color: white;
-//   margin-bottom: 5rem;
-// }
-
-// .training-index-list-dashboard-md {
-//   width: 65%;
 //   padding: 1rem;
 //   overflow-y: scroll;
 //   background-color: white;
 //   margin-bottom: 5rem;
 // }
 
-
-// .training-index-list-dashboard-large {
-//   width: 100%;
-//   padding: 2rem;
-//   @include from-medium-high {
-//     min-width: 82rem;
-//   }
-// }
-
-// .training-index-infos-group-dashboard {
-//   flex-grow: 1;
-//   padding-left: 3rem;
-// }
-
-// .training-index-infos-dashboard {
-//   width: 20rem;
-//   text-align: left;
-
-//   &:first-of-type {
-//     width: 5rem;
-//     min-width: 2rem;
-//   }
+// .dashboard-label {
+//   display: inline-flex;
+//   border-radius: 8px;
+//   margin-right: 3rem;
+//   margin-bottom: 20px;
 
 //   h3 {
-//     margin: 0 !important;
+//     margin: 0;
+//     padding: 2rem;
+//     font-size: 3rem;
+//   }
+
+//   h3:first-of-type {
+//     padding: 2rem 0 2rem 2rem;
+//     color: white;
+//   }
+//   @include from-medium-high {
+//     margin-bottom: 0px;
 //   }
 // }
 
-// .training-index-infos-dashboard-lg {
-//   width: 40%;
-//   text-align: left;
 
-//   p {
-//     width: 100%;
-//   }
-// }
-
-// .training-index-list-dashboard-controls {
-//   height: 4rem;
-//   margin-bottom: 2rem;
-// }
-
-// .training-index-list-dashboard-title {
-//   margin-bottom: 3rem;
-// }
 
 .dashboard-cards {
   display: flex;
@@ -164,12 +78,24 @@
 }
 
 // DASHBOARD GRID //
+// .dashboard-grid {
+//   display: grid;
+//   grid-template-columns: 1fr;
+// @include from-medium-low {
+//   grid-template-columns: 3fr 1fr;
+// }
+// }
+
 .dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
 @include from-medium-low {
-  grid-template-columns: 3fr 1fr;
+  flex-direction: row;
+ }
 }
+
+.dashboard-navigation {
+  flex-grow: 1;
 }
 
 // DASHBOARD
@@ -207,13 +133,13 @@
 .calendar-schedule-card-sync {
     margin: 20px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     background-color: #F8D9C8;
     border-radius: 10px;
     color: #F26419;
     height: 80px;
-    width: 350px;
+    width: 320px;
     .calendar-card-time {
       p {
       font-size: 15px;
@@ -241,17 +167,20 @@
         font-size: 3rem !important;
       }
     }
+    @include from-medium {
+      width: 350px;
+    }
 }
 
 .calendar-schedule-card-async {
     margin: 20px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content:center;
     align-items: center;
     background-color: #EEEEEE;
     border-radius: 10px;
     height: 80px;
-    width: 350px;
+    width: 320px;
 
     .calendar-card-info {
       width: 80%;
@@ -272,5 +201,8 @@
       h2 {
         font-size: 3rem !important;
       }
+    }
+      @include from-medium {
+      width: 350px;
     }
 }
