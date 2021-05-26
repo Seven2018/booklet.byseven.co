@@ -26,11 +26,11 @@
     <div class="content-show-infos content-show-infos-trix" onclick="openInputTrix(this);">
       <p>Objectives :
         <br>
-        <%= content.description %>
+        <%= content.description.html_safe %>
       </p>
     </div>
     <div class="content-show-input-trix hidden">
-      <%= f.rich_text_area :description, label: false, input_html: { autocomplete: "off"}, placeholder: 'Objectives' %>
+      <%= f.trix_editor :description, label: false, input_html: { autocomplete: "off"}, placeholder: 'Objectives' %>
     </div>
   </div>
   <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'} %>

@@ -10,7 +10,7 @@
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.hidden_field :mod_type, value: 'text' %>
       <%= f.input :title, placeholder: 'Title', label: false %>
-      <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
+      <%= f.trix_editor :text, placeholder: 'Content', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <button class="btn-orange btn-icon" onclick="closeModalOnSubmit(this);">
         <i class="fas fa-save"></i>
