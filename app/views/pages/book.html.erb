@@ -5,50 +5,57 @@
   <div class="workshop-grid">
     <div class="workshop-cards-book container">
       <ul id='workshop-card-list'>
+        <% Content.where(company_id: current_user.company_id).each do |content| %>
         <li>
           <div class="card-interest draggable" draggable='true'>
             <div class="card-interest-left">
-              <div class="card-interest-title"></i><h2>Title</h2></div>
-              <div class="card-interest-duration"><p>Duration</p></div>
-              <div class="card-interest-objective"><p>This would be the objective of the card.</p></div>
-              <div class="card-interest-left-themes">
-                <div class='card-interest-themes'>
-                  <p>Web Design</p>
+            <div class="catalogue-content-card-left-book">
+              <div>
+                <% if content.title.length > 35 %>
+                  <h3><b><%= content.title.first(35)+'...' %></b></h3>
+                <% else %>
+                  <h3><b><%= content.title %></b></h3>
+                <% end %>
+                <p><%= content.duration %> Minutes</p>
+                  <div class="content-description">
+                  <% if content.description.length >= (200) %>
+                    <p><%content.description.first(200) + '...' %></p>
+                  <%else %>
+                    <p><%= content.description %></p>
+                  <%end %>
                 </div>
               </div>
-            </div>
-            <div class="card-interest-synch-right">
-              <div class="card-type">
-                <i class="fas fa-laptop fa-5x"></i>
+              <div class="type-icon">
+                <% if content.content_type == 'Synchronous' %>
+                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                <% else %>
+                  <i class="fas fa-laptop" style='color:black;'></i>
+                <% end %>
               </div>
-              <div class="card-heart-interest">
-                <p><i class="fas fa-heart"></i> 12 Interested</p>
+            </div>
+            <% if content.content_type == 'Synchronous' %>
+            <div class="catalogue-content-card-right-syn-book">
+            <% else %>
+              <div class="catalogue-content-card-right-asyn-book">
+            <% end %>
+                <div class="catalogue-content-card-right-interest">
+                  <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
+                  <% if interest.present? %>
+                    <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
+                      <i class="fas fa-heart"></i>
+                    <% end %>
+                  <% else %>
+                    <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
+                      <i class="far fa-heart"></i>
+                    <% end %>
+                  <% end %>
+                  <p><%= content.interested.count %> Interested</p>
+                </div>
               </div>
             </div>
           </div>
         </li>
-        <li>
-          <div class="card-interest draggable"  draggable='true'>
-            <div class="card-interest-left">
-              <div class="card-interest-title"><h2>Title</h2></div>
-              <div class="card-interest-duration"><p>Duration</p></div>
-              <div class="card-interest-objective"><p>This would be the objective of the card.</p></div>
-              <div class="card-interest-left-themes">
-                <div class='card-interest-themes'>
-                  <p>Web Design</p>
-                </div>
-              </div>
-            </div>
-            <div class="card-interest-asynch-right">
-              <div class="card-type">
-                <i class="fas fa-chalkboard-teacher fa-5x"></i>
-              </div>
-              <div class="card-heart-interest">
-                <p><i class="fas fa-heart"></i> 12 Interested</p>
-              </div>
-            </div>
-          </div>
-        </li>
+        <% end %>
       </ul>
     </div>
     <div class="workshop-cards-selected container">

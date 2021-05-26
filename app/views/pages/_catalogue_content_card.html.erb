@@ -4,11 +4,11 @@
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">
-      <% if content.description.length >= (200) %>
-        <p><%= content.description.first(200) + '...' %></p>
-      <% else %>
+      <%# if content.description.length >= (200) %>
+<!--         <p><%# content.description.first(200) + '...' %></p>
+ -->      <%# else %>
         <p><%= content.description %></p>
-      <% end %>
+      <%# end %>
     </div>
   </div>
   <div class="catalogue-content-card-categories">
