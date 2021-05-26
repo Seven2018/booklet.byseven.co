@@ -4,10 +4,10 @@
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">
-      <% if content.description.length >= (200) %>
-        <p><%= content.description.first(200) + '...' %></p>
+      <% if content.description.body.to_plain_text.length >= (200) %>
+        <p><%= content.description.body.to_plain_text.first(200) + '...' %></p>
       <% else %>
-        <p><%= content.description %></p>
+        <p><%= content.description.body.to_plain_text.description %></p>
       <% end %>
     </div>
   </div>
