@@ -4,10 +4,12 @@
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">
-      <% if content.description.body.to_plain_text.length >= (200) %>
-        <p><%= content.description.body.to_plain_text.first(200) + '...' %></p>
-      <% else %>
-        <p><%= content.description.body.to_plain_text.first(200) %></p>
+      <% if content.description.present? %>
+        <% if content.description.body.to_plain_text.length >= (200) %>
+          <p><%= content.description.body.to_plain_text.first(200) + '...' %></p>
+        <% else %>
+          <p><%= content.description.body.to_plain_text.first(200) %></p>
+        <% end %>
       <% end %>
     </div>
   </div>
