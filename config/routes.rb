@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   patch 'contents/:id/update_content', to: 'contents#update_content', as: 'update_content'
   get :change_author, controller: :contents
   get :add_category, controller: :contents
+  get 'contents/:id/duplicate', to: 'contents#duplicate', as: 'duplicate_content'
 
   # USER_INTERESTS
   resources :user_interests, only: %i[create destroy]

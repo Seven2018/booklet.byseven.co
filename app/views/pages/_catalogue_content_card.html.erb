@@ -1,14 +1,19 @@
 <div class="catalogue-content-card-left">
+  <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+    <%= link_to '', content_path(content), class: 'stretched-link' %>
+  <% end %>
   <% content = @content if @content.present? %>
   <div>
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">
-      <%# if content.description.length >= (200) %>
-<!--         <p><%# content.description.first(200) + '...' %></p>
- -->      <%# else %>
-        <p><%= content.description %></p>
-      <%# end %>
+      <% if content.description.present? %>
+        <% if content.description.html_safe.length >= (200) %>
+          <p><%= content.description.html_safe.first(200) + '...' %></p>
+        <% else %>
+          <p><%= content.description.html_safe.first(200) %></p>
+        <% end %>
+      <% end %>
     </div>
   </div>
   <div class="catalogue-content-card-categories">
@@ -35,12 +40,14 @@
 <% else %>
   <div class="catalogue-content-card-right-asyn">
 <% end %>
-    <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
-    <div class="content-dropdown hidden">
-      <a>Edit</a>
-      <a>Delete</a>
-      <a>Duplicate</a>
-    </div>
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
+      <div class="content-dropdown hidden">
+        <%= link_to 'Edit', content_path(content) %>
+        <%= link_to 'Delete', content_path(content, catalogue: 'true', contents: @contents.map(&:id).join(',')), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
+        <%= link_to 'Duplicate', duplicate_content_path(content, contents: @contents.map(&:id).join(',')), remote: true %>
+      </div>
+    <% end %>
     <div class="catalogue-content-card-right-interest">
       <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
       <% if interest.present? %>

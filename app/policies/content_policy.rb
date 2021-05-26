@@ -25,6 +25,10 @@ class ContentPolicy < ApplicationPolicy
     check_access_hr
   end
 
+  def duplicate?
+    check_access_hr
+  end
+
   def destroy?
     check_access_hr
   end

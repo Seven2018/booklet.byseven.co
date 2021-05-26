@@ -1,5 +1,5 @@
 class ContentsController < ApplicationController
-  before_action :set_content, only: [:show, :view_mode, :edit, :update, :update_content, :destroy]
+  before_action :set_content, only: [:show, :duplicate, :view_mode, :edit, :update, :update_content, :destroy]
   before_action :force_json, only: [:change_author]
   helper VideoHelper
 
@@ -9,11 +9,6 @@ class ContentsController < ApplicationController
   end
 
   def view_mode
-    authorize @content
-  end
-
-  def new
-    @content = Content.new
     authorize @content
   end
 
@@ -61,6 +56,17 @@ class ContentsController < ApplicationController
     end
   end
 
+  def duplicate
+    authorize @content
+    @new_content = Content.new(@content.attributes.except("id", "created_at", "updated_at"))
+    if @new_content.save
+      @contents = Content.where(id: params[:contents].split(',')+[@new_content.id])
+      respond_to do |format|
+        format.js
+      end
+    end
+  end
+
   def add_category
     skip_authorization
     # if params[:ajax].present?
@@ -71,14 +77,6 @@ class ContentsController < ApplicationController
       format.html {redirect_to catalogue_path}
       format.js
     end
-    # else
-    #   @categories = Category.where(company_id: current_user.company_id).ransack(title_cont: params[:search]).result(distinct: true)
-    #   respond_to do |format|
-    #     format.json {
-    #       @users = @categories.limit(5)
-    #     }
-    #   end
-    # end
   end
 
   def change_author
@@ -101,14 +99,14 @@ class ContentsController < ApplicationController
   def destroy
     @content.destroy
     authorize @content
-    redirect_to catalogue_path
-  end
-
-  def filter
-    @contents = @contents = Content.where(company_id: current_user.company.id)
-    authorize @contents
-    category_ids = params[:content][:category_ids].drop(1).map(&:to_i)
-    redirect_to contents_path(filter: category_ids)
+    if params[:catalogue].present?
+      @contents = Content.where(id: params[:contents].split(','))
+      respond_to do |format|
+        format.js
+      end
+    else
+      redirect_to catalogue_path
+    end
   end
 
   private
