@@ -7,7 +7,7 @@
       <% if content.description.body.to_plain_text.length >= (200) %>
         <p><%= content.description.body.to_plain_text.first(200) + '...' %></p>
       <% else %>
-        <p><%= content.description.body.to_plain_text.description %></p>
+        <p><%= content.description.body.to_plain_text.first(200) %></p>
       <% end %>
     </div>
   </div>
