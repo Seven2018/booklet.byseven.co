@@ -1,13 +1,13 @@
 <div id='mod-assessment-questions-list'>
-  <% @form.assessment_questions.order(position: :asc).each do |question| %>
+  <% form.assessment_questions.order(position: :asc).each do |question| %>
     <div class="mod-assessment-questions-card">
       <div class='flex-row-between-start'>
         <p class='mod-assessment-questions-position'>Question n°<%= question&.position %></p>
         <div class='mod-assessment-questions-controls flex-column-between-centered'>
-          <a data-toggle='modal' data-target='#editQuestion<%= question.id %>'>
+          <!-- <a data-toggle='modal' data-target='#editQuestion<%= question.id %>'>
             <button class="btn btn-icon"><i class='fas fa-pen'></i></button>
-          </a>
-          <%= link_to assessment_assessment_question_path(question.mod, question), method: :delete, data: { confirm: 'Are you sure ?'} do %>
+          </a> -->
+          <%= link_to assessment_assessment_question_path(question.mod, question), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true do %>
             <button class="btn btn-icon"><i class="far fa-trash-alt"></i></button>
           <% end %>
           <% if question.position == 1 %>
@@ -30,13 +30,13 @@
           <% end %>
         </div>
       </div>
-      <div class='modal fade' id='editQuestion<%= question.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+      <!-- <div class='modal fade' id='editQuestion<%= question.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
         <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-          <%= render 'assessment_questions/edit', question: question %>
+          <%# render 'assessment_questions/edit', question: question %>
         </div>
-      </div>
+      </div> -->
       <p style="white-space: pre-line"><%= question&.question %></p>
-      <% if question.options.present? && question.question_type == 'MCQ' %>
+      <%# if question.options.present? && question.question_type == 'MCQ' %>
         <% i = 1 %>
         <% question.options.each do |key, value| %>
           <% if question.options[key] == 'true' %>
@@ -46,10 +46,10 @@
           <% end %>
           <% i += 1 %>
         <% end %>
-      <% elsif question.options.present? && question.question_type == 'rating' %>
-        <p class='mod-assessment-questions-answer'>Rating values :</p>
-        <p><%= question.options[:start] %> => <%= question.options[:end] %></p>
-      <% end %>
+      <%# elsif question.options.present? && question.question_type == 'rating' %>
+        <!-- <p class='mod-assessment-questions-answer'>Rating values :</p>
+        <p><%# question.options[:start] %> => <%= question.options[:end] %></p> -->
+      <%# end %>
     </div>
   <% end %>
 </div>

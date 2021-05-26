@@ -34,12 +34,15 @@ class AssessmentQuestionsController < ApplicationController
   def destroy
     authorize @question
     @question.destroy
+    @form = @question.mod
     i = 1
     @question.mod.assessment_questions.order(position: :asc).each do |question|
       question.update(position: i)
       i += 1
     end
-    redirect_back(fallback_location: root_path)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def move_up
@@ -52,7 +55,6 @@ class AssessmentQuestionsController < ApplicationController
     end
     @question.save
     respond_to do |format|
-      format.html {redirect_to assessment_path(@question.mod)}
       format.js
     end
   end

@@ -67,6 +67,7 @@ class PagesController < ApplicationController
       @content = Content.find(params[:content_id])
       @modal = 'true'
     elsif params[:add_categories].present?
+      @action = params[:add_categories][:page]
       @content = Content.find(params[:add_categories][:content_id])
       ids = params[:content][:categories].reject{|x| x.empty?}
       ids.each do |category_id|

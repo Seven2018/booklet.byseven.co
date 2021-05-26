@@ -1,14 +1,10 @@
 <h3>New question</h3>
-<%= simple_form_for AssessmentQuestion.new, url: add_questions_assessment_path(@form), method: :post do |f| %>
+<%= simple_form_for AssessmentQuestion.new, url: add_questions_assessment_path(form), method: :post, remote: true do |f| %>
   <div class='mod-assessment-questions-radio-buttons'>
     <%# f.collection_radio_buttons :question_type, [['MCQ', 'MCQ'] ,['open question', 'Open question'], ['rating', 'Rating']], :first, :last, :checked => 'MCQ' do |b| %>
-    <%= f.collection_radio_buttons :question_type, [['MCQ', 'MCQ']], :first, :last, :checked => 'MCQ' do |b| %>
-      <%= b.radio_button(class: b.value) %>
-      <%= b.label %>
-    <% end %>
   </div>
   <div class='mod-assessment-questions-form'>
-    <%= f.input :question, as: :text, id: "ckeditor#{@form.assessment_questions.count}" %>
+    <%= f.input :question, as: :text, id: "ckeditor#{form.assessment_questions.count}" %>
     <div class='mod-assessment-questions-options-mcq'>
       <div class='flex-column-between-left'>
       </div>
@@ -42,7 +38,7 @@
     <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-icon' do %>
       <i class="fas fa-save"></i>
     <% end %>
-    <%= link_to assessment_path(@form) do %>
+    <%= link_to assessment_path(form) do %>
       <div class="btn btn-edit-red btn-icon btn-close">
         <i class="fas fa-times"></i>
       </div>

@@ -16,11 +16,15 @@
         <p>min</p>
       </div>
     </div>
-    <div class="content-show-infos">
-      <% content.categories.each do |category| %>
-        <p><%= category.title %></p>
-      <% end %>
-    </div>
+    <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'} %>
+  </div>
+  <div class="content-show-infos content-show-infos-themes">
+    <p>Themes :</p>
+    <% content.categories.order(title: :asc).each do |category| %>
+      <p class="category-tag"><%= category.title %></p>
+    <% end %>
+    <a data-toggle='modal' data-target='#addTheme'><i class="fas fa-plus"></i></a>
+
   </div>
   <div>
     <div class="content-show-infos content-show-infos-trix" onclick="openInputTrix(this);">
@@ -33,6 +37,11 @@
       <%= f.trix_editor :description, label: false, input_html: { autocomplete: "off"}, placeholder: 'Objectives' %>
     </div>
   </div>
-  <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'} %>
   <%= f.submit '', class: 'hidden-submit hidden' %>
 <% end %>
+
+<div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'contents/manage_categories', content: content %>
+  </div>
+</div>
