@@ -1,13 +1,17 @@
 <div class="book-container">
-  <div class="booking-title">
-    <h2>Select Workshop to Book</h2>
-  </div>
-  <div class="workshop-grid">
-    <div class="workshop-cards-book container">
-      <ul id='workshop-card-list'>
+  <div class="book-page-1">
+    <div class="booking-title">
+      <h2>Select Workshop to Book</h2>
+    </div>
+    <div class="index-controls-filter-bar-book">
+      <div class="index-controls-filter-bar-block-book">
+        <%= render 'catalogue_filter' %>
+      </div>
+    </div>
+    <div class="workshop-grid">
+      <div class="workshop-cards-book container">
         <% Content.where(company_id: current_user.company_id).each do |content| %>
-        <li>
-          <div class="card-interest draggable" draggable='true'>
+          <div class="card-interest-book draggable" draggable='true' ondragend="removeGhost();">
             <div class="card-interest-left">
             <div class="catalogue-content-card-left-book">
               <div>
@@ -17,12 +21,17 @@
                   <h3><b><%= content.title %></b></h3>
                 <% end %>
                 <p><%= content.duration %> Minutes</p>
-                  <div class="content-description">
-                  <% if content.description.length >= (200) %>
-                    <p><%content.description.first(200) + '...' %></p>
-                  <%else %>
-                    <p><%= content.description %></p>
-                  <%end %>
+                  <% if content.description.present? %>
+                    <% if content.description.html_safe.length >= (200) %>
+                      <p><%= content.description.html_safe.first(200) + '...' %></p>
+                    <% else %>
+                      <p><%= content.description.html_safe.first(200) %></p>
+                    <% end %>
+                  <% end %>
+                <div class="catalogue-content-card-categories">
+                  <% content.categories.order(title: :asc).each do |category| %>
+                    <p><%= category.title %></p>
+                  <% end %>
                 </div>
               </div>
               <div class="type-icon">
@@ -54,19 +63,67 @@
               </div>
             </div>
           </div>
-        </li>
-        <% end %>
-      </ul>
+          <% end %>
+        </div>
+        <div class="workshop-cards-selected container" id='selected'>
+          <div class="ghost-card">
+            <p>Drag & drop cards you wish to book.</p>
+          </div>
+        </div>
+      </div>
+      <div class="book-next-page">
+        <div class="book-next">
+          <i class="fas fa-arrow-right" style='color:#F26419'></i>
+          <p>Select Participants</p>
+        </div>
+      </div>
     </div>
-    <div class="workshop-cards-selected container">
+    <div class="book-page-2 hidden">
+      <div class="booking-title">
+        <h2>Select Participants to Book</h2>
+      </div>
+      <div class="users-book-grid">
+        <div class="users-book container">
+          <% @users.each do |user| %>
+            <div class='user-index-card-book draggable' draggable='true'>
+              <div class="user-index-info-book">
+                <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
+                <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+              </div>
+              <div class="user-index-info-book">
+                <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
+              </div>
+              <div class="user-index-info-book">
+                <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+              </div>
+              <div class="user-index-info-book">
+                <p data-toggle="tooltip" title="<%= user.job_title %>"><%= user.job_title %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="users-book-selected container">
+
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-
 <script>
+
+  var participants = document.querySelector('.book-next')
+  var pageone = document.querySelector('.book-page-1')
+  var pagetwo = document.querySelector('.book-page-2')
+
+  participants.addEventListener("click", event => {
+    pageone.classList.add('hidden')
+    pagetwo.classList.remove('hidden')
+  });
+
   const draggables = document.querySelectorAll('.draggable')
-const containers = document.querySelectorAll('.container')
+  const containers = document.querySelectorAll('.container')
+
 
 draggables.forEach(draggable => {
   draggable.addEventListener('dragstart', () => {
@@ -104,5 +161,17 @@ function getDragAfterElement(container, y) {
     }
   }, { offset: Number.NEGATIVE_INFINITY }).element
 }
+
+var selected = document.getElementById('selected')
+var ghostcard = document.querySelector('.ghost-card')
+
+function removeGhost() {
+  if (selected.querySelector('.draggable') == null) {
+    ghostcard.classList.remove('hidden')
+  } else {
+    ghostcard.classList.add('hidden')
+  }
+}
+
 </script>
 

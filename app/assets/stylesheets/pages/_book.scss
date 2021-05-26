@@ -1,21 +1,23 @@
 .book-container {
-  padding: 50px;
+  padding: 30px;
 }
 
 .workshop-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
 }
 
 .workshop-cards-selected {
   padding: 20px;
-  border-left: 1px solid grey;
-  height: 900px;
+  border-left: 1px solid #C4C4C4;
+  min-height: 700px;
+  padding: 0px 20px 20px 20px;
+
 }
 
 .workshop-cards-book {
   padding: 20px;
-  height: 900px;
+  min-height: 700px;
+  padding: 0px 20px 20px 20px;
 }
 
 
@@ -33,6 +35,7 @@
   }
 }
 
+
 .card-interest {
   cursor: all-scroll;
 }
@@ -42,10 +45,16 @@
   opacity: .8;
 }
 
+// CARDS //
+
 .card-interest-left {
   display: flex;
   width: 100%;
   height: 15rem;
+  margin-bottom: 20px;
+  cursor: move;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
 }
 
 
@@ -128,10 +137,195 @@
     }
 
   }
-  // @include from-medium-high {
-  //   width: 100%;
-  //   p {
-  //     font-size: 1.6rem !important;
-  //   }
-  // }
+}
+
+
+.ghost-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 550.5px;
+  height: 150px;
+  border: 2px dashed #C4C4C4;
+  p {
+    color: #C4C4C4
+  }
+}
+
+
+// FILTER //
+
+.index-controls-filter-bar-book {
+  min-height: 4rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-right: 2rem;
+  flex-wrap: wrap;
+  padding: 20px;
+
+  .index-controls-filter-bar-block-book {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: white;
+    height: 4rem;
+    min-width: 38.5rem;
+    padding: 0 2rem;
+    margin-left: 0rem;
+    border-radius: 5px;
+    margin-bottom: 10px;
+
+    i {
+      margin-right: 1rem;
+    }
+
+    h6 {
+      font-weight: 600;
+    }
+
+    .index-controls-filter-bar-block-filter {
+      min-height: 6.4rem;
+    }
+
+    input {
+      border: none !important;
+      box-shadow: none !important;
+      padding: .6rem !important;
+
+      &:focus {
+        background-color: white;
+      }
+    }
+
+    .filtered_themes {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      div {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        background: #F8D9C8;
+        padding: .5rem;
+        margin-right: 1rem;
+
+        p {
+          margin-right: 1rem;
+        }
+
+        i {
+          margin: 0;
+        }
+      }
+    }
+    @include from-medium {
+      margin-bottom: 0px;
+    }
+  }
+  @include from-medium {
+
+  }
+}
+
+// Next Page controls //
+.book-next-page {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  &:hover{
+    i {
+      opacity: .8;
+    }
+  }
+}
+.book-next {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  p {
+    font-size: 12px;
+  }
+}
+
+
+// PARTICIPANTS PAGE //
+
+.users-book-grid {
+  display: flex;
+}
+
+.users-book-selected {
+  padding: 20px;
+  border-left: 1px solid #C4C4C4;
+  min-height: 700px;
+  padding: 0px 20px 20px 20px;
+
+}
+
+.users-book {
+  padding: 20px;
+  min-height: 700px;
+  padding: 0px 20px 20px 20px;
+}
+
+
+//---user cards---//
+
+
+
+.user-index-infos {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.user-index-info-book {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 3rem;
+  height: 2.4rem;
+
+  &:first-of-type {
+    min-width: 7rem;
+  }
+
+  p {
+    font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  @include from-medium {
+    p {
+      font-size: 16px;
+    }
+  }
+}
+
+.user-index-card-book {
+  background-color: white;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  height: 15rem;
+  display: flex;
+  align-items: center;
+  padding: 0 3rem;
+  img {
+    display:none;
+  }
+  &:hover {
+    opacity: 65%;
+  }
+  @include from-medium {
+    img {
+      display: inherit;
+    }
+  }
 }
