@@ -3,24 +3,40 @@
 }
 
 #content-show-container-left {
+  display: none;
+  padding: 25px;
   width: 20rem;
   border-right: 1px solid black;
   min-height: calc(100vh - 50px);
   position: fixed;
   top: 50px;
   left: 0;
-  display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+  a {
+    margin: 1rem 0px;
+    &:hover {
+      color: #888888;
+    }
+  }
+  @include from-medium-high {
+    display: flex;
+  }
 }
 
 #content-show-container-right {
-  margin-left: 20rem;
-  padding: 5rem 15rem;
+  margin-left: 0rem;
+  padding: 1rem;
+  margin-bottom: 100px;
 
   #content_description {
     min-height: 300px;
+  }
+  @include from-medium-high {
+    margin-left: 20rem;
+    padding: 5rem 20rem;
+    margin-bottom: 0px;
   }
 }
 
@@ -28,13 +44,13 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background: white;
+  // background: white;
   border-radius: 4px;
-  height: 5rem;
-  padding: 1rem 2rem;
+  // height: 5rem;
+  // padding: 1rem 2rem;
   margin-bottom: 2rem;
   flex: 1;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   overflow: hidden;
 
   &:nth-of-type(2) {
@@ -44,6 +60,7 @@
   p {
     flex-grow: 1;
     margin: 0;
+    padding: 4.7px 0px;
   }
 
   .content-show-input {
@@ -92,6 +109,10 @@
   }
 }
 
+.content-show-attributes {
+  margin-bottom: 20px;
+}
+
 .content-show-infos-duration, .content-show-infos-themes {
 
   p {
@@ -123,27 +144,38 @@
   align-items: flex-start;
   min-height: 5rem;
   height: auto;
+  font-size:1.6rem;
 }
 
 .content-show-mods-controls {
   display: flex;
+  overflow: hidden;
   justify-content: space-between;
   align-items: center;
   background:#E5E5E5;
-  width: 100%;
-  border-radius: 4px;
+  width: 0;
+  border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: width .25s linear;
+
 
   .content-show-mods-controls-block {
-    width: 25%;
+    width: 0;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem 0;
+    padding: 1rem 0;
     position: relative;
+    transition: width .25s linear;
 
     i {
       margin-right: 1rem;
+    }
+
+    &:hover {
+      background-color: #c4c4c4 !important;
+      border-radius: 20px !important;
     }
 
     .hidden-mod-form {
@@ -158,6 +190,7 @@
 
       .trix-content {
         min-height: 30rem;
+        font-size: 1.6rem;
       }
 
       form {
@@ -175,6 +208,7 @@
 
 .trix-content {
   min-height: 30rem;
+  font-size: 1.6rem;
 
   div {
     font-size: 1.6rem;
@@ -185,6 +219,7 @@
   background: white;
   padding: 2rem;
   margin-top: 2rem;
+  font-size: 1.4rem;
 }
 
 .content-show-mods-card-video {
@@ -208,3 +243,109 @@
   margin-top: 2rem;
   background: white;
 }
+
+#myRange {
+  padding: 0 !important;
+}
+
+.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
+  color: black !important;
+}
+
+.duration-content-type {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    @include from-medium {
+      flex-direction: row;
+      align-items: center;
+    }
+}
+
+
+// SLIDER //
+.slidecontainer {
+  width: 80%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+
+// ASYNC RADIO BUTTONS //
+
+
+.content-type-radio {
+  .form-check {
+    display: flex;
+    align-items: center;
+    margin: 0px 0px 5px 5px;
+    label {
+      margin-left: 5px;
+    }
+  }
+}
+
+.content-title {
+  font-size: 20px !important;
+}
+
+.categories-form {
+  i {
+    color: #F26419;
+  }
+}
+
+.content-show-mods-control-btn {
+  cursor: pointer;
+  height: 50px;
+  display:flex;
+  align-items: center;
+  i {
+    margin-right: 10px;
+  }
+  &:hover {
+    i {
+      opacity: 80%;
+    }
+  }
+}
+
+
+.icon-transform {
+  transition: transform .25s;
+}
+
