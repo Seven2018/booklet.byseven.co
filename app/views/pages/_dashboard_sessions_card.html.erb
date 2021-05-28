@@ -37,38 +37,23 @@
 </div>
 <% if content.content_type == 'Synchronous' %>
   <div class="catalogue-content-card-right-syn">
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-      <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
-      <div class="content-dropdown hidden">
-        <%= link_to 'Edit', content_path(content) %>
-        <%= link_to 'Delete', content_path(content, catalogue: 'true', contents: @contents.map(&:id).join(',')), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
-        <%= link_to 'Duplicate', duplicate_content_path(content, contents: @contents.map(&:id).join(',')), remote: true %>
-      </div>
-    <% end %>
+    <div class="sessions-date">
+      <b><p>Begins (date)</p></b>
+      <p>1/4 sessions</p>
+    </div>
     <div class="catalogue-content-card-right-interest">
-      <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
-      <% if interest.present? %>
-        <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
-          <i class="fas fa-heart"></i>
-        <% end %>
-      <% else %>
-        <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
-          <i class="far fa-heart"></i>
-        <% end %>
-      <% end %>
-      <p><%= content.interested.count %> Interested</p>
+      <p><%= content.interested.count %> Participants</p>
     </div>
   </div>
 <% elsif content.content_type == 'Asynchronous' %>
-  <div class="catalogue-content-card-right-asyn">
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-      <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
-      <div class="content-dropdown hidden">
-        <%= link_to 'Edit', content_path(content) %>
-        <%= link_to 'Delete', content_path(content, catalogue: 'true', contents: @contents.map(&:id).join(',')), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
-        <%= link_to 'Duplicate', duplicate_content_path(content, contents: @contents.map(&:id).join(',')), remote: true %>
+    <div class="catalogue-content-card-right-syn">
+      <div class="sessions-date">
+        <b><p>Available (date)</p></b>
       </div>
-    <% end %>
+      <div class="catalogue-content-card-right-interest">
+        <p><%= content.interested.count %> Participants</p>
+      </div>
+    </div>
     <div class="catalogue-content-card-right-interest">
       <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
       <% if interest.present? %>
@@ -80,8 +65,7 @@
           <i class="far fa-heart"></i>
         <% end %>
       <% end %>
-      <p><%= content.interested.count %> Interested</p>
+      <p><%= content.interested.count %> Participants</p>
     </div>
   </div>
 <% end %>
-

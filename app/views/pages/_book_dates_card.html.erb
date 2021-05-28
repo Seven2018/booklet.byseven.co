@@ -11,11 +11,21 @@
     <% else %>
       <p><%= content.description.html_safe.first(200) %></p>
     <% end %>
-  <% end %>
-  <div class="book-selected-card-categories">
-    <% content.categories.order(title: :asc).each do |category| %>
-      <p><%= category.title %></p>
+    <p><%= content.duration %> Minutes</p>
+    <div class="card-content-description">
+    <% if content.description.present? %>
+      <% if content.description.html_safe.length >= (200) %>
+        <p><%= content.description.html_safe.first(200) + '...' %></p>
+      <% else %>
+        <p><%= content.description.html_safe.first(200) %></p>
+      <% end %>
     <% end %>
+    </div>
+    <div class="book-selected-card-categories">
+      <% content.categories.order(title: :asc).each do |category| %>
+        <p><%= category.title %></p>
+      <% end %>
+    </div>
   </div>
 </div>
 <div class="book-selected-card-dates">
