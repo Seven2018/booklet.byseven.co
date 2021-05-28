@@ -106,7 +106,7 @@
   }
 
   function hideClearFilterButton() {
-    form = document.querySelector('.filter');
+    form = document.querySelector('.filter_user');
     form.querySelectorAll('.organisation-filter-block').forEach((element) => {
       checked = false;
       element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
@@ -140,7 +140,7 @@
   function autoSubmit(element) {
     element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
     hideClearFilterButton();
-    document.querySelector('.filter').querySelector('.hidden-submit').click();
+    document.querySelector('.filter_user').querySelector('.hidden-submit').click();
   }
 
   function clearFilter(element) {
@@ -151,7 +151,7 @@
       }
     })
     hideClearFilterButton();
-    document.querySelector('.filter').querySelector('.hidden-submit').click();
+    document.querySelector('.filter_user').querySelector('.hidden-submit').click();
   }
 
   function clearFilterManager(element) {
@@ -165,7 +165,7 @@
   }
 
   function resetFilter() {
-    form = document.querySelector('.filter');
+    form = document.querySelector('.filter_user');
     form.querySelectorAll('.check_boxes').forEach((element) => {
       if (element.checked == true) {
         element.checked = false;
@@ -176,9 +176,9 @@
   }
 
   function removeJob(element) {
-    form = document.querySelector('.filter');
+    form = document.querySelector('.filter_user');
     job = element.parentNode.getAttribute("name");
-    form.querySelector('.filter_job').querySelectorAll('input.check_boxes').forEach((checkbox) => {
+    form.querySelector('.filter_user_job').querySelectorAll('input.check_boxes').forEach((checkbox) => {
       if (checkbox.value == job) {
         checkbox.checked = false;
         form.querySelector('.hidden-submit').click();
@@ -187,9 +187,9 @@
   }
 
   function removeTag(element) {
-    form = document.querySelector('.filter');
+    form = document.querySelector('.filter_user');
     job = element.parentNode.getAttribute("name");
-    form.querySelectorAll('.filter_tag').forEach((category) => {
+    form.querySelectorAll('.filter_user_tag').forEach((category) => {
       category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
         if (checkbox.value == job) {
           checkbox.checked = false;
