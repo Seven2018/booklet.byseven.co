@@ -1,0 +1,45 @@
+<div class="book-selected-card-infos">
+  <% if session.content.title.length > 35 %>
+    <h3><b><%= session.content.title.first(35)+'...' %></b></h3>
+  <% else %>
+    <h3><b><%= session.content.title %></b></h3>
+  <% end %>
+  <p><%= session.content.duration %> Minutes</p>
+  <% if session.content.description.present? %>
+    <% if session.content.description.html_safe.length >= (200) %>
+      <p><%= session.content.description.html_safe.first(200) + '...' %></p>
+    <% else %>
+      <p><%= session.content.description.html_safe.first(200) %></p>
+    <% end %>
+  <% end %>
+  <div class="book-selected-card-categories">
+    <% session.content.categories.order(title: :asc).each do |category| %>
+      <p><%= category.title %></p>
+    <% end %>
+  </div>
+</div>
+<div class="book-selected-card-dates" onclick='bookDate(this)'>
+  <p>Date</p>
+  <div>
+    <%= simple_form_for :session, url: book_sessions_update_path, method: :get, remote: true do |f| %>
+      <%= f.input :date, label: false, input_html: {class: 'datepicker'} %>
+      <div class="flex-row-between-centered">
+        <div style='width:10rem;'>
+          <%= f.input :start_time, label: 'Start time', as: :time, minute_step: 15, input_html: { class: "timepicker new_start_time", style: 'width:5rem;'}, default: Time.parse('9:00') %>
+        </div>
+        <div style='width:10rem;'>
+          <%= f.input :end_time, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker new_end_time', style: 'width:5rem;'}, default: Time.parse('17:00') %>
+        </div>
+      </div>
+      <%= f.hidden_field :content_id, value: session.content.id %>
+      <%= f.hidden_field :session_id, value: session.id %>
+      <%= f.hidden_field :selected, value: selected_contents.map(&:id).join(',') %>
+      <%= f.hidden_field :booked_sessions, value: booked_sessions.map(&:id).join(',') %>
+      <div class="flex-row-between-centered">
+        <%= f.submit '', class: 'hidden-submit hidden' %>
+        <!-- <p class='add_date' onclick="addDate(this)">Add Date</p> -->
+      </div>
+    <% end %>
+  </div>
+</div>
+

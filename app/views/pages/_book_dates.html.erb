@@ -1,3 +1,11 @@
+<%# booked_sessions = [] unless booked_sessions.present? %>
+<%# booked_sessions.each do |session| %>
+  <!-- <div class="book-selected-card" id="session-<%= session.id %>">
+    <%# render 'pages/book_dates_card_booked', session: session, selected_contents: selected_contents, booked_sessions: booked_sessions %>
+  </div> -->
+<%# end %>
 <% selected_contents.each do |content| %>
-  <%= render 'pages/book_dates_card', content: content %>
+  <div class="book-selected-card" id="book_content-<%= content.id %>">
+    <%= render 'pages/book_dates_card', content: content, selected_contents: selected_contents, booked_sessions: booked_sessions %>
+  </div>
 <% end %>
