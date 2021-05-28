@@ -14,9 +14,6 @@
   img {
     display:none;
   }
-  &:hover {
-    opacity: 65%;
-  }
   @include from-medium {
     img {
       display: inherit;
@@ -70,6 +67,9 @@
 .user-index-card {
   background-color: white;
   position: relative;
+    &:hover {
+    background-color: #F8F8F8;
+  }
 }
 
 .user-index-infos {
@@ -96,6 +96,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
 
   @include from-medium {
     p {
@@ -354,6 +355,16 @@
   z-index: 100;
 }
 
+.organisation-users {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  flex-grow: 1;
+  width: auto;
+  @include from-medium-high {
+    width: 100%;
+  }
+}
+
+
 /* // A EFFACER
 .organization-buttons {
     display: flex;
@@ -362,14 +373,6 @@
 
 
 
-.organisation-users {
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  flex-grow: 1;
-  width: auto;
-  // @include from-medium-high {
-  //   width: 100%;
-  // }
-}
 
 .filter-form-input {
    .form-group {

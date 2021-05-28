@@ -85,6 +85,7 @@
 }
 
 .catalogue-content-card-left-book {
+  font-size: 1.4rem;
   height: 100%;
   background: white;
   padding: 1rem;
@@ -310,19 +311,20 @@
   }
 }
 
+.card-content-description {
+  height: 6rem;
+}
+
 .user-index-card-book {
   background-color: white;
   margin-bottom: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  height: 15rem;
+  height: 10rem;
   display: flex;
   align-items: center;
   padding: 0 3rem;
   img {
     display:none;
-  }
-  &:hover {
-    opacity: 65%;
   }
   @include from-medium {
     img {

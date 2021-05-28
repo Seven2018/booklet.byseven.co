@@ -58,7 +58,7 @@
             <div class="user-work-info">
                 <p> <i class="fas fa-briefcase"></i> <%= @user.company.name %></p>
               <div class="user-job">
-                <p class="data" id='job' onclick='openForm(this)'> <%=  @user.job_title if @user.job_title.present? %></p>
+                <p class="data" id='job' onclick='openForm(this)'> <%=  @user.job_title if @user.job_title.present? %>Job Title</p>
                 <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'job'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
                   <%= f.input :job_title, label: false, input_html: {value: @user.job_title} %>
                   <%= button_tag :submit, class: 'hidden-submit' do %>
@@ -148,9 +148,9 @@
                       </div>
                     </div>
                     </div>
-                <% end %>
                 </div>
               </div>
+            <% end %>
           </div>
         </div>
       </div>
@@ -159,43 +159,87 @@
           <p>Upcoming Trainings</p>
           <div class="trainings-row">
             <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |content| %>
-              <%= link_to training_content_path(content) do %>
+              <% link_to training_content_path(content) do %>
                 <div class="training-card-main">
-                  <div class="upcoming-trainings-card">
-                    <div class="user-training-title">
+              <% if content.content_type == 'Asynchronous' %>
+                  <div class="user-trainings-card-asyn">
+                    <div class="user-training-top">
                       <% if content.title.length > 60 %>
-                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
+                        <h3><b>This is the title<% content.title.first(60)+'...' %></b></h3>
                       <% else %>
-                        <h3><b><%= content.title %></b></h3>
+                     <h3><b><% content.title %></b></h3>
                       <% end %>
+                    <div class="user-training-icon"><i class="fas fa-laptop"></i></div>
                     </div>
-                    <p><i class="fas fa-calendar-alt"></i> <%= content.date.strftime('%d/%m/%Y') %></p>
-                    <div class='content-time'><p><i class="fas fa-clock"></i> <%= content.duration %> min</p></div>
+                    <div class="user-training-bottom">
+                      <p><i class="fas fa-calendar-alt"></i> 12/24/2021 <% content.date.strftime('%d/%m/%Y') %></p>
+                      <div class='content-time'><p><i class="fas fa-clock"></i>60 <% content.duration %> min</p></div>
+                    </div>
                   </div>
                 </div>
+              <% elsif %>
+               <div class="training-card-main">
+              <% content.content_type == 'Synchronous' %>
+                  <div class="user-trainings-card-syn">
+                    <div class="user-training-top">
+                      <% if content.title.length > 60 %>
+                        <h3><b>This is the title<% content.title.first(60)+'...' %></b></h3>
+                      <% else %>
+                    <h3><b><% content.title %></b></h3>
+                      <% end %>
+                      <div class="user-training-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    </div>
+                    <div class="user-training-bottom">
+                      <p><i class="fas fa-calendar-alt"></i> 12/24/2021 <% content.date.strftime('%d/%m/%Y') %></p>
+                      <div class='content-time'><p><i class="fas fa-clock"></i>60 <% content.duration %> min</p></div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
               <% end %>
             <% end %>
           </div>
           <p>Completed Trainings</p>
           <div class="trainings-row">
-            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |content| %>
-              <%= link_to training_content_path(content) do %>
-                <div class="training-card-main">
-                  <div class="completed-trainings-card">
-                    <div class="user-training-title">
+            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |content| %>
+              <% link_to training_content_path(content) do %>
+                <div class="training-card-main-completed">
+              <% if content.content_type == 'Asynchronous' %>
+                  <div class="user-trainings-card-asyn">
+                    <div class="user-training-top">
                       <% if content.title.length > 60 %>
-                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
+                        <h3><b>This is the title<% content.title.first(60)+'...' %></b></h3>
                       <% else %>
-                        <h3><b><%= content.title %></b></h3>
+                     <h3><b><% content.title %></b></h3>
                       <% end %>
+                      <div class="user-training-icon"><i class="fas fa-laptop"></i></div>
                     </div>
                     <div class="user-training-bottom">
-                      <p><i class="fas fa-calendar-alt"></i> <%= content.date.strftime('%d/%m/%Y') %></p>
-                    <div class='content-time'><p><i class="fas fa-clock"></i> <%= content.duration %> min</p></div>
+                      <p><i class="fas fa-calendar-alt"></i><% content.date.strftime('%d/%m/%Y') %></p>
+                      <div class='content-time'><p><i class="fas fa-clock"></i><%content.duration %> min</p></div>
                     </div>
                   </div>
                 </div>
-              <% end %>
+              <% elsif %>
+                <div class="training-card-main-completed">
+                  <% content.content_type == 'Synchronous' %>
+                    <div class="user-trainings-card-syn">
+                      <div class="user-training-top">
+                        <% if content.title.length > 60 %>
+                          <h3><b>This is the title<% content.title.first(60)+'...' %></b></h3>
+                        <% else %>
+                        <h3><b><% content.title %></b></h3>
+                        <% end %>
+                        <div class="user-training-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                      </div>
+                      <div class="user-training-bottom">
+                        <p><i class="fas fa-calendar-alt"></i> <% content.date.strftime('%d/%m/%Y') %></p>
+                        <div class='content-time'><p><i class="fas fa-clock"></i> <% content.duration %> min</p></div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+                <% end %>
             <% end %>
           </div>
         </div>
