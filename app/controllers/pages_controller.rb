@@ -127,6 +127,7 @@ class PagesController < ApplicationController
     end
     @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
     respond_to do |format|
+      format.html
       format.js
     end
   end
