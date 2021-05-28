@@ -122,10 +122,16 @@ class PagesController < ApplicationController
         @contents = Content.where(company_id: current_user.company_id).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc)
       end
       @filter = 'content'
+      @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
+    elsif params[:filter_user].present?
+      @filter = 'user'
+      @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+      @selected_contents = []
+    elsif params[:confirm].present?
+      @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
     else
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
     end
-    @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
     respond_to do |format|
       format.html
       format.js

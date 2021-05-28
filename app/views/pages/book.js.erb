@@ -1,10 +1,11 @@
 if ("<%= @filter %>" == 'content') {
   document.querySelector('.workshop-cards-book').innerHTML = '<%= j render("pages/book_content_index", contents: @contents) %>';
-} else {
+} else if ("<%= @filter %>" == 'user') {
   document.querySelector('.users-book').innerHTML = '<%= j render("pages/book_user_index", users: @users) %>';
 }
-document.querySelector('.date-book').innerHTML = '<%= j render("pages/book_dates", selected_contents: @selected_contents, booked_session: @booked_sessions) %>';
-flatpickr(".datepicker", {
-  disableMobile: true,
-  dateFormat: "d/m/Y",
-})
+document.querySelector('.date-book').innerHTML = '<%= j render("pages/book_dates", selected_contents: @selected_contents) %>';
+  flatpickr(".datepicker", {
+    disableMobile: true,
+    dateFormat: "d/m/Y",
+  })
+

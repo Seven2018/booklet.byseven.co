@@ -18,7 +18,7 @@
     <% end %>
   </div>
 </div>
-<div class="book-selected-card-dates" onclick='bookDate(this)'>
+<div class="book-selected-card-dates">
   <p>Date</p>
   <div>
     <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
@@ -32,8 +32,7 @@
         </div>
       </div>
       <%= f.hidden_field :content_id, value: content.id %>
-      <%= f.hidden_field :selected, value: selected_contents.map(&:id).join(',') %>
-      <%# f.hidden_field :booked_sessions, value: booked_sessions.map(&:id).join(',') %>
+      <%= f.hidden_field :selected_users, value: selected_users.map{|x| x.id}.join(',') %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
   </div>

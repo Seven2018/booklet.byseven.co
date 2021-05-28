@@ -76,8 +76,12 @@
       </div>
     </div>
     <div class="date-book">
-      <%= render 'pages/book_dates', selected_contents: [], booked_sessions: [] %>
+      <% selected_users = [] %>
+      <% selected_contents = [] %>
+      <%= render 'pages/book_dates', selected_contents: selected_contents %>
     </div>
+    <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
+    <button onclick='bookDates()'>Confirm</button>
   </div>
 </div>
 
@@ -99,6 +103,7 @@
       pagetwo.classList.add('hidden')
       pagethree.classList.remove('hidden')
       document.querySelector('.filter_content').querySelector('.hidden-submit').click()
+      //document.querySelector('.filter_user').querySelector('.hidden-submit').click()
     }
     page += 1
   }
@@ -212,7 +217,7 @@ function autoSubmit(element) {
   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
 }
 
-rotated = 0;
+rotated = 0
 
 function toggleTagCategoryDropdown(element) {
   element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
@@ -310,19 +315,25 @@ function selectUser(element) {
   });
 }*/
 
-function bookDate(element) {
+function bookDates() {
   if (formGuardian == false) {
     formGuardian = true
-
-
+    selected_users = document.querySelector('.users-book-selected').querySelectorAll('.user-index-card-book')
+    storage_var = []
+    selected_users.forEach((user) => {
+      storage_var.push(user.id.split('-')[1])
+    })
+    users = document.querySelector('.date-book').querySelectorAll('#session_selected_users')
+    users.forEach((user) => {
+      user.value = storage_var.join(',')
+    })
+    submit_buttons = document.querySelector('.date-book').querySelectorAll('.hidden-submit')
+    redirect_button = document.querySelector('.confirm-button')
+    submit_buttons.forEach((element) => {
+      setTimeout(function(){element.click()}, 10)
+    })
+    redirect_button.click()
     setTimeout(function(){formGuardian = false}, 10)
-
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, element) && outsideClick(e, document.querySelector('.datepicker')) && formGuardian == false) {
-        element.querySelector('.hidden-submit').click();
-        this.removeEventListener('click', arguments.callee, false);
-      }
-    });
   }
 }
 
