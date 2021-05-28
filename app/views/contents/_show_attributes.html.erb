@@ -15,20 +15,24 @@
       </div>
     </div>
     <div class="content-type-radio">
-      <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'}, class: 'content-type-radio' %>
+      <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], :checked => ['Synchronous', 'Synchronous'], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'}, class: 'content-type-radio' %>
     </div>
   </div>
   <div class="content-show-infos content-show-infos-themes">
     <% content.categories.order(title: :asc).each do |category| %>
       <p class="category-tag"><%= category.title %></p>
     <% end %>
-    <a data-toggle='modal' data-target='#addTheme' class='btn-text'><i class="fas fa-plus"></i> Themes </a><br>
+    <a data-toggle='modal' data-target='#addTheme' class='btn-text-white'><i class="fas fa-plus"></i> Themes </a><br>
   </div>
   <div>
     <div class="content-show-infos content-show-infos-trix" onclick="openInputTrix(this);">
       <p>Objectives :
         <br>
-        <p><%= content.description.html_safe %></p>
+        <% if content.description.html_safe.present? %>
+          <p><%= content.description.html_safe %></p>
+        <% else %>
+          <p style='color:#888888;'>Write the objective or purpose of the workshop here.</p>
+        <% end %>
       </p>
     </div>
     <div class="content-show-input-trix hidden">

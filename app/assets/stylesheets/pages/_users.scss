@@ -137,7 +137,7 @@ background: #F8D9C8;
 
 .hidden-form-user {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
 
   div {
@@ -415,115 +415,75 @@ background: #F8D9C8;
 }
 
 
-.upcoming-trainings-card {
-  text-align: center;
+.training-card-main-completed {
+  opacity: 65%;
+}
+
+
+.user-trainings-card-syn {
   h3 {
     text-decoration: none;
   }
- color: #8FA078;
- background-color: rgba(143, 160, 120, 0.20);
+ background-color: white;
  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
- padding: 20px;
  border-radius: 5px;
  width: 25rem;
  height: 17rem;
  margin: 10px;
- &:hover {
-   background-color: rgba(143, 160, 120, 0.30);
- }
+  .user-training-top {
+    text-align: center;
+    position: relative;
+    height: 60%;
+    padding: 20px;
+  }
+  .user-training-bottom {
+    height: 40%;
+    background: #F8D9C8;
+    padding: 10px 20px;
+  }
+    i {
+      color: #F26419;
+    }
+  .content-time {
+    margin-right: 27px;
+  }
 }
 
-.completed-trainings-card {
-  text-align: center;
-   h3 {
+.user-trainings-card-asyn {
+  h3 {
     text-decoration: none;
   }
-  color: #264653;
-  background-color: rgba(38, 70, 83, 0.40);
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 20px;
-  border-radius: 5px;
-  width: 25rem;
-  height: 17rem;
-  margin: 10px;
-   &:hover {
-  background-color: rgba(38, 70, 83, 0.50);
- }
+   background-color: white;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   border-radius: 5px;
+   width: 25rem;
+   height: 17rem;
+   margin: 10px;
+    .user-training-top {
+      text-align: center;
+      position: relative;
+      height: 60%;
+      padding: 20px;
+    }
+
+  .user-training-bottom {
+    height: 40%;
+    background-color: #EEEEEE;
+    padding: 10px 20px;
+  }
+    i {
+      color: black;
+    }
+  .content-time {
+    margin-right: 27px;
+  }
 }
 
-// .user-top {
-//   display: flex;
-//   justify-content: center;
-//   flex-direction: column;
-//   align-items: center;
-//   @include from-medium-low {
-//     flex-direction: row;
-//   }
-// }
-
-// .user-name {
-//   display: flex;
-//   p {
-//     font-size: 20px;
-//     margin-right: 5px;
-//   }
-// }
-
-// .user-photo {
-//   margin-bottom: 20px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// }
-
-// .user-hire, .user-job, .user-birth {
-//   display: flex;
-//   flex-direction: row;
-//   padding-bottom: 20px;
-//   justify-content: space-between;
-//   height: 35px;
-//   p {
-//     margin-right: 5px;
-//   }
-//   form {
-//     display:flex;
-//   }
-// }
-
-
-// .user-access {
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   margin-top: 20px;
-//   height: 35px;
-//   p {
-//     margin-right: 5px;
-//   }
-// }
-
-// .user-top-info {
-//   border-bottom: 3px solid #F26419;
-// }
-
-// .user-training-title {
-//   h3 {
-//     margin-bottom: 15px;
-//     font-size: 18px;
-//     font-weight: 700px !important;
-//     height: 70px;
-//     border-bottom: 3px solid white;
-//   }
-// }
-
-// .content-time {
-//   margin-right: 39px;
-// }
-
-// .fa-save {
-//   margin: 0px;
-//   padding: 0px;
-// }
+.user-training-icon {
+  position: absolute;
+  bottom: 10px;
+  right: -4px;
+}
 
 
 
