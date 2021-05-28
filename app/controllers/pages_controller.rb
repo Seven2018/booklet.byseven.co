@@ -167,9 +167,17 @@ class PagesController < ApplicationController
             @users = (parameter.where(company_id: current_user.company_id, job_title: params[:filter_user][:job].reject(&:blank?)).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc))
           end
         elsif tags.empty?
-          @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          if params[:filter_user][:selected].present?
+            @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          else
+            @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
+          end
         else
-          @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          if params[:filter_user][:selected].present?
+            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          else
+            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).order(lastname: :asc)
+          end
           tags_hash.each do |key, value|
             @users = @users.select{|x| (x.tags & value).present?}.uniq
           end
@@ -186,7 +194,11 @@ class PagesController < ApplicationController
         end
       else
         if params[:filter_user].present?
-          @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          if params[:filter_user][:selected].present?
+            @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          else
+            @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
+          end
         else
           @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
         end
