@@ -115,6 +115,20 @@ class PagesController < ApplicationController
 
   def book
     index_function(User.all)
+    if params[:filter_content].present?
+      if params[:filter_content][:themes].split(',').uniq.present?
+        @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter_content][:themes].split(',')}).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc).uniq
+      else
+        @contents = Content.where(company_id: current_user.company_id).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc)
+      end
+      @filter = 'content'
+    else
+      @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    end
+    @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
@@ -122,15 +136,15 @@ class PagesController < ApplicationController
   def index_function(parameter)
     if ['Super Admin', 'HR'].include?(current_user.access_level)
       if params[:search].present?
-        if params[:filter][:themes].split(',').uniq.present?
+        if params[:filter_user][:themes].split(',').uniq.present?
           @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
         else
           @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
         end
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
-      elsif params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
-        # tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
-        tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?))
+      elsif params[:filter_user].present? && (params[:filter_user][:job] != [""] || params[:filter_user][:tag].reject{|x|x.empty?} != [])
+        # tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?)).map{|x| x.id}
+        tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?))
         tags_hash = {}
         tags.each do |tag|
           if tags_hash[tag.tag_category_id].present?
@@ -139,25 +153,23 @@ class PagesController < ApplicationController
             tags_hash[tag.tag_category_id] = [tag]
           end
         end
-        if params[:filter][:job] != [""] && params[:filter][:job].present?
+        if params[:filter_user][:job] != [""] && params[:filter_user][:job].present?
           if tags.present?
-            @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_title: params[:filter][:job].reject(&:blank?), user_tags: {tag_id: tags}).uniq)
+            @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_title: params[:filter_user][:job].reject(&:blank?), user_tags: {tag_id: tags}).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).uniq)
           else
-            @users = (parameter.where(company_id: current_user.company_id, job_title: params[:filter][:job].reject(&:blank?)))
+            @users = (parameter.where(company_id: current_user.company_id, job_title: params[:filter_user][:job].reject(&:blank?)).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc))
           end
         elsif tags.empty?
-          @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')
+          @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
         else
-          # @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: tags}).uniq).select{|x| x.tags.map(&:id) & tags == tags}
-          # @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: tags}).uniq)
-          @users = parameter.joins(:user_tags).where(company_id: current_user.company_id)
+          @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           tags_hash.each do |key, value|
             @users = @users.select{|x| (x.tags & value).present?}.uniq
           end
           @users = @users.uniq
         end
-        @filter_jobs = params[:filter][:job].reject{|c| c.empty?}
-        @filter_tags = params[:filter][:tag].reject{|c| c.empty?}
+        @filter_jobs = params[:filter_user][:job].reject{|c| c.empty?}
+        @filter_tags = params[:filter_user][:tag].reject{|c| c.empty?}
       elsif params[:order].present?
         if params[:order] == 'tag_category'
           params[:mode] == 'asc' ? @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :asc)) : @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :desc))
@@ -166,7 +178,11 @@ class PagesController < ApplicationController
           params[:mode] == 'asc' ? @users = User.where(id: params[:users].split(',')).order(params[:order]) : @users = User.where(id: params[:users].split(',')).order(params[:order]).reverse
         end
       else
-        @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
+        if params[:filter_user].present?
+          @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+        else
+          @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
+        end
       end
     end
   end

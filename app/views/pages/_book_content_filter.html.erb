@@ -5,8 +5,9 @@
   <%= f.text_field :search, placeholder: 'Themes', label: false, data: {behavior: 'autocomplete'} %>
 <% end %>
 <div class="hidden-form-ajax hidden">
-  <%= simple_form_for :filter, url: book_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
+  <%= simple_form_for :filter_content, url: book_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
     <%= f.hidden_field :themes %>
+    <%= f.hidden_field :selected %>
     <%= f.submit class: 'hidden-submit' %>
   <% end %>
 </div>

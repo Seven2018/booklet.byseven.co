@@ -5,150 +5,147 @@
     </div>
     <div class="index-controls-filter-bar-book">
       <div class="index-controls-filter-bar-block-book">
-        <%= render 'catalogue_filter' %>
-      </div>
-    </div>
-    <div class="workshop-grid">
-      <div class="workshop-cards-book container">
-        <% Content.where(company_id: current_user.company_id).each do |content| %>
-          <div class="card-interest-book draggable" draggable='true' ondragend="removeGhost();">
-            <div class="card-interest-left">
-            <div class="catalogue-content-card-left-book">
-              <div>
-                <% if content.title.length > 35 %>
-                  <h3><b><%= content.title.first(35)+'...' %></b></h3>
-                <% else %>
-                  <h3><b><%= content.title %></b></h3>
-                <% end %>
-                <p><%= content.duration %> Minutes</p>
-                  <% if content.description.present? %>
-                    <% if content.description.html_safe.length >= (200) %>
-                      <p><%= content.description.html_safe.first(200) + '...' %></p>
-                    <% else %>
-                      <p><%= content.description.html_safe.first(200) %></p>
-                    <% end %>
-                  <% end %>
-                <div class="catalogue-content-card-categories">
-                  <% content.categories.order(title: :asc).each do |category| %>
-                    <p><%= category.title %></p>
-                  <% end %>
-                </div>
-              </div>
-              <div class="type-icon">
-                <% if content.content_type == 'Synchronous' %>
-                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                <% else %>
-                  <i class="fas fa-laptop" style='color:black;'></i>
-                <% end %>
-              </div>
-            </div>
-            <% if content.content_type == 'Synchronous' %>
-            <div class="catalogue-content-card-right-syn-book">
-            <% else %>
-              <div class="catalogue-content-card-right-asyn-book">
-            <% end %>
-                <div class="catalogue-content-card-right-interest">
-                  <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
-                  <% if interest.present? %>
-                    <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
-                      <i class="fas fa-heart"></i>
-                    <% end %>
-                  <% else %>
-                    <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
-                      <i class="far fa-heart"></i>
-                    <% end %>
-                  <% end %>
-                  <p><%= content.interested.count %> Interested</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <% end %>
-        </div>
-        <div class="workshop-cards-selected container" id='selected'>
-          <div class="ghost-card">
-            <p>Drag & drop cards you wish to book.</p>
-          </div>
-        </div>
+        <%= render 'book_content_filter' %>
       </div>
       <div class="book-next-page">
-        <div class="book-next">
+        <div class="book-next" onclick="nextPage()">
           <i class="fas fa-arrow-right" style='color:#F26419'></i>
           <p>Select Participants</p>
         </div>
       </div>
     </div>
-    <div class="book-page-2 hidden">
-      <div class="booking-title">
-        <h2>Select Participants to Book</h2>
+    <div class="workshop-grid">
+      <div class="workshop-cards-book container">
+        <%= render 'pages/book_content_index', contents: @contents %>
       </div>
-      <div class="users-book-grid">
-        <div class="users-book container">
-          <% @users.each do |user| %>
-            <div class='user-index-card-book draggable' draggable='true'>
-              <div class="user-index-info-book">
-                <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
-                <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-              </div>
-              <div class="user-index-info-book">
-                <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
-              </div>
-              <div class="user-index-info-book">
-                <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
-              </div>
-              <div class="user-index-info-book">
-                <p data-toggle="tooltip" title="<%= user.job_title %>"><%= user.job_title %></p>
-              </div>
-            </div>
-          <% end %>
-        </div>
-        <div class="users-book-selected container">
-
+      <div class="workshop-cards-selected container" id='selected'>
+        <div class="ghost-card">
+          <p>Drag & drop cards you wish to book.</p>
         </div>
       </div>
     </div>
   </div>
+  <div class="book-page-2 hidden">
+    <div class="booking-title">
+      <h2>Select Participants to Book</h2>
+    </div>
+    <div class="index-controls-filter-bar-book">
+      <div class="btn-white" onclick='openFilter();'>
+        <i class="fas fa-filter"></i>
+        <p>Filter</p>
+      </div>
+      <div class="flex-row-between-centered">
+        <div class="book-next-page" onclick="previousPage()">
+          <div class="book-next">
+            <i class="fas fa-arrow-left" style='color:#F26419'></i>
+            <p>Select Workshops</p>
+          </div>
+        </div>
+        <div class="book-next-page" onclick="nextPage()">
+          <div class="book-next">
+            <i class="fas fa-arrow-right" style='color:#F26419'></i>
+            <p>Select Dates</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="organisation-filter-container">
+    <div class="organisation-filter-background" onclick='closeFilter();'></div>
+      <div class="organisation-filter-dropright">
+        <%= render 'pages/book_user_filter_dropright' %>
+      </div>
+    </div>
+    <div class="users-book-grid">
+      <div class="users-book container">
+        <%= render 'pages/book_user_index', users: @users %>
+      </div>
+      <div class="users-book-selected container">
+      </div>
+    </div>
+  </div>
+  <div class="book-page-3 hidden">
+    <div class="booking-title">
+      <h2>Select Dates</h2>
+    </div>
+    <div class="index-controls-filter-bar-book">
+      <div class="book-next-page" onclick="previousPage()">
+        <div class="book-next">
+          <i class="fas fa-arrow-left" style='color:#F26419'></i>
+          <p>Select Users</p>
+        </div>
+      </div>
+    </div>
+    <div class="date-book">
+      <%= render 'pages/book_dates', selected_contents: [] %>
+    </div>
+  </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
 <script>
+  page = 1;
 
-  var participants = document.querySelector('.book-next')
-  var pageone = document.querySelector('.book-page-1')
-  var pagetwo = document.querySelector('.book-page-2')
+  pageone = document.querySelector('.book-page-1')
+  pagetwo = document.querySelector('.book-page-2')
+  pagethree = document.querySelector('.book-page-3')
+  containers = document.querySelectorAll('.container')
 
-  participants.addEventListener("click", event => {
-    pageone.classList.add('hidden')
-    pagetwo.classList.remove('hidden')
-  });
-
-  const draggables = document.querySelectorAll('.draggable')
-  const containers = document.querySelectorAll('.container')
-
-
-draggables.forEach(draggable => {
-  draggable.addEventListener('dragstart', () => {
-    draggable.classList.add('dragging')
-  })
-
-  draggable.addEventListener('dragend', () => {
-    draggable.classList.remove('dragging')
-  })
-})
-
-containers.forEach(container => {
-  container.addEventListener('dragover', e => {
-    e.preventDefault()
-    const afterElement = getDragAfterElement(container, e.clientY)
-    const draggable = document.querySelector('.dragging')
-    if (afterElement == null) {
-      container.appendChild(draggable)
+  function nextPage() {
+    if (page == 1) {
+      pageone.classList.add('hidden')
+      pagetwo.classList.remove('hidden')
     } else {
-      container.insertBefore(draggable, afterElement)
+      pagetwo.classList.add('hidden')
+      pagethree.classList.remove('hidden')
+      document.querySelector('.filter_content').querySelector('.hidden-submit').click()
     }
-  })
-})
+    page += 1
+  }
 
-function getDragAfterElement(container, y) {
+  function previousPage() {
+    if (page == 3) {
+      pagethree.classList.add('hidden')
+      pagetwo.classList.remove('hidden')
+    } else {
+      pagetwo.classList.add('hidden')
+      pageone.classList.remove('hidden')
+    }
+    page -= 1
+  }
+
+  function dragRaceStart(element) {
+    element.classList.add('dragging')
+  }
+
+  function dragRaceEnd(element) {
+    element.classList.remove('dragging')
+    selected_cards = document.querySelector('.workshop-cards-selected').querySelectorAll('.card-interest-book')
+    storage_var = []
+    selected_cards.forEach((card) => {
+      storage_var.push(card.id.split('-')[1])
+    })
+    console.log(storage_var)
+    selected_storage = document.getElementById('filter_content_selected');
+    selected_storage.value = storage_var.join(',')
+  }
+
+  containers.forEach(container => {
+    container.addEventListener('dragover', e => {
+      e.preventDefault()
+      const afterElement = getDragAfterElement(container, e.clientY)
+      const draggable = document.querySelector('.dragging')
+      if (afterElement == null) {
+        container.appendChild(draggable)
+        return false
+      } else {
+        container.insertBefore(draggable, afterElement)
+        return false
+      }
+    })
+  })
+
+function getDragAfterElement(container, y, element) {
   const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')]
 
   return draggableElements.reduce((closest, child) => {
@@ -162,6 +159,86 @@ function getDragAfterElement(container, y) {
   }, { offset: Number.NEGATIVE_INFINITY }).element
 }
 
+function openFilter() {
+  filter_container = document.querySelector('.organisation-filter-container');
+  filter_dropright = document.querySelector('.organisation-filter-dropright');
+  filter_container.style.display = 'flex';
+  setTimeout(function(){
+    filter_dropright.style.width = '400px';
+  }, 1);
+}
+
+function closeFilter() {
+  filter_container = document.querySelector('.organisation-filter-container');
+  filter_dropright = document.querySelector('.organisation-filter-dropright');
+  filter_dropright.style.width = '0px';
+  setTimeout(function(){
+    filter_container.style.display = 'none';
+  }, 250);
+}
+
+function hideClearFilterButton() {
+  form = document.querySelector('.filter_user');
+  form.querySelectorAll('.organisation-filter-block').forEach((element) => {
+    checked = false;
+    element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+      if (checkbox.checked == true) {
+        checked = true;
+      }
+    })
+    if (checked == false) {
+      element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
+    }
+  })
+}
+
+function autoSubmit(element) {
+  element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
+  hideClearFilterButton();
+  document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+}
+
+rotated = 0;
+
+function toggleTagCategoryDropdown(element) {
+  element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
+  element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
+  element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
+  element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
+  element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
+  rotated = rotated + 180;
+  block = element.parentNode.parentNode.parentNode.parentNode;
+  if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+    block.style.maxHeight = '1000px';
+    block.classList.add('active');
+  } else {
+    block.style.maxHeight = '61px';
+    block.classList.remove('active');
+  }
+}
+
+function clearFilter(element) {
+  block = element.parentNode.parentNode.parentNode.parentNode;
+  block.querySelectorAll('input.check_boxes').forEach((element) => {
+    if (element.checked == true) {
+      element.checked = false;
+    }
+  })
+  hideClearFilterButton();
+  document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+}
+
+function resetFilter() {
+  form = document.querySelector('.filter_user');
+  form.querySelectorAll('.check_boxes').forEach((element) => {
+    if (element.checked == true) {
+      element.checked = false;
+    }
+  })
+  hideClearFilterButton();
+  form.querySelector('.hidden-submit').click();
+}
+
 var selected = document.getElementById('selected')
 var ghostcard = document.querySelector('.ghost-card')
 
@@ -172,6 +249,69 @@ function removeGhost() {
     ghostcard.classList.add('hidden')
   }
 }
+
+function removeFilter(element) {
+  filter_tag = element.parentNode;
+  storage = document.querySelector('#filter_content_themes')
+  array = storage.value.split(',');
+  array = array.filter(function(value, index, arr){
+    return value != element.getAttribute('data-id');
+  });
+  storage.value = array.join(',');
+  filter_tag.remove();
+  storage.parentNode.querySelector('.hidden-submit').click();
+}
+
+function selectUser(element) {
+  card = element.parentNode.parentNode
+  user_container = document.querySelector('.users-book')
+  selected_container = document.querySelector('.users-book-selected')
+  if (card.parentNode == user_container) {
+    selected_container.appendChild(card)
+  } else {
+    user_container.appendChild(card)
+  }
+  selected_users = selected_container.querySelectorAll('.user-index-card-book')
+  storage_var = []
+  selected_users.forEach((user) => {
+    storage_var.push(user.id.split('-')[1])
+  })
+  document.getElementById('filter_user_selected').value = storage_var.join(',')
+  document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+}
+
+$input = $("[data-behavior='autocomplete']");
+
+var options = {
+  listLocation: "categories",
+  getValue: 'title',
+  url: function(phrase) {
+    return "/categories_search.json?search=" + phrase
+  },
+  list: {
+    onChooseEvent: function() {
+      var id = $input.getSelectedItemData().id;
+      var title = $input.getSelectedItemData().title;
+      container = document.querySelector('.filtered_themes');
+      new_category = document.createElement("div");
+      new_category.innerHTML = "<p>" + title + "</p><i class='fas fa-times' data-id="+ id +" onclick='removeFilter(this);'></i>";
+      container.appendChild(new_category);
+      storage = document.querySelector('#filter_content_themes')
+      if (storage.value != '') {
+        storage.value = storage.value + ',' + id;
+      } else {
+        storage.value = id;
+      }
+      $input[0].value = '';
+      storage.parentNode.querySelector('.hidden-submit').click();
+    },
+    match: {
+      enabled: true
+    }
+  }
+}
+
+$input.easyAutocomplete(options);
 
 </script>
 

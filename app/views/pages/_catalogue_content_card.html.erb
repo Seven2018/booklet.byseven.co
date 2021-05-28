@@ -1,9 +1,9 @@
 <div class="catalogue-content-card-left">
-  <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-    <%= link_to '', content_path(content), class: 'stretched-link' %>
-  <% end %>
   <% content = @content if @content.present? %>
-  <div>
+  <div class="catalogue-content-card-left-main">
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <%= link_to '', content_path(content), class: 'stretched-link' %>
+    <% end %>
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">
