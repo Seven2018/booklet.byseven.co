@@ -1,5 +1,6 @@
 <div id="content-show-container">
   <div id="content-show-container-left">
+    <p><b><%= @content.title %></b></p>
     <% @content.mods.order(position: :asc).each do |mod| %>
       <a href="#anchor-<%= mod.id %>"><%= mod.title %></a>
     <% end %>
@@ -9,29 +10,33 @@
       <%= render 'show_attributes', content: @content %>
     </div>
     <div class="content-show-mods-container">
-      <div class="content-show-mods-controls">
-        <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModText'>
-          <i class="far fa-file-alt"></i>
-          <p>Text</p>
-        </a>
-        <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModVideo'>
-          <i class="fas fa-video"></i>
-          <p>Video</p>
-        </a>
-        <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModImage'>
-          <i class="fas fa-image"></i>
-          <p>Image</p>
-        </a>
-        <div class="content-show-mods-controls-block" onclick="openQuizForm(this);">
-          <i class="fas fa-star-half-alt"></i>
-          <p>Quiz</p>
-          <div class="hidden-mod-form hidden">
-            <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
-              <%= f.text_field :title, placeholder: 'Quiz Title' %>
-              <%= f.hidden_field :content_id, value: @content.id %>
-              <%= f.submit '', class: 'hidden-submit hidden' %>
-              <div class="btn-icon" onclick="dismissForm(this);"><i class="fas fa-save"></i></div>
-            <% end %>
+      <div class="content-show-mods-control-btn" onclick="contentAdd()";>
+        <i class="far fa-edit fa-2x" id='icon-edit'></i>
+        <i class="fas fa-plus fa-2x hidden" id='icon-close'></i>
+        <div class="content-show-mods-controls" style='display:none;'>
+          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModText'>
+            <i class="far fa-file-alt"></i>
+            <p>Text</p>
+          </a>
+          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModVideo'>
+            <i class="fas fa-video"></i>
+            <p>Video</p>
+          </a>
+          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModImage'>
+            <i class="fas fa-image"></i>
+            <p>Image</p>
+          </a>
+          <div class="content-show-mods-controls-block" onclick="openQuizForm(this);">
+            <i class="fas fa-star-half-alt"></i>
+            <p>Quiz</p>
+            <div class="hidden-mod-form hidden">
+              <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
+                <%= f.text_field :title, placeholder: 'Quiz Title' %>
+                <%= f.hidden_field :content_id, value: @content.id %>
+                <%= f.submit '', class: 'hidden-submit hidden' %>
+                <div class="btn-icon" onclick="dismissForm(this);"><i class="fas fa-save"></i></div>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
@@ -64,6 +69,36 @@
 </div>
 
 <script>
+
+
+
+function contentAdd() {
+  var contentbar = document.querySelector('.content-show-mods-controls')
+  var iconedit = document.querySelector('#icon-edit')
+  var iconclose = document.querySelector('#icon-close')
+  var contentblock = document.querySelectorAll('.content-show-mods-controls-block')
+
+  if (contentbar.style.display === "none") {
+    contentbar.style.display = "flex";
+    iconedit.classList.add('hidden')
+    iconclose.classList.remove('hidden')
+    iconclose.classList.add('icon-transform')
+    setTimeout(function(){
+    iconclose.style.transform = ('rotate(45deg)')
+    contentbar.style.width = '100%'
+    contentblock.forEach((content) => {
+      content.style.width = '25%'
+    })
+    },1);
+  } else {
+    iconclose.style.transform = ('rotate(-45deg)')
+    contentbar.style.width = '0'
+    contentbar.style.display = "none";
+    iconclose.classList.add('hidden')
+    iconedit.classList.remove('hidden')
+  }
+}
+
   doubleClickGuardian = false;
 
   function outsideClick(event, notelem) {
@@ -157,7 +192,7 @@
   }
 
   function closeModalOnSubmit(element) {
-    document.querySelector('.modal.show').querySelector('.close').click();
+    document.querySelector('.modal.show').querySelector('.cancel-close').click();
     document.querySelector('.modal.show').querySelector('hidden-submit').click();
   }
 

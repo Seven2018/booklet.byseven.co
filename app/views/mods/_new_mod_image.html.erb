@@ -12,9 +12,12 @@
       <%= f.input :title, placeholder: 'Title', label: false %>
       <%= f.input :image, placeholder: 'Image URL', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
-      <button class="btn-orange btn-icon" onclick="closeModalOnSubmit(this);">
-        <i class="fas fa-save"></i>
-      </button>
-    <% end %>
+      <div class="cancel-submit-btns">
+        <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <button class="btn-orange" onclick="closeModalOnSubmit(this);">
+          <p>Add Image</p>
+        </button>
+      <% end %>
+      </div>
   </div>
 </div>

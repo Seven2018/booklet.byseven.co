@@ -3,7 +3,6 @@
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
       <h3 class="modal-title" id="myModalLabel">Add text to <%= @content.title %></h3>
     </div>
-    <button type="button" class="btn btn-icon close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for Mod.new, remote: true do |f| %>
@@ -12,9 +11,12 @@
       <%= f.input :title, placeholder: 'Title', label: false %>
       <%= f.input :video, placeholder: 'Youtube URL', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
-      <button class="btn-orange btn-icon" onclick="closeModalOnSubmit(this);">
-        <i class="fas fa-save"></i>
-      </button>
-    <% end %>
+      <div class="cancel-submit-btns">
+        <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <button class="btn-orange" onclick="closeModalOnSubmit(this);">
+          <p>Add Video</p>
+        </button>
+      <% end %>
+      </div>
   </div>
 </div>

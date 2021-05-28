@@ -37,7 +37,7 @@
 </div>
 <% if content.content_type == 'Synchronous' %>
   <div class="catalogue-content-card-right-syn">
-<% else %>
+<% elsif content.content_type == 'Asynchronous' %>
   <div class="catalogue-content-card-right-asyn">
 <% end %>
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
@@ -62,4 +62,3 @@
       <p><%= content.interested.count %> Interested</p>
     </div>
   </div>
-
