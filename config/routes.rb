@@ -85,6 +85,10 @@ Rails.application.routes.draw do
   get :catalogue_filter_add_category, controller: :pages
   get 'book', to: 'pages#book', as: 'book'
 
+  # SESSIONS
+  get :book_sessions, controller: :sessions
+  get :book_sessions_update, controller: :sessions
+
   # CALENDAR
   get '/redirect', to: 'attendees#redirect', as: 'redirect'
   get '/callback', to: 'attendees#callback', as: 'callback'

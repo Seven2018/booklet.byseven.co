@@ -107,13 +107,11 @@
       </div>
     </div>
     <% @users.each do |user| %>
-    <%= link_to user_path(user) do %>
       <div class='user-index-card'>
+        <%= link_to '', user_path(user), class: 'stretched-link' %>
         <div class="user-index-info">
           <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
-         <!--  <a data-toggle='modal' data-target='#showUser-<%= user.id %>'> -->
-            <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-         <!--  </a> -->
+          <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
         </div>
         <div class="user-index-info">
           <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
@@ -134,7 +132,6 @@
           </div>
         <% end %>
       </div>
-        <% end %>
       <div class='modal fade' id='showUser-<%= user.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
         <div class='modal-dialog' role='document' style='border-radius: 20px'>
           <%= render 'users/show', user: user %>
