@@ -1,16 +1,29 @@
 .book-container {
+    padding: 10px;
+  @include from-medium {
   padding: 30px;
+  }
+}
+
+.booking-title {
+  margin-top: 20px;
 }
 
 .workshop-grid {
-  display: flex;
+    display: block;
+  @include from-medium-high {
+    display: flex;
+  }
 }
 
 .workshop-cards-selected {
   padding: 20px;
-  border-left: 1px solid #C4C4C4;
+  border-left: none;
   min-height: 700px;
   padding: 0px 20px 20px 20px;
+  @include from-medium-high {
+    border-left: 1px solid #C4C4C4;
+  }
 
 }
 
@@ -49,24 +62,33 @@
 
 .card-interest-left {
   display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 15rem;
+  min-height: 20rem;
   margin-bottom: 20px;
   cursor: move;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
+  @include from-medium-high {
+    min-height: 10rem;
+    flex-direction: row;
+  }
 }
 
 
+
+
 .catalogue-content-card-right-syn-book, .catalogue-content-card-right-asyn-book {
-  width: 30%;
-  height: 100%;
+  width: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   padding: 1rem;
   position: relative;
+  @include from-medium-high {
+    width: 30%;
+  }
 }
 
 .catalogue-content-card-right-syn-book {
@@ -94,7 +116,11 @@
   justify-content: space-between;
   align-items: flex-start;
   position: relative;
-  width: 70%;
+  width: 100%;
+
+  h3 {
+    width: 95%;
+  }
 
   h4 {
     font-weight: 600;
@@ -136,7 +162,17 @@
     i {
       color: #F26419;
     }
-
+    @include from-large {
+    width: 100%;
+    p {
+      font-size: 1.3rem !important;
+    }
+  }
+  }
+    @include from-medium-high {
+    h3 {
+      width: 100% !important;
+    }
   }
 }
 
@@ -146,11 +182,14 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
-  width: 550.5px;
-  height: 150px;
+  max-width: 700px;
+  height: 20rem;
   border: 2px dashed #C4C4C4;
   p {
     color: #C4C4C4
+  }
+  @include from-medium-high {
+  height: 15rem;
   }
 }
 
@@ -259,15 +298,22 @@
 // PARTICIPANTS PAGE //
 
 .users-book-grid {
-  display: flex;
+    display:block;
+  @include from-medium-high {
+    display: flex;
+  }
 }
 
 .users-book-selected {
   padding: 20px;
-  border-left: 1px solid #C4C4C4;
   min-height: 700px;
   padding: 0px 20px 20px 20px;
-
+  border-left: none;
+  border-top:  1px solid #C4C4C4;
+  @include from-medium-high {
+  border-left: 1px solid #C4C4C4;
+  border-top: none;
+  }
 }
 
 .users-book {
@@ -336,28 +382,43 @@
 /* SELECTED CARD */
 
 .book-selected-card {
+  margin-top: 20px;
   background: white;
   height: 20rem;
   display: flex;
-  justify-content: space-between;
   margin-bottom: 3rem;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+ .type-icon {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+
+  .book-selected-card-left {
+    width: 100%;
+  }
 
   .book-selected-card-infos {
-    height: 100%;
-    width: 70%;
+    height: 80%;
+    width: 100%;
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: flex-start;
     position: relative;
+    font-size: 1.6rem;
   }
+
+
 
   .book-selected-card-dates {
     background: #F8D9C8;
     height: 100%;
     width: 30%;
     padding: 2rem;
+    p {
+      color: #f26419;
+    }
   }
 
   .book-selected-card-categories {
@@ -365,7 +426,7 @@
     justify-content: flex-start;
     align-items: center;
     flex-wrap:wrap;
-
+    padding: 10px;
     p {
       background: #F8D9C8;
       color: #F26419;
@@ -377,6 +438,43 @@
 
     i {
       color: #F26419;
+    }
+  }
+}
+
+.book-dates {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  label {
+    color: #F26419;
+  }
+}
+
+
+.book-confirm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.session {
+  .session_date {
+    input {
+      background-color: transparent !important;
+      border: none !important;
+    }
+  }
+  .session_start_time {
+    select {
+      background-color: transparent !important;
+      border: none !important;
+    }
+  }
+  .session_end_time {
+    select {
+      background-color: transparent !important;
+      border: none !important;
     }
   }
 }

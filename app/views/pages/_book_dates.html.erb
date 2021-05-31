@@ -6,6 +6,7 @@
 <%# end %>
 <% selected_contents.each do |content| %>
   <div class="book-selected-card" id="book_content-<%= content.id %>">
+    <div class="book-selected-card-left">
     <div class="book-selected-card-infos">
       <% if content.title.length > 35 %>
         <h3><b><%= content.title.first(35)+'...' %></b></h3>
@@ -13,6 +14,7 @@
         <h3><b><%= content.title %></b></h3>
       <% end %>
       <p><%= content.duration %> Minutes</p>
+       <div class="card-content-description">
       <% if content.description.present? %>
         <% if content.description.to_plain_text.length >= (200) %>
           <p><%= content.description.to_plain_text.first(200) + '...' %></p>
@@ -20,23 +22,33 @@
           <p><%= content.description.to_plain_text.first(200) %></p>
         <% end %>
       <% end %>
+      </div>
+      <div class="type-icon">
+      <% if content.content_type == 'Synchronous' %>
+        <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+      <% else %>
+        <i class="fas fa-laptop"></i>
+      <% end %>
+      </div>
+    </div>
       <div class="book-selected-card-categories">
         <% content.categories.order(title: :asc).each do |category| %>
           <p><%= category.title %></p>
         <% end %>
       </div>
     </div>
-    <div class="book-selected-card-dates">
+    <% if content.content_type == 'Synchronous' %>
+    <div class="book-selected-card-dates" style='background-color: #F8D9C8'>
+      <div class='book-dates'>
       <p>Date</p>
-      <div>
         <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
-          <%= f.input :date, label: false, input_html: {class: 'datepicker'} %>
+          <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
           <div class="flex-row-between-centered">
-            <div style='width:10rem;'>
-              <%= f.input :start_time, label: 'Start time', as: :time, minute_step: 15, input_html: { class: "timepicker new_start_time", style: 'width:5rem;'}, default: Time.parse('9:00') %>
+            <div>
+              <%= f.input :start_time, label: 'Start time', as: :time, minute_step: 15, input_html: { class: "timepicker new_start_time"}, default: Time.parse('9:00') %>
             </div>
-            <div style='width:10rem;'>
-              <%= f.input :end_time, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker new_end_time', style: 'width:5rem;'}, default: Time.parse('17:00') %>
+            <div>
+              <%= f.input :end_time, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker new_end_time'}, default: Time.parse('17:00') %>
             </div>
           </div>
           <%= f.hidden_field :content_id, value: content.id %>
@@ -45,5 +57,26 @@
         <% end %>
       </div>
     </div>
+    <% elsif %>
+    <div class="book-selected-card-dates" style='background-color: #EEEEEE'>
+      <div class='book-dates'>
+      <p>Date</p>
+        <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
+          <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
+          <div class="flex-row-between-centered">
+            <div>
+              <%= f.input :start_time, label: 'Start time', as: :time, minute_step: 15, input_html: { class: "timepicker new_start_time"}, default: Time.parse('9:00') %>
+            </div>
+            <div>
+              <%= f.input :end_time, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker new_end_time'}, default: Time.parse('17:00') %>
+            </div>
+          </div>
+          <%= f.hidden_field :content_id, value: content.id %>
+          <%= f.hidden_field :selected_users %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
   </div>
 <% end %>
