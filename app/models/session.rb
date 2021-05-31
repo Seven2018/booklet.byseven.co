@@ -5,3 +5,11 @@ class Session < ApplicationRecord
   has_many :attendees, dependent: :destroy
   has_many :users, through: :attendees
 end
+
+def start_time
+  self.date
+end
+
+def end_time
+  self.date
+end

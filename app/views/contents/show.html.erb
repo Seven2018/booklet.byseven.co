@@ -1,9 +1,6 @@
 <div id="content-show-container">
   <div id="content-show-container-left">
-    <p><b><%= @content.title %></b></p>
-    <% @content.mods.order(position: :asc).each do |mod| %>
-      <a href="#anchor-<%= mod.id %>"><%= mod.title %></a>
-    <% end %>
+    <%= render 'contents/show_anchors', content: @content %>
   </div>
   <div id="content-show-container-right">
     <div class="content-show-attributes">
@@ -187,7 +184,7 @@ function contentAdd() {
     }
   }
 
-  function saveOnSelect(element) {
+  function saveOnSelect(element = false) {
     document.querySelector('.edit_content').querySelector('.hidden-submit').click();
   }
 

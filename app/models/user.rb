@@ -30,7 +30,7 @@ class User < ApplicationRecord
     CSV.foreach(file.path, headers: true) do |row|
       company_id = Current.user.company_id
       user_row = row.to_hash
-      main_attr = "firstname,lastname,email,password,birth_date,hire_date,address,phone_number,social_security,gender,job_description".split(',')
+      main_attr = "firstname,lastname,email,password,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
       tag_attr = row.to_hash.keys - main_attr
       tag_attr.each do |tag|
         user_row.delete(tag)

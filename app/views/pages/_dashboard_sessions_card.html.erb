@@ -1,17 +1,17 @@
 <div class="catalogue-content-card-left">
-  <% content = @content if @content.present? %>
+  <% content = Session.includes([:content]).find(session.id).content %>
   <div class="catalogue-content-card-left-main">
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-      <%= link_to '', content_path(content), class: 'stretched-link' %>
+      <%= link_to '', content_path(content.id), class: 'stretched-link' %>
     <% end %>
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">
       <% if content.description.present? %>
-        <% if content.description.html_safe.length >= (200) %>
-          <p><%= content.description.html_safe.first(200) + '...' %></p>
+        <% if content.description.to_plain_text.length >= (200) %>
+          <p><%= content.description.to_plain_text.first(200) + '...' %></p>
         <% else %>
-          <p><%= content.description.html_safe.first(200) %></p>
+          <p><%= content.description.to_plain_text.first(200) %></p>
         <% end %>
       <% end %>
     </div>
@@ -20,12 +20,6 @@
     <% content.categories.order(title: :asc).each do |category| %>
       <p><%= category.title %></p>
     <% end %>
-    <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus"></i></a>
-    <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-      <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-        <%= render 'pages/manage_categories', content: content %>
-      </div>
-    </div>
   </div>
   <div class="type-icon">
     <% if content.content_type == 'Synchronous' %>
@@ -38,20 +32,19 @@
 <% if content.content_type == 'Synchronous' %>
   <div class="catalogue-content-card-right-syn">
     <div class="sessions-date">
-      <b><p>Begins (date)</p></b>
-      <p>1/4 sessions</p>
+      <b><p><%= session.date.strftime('%d/%m/%Y') %></p></b>
     </div>
     <div class="catalogue-content-card-right-interest">
-      <p><%= content.interested.count %> Participants</p>
+      <p><%= session.attendees.count %> Participants</p>
     </div>
   </div>
 <% elsif content.content_type == 'Asynchronous' %>
     <div class="catalogue-content-card-right-syn">
       <div class="sessions-date">
-        <b><p>Available (date)</p></b>
+        <b><p>From <%= session.date.strftime('%d/%m/%Y') %></p></b>
       </div>
       <div class="catalogue-content-card-right-interest">
-        <p><%= content.interested.count %> Participants</p>
+        <p><%= session.attendees.count %> Participants</p>
       </div>
     </div>
     <div class="catalogue-content-card-right-interest">

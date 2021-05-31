@@ -73,13 +73,15 @@ class ModsController < ApplicationController
   def destroy
     authorize @module
     @module.destroy
-    @content = Content.find(params[:content_id])
+    @content = @module.content
     i = 1
-    @content.content_mods.order(position: :asc).each do |content_mod|
-      content_mod.update(position: i)
+    @content.mods.order(position: :asc).each do |mod|
+      mod.update(position: i)
       i += 1
     end
-    redirect_back(fallback_location: root_path)
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
