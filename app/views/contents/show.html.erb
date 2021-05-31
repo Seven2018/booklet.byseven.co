@@ -6,41 +6,41 @@
     <div class="content-show-attributes">
       <%= render 'show_attributes', content: @content %>
     </div>
-    <div class="content-show-mods-container">
-      <div class="content-show-mods-control-btn" onclick="contentAdd()";>
-        <i class="far fa-edit fa-2x" id='icon-edit'></i>
-        <i class="fas fa-plus fa-2x hidden" id='icon-close'></i>
-        <div class="content-show-mods-controls" style='display:none;'>
-          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModText'>
-            <i class="far fa-file-alt"></i>
-            <p>Text</p>
-          </a>
-          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModVideo'>
-            <i class="fas fa-video"></i>
-            <p>Video</p>
-          </a>
-          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModImage'>
-            <i class="fas fa-image"></i>
-            <p>Image</p>
-          </a>
-          <div class="content-show-mods-controls-block" onclick="openQuizForm(this);">
-            <i class="fas fa-star-half-alt"></i>
-            <p>Quiz</p>
-            <div class="hidden-mod-form hidden">
-              <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
-                <%= f.text_field :title, placeholder: 'Quiz Title' %>
-                <%= f.hidden_field :content_id, value: @content.id %>
-                <%= f.submit '', class: 'hidden-submit hidden' %>
-                <div class="btn-icon" onclick="dismissForm(this);"><i class="fas fa-save"></i></div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
       <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
         <div class="content-show-mods-index">
           <%= render 'mods/content_show_mods_index', content: @content %>
         </div>
+        <div class="content-show-mods-container">
+          <div class="content-show-mods-control-btn" onclick="contentAdd()";>
+            <i class="far fa-edit fa-2x" id='icon-edit'></i>
+            <i class="fas fa-plus fa-2x hidden" id='icon-close'></i>
+            <div class="content-show-mods-controls" style='display:none;'>
+              <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModText'>
+                <i class="far fa-file-alt"></i>
+                <p>Text</p>
+              </a>
+              <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModVideo'>
+                <i class="fas fa-video"></i>
+                <p>Video</p>
+              </a>
+              <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModImage'>
+                <i class="fas fa-image"></i>
+                <p>Image</p>
+              </a>
+              <div class="content-show-mods-controls-block" onclick="openQuizForm(this);">
+                <i class="fas fa-star-half-alt"></i>
+                <p>Quiz</p>
+                <div class="hidden-mod-form hidden">
+                  <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
+                    <%= f.text_field :title, placeholder: 'Quiz Title' %>
+                    <%= f.hidden_field :content_id, value: @content.id %>
+                    <%= f.submit '', class: 'hidden-submit hidden' %>
+                    <div class="btn-icon" onclick="dismissForm(this);"><i class="fas fa-save"></i></div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
       <% end %>
     </div>
   </div>
