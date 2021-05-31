@@ -167,8 +167,8 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
 
   create_table "sessions", force: :cascade do |t|
     t.date "date"
-    t.time "start_time"
-    t.time "end_time"
+    t.time "starts_at"
+    t.time "ends_at"
     t.bigint "training_id"
     t.bigint "content_id"
     t.bigint "company_id"

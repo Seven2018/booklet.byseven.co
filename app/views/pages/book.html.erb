@@ -60,6 +60,9 @@
         <%= render 'pages/book_user_index', users: @users %>
       </div>
       <div class="users-book-selected container">
+        <div class="headers-div">
+          <p onclick='removeAll(this);'>Remove all</p>
+        </div>
       </div>
     </div>
   </div>
@@ -299,21 +302,17 @@ function selectUser(element) {
   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
 }
 
-/*function addDate(element) {
+function addDate(element) {
   card = element.closest('.book-selected-card')
   new_card = card.cloneNode(true)
   form = new_card.querySelector('form')
-  button = form.querySelector('.add_date')
-  button.parentNode.removeChild(button)
-  session_id = form.querySelector('#session_session_id')
-  session_id.parentNode.removeChild(session_id)
-  form.action = "/book_sessions"
+  element.classList.add('hidden')
   card.parentNode.insertBefore(new_card, card.nextSibling)
   flatpickr(".datepicker", {
     disableMobile: true,
     dateFormat: "d/m/Y",
   });
-}*/
+}
 
 function bookDates() {
   if (formGuardian == false) {
@@ -335,6 +334,40 @@ function bookDates() {
     redirect_button.click()
     setTimeout(function(){formGuardian = false}, 10)
   }
+}
+
+function addAll(source) {
+  document.querySelector('.users-book').querySelectorAll('.select-user').forEach((element) => {
+    element.checked = true
+    card = element.parentNode.parentNode
+    user_container = document.querySelector('.users-book')
+    selected_container = document.querySelector('.users-book-selected')
+    selected_container.appendChild(card)
+  })
+  selected_users = selected_container.querySelectorAll('.user-index-card-book')
+  storage_var = []
+  selected_users.forEach((user) => {
+    storage_var.push(user.id.split('-')[1])
+  })
+  document.getElementById('filter_user_selected').value = storage_var.join(',')
+  document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+}
+
+function removeAll(source) {
+  document.querySelector('.users-book-selected').querySelectorAll('.select-user').forEach((element) => {
+    element.checked = false
+    card = element.parentNode.parentNode
+    user_container = document.querySelector('.users-book')
+    selected_container = document.querySelector('.users-book-selected')
+    user_container.appendChild(card)
+  })
+  selected_users = selected_container.querySelectorAll('.user-index-card-book')
+  storage_var = []
+  selected_users.forEach((user) => {
+    storage_var.push(user.id.split('-')[1])
+  })
+  document.getElementById('filter_user_selected').value = storage_var.join(',')
+  document.querySelector('.filter_user').querySelector('.hidden-submit').click();
 }
 
 $input = $("[data-behavior='autocomplete']");

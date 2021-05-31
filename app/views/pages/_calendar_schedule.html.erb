@@ -1,0 +1,29 @@
+<div class="schedule-title">Schedule</div>
+<% if tab == 'all' %>
+  <% sessions = Session.where(company_id: current_user.company_id, date: @date) %>
+<% else %>
+  <% sessions = Session.joins(:attendees).where(company_id: current_user.company_id, date: @date, attendees: {user_id: current_user.id}) %>
+<% end %>
+<% sessions.each do |session| %>
+  <% content = session.content %>
+  <% if content.content_type == 'Synchronous' %>
+    <div class="calendar-schedule-card-sync">
+      <div class="calendar-card-date"><h2><%= session.date.strftime('%d') %></h2></div>
+      <div class="calendar-card-info">
+        <div class="calendar-card-title"><p><%= content.title %></p></div>
+        <div class="calendar-card-time"><p><%= session.starts_at.strftime('%H:%M') %> - <%= session.ends_at.strftime('%H:%M') %></p>
+          <div class="calendar-card-title-sessions"><p></p></div>
+        </div>
+      </div>
+    </div>
+  <% elsif %>
+    <div class="calendar-schedule-card-async">
+      <div class="calendar-card-date"><h2><%= session.date.strftime('%d') %></h2></div>
+      <div class="calendar-card-info">
+        <div class="calendar-card-title"><p><%= content.title %></p></div>
+        <div class="calendar-card-time"><p><%= session.starts_at.strftime('%H:%M') %> - <%= session.ends_at.strftime('%H:%M') %></p>
+      </div>
+       <div class="calendar-card-title-sessions"><p></p></div>
+      </div>
+  <% end %>
+<% end %>

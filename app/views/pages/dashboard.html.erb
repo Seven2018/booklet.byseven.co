@@ -16,3 +16,19 @@
     <%= render 'dashboard_all' %>
   </div>
 </div>
+
+
+<script>
+  days = document.querySelectorAll('.day')
+  days.forEach((element) =>{
+    element.addEventListener('click', event => {
+      previous = document.querySelector('.selected_day')
+      console.log(event.currentTarget)
+      if (previous != null) {
+        document.querySelector('.selected_day').classList.remove('selected_day')
+      }
+
+      element.classList.add('selected_day')
+    })
+  })
+</script>

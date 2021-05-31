@@ -31,36 +31,22 @@
   </div>
   <div class="dashboard-right-schedule">
     <div class="dashboard-calendar">
-      <%= month_calendar do |date| %>
-      <%= date.day %>
+      <%= month_calendar(events: @all_my_sessions, attribute: :date) do |date, sessions| %>
+        <%= link_to dashboard_path(tab: 'all', date: date), remote: true do%>
+          <div class="flex-column-between-centered">
+            <%= date.day %>
+            <% if sessions.present? %>
+              <i class="fas fa-circle"></i>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     </div>
     <div class="schedule">
-      <div class="calendar-schedule">
-        <div class="schedule-title">Schedule</div>
-          <% Session.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where("date < ?", Date.today).each do |session| %>
-            <% if session.content.content_type == 'Synchronous' %>
-              <div class="calendar-schedule-card-sync">
-                <div class="calendar-card-date"><h2>18</h2></div>
-                <div class="calendar-card-info">
-                  <div class="calendar-card-title"><p>UX/UI Workshop</p></div>
-                  <div class="calendar-card-time"><p>10:00 - 15:00</p>
-                    <div class="calendar-card-title-sessions"><p>1/4</p></div>
-                  </div>
-                </div>
-              </div>
-            <% elsif %>
-              <div class="calendar-schedule-card-async">
-                <div class="calendar-card-date"><h2>22</h2></div>
-                <div class="calendar-card-info">
-                  <div class="calendar-card-title"><p>Design Thinking</p></div>
-                  <div class="calendar-card-time"><p>15:00 - 18:00</p></div>
-                </div>
-                 <div class="calendar-card-title-sessions"><p></p></div>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-     </div>
+      <div class="calendar-schedule calendar-schedule-personal">
+        <% @date = Date.today unless @date.present? %>
+        <%= render 'pages/calendar_schedule', date: @date, tab: 'personal' %>
+      </div>
+    </div>
   </div>
 </div>

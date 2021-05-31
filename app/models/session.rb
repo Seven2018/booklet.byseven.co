@@ -4,12 +4,14 @@ class Session < ApplicationRecord
   belongs_to :content
   has_many :attendees, dependent: :destroy
   has_many :users, through: :attendees
+  validates :date, presence: true
+
+  def start_date
+    self.date
+  end
+
+  def end_date
+    self.date
+  end
 end
 
-def start_time
-  self.date
-end
-
-def end_time
-  self.date
-end
