@@ -1,17 +1,18 @@
-<div id="index-controls" class="flex-row-start-centered">
-  <h1>My Booklet</h1>
-</div>
-<div class="dashboard-tabs">
-  <ul class="nav nav-tabs">
-    <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
-    <li role="presentation"><a href="#All" data-toggle="tab">Staff Trainings</a></li>
-  </ul>
+<div class="dashboard-grid">
+  <div class="dashboard-navigation">
+    <div class="dashboard-tabs">
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="#Personal" data-toggle="tab">My Trainings</a></li>
+        <li role="presentation"><a href="#All" data-toggle="tab" class='active'>Staff Trainings</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
 <div class="tab-content">
-  <div role="tabpanel" class="tab-pane active" id="Personal">
+  <div role="tabpanel" class="tab-pane" id="Personal">
     <%= render 'dashboard_personal' %>
   </div>
-  <div role="tabpanel" class="tab-pane" id="All">
+  <div role="tabpanel" class="tab-pane active" id="All">
     <%= render 'dashboard_all' %>
   </div>
 </div>

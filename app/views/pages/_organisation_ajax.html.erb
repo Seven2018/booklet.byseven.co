@@ -1,0 +1,142 @@
+<div id="index-controls" class='employee-tag flex-row-between-centered'>
+  <% if @filter_tags.present? || @filter_jobs.present? %>
+    <div class="filter-selected-tags">
+      <h1><%= @users.count %> result(s) for</h1>
+      <% @filter_jobs.each do |job| %>
+        <div class="selected-tags" name='<%= job %>'>
+          <p><%= job %></p>
+          <i class="fas fa-times" onclick='removeJob(this);'></i>
+        </div>
+      <% end %>
+      <% @filter_tags.each do |tag| %>
+        <div class="selected-tags" name='<%= tag %>'>
+          <p><%= tag %></p>
+          <i class="fas fa-times" onclick='removeTag(this);'></i>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <h1>Employees (<%= @users.count %>)</h1>
+  <% end %>
+  <div class="index-controls-buttons flex-row-between-centered">
+    <div class="btn-white" onclick='openFilter();'>
+      <i class="fas fa-filter"></i>
+      <p>Filter</p>
+    </div>
+    <div class="btn-white" id='manage-users-button' onclick='openManager();'>
+      <i class="fas fa-user-tag"></i>
+      <p>Manage Tags</p>
+    </div>
+    <div class="dropdown">
+      <div class="btn-white btn-icon dropdown-toggle" id="dropdownMenu" data-toggle="dropdown">
+        <i class="fas fa-ellipsis-h"></i>
+      </div>
+      <ul class="dropdown-menu dropdown-menu-right navbar-wagon-dropdown-menu" aria-labelledby="dropdownMenu">
+        <li><a data-toggle='modal' data-target='#newUser'>New User</a></li>
+        <li><a data-toggle='modal' data-target='#importUsers'>Import Users</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class='organisation-page'>
+  <div class='organisation-users'>
+    <div class='user-index-headers'>
+      <div class="headers-div">
+        <input type="checkbox" onclick="toggle(this);">
+      </div>
+      <div class="headers-div">
+        <p>Name</p>
+        <div class="headers-div-order">
+          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
+            <i class="fas fa-caret-up"></i>
+          <% end %>
+          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
+            <i class="fas fa-caret-down"></i>
+          <% end %>
+        </div>
+      </div>
+      <div class="headers-div">
+        <p>Email</p>
+        <div class="headers-div-order">
+          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
+            <i class="fas fa-caret-up"></i>
+          <% end %>
+          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
+            <i class="fas fa-caret-down"></i>
+          <% end %>
+        </div>
+      </div>
+<!--       <div class="headers-div">
+        <p>Job Title</p>
+        <div class="headers-div-order">
+          <%#link_to organisation_path(order: 'job_title', users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
+            <i class="fas fa-caret-up"></i>
+          <%#end %>
+          <%# link_to organisation_path(order: 'job_title', users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
+            <i class="fas fa-caret-down"></i>
+          <%#end %>
+        </div>
+      </div> -->
+      <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+        <div class="headers-div">
+          <p><%= tag_category.name %></p>
+          <div class="headers-div-order">
+            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
+            <i class="fas fa-caret-up"></i>
+          <% end %>
+          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
+            <i class="fas fa-caret-down"></i>
+          <% end %>
+          </div>
+        </div>
+      <% end %>
+      <div class="headers-div">
+        <i class="fas fa-plus" onclick="openForm(this);"></i>
+        <div class='hidden-form-category-ajax hidden'>
+          <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
+            <div class='flex-row-between-centered'>
+              <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;width:200px;' %>
+              <%= f.hidden_field :users, value: @users.map(&:id) %>
+              <%= f.submit '', class: 'hidden hidden-submit' %>
+              <div class="btn-white btn-icon" onclick='clearInput(this);'>
+                <i class="fas fa-save"></i>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <% @users.each do |user| %>
+      <div class='user-index-card'>
+        <%= link_to '', user_path(user), class: 'stretched-link' %>
+        <div class="user-index-info">
+          <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
+          <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+        </div>
+        <div class="user-index-info">
+          <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
+        </div>
+        <div class="user-index-info">
+          <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+        </div>
+        <div class="user-index-info">
+          <p data-toggle="tooltip" title="<%= user.job_title %>"><%= user.job_title %></p>
+        </div>
+        <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+          <div class="user-index-info">
+            <% tags = '' %>
+            <% Tag.joins(:user_tags).where(tag_category_id: tag_category.id, user_tags: {user_id: user}).order(tag_name: :asc).each do |tag| %>
+              <% tags += tag.tag_name + ', ' %>
+            <% end %>
+            <p><%= tags[0..-3] %></p>
+          </div>
+        <% end %>
+      </div>
+      <div class='modal fade' id='showUser-<%= user.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+        <div class='modal-dialog' role='document' style='border-radius: 20px'>
+          <%= render 'users/show', user: user %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

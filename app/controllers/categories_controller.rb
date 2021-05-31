@@ -20,7 +20,16 @@ class CategoriesController < ApplicationController
     authorize @category
     @category.company_id = current_user.company_id
     @category.title = 'Sans titre' if @category.title == ''
-    @category.save ? (redirect_to catalogue_path) : (render :new)
+    if @category.save
+      if params[:ajax].present?
+        respond_to do |format|
+          format.html {redirect_to catalogue_path}
+          format.js
+        end
+      else
+        redirect_to catalogue_path
+      end
+    end
   end
 
   def edit
@@ -30,13 +39,39 @@ class CategoriesController < ApplicationController
   def update
     authorize @category
     @category.update(category_params)
-    @category.save ? (redirect_to catalogue_path) : (render '_edit')
+    if @category.save
+      if params[:category][:ajax].present?
+        respond_to do |format|
+          format.html {redirect_to catalogue_path}
+          format.js
+        end
+      else
+        redirect_to catalogue_path
+      end
+    end
   end
 
   def destroy
     @category.destroy
     authorize @category
-    redirect_to catalogue_path
+    if params[:ajax].present?
+      respond_to do |format|
+        format.html {redirect_to catalogue_path}
+        format.js
+      end
+    else
+      redirect_to catalogue_path
+    end
+  end
+
+  def categories_search
+    skip_authorization
+    @categories = Category.where(company_id: current_user.company_id).ransack(title_cont: params[:search]).result(distinct: true)
+      respond_to do |format|
+        format.json {
+          @users = @categories.limit(5)
+        }
+      end
   end
 
   private

@@ -5,7 +5,7 @@
       You have been invited to the following training: <%= @training.title %>
       <%= link_to 'Link', training_path(@training) %>
     <% else %>
-      You have been invited to the following workshop: <%= @attendee.training_workshop.title %>
-      <%= link_to 'Link', training_workshop_path(@attendee.training_workshop) %>
+      You have been invited to the following content: <%= @attendee.training_content.title %>
+      <%= link_to 'Link', training_content_path(@attendee.training_content) %>
     <% end %>
     Thanks you and have a great day!

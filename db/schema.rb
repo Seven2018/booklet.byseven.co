@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_14_141536) do
+ActiveRecord::Schema.define(version: 2021_05_20_121429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,18 +74,17 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.string "status", default: "Not completed", null: false
     t.string "calendar_uuid"
     t.bigint "user_id"
-    t.bigint "training_workshop_id"
+    t.bigint "session_id"
     t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["creator_id"], name: "index_attendees_on_creator_id"
-    t.index ["training_workshop_id"], name: "index_attendees_on_training_workshop_id"
+    t.index ["session_id"], name: "index_attendees_on_session_id"
     t.index ["user_id"], name: "index_attendees_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|
     t.string "title", default: "", null: false
-    t.string "description", default: "", null: false
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -102,61 +101,82 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "content_categories", force: :cascade do |t|
+    t.bigint "content_id"
+    t.bigint "category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_content_categories_on_category_id"
+    t.index ["content_id"], name: "index_content_categories_on_content_id"
+  end
+
+  create_table "content_skills", force: :cascade do |t|
+    t.bigint "skill_id"
+    t.bigint "content_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_id"], name: "index_content_skills_on_content_id"
+    t.index ["skill_id"], name: "index_content_skills_on_skill_id"
+  end
+
+  create_table "contents", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.integer "duration", default: 0, null: false
+    t.text "description", default: "", null: false
+    t.string "content_type"
+    t.string "image", default: "", null: false
+    t.bigint "company_id"
+    t.bigint "folder_id"
+    t.bigint "author_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_contents_on_author_id"
+    t.index ["company_id"], name: "index_contents_on_company_id"
+    t.index ["folder_id"], name: "index_contents_on_folder_id"
+  end
+
   create_table "currents", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "mods", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.integer "duration", default: 0, null: false
-    t.text "content", default: "", null: false
-    t.string "document", default: "", null: false
+  create_table "folders", force: :cascade do |t|
+    t.string "title"
     t.bigint "company_id"
-    t.string "mod_type", default: ""
-    t.integer "workshop_id"
+    t.integer "parent_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "media"
+    t.index ["company_id"], name: "index_folders_on_company_id"
+  end
+
+  create_table "mods", force: :cascade do |t|
+    t.string "title"
+    t.text "text", default: ""
+    t.string "link"
+    t.string "document"
+    t.string "video"
+    t.string "image"
+    t.string "mod_type", default: ""
+    t.integer "position"
+    t.bigint "company_id"
+    t.integer "content_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_mods_on_company_id"
   end
 
-  create_table "notifications", force: :cascade do |t|
-    t.string "content", default: "", null: false
-    t.string "status", default: "Unread", null: false
-    t.bigint "user_id"
+  create_table "sessions", force: :cascade do |t|
+    t.date "date"
+    t.time "start_time"
+    t.time "end_time"
+    t.bigint "training_id"
+    t.bigint "content_id"
+    t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_notifications_on_user_id"
-  end
-
-  create_table "program_categories", force: :cascade do |t|
-    t.bigint "training_program_id"
-    t.bigint "category_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_program_categories_on_category_id"
-    t.index ["training_program_id"], name: "index_program_categories_on_training_program_id"
-  end
-
-  create_table "program_workshops", force: :cascade do |t|
-    t.bigint "training_program_id"
-    t.bigint "workshop_id"
-    t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["training_program_id"], name: "index_program_workshops_on_training_program_id"
-    t.index ["workshop_id"], name: "index_program_workshops_on_workshop_id"
-  end
-
-  create_table "requests", force: :cascade do |t|
-    t.string "status", default: "", null: false
-    t.bigint "user_id"
-    t.bigint "training_program_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["training_program_id"], name: "index_requests_on_training_program_id"
-    t.index ["user_id"], name: "index_requests_on_user_id"
+    t.index ["company_id"], name: "index_sessions_on_company_id"
+    t.index ["content_id"], name: "index_sessions_on_content_id"
+    t.index ["training_id"], name: "index_sessions_on_training_id"
   end
 
   create_table "skill_groups", force: :cascade do |t|
@@ -176,19 +196,11 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
 
   create_table "tag_categories", force: :cascade do |t|
     t.string "name"
+    t.integer "position"
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_tag_categories_on_company_id"
-  end
-
-  create_table "tag_workshops", force: :cascade do |t|
-    t.bigint "tag_id"
-    t.bigint "training_workshop_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["tag_id"], name: "index_tag_workshops_on_tag_id"
-    t.index ["training_workshop_id"], name: "index_tag_workshops_on_training_workshop_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -202,62 +214,16 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.index ["tag_category_id"], name: "index_tags_on_tag_category_id"
   end
 
-  create_table "training_programs", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.text "description", default: "", null: false
-    t.string "image", default: "", null: false
-    t.integer "participant_number", default: 0, null: false
-    t.bigint "company_id"
-    t.bigint "author_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_id"], name: "index_training_programs_on_author_id"
-    t.index ["company_id"], name: "index_training_programs_on_company_id"
-  end
-
-  create_table "training_workshop_mods", force: :cascade do |t|
-    t.integer "position", default: 0, null: false
-    t.bigint "mod_id"
-    t.bigint "training_workshop_id"
-    t.string "comments", default: "", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["mod_id"], name: "index_training_workshop_mods_on_mod_id"
-    t.index ["training_workshop_id"], name: "index_training_workshop_mods_on_training_workshop_id"
-  end
-
-  create_table "training_workshops", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.integer "duration", default: 0, null: false
-    t.integer "participant_number", default: 0, null: false
-    t.text "description", default: "", null: false
-    t.string "workshop_type", default: "", null: false
-    t.string "image", default: "", null: false
-    t.bigint "company_id"
-    t.datetime "available_date"
-    t.datetime "date"
-    t.time "starts_at"
-    t.time "ends_at"
-    t.bigint "training_id"
-    t.bigint "workshop_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_training_workshops_on_company_id"
-    t.index ["training_id"], name: "index_training_workshops_on_training_id"
-    t.index ["workshop_id"], name: "index_training_workshops_on_workshop_id"
-  end
-
   create_table "trainings", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.text "description"
-    t.string "image", default: "", null: false
-    t.integer "participant_number", default: 0, null: false
-    t.bigint "training_program_id"
+    t.string "title"
+    t.bigint "folder_id"
+    t.bigint "content_id"
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_trainings_on_company_id"
-    t.index ["training_program_id"], name: "index_trainings_on_training_program_id"
+    t.index ["content_id"], name: "index_trainings_on_content_id"
+    t.index ["folder_id"], name: "index_trainings_on_folder_id"
   end
 
   create_table "user_forms", force: :cascade do |t|
@@ -269,6 +235,16 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["mod_id"], name: "index_user_forms_on_mod_id"
     t.index ["user_id"], name: "index_user_forms_on_user_id"
+  end
+
+  create_table "user_interests", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "content_id"
+    t.string "interest_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_id"], name: "index_user_interests_on_content_id"
+    t.index ["user_id"], name: "index_user_interests_on_user_id"
   end
 
   create_table "user_skills", force: :cascade do |t|
@@ -303,7 +279,7 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.string "phone_number", default: "", null: false
     t.string "social_security", default: "", null: false
     t.string "gender", default: "", null: false
-    t.string "job_description", default: "", null: false
+    t.string "job_title", default: "", null: false
     t.string "linkedin", default: "", null: false
     t.string "picture", default: "", null: false
     t.string "access_level", default: "Employee", null: false
@@ -315,89 +291,38 @@ ActiveRecord::Schema.define(version: 2021_04_14_141536) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "workshop_categories", force: :cascade do |t|
-    t.bigint "workshop_id"
-    t.bigint "category_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_workshop_categories_on_category_id"
-    t.index ["workshop_id"], name: "index_workshop_categories_on_workshop_id"
-  end
-
-  create_table "workshop_mods", force: :cascade do |t|
-    t.integer "position", default: 0, null: false
-    t.bigint "mod_id"
-    t.bigint "workshop_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["mod_id"], name: "index_workshop_mods_on_mod_id"
-    t.index ["workshop_id"], name: "index_workshop_mods_on_workshop_id"
-  end
-
-  create_table "workshop_skills", force: :cascade do |t|
-    t.bigint "skill_id"
-    t.bigint "workshop_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["skill_id"], name: "index_workshop_skills_on_skill_id"
-    t.index ["workshop_id"], name: "index_workshop_skills_on_workshop_id"
-  end
-
-  create_table "workshops", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.integer "duration", default: 0, null: false
-    t.text "description", default: "", null: false
-    t.string "workshop_type", default: "", null: false
-    t.string "image", default: "", null: false
-    t.bigint "company_id"
-    t.bigint "author_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_id"], name: "index_workshops_on_author_id"
-    t.index ["company_id"], name: "index_workshops_on_company_id"
-  end
-
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assessment_answers", "assessment_questions"
   add_foreign_key "assessment_answers", "users"
   add_foreign_key "assessment_questions", "mods"
-  add_foreign_key "attendees", "training_workshops"
+  add_foreign_key "attendees", "sessions"
   add_foreign_key "attendees", "users"
   add_foreign_key "categories", "companies"
+  add_foreign_key "content_categories", "categories"
+  add_foreign_key "content_categories", "contents"
+  add_foreign_key "content_skills", "contents"
+  add_foreign_key "content_skills", "skills"
+  add_foreign_key "contents", "companies"
+  add_foreign_key "contents", "folders"
+  add_foreign_key "folders", "companies"
   add_foreign_key "mods", "companies"
-  add_foreign_key "notifications", "users"
-  add_foreign_key "program_categories", "categories"
-  add_foreign_key "program_categories", "training_programs"
-  add_foreign_key "program_workshops", "training_programs"
-  add_foreign_key "program_workshops", "workshops"
-  add_foreign_key "requests", "training_programs"
-  add_foreign_key "requests", "users"
+  add_foreign_key "sessions", "companies"
+  add_foreign_key "sessions", "contents"
+  add_foreign_key "sessions", "trainings"
   add_foreign_key "skills", "skill_groups"
   add_foreign_key "tag_categories", "companies"
-  add_foreign_key "tag_workshops", "tags"
-  add_foreign_key "tag_workshops", "training_workshops"
   add_foreign_key "tags", "companies"
   add_foreign_key "tags", "tag_categories"
-  add_foreign_key "training_programs", "companies"
-  add_foreign_key "training_workshop_mods", "mods"
-  add_foreign_key "training_workshop_mods", "training_workshops"
-  add_foreign_key "training_workshops", "companies"
-  add_foreign_key "training_workshops", "trainings"
-  add_foreign_key "training_workshops", "workshops"
   add_foreign_key "trainings", "companies"
-  add_foreign_key "trainings", "training_programs"
+  add_foreign_key "trainings", "contents"
+  add_foreign_key "trainings", "folders"
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
+  add_foreign_key "user_interests", "contents"
+  add_foreign_key "user_interests", "users"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
   add_foreign_key "user_tags", "tags"
   add_foreign_key "user_tags", "users"
   add_foreign_key "users", "companies"
-  add_foreign_key "workshop_categories", "categories"
-  add_foreign_key "workshop_categories", "workshops"
-  add_foreign_key "workshop_mods", "mods"
-  add_foreign_key "workshop_mods", "workshops"
-  add_foreign_key "workshop_skills", "skills"
-  add_foreign_key "workshop_skills", "workshops"
-  add_foreign_key "workshops", "companies"
 end

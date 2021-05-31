@@ -5,7 +5,7 @@
       <img src='<%= @company.logo %>' class='company-show-logo'>
       <div class='training-info-headers-buttons'>
         <% if ['Super Admin', 'Admin', 'HR'].include? current_user.access_level %>
-          <a class='edit-fafa btn btn-edit btn-edit-icon' data-toggle='modal' data-target='#editCompany'><i class='fas fa-pen'></i></a>
+          <a class='edit-fafa btn btn-edit btn-icon' data-toggle='modal' data-target='#editCompany'><i class='fas fa-pen'></i></a>
         <% end %>
       </div>
     </div>

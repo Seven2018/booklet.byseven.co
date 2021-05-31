@@ -17,19 +17,23 @@
     <%= javascript_include_tag Ckeditor.cdn_url %>
     <%= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
     <%= javascript_pack_tag 'application' %>
+
   </head>
   <body>
     <div id="booklet-wrapper">
       <% if user_signed_in? %>
         <%= render 'shared/navbar' %>
-        <%= render 'shared/left_navbar' %>
         <%= render 'shared/left_navbar-mobile' %>
       <% end %>
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
-        <div id="booklet-container">
+        <% if params[:controller] == 'users' && params[:action] == 'show' %>
           <%= yield %>
-        </div>
+        <% else %>
+          <div id="booklet-container">
+            <%= yield %>
+          </div>
+        <% end %>
       <% else %>
         <%= yield %>
       <% end %>

@@ -39,7 +39,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :phone_number, null: false, default: ""
       t.string :social_security, null: false, default: ""
       t.string :gender, null: false, default: ""
-      t.string :job_description, null: false, default: ""
+      t.string :job_title, null: false, default: ""
       t.string :linkedin, null: false, default: ""
       t.string :picture, null: false, default: ""
       t.string :access_level, null: false, inclusion: { in: ['Admin', 'Super Admin', 'HR', 'Employee'] }, default: "Employee"

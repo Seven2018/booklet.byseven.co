@@ -1,67 +1,67 @@
-<div class="training-index-dashboard flex-row-between-centered">
-  <div class='training-index-list-dashboard-large' style='margin-top:5rem'>
-    <div class="dashboard-cards">
-      <div class='dashboard-label dashboard-label-green'>
-        <h3><strong><%= TrainingWorkshop.where(company_id: current_user.company_id).where('date > ?', Date.today).count %></strong></h3>
-        <h3>To Come</h3>
+<div class="dashboard-grid">
+  <div class="dashboard-navigation">
+    <div class="trainings-nav">
+     <ul class="nav nav-tabs-trainings">
+        <li role="presentation"><a href="#UpcomingAll" data-toggle="tab" class='active'>Upcoming</a></li>
+        <li role="presentation"><a href="#CompletedAll" data-toggle="tab">Completed</a></li>
+        <li role="presentation"><a href="#AllSessionsAll" data-toggle="tab">All</a></li>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="UpcomingAll">
+        <% @upcoming_sessions.each do |session| %>
+          <%= render 'dashboard_sessions_card', session: session %>
+        <% end %>
       </div>
-      <div class='dashboard-label dashboard-label-orange'>
-        <h3><strong><%= (TrainingWorkshop.where(company_id: current_user.company_id, workshop_type: 'Asynchronous').where('date <= ?', Date.today).where('available_date > ?', Date.today) + TrainingWorkshop.where(company_id: current_user.company_id).where(date: Date.today)).count %></strong></h3>
-        <h3>Pending</h3>
+      <div role="tabpanel" class="tab-pane" id="CompletedAll">
+        <% @past_sessions.each do |session| %>
+          <%= render 'dashboard_sessions_card', session: session %>
+        <% end %>
       </div>
-      <div class='dashboard-label dashboard-label-blue'>
-        <h3><strong><%= TrainingWorkshop.where(company_id: current_user.company_id).where('date < ?', Date.today).count %></strong></h3>
-        <h3>Completed</h3>
+      <div role="tabpanel" class="tab-pane" id="AllSessionsAll">
+        <% @all_sessions.each do |session| %>
+          <%= render 'dashboard_sessions_card', session: session %>
+        <% end %>
       </div>
     </div>
   </div>
-</div>
-<div class="training-index-dashboard">
-  <div class='catalogue-index-list'>
-    <h3 class='training-index-list-dashboard-title'>Trainings Overview</h3>
-    <% (Training.where(company_id: current_user.company_id) + TrainingWorkshop.where(company_id: current_user.company_id).order(date: :asc)).each do |element| %>
-      <% if (element&.instance_of? TrainingWorkshop) && element&.training_id.nil?%>
-        <%= link_to training_workshop_path(element) do %>
-          <div class='training-index-card'>
-            <% if element&.attendees.where(user_id: current_user.id, status: 'Invited').present? %>
-              <div class="training-card-calendar-indicator-orange"><i class="fas fa-circle"></i></div>
-            <% elsif element&.attendees.where(user_id: current_user.id, status: 'Registered').present? %>
-              <div class="training-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
-            <% end %>
-            <div class="training-index-infos-dashboard">
-              <h3>W</h3>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= element&.title %></p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <% if element&.starts_at.present? && element&.ends_at.present? %>
-                <p><%= "#{element&.date&.strftime('%d/%m/%Y')} | #{element&.starts_at&.strftime('%H:%M')} - #{element&.ends_at&.strftime('%H:%M')}" %></p>
-              <% else %>
-                <p><%= "#{element&.date&.strftime('%d/%m/%Y')}" %></p>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      <% elsif element.instance_of? Training %>
-        <%= link_to training_path(element) do %>
-          <div class='training-index-card'>
-            <% if element&.training_workshops.joins(:attendees).where(attendees: {user_id: current_user.id}).present? %>
-              <div class="training-card-calendar-indicator-green"><i class="fas fa-circle"></i></div>
-            <% end %>
-            <div class="training-index-infos-dashboard">
-              <h3>P</h3>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= element&.title %></p>
-            </div>
-            <div class="training-index-infos-dashboard">
-              <p><%= "Next workshop #{element&.next_date&.strftime('%d/%m/%Y')}" %></p>
-            </div>
-          </div>
+  <div class="dashboard-right-schedule">
+    <div class="dashboard-calendar">
+      <%= month_calendar(events: @all_sessions, attribute: :date) do |date, sessions| %>
+        <%= date.day %>
+        <% sessions.each do |session| %>
+          <%= session.content.title %>
         <% end %>
       <% end %>
-    <% end %>
+    </div>
+    <div class="schedule">
+      <div class="calendar-schedule">
+        <div class="schedule-title">Schedule</div>
+          <% Session.where(company_id: current_user.company_id).where("date >= ?", Date.today).order(date: :asc).each do |session| %>
+            <% content = session.content %>
+            <% if content.content_type == 'Synchronous' %>
+              <div class="calendar-schedule-card-sync">
+                <div class="calendar-card-date"><h2>18</h2></div>
+                <div class="calendar-card-info">
+                  <div class="calendar-card-title"><p><%= content.title %></p></div>
+                  <div class="calendar-card-time"><p>10:00 - 15:00</p>
+                    <div class="calendar-card-title-sessions"><p>1/4</p></div>
+                  </div>
+                </div>
+              </div>
+            <% elsif %>
+              <div class="calendar-schedule-card-async">
+                <div class="calendar-card-date"><h2>22</h2></div>
+                <div class="calendar-card-info">
+                  <div class="calendar-card-title"><p><%= content.title %></p></div>
+                  <div class="calendar-card-time"><p>15:00 - 18:00</p></div>
+                </div>
+                 <div class="calendar-card-title-sessions"><p></p></div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+     </div>
   </div>
 </div>
-

@@ -68,9 +68,9 @@
           <p><%= @host&.firstname %> has invited  you to the following training: <%= @training.title %></p>
           <%= link_to 'See details', training_url(@training) %>
         <% else %>
-          <p><%= @host&.firstname %> has invited you to the following workshop: <%= @attendee.training_workshop.title %></p>
-          <p><%= @attendee.training_workshop.date.strftime('%d/%m/%Y') %> | <%= @attendee.training_workshop.starts_at.strftime('%H:%M') %> - <%= @attendee.training_workshop.ends_at.strftime('%H:%M') %></p>
-          <%= link_to 'See details', training_workshop_url(@attendee.training_workshop) %>
+          <p><%= @host&.firstname %> has invited you to the following content: <%= @attendee.training_content.title %></p>
+          <p><%= @attendee.training_content.date.strftime('%d/%m/%Y') %> | <%= @attendee.training_content.starts_at.strftime('%H:%M') %> - <%= @attendee.training_content.ends_at.strftime('%H:%M') %></p>
+          <%= link_to 'See details', training_content_url(@attendee.training_content) %>
         <% end %>
         <p>Thank you and have a great day!</p>
       </div>

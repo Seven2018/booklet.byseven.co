@@ -1,0 +1,14 @@
+<% users.each do |user| %>
+  <div class='user-index-card-book' id="user-<%= user.id %>">
+    <div class="user-index-info-book">
+      <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser(this);'>
+      <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+    </div>
+    <div class="user-index-info-book">
+      <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
+    </div>
+    <div class="user-index-info-book">
+      <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+    </div>
+  </div>
+<% end %>

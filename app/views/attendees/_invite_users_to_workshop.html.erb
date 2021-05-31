@@ -3,12 +3,12 @@
     <div id="modal-title" style="display:flex;justify-content:center;text-align:center;">
       <h3 class="modal-title" id="myModalLabel">Invite Users</h3>
     </div>
-    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody" style='display:flex;flex-direction:column;align-items:center;'>
-    <%= simple_form_for :invite, url: invite_to_workshop_attendees_path(training_workshop_id: "#{training_workshop.id}") do |f| %>
+    <%= simple_form_for :invite, url: invite_to_content_attendees_path(training_content_id: "#{training_content.id}") do |f| %>
       <div>
-        <%= collection_check_boxes(:training_workshop, :team_ids, @teams.order(team_name: :asc), :id, :team_name) do |b| %>
+        <%= collection_check_boxes(:training_content, :team_ids, @teams.order(team_name: :asc), :id, :team_name) do |b| %>
           <% team = @teams.find_by(team_name: b.text) %>
           <div class="invite-form-team">
             <div class="invite-form-team-name flex-row-between-centered">
@@ -18,9 +18,9 @@
               <a class="simple-form-toggle-collapse"><i class="fas fa-angle-down"></i></a>
             </div>
             <div class="invite-form-users-list">
-              <%= collection_check_boxes(:training_workshop, :user_ids, User.joins(:user_teams).where(company_id: current_user.company_id, user_teams: {team_id: team.id}).order(lastname: :asc), :id, :fullname) do |c| %>
+              <%= collection_check_boxes(:training_content, :user_ids, User.joins(:user_teams).where(company_id: current_user.company_id, user_teams: {team_id: team.id}).order(lastname: :asc), :id, :fullname) do |c| %>
                 <% user = @users.find_by(firstname: c.text.split(' ').first, lastname: c.text.split(' ')[1..-1].join(' ')) %>
-                <% user_status = Attendee.find_by(user_id: user.id, training_workshop_id: @training_workshop.id)&.status %>
+                <% user_status = Attendee.find_by(user_id: user.id, training_content_id: @training_content.id)&.status %>
                 <%= c.label class: 'label-checkbox', style: 'color:black;' do %>
                   <%= c.check_box + c.text %>
                   <% if user_status.present? %>
@@ -59,7 +59,7 @@
         })
       </script>
       <div style="display:flex;justify-content:center;margin-top:30px;">
-        <%= button_tag :submit, name: 'status', value: "Invited", class: 'btn btn-edit btn-edit-icon' do %>
+        <%= button_tag :submit, name: 'status', value: "Invited", class: 'btn btn-edit btn-icon' do %>
           <i class="fas fa-user-clock"></i>
         <% end %>
       </div>

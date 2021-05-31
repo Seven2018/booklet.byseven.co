@@ -3,13 +3,13 @@
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
       <h3 class="modal-title" id="myModalLabel">New module</h3>
     </div>
-    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
-    <% if @workshop.present? %>
-      <%= simple_form_for WorkshopMod.new do |f| %>
+    <% if @content.present? %>
+      <%= simple_form_for ContentMod.new do |f| %>
         <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
-          <%= collection_check_boxes(:workshop, :mod_ids, Mod.where(company_id: current_user.company_id), :id, :title) do |b| %>
+          <%= collection_check_boxes(:content, :mod_ids, Mod.where(company_id: current_user.company_id), :id, :title) do |b| %>
             <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
               <%= b.check_box + b.text %>
             <% end %>
@@ -22,15 +22,15 @@
           });
         </script>
         <div style="display:flex;justify-content:center;margin-top:30px;">
-            <%= button_tag :submit, name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green ' do %>
+            <%= button_tag :submit, name: 'content_id', value: "#{@content.id}", class: 'btn btn-edit-green ' do %>
               <p><b>SAVE</b> <i class="fas fa-save"></i></p>
             <% end %>
         </div>
       <% end %>
-    <% elsif @training_workshop.present? %>
-      <%= simple_form_for TrainingWorkshopMod.new do |f| %>
+    <% elsif @training_content.present? %>
+      <%= simple_form_for SessionMod.new do |f| %>
         <div id='checkbox3' style=" display:flex;justify-content:space-between;flex-direction:column;">
-          <%= collection_check_boxes(:training_workshop, :mod_ids, Mod.where(company_id: current_user.company_id), :id, :title) do |b| %>
+          <%= collection_check_boxes(:training_content, :mod_ids, Mod.where(company_id: current_user.company_id), :id, :title) do |b| %>
             <%= b.label class: 'label-checkbox', style: 'color:black;' do %>
               <%= b.check_box + b.text %>
             <% end %>
@@ -43,7 +43,7 @@
           });
         </script>
         <div style="display:flex;justify-content:center;margin-top:30px;">
-          <%= button_tag :submit, name: 'training_workshop_id', value: "#{@training_workshop.id}", class: 'btn btn-edit-green ' do %>
+          <%= button_tag :submit, name: 'training_content_id', value: "#{@training_content.id}", class: 'btn btn-edit-green ' do %>
             <p><b>SAVE</b><i class="fas fa-save"></i></p>
           <% end %>
         </div>

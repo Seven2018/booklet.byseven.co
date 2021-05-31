@@ -23,8 +23,8 @@
     <%= f.input :hire_date, as: :date, label: 'Hire date', start_year: Date.today.year - 70,
                             end_year: Date.today.year %>
     <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
-      <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
-        <i class="fas fa-save"></i>
+      <%= button_tag type: 'submit', class: 'btn-orange' do %>
+        <p>Save</p>
       <% end %>
     </div>
   <% end %>

@@ -1,0 +1,56 @@
+<% contents.each do |content| %>
+  <div class="card-interest-book draggable" id="content-<%= content.id %>" draggable='true' ondragend="removeGhost();dragRaceEnd(this);" ondragstart="dragRaceStart(this);">
+    <div class="card-interest-left">
+    <div class="catalogue-content-card-left-book">
+      <div>
+        <% if content.title.length > 35 %>
+          <h3><b><%= content.title.first(35)+'...' %></b></h3>
+        <% else %>
+          <h3><b><%= content.title %></b></h3>
+        <% end %>
+        <p><%= content.duration %> Minutes</p>
+        <div class="card-content-description">
+        <% if content.description.present? %>
+          <% if content.description.to_plain_text.length >= (100) %>
+            <p><%= content.description.to_plain_text.first(100) + '...' %></p>
+          <% else %>
+            <p><%= content.description.to_plain_text.first(100) %></p>
+          <% end %>
+        <% end %>
+        </div>
+        <div class="catalogue-content-card-categories">
+          <% content.categories.order(title: :asc).each do |category| %>
+            <p><%= category.title %></p>
+          <% end %>
+        </div>
+      </div>
+      <div class="type-icon">
+        <% if content.content_type == 'Synchronous' %>
+          <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+        <% else %>
+          <i class="fas fa-laptop" style='color:black;'></i>
+        <% end %>
+      </div>
+    </div>
+    <% if content.content_type == 'Synchronous' %>
+      <div class="catalogue-content-card-right-syn-book">
+    <% else %>
+      <div class="catalogue-content-card-right-asyn-book">
+    <% end %>
+        <div class="catalogue-content-card-right-interest">
+          <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
+          <% if interest.present? %>
+            <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
+              <i class="fas fa-heart"></i>
+            <% end %>
+          <% else %>
+            <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
+              <i class="far fa-heart"></i>
+            <% end %>
+          <% end %>
+          <p><%= content.interested.count %> Interested</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

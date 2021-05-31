@@ -6,24 +6,23 @@ html {
 
 body {
   margin: 0 auto;
-  max-width: 1440px;
+  // max-width: 1440px;
   min-height: 100%;
   padding: 0 !important;
+  background-color: #f7f7f7;
 }
 
 #booklet-wrapper {}
 
 #booklet-container {
   margin: 0;
+  width: auto;
   padding: 0 1rem 1rem 1rem;
-  position: relative;
   background-color: #f7f7f7;
-  border-radius: 10px;
   min-height: calc(100vh - 110px);
   overflow: hidden;
   transition: all 0.25s ease-in-out;
   @include from-medium-high {
-    margin: 0 3rem 3rem 6rem;
     padding: 0 3rem 3rem 3rem;
   }
 }
@@ -75,6 +74,10 @@ body {
   border-radius: 20px;
   background-color: #F7F7F7;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+  @include from-medium {
+  background-color: transparent;
+  box-shadow: none;
+  }
 }
 
 #container-new {
@@ -116,6 +119,24 @@ body {
   h3 {
     margin-bottom: 0;
     margin-right: 5rem;
+  }
+
+  .index-controls-buttons {
+
+    & > div {
+      margin-left: 1rem;
+    }
+
+    .dropdown-menu {
+      min-width: 15rem;
+    }
+  }
+
+  .index-controls-create-content {
+
+    .form-group {
+      margin: 0;
+    }
   }
 }
 
@@ -167,6 +188,12 @@ body {
 .flex-row-start-centered {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+}
+
+.flex-row-end-centered {
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
 }
 

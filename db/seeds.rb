@@ -1,7 +1,5 @@
 puts 'Cleaning database...'
 Company.destroy_all
-Training.destroy_all
-TrainingProgram.destroy_all
 User.destroy_all
 Category.destroy_all
 Skill.destroy_all
@@ -20,16 +18,12 @@ User.create(firstname: "Marjorie", lastname: "Buisson", company_id: 2, email: "m
 
 #Tag.create(tag_name: 'Tag SEVEN', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBnUro-wUXAyxHcFgUpyE3mYacHTifjn1-7dxonThmaWdMOoq8Mw&s', company_id: 1)
 
-#Category.create(title: 'Négociation', description: "L'art de calmer sa femme.", company_id: 1)
-#Category.create(title: 'Business Development', description: "L'art de trouver des clients.", company_id: 1)
+Category.create(title: 'Négociation', company_id: 1)
+Category.create(title: 'Business Development', company_id: 1)
 
-#TrainingProgram.create(title: 'Négociation', company_id: 1, description: 'Apprendre à négocier en finesse.', participant_number: 10, image: 'https://images.unsplash.com/photo-1467664631004-58beab1ece0d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80', author_id: 2)
+#Content.create(title: 'Trust Challenge', company_id: 1, duration: 60, content_type: 'Synchronous', description: 'Blah blahblah', image: 'https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80', author_id: 2)
+#Content.create(title: 'Intelligence économique', company_id: 1, duration: 90, content_type: 'Asynchronous', description: 'Analyse et influence', image: 'https://images.unsplash.com/photo-1507007246334-2a2ec227f2e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80', author_id: 2)
 
-#Workshop.create(title: 'Trust Challenge', company_id: 1, duration: 60, workshop_type: 'Synchronous', description: 'Blah blahblah', image: 'https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80', author_id: 2)
-#Workshop.create(title: 'Intelligence économique', company_id: 1, duration: 90, workshop_type: 'Asynchronous', description: 'Analyse et influence', image: 'https://images.unsplash.com/photo-1507007246334-2a2ec227f2e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80', author_id: 2)
-
-#ProgramWorkshop.create(training_program_id: 1, workshop_id: 1, position: 1)
-#ProgramWorkshop.create(training_program_id: 1, workshop_id: 2, position: 2)
 
 #SkillGroup.create(title: 'Code')
 #SkillGroup.create(title: 'Sales')

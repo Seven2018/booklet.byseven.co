@@ -1,0 +1,25 @@
+class SessionPolicy < ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      if ['Super Admin', 'Admin', 'HR', 'Employee'].include? user.access_level
+        scope.all
+      else
+        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
+      end
+    end
+  end
+
+  def book_sessions?
+    check_access_hr
+  end
+
+  def book_sessions_update?
+    check_access_hr
+  end
+
+  private
+
+  def check_access_hr
+    ['Super Admin', 'Admin', 'HR'].include? user.access_level
+  end
+end

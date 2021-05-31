@@ -1,0 +1,22 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Add text to <%= @content.title %></h3>
+    </div>
+  </div>
+  <div class="modal-body" id="modalNewBookinBody">
+    <%= simple_form_for Mod.new, remote: true do |f| %>
+      <%= f.hidden_field :content_id, value: @content.id %>
+      <%= f.hidden_field :mod_type, value: 'video' %>
+      <%= f.input :title, placeholder: 'Title', label: false %>
+      <%= f.input :video, placeholder: 'Youtube URL', label: false %>
+      <%= f.submit '', class: 'hidden-submit hidden' %>
+      <div class="cancel-submit-btns">
+        <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <button class="btn-orange" onclick="closeModalOnSubmit(this);">
+          <p>Add Video</p>
+        </button>
+      </div>
+      <% end %>
+  </div>
+</div>

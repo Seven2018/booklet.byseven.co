@@ -5,47 +5,92 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-    @my_trainings = Training.includes(:training_workshops).joins(training_workshops: :attendees).where(attendees: {user_id: current_user.id, status: 'Registered'}).where.not('date < ?', Date.today).uniq
-    @completed_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Completed'})
-    @my_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Registered'}).where.not('date < ?', Date.today)
+    @my_past_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where('date < ?', Date.today).order(date: :desc)
+    @my_upcoming_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where('date >= ?', Date.today).order(date: :asc)
+    @all_my_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).order(date: :asc)
     if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
-      @available_workshops = TrainingWorkshop.joins(:workshop).where(training_id: nil, workshops: {company_id: current_user.company_id}).where.not(date: nil).where.not('date < ?', Date.today) - @my_workshops
-      @available_trainings = Training.where(company_id: current_user.company_id) - @my_trainings
-    else
-      @available_workshops = TrainingWorkshop.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).where.not('date < ?', Date.today)
-      @available_trainings = Training.includes(:training_workshops).joins(training_workshops: :attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).where.not('date < ?', Date.today).uniq
+      @past_sessions = Session.where(company_id: current_user.company_id).where('date < ?', Date.today).order(date: :desc)
+      @upcoming_sessions = Session.where(company_id: current_user.company_id).where('date >= ?', Date.today).order(date: :asc)
+      @all_sessions = Session.where(company_id: current_user.company_id).order(date: :desc)
     end
   end
 
   def calendar_month
-    @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
+    @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
   end
 
   def calendar_week
-    @workshops = TrainingWorkshop.joins(:workshop).where(workshops: {company_id: current_user.company_id})
+    @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
   end
 
   def catalogue
+    if params[:filter].present?
+      if params[:filter][:themes].split(',').uniq.present?
+        @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter][:themes].split(',')}).order(title: :asc).uniq
+      else
+        @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+      end
+      respond_to do |format|
+        format.html {catalogue_path}
+        format.js
+      end
     # Index with 'search' option and global visibility for SEVEN Users
-    if current_user.access_level == 'Super Admin'
-      @training_programs = TrainingProgram.all.order(title: :asc)
-      @workshops = Workshop.all.order(title: :asc)
-      if params[:search]
-        @training_programs = ((TrainingProgram.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)) + (TrainingProgram.joins(program_workshops: :workshop).where("lower(workshops.title) LIKE ?", "%#{params[:search][:title].downcase}%"))).flatten(1).uniq
-        @workshops = Workshop.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
-      elsif params[:filter]
-        @training_programs = TrainingProgram.joins(workshops: :workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
-        @workshops = Workshop.joins(:workshop_categories).where(workshop_categories: {category_id: params[:filter].map(&:to_i)}).order(title: :asc)
+    elsif current_user.access_level == 'Super Admin'
+      @contents = Content.all.order(title: :asc)
+      if params[:search].present?
+        @contents = Content.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+        respond_to do |format|
+          format.html {catalogue_path}
+          format.js
+        end
       end
     # Index for other Users, with visibility limited to programs proposed by their company only
     else
-      @training_programs = TrainingProgram.joins(:company).where(companies: { name: current_user.company.name }).order(title: :asc)
-      @workshops = Workshop.where(company_id: current_user.company.id).order(title: :asc)
-      if params[:search]
-        @training_programs = @training_programs.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+      @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
+      if params[:search].present?
+        @contents = Content.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+        respond_to do |format|
+          format.html {catalogue_path}
+          format.js
+        end
       end
     end
-    @training = Training.new
+  end
+
+  def catalogue_content_link_category
+    skip_authorization
+    if params[:new_category].present?
+      Category.create(company_id: current_user.company_id, title: params[:new_category][:title])
+      @content = Content.find(params[:new_category][:content_id])
+      @modal = 'true'
+    elsif params[:delete].present?
+      Category.find(params[:category_id]).destroy
+      @content = Content.find(params[:content_id])
+      @modal = 'true'
+    elsif params[:add_categories].present?
+      @action = params[:add_categories][:page]
+      @content = Content.find(params[:add_categories][:content_id])
+      ids = params[:content][:categories].reject{|x| x.empty?}
+      ids.each do |category_id|
+        unless ContentCategory.find_by(content_id: @content.id, category_id: category_id).present?
+          ContentCategory.create(content_id: @content.id, category_id: category_id)
+        end
+      end
+      ContentCategory.where(content_id: @content.id).where.not(category_id: ids).each do |content_category|
+        content_category.destroy
+      end
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def catalogue_filter_add_category
+    skip_authorization
+    params[:categories].present? ? @filtered_themes = Category.where(id: (params[:categories].split(',') + params[:category_id].split())) : @filtered_themes = Category.where(id: params[:category_id])
+    respond_to do |format|
+      format.js
+    end
   end
 
   def organisation
@@ -53,61 +98,43 @@ class PagesController < ApplicationController
     index_function(User.all)
     # Index for other Users, with visibility limited to programs proposed by their company only
     @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
-  end
-
-  def catalogue_filter_workshop
-    @workshop_categories = params[:workshop][:category_ids].drop(1).map(&:to_i)
-    @workshop_categories = Category.where(company_id: current_user.company_id).map(&:id) if params[:filter][:all] == '1'
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-
-  def catalogue_filter_program
-    if params[:filter][:all] == '1'
-      @program_categories = Category.where(company_id: current_user.company_id).map(&:id)
-    else
-      @program_categories = params[:training_program][:category_ids].drop(1).map(&:to_i)
-    end
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-
-  %w(catalogue_workshops_title_order_asc catalogue_workshops_title_order_desc catalogue_workshops_type_order_asc catalogue_workshops_type_order_desc catalogue_workshops_duration_order_asc catalogue_workshops_duration_order_desc ).each do |name|
-    def name
-      respond_to do |format|
-        format.html {redirect_to catalogue_path}
-        format.js
+    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+    if params[:add_tags].present?
+      users = User.where(id: params[:add_tags][:users].split(','))
+      tags = Tag.where(tag_name: params[:add_tags][:tag].reject(&:blank?))
+      users.each do |user|
+        tags.each do |tag|
+          UserTag.create(user_id: user.id, tag_id: tag.id)
+        end
       end
     end
-  end
-
-  def catalogue_programs_title_order_asc
     respond_to do |format|
-      format.html {redirect_to catalogue_path}
+      format.html {organisation_path}
       format.js
     end
   end
 
-  def catalogue_programs_title_order_desc
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
+  def book
+    index_function(User.all)
+    if params[:filter_content].present?
+      if params[:filter_content][:themes].split(',').uniq.present?
+        @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter_content][:themes].split(',')}).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc).uniq
+      else
+        @contents = Content.where(company_id: current_user.company_id).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc)
+      end
+      @filter = 'content'
+      @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
+    elsif params[:filter_user].present?
+      @filter = 'user'
+      @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+      @selected_contents = []
+    elsif params[:confirm].present?
+      @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
+    else
+      @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
     end
-  end
-def catalogue_programs_duration_order_asc
     respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-
-  def catalogue_programs_duration_order_desc
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
+      format.html
       format.js
     end
   end
@@ -117,21 +144,65 @@ def catalogue_programs_duration_order_asc
   def index_function(parameter)
     if ['Super Admin', 'HR'].include?(current_user.access_level)
       if params[:search].present?
-        @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
+        if params[:filter_user][:themes].split(',').uniq.present?
+          @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
+        else
+          @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
+        end
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
-      elsif params[:filter].present? && (params[:filter][:job] != [""] || params[:filter][:tag].reject{|x|x.empty?} != [])
-        tags = Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}
-        if params[:filter][:job] != [""]
-          if tags.present?
-            @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?), user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+      elsif params[:filter_user].present? && (params[:filter_user][:job] != [""] || params[:filter_user][:tag].reject{|x|x.empty?} != [])
+        # tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?)).map{|x| x.id}
+        tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?))
+        tags_hash = {}
+        tags.each do |tag|
+          if tags_hash[tag.tag_category_id].present?
+            tags_hash[tag.tag_category_id] << tag
           else
-            @users = (parameter.where(company_id: current_user.company_id, job_description: params[:filter][:job].reject(&:blank?)))
+            tags_hash[tag.tag_category_id] = [tag]
+          end
+        end
+        if params[:filter_user][:job] != [""] && params[:filter_user][:job].present?
+          if tags.present?
+            @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_title: params[:filter_user][:job].reject(&:blank?), user_tags: {tag_id: tags}).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).uniq)
+          else
+            @users = (parameter.where(company_id: current_user.company_id, job_title: params[:filter_user][:job].reject(&:blank?)).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc))
+          end
+        elsif tags.empty?
+          if params[:filter_user][:selected].present?
+            @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          else
+            @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
           end
         else
-          @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}).uniq)
+          if params[:filter_user][:selected].present?
+            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          else
+            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).order(lastname: :asc)
+          end
+          tags_hash.each do |key, value|
+            @users = @users.select{|x| (x.tags & value).present?}.uniq
+          end
+          @users = @users.uniq
+        end
+        @filter_jobs = params[:filter_user][:job].reject{|c| c.empty?}
+        @filter_tags = params[:filter_user][:tag].reject{|c| c.empty?}
+      elsif params[:order].present?
+        if params[:order] == 'tag_category'
+          params[:mode] == 'asc' ? @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :asc)) : @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :desc))
+          @users = (@users + User.where(company_id: current_user.company.id).order(lastname: :asc)).uniq
+        else
+          params[:mode] == 'asc' ? @users = User.where(id: params[:users].split(',')).order(params[:order]) : @users = User.where(id: params[:users].split(',')).order(params[:order]).reverse
         end
       else
-        @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')
+        if params[:filter_user].present?
+          if params[:filter_user][:selected].present?
+            @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          else
+            @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
+          end
+        else
+          @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
+        end
       end
     end
   end

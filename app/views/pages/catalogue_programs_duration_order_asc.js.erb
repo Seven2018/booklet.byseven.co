@@ -1,1 +1,0 @@
-document.getElementById('Programs').innerHTML = '<%= j (render("pages/catalogue_programs", training_programs: TrainingProgram.where(company_id: current_user.company_id).sort_by(&:duration)) %>';

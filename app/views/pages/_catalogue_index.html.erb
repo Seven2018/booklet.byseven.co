@@ -1,0 +1,5 @@
+<% contents.each do |content| %>
+  <div class="catalogue-content-card" id="content-<%= content.id %>">
+    <%= render 'pages/catalogue_content_card', content: content, contents: contents %>
+  </div>
+<% end %>

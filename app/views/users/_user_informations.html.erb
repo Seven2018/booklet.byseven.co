@@ -1,0 +1,57 @@
+<p><b>Personal Info</b></p>
+<div class="user-access">
+  <p><i class="fas fa-universal-access"></i> <%=  user.access_level %></p>
+</div>
+<div class="user-work-info">
+    <p> <i class="fas fa-briefcase"></i> <%= user.company.name %></p>
+  <div class="user-job">
+    <% if user.job_title.present? %>
+      <p class="data" id='job' onclick='openForm(this)'><%=  user.job_title if user.job_title.present? %></p>
+    <% else %>
+      <p class="data" id='job' onclick='openForm(this)'>Job Title</p>
+    <% end %>
+    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'job'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+      <%= f.input :job_title, label: false, input_html: {value: user.job_title} %>
+      <%= button_tag :submit, class: 'hidden-submit' do %>
+        <i class="fas fa-save"></i>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="user-hire">
+    <% if user.hire_date.present? %>
+      <p class="data" id='hire_date' onclick='openForm(this)'> <%=  user.hire_date %></p>
+    <% else %>
+      <p class="data" id='birth_date' onclick='openForm(this)'>Hire Date</p>
+    <% end %>
+    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'hire_date'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+      <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, value: user.hire_date %>
+      <%= button_tag :submit, class: 'hidden-submit' do %>
+            <i class="fas fa-save"></i>
+          <% end %>
+    <% end %>
+  </div>
+</div>
+<div class="user-birth">
+  <i class="fas fa-birthday-cake"></i>
+  <% if user.birth_date.present? %>
+    <p class="data" id='birth_date' onclick='openForm(this)'><%=  user&.birth_date %></p>
+  <% else %>
+    <p class="data" id='birth_date' onclick='openForm(this)'>Birth Date</p>
+  <% end %>
+  <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'birth_date'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+    <%= f.input :birth_date, label: false, input_html: {class: 'datepicker'}, value: user.birth_date %>
+    <%= button_tag :submit, class: 'hidden-submit' do %>
+      <i class="fas fa-save"></i>
+    <% end %>
+  <% end %>
+</div>
+<div class="user-tags">
+  <i class="fas fa-user-tag"></i>
+  <% user.tags.each do |tag| %>
+  <% if tag.tag_name.present? %>
+    <div class='user-tag-name'><p><%= tag.tag_name %></p></div>
+  <% else %>
+    <p>No associated tags</p>
+  <% end %>
+  <% end %>
+</div>

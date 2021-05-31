@@ -1,6 +1,4 @@
 class Category < ApplicationRecord
-  has_many :workshop_categories, dependent: :destroy
-  has_many :workshops, through: :workshop_categories
-  has_many :program_categories, dependent: :destroy
-  has_many :training_programs, through: :program_categories
+  has_many :content_categories, dependent: :destroy
+  has_many :contents, through: :content_categories
 end

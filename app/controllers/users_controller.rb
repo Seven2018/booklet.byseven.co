@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
   before_action :set_current_user, only: [:import, :create]
+  skip_before_action :verify_authenticity_token, only: [:update]
 
   def index
     # Index with 'search' option and global visibility for SEVEN Users
-    raise
     index_function(policy_scope(User))
     # Index for other Users, with visibility limited to programs proposed by their company only
     if current_user.access_level == 'HR'
@@ -13,7 +13,6 @@ class UsersController < ApplicationController
         @Tags = @Tags.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc)
       end
     end
-    @training = Training.new
   end
 
   def show
@@ -61,16 +60,25 @@ class UsersController < ApplicationController
   def update
     authorize @user
     @user.update(user_params)
-    tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
-    del_tags = Tag.where(company_id: current_user.id).map(&:id) - tags
+    if params[:user][:tags].present?
+      tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
+      del_tags = Tag.where(company_id: current_user.id).map(&:id) - tags
+    end
     if @user.save
-      tags.each do |tag|
-        UserTag.create(user_id: @user.id, tag_id: tag)
-        UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
+      if tags.present?
+        tags.each do |tag|
+          UserTag.create(user_id: @user.id, tag_id: tag)
+          UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
+        end
       end
-      redirect_to user_path(@user)
-    else
-      render "_edit"
+      respond_to do |format|
+        if params[:page] != 'show'
+          format.html {redirect_to user_path(@user)}
+        else
+          format.html {redirect_to user_path(@user)}
+          format.js
+        end
+      end
     end
   end
 
@@ -93,29 +101,17 @@ class UsersController < ApplicationController
     end
   end
 
-  # Allows to scrape data from the current user Linkedin profile
-  # def linkedin_scrape
-  #   skip_authorization
-  #   oauth = LinkedIn::OAuth2.new
-  #   url = oauth.auth_code_url
-  #   redirect_to "#{url}"
-  # end
-
-  # def linkedin_scrape_callback
-  #   skip_authorization
-  #   oauth = LinkedIn::OAuth2.new
-  #   code = params[:code]
-  #   access_token = oauth.get_access_token(code)
-  #   api = LinkedIn::API.new(access_token)
-  #   client = RestClient
-  #   # Updates User picture with his(her) Linkedin profile picture.
-  #   url = 'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))'
-  #   res = RestClient.get(url, Authorization: "Bearer #{access_token.token}")
-  #   picture_url = res.body.split('"').select{ |i| i[/https:\/\/media\.licdn\.com\/dms\/image\/.*/]}.last
-  #   current_user.update(picture: picture_url)
-
-  #   redirect_to user_path(current_user)
-  # end
+  def users_search
+    skip_authorization
+    @users = User.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
+    respond_to do |format|
+      format.html{}
+      format.json {
+        # render json: @users
+        @users = @users.limit(5)
+      }
+    end
+  end
 
   private
 
@@ -128,7 +124,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:firstname, :lastname, :email, :password, :access_level, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_description, :company_id)
+    params.require(:user).permit(:firstname, :lastname, :email, :password, :access_level, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_title, :company_id)
   end
 
   def index_function(parameter)

@@ -6,10 +6,9 @@
   i {
     font-size: 1.4rem;
   }
-}
-
-input.btn {
-  // margin-bottom: 1.0rem !important;
+  &:hover {
+    opacity: 65%;
+  }
 }
 
 .btn {
@@ -21,79 +20,177 @@ input.btn {
   }
 }
 
-.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange, .btn-edit-blue, .btn-invite-users {
+.btn-white {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: auto;
-  max-width: none;
-  padding: 0.45rem 2rem;
-  border-radius: 0.22rem;
-  box-sizing: border-box;
-  font-weight: 800 !important;
-  text-align: center;
-  transition: all 0.1s;
-  outline: none !important;
-  margin-right: 0.5rem;
-  color: white !important;
+  padding: 0 1rem;
+  height: 4rem;
+  background-color: white;
+  border-radius: 4px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 
-  a {
-    color: white !important;
+  i, p {
+    color: #F26419;
   }
 
   i {
+    margin-right: 1rem;
+  }
+
+  &:hover {
+    background-color: #F26419;
+
+    i, p {
+      color: white;
+    }
+  }
+}
+
+.btn-orange {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  padding: 0 1rem;
+  height: 4rem;
+  background-color: #F26419;
+  border-radius: 4px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+
+  i, p, a {
+    color: white !important;
+    transition: all .25s ease-in-out;
+    font-weight: 500;
+    font-size: 1.3rem;
+    font-weight: 600 !important;
+    line-height: 27px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  i {
+    margin-right: 1rem;
+  }
+
+  &:hover {
+    opacity: 75%;
+
+    i, p {
+      color: white !important;
+    }
+  }
+  @include from-medium {
+    p {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.btn-orange-text {
+  color: #F26419 !important;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background-color: transparent;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  margin-right:5px;
+  &:hover {
+    padding: .5rem 1rem;
+    border-radius: 4px;
+    background-color: #E5E5E5;
+  }
+  @include from-medium {
+    p {
+      font-size: 1.6rem !important;
+    }
+  }
+}
+
+.btn-text-white {
+  color: black !important;
+  font-size: 1.6rem;
+  background-color: transparent;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  margin-right:5px;
+  i {
+    margin-right: 5px;
+    color: black !important;
+  }
+  &:hover {
+    padding: .5rem 1rem;
+    border-radius: 4px;
+    background-color: #E5E5E5;
+  }
+  @include from-medium {
+    p {
+      font-size: 1.6rem !important;
+    }
+  }
+}
+
+.btn-white-border {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  padding: 0 1rem;
+  height: 4rem;
+  background-color: white;
+  border-radius: 4px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border: 1px solid #F26419;
+
+  i, p, h4 {
+    color: #F26419;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 1.6rem !important;
+  }
+  i {
+    margin-right: 1rem;
+  }
+
+  &:hover {
+    background-color: #F26419;
+    border: 1px solid #F26419;
+
+
+    i, p, h4 {
+      color: white;
+    }
+  }
+}
+
+
+.btn-white.flashing_button {
+  -webkit-animation: glowing 1300ms infinite;
+  -moz-animation: glowing 1300ms infinite;
+  -o-animation: glowing 1300ms infinite;
+  animation: glowing 1300ms infinite;
+
+  i, p {
     color: white;
   }
-
-  &:hover, &:hover:enabled{
-    opacity: 0.8;
-    text-decoration: none !important;
-    color: white !important;
-  }
 }
 
-.btn-edit-white {
-  opacity: 0.8;
-  width: auto;
-  max-width: none;
-  padding: 0.45rem 2rem;
-  border-radius: 0.22rem;
-  box-sizing: border-box;
-  font-weight: 800 !important;
-  text-align: center;
-  transition: all 0.1s;
-  outline: none !important;
-  margin-right: 0.5rem;
-
-  &:hover, &:hover:enabled{
-    opacity: 1;
-    text-decoration: none !important;
-  }
-}
-
-.btn-edit, .btn-edit-red, .btn-edit-green, .btn-edit-grey, .btn-edit-orange {
-  color: white;
-}
-
-.btn-edit {
-  background-color: #E9C46A !important;
-}
-
-.btn-edit-red {
-  background-color: #E76F51!important;
-}
-
-.btn-edit-green {
-  background-color: #8FA078 !important;
-  p {
-    font-weight: 700 !important;
-  }
-
-}
-
-.btn-edit-blue {
-  background-color: #779DBF !important;
-}
-
-.btn-edit-grey {
-  background-color: #23282E !important;
+@keyframes glowing {
+  0% { background-color: #F26419; box-shadow: 0 0 3px #F26419; }
+  50% { background-color: #F26419; box-shadow: 0 0 10px #F26419; }
+  100% { background-color: #F26419; box-shadow: 0 0 3px #F26419; }
 }
 
 .btn-edit-orange {
@@ -119,12 +216,13 @@ input.btn {
 
 .btn-sign-in {
   height: 40px;
-  background-color: $yellow !important;
+  background-color: #F26419 !important;
+  color: white !important;
   border-radius: 2px;
   box-shadow: 0 3px 4px 0 rgba(0,0,0,.25);
 }
 
-.btn-edit-icon {
+.btn-icon {
   height: 4rem;
   width: 4rem;
   display: flex;
@@ -133,14 +231,12 @@ input.btn {
   padding: 0 !important;
   min-width: 0 !important;
 
-  &::after {
-    z-index: 100;
+  i {
+    margin: 0;
   }
 }
 
-
-
-.btn-edit-icon-small {
+.btn-icon-small {
   height: 2rem;
   width: 2rem;
   display: flex;
@@ -175,10 +271,10 @@ input.btn {
   box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302),0 1px 3px 1px rgba(60,64,67,0.149);
   width: 115px;
   height: 35px;
-  margin: 0 2.4rem;
+  margin: 0;
   background-color: #F26419;
 
-  p {
+  a {
     font-size: 2rem !important;
     color: white;
   }
@@ -192,10 +288,13 @@ input.btn {
   &:hover, &:focus {
     background-color: #F8D9C8 !important;
 
-    i, p {
+    i, a {
       // color: black !important;
       color: #F26419 !important;
     }
+  }
+  @include from-medium-high {
+      margin: 0 2.4rem;
   }
 }
 
@@ -226,6 +325,9 @@ input.btn {
 button {
   border-color: transparent;
   color: #F26419 !important;
+  p {
+    color: white !important;
+  }
 }
 
 #mod-create-assessment-button {
@@ -284,4 +386,30 @@ button {
   i {
     color:#8C8B8A;
   }
+  &:hover {
+    opacity: 65%;
+  }
+}
+
+.btn-icon-grey {
+  background-color: transparent;
+  margin-bottom: 8px;
+  &:hover {
+    opacity: 65%
+  }
+  i {
+    color:#8C8B8A;
+  }
+}
+
+
+.cancel-submit-btns {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 20px;
+}
+
+button {
+  background-color: transparent;
 }

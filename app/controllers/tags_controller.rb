@@ -10,9 +10,17 @@ class TagsController < ApplicationController
     authorize @tag
     @tag.company_id = current_user.company_id
     if @tag.save
-      redirect_back(fallback_location: root_path)
-    else
-      raise
+      @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+      @users = User.where(id: params[:tag][:users].split(' '))
+      @opened = params[:button]
+      if params[:ajax].present?
+        respond_to do |format|
+          format.html {redirect_to organisation_path}
+          format.js
+        end
+      else
+        redirect_back(fallback_location: root_path)
+      end
     end
   end
 
@@ -24,6 +32,19 @@ class TagsController < ApplicationController
       redirect_to tag_path(@tag)
     else
       raise
+    end
+  end
+
+  def delete_tag
+    @tag = Tag.find(params[:tag][:id])
+    authorize @tag
+    @tag.destroy
+    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+    @users = User.where(id: params[:tag][:users].split(' '))
+    @opened = params[:button]
+    respond_to do |format|
+      format.html {redirect_to organisation_path}
+      format.js
     end
   end
 

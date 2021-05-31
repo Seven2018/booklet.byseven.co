@@ -3,40 +3,39 @@
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
       <h3 class="modal-title" id="myModalLabel">Add a new user</h3>
     </div>
-    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body">
-    <%= simple_form_for User.new do |f| %>
-      <%= f.input :firstname %>
-      <%= f.input :lastname %>
-      <%= f.input :email %>
-      <%= f.input :password %>
+    <%= simple_form_for User.new, class:'form-group' do |f| %>
+      <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
+      <%= f.input :lastname, label: 'Last Name:', class:'form-control' %>
+      <%= f.input :email, label: 'Email:', class:'form-control' %>
       <% if current_user.access_level == 'Super Admin' %>
-        <%= f.input :access_level, collection: ['Super Admin', 'Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
+        <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
       <% elsif current_user.access_level == 'Admin' %>
-        <%= f.input :access_level, collection: ['Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
+        <%= f.input :access_level, label: 'Access Level:', collection: ['Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
       <% elsif current_user.access_level == 'HR' %>
-        <%= f.input :access_level, collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
+        <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
       <% end %>
       <% if current_user.access_level == 'Super Admin' %>
-        <%= f.association :company, collection: Company.all, include_blank: false, label: 'Company' %>
+        <%= f.input :company, collection: Company.all, include_blank: false, label: 'Company:' %>
       <% end %>
-      <%= f.input :phone_number, label: 'Phone number' %>
-      <%= f.input :linkedin, label: 'Linkedin (url)' %>
-      <%= f.input :birth_date, as: :date, label: 'Birth date', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
+      <%= f.input :phone_number, label: 'Phone:', class:'form-control' %>
+      <%= f.input :linkedin, label: 'Linkedin (url):', class:'form-control' %>
+      <%= f.input :birth_date, as: :date, label: 'Birth date:', class:'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
                               end_year: Date.today.year - 12 %>
-      <%= f.input :hire_date, as: :date, label: 'Hire date', start_year: Date.today.year - 70,
+      <%= f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Date.today.year - 70,
                               end_year: Date.today.year %>
-      <%= f.input :picture, label: 'Photo URL' %>
+      <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
       <div class="new_user_tags">
         <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
-          <p><%= category.name %></p>
+          <p><%= category.name.capitalize %></p>
           <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes %>
         <% end %>
       </div>
-      <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
-        <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-edit-icon' do %>
-          <i class="fas fa-save"></i>
+      <div style=" display: flex; justify-content: flex-end;margin-top:3rem;">
+        <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <%= button_tag type: 'submit', class: 'btn-orange' do %>
+          <p>SAVE</p>
         <% end %>
       </div>
     <% end %>

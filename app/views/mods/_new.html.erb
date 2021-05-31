@@ -3,20 +3,20 @@
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
       <h3 class="modal-title" id="myModalLabel">New module</h3>
     </div>
-    <button type="button" class="btn btn-edit-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
-    <%= simple_form_for Mod.new do |f| %>
+    <%= simple_form_for Mod.new(content: nil) do |f| %>
       <%= f.input :title %>
       <%= f.input :duration %>
-      <%= f.cktext_area :content %>
+      <%= f.rich_text_area :content %>
       <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
-        <% if @workshop.present? %>
-          <%= button_tag type: 'submit', name: 'workshop_id', value: "#{@workshop.id}", class: 'btn btn-edit-green' do %>
+        <% if @content.present? %>
+          <%= button_tag type: 'submit', name: 'content_id', value: "#{@content.id}", class: 'btn btn-edit-green' do %>
             <p><b>SAVE</b> <i class="fas fa-save"></i></p>
           <% end %>
-        <% elsif @training_workshop.present? %>
-          <%= button_tag type: 'submit', name: 'training_workshop_id', value: "#{@training_workshop.id}", class: 'btn btn-edit-green' do %>
+        <% elsif @training_content.present? %>
+          <%= button_tag type: 'submit', name: 'training_content_id', value: "#{@training_content.id}", class: 'btn btn-edit-green' do %>
             <p><b>SAVE</b> <i class="fas fa-save"></i></p>
           <% end %>
         <% end %>

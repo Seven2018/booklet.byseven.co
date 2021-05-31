@@ -1,94 +1,21 @@
-<div id="index-controls" class='flex-row-between-centered'>
-  <h1>Employees</h1>
+<div class="organisation-main-container">
+  <%= render 'organisation_ajax' %>
 </div>
-
-<div class='organization-page'>
-  <div class='filter-dropdown-form'>
-    <div class="hidden-form">
-    <div class="fil">
-      <h3 class="category-title"><b>Filter</b></h3>
-      <i class="fas fa-times" id='close-btn'></i>
-    </div>
-    <% i = 1 %>
-    <%= simple_form_for :filter, url: organisation_path, input_html: { class: "filter-form" }, method: :get do |f| %>
-      <% job_checked = params[:filter][:job] if params[:filter].present? %>
-      <% tag_checked = params[:filter][:tag] if params[:filter].present? %>
-      <div class="filter-form-input"><%= f.input :job, label: 'Job Description', collection: User.where(company_id: current_user.company_id).map(&:job_description).uniq.reject(&:blank?).sort, as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: job_checked %></div>
-      <% TagCategory.where(company_id: current_user.company_id).order(name: :asc).each do |category| %>
-        <div class="filter-form-input"><%= f.input :tag, label: category.name.capitalize, collection: Tag.where(tag_category_id: category.id).map(&:tag_name), as: :check_boxes, input_html: { class: "tag-selector" }, required: false, checked: tag_checked %></div>
-      <% end %>
-      <div class=filter-text>
-        <%= f.submit 'Filter', class: 'final-filter-btn' %>
-    <% end %>
-        <!-- <a class='final-filter-clear'>Clear All</a> -->
-        <%= link_to 'Clear All', organisation_path, class: 'final-filter-clear' %>
-      </div>
-    </div>
+<div class="organisation-filter-container">
+  <div class="organisation-filter-background" onclick='closeFilter();'></div>
+  <div class="organisation-filter-dropright">
+    <%= render 'organisation_filter_dropright' %>
   </div>
-  <div class='organisation-users'>
-    <div class='staff-members'>
-      <h3 class="category-title"><b>Staff Members</b></h3>
-      <div class='mobile-btns'>
-        <div class="mobile-filter-btn">
-          <i class="fas fa-sliders-h fa-2x"></i>
-        </div>
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-        <button class="btn btn-edit-white btn-edit-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-          <a data-toggle='modal' data-target='#newTagCategory' class='dropdown-item'>New Tag Category</a>
-          <a data-toggle='modal' data-target='#newTag' class='dropdown-item'>New Tag</a>
-          <a data-toggle='modal' data-target='#newUser' class='dropdown-item'>New User</a>
-          <a data-toggle='modal' data-target='#importUsers' class='dropdown-item'>Import Users</a>
-        </div>
-      <% end %>
-      </div>
-    </div>
-    <% @users.each do |user| %>
-      <%= link_to user_path(user) do %>
-        <div class='user-index-card'>
-          <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          <div class="user-index-infos flex-row-between-centered">
-            <div class="user-index-info">
-              <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.fullname %></p>
-            </div>
-            <div class="user-index-info">
-              <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
-            </div>
-            <div class="user-index-info">
-              <% tags = '' %>
-              <% user.tags.each do |tag| %>
-                <% if tag == user.tags.last %>
-                  <% tags += "#{tag.tag_name}" %>
-                <% else %>
-                  <% tags += "#{tag.tag_name}, " %>
-                <% end %>
-              <% end %>
-              <p data-toggle="tooltip" title="<%= tags %>"><%= tags %></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+</div>
+<div class="organisation-manage-users-container">
+  <div class="organisation-manage-users-background" onclick='closeManager();'></div>
+  <div class="organisation-manage-users-dropright">
+    <%= render 'organisation_manage_users_dropright' %>
   </div>
 </div>
 
 
-
-<!-- </div>
- -->
 <!-- Modals -->
-<div class='modal fade' id='newTagCategory' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'tag_categories/new', tag_category: TagCategory.new %>
-  </div>
-</div>
-
-<div class='modal fade' id='newTag' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'tags/new', tag: Tag.new %>
-  </div>
-</div>
-
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'users/new', tag: User.new %>
@@ -102,72 +29,239 @@
 </div>
 
 <script>
-  searchButton = document.querySelector('.btn-search');
-  searchBar = document.querySelector('.search-bar');
-  searchClose = document.querySelector('.search-close');
-  searchButton.addEventListener('click', (event) => {
-    searchButton.classList.toggle('hidden');
-    searchBar.classList.toggle('hidden');
-  })
-  searchClose.addEventListener('click', (event) => {
-    searchButton.classList.toggle('hidden');
-    searchBar.classList.toggle('hidden');
-  })
+  formGuardian = false;
+  doubleClickGuardian = false;
 
-
-  /* When the user clicks on the button,
-  toggle between hiding and showing the dropdown content */
-  function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
   }
 
-  // Close the dropdown if the user clicks outside of it
-  window.onclick = function(event) {
-    if (!event.target.matches('.filter-dropbtn')) {
-      var dropdowns = document.getElementsByClassName("filter-dropdown-content");
-      var i;
-      for (i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
-        }
-      }
+  function openForm(element) {
+    element.classList.toggle('hidden');
+    element.parentNode.querySelector('.hidden-form-category-ajax').classList.toggle('hidden');
+  }
+
+  function openFilter() {
+    filter_container = document.querySelector('.organisation-filter-container');
+    filter_dropright = document.querySelector('.organisation-filter-dropright');
+    filter_container.style.display = 'flex';
+    setTimeout(function(){
+      filter_dropright.style.width = '400px';
+    }, 1);
+  }
+
+  function closeFilter() {
+    filter_container = document.querySelector('.organisation-filter-container');
+    filter_dropright = document.querySelector('.organisation-filter-dropright');
+    filter_dropright.style.width = '0px';
+    setTimeout(function(){
+      filter_container.style.display = 'none';
+    }, 250);
+  }
+
+  function openManager() {
+    manage_users_container = document.querySelector('.organisation-manage-users-container');
+    manage_users_dropright = document.querySelector('.organisation-manage-users-dropright');
+    manage_users_container.style.display = 'flex';
+    setTimeout(function(){
+      manage_users_dropright.style.width = '400px';
+    }, 1);
+  }
+
+  function closeManager() {
+    filter_container = document.querySelector('.organisation-manage-users-container');
+    filter_dropright = document.querySelector('.organisation-manage-users-dropright');
+    filter_dropright.style.width = '0px';
+    setTimeout(function(){
+      filter_container.style.display = 'none';
+    }, 250);
+  }
+
+  rotated = 0;
+
+  function toggleTagCategoryDropdown(element) {
+    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
+    rotated = rotated + 180;
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '1000px';
+      block.classList.add('active');
+    } else {
+      block.style.maxHeight = '61px';
+      block.classList.remove('active');
     }
   }
 
-  $('.filter-dropbtn').click(function(){
-    $(this).parent().toggleClass('open');
-  });
-</script>
-
-<!-- <script>
-  clear_button = document.querySelector('.final-filter-clear');
-  check_boxes = document.querySelectorAll('.check_boxes');
-  clear_button.addEventListener('click', (event) => {
-    event.preventDefault();
-    check_boxes.forEach(element => {
-      element.checked = false;
+  function hideClearFilterButton() {
+    form = document.querySelector('.filter_user');
+    form.querySelectorAll('.organisation-filter-block').forEach((element) => {
+      checked = false;
+      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.checked == true) {
+          checked = true;
+        }
+      })
+      if (checked == false) {
+        element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
+      }
     })
-  });
-</script> -->
+  }
 
-<script>
-filter_btn = document.querySelector('.mobile-filter-btn')
-close_btn = document.querySelector('#close-btn')
-bookletcontainer = document.getElementById('booklet-container')
-filter_slider = document.querySelector('.filter-dropdown-form')
-filter_btn.addEventListener('click', (event) => {
-    filter_slider.style.width = "375px";
-    filter_slider.style.zindex = "100";
-    filter_slider.style.background = "white";
-  })
+  function hideClearManagerButton() {
+    form = document.querySelector('.add_tags');
+    form.querySelectorAll('.organisation-manage-users-block').forEach((element) => {
+      checked = false;
+      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.checked == true) {
+          checked = true;
+        }
+      })
+      if (checked == false) {
+        element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '0';
+      } else {
+        element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '1';
+      }
+    })
+  }
 
-close_btn.addEventListener('click', (event) => {
-    filter_slider.style.width = "0px";
-    filter_slider.style.zindex = "100";
-    filter_slider.style.background = "transparent";
-    filter_slider.style.padding = "0px";
-  })
+  function autoSubmit(element) {
+    element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
+    hideClearFilterButton();
+    document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  }
 
+  function clearFilter(element) {
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    block.querySelectorAll('input.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearFilterButton();
+    document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  }
 
+  function clearFilterManager(element) {
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    block.querySelectorAll('input.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearManagerButton();
+  }
+
+  function resetFilter() {
+    form = document.querySelector('.filter_user');
+    form.querySelectorAll('.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearFilterButton();
+    form.querySelector('.hidden-submit').click();
+  }
+
+  function removeJob(element) {
+    form = document.querySelector('.filter_user');
+    job = element.parentNode.getAttribute("name");
+    form.querySelector('.filter_user_job').querySelectorAll('input.check_boxes').forEach((checkbox) => {
+      if (checkbox.value == job) {
+        checkbox.checked = false;
+        form.querySelector('.hidden-submit').click();
+      }
+    })
+  }
+
+  function removeTag(element) {
+    form = document.querySelector('.filter_user');
+    job = element.parentNode.getAttribute("name");
+    form.querySelectorAll('.filter_user_tag').forEach((category) => {
+      category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.value == job) {
+          checkbox.checked = false;
+          form.querySelector('.hidden-submit').click();
+        }
+      })
+    })
+  }
+
+  function selectUser() {
+    ids = []
+    check_boxes = document.querySelectorAll('.select-user')
+    check_boxes.forEach((checkbox) => {
+      if (checkbox.checked == true) {
+        ids.push(checkbox.value);
+      }
+    })
+    document.querySelector('#add_tags_users').value = ids.join();
+    if (ids.length == 0) {
+      document.querySelector('#manage-users-button').classList.remove('flashing_button');
+    } else {
+      document.querySelector('#manage-users-button').classList.add('flashing_button');
+    }
+  }
+
+  function clearInput(element) {
+    form = element.parentNode.parentNode;
+    form.querySelector('.hidden-submit').click();
+  }
+
+  function fetchCategoryForm(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      form = document.querySelector(element.getAttribute('data-target'));
+      initial_top = form.offsetTop
+      initial_left = form.offsetLeft
+      opened_blocks = []
+      document.querySelectorAll('.organisation-manage-users-block.active').forEach((block) => {
+        opened_blocks.push(block.getAttribute('data-category'));
+      })
+      form.querySelector('.hidden-submit').value = opened_blocks.join(',');
+      if (element.getAttribute('data-target').split('-')[0] == '#delete') {
+        form.style.top = (element.offsetTop - 3).toString() + 'px';
+        form.style.left = (element.offsetLeft.toString() - 100) + 'px'
+      } else {
+        form.style.top = (element.offsetTop - 3).toString() + 'px';
+        form.style.left = element.offsetLeft.toString() + 'px'
+      }
+      element.parentNode.style.opacity = '0';
+      form.classList.toggle('hidden');
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 1);
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, form) && doubleClickGuardian == false) {
+          form.style.top = initial_top.toString() + 'px';
+          form.style.left = initial_left.toString() + 'px';
+          element.parentNode.style.opacity = '1';
+          form.classList.toggle('hidden');
+          form.querySelector('input').value = '';
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    }
+  }
+
+  function toggle(source) {
+    checkboxes = document.querySelectorAll('.select-user');
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      checkboxes[i].checked = source.checked;
+    }
+    selectUser();
+  }
 </script>

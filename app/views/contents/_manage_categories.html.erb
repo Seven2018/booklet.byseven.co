@@ -1,0 +1,47 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Manage Themes for <em><%= content.title %></em></h3>
+    </div>
+  </div>
+  <div class="modal-body" id="modalNewBookinBody">
+    <div class="categories-form">
+      <% checked = content.categories.ids %>
+      <%= simple_form_for :add_categories, url: content_link_category_path, method: :get, remote: true do |f| %>
+        <div class="categories-form-checkboxes">
+          <%# f.input :categories, collection: Category.where(company_id: current_user.company_id).order(title: :asc), as: :check_boxes, legend_tag: false, label: false %>
+          <%= collection_check_boxes(:content, :categories, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title, checked: checked) do |b| %>
+            <div class="flex-row-between-centered">
+              <%= b.check_box %>
+              <div class="flex-row-between-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
+                <p class='category-title'><%= b.text %></p>
+                <%= link_to content_link_category_path(delete: true, category_id: b.value, content_id: content.id, page: params[:action]), data: {confirm: 'Are you sure ?'}, class: 'category-delete', remote: true do %>
+                  <i class="fas fa-trash"></i>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <i class="fas fa-plus" onclick='fetchCategoryForm(this);'></i>
+        <%= f.hidden_field :content_id, value: content.id %>
+        <%= f.hidden_field :page, value: params[:action] %>
+        <div class="theme-save-btn">
+          <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
+          <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'dismissModal(this);' do %>
+            <p class='save-btn'>Select</p>
+          <% end %>
+      <% end %>
+        </div>
+      <div class='hidden-form-category-ajax hidden'>
+        <%= simple_form_for :new_category, url: content_link_category_path, method: :get, remote: true do |f| %>
+          <%= f.text_field :title, placeholder: 'New Category', style: 'height: 100%;' %>
+          <%= f.hidden_field :content_id, value: content.id %>
+          <%= f.hidden_field :page, value: params[:action] %>
+          <%= button_tag :submit, class: 'hidden-submit' do %>
+            <i class="fas fa-save"></i>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

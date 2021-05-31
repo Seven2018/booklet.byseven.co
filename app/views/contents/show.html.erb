@@ -1,0 +1,230 @@
+<div id="content-show-container">
+  <div id="content-show-container-left">
+    <%= render 'contents/show_anchors', content: @content %>
+  </div>
+  <div id="content-show-container-right">
+    <div class="content-show-attributes">
+      <%= render 'show_attributes', content: @content %>
+    </div>
+    <div class="content-show-mods-container">
+      <div class="content-show-mods-control-btn" onclick="contentAdd()";>
+        <i class="far fa-edit fa-2x" id='icon-edit'></i>
+        <i class="fas fa-plus fa-2x hidden" id='icon-close'></i>
+        <div class="content-show-mods-controls" style='display:none;'>
+          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModText'>
+            <i class="far fa-file-alt"></i>
+            <p>Text</p>
+          </a>
+          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModVideo'>
+            <i class="fas fa-video"></i>
+            <p>Video</p>
+          </a>
+          <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModImage'>
+            <i class="fas fa-image"></i>
+            <p>Image</p>
+          </a>
+          <div class="content-show-mods-controls-block" onclick="openQuizForm(this);">
+            <i class="fas fa-star-half-alt"></i>
+            <p>Quiz</p>
+            <div class="hidden-mod-form hidden">
+              <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
+                <%= f.text_field :title, placeholder: 'Quiz Title' %>
+                <%= f.hidden_field :content_id, value: @content.id %>
+                <%= f.submit '', class: 'hidden-submit hidden' %>
+                <div class="btn-icon" onclick="dismissForm(this);"><i class="fas fa-save"></i></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <div class="content-show-mods-index">
+          <%= render 'mods/content_show_mods_index', content: @content %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<div class='modal fade' id='newModText' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/new_mod_text' %>
+  </div>
+</div>
+
+<div class='modal fade' id='newModVideo' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/new_mod_video' %>
+  </div>
+</div>
+
+<div class='modal fade' id='newModImage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'mods/new_mod_image' %>
+  </div>
+</div>
+
+<script>
+
+
+
+function contentAdd() {
+  var contentbar = document.querySelector('.content-show-mods-controls')
+  var iconedit = document.querySelector('#icon-edit')
+  var iconclose = document.querySelector('#icon-close')
+  var contentblock = document.querySelectorAll('.content-show-mods-controls-block')
+
+  if (contentbar.style.display === "none") {
+    contentbar.style.display = "flex";
+    iconedit.classList.add('hidden')
+    iconclose.classList.remove('hidden')
+    iconclose.classList.add('icon-transform')
+    setTimeout(function(){
+    iconclose.style.transform = ('rotate(45deg)')
+    contentbar.style.width = '100%'
+    contentblock.forEach((content) => {
+      content.style.width = '25%'
+    })
+    },1);
+  } else {
+    iconclose.style.transform = ('rotate(-45deg)')
+    contentbar.style.width = '0'
+    contentbar.style.display = "none";
+    iconclose.classList.add('hidden')
+    iconedit.classList.remove('hidden')
+  }
+}
+
+  doubleClickGuardian = false;
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function openInput(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      input = element.parentNode.querySelector('.content-show-input');
+      initial_value = input.querySelector('input').value;
+      element.querySelector('p').classList.add('hidden');
+      input.classList.remove('hidden');
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 1);
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, input) && doubleClickGuardian == false) {
+          if (input.value != initial_value) {
+            document.querySelector('.edit_content').querySelector('.hidden-submit').click();
+            // input.classList.add('hidden');
+            // element.querySelector('p').classList.remove('hidden');
+          } else {
+            input.classList.add('hidden');
+            element.querySelector('p').classList.remove('hidden');
+          }
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    }
+  }
+  function openInputTrix(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      input = element.parentNode.querySelector('.content-show-input-trix');
+      initial_value = input.querySelector('input').value;
+      element.classList.add('hidden');
+      input.classList.remove('hidden');
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 1);
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, input) && doubleClickGuardian == false) {
+          document.querySelector('.edit_content').querySelector('.hidden-submit').click();
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    }
+  }
+
+  function dismissModal(element) {
+    content_id = element.parentNode.parentNode.querySelector('#add_categories_content_id').value;
+    modal = document.querySelector('#addTheme');
+    modal.querySelector('.cancel-close').click();
+  }
+
+  function dismissForm(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 100);
+      document.querySelector('.hidden-mod-form').classList.add('hidden');
+      element.parentNode.parentNode.querySelector('.hidden-submit').click();
+    }
+  }
+
+  function showDelete(element) {
+    // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
+    trash = element.parentNode.querySelector('.category-delete');
+    if (trash.style.opacity == 0) {
+      trash.style.opacity = 1;
+    } else {
+      trash.style.opacity = 0;
+    }
+  }
+
+  function saveOnSelect(element = false) {
+    document.querySelector('.edit_content').querySelector('.hidden-submit').click();
+  }
+
+  function closeModalOnSubmit(element) {
+    document.querySelector('.modal.show').querySelector('.cancel-close').click();
+    document.querySelector('.modal.show').querySelector('hidden-submit').click();
+  }
+
+  function fetchCategoryForm(element) {
+    form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
+    initial_top = form.offsetTop
+    initial_left = form.offsetLeft
+    form.style.top = (element.offsetTop - 8).toString() + 'px';
+    form.style.left = (element.offsetLeft.toString()) + 'px';
+    element.style.opacity = '0';
+    form.classList.toggle('hidden');
+    formGuardian = true;
+    setTimeout(function(){
+      formGuardian = false;
+    }, 1);
+
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, form) && formGuardian == false) {
+        form.style.top = initial_top.toString() + 'px';
+        form.style.left = initial_left.toString() + 'px';
+        element.style.opacity = '1';
+        form.classList.toggle('hidden');
+        form.querySelector('input').value = '';
+        this.removeEventListener('click', arguments.callee, false);
+      }
+    });
+  }
+
+  function openQuizForm(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 100);
+      element.querySelector('.hidden-mod-form').classList.remove('hidden');
+    }
+  }
+</script>

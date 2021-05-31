@@ -1,24 +1,25 @@
 .simple-calendar {
 
+  width: 300px;
+
   @media screen and (max-width: 640px) {
-    table {
-    width:100%;
-    }
-    thead {
-    display: none;
-    }
-    tbody td {
-       display: block;
-       text-align:center;
-       width:100%;
-    }
+    // table {
+    // width:100%;
+    // }
+    // thead {
+    // display: none;
+    // }
+    // tbody td {
+    //    text-align:center;
+    //    width:100%;
+    // }
   }
 
   table {
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
-    background-color: rgba(0, 0, 0, 0);
-    border: 1px solid rgb(221, 221, 221);
+    background-color: transparent !important;
+    border: none !important;
     border-collapse: collapse;
     box-sizing: border-box;
     max-width: 100%;
@@ -27,6 +28,8 @@
     td {
       padding-right: 10px !important;
       padding-left: 10px !important;
+      border: none !important;
+      background-color: transparent !important;
     }
   }
 
@@ -37,38 +40,48 @@
   th {
     padding: 8px;
     font-size: 15px;
-    border-bottom: 2px solid rgb(221, 221, 221);
+    border-bottom: none !important;
     border-collapse: collapse;
-    border-left: 1px solid rgb(221, 221, 221);
-    border-right: 1px solid rgb(221, 221, 221);
-    border-top: 0px none rgb(51, 51, 51);
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
     box-sizing: border-box;
     text-align: left;
+    color: #888888;
+    font-weight: 400 !important;
   }
 
   td {
-    padding: 6px;
+    padding: 10px !important;
     vertical-align: top;
     width: 14%;
-    border: 1px solid black !important
+    border: none;
+    font-size: 15px;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: transparent !important;
   }
 
 
   .today {
-    background: #EFB08E !important;
+    background: #F8D9C8 !important;
+    border-radius: 50%;
   }
 
   .day {
     height: 100% !important;
+    text-align: center;
   }
 
   .prev-month {
-    background: #DDD;
+    background: transparent !important;
+    opacity: 0;
   }
 
-
   .next-month {
-    background: #DDD;
+    background: transparent !important;
+    display: none !important;
   }
   .current-month {}
 
@@ -78,11 +91,14 @@
 
 .calendar-heading {
   text-align: center;
-  margin-bottom: 30px;
+  i {
+    color: #F26419;
+  }
 }
 
 .calendar-title {
-  font-size: 1.6rem;
+  font-size: 2.5rem;
+  color: #F26419;
   margin: 0 1rem;
 }
 
@@ -95,21 +111,20 @@
 }
 
 .tab-grayed {
-
   color: rgba(0,0,0,0.3) !important;
 }
 
 
-.workshop-card-calendar {
+.content-card-calendar {
   position: relative;
   background-color: white;
-  border: 1px solid black;
+  border: none !important;
   padding: 0.5rem;
   margin-top: 0.5rem;
   border-radius: 5px;
 }
 
-.workshop-card-calendar-indicator-green {
+.content-card-calendar-indicator-green {
   position: absolute;
   top: -0.7rem;
   right: -0.7rem;
@@ -120,7 +135,7 @@
   }
 }
 
-.workshop-card-calendar-indicator-orange {
+.content-card-calendar-indicator-orange {
   position: absolute;
   top: -0.7rem;
   right: -0.7rem;
