@@ -36,10 +36,10 @@
       <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'select date' %>
       <div class="flex-row-between-centered">
         <div>
-          <%= f.input :start_time, label: 'Start time', as: :time, minute_step: 15, input_html: { class: "timepicker new_start_time"}, default: Time.parse('9:00') %>
+          <%= f.input :starts_at, label: 'Start time', as: :time, minute_step: 15, input_html: { class: "timepicker new_starts_at"}, default: Time.parse('9:00') %>
         </div>
         <div>
-          <%= f.input :end_time, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker new_end_time'}, default: Time.parse('17:00') %>
+          <%= f.input :ends_at, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker new_ends_at'}, default: Time.parse('17:00') %>
         </div>
       </div>
       <%= f.hidden_field :content_id, value: content.id %>

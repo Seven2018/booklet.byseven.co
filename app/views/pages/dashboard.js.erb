@@ -1,0 +1,3 @@
+if ("<%= @tab %>" == 'all') {
+  document.querySelector('.calendar-schedule-all').innerHTML = '<%= j render("pages/calendar_schedule", date: @date, tab: @tab) %>';
+}

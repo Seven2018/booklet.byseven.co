@@ -13,6 +13,13 @@ class PagesController < ApplicationController
       @upcoming_sessions = Session.where(company_id: current_user.company_id).where('date >= ?', Date.today).order(date: :asc)
       @all_sessions = Session.where(company_id: current_user.company_id).order(date: :desc)
     end
+    if params[:date].present?
+      @tab = params[:tab]
+      @date = params[:date].to_date
+      respond_to do |format|
+        format.js
+      end
+    end
   end
 
   def calendar_month
@@ -150,7 +157,7 @@ class PagesController < ApplicationController
           @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
         end
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
-      elsif params[:filter_user].present? && (params[:filter_user][:job] != [""] || params[:filter_user][:tag].reject{|x|x.empty?} != [])
+      elsif params[:filter_user].present? && (params[:filter_user][:job] != [""] || (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != []))
         # tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?)).map{|x| x.id}
         tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?))
         tags_hash = {}

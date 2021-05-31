@@ -101,6 +101,7 @@
 // DASHBOARD
 .dashboard-right-schedule {
   height: 900px;
+  width: 40rem;
   border-left: none;
   padding: 0;
   @include from-medium-low {
@@ -114,6 +115,16 @@
   justify-content: center;
   align-items: center;
   padding-top: 15px;
+
+  i {
+    font-size: .5rem;
+    color: #F26419;
+  }
+}
+
+.selected_day {
+  background-color: #c8c2bc !important;
+  border-radius: 50%;
 }
 
 .schedule {
