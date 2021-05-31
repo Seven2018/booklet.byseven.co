@@ -422,7 +422,7 @@
       color: #f26419;
     }
     @include from-medium-high {
-      width: 30%;
+      width: 40%;
     }
   }
 
@@ -469,6 +469,7 @@
 .session {
   .session_date {
     input {
+      margin-left: 5px;
       background-color: transparent !important;
       border: none !important;
     }
@@ -485,4 +486,11 @@
       border: none !important;
     }
   }
+}
+
+.add-date {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  cursor: pointer;
 }
