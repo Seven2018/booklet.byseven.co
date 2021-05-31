@@ -1,17 +1,17 @@
 <div class="book-container">
   <div class="book-page-1">
+      <div class="book-next-page">
+        <div class="book-next" onclick="nextPage()">
+          <i class="fas fa-arrow-right" style='color:#F26419'></i>
+          <p>Select Participants</p>
+        </div>
+      </div>
     <div class="booking-title">
       <h2>Select Workshop to Book</h2>
     </div>
     <div class="index-controls-filter-bar-book">
       <div class="index-controls-filter-bar-block-book">
         <%= render 'book_content_filter' %>
-      </div>
-      <div class="book-next-page">
-        <div class="book-next" onclick="nextPage()">
-          <i class="fas fa-arrow-right" style='color:#F26419'></i>
-          <p>Select Participants</p>
-        </div>
       </div>
     </div>
     <div class="workshop-grid">
@@ -26,14 +26,6 @@
     </div>
   </div>
   <div class="book-page-2 hidden">
-    <div class="booking-title">
-      <h2>Select Participants to Book</h2>
-    </div>
-    <div class="index-controls-filter-bar-book">
-      <div class="btn-white" onclick='openFilter();'>
-        <i class="fas fa-filter"></i>
-        <p>Filter</p>
-      </div>
       <div class="flex-row-between-centered">
         <div class="book-next-page" onclick="previousPage()">
           <div class="book-next">
@@ -47,6 +39,14 @@
             <p>Select Dates</p>
           </div>
         </div>
+      </div>
+    <div class="booking-title">
+      <h2>Select Participants to Book</h2>
+    </div>
+    <div class="index-controls-filter-bar-book">
+      <div class="btn-white" onclick='openFilter();'>
+        <i class="fas fa-filter"></i>
+        <p>Filter</p>
       </div>
     </div>
     <div class="organisation-filter-container">
@@ -64,24 +64,25 @@
     </div>
   </div>
   <div class="book-page-3 hidden">
+    <div class="book-confirm">
+    <div class="book-next-page" onclick="previousPage()">
+      <div class="book-next">
+        <i class="fas fa-arrow-left" style='color:#F26419'></i>
+        <p>Select Users</p>
+      </div>
+    </div>
+    <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
+    <button class='btn-orange' onclick='bookDates()'><p>Confirm</p></button>
+    </div>
     <div class="booking-title">
       <h2>Select Dates</h2>
-    </div>
-    <div class="index-controls-filter-bar-book">
-      <div class="book-next-page" onclick="previousPage()">
-        <div class="book-next">
-          <i class="fas fa-arrow-left" style='color:#F26419'></i>
-          <p>Select Users</p>
-        </div>
-      </div>
     </div>
     <div class="date-book">
       <% selected_users = [] %>
       <% selected_contents = [] %>
       <%= render 'pages/book_dates', selected_contents: selected_contents %>
     </div>
-    <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
-    <button onclick='bookDates()'>Confirm</button>
+
   </div>
 </div>
 
