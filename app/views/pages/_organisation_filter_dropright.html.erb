@@ -10,7 +10,7 @@
   </div>
 </div>
 <%= simple_form_for :filter_user, url: organisation_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
-  <div class="organisation-filter-block">
+  <!-- <div class="organisation-filter-block">
     <div class="organisation-filter-block-title">
       <div>
         <p>Job Title</p>
@@ -23,9 +23,9 @@
       </div>
     </div>
     <div class="organisation-filter-block-checkboxes">
-        <%= f.input :job, collection: User.where(company_id: current_user.company_id).map(&:job_title).uniq.reject{|x| x.empty?}.sort, as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
+        <%# f.input :job, collection: User.where(company_id: current_user.company_id).map(&:job_title).uniq.reject{|x| x.empty?}.sort, as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
     </div>
-  </div>
+  </div> -->
   <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
     <div class="organisation-filter-block">
       <div class="organisation-filter-block-title">
@@ -40,6 +40,9 @@
         </div>
       </div>
       <div class="organisation-filter-block-checkboxes">
+        <% if tag.null? %>
+        <p>No tags associated, create some in 'Manage Tags'</p>
+        <% end %>
           <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
       </div>
     </div>

@@ -364,6 +364,20 @@
   }
 }
 
+.employee-tag {
+  flex-direction: column;
+  margin-bottom: 50px !important;
+  h1 {
+    margin-bottom: 20px;
+  }
+  @include from-medium {
+    flex-direction: row;
+    h1 {
+      margin-bottom: 0;
+    }
+  }
+}
+
 
 /* // A EFFACER
 .organization-buttons {

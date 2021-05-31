@@ -6,7 +6,7 @@
     <p> <i class="fas fa-briefcase"></i> <%= user.company.name %></p>
   <div class="user-job">
     <% if user.job_title.present? %>
-      <p class="data" id='job' onclick='openForm(this)'><%=  user.job_title if user.job_title.present? %>Job Title</p>
+      <p class="data" id='job' onclick='openForm(this)'><%=  user.job_title if user.job_title.present? %></p>
     <% else %>
       <p class="data" id='job' onclick='openForm(this)'>Job Title</p>
     <% end %>

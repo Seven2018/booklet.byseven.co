@@ -27,41 +27,6 @@
   }
 }
 
-// .dashboard-tabs-secondary {
-//   padding-left: 3rem;
-//   margin-top: 0;
-// }
-
-// .training-index-list-dashboard-sm {
-//   width: 38%;
-//   height: 50rem;
-//   padding: 1rem;
-//   overflow-y: scroll;
-//   background-color: white;
-//   margin-bottom: 5rem;
-// }
-
-// .dashboard-label {
-//   display: inline-flex;
-//   border-radius: 8px;
-//   margin-right: 3rem;
-//   margin-bottom: 20px;
-
-//   h3 {
-//     margin: 0;
-//     padding: 2rem;
-//     font-size: 3rem;
-//   }
-
-//   h3:first-of-type {
-//     padding: 2rem 0 2rem 2rem;
-//     color: white;
-//   }
-//   @include from-medium-high {
-//     margin-bottom: 0px;
-//   }
-// }
-
 
 
 .dashboard-cards {
@@ -205,4 +170,95 @@
       @include from-medium {
       width: 350px;
     }
+}
+.catalogue-content-card-right-sessions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    font-size: 1.3rem !important;
+  }
+  i {
+    margin-right: 1rem;
+  }
+  @include from-large {
+    p {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.sessions-content-card-right-asyn {
+  background: #EEEEEE;
+  i {
+    color: black;
+  }
+  .catalogue-content-card-right-menu {
+  height: 1.6rem;
+  width: 1.6rem;
+  position: absolute;
+  padding: 15px;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background-color: #c1c1c1;
+    padding: 15px;
+    border-radius: 50%;
+  }
+}
+}
+
+.sessions-content-card-right-syn {
+  background: #F8D9C8;
+
+  p, i {
+    color: #F26419;
+  }
+  .catalogue-content-card-right-menu {
+  height: 1.6rem;
+  width: 1.6rem;
+  position: absolute;
+  padding: 15px;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background-color: #f7c0a3;
+    padding: 15px;
+    border-radius: 50%;
+  }
+}
+}
+
+.sessions-content-card-right-syn, .sessions-content-card-right-asyn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  position: relative;
+
+  .content-dropdown {
+    position: absolute;
+    right: 1rem;
+    top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: white;
+    padding: 0 1rem;
+    z-index: 100;
+    a {
+      padding: 5px 20px;
+    }
+  }
+  @include from-medium-high {
+    width: 15%;
+  }
 }

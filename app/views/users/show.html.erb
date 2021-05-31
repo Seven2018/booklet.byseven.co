@@ -148,6 +148,7 @@
               <% end %>
             <% end %>
           </div>
+        </div>
           <p>Completed Trainings</p>
           <div class="trainings-row">
             <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |session| %>
