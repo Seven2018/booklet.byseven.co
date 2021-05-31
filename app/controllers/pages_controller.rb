@@ -5,12 +5,13 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-    @completed_contents = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.id, status: 'Completed'})
-    @my_contents = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.id, status: 'Registered'}).where.not('date < ?', Date.today)
+    @my_past_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where('date < ?', Date.today).order(date: :desc)
+    @my_upcoming_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where('date >= ?', Date.today).order(date: :asc)
+    @all_my_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).order(date: :asc)
     if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
-      @available_contents = Training.joins(:sessions).where(company_id: current_user.company_id).where.not('date < ?', Date.today) - @my_contents
-    else
-      @available_contents = Session.joins(:attendees).where(attendees: {user_id: current_user.id, status: 'Invited'}).where.not('date < ?', Date.today)
+      @past_sessions = Session.where(company_id: current_user.company_id).where('date < ?', Date.today).order(date: :desc)
+      @upcoming_sessions = Session.where(company_id: current_user.company_id).where('date >= ?', Date.today).order(date: :asc)
+      @all_sessions = Session.where(company_id: current_user.company_id).order(date: :desc)
     end
   end
 

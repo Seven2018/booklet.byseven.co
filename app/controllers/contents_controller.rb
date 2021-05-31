@@ -59,11 +59,13 @@ class ContentsController < ApplicationController
   def duplicate
     authorize @content
     @new_content = Content.new(@content.attributes.except("id", "created_at", "updated_at"))
+    @new_content.title = @content.title + ' - Duplicate'
     if @new_content.save
-      @contents = Content.where(id: params[:contents].split(',')+[@new_content.id])
-      respond_to do |format|
-        format.js
-      end
+      @contents_filtered = Content.where(id: (params[:contents].split(',')+[@new_content.id]))
+      @new_content.description = @content.description.dup
+      @new_content.description.record_id = @new_content.id
+      @new_content.description.update(body: @content.description.body.dup)
+      redirect_to content_path(@new_content)
     end
   end
 
@@ -128,14 +130,14 @@ class ContentsController < ApplicationController
   def destroy
     @content.destroy
     authorize @content
-    if params[:catalogue].present?
-      @contents = Content.where(id: params[:contents].split(','))
-      respond_to do |format|
-        format.js
-      end
-    else
+    #if params[:catalogue].present?
+    #  @contents = Content.where(id: params[:contents].split(','))
+    #  respond_to do |format|
+    #    format.js
+    #  end
+    #else
       redirect_to catalogue_path
-    end
+    #end
   end
 
   private

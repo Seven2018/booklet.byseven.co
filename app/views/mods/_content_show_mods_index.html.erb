@@ -1,21 +1,26 @@
 <% content.mods.each do |mod| %>
-  <a id="anchor-<%= mod.id %>"></a>
-  <% if mod.mod_type == 'text' %>
-    <div class="content-show-mods-card-text">
-      <p><%= mod.title %></p>
-      <%= mod.text.html_safe %>
-    </div>
-  <% elsif mod.mod_type == 'video' %>
-    <div class="content-show-mods-card-video">
-      <%= embed_video(mod.video) %>
-    </div>
-  <% elsif mod.mod_type == 'image' %>
-    <div class="content-show-mods-card-image">
-      <img src="<%= mod.image %>" alt="<%= mod.title %>">
-    </div>
-  <% elsif mod.mod_type == 'assessment' %>
-    <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
-      <%= render 'assessments/show', form: mod %>
-    </div>
-  <% end %>
+  <div class="mod-card">
+    <a id="anchor-<%= mod.id %>"></a>
+    <% if mod.mod_type == 'text' %>
+      <div class="content-show-mods-card-text">
+        <p><%= mod.title %></p>
+        <%= mod.text %>
+      </div>
+    <% elsif mod.mod_type == 'video' %>
+      <div class="content-show-mods-card-video">
+        <%= embed_video(mod.video) %>
+      </div>
+    <% elsif mod.mod_type == 'image' %>
+      <div class="content-show-mods-card-image">
+        <img src="<%= mod.image %>" alt="<%= mod.title %>">
+      </div>
+    <% elsif mod.mod_type == 'assessment' %>
+      <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
+        <%= render 'assessments/show', form: mod %>
+      </div>
+    <% end %>
+    <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+      <i class="fas fa-times"></i>
+    <% end %>
+  </div>
 <% end %>

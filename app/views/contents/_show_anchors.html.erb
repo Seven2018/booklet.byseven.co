@@ -1,0 +1,4 @@
+<p><b><%= content.title %></b></p>
+<% content.mods.order(position: :asc).each do |mod| %>
+  <a href="#anchor-<%= mod.id %>"><%= mod.title %></a>
+<% end %>

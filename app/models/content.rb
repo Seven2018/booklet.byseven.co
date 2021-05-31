@@ -11,5 +11,5 @@ class Content < ApplicationRecord
   has_many :user_interests, dependent: :destroy
   has_many :interested, through: :user_interests, source: :user
   validates :title, :duration, presence: true
-  # has_rich_text :description
+  has_rich_text :description
 end

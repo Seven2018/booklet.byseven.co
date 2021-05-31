@@ -2,27 +2,25 @@
   <div class="dashboard-navigation">
     <div class="trainings-nav">
      <ul class="nav nav-tabs-trainings">
-        <li role="presentation"><a href="#Upcoming" data-toggle="tab" class='active'>Upcoming</a></li>
-        <li role="presentation"><a href="#Completed" data-toggle="tab">Completed</a></li>
-        <li role="presentation"><a href="#All" data-toggle="tab">All</a></li>
+        <li role="presentation"><a href="#UpcomingPersonal" data-toggle="tab" class='active'>Upcoming</a></li>
+        <li role="presentation"><a href="#CompletedPersonal" data-toggle="tab">Completed</a></li>
+        <li role="presentation"><a href="#AllSessionsPersonal" data-toggle="tab">All</a></li>
       </ul>
     </div>
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Upcoming">
-        <% future_sessions = Session.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where("date >= ?", Date.today) %>
-        <% future_sessions.each do |session| %>
-          <% render 'dashboard_sessions_card' %>
+      <div role="tabpanel" class="tab-pane active" id="UpcomingPersonal">
+        <% @my_upcoming_sessions.each do |session| %>
+          <%= render 'dashboard_sessions_card', session: session %>
         <% end %>
       </div>
-      <div role="tabpanel" class="tab-pane" id="Completed">
-        <% past_sessions = Session.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where("date < ?", Date.today) %>
-        <% past_sessions.each do |session| %>
-          <% render 'dashboard_sessions_card' %>
+      <div role="tabpanel" class="tab-pane" id="CompletedPersonal">
+        <% @my_past_sessions.each do |session| %>
+          <%= render 'dashboard_sessions_card', session: session %>
         <% end %>
       </div>
-      <div role="tabpanel" class="tab-pane" id="All">
-        <% (past_sessions + future_sessions).each do |session| %>
-          <% render 'dashboard_sessions_card' %>
+      <div role="tabpanel" class="tab-pane" id="AllSessionsPersonal">
+        <% @all_my_sessions.each do |session| %>
+          <%= render 'dashboard_sessions_card', session: session %>
         <% end %>
       </div>
     </div>
@@ -35,30 +33,30 @@
     </div>
     <div class="schedule">
       <div class="calendar-schedule">
-      <div class="schedule-title">Schedule</div>
-      <% Session.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where("date < ?", Date.today).each do |session| %>
-        <% if content.content_type == 'Synchronous' %>
-        <div class="calendar-schedule-card-sync">
-          <div class="calendar-card-date"><h2>18</h2></div>
-          <div class="calendar-card-info">
-            <div class="calendar-card-title"><p>UX/UI Workshop</p></div>
-            <div class="calendar-card-time"><p>10:00 - 15:00</p>
-              <div class="calendar-card-title-sessions"><p>1/4</p></div>
-            </div>
-          </div>
+        <div class="schedule-title">Schedule</div>
+          <% Session.joins(:attendees).where(company_id: current_user.company_id, attendees: {user_id: current_user.id}).where("date < ?", Date.today).each do |session| %>
+            <% if session.content.content_type == 'Synchronous' %>
+              <div class="calendar-schedule-card-sync">
+                <div class="calendar-card-date"><h2>18</h2></div>
+                <div class="calendar-card-info">
+                  <div class="calendar-card-title"><p>UX/UI Workshop</p></div>
+                  <div class="calendar-card-time"><p>10:00 - 15:00</p>
+                    <div class="calendar-card-title-sessions"><p>1/4</p></div>
+                  </div>
+                </div>
+              </div>
+            <% elsif %>
+              <div class="calendar-schedule-card-async">
+                <div class="calendar-card-date"><h2>22</h2></div>
+                <div class="calendar-card-info">
+                  <div class="calendar-card-title"><p>Design Thinking</p></div>
+                  <div class="calendar-card-time"><p>15:00 - 18:00</p></div>
+                </div>
+                 <div class="calendar-card-title-sessions"><p></p></div>
+              </div>
+            <% end %>
+          <% end %>
         </div>
-        <% elsif %>
-        <div class="calendar-schedule-card-async">
-          <div class="calendar-card-date"><h2>22</h2></div>
-          <div class="calendar-card-info">
-            <div class="calendar-card-title"><p>Design Thinking</p></div>
-            <div class="calendar-card-time"><p>15:00 - 18:00</p></div>
-          </div>
-           <div class="calendar-card-title-sessions"><p></p></div>
-        </div>
-        <% end %>
-        <% end %>
-      </div>
      </div>
   </div>
 </div>

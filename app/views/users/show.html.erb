@@ -51,59 +51,7 @@
       <div role="tabpanel" class="tab-pane active" id="Overview">
         <div class="user-overview-grid">
           <div class="user-information">
-            <p><b>Personal Info</b></p>
-            <div class="user-access">
-              <p><i class="fas fa-universal-access"></i> <%=  @user.access_level %></p>
-            </div>
-            <div class="user-work-info">
-                <p> <i class="fas fa-briefcase"></i> <%= @user.company.name %></p>
-              <div class="user-job">
-                <p class="data" id='job' onclick='openForm(this)'> <%=  @user.job_title if @user.job_title.present? %>Job Title</p>
-                <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'job'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-                  <%= f.input :job_title, label: false, input_html: {value: @user.job_title} %>
-                  <%= button_tag :submit, class: 'hidden-submit' do %>
-                    <i class="fas fa-save"></i>
-                  <% end %>
-                <% end %>
-              </div>
-              <div class="user-hire">
-                <% if @user.hire_date.present? %>
-                  <p class="data" id='hire_date' onclick='openForm(this)'> <%=  @user.hire_date %></p>
-                <% else %>
-                  <p class="data" id='birth_date' onclick='openForm(this)'>Hire Date</p>
-                <% end %>
-                <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'hire_date'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-                  <%= f.input :hire_date, label: false, input_html: {class: 'datepicker'}, value: @user.hire_date %>
-                  <%= button_tag :submit, class: 'hidden-submit' do %>
-                        <i class="fas fa-save"></i>
-                      <% end %>
-                <% end %>
-              </div>
-            </div>
-            <div class="user-birth">
-              <i class="fas fa-birthday-cake"></i>
-              <% if @user.birth_date.present? %>
-                <p class="data" id='birth_date' onclick='openForm(this)'><%=  @user&.birth_date %></p>
-              <% else %>
-                <p class="data" id='birth_date' onclick='openForm(this)'>Birth Date</p>
-              <% end %>
-              <%= simple_form_for :user, url: user_path(@user, page: 'show', type: 'birth_date'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-                <%= f.input :birth_date, label: false, input_html: {class: 'datepicker'}, value: @user.birth_date %>
-                <%= button_tag :submit, class: 'hidden-submit' do %>
-                  <i class="fas fa-save"></i>
-                <% end %>
-              <% end %>
-            </div>
-            <div class="user-tags">
-              <i class="fas fa-user-tag"></i>
-              <% @user.tags.each do |tag| %>
-              <% if tag.tag_name.present? %>
-                <div class='user-tag-name'><p><%= tag.tag_name %></p></div>
-              <% else %>
-                <p>No associated tags</p>
-              <% end %>
-              <% end %>
-            </div>
+            <%= render 'users/user_informations', user: @user %>
           </div>
           <div class="interested-in">
             <p><b>Interested In <i class="fas fa-heart"></i></b></p>
@@ -158,22 +106,23 @@
         <div class="user-trainings">
           <p>Upcoming Trainings</p>
           <div class="trainings-row">
-            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |content| %>
-              <% link_to training_content_path(content) do %>
+            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |session| %>
+              <% content = Session.includes([:content]).find(session.id).content %>
+              <%= link_to training_content_path(content) do %>
                 <div class="training-card-main">
               <% if content.content_type == 'Asynchronous' %>
                   <div class="user-trainings-card-asyn">
                     <div class="user-training-top">
                       <% if content.title.length > 60 %>
-                        <h3><b>This is the title<% content.title.first(60)+'...' %></b></h3>
+                        <h3><b>=<% content.title.first(60)+'...' %></b></h3>
                       <% else %>
-                     <h3><b><% content.title %></b></h3>
+                     <h3><b><%= content.title %></b></h3>
                       <% end %>
                     <div class="user-training-icon"><i class="fas fa-laptop"></i></div>
                     </div>
                     <div class="user-training-bottom">
-                      <p><i class="fas fa-calendar-alt"></i> 12/24/2021 <% content.date.strftime('%d/%m/%Y') %></p>
-                      <div class='content-time'><p><i class="fas fa-clock"></i>60 <% content.duration %> min</p></div>
+                      <p><i class="fas fa-calendar-alt"></i><%= session.date.strftime('%d/%m/%Y') %></p>
+                      <div class='content-time'><p><i class="fas fa-clock"></i><%= content.duration %> min</p></div>
                     </div>
                   </div>
                 </div>
@@ -183,15 +132,15 @@
                   <div class="user-trainings-card-syn">
                     <div class="user-training-top">
                       <% if content.title.length > 60 %>
-                        <h3><b>This is the title<% content.title.first(60)+'...' %></b></h3>
+                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
                       <% else %>
-                    <h3><b><% content.title %></b></h3>
+                    <h3><b><%= content.title %></b></h3>
                       <% end %>
                       <div class="user-training-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                     </div>
                     <div class="user-training-bottom">
-                      <p><i class="fas fa-calendar-alt"></i> 12/24/2021 <% content.date.strftime('%d/%m/%Y') %></p>
-                      <div class='content-time'><p><i class="fas fa-clock"></i>60 <% content.duration %> min</p></div>
+                      <p><i class="fas fa-calendar-alt"></i><%= session.date.strftime('%d/%m/%Y') %></p>
+                      <div class='content-time'><p><i class="fas fa-clock"></i><%= content.duration %> min</p></div>
                     </div>
                   </div>
                 </div>
@@ -201,22 +150,23 @@
           </div>
           <p>Completed Trainings</p>
           <div class="trainings-row">
-            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |content| %>
-              <% link_to training_content_path(content) do %>
+            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |session| %>
+              <% content = Session.includes([:content]).find(session.id).content %>
+              <%= link_to training_content_path(content) do %>
                 <div class="training-card-main-completed">
               <% if content.content_type == 'Asynchronous' %>
                   <div class="user-trainings-card-asyn">
                     <div class="user-training-top">
                       <% if content.title.length > 60 %>
-                        <h3><b>This is the title<% content.title.first(60)+'...' %></b></h3>
+                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
                       <% else %>
-                     <h3><b><% content.title %></b></h3>
+                     <h3><b><%= content.title %></b></h3>
                       <% end %>
                       <div class="user-training-icon"><i class="fas fa-laptop"></i></div>
                     </div>
                     <div class="user-training-bottom">
-                      <p><i class="fas fa-calendar-alt"></i><% content.date.strftime('%d/%m/%Y') %></p>
-                      <div class='content-time'><p><i class="fas fa-clock"></i><%content.duration %> min</p></div>
+                      <p><i class="fas fa-calendar-alt"></i><%= session.date.strftime('%d/%m/%Y') %></p>
+                      <div class='content-time'><p><i class="fas fa-clock"></i><%= content.duration %> min</p></div>
                     </div>
                   </div>
                 </div>
@@ -226,15 +176,15 @@
                     <div class="user-trainings-card-syn">
                       <div class="user-training-top">
                         <% if content.title.length > 60 %>
-                          <h3><b>This is the title<% content.title.first(60)+'...' %></b></h3>
+                          <h3><b><%= content.title.first(60)+'...' %></b></h3>
                         <% else %>
-                        <h3><b><% content.title %></b></h3>
+                        <h3><b><%= content.title %></b></h3>
                         <% end %>
                         <div class="user-training-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                       </div>
                       <div class="user-training-bottom">
-                        <p><i class="fas fa-calendar-alt"></i> <% content.date.strftime('%d/%m/%Y') %></p>
-                        <div class='content-time'><p><i class="fas fa-clock"></i> <% content.duration %> min</p></div>
+                        <p><i class="fas fa-calendar-alt"></i> <%= session.date.strftime('%d/%m/%Y') %></p>
+                        <div class='content-time'><p><i class="fas fa-clock"></i><%= content.duration %> min</p></div>
                       </div>
                     </div>
                   </div>

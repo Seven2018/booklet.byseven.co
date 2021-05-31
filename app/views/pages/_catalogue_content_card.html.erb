@@ -8,10 +8,10 @@
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">
       <% if content.description.present? %>
-        <% if content.description.html_safe.length >= (200) %>
-          <p><%= content.description.html_safe.first(200) + '...' %></p>
+        <% if content.description.to_plain_text.length >= (200) %>
+          <p><%= content.description.to_plain_text.first(200) + '...' %></p>
         <% else %>
-          <p><%= content.description.html_safe.first(200) %></p>
+          <p><%= content.description.to_plain_text.first(200) %></p>
         <% end %>
       <% end %>
     </div>
@@ -41,8 +41,8 @@
       <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
       <div class="content-dropdown hidden">
         <%= link_to 'Edit', content_path(content) %>
-        <%= link_to 'Delete', content_path(content, catalogue: 'true', contents: @contents.map(&:id).join(',')), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
-        <%= link_to 'Duplicate', duplicate_content_path(content, contents: @contents.map(&:id).join(',')), remote: true %>
+        <%= link_to 'Delete', content_path(content, catalogue: 'true', contents: contents.map(&:id).join(',')), method: :delete, data: {confirm: 'Are you sure ?'} %>
+        <%= link_to 'Duplicate', duplicate_content_path(content, contents: contents.map(&:id).join(',')) %>
       </div>
     <% end %>
     <div class="catalogue-content-card-right-interest">
@@ -65,8 +65,8 @@
       <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
       <div class="content-dropdown hidden">
         <%= link_to 'Edit', content_path(content) %>
-        <%= link_to 'Delete', content_path(content, catalogue: 'true', contents: @contents.map(&:id).join(',')), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
-        <%= link_to 'Duplicate', duplicate_content_path(content, contents: @contents.map(&:id).join(',')), remote: true %>
+        <%= link_to 'Delete', content_path(content), catalogue: 'true', method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
+        <%= link_to 'Duplicate', duplicate_content_path(content), remote: true %>
       </div>
     <% end %>
     <div class="catalogue-content-card-right-interest">
