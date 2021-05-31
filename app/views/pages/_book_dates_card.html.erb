@@ -1,25 +1,27 @@
-<div class="book-selected-card-infos">
-  <% if content.title.length > 35 %>
-    <h3><b><%= content.title.first(35)+'...' %></b></h3>
-  <% else %>
-    <h3><b><%= content.title %></b></h3>
-  <% end %>
-  <p><%= content.duration %> Minutes</p>
-  <% if content.description.present? %>
-    <% if content.description.html_safe.length >= (200) %>
-      <p><%= content.description.html_safe.first(200) + '...' %></p>
-    <% else %>
-      <p><%= content.description.html_safe.first(200) %></p>
-    <% end %>
-    <p><%= content.duration %> Minutes</p>
-    <div class="card-content-description">
-    <% if content.description.present? %>
-      <% if content.description.html_safe.length >= (200) %>
-        <p><%= content.description.html_safe.first(200) + '...' %></p>
+  <div class="book-selected-card-left">
+    <div class="book-selected-card-infos">
+      <% if content.title.length > 35 %>
+        <h3><b><%= content.title.first(35)+'...' %></b></h3>
       <% else %>
-        <p><%= content.description.html_safe.first(200) %></p>
+        <h3><b><%= content.title %></b></h3>
       <% end %>
-    <% end %>
+      <p><%= content.duration %> Minutes</p>
+       <div class="card-content-description">
+      <% if content.description.present? %>
+        <% if content.description.html_safe.length >= (200) %>
+          <p><%= content.description.html_safe.first(200) + '...' %></p>
+        <% else %>
+          <p><%= content.description.html_safe.first(200) %></p>
+        <% end %>
+      <% end %>
+      </div>
+      <div class="type-icon">
+      <% if content.content_type == 'Synchronous' %>
+        <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+      <% else %>
+        <i class="fas fa-laptop"></i>
+      <% end %>
+      </div>
     </div>
     <div class="book-selected-card-categories">
       <% content.categories.order(title: :asc).each do |category| %>
@@ -27,18 +29,17 @@
       <% end %>
     </div>
   </div>
-</div>
 <div class="book-selected-card-dates">
+  <div class='book-dates'>
   <p>Date</p>
-  <div>
     <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
-      <%= f.input :date, label: false, input_html: {class: 'datepicker'} %>
+      <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'select date' %>
       <div class="flex-row-between-centered">
-        <div style='width:10rem;'>
-          <%= f.input :start_time, label: 'Start time', as: :time, minute_step: 15, input_html: { class: "timepicker new_start_time", style: 'width:5rem;'}, default: Time.parse('9:00') %>
+        <div>
+          <%= f.input :start_time, label: 'Start time', as: :time, minute_step: 15, input_html: { class: "timepicker new_start_time"}, default: Time.parse('9:00') %>
         </div>
-        <div style='width:10rem;'>
-          <%= f.input :end_time, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker new_end_time', style: 'width:5rem;'}, default: Time.parse('17:00') %>
+        <div>
+          <%= f.input :end_time, label: 'End time', as: :time, minute_step: 15, input_html: { class: 'timepicker new_end_time'}, default: Time.parse('17:00') %>
         </div>
       </div>
       <%= f.hidden_field :content_id, value: content.id %>

@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="content-type-radio">
-      <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], :checked => ['Synchronous', 'Synchronous'], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'}, class: 'content-type-radio' %>
+      <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'}, class: 'content-type-radio' %>
     </div>
   </div>
   <div class="content-show-infos content-show-infos-themes">

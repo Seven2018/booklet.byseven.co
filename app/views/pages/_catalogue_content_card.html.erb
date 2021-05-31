@@ -37,7 +37,7 @@
 </div>
 <% if content.content_type == 'Synchronous' %>
   <div class="catalogue-content-card-right-syn">
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
       <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
       <div class="content-dropdown hidden">
         <%= link_to 'Edit', content_path(content) %>

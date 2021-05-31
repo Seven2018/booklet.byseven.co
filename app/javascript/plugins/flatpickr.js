@@ -8,11 +8,10 @@ flatpickr(".datepicker", {
 })
 
 // flatpickr(".timepicker", {
-//   enableTime: true,
-//   noCalendar: true,
-//   dateFormat: "H:i",
-//   time_24hr: true,
-//   defaultHour: 9,
-//   minuteIncrement: 10
+// enableTime: true,
+//     noCalendar: true,
+//     dateFormat: "H:i",
+//     minTime: "16:00",
+//     maxTime: "22:30",
 // })
 
