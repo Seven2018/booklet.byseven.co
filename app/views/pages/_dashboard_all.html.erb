@@ -9,8 +9,12 @@
     </div>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="UpcomingAll">
+        <% if @upcoming_sessions.empty? %>
+        <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
+        <% elsif %>
         <% @upcoming_sessions.each do |session| %>
           <%= render 'dashboard_sessions_card', session: session %>
+        <% end %>
         <% end %>
       </div>
       <div role="tabpanel" class="tab-pane" id="CompletedAll">
