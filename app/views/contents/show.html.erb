@@ -189,8 +189,14 @@ function contentAdd() {
   }
 
   function closeModalOnSubmit(element) {
-    document.querySelector('.modal.show').querySelector('.cancel-close').click();
-    document.querySelector('.modal.show').querySelector('hidden-submit').click();
+    var title = element.closest('.modal-body').querySelector('#mod_title');
+    if (title.value.innerHTML != null) {
+      modal = document.querySelector('.modal.show')
+      console.log(modal.querySelector('.cancel-close'))
+
+      modal.querySelector('.cancel-close').click();
+      modal.querySelector('.hidden-submit').click();
+    }
   }
 
   function fetchCategoryForm(element) {
