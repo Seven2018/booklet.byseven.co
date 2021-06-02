@@ -2,7 +2,7 @@
   <% content = @content if @content.present? %>
   <div class="catalogue-content-card-left-main">
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-      <%= link_to '', content_path(content), class: 'stretched-link' %>
+      <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
     <% end %>
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
@@ -41,8 +41,8 @@
       <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
       <div class="content-dropdown hidden">
         <%= link_to 'Edit', content_path(content) %>
-        <%= link_to 'Delete', content_path(content, catalogue: 'true', contents: contents.map(&:id).join(',')), method: :delete, data: {confirm: 'Are you sure ?'} %>
-        <%= link_to 'Duplicate', duplicate_content_path(content, contents: contents.map(&:id).join(',')) %>
+        <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'} %>
+        <%= link_to 'Duplicate', duplicate_content_path(content) %>
       </div>
     <% end %>
     <div class="catalogue-content-card-right-interest">
@@ -61,7 +61,7 @@
   </div>
 <% elsif content.content_type == 'Asynchronous' %>
   <div class="catalogue-content-card-right-asyn">
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
       <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
       <div class="content-dropdown hidden">
         <%= link_to 'Edit', content_path(content) %>

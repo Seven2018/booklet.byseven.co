@@ -12,9 +12,9 @@
         <% if @upcoming_sessions.empty? %>
           <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
         <% elsif %>
-        <% @my_upcoming_sessions.each do |session| %>
-          <%= render 'dashboard_sessions_card', session: session %>
-        <% end %>
+          <% @my_upcoming_sessions.each do |session| %>
+            <%= render 'dashboard_sessions_card', session: session %>
+          <% end %>
         <% end %>
       </div>
       <div role="tabpanel" class="tab-pane" id="CompletedPersonal">
@@ -32,7 +32,7 @@
   <div class="dashboard-right-schedule">
     <div class="dashboard-calendar">
       <%= month_calendar(events: @all_my_sessions, attribute: :date) do |date, sessions| %>
-        <%= link_to dashboard_path(tab: 'all', date: date), remote: true do%>
+        <%= link_to dashboard_path(tab: 'all', date: date), remote: true do %>
           <div class="flex-column-between-centered">
             <%= date.day %>
             <% if sessions.present? %>

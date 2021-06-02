@@ -30,8 +30,8 @@
           <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'dismissModal(this);' do %>
             <p class='save-btn'>select skills</p>
           <% end %>
-      <% end %>
         </div>
+      <% end %>
       <div class='hidden-form-category-ajax hidden'>
         <%= simple_form_for :new_category, url: catalogue_content_link_category_path, method: :get, remote: true do |f| %>
           <%= f.text_field :title, placeholder: 'New Category', style: 'height: 100%;' %>

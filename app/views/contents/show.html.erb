@@ -6,10 +6,22 @@
     <div class="content-show-attributes">
       <%= render 'show_attributes', content: @content %>
     </div>
-      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] == 'catalogue') || params[:content_access] == 'granted' %>
         <div class="content-show-mods-index">
           <%= render 'mods/content_show_mods_index', content: @content %>
+          <div class="hidden-mod-form hidden">
+            <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
+              <%= f.text_field :title, placeholder: 'Quiz Title' %>
+              <%= f.hidden_field :content_id, value: @content.id %>
+              <%= f.submit '', class: 'hidden-submit hidden' %>
+              <div class="btn-icon" onclick="dismissForm(this);"><i class="fas fa-save"></i></div>
+            <% end %>
+          </div>
         </div>
+      <% else %>
+        <p>Content available on <%= Session.find(params[:session_id]).date.to_s %></p>
+      <% end %>
+      <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] == 'catalogue') %>
         <div class="content-show-mods-container">
           <div class="content-show-mods-control-btn" onclick="contentAdd()";>
             <i class="far fa-edit fa-2x" id='icon-edit'></i>
@@ -66,37 +78,34 @@
 </div>
 
 <script>
-
-
-
-function contentAdd() {
-  var contentbar = document.querySelector('.content-show-mods-controls')
-  var iconedit = document.querySelector('#icon-edit')
-  var iconclose = document.querySelector('#icon-close')
-  var contentblock = document.querySelectorAll('.content-show-mods-controls-block')
-
-  if (contentbar.style.display === "none") {
-    contentbar.style.display = "flex";
-    iconedit.classList.add('hidden')
-    iconclose.classList.remove('hidden')
-    iconclose.classList.add('icon-transform')
-    setTimeout(function(){
-    iconclose.style.transform = ('rotate(45deg)')
-    contentbar.style.width = '100%'
-    contentblock.forEach((content) => {
-      content.style.width = '25%'
-    })
-    },1);
-  } else {
-    iconclose.style.transform = ('rotate(-45deg)')
-    contentbar.style.width = '0'
-    contentbar.style.display = "none";
-    iconclose.classList.add('hidden')
-    iconedit.classList.remove('hidden')
-  }
-}
-
   doubleClickGuardian = false;
+
+  function contentAdd() {
+    var contentbar = document.querySelector('.content-show-mods-controls')
+    var iconedit = document.querySelector('#icon-edit')
+    var iconclose = document.querySelector('#icon-close')
+    var contentblock = document.querySelectorAll('.content-show-mods-controls-block')
+
+    if (contentbar.style.display === "none") {
+      contentbar.style.display = "flex";
+      iconedit.classList.add('hidden')
+      iconclose.classList.remove('hidden')
+      iconclose.classList.add('icon-transform')
+      setTimeout(function(){
+      iconclose.style.transform = ('rotate(45deg)')
+      contentbar.style.width = '100%'
+      contentblock.forEach((content) => {
+        content.style.width = '25%'
+      })
+      },1);
+    } else {
+      iconclose.style.transform = ('rotate(-45deg)')
+      contentbar.style.width = '0'
+      contentbar.style.display = "none";
+      iconclose.classList.add('hidden')
+      iconedit.classList.remove('hidden')
+    }
+  }
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
@@ -126,8 +135,6 @@ function contentAdd() {
         if (outsideClick(e, input) && doubleClickGuardian == false) {
           if (input.value != initial_value) {
             document.querySelector('.edit_content').querySelector('.hidden-submit').click();
-            // input.classList.add('hidden');
-            // element.querySelector('p').classList.remove('hidden');
           } else {
             input.classList.add('hidden');
             element.querySelector('p').classList.remove('hidden');
@@ -190,7 +197,6 @@ function contentAdd() {
 
   function closeModalOnSubmit(element) {
     document.querySelector('.modal.show').querySelector('.cancel-close').click();
-    document.querySelector('.modal.show').querySelector('hidden-submit').click();
   }
 
   function fetchCategoryForm(element) {
@@ -224,7 +230,8 @@ function contentAdd() {
       setTimeout(function(){
         doubleClickGuardian = false;
       }, 100);
-      element.querySelector('.hidden-mod-form').classList.remove('hidden');
+      console.log('test')
+      document.querySelector('.hidden-mod-form').classList.remove('hidden');
     }
   }
 </script>

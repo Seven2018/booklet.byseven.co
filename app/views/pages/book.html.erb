@@ -106,7 +106,6 @@
       pagetwo.classList.add('hidden')
       pagethree.classList.remove('hidden')
       document.querySelector('.filter_content').querySelector('.hidden-submit').click()
-      //document.querySelector('.filter_user').querySelector('.hidden-submit').click()
     }
     page += 1
   }
@@ -304,7 +303,10 @@ function selectUser(element) {
 
 function addDate(element) {
   card = element.closest('.book-selected-card')
-  new_card = card.cloneNode(true)
+  /*new_card = card.cloneNode(true)*/
+  new_card = document.createElement('div')
+  new_card.classList.add('book-selected-card')
+  new_card.innerHTML = card.innerHTML
   form = new_card.querySelector('form')
   element.classList.add('hidden')
   card.parentNode.insertBefore(new_card, card.nextSibling)
@@ -316,7 +318,6 @@ function addDate(element) {
 
 function bookDates() {
   if (formGuardian == false) {
-    formGuardian = true
     selected_users = document.querySelector('.users-book-selected').querySelectorAll('.user-index-card-book')
     storage_var = []
     selected_users.forEach((user) => {
@@ -329,10 +330,10 @@ function bookDates() {
     submit_buttons = document.querySelector('.date-book').querySelectorAll('.hidden-submit')
     redirect_button = document.querySelector('.confirm-button')
     submit_buttons.forEach((element) => {
-      setTimeout(function(){element.click()}, 10)
+      console.log(element)
+      setTimeout(function(){element.click()}, 100)
     })
-    redirect_button.click()
-    setTimeout(function(){formGuardian = false}, 10)
+    setTimeout(function(){redirect_button.click()}, 1000)
   }
 }
 
