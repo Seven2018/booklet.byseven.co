@@ -1,77 +1,39 @@
 .simple-calendar {
-
-  width: 300px;
-
-  @media screen and (max-width: 640px) {
-    // table {
-    // width:100%;
-    // }
-    // thead {
-    // display: none;
-    // }
-    // tbody td {
-    //    text-align:center;
-    //    width:100%;
-    // }
+  tr {
+    display:flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 300px;
+  }
+  td {
+    width: 40px;
+    background-color: none !important;
+    border: none !important;
   }
 
   table {
-    -webkit-border-horizontal-spacing: 0px;
-    -webkit-border-vertical-spacing: 0px;
     background-color: transparent !important;
     border: none !important;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    max-width: 100%;
-    width: 100%;
-
-    td {
-      padding-right: 10px !important;
-      padding-left: 10px !important;
-      border: none !important;
-      background-color: transparent;
-    }
-  }
-
-  tr {
-    border-collapse: collapse;
   }
 
   th {
-    padding: 8px;
-    font-size: 15px;
-    border-bottom: none !important;
-    border-collapse: collapse;
-    border-left: none !important;
-    border-right: none !important;
-    border-top: none !important;
-    box-sizing: border-box;
-    text-align: left;
-    color: #888888;
-    font-weight: 400 !important;
+    font-weight: 400;
+    font-size: 1.4rem;
+    width: 45px;
   }
 
-  td {
-    padding: 10px !important;
-    vertical-align: top;
-    width: 14%;
-    border: none;
-    font-size: 15px;
+  thead {
+    margin-right: 20px;
   }
 
-  .table-striped tbody tr:nth-of-type(odd) {
-    background-color: transparent !important;
-  }
-
-
-  .today {
+   .today {
     background: #F8D9C8 !important;
     border-radius: 50%;
   }
 
   .day {
-    height: 100% !important;
     text-align: center;
+
   }
 
   .prev-month {
@@ -86,8 +48,21 @@
   .current-month {}
 
   .has-events {}
-}
 
+  th {
+    border-bottom: none !important;
+    border-collapse: collapse;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    box-sizing: border-box;
+    text-align: left;
+    color: #888888;
+  }
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: transparent !important;
+}
 
 .calendar-heading {
   text-align: center;
@@ -102,8 +77,10 @@
   margin: 0 1rem;
 }
 
-.prev-month, .next-month {
-  display: none !important;
+ .next-month {
+  td {
+   color: lightgrey;
+  }
 
   @include from-large {
     display: table-cell !important;
@@ -114,55 +91,119 @@
   color: rgba(0,0,0,0.3) !important;
 }
 
-
-.content-card-calendar {
-  position: relative;
-  background-color: white;
-  border: none !important;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  border-radius: 5px;
-}
-
-.content-card-calendar-indicator-green {
-  position: absolute;
-  top: -0.7rem;
-  right: -0.7rem;
-  color: green;
-
-  i {
-    font-size: 1.4rem;
-  }
-}
-
-.content-card-calendar-indicator-orange {
-  position: absolute;
-  top: -0.7rem;
-  right: -0.7rem;
-  color: orange;
-
-  i {
-    font-size: 1.4rem;
-  }
-}
-
-.training-card-calendar-indicator-green {
-  position: absolute;
-  top: -0.3rem;
-  right: 0.3rem;
-  color: green;
-
-  i {
-    font-size: 1.4rem;
+  .calendar-heading {
+    a {
+      font-weight: 400;
+      font-size: 2.5rem;
+    }
   }
 
-}.training-card-calendar-indicator-orange {
-  position: absolute;
-  top: -0.3rem;
-  right: 0.3rem;
-  color: orange;
 
-  i {
-    font-size: 1.4rem;
-  }
 }
+
+//   width: 300px;
+
+
+
+//   table {
+//     -webkit-border-horizontal-spacing: 0px;
+//     -webkit-border-vertical-spacing: 0px;
+
+//     border-collapse: collapse;
+//     box-sizing: border-box;
+//     max-width: 100%;
+//     width: 100%;
+
+//     td {
+//       padding: none !important;
+//       border: none !important;
+//       background-color: transparent;
+//     }
+//   }
+
+//   tr {
+//     border-collapse: collapse;
+//   }
+
+//   th {
+//     // padding: 8px;
+//     font-size: 15px;
+//     border-bottom: none !important;
+//     border-collapse: collapse;
+//     border-left: none !important;
+//     border-right: none !important;
+//     border-top: none !important;
+//     box-sizing: border-box;
+//     text-align: left;
+//     color: #888888;
+//     width: 50px !important;
+//     font-weight: 400 !important;
+//   }
+
+//   td {
+//     margin: 1rem;
+//     vertical-align: top;
+//     width: 50px !important;
+//     height: 3rem;
+//     border: none;
+//     font-size: 15px;
+//   }
+
+//   .table-striped tbody tr:nth-of-type(odd) {
+//     background-color: transparent !important;
+//   }
+
+
+
+
+// .content-card-calendar {
+//   position: relative;
+//   background-color: white;
+//   border: none !important;
+//   // padding: 0.5rem;
+//   margin-top: 0.5rem;
+//   border-radius: 5px;
+// }
+
+// .content-card-calendar-indicator-green {
+//   position: absolute;
+//   top: -0.7rem;
+//   right: -0.7rem;
+//   color: green;
+
+//   i {
+//     font-size: 1.4rem;
+//   }
+// }
+
+// .content-card-calendar-indicator-orange {
+//   position: absolute;
+//   top: -0.7rem;
+//   right: -0.7rem;
+//   color: orange;
+
+//   i {
+//     font-size: 1.4rem;
+//   }
+// }
+
+// .training-card-calendar-indicator-green {
+//   position: absolute;
+//   top: -0.3rem;
+//   right: 0.3rem;
+//   color: green;
+
+//   i {
+//     font-size: 1.4rem;
+//   }
+
+// }.training-card-calendar-indicator-orange {
+//   position: absolute;
+//   top: -0.3rem;
+//   right: 0.3rem;
+//   color: orange;
+
+//   i {
+//     font-size: 1.4rem;
+//   }
+// }

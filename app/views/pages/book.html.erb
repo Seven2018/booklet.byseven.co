@@ -160,6 +160,13 @@
     } else {
       ghostcard.classList.remove('hidden')
     }
+    selected_cards = document.querySelector('.workshop-cards-selected').querySelectorAll('.card-interest-book')
+    storage_var = []
+    selected_cards.forEach((card) => {
+      storage_var.push(card.id.split('-')[1])
+    })
+    selected_storage = document.getElementById('filter_content_selected');
+    selected_storage.value = storage_var.join(',')
   }
 
 

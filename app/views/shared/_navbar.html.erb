@@ -3,7 +3,7 @@
     <ul>
     <% if user_signed_in? %>
       <li>
-        <% if request.original_url&.split('/')[3]&.split('?')&.first == 'dashboard' %>
+        <% if params[:action] == 'dashboard' %>
           <%= link_to dashboard_path, class: 'left-buttons' do %>
             <div class="left-menu-title" style='color: #F26419;'><h4>Dashboard</h4></div>
           <% end %>
@@ -16,7 +16,7 @@
       </li>
       <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
         <li>
-          <% if request.original_url&.split('/')[3]&.split('?')&.first == 'catalogue' %>
+          <% if params[:action] == 'catalogue' || params[:controller] == 'contents' %>
             <%= link_to catalogue_path, class: 'left-buttons' do %>
               <div class="left-menu-title " style='color: #F26419;'><h4>Catalogue</h4></div>
             <% end %>
@@ -28,7 +28,7 @@
           <% end %>
         </li>
         <li>
-          <% if request.original_url&.split('/')[3]&.split('?')&.first == 'organisation' %>
+          <% if params[:controller] == 'users' || params[:action] == 'organisation' %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
               <div class="left-menu-title " style='color: #F26419;'><h4>Employees</h4></div>
             <% end %>
@@ -40,7 +40,7 @@
           <% end %>
         </li>
         <li>
-           <% if request.original_url&.split('/')[3]&.split('?')&.first == 'book' %>
+           <% if params[:action] == 'book' %>
             <%= link_to book_path, class: 'left-buttons' do %>
               <div class="left-menu-title " style='color: #F26419;'><h4>Book</h4></div>
             <% end %>

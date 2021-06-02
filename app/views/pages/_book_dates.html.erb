@@ -43,7 +43,7 @@
         <p>Date & Time</p>
           <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
             <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
-            <div class="flex-row-between-centered">
+            <div class="book-times">
               <div>
                 <%= f.input :starts_at, label: false, as: :time, minute_step: 15, input_html: { class: "timepicker new_starts_at"}, default: Time.parse('9:00') %>
               </div>
