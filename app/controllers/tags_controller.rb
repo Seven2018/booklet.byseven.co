@@ -35,13 +35,13 @@ class TagsController < ApplicationController
     end
   end
 
-  def delete_tag
-    @tag = Tag.find(params[:tag][:id])
+  def destroy
+    @tag = Tag.find(params[:id])
     authorize @tag
     @tag.destroy
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
-    @users = User.where(id: params[:tag][:users].split(' '))
-    @opened = params[:button]
+    @users = User.where(id: params[:users].split(' '))
+    @opened = params[:tag_category_id]
     respond_to do |format|
       format.html {redirect_to organisation_path}
       format.js

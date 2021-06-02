@@ -10,7 +10,7 @@
 <div class="organisation-manage-users-container">
   <div class="organisation-manage-users-background" onclick='closeManager();'></div>
   <div class="organisation-manage-users-dropright">
-    <%= render 'organisation_manage_users_dropright' %>
+    <%= render 'organisation_manage_users_dropright', users: @users %>
   </div>
 </div>
 
@@ -50,8 +50,21 @@
   }
 
   function openForm(element) {
-    element.classList.toggle('hidden');
-    element.parentNode.querySelector('.hidden-form-category-ajax').classList.toggle('hidden');
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      element.classList.toggle('hidden')
+      form = element.parentNode.querySelector('.hidden-form-category-ajax')
+      form.classList.toggle('hidden')
+      setTimeout(function(){doubleClickGuardian = false}, 10)
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, form) && doubleClickGuardian == false) {
+          form.classList.toggle('hidden')
+          element.classList.toggle('hidden')
+          this.removeEventListener('click', arguments.callee, false)
+        }
+      });
+    }
   }
 
   function openFilter() {
@@ -235,7 +248,10 @@
         opened_blocks.push(block.getAttribute('data-category'));
       })
       form.querySelector('.hidden-submit').value = opened_blocks.join(',');
-      if (element.getAttribute('data-target').split('-')[0] == '#delete') {
+      console.log()
+      if (element.getAttribute('data-target').split('-')[0] == '#edit') {
+        controls = element.parentNode.parentNode
+        controls.classList.add('hidden')
         form.style.top = (element.offsetTop - 3).toString() + 'px';
         form.style.left = (element.offsetLeft.toString() - 100) + 'px'
       } else {
@@ -250,6 +266,10 @@
 
       window.addEventListener('click', function(e) {
         if (outsideClick(e, form) && doubleClickGuardian == false) {
+          if (element.getAttribute('data-target').split('-')[0] == '#edit') {
+            controls = element.parentNode.parentNode
+            controls.classList.remove('hidden')
+          }
           form.style.top = initial_top.toString() + 'px';
           form.style.left = initial_left.toString() + 'px';
           element.parentNode.style.opacity = '1';
@@ -259,6 +279,18 @@
         }
       });
     }
+  }
+
+  function showDelete(element) {
+    // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
+    controls = element.querySelectorAll('.tag_delete');
+    controls.forEach((control) => {
+      if (control.style.opacity == 0) {
+        control.style.opacity = 1;
+      } else {
+        control.style.opacity = 0;
+      }
+    })
   }
 
   function toggle(source) {

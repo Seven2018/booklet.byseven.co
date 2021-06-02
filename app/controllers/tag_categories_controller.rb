@@ -20,9 +20,11 @@ class TagCategoriesController < ApplicationController
     end
   end
 
-  def delete_tag_category
-    @tag_category = TagCategory.find(params[:tag_category][:id])
+  def destroy
+    @tag_category = TagCategory.find(params[:id])
     authorize @tag_category
+    @users = User.where(id: params[:users].split(' '))
+    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
     TagCategory.where(company_id: current_user.company_id).where('position > ?', @tag_category.position).each{|x| x.update(position: x.position - 1)}
     @tag_category.destroy
     respond_to do |format|

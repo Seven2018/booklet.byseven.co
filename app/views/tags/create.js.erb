@@ -1,9 +1,14 @@
-document.querySelector('.organisation-manage-users-dropright').innerHTML = '<%= j render("pages/organisation_manage_users_dropright", tag_categories: @tag_categories) %>';
+manage_users = document.querySelector('.organisation-manage-users-dropright')
+manage_users.innerHTML = '<%= j render("pages/organisation_manage_users_dropright", tag_categories: @tag_categories) %>';
+manage_users.querySelectorAll('#tag_tag_name').forEach((element) => {
+  element.value = ''
+})
+manage_users.querySelectorAll('input[type="checkbox"]').forEach((element) => {
+  element.checked = false
+})
 document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>';
 opened = '<%= @opened %>'.split(',')
-console.log(opened);
 document.querySelectorAll('.organisation-manage-users-block').forEach((block) => {
-  console.log(opened.includes(block.getAttribute('data-category')));
   if (opened.includes(block.getAttribute('data-category'))) {
     block.style.maxHeight = '1000px';
     block.classList.add('active');
