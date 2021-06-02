@@ -3,9 +3,9 @@
     <% content = Session.includes([:content]).find(session.id).content %>
     <div class="catalogue-content-card-left-main">
       <% if session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today) %>
-        <%= link_to '', content_path(content.id, content_access: 'granted'), class: 'stretched-link' %>
+        <%= link_to '', content_path(content.id, content_access: 'granted', redirect_from: 'dashboard'), class: 'stretched-link' %>
       <% else %>
-        <%= link_to '', content_path(content.id, session_id: session.id), class: 'stretched-link' %>
+        <%= link_to '', content_path(content.id, session_id: session.id, redirect_from: 'dashboard'), class: 'stretched-link' %>
       <% end %>
       <h4><%= content.title %></h4>
       <p><%= content.duration %> Minutes</p>

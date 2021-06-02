@@ -1,4 +1,4 @@
-<% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] == 'catalogue') %>
+<% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] != 'dashboard') %>
   <%= simple_form_for content, remote: true do |f| %>
     <div class="flex-row-between-centered">
       <div class="content-show-infos" onclick="openInput(this);">
