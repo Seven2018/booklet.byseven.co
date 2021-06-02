@@ -37,23 +37,15 @@
     <% else %>
       <div class="catalogue-content-card-right-asyn-book">
     <% end %>
-      <div class="book-element" id='bookbtn' onclick='bookWorkshop();' >
-        <i class="fas fa-shopping-cart fa-5x"></i>
+      <div class="book-element" id='bookbtn' onclick='bookWorkshop(this);' >
+        <i class="fas fa-shopping-cart fa-5x" id='cart'></i>
+        <i class="fas fa-backspace fa-5x hidden" id='undo'></i>
       </div>
-        <div class="catalogue-content-card-right-interest">
-          <p><%= content.interested.count %> Interested</p>
-        </div>
+      <div class="catalogue-content-card-right-interest">
+        <p><%= content.interested.count %> Interested</p>
+      </div>
       </div>
     </div>
   </div>
 <% end %>
 
-<script>
-
-  function bookWorkshop () {
-    var card = document.querySelector('.card-interest-book');
-    var bookcontainter = document.querySelector('.workshop-cards-selected')
-    bookcontainter.append(card)
-  }
-
-</script>
