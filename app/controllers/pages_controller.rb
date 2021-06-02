@@ -157,7 +157,7 @@ class PagesController < ApplicationController
           @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
         end
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
-      elsif params[:filter_user].present? && (params[:filter_user][:job] != [""] || (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != []))
+      elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])
         # tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?)).map{|x| x.id}
         tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?))
         tags_hash = {}
@@ -168,13 +168,7 @@ class PagesController < ApplicationController
             tags_hash[tag.tag_category_id] = [tag]
           end
         end
-        if params[:filter_user][:job] != [""] && params[:filter_user][:job].present?
-          if tags.present?
-            @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, job_title: params[:filter_user][:job].reject(&:blank?), user_tags: {tag_id: tags}).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).uniq)
-          else
-            @users = (parameter.where(company_id: current_user.company_id, job_title: params[:filter_user][:job].reject(&:blank?)).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc))
-          end
-        elsif tags.empty?
+        if tags.empty?
           if params[:filter_user][:selected].present?
             @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           else
@@ -191,7 +185,6 @@ class PagesController < ApplicationController
           end
           @users = @users.uniq
         end
-        @filter_jobs = params[:filter_user][:job].reject{|c| c.empty?}
         @filter_tags = params[:filter_user][:tag].reject{|c| c.empty?}
       elsif params[:order].present?
         if params[:order] == 'tag_category'

@@ -1,13 +1,7 @@
 <div id="index-controls" class='employee-tag flex-row-between-centered'>
-  <% if @filter_tags.present? || @filter_jobs.present? %>
+  <% if @filter_tags.present? %>
     <div class="filter-selected-tags">
       <h1><%= @users.count %> result(s) for</h1>
-      <% @filter_jobs.each do |job| %>
-        <div class="selected-tags" name='<%= job %>'>
-          <p><%= job %></p>
-          <i class="fas fa-times" onclick='removeJob(this);'></i>
-        </div>
-      <% end %>
       <% @filter_tags.each do |tag| %>
         <div class="selected-tags" name='<%= tag %>'>
           <p><%= tag %></p>
@@ -66,17 +60,6 @@
           <% end %>
         </div>
       </div>
-<!--       <div class="headers-div">
-        <p>Job Title</p>
-        <div class="headers-div-order">
-          <%#link_to organisation_path(order: 'job_title', users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
-            <i class="fas fa-caret-up"></i>
-          <%#end %>
-          <%# link_to organisation_path(order: 'job_title', users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
-            <i class="fas fa-caret-down"></i>
-          <%#end %>
-        </div>
-      </div> -->
       <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
         <div class="headers-div">
           <p><%= tag_category.name %></p>
@@ -118,9 +101,6 @@
         </div>
         <div class="user-index-info">
           <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
-        </div>
-        <div class="user-index-info">
-          <p data-toggle="tooltip" title="<%= user.job_title %>"><%= user.job_title %></p>
         </div>
         <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
           <div class="user-index-info">

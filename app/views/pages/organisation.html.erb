@@ -31,6 +31,10 @@
 <script>
   formGuardian = false;
   doubleClickGuardian = false;
+  setTimeout(function(){
+    document.querySelector('#user_email').value = ''
+    document.querySelector('#user_password').value = ''
+  }, 100)
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)

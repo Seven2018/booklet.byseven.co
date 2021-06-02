@@ -8,8 +8,8 @@
     <%= simple_form_for User.new, class:'form-group' do |f| %>
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control' %>
-      <%= f.input :email, label: 'Email:', class:'form-control' %>
-      <%= f.input :password, label:'Password:', class:'form-control'  %>
+      <%= f.input :email, label: 'Email:', class:'form-control', input_html: {value: ''} %>
+      <%= f.input :password, label: 'Password:', class:'form-control', input_html: {value: ''} %>
       <% if current_user.access_level == 'Super Admin' %>
         <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
       <% elsif current_user.access_level == 'Admin' %>

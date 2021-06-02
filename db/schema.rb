@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
     t.string "title", default: "", null: false
     t.integer "duration", default: 0, null: false
     t.text "description", default: "", null: false
-    t.string "content_type"
+    t.string "content_type", default: "Synchronous", null: false
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.bigint "folder_id"
@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
 
   create_table "sessions", force: :cascade do |t|
     t.date "date"
+    t.date "available_date"
     t.time "starts_at"
     t.time "ends_at"
     t.bigint "training_id"

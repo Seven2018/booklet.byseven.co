@@ -2,8 +2,10 @@
   <div class="catalogue-content-card-left">
     <% content = Session.includes([:content]).find(session.id).content %>
     <div class="catalogue-content-card-left-main">
-      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-        <%= link_to '', content_path(content.id), class: 'stretched-link' %>
+      <% if session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today) %>
+        <%= link_to '', content_path(content.id, content_access: 'granted'), class: 'stretched-link' %>
+      <% else %>
+        <%= link_to '', content_path(content.id, session_id: session.id), class: 'stretched-link' %>
       <% end %>
       <h4><%= content.title %></h4>
       <p><%= content.duration %> Minutes</p>
@@ -37,31 +39,17 @@
         <b><p><%= session.date.strftime('%B %d') %></p></b>
       </div>
       <div class="catalogue-content-card-right-sessions">
-        <p><%= session.attendees.count %> Participants</p>
+        <p><%= session.attendees.count %> Participant(s)</p>
       </div>
     </div>
   <% elsif content.content_type == 'Asynchronous' %>
-      <div class="sessions-content-card-right-asyn">
-        <div class="sessions-date">
-          <p>Available</p>
-          <b><p><%= session.date.strftime('%B %d') %></p></b>
-        </div>
-        <div class="catalogue-content-card-right-interest">
-          <p><%= session.attendees.count %> Participants</p>
-        </div>
+    <div class="sessions-content-card-right-asyn">
+      <div class="sessions-date">
+        <p>Available</p>
+        <b><p><%= session.date.strftime('%B %d') %></p></b>
       </div>
       <div class="catalogue-content-card-right-sessions">
-        <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
-        <% if interest.present? %>
-          <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
-            <i class="fas fa-heart"></i>
-          <% end %>
-        <% else %>
-          <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
-            <i class="far fa-heart"></i>
-          <% end %>
-        <% end %>
-        <p><%= session.attendees.count %> Participants</p>
+        <p><%= session.attendees.count %> Participant(s)</p>
       </div>
     </div>
   <% end %>

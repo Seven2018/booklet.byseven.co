@@ -62,17 +62,17 @@
           </div>
       </div>
     <% elsif %>
-    <div class="book-selected-card-dates" style='background-color: #EEEEEE'>
-      <div class='book-dates'>
-      <p>Date</p>
-        <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
-          <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
-          <%= f.hidden_field :content_id, value: content.id %>
-          <%= f.hidden_field :selected_users %>
-          <%= f.submit '', class: 'hidden-submit hidden' %>
-        <% end %>
+      <div class="book-selected-card-dates" style='background-color: #EEEEEE'>
+        <div class='book-dates'>
+        <p>Date</p>
+          <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
+            <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
+            <%= f.hidden_field :content_id, value: content.id %>
+            <%= f.hidden_field :selected_users %>
+            <%= f.submit '', class: 'hidden-submit hidden' %>
+          <% end %>
+        </div>
       </div>
-    </div>
     <% end %>
   </div>
 <% end %>

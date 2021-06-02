@@ -1,45 +1,84 @@
-<%= simple_form_for content, remote: true do |f| %>
-  <div class="flex-row-between-centered">
-    <div class="content-show-infos" onclick="openInput(this);">
-      <p class='content.title'><b><%= content.title %></b></p>
-      <div class="content-show-input hidden">
-        <%= f.input :title, label: false, input_html: { autocomplete: "off" } %>
+<% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] == 'catalogue') %>
+  <%= simple_form_for content, remote: true do |f| %>
+    <div class="flex-row-between-centered">
+      <div class="content-show-infos" onclick="openInput(this);">
+        <p class='content.title'><b><%= content.title %></b></p>
+        <div class="content-show-input hidden">
+          <%= f.input :title, label: false, input_html: { autocomplete: "off" } %>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="duration-content-type">
-    <div class="content-show-infos content-show-infos-duration" >
-      <div class="slidecontainer">
-      <p><%= f.input :duration, label: false, input_html: { autocomplete: "off",  type: 'range', min: '0', max: '600', id: 'myRange', value: content.duration, onmouseup: 'saveOnSelect();' }%></p>
-      <p class='sliding'>Duration: <span id="demo"></span> Minutes</p>
+    <div class="duration-content-type">
+      <div class="content-show-infos content-show-infos-duration" >
+        <div class="slidecontainer">
+        <p><%= f.input :duration, label: false, input_html: { autocomplete: "off",  type: 'range', min: '0', max: '600', id: 'myRange', value: content.duration, onmouseup: 'saveOnSelect();' }%></p>
+        <p class='sliding'>Duration: <span id="demo"></span> Minutes</p>
+        </div>
+      </div>
+      <div class="content-type-radio">
+        <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], :checked => [content.content_type, content.content_type], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect();'}, class: 'content-type-radio' %>
       </div>
     </div>
-    <div class="content-type-radio">
-      <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect();'}, class: 'content-type-radio', required: true %>
+    <div class="content-show-infos content-show-infos-themes">
+      <% content.categories.order(title: :asc).each do |category| %>
+        <p class="category-tag"><%= category.title %></p>
+      <% end %>
+      <a data-toggle='modal' data-target='#addTheme' class='btn-text-white'><i class="fas fa-plus"></i> Themes </a><br>
     </div>
-  </div>
-  <div class="content-show-infos content-show-infos-themes">
-    <% content.categories.order(title: :asc).each do |category| %>
-      <p class="category-tag"><%= category.title %></p>
-    <% end %>
-    <a data-toggle='modal' data-target='#addTheme' class='btn-text-white'><i class="fas fa-plus"></i> Themes </a><br>
-  </div>
-  <div>
-    <div class="content-show-infos content-show-infos-trix" onclick="openInputTrix(this);">
-      <p>Objectives :
-        <br>
-        <% if content.description.present? %>
-          <p><%= content.description %></p>
+    <div>
+      <div class="content-show-infos content-show-infos-trix" onclick="openInputTrix(this);">
+        <p>Objectives :
+          <br>
+          <% if content.description.present? %>
+            <p><%= content.description %></p>
+          <% else %>
+            <p style='color:#888888;'>Write the objective or purpose of the workshop here.</p>
+          <% end %>
+        </p>
+      </div>
+      <div class="content-show-input-trix hidden">
+        <%= f.trix_editor :description, label: false, input_html: { autocomplete: "off"}, placeholder: 'Objectives' %>
+      </div>
+    </div>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+  <% end %>
+<% else %>
+    <div class="flex-row-between-centered">
+      <div class="content-show-infos">
+        <p class='content.title'><b><%= content.title %></b></p>
+      </div>
+    </div>
+    <div class="duration-content-type">
+      <div class="content-show-infos content-show-infos-duration" >
+        <div class="slidecontainer">
+          <p class='sliding'>Duration: <%= content.duration %> Minutes</p>
+        </div>
+      </div>
+      <div class="content-type-radio">
+        <% if content.content_type == 'Synchronous' %>
+          <p>In Person</p>
         <% else %>
-          <p style='color:#888888;'>Write the objective or purpose of the workshop here.</p>
+          <p>Online</p>
         <% end %>
-      </p>
+      </div>
     </div>
-    <div class="content-show-input-trix hidden">
-      <%= f.trix_editor :description, label: false, input_html: { autocomplete: "off"}, placeholder: 'Objectives' %>
+    <div class="content-show-infos content-show-infos-themes">
+      <% content.categories.order(title: :asc).each do |category| %>
+        <p class="category-tag"><%= category.title %></p>
+      <% end %>
     </div>
-  </div>
-  <%= f.submit '', class: 'hidden-submit hidden' %>
+    <div>
+      <div class="content-show-infos content-show-infos-trix">
+        <p>Objectives :
+          <br>
+          <% if content.description.present? %>
+            <p><%= content.description %></p>
+          <% else %>
+            <p style='color:#888888;'>Write the objective or purpose of the workshop here.</p>
+          <% end %>
+        </p>
+      </div>
+    </div>
 <% end %>
 
 <div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">

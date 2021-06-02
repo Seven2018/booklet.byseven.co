@@ -13,9 +13,9 @@
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
         <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
-        <button class="btn-orange" onclick="closeModalOnSubmit(this);">
+        <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'closeModalOnSubmit(this);' do %>
           <p>Add Image</p>
-        </button>
+        <% end %>
       <% end %>
       </div>
   </div>

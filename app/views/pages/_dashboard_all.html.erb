@@ -2,7 +2,7 @@
   <div class="dashboard-navigation">
     <div class="trainings-nav">
      <ul class="nav nav-tabs-trainings">
-        <li role="presentation"><a href="#UpcomingAll" data-toggle="tab">Upcoming</a></li>
+        <li role="presentation"><a href="#UpcomingAll" data-toggle="tab" class='active'>Upcoming</a></li>
         <li role="presentation"><a href="#CompletedAll" data-toggle="tab">Completed</a></li>
         <li role="presentation"><a href="#AllSessionsAll" data-toggle="tab">All</a></li>
       </ul>
@@ -10,11 +10,11 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="UpcomingAll">
         <% if @upcoming_sessions.empty? %>
-        <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
+          <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
         <% elsif %>
-        <% @upcoming_sessions.each do |session| %>
-          <%= render 'dashboard_sessions_card', session: session %>
-        <% end %>
+          <% @upcoming_sessions.each do |session| %>
+            <%= render 'dashboard_sessions_card', session: session %>
+          <% end %>
         <% end %>
       </div>
       <div role="tabpanel" class="tab-pane" id="CompletedAll">
