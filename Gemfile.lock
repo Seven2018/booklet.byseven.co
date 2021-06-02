@@ -216,6 +216,9 @@ GEM
     net-ftp (0.1.2)
       net-protocol
       time
+    net-http (0.1.1)
+      net-protocol
+      uri
     net-protocol (0.1.1)
       io-wait
       timeout
@@ -367,6 +370,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     uniform_notifier (1.14.2)
+    uri (0.10.1)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.1.0)
@@ -404,6 +408,7 @@ DEPENDENCIES
   jquery-rails
   listen (~> 3.0.5)
   material-sass!
+  net-http
   oauth2
   omniauth-google-oauth2
   omniauth-rails_csrf_protection

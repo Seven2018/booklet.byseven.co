@@ -77,7 +77,7 @@ Rails.application.routes.draw do
   post 'attendee-mark-as-completed', to: 'attendees#mark_as_completed', as: 'mark_as_completed_attendees'
 
   # PAGES
-  root to: 'pages#dashboard'
+  root to: redirect('/dashboard')
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
   get 'organisation', to: 'pages#organisation', as: 'organisation'

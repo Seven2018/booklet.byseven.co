@@ -67,7 +67,7 @@
 <% end %>
 <div class="organisation-manage-users-tags-form">
   <% @tag_categories.each do |tag_category| %>
-    <div class='hidden-form-category-ajax hidden' id="category-<%= tag_category.id %>">
+    <div class='hidden-form-category-ajax hidden-form-tag-ajax hidden' id="category-<%= tag_category.id %>">
       <%= simple_form_for :tag, url: tags_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
         <div class='flex-row-between-centered'>
           <%= f.text_field :tag_name, placeholder: 'New Tag', style: 'height: 100%;' %>

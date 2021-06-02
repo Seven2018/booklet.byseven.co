@@ -31,6 +31,7 @@ gem 'ransack'
 gem 'bullet', group: 'development'
 gem 'trix-rails', require: 'trix'
 gem "acts_as_tree"
+gem "net-http"
 
 
 group :development do

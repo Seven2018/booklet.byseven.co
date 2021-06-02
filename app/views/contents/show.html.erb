@@ -6,7 +6,7 @@
     <div class="content-show-attributes">
       <%= render 'show_attributes', content: @content %>
     </div>
-      <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] == 'catalogue') || params[:content_access] == 'granted' %>
+      <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' %>
         <div class="content-show-mods-index">
           <%= render 'mods/content_show_mods_index', content: @content %>
           <div class="hidden-mod-form hidden">
