@@ -91,6 +91,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
 
 <script>
+
+
+
   page = 1;
 
   pageone = document.querySelector('.book-page-1')
@@ -136,6 +139,30 @@
     else return false;
   }
 
+    function bookWorkshop (element) {
+    var card = element.closest('.card-interest-book');
+    var bookcontainer = document.querySelector('.workshop-cards-selected')
+    var selectcontainer = document.querySelector('.workshop-cards-book')
+    var cart = card.querySelector('#cart')
+    var undo = card.querySelector('#undo')
+    var ghostcard = document.querySelector('.ghost-card')
+    if (element.closest('.workshop-cards-selected')) {
+      cart.classList.remove('hidden')
+      undo.classList.add('hidden')
+      selectcontainer.append(card)
+    } else {
+      bookcontainer.append(card)
+      cart.classList.add('hidden')
+      undo.classList.remove('hidden')
+    }
+    if (bookcontainer.querySelector('.card-interest-book') != null) {
+      ghostcard.classList.add('hidden')
+    } else {
+      ghostcard.classList.remove('hidden')
+    }
+  }
+
+
   function dragRaceStart(element) {
     element.classList.add('dragging')
   }
@@ -156,6 +183,15 @@
       e.preventDefault()
       const afterElement = getDragAfterElement(container, e.clientY)
       const draggable = document.querySelector('.dragging')
+      var cart = draggable.querySelector('#cart')
+      var undo = draggable.querySelector('#undo')
+      if (container.classList.contains('workshop-cards-book')) {
+        cart.classList.remove('hidden')
+        undo.classList.add('hidden')
+      } else {
+        cart.classList.add('hidden')
+        undo.classList.remove('hidden')
+      }
       if (afterElement == null) {
         container.appendChild(draggable)
         return false

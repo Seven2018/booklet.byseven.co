@@ -19,18 +19,24 @@
 .workshop-cards-selected {
   padding: 20px;
   border-left: none;
+  border-top: 1px solid #C4C4C4;
   min-height: 700px;
-  padding: 0px 20px 20px 20px;
+  padding: 20px 0px;
   @include from-medium-high {
+    padding: 0px 20px 20px 20px;
     border-left: 1px solid #C4C4C4;
+    border-top: none;
   }
 
 }
 
 .workshop-cards-book {
-  padding: 20px;
-  min-height: 700px;
+  padding: 10px 0px;
+  min-height: 0;
+  @include from-medium-high {
   padding: 0px 20px 20px 20px;
+  min-height: 700px;
+  }
 }
 
 
@@ -50,7 +56,7 @@
 
 
 .card-interest {
-  cursor: all-scroll;
+  // cursor: all-scroll;
 }
 
 
@@ -66,7 +72,6 @@
   width: 100%;
   min-height: 19rem;
   margin-bottom: 20px;
-  cursor: move;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   @include from-medium-high {
     min-height: 10rem;
@@ -79,6 +84,7 @@
 
 .catalogue-content-card-right-syn-book, .catalogue-content-card-right-asyn-book {
   width: 100%;
+  cursor: grab;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -117,6 +123,7 @@
   align-items: flex-start;
   position: relative;
   width: 100%;
+  cursor: move;
 
   h3 {
     width: 95%;
@@ -144,11 +151,12 @@
     top: 1rem;
   }
 
-  .catalogue-content-card-categories {
+  .catalogue-content-card-categories-book {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-wrap:wrap;
+    height: 2rem;
 
     p {
       background: #F8D9C8;
@@ -178,7 +186,7 @@
 
 
 .ghost-card {
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
@@ -190,6 +198,7 @@
   }
   @include from-medium-high {
   height: 15.5rem;
+  display: flex;
   }
 }
 
@@ -306,20 +315,23 @@
 
 .users-book-selected {
   padding: 20px;
-  min-height: 700px;
-  padding: 0px 20px 20px 20px;
+  padding: 20px 20px 20px 20px;
   border-left: none;
+  min-height: 0px;
   border-top:  1px solid #C4C4C4;
   @include from-medium-high {
   border-left: 1px solid #C4C4C4;
   border-top: none;
+  min-height: 700px;
   }
 }
 
 .users-book {
-  padding: 20px;
-  min-height: 700px;
+  min-height: 0px;
   padding: 0px 20px 20px 20px;
+  @include from-medium {
+    min-height: 700px;
+  }
 }
 
 
@@ -341,31 +353,39 @@
   height: 2.4rem;
 
   &:first-of-type {
-    min-width: 7rem;
+    min-width: 0rem;
   }
 
   p {
-    font-size: 12px;
+    font-size: 16px;
     text-overflow: ellipsis;
     overflow: hidden;
   }
 
   @include from-medium {
-    p {
-      font-size: 16px;
-    }
+    &:first-of-type {
+    min-width: 7rem;
+  }
+  }
+}
+
+#useremail {
+  display: none;
+  @include from-medium {
+    display: block;
   }
 }
 
 .card-content-description {
   height: 6rem;
+  display:none;
+  @include from-medium {
+    display: block;
+  }
 }
 
 .user-index-card-book {
-  // background-color: white;
-  // margin-bottom: 20px;
-  border-bottom: 1px solid #c4c4c4;
-  // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-bottom: none;
   height: 8rem;
   display: flex;
   align-items: center;
@@ -374,6 +394,7 @@
     display:none;
   }
   @include from-medium {
+    border-bottom: 1px solid #c4c4c4;
     img {
       display: inherit;
     }
@@ -385,7 +406,6 @@
 .book-selected-card {
   margin-top: 20px;
   background: white;
-  height: 20rem;
   display: flex;
   flex-direction:column;
   margin-bottom: 3rem;
@@ -401,7 +421,7 @@
   }
 
   .book-selected-card-infos {
-    height: 80%;
+    height: 100%;
     width: 100%;
     padding: 1rem;
     display: flex;
@@ -409,6 +429,9 @@
     align-items: flex-start;
     position: relative;
     font-size: 1.6rem;
+    @include from-medium-high {
+      height: 80%;
+    }
   }
 
 
@@ -452,10 +475,19 @@
 
 .book-dates {
   background-color: white;
-  padding: 10px;
+  padding: 0;
+  p {
+    padding: 0px;
+  }
   border-radius: 5px;
   label {
     color: #F26419;
+  }
+  @include from-medium-high {
+    padding: 10px;
+    p {
+      padding: 5px;
+    }
   }
 }
 
@@ -494,3 +526,8 @@
   margin-top: 10px;
   cursor: pointer;
 }
+
+.book-element{
+  cursor: pointer;
+}
+

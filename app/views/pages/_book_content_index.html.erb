@@ -18,7 +18,7 @@
           <% end %>
         <% end %>
         </div>
-        <div class="catalogue-content-card-categories">
+        <div class="catalogue-content-card-categories-book">
           <% content.categories.order(title: :asc).each do |category| %>
             <p><%= category.title %></p>
           <% end %>
@@ -37,20 +37,15 @@
     <% else %>
       <div class="catalogue-content-card-right-asyn-book">
     <% end %>
-        <div class="catalogue-content-card-right-interest">
-          <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
-          <% if interest.present? %>
-            <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
-              <i class="fas fa-heart"></i>
-            <% end %>
-          <% else %>
-            <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
-              <i class="far fa-heart"></i>
-            <% end %>
-          <% end %>
-          <p><%= content.interested.count %> Interested</p>
-        </div>
+      <div class="book-element" id='bookbtn' onclick='bookWorkshop(this);' >
+        <i class="fas fa-shopping-cart fa-5x" id='cart'></i>
+        <i class="fas fa-backspace fa-5x hidden" id='undo'></i>
+      </div>
+      <div class="catalogue-content-card-right-interest">
+        <p><%= content.interested.count %> Interested</p>
+      </div>
       </div>
     </div>
   </div>
 <% end %>
+
