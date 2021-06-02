@@ -18,7 +18,7 @@
             <% end %>
           </div>
         </div>
-      <% else %>
+      <% elsif params[:session_id].present? %>
         <p>Content available on <%= Session.find(params[:session_id]).date.to_s %></p>
       <% end %>
       <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] == 'catalogue') %>
