@@ -3,12 +3,12 @@
 }
 
 
-.book-container {
-    padding: 10px;
-  @include from-medium {
-  padding: 30px;
-  }
-}
+// .book-container {
+//     padding: 10px;
+//   @include from-medium {
+//   padding: 30px;
+//   }
+// }
 
 .booking-title {
   margin-top: 20px;
@@ -257,7 +257,7 @@
     }
 
     @include from-medium {
-      margin: 0rem 1rem 0rem 1rem;
+      margin: 0rem 1rem 0rem 2rem;
     }
   }
 }
@@ -298,6 +298,7 @@
 
 // Next Page controls //
 .book-next-page {
+  margin-top: 20px;
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
