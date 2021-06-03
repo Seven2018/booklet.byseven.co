@@ -9,17 +9,22 @@
       <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' %>
         <div class="content-show-mods-index">
           <%= render 'mods/content_show_mods_index', content: @content %>
-          <div class="hidden-mod-form hidden">
-            <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
-              <%= f.text_field :title, placeholder: 'Quiz Title' %>
-              <%= f.hidden_field :content_id, value: @content.id %>
-              <%= f.submit '', class: 'hidden-submit hidden' %>
-              <div class="btn-icon" onclick="dismissForm(this);"><i class="fas fa-save"></i></div>
-            <% end %>
-          </div>
         </div>
       <% elsif params[:session_id].present? %>
         <p>Content available on <%= Session.find(params[:session_id]).date.to_s %></p>
+      <% end %>
+      <% if params[:content_access] == 'granted' %>
+        <div style='display: inline-block;'>
+          <% if UserInterest.find_by(user_id: current_user.id, content_id: @content.id, interest_type: 'Completed').present? %>
+            <div class="btn-orange btn-complete">
+              <p>Training Completed</p>
+            </div>
+          <% else %>
+            <%= link_to complete_content_path(content_id: @content.id), class: 'btn-orange btn-complete', remote: true do %>
+              <p>Complete Training</p>
+            <% end %>
+          <% end %>
+        </div>
       <% end %>
       <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] == 'catalogue') %>
         <div class="content-show-mods-container">
@@ -35,24 +40,17 @@
                 <i class="fas fa-video"></i>
                 <p>Video</p>
               </a>
-              <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModImage'>
+<!--               <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModImage'>
                 <i class="fas fa-image"></i>
                 <p>Image</p>
-              </a>
-              <div class="content-show-mods-controls-block" onclick="openQuizForm(this);">
+              </a> -->
+              <div class="content-show-mods-controls-block"  data-toggle='modal' data-target='#newModQuiz'>
                 <i class="fas fa-star-half-alt"></i>
                 <p>Quiz</p>
-                <div class="hidden-mod-form hidden">
-                  <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
-                    <%= f.text_field :title, placeholder: 'Quiz Title' %>
-                    <%= f.hidden_field :content_id, value: @content.id %>
-                    <%= f.submit '', class: 'hidden-submit hidden' %>
-                    <div class="btn-icon" onclick="dismissForm(this);"><i class="fas fa-save"></i></div>
-                  <% end %>
-                </div>
               </div>
             </div>
           </div>
+        </div>
       <% end %>
     </div>
   </div>
@@ -74,6 +72,12 @@
 <div class='modal fade' id='newModImage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'mods/new_mod_image' %>
+  </div>
+</div>
+
+<div class='modal fade' id='newModQuiz' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'mods/new_mod_quiz' %>
   </div>
 </div>
 
@@ -196,11 +200,20 @@
   }
 
   function closeModalOnSubmit(element) {
-    var title = element.closest('.modal-body').querySelector('#mod_title');
-    if (title.value.innerHTML != null) {
-      modal = document.querySelector('.modal.show')
-      modal.querySelector('.cancel-close').click();
-      modal.querySelector('.hidden-submit').click();
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      title = element.closest('.modal-body').querySelector('#mod_title');
+      //f (title.value.innerHTML != null) {
+        modal = document.querySelector('.modal.show')
+        modal.querySelector('.cancel-close').click()
+        modal.querySelector('.hidden-submit').click()
+        modal.querySelector('#mod_title').value = ''
+        if (modal.querySelector('trix-editor') != null) {
+          modal.querySelector('trix-editor').value = ''
+        }
+
+      //}
+      setTimeout(function(){doubleClickGuardian = false}, 10)
     }
   }
 
@@ -227,16 +240,5 @@
         this.removeEventListener('click', arguments.callee, false);
       }
     });
-  }
-
-  function openQuizForm(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true;
-      setTimeout(function(){
-        doubleClickGuardian = false;
-      }, 100);
-      console.log('test')
-      document.querySelector('.hidden-mod-form').classList.remove('hidden');
-    }
   }
 </script>
