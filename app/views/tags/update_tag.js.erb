@@ -1,9 +1,9 @@
 manage_users = document.querySelector('.organisation-manage-users-dropright')
 manage_users.innerHTML = '<%= j render("pages/organisation_manage_users_dropright", users: @users, tag_categories: @tag_categories) %>';
+document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>';
 manage_users.querySelectorAll('input[type="checkbox"]').forEach((element) => {
   element.checked = false
 })
-document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>';
 opened = '<%= @opened %>'.split(',')
 document.querySelectorAll('.organisation-manage-users-block').forEach((block) => {
   if (opened.includes(block.getAttribute('data-category'))) {

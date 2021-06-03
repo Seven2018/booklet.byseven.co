@@ -9,6 +9,24 @@
       <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser(this);'>
       <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
     </div>
+    <div>
+      <% interest_for == [] ? interested = 'No workshop selected ' : interested = '' %>
+      <% interest_for == [] ? completed = 'No workshop selected ' : completed = '' %>
+      <% UserInterest.where(user_id: user.id, content_id: interest_for, interest_type: 'Interested').each do |interest| %>
+        <% interested += interest.content.title + ',' %>
+      <% end %>
+      <% UserInterest.where(user_id: user.id, content_id: interest_for, interest_type: 'Completed').each do |complete| %>
+        <% completed += complete.content.title + ',' %>
+      <% end %>
+      <div class="flex-row-start-centered">
+        <i class="fas fa-heart"></i>
+        <p><%= interested[0..-2] %></p>
+      </div>
+      <div class="flex-row-start-centered">
+        <i class="fas fa-check-circle"></i>
+        <p><%= completed[0..-2] %></p>
+      </div>
+    </div>
     <div class="user-index-info-book">
       <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
     </div>

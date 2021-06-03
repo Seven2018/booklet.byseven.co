@@ -9,7 +9,7 @@ class TagCategoryPolicy < ApplicationPolicy
     check_access
   end
 
-  def update?
+  def update_tag_category?
     check_access
   end
 

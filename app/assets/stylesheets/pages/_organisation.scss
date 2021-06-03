@@ -137,6 +137,15 @@
   }
 }
 
+#tag_tag_name {
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+
+  &:focus {
+    border: 1px solid transparent !important;
+  }
+}
+
 .organisation-filter-container {
   display: none;
   justify-content: space-between;
@@ -201,7 +210,7 @@
           width: 100%;
 
           p {
-            margin-left: 27px;
+            margin-left: 2rem;
           }
         }
 
@@ -353,11 +362,17 @@
   }
 
   .hidden-form-category-ajax {
-
     position: absolute;
+
       input {
         height: 4rem !important;
         margin-left: 2rem;
+      }
+
+      form {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
       }
     }
   }

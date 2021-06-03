@@ -134,6 +134,7 @@ class PagesController < ApplicationController
     elsif params[:filter_user].present?
       @filter = 'user'
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+      @interest_for = Content.where(id: params[:filter_user][:interest_for].split(' '))
       @selected_contents = []
     elsif params[:confirm].present?
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?

@@ -45,6 +45,11 @@
     </div>
   <% end %>
   <%= f.hidden_field :selected %>
+  <% if interest_for != [] %>
+    <%= f.hidden_field :interest_for, value: interest_for.map(&:id).join(' ') %>
+  <% else %>
+    <%= f.hidden_field :interest_for, value: '' %>
+  <% end %>
   <%= f.submit 'Filter', class: 'hidden hidden-submit' %>
 <% end %>
 <div class="centered-item" style='margin-top: 2rem;'>

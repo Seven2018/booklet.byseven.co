@@ -19,8 +19,8 @@
   <div class="hidden-form-category-ajax hidden">
     <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
       <div class="flex-row-between-centered">
-        <%= f.text_field :name, placeholder: 'Tag Category', style: 'height: 100%;' %>
-        <%= f.hidden_field :users, value: @users.map(&:id) %>
+        <%= f.text_field :name, placeholder: 'Tag Category', style: 'height: 100%;', value: '' %>
+        <%= f.hidden_field :users, value: users.map(&:id) %>
         <%= f.submit '', class: 'hidden hidden-submit' %>
         <div onclick='clearInput(this);'>
           <i class="fas fa-save"></i>
@@ -41,7 +41,7 @@
                 <i class="fas fa-pencil-alt"></i>
               </div>
             </div>
-            <%= link_to tag_category_path(tag_category, users: @users.map(&:id)), class: 'tag_delete', data: {confirm: 'Are you sure ?'}, method: :delete, remote: true do %>
+            <%= link_to tag_category_path(tag_category, users: users.map(&:id)), class: 'tag_delete', data: {confirm: 'Are you sure ?'}, method: :delete, remote: true do %>
               <i class="fas fa-trash"></i>
             <% end %>
           </div>
@@ -59,7 +59,12 @@
           <%= collection_check_boxes(:tag, :id, Tag.where(tag_category_id: tag_category.id).order(tag_name: :asc), :id, :tag_name) do |b| %>
             <div class="flex-row-start-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
               <%= b.check_box + b.label %>
-              <%= link_to tag_path(Tag.find(b.object.id), users: @users.map(&:id), tag_category_id: tag_category.id), data: {confirm: 'Are you sure ?'}, method: :delete, class: 'tag_delete', remote: true do %>
+              <div>
+                <div class="tag_delete" data-target="#edit_tag-<%= b.object.id %>" onclick='fetchCategoryForm(this);'>
+                  <i class="fas fa-pencil-alt"></i>
+                </div>
+              </div>
+              <%= link_to tag_path(Tag.find(b.object.id), users: users.map(&:id), tag_category_id: tag_category.id), data: {confirm: 'Are you sure ?'}, method: :delete, class: 'tag_delete', remote: true do %>
                 <i class="fas fa-trash"></i>
               <% end %>
             </div>
@@ -84,10 +89,10 @@
 <div class="organisation-manage-users-tags-form">
   <% @tag_categories.each do |tag_category| %>
     <div class='hidden-form-category-ajax hidden-form-tag-ajax hidden' id="edit-tag_category-<%= tag_category.id %>">
-      <%= simple_form_for tag_category, method: :patch do |f| %>
-        <%= f.text_field :name, style: 'height: 100%;' %>
+      <%= simple_form_for :tag_category, url: update_tag_category_path, method: :get, remote: true do |f| %>
+        <%= f.text_field :name, style: 'height: 100%;', value: tag_category.name %>
         <%= f.hidden_field :tag_category_id, value: tag_category.id %>
-        <%= f.hidden_field :users, value: @users.map(&:id) %>
+        <%= f.hidden_field :users, value: users.map(&:id) %>
         <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '' do %>
           <i class="fas fa-save"></i>
         <% end %>
@@ -98,12 +103,25 @@
         <div class='flex-row-between-centered'>
           <%= f.text_field :tag_name, placeholder: 'New Tag', style: 'height: 100%;' %>
           <%= f.hidden_field :tag_category_id, value: tag_category.id %>
-          <%= f.hidden_field :users, value: @users.map(&:id) %>
+          <%= f.hidden_field :users, value: users.map(&:id) %>
           <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '' do %>
             <i class="fas fa-save"></i>
           <% end %>
         </div>
       <% end %>
     </div>
+    <% tag_category.tags.each do |tag| %>
+      <div class='hidden-form-category-ajax hidden-form-category-ajax-ajax hidden' id="edit_tag-<%= tag.id %>">
+        <%= simple_form_for :tag, url: update_tag_path, method: :get, remote: true do |f| %>
+          <%= f.text_field :tag_name, style: 'height: 100%;', value: tag.tag_name %>
+          <%= f.hidden_field :tag_id, value: tag.id %>
+          <%= f.hidden_field :tag_category_id, value: tag_category.id %>
+          <%= f.hidden_field :users, value: users.map(&:id) %>
+          <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '' do %>
+            <i class="fas fa-save"></i>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
