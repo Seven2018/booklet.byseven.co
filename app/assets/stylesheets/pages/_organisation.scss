@@ -314,12 +314,13 @@
           }
         }
 
-      .organisation-manage-users-block-checkboxes {
-        margin-left: 27px;
+      }
+    .organisation-manage-users-block-checkboxes {
+      margin-left: 27px;
 
-        label {
-          padding-left: 1rem;
-        }
+      label {
+        padding-left: 1rem;
+        margin: 0;
       }
     }
   }
@@ -333,7 +334,6 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-left: 2rem;
 
     i {
       color: #F26419;
@@ -369,6 +369,16 @@
       height: 2.7rem;
       margin: 0 !important;
     }
+  }
+}
+
+.tag_delete {
+  margin-left: 2rem;
+  opacity: 0;
+  transition: opacity .25s ease-in-out;
+
+  i {
+    color: #F26419;
   }
 }
 

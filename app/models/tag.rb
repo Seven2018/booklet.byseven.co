@@ -4,4 +4,5 @@ class Tag < ApplicationRecord
   belongs_to :company
   belongs_to :tag_category
   validates :tag_name, presence: true
+  validates_uniqueness_of :tag_name, scope: :tag_category_id
 end

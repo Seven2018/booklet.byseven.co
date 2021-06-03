@@ -9,7 +9,7 @@ class TagCategoryPolicy < ApplicationPolicy
     check_access
   end
 
-  def delete_tag_category?
+  def update?
     check_access
   end
 
