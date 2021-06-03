@@ -9,7 +9,7 @@
     </div>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="UpcomingPersonal">
-        <% if @upcoming_sessions.empty? %>
+        <% if @my_upcoming_sessions.empty? %>
           <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
         <% elsif %>
           <% @my_upcoming_sessions.each do |session| %>

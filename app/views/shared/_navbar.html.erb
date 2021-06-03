@@ -14,7 +14,6 @@
           <% end %>
         <% end %>
       </li>
-      <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
         <li>
           <% if params[:action] == 'catalogue' || params[:controller] == 'contents' %>
             <%= link_to catalogue_path, class: 'left-buttons' do %>
@@ -27,6 +26,7 @@
             <% end %>
           <% end %>
         </li>
+      <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
         <li>
           <% if params[:controller] == 'users' || params[:action] == 'organisation' %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
