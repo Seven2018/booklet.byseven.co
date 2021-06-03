@@ -210,28 +210,29 @@
 
 // FILTER //
 
+
+
 .index-controls-filter-bar-book {
-  min-height: 4rem;
+  // min-height: 4rem;
+  margin: 3rem 2rem 3rem 0rem;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   position: relative;
   margin-right: 2rem;
   flex-wrap: wrap;
-  padding: 20px;
 
   .index-controls-filter-bar-block-book {
     display: flex;
+    border: 1px solid #C4C4C4;
     justify-content: flex-start;
     align-items: center;
     background: white;
     height: 4rem;
-    max-width: 70rem;
+    width: 30rem;
     padding: 0 2rem;
-    margin-left: 0rem;
+    margin: 0rem 0rem 1rem 0rem;
     border-radius: 5px;
-    margin-bottom: 10px;
 
     i {
       margin-right: 1rem;
@@ -255,34 +256,43 @@
       }
     }
 
-    .filtered_themes {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      div {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        background: #F8D9C8;
-        padding: .5rem;
-        margin-right: 1rem;
-
-        p {
-          margin-right: 1rem;
-        }
-
-        i {
-          margin: 0;
-        }
-      }
-    }
     @include from-medium {
-      margin-bottom: 0px;
+      margin: 0rem 1rem 0rem 1rem;
+    }
+  }
+}
+
+.filtered_themes {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap:wrap;
+  width: 350px;
+
+  div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: #F8D9C8;
+    padding: .5rem;
+    margin: .3rem 1rem .3rem .5rem;
+    border-radius: 5px;
+
+
+    p {
+      margin-right: 1rem;
+      color: #F26419;
+    }
+
+    i {
+      color: #F26419;
+      margin: 0;
+      font-size: 14px;
+      opacity: .5;
     }
   }
   @include from-medium {
-
+    width: 650px;
   }
 }
 
@@ -341,7 +351,9 @@
 
 
 //---user cards---//
-
+.icon {
+  margin: 10px;
+}
 
 
 .user-index-infos {
@@ -355,11 +367,8 @@
   justify-content: space-between;
   align-items: center;
   margin-right: 3rem;
-  height: 2.4rem;
 
-  &:first-of-type {
-    min-width: 0rem;
-  }
+
 
   p {
     font-size: 16px;
@@ -374,12 +383,53 @@
   }
 }
 
-#useremail {
+.user-training-info {
   display: none;
   @include from-medium {
     display: block;
   }
 }
+
+.user-index-info-book-user-interest {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 3rem;
+
+  &:first-of-type {
+    min-width: 0rem;
+  }
+
+  p {
+    font-size: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  @include from-medium {
+    &:first-of-type {
+    min-width: 18rem;
+  }
+  }
+}
+
+.user-info-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  p {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  @include from-medium {
+    flex-direction: row;
+    p {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+
 
 .card-content-description {
   height: 6rem;
@@ -391,7 +441,7 @@
 
 .user-index-card-book {
   border-bottom: none;
-  height: 8rem;
+  height: 10rem;
   display: flex;
   align-items: center;
   padding: 0 3rem;
@@ -404,6 +454,12 @@
       display: inherit;
     }
   }
+}
+
+.user-book-interest-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* SELECTED CARD */
