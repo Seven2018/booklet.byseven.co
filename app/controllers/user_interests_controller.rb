@@ -20,7 +20,24 @@ class UserInterestsController < ApplicationController
     authorize user_interest
     user_interest.destroy
     respond_to do |format|
+      @redirect_from = params[:redirect_from]
+      if @redirect_from == 'user_show'
+        @user = current_user
+      end
       format.html {redirect_to catalogue_path}
+      format.js
+    end
+  end
+
+  def complete_content
+    skip_authorization
+    @user_interest = UserInterest.find_by(user_id: current_user.id, content_id: params[:content_id])
+    if @user_interest.present?
+      @user_interest.update(interest_type: 'Completed')
+    else
+      UserInterest.create(user_id: current_user.id, content_id: params[:content_id], interest_type: 'Completed')
+    end
+    respond_to do |format|
       format.js
     end
   end

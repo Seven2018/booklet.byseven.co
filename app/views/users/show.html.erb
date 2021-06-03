@@ -45,51 +45,7 @@
             <%= render 'users/user_informations', user: @user %>
           </div>
           <div class="interested-in">
-            <p><b>Interested In <i class="fas fa-heart"></i></b></p>
-            <% @user.user_interests.includes([:content]).where(interest_type: 'Interested').each do |interest| %>
-             <% content = interest.content  %>
-              <div class='user-card-interest'>
-                <div class="user-card">
-                  <div class="catalogue-content-card-left-user">
-                    <div>
-                      <% if content.title.length > 60 %>
-                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
-                      <% else %>
-                        <h3><b><%= content.title %></b></h3>
-                      <% end %>
-                      <p><%= content.duration %> Minutes</p>
-                    </div>
-                    <div class="type-icon">
-                      <% if content.content_type == 'Synchronous' %>
-                        <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                      <% else %>
-                        <i class="fas fa-laptop" style='color:black;'></i>
-                      <% end %>
-                    </div>
-                  </div>
-                  <% if content.content_type == 'Synchronous' %>
-                    <div class="catalogue-content-card-right-syn-user">
-                  <% else %>
-                    <div class="catalogue-content-card-right-asyn-user">
-                  <% end %>
-                      <div class="catalogue-content-card-right-interest">
-                        <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
-                        <% if interest.present? %>
-                          <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
-                            <i class="fas fa-heart"></i>
-                          <% end %>
-                        <% else %>
-                          <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
-                            <i class="far fa-heart"></i>
-                          <% end %>
-                        <% end %>
-                        <p><%= content.interested.count %> Interested</p>
-                      </div>
-                    </div>
-                    </div>
-                </div>
-              </div>
-            <% end %>
+            <%= render 'user_interests', user: @user %>
           </div>
         </div>
       </div>

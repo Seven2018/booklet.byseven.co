@@ -42,6 +42,8 @@ Rails.application.routes.draw do
 
   # USER_INTERESTS
   resources :user_interests, only: %i[create destroy]
+  get :complete_content, controller: :user_interests
+
 
   # ASSESSMENTS
   resources :assessments, only: %i[show new create edit update destroy] do

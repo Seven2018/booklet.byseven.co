@@ -1,20 +1,17 @@
 <div class="modal-content">
   <div class="modal-header">
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Add image to <%= @content.title %></h3>
+      <h3 class="modal-title" id="myModalLabel">Add Quiz to <%= @content.title %></h3>
     </div>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
-    <%= simple_form_for Mod.new, remote: true do |f| %>
+    <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
+      <%= f.text_field :title, placeholder: 'Quiz Title' %>
       <%= f.hidden_field :content_id, value: @content.id %>
-      <%= f.hidden_field :mod_type, value: 'image' %>
-      <%= f.input :title, placeholder: 'Title', label: false, input_html: { class: "form-control", required: true } %>
-      <%= f.input :image, placeholder: 'Image URL', label: false %>
-      <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
         <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
         <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'closeModalOnSubmit(this);' do %>
-          <p>Add Image</p>
+          <p>Add Video</p>
         <% end %>
       </div>
     <% end %>
