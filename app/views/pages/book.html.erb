@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-    <div class="booking-title">
+    <div class="booking-title users-title">
       <h2>Select Participants to Book</h2>
     </div>
     <div class="index-controls-filter-bar-book">
@@ -51,13 +51,14 @@
     </div>
     <div class="organisation-filter-container">
     <div class="organisation-filter-background" onclick='closeFilter();'></div>
+      <% interest_for = [] %>
       <div class="organisation-filter-dropright">
-        <%= render 'pages/book_user_filter_dropright' %>
+        <%= render 'pages/book_user_filter_dropright', interest_for: interest_for %>
       </div>
     </div>
     <div class="users-book-grid">
       <div class="users-book container">
-        <%= render 'pages/book_user_index', users: @users %>
+        <%= render 'pages/book_user_index', users: @users, interest_for: interest_for %>
       </div>
       <div class="users-book-selected container">
         <div class="headers-div">
@@ -77,7 +78,7 @@
     <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
     <button class='btn-orange' onclick='bookDates()'><p>Confirm</p></button>
     </div>
-    <div class="booking-title">
+    <div class="booking-title dates-title">
       <h2>Select Dates</h2>
     </div>
     <div class="date-book">
@@ -103,8 +104,11 @@
 
   function nextPage() {
     if (page == 1) {
-      pageone.classList.add('hidden')
-      pagetwo.classList.remove('hidden')
+      document.querySelector('.filter_user').querySelector('.hidden-submit').click()
+      setTimeout(function(){
+        pageone.classList.add('hidden')
+        pagetwo.classList.remove('hidden')
+      }, 250)
     } else {
       pagetwo.classList.add('hidden')
       pagethree.classList.remove('hidden')
@@ -139,13 +143,13 @@
     else return false;
   }
 
-    function bookWorkshop (element) {
-    var card = element.closest('.card-interest-book');
-    var bookcontainer = document.querySelector('.workshop-cards-selected')
-    var selectcontainer = document.querySelector('.workshop-cards-book')
-    var cart = card.querySelector('#cart')
-    var undo = card.querySelector('#undo')
-    var ghostcard = document.querySelector('.ghost-card')
+  function bookWorkshop (element) {
+    card = element.closest('.card-interest-book');
+    bookcontainer = document.querySelector('.workshop-cards-selected')
+    selectcontainer = document.querySelector('.workshop-cards-book')
+    cart = card.querySelector('#cart')
+    undo = card.querySelector('#undo')
+    ghostcard = document.querySelector('.ghost-card')
     if (element.closest('.workshop-cards-selected')) {
       cart.classList.remove('hidden')
       undo.classList.add('hidden')
@@ -165,8 +169,10 @@
     selected_cards.forEach((card) => {
       storage_var.push(card.id.split('-')[1])
     })
-    selected_storage = document.getElementById('filter_content_selected');
+    selected_storage = document.getElementById('filter_content_selected')
     selected_storage.value = storage_var.join(',')
+    interest_storage = document.getElementById('filter_user_interest_for')
+    interest_storage.value = storage_var.join(',')
   }
 
 
@@ -183,15 +189,17 @@
     })
     selected_storage = document.getElementById('filter_content_selected');
     selected_storage.value = storage_var.join(',')
+    interest_storage = document.getElementById('filter_user_interest_for')
+    interest_storage.value = storage_var.join(',')
   }
 
   containers.forEach(container => {
     container.addEventListener('dragover', e => {
       e.preventDefault()
-      const afterElement = getDragAfterElement(container, e.clientY)
-      const draggable = document.querySelector('.dragging')
-      var cart = draggable.querySelector('#cart')
-      var undo = draggable.querySelector('#undo')
+      afterElement = getDragAfterElement(container, e.clientY)
+      draggable = document.querySelector('.dragging')
+      cart = draggable.querySelector('#cart')
+      undo = draggable.querySelector('#undo')
       if (container.classList.contains('workshop-cards-book')) {
         cart.classList.remove('hidden')
         undo.classList.add('hidden')

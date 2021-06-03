@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: [:show, :update, :destroy]
+  before_action :set_tag, only: [:show, :destroy]
 
   def show
     authorize @tag
@@ -24,14 +24,16 @@ class TagsController < ApplicationController
     end
   end
 
-  def update
+  def update_tag
+    @tag = Tag.find(params[:tag][:tag_id])
     authorize @tag
     @tag.update(tag_params)
-    @tag.company_id = current_user.company_id
-    if @tag.save
-      redirect_to tag_path(@tag)
-    else
-      raise
+    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+    @users = User.where(id: params[:tag][:users].split(' '))
+    @opened = params[:button]
+    respond_to do |format|
+      format.html {redirect_to organisation_path}
+      format.js
     end
   end
 

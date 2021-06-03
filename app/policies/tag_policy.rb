@@ -17,7 +17,7 @@ class TagPolicy < ApplicationPolicy
     check_access
   end
 
-  def update?
+  def update_tag?
     check_access
   end
 

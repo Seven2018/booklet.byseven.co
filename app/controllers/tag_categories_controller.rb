@@ -1,4 +1,5 @@
 class TagCategoriesController < ApplicationController
+
   def create
     @tag_category = TagCategory.new(tag_category_params)
     authorize @tag_category
@@ -20,6 +21,18 @@ class TagCategoriesController < ApplicationController
     end
   end
 
+  def update_tag_category
+    @tag_category = TagCategory.find(params[:tag_category][:tag_category_id])
+    authorize @tag_category
+    @tag_category.update(tag_category_params)
+    @users = User.where(id: params[:tag_category][:users].split(' '))
+    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+    respond_to do |format|
+      format.html {redirect_to organisation_path}
+      format.js
+    end
+  end
+
   def destroy
     @tag_category = TagCategory.find(params[:id])
     authorize @tag_category
@@ -35,8 +48,8 @@ class TagCategoriesController < ApplicationController
 
   private
 
-  def set_tag
-    @tag = Tag.find(params[:id])
+  def set_tag_category
+    @tag_category = TagCategory.find(params[:id])
   end
 
   def tag_category_params

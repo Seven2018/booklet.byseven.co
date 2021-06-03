@@ -251,9 +251,14 @@
       console.log()
       if (element.getAttribute('data-target').split('-')[0] == '#edit') {
         controls = element.parentNode.parentNode
-        controls.classList.add('hidden')
-        form.style.top = (element.offsetTop - 3).toString() + 'px';
-        form.style.left = (element.offsetLeft.toString() - 100) + 'px'
+        controls.style.opacity = 0
+        form.style.top = (controls.offsetTop - 2).toString() + 'px';
+        form.style.left = (controls.offsetLeft + 27).toString() + 'px'
+      } else if (element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
+        controls = element.parentNode.parentNode
+        controls.style.opacity = 0
+        form.style.top = (controls.offsetTop - 8).toString() + 'px';
+        form.style.left = (controls.offsetLeft + 4).toString() + 'px'
       } else {
         form.style.top = (element.offsetTop - 3).toString() + 'px';
         form.style.left = element.offsetLeft.toString() + 'px'
@@ -266,9 +271,9 @@
 
       window.addEventListener('click', function(e) {
         if (outsideClick(e, form) && doubleClickGuardian == false) {
-          if (element.getAttribute('data-target').split('-')[0] == '#edit') {
+          if (element.getAttribute('data-target').split('-')[0] == '#edit' || element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
             controls = element.parentNode.parentNode
-            controls.classList.remove('hidden')
+            controls.style.opacity = 1
           }
           form.style.top = initial_top.toString() + 'px';
           form.style.left = initial_left.toString() + 'px';
