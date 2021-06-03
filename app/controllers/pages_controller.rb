@@ -108,7 +108,7 @@ class PagesController < ApplicationController
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
     if params[:add_tags].present?
       users = User.where(id: params[:add_tags][:users].split(','))
-      tags = Tag.where(tag_name: params[:add_tags][:tag].reject(&:blank?))
+      tags = Tag.where(id: params[:tag][:id].reject(&:blank?))
       users.each do |user|
         tags.each do |tag|
           UserTag.create(user_id: user.id, tag_id: tag.id)
@@ -134,7 +134,7 @@ class PagesController < ApplicationController
     elsif params[:filter_user].present?
       @filter = 'user'
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
-      @interest_for = Content.where(id: params[:filter_user][:interest_for].split(' '))
+      @interest_for = params[:filter_user][:interest_for].split(',')
       @selected_contents = []
     elsif params[:confirm].present?
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?

@@ -1,8 +1,9 @@
 if ("<%= @filter %>" == 'content') {
   document.querySelector('.workshop-cards-book').innerHTML = '<%= j render("pages/book_content_index", contents: @contents) %>';
 } else if ("<%= @filter %>" == 'user') {
-  document.querySelector('.users-title').innerHTML = "<h2>Book Participants for</h2><h2><%= @interest_for.map(&:title).join(',') %></h2>";
-  document.querySelector('.dates-title').innerHTML = "<h2>Select Dates for</h2><h2><%= @interest_for.map(&:title).join(',') %></h2>";
+  document.querySelector('.users-title').innerHTML = "<h2>Book Participants for</h2><h2><%= Content.where(id: @interest_for).map(&:title).join(', ') %></h2>";
+  document.querySelector('.dates-title').innerHTML = "<h2>Select Dates for</h2><h2><%= Content.where(id: @interest_for).map(&:title).join(', ') %></h2>";
+  console.log("<%= @interest_for %>")
   document.querySelector('.users-book').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: @interest_for) %>';
 }
 document.querySelector('.date-book').innerHTML = '<%= j render("pages/book_dates", selected_contents: @selected_contents) %>';

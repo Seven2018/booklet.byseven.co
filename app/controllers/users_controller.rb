@@ -36,7 +36,7 @@ class UsersController < ApplicationController
     @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
     @user.company_id = current_user.company_id
     authorize @user
-    tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
+    tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i} if params[:user][:tags].present?
     if @user.save
       raw, token = Devise.token_generator.generate(User, :reset_password_token)
       @user.reset_password_token = token
