@@ -1,5 +1,5 @@
 if ("<%= @redirect_from %>" == 'user_show') {
-  document.querySelector('.interested-in').innerHTML = '<%= j render("users/user_interests"), user: @user %>';
+  document.querySelector('.interested-in').innerHTML = '<%= j render("users/user_interests", user: @user) %>';
 } else {
   document.querySelector('#content-<%= @content.id %>').innerHTML = '<%= j render("pages/catalogue_content_card", content: @content) %>';
 }

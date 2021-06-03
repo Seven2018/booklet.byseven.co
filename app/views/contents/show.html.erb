@@ -26,7 +26,7 @@
           <% end %>
         </div>
       <% end %>
-      <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] == 'catalogue') %>
+      <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) %>
         <div class="content-show-mods-container">
           <div class="content-show-mods-control-btn" onclick="contentAdd()";>
             <i class="far fa-edit fa-2x" id='icon-edit'></i>
@@ -244,4 +244,10 @@
       }
     });
   }
+
+  function addQuestionToQuizz(element) {
+      $(this).hide();
+      $("#assessment-show-content").append($("#add_questions_form").html());
+  }
+
 </script>

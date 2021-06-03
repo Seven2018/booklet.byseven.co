@@ -2,19 +2,23 @@
   <div class="dashboard-navigation">
     <div class="dashboard-tabs">
       <ul class="nav nav-tabs">
-        <li role="presentation"><a href="#Personal" data-toggle="tab">My Trainings</a></li>
-        <li role="presentation"><a href="#All" data-toggle="tab" class='active'>Staff Trainings</a></li>
+        <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
+        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+          <li role="presentation"><a href="#All" data-toggle="tab" >Staff Trainings</a></li>
+        <% end %>
       </ul>
     </div>
   </div>
 </div>
 <div class="tab-content">
-  <div role="tabpanel" class="tab-pane" id="Personal">
+  <div role="tabpanel" class="tab-pane active" id="Personal">
     <%= render 'dashboard_personal' %>
   </div>
-  <div role="tabpanel" class="tab-pane active" id="All">
-    <%= render 'dashboard_all' %>
-  </div>
+  <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+    <div role="tabpanel" class="tab-pane" id="All">
+      <%= render 'dashboard_all' %>
+    </div>
+  <% end %>
 </div>
 
 
