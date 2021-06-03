@@ -383,3 +383,23 @@
   }
 }
 
+.saved-message {
+  background:#E6EAD7;
+  color: #56690A;
+  padding: 10px 30px;
+  border-radius: 10px;
+  position: absolute;
+  right: 10px;
+  top: 60px;
+  p {
+    font-weight: 500;
+    font-size: 1.6rem;
+    font-weight: 600 !important;
+    line-height: 27px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  @include from-medium {
+    top: 20px;
+  }
+}

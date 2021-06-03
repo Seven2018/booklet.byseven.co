@@ -1,0 +1,10 @@
+<div class='user-contact-info'>
+  <p><i class="fas fa-envelope"></i> <%=  user.email %></p>
+  <p class="data" id='phone' onclick='openForm(this)'><i class="fas fa-phone"></i> <%=  user.phone_number if user.phone_number.present? %></p>
+  <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'phone'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+    <%= f.input :phone_number, label: false, input_html: {value: user.phone_number} %>
+    <%= button_tag :submit, class: 'hidden-submit' do %>
+      <i class="fas fa-save"></i>
+    <% end %>
+  <% end %>
+</div>
