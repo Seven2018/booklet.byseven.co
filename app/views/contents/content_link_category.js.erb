@@ -3,3 +3,5 @@ if ('<%= @modal %>' == 'true') {
 } else {
   document.querySelector('.content-show-attributes').innerHTML = '<%= j render("contents/show_attributes", content: @content) %>';
 }
+document.querySelector('.saved-message').classList.remove('hidden');
+setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);

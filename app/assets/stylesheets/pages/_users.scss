@@ -358,7 +358,7 @@ background: #F8D9C8;
 // }
 
 .user-trainings {
-  padding: 20px;
+  padding: none;
   h3 {
     text-decoration: underline;
     text-decoration-color: #F26419;
@@ -370,6 +370,9 @@ background: #F8D9C8;
   margin-top: 120px;
   display: flex;
   flex-direction: column;
+  @include from-medium {
+    padding: 20px;
+  }
 }
 
 

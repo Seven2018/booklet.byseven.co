@@ -1,23 +1,27 @@
 <div class="catalogue-container">
   <div id="index-controls" class='flex-row-between-centered'>
     <div class="index-controls-filter-bar">
-      <div class="index-controls-filter-bar-block">
-        <%= render 'catalogue_filter' %>
+      <div class="search-and-create">
+        <div class='index-controls-create-content'>
+          <div class="btn-orange" onclick='openHiddenForm(this);'>
+            <p><i class="fas fa-plus"></i> Create</p>
+          </div>
+          <div class="hidden-form-ajax hidden">
+            <%= simple_form_for Content.new do |f| %>
+              <div style="display:flex;flex-direction:row;justify-content:space-between;align-items: center; height:100%;">
+                <%= f.input :title, label: false, placeholder: 'Title' %>
+                <%= button_tag :submit, class: 'hidden-submit' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="index-controls-filter-bar-block">
+          <%= render 'catalogue_filter' %>
+        </div>
+      <div class="filtered_themes">
       </div>
-      <div class='index-controls-create-content'>
-        <div class="btn-orange" onclick='openHiddenForm(this);'>
-          <p><i class="fas fa-plus"></i> Create</p>
-        </div>
-        <div class="hidden-form-ajax hidden">
-          <%= simple_form_for Content.new do |f| %>
-            <div style="display:flex;flex-direction:row;justify-content:space-between;align-items: center; height:100%;">
-              <%= f.input :title, label: false, placeholder: 'Title' %>
-              <%= button_tag :submit, class: 'hidden-submit' do %>
-            <i class="fas fa-save"></i>
-          <% end %>
-            </div>
-          <% end %>
-        </div>
       </div>
     </div>
   </div>
