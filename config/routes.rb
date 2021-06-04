@@ -88,6 +88,7 @@ Rails.application.routes.draw do
   get 'book', to: 'pages#book', as: 'book'
 
   # SESSIONS
+  resources :sessions
   get :book_sessions, controller: :sessions
   get :book_sessions_update, controller: :sessions
 
