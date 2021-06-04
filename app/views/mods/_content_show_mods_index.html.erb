@@ -15,11 +15,23 @@
         <img src="<%= mod.image %>" alt="<%= mod.title %>">
       </div>
     <% elsif mod.mod_type == 'assessment' %>
-      <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
-        <%= render 'assessments/show', form: mod %>
-      </div>
+      <% if params[:content_access] == 'granted' %>
+        <h3><%= mod.title %></h3>
+        <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? %>
+          <%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %>
+        <% else %>
+          <div class="flex-row-between-centered">
+            <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+            <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
+          <%= render 'assessments/show', form: mod %>
+        </div>
+      <% end %>
     <% end %>
-    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
       <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
         <i class="fas fa-times"></i>
       <% end %>

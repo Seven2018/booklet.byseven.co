@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   get :change_author, controller: :contents
   get :add_category, controller: :contents
   get :content_link_category, controller: :contents
+  get :destroy_content, controller: :contents
   get 'contents/:id/duplicate', to: 'contents#duplicate', as: 'duplicate_content'
 
   # USER_INTERESTS

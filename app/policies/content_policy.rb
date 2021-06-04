@@ -33,6 +33,10 @@ class ContentPolicy < ApplicationPolicy
     check_access_hr
   end
 
+  def destroy_content?
+    check_access_hr
+  end
+
   def filter?
     true
   end

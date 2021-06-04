@@ -81,7 +81,7 @@ class AssessmentsController < ApplicationController
     else
       correct_answers = 0
       wrong_answers = 0
-      AssessmentAnswer.joins(:assessment_question).where(user_id: current_user.id, assessment_questions: {question_type: 'MCQ', mod_id: @form.id}).each do |answer|
+      AssessmentAnswer.joins(:assessment_question).where(user_id: current_user.id, assessment_questions: {mod_id: @form.id}).each do |answer|
         if answer.assessment_question.options[answer.answer] == 'true'
           answer.update(correct: true)
           correct_answers += 1
@@ -97,7 +97,7 @@ class AssessmentsController < ApplicationController
       else
         UserForm.create(grade: (grade*100).round, user_id: current_user.id, mod_id: @form.id)
       end
-      redirect_to view_content_path(Content.joins(:content_mods).find_by(content_mods: {mod_id: @form.id}))
+      redirect_to content_path(@form.content, content_access: 'granted')
     end
   end
 
