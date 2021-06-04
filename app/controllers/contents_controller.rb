@@ -61,7 +61,6 @@ class ContentsController < ApplicationController
     @new_content = Content.new(@content.attributes.except("id", "created_at", "updated_at"))
     @new_content.title = @content.title + ' - Duplicate'
     if @new_content.save
-      @contents_filtered = Content.where(id: (params[:contents].split(',')+[@new_content.id]))
       @new_content.description = @content.description.dup
       @new_content.description.record_id = @new_content.id
       @new_content.description.update(body: @content.description.body.dup)

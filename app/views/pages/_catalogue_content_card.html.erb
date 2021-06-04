@@ -40,7 +40,7 @@
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
       <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
       <div class="content-dropdown hidden">
-        <%= link_to 'Edit', content_path(content) %>
+        <%= link_to 'Edit', content_path(content, redirect_from: 'catalogue') %>
         <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'} %>
         <%= link_to 'Duplicate', duplicate_content_path(content) %>
       </div>
