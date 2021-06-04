@@ -47,38 +47,33 @@
     <%= f.submit '', class: 'hidden-submit hidden' %>
   <% end %>
 <% else %>
-    <div class="flex-row-between-centered">
-      <div class="content-show-infos">
-        <p class='content.title'><b><%= content.title %></b></p>
-      </div>
-    </div>
-    <div class="duration-content-type">
-      <div class="content-show-infos content-show-infos-duration" >
-        <div class="slidecontainer">
-          <p class='sliding'>Duration: <%= content.duration %> Minutes</p>
+  <div class="content-info">
+    <div class="content-type-categories">
+      <div class="content-employee">
+        <div class="content-show-infos-employee">
+          <p class='content.title'><b><%= content.title %></b></p>
+        </div>
+        <div class="content-show-infos-employee content-show-infos-themes" style='margin-top:10px;'>
+          <% content.categories.order(title: :asc).each do |category| %>
+            <p class="category-tag"><%= category.title %></p>
+          <% end %>
         </div>
       </div>
-      <div class="content-type-radio">
+      <div class="content-type-radio-employee">
+        <div class="slidecontainer">
+          <p class='sliding'><i class="far fa-clock"></i> <%= content.duration %> Minutes</p>
+        </div>
         <% if content.content_type == 'Synchronous' %>
-          <p>In Person</p>
+          <p><i class="fas fa-chalkboard-teacher" style='color:#F26419'></i> In Person</p>
         <% else %>
-          <p>Online</p>
+          <p><i class="fas fa-laptop"></i> Online</p>
         <% end %>
       </div>
     </div>
-    <div class="content-show-infos content-show-infos-themes">
-      <% content.categories.order(title: :asc).each do |category| %>
-        <p class="category-tag"><%= category.title %></p>
-      <% end %>
-    </div>
-    <div>
-      <div class="content-show-infos content-show-infos-trix">
-        <p>Objectives :
-          <br>
+      <div class="content-show-infos-employee content-show-infos-trix"style='margin-top:20px;'>
+        <p>
           <% if content.description.present? %>
             <p><%= content.description %></p>
-          <% else %>
-            <p style='color:#888888;'>Write the objective or purpose of the workshop here.</p>
           <% end %>
         </p>
       </div>
