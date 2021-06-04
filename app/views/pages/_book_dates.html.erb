@@ -38,7 +38,7 @@
       </div>
     </div>
     <% if content.content_type == 'Synchronous' %>
-      <div class="book-selected-card-dates">
+      <div class="book-selected-card-dates" style='height:174px;'>
         <div class='book-dates'>
         <p>Date & Time</p>
           <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>

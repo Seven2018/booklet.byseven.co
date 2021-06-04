@@ -37,6 +37,11 @@
       <div class="sessions-date">
         <p>Begins</p>
         <b><p><%= session.date.strftime('%B %d') %></p></b>
+      <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
+      <div class="content-dropdown hidden">
+        <%= link_to 'Modify', content_path(content, redirect_from: 'catalogue') %>
+        <%= link_to 'Delete', destroy_content_path(content_id: content.id, catalogue: 'true'), data: {confirm: 'Are you sure ?'} %>
+      </div>
       </div>
       <div class="catalogue-content-card-right-sessions">
         <p><%= session.attendees.count %> Participant(s)</p>
@@ -48,9 +53,20 @@
         <p>Available</p>
         <b><p><%= session.date.strftime('%B %d') %></p></b>
       </div>
+      <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
+      <div class="content-dropdown hidden">
+        <%= link_to 'Modify', content_path(content, redirect_from: 'catalogue') %>
+        <%= link_to 'Delete', destroy_content_path(content_id: content.id, catalogue: 'true'), data: {confirm: 'Are you sure ?'} %>
+      </div>
       <div class="catalogue-content-card-right-sessions">
         <p><%= session.attendees.count %> Participant(s)</p>
       </div>
     </div>
   <% end %>
 </div>
+<script>
+  function openContentMenu(element) {
+    dropdown = element.parentNode.querySelector('.content-dropdown');
+    dropdown.classList.toggle('hidden');
+  };
+</script>
