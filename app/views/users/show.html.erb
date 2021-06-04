@@ -48,7 +48,6 @@
             <%= render 'user_interests', user: @user %>
           </div>
         </div>
-      </div>
       <div role="tabpanel" class="tab-pane" id="Trainings">
         <div class="user-trainings">
           <p>Upcoming Trainings</p>
@@ -56,8 +55,8 @@
             <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |session| %>
               <% content = Session.includes([:content]).find(session.id).content %>
               <%= link_to content_path(content) do %>
-                <div class="training-card-main">
               <% if content.content_type == 'Asynchronous' %>
+              <div class="training-card-main">
                   <div class="user-trainings-card-asyn">
                     <div class="user-training-top">
                       <% if content.title.length > 60 %>
@@ -74,8 +73,8 @@
                   </div>
                 </div>
               <% elsif %>
-               <div class="training-card-main">
               <% content.content_type == 'Synchronous' %>
+               <div class="training-card-main">
                   <div class="user-trainings-card-syn">
                     <div class="user-training-top">
                       <% if content.title.length > 60 %>
@@ -95,6 +94,7 @@
               <% end %>
             <% end %>
           </div>
+        </div>
           <p>Completed Trainings</p>
           <div class="trainings-row">
             <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |session| %>

@@ -16,7 +16,11 @@
         </div>
       </div>
       <div class="content-type-radio">
-        <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'Synchronous'], ['Asynchronous', 'Asynchronous']], :checked => [content.content_type, content.content_type], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect();'}, class: 'content-type-radio' %>
+        <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], :checked => [content.content_type, content.content_type], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect();'}, class: 'content-type-radio' %>
+      <div class="content-type-icons">
+        <i class="fas fa-chalkboard-teacher" style='margin: 3px 0px 13px 0px; color:#F26419;'></i>
+        <i class="fas fa-laptop"></i>
+      </div>
       </div>
     </div>
     <div class="content-show-infos content-show-infos-themes">
