@@ -286,6 +286,16 @@
     }
   }
 
+  function applyToUsers(element) {
+    element.parentNode.querySelector('.hidden-submit').click()
+    document.querySelector('.organisation-manage-users-dropright').querySelectorAll('input').forEach((input) => {
+      console.log(input)
+      if (input.type == 'checkbox') {
+        input.checked = false;
+      }
+    })
+  }
+
   function showDelete(element) {
     // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
     controls = element.querySelectorAll('.tag_delete');
