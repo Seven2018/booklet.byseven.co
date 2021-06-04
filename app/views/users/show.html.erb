@@ -54,7 +54,8 @@
           <div class="trainings-row">
             <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |session| %>
               <% content = Session.includes([:content]).find(session.id).content %>
-              <%= link_to content_path(content, redirect_from: 'user_show') do %>
+              <% if session.date == Date.today %>
+              <%= link_to content_path(content, redirect_from: 'user_show', session_id: session.id) do %>
               <% if content.content_type == 'Asynchronous' %>
               <div class="training-card-main">
                   <div class="user-trainings-card-asyn">

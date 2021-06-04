@@ -14,4 +14,11 @@ class SessionsController < ApplicationController
       redirect_to dashboard_path
     end
   end
+
+  def delete_session
+    @session = Session.find(params[:id])
+    authorize @session
+    @session.destroy
+    redirect_to dashboard_path
+  end
 end

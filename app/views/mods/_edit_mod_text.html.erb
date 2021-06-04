@@ -6,13 +6,13 @@
   </div>
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for mod, remote: true do |f| %>
-      <%= f.input :title, label: false, required: true %>
+      <%= f.input :title, label: false %>
       <%= f.trix_editor :text, placeholder: 'Content', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
         <div type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</div>
-        <button class="btn-orange" disabled='true' onclick="closeModalOnSubmit(this);">
-          <p>Add Text</p>
+        <button class="btn-orange" onclick="closeModalOnSubmit(this);">
+          <p>Edit Text</p>
         </button>
       </div>
     <% end %>
