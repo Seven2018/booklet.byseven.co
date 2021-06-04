@@ -13,9 +13,9 @@
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
         <div type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</div>
-        <div class="btn-orange" onclick="closeModalOnSubmit(this);">
+        <button class="btn-orange" disabled='true' onclick="closeModalOnSubmit(this);">
           <p>Add Text</p>
-        </div>
+        </button>
       </div>
     <% end %>
   </div>

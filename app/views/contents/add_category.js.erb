@@ -1,3 +1,4 @@
 document.querySelector('#content-<%= @content.id %>').innerHTML = '<%= j render("pages/catalogue_content_card", content: @content) %>';
 document.querySelector('.saved-message').classList.remove('hidden');
 setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);
+

@@ -126,9 +126,10 @@ class ContentsController < ApplicationController
     end
   end
 
-  def destroy
-    @content.destroy
+  def destroy_content
+    @content = Content.find(params[:content_id])
     authorize @content
+    @content.destroy
     #if params[:catalogue].present?
     #  @contents = Content.where(id: params[:contents].split(','))
     #  respond_to do |format|

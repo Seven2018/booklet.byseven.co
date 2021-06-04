@@ -41,7 +41,7 @@
       <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
       <div class="content-dropdown hidden">
         <%= link_to 'Edit', content_path(content, redirect_from: 'catalogue') %>
-        <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'} %>
+        <%= link_to 'Delete', destroy_content_path(content_id: content.id, catalogue: 'true'), data: {confirm: 'Are you sure ?'} %>
         <%= link_to 'Duplicate', duplicate_content_path(content) %>
       </div>
     <% end %>
@@ -65,7 +65,7 @@
       <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
       <div class="content-dropdown hidden">
         <%= link_to 'Edit', content_path(content) %>
-        <%= link_to 'Delete', content_path(content), catalogue: 'true', method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
+        <%= link_to 'Delete', destroy_content_path(content_id: content.id, catalogue: 'true'), data: {confirm: 'Are you sure ?'}, remote: true %>
         <%= link_to 'Duplicate', duplicate_content_path(content), remote: true %>
       </div>
     <% end %>

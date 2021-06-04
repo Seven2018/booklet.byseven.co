@@ -2,7 +2,7 @@
   <div class="mod-assessment-questions-card-view">
     <p class='mod-assessment-questions-position'>Question n°<%= @question&.position %></p>
     <p style="white-space: pre-line"><%= @question&.question %></p>
-    <% if @question.options.present? && @question.question_type == 'MCQ' %>
+    <% if @question.options.present? %>
       <% array = [] %>
       <% @question.options.each do |key, value| %>
         <% array << [key, key] %>
