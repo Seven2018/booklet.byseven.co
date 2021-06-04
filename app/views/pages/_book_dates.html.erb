@@ -38,7 +38,7 @@
       </div>
     </div>
     <% if content.content_type == 'Synchronous' %>
-      <div class="book-selected-card-dates" style='background-color: #F8D9C8'>
+      <div class="book-selected-card-dates">
         <div class='book-dates'>
         <p>Date & Time</p>
           <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
@@ -58,11 +58,11 @@
           <% end %>
         </div>
           <div class="add-date">
-            <p onclick="addDate(this);">Add another date</p>
+            <p style='color:#F26419;' onclick="addDate(this);">Add another date</p>
           </div>
       </div>
     <% elsif %>
-      <div class="book-selected-card-dates" style='background-color: #EEEEEE; padding-bottom: 6rem;'>
+      <div class="book-selected-card-dates" style='background-color: #EEEEEE; height:174px;'>
         <div class='book-dates'>
         <p>Date</p>
           <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>

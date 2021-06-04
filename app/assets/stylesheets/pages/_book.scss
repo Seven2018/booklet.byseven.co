@@ -1,5 +1,6 @@
 .book-times {
   display:flex;
+  align-items: center;
 }
 
 
@@ -504,7 +505,7 @@
     width: 100%;
     padding: 2rem;
     p {
-      color: #f26419;
+      color: black;
     }
     @include from-medium-high {
       width: 40%;
@@ -536,21 +537,19 @@
 }
 
 .book-dates {
-  background-color: white;
   padding: 0;
   p {
     padding: 0px;
   }
   border-radius: 5px;
   label {
-    color: #F26419;
+    color: black;
   }
-  @include from-medium-high {
-    padding: 10px;
-    p {
-      padding: 5px;
-    }
-  }
+
+}
+
+.book-times {
+
 }
 
 
