@@ -14,7 +14,7 @@
         <p>Content available on <%= Session.find(params[:session_id]).date.to_s %></p>
       <% end %>
       <% if params[:content_access] == 'granted' %>
-        <div style='display: inline-block;'>
+        <div style='display: inline-block; margin-top: 5rem;'>
           <% if UserInterest.find_by(user_id: current_user.id, content_id: @content.id, interest_type: 'Completed').present? %>
             <div class="btn-orange btn-complete">
               <p>Training Completed</p>

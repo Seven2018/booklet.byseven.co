@@ -19,8 +19,10 @@
         <%= render 'assessments/show', form: mod %>
       </div>
     <% end %>
-    <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
-      <i class="fas fa-times"></i>
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+        <i class="fas fa-times"></i>
+      <% end %>
     <% end %>
   </div>
 <% end %>
