@@ -6,7 +6,7 @@ class Content < ApplicationRecord
   has_many :categories, through: :content_categories
   has_many :content_skills, dependent: :destroy
   has_many :skills, through: :content_skills
-  has_many :mods
+  has_many :mods, dependent: :destroy
   has_many :assessments, dependent: :destroy
   has_many :user_interests, dependent: :destroy
   has_many :interested, through: :user_interests, source: :user
