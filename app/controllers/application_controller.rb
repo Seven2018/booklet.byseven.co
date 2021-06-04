@@ -1,9 +1,12 @@
+require 'action_text'
+
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
   add_flash_types :error
   # before_action :set_time_zone, if: :user_signed_in?
   include Pundit
+  helper ActionText::Engine.helpers
 
   # Pundit: white-list approach.
   after_action :verify_authorized, except: :index, unless: :skip_pundit?
