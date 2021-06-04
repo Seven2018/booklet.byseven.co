@@ -19,8 +19,8 @@
         </div>
       </div>
       <div class='user-training-info'>
-        <% interest_for == [] ? interested = 'No workshop selected ' : interested = '' %>
-        <% interest_for == [] ? completed = 'No workshop selected ' : completed = '' %>
+        <% interested = '' %>
+        <% completed = '' %>
         <% UserInterest.where(user_id: user.id, content_id: interest_for, interest_type: 'Interested').each do |interest| %>
           <% interested += interest.content.title + ',' %>
         <% end %>
@@ -28,12 +28,16 @@
           <% completed += complete.content.title + ',' %>
         <% end %>
         <div class="flex-row-start-centered icon">
-          <i class="fas fa-heart" style='color:#F26419; margin-right:5px;'></i>
-          <p style='font-size:14px'><%= interested[0..-2] %></p>
+          <% if interested.present? %>
+            <i class="fas fa-heart" style='color:#F26419; margin-right:5px;'></i>
+            <p style='font-size:14px'><%= interested[0..-2] %></p>
+          <% end %>
         </div>
         <div class="flex-row-start-centered icon">
-          <i class="fas fa-check-circle" style='color:#888888; margin-right:5px;'></i>
-          <p style='font-size:14px'><%= completed[0..-2] %></p>
+          <% if completed.present? %>
+            <i class="fas fa-check-circle" style='color:#888888; margin-right:5px;'></i>
+            <p style='font-size:14px'><%= completed[0..-2] %></p>
+          <% end %>
         </div>
       </div>
     </div>

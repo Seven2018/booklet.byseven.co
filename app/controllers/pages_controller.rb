@@ -55,7 +55,7 @@ class PagesController < ApplicationController
     else
       @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
       if params[:search].present?
-        @contents = Content.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+        @contents = Content.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc) if params[:search] != ' '
         respond_to do |format|
           format.html {catalogue_path}
           format.js
@@ -152,10 +152,9 @@ class PagesController < ApplicationController
   def index_function(parameter)
     if ['Super Admin', 'HR'].include?(current_user.access_level)
       if params[:search].present?
-        if params[:filter_user][:themes].split(',').uniq.present?
+        @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
+        if params[:search][:name] != ' '
           @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
-        else
-          @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
         end
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])

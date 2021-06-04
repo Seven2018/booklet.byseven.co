@@ -19,11 +19,12 @@ class UserInterestsController < ApplicationController
     @content = Content.find(user_interest.content_id)
     authorize user_interest
     user_interest.destroy
+    if params[:redirect_from] == 'user_show'
+      @test = params[:redirect_from]
+      @user = current_user
+      raise
+    end
     respond_to do |format|
-      @redirect_from = params[:redirect_from]
-      if @redirect_from == 'user_show'
-        @user = current_user
-      end
       format.html {redirect_to catalogue_path}
       format.js
     end
