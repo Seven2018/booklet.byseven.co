@@ -2,3 +2,17 @@ document.querySelector('.content-show-mods-index').innerHTML = '<%= j (render("m
 document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/show_anchors", content: @content)) %>';
 document.querySelector('.saved-message').classList.remove('hidden');
 setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);
+document.querySelectorAll('#mod_title').forEach((element) =>{
+  if (element.value == '') {
+    element.parentNode.parentNode.querySelector('.btn-orange').disabled = true
+  } else {
+    element.parentNode.parentNode.querySelector('.btn-orange').disabled = false
+  }
+  element.addEventListener('change', event => {
+    if (element.value != '') {
+      element.parentNode.parentNode.querySelector('.btn-orange').disabled = false
+    } else {
+      element.parentNode.parentNode.querySelector('.btn-orange').disabled = true
+    }
+  })
+})

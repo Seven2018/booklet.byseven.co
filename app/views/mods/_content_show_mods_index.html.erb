@@ -32,6 +32,14 @@
       <% end %>
     <% end %>
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+      <% if mod.mod_type == 'text' %>
+        <a data-toggle='modal' data-target='#editMod-<%= mod.id %>' class='mod-edit'><i class="fas fa-pencil-alt"></i></a>
+      <% end %>
+      <div class='modal fade' id='editMod-<%= mod.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+        <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+          <%= render 'mods/edit_mod_text', mod: mod %>
+        </div>
+      </div>
       <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
         <i class="fas fa-times"></i>
       <% end %>

@@ -61,12 +61,13 @@ class ModsController < ApplicationController
 
   def update
     authorize @module
-    content = Content.find(params[:content_id]) if params[:content_id].present?
+    @content = @module.content
     @module.update(mod_params)
     if @module.save
-      params[:content_id].present? ? (redirect_to content_path(content)) : (redirect_to mod_path(@module))
-    else
-      raise
+      respond_to do |format|
+        format.html {redirect_to content_path(@content)}
+        format.js
+      end
     end
   end
 

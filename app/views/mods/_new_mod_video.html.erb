@@ -8,14 +8,14 @@
     <%= simple_form_for Mod.new, remote: true do |f| %>
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.hidden_field :mod_type, value: 'video' %>
-      <%= f.input :title, placeholder: 'Title', label: false, required: true, value: '' %>
+      <%= f.input :title, placeholder: 'Title', label: false, value: '' %>
       <%= f.input :video, placeholder: 'Youtube URL', label: false, value: '' %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
-        <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
-        <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'closeModalOnSubmit(this);' do %>
-          <p>Add Video</p>
-        <% end %>
+        <div type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</div>
+        <button class="btn-orange" disabled='true' onclick="closeModalOnSubmit(this);">
+          <p>Add Text</p>
+        </button>
       </div>
     <% end %>
   </div>
