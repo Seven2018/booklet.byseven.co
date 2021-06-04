@@ -143,6 +143,7 @@
 
   &:focus {
     border: 1px solid transparent !important;
+    border-bottom: 1px solid #F26419 !important;
   }
 }
 
@@ -424,6 +425,19 @@
   }
 }
 
+.new_user_tags {
+
+  input {
+    margin-right: 1rem;
+  }
+
+  .form-check {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 1rem 0;
+  }
+}
 
 /* // A EFFACER
 .organization-buttons {
@@ -645,19 +659,7 @@ opacity: 0.8;
   }
 }
 
-.new_user_tags {
 
-  input {
-    margin-right: 1rem;
-  }
-
-  .form-check {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 1rem 0;
-  }
-}
 
 .filter-twitter-btn {
   display: flex;
