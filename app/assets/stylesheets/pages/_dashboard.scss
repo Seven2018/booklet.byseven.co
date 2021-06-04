@@ -74,7 +74,7 @@
   padding: 0;
   @include from-medium-low {
     border-left: 1px solid #C4C4C4;
-    padding: 10px;
+    padding-left: 30px;
   }
 }
 
@@ -118,7 +118,6 @@
     border-radius: 10px;
     color: #F26419;
     height: 80px;
-    width: 320px;
     .calendar-card-time {
       p {
       font-size: 15px;
@@ -146,9 +145,6 @@
         font-size: 3rem !important;
       }
     }
-    @include from-medium {
-      width: 350px;
-    }
 }
 
 .calendar-schedule-card-async {
@@ -159,7 +155,6 @@
     background-color: #EEEEEE;
     border-radius: 10px;
     height: 80px;
-    width: 320px;
 
     .calendar-card-info {
       width: 80%;
@@ -181,9 +176,9 @@
         font-size: 3rem !important;
       }
     }
-      @include from-medium {
-      width: 350px;
-    }
+    //   @include from-medium {
+    //   width: 350px;
+    // }
 }
 .catalogue-content-card-right-sessions {
   display: flex;
