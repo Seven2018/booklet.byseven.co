@@ -11,12 +11,12 @@
           <%= render 'mods/content_show_mods_index', content: @content %>
         </div>
       <% elsif params[:session_id].present? %>
-        <p>Content available on <%= Session.find(params[:session_id]).date.to_s %></p>
+        <p style='color:#F26419'><b><i>Content available on <%= Session.find(params[:session_id]).date.to_s %></i></b></p>
       <% end %>
       <% if params[:content_access] == 'granted' %>
         <div style='display: inline-block; margin-top: 5rem;'>
           <% if UserInterest.find_by(user_id: current_user.id, content_id: @content.id, interest_type: 'Completed').present? %>
-            <div class="btn-orange btn-complete">
+            <div class="btn-complete completed">
               <p>Training Completed</p>
             </div>
           <% else %>

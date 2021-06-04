@@ -92,6 +92,24 @@
   }
 }
 
+.completed {
+  color: #56690A !important;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background-color: #E6EAD7;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  margin-right:5px;
+  @include from-medium {
+    p {
+      font-size: 1.6rem !important;
+    }
+  }
+}
+
 .btn-orange-text {
   color: #F26419 !important;
   font-size: 1.6rem;

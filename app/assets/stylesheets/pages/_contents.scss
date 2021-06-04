@@ -5,7 +5,7 @@
 #content-show-container-left {
   display: none;
   padding: 25px;
-  width: 20rem;
+  width: 26rem;
   border-right: 1px solid black;
   min-height: calc(100vh - 50px);
   position: fixed;
@@ -411,4 +411,23 @@
   flex-direction: column;
   justify-content: flex-start;
   margin-left: 1rem;
+}
+
+.content-type-radio-employee {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+}
+
+.content-show-infos-employee {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.content-type-categories {
+  display: flex;
+  justify-content: space-between;
 }
