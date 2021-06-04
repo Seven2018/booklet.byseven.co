@@ -325,6 +325,7 @@
 
 
 .content-type-radio {
+  display: flex;
   .form-check {
     display: flex;
     align-items: center;
@@ -403,4 +404,11 @@
   @include from-medium {
     top: 20px;
   }
+}
+
+.content-type-icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 1rem;
 }
