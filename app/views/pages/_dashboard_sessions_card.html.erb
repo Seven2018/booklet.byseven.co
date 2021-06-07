@@ -37,11 +37,13 @@
       <div class="sessions-date">
         <p>Begins</p>
         <b><p><%= session.date.strftime('%B %d') %></p></b>
-      <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
-      <div class="content-dropdown hidden">
-        <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
-        <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
-      </div>
+        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+          <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
+          <div class="content-dropdown hidden">
+            <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
+            <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
+          </div>
+        <% end %>
       </div>
       <div class="catalogue-content-card-right-sessions">
         <p><%= session.attendees.count %> Participant(s)</p>
@@ -52,11 +54,13 @@
       <div class="sessions-date">
         <p>Available</p>
         <b><p><%= session.date.strftime('%B %d') %></p></b>
-      </div>
-      <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
-      <div class="content-dropdown hidden">
-        <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
-        <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
+        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+          <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
+          <div class="content-dropdown hidden">
+            <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
+            <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
+          </div>
+        <% end %>
       </div>
       <div class="catalogue-content-card-right-sessions">
         <p><%= session.attendees.count %> Participant(s)</p>

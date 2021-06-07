@@ -1,9 +1,7 @@
 <div class="catalogue-content-card-left">
   <% content = @content if @content.present? %>
   <div class="catalogue-content-card-left-main">
-    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-      <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
-    <% end %>
+    <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">
@@ -20,12 +18,14 @@
     <% content.categories.order(title: :asc).each do |category| %>
       <p><%= category.title %></p>
     <% end %>
-    <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus"></i></a>
-    <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-      <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-        <%= render 'pages/manage_categories', content: content %>
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus"></i></a>
+      <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+        <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+          <%= render 'pages/manage_categories', content: content %>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
   <div class="type-icon">
     <% if content.content_type == 'Synchronous' %>
