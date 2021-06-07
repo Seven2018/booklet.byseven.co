@@ -1,4 +1,8 @@
 <p><b><%= content.title %></b></p>
-<% content.mods.order(position: :asc).each do |mod| %>
-  <a href="#anchor-<%= mod.id %>"><%= mod.title %></a>
+<% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' %>
+  <% content.mods.order(position: :asc).each do |mod| %>
+    <a href="#anchor-<%= mod.id %>"><%= mod.title %></a>
+  <% end %>
+<% elsif params[:session_id].present? %>
+  <p style='color:#F26419'><b><i>Content available on <%= Session.find(params[:session_id]).date.to_s %></i></b></p>
 <% end %>

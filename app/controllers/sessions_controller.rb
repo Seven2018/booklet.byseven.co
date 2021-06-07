@@ -15,10 +15,23 @@ class SessionsController < ApplicationController
     end
   end
 
-  def delete_session
+  def update
+    @session = Session.find(params[:id])
+    authorize @session
+    @session.update(session_params)
+    redirect_to dashboard_path
+  end
+
+  def destroy
     @session = Session.find(params[:id])
     authorize @session
     @session.destroy
     redirect_to dashboard_path
+  end
+
+  private
+
+  def session_params
+    params.require(:session).permit(:date, :available_date, :starts_at, :ends_at)
   end
 end
