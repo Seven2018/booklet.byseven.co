@@ -17,20 +17,22 @@
       </div>
     <% elsif mod.mod_type == 'assessment' %>
       <% if params[:content_access] == 'granted' %>
-        <h3><%= mod.title %></h3>
-        <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? %>
-          <%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %>
+        <div class="content-show-mods-card-text">
+          <h3 style='margin-bottom: 15px;'>Assessment: <%= mod.title %></h3>
+          <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? %>
+            <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
+          <% else %>
+            <div class="flex-row-between-centered">
+              <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+              <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
+            </div>
+          <% end %>
         <% else %>
-          <div class="flex-row-between-centered">
-            <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
-            <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
+          <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
+            <%= render 'assessments/show', form: mod %>
           </div>
         <% end %>
-      <% else %>
-        <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
-          <%= render 'assessments/show', form: mod %>
-        </div>
-      <% end %>
+      </div>
     <% end %>
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
       <% if mod.mod_type == 'text' %>
