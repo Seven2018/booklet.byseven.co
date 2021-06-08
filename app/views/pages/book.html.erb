@@ -78,7 +78,7 @@
       </div>
     </div>
     <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
-    <button class='btn-orange' onclick='bookDates()'><p>Confirm</p></button>
+    <button class='btn-orange' onclick='bookDates()' style='margin-top:20px'><p>Confirm</p></button>
     </div>
     <div class="booking-title dates-title">
       <h2>Select Dates</h2>
@@ -94,8 +94,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
 
 <script>
-
-
 
   page = 1;
 
@@ -383,7 +381,6 @@ function bookDates() {
     submit_buttons = document.querySelector('.date-book').querySelectorAll('.hidden-submit')
     redirect_button = document.querySelector('.confirm-button')
     submit_buttons.forEach((element) => {
-      console.log(element)
       setTimeout(function(){element.click()}, 100)
     })
     setTimeout(function(){redirect_button.click()}, 1000)
