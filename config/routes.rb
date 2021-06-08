@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   # USERS
   devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_scope :user do
+    match '/sessions/user', to: 'devise/sessions#create', via: :post
+  end
   resources :users, only: %i[new create show update destroy]
   post 'users/import', to: 'users#import', as: 'import_users'
   get :users_search, controller: :users
@@ -88,6 +91,7 @@ Rails.application.routes.draw do
   get 'book', to: 'pages#book', as: 'book'
 
   # SESSIONS
+  resources :sessions
   get :book_sessions, controller: :sessions
   get :book_sessions_update, controller: :sessions
 
