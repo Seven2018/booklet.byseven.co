@@ -114,7 +114,11 @@
                     </div>
                     <div class="user-training-bottom">
                       <p><i class="fas fa-calendar-alt"></i><%= session.date.strftime('%d/%m/%Y') %></p>
-                      <div class='content-time'><p><i class="fas fa-clock"></i><%= content.duration %> min</p></div>
+                      <div class='content-time'><p><i class="fas fa-star-half-alt"></i>
+                        <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
+                         Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%
+                        <% end %></p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -132,7 +136,11 @@
                     </div>
                     <div class="user-training-bottom">
                       <p><i class="fas fa-calendar-alt"></i> <%= session.date.strftime('%d/%m/%Y') %></p>
-                      <div class='content-time'><p><i class="fas fa-clock"></i><%= content.duration %> min</p></div>
+                      <div class='content-time'><p><i class="fas fa-star-half-alt"></i>
+                        <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
+                         Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%
+                        <% end %></p>
+                      </div>
                     </div>
                   </div>
                   </div>
@@ -148,12 +156,6 @@
   </div>
 </div>
 
-<div>
-  <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
-   <p><%= form.title %></p>
-   <p>Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%</p>
-  <% end %>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
