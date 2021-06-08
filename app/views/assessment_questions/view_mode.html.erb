@@ -1,4 +1,4 @@
-<div id="show-controls" class='flex-row-between-centered'>
+<div id="show-controls">
   <% if @question.position != 1 %>
     <%= link_to assessment_view_mode_assessment_question_path(@question.mod, @previous_question), class: 'btn-icon return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
   <% else %>
@@ -8,7 +8,7 @@
   </div>
 </div>
 <div id="container-show">
-  <h3><%= @form.title %></h3>
+  <h3><b><%= @form.title %></b></h3>
   <div id="assessment-show-content">
     <%= render 'content_view_mode', form: @form %>
   </div>

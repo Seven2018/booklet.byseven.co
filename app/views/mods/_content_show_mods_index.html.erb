@@ -3,12 +3,12 @@
     <a id="anchor-<%= mod.id %>"></a>
     <% if mod.mod_type == 'text' %>
       <div class="content-show-mods-card-text">
-        <p style='color:#F26419;'><%= mod.title %></p>
+        <p><b><%= mod.title %></b></p>
         <%= mod.text %>
       </div>
     <% elsif mod.mod_type == 'video' %>
       <div class="content-show-mods-card-video" style='padding:10px;'>
-        <p style='color:#219ebc; padding: 10px;'><%= mod.title %></p>
+        <p style='padding: 10px;'><b><%= mod.title %></b></p>
         <%= embed_video(mod.video) %>
       </div>
     <% elsif mod.mod_type == 'image' %>
@@ -27,12 +27,12 @@
               <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
             </div>
           <% end %>
-        <% else %>
-          <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
-            <%= render 'assessments/show', form: mod %>
-          </div>
-        <% end %>
-      </div>
+        </div>
+      <% else %>
+        <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
+          <%= render 'assessments/show', form: mod %>
+        </div>
+      <% end %>
     <% end %>
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
       <% if mod.mod_type == 'text' %>

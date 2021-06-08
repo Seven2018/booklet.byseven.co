@@ -569,12 +569,18 @@
 }
 
 .session {
-  .session_date {
+  .session_available_date {
     input {
-      width: 200px;
       margin-left: 5px;
       background-color: transparent !important;
-      border: none !important;
+      // border: 1px solid #888888 !important;
+    }
+    }
+  .session_date {
+    input {
+      margin-left: 5px;
+      background-color: transparent !important;
+      // border: 1px solid orange !important;
     }
   }
   .session_starts_at {

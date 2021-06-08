@@ -64,10 +64,11 @@
     <% elsif %>
       <div class="book-selected-card-dates" style='background-color: #EEEEEE; height:174px;'>
         <div class='book-dates'>
-        <p>Date</p>
+        <p>Available From:</p>
           <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
-            <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
-            <%= f.input :available_date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Ends on (optional)' %>
+            <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select Start Date' %></div>
+            <p>Until:</p>
+            <%= f.input :available_date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select End Date (Optional)' %>
             <%= f.hidden_field :content_id, value: content.id %>
             <%= f.hidden_field :selected_users %>
             <%= f.submit '', class: 'hidden-submit hidden' %>
