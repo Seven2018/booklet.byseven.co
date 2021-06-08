@@ -11,8 +11,8 @@
     <div class="duration-content-type">
       <div class="content-show-infos content-show-infos-duration" >
         <div class="slidecontainer">
-        <p><%= f.input :duration, label: false, input_html: { autocomplete: "off",  type: 'range', min: '0', max: '600', id: 'myRange', value: content.duration, onmouseup: 'saveOnSelect();' }%></p>
         <p class='sliding'>Duration: <span id="demo"></span> Minutes</p>
+        <p><%= f.input :duration, label: false, input_html: { autocomplete: "off",  type: 'range', min: '0', max: '600', id: 'myRange', value: content.duration, onmouseup: 'saveOnSelect();' }%></p>
         </div>
       </div>
       <div class="content-type-radio">
@@ -93,6 +93,7 @@
 
   // Update the current slider value (each time you drag the slider handle)
   slider.oninput = function() {
+    this.value += 5;
     output.innerHTML = this.value;
   }
 

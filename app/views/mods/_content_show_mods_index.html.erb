@@ -3,11 +3,12 @@
     <a id="anchor-<%= mod.id %>"></a>
     <% if mod.mod_type == 'text' %>
       <div class="content-show-mods-card-text">
-        <p><%= mod.title %></p>
+        <p style='color:#F26419;'><%= mod.title %></p>
         <%= mod.text %>
       </div>
     <% elsif mod.mod_type == 'video' %>
-      <div class="content-show-mods-card-video">
+      <div class="content-show-mods-card-video" style='padding:10px;'>
+        <p style='color:#219ebc; padding: 10px;'><%= mod.title %></p>
         <%= embed_video(mod.video) %>
       </div>
     <% elsif mod.mod_type == 'image' %>
@@ -33,7 +34,7 @@
     <% end %>
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
       <% if mod.mod_type == 'text' %>
-        <a data-toggle='modal' data-target='#editMod-<%= mod.id %>' class='mod-edit'><i class="fas fa-pencil-alt"></i></a>
+        <a data-toggle='modal' data-target='#editMod-<%= mod.id %>' class='mod-edit'><i class="fas fa-pencil-alt" data-toggle='tooltip' title='Edit'></i></a>
       <% end %>
       <div class='modal fade' id='editMod-<%= mod.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
         <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
@@ -41,7 +42,7 @@
         </div>
       </div>
       <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
-        <i class="fas fa-times"></i>
+        <i class="fas fa-times" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
       <% end %>
     <% end %>
   </div>

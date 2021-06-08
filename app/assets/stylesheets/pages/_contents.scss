@@ -145,6 +145,7 @@
   min-height: 5rem;
   height: auto;
   font-size:1.6rem;
+  padding: 10px;
 }
 
 .content-show-mods-controls {
@@ -213,6 +214,9 @@
   div {
     font-size: 1.6rem;
   }
+  li {
+    list-style: disc;
+  }
 }
 
 .mod-card {
@@ -228,6 +232,9 @@
     position: absolute;
     top: 0rem;
     right: -3rem;
+    &:hover {
+      color: #888888;
+    }
   }
 }
 
@@ -361,8 +368,11 @@
     margin-right: 10px;
   }
   &:hover {
-    i {
-      opacity: 80%;
+    .fa-edit {
+      color: #888888;
+    }
+    .fa-plus {
+      color: #888888;
     }
   }
 }
@@ -435,4 +445,10 @@
 .content-type-categories {
   display: flex;
   justify-content: space-between;
+}
+
+#mod-delete {
+  &:hover {
+    color: #888888;
+  }
 }
