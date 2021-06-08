@@ -1,7 +1,13 @@
-<p><b><%= content.title %></b></p>
+<h3><b><%= content.title %></b></h3>
 <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' || redirect_from = 'catalogue' %>
   <% content.mods.order(position: :asc).each do |mod| %>
-    <a href="#anchor-<%= mod.id %>"><%= mod.title %></a>
+    <% if mod.mod_type == 'text' %>
+      <a href="#anchor-<%= mod.id %>" style='color:#F26419;'><%= mod.title %></a>
+    <% elsif mod.mod_type == 'video' %>
+      <a href="#anchor-<%= mod.id %>" style='color:#219ebc'><%= mod.title %></a>
+    <% elsif mod.mod_type == 'quiz' %>
+      <a href="#anchor-<%= mod.id %>" style='color:#8FA078'><%= mod.title %></a>
+    <% end %>
   <% end %>
 <% elsif params[:session_id].present? %>
   <p style='color:#F26419'><b><i>Content available on <%= Session.find(params[:session_id]).date.to_s %></i></b></p>
