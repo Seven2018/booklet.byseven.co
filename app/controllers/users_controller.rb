@@ -38,10 +38,10 @@ class UsersController < ApplicationController
     authorize @user
     tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i} if params[:user][:tags].present?
     if @user.save
-      raw, token = Devise.token_generator.generate(User, :reset_password_token)
-      @user.reset_password_token = token
-      @user.reset_password_sent_at = Time.now.utc
-      @user.save(validate: false)
+      #raw, token = Devise.token_generator.generate(User, :reset_password_token)
+      #@user.reset_password_token = token
+      #@user.reset_password_sent_at = Time.now.utc
+      #@user.save(validate: false)
       tags.each do |tag|
         UserTag.create(user_id: @user.id, tag_id: tag)
       end

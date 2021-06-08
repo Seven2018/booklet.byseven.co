@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :update, :destroy]
+  before_action :set_mod, only: [:show, :update, :destroy, :move_up, :move_down]
   helper VideoHelper
 
   def show
@@ -15,25 +15,6 @@ class ModsController < ApplicationController
       @training_content = Session.find(params[:training_content_id])
     end
   end
-
-  # def create
-  #   @module = Mod.new(mod_params)
-  #   authorize @module
-  #   @module.document = params[:mod][:document]&.gsub(/edit/, 'present')
-  #   @module.document = '' if @module.document == nil
-  #   @module.company_id = current_user.company_id
-  #   if @module.save
-  #     if params[:content_id].present?
-  #       content = Content.find(params[:content_id])
-  #       ContentMod.create(mod_id: @module.id, content_id: content.id, position: ContentMod.where(content_id: params[:content_id]).count + 1)
-  #       redirect_to content_path(content)
-  #     elsif params[:training_content_id].present?
-  #       training_content = Session.find(params[:training_content_id])
-  #       SessionMod.create(mod_id: @module.id, training_content_id: training_content.id, position: SessionMod.where(training_content_id: params[:training_content_id]).count + 1)
-  #       redirect_to training_content_path(training_content)
-  #     end
-  #   end
-  # end
 
   def create
     @new_mod = Mod.new(mod_params)
@@ -81,6 +62,32 @@ class ModsController < ApplicationController
       i += 1
     end
     respond_to do |format|
+      format.js
+    end
+  end
+
+  def move_up
+    skip_authorization
+    @content = @module.content
+    position = @module.position
+    @previous_module = @content.mods.find_by(position: position - 1)
+    @previous_module.update(position: position)
+    @module.update(position: position - 1)
+    respond_to do |format|
+      format.html {redirect_to content_path(@module.content)}
+      format.js
+    end
+  end
+
+  def move_down
+    skip_authorization
+    @content = @module.content
+    position = @module.position
+    @next_module = @content.mods.find_by(position: position + 1)
+    @next_module.update(position: position)
+    @module.update(position: position + 1)
+    respond_to do |format|
+      format.html {redirect_to content_path(@module.content)}
       format.js
     end
   end

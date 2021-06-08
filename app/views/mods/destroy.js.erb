@@ -1,5 +1,5 @@
 document.querySelector('.content-show-mods-index').innerHTML = '<%= j (render("mods/content_show_mods_index", content: @content)) %>';
-document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/show_anchors", content: @content)) %>';
+document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/show_anchors", content: @content, redirect_from: "catalogue")) %>';
 document.querySelector('.saved-message').classList.remove('hidden');
 setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);
 document.querySelectorAll('#mod_title').forEach((element) =>{

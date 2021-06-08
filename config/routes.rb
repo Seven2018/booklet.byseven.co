@@ -65,13 +65,16 @@ Rails.application.routes.draw do
 
   get 'contents-filter', to: 'contents#filter', as: 'filter_contents'
   get 'contents/:id/viewmode', to: 'contents#view_mode', as: 'view_content'
+
+  #MODS
   resources :mods, only: %i[show new create update destroy]
   post :create_mod, controller: :mods
+  get 'mods/:id/move_up', to: 'mods#move_up', as: 'move_up_mod'
+  get 'mods/:id/move_down', to: 'mods#move_down', as: 'move_down_mod'
   post 'mods/:id/update_mod', to: 'mods#update_mod', as: 'update_mod'
-  resources :content_mods, only: %i[create destroy]
-  get 'content_mods/:id/move_up', to: 'content_mods#move_up', as: 'move_up_content_mod'
-  get 'content_mods/:id/move_down', to: 'content_mods#move_down', as: 'move_down_content_mod'
-  post 'content_mods/create_ajax', to: 'content_mods#create_ajax', as: 'create_ajax_content_mods'
+
+
+  # ATTENDEES
   resources :attendees, only: %i[create update destroy]
   get 'attendee-create-all', to: 'attendees#create_all', as: 'create_all_attendees'
   get 'attendee-destroy-all', to: 'attendees#destroy_all', as: 'destroy_all_attendees'
