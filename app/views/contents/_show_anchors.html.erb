@@ -1,5 +1,5 @@
 <h3><b><%= content.title %></b></h3>
-<% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' %>
+<% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' || redirect_from = 'catalogue' %>
   <% content.mods.order(position: :asc).each do |mod| %>
     <% if mod.mod_type == 'text' %>
       <a href="#anchor-<%= mod.id %>" style='color:#F26419;'><%= mod.title %></a>

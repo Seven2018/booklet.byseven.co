@@ -1,4 +1,4 @@
-<% content.mods.each do |mod| %>
+<% content.mods.order(position: :asc).each do |mod| %>
   <div class="mod-card">
     <a id="anchor-<%= mod.id %>"></a>
     <% if mod.mod_type == 'text' %>
@@ -43,6 +43,24 @@
       </div>
       <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
         <i class="fas fa-times" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+      <% end %>
+      <% if mod.position == 1 %>
+        <a disabled class="mod-move-up" style='cursor: default;'>
+          <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+          <i class="fas fa-arrow-up"></i>
+        <% end %>
+      <% end %>
+      <% if mod.position >= mod.content.mods.count %>
+        <a disabled class="mod-move-down" style='cursor: default;'>
+          <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+          <i class="fas fa-arrow-down"></i>
+        <% end %>
       <% end %>
     <% end %>
   </div>

@@ -1,8 +1,4 @@
-<h3>New question</h3>
 <%= simple_form_for AssessmentQuestion.new, url: add_questions_assessment_path(form), method: :post, remote: true do |f| %>
-  <div class='mod-assessment-questions-radio-buttons'>
-    <%# f.collection_radio_buttons :question_type, [['MCQ', 'MCQ'] ,['open question', 'Open question'], ['rating', 'Rating']], :first, :last, :checked => 'MCQ' do |b| %>
-  </div>
   <div class='mod-assessment-questions-form'>
     <%= f.input :question, as: :text, id: "ckeditor#{form.assessment_questions.count}" %>
     <div class='mod-assessment-questions-options-mcq'>
@@ -26,12 +22,6 @@
               }
         });
       </script>
-    </div>
-    <div class='mod-assessment-questions-options-rating'>
-      <%= label_tag 'Min value' %>
-      <%= text_field_tag 'rating[]' %>
-      <%= label_tag 'Max value' %>
-      <%= text_field_tag 'rating[]' %>
     </div>
   </div>
   <div style=" display: flex; justify-content: flex-start;margin-top:3rem;">

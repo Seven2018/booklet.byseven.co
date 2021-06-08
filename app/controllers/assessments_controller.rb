@@ -11,6 +11,7 @@ class AssessmentsController < ApplicationController
     authorize @form
     @form.media = ''
     @content = Content.find(params[:content_id])
+    @form.position = @content.mods.order(position: :asc).count + 1
     if @form.save
       ContentMod.create(content_id: @content.id, mod_id: @form.id, position: @content.content_mods.count + 1)
       redirect_to assessment_path(@form)
@@ -21,8 +22,8 @@ class AssessmentsController < ApplicationController
     skip_authorization
     @content = Content.find(params[:new_assessment][:content_id])
     @form = Assessment.new(title: params[:new_assessment][:title], mod_type: 'assessment', company_id: current_user.company_id, content_id: @content.id)
+    @form.position = @content.mods.order(position: :asc).count + 1
     if @form.save
-
       respond_to do |format|
         format.html {redirect_to content_path(@content)}
         format.js

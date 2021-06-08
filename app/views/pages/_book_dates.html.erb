@@ -67,6 +67,7 @@
         <p>Date</p>
           <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
             <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
+            <%= f.input :available_date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Ends on (optional)' %>
             <%= f.hidden_field :content_id, value: content.id %>
             <%= f.hidden_field :selected_users %>
             <%= f.submit '', class: 'hidden-submit hidden' %>

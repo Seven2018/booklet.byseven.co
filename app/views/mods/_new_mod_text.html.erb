@@ -9,7 +9,7 @@
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.hidden_field :mod_type, value: 'text' %>
       <%= f.input :title, placeholder: 'Title', label: false %>
-      <%= f.trix_editor :text, placeholder: 'Content', label: false %>
+      <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
         <div type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</div>
