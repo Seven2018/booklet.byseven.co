@@ -28,11 +28,9 @@
     <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-icon' do %>
       <i class="fas fa-save"></i>
     <% end %>
-    <%= link_to assessment_path(form) do %>
-      <div class="btn btn-edit-red btn-icon btn-close">
-        <i class="fas fa-times"></i>
-      </div>
-    <% end %>
+    <div class="btn btn-edit-red btn-icon btn-close" onclick="removeQuestion(this)">
+      <i class="fas fa-times"></i>
+    </div>
   </div>
 <% end %>
 <!-- <script>
