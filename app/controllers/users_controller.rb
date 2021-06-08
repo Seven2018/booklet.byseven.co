@@ -47,7 +47,7 @@ class UsersController < ApplicationController
       end
       # @user.send_reset_password_instructions
       # UserMailer.account_created(@user, raw).deliver
-      redirect_to user_path(@user)
+      redirect_to organisation_path
     else
       render :new
     end
