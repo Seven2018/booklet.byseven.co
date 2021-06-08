@@ -255,4 +255,10 @@
     })
   })
 
+  function removeQuestion(element) {
+    question = element.closest('#new_assessment_question')
+    question.parentNode.removeChild(question)
+    document.querySelector('#addQuestion').style.display = 'flex'
+  }
+
 </script>
