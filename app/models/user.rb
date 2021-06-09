@@ -28,41 +28,48 @@ class User < ApplicationRecord
 
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
-      company_id = Current.user.company_id
-      user_row = row.to_hash
-      main_attr = "firstname,lastname,email,password,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
-      tag_attr = row.to_hash.keys - main_attr
-      tag_attr.each do |tag|
-        user_row.delete(tag)
-      end
-      user = User.new(user_row)
-      user.company_id = company_id
-      user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
-      user.save
-      raw, token = Devise.token_generator.generate(User, :reset_password_token)
-      user.reset_password_token = token
-      user.reset_password_sent_at = Time.now.utc
-      user.save(validate: false)
+      #begin
+        company_id = Current.user.company_id
+        user_row = row.to_hash
+        main_attr = "firstname,lastname,email,password,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
+        tag_attr = row.to_hash.keys - main_attr
+        tag_attr.each do |tag|
+          user_row.delete(tag)
+        end
+        user = User.new(user_row)
+        user.company_id = company_id
+        user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
+        if !user.email.present?
+          last_user = User.last
+          user.email = 'user' + (last_user.id + 1).to_s + '@' + last_user.email.split('@').last
+        end
+        user.save
+        raw, token = Devise.token_generator.generate(User, :reset_password_token)
+        user.reset_password_token = token
+        user.reset_password_sent_at = Time.now.utc
+        user.save(validate: false)
 
-      tag_attr.each do |x|
-        category = TagCategory.where(company_id: company_id, name: x).first
-        unless category.present?
-          category = TagCategory.create(company_id: company_id, name: x)
+        tag_attr.each do |x|
+          category = TagCategory.where(company_id: company_id, name: x).first
+          unless category.present?
+            category = TagCategory.create(company_id: company_id, name: x)
+          end
+          tag = Tag.where(company_id: company_id, tag_category_id: category.id, tag_name: row[x]).first
+          unless tag.present?
+            tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row[x])
+          end
+          UserTag.create(user_id: user.id, tag_id: tag.id)
         end
-        tag = Tag.where(company_id: company_id, tag_category_id: category.id, tag_name: row[x]).first
-        unless tag.present?
-          tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row[x])
-        end
-        UserTag.create(user_id: user.id, tag_id: tag.id)
-      end
-      # tag = row['tag']
-      # existing_Tag = Tag.where(company_id: user.company_id, tag_name: row['tag'])
-      # if existing_tag.present?
-      #   UserTag.create(tag_id: existing_tag.first.id, user_id: user.id)
-      # else
-      #   Tag.create(tag_name: row['tag'], company_id: user.company_id)
-      # end
-      # UserMailer.account_created(user, raw).deliver
+        # tag = row['tag']
+        # existing_Tag = Tag.where(company_id: user.company_id, tag_name: row['tag'])
+        # if existing_tag.present?
+        #   UserTag.create(tag_id: existing_tag.first.id, user_id: user.id)
+        # else
+        #   Tag.create(tag_name: row['tag'], company_id: user.company_id)
+        # end
+        # UserMailer.account_created(user, raw).deliver
+      #rescue
+      #end
     end
   end
 end
