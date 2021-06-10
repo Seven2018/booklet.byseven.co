@@ -6,16 +6,21 @@
   </div>
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for session do |f| %>
-      <%= f.input :date, label: false, input_html: {class: 'datepicker'}, as: :string, placeholder: 'select date' %>
-      <div class="flex-row-between-centered">
-        <div>
-          <%= f.input :starts_at, label: false, as: :time, minute_step: 15, input_html: { class: "timepicker new_starts_at"}, default: Time.parse('9:00') %>
+      <% if session.content.content_type == 'Synchronous' %>
+        <%= f.input :date, label: 'Date', input_html: {class: 'datepicker'}, as: :string, placeholder: 'select date' %>
+        <div class="flex-row-between-centered">
+          <div>
+            <%= f.input :starts_at, label: false, as: :time, minute_step: 15, input_html: { class: "timepicker new_starts_at"}, default: Time.parse('9:00') %>
+          </div>
+          <p style='margin-bottom: 10px;'>to</p>
+          <div>
+            <%= f.input :ends_at, label: false, as: :time, minute_step: 15, input_html: { class: 'timepicker new_ends_at'}, default: Time.parse('17:00') %>
+          </div>
         </div>
-        <p style='margin-bottom: 10px;'>to</p>
-        <div>
-          <%= f.input :ends_at, label: false, as: :time, minute_step: 15, input_html: { class: 'timepicker new_ends_at'}, default: Time.parse('17:00') %>
-        </div>
-      </div>
+      <% else %>
+        <%= f.input :date, label: 'Start Date', input_html: {class: 'datepicker'}, as: :string, placeholder: 'select date' %>
+        <%= f.input :available_date, label: 'End Date', input_html: {class: 'datepicker'}, as: :string, placeholder: 'select date' %>
+      <% end %>
       <div class="cancel-submit-btns">
         <div type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</div>
         <%= button_tag type: 'submit', class: 'btn-orange' do %>

@@ -1,4 +1,3 @@
-console.log("<% @action %>");
 if ("<% @action %>" == 'show') {
   document.querySelector('.content-show-attributes').innerHTML = '<%= j render("contents/show_attributes", content: @content) %>';
 } else {

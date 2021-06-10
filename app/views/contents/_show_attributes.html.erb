@@ -4,16 +4,13 @@
       <div class="content-show-infos" onclick="openInput(this);">
         <p class='content.title'><b><%= content.title %></b></p>
         <div class="content-show-input hidden">
-          <%= f.input :title, label: false, input_html: { autocomplete: "off", value: 0 } %>
+          <%= f.input :title, label: false, input_html: { autocomplete: "off" } %>
         </div>
       </div>
     </div>
     <div class="duration-content-type">
       <div class="content-show-infos-duration" >
-<!--         <p>Duration:</p>
-        <div class="durationinput"><%= f.input :duration, label: false, input_html: { autocomplete: "off" } %>
-            <p>Min</p>
-        </div> -->
+        <p><%= content.duration %> min</p>
       </div>
       <div class="content-type-radio">
         <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], :checked => [content.content_type, content.content_type], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect();'}, class: 'content-type-radio' %>
@@ -85,15 +82,3 @@
     <%= render 'contents/manage_categories', content: content %>
   </div>
 </div>
-
-<script>
-  slider = document.getElementById("myRange");
-  output = document.getElementById("demo");
-  output.innerHTML = slider.value; // Display the default slider value
-
-  // Update the current slider value (each time you drag the slider handle)
-  slider.oninput = function() {
-    this.value += 5;
-    output.innerHTML = this.value;
-  }
-</script>

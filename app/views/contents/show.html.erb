@@ -42,7 +42,12 @@
                 <i class="fas fa-video"></i>
                 <p>Video</p>
               </a>
-              <% unless @content.mods.where(mod_type: 'assessment').count >= 1 %>
+              <% if @content.mods.where(mod_type: 'assessment').count >= 1 %>
+                <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz hidden"  data-toggle='modal' data-target='#newModQuiz'>
+                  <i class="fas fa-star-half-alt"></i>
+                  <p>Quiz (max 1)</p>
+                </div>
+              <% else %>
                 <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz"  data-toggle='modal' data-target='#newModQuiz'>
                   <i class="fas fa-star-half-alt"></i>
                   <p>Quiz (max 1)</p>
@@ -221,7 +226,6 @@
         if (modal.querySelector('trix-editor') != null) {
           modal.querySelector('trix-editor').value = ''
         }
-        console.log('test')
       //}
       setTimeout(function(){doubleClickGuardian = false}, 250)
     }
@@ -272,15 +276,5 @@
     question = element.closest('#new_assessment_question')
     question.parentNode.removeChild(question)
     document.querySelector('#addQuestion').style.display = 'flex'
-  }
-
-  slider = document.getElementById("myRange");
-  output = document.getElementById("demo");
-  output.innerHTML = slider.value; // Display the default slider value
-
-  // Update the current slider value (each time you drag the slider handle)
-  slider.oninput = function() {
-    this.value += 1;
-    output.innerHTML = this.value;
   }
 </script>

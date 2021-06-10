@@ -3,8 +3,8 @@
     <div class="trainings-nav">
      <ul class="nav nav-tabs-trainings">
         <li role="presentation"><a href="#UpcomingAll" data-toggle="tab" class='active'>Upcoming</a></li>
+        <li role="presentation"><a href="#CurrentSessionsAll" data-toggle="tab">Current</a></li>
         <li role="presentation"><a href="#CompletedAll" data-toggle="tab">Completed</a></li>
-        <li role="presentation"><a href="#AllSessionsAll" data-toggle="tab">All</a></li>
       </ul>
     </div>
     <div class="tab-content">
@@ -22,8 +22,8 @@
           <%= render 'dashboard_sessions_card', session: session %>
         <% end %>
       </div>
-      <div role="tabpanel" class="tab-pane" id="AllSessionsAll">
-        <% @all_sessions.each do |session| %>
+      <div role="tabpanel" class="tab-pane" id="CurrentSessionsAll">
+        <% @current_sessions.each do |session| %>
           <%= render 'dashboard_sessions_card', session: session %>
         <% end %>
       </div>
@@ -31,7 +31,7 @@
   </div>
   <div class="dashboard-right-schedule">
     <div class="dashboard-calendar">
-      <%= month_calendar(events: @all_sessions, attribute: :date) do |date, sessions| %>
+      <%= month_calendar(events: @current_sessions, attribute: :date) do |date, sessions| %>
         <%= link_to dashboard_path(tab: 'all', date: date), remote: true do%>
           <div class="flex-column-between-centered">
             <%= date.day %>
