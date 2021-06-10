@@ -45,12 +45,12 @@
               <% if @content.mods.where(mod_type: 'assessment').count >= 1 %>
                 <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz hidden"  data-toggle='modal' data-target='#newModQuiz'>
                   <i class="fas fa-star-half-alt"></i>
-                  <p>Quiz (max 1)</p>
+                  <p>Quiz</p>
                 </div>
               <% else %>
                 <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz"  data-toggle='modal' data-target='#newModQuiz'>
                   <i class="fas fa-star-half-alt"></i>
-                  <p>Quiz (max 1)</p>
+                  <p>Quiz</p>
                 </div>
               <% end %>
             </div>
@@ -58,7 +58,7 @@
         </div>
         <div class="button-add-catalogue">
           <div class="btn-orange">
-            <p>Add to Catalogue</p>
+            <%= link_to 'Add to catalogue', catalogue_path %>
           </div>
         </div>
       <% end %>
