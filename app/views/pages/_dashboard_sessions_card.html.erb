@@ -69,13 +69,6 @@
   <% end %>
 </div>
 
-<!-- MODALS -->
-<div class='modal fade' id='editSession-<%= session.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'sessions/edit_session', session: session %>
-  </div>
-</div>
-
 <script>
   function openContentMenu(element) {
     dropdown = element.parentNode.querySelector('.content-dropdown');
