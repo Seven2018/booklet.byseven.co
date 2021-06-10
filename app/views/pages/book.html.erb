@@ -43,7 +43,7 @@
         </div>
       </div>
     <div class="booking-title users-title">
-      <h2>Select Participants to Book</h2>
+      <h2>&nbsp;</h2>
     </div>
     <div class="index-controls-filter-bar-book">
       <div class="btn-white" onclick='openFilter();'>
@@ -64,7 +64,7 @@
       </div>
       <div class="users-book-selected container">
         <div class="headers-div">
-          <p onclick='removeAll(this);' style='cursor:pointer;'>Remove all</p>
+          <p onclick='removeAll(this);' style='cursor:pointer;' class='remove-selected'>Remove all (0)</p>
         </div>
       </div>
     </div>
@@ -110,9 +110,11 @@
         pagetwo.classList.remove('hidden')
       }, 250)
     } else {
-      pagetwo.classList.add('hidden')
-      pagethree.classList.remove('hidden')
       document.querySelector('.filter_content').querySelector('.hidden-submit').click()
+      setTimeout(function(){
+        pagetwo.classList.add('hidden')
+        pagethree.classList.remove('hidden')
+      }, 250)
     }
     page += 1
   }
@@ -350,6 +352,12 @@ function selectUser(element) {
   })
   document.getElementById('filter_user_selected').value = storage_var.join(',')
   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  available = document.querySelector('.users-book').querySelectorAll('.user-index-card-book').length
+  selected = document.querySelector('.users-book-selected').querySelectorAll('.user-index-card-book').length
+  counter_available = document.querySelector('.add-selected')
+  counter_selected = document.querySelector('.remove-selected')
+  counter_available.innerHTML = 'Add All (' + available.toString() + ')'
+  counter_selected.innerHTML = 'Remove All (' + selected.toString() + ')'
 }
 
 function addDate(element) {
@@ -358,6 +366,7 @@ function addDate(element) {
   new_card = document.createElement('div')
   new_card.classList.add('book-selected-card')
   new_card.innerHTML = card.innerHTML
+  new_card.querySelector('.remove_date').classList.remove('hidden')
   form = new_card.querySelector('form')
   element.classList.add('hidden')
   card.parentNode.insertBefore(new_card, card.nextSibling)
@@ -365,6 +374,14 @@ function addDate(element) {
     disableMobile: true,
     dateFormat: "d/m/Y",
   });
+}
+
+function removeDate(element) {
+  card = element.closest('.book-selected-card')
+  card.remove();
+  selected = document.querySelectorAll('.book-selected-card-dates')
+  console.log(selected)
+  selected[selected.length - 1].querySelector('.add-date').querySelector('p').classList.remove('hidden')
 }
 
 function bookDates() {
