@@ -13,6 +13,7 @@
       <% elsif params[:session_id].present? %>
         <p style='color:#F26419'><b><i>Content available on <%= Session.find(params[:session_id]).date.to_s %></i></b></p>
       <% end %>
+
       <% if params[:content_access] == 'granted' %>
         <div style='display: inline-block; margin-top: 5rem;'>
           <% if UserInterest.find_by(user_id: current_user.id, content_id: @content.id, interest_type: 'Completed').present? %>
@@ -26,6 +27,7 @@
           <% end %>
         </div>
       <% end %>
+
       <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) %>
         <div class="content-show-mods-container">
           <div class="content-show-mods-control-btn" onclick="contentAdd()"; data-toggle='tooltip' title='Add content'>
@@ -47,6 +49,11 @@
                 </div>
               <% end %>
             </div>
+          </div>
+        </div>
+        <div class="button-add-catalogue">
+          <div class="btn-orange">
+            <p>Add to Catalogue</p>
           </div>
         </div>
       <% end %>
@@ -98,9 +105,9 @@
       iconclose.classList.add('icon-transform')
       setTimeout(function(){
       iconclose.style.transform = ('rotate(45deg)')
-      contentbar.style.width = '100%'
+      contentbar.style.width = '75%'
       contentblock.forEach((content) => {
-        content.style.width = '25%'
+        content.style.width = '33.3%'
       })
       },1);
     } else {
@@ -251,7 +258,7 @@
     $("#assessment-show-content").append($("#add_questions_form").html());
   }
 
-  document.querySelectorAll('#mod_title').forEach((element) =>{
+  document.querySelectorAll('#mod_title').forEach((element) => {
     element.addEventListener('keyup', event => {
       if (element.value != '') {
         element.parentNode.parentNode.querySelector('.btn-orange').disabled = false
