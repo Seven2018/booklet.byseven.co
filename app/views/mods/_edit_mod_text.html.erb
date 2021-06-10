@@ -7,6 +7,7 @@
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for mod, remote: true do |f| %>
       <%= f.input :title, label: false %>
+      <%= f.input :duration, input_html: {min: 0} %>
       <%= f.trix_editor :text, placeholder: 'Content', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">

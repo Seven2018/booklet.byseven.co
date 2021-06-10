@@ -5,13 +5,15 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-    @my_past_sessions = (Session.joins(:attendees).where(available_date: nil, attendees: {user_id: current_user.id}).where('date < ?', Date.today) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('available_date < ?', Date.today))
+    @my_past_sessions = (Session.joins(:attendees).where(available_date: nil, attendees: {user_id: current_user.id}).where('date < ?', Date.today) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
     @my_upcoming_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where('date > ?', Date.today).order(date: :asc)
-    @my_current_sessions = (Session.joins(:attendees).where(date: Date.today, attendees: {user_id: current_user.id}) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today))
+    @my_current_sessions = (Session.joins(:attendees).where(date: Date.today, attendees: {user_id: current_user.id}) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
+    @all_my_sessions = @my_past_sessions + @my_upcoming_sessions + @my_current_sessions
     if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
-      @past_sessions = (Session.where(available_date: nil, company_id: current_user.company_id).where('date < ?', Date.today) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('available_date < ?', Date.today))
+      @past_sessions = (Session.where(available_date: nil, company_id: current_user.company_id).where('date < ?', Date.today) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
       @upcoming_sessions = Session.where(company_id: current_user.company_id).where('date > ?', Date.today).order(date: :asc)
-      @current_sessions = (Session.where(date: Date.today, company_id: current_user.company_id) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today))
+      @current_sessions = (Session.where(date: Date.today, company_id: current_user.company_id) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
+      @allsessions = @past_sessions + @upcoming_sessions + @current_sessions
     end
     if params[:date].present?
       @tab = params[:tab]

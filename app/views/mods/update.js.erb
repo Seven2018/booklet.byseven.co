@@ -1,4 +1,4 @@
-document.querySelector('.content-show-attributes').innerHTML = '<%= j render("show_attributes", content: @content) %>';
+document.querySelector('.content-show-attributes').innerHTML = '<%= j render("contents/show_attributes", content: @content) %>';
 document.querySelector('.content-show-mods-index').innerHTML = '<%= j (render("mods/content_show_mods_index", content: @content)) %>';
 document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/show_anchors", content: @content)) %>';
 document.querySelector('.saved-message').classList.remove('hidden');

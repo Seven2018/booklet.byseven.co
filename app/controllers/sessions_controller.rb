@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
 
   def book_sessions
     params.permit!
-    params_session = params[:session].except(:selected, :selected_users)
+    params_session = params[:session].except(:selected, :selected_users, :duration)
     @session = Session.new(params_session)
     authorize @session
     @session.company_id = current_user.company_id

@@ -21,6 +21,25 @@
   <% end %>
 </div>
 
+<!-- MODALS -->
+<% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+  <% @allsessions.each do |session| %>
+    <div class='modal fade' id='editSession-<%= session.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+      <div class='modal-dialog' role='document' style='border-radius: 20px'>
+        <%= render 'sessions/edit_session', session: session %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <% @all_my_sessions.each do |session| %>
+    <div class='modal fade' id='editSession-<%= session.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+      <div class='modal-dialog' role='document' style='border-radius: 20px'>
+        <%= render 'sessions/edit_session', session: session %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 
 <script>
   days = document.querySelectorAll('.day')
