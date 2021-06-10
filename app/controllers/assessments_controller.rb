@@ -21,9 +21,10 @@ class AssessmentsController < ApplicationController
   def create_ajax
     skip_authorization
     @content = Content.find(params[:new_assessment][:content_id])
-    @form = Assessment.new(title: params[:new_assessment][:title], mod_type: 'assessment', company_id: current_user.company_id, content_id: @content.id)
+    @form = Assessment.new(title: params[:new_assessment][:title], mod_type: 'assessment', company_id: current_user.company_id, content_id: @content.id, duration: params[:new_assessment][:duration])
     @form.position = @content.mods.order(position: :asc).count + 1
     if @form.save
+      @content.update(duration: @content.mods.map(&:duration).sum)
       respond_to do |format|
         format.html {redirect_to content_path(@content)}
         format.js

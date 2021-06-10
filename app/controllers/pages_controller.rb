@@ -5,13 +5,13 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-    @my_past_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where('date < ?', Date.today).order(date: :desc)
-    @my_upcoming_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where('date >= ?', Date.today).order(date: :asc)
-    @all_my_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).order(date: :asc)
+    @my_past_sessions = (Session.joins(:attendees).where(available_date: nil, attendees: {user_id: current_user.id}).where('date < ?', Date.today) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('available_date < ?', Date.today))
+    @my_upcoming_sessions = Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where('date > ?', Date.today).order(date: :asc)
+    @my_current_sessions = (Session.joins(:attendees).where(date: Date.today, attendees: {user_id: current_user.id}) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today))
     if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
-      @past_sessions = Session.where(company_id: current_user.company_id).where('date < ?', Date.today).order(date: :desc)
-      @upcoming_sessions = Session.where(company_id: current_user.company_id).where('date >= ?', Date.today).order(date: :asc)
-      @all_sessions = Session.where(company_id: current_user.company_id).order(date: :desc)
+      @past_sessions = (Session.where(available_date: nil, company_id: current_user.company_id).where('date < ?', Date.today) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('available_date < ?', Date.today))
+      @upcoming_sessions = Session.where(company_id: current_user.company_id).where('date > ?', Date.today).order(date: :asc)
+      @current_sessions = (Session.where(date: Date.today, company_id: current_user.company_id) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today))
     end
     if params[:date].present?
       @tab = params[:tab]

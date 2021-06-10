@@ -5,7 +5,7 @@
       <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="far fa-file-alt"></i> <%= mod.title %></div></a>
     <% elsif mod.mod_type == 'video' %>
       <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="fas fa-video"></i> <%= mod.title %></div></a>
-    <% elsif mod.mod_type == 'quiz' %>
+    <% elsif mod.mod_type == 'assessment' %>
       <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="fas fa-star-half-alt"></i> <%= mod.title %></div></a>
     <% end %>
   <% end %>

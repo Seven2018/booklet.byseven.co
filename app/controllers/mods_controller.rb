@@ -25,6 +25,7 @@ class ModsController < ApplicationController
     @new_mod.mod_type = params[:mod][:mod_type]
     @new_mod.position = @content.mods.order(position: :asc).count + 1
     if @new_mod.save
+      @content.update(duration: @content.mods.map(&:duration).sum)
       respond_to do |format|
         format.html {redirect_to content_path(@content)}
         format.js
@@ -45,6 +46,7 @@ class ModsController < ApplicationController
     @content = @module.content
     @module.update(mod_params)
     if @module.save
+      @content.update(duration: @content.mods.map(&:duration).sum)
       respond_to do |format|
         format.html {redirect_to content_path(@content)}
         format.js
@@ -61,6 +63,7 @@ class ModsController < ApplicationController
       mod.update(position: i)
       i += 1
     end
+    @content.update(duration: @content.mods.map(&:duration).sum)
     respond_to do |format|
       format.js
     end
@@ -99,6 +102,6 @@ class ModsController < ApplicationController
   end
 
   def mod_params
-    params.require(:mod).permit(:title, :position, :content_id, :document, :video, :image, :mod_type, :text)
+    params.require(:mod).permit(:title, :position, :duration, :content_id, :document, :video, :image, :mod_type, :text)
   end
 end
