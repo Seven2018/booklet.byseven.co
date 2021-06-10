@@ -1,14 +1,16 @@
 <% content.mods.order(position: :asc).each do |mod| %>
   <div class="mod-card">
-    <a id="anchor-<%= mod.id %>"></a>
+    <a id="anchor-<%= mod.id %>" class='content-anchor'></a>
     <% if mod.mod_type == 'text' %>
       <div class="content-show-mods-card-text">
         <p><b><%= mod.title %></b></p>
+        <p>Duration : <%= mod.duration %> min</p>
         <%= mod.text %>
       </div>
     <% elsif mod.mod_type == 'video' %>
       <div class="content-show-mods-card-video" style='padding:10px;'>
         <p style='padding: 10px;'><b><%= mod.title %></b></p>
+        <p>Duration : <%= mod.duration %> min</p>
         <%= embed_video(mod.video) %>
       </div>
     <% elsif mod.mod_type == 'image' %>
@@ -19,6 +21,7 @@
       <% if params[:content_access] == 'granted' %>
         <div class="content-show-mods-card-text">
           <h3 style='margin-bottom: 15px;'>Assessment: <%= mod.title %></h3>
+          <p>Duration : <%= mod.duration %> min</p>
           <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? %>
             <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
           <% else %>
@@ -66,4 +69,5 @@
       <% end %>
     <% end %>
   </div>
+
 <% end %>

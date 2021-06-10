@@ -115,9 +115,14 @@
                     <div class="user-training-bottom">
                       <p><i class="fas fa-calendar-alt"></i><%= session.date.strftime('%d/%m/%Y') %></p>
                       <div class='content-time'><p><i class="fas fa-star-half-alt"></i>
-                        <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
-                         Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%
-                        <% end %></p>
+                        <% assessment = session.content.mods.where(mod_type: 'assessment').first %>
+                        <% if assessment.present? %>
+                          <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id, mod_id: assessment.id}).each do |form| %>
+                           Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%
+                          <% end %></p>
+                        <% else %>
+                          <p>No Quiz</p>
+                        <% end %>
                       </div>
                     </div>
                   </div>
@@ -137,9 +142,14 @@
                     <div class="user-training-bottom">
                       <p><i class="fas fa-calendar-alt"></i> <%= session.date.strftime('%d/%m/%Y') %></p>
                       <div class='content-time'><p><i class="fas fa-star-half-alt"></i>
-                        <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id}).each do |form| %>
-                         Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%
-                        <% end %></p>
+                        <% assessment = session.content.mods.where(mod_type: 'assessment').first %>
+                        <% if assessment.present? %>
+                          <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id, mod_id: assessment.id}).each do |form| %>
+                           Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%
+                          <% end %></p>
+                        <% else %>
+                          No Quiz</p>
+                        <% end %>
                       </div>
                     </div>
                   </div>
