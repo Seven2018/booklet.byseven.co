@@ -35,8 +35,18 @@
       <div class="new_user_tags">
         <% checked_tags = Tag.joins(:user_tags).where(user_tags: {user_id: @user.id}).map(&:id) %>
         <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
-          <p><%= category.name.capitalize %></p>
+        <div class="organisation-filter-block">
+          <div class="organisation-filter-block-title-user-show">
+            <p><b><%= category.name.capitalize %></b></p>
+            <div class="organisation-filter-block-title-buttons">
+              <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </div>
+          </div>
+           <div class="organisation-filter-block-checkboxes-user hidden">
           <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes, checked: checked_tags %>
+          </div>
         <% end %>
       </div>
       <div style=" display: flex; justify-content: center;margin-top:3rem;">
@@ -48,3 +58,30 @@
     <% end %>
   </div>
 </div>
+
+
+<script>
+
+   rotated = 0;
+
+  function toggleTagCategoryDropdownUser(element) {
+    items = document.querySelector('.organisation-filter-block-checkboxes-user');
+    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
+    rotated = rotated + 180;
+    block = element.parentNode.parentNode.parentNode;
+    if (block.style.maxHeight == '45px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '1000px';
+      block.classList.add('active');
+      items.classList.remove('hidden');
+    } else {
+      block.style.maxHeight = '45px';
+      block.classList.remove('active');
+      items.classList.add('hidden');
+    }
+  }
+
+</script>

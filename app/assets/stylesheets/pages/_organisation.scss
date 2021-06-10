@@ -150,6 +150,10 @@
   &:focus {
     border: 1px solid transparent !important;
     border-bottom: 1px solid #F26419 !important;
+    background-color: transparent !important;
+  }
+  input:internal-autofill-selected {
+    background-color: transparent !important;
   }
 }
 
@@ -432,7 +436,6 @@
 }
 
 .new_user_tags {
-
   input {
     margin-right: 1rem;
   }
@@ -444,6 +447,8 @@
     margin: 1rem 0;
   }
 }
+
+
 
 /* // A EFFACER
 .organization-buttons {
