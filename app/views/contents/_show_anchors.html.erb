@@ -12,4 +12,3 @@
 <% elsif params[:session_id].present? %>
   <p style='color:#F26419'><b><i>Content available on <%= Session.find(params[:session_id]).date.to_s %></i></b></p>
 <% end %>
-
