@@ -22,7 +22,6 @@ class UserInterestsController < ApplicationController
     if params[:redirect_from] == 'user_show'
       @test = params[:redirect_from]
       @user = current_user
-      raise
     end
     respond_to do |format|
       format.html {redirect_to catalogue_path}

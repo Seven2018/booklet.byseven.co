@@ -1,7 +1,7 @@
 <p><b>Interested In <i class="fas fa-heart"></i></b></p>
 <% user.user_interests.includes([:content]).where(interest_type: 'Interested').each do |interest| %>
  <% content = interest.content  %>
-  <div class='user-card-interest'>
+  <div class='user-card-interest' id='user-interest-content-<%= content.id %>'>
     <div class="user-card">
       <div class="catalogue-content-card-left-user">
         <div>
