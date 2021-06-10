@@ -7,11 +7,11 @@
     <%= f.input :email %>
     <%= f.input :password %>
     <% if current_user.access_level == 'Super Admin' %>
-      <%= f.input :access_level, collection: ['Super Admin', 'Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
+      <%= f.input :access_level, collection: ['Super Admin', 'Admin', 'HR', 'Employee'], include_blank: false %>
     <% elsif current_user.access_level == 'Admin' %>
-      <%= f.input :access_level, collection: ['Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
+      <%= f.input :access_level, collection: ['Admin', 'HR', 'Employee'], include_blank: false %>
     <% elsif current_user.access_level == 'HR' %>
-      <%= f.input :access_level, collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
+      <%= f.input :access_level, collection: ['HR', 'Employee'], include_blank: false %>
     <% end %>
     <% if current_user.access_level == 'Super Admin' %>
       <%= f.association :company, collection: Company.all, include_blank: false, label: 'Company' %>

@@ -1,19 +1,21 @@
 <div class="catalogue-container">
   <div class='index-controls-create-content'>
     <h2>Catalogue of Trainings<h2>
-    <div class="btn-orange" onclick='openHiddenForm(this);'>
-      <p><i class="fas fa-plus"></i> Create</p>
-    </div>
-    <div class="hidden-form-ajax hidden" style='height: 4rem;'>
-      <%= simple_form_for Content.new do |f| %>
-        <div style='display:flex; justify-content: flex-end; align-items:center; margin:0px;'>
-          <%= f.input :title, label: false, placeholder: 'Title' %>
-          <%= button_tag :submit, class: 'hidden-submit' do %>
-        <i class="fas fa-save"></i>
-      <% end %>
-        </div>
-      <% end %>
-    </div>
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <div class="btn-orange" onclick='openHiddenForm(this);'>
+        <p><i class="fas fa-plus"></i> Create</p>
+      </div>
+      <div class="hidden-form-ajax hidden" style='height: 4rem;'>
+        <%= simple_form_for Content.new do |f| %>
+          <div style='display:flex; justify-content: flex-end; align-items:center; margin:0px;'>
+            <%= f.input :title, label: false, placeholder: 'Title' %>
+            <%= button_tag :submit, class: 'hidden-submit' do %>
+              <i class="fas fa-save"></i>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
   <div id="index-controls" class='flex-row-between-centered' style='padding-top:0rem; min-height: 2rem;'>
     <div class="index-controls-filter-bar">
@@ -28,9 +30,9 @@
   </div>
   <div id="catalogue-index">
     <% if @contents.empty? %>
-    <p style="padding:15px;">No trainings have been created. You see that big <span style='color:#F26419'>orange</span> button in the corner? Click it to create your first training.</p>
+      <p style="padding:15px;">No trainings have been created. You see that big <span style='color:#F26419'>orange</span> button in the corner? Click it to create your first training.</p>
     <% elsif %>
-    <%= render 'catalogue_index', contents: @contents %>
+      <%= render 'catalogue_index', contents: @contents %>
     <% end %>
   </div>
 </div>
