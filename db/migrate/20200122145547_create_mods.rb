@@ -9,6 +9,7 @@ class CreateMods < ActiveRecord::Migration[6.0]
       t.string :image
       t.string :mod_type, default: ""
       t.integer :position
+      t.integer :duration, null: false, default: 0
       t.references :company, foreign_key: true
       t.integer :content_id
       t.timestamps

@@ -40,10 +40,12 @@
                 <i class="fas fa-video"></i>
                 <p>Video</p>
               </a>
-              <div class="content-show-mods-controls-block"  data-toggle='modal' data-target='#newModQuiz'>
-                <i class="fas fa-star-half-alt"></i>
-                <p>Quiz</p>
-              </div>
+              <% unless @content.mods.where(mod_type: 'assessment').count >= 1 %>
+                <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz"  data-toggle='modal' data-target='#newModQuiz'>
+                  <i class="fas fa-star-half-alt"></i>
+                  <p>Quiz (max 1)</p>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
@@ -203,16 +205,18 @@
       doubleClickGuardian = true
       title = element.closest('.modal-body').querySelector('#mod_title');
       //f (title.value.innerHTML != null) {
-        modal = document.querySelector('.modal.show')
+        modal = element.closest('.modal')
         modal.querySelector('.cancel-close').click()
         modal.querySelector('.hidden-submit').click()
-        modal.querySelector('#mod_title').value = ''
+        if (modal.querySelector('#mod_title') != null) {
+          modal.querySelector('#mod_title').value = ''
+        }
         if (modal.querySelector('trix-editor') != null) {
           modal.querySelector('trix-editor').value = ''
         }
-
+        console.log('test')
       //}
-      setTimeout(function(){doubleClickGuardian = false}, 10)
+      setTimeout(function(){doubleClickGuardian = false}, 250)
     }
   }
 
@@ -261,4 +265,13 @@
     document.querySelector('#addQuestion').style.display = 'flex'
   }
 
+  slider = document.getElementById("myRange");
+  output = document.getElementById("demo");
+  output.innerHTML = slider.value; // Display the default slider value
+
+  // Update the current slider value (each time you drag the slider handle)
+  slider.oninput = function() {
+    this.value += 1;
+    output.innerHTML = this.value;
+  }
 </script>

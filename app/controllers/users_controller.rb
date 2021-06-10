@@ -42,12 +42,14 @@ class UsersController < ApplicationController
       #@user.reset_password_token = token
       #@user.reset_password_sent_at = Time.now.utc
       #@user.save(validate: false)
-      tags.each do |tag|
-        UserTag.create(user_id: @user.id, tag_id: tag)
+      if tags.present?
+        tags.each do |tag|
+          UserTag.create(user_id: @user.id, tag_id: tag)
+        end
       end
       # @user.send_reset_password_instructions
       # UserMailer.account_created(@user, raw).deliver
-      redirect_to user_path(@user)
+      redirect_to organisation_path
     else
       render :new
     end

@@ -10,6 +10,7 @@
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.hidden_field :mod_type, value: 'image' %>
       <%= f.input :title, placeholder: 'Title', label: false, required: true %>
+      <%= f.input :duration, input_html: {min: 0} %>
       <%= f.input :image, placeholder: 'Image URL', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <button class="btn-orange btn-icon" onclick="closeModalOnSubmit(this);">

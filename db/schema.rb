@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
     t.string "image"
     t.string "mod_type", default: ""
     t.integer "position"
+    t.integer "duration", default: 0, null: false
     t.bigint "company_id"
     t.integer "content_id"
     t.datetime "created_at", precision: 6, null: false
