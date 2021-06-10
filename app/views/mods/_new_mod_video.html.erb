@@ -8,7 +8,7 @@
     <%= simple_form_for Mod.new, remote: true do |f| %>
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.hidden_field :mod_type, value: 'video' %>
-      <%= f.input :title, placeholder: 'Title', label: false, value: '' %>
+      <%= f.input :title, placeholder: 'Title *Required'', label: false, value: '' %>
       <%= f.input :duration, input_html: {min: 0} %>
       <%= f.input :video, placeholder: 'Youtube URL', label: false, value: '' %>
       <%= f.submit '', class: 'hidden-submit hidden' %>

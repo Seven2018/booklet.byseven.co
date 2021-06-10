@@ -8,10 +8,12 @@
   <div class="modal-body">
     <%= form_tag import_users_path, multipart: true, class: 'flex-row-between-centered' do %>
       <%= file_field_tag :file %>
-      <%= submit_tag 'Import CSV', class: 'btn btn-edit', style: 'margin: 0 !important;' %>
+      <%= submit_tag 'Import CSV', class: 'btn-csv', style: 'margin: 0 !important;' %>
     <% end %>
     <br>
     <p>Example: </p>
     <img src="<%= asset_path('import-example.png') %>" alt="" width='450px'>
+    <p>Ensure that these following columns are properally named.</p><br>
+    <p>firstname <br> lastname <br> access_level <br> email <br> password <br> social_security</p>
   </div>
 </div>

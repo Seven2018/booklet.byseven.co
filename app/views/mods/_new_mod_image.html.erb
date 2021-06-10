@@ -8,7 +8,7 @@
     <%= simple_form_for Mod.new, remote: true do |f| %>
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.hidden_field :mod_type, value: 'image' %>
-      <%= f.input :title, placeholder: 'Title', label: false, input_html: { class: "form-control", required: true } %>
+      <%= f.input :title, placeholder: 'Title *Required', label: false, input_html: { class: "form-control", required: true } %>
       <%= f.input :image, placeholder: 'Image URL', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
