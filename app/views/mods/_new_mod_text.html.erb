@@ -8,7 +8,7 @@
     <%= simple_form_for Mod.new, remote: true do |f| %>
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.hidden_field :mod_type, value: 'text' %>
-      <%= f.input :title, placeholder: 'Title', label: false %>
+      <%= f.input :title, placeholder: 'Title *Required', label: false %>
       <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
