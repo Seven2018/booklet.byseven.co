@@ -1,1 +1,5 @@
-document.querySelector('#content-<%= @content.id %>').innerHTML = '<%= j render("pages/catalogue_content_card", content: @content) %>';
+if ("<%= @test %>" == 'user_show') {
+  document.querySelector('#user-interest-content-<%= @content.id %>').remove()
+} else {
+  document.querySelector('#content-<%= @content.id %>').innerHTML = '<%= j render("pages/catalogue_content_card", content: @content) %>';
+}

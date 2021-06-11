@@ -22,9 +22,9 @@
         <div class="content-show-mods-card-text">
           <h3 style='margin-bottom: 15px;'>Assessment: <%= mod.title %></h3>
           <p>Duration : <%= mod.duration %> min</p>
-          <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? %>
+          <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? && mod.assessment_questions.present? %>
             <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
-          <% else %>
+          <% elsif mod.assessment_questions.present? %>
             <div class="flex-row-between-centered">
               <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
               <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>

@@ -2,6 +2,11 @@ document.querySelector('.content-show-attributes').innerHTML = '<%= j render("co
 document.querySelector('.content-show-mods-index').innerHTML = '<%= j (render("mods/content_show_mods_index", content: @content)) %>';
 document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/show_anchors", content: @content, redirect_from: "catalogue")) %>';
 document.querySelector('.saved-message').classList.remove('hidden');
+if ("<%= @content.mods.where(mod_type: 'assessment').present? %>" == 'true') {
+  document.querySelector('.content-show-mods-controls-block-quiz').classList.add('hidden')
+} else {
+  document.querySelector('.content-show-mods-controls-block-quiz').classList.remove('hidden')
+}
 setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);
 document.querySelectorAll('#mod_title').forEach((element) =>{
   if (element.value == '') {
