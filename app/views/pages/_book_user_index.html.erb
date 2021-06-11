@@ -1,12 +1,10 @@
-<div class="headers-div">
-  <div class="headers-div">
-    <p onclick='addAll(this);' style='cursor:pointer;' class='add-selected'>Add All (<%= users.count %>)</p>
-    <% if selected_filter.present? %>
-      <% selected_filter.split(',').each do |filter| %>
-        <p><%= filter %></p>
-      <% end %>
+<div class="headers-div-book">
+  <p onclick='addAll(this);' style='cursor:pointer;' class='add-selected'>Add All (<%= users.count %>)</p>
+  <% if selected_filter.present? %>
+    <% selected_filter.split(',').each do |filter| %>
+      <p class='user-filter'><%= filter %></p>
     <% end %>
-  </div>
+  <% end %>
 </div>
 <% users.each do |user| %>
   <div class='user-index-card-book' id="user-<%= user.id %>">
