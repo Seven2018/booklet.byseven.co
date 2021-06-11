@@ -9,11 +9,8 @@
       <% end %>
       <div class="flex-row-start-centered">
         <h4><%= content.title %></h4>
-        <% attendee = Attendee.find_by(session_id: session.id, user_id: current_user.id) %>
-        <% if attendee.present? %>
-          <% if attendee.status == 'Not completed' %>
-            <p>Registered</p>
-          <% elsif attendee.status == 'Completed' %>
+        <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
+        <% if interest.status == 'Completed' %>
             <p>Completed</p>
           <% end %>
         <% end %>
