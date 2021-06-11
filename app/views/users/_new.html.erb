@@ -28,8 +28,21 @@
       <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
       <div class="new_user_tags">
         <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
-          <p><%= category.name.capitalize %></p>
+        <div class="organisation-filter-block-user">
+          <div class="organisation-filter-block-title-user-show">
+            <div>
+              <p><b><%= category.name.capitalize %></b></p>
+              <div class="organisation-filter-block-title-buttons">
+                <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+           <div class="organisation-filter-block-checkboxes-user">
           <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes %>
+          </div>
+        </div>
         <% end %>
       </div>
       <div style=" display: flex; justify-content: flex-end;margin-top:3rem;">
@@ -41,3 +54,27 @@
     <% end %>
   </div>
 </div>
+<script>
+
+   rotated = 0;
+
+  function toggleTagCategoryDropdownUser(element) {
+    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
+    rotated = rotated + 180;
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '' ) {
+      console.log('hi')
+      block.style.maxHeight = '1000px';
+      block.classList.add('active');
+    } else {
+      console.log('hello')
+      block.style.maxHeight = '61px';
+      block.classList.remove('active');
+    }
+  };
+
+</script>
