@@ -11,10 +11,8 @@
         <h4><%= content.title %></h4>
         <% attendee = Attendee.find_by(session_id: session.id, user_id: current_user.id) %>
         <% if attendee.present? %>
-          <% if attendee.status == 'Not completed' %>
-            <p>Registered</p>
-          <% elsif attendee.status == 'Completed' %>
-            <p>Completed</p>
+          <% if attendee.status == 'Completed' %>
+            <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A' data-toggle='tooltip' title='Training Completed'></i>
           <% end %>
         <% end %>
       </div>
