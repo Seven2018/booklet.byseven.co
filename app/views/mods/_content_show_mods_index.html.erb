@@ -11,7 +11,8 @@
       <div class="content-show-mods-card-video" style='padding:10px;'>
         <p style='padding: 10px;'><b><%= mod.title %></b></p>
         <p style='padding: 10px;'>Duration : <%= mod.duration %> min</p>
-        <%= embed_video(mod.video) %>
+        <% video_id = mod.video.split("=")[1] %>
+        <%= content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen") %>
       </div>
     <% elsif mod.mod_type == 'image' %>
       <div class="content-show-mods-card-image">

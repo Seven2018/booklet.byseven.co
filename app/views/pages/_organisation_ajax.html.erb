@@ -94,7 +94,6 @@
         <%= link_to '', user_path(user), class: 'stretched-link' %>
         <div class="user-index-info">
           <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
-          <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
         </div>
         <div class="user-index-info">
           <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>

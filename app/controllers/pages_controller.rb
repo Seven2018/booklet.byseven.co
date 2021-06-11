@@ -138,6 +138,7 @@ class PagesController < ApplicationController
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
       @interest_for = params[:filter_user][:interest_for].split(',')
       @selected_contents = []
+      @selected_filter = params[:filter_user][:tag].reject(&:blank?).join(',')
     elsif params[:confirm].present?
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
     else
