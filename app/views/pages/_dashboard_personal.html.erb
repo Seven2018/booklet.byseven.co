@@ -4,7 +4,7 @@
      <ul class="nav nav-tabs-trainings">
         <li role="presentation"><a href="#UpcomingPersonal" data-toggle="tab" class='active'>Upcoming</a></li>
         <li role="presentation"><a href="#CurrentPersonal" data-toggle="tab">Current</a></li>
-        <li role="presentation"><a href="#CompletedPersonal" data-toggle="tab">Completed</a></li>
+        <li role="presentation"><a href="#CompletedPersonal" data-toggle="tab">Past</a></li>
       </ul>
     </div>
     <div class="tab-content">
@@ -31,7 +31,7 @@
   </div>
   <div class="dashboard-right-schedule">
     <div class="dashboard-calendar">
-      <%= month_calendar(events: @my_current_sessions, attribute: :date) do |date, sessions| %>
+      <%= month_calendar(events: @all_my_sessions, attribute: :date) do |date, sessions| %>
         <%= link_to dashboard_path(tab: 'personal', date: date), remote: true do %>
           <div class="flex-column-between-centered">
             <%= date.day %>

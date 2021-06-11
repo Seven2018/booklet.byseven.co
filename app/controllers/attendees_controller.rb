@@ -67,7 +67,7 @@ class AttendeesController < ApplicationController
     training_content = Session.find(params[:training_content_id])
     @attendee = Attendee.where(training_content_id: training_content.id, user_id: current_user.id).first
     authorize @attendee
-    @attendee.update(status: 'Confirmed')
+    @attendee.update(status: 'Completed')
     redirect_back(fallback_location: root_path)
   end
 
