@@ -6,14 +6,14 @@
   </div>
   <div class="modal-body" id="modalNewBookinBody">
     <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
-      <%= f.text_field :title, placeholder: 'Quiz Title *Required' %>
-      <%= f.input :duration, input_html: {min: 0} %>
+      <%= f.input :title, placeholder: '*Required', label:'Title:' %>
+      <%= f.input :duration, input_html: {min: 0}, label:'Duration:' %>
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
         <div type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</div>
         <div class="btn-orange" onclick="closeModalOnSubmit(this);">
-          <p>Add Quizz</p>
+          <p>Add Quiz</p>
         </div>
       </div>
     <% end %>

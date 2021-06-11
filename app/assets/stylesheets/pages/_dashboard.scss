@@ -69,24 +69,31 @@
 // DASHBOARD
 .dashboard-right-schedule {
   height: 900px;
-  width: 40rem;
+  width: auto;
   border-left: none;
   padding: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   @include from-medium-low {
     border-left: 1px solid #C4C4C4;
     padding-left: 30px;
+    width: 40rem;
   }
 }
 
 .dashboard-calendar {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: normal;
   padding-top: 15px;
 
   i {
     font-size: .5rem;
     color: #F26419;
+  }
+  @include from-medium {
+    justify-content: center;
   }
 }
 
@@ -95,13 +102,14 @@
   border-radius: 50%;
 }
 
-// .schedule {
-//   display:flex;
-//   justify-content: center;
-//   align-items: center;
-// }
+.schedule {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .schedule-title {
+  text-align: center;
   font-size: 2.5rem;
   margin-top: 30px;
   color: #F26419;

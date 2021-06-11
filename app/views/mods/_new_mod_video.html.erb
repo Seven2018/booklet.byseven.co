@@ -8,9 +8,9 @@
     <%= simple_form_for Mod.new, remote: true do |f| %>
       <%= f.hidden_field :content_id, value: @content.id %>
       <%= f.hidden_field :mod_type, value: 'video' %>
-      <%= f.input :title, placeholder: 'Title *Required'', label: false, value: '' %>
-      <%= f.input :duration, input_html: {min: 0} %>
-      <%= f.input :video, placeholder: 'Youtube URL', label: false, value: '' %>
+      <%= f.input :title, placeholder: '*Required', label: 'Title:', value: '' %>
+      <%= f.input :duration, input_html: {min: 0}, label: 'Duration:' %>
+      <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
       <div class="cancel-submit-btns">
         <div type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</div>
