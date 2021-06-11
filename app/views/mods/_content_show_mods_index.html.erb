@@ -4,13 +4,13 @@
     <% if mod.mod_type == 'text' %>
       <div class="content-show-mods-card-text">
         <p><b><%= mod.title %></b></p>
-        <p>Duration : <%= mod.duration %> min</p>
+        <p>Duration : <%= mod.duration %> min</p><br>
         <%= mod.text %>
       </div>
     <% elsif mod.mod_type == 'video' %>
       <div class="content-show-mods-card-video" style='padding:10px;'>
         <p style='padding: 10px;'><b><%= mod.title %></b></p>
-        <p>Duration : <%= mod.duration %> min</p>
+        <p style='padding: 10px;'>Duration : <%= mod.duration %> min</p>
         <%= embed_video(mod.video) %>
       </div>
     <% elsif mod.mod_type == 'image' %>
