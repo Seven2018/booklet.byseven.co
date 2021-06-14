@@ -118,6 +118,7 @@
 
 
 .calendar-schedule-card-sync {
+    width: 300px;
     margin: 20px;
     display: flex;
     justify-content: center;
@@ -156,6 +157,7 @@
 }
 
 .calendar-schedule-card-async {
+    width: 300px;
     margin: 20px;
     display: flex;
     justify-content:center;
@@ -281,4 +283,10 @@
   // @include from-medium-low {
   //   width: 25%
   // }
+}
+
+.flex-row-start-baseline {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
 }
