@@ -44,15 +44,15 @@ class PagesController < ApplicationController
         format.js
       end
     # Index with 'search' option and global visibility for SEVEN Users
-    elsif current_user.access_level == 'Super Admin'
-      @contents = Content.all.order(title: :asc)
-      if params[:search].present?
-        @contents = Content.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
-        respond_to do |format|
-          format.html {catalogue_path}
-          format.js
-        end
-      end
+    #elsif current_user.access_level == 'Super Admin'
+    #  @contents = Content.all.order(title: :asc)
+    #  if params[:search].present?
+    #   @contents = Content.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
+    #    respond_to do |format|
+    #      format.html {catalogue_path}
+    #      format.js
+    #    end
+    #  end
     # Index for other Users, with visibility limited to programs proposed by their company only
     else
       @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
@@ -124,7 +124,7 @@ class PagesController < ApplicationController
   end
 
   def book
-    index_function(User.all)
+    index_function(User.where(company_id: current_user.company_id))
     if params[:filter_content].present?
       if params[:filter_content][:themes].split(',').uniq.present?
         @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter_content][:themes].split(',')}).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc).uniq
