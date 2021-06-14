@@ -93,14 +93,24 @@ class UsersController < ApplicationController
   # Creates new Users from an imported list
   def import
     skip_authorization
-    begin
-      @users = User.import(params[:file])
-      flash[:notice] = 'Import terminé'
-      redirect_back(fallback_location: root_path)
-    rescue
-      redirect_back(fallback_location: root_path)
-      flash[:error] = "An error has occured. Please check your csv file."
+    errors = []
+    CSV.foreach(params[:file].path, headers: true) do |row|
+      user_row = row.to_hash
+      if !user_row['email'].present?
+        errors << "#{user_row[:lastname]}, #{user_row[:firstname]}"
+      end
     end
+    flash[:error] = "There is #{errors.count} users with missing email addresses. No account will be created for these users."
+    #begin
+    #  @users = User.import(params[:file])
+    #  flash[:notice] = 'Import terminé'
+    #  redirect_back(fallback_location: root_path)
+    #rescue
+    #  redirect_back(fallback_location: root_path)
+    #  flash[:error] = "An error has occured. Please check your csv file."
+    #end
+    ImportEmployeesJob.perform_async(params[:file], current_user.company_id)
+    redirect_back(fallback_location: root_path)
   end
 
   def users_search

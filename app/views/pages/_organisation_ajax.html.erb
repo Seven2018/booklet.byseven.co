@@ -60,7 +60,7 @@
           <% end %>
         </div>
       </div>
-      <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+      <% @tag_categories.order(position: :asc).each do |tag_category| %>
         <div class="headers-div">
           <p><%= tag_category.name %></p>
           <div class="headers-div-order">
@@ -91,30 +91,7 @@
     </div>
     <% @users.each do |user| %>
       <div class='user-index-card'>
-        <%= link_to '', user_path(user), class: 'stretched-link' %>
-        <div class="user-index-info">
-          <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
-        </div>
-        <div class="user-index-info">
-          <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
-        </div>
-        <div class="user-index-info">
-          <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
-        </div>
-        <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
-          <div class="user-index-info">
-            <% tags = '' %>
-            <% Tag.joins(:user_tags).where(tag_category_id: tag_category.id, user_tags: {user_id: user}).order(tag_name: :asc).each do |tag| %>
-              <% tags += tag.tag_name + ', ' %>
-            <% end %>
-            <p><%= tags[0..-3] %></p>
-          </div>
-        <% end %>
-      </div>
-      <div class='modal fade' id='showUser-<%= user.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-        <div class='modal-dialog' role='document' style='border-radius: 20px'>
-          <%= render 'users/show', user: user %>
-        </div>
+        <%= render 'pages/organisation_user_card', user: user %>
       </div>
     <% end %>
   </div>
