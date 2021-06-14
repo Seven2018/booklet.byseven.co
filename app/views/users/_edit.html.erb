@@ -51,19 +51,18 @@
           </div>
         </div>
         <% end %>
-    <% end %>
-  </div>
-  <div style=" display: flex; justify-content: center;margin-top:3rem;">
-    <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
-    <%= button_tag type: 'submit', class: 'btn-orange' do %>
-      <p>SAVE</p>
+        <div style=" display: flex; justify-content: center;margin-top:3rem;">
+          <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+          <%= button_tag type: 'submit', class: 'btn-orange' do %>
+            <p>SAVE</p>
+          <% end %>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>
 
-
 <script>
-
    rotated = 0;
 
   function toggleTagCategoryDropdownUser(element) {
