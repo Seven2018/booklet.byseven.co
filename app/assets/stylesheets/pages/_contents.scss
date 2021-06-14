@@ -113,6 +113,10 @@
   margin-bottom: 20px;
 }
 
+.content-show-infos-duration {
+  display: flex;
+}
+
 .content-show-infos-duration, .content-show-infos-themes {
   p {
     flex-grow: 0;
@@ -144,7 +148,6 @@
   min-height: 5rem;
   height: auto;
   font-size:1.6rem;
-  padding: 10px;
 }
 
 .content-show-mods-controls {
@@ -310,7 +313,6 @@
     align-items: flex-start;
     @include from-medium {
       flex-direction: row;
-      align-items: center;
     }
 }
 
