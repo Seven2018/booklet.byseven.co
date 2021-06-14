@@ -32,6 +32,8 @@ gem 'bullet', group: 'development'
 gem 'trix-rails', require: 'trix'
 gem "acts_as_tree"
 gem "net-http"
+gem 'sucker_punch', '~> 3.0'
+gem 'render_async'
 
 
 group :development do

@@ -104,7 +104,7 @@ class PagesController < ApplicationController
 
   def organisation
     # Index with 'search' option and global visibility for SEVEN Users
-    index_function(User.all)
+    index_function(User.where(company_id: current_user.company_id))
     # Index for other Users, with visibility limited to programs proposed by their company only
     @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
@@ -155,9 +155,9 @@ class PagesController < ApplicationController
   def index_function(parameter)
     if ['Super Admin', 'HR'].include?(current_user.access_level)
       if params[:search].present?
-        @users = parameter.where(company_id: current_user.company.id).order(id: :asc)
+        @users = parameter.order(id: :asc)
         if params[:search][:name] != ' '
-          @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
+          @users = (parameter.where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
         end
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])
@@ -173,9 +173,9 @@ class PagesController < ApplicationController
         end
         if tags.empty?
           if params[:filter_user][:selected].present?
-            @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+            @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           else
-            @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
+            @users = parameter.order(lastname: :asc)
           end
         else
           if params[:filter_user][:selected].present?
@@ -199,14 +199,15 @@ class PagesController < ApplicationController
       else
         if params[:filter_user].present?
           if params[:filter_user][:selected].present?
-            @users = parameter.where(company_id: current_user.company.id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+            @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           else
-            @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
+            @users = parameter.order(lastname: :asc)
           end
         else
-          @users = parameter.where(company_id: current_user.company.id).order(lastname: :asc)
+          @users = parameter.order(lastname: :asc)
         end
       end
+      @tag_categories = TagCategory.where(company_id: current_user.company_id)
     end
   end
 end

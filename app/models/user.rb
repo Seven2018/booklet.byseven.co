@@ -26,10 +26,10 @@ class User < ApplicationRecord
     user
   end
 
-  def self.import(file)
+  def self.import(file, company_id)
     CSV.foreach(file.path, headers: true) do |row|
       #begin
-        company_id = Current.user.company_id
+        #company_id = Current.user.company_id
         user_row = row.to_hash
         main_attr = "firstname,lastname,email,password,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
         tag_attr = row.to_hash.keys - main_attr
@@ -40,8 +40,9 @@ class User < ApplicationRecord
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         if !user.email.present?
-          last_user = User.last
-          user.email = 'user' + (last_user.id + 1).to_s + '@' + last_user.email.split('@').last
+          #last_user = User.last
+          #user.email = 'user' + (last_user.id + 1).to_s + '@' + last_user.email.split('@').last
+          next
         end
         user.save
         raw, token = Devise.token_generator.generate(User, :reset_password_token)

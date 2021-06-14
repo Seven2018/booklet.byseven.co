@@ -10,7 +10,7 @@
   </div>
 </div>
 <%= simple_form_for :filter_user, url: organisation_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
-  <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |tag_category| %>
+  <% @tag_categories.order(position: :asc).each do |tag_category| %>
     <div class="organisation-filter-block">
       <div class="organisation-filter-block-title">
         <div>
