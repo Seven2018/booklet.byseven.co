@@ -123,6 +123,12 @@ class PagesController < ApplicationController
     end
   end
 
+  def organisation_user_card
+    @user = User.find(params[:user_id])
+    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+    render partial: "organisation_user_card"
+  end
+
   def book
     index_function(User.where(company_id: current_user.company_id))
     if params[:filter_content].present?
