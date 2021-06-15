@@ -64,9 +64,9 @@
                   <i class="fas fa-pencil-alt"></i>
                 </div>
               </div>
-              <%# link_to tag_path(Tag.find(b.object.id), users: users.map(&:id), tag_category_id: tag_category.id), data: {confirm: 'Are you sure ?'}, method: :delete, class: 'tag_delete', remote: true do %>
-                <!-- <i class="fas fa-trash"></i> -->
-              <%# end %>
+              <%= link_to tag_path(Tag.find(b.object.id), users: users.map(&:id), tag_category_id: tag_category.id), data: {confirm: 'Are you sure ?'}, method: :delete, class: 'tag_delete', remote: true do %>
+                <i class="fas fa-trash"></i>
+              <% end %>
             </div>
           <% end %>
         </div>
