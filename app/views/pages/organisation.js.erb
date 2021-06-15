@@ -1,1 +1,4 @@
 document.querySelector('.organisation-main-container').innerHTML = '<%= j render("organisation_ajax", users: @users) %>';
+$(document).ready(function () {
+  $(".organisation-page").floatingScroll();
+});
