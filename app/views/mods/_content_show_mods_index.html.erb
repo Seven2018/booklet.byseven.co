@@ -9,8 +9,8 @@
       </div>
     <% elsif mod.mod_type == 'video' %>
       <div class="content-show-mods-card-video" style='padding:10px;'>
-        <p style='padding: 10px;'><b><%= mod.title %></b></p>
-        <p style='padding: 10px;'>Duration : <%= mod.duration %> min</p>
+        <p style='padding-left: 10px;'><b><%= mod.title %></b></p>
+        <p style='padding-left: 10px;'>Duration : <%= mod.duration %> min</p><br>
         <% video_id = mod.video.split("=")[1] %>
         <%= content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen") %>
       </div>
@@ -20,17 +20,21 @@
       </div>
     <% elsif mod.mod_type == 'assessment' %>
       <% if params[:content_access] == 'granted' %>
-        <div class="content-show-mods-card-text">
-          <h3 style='margin-bottom: 15px;'>Assessment: <%= mod.title %></h3>
-          <p>Duration : <%= mod.duration %> min</p>
+        <div class="content-show-mods-card-quiz">
+          <div class="quiz-info">
+            <h3 style='margin-bottom: 15px;'>Assessment: <%= mod.title %></h3>
+            <p>Duration : <%= mod.duration %> min</p>
+          </div>
+          <div class="quiz-start">
           <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? && mod.assessment_questions.present? %>
             <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
           <% elsif mod.assessment_questions.present? %>
-            <div class="flex-row-between-centered">
-              <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+            <div class="flex-row-between-centered" style='flex-direction: column'>
               <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
+              <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
             </div>
           <% end %>
+          </div>
         </div>
       <% else %>
         <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
