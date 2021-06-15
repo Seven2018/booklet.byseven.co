@@ -28,7 +28,96 @@
   </div>
 </div>
 
+
 <script>
+
+// class FScroll {
+//     constructor(cont) {
+//         let inst = this;
+//         inst.cont = cont[0];
+//         let scrollBody = cont.closest(".fl-scrolls-body");
+//         if (scrollBody.length) {
+//             inst.scrollBody = scrollBody;
+//         }
+//         inst.sbar = inst.initScroll();
+//         inst.visible = true;
+//         inst.updateAPI(); // recalculate floating scrolls and hide those of them whose containers are out of sight
+//         inst.syncSbar(inst.cont);
+//         inst.addEventHandlers();
+//     }
+
+//     initScroll() {
+//         let flscroll = $("<div class='fl-scrolls'></div>");
+//         let {cont} = this;
+//         $("<div></div>").appendTo(flscroll).css({width: `${cont.scrollWidth}px`});
+//         return flscroll.appendTo(cont);
+//     }
+
+//     addEventHandlers() {
+//         let inst = this;
+//         let eventHandlers = inst.eventHandlers = [
+//             {
+//                 $el: inst.scrollBody || $(window),
+//                 handlers: {
+//                     // Don't use `$.proxy()` since it makes impossible event unbinding individually per instance (see the warning at http://api.jquery.com/unbind/)
+//                     scroll() {
+//                         inst.checkVisibility();
+//                     },
+//                     resize() {
+//                         inst.updateAPI();
+//                     }
+//                 }
+//             },
+//             {
+//                 $el: inst.sbar,
+//                 handlers: {
+//                     scroll({target}) {
+//                         inst.visible && inst.syncCont(target, true);
+//                     }
+//                 }
+//             },
+//             {
+//                 $el: $(inst.cont),
+//                 handlers: {
+//                     scroll({target}) {
+//                         inst.syncSbar(target, true);
+//                     },
+//                     focusin() {
+//                         setTimeout(inst.syncSbar.bind(inst, inst.cont), 0);
+//                     },
+//                     "update.fscroll"({namespace}) {
+//                         if (namespace === "fscroll") { // Check event namespace to ensure that this is not an extraneous event in a bubbling phase
+//                             inst.updateAPI();
+//                         }
+//                     },
+//                     "destroy.fscroll"({namespace}) {
+//                         if (namespace === "fscroll") {
+//                             inst.destroyAPI();
+//                         }
+//                     }
+//                 }
+//             }
+//         ];
+//         eventHandlers.forEach(({$el, handlers}) => $el.bind(handlers));
+//     }
+
+// }
+
+
+// $(document).ready(() => {
+//     $("body [data-fl-scrolls]").floatingScroll();
+// });
+
+
+
+
+  $(document).ready(function () {
+    $(".organisation-page").floatingScroll();
+});
+</script>
+
+<script>
+
   formGuardian = false;
   doubleClickGuardian = false;
   setTimeout(function(){
@@ -316,3 +405,5 @@
     selectUser();
   }
 </script>
+
+
