@@ -90,9 +90,8 @@
       </div>
     </div>
     <% @users.each do |user| %>
-      <div class='user-index-card'>
-        <%= render 'pages/organisation_user_card', user: user %>
-      </div>
+        <%= render 'pages/organisation_user_card_container', user: user %>
+        <%# render_async organisation_user_card_path(user_id: user.id) %>
     <% end %>
   </div>
 </div>
