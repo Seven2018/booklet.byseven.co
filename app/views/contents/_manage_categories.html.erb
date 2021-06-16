@@ -25,7 +25,7 @@
             </div>
           <% end %>
         </div>
-        <i class="fas fa-plus" onclick='fetchCategoryForm(this);'></i>
+        <i class="fas fa-plus" onclick='fetchCategoryForm(this);' data-target='tooltip' title='Add Theme'></i>
         <%= f.hidden_field :content_id, value: content.id %>
         <%= f.hidden_field :page, value: params[:action] %>
         <div class="theme-save-btn">

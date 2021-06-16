@@ -2,7 +2,7 @@
   <div class='index-controls-create-content'>
     <h2>Catalogue of Trainings<h2>
     <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
-      <div class="btn-orange" onclick='openHiddenForm(this);'>
+      <div class="btn-orange" onclick='openHiddenForm(this);' data-target='tooltip' title='Create a content'>
         <p><i class="fas fa-plus"></i> Create</p>
       </div>
       <div class="hidden-form-ajax hidden" style='height: 4rem;'>
