@@ -111,15 +111,16 @@
     }, 250);
   }
 
-  rotated = 0;
 
   function toggleTagCategoryDropdown(element) {
-    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
-    rotated = rotated + 180;
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
     block = element.parentNode.parentNode.parentNode.parentNode;
     if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
       block.style.maxHeight = '10000px';
