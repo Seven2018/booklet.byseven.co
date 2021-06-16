@@ -13,11 +13,8 @@
   <% end %>
 </div>
 <% @tag_categories.order(position: :asc).each do |tag_category| %>
+  <% tag = user.tags.where(tag_category_id: tag_category.id).first %>
   <div class="user-index-info">
-    <% tags = '' %>
-    <% Tag.joins(:user_tags).where(tag_category_id: tag_category.id, user_tags: {user_id: user}).order(tag_name: :asc).each do |tag| %>
-      <% tags += tag.tag_name + ', ' %>
-    <% end %>
-    <p><%= tags[0..-3] %></p>
+    <p><%= tag.tag_name if tag.present? %></p>
   </div>
 <% end %>

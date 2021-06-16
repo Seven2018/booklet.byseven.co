@@ -4,11 +4,10 @@ if ("<%= @filter %>" == 'content') {
   document.querySelector('.users-title').innerHTML = "<h2>Book Participants for: <%= Content.where(id: @interest_for).map(&:title).join(', ') %></h2>";
   document.querySelector('.dates-title').innerHTML = "<h2>Select Dates for: <%= Content.where(id: @interest_for).map(&:title).join(', ') %></h2>";
   document.querySelector('.users-book').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: @interest_for, selected_filter: @selected_filter) %>';
-  console.log("<%= @selected_filter %>")
 }
 document.querySelector('.date-book').innerHTML = '<%= j render("pages/book_dates", selected_contents: @selected_contents) %>';
   flatpickr(".datepicker", {
     disableMobile: true,
     dateFormat: "d/m/Y",
   })
-
+document.querySelector('body').classList.remove('wait');
