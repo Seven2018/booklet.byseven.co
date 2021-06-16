@@ -106,12 +106,14 @@
   function nextPage() {
     if (page == 1) {
       document.querySelector('.filter_user').querySelector('.hidden-submit').click()
+      document.querySelector('body').classList.add('wait');
       setTimeout(function(){
         pageone.classList.add('hidden')
         pagetwo.classList.remove('hidden')
       }, 250)
     } else {
       document.querySelector('.filter_content').querySelector('.hidden-submit').click()
+      document.querySelector('body').classList.add('wait');
       setTimeout(function(){
         pagetwo.classList.add('hidden')
         pagethree.classList.remove('hidden')
@@ -271,6 +273,7 @@ function autoSubmit(element) {
   element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
   hideClearFilterButton();
   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  document.querySelector('body').classList.add('wait');
 }
 
 rotated = 0
@@ -301,6 +304,7 @@ function clearFilter(element) {
   })
   hideClearFilterButton();
   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  document.querySelector('body').classList.add('wait');
 }
 
 function resetFilter() {
@@ -312,6 +316,7 @@ function resetFilter() {
   })
   hideClearFilterButton();
   form.querySelector('.hidden-submit').click();
+  document.querySelector('body').classList.add('wait');
 }
 
 var selected = document.getElementById('selected')
@@ -335,6 +340,7 @@ function removeFilter(element) {
   storage.value = array.join(',');
   filter_tag.remove();
   storage.parentNode.querySelector('.hidden-submit').click();
+  document.querySelector('body').classList.add('wait');
 }
 
 function selectUser(element) {
@@ -420,6 +426,7 @@ function addAll(source) {
   })
   document.getElementById('filter_user_selected').value = storage_var.join(',')
   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  document.querySelector('body').classList.add('wait');
 }
 
 function removeAll(source) {
@@ -437,6 +444,7 @@ function removeAll(source) {
   })
   document.getElementById('filter_user_selected').value = storage_var.join(',')
   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  document.querySelector('body').classList.add('wait');
 }
 
 function checkDuration(element) {
@@ -482,6 +490,7 @@ var options = {
       }
       $input[0].value = '';
       storage.parentNode.querySelector('.hidden-submit').click();
+      document.querySelector('body').classList.add('wait');
     },
     match: {
       enabled: true
