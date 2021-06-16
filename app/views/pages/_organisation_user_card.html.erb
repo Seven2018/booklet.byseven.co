@@ -1,3 +1,4 @@
+<% user = @user if @user.present? %>
 <div class="user-index-info">
   <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
 </div>

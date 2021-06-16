@@ -21,5 +21,8 @@ module BookletBysevenCo
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
     config.active_job.queue_adapter = :sucker_punch
+    RenderAsync.configure do |config|
+      jquery = true # This will render jQuery code, and skip Vanilla JS code
+    end
   end
 end

@@ -42,7 +42,7 @@ class TagsController < ApplicationController
     authorize @tag
     @tag.destroy
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
-    @users = User.where(id: params[:users].split(' '))
+    #@users = User.where(id: params[:users].split(' '))
     @opened = params[:tag_category_id]
     respond_to do |format|
       format.html {redirect_to organisation_path}

@@ -7,7 +7,7 @@ class UserTagsController < ApplicationController
     array = params[:tag][:user_ids].drop(1).map(&:to_i)
     array.each do |ind|
       if UserTag.where(tag_id: @tag.id, user_id: ind).empty?
-        UserTag.create(tag_id: @tag.id, user_id: ind)
+        UserTag.create(tag_id: @tag.id, tag_category_id: @tag.tag_category_id, user_id: ind)
       end
     end
     # Select all Users whose checkbox is unchecked and destroy their UserTag, if existing

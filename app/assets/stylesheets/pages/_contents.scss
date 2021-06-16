@@ -85,28 +85,6 @@
       }
     }
   }
-
-  .content-show-input-duration {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: auto;
-
-    div {
-      margin: 0;
-      width: 5rem;
-    }
-
-    input {
-      border: none;
-      padding: 0 !important;
-
-      &:focus {
-        border: none;
-        box-shadow: none;
-      }
-    }
-  }
 }
 
 .content-show-attributes {
@@ -115,6 +93,32 @@
 
 .content-show-infos-duration {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 33.5px;
+
+  .content-show-input {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 20%;
+
+    div {
+      margin: 0 1rem 0 0;
+      width: 100%;
+    }
+
+    input {
+      border: none;
+      padding: 0 !important;
+      width: 100%;
+
+      &:focus {
+        border: none;
+        box-shadow: none;
+      }
+    }
+  }
 }
 
 .content-show-infos-duration, .content-show-infos-themes {
