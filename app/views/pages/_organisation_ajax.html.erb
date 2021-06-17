@@ -41,10 +41,10 @@
       <div class="headers-div">
         <p>Name</p>
         <div class="headers-div-order">
-          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
+          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-up"></i>
           <% end %>
-          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
+          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-down"></i>
          <% end %>
         </div>
@@ -52,10 +52,10 @@
       <div class="headers-div">
         <p>Email</p>
         <div class="headers-div-order">
-          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
+          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-up"></i>
           <% end %>
-          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
+          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-down"></i>
           <% end %>
         </div>
@@ -64,10 +64,10 @@
         <div class="headers-div">
           <p><%= tag_category.name %></p>
           <div class="headers-div-order">
-            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
+            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-up"></i>
           <% end %>
-          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
+          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-down"></i>
           <% end %>
           </div>

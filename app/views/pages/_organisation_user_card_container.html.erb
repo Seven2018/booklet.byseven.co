@@ -1,6 +1,6 @@
 <div class='user-index-card'>
   <% user = @user if @user.present? %>
-  <%= render 'organisation_user_card', user: user %>
+  <%= render 'pages/organisation_user_card', user: user %>
   <%# render_async organisation_user_card_path(user_id: user.id) %>
   <%# content_for :render_async %>
 </div>

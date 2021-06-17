@@ -184,6 +184,7 @@
     width: 0;
     height: 225vh;
     transition: width .25s linear;
+    margin-top: 5rem;
 
     .organisation-filter-controls {
       display: flex;
@@ -279,6 +280,11 @@
     width: 0;
     height: 1000vh;
     transition: width .25s linear;
+    margin-top: 5rem;
+
+    input:focus {
+      border: none !important;
+    }
 
     .organisation-manage-users-controls {
       display: flex;

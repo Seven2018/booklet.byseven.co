@@ -118,6 +118,9 @@ class PagesController < ApplicationController
             current.destroy
           end
           UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: tag.tag_category_id)
+          if tag.tag_category.name == 'Job Title'
+            user.update(job_title: tag.tag_name)
+          end
         end
       end
     end

@@ -4,7 +4,3 @@ document.querySelector('#content-show-container-left').innerHTML = '<%= j (rende
 document.querySelector('.saved-message').classList.remove('hidden');
 document.querySelector('.content-show-mods-controls-block-quiz').classList.add('hidden')
 setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);
-$("#addQuestion").click(function(){
-  $(this).hide();
-  $("#assessment-show-content").append($("#add_questions_form").html());
-});
