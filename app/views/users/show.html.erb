@@ -4,8 +4,8 @@
       <%= link_to organisation_path, class: 'btn return-arrow' do %><i class="fas fa-arrow-left"></i><% end %>
       <div id='show-buttons'>
         <% if current_user.access_level == 'Super Admin' || @user == current_user || (['Admin', 'HR'].include?(current_user.access_level) && current_user.company == @user.company) %>
-          <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon'><i class='fas fa-pen'></i></button></a>
-          <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last'><i class="fas fa-key"></i></button></a>
+          <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-target='tooltip' title='Edit User'><i class='fas fa-pen'></i></button></a>
+          <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last' data-target='tooltip' title='Change Password'><i class="fas fa-key"></i></button></a>
         <% end %>
       </div>
     </div>

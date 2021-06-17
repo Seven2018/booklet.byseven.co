@@ -92,12 +92,16 @@
   min-width: 20rem;
   max-width: 20rem;
   margin-right: 3rem;
-  height: 2.4rem;
-
+  // height: 2.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
   &:first-of-type {
     min-width: 7rem;
   }
-
+  a {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
   p {
     font-size: 12px;
     text-overflow: ellipsis;
@@ -171,14 +175,14 @@
   .organisation-filter-background {
     opacity: .4;
     background-image: linear-gradient(315deg, #5b6467 0%, #8b939a 74%);
-    height: 100vh;
+    height: 225vh;
     flex-grow: 1;
   }
 
   .organisation-filter-dropright {
     background-color: white;
     width: 0;
-    height: 100vh;
+    height: 225vh;
     transition: width .25s linear;
 
     .organisation-filter-controls {
@@ -244,7 +248,7 @@
 
       .organisation-filter-block-checkboxes {
         margin-left: 27px;
-
+        overflow: scroll;
         label {
           padding-left: 1rem;
         }
@@ -266,14 +270,14 @@
   .organisation-manage-users-background {
     opacity: .4;
     background-image: linear-gradient(315deg, #5b6467 0%, #8b939a 74%);
-    height: 100vh;
+    height: 1000vh;
     flex-grow: 1;
   }
 
   .organisation-manage-users-dropright {
     background-color: white;
     width: 0;
-    height: 100vh;
+    height: 1000vh;
     transition: width .25s linear;
 
     .organisation-manage-users-controls {

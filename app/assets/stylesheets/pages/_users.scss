@@ -57,6 +57,7 @@ background: #F8D9C8;
 }
 
 .user-top-info {
+  margin-top: 10px;
     p {
       color: #888888;
     }
@@ -79,18 +80,19 @@ background: #F8D9C8;
   }
 }
 
-.user-birth {
-
+.data {
+  height: 33.5px;
 }
 
 .user-job, .user-birth, .user-hire, .user-job {
   margin: 10px 0px;
   height: 33.5px;
   display: flex;
-  align-items: center;
-  p {
-    margin-left: 5px;
-  }
+  align-items: baseline;
+}
+
+.user-birth {
+  margin-left: 5px;
 }
 
 .user-hire, .user-job {
@@ -117,6 +119,7 @@ background: #F8D9C8;
   display: flex;
   align-items: center;
   color: #888888;
+  flex-wrap: wrap;
 }
 
 .user-tag-name {
@@ -125,6 +128,7 @@ background: #F8D9C8;
   color: #F26419;
   background-color: #F8D9C8;
   border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .user-overview-grid {
