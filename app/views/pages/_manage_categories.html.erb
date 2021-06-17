@@ -19,7 +19,7 @@
               <div class="flex-row-between-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
                 <p class='category-title'><%= b.text %></p>
                 <%= link_to catalogue_content_link_category_path(delete: true, category_id: b.value, content_id: content.id), data: {confirm: 'Are you sure ?'}, class: 'category-delete', remote: true do %>
-                  <i class="fas fa-trash"></i>
+                  <i class="fas fa-trash" data-toggle='tooltip' title='Delete Theme'></i>
                 <% end %>
               </div>
             </div>

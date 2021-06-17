@@ -28,7 +28,7 @@
       <% content.categories.order(title: :asc).each do |category| %>
         <p class="category-tag"><%= category.title %></p>
       <% end %>
-      <a data-toggle='modal' data-target='#addTheme' class='btn-text-white'><i class="fas fa-plus"></i> Themes </a><br>
+      <a data-toggle='modal' data-target='#addTheme' class='btn-text-white' data-target='tooltip' title='Add a theme'><i class="fas fa-plus"></i> Themes </a><br>
     </div>
     <div>
       <div class="content-show-infos content-show-infos-trix" onclick="openInputTrix(this);">
