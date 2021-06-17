@@ -104,7 +104,7 @@ class PagesController < ApplicationController
 
   def organisation
     # Index with 'search' option and global visibility for SEVEN Users
-    index_function(User.where(company_id: current_user.company_id))
+    index_function(User.where(company_id: current_user.company_id).select(:id, :lastname, :firstname, :email))
     # Index for other Users, with visibility limited to programs proposed by their company only
     @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
     @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
@@ -113,7 +113,11 @@ class PagesController < ApplicationController
       tags = Tag.where(id: params[:tag][:id].reject(&:blank?))
       users.each do |user|
         tags.each do |tag|
-          UserTag.create(user_id: user.id, tag_id: tag.id)
+          current = UserTag.where(user_id: user.id, tag_category_id: tag.tag_category_id).first
+          if current.present?
+            current.destroy
+          end
+          UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: tag.tag_category_id)
         end
       end
     end
@@ -163,7 +167,7 @@ class PagesController < ApplicationController
       if params[:search].present?
         @users = parameter.order(id: :asc)
         if params[:search][:name] != ' '
-          @users = (parameter.where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
+          @users = (@users.where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + @users.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
         end
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])

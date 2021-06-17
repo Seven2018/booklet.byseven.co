@@ -20,7 +20,7 @@
             <div class="btn-complete completed">
               <p>Training Completed</p>
             </div>
-          <% else %>
+          <% elsif UserInterest.find_by(user_id: current_user.id, content_id: @content.id).present? %>
             <%= link_to complete_content_path(content_id: @content.id), class: 'btn-orange btn-complete', remote: true do %>
               <p>Complete Training</p>
             <% end %>

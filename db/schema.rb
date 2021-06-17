@@ -210,6 +210,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.bigint "tag_category_id"
+    t.integer "tag_category_position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_tags_on_company_id"

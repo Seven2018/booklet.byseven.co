@@ -22,7 +22,7 @@
           <%= render 'dashboard_sessions_card', session: session %>
         <% end %>
       </div>
-      <div role="tabpanel" class="tab-pane" id="CurrentSessionsAll">
+      <div role="tabpanel" class="tab-pane active" id="CurrentSessionsAll">
         <% if @current_sessions.empty? %>
           <p>No current trainings scheduled for the moment.</p>
         <% elsif %>

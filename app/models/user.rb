@@ -53,15 +53,18 @@ class User < ApplicationRecord
         user.reset_password_token = token
         user.reset_password_sent_at = Time.now.utc
         user.save(validate: false)
+        tag_category_last_position = TagCategory.where(company_id: company_id)&.order(position: :asc)&.last&.position
+        tag_category_last_position = 0 if tag_category_last_position.nil?
 
         tag_attr.each do |x|
           category = TagCategory.where(company_id: company_id, name: x).first
           unless category.present?
-            category = TagCategory.create(company_id: company_id, name: x)
+            category = TagCategory.create(company_id: company_id, name: x, position: tag_category_last_position + 1)
+            tag_category_last_position += 1
           end
           tag = Tag.where(company_id: company_id, tag_category_id: category.id, tag_name: row[x]).first
           unless tag.present?
-            tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row[x])
+            tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row[x], tag_category_position: category.position)
           end
           UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
         end
