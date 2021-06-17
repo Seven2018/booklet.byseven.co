@@ -67,6 +67,14 @@ class ContentsController < ApplicationController
       @content.categories.each do |category|
         ContentCategory.create(content_id: @new_content.id, category_id: category.id)
       end
+      @content.mods.each do |mod|
+        new_mod = Mod.new(mod.attributes.except("id", "created_at", "updated_at", "content_id"))
+        new_mod.content_id = @new_content.id
+        new_mod.save
+        new_mod.text = mod.text.dup
+        new_mod.text.record_id = new_mod.id
+        new_mod.text.update(body: mod.text.body.dup)
+      end
       redirect_to content_path(@new_content, redirect_from: 'edit')
     end
   end

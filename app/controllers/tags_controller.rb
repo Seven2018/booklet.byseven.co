@@ -27,6 +27,11 @@ class TagsController < ApplicationController
   def update_tag
     @tag = Tag.find(params[:tag][:tag_id])
     authorize @tag
+    if @tag.tag_category == TagCategory.where(company_id: current_user.company_id).order(:id).first
+      User.where(company_id: current_user.company_id, job_title: @tag.tag_name).each do |user|
+        user.update(job_title: params[:tag][:tag_name])
+      end
+    end
     @tag.update(tag_params)
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
     @users = User.where(id: params[:tag][:users].split(' '))
@@ -42,7 +47,7 @@ class TagsController < ApplicationController
     authorize @tag
     @tag.destroy
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
-    @users = User.where(id: params[:users].split(' '))
+    #@users = User.where(id: params[:users].split(' '))
     @opened = params[:tag_category_id]
     respond_to do |format|
       format.html {redirect_to organisation_path}

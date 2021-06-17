@@ -32,38 +32,39 @@
       <%= f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Date.today.year - 70,
                               end_year: Date.today.year %>
       <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
-      <div class="new_user_tags">
-        <% checked_tags = Tag.joins(:user_tags).where(user_tags: {user_id: @user.id}).map(&:id) %>
-        <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
-        <div class="organisation-filter-block-user">
-          <div class="organisation-filter-block-title-user-show">
-            <div>
-              <p><b><%= category.name.capitalize %></b></p>
-              <div class="organisation-filter-block-title-buttons">
-                <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>
-                  <i class="fas fa-angle-down" data-rotated='0'></i>
+      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <div class="new_user_tags">
+          <% checked_tags = Tag.joins(:user_tags).where(user_tags: {user_id: @user.id}).map(&:id) %>
+          <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
+          <div class="organisation-filter-block-user">
+            <div class="organisation-filter-block-title-user-show">
+              <div>
+                <p><b><%= category.name.capitalize %></b></p>
+                <div class="organisation-filter-block-title-buttons">
+                  <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>
+                    <i class="fas fa-angle-down" data-rotated='0'></i>
+                  </div>
                 </div>
               </div>
             </div>
+             <div class="organisation-filter-block-checkboxes-user">
+            <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes, checked: checked_tags %>
+            </div>
           </div>
-           <div class="organisation-filter-block-checkboxes-user">
-          <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes, checked: checked_tags %>
-          </div>
-        </div>
-        <% end %>
-        <div style=" display: flex; justify-content: center;margin-top:3rem;">
-          <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
-          <%= button_tag type: 'submit', class: 'btn-orange' do %>
-            <p>SAVE</p>
           <% end %>
+          <div style=" display: flex; justify-content: center;margin-top:3rem;">
+            <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+            <%= button_tag type: 'submit', class: 'btn-orange' do %>
+              <p>SAVE</p>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
 </div>
 
 <script>
-
   function toggleTagCategoryDropdownUser(element) {
     caret = element.querySelector('i')
     angle = parseInt(caret.getAttribute('data-rotated'), 10)
@@ -82,6 +83,4 @@
       block.classList.remove('active');
     }
   }
-
-
 </script>

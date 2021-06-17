@@ -94,13 +94,17 @@ class UsersController < ApplicationController
   def import
     skip_authorization
     errors = []
+    creating = []
     CSV.foreach(params[:file].path, headers: true) do |row|
       user_row = row.to_hash
       if !user_row['email'].present?
         errors << "#{user_row[:lastname]}, #{user_row[:firstname]}"
+      elsif User.find_by(email: user_row['email']).nil?
+        creating << "#{user_row[:lastname]}, #{user_row[:firstname]}"
       end
     end
     flash[:error] = "There is #{errors.count} users with missing email addresses. No account will be created for these users."
+    flash[:notice] = "Creating #{creating.count} new accounts. Please wait a few minutes and refresh this page."
     #begin
     #  @users = User.import(params[:file])
     #  flash[:notice] = 'Import terminé'

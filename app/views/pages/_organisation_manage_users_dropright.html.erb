@@ -94,7 +94,7 @@
         <%= f.text_field :name, style: 'height: 100%;', value: tag_category.name %>
         <%= f.hidden_field :tag_category_id, value: tag_category.id %>
         <%= f.hidden_field :users, value: users.map(&:id) %>
-        <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '' do %>
+        <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '', onclick: 'spinningLoader();' do %>
           <i class="fas fa-save"></i>
         <% end %>
       <% end %>
@@ -118,7 +118,7 @@
           <%= f.hidden_field :tag_id, value: tag.id %>
           <%= f.hidden_field :tag_category_id, value: tag_category.id %>
           <%= f.hidden_field :users, value: users.map(&:id) %>
-          <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '' do %>
+          <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '', onclick: 'spinningLoader();' do %>
             <i class="fas fa-save"></i>
           <% end %>
         <% end %>

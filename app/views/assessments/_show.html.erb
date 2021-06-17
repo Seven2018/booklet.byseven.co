@@ -3,15 +3,17 @@
 <div id="assessment-show-content">
   <%= render 'assessments/content', form: form %>
 </div>
-<a href="javascript:;" id='addQuestion' class='btn btn-edit'>Add Question</a>
-
-<div class="hidden" id="add_questions_form">
-  <%= render 'assessments/add_questions', form: form %>
+<div>
+  <a href="javascript:;" id='addQuestion' class='btn btn-edit' onclick='addQuestionToQuiz(this);'>Add Question</a>
+  <div class="hidden" id="add_questions_form">
+    <%= render 'assessments/add_questions', form: form %>
+  </div>
 </div>
 
-<script>
+<!-- <script>
   $("#addQuestion").click(function(){
     $(this).hide();
     $("#assessment-show-content").append($("#add_questions_form").html());
   });
 </script>
+ -->
