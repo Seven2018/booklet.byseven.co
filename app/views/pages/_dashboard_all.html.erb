@@ -8,7 +8,7 @@
       </ul>
     </div>
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="UpcomingAll">
+      <div role="tabpanel" class="tab-pane" id="UpcomingAll">
         <% if @upcoming_sessions.empty? %>
           <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
         <% elsif %>
@@ -22,7 +22,7 @@
           <%= render 'dashboard_sessions_card', session: session %>
         <% end %>
       </div>
-      <div role="tabpanel" class="tab-pane" id="CurrentSessionsAll">
+      <div role="tabpanel" class="tab-pane active" id="CurrentSessionsAll">
         <% if @current_sessions.empty? %>
           <p>No current trainings scheduled for the moment.</p>
         <% elsif %>

@@ -138,10 +138,20 @@ body {
     .form-group {
       margin: 0;
     }
+    h2 {
+      font-size: 14px !important;
+    }
     @include from-medium {
       width:135px;
     }
   }
+}
+
+.cat-title {
+  font-size: 1.6rem;
+    @include from-medium {
+     font-size: 2rem;
+    }
 }
 
 #index-buttons, #show-buttons {
