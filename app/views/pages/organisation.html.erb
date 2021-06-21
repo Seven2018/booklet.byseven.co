@@ -1,6 +1,9 @@
 <div class="organisation-main-container">
   <%= render 'organisation_ajax' %>
 </div>
+<div id="infinite-scrolling">
+  <%= will_paginate @users %>
+</div>
 <div class="organisation-filter-container">
   <div class="organisation-filter-background" onclick='closeFilter();'></div>
   <div class="organisation-filter-dropright">
