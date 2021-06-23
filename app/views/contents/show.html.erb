@@ -7,9 +7,9 @@
       <%= render 'show_attributes', content: @content %>
     </div>
       <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' %>
-        <div class="content-show-mods-index">
-          <%= render 'mods/content_show_mods_index', content: @content %>
-        </div>
+<!--         <div class="content-show-mods-index">
+          <%# render 'mods/content_show_mods_index', content: @content %>
+        </div> -->
       <% elsif params[:session_id].present? %>
         <p style='color:#F26419'><b><i>Content available on <%= Session.find(params[:session_id]).date.to_s %></i></b></p>
       <% end %>
@@ -25,41 +25,6 @@
               <p>Complete Training</p>
             <% end %>
           <% end %>
-        </div>
-      <% end %>
-
-      <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) %>
-        <div class="content-show-mods-container">
-          <div class="content-show-mods-control-btn" onclick="contentAdd()"; data-toggle='tooltip' title='Add content'>
-            <i class="far fa-edit fa-2x" id='icon-edit'></i>
-            <i class="fas fa-plus fa-2x hidden" id='icon-close'></i>
-            <div class="content-show-mods-controls" style='display:none;'>
-              <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModText'>
-                <i class="far fa-file-alt"></i>
-                <p>Text</p>
-              </a>
-              <a class="content-show-mods-controls-block" data-toggle='modal' data-target='#newModVideo'>
-                <i class="fas fa-video"></i>
-                <p>Video</p>
-              </a>
-              <% if @content.mods.where(mod_type: 'assessment').count >= 1 %>
-                <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz hidden"  data-toggle='modal' data-target='#newModQuiz'>
-                  <i class="fas fa-star-half-alt"></i>
-                  <p>Quiz</p>
-                </div>
-              <% else %>
-                <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz"  data-toggle='modal' data-target='#newModQuiz'>
-                  <i class="fas fa-star-half-alt"></i>
-                  <p>Quiz</p>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="button-add-catalogue">
-          <div class="btn-orange">
-            <%= link_to 'Add to catalogue', catalogue_path %>
-          </div>
         </div>
       <% end %>
     </div>
@@ -95,7 +60,69 @@
 </div>
 
 <script>
+
+  rotated = 0;
+
+  function toggleMod(element) {
+    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
+    rotated = rotated + 180;
+    block = element.parentNode.parentNode;
+    if (block.style.maxHeight == '61px') {
+      block.style.maxHeight = '1000px';
+      block.classList.add('active');
+    } else if (block.style.maxHeight == '1000px' || block.style.maxHeight == '' ) {
+      block.style.maxHeight = '61px';
+      block.classList.remove('active');
+    }
+  };
+
+
+
+  function saveMod(element) {
+    initial_value = element.value;
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, element)) {
+        if (element.value != initial_value) {
+          element.closest('form').querySelector('.hidden-submit').click();
+        }
+        this.removeEventListener('click', arguments.callee, false);
+      }
+    });
+  }
+
   doubleClickGuardian = false;
+
+  function addMod(type) {
+    if (type == 'text') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-text')
+      template = document.querySelector('.add-text-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.content-add-mods')
+      content.append(newDiv)
+    } else if (type == 'video') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-video')
+      template = document.querySelector('.add-video-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.content-add-mods')
+      content.append(newDiv)
+    } else if (type == 'quiz') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-quiz')
+      template = document.querySelector('.add-quiz-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.content-add-mods')
+      content.append(newDiv)
+    }
+  }
 
   function contentAdd() {
     var contentbar = document.querySelector('.content-show-mods-controls')
@@ -110,7 +137,7 @@
       iconclose.classList.add('icon-transform')
       setTimeout(function(){
       iconclose.style.transform = ('rotate(45deg)')
-      contentbar.style.width = '75%'
+      contentbar.style.width = '100%'
       contentblock.forEach((content) => {
         content.style.width = '33.3%'
       })
@@ -161,6 +188,7 @@
       });
     }
   }
+
   function openInputTrix(element) {
     if (doubleClickGuardian == false) {
       doubleClickGuardian = true;
@@ -208,8 +236,8 @@
     }
   }
 
-  function saveOnSelect(element = false) {
-    document.querySelector('.edit_content').querySelector('.hidden-submit').click();
+  function saveOnSelect(element) {
+    element.closest('form').querySelector('.hidden-submit').click();
   }
 
   function closeModalOnSubmit(element) {
