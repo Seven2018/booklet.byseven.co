@@ -1,49 +1,50 @@
 <% contents.each do |content| %>
-  <div class="card-interest-book draggable" id="content-<%= content.id %>" draggable='true' ondragend="removeGhost();dragRaceEnd(this);" ondragstart="dragRaceStart(this);">
-    <div class="card-interest-left">
-    <div class="catalogue-content-card-left-book">
-      <div>
+
+  <div class="booklet-card-syn">
+    <div class="booklet-card-top">
+      <div class="booklet-card-top-info">
         <% if content.title.length > 35 %>
           <h3><b><%= content.title.first(35)+'...' %></b></h3>
         <% else %>
           <h3><b><%= content.title %></b></h3>
         <% end %>
         <p><%= content.duration %> Minutes</p>
-        <div class="card-content-description">
-        <% if content.description.present? %>
-          <% if content.description.to_plain_text.length >= (100) %>
-            <p><%= content.description.to_plain_text.first(100) + '...' %></p>
-          <% else %>
-            <p><%= content.description.to_plain_text.first(100) %></p>
-          <% end %>
-        <% end %>
-        </div>
-        <div class="catalogue-content-card-categories-book">
-          <% content.categories.order(title: :asc).each do |category| %>
-            <p><%= category.title %></p>
-          <% end %>
+      </div>
+      <div class="booklet-card-type-pill">
+        <div class="booklet-card-type">
+          <div class="booklet-card-type-icon">
+            <% if content.content_type == 'Synchronous' %>
+              <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+              <p>In Person</p>
+            <% else %>
+              <i class="fas fa-laptop" style='color:black;'></i>
+              <p>Online</p>
+            <% end %>
+          </div>
         </div>
       </div>
-      <div class="type-icon">
-        <% if content.content_type == 'Synchronous' %>
-          <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-        <% else %>
-          <i class="fas fa-laptop" style='color:black;'></i>
-        <% end %>
+      <div class="booklet-top-right-icon">
+        <i class="far fa-circle"></i>
+        <i class="fas fa-circle hidden"></i>
       </div>
     </div>
-    <% if content.content_type == 'Synchronous' %>
-      <div class="catalogue-content-card-right-syn-book">
-    <% else %>
-      <div class="catalogue-content-card-right-asyn-book">
-    <% end %>
-      <div class="book-element" id='bookbtn' onclick='bookWorkshop(this);' >
-        <i class="fas fa-plus fa-5x" id='cart'></i>
-        <i class="fas fa-times fa-5x hidden" id='undo'></i>
+    <div class="booklet-card-bottom">
+      <div class="booklet-card-theme">
+        <% content.categories.order(title: :asc).each do |category| %>
+          <p><%= category.title %></p>
+        <% end %>
       </div>
-      <div class="catalogue-content-card-right-interest">
-        <p><%= content.interested.count %> Interested</p>
+      <div class="booklet-card-objective">
+        <% if content.description.present? %>
+          <% if content.description.to_plain_text.length >= (300) %>
+            <p><%= content.description.to_plain_text.first(300) + '...' %></p>
+          <% else %>
+            <p><%= content.description.to_plain_text.first(300) %></p>
+          <% end %>
+        <% end %>
       </div>
+      <div class="booklet-card-like">
+         <p><%= content.interested.count %><i class="fas fa-heart"></i></p>
       </div>
     </div>
   </div>
