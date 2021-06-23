@@ -1,6 +1,6 @@
 <div class="catalogue-content-card">
   <div class="catalogue-content-card-left">
-    <% content = Session.includes([:content]).find(session.id).content %>
+    <% content = session.content %>
     <div class="catalogue-content-card-left-main">
       <% if session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today) %>
         <%= link_to '', content_path(content.id, content_access: 'granted', redirect_from: 'dashboard'), class: 'stretched-link' %>

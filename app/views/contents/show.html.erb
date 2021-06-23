@@ -20,7 +20,7 @@
             <div class="btn-complete completed">
               <p>Training Completed</p>
             </div>
-          <% else %>
+          <% elsif UserInterest.find_by(user_id: current_user.id, content_id: @content.id).present? %>
             <%= link_to complete_content_path(content_id: @content.id), class: 'btn-orange btn-complete', remote: true do %>
               <p>Complete Training</p>
             <% end %>
@@ -284,10 +284,28 @@
     });
   }
 
-  function addQuestionToQuizz(element) {
-    //$(this).hide();
-    element.classList.add('hidden')
-    $("#assessment-show-content").append($("#add_questions_form").html());
+  function addQuestionToQuiz(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      $(element).hide();
+      $(element).parent().parent().find("#assessment-show-content").append($(element).parent().find("#add_questions_form").html())
+      console.log($(element).parent().find("#add_questions_form"))
+      setTimeout(function(){doubleClickGuardian = false}, 250)
+    }
+  }
+
+  function removeQuestion(element) {
+    question = element.closest('#new_assessment_question')
+    element.closest('.content-show-mods-card-assessment').querySelector('#addQuestion').style.display = 'flex'
+    question.parentNode.removeChild(question)
+  }
+
+  function addAnswer(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      $(element).parent().children('div').append($("#add_options_form").html());
+      setTimeout(function(){doubleClickGuardian = false}, 250)
+    }
   }
 
   document.querySelectorAll('#mod_title').forEach((element) => {
@@ -297,12 +315,4 @@
       }
     })
   })
-
-
-
-  function removeQuestion(element) {
-    question = element.closest('#new_assessment_question')
-    question.parentNode.removeChild(question)
-    document.querySelector('#addQuestion').style.display = 'flex'
-  }
 </script>

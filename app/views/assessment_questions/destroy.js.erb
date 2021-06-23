@@ -1,5 +1,1 @@
 document.getElementById('assessment-<%= @form.id %>').innerHTML = '<%= j (render("assessments/show", form: @form)) %>';
-$("#addQuestion").click(function(){
-  $(this).hide();
-  $("#assessment-show-content").append($("#add_questions_form").html());
-});

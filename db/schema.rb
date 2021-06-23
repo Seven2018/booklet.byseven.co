@@ -210,6 +210,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.bigint "tag_category_id"
+    t.integer "tag_category_position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_tags_on_company_id"
@@ -261,8 +262,10 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
   create_table "user_tags", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "tag_id"
+    t.bigint "tag_category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["tag_category_id"], name: "index_user_tags_on_tag_category_id"
     t.index ["tag_id"], name: "index_user_tags_on_tag_id"
     t.index ["user_id"], name: "index_user_tags_on_user_id"
   end
@@ -324,6 +327,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
   add_foreign_key "user_interests", "users"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
+  add_foreign_key "user_tags", "tag_categories"
   add_foreign_key "user_tags", "tags"
   add_foreign_key "user_tags", "users"
   add_foreign_key "users", "companies"

@@ -7,6 +7,9 @@
   <div class="modal-body" id="modalNewBookinBody">
     <div class="categories-form">
       <% checked = content.categories.ids %>
+      <% if !Category.where(company_id: current_user.company_id).present? %>
+        <p>No themes have been created. Categorize your trainings by adding specific themes. It will allow to filter and find trainings more easily.</p>
+      <% end %>
       <%= simple_form_for :add_categories, url: catalogue_content_link_category_path, method: :get, remote: true do |f| %>
         <div class="categories-form-checkboxes">
           <%# f.input :categories, collection: Category.where(company_id: current_user.company_id).order(title: :asc), as: :check_boxes, legend_tag: false, label: false %>
@@ -16,7 +19,7 @@
               <div class="flex-row-between-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
                 <p class='category-title'><%= b.text %></p>
                 <%= link_to catalogue_content_link_category_path(delete: true, category_id: b.value, content_id: content.id), data: {confirm: 'Are you sure ?'}, class: 'category-delete', remote: true do %>
-                  <i class="fas fa-trash"></i>
+                  <i class="fas fa-trash" data-toggle='tooltip' title='Delete Theme'></i>
                 <% end %>
               </div>
             </div>
@@ -28,7 +31,7 @@
         <div class="theme-save-btn">
           <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
           <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'dismissModal(this);' do %>
-            <p class='save-btn'>select skills</p>
+            <p class='save-btn'>select</p>
           <% end %>
         </div>
       <% end %>

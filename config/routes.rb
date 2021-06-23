@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :users, only: %i[new create show update destroy]
   post 'users/import', to: 'users#import', as: 'import_users'
   get :users_search, controller: :users
+  get :organisation_user_card, controller: :pages
 
   # TAG CATEGORIES
   resources :tag_categories, only: %i[create destroy]

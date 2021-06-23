@@ -34,7 +34,7 @@
               <p><b><%= category.name.capitalize %></b></p>
               <div class="organisation-filter-block-title-buttons">
                 <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>
-                  <i class="fas fa-angle-down"></i>
+                  <i class="fas fa-angle-down" data-rotated='0'></i>
                 </div>
               </div>
             </div>
@@ -56,25 +56,23 @@
 </div>
 <script>
 
-   rotated = 0;
-
   function toggleTagCategoryDropdownUser(element) {
-    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
-    rotated = rotated + 180;
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
     block = element.parentNode.parentNode.parentNode.parentNode;
-    if (block.style.maxHeight == '61px' || block.style.maxHeight == '' ) {
-      console.log('hi')
-      block.style.maxHeight = '1000px';
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '10000px';
       block.classList.add('active');
     } else {
-      console.log('hello')
       block.style.maxHeight = '61px';
       block.classList.remove('active');
     }
-  };
+  }
 
 </script>
