@@ -1,51 +1,151 @@
 <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && params[:redirect_from] != 'dashboard' && params[:redirect_from] != 'user_show') && params[:content_access] != 'granted' %>
-<div class="content-add">
-  <div class="content-add-left">
-    <%= simple_form_for content, remote: true do |f| %>
-        <%= f.input :title, label: false, input_html: { autocomplete: "off" } %>
-        <%= f.input :description, label: false, input_html: { autocomplete: "off"}, placeholder: 'Write the objective or purpose of the workshop here.' %>
-    <%= f.submit '', class: 'hidden-submit hidden' %>
-     <div class="add-text add-text-template hidden">
-        <%= simple_form_for Mod.new, remote: true do |f| %>
-        <%= f.hidden_field :content_id, value: @content.id %>
-        <%= f.hidden_field :mod_type, value: 'text' %>
-        <div class="add-text-flex">
-        <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {class:'text-flex'}, required: false %>
-        <%= f.input :duration, input_html: {min: 0}, label: 'Duration(Min)' %>
+  <div class="content-add">
+    <div class="content-add-left">
+      <div class="content-info">
+        <%= simple_form_for content, remote: true do |f| %>
+          <%= f.input :title, label: false, input_html: { autocomplete: "off", style:'margin-bottom: 0px;'} %>
+          <%= f.input :description, label: false, input_html: { autocomplete: "off"}, placeholder: 'Write the objective or purpose of the workshop here.' %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        <% end %>
+        <div class="content-add-right-mobile">
+          <div style='display: flex; justify-content: space-between; margin-top:20px'>
+            <div class="content-show-infos-duration" >
+              <p style='color:#808080;'><b>Duration</b></p>
+              <p><%= content.duration %> min <i class="far fa-clock"></i></p>
+            </div>
+            <div><p style='color:#808080;'><b>Workshop Type</b></p>
+              <div class="content-type-radio">
+              <%= simple_form_for content, remote: true do |f| %>
+                <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], :checked => [content.content_type, content.content_type], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'}, class: 'content-type-radio' %>
+                <%= f.submit '', class: 'hidden-submit hidden' %>
+              <% end %>
+                <div class="content-type-icons">
+                  <i class="fas fa-chalkboard-teacher" style='margin: 3px 0px 13px 0px; color:#F26419;'></i>
+                  <i class="fas fa-laptop"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content-show-infos-themes">
+            <p style='color:#808080;'><b>Themes</b></p>
+            <div class="theme-btns">
+              <% content.categories.order(title: :asc).each do |category| %>
+                <p class="category-tag"><%= category.title %></p>
+              <% end %>
+              <a data-toggle='modal' data-target='#addTheme' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#F26419;'></i></a><br>
+            </div>
+          </div>
         </div>
-        <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
+      </div>
+      <div class="content-add-mods">
+        <% content.mods.each do |mod| %>
+          <% if mod.mod_type == 'text' %>
+          <div class="add-text active">
+            <div class="mod-top">
+              <div class="mod-title" onclick='toggleMod(this);'>
+                <i class="fas fa-angle-down"></i>
+                <i class="fas fa-angle-up hidden"></i>
+                <p>Text</p>
+              </div>
+              <div class="mod-controls">
+              <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+                <% if mod.position == 1 %>
+                  <a disabled class="mod-move-up" style='cursor: default;'>
+                    <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+                  </a>
+                <% else %>
+                  <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+                    <i class="fas fa-arrow-up"></i>
+                  <% end %>
+                <% end %>
+                <% if mod.position >= mod.content.mods.count %>
+                  <a disabled class="mod-move-down" style='cursor: default;'>
+                    <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+                  </a>
+                <% else %>
+                  <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+                    <i class="fas fa-arrow-down"></i>
+                  <% end %>
+                <% end %>
+                <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+                  <i class="far fa-trash-alt" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+                <% end %>
+              <% end %>
+              </div>
+            </div>
+            <%= simple_form_for mod, remote: true do |f| %>
+              <div class="form-row">
+                <div class="form-group col-9">
+                <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+                </div>
+                <div class="form-group col-3">
+                <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration' %>
+                </div>
+              </div>
+              <%= f.rich_text_area :text, placeholder: 'Content', label: false, onclick: 'saveMod(this)' %>
+              <%= f.submit '', class: 'hidden-submit hidden' %>
+            <% end %>
+          </div>
+          <% elsif mod.mod_type == 'video' %>
+          <div class="add-video active">
+            <div class="mod-top">
+              <div class="mod-title" onclick='toggleMod(this);'>
+                <i class="fas fa-angle-down"></i>
+                <p>Video</p>
+              </div>
+              <div class="mod-controls">
+              <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+                <% if mod.position == 1 %>
+                  <a disabled class="mod-move-up" style='cursor: default;'>
+                    <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+                  </a>
+                <% else %>
+                  <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+                    <i class="fas fa-arrow-up"></i>
+                  <% end %>
+                <% end %>
+                <% if mod.position >= mod.content.mods.count %>
+                  <a disabled class="mod-move-down" style='cursor: default;'>
+                    <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+                  </a>
+                <% else %>
+                  <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+                    <i class="fas fa-arrow-down"></i>
+                  <% end %>
+                <% end %>
+                <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+                  <i class="far fa-trash-alt" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+                <% end %>
+              <% end %>
+              </div>
+            </div>
+            <%= simple_form_for mod, remote: true do |f| %>
+              <div class="form-row">
+                <div class="form-group col-9">
+                <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+                </div>
+                <div class="form-group col-3">
+                <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration' %>
+                </div>
+              </div>
+              <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '', input_html: {onclick: 'saveMod(this)'} %>
+              <%= f.submit '', class: 'hidden-submit hidden' %>
+            <% end %>
+          </div>
+          <% elsif mod.mod_type == 'quiz' %>
+          <% end %>
         <% end %>
-     </div>
-     <div class="add-video add-video-template hidden">
-      <%= simple_form_for Mod.new, remote: true do |f| %>
-      <%= f.hidden_field :content_id, value: @content.id %>
-      <%= f.hidden_field :mod_type, value: 'video' %>
-      <%= f.input :title, placeholder: '*Required', label: 'Title:', value: '' %>
-      <%= f.input :duration, input_html: {min: 0}, label: 'Duration(Min):' %>
-      <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
-      <%= f.submit '', class: 'hidden-submit hidden' %>
-      <% end %>
-     </div>
-     <div class="add-quiz add-quiz-template hidden">
-        <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
-        <%= f.input :title, placeholder: '*Required', label:'Title:' %>
-        <%= f.input :duration, input_html: {min: 0}, label:'Duration(Min):' %>
-        <%= f.hidden_field :content_id, value: @content.id %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
-        <% end %>
-     </div>
-    <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) %>
-      <div class="content-show-mods-container">
+      </div>
+      <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level))%>
         <div class="content-show-mods-control-btn" onclick="contentAdd()"; data-toggle='tooltip' title='Add content'>
           <div class='add-content-btn' id='icon-edit'><p><i class="fas fa-plus-circle" ></i>Add Content</p></div>
           <i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i>
           <div class="content-show-mods-controls" style='display:none;'>
-            <a class="content-show-mods-controls-block" onclick='AddText();'>
+            <a class="content-show-mods-controls-block" onclick="addMod('text');">
               <i class="far fa-file-alt"></i>
               <p>Text</p>
             </a>
-            <a class="content-show-mods-controls-block" >
+            <a class="content-show-mods-controls-block" onclick="addMod('video');">
               <i class="fas fa-video"></i>
               <p>Video</p>
             </a>
@@ -55,48 +155,48 @@
                 <p>Quiz</p>
               </div>
             <% else %>
-              <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz" >
+              <div class="content-show-mods-controls-block content-show-mods-controls-block-quiz" onclick="addMod('quiz');">
                 <i class="fas fa-star-half-alt"></i>
                 <p>Quiz</p>
               </div>
             <% end %>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
       <div class="button-add-catalogue">
         <div class="btn-orange">
           <%= link_to 'Add to catalogue', catalogue_path %>
         </div>
       </div>
-    <div class="content-add"></div>
-  </div>
-  <div class="content-add-right">
-    <div class="content-show-infos-duration" >
-      <p style='color:#808080;'><b>Duration</b></p>
-      <p><%= content.duration %> min <i class="far fa-clock"></i></p>
     </div>
-    <div class="content-show-infos-themes">
-      <p style='color:#808080;'><b>Themes</b></p>
-      <div class="theme-btns">
-        <% content.categories.order(title: :asc).each do |category| %>
-          <p class="category-tag"><%= category.title %></p>
-        <% end %>
-        <a data-toggle='modal' data-target='#addTheme' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#F26419;'></i></a><br>
+    <div class="content-add-right">
+      <div class="content-show-infos-duration" >
+        <p style='color:#808080;'><b>Duration</b></p>
+        <p><%= content.duration %> min <i class="far fa-clock"></i></p>
       </div>
-    </div>
-      <div><p style='color:#808080;'><b>Workshop Type</b></p>
-        <div class="content-type-radio">
-        <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], :checked => [content.content_type, content.content_type], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect();'}, class: 'content-type-radio' %>
-          <div class="content-type-icons">
-            <i class="fas fa-chalkboard-teacher" style='margin: 3px 0px 13px 0px; color:#F26419;'></i>
-            <i class="fas fa-laptop"></i>
-          </div>
+      <div class="content-show-infos-themes">
+        <p style='color:#808080;'><b>Themes</b></p>
+        <div class="theme-btns">
+          <% content.categories.order(title: :asc).each do |category| %>
+            <p class="category-tag"><%= category.title %></p>
+          <% end %>
+          <a data-toggle='modal' data-target='#addTheme' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#F26419;'></i></a><br>
         </div>
       </div>
+        <div><p style='color:#808080;'><b>Workshop Type</b></p>
+          <div class="content-type-radio">
+          <%= simple_form_for content, remote: true do |f| %>
+            <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], :checked => [content.content_type, content.content_type], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'}, class: 'content-type-radio' %>
+            <%= f.submit '', class: 'hidden-submit hidden' %>
+          <% end %>
+            <div class="content-type-icons">
+              <i class="fas fa-chalkboard-teacher" style='margin: 3px 0px 13px 0px; color:#F26419;'></i>
+              <i class="fas fa-laptop"></i>
+            </div>
+          </div>
+        </div>
+    </div>
   </div>
-  <% end %>
-</div>
 <% else %>
   <div class="content-info">
     <div class="content-type-categories">
@@ -136,3 +236,148 @@
     <%= render 'contents/manage_categories', content: content %>
   </div>
 </div>
+
+   <% content.mods.each do |mod| %>
+<div class="add-text add-text-template hidden active">
+  <div class="mod-top">
+    <div class="mod-title" onclick='toggleMod(this);'>
+      <i class="fas fa-angle-down"></i>
+      <p>Text</p>
+    </div>
+    <div class="mod-controls">
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+      <% if mod.position == 1 %>
+        <a disabled class="mod-move-up" style='cursor: default;'>
+          <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+          <i class="fas fa-arrow-up"></i>
+        <% end %>
+      <% end %>
+      <% if mod.position >= mod.content.mods.count %>
+        <a disabled class="mod-move-down" style='cursor: default;'>
+          <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+          <i class="fas fa-arrow-down"></i>
+        <% end %>
+      <% end %>
+      <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+        <i class="far fa-trash-alt" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+  <%= simple_form_for Mod.new, remote: true do |f| %>
+    <%= f.hidden_field :content_id, value: @content.id %>
+    <%= f.hidden_field :mod_type, value: 'text' %>
+    <div class="form-row">
+      <div class="form-group col-9">
+      <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+      </div>
+      <div class="form-group col-3">
+      <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration' %>
+      </div>
+    </div>
+    <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+  <% end %>
+</div>
+<div class="add-video add-video-template hidden active">
+  <div class="mod-top" onclick='toggleMod(this);'>
+    <div class="mod-title">
+      <i class="fas fa-angle-down"></i>
+      <i class="fas fa-angle-up hidden"></i>
+      <p>Video</p>
+    </div>
+    <div class="mod-controls">
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+      <% if mod.position == 1 %>
+        <a disabled class="mod-move-up" style='cursor: default;'>
+          <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+          <i class="fas fa-arrow-up"></i>
+        <% end %>
+      <% end %>
+      <% if mod.position >= mod.content.mods.count %>
+        <a disabled class="mod-move-down" style='cursor: default;'>
+          <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+          <i class="fas fa-arrow-down"></i>
+        <% end %>
+      <% end %>
+      <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+        <i class="far fa-trash-alt" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+  <%= simple_form_for Mod.new, remote: true do |f| %>
+    <%= f.hidden_field :content_id, value: @content.id %>
+    <%= f.hidden_field :mod_type, value: 'video' %>
+    <div class="form-row">
+      <div class="form-group col-9">
+      <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+      </div>
+      <div class="form-group col-3">
+      <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration' %>
+      </div>
+    </div>
+    <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+  <% end %>
+</div>
+<div class="add-quiz add-quiz-template hidden">
+    <div class="mod-top">
+    <div class="mod-title">
+      <i class="fas fa-angle-down"></i>
+      <i class="fas fa-angle-up hidden"></i>
+      <p>Quiz</p>
+    </div>
+    <div class="mod-controls">
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+      <% if mod.position == 1 %>
+        <a disabled class="mod-move-up" style='cursor: default;'>
+          <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+          <i class="fas fa-arrow-up"></i>
+        <% end %>
+      <% end %>
+      <% if mod.position >= mod.content.mods.count %>
+        <a disabled class="mod-move-down" style='cursor: default;'>
+          <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+          <i class="fas fa-arrow-down"></i>
+        <% end %>
+      <% end %>
+      <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+        <i class="far fa-trash-alt" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+  <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
+    <div class="form-row">
+      <div class="form-group col-9">
+      <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+      </div>
+      <div class="form-group col-3">
+      <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration' %>
+      </div>
+    </div>
+    <%= f.hidden_field :content_id, value: @content.id %>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+  <% end %>
+</div>
+<% end %>
+

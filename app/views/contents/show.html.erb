@@ -7,9 +7,9 @@
       <%= render 'show_attributes', content: @content %>
     </div>
       <% if (['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' %>
-        <div class="content-show-mods-index">
-          <%= render 'mods/content_show_mods_index', content: @content %>
-        </div>
+<!--         <div class="content-show-mods-index">
+          <%# render 'mods/content_show_mods_index', content: @content %>
+        </div> -->
       <% elsif params[:session_id].present? %>
         <p style='color:#F26419'><b><i>Content available on <%= Session.find(params[:session_id]).date.to_s %></i></b></p>
       <% end %>
@@ -60,32 +60,66 @@
 </div>
 
 <script>
+
+  rotated = 0;
+
+  function toggleMod(element) {
+    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
+    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
+    rotated = rotated + 180;
+    block = element.parentNode.parentNode;
+    if (block.style.maxHeight == '61px') {
+      block.style.maxHeight = '1000px';
+      block.classList.add('active');
+    } else if (block.style.maxHeight == '1000px' || block.style.maxHeight == '' ) {
+      block.style.maxHeight = '61px';
+      block.classList.remove('active');
+    }
+  };
+
+
+
+  function saveMod(element) {
+    initial_value = element.value;
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, element)) {
+        if (element.value != initial_value) {
+          element.closest('form').querySelector('.hidden-submit').click();
+        }
+        this.removeEventListener('click', arguments.callee, false);
+      }
+    });
+  }
+
   doubleClickGuardian = false;
 
-  function AddText() {
-    if (document.querySelector('.add-text-template')) {
+  function addMod(type) {
+    if (type == 'text') {
       const newDiv = document.createElement("div");
       newDiv.classList.add('add-text')
       template = document.querySelector('.add-text-template')
       templateinfo = template.innerHTML
       newDiv.innerHTML = templateinfo
-      content = document.querySelector('.content-add')
+      content = document.querySelector('.content-add-mods')
       content.append(newDiv)
-    } else if (document.querySelector('.add-video-template')) {
+    } else if (type == 'video') {
       const newDiv = document.createElement("div");
       newDiv.classList.add('add-video')
       template = document.querySelector('.add-video-template')
       templateinfo = template.innerHTML
       newDiv.innerHTML = templateinfo
-      content = document.querySelector('.content-add')
+      content = document.querySelector('.content-add-mods')
       content.append(newDiv)
-    } else {
+    } else if (type == 'quiz') {
       const newDiv = document.createElement("div");
       newDiv.classList.add('add-quiz')
       template = document.querySelector('.add-quiz-template')
       templateinfo = template.innerHTML
       newDiv.innerHTML = templateinfo
-      content = document.querySelector('.content-add')
+      content = document.querySelector('.content-add-mods')
       content.append(newDiv)
     }
   }
@@ -103,7 +137,7 @@
       iconclose.classList.add('icon-transform')
       setTimeout(function(){
       iconclose.style.transform = ('rotate(45deg)')
-      contentbar.style.width = '75%'
+      contentbar.style.width = '100%'
       contentblock.forEach((content) => {
         content.style.width = '33.3%'
       })
@@ -154,6 +188,7 @@
       });
     }
   }
+
   function openInputTrix(element) {
     if (doubleClickGuardian == false) {
       doubleClickGuardian = true;
@@ -201,8 +236,8 @@
     }
   }
 
-  function saveOnSelect(element = false) {
-    document.querySelector('.edit_content').querySelector('.hidden-submit').click();
+  function saveOnSelect(element) {
+    element.closest('form').querySelector('.hidden-submit').click();
   }
 
   function closeModalOnSubmit(element) {
