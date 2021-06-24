@@ -34,8 +34,8 @@ gem "acts_as_tree"
 gem "net-http"
 gem 'sucker_punch', '~> 3.0'
 gem 'render_async'
-gem 'will_paginate', '~> 3.1.0'
-gem 'bootstrap-will_paginate'
+gem 'kaminari'
+gem 'where_exists'
 
 
 group :development do

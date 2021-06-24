@@ -1,8 +1,9 @@
+<script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 <div class="organisation-main-container">
-  <%= render 'organisation_ajax' %>
+  <%= render 'organisation_ajax', users: @users, unfiltered: @unfiltered %>
 </div>
-<div id="infinite-scrolling">
-  <%= will_paginate @users %>
+<div class="organisation-main-container organisation-main-container-filtered hidden">
+  <%= render 'organisation_ajax', users: [], unfiltered: @unfiltered %>
 </div>
 <div class="organisation-filter-container">
   <div class="organisation-filter-background" onclick='closeFilter();'></div>
@@ -333,7 +334,32 @@
     selectUser();
   }
 
+  function clearSearchBis() {
+    element = document.querySelector('#navbar-search-clear')
+    search_input = element.parentNode.querySelector('input');
+    search_input.value = '';
+    element.classList.add('hidden');
+    document.querySelector('.organisation-main-container').classList.remove('hidden')
+    document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
+  }
+
   function spinningLoader() {
     document.querySelector('body').classList.add('wait');
   }
+
+  function infiniteScroll() {
+    if ($("nav ul.pagination a[rel=next]").length) {
+      $('.users-index').infiniteScroll({
+        path: "nav ul.pagination a[rel=next]",
+        append: ".user-index-card",
+        hideNav: "nav ul.pagination",
+        history: false,
+        scrollThreshold: 3000,
+        debug: false,
+        loadOnScroll: true,
+      });
+    };
+  }
+
+  infiniteScroll()
 </script>

@@ -43,16 +43,6 @@ class PagesController < ApplicationController
         format.html {catalogue_path}
         format.js
       end
-    # Index with 'search' option and global visibility for SEVEN Users
-    #elsif current_user.access_level == 'Super Admin'
-    #  @contents = Content.all.order(title: :asc)
-    #  if params[:search].present?
-    #   @contents = Content.where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc)
-    #    respond_to do |format|
-    #      format.html {catalogue_path}
-    #      format.js
-    #    end
-    #  end
     # Index for other Users, with visibility limited to programs proposed by their company only
     else
       @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
@@ -104,7 +94,7 @@ class PagesController < ApplicationController
 
   def organisation
     # Index with 'search' option and global visibility for SEVEN Users
-    index_function(User.where(company_id: current_user.company_id).select(:id, :lastname, :firstname, :email))
+    index_function(User.where(company_id: current_user.company_id))
     # Index for other Users, with visibility limited to programs proposed by their company only
     @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
     @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
@@ -123,6 +113,8 @@ class PagesController < ApplicationController
           end
         end
       end
+      @unfiltered = false
+      @users = users
     end
     respond_to do |format|
       format.html {organisation_path}
@@ -176,15 +168,8 @@ class PagesController < ApplicationController
         # If the 'clear' button is clicked, return all the employees
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])
-        tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?))
-        tags_hash = {}
-        tags.each do |tag|
-          if tags_hash[tag.tag_category_id].present?
-            tags_hash[tag.tag_category_id] << tag
-          else
-            tags_hash[tag.tag_category_id] = [tag]
-          end
-        end
+        #tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?))
+        tags = params[:filter_user][:tag].reject(&:blank?)
         if tags.empty?
           if params[:filter_user][:selected].present?
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
@@ -192,14 +177,15 @@ class PagesController < ApplicationController
           end
         else
           if params[:filter_user][:selected].present?
-            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).paginate(page: params[:page], per_page: 50)
+            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).page params[:page]
           else
             @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).order(lastname: :asc)
           end
-          tags_hash.each do |key, value|
-            @users = @users.select{|x| (x.tags & value).present?}.uniq
+          query_chain = User.where(company: current_user.company_id)
+          tags.each do |tag|
+            query_chain = query_chain.where_exists(:tags, tag_name: [tag])
           end
-          @users = @users.uniq.paginate(page: params[:page], per_page: 50)
+          @users = query_chain
         end
         @filter_tags = params[:filter_user][:tag].reject{|c| c.empty?}
       elsif params[:order].present?
@@ -212,12 +198,14 @@ class PagesController < ApplicationController
       else
         if params[:filter_user].present?
           if params[:filter_user][:selected].present?
-            @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).paginate(page: params[:page], per_page: 50)
+            @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).page params[:page]
           else
-            @users = parameter.order(lastname: :asc).paginate(page: params[:page], per_page: 50)
+            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
+            @unfiltered = true
           end
         else
-          @users = parameter.order(lastname: :asc).paginate(page: params[:page], per_page: 50)
+          @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
+          @unfiltered = true
         end
       end
       @tag_categories = TagCategory.where(company_id: current_user.company_id)

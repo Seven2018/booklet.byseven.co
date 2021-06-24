@@ -106,8 +106,6 @@ GEM
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
-    bootstrap-will_paginate (1.0.0)
-      will_paginate
     builder (3.2.4)
     bullet (6.1.4)
       activesupport (>= 3.0.0)
@@ -189,6 +187,18 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.5.1)
     jwt (2.2.3)
+    kaminari (1.2.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
+      actionview
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
+      activerecord
+      kaminari-core (= 1.2.1)
+    kaminari-core (1.2.1)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -387,7 +397,8 @@ GEM
     websocket-driver (0.7.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    will_paginate (3.1.8)
+    where_exists (1.2.3)
+      rails (>= 4.2, < 6.2)
     zeitwerk (2.4.2)
 
 PLATFORMS
@@ -398,7 +409,6 @@ DEPENDENCIES
   autoprefixer-rails
   bootsnap
   bootstrap (~> 4.4.1)
-  bootstrap-will_paginate
   bullet
   ckeditor!
   create_api_gem!
@@ -408,6 +418,7 @@ DEPENDENCIES
   google-api-client
   jbuilder (~> 2.0)
   jquery-rails
+  kaminari
   listen (~> 3.0.5)
   material-sass!
   net-http
@@ -434,7 +445,7 @@ DEPENDENCIES
   uglifier
   web-console (>= 3.3.0)
   webpacker
-  will_paginate (~> 3.1.0)
+  where_exists
 
 RUBY VERSION
    ruby 2.7.3p183
