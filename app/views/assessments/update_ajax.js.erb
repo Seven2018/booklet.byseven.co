@@ -1,5 +1,1 @@
 document.querySelector('#new_assessment_container').innerHTML = '<%= j (render("create_ajax", assessment: @form)) %>';
-$("#addQuestion").click(function(){
-  $(this).hide();
-  $("#assessment-show-content").append($("#add_questions_form").html());
-});

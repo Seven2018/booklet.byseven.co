@@ -7,6 +7,9 @@
   <div class="modal-body" id="modalNewBookinBody">
     <div class="categories-form">
       <% checked = content.categories.ids %>
+      <% if !Category.where(company_id: current_user.company_id).present? %>
+        <p>No themes have been created. Categorize your trainings by adding specific themes. It will allow to filter and find trainings more easily.</p>
+      <% end %>
       <%= simple_form_for :add_categories, url: content_link_category_path, method: :get, remote: true do |f| %>
         <div class="categories-form-checkboxes">
           <%# f.input :categories, collection: Category.where(company_id: current_user.company_id).order(title: :asc), as: :check_boxes, legend_tag: false, label: false %>
@@ -22,7 +25,7 @@
             </div>
           <% end %>
         </div>
-        <i class="fas fa-plus" onclick='fetchCategoryForm(this);'></i>
+        <i class="fas fa-plus" onclick='fetchCategoryForm(this);' data-target='tooltip' title='Add Theme'></i>
         <%= f.hidden_field :content_id, value: content.id %>
         <%= f.hidden_field :page, value: params[:action] %>
         <div class="theme-save-btn">

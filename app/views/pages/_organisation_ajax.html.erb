@@ -10,7 +10,7 @@
       <% end %>
     </div>
   <% else %>
-    <h1>Employees (<%= @users.count %>)</h1>
+    <h1>Employees (<%= @users.length %>)</h1>
   <% end %>
   <div class="index-controls-buttons flex-row-between-centered">
     <div class="btn-white" onclick='openFilter();'>
@@ -41,22 +41,22 @@
       <div class="headers-div">
         <p>Name</p>
         <div class="headers-div-order">
-          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
-            <i class="fas fa-caret-up"></i>
+          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+            <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
-            <i class="fas fa-caret-down"></i>
+          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+            <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
          <% end %>
         </div>
       </div>
       <div class="headers-div">
         <p>Email</p>
         <div class="headers-div-order">
-          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
-            <i class="fas fa-caret-up"></i>
+          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+            <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
-            <i class="fas fa-caret-down"></i>
+          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+            <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
           <% end %>
         </div>
       </div>
@@ -64,11 +64,11 @@
         <div class="headers-div">
           <p><%= tag_category.name %></p>
           <div class="headers-div-order">
-            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'asc'), remote: true do %>
-            <i class="fas fa-caret-up"></i>
+            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+            <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'desc'), remote: true do %>
-            <i class="fas fa-caret-down"></i>
+          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+            <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
           <% end %>
           </div>
         </div>
@@ -90,9 +90,8 @@
       </div>
     </div>
     <% @users.each do |user| %>
-      <div class='user-index-card'>
-        <%= render 'pages/organisation_user_card', user: user %>
-      </div>
+        <%= render 'pages/organisation_user_card_container', user: user %>
+        <%# render_async organisation_user_card_path(user_id: user.id) %>
     <% end %>
   </div>
 </div>

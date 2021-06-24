@@ -1,5 +1,6 @@
 manage_users = document.querySelector('.organisation-manage-users-dropright')
 manage_users.innerHTML = '<%= j render("pages/organisation_manage_users_dropright", users: @users, tag_categories: @tag_categories) %>';
+document.querySelector('.organisation-main-container').innerHTML = '<%= j render("pages/organisation_ajax", users: @users) %>';
 document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>';
 manage_users.querySelectorAll('input[type="checkbox"]').forEach((element) => {
   element.checked = false
@@ -11,3 +12,7 @@ document.querySelectorAll('.organisation-manage-users-block').forEach((block) =>
     block.classList.add('active');
   }
 })
+$(document).ready(function () {
+  $(".organisation-page").floatingScroll();
+});
+document.querySelector('body').classList.remove('wait');

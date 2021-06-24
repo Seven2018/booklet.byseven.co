@@ -1,0 +1,20 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Edit <%= mod.title %></h3>
+    </div>
+  </div>
+  <div class="modal-body" id="modalNewBookinBody">
+    <%= simple_form_for mod, remote: true do |f| %>
+      <%= f.input :title, label: false %>
+      <%= f.input :duration, input_html: {min: 0} %>
+      <%= f.submit '', class: 'hidden-submit hidden' %>
+      <div class="cancel-submit-btns">
+        <div type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</div>
+        <button class="btn-orange" onclick="closeModalOnSubmit(this);">
+          <p>Edit Text</p>
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>

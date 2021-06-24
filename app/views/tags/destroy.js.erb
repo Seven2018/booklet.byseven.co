@@ -1,4 +1,4 @@
-document.querySelector('.organisation-manage-users-dropright').innerHTML = '<%= j render("pages/organisation_manage_users_dropright", users: @users, tag_categories: @tag_categories) %>';
+document.querySelector('.organisation-manage-users-dropright').innerHTML = '<%= j render("pages/organisation_manage_users_dropright", users: [], tag_categories: @tag_categories) %>';
 document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>';
 opened = '<%= @opened %>'.split(',')
 document.querySelectorAll('.organisation-manage-users-block').forEach((block) => {
@@ -7,3 +7,6 @@ document.querySelectorAll('.organisation-manage-users-block').forEach((block) =>
     block.classList.add('active');
   }
 })
+$(document).ready(function () {
+  $(".organisation-page").floatingScroll();
+});

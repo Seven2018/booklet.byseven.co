@@ -10,7 +10,7 @@
 <div class="organisation-manage-users-container">
   <div class="organisation-manage-users-background" onclick='closeManager();'></div>
   <div class="organisation-manage-users-dropright">
-    <%= render 'organisation_manage_users_dropright', users: @users %>
+    <%= render 'organisation_manage_users_dropright', users: @users, cached: true %>
   </div>
 </div>
 
@@ -27,7 +27,6 @@
     <%= render 'users/import', tag: User.new %>
   </div>
 </div>
-
 
 <script>
   $(document).ready(function () {
@@ -111,15 +110,16 @@
     }, 250);
   }
 
-  rotated = 0;
 
   function toggleTagCategoryDropdown(element) {
-    element.querySelector('i').style.webkitTransform = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.mozTransform    = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.msTransform     = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.oTransform      = 'rotate('+ (rotated + 180).toString() +'deg)';
-    element.querySelector('i').style.transform       = 'rotate('+ (rotated + 180).toString() +'deg)';
-    rotated = rotated + 180;
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
     block = element.parentNode.parentNode.parentNode.parentNode;
     if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
       block.style.maxHeight = '10000px';
@@ -166,6 +166,7 @@
     element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
     hideClearFilterButton();
     document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
   }
 
   function clearFilter(element) {
@@ -177,6 +178,7 @@
     })
     hideClearFilterButton();
     document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
   }
 
   function clearFilterManager(element) {
@@ -198,6 +200,7 @@
     })
     hideClearFilterButton();
     form.querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
   }
 
   function removeJob(element) {
@@ -207,6 +210,7 @@
       if (checkbox.value == job) {
         checkbox.checked = false;
         form.querySelector('.hidden-submit').click();
+        document.querySelector('body').classList.add('wait');
       }
     })
   }
@@ -219,6 +223,7 @@
         if (checkbox.value == job) {
           checkbox.checked = false;
           form.querySelector('.hidden-submit').click();
+          document.querySelector('body').classList.add('wait');
         }
       })
     })
@@ -243,6 +248,7 @@
   function clearInput(element) {
     form = element.parentNode.parentNode;
     form.querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
   }
 
   function fetchCategoryForm(element) {
@@ -296,8 +302,8 @@
 
   function applyToUsers(element) {
     element.parentNode.querySelector('.hidden-submit').click()
+    document.querySelector('body').classList.add('wait')
     document.querySelector('.organisation-manage-users-dropright').querySelectorAll('input').forEach((input) => {
-      console.log(input)
       if (input.type == 'checkbox') {
         input.checked = false;
       }
@@ -323,6 +329,8 @@
     }
     selectUser();
   }
+
+  function spinningLoader() {
+    document.querySelector('body').classList.add('wait');
+  }
 </script>
-
-

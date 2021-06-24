@@ -184,6 +184,7 @@
     width: 0;
     height: 225vh;
     transition: width .25s linear;
+    margin-top: 5rem;
 
     .organisation-filter-controls {
       display: flex;
@@ -270,15 +271,20 @@
   .organisation-manage-users-background {
     opacity: .4;
     background-image: linear-gradient(315deg, #5b6467 0%, #8b939a 74%);
-    height: 225vh;
+    height: 1000vh;
     flex-grow: 1;
   }
 
   .organisation-manage-users-dropright {
     background-color: white;
     width: 0;
-    height: 225vh;
+    height: 1000vh;
     transition: width .25s linear;
+    margin-top: 5rem;
+
+    input:focus {
+      border: none !important;
+    }
 
     .organisation-manage-users-controls {
       display: flex;

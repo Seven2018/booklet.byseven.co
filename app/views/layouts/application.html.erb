@@ -39,5 +39,10 @@
     </div>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>
+    <%# if params[:action] == 'organisation' %>
+      <div class="render_async-content">
+        <%# render 'pages/organisation_render_async_content' %>
+      </div>
+    <%# end %>
   </body>
 </html>
