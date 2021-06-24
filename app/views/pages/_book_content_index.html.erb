@@ -28,13 +28,11 @@
         <i class="fas fa-circle hidden"></i>
       </div>
     </div>
-<<<<<<< HEAD
     <div class="booklet-card-bottom">
       <div class="booklet-card-theme">
         <% content.categories.order(title: :asc).each do |category| %>
           <p><%= category.title %></p>
         <% end %>
-=======
     <% if content.content_type == 'Synchronous' %>
       <div class="catalogue-content-card-right-syn-book">
     <% else %>
@@ -43,7 +41,6 @@
       <div class="book-element" id='bookbtn' onclick='bookWorkshop(this);' >
         <i class="fas fa-plus fa-5x" id='cart' data-toggle='tooltip' title='Book Training'></i>
         <i class="fas fa-times fa-5x hidden" id='undo' data-toggle='tooltip' title='Remove Training'></i>
->>>>>>> 32455ae532149904488e11b07bde5973da4e5ed3
       </div>
       <div class="booklet-card-objective">
         <% if content.description.present? %>
