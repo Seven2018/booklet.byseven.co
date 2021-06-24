@@ -1,7 +1,7 @@
 <div id="index-controls" class='employee-tag flex-row-between-centered'>
   <% if @filter_tags.present? %>
     <div class="filter-selected-tags">
-      <h1><%= @users.count %> result(s) for</h1>
+      <h1><%= users.count %> result(s) for</h1>
       <% @filter_tags.each do |tag| %>
         <div class="selected-tags" name='<%= tag %>'>
           <p><%= tag %></p>
@@ -10,8 +10,17 @@
       <% end %>
     </div>
   <% else %>
-    <h1>Employees (<%= @users.length %>)</h1>
+    <% if unfiltered.present? %>
+      <h1>Employees (<%= User.where(company_id: current_user.company_id).count %>)</h1>
+    <% else %>
+      <h1>Employees (<%= users.length %>) <span onclick="clearSearchBis(this)">See All</span></h1>
+    <% end %>
   <% end %>
+  <div>
+    <% if unfiltered.present? %>
+      <%= paginate @users, remote: true %>
+    <% end %>
+  </div>
   <div class="index-controls-buttons flex-row-between-centered">
     <div class="btn-white" onclick='openFilter();'>
       <i class="fas fa-filter"></i>
@@ -41,10 +50,10 @@
       <div class="headers-div">
         <p>Name</p>
         <div class="headers-div-order">
-          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'lastname', users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
          <% end %>
         </div>
@@ -52,10 +61,10 @@
       <div class="headers-div">
         <p>Email</p>
         <div class="headers-div-order">
-          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'email', users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
           <% end %>
         </div>
@@ -64,10 +73,10 @@
         <div class="headers-div">
           <p><%= tag_category.name %></p>
           <div class="headers-div-order">
-            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: @users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
             <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
           <% end %>
           </div>
@@ -79,7 +88,7 @@
           <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
             <div class='flex-row-between-centered'>
               <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;width:200px;' %>
-              <%= f.hidden_field :users, value: @users.map(&:id) %>
+              <%= f.hidden_field :users, value: users.map(&:id) %>
               <%= f.submit '', class: 'hidden hidden-submit' %>
               <div onclick='clearInput(this);'>
                 <i class="fas fa-save"></i>
@@ -89,9 +98,12 @@
         </div>
       </div>
     </div>
-    <% @users.each do |user| %>
-        <%= render 'pages/organisation_user_card_container', user: user %>
-        <%# render_async organisation_user_card_path(user_id: user.id) %>
-    <% end %>
+    <div class='users-index'>
+      <% users.each do |user| %>
+        <div class='user-index-card user-card-<%= user.id %>'>
+          <%= render 'pages/organisation_user_card', user: user %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

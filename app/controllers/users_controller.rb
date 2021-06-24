@@ -64,13 +64,13 @@ class UsersController < ApplicationController
     @user.update(user_params)
     if params[:user][:tags].present?
       tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
-      del_tags = Tag.where(company_id: current_user.id).map(&:id) - tags
+      del_tags = Tag.where(company_id: current_user.company_id).map(&:id) - tags
     end
     if @user.save
-      if tags.present?
+      if params[:user][:tags].present?
+        UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
         tags.each do |tag|
           UserTag.create(user_id: @user.id, tag_id: tag)
-          UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
         end
       end
       respond_to do |format|

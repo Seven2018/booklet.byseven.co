@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :user_interests, dependent: :destroy
   has_many :interests, through: :user_interests, source: :content
   validates :firstname, :lastname, :email, :access_level, presence: true
+  paginates_per 50
   # validates :gender, inclusion: { in: ['M', 'F'] }
   require 'csv'
 
