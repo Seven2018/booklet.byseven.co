@@ -1,48 +1,53 @@
-<!-- <div class="headers-div-book">
-  <p onclick='addAll(this);' style='cursor:pointer;' class='add-selected'>Add All (<%= users.count %>)</p>
-  <% if selected_filter.present? %>
+ <% if selected_filter.present? %>
     <% selected_filter.split(',').each do |filter| %>
       <p class='user-filter'><%= filter %></p>
     <% end %>
   <% end %>
-</div>
 <% users.each do |user| %>
-  <div class='user-index-card-book' id="user-<%= user.id %>">
-    <div class="user-index-info-book">
-      <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser(this);'>
-      <img src="<%= user.picture %>" alt="" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-    </div>
-    <div class="user-book-interest-right">
-      <div class="user-info-card">
-        <div class="user-index-info-book-user-interest">
-          <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %>, <%= user.firstname %></p>
-        </div>
-        <div class="user-index-info-book" id='useremail'>
-          <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
-        </div>
+  <div class="user-book-card" id="<%= user.id %>">
+    <div class="user-book-card-overlay hidden"></div>
+    <div class="user-book-top">
+      <div class="user-book-icon select-user" onclick='selectUser(this);'>
+        <i class="far fa-circle"  id='nouser'></i>
+        <i class="fas fa-check-circle hidden" id='adduser' style='color:#F26419;'></i>
+        <i class="fas fa-times hidden" id='removeuser'></i>
       </div>
-      <div class='user-training-info'>
+    </div>
+    <div class="book-bottom">
+      <div class="user-book-info">
+        <div class="user-book-name">
+          <p data-toggle="tooltip" title="<%= user.fullname %>"><%= user.firstname %> <%= user.lastname %></p>
+        </div>
+        <!-- <div class="user-book-email">
+          <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+        </div> -->
+      </div>
+      <div class="user-book-interest">
         <% interested = '' %>
         <% completed = '' %>
         <% UserInterest.where(user_id: user.id, content_id: interest_for, interest_type: 'Interested').each do |interest| %>
-          <% interested += interest.content.title + ',' %>
+          <% interested += interest.content.title + "\n" %>
         <% end %>
         <% UserInterest.where(user_id: user.id, content_id: interest_for, interest_type: 'Completed').each do |complete| %>
-          <% completed += complete.content.title + ',' %>
+          <% completed += complete.content.title + "\n" %>
         <% end %>
         <% if interested.present? %>
           <div class="flex-row-start-centered icon">
-              <i class="fas fa-heart" style='color:#F26419; margin-right:5px;'></i>
-              <p style='font-size:14px'><%= interested[0..-2] %></p>
+            <i class="fas fa-heart fa-2x" style='color:#F26419; margin-right:5px;'data-toggle='tooltip' title='<%= interested %>'></i>
           </div>
+        <% else %>
+            <i class="fas fa-heart fa-2x" style='color:#888888; margin-right:5px;'data-toggle='tooltip' title='Not interested in workshop(s) selected'></i>
         <% end %>
         <% if completed.present? %>
           <div class="flex-row-start-centered icon">
-              <i class="fas fa-check-circle" style='color:#888888; margin-right:5px;'></i>
-              <p style='font-size:14px'><%= completed[0..-2] %></p>
+              <i class="fas fa-check-circle fa-2x" style='color:#F26419; margin-right:5px;'data-toggle='tooltip' title='<%= completed %>'></i>
           </div>
+        <% else %>
+          <i class="fas fa-check-circle fa-2x" style='color:#888888; margin-right:5px;'data-toggle='tooltip' title='Has not completed any workshop(s) selected'></i>
         <% end %>
       </div>
     </div>
   </div>
-<% end %> -->
+<% end %>
+
+
