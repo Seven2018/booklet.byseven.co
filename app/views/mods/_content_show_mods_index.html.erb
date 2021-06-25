@@ -1,82 +1,211 @@
 <% content.mods.order(position: :asc).each do |mod| %>
-  <div class="mod-card">
-    <a id="anchor-<%= mod.id %>" class='content-anchor'></a>
-    <% if mod.mod_type == 'text' %>
-      <div class="content-show-mods-card-text">
-        <p><b><%= mod.title %></b></p>
-        <p>Duration : <%= mod.duration %> min</p><br>
-        <%= mod.text %>
-      </div>
-    <% elsif mod.mod_type == 'video' %>
-      <div class="content-show-mods-card-video" style='padding:10px;'>
-        <p style='padding-left: 10px;'><b><%= mod.title %></b></p>
-        <p style='padding-left: 10px;'>Duration : <%= mod.duration %> min</p><br>
-        <% video_id = mod.video.split("=")[1] %>
-        <%= content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen") %>
-      </div>
-    <% elsif mod.mod_type == 'image' %>
-      <div class="content-show-mods-card-image">
-        <img src="<%= mod.image %>" alt="<%= mod.title %>">
-      </div>
-    <% elsif mod.mod_type == 'assessment' %>
-      <% if params[:content_access] == 'granted' %>
-        <div class="content-show-mods-card-quiz">
-          <div class="quiz-info">
-            <h3 style='margin-bottom: 15px;'>Assessment: <%= mod.title %></h3>
-            <p>Duration : <%= mod.duration %> min</p>
+  <% if mod.mod_type == 'text' %>
+    <% if page == 'edit' %>
+      <div class="content-text active">
+        <div class="mod-top">
+          <div class="mod-title" onclick='toggleMod(this);'>
+            <i class="fas fa-angle-down" data-rotated='0'></i>
+            <p>Text</p>
           </div>
-          <div class="quiz-start">
-          <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? && mod.assessment_questions.present? %>
-            <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
-          <% elsif mod.assessment_questions.present? %>
-            <div class="flex-row-between-centered" style='flex-direction: column'>
-              <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
-              <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
-            </div>
+          <div class="mod-controls">
+          <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+            <% if mod.position == 1 %>
+              <a disabled class="mod-move-up" style='cursor: default;'>
+                <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+              </a>
+            <% else %>
+              <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+                <i class="fas fa-arrow-up"></i>
+              <% end %>
+            <% end %>
+            <% if mod.position >= mod.content.mods.count %>
+              <a disabled class="mod-move-down" style='cursor: default;'>
+                <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+              </a>
+            <% else %>
+              <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+                <i class="fas fa-arrow-down"></i>
+              <% end %>
+            <% end %>
+            <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+              <i class="far fa-trash-alt" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+            <% end %>
           <% end %>
           </div>
         </div>
-      <% else %>
-        <div class="content-show-mods-card-assessment" id="assessment-<%= mod.id %>">
+        <%= simple_form_for mod, remote: true do |f| %>
+          <div class="form-row">
+            <div class="form-group col-9">
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+            </div>
+            <div class="form-group col-3">
+              <% duration = mod.duration.to_s + ' Mins' %>
+              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
+            </div>
+          </div>
+          <%= f.rich_text_area :text, placeholder: 'Content', label: false, onclick: 'saveMod(this)' %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="form-row" style='border-bottom: 1px solid grey; margin-top: 2rem;'>
+        <div class="form-group col-9">
+          <h3><strong><%= mod.title %></strong></h3>
+        </div>
+        <div class="form-group col-3">
+          <% duration = mod.duration.to_s + ' Mins' %>
+          <p class='form-group col'><%= duration %></p>
+        </div>
+      </div>
+      <div class="form-row" style='margin-top: 2rem;'>
+        <div class="form-group col-12">
+          <%= mod.text %>
+        </div>
+      </div>
+    <% end %>
+  <% elsif mod.mod_type == 'video' %>
+    <% if page == 'edit' %>
+      <div class="content-video active">
+        <div class="mod-top">
+          <div class="mod-title" onclick='toggleMod(this);'>
+            <i class="fas fa-angle-down" data-rotated='0'></i>
+            <p>Video</p>
+          </div>
+          <div class="mod-controls">
+          <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+            <% if mod.position == 1 %>
+              <a disabled class="mod-move-up" style='cursor: default;'>
+                <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+              </a>
+            <% else %>
+              <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+                <i class="fas fa-arrow-up"></i>
+              <% end %>
+            <% end %>
+            <% if mod.position >= mod.content.mods.count %>
+              <a disabled class="mod-move-down" style='cursor: default;'>
+                <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+              </a>
+            <% else %>
+              <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+                <i class="fas fa-arrow-down"></i>
+              <% end %>
+            <% end %>
+            <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+              <i class="far fa-trash-alt" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+            <% end %>
+          <% end %>
+          </div>
+        </div>
+        <%= simple_form_for mod, remote: true do |f| %>
+          <div class="form-row">
+            <div class="form-group col-9">
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+            </div>
+            <div class="form-group col-3">
+              <% duration = mod.duration.to_s + ' Mins' %>
+              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
+            </div>
+          </div>
+          <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '', input_html: {onclick: 'saveMod(this)'} %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="form-row" style='border-bottom: 1px solid grey; margin-top: 2rem;'>
+        <div class="form-group col-9">
+          <h3><strong><%= mod.title %></strong></h3>
+        </div>
+        <div class="form-group col-3">
+          <% duration = mod.duration.to_s + ' Mins' %>
+          <p class='form-group col'><%= duration %></p>
+        </div>
+      </div>
+      <div class="form-row" style='margin-top: 2rem;'>
+        <div class="form-group col-12">
+          <% video_id = mod.video.split("=")[1].split("&")[0] %>
+          <%= content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen") %>
+        </div>
+      </div>
+    <% end %>
+  <% elsif mod.mod_type == 'assessment' %>
+    <% if page == 'edit' %>
+      <div class="content-quiz active">
+        <div class="mod-top">
+          <div class="mod-title" onclick='toggleMod(this);'>
+            <i class="fas fa-angle-down" data-rotated='0'></i>
+            <p>Quiz</p>
+          </div>
+          <div class="mod-controls">
+          <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+            <% if mod.position == 1 %>
+              <a disabled class="mod-move-up" style='cursor: default;'>
+                <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+              </a>
+            <% else %>
+              <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
+                <i class="fas fa-arrow-up"></i>
+              <% end %>
+            <% end %>
+            <% if mod.position >= mod.content.mods.count %>
+              <a disabled class="mod-move-down" style='cursor: default;'>
+                <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+              </a>
+            <% else %>
+              <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
+                <i class="fas fa-arrow-down"></i>
+              <% end %>
+            <% end %>
+            <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+              <i class="far fa-trash-alt" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
+            <% end %>
+          <% end %>
+          </div>
+        </div>
+        <%= simple_form_for mod, remote: true do |f| %>
+          <div class="form-row">
+            <div class="form-group col-9">
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+            </div>
+            <div class="form-group col-3">
+              <% duration = mod.duration.to_s + ' Mins' %>
+              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
+            </div>
+          </div>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        <% end %>
+        <div id='assessment-<%= mod.id %>'>
           <%= render 'assessments/show', form: mod %>
         </div>
-      <% end %>
-    <% end %>
-    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
-      <% if mod.mod_type == 'text' || mod.mod_type == 'assessment' %>
-        <a data-toggle='modal' data-target='#editMod-<%= mod.id %>' class='mod-edit'><i class="fas fa-pencil-alt" data-toggle='tooltip' title='Edit'></i></a>
-      <% end %>
-        <div class='modal fade' id='editMod-<%= mod.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-          <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-            <% if mod.mod_type == 'text' %>
-              <%= render 'mods/edit_mod_text', mod: mod %>
-            <% elsif mod.mod_type = 'assessment' %>
-              <%= render 'mods/edit_mod_assessment', mod: mod %>
+      </div>
+    <% else %>
+      <div class="form-row" style='border-bottom: 1px solid grey; margin-top: 2rem;'>
+        <div class="form-group col-9">
+          <h3><strong><%= mod.title %></strong></h3>
+        </div>
+        <div class="form-group col-3">
+          <% duration = mod.duration.to_s + ' Mins' %>
+          <p class='form-group col'><%= duration %></p>
+        </div>
+      </div>
+      <div class="form-row" style='margin-top: 2rem;'>
+        <div class="form-group col-12">
+          <div class="quiz-start">
+            <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? && mod.assessment_questions.present? %>
+              <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
+            <% elsif mod.assessment_questions.present? %>
+              <div class="flex-row-between-centered" style='flex-direction: column'>
+                <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
+                <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+              </div>
             <% end %>
           </div>
         </div>
-      <%= link_to mod_path(mod), method: :delete, class: 'mod-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
-        <i class="fas fa-times" id='mod-delete' data-toggle='tooltip' title='Delete'></i>
-      <% end %>
-      <% if mod.position == 1 %>
-        <a disabled class="mod-move-up" style='cursor: default;'>
-          <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
-        </a>
-      <% else %>
-        <%= link_to move_up_mod_path(mod), class: 'mod-move-up', remote: true do %>
-          <i class="fas fa-arrow-up"></i>
-        <% end %>
-      <% end %>
-      <% if mod.position >= mod.content.mods.count %>
-        <a disabled class="mod-move-down" style='cursor: default;'>
-          <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
-        </a>
-      <% else %>
-        <%= link_to move_down_mod_path(mod), class: 'mod-move-down', remote: true do %>
-          <i class="fas fa-arrow-down"></i>
-        <% end %>
-      <% end %>
+      </div>
     <% end %>
-  </div>
-
+  <% end %>
 <% end %>
+
+<div class="content-add-mods">
+
+</div>

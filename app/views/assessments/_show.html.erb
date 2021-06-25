@@ -1,5 +1,3 @@
-<p><b><%= form.title %></b></p>
-<p>Duration : <%= form.duration %> min</p>
 <div id="assessment-show-content">
   <%= render 'assessments/content', form: form %>
 </div>
@@ -9,11 +7,3 @@
     <%= render 'assessments/add_questions', form: form %>
   </div>
 </div>
-
-<!-- <script>
-  $("#addQuestion").click(function(){
-    $(this).hide();
-    $("#assessment-show-content").append($("#add_questions_form").html());
-  });
-</script>
- -->

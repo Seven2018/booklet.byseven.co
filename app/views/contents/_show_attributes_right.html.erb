@@ -1,0 +1,39 @@
+<div class="content-show-infos-duration" >
+  <p style='color:#808080;'><b>Duration</b></p>
+  <p><%= @content.duration %> min <i class="far fa-clock"></i></p>
+</div>
+<div class="content-show-infos-themes">
+  <p style='color:#808080;'><b>Themes</b></p>
+  <div class="theme-btns">
+    <% @content.categories.order(title: :asc).each do |category| %>
+      <p class="category-tag"><%= category.title %></p>
+    <% end %>
+    <% if page == 'edit' %>
+      <a data-toggle='modal' data-target='#addTheme' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#F26419;'></i></a><br>
+    <% end %>
+  </div>
+</div>
+<div><p style='color:#808080;'><b>Workshop Type</b></p>
+  <div class="content-type-radio">
+    <% if page == 'edit' %>
+      <%= simple_form_for @content, remote: true do |f| %>
+        <%= f.input :content_type, as: :radio_buttons, collection: [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], :checked => [@content.content_type, @content.content_type], label_method: :second, value_method: :first, legend_tag: false, input_html: {onclick: 'saveOnSelect(this);'}, class: 'content-type-radio' %>
+        <%= f.submit '', class: 'hidden-submit hidden' %>
+      <% end %>
+      <div class="content-type-icons">
+        <i class="fas fa-chalkboard-teacher" style='margin: 3px 0px 13px 0px; color:#F26419;'></i>
+        <i class="fas fa-laptop"></i>
+      </div>
+    <% else %>
+      <div class="flex-row-between-centered">
+        <% if @content.content_type == 'Synchronous' %>
+          <p>In Person</p>
+          <i class="fas fa-chalkboard-teacher" style='margin-left: 13px; color:#F26419;'></i>
+        <% else %>
+          <p>Online</p>
+          <i class="fas fa-laptop"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
