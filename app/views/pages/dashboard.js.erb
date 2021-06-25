@@ -1,5 +1,5 @@
 if ("<%= @tab %>" == 'all') {
   document.querySelector('.calendar-schedule-all').innerHTML = '<%= j render("pages/calendar_schedule", date: @date, tab: @tab) %>';
-} else {
+} else if ("<%= @tab %>" == 'personal') {
   document.querySelector('.calendar-schedule-personal').innerHTML = '<%= j render("pages/calendar_schedule", date: @date, tab: @tab) %>';
 }
