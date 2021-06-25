@@ -1,7 +1,11 @@
 <div class="catalogue-content-card-left">
   <% content = @content if @content.present? %>
   <div class="catalogue-content-card-left-main">
-    <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
+    <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <%= link_to '', edit_mode_content_path(content), class: 'stretched-link' %>
+    <% else %>
+      <%= link_to '', content_path(content), class: 'stretched-link' %>
+    <% end %>
     <h4><%= content.title %></h4>
     <p><%= content.duration %> Minutes</p>
     <div class="content-description">

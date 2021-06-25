@@ -1,11 +1,15 @@
 class ContentsController < ApplicationController
-  before_action :set_content, only: [:show, :duplicate, :view_mode, :edit, :update, :update_content, :destroy]
+  before_action :set_content, only: [:show, :edit_mode, :duplicate, :view_mode, :edit, :update, :update_content, :destroy]
   before_action :force_json, only: [:change_author]
   helper VideoHelper
 
   def show
     authorize @content
     @content_skill = ContentSkill.new
+  end
+
+  def edit_mode
+    authorize @content
   end
 
   def view_mode

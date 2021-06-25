@@ -17,8 +17,8 @@ class ContentPolicy < ApplicationPolicy
     true
   end
 
-  def view_mode?
-    true
+  def edit_mode?
+    check_access_hr
   end
 
   def update?
