@@ -35,7 +35,7 @@
     </div>
       <div class="book-next-page">
         <div class="book-next" onclick="nextPage()">
-          <i class="fas fa-arrow-right" style='color:#F26419'></i>
+          <i class="fas fa-arrow-right fa-3x" style='color:#F26419'></i>
           <p>Select Participants</p>
         </div>
       </div>
@@ -48,13 +48,10 @@
       </div>
     </div>
     <div class="workshop-grid">
-      <div class="workshop-cards-book container">
-        <%= render 'pages/book_content_index', contents: @contents %>
+      <div class="workshop-cards-selected" id='selected'>
       </div>
-      <div class="workshop-cards-selected container" id='selected'>
-        <div class="ghost-card">
-          <p>Drag & drop cards you wish to book.</p>
-        </div>
+      <div class="workshop-cards-book">
+        <%= render 'pages/book_content_index', contents: @contents %>
       </div>
     </div>
   </div>
@@ -65,7 +62,7 @@
       <div class="book-confirm">
       <div class="book-next-page" onclick="previousPage()">
         <div class="book-next">
-          <i class="fas fa-arrow-left" style='color:#F26419'></i>
+          <i class="fas fa-arrow-left fa-3x" style='color:#F26419'></i>
           <p>Select Workshops</p>
         </div>
       </div>
@@ -99,7 +96,7 @@
         </div>
         <div class="book-next-page" onclick="nextPage()">
           <div class="book-next">
-            <i class="fas fa-arrow-right" style='color:#F26419'></i>
+            <i class="fas fa-arrow-right fa-3x" style='color:#F26419'></i>
             <p>Select Dates</p>
           </div>
         </div>
@@ -108,6 +105,10 @@
       <div class="btn-white" onclick='openFilter();'>
         <i class="fas fa-filter"></i>
         <p>Filter</p>
+      </div>
+      <div class="add-remove-users">
+        <p onclick='addAll(this);' style='cursor:pointer;' class='add-selected'>Add All (<%= @users.count %>)</p>
+        <p onclick='removeAll(this);' style='cursor:pointer;' class='remove-selected'>Remove all (0)</p>
       </div>
     </div>
     <div class="organisation-filter-container">
@@ -118,17 +119,15 @@
       </div>
     </div>
     <div class="users-book-grid">
+      </div>
+        <div class="users-book-selected">
+
+      </div>
       <div class="users-book">
         <% selected_filter = [] %>
         <%= render 'pages/book_user_index', users: @users, interest_for: interest_for, selected_filter: selected_filter %>
-      </div>
-<!--       <div class="users-book-selected container">
-        <div class="headers-div">
-          <p onclick='removeAll(this);' style='cursor:pointer;' class='remove-selected'>Remove all (0)</p>
-        </div>
-      </div> -->
     </div>
-  </div>
+    </div>
   <div class="book-page-3 hidden">
     <div class="booking-title dates-title">
       <h2>Select Dates</h2>
@@ -141,7 +140,7 @@
     <div class="book-confirm">
     <div class="book-next-page" onclick="previousPage()">
       <div class="book-next">
-        <i class="fas fa-arrow-left" style='color:#F26419'></i>
+        <i class="fas fa-arrow-left fa-3x" style='color:#F26419'></i>
         <p>Select Users</p>
       </div>
     </div>
@@ -174,7 +173,7 @@
       </div>
     </div>
     <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
-    <button class='btn-orange' onclick='bookDates()'><p>Confirm</p></button>
+    <button class='btn-orange' onclick='bookDates()' style='margin-bottom: 15px'><p>Confirm</p></button>
     </div>
   </div>
 </div>
@@ -237,79 +236,174 @@
     else return false;
   }
 
-  function bookWorkshop (element) {
-    card = element.closest('.card-interest-book');
-    bookcontainer = document.querySelector('.workshop-cards-selected')
-    selectcontainer = document.querySelector('.workshop-cards-book')
-    cart = card.querySelector('#cart')
-    undo = card.querySelector('#undo')
-    ghostcard = document.querySelector('.ghost-card')
-    if (element.closest('.workshop-cards-selected')) {
-      cart.classList.remove('hidden')
-      undo.classList.add('hidden')
-      selectcontainer.append(card)
+  function addCard(element) {
+    newCard = document.createElement("div");
+    newCard.classList.add('booklet-card-book')
+    existingcard = element.closest('.booklet-card-book')
+    cardcontent = existingcard.innerHTML
+    newCard.innerHTML = cardcontent
+    circle = newCard.querySelector('#notselected')
+    circle.classList.add('hidden')
+    remove = newCard.querySelector('#removecard')
+    remove.classList.remove('hidden')
+    syn = newCard.querySelector('.booklet-card-syn')
+    asyn = newCard.querySelector('.booklet-card-asyn')
+    theme = newCard.querySelector('.booklet-card-theme')
+    remove.style.background = 'transparent'
+    newCard.setAttribute("id", existingcard.id)
+    content = document.querySelector('.workshop-cards-selected')
+    content.append(newCard)
+    theme.classList.add('theme-white')
+    if (newCard.contains(syn)) {
+      syn.style.backgroundColor = '#F8D9C8'
     } else {
-      bookcontainer.append(card)
-      cart.classList.add('hidden')
-      undo.classList.remove('hidden')
+      asyn.style.backgroundColor = '#C4C4C4'
     }
-    if (bookcontainer.querySelector('.card-interest-book') != null) {
-      ghostcard.classList.add('hidden')
+  }
+
+  function selectCard(element) {
+    card = element.closest('.booklet-card-book')
+    emptycircle = card.querySelector('#notselected')
+    added = card.querySelector('#added')
+    overlay = card.querySelector('.booklet-card-book-overlay')
+    selected = document.querySelector('.workshop-cards-selected')
+    if (selected.contains(card)) {
+      card_id = card.id
+      card.remove()
+      grey_card = document.getElementById(card_id);
+      overlay = grey_card.querySelector('.booklet-card-book-overlay')
+      overlay.classList.add('hidden')
+      emptycircle = grey_card.querySelector('#notselected')
+      emptycircle.classList.remove('hidden')
+      added = grey_card.querySelector('#added')
+      added.classList.add('hidden')
+    } else if (overlay.classList.contains('hidden')) {
+      addCard(element);
+      overlay.classList.remove('hidden')
+      added.classList.remove('hidden')
+      emptycircle.classList.add('hidden')
     } else {
-      ghostcard.classList.remove('hidden')
+      overlay.classList.add('hidden')
+      added.classList.add('hidden')
+      emptycircle.classList.remove('hidden')
     }
-    selected_cards = document.querySelector('.workshop-cards-selected').querySelectorAll('.card-interest-book')
-    storage_var = []
-    selected_cards.forEach((card) => {
-      storage_var.push(card.id.split('-')[1])
-    })
-    selected_storage = document.getElementById('filter_content_selected')
-    selected_storage.value = storage_var.join(',')
-    interest_storage = document.getElementById('filter_user_interest_for')
-    interest_storage.value = storage_var.join(',')
+  }
+
+  function addUser(element) {
+    newUser = document.createElement("div");
+    newUser.classList.add('user-book-card')
+    existinguser = element.closest('.user-book-card')
+    cardcontent = existinguser.innerHTML
+    newUser.innerHTML = cardcontent
+    circle = newUser.querySelector('#nouser')
+    circle.classList.add('hidden')
+    newUser.style.backgroundColor = '#F8D9C8'
+    removeuser = newUser.querySelector('#removeuser')
+    removeuser.classList.remove('hidden')
+    removeuser.style.backgroundColor = 'transparent'
+    newUser.setAttribute("id", existinguser.id)
+    content = document.querySelector('.users-book-selected')
+    content.append(newUser)
+  }
+    function selectUser(element) {
+    user = element.closest('.user-book-card')
+    empty = user.querySelector('#nouser')
+    adduser = user.querySelector('#adduser')
+    overlay_user = user.querySelector('.user-book-card-overlay')
+    selecteduser = document.querySelector('.users-book-selected')
+    if (selecteduser.contains(user)) {
+      card_id = user.id
+      user.remove()
+      user_card = document.getElementById(card_id);
+      overlay_user = user_card.querySelector('.user-book-card-overlay')
+      overlay_user.classList.add('hidden')
+      empty = user_card.querySelector('#nouser')
+      empty.classList.remove('hidden')
+      adduser = user_card.querySelector('#adduser')
+      adduser.classList.add('hidden')
+
+    } else if (overlay_user.classList.contains('hidden')) {
+      addUser(element);
+      overlay_user.classList.remove('hidden')
+      adduser.classList.remove('hidden')
+      empty.classList.add('hidden')
+    } else {
+      overlay_user.classList.add('hidden')
+      adduser.classList.add('hidden')
+      empty.classList.remove('hidden')
+    }
   }
 
 
-  function dragRaceStart(element) {
-    element.classList.add('dragging')
-  }
 
-  function dragRaceEnd(element) {
-    element.classList.remove('dragging')
-    selected_cards = document.querySelector('.workshop-cards-selected').querySelectorAll('.card-interest-book')
-    storage_var = []
-    selected_cards.forEach((card) => {
-      storage_var.push(card.id.split('-')[1])
-    })
-    selected_storage = document.getElementById('filter_content_selected');
-    selected_storage.value = storage_var.join(',')
-    interest_storage = document.getElementById('filter_user_interest_for')
-    interest_storage.value = storage_var.join(',')
-  }
+  // function bookWorkshop (element) {
+  //   card = element.closest('.booklet-card-book');
+  //   bookcontainer = document.querySelector('.workshop-cards-selected')
+  //   selectcontainer = document.querySelector('.workshop-cards-book')
+  //   emptycircle = card.querySelector('#notselected')
+  //   added = card.querySelector('#added')
+  //   if (element.closest('.workshop-cards-selected')) {
+  //     emptycircle.classList.remove('hidden')
+  //     added.classList.add('hidden')
+  //     selectcontainer.append(card)
+  //   } else {
+  //     bookcontainer.append(card)
+  //     emptycircle.classList.add('hidden')
+  //     added.classList.remove('hidden')
+  //   }
 
-  containers.forEach(container => {
-    container.addEventListener('dragover', e => {
-      e.preventDefault()
-      afterElement = getDragAfterElement(container, e.clientY)
-      draggable = document.querySelector('.dragging')
-      cart = draggable.querySelector('#cart')
-      undo = draggable.querySelector('#undo')
-      if (container.classList.contains('workshop-cards-book')) {
-        cart.classList.remove('hidden')
-        undo.classList.add('hidden')
-      } else {
-        cart.classList.add('hidden')
-        undo.classList.remove('hidden')
-      }
-      if (afterElement == null) {
-        container.appendChild(draggable)
-        return false
-      } else {
-        container.insertBefore(draggable, afterElement)
-        return false
-      }
-    })
-  })
+  //   selected_cards = document.querySelector('.workshop-cards-selected').querySelectorAll('.booklet-card-book')
+  //   storage_var = []
+  //   selected_cards.forEach((card) => {
+  //     storage_var.push(card.id.split('-')[1])
+  //   })
+  //   selected_storage = document.getElementById('filter_content_selected')
+  //   selected_storage.value = storage_var.join(',')
+  //   interest_storage = document.getElementById('filter_user_interest_for')
+  //   interest_storage.value = storage_var.join(',')
+  // }
+
+
+  // function dragRaceStart(element) {
+  //   element.classList.add('dragging')
+  // }
+
+  // function dragRaceEnd(element) {
+  //   element.classList.remove('dragging')
+  //   selected_cards = document.querySelector('.workshop-cards-selected').querySelectorAll('.booklet-card-book')
+  //   storage_var = []
+  //   selected_cards.forEach((card) => {
+  //     storage_var.push(card.id.split('-')[1])
+  //   })
+  //   selected_storage = document.getElementById('filter_content_selected');
+  //   selected_storage.value = storage_var.join(',')
+  //   interest_storage = document.getElementById('filter_user_interest_for')
+  //   interest_storage.value = storage_var.join(',')
+  // }
+
+  // containers.forEach(container => {
+  //   container.addEventListener('dragover', e => {
+  //     e.preventDefault()
+  //     afterElement = getDragAfterElement(container, e.clientY)
+  //     draggable = document.querySelector('.dragging')
+  //     emptycircle = draggable.querySelector('#notselected')
+  //     added = draggable.querySelector('#added')
+  //     if (container.classList.contains('workshop-cards-book')) {
+  //       emptycircle.classList.remove('hidden')
+  //       added.classList.add('hidden')
+  //     } else {
+  //       emptycircle.classList.add('hidden')
+  //       added.classList.remove('hidden')
+  //     }
+  //     if (afterElement == null) {
+  //       container.appendChild(draggable)
+  //       return false
+  //     } else {
+  //       container.insertBefore(draggable, afterElement)
+  //       return false
+  //     }
+  //   })
+  // })
 
 function getDragAfterElement(container, y, element) {
   const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')]
@@ -408,16 +502,7 @@ function resetFilter() {
   document.querySelector('body').classList.add('wait');
 }
 
-var selected = document.getElementById('selected')
-var ghostcard = document.querySelector('.ghost-card')
 
-function removeGhost() {
-  if (selected.querySelector('.draggable') == null) {
-    ghostcard.classList.remove('hidden')
-  } else {
-    ghostcard.classList.add('hidden')
-  }
-}
 
 function removeFilter(element) {
   filter_tag = element.parentNode;
@@ -432,29 +517,29 @@ function removeFilter(element) {
   document.querySelector('body').classList.add('wait');
 }
 
-function selectUser(element) {
-  card = element.parentNode.parentNode
-  user_container = document.querySelector('.users-book')
-  selected_container = document.querySelector('.users-book-selected')
-  if (card.parentNode == user_container) {
-    selected_container.appendChild(card)
-  } else {
-    user_container.appendChild(card)
-  }
-  selected_users = selected_container.querySelectorAll('.user-index-card-book')
-  storage_var = []
-  selected_users.forEach((user) => {
-    storage_var.push(user.id.split('-')[1])
-  })
-  document.getElementById('filter_user_selected').value = storage_var.join(',')
-  document.querySelector('.filter_user').querySelector('.hidden-submit').click();
-  available = document.querySelector('.users-book').querySelectorAll('.user-index-card-book').length
-  selected = document.querySelector('.users-book-selected').querySelectorAll('.user-index-card-book').length
-  counter_available = document.querySelector('.add-selected')
-  counter_selected = document.querySelector('.remove-selected')
-  counter_available.innerHTML = 'Add All (' + available.toString() + ')'
-  counter_selected.innerHTML = 'Remove All (' + selected.toString() + ')'
-}
+// function selectUser(element) {
+//   card = element.parentNode.parentNode
+//   user_container = document.querySelector('.users-book')
+//   selected_container = document.querySelector('.users-book-selected')
+//   if (card.parentNode == user_container) {
+//     selected_container.appendChild(card)
+//   } else {
+//     user_container.appendChild(card)
+//   }
+//   selected_users = selected_container.querySelectorAll('.user-index-card-book')
+//   storage_var = []
+//   selected_users.forEach((user) => {
+//     storage_var.push(user.id.split('-')[1])
+//   })
+//   document.getElementById('filter_user_selected').value = storage_var.join(',')
+//   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+//   available = document.querySelector('.users-book').querySelectorAll('.user-index-card-book').length
+//   selected = document.querySelector('.users-book-selected').querySelectorAll('.user-index-card-book').length
+//   counter_available = document.querySelector('.add-selected')
+//   counter_selected = document.querySelector('.remove-selected')
+//   counter_available.innerHTML = 'Add All (' + available.toString() + ')'
+//   counter_selected.innerHTML = 'Remove All (' + selected.toString() + ')'
+// }
 
 function addDate(element) {
   card = element.closest('.book-selected-card')
