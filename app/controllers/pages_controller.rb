@@ -137,7 +137,7 @@ class PagesController < ApplicationController
         @contents = Content.where(company_id: current_user.company_id).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc)
       end
       @filter = 'content'
-      @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
+      @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc)
     elsif params[:filter_user].present?
       @filter = 'user'
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
@@ -146,6 +146,7 @@ class PagesController < ApplicationController
       @selected_filter = params[:filter_user][:tag].reject(&:blank?).join(',')
     elsif params[:confirm].present?
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
+      @selected_users = User.where(id: params[:filter_user][:selected].split(',')) if params[:filter_user].present?
     else
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
     end
