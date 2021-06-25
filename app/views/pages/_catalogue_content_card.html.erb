@@ -5,7 +5,7 @@
       <div class="booklet-card-top">
         <div class="booklet-card-top-info">
           <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
-          <h3><%= content.title %></h3>
+          <h3><b><%= content.title %></b></h3>
           <p><%= content.duration %> Minutes</p>
         </div>
         <div class="booklet-card-type-pill">
@@ -70,8 +70,8 @@
       <div class="booklet-card-top">
         <div class="booklet-card-top-info">
           <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
-          <h3><%= content.title %></h3>
-          <p><%= content.duration %> Minutes</p>
+            <h3><b><%= content.title %></b></h3>
+            <p><%= content.duration %> Minutes</p>
         </div>
         <div class="booklet-card-type-pill">
           <div class="booklet-card-type">
