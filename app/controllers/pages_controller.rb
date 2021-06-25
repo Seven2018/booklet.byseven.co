@@ -138,6 +138,7 @@ class PagesController < ApplicationController
       end
       @filter = 'content'
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc)
+      @interest_for = @selected_contents.map(&:id)
     elsif params[:filter_user].present?
       @filter = 'user'
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
@@ -174,19 +175,17 @@ class PagesController < ApplicationController
         if tags.empty?
           if params[:filter_user][:selected].present?
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
-            @users = parameter.order(lastname: :asc)
           end
         else
           if params[:filter_user][:selected].present?
-            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).page params[:page]
+            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).where.not(id: params[:filter_user][:selected].split(','))
           else
-            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id).order(lastname: :asc)
+            @users = parameter.joins(:user_tags).where(company_id: current_user.company_id)
           end
-          query_chain = User.where(company: current_user.company_id)
           tags.each do |tag|
-            query_chain = query_chain.where_exists(:tags, tag_name: [tag])
+            @users = @users.where_exists(:tags, tag_name: [tag])
           end
-          @users = query_chain
+          @users = @users.order(lastname: :asc).uniq
         end
         @filter_tags = params[:filter_user][:tag].reject{|c| c.empty?}
       elsif params[:order].present?
@@ -199,11 +198,11 @@ class PagesController < ApplicationController
       else
         if params[:filter_user].present?
           if params[:filter_user][:selected].present?
-            @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc).page params[:page]
+            @selected_users = params[:filter_user][:selected]
           else
-            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
             @unfiltered = true
           end
+          @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
         else
           @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
           @unfiltered = true

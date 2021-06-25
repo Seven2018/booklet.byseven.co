@@ -14,7 +14,7 @@
 <div class="organisation-manage-users-container">
   <div class="organisation-manage-users-background" onclick='closeManager();'></div>
   <div class="organisation-manage-users-dropright">
-    <%= render 'organisation_manage_users_dropright', users: @users, cached: true %>
+    <%= render 'organisation_manage_users_dropright', users: @users %>
   </div>
 </div>
 
@@ -266,7 +266,6 @@
         opened_blocks.push(block.getAttribute('data-category'));
       })
       form.querySelector('.hidden-submit').value = opened_blocks.join(',');
-      console.log()
       if (element.getAttribute('data-target').split('-')[0] == '#edit') {
         controls = element.parentNode.parentNode
         controls.style.opacity = 0
@@ -278,11 +277,12 @@
         form.style.top = (controls.offsetTop - 8).toString() + 'px';
         form.style.left = (controls.offsetLeft + 4).toString() + 'px'
       } else {
-        form.style.top = (element.offsetTop - 3).toString() + 'px';
-        form.style.left = element.offsetLeft.toString() + 'px'
+        form.style.top = (element.offsetTop - 2).toString() + 'px';
+        form.style.left = (element.offsetLeft + 24).toString() + 'px'
       }
-      element.parentNode.style.opacity = '0';
+      element.parentNode.querySelector('p').style.opacity = '0';
       form.classList.toggle('hidden');
+      form.querySelector('input').focus()
       setTimeout(function(){
         doubleClickGuardian = false;
       }, 1);
@@ -295,7 +295,7 @@
           }
           form.style.top = initial_top.toString() + 'px';
           form.style.left = initial_left.toString() + 'px';
-          element.parentNode.style.opacity = '1';
+          element.parentNode.querySelector('p').style.opacity = '1';
           form.classList.toggle('hidden');
           form.querySelector('input').value = '';
           this.removeEventListener('click', arguments.callee, false);
@@ -335,12 +335,13 @@
   }
 
   function clearSearchBis() {
-    element = document.querySelector('#navbar-search-clear')
-    search_input = element.parentNode.querySelector('input');
-    search_input.value = '';
-    element.classList.add('hidden');
-    document.querySelector('.organisation-main-container').classList.remove('hidden')
-    document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
+    // element = document.querySelector('#navbar-search-clear')
+    // search_input = element.parentNode.querySelector('input');
+    // search_input.value = '';
+    // element.classList.add('hidden');
+    // document.querySelector('.organisation-main-container').classList.remove('hidden')
+    // document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
+    document.location.reload()
   }
 
   function spinningLoader() {

@@ -11,9 +11,7 @@ class SessionsController < ApplicationController
       User.where(id: params[:session][:selected_users].split(',')).each do |user|
         Attendee.create(user_id: user.id, session_id: @session.id, creator_id: current_user.id)
       end
-      respond_to do |format|
-        format.js
-      end
+      return
     end
   end
 
