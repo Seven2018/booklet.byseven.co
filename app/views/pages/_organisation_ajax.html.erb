@@ -21,12 +21,26 @@
       <%= paginate @users, remote: true %>
     <% end %>
   </div>
+</div>
+<div class="organisation-controls">
+  <div id="user-search">
+    <% if params[:action] == 'organisation' %>
+    <i class="fas fa-search search-icon"></i>
+      <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
+        <%= f.input :name, placeholder: 'Search', label: false %>
+        <%= f.submit class: 'hidden hidden-submit' %>
+      <% end %>
+    <% end %>
+    <div class="hidden" id="user-search-clear" onclick='clearSearch(this);'>
+      <p>Clear</p>
+    </div>
+  </div>
   <div class="index-controls-buttons flex-row-between-centered">
     <div class="btn-white" onclick='openFilter();'>
       <i class="fas fa-filter"></i>
       <p>Filter</p>
     </div>
-    <div class="btn-white" id='manage-users-button' onclick='openManager();'>
+    <div class="btn-white" id='manage-users-button' onclick='openManager();' style='margin: 0px 5px 0px 5px'>
       <i class="fas fa-user-tag"></i>
       <p>Manage Tags</p>
     </div>
@@ -40,7 +54,7 @@
       </ul>
     </div>
   </div>
-</div>
+  </div>
 <div class='organisation-page' data-fl-scrolls='{"orientation": "horizontal"}'>
   <div class='organisation-users'>
     <div class='user-index-headers'>
@@ -50,10 +64,10 @@
       <div class="headers-div">
         <p>Name</p>
         <div class="headers-div-order">
-          <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
             <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
             <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
          <% end %>
         </div>
@@ -61,10 +75,10 @@
       <div class="headers-div">
         <p>Email</p>
         <div class="headers-div-order">
-          <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
             <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
             <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
           <% end %>
         </div>
@@ -73,10 +87,10 @@
         <div class="headers-div">
           <p><%= tag_category.name %></p>
           <div class="headers-div-order">
-            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader();' do %>
+            <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
             <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
           <% end %>
-          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader();' do %>
+          <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
             <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
           <% end %>
           </div>
