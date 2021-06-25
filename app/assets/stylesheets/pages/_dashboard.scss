@@ -28,6 +28,7 @@
 }
 
 .tab-content {
+
   padding-right: 10px;
 }
 
@@ -289,4 +290,226 @@
   display: flex;
   justify-content: flex-start;
   align-items: baseline;
+}
+
+
+// Catalogue v2 //
+.booklet-card {
+  position: relative;
+}
+.booking-date {
+  position: absolute;
+}
+.booklet-card-syn {
+  width: 360px;
+  height: 360px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  margin: 20px;
+  .booklet-card-top {
+    border-radius: 5px 5px 0px 0px;
+    padding: 10px;
+    height: 30%;
+    position: relative;
+    background: #F8D9C8;
+    .booklet-card-top-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .booklet-card-type-pill {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .booklet-card-type {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+      width: 133px;
+      height: 30px;
+      background: white;
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .booklet-card-type-icon {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: baseline;
+        i {
+          margin-right: 10px;
+        }
+      }
+    }
+    .booklet-top-right-icon-catalogue {
+      z-index: 200;
+      position: absolute;
+      top: 12px;
+      right: 10px;
+      i {
+        &:hover {
+          cursor:pointer;
+          opacity: 80%;
+        }
+        font-size: 2rem;
+        border-radius: 50%;
+      }
+    }
+  }
+  .booklet-card-bottom {
+    height: 70%;
+    padding: 10px;
+    .booklet-card-theme {
+      height: 50px;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      p {
+        height: 20px;
+        background: #F8D9C8;
+        color: #F26419;
+        padding: 0 .5rem;
+        margin: 0 1rem .5rem 0;
+        border-radius: 5px;
+        font-size: 1.3rem;
+      }
+      i {
+        color: #F26419;
+        &:hover {
+          cursor:pointer;
+          opacity: 80%;
+        }
+      }
+    }
+    .booklet-card-objective {
+      height: 160px;
+    }
+    .booklet-card-like {
+
+      color:#F26419;
+      height: 32px;
+      display: flex;
+      justify-content: flex-end;
+      i {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.content-dropdown {
+    position: absolute;
+    right: 1rem;
+    top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: white;
+    padding: 0 1rem;
+    z-index: 100;
+    a {
+      padding: 5px 20px;
+    }
+  }
+.booklet-card-asyn {
+  width: 360px;
+  height: 360px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  margin: 20px;
+  .booklet-card-top {
+    border-radius: 5px 5px 0px 0px;
+    padding: 10px;
+    height: 30%;
+    position: relative;
+    background: #C4C4C4;
+    .booklet-card-top-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .booklet-card-type-pill {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .booklet-card-type {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+      width: 133px;
+      height: 30px;
+      background: white;
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .booklet-card-type-icon {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: baseline;
+        i {
+          margin-right: 10px;
+        }
+      }
+    }
+    .booklet-top-right-icon-catalogue {
+      z-index: 200;
+      position: absolute;
+      top: 12px;
+      right: 10px;
+      i {
+        &:hover {
+          cursor:pointer;
+          opacity: 80%;
+        }
+        font-size: 2rem;
+        border-radius: 50%;
+      }
+    }
+  }
+  .booklet-card-bottom {
+    height: 70%;
+    padding: 10px;
+    .booklet-card-theme {
+      height: 50px;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      p {
+        height: 20px;
+        background: #F8D9C8;
+        color: #F26419;
+        padding: 0 .5rem;
+        margin: 0 1rem .5rem 0;
+        border-radius: 5px;
+        font-size: 1.3rem;
+      }
+      i {
+        color: #F26419;
+        &:hover {
+          cursor:pointer;
+          opacity: 80%;
+        }
+      }
+    }
+    .booklet-card-objective {
+      height: 160px;
+    }
+    .booklet-card-like {
+      color:black;
+      height: 32px;
+      display: flex;
+      justify-content: flex-end;
+      i {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.booking-date {
+  top: 175px;
+  position: absolute;
+  display: flex;
+  left: 270px;
+  background: white;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #c4c4c4;
 }

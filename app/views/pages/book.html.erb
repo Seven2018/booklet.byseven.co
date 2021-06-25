@@ -132,11 +132,6 @@
     <div class="booking-title dates-title">
       <h2>Select Dates</h2>
     </div>
-    <div class="date-book">
-      <% selected_users = [] %>
-      <% selected_contents = [] %>
-      <%= render 'pages/book_dates', selected_contents: selected_contents %>
-    </div>
     <div class="book-confirm">
       <div class="book-next-page" onclick="previousPage()">
         <div class="book-next">
@@ -174,6 +169,11 @@
       </div>
       <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
       <button class='btn-orange' onclick='bookDates()' style='margin-bottom: 15px'><p>Confirm</p></button>
+    </div>
+    <div class="date-book">
+      <% selected_users = [] %>
+      <% selected_contents = [] %>
+      <%= render 'pages/book_dates', selected_contents: selected_contents %>
     </div>
   </div>
 </div>
@@ -474,26 +474,28 @@
   }
 
   function addDate(element) {
-    card = element.closest('.book-selected-card')
-    new_card = document.createElement('div')
-    new_card.classList.add('book-selected-card')
-    new_card.innerHTML = card.innerHTML
-    new_card.querySelector('.remove_date').classList.remove('hidden')
-    form = new_card.querySelector('form')
-    element.classList.add('hidden')
-    card.parentNode.insertBefore(new_card, card.nextSibling)
+    card = element.parentNode.parentNode.parentNode.querySelector('.book-dates')
+    console.log(card)
+    new_date = document.createElement('div')
+    new_date.classList.add('book-dates')
+    new_date.innerHTML = card.innerHTML
+    new_date.querySelector('.remove_date').classList.remove('hidden')
+    form = new_date.querySelector('form')
+    card.parentNode.insertBefore(new_date, card.nextSibling)
     flatpickr(".datepicker", {
       disableMobile: true,
       dateFormat: "d/m/Y",
     });
+    flatpickr(".timepicker", {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+    })
   }
 
   function removeDate(element) {
-    card = element.closest('.book-selected-card')
+    card = element.closest('.book-cards')
     card.remove();
-    selected = document.querySelectorAll('.book-selected-card-dates')
-    console.log(selected)
-    selected[selected.length - 1].querySelector('.add-date').querySelector('p').classList.remove('hidden')
   }
 
   function bookDates() {
