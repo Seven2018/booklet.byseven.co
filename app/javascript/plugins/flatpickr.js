@@ -7,11 +7,15 @@ flatpickr(".datepicker", {
   dateFormat: "d/m/Y",
 })
 
-// flatpickr(".timepicker", {
-// enableTime: true,
-//     noCalendar: true,
-//     dateFormat: "H:i",
-//     minTime: "16:00",
-//     maxTime: "22:30",
-// })
+flatpickr(".datepicker-range", {
+  disableMobile: true,
+  dateFormat: "d/m/Y",
+  mode: 'range',
+})
+
+flatpickr(".timepicker", {
+  enableTime: true,
+  noCalendar: true,
+  dateFormat: "H:i",
+})
 

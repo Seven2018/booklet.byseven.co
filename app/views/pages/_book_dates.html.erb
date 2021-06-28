@@ -5,83 +5,129 @@
   </div> -->
 <%# end %>
 <% selected_contents.each do |content| %>
-  <div class="book-selected-card" id="book_content-<%= content.id %>">
-    <div class="book-selected-card-left">
-      <div class="book-selected-card-infos">
-        <% if content.title.length > 35 %>
-          <h3><b><%= content.title.first(35)+'...' %></b></h3>
-        <% else %>
-          <h3><b><%= content.title %></b></h3>
-        <% end %>
-        <p><%= content.duration %> Minutes</p>
-         <div class="card-content-description">
-        <% if content.description.present? %>
-          <% if content.description.to_plain_text.length >= (200) %>
-            <p><%= content.description.to_plain_text.first(200) + '...' %></p>
-          <% else %>
-            <p><%= content.description.to_plain_text.first(200) %></p>
-          <% end %>
-        <% end %>
+  <% if content.content_type == 'Synchronous' %>
+    <div class="booklet-card" id="book_content-<%= content.id %>" >
+      <div class="booklet-card-syn-dates">
+        <div class="booklet-card-top">
+          <div class="booklet-card-top-info">
+            <% if content.title.length > 35 %>
+              <h3><b><%= content.title.first(35)+'...' %></b></h3>
+            <% else %>
+              <h3><b><%= content.title %></b></h3>
+            <% end %>
+          <p><%= content.duration %> Minutes</p>
+          </div>
+          <div class="booklet-card-type-pill">
+            <div class="booklet-card-type">
+              <div class="booklet-card-type-icon">
+                <% if content.content_type == 'Synchronous' %>
+                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                  <p>In Person</p>
+                <% else %>
+                  <i class="fas fa-laptop" style='color:black;'></i>
+                  <p>Online</p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="booklet-top-right-icon">
+            <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal" style='color:#F26419;'></i>
+          </div>
         </div>
-        <div class="type-icon">
-        <% if content.content_type == 'Synchronous' %>
-          <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-        <% else %>
-          <i class="fas fa-laptop"></i>
-        <% end %>
-        </div>
-        <div class="duration-alert hidden">
-          <p>Duration exceeds alloted time</p>
+        <div class="booklet-card-bottom-dates">
+          <div class="booklet-card-objective-booking">
+            <div class='book-dates' style='color:#F26419;'>
+            <p><b>Date & Time</b></p>
+             <a class='remove_date hidden' onclick="removeDate(this)">
+              <i class="fas fa-times"></i>
+            </a>
+              <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
+              <div class="sync-booking">
+                <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
+                  <%= f.hidden_field :duration, value: content.duration %>
+                  <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);'}, default: Time.parse('9:00'), placeholder: '8:00AM' %>
+                  <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);'}, default: Time.parse('17:00'), placeholder: '9:00AM'%>
+                  <%= f.hidden_field :content_id, value: content.id %>
+                  <%= f.hidden_field :selected_users %>
+                  <%= f.submit '', class: 'hidden-submit hidden' %>
+              </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="booklet-card-like">
+            <div class="add-date">
+              <p style='color:#F26419;' onclick="addDate(this);"><b>Add another date </b></p>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+    <% else %>
+    <div class="booklet-card" id="book_content-<%= content.id %>">
+      <div class="booklet-card-asyn">
+        <div class="booklet-card-top">
+          <div class="booklet-card-top-info">
+            <% if content.title.length > 35 %>
+              <h3><b><%= content.title.first(35)+'...' %></b></h3>
+            <% else %>
+              <h3><b><%= content.title %></b></h3>
+            <% end %>
+          <p><%= content.duration %> Minutes</p>
+          </div>
+          <div class="booklet-card-type-pill">
+            <div class="booklet-card-type">
+              <div class="booklet-card-type-icon">
+                <% if content.content_type == 'Synchronous' %>
+                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                  <p>In Person</p>
+                <% else %>
+                  <i class="fas fa-laptop" style='color:black;'></i>
+                  <p>Online</p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="booklet-top-right-icon">
+            <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal"></i>
+          </div>
+        </div>
+        <div class="booklet-card-bottom">
+          <div class="booklet-card-objective-booking">
+            <div class='book-dates'>
+            <p><b>Available From:</b></p>
+              <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
+                <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker-range'}, placeholder: 'Select Date..' %></div>
+                <%= f.hidden_field :content_id, value: content.id %>
+                <%= f.hidden_field :selected_users %>
+                <%= f.submit '', class: 'hidden-submit hidden' %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><%= content.title %></h4>
+        <button type="button"  data-dismiss="modal"><i class="fas fa-times" style='opacity: 1;'></i></button>
+      </div>
+      <div class="modal-body">
       <div class="book-selected-card-categories">
         <% content.categories.order(title: :asc).each do |category| %>
           <p><%= category.title %></p>
         <% end %>
       </div>
+        <p><%= content.description%></p>
+      </div>
     </div>
-    <% if content.content_type == 'Synchronous' %>
-      <div class="book-selected-card-dates" style='height:174px;'>
-        <a class='remove_date hidden' onclick="removeDate(this)">
-          <i class="fas fa-times"></i>
-        </a>
-        <div class='book-dates'>
-        <p>Date & Time</p>
-          <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
-            <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
-            <div class="book-times">
-              <div>
-                <%= f.hidden_field :duration, value: content.duration %>
-                <%= f.input :starts_at, label: false, as: :time, minute_step: 15, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);'}, default: Time.parse('9:00') %>
-              </div>
-              <p style='margin-bottom: 10px;'>to</p>
-              <div>
-                <%= f.input :ends_at, label: false, as: :time, minute_step: 15, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);'}, default: Time.parse('17:00') %>
-              </div>
-            </div>
-            <%= f.hidden_field :content_id, value: content.id %>
-            <%= f.hidden_field :selected_users %>
-            <%= f.submit '', class: 'hidden-submit' %>
-          <% end %>
-        </div>
-          <div class="add-date">
-            <p style='color:#F26419;' onclick="addDate(this);">Add another date</p>
-          </div>
-      </div>
-    <% elsif %>
-      <div class="book-selected-card-dates" style='background-color: #EEEEEE; height:174px;'>
-        <div class='book-dates'>
-        <p>Available From:</p>
-          <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
-            <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select Start Date' %></div>
-            <p>Until:</p>
-            <%= f.input :available_date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select End Date (Optional)' %>
-            <%= f.hidden_field :content_id, value: content.id %>
-            <%= f.hidden_field :selected_users %>
-            <%= f.submit '', class: 'hidden-submit hidden' %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
   </div>
+</div>
+
 <% end %>
