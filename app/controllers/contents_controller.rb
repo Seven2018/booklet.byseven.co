@@ -22,7 +22,7 @@ class ContentsController < ApplicationController
     @content.company_id = current_user.company.id
     @content.author_id = current_user.id
     if @content.save
-      redirect_to content_path(@content, redirect_from: 'edit')
+      redirect_to edit_mode_content_path(@content)
     end
   end
 
@@ -36,7 +36,7 @@ class ContentsController < ApplicationController
     if @content.save
       @content = @content
       respond_to do |format|
-        format.html {content_path(@content, redirect_from: 'edit')}
+        format.html {edit_mode_content_path(@content)}
         format.js
       end
     end

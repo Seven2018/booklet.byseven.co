@@ -1,3 +1,4 @@
+<script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 <div class="book-container">
   <div class="book-page-1">
     <div class="booking-title">
@@ -123,8 +124,9 @@
         <div class="users-book-selected">
 
       </div>
+      <%= paginate @users, remote: true %>
+      <% selected_filter = [] %>
       <div class="users-book">
-        <% selected_filter = [] %>
         <%= render 'pages/book_user_index', users: @users, interest_for: interest_for, selected_filter: selected_filter %>
     </div>
     </div>
@@ -173,7 +175,7 @@
         </div>
       </div>
       <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
-      <button class='btn-orange' onclick='bookDates()' style='margin-bottom: 15px'><p>Confirm</p></button>
+      <button class='btn-orange' onclick='bookDates(this)' style='margin-bottom: 15px'><p>Confirm</p></button>
     </div>
   </div>
 </div>
@@ -354,23 +356,24 @@
     if (selecteduser.contains(user)) {
       card_id = user.id
       user.remove()
-      user_card = document.getElementById(card_id);
-      overlay_user = user_card.querySelector('.user-book-card-overlay')
-      overlay_user.classList.add('hidden')
-      empty = user_card.querySelector('#nouser')
-      empty.classList.remove('hidden')
-      adduser = user_card.querySelector('#adduser')
-      adduser.classList.add('hidden')
+      // user_card = document.getElementById(card_id);
+      // overlay_user = user_card.querySelector('.user-book-card-overlay')
+      // overlay_user.classList.add('hidden')
+      // empty = user_card.querySelector('#nouser')
+      // empty.classList.remove('hidden')
+      // adduser = user_card.querySelector('#adduser')
+      // adduser.classList.add('hidden')
 
     } else if (overlay_user.classList.contains('hidden')) {
       addUser(element);
-      overlay_user.classList.remove('hidden')
-      adduser.classList.remove('hidden')
-      empty.classList.add('hidden')
+      // overlay_user.classList.remove('hidden')
+      // adduser.classList.remove('hidden')
+      // empty.classList.add('hidden')
+      user.remove()
     } else {
-      overlay_user.classList.add('hidden')
-      adduser.classList.add('hidden')
-      empty.classList.remove('hidden')
+      // overlay_user.classList.add('hidden')
+      // adduser.classList.add('hidden')
+      // empty.classList.remove('hidden')
     }
     updateUsers()
   }
@@ -496,8 +499,10 @@
     selected[selected.length - 1].querySelector('.add-date').querySelector('p').classList.remove('hidden')
   }
 
-  function bookDates() {
+  function bookDates(element) {
     if (formGuardian == false) {
+      document.querySelector('body').classList.add('wait');
+      element.disabled = true
       submit_buttons = document.querySelector('.date-book').querySelectorAll('.hidden-submit')
       redirect_button = document.querySelector('.confirm-button')
       submit_buttons.forEach((element) => {
@@ -595,6 +600,22 @@
   }
 
   $input.easyAutocomplete(options);
+
+  function infiniteScroll() {
+    if ($("nav ul.pagination a[rel=next]").length) {
+      $('.users-book').infiniteScroll({
+        path: "nav ul.pagination a[rel=next]",
+        append: ".user-book-card",
+        hideNav: "nav ul.pagination",
+        history: false,
+        scrollThreshold: 3000,
+        debug: false,
+        loadOnScroll: true,
+      });
+    };
+  }
+
+  infiniteScroll()
 
 </script>
 

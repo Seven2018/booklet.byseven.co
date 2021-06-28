@@ -1,4 +1,4 @@
-document.querySelector('.organisation-main-container').innerHTML = '<%= j render("pages/organisation_ajax", users: @users) %>';
+document.querySelector('.organisation-main-container').innerHTML = '<%= j render("pages/organisation_ajax", users: @users, unfiltered: @unfiltered) %>';
 document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>';
 document.querySelector('.organisation-manage-users-dropright').innerHTML = '<%= j render("pages/organisation_manage_users_dropright", users: @users, tag_categories: @tag_categories) %>';
 $(document).ready(function () {

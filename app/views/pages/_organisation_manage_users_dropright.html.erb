@@ -12,21 +12,20 @@
   </div>
 </div>
 <div class="organisation-manage-users-block">
-  <div class='manage-users-new-tag' onclick='openForm(this);' data-toggle='tooltip' title='Add New Tag Category'>
+  <div class='manage-users-new-tag' data-toggle='tooltip' title='Add New Tag Category'>
     <i class="fas fa-plus"></i>
-    <p>Tag Category</p>
-  </div>
-  <div class="hidden-form-category-ajax hidden">
-    <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
-      <div class="flex-row-between-centered">
-        <%= f.text_field :name, placeholder: 'Tag Category', style: 'height: 100%;', value: '' %>
-        <%= f.hidden_field :users, value: users.map(&:id) %>
-        <%= f.submit '', class: 'hidden hidden-submit' %>
-        <div onclick='clearInput(this);'>
-          <i class="fas fa-save"></i>
+    <div class="hidden-form-category-ajax">
+      <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
+        <div class="flex-row-between-centered">
+          <%= f.text_field :name, placeholder: 'New Tag Category', style: 'height: 100%;', value: '' %>
+          <%= f.hidden_field :users, value: users.map(&:id) %>
+          <%= f.submit '', class: 'hidden hidden-submit' %>
+          <div onclick='clearInput(this);'>
+            <i class="fas fa-save"></i>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 <%= simple_form_for :add_tags, url: organisation_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
