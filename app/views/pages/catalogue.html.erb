@@ -58,8 +58,18 @@
 
 
   function openContentMenu(element) {
-    dropdown = element.parentNode.querySelector('.content-dropdown');
-    dropdown.classList.toggle('hidden');
+    dropdown = element.parentNode.querySelector('.content-dropdown')
+    dropdown.classList.toggle('hidden')
+    formGuardian = true
+    setTimeout(function(){
+      formGuardian = false
+    }, 1);
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, dropdown) && formGuardian == false) {
+        dropdown.classList.add('hidden')
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
   }
 
   function openHiddenForm(element) {

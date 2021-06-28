@@ -366,10 +366,11 @@
     form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
     initial_top = form.offsetTop
     initial_left = form.offsetLeft
-    form.style.top = (element.offsetTop - 8).toString() + 'px';
-    form.style.left = (element.offsetLeft.toString()) + 'px';
-    element.style.opacity = '0';
-    form.classList.toggle('hidden');
+    form.style.top = (element.offsetTop - 4).toString() + 'px'
+    form.style.left = (element.offsetLeft + 25).toString() + 'px'
+    element.querySelector('p').style.opacity = '0'
+    form.classList.toggle('hidden')
+    form.querySelector('input').focus()
     formGuardian = true;
     setTimeout(function(){
       formGuardian = false;
@@ -378,11 +379,11 @@
     window.addEventListener('click', function(e) {
       if (outsideClick(e, form) && formGuardian == false) {
         form.style.top = initial_top.toString() + 'px';
-        form.style.left = initial_left.toString() + 'px';
-        element.style.opacity = '1';
-        form.classList.toggle('hidden');
-        form.querySelector('input').value = '';
-        this.removeEventListener('click', arguments.callee, false);
+        form.style.left = initial_left.toString() + 'px'
+        element.querySelector('p').style.opacity = '1'
+        form.classList.toggle('hidden')
+        form.querySelector('input').value = ''
+        this.removeEventListener('click', arguments.callee, false)
       }
     });
   }

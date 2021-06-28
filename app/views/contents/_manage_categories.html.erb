@@ -12,7 +12,6 @@
       <% end %>
       <%= simple_form_for :add_categories, url: content_link_category_path, method: :get, remote: true do |f| %>
         <div class="categories-form-checkboxes">
-          <%# f.input :categories, collection: Category.where(company_id: current_user.company_id).order(title: :asc), as: :check_boxes, legend_tag: false, label: false %>
           <%= collection_check_boxes(:content, :categories, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title, checked: checked) do |b| %>
             <div class="flex-row-between-centered">
               <%= b.check_box %>
@@ -25,7 +24,10 @@
             </div>
           <% end %>
         </div>
-        <i class="fas fa-plus" onclick='fetchCategoryForm(this);' data-target='tooltip' title='Add Theme'></i>
+        <div class="flex-row-start-centered" onclick='fetchCategoryForm(this);'>
+          <i class="fas fa-plus" data-target='tooltip' title='Add Theme'></i>
+          <p>New Category</p>
+        </div>
         <%= f.hidden_field :content_id, value: content.id %>
         <%= f.hidden_field :page, value: params[:action] %>
         <div class="theme-save-btn">
