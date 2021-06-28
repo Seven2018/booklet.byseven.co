@@ -40,6 +40,29 @@
 
 <script>
 
+function clearSearch(element) {
+    search_input = element.parentNode.querySelector('input');
+    search_input.value = ' ';
+    element.classList.add('hidden');
+    document.querySelector('.organisation-main-container').classList.remove('hidden')
+    document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
+  }
+
+
+  if (document.querySelector('.search') != null) {
+    search_input = document.querySelector('.search').querySelector('input');
+    clear_button = document.getElementById('user-search-clear');
+    search_input.addEventListener('keyup', event => {
+      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
+        clear_button.classList.remove('hidden');
+      } else if (search_input.value == '') {
+        clear_button.classList.add('hidden');
+      }
+    })
+  }
+
+
+
   formGuardian = false;
   doubleClickGuardian = false;
   setTimeout(function(){
@@ -239,6 +262,9 @@
     check_boxes.forEach((checkbox) => {
       if (checkbox.checked == true) {
         ids.push(checkbox.value);
+        checkbox.parentNode.parentNode.style.backgroundColor = '#F8D9C8'
+      } else {
+        checkbox.parentNode.parentNode.style.backgroundColor = 'white'
       }
     })
     document.querySelector('#add_tags_users').value = ids.join();
@@ -248,6 +274,12 @@
       document.querySelector('#manage-users-button').classList.add('flashing_button');
     }
   }
+
+ // function filterWord(element) {
+ //  category = element.closest('.headers-div')
+ //  category.style.fontWeight = '800';
+ // }
+
 
   function clearInput(element) {
     form = element.parentNode.parentNode;

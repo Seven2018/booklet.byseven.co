@@ -56,22 +56,6 @@
     </ul>
   </div>
   <div class="navbar-controls-right flex-row-between-centered">
-    <div id="navbar-search">
-      <% if params[:action] == 'organisation' %>
-        <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
-          <%= f.input :name, placeholder: 'Search', label: false %>
-          <%= f.submit class: 'hidden hidden-submit' %>
-        <% end %>
-      <% elsif params[:action] == 'catalogue' %>
-        <%= simple_form_for :search, url: catalogue_path, method: :get, remote: true do |f| %>
-          <%= f.input :title, placeholder: 'Search', label: false %>
-          <%= f.submit class: 'hidden hidden-submit' %>
-        <% end %>
-      <% end %>
-      <div class="hidden" id="navbar-search-clear" onclick='clearSearch(this);'>
-        <p>Clear</p>
-      </div>
-    </div>
     <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
       <div class="centered-item">
       </div>
@@ -108,25 +92,3 @@
   </div>
 </div>
 
-<script>
-  function clearSearch(element) {
-    search_input = element.parentNode.querySelector('input');
-    search_input.value = ' ';
-    element.classList.add('hidden');
-    document.querySelector('.organisation-main-container').classList.remove('hidden')
-    document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
-  }
-
-
-  if (document.querySelector('.search') != null) {
-    search_input = document.querySelector('.search').querySelector('input');
-    clear_button = document.getElementById('navbar-search-clear');
-    search_input.addEventListener('keyup', event => {
-      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
-        clear_button.classList.remove('hidden');
-      } else if (search_input.value == '') {
-        clear_button.classList.add('hidden');
-      }
-    })
-  }
-</script>
