@@ -1,4 +1,4 @@
-document.querySelector('.content-show-attributes-left').innerHTML = '<%= j render("show_attributes_left", content: @content) %>';
+document.querySelector('.content-show-attributes-left').innerHTML = '<%= j render("show_attributes_left", content: @content, page: "edit") %>';
 document.querySelector('.content-show-attributes-right').innerHTML = '<%= j render("contents/show_attributes_right", content: @content, page: "edit") %>';
 document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/show_anchors", content: @content, page: "edit")) %>';
 document.querySelector('.saved-message').classList.remove('hidden');

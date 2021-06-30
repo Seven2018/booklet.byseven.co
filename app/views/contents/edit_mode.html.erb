@@ -63,7 +63,7 @@
         <p>Text</p>
       </div>
       <div class="mod-controls-new">
-        <a class="mod-delete" onclick="this.closest('.add-text').remove()"><i class="fas fa-times"></i></a>
+        <a class="mod-delete" onclick="this.closest('.add-text').remove()"><i class="far fa-trash-alt"></i></a>
       </div>
     </div>
     <%= simple_form_for Mod.new, remote: true do |f| %>
@@ -88,7 +88,7 @@
         <p>Video</p>
       </div>
       <div class="mod-controls-new">
-        <a class="mod-delete" onclick="this.closest('.add-video').remove()"><i class="fas fa-times"></i></a>
+        <a class="mod-delete" onclick="this.closest('.add-video').remove()"><i class="far fa-trash-alt"></i></a>
       </div>
     </div>
     <%= simple_form_for Mod.new, remote: true do |f| %>
@@ -113,7 +113,7 @@
         <p>Quiz</p>
       </div>
       <div class="mod-controls-new">
-        <a class="mod-delete" onclick="this.closest('.add-quiz').remove()"><i class="fas fa-times"></i></a>
+        <a class="mod-delete" onclick="this.closest('.add-quiz').remove()"><i class="far fa-trash-alt"></i></a>
       </div>
     </div>
     <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
@@ -157,10 +157,34 @@
 </div>
 
 <script>
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
   doubleClickGuardian = false
 
+  function updateContent(element) {
+    form = element.closest('form')
+    submit = form.querySelector('.hidden-submit')
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, element) && doubleClickGuardian == false) {
+        submit.click();
+        this.removeEventListener('click', arguments.callee, false);
+      }
+    })
+  }
+
   function toggleMod(element) {
-        caret = element.querySelector('i')
+    caret = element.querySelector('i')
     angle = parseInt(caret.getAttribute('data-rotated'), 10)
     caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
     caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
@@ -176,9 +200,7 @@
       block.style.maxHeight = '61px';
       block.classList.remove('active');
     }
-  };
-
-
+  }
 
   function saveMod(element) {
     if (doubleClickGuardian == false) {
@@ -196,8 +218,6 @@
       setTimeout(function(){doubleClickGuardian = false}, 500)
     }
   }
-
-  doubleClickGuardian = false;
 
   function addMod(type) {
     if (type == 'text') {
@@ -252,19 +272,6 @@
       iconclose.classList.add('hidden')
       iconedit.classList.remove('hidden')
     }
-  }
-
-  function outsideClick(event, notelem) {
-    notelem = $(notelem); // jquerize (optional)
-    // check outside click for multiple elements
-    var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
-    }
-    if (clickedOut) return true;
-    else return false;
   }
 
   function openInput(element) {
