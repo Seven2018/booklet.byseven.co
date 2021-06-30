@@ -157,6 +157,8 @@
 </div>
 
 <script>
+  doubleClickGuardian = false
+
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
     // check outside click for multiple elements
@@ -169,8 +171,6 @@
     if (clickedOut) return true;
     else return false;
   }
-
-  doubleClickGuardian = false
 
   function updateContent(element) {
     form = element.closest('form')

@@ -1,13 +1,14 @@
 <% content = session.content %>
 <% if content.content_type == 'Synchronous' %>
-  <div class="booking-date">
-    <p style='margin-right:5px; color:#F26419;'>Begins</p>
-    <b><p style='color:#F26419;'><%= session.date.strftime('%B %d') %></p></b>
-  </div>
-  <div class="booklet-card">
+  <div class="booklet-card col-lg-6 col-sm-12">
+    <div class="booking-date">
+      <p style='margin-right:5px; color:#F26419;'>Begins</p>
+      <b><p style='color:#F26419;'><%= session.date.strftime('%B %d') %></p></b>
+    </div>
     <div class="booklet-card-syn">
       <div class="booklet-card-top">
         <div class="booklet-card-top-info">
+          <%= link_to '', content_path(content), class: 'stretched-link' %>
         <h3><%= content.title %></h3>
         <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
          <% if interest.present? && interest.interest_type == 'Completed' %>
@@ -29,23 +30,16 @@
           </div>
         </div>
         <div class="booklet-top-right-icon-catalogue" >
-        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-          <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v" style='color:#F26419;'></i></div>
-          <div class="content-dropdown hidden">
-            <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
-            <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
-          </div>
-        <% end %>
+          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+            <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v" style='color:#F26419;'></i></div>
+            <div class="content-dropdown hidden">
+              <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
+              <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
+            </div>
+          <% end %>
         </div>
       </div>
       <div class="booklet-card-bottom">
-        <div class="booked-date">
-          <% if session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today) %>
-            <%= link_to '', content_path(content.id, content_access: 'granted', redirect_from: 'dashboard'), class: 'stretched-link' %>
-          <% else %>
-            <%= link_to '', content_path(content.id, session_id: session.id, redirect_from: 'dashboard'), class: 'stretched-link' %>
-          <% end %>
-        </div>
         <div class="booklet-card-theme">
         <% content.categories.order(title: :asc).each do |category| %>
         <p><%= category.title %></p>
@@ -53,10 +47,10 @@
         </div>
         <div class="booklet-card-objective">
         <% if content.description.present? %>
-          <% if content.description.to_plain_text.length >= (200) %>
-            <p><%= content.description.to_plain_text.first(200) + '...' %></p>
+          <% if content.description.length >= (200) %>
+            <p><%= content.description.first(200) + '...' %></p>
           <% else %>
-            <p><%= content.description.to_plain_text.first(200) %></p>
+            <p><%= content.description.first(200) %></p>
           <% end %>
         <% end %>
         </div>
@@ -67,14 +61,15 @@
     </div>
   </div>
   <% else %>
-  <div class="booking-date">
-    <p style='margin-right:5px;'>Available</p>
-    <b><p><%= session.date.strftime('%B %d') %></p></b>
-  </div>
   <div class="booklet-card">
+    <div class="booking-date">
+      <p style='margin-right:5px;'>Available</p>
+      <b><p><%= session.date.strftime('%B %d') %></p></b>
+    </div>
     <div class="booklet-card-asyn">
       <div class="booklet-card-top">
         <div class="booklet-card-top-info">
+          <%= link_to '', content_path(content), class: 'stretched-link' %>
         <h3><%= content.title %></h3>
         <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
          <% if interest.present? && interest.interest_type == 'Completed' %>
@@ -96,23 +91,16 @@
           </div>
         </div>
         <div class="booklet-top-right-icon-catalogue">
-        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-          <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
-          <div class="content-dropdown hidden">
-            <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
-            <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
-          </div>
-        <% end %>
+          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+            <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
+            <div class="content-dropdown hidden">
+              <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
+              <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
+            </div>
+          <% end %>
         </div>
       </div>
       <div class="booklet-card-bottom">
-        <div class="booked-date">
-          <% if session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today) %>
-            <%= link_to '', content_path(content.id, content_access: 'granted', redirect_from: 'dashboard'), class: 'stretched-link' %>
-          <% else %>
-            <%= link_to '', content_path(content.id, session_id: session.id, redirect_from: 'dashboard'), class: 'stretched-link' %>
-          <% end %>
-        </div>
         <div class="booklet-card-theme">
         <% content.categories.order(title: :asc).each do |category| %>
         <p><%= category.title %></p>
@@ -120,10 +108,10 @@
         </div>
         <div class="booklet-card-objective">
         <% if content.description.present? %>
-          <% if content.description.to_plain_text.length >= (200) %>
-            <p><%= content.description.to_plain_text.first(200) + '...' %></p>
+          <% if content.description.length >= (200) %>
+            <p><%= content.description.first(200) + '...' %></p>
           <% else %>
-            <p><%= content.description.to_plain_text.first(200) %></p>
+            <p><%= content.description.first(200) %></p>
           <% end %>
         <% end %>
         </div>

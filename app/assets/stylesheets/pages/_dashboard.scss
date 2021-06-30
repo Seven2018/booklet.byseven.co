@@ -296,10 +296,22 @@
 // Catalogue v2 //
 .booklet-card {
   position: relative;
+  padding: 1rem;
+  max-height: 40rem;
 }
+
 .booking-date {
+  top: 0;
   position: absolute;
+  display: flex;
+  right: 40px;
+  background: white;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #c4c4c4;
 }
+
+
 .booklet-card-syn {
   width: 360px;
   height: 360px;
@@ -501,15 +513,4 @@
       }
     }
   }
-}
-
-.booking-date {
-  top: 175px;
-  position: absolute;
-  display: flex;
-  left: 270px;
-  background: white;
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #c4c4c4;
 }
