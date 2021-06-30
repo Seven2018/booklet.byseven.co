@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="booklet-top-right-icon-catalogue">
-          <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v" style='color:#F26419;'></i></div>
           <div class="content-dropdown hidden">
             <%= link_to 'Edit', edit_mode_content_path(content) %>
@@ -37,7 +37,7 @@
         <% content.categories.order(title: :asc).each do |category| %>
           <p><%= category.title %></p>
         <% end %>
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus" data-target='tooltip' title='Add a Theme'></i></a>
           <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
             <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
@@ -87,7 +87,7 @@
           </div>
         </div>
         <div class="booklet-top-right-icon-catalogue">
-          <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
           <div class="content-dropdown hidden">
             <%= link_to 'Edit', edit_mode_content_path(content) %>
@@ -102,7 +102,7 @@
         <% content.categories.order(title: :asc).each do |category| %>
           <p><%= category.title %></p>
         <% end %>
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus" data-target='tooltip' title='Add a Theme'></i></a>
           <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
             <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>

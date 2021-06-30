@@ -14,6 +14,7 @@
           <% end %>
         <% end %>
       </li>
+      <% if current_user.company_id.present? %>
         <li>
           <% if params[:action] == 'catalogue' || params[:controller] == 'contents' %>
             <%= link_to catalogue_path, class: 'left-buttons' do %>
@@ -26,7 +27,8 @@
             <% end %>
           <% end %>
         </li>
-      <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
+      <% end %>
+      <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
         <li>
           <% if params[:controller] == 'users' || params[:action] == 'organisation' %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
@@ -56,8 +58,11 @@
     </ul>
   </div>
   <div class="navbar-controls-right flex-row-between-centered">
-    <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include?(current_user.access_level) %>
+    <% if current_user.company_id.nil? && params[:action] == 'dashboard' %>
       <div class="centered-item">
+        <%= link_to new_company_path, class: 'btn-orange' do %>
+          <p>Register Company</p>
+        <% end %>
       </div>
     <% end %>
     <div class="user-top-nav">

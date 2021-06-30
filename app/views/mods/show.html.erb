@@ -5,7 +5,7 @@
     <%= link_to training_content_path(Session.find(params[:training_content_id])), class: 'btn return-arrow' do %><i class='fas fa-arrow-left'></i><% end %>
   <% end %>
   <div id='show-buttons'>
-    <% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+    <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? current_user.access_level %>
       <!-- <a data-toggle='modal' data-target='#editContent'><button class='btn-edit-white btn-icon'><i class='fas fa-pen'></i></button></a> -->
       <a data-toggle='modal' data-target='#editModule'>
         <button class='btn-edit-white btn-icon' data-toggle='tooltip' title='Edit'><i class='fas fa-pen'></i></button>

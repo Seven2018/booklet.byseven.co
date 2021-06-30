@@ -5,8 +5,8 @@ Category.destroy_all
 Skill.destroy_all
 puts 'Done !'
 
-Company.create(name: 'SEVEN', address: '5 rue Moret', zipcode: '75011', city: 'Paris', logo: 'https://seven-builder.herokuapp.com/assets/logo-seven-navbar-51a163c33ccd651fbb26210144a68af7f941f90131d3a359d8e1cb59a24ac375.png')
-Company.create(name: 'BIG MAMMA', address: "28 rue d'Aboukir", zipcode: '75002', city: 'Paris', logo: 'https://media.glassdoor.com/sqll/1563896/big-mamma-groupe-squarelogo-1511525722768.png')
+Company.create(name: 'SEVEN', address: '5 rue Moret', zipcode: '75011', city: 'Paris', logo: 'https://seven-builder.herokuapp.com/assets/logo-seven-navbar-51a163c33ccd651fbb26210144a68af7f941f90131d3a359d8e1cb59a24ac375.png', siret: '80396439400024', auth_token: rand(36**12).to_s(36))
+Company.create(name: 'BIG MAMMA', address: "28 rue d'Aboukir", zipcode: '75002', city: 'Paris', logo: 'https://media.glassdoor.com/sqll/1563896/big-mamma-groupe-squarelogo-1511525722768.png', siret: '83850177300017', auth_token: rand(36**12).to_s(36))
 
 User.create(firstname: "Brice", lastname: "Chapuis", company_id: 1, email: "brice.chapuis@byseven.co", password: "Seven2021", access_level: "Super Admin", gender: 'M', picture: 'https://media-exp1.licdn.com/dms/image/C4D03AQH76liGuqaaMA/profile-displayphoto-shrink_200_200/0?e=1583971200&v=beta&t=sXSYg68rJ2YBIzs5NrgrgJZf_CkmdMkiuIEuZ2nRU0A')
 User.create(firstname: "Marie", lastname: "Leleu", company_id: 1, email: "marie.leleu@byseven.co", password: "Seven2021", access_level: "Super Admin", gender: 'F', picture: '')

@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="booklet-top-right-icon-catalogue" >
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v" style='color:#F26419;'></i></div>
           <div class="content-dropdown hidden">
             <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
@@ -96,7 +96,7 @@
           </div>
         </div>
         <div class="booklet-top-right-icon-catalogue">
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
           <div class="content-dropdown hidden">
             <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>

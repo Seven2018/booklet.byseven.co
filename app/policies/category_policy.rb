@@ -28,6 +28,6 @@ class CategoryPolicy < ApplicationPolicy
   private
 
   def check_access
-    ['Super Admin', 'Admin', 'HR', 'Manager'].include? user.access_level
+    ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
   end
 end

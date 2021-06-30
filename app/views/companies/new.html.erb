@@ -1,22 +1,22 @@
-<div class="container-seven">
-  <div class="training-info-headers">
-    <%= link_to companies_path, class: 'btn return-arrow' do %>
-      <i class="fas fa-arrow-left"></i>
-    <% end %>
-  </div>
-  <h3>Add a company</h3>
-  <%= simple_form_for @company do |f| %>
-    <%= f.input :name %>
-    <div style='display:flex;justify-content:space-between;'>
-      <%= f.input :address, placeholder: 'ex: 5 rue Moret' %>
-      <%= f.input :zipcode, placeholder: 'ex: 75011', input_html: { maxlength: 5 } %>
-      <%= f.input :city, placeholder: 'ex: Paris' %>
-      <%= f.input :logo, label: 'Logo URL' %>
-    </div>
-    <div class="center-button">
-      <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-icon' do %>
-        <i class="fas fa-save"></i>
+<div id="container-login">
+  <div class="login">
+    <div id="login-div">
+      <div class="login-title flex-row-around-centered">
+        <h3>Register a company</h3>
+      </div>
+        <%= simple_form_for @company do |f| %>
+          <div class="form-inputs">
+            <%= f.input :name %>
+            <%= f.input :siret, placeholder: 'ex: 80396439400024' %>
+            <%= f.input :address, placeholder: 'ex: 5 rue Moret' %>
+            <%= f.input :zipcode, placeholder: 'ex: 75011', input_html: { maxlength: 5 } %>
+            <%= f.input :city, placeholder: 'ex: Paris' %>
+            <%= f.input :logo, label: 'Logo URL' %>
+          </div>
+        <div class="form-actions flex-row-between-centered">
+          <%= f.button :submit, "Sign up", class: 'btn-edit btn-sign-in' %>
+        </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
 </div>

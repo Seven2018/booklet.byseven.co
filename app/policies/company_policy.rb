@@ -6,36 +6,32 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_super
+    true
   end
 
   def show?
-    check_access
+    check_access_owner
   end
 
   def edit?
-    check_access_hr
+    check_access_owner
   end
 
   def update?
-    check_access_hr
+    check_access_owner
   end
 
   def destroy?
-    check_access_super
+    check_access_owner
   end
 
   private
 
-  def check_access
-    ['Super Admin', 'Admin', 'HR'].include? user.access_level
-  end
-
   def check_access_hr
-    ['Super Admin', 'Admin', 'HR'].include? user.access_level
+    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 
-  def check_access_super
-    user.access_level == 'Super Admin'
+  def check_access_owner
+    user.access_level == 'Account Owner'
   end
 end

@@ -18,7 +18,14 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     authorize @company
-    @company.save ? (redirect_to company_path(@company)) : (render :new)
+    if @company.save
+      if current_user.access_level == 'Employee'
+        current_user.update(access_level: 'Account Owner', company_id: @company.id)
+      end
+      redirect_to dashboard_path
+    else
+      render :new
+    end
   end
 
   def edit
@@ -44,6 +51,6 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:name, :address, :zipcode, :city, :description, :logo, :company_type)
+    params.require(:company).permit(:name, :siret, :address, :zipcode, :city, :description, :logo, :company_type)
   end
 end

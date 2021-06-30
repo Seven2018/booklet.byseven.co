@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :update, :destroy]
+  before_action :set_user, only: [:update, :destroy]
   before_action :set_current_user, only: [:import, :create]
   skip_before_action :verify_authenticity_token, only: [:update]
 
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    if ['Super Admin', 'Admin'].include?(current_user.access_level)
+    if ['Super Admin', 'Account Owner'].include?(current_user.access_level)
       @user = User.find(params[:id])
     elsif current_user.access_level == 'HR'
       @user = User.where(company_id: current_user.company_id).find(params[:id])
@@ -55,8 +55,20 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
+  def complete_profile
+    @user = current_user
     authorize @user
+  end
+
+  def link_to_company
+    skip_authorization
+    company = Company.find_by(auth_token: params[:auth_token])
+    if company.present?
+      current_user.update(company_id: company.id)
+      redirect_to dashboard_path, notice: "Your account is now linked to #{company.name}"
+    else
+      redirect_to dashboard_path, notice: "An error has occured, please check the provided url link."
+    end
   end
 
   def update

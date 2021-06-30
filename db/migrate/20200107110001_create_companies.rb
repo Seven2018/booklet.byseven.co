@@ -6,6 +6,8 @@ class CreateCompanies < ActiveRecord::Migration[6.0]
       t.string :zipcode
       t.string :city
       t.string :logo
+      t.string :siret
+      t.string :auth_token
       t.timestamps
     end
   end

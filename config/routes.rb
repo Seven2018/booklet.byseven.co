@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   devise_scope :user do
     match '/sessions/user', to: 'devise/sessions#create', via: :post
   end
-  resources :users, only: %i[new create show update destroy]
+  resources :users, only: %i[create show update destroy]
+  get :complete_profile, controller: :users
+  get :link_to_company, controller: :users
   post 'users/import', to: 'users#import', as: 'import_users'
   get :users_search, controller: :users
   get :organisation_user_card, controller: :pages

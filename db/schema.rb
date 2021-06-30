@@ -97,6 +97,8 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
     t.string "zipcode"
     t.string "city"
     t.string "logo"
+    t.string "siret"
+    t.string "auth_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

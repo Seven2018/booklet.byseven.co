@@ -7,9 +7,9 @@
     <%= f.input :email %>
     <%= f.input :password %>
     <% if current_user.access_level == 'Super Admin' %>
-      <%= f.input :access_level, collection: ['Super Admin', 'Admin', 'HR', 'Employee'], include_blank: false %>
-    <% elsif current_user.access_level == 'Admin' %>
-      <%= f.input :access_level, collection: ['Admin', 'HR', 'Employee'], include_blank: false %>
+      <%= f.input :access_level, collection: ['Super Admin', 'Account Owner', 'HR', 'Employee'], include_blank: false %>
+    <% elsif current_user.access_level == 'Account Owner' %>
+      <%= f.input :access_level, collection: ['Account Owner', 'HR', 'Employee'], include_blank: false %>
     <% elsif current_user.access_level == 'HR' %>
       <%= f.input :access_level, collection: ['HR', 'Employee'], include_blank: false %>
     <% end %>
