@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
   has_many :attendees, dependent: :destroy
@@ -12,7 +12,8 @@ class User < ApplicationRecord
   has_many :mods, through: :user_forms
   has_many :user_interests, dependent: :destroy
   has_many :interests, through: :user_interests, source: :content
-  validates :firstname, :lastname, :email, :access_level, presence: true
+  # validates :firstname, :lastname, :email, :access_level, presence: true
+  validates :email, presence: true
   paginates_per 50
   # validates :gender, inclusion: { in: ['M', 'F'] }
   require 'csv'

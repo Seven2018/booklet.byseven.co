@@ -269,22 +269,7 @@
   p, i {
     color: #F26419;
   }
-  .catalogue-content-card-right-menu {
-  height: 1.6rem;
-  width: 1.6rem;
-  position: absolute;
-  padding: 15px;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &:hover {
-    background-color: #f7c0a3;
-    padding: 15px;
-    border-radius: 50%;
-  }
-}
+
 }
 
 .catalogue-content-card-right-asyn {
@@ -371,20 +356,24 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   margin: 20px;
+
   .booklet-card-top {
     border-radius: 5px 5px 0px 0px;
     padding: 10px;
     height: 30%;
     position: relative;
     background: #F8D9C8;
+
     .booklet-card-top-info {
       display: flex;
       flex-direction: column;
     }
+
     .booklet-card-type-pill {
       display: flex;
       justify-content: flex-end;
     }
+
     .booklet-card-type {
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
       width: 133px;
@@ -394,6 +383,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
       .booklet-card-type-icon {
         display: flex;
         justify-content: space-evenly;
@@ -403,29 +393,42 @@
         }
       }
     }
+
     .booklet-top-right-icon-catalogue {
       z-index: 200;
       position: absolute;
       top: 12px;
       right: 10px;
+
       i {
+        font-size: 2rem;
+        border-radius: 50%;
+      }
+
+      .catalogue-content-card-right-menu {
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         &:hover {
           cursor:pointer;
           opacity: 80%;
         }
-        font-size: 2rem;
-        border-radius: 50%;
       }
     }
   }
+
   .booklet-card-bottom {
     height: 70%;
     padding: 10px;
+
     .booklet-card-theme {
       height: 50px;
       overflow: hidden;
       display: flex;
       flex-wrap: wrap;
+
       p {
         height: 20px;
         background: #F8D9C8;
@@ -435,23 +438,27 @@
         border-radius: 5px;
         font-size: 1.3rem;
       }
+
       i {
         color: #F26419;
+
         &:hover {
           cursor:pointer;
           opacity: 80%;
         }
       }
     }
+
     .booklet-card-objective {
       height: 160px;
     }
-    .booklet-card-like {
 
+    .booklet-card-like {
       color:#F26419;
       height: 32px;
       display: flex;
       justify-content: flex-end;
+
       i {
         margin-left: 10px;
       }
@@ -460,19 +467,22 @@
 }
 
 .content-dropdown {
-    position: absolute;
-    right: 1rem;
-    top: 3.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background: white;
-    padding: 0 1rem;
-    z-index: 100;
-    a {
-      padding: 5px 20px;
-    }
+  position: absolute;
+  right: 1rem;
+  top: 2.5rem;
+  border-radius: 4px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: white;
+  padding: 0 1rem;
+  z-index: 100;
+  a {
+    padding: 5px 20px;
   }
+}
+
 .booklet-card-asyn {
   width: 360px;
   height: 360px;

@@ -20,6 +20,6 @@ class TagCategoryPolicy < ApplicationPolicy
   private
 
   def check_access
-    ['Super Admin', 'Admin', 'HR'].include?(user.access_level)
+    ['Super Admin', 'Account Owner', 'HR'].include?(user.access_level)
   end
 end

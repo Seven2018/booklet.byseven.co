@@ -1,7 +1,7 @@
 class UserTagPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Admin', 'HR', 'Employee'].include? user.access_level
+      if ['Super Admin', 'Account Owner', 'HR', 'Employee'].include? user.access_level
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -16,6 +16,6 @@ class UserTagPolicy < ApplicationPolicy
   private
 
   def check_access
-    ['Super Admin', 'Admin', 'HR'].include? user.access_level
+    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 end

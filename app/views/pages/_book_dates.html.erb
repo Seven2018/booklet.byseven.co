@@ -36,11 +36,13 @@
         </div>
         <div class="booklet-card-bottom-dates">
           <div class="booklet-card-objective-booking">
-            <div class='book-dates' style='color:#F26419;'>
-            <p><b>Date & Time</b></p>
-             <a class='remove_date hidden' onclick="removeDate(this)">
-              <i class="fas fa-times"></i>
-            </a>
+            <div class='book-dates'>
+              <div class="flex-row-between-centered">
+                <p><b>Date & Time</b></p>
+                <a class='remove_date hidden' onclick="removeDate(this)">
+                  <i class="fas fa-times"></i>
+                </a>
+              </div>
               <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
               <div class="sync-booking">
                 <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
@@ -62,7 +64,7 @@
         </div>
       </div>
     </div>
-    <% else %>
+  <% else %>
     <div class="booklet-card" id="book_content-<%= content.id %>">
       <div class="booklet-card-asyn">
         <div class="booklet-card-top">

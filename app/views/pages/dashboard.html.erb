@@ -3,7 +3,7 @@
     <div class="dashboard-tabs">
       <ul class="nav nav-tabs">
         <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
-        <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <li role="presentation"><a href="#All" data-toggle="tab" >Staff Trainings</a></li>
         <% end %>
       </ul>
@@ -14,7 +14,7 @@
   <div role="tabpanel" class="tab-pane active" id="Personal">
     <%= render 'dashboard_personal' %>
   </div>
-  <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+  <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
     <div role="tabpanel" class="tab-pane" id="All">
       <%= render 'dashboard_all' %>
     </div>
@@ -22,7 +22,7 @@
 </div>
 
 <!-- MODALS -->
-<% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+<% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
   <% @allsessions.each do |session| %>
     <div class='modal fade' id='editSession-<%= session.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
       <div class='modal-dialog' role='document' style='border-radius: 20px'>

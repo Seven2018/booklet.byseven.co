@@ -1,7 +1,7 @@
 class UserInterestPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Admin', 'HR'].include? user.access_level
+      if ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'

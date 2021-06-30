@@ -1,5 +1,5 @@
 <h3>By <%= @content.author.firstname %></h3>
-<% if ['Super Admin', 'Admin', 'HR', 'Manager'].include? current_user.access_level %>
+<% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? current_user.access_level %>
   <div class='icon-btn'>
     <i class="fas fa-pencil-alt"></i>
   </div>

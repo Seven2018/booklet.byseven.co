@@ -5,11 +5,12 @@ class PagesController < ApplicationController
   end
 
   def dashboard
+    complete_profile
     @my_past_sessions = (Session.includes([:content]).joins(:attendees).where(available_date: nil, attendees: {user_id: current_user.id}).where('date < ?', Date.today) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
     @my_upcoming_sessions = Session.includes([:content]).joins(:attendees).where(attendees: {user_id: current_user.id}).where('date > ?', Date.today).order(date: :asc)
     @my_current_sessions = (Session.includes([:content]).joins(:attendees).where(date: Date.today, attendees: {user_id: current_user.id}) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
     @all_my_sessions = @my_past_sessions + @my_upcoming_sessions + @my_current_sessions
-    if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level)
+    if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       @past_sessions = (Session.includes([:content]).where(available_date: nil, company_id: current_user.company_id).where('date < ?', Date.today) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
       @upcoming_sessions = Session.includes([:content]).where(company_id: current_user.company_id).where('date > ?', Date.today).order(date: :asc)
       @current_sessions = (Session.includes([:content]).where(date: Date.today, company_id: current_user.company_id) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
@@ -33,24 +34,27 @@ class PagesController < ApplicationController
   end
 
   def catalogue
-    if params[:filter].present?
-      if params[:filter][:themes].split(',').uniq.present?
-        @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter][:themes].split(',')}).order(title: :asc).uniq
-      else
-        @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
-      end
-      respond_to do |format|
-        format.html {catalogue_path}
-        format.js
-      end
-    # Index for other Users, with visibility limited to programs proposed by their company only
-    else
-      @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
-      if params[:search].present?
-        @contents = Content.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc) if params[:search] != ' '
+    complete_profile
+    if current_user.company_id.present?
+      if params[:filter].present?
+        if params[:filter][:themes].split(',').uniq.present?
+          @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter][:themes].split(',')}).order(title: :asc).uniq
+        else
+          @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+        end
         respond_to do |format|
           format.html {catalogue_path}
           format.js
+        end
+      # Index for other Users, with visibility limited to programs proposed by their company only
+      else
+        @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
+        if params[:search].present?
+          @contents = Content.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc) if params[:search] != ' '
+          respond_to do |format|
+            format.html {catalogue_path}
+            format.js
+          end
         end
       end
     end
@@ -210,5 +214,9 @@ class PagesController < ApplicationController
       end
       @tag_categories = TagCategory.where(company_id: current_user.company_id)
     end
+  end
+
+  def complete_profile
+    redirect_to complete_profile_path unless (current_user.firstname.present? || current_user.lastname.present?)
   end
 end

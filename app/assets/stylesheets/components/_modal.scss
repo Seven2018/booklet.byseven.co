@@ -221,6 +221,8 @@ input:focus {
   }
 
   i {
+    margin-right: 3px;
+
     &:hover {
       opacity: 70%;
     }
@@ -239,6 +241,14 @@ input:focus {
 
   .hidden-form-category-ajax {
     position: absolute;
+
+    .new_category {
+
+      input {
+        height: 2.4rem !important;
+        border: 1px solid transparent !important;
+      }
+    }
   }
 
   .btn {

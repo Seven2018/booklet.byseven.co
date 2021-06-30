@@ -16,9 +16,9 @@
       <%= f.input :lastname, label: 'Last Name:', class:'form-control' %>
       <%= f.input :email, label: 'Email:', class:'form-control' %>
       <% if current_user.access_level == 'Super Admin' %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
-      <% elsif current_user.access_level == 'Admin' %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Admin', 'HR', 'Manager', 'Employee'], include_blank: false %>
+        <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false %>
+      <% elsif current_user.access_level == 'Account Owner' %>
+        <%= f.input :access_level, label: 'Access Level:', collection: ['Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false %>
       <% elsif current_user.access_level == 'HR' %>
         <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
       <% end %>
@@ -29,10 +29,12 @@
       <%= f.input :linkedin, label: 'Linkedin (url):', class:'form-control' %>
       <%= f.input :birth_date, as: :date, label: 'Birth date:', class:'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
                               end_year: Date.today.year - 12 %>
-      <%= f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Date.today.year - 70,
+      <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+        <%= f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Date.today.year - 70,
                               end_year: Date.today.year %>
+      <% end %>
       <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
-      <% if ['Super Admin', 'Admin', 'HR'].include?(current_user.access_level) %>
+      <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
         <div class="new_user_tags">
           <% checked_tags = Tag.joins(:user_tags).where(user_tags: {user_id: @user.id}).map(&:id) %>
           <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
@@ -52,14 +54,14 @@
             </div>
           </div>
           <% end %>
-          <div style=" display: flex; justify-content: center;margin-top:3rem;">
-            <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
-            <%= button_tag type: 'submit', class: 'btn-orange' do %>
-              <p>SAVE</p>
-            <% end %>
-          </div>
         </div>
       <% end %>
+      <div style=" display: flex; justify-content: center;margin-top:3rem;">
+        <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <%= button_tag type: 'submit', class: 'btn-orange' do %>
+          <p>SAVE</p>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>

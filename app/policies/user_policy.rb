@@ -1,7 +1,7 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Admin', 'HR'].include? user.access_level
+      if ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -17,7 +17,7 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
-  def edit?
+  def complete_profile?
     true
   end
 
@@ -32,6 +32,6 @@ class UserPolicy < ApplicationPolicy
   private
 
   def check_access
-    ['Super Admin', 'Admin', 'HR'].include? user.access_level
+    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 end
