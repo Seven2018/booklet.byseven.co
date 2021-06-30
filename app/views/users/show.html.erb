@@ -4,116 +4,282 @@
       <%= link_to organisation_path, class: 'btn return-arrow' do %><i class="fas fa-arrow-left"></i><% end %>
       <div id='show-buttons'>
         <% if current_user.access_level == 'Super Admin' || @user == current_user || (['Account Owner', 'HR'].include?(current_user.access_level) && current_user.company == @user.company) %>
-          <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-target='tooltip' title='Edit User'><i class='fas fa-pen'></i></button></a>
-          <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last' data-target='tooltip' title='Change Password'><i class="fas fa-key"></i></button></a>
+          <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-target='tooltip' title='Edit User' style='margin-right: 5px; border-radius: 5px'><i class='fas fa-pen'></i></button></a>
+          <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last' data-target='tooltip' title='Change Password' style='margin-right: 5px; border-radius: 5px'><i class="fas fa-key"></i></button></a>
         <% end %>
       </div>
     </div>
+  </div>
+  <div class="user-grid">
     <div class="user-top">
       <div class="user-photo">
         <% if @user.picture.present? %>
           <img src='<%= @user.picture %>' alt="" class='avatar-xlarge' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
         <% else %>
-          <a data-toggle='modal' data-target='#editPicture' class="avatar-xlarge-empty centered-item">
-            <h6>Add picture</h6>
-          </a>
+            <%=  image_tag 'empty-avatar.png', class:'avatar-xlarge' %>
         <% end %>
-      </div>
-      <div class="user-contant">
+      <div class="user-main-info">
         <div class='user-name'>
           <p><strong><%=  @user.firstname %> <%=  @user.lastname %></strong></p>
         </div>
-        <div class="user-top-info">
-          <%= render 'user_contact_info', user: @user %>
+        <div class="user-information">
+          <%= render 'users/user_informations', user: @user %>
         </div>
       </div>
+      </div>
+      <div class="user-top-info">
+        <%= render 'user_contact_info', user: @user %>
+      </div>
+      <div class="user-basic-info">
+        <%= render 'user_basic', user: @user %>
+      </div>
     </div>
+    <p class='trainings-title'>Trainings</p>
   </div>
-  <div class="user-secondary-container">
-    <div class="user-dashboard-tabs">
-      <div class="dashboard-tabs">
-        <ul class="nav nav-tabs">
-            <li role="presentation"><a href="#Overview" data-toggle="tab" class='active'>Overview</a></li>
-            <li role="presentation"><a href="#Trainings" data-toggle="tab">Trainings</a></li>
-        </ul>
-      </div>
+  <div class="user-trainings">
+    <div class="user-info-header">
+      <p style='font-size: 12px'>Interested</p>
     </div>
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Overview">
-        <div class="user-overview-grid">
-          <div class="user-information">
-            <%= render 'users/user_informations', user: @user %>
-          </div>
-          <div class="interested-in">
-            <%= render 'user_interests', user: @user %>
-          </div>
-        </div>
-      <div role="tabpanel" class="tab-pane" id="Trainings">
-        <div class="user-trainings">
-          <p>Upcoming Trainings</p>
-          <div class="trainings-row">
-            <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |session| %>
-              <% content = Session.includes([:content]).find(session.id).content %>
-              <% if session.date == Date.today %>
-              <%= link_to content_path(content, redirect_from: 'user_show', session_id: session.id) do %>
-              <% if content.content_type == 'Asynchronous' %>
-              <div class="training-card-main">
-                  <div class="user-trainings-card-asyn">
-                    <div class="user-training-top">
-                      <% if content.title.length > 60 %>
-                        <h3><b>=<% content.title.first(60)+'...' %></b></h3>
-                      <% else %>
-                     <h3><b><%= content.title %></b></h3>
-                      <% end %>
-                    <div class="user-training-icon"><i class="fas fa-laptop"></i></div>
+    <div class="trainings-row">
+      <%= render 'user_interests', user: @user %>
+    </div>
+    <div class="user-info-header">
+      <p style='font-size: 12px'>Upcoming</p>
+    </div>
+    <div class="trainings-row">
+      <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |session| %>
+        <% content = Session.includes([:content]).find(session.id).content %>
+        <% if session.date == Date.today %>
+        <%= link_to content_path(content, redirect_from: 'user_show', session_id: session.id) do %>
+          <% if content.content_type == 'Synchronous' %>
+            <div class="booking-date">
+              <p style='margin-right:5px; color:#F26419;'>Begins</p>
+              <b><p style='color:#F26419;'><%= session.date.strftime('%B %d') %></p></b>
+            </div>
+            <div class="booklet-card">
+              <div class="booklet-card-syn">
+                <div class="booklet-card-top">
+                  <div class="booklet-card-top-info">
+                  <h3><%= content.title %></h3>
+                  <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
+                  <p><%= content.duration %> Minutes</p>
+                  </div>
+                  <div class="booklet-card-type-pill">
+                    <div class="booklet-card-type">
+                      <div class="booklet-card-type-icon">
+                        <% if content.content_type == 'Synchronous' %>
+                          <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                          <p>In Person</p>
+                        <% else %>
+                          <i class="fas fa-laptop" style='color:black;'></i>
+                          <p>Online</p>
+                        <% end %>
+                      </div>
                     </div>
-                    <div class="user-training-bottom">
-                      <p><i class="fas fa-calendar-alt"></i><%= session.date.strftime('%d/%m/%Y') %></p>
-                      <div class='content-time'><p><i class="fas fa-clock"></i><%= content.duration %> min</p></div>
+                  </div>
+                  <div class="booklet-top-right-icon-catalogue" >
+                  </div>
+                </div>
+                <div class="booklet-card-bottom">
+                  <div class="booked-date">
+                    <% if session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today) %>
+                      <%= link_to '', content_path(content.id, content_access: 'granted', redirect_from: 'dashboard'), class: 'stretched-link' %>
+                    <% else %>
+                      <%= link_to '', content_path(content.id, session_id: session.id, redirect_from: 'dashboard'), class: 'stretched-link' %>
+                    <% end %>
+                  </div>
+                  <div class="booklet-card-theme">
+                  <% content.categories.order(title: :asc).each do |category| %>
+                  <p><%= category.title %></p>
+                  <% end %>
+                  </div>
+                  <div class="booklet-card-objective">
+                  <% if content.description.present? %>
+                    <% if content.description.to_plain_text.length >= (200) %>
+                      <p><%= content.description.to_plain_text.first(200) + '...' %></p>
+                    <% else %>
+                      <p><%= content.description.to_plain_text.first(200) %></p>
+                    <% end %>
+                  <% end %>
+                  </div>
+                  <div class="booklet-card-like">
+                    <p><%= session.attendees.count %> Participant(s)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% else %>
+            <div class="booking-date">
+              <p style='margin-right:5px;'>Available</p>
+              <b><p><%= session.date.strftime('%B %d') %></p></b>
+            </div>
+            <div class="booklet-card">
+              <div class="booklet-card-asyn">
+                <div class="booklet-card-top">
+                  <div class="booklet-card-top-info">
+                  <h3><%= content.title %></h3>
+                  <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
+                  <p><%= content.duration %> Minutes</p>
+                  </div>
+                  <div class="booklet-card-type-pill">
+                    <div class="booklet-card-type">
+                      <div class="booklet-card-type-icon">
+                        <% if content.content_type == 'Synchronous' %>
+                          <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                          <p>In Person</p>
+                        <% else %>
+                          <i class="fas fa-laptop" style='color:black;'></i>
+                          <p>Online</p>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="booklet-top-right-icon-catalogue">
+                  </div>
+                </div>
+                <div class="booklet-card-bottom">
+                  <div class="booked-date">
+                    <% if session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today) %>
+                      <%= link_to '', content_path(content.id, content_access: 'granted', redirect_from: 'dashboard'), class: 'stretched-link' %>
+                    <% else %>
+                      <%= link_to '', content_path(content.id, session_id: session.id, redirect_from: 'dashboard'), class: 'stretched-link' %>
+                    <% end %>
+                  </div>
+                  <div class="booklet-card-theme">
+                  <% content.categories.order(title: :asc).each do |category| %>
+                  <p><%= category.title %></p>
+                  <% end %>
+                  </div>
+                  <div class="booklet-card-objective">
+                  <% if content.description.present? %>
+                    <% if content.description.to_plain_text.length >= (200) %>
+                      <p><%= content.description.to_plain_text.first(200) + '...' %></p>
+                    <% else %>
+                      <p><%= content.description.to_plain_text.first(200) %></p>
+                    <% end %>
+                  <% end %>
+                  </div>
+                  <div class="booklet-card-like">
+                    <p><%= session.attendees.count %> Participant(s)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% end %>
+    </div>
+    <div class="user-info-header">
+      <p style='font-size: 12px'>Completed</p>
+    </div>
+      <div class="trainings-row">
+        <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |session| %>
+          <% content = Session.includes([:content]).find(session.id).content %>
+          <%= link_to content_path(content, redirect_from: 'user_show', content_access: 'granted') do %>
+            <% if content.content_type == 'Synchronous' %>
+              <div class="booklet-card">
+                <div class="booklet-card-syn">
+                  <div class="booklet-card-top">
+                    <div class="booklet-card-top-info">
+                    <h3><%= content.title %></h3>
+                    <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
+                    <p><%= content.duration %> Minutes</p>
+                    </div>
+                    <div class="booklet-card-type-pill">
+                      <div class="booklet-card-type">
+                        <div class="booklet-card-type-icon">
+                          <% if content.content_type == 'Synchronous' %>
+                            <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                            <p>In Person</p>
+                          <% else %>
+                            <i class="fas fa-laptop" style='color:black;'></i>
+                            <p>Online</p>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="booklet-top-right-icon-catalogue" >
+                    </div>
+                  </div>
+                  <div class="booklet-card-bottom">
+                    <div class="booked-date">
+                      <%= session.date.strftime('%d/%m/%Y') %>
+                    </div>
+                    <div class="booklet-card-theme">
+                    <% content.categories.order(title: :asc).each do |category| %>
+                    <p><%= category.title %></p>
+                    <% end %>
+                    </div>
+                    <div class="booklet-card-objective">
+                    <% if content.description.present? %>
+                      <% if content.description.to_plain_text.length >= (200) %>
+                        <p><%= content.description.to_plain_text.first(200) + '...' %></p>
+                      <% else %>
+                        <p><%= content.description.to_plain_text.first(200) %></p>
+                      <% end %>
+                    <% end %>
+                    </div>
+                    <div class="booklet-card-like">
+                      <div class='content-time'><p><i class="fas fa-star-half-alt" style='color:#F26419;'></i>
+                        <% assessment = session.content.mods.where(mod_type: 'assessment').first %>
+                        <% if assessment.present? %>
+                          <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id, mod_id: assessment.id}).each do |form| %>
+                           Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%
+                          <% end %></p>
+                        <% else %>
+                          <p>No Quiz</p>
+                        <% end %>
+                      </div>
                     </div>
                   </div>
                 </div>
-              <% elsif %>
-              <% content.content_type == 'Synchronous' %>
-               <div class="training-card-main">
-                  <div class="user-trainings-card-syn">
-                    <div class="user-training-top">
-                      <% if content.title.length > 60 %>
-                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
-                      <% else %>
-                    <h3><b><%= content.title %></b></h3>
-                      <% end %>
-                      <div class="user-training-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+              </div>
+              <% else %>
+               <div class="booklet-card">
+                <div class="booklet-card-syn">
+                  <div class="booklet-card-top">
+                    <div class="booklet-card-top-info">
+                    <h3><%= content.title %></h3>
+                    <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
+                    <p><%= content.duration %> Minutes</p>
                     </div>
-                    <div class="user-training-bottom">
-                      <p><i class="fas fa-calendar-alt"></i><%= session.date.strftime('%d/%m/%Y') %></p>
-                      <div class='content-time'><p><i class="fas fa-clock"></i><%= content.duration %> min</p></div>
+                    <div class="booklet-card-type-pill">
+                      <div class="booklet-card-type">
+                        <div class="booklet-card-type-icon">
+                          <% if content.content_type == 'Synchronous' %>
+                            <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                            <p>In Person</p>
+                          <% else %>
+                            <i class="fas fa-laptop" style='color:black;'></i>
+                            <p>Online</p>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="booklet-top-right-icon-catalogue" >
                     </div>
                   </div>
-                </div>
-              <% end %>
-              <% end %>
-            <% end %>
-            <% end %>
-          </div>
-        <p>Completed Trainings</p>
-        <div class="trainings-row">
-          <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |session| %>
-            <% content = Session.includes([:content]).find(session.id).content %>
-            <%= link_to content_path(content, redirect_from: 'user_show', content_access: 'granted') do %>
-              <div class="training-card-main-completed">
-              <% if content.content_type == 'Asynchronous' %>
-                  <div class="user-trainings-card-asyn">
-                    <div class="user-training-top">
-                      <% if content.title.length > 60 %>
-                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
-                      <% else %>
-                     <h3><b><%= content.title %></b></h3>
-                      <% end %>
-                      <div class="user-training-icon"><i class="fas fa-laptop"></i></div>
+                  <div class="booklet-card-bottom">
+                    <div class="booked-date">
+                      <%= session.date.strftime('%d/%m/%Y') %>
                     </div>
-                    <div class="user-training-bottom">
-                      <p><i class="fas fa-calendar-alt"></i><%= session.date.strftime('%d/%m/%Y') %></p>
+                    <div class="booklet-card-theme">
+                    <% content.categories.order(title: :asc).each do |category| %>
+                    <p><%= category.title %></p>
+                    <% end %>
+                    </div>
+                    <div class="booklet-card-objective">
+                    <% if content.description.present? %>
+                      <% if content.description.to_plain_text.length >= (200) %>
+                        <p><%= content.description.to_plain_text.first(200) + '...' %></p>
+                      <% else %>
+                        <p><%= content.description.to_plain_text.first(200) %></p>
+                      <% end %>
+                    <% end %>
+                    </div>
+                    <div class="booklet-card-like">
                       <div class='content-time'><p><i class="fas fa-star-half-alt"></i>
                         <% assessment = session.content.mods.where(mod_type: 'assessment').first %>
                         <% if assessment.present? %>
@@ -127,41 +293,11 @@
                     </div>
                   </div>
                 </div>
-              <% elsif %>
-                <div class="training-card-main-completed">
-                  <% content.content_type == 'Synchronous' %>
-                  <div class="user-trainings-card-syn">
-                    <div class="user-training-top">
-                      <% if content.title.length > 60 %>
-                        <h3><b><%= content.title.first(60)+'...' %></b></h3>
-                      <% else %>
-                      <h3><b><%= content.title %></b></h3>
-                      <% end %>
-                      <div class="user-training-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                    </div>
-                    <div class="user-training-bottom">
-                      <p><i class="fas fa-calendar-alt"></i> <%= session.date.strftime('%d/%m/%Y') %></p>
-                      <div class='content-time'><p><i class="fas fa-star-half-alt"></i>
-                        <% assessment = session.content.mods.where(mod_type: 'assessment').first %>
-                        <% if assessment.present? %>
-                          <% Assessment.joins(:user_forms).where(user_forms: {user_id: @user.id, mod_id: assessment.id}).each do |form| %>
-                           Grade : <%= UserForm.find_by(user_id: @user, mod_id: form.id)&.grade %>%
-                          <% end %></p>
-                        <% else %>
-                          No Quiz</p>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                </div>
-                <% end %>
-              <% end %>
+              </div>
             <% end %>
-          </div>
+          <% end %>
         </div>
-        </div>
-      </div>
+        <% end %>
     </div>
   </div>
 </div>
