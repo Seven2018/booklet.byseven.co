@@ -9,7 +9,7 @@
     <% if user.phone_number.present? %>
       <p class="data" id='phone' onclick='openForm(this)' style='color:#F26419'><%=  user.phone_number %></p>
         <% else %>
-      <p class="data" id='job' onclick='openForm(this)' >Add phone number</p>
+      <p class="data" id='job' onclick='openForm(this)' style='color:#F26419'>Add phone number</p>
     <% end %>
     <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'phone'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
       <%= f.input :phone_number, label: false, input_html: {value: user.phone_number} %>
