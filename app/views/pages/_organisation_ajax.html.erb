@@ -13,7 +13,7 @@
     <% if unfiltered.present? %>
       <h1>Employees (<%= User.where(company_id: current_user.company_id).count %>)</h1>
     <% else %>
-      <h1>Employees (<%= users.length %>) <span onclick="clearSearchBis(this)">See All</span></h1>
+      <h1>Employees (<%= users.length %>) <span onclick="clearSearchBis(this)" class='see-all'>See All</span></h1>
     <% end %>
   <% end %>
   <div>

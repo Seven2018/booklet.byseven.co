@@ -24,17 +24,17 @@
 }
 
 .workshop-cards-selected {
-    display: flex;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .workshop-cards-book {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 
@@ -461,7 +461,7 @@
 
 // Booking v2 //
 .book-page-guide {
-    display: flex;
+    display: none;
     position:relative;
     justify-content: space-evenly;
     width: 400px;
@@ -510,6 +510,9 @@
   .disabled {
     color: #808080;
     border: 1px solid #808080;
+  }
+  @include from-medium-high {
+    display: flex;
   }
 }
 
@@ -914,5 +917,22 @@
         margin-left: 10px;
       }
     }
+  }
+}
+
+.booklet-card-theme-modal {
+  height: 50px;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  p {
+    height: 20px;
+    background: #F8D9C8;
+    color: #F26419;
+    padding: 0 .5rem;
+    margin: 0 1rem .5rem 0;
+    border-radius: 5px;
+    font-size: 1.3rem;
   }
 }
