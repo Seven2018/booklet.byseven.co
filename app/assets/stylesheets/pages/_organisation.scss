@@ -156,10 +156,8 @@
 
 #tag_tag_name {
   background-color: transparent !important;
-  border: 1px solid transparent !important;
 
   &:focus {
-    border: 1px solid transparent !important;
     background-color: transparent !important;
   }
   input:internal-autofill-selected {
@@ -287,9 +285,6 @@
     transition: width .25s linear;
     margin-top: 5rem;
 
-    input:focus {
-      border: none !important;
-    }
 
     .organisation-manage-users-controls {
       display: flex;
@@ -552,6 +547,13 @@
     label {
       padding-left: 1rem;
     }
+  }
+}
+
+.see-all {
+  cursor: pointer;
+  &:hover {
+    color: #F26419;
   }
 }
 

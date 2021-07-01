@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="booklet-top-right-icon">
-            <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal" style='color:#F26419;'></i>
+            <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal-<%= content.id %>" style='color:#F26419;'></i>
           </div>
         </div>
         <div class="booklet-card-bottom-dates">
@@ -66,7 +66,7 @@
     </div>
   <% else %>
     <div class="booklet-card" id="book_content-<%= content.id %>">
-      <div class="booklet-card-asyn">
+      <div class="booklet-card-asyn-dates">
         <div class="booklet-card-top">
           <div class="booklet-card-top-info">
             <% if content.title.length > 35 %>
@@ -90,10 +90,10 @@
             </div>
           </div>
           <div class="booklet-top-right-icon">
-            <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal"></i>
+            <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal-<%= content.id %>"></i>
           </div>
         </div>
-        <div class="booklet-card-bottom">
+        <div class="booklet-card-bottom-dates">
           <div class="booklet-card-objective-booking">
             <div class='book-dates'>
             <p><b>Available From:</b></p>
@@ -111,7 +111,7 @@
   <% end %>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal-<%= content.id %>" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -121,7 +121,7 @@
         <button type="button"  data-dismiss="modal"><i class="fas fa-times" style='opacity: 1;'></i></button>
       </div>
       <div class="modal-body">
-      <div class="book-selected-card-categories">
+      <div class="booklet-card-theme-modal">
         <% content.categories.order(title: :asc).each do |category| %>
           <p><%= category.title %></p>
         <% end %>

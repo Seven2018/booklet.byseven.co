@@ -26,7 +26,7 @@
         </div>
         <div class="flex-row-start-centered" onclick='fetchCategoryForm(this);'>
           <i class="fas fa-plus" data-target='tooltip' title='Add Theme'></i>
-          <p>New Category</p>
+          <p>New Theme</p>
         </div>
         <%= f.hidden_field :content_id, value: content.id %>
         <%= f.hidden_field :page, value: params[:action] %>
@@ -39,7 +39,7 @@
       <% end %>
       <div class='hidden-form-category-ajax hidden'>
         <%= simple_form_for :new_category, url: content_link_category_path, method: :get, remote: true do |f| %>
-          <%= f.text_field :title, placeholder: 'New Category', style: 'height: 100%;' %>
+          <%= f.text_field :title, placeholder: 'New Theme', style: 'height: 100%;' %>
           <%= f.hidden_field :content_id, value: content.id %>
           <%= f.hidden_field :page, value: params[:action] %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
