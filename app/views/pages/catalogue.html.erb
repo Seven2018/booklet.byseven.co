@@ -2,19 +2,11 @@
   <div class='index-controls-create-content'>
     <h2 class='cat-title'>Catalogue of Trainings</h2>
     <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-      <div class="btn-orange" onclick='openHiddenForm(this);' data-target='tooltip' title='Create a content'>
+      <%= link_to contents_path(content: {title: 'New Workshop - ' + Date.today.to_s}), method: :post do %>
+      <div class="btn-orange" data-target='tooltip' title='Create a content'>
         <p><i class="fas fa-plus"></i> Create</p>
       </div>
-      <div class="hidden-form-ajax hidden" style='height: 4rem;'>
-        <%= simple_form_for Content.new do |f| %>
-          <div style='display:flex; justify-content: flex-end; align-items:center; margin:0px;'>
-            <%= f.input :title, label: false, placeholder: 'Title' %>
-            <%= button_tag :submit, class: 'hidden-submit' do %>
-              <i class="fas fa-save"></i>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+      <% end %>
     <% end %>
   </div>
   <div id="index-controls" class='flex-row-between-centered' style='padding-top:0rem; min-height: 2rem;'>
