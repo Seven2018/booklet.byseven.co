@@ -39,10 +39,10 @@
           </div>
           <div class="booklet-card-objective">
             <% if content.description.present? %>
-              <% if content.description.to_plain_text.length >= (300) %>
-                <p><%= content.description.to_plain_text.first(300) + '...' %></p>
+              <% if content.description.length >= (300) %>
+                <p><%= content.description.first(300) + '...' %></p>
               <% else %>
-                <p><%= content.description.to_plain_text.first(300) %></p>
+                <p><%= content.description.first(300) %></p>
               <% end %>
             <% end %>
           </div>
@@ -92,10 +92,10 @@
           </div>
           <div class="booklet-card-objective">
             <% if content.description.present? %>
-              <% if content.description.to_plain_text.length >= (300) %>
-                <p><%= content.description.to_plain_text.first(300) + '...' %></p>
+              <% if content.description.length >= (300) %>
+                <p><%= content.description.first(300) + '...' %></p>
               <% else %>
-                <p><%= content.description.to_plain_text.first(300) %></p>
+                <p><%= content.description.first(300) %></p>
               <% end %>
             <% end %>
           </div>

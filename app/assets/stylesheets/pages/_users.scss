@@ -17,7 +17,7 @@ padding: 20px;
 // //COMPLETED AND UPCOMING TRAININGS//
 
 .trainings-row {
-  min-height: 40rem;
+  min-height: 45rem;
   width: auto;
   display: flex;
   flex-direction: column;
@@ -83,6 +83,7 @@ padding: 20px;
 
 .user-top-info, .user-basic-info {
   margin-top: 0px;
+
   @include from-medium-high {
     margin-top: 5rem;
   }
@@ -99,9 +100,18 @@ padding: 20px;
   }
 }
 
-.user-job {
-  p {
-    font-size: 1.6rem;
+.user-job, .user-contact-info {
+
+  div {
+    margin: 0;
+  }
+
+  input {
+    font-size: 1.4rem !important;
+    background-color: transparent !important;
+    padding: 0;
+    border: none !important;
+    box-shadow: none !important;
   }
 }
 
@@ -128,18 +138,23 @@ color: #808080;
 }
 
 .user-text {
+  display: flex;
+  align-items: center;
+  height: 30.5px;
+
   p, a {
     font-size: 1.4rem;
   }
+
   a {
     color: #F26419;
   }
-  display: flex;
-  margin-bottom: 1rem;
+
   p:first-of-type {
     color: #808080;
     width: 100px;
   }
+
   a:hover {
     opacity: 80%;
   }

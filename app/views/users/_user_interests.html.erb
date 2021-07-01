@@ -6,6 +6,7 @@
         <div class="booklet-card-syn">
           <div class="booklet-card-top">
             <div class="booklet-card-top-info">
+              <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
               <h3><b><%= content.title %></b></h3>
               <p><%= content.duration %> Minutes</p>
             </div>

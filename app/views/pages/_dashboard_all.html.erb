@@ -9,27 +9,33 @@
     </div>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane" id="UpcomingAll">
-        <% if @upcoming_sessions.empty? %>
-          <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
-        <% elsif %>
-          <% @upcoming_sessions.each do |session| %>
-            <%= render 'dashboard_sessions_card', session: session %>
+        <div class="row">
+          <% if @upcoming_sessions.empty? %>
+            <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
+          <% elsif %>
+            <% @upcoming_sessions.each do |session| %>
+              <%= render 'dashboard_sessions_card', session: session %>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="CompletedAll">
-        <% @past_sessions.each do |session| %>
-          <%= render 'dashboard_sessions_card', session: session %>
-        <% end %>
-      </div>
-      <div role="tabpanel" class="tab-pane active" id="CurrentSessionsAll">
-        <% if @current_sessions.empty? %>
-          <p>No current trainings scheduled for the moment.</p>
-        <% elsif %>
-          <% @current_sessions.each do |session| %>
+        <div class="row">
+          <% @past_sessions.each do |session| %>
             <%= render 'dashboard_sessions_card', session: session %>
           <% end %>
-        <% end %>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane active" id="CurrentSessionsAll">
+        <div class="row">
+          <% if @current_sessions.empty? %>
+            <p>No current trainings scheduled for the moment.</p>
+          <% elsif %>
+            <% @current_sessions.each do |session| %>
+              <%= render 'dashboard_sessions_card', session: session %>
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

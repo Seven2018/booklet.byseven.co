@@ -6,30 +6,16 @@
   </div>
   <div class="user-text">
     <p>Phone:</p>
-    <% if user.phone_number.present? %>
-      <p class="data" id='phone' onclick='openForm(this)' style='color:#F26419'><%=  user.phone_number %></p>
-        <% else %>
-      <p class="data" id='job' onclick='openForm(this)' style='color:#F26419'>Add phone number</p>
-    <% end %>
-    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'phone'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-      <%= f.input :phone_number, label: false, input_html: {value: user.phone_number} %>
-      <%= button_tag :submit, class: 'hidden-submit' do %>
-        <i class="fas fa-save"></i>
-      <% end %>
+    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'phone'), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+      <%= f.input :phone_number, label: false, placeholder: 'Add phone number', input_html: {class: "data", value: user.phone_number, style: 'color:#F26419', onclick: 'updateUser(this)'} %>
+      <%= f.submit '', class: 'hidden-submit hidden' %>
    <% end %>
   </div>
   <div class="user-text">
     <p>Address:</p>
-    <% if user.address.present? %>
-      <p class="data" id='address' onclick='openForm(this)'><%=  user.address %></p>
-      <% else %>
-      <p class="data" id='address' onclick='openForm(this)'>Add Address</p>
-    <% end %>
-      <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'address'), html: { class: "hidden hidden-form-user" }, method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-      <%= f.input :address, label: false, input_html: {value: user.address} %>
-      <%= button_tag :submit, class: 'hidden-submit' do %>
-        <i class="fas fa-save"></i>
-      <% end %>
+    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'address'), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
+      <%= f.input :address, label: false, placeholder: 'Add address', input_html: {class: "data", value: user.address, onclick: 'updateUser(this)'} %>
+      <%= f.submit '', class: 'hidden-submit hidden' %>
    <% end %>
   </div>
 </div>
