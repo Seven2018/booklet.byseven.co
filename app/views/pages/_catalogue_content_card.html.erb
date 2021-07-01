@@ -119,6 +119,13 @@
         <% end %>
         </div>
         <div class="booklet-card-objective">
+          <% if content.description.present? %>
+            <% if content.description.length >= (200) %>
+              <p><%= content.description.first(200) + '...' %></p>
+            <% else %>
+              <p><%= content.description.first(200) %></p>
+            <% end %>
+          <% end %>
         </div>
         <div class="booklet-card-like">
           <p><%= content.interested.count %></p>
