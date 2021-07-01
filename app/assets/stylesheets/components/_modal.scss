@@ -233,6 +233,7 @@ input:focus {
   }
 
   p {
+    height: 2.4rem !important;
     background: none !important;
     color: black !important;
     padding: 0 !important;
@@ -241,14 +242,6 @@ input:focus {
 
   .hidden-form-category-ajax {
     position: absolute;
-
-    .new_category {
-
-      input {
-        height: 2.4rem !important;
-        border: 1px solid transparent !important;
-      }
-    }
   }
 
   .btn {
@@ -264,11 +257,10 @@ input:focus {
 
 .new_category {
   input {
-    border-bottom: 1px solid transparent !important;
     border: none;
+    padding: 0;
   }
   input:focus {
-    border-bottom: 1px solid#F26419 !important;
     border: none;
     background-color: transparent;
   }
