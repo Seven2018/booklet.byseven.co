@@ -11,8 +11,8 @@
       <div class="calendar-card-date"><h2><%= session.date.strftime('%d') %></h2></div>
       <div class="calendar-card-info">
         <div class="calendar-card-title"><p><%= content.title %></p></div>
-<!--         <div class="calendar-card-time"><p><%# session.starts_at.strftime('%H:%M') %> - <%# session.ends_at.strftime('%H:%M') %></p>
- -->          <div class="calendar-card-title-sessions"><p></p></div>
+        <div class="calendar-card-time"><p><%# session.starts_at.strftime('%H:%M') %> - <%# session.ends_at.strftime('%H:%M') %></p>
+        <div class="calendar-card-title-sessions"><p></p></div>
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@
         <% if session.available_date.present? %>
           <div class="calendar-card-time"><p>Available until <%= session.available_date.to_s %></p></div>
         <% else %>
-          <div class="calendar-card-time"><p></p></div>sess
+          <div class="calendar-card-time"><p></p></div>
         <% end %>
        <div class="calendar-card-title-sessions"><p></p></div>
       </div>
