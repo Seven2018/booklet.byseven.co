@@ -1,6 +1,6 @@
 <% content = session.content %>
 <% if content.content_type == 'Synchronous' %>
-  <div class="col-lg-6 col-sm-12">
+  <div class="col-xl-6 col-lg-12 booklet-col">
     <div class="booklet-card">
       <div class="booking-date">
         <p style='margin-right:5px; color:#F26419;'>Begins</p>
@@ -63,7 +63,7 @@
     </div>
   </div>
 <% else %>
-  <div class="col-lg-6 col-sm-12">
+  <div class="col-xl-6 col-lg-12 booklet-col">
     <div class="booklet-card">
       <div class="booking-date">
         <p style='margin-right:5px;'>Available</p>
@@ -92,6 +92,9 @@
                 <% end %>
               </div>
             </div>
+            <% if session.available_date.present? %>
+              <h6><b>Ends <%= session.available_date.strftime('%B %d') %></b></h6>
+            <% end %>
           </div>
           <div class="booklet-top-right-icon-catalogue">
             <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
@@ -128,8 +131,31 @@
 <% end %>
 
 <script>
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem);
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
   function openContentMenu(element) {
+    doubleClickGuardian = true
     dropdown = element.parentNode.querySelector('.content-dropdown');
     dropdown.classList.toggle('hidden');
+    setTimeout(function(){doubleClickGuardian = false}, 10)
+
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, dropdown) && doubleClickGuardian == false) {
+        dropdown.classList.toggle('hidden');
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
   };
 </script>

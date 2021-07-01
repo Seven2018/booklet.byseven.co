@@ -3,6 +3,7 @@ if ("<%= @filter %>" == 'content') {
   document.querySelector('.dates-title').innerHTML = "<h2>Select Dates for: <%= @selected_contents.map(&:title).join(', ') %>";
   document.querySelector('.date-book').innerHTML = '<%= j render("pages/book_dates", selected_contents: @selected_contents) %>';
   document.querySelector('.users-book').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: @interest_for, selected_filter: @selected_filter) %>';
+  document.querySelector('.workshop-cards-book').innerHTML = '<%= j render("pages/book_content_index", contents: @contents) %>';
   flatpickr(".datepicker", {
     disableMobile: true,
     dateFormat: "d/m/Y",
