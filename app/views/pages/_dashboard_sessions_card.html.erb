@@ -10,12 +10,12 @@
         <div class="booklet-card-top">
           <div class="booklet-card-top-info">
             <%= link_to '', content_path(content), class: 'stretched-link' %>
-          <h3><%= content.title %></h3>
-          <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
-           <% if interest.present? && interest.interest_type == 'Completed' %>
-            <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
-          <% end %>
-          <p><%= content.duration %> Minutes</p>
+            <h3><%= content.title %></h3>
+            <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
+            <% if interest.present? && interest.interest_type == 'Completed' %>
+              <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
+            <% end %>
+            <p><%= content.duration %> Minutes</p>
           </div>
           <div class="booklet-card-type-pill">
             <div class="booklet-card-type">
@@ -42,9 +42,9 @@
         </div>
         <div class="booklet-card-bottom">
           <div class="booklet-card-theme">
-          <% content.categories.order(title: :asc).each do |category| %>
-            <p><%= category.title %></p>
-          <% end %>
+            <% content.categories.order(title: :asc).each do |category| %>
+              <p><%= category.title %></p>
+            <% end %>
           </div>
           <div class="booklet-card-objective">
             <% if content.description.present? %>
@@ -73,12 +73,12 @@
         <div class="booklet-card-top">
           <div class="booklet-card-top-info">
             <%= link_to '', content_path(content), class: 'stretched-link' %>
-          <h3><%= content.title %></h3>
-          <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
-           <% if interest.present? && interest.interest_type == 'Completed' %>
-            <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
-          <% end %>
-          <p><%= content.duration %> Minutes</p>
+            <h3><%= content.title %></h3>
+            <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
+            <% if interest.present? && interest.interest_type == 'Completed' %>
+              <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
+            <% end %>
+            <p><%= content.duration %> Minutes</p>
           </div>
           <div class="booklet-card-type-pill">
             <div class="booklet-card-type">
@@ -105,18 +105,18 @@
         </div>
         <div class="booklet-card-bottom">
           <div class="booklet-card-theme">
-          <% content.categories.order(title: :asc).each do |category| %>
-          <p><%= category.title %></p>
-          <% end %>
+            <% content.categories.order(title: :asc).each do |category| %>
+              <p><%= category.title %></p>
+            <% end %>
           </div>
           <div class="booklet-card-objective">
-          <% if content.description.present? %>
-            <% if content.description.length >= (200) %>
-              <p><%= content.description.first(200) + '...' %></p>
-            <% else %>
-              <p><%= content.description.first(200) %></p>
+            <% if content.description.present? %>
+              <% if content.description.length >= (200) %>
+                <p><%= content.description.first(200) + '...' %></p>
+              <% else %>
+                <p><%= content.description.first(200) %></p>
+              <% end %>
             <% end %>
-          <% end %>
           </div>
           <div class="booklet-card-like">
             <p><%= session.attendees.count %> Participant(s)</p>
