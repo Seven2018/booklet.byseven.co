@@ -8,9 +8,6 @@
         <% end %>
       </ul>
     </div>
-  </div>
-</div>
-
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Personal">
         <%= render 'dashboard_personal' %>
@@ -21,14 +18,9 @@
         </div>
       <% end %>
     </div>
-
   </div>
-  <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-    <div role="tabpanel" class="tab-pane" id="All">
-      <%= render 'dashboard_all' %>
-    </div>
-  <% end %>
 </div>
+
 
 <!-- MODALS -->
 <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
