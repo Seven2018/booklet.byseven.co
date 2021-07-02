@@ -61,8 +61,6 @@ function clearSearch(element) {
     })
   }
 
-
-
   formGuardian = false;
   doubleClickGuardian = false;
   setTimeout(function(){
@@ -275,12 +273,6 @@ function clearSearch(element) {
     }
   }
 
- // function filterWord(element) {
- //  category = element.closest('.headers-div')
- //  category.style.fontWeight = '800';
- // }
-
-
   function clearInput(element) {
     form = element.parentNode.parentNode;
     form.querySelector('.hidden-submit').click();
@@ -367,12 +359,6 @@ function clearSearch(element) {
   }
 
   function clearSearchBis() {
-    // element = document.querySelector('#navbar-search-clear')
-    // search_input = element.parentNode.querySelector('input');
-    // search_input.value = '';
-    // element.classList.add('hidden');
-    // document.querySelector('.organisation-main-container').classList.remove('hidden')
-    // document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
     document.location.reload()
   }
 
@@ -395,4 +381,8 @@ function clearSearch(element) {
   }
 
   infiniteScroll()
+
+  // if (window.location.href.split('?')[1].split('=')[0] == 'timer') {
+  //   (function(){window.location.href = window.location.href.split('?')[0]}, parseInt(window.location.href.split('?')[1].split('=')[0],10));
+  // }
 </script>

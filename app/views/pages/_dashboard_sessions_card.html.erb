@@ -9,7 +9,7 @@
       <div class="booklet-card-syn">
         <div class="booklet-card-top">
           <div class="booklet-card-top-info">
-            <%= link_to '', content_path(content), class: 'stretched-link' %>
+            <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link' %>
             <h3><%= content.title %></h3>
             <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
             <% if interest.present? && interest.interest_type == 'Completed' %>
@@ -72,7 +72,7 @@
       <div class="booklet-card-asyn">
         <div class="booklet-card-top">
           <div class="booklet-card-top-info">
-            <%= link_to '', content_path(content), class: 'stretched-link' %>
+            <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link' %>
             <h3><%= content.title %></h3>
             <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
             <% if interest.present? && interest.interest_type == 'Completed' %>

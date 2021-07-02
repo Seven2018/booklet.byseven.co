@@ -6,7 +6,13 @@
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
   <% else %>
-    <h2><%= content.title %></h2>
+    <div class="flex-row-between-centered">
+      <h2><%= content.title %></h2>
+      <% if params[:session_id].present? && Session.find(params[:session_id]).date > Date.today %>
+        <% session = Session.find(params[:session_id]) %>
+        <p style='color:#F26419'><b><i>Content available on <%= session.date.to_s %></i></b></p>
+      <% end %>
+    </div>
     <p><%= content.description %></p>
   <% end %>
   <div class="content-add-right-mobile">

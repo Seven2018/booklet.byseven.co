@@ -374,9 +374,9 @@
     initial_top = form.offsetTop
     initial_left = form.offsetLeft
     form.style.top = (element.offsetTop).toString() + 'px'
-    form.style.left = (element.offsetLeft + 25).toString() + 'px'
+    form.style.left = (element.offsetLeft + 27).toString() + 'px'
     element.querySelector('p').style.opacity = '0'
-    form.classList.toggle('hidden')
+    form.classList.remove('hidden')
     form.querySelector('input').focus()
     formGuardian = true;
     setTimeout(function(){
@@ -395,7 +395,7 @@
         form.style.top = initial_top.toString() + 'px';
         form.style.left = initial_left.toString() + 'px'
         element.querySelector('p').style.opacity = '1'
-        form.classList.toggle('hidden')
+        form.classList.add('hidden')
         form.querySelector('input').value = ''
         this.removeEventListener('click', arguments.callee, false)
       }
