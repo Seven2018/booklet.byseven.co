@@ -20,9 +20,6 @@
           <%= f.text_field :name, placeholder: 'New Tag Category', style: 'height: 100%;', value: '' %>
           <%= f.hidden_field :users, value: users.map(&:id) %>
           <%= f.submit '', class: 'hidden hidden-submit' %>
-          <div onclick='clearInput(this);'>
-            <i class="fas fa-save"></i>
-          </div>
         </div>
       <% end %>
     </div>
@@ -105,7 +102,6 @@
           <%= f.hidden_field :tag_category_id, value: tag_category.id %>
           <%= f.hidden_field :users, value: users.map(&:id) %>
           <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '' do %>
-            <i class="fas fa-save"></i>
           <% end %>
         </div>
       <% end %>

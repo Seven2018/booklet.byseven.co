@@ -16,3 +16,12 @@ $(document).ready(function () {
   $(".organisation-page").floatingScroll();
 });
 document.querySelector('body').classList.remove('wait');
+tag_category_names = document.querySelectorAll('#tag_category_name')
+tag_category_names.forEach((element) => {
+  element.addEventListener('keypress', function(e) {
+    if (event.which == '13') {
+      spinningLoader();
+    }
+  })
+})
+document.querySelector('body').classList.remove('wait');
