@@ -12,7 +12,7 @@
           <% end %>
           <% if question.position == 1 %>
             <%= link_to assessment_move_up_assessment_question_path(question.mod, question), remote: true do %>
-              <i class="fas fa-caret-up" style='color:grey;cursor:default;'></i>
+              <i class="fas fa-caret-up" style='color:grey;'></i>
             <% end %>
           <% else %>
             <%= link_to assessment_move_up_assessment_question_path(question.mod, question), remote: true do %>
@@ -21,7 +21,7 @@
           <% end %>
           <% if question.position == question.mod.assessment_questions.count %>
             <%= link_to assessment_move_down_assessment_question_path(question.mod, question), remote: true do %>
-              <i class="fas fa-caret-down" style='color:grey;cursor:default;'></i>
+              <i class="fas fa-caret-down" style='color:grey;'></i>
             <% end %>
           <% else %>
             <%= link_to assessment_move_down_assessment_question_path(question.mod, question), remote: true do %>

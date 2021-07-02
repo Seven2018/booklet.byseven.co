@@ -32,6 +32,7 @@
           </div>
         </div>
         <div class="booklet-card-bottom">
+            <%= link_to '', content_path(content), class: 'stretched-link' %>
           <div class="booklet-card-theme">
             <% content.categories.order(title: :asc).each do |category| %>
               <p id='theme'><%= category.title %></p>
