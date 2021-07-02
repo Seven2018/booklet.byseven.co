@@ -42,8 +42,8 @@
               <div class="sync-booking">
                 <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
                   <%= f.hidden_field :duration, value: content.duration %>
-                  <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);'}, default: Time.parse('9:00') %>
-                  <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);'}, default: Time.parse('17:00') %>
+                  <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);'}, default: Time.parse('9:00'), placeholder: '9:00' %>
+                  <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);'}, default: Time.parse('17:00'), placeholder: '10:00' %>
                   <%= f.hidden_field :content_id, value: content.id %>
                   <%= f.hidden_field :selected_users %>
                   <%= f.submit '', class: 'hidden-submit hidden' %>
