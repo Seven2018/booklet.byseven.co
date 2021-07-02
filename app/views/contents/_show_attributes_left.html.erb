@@ -13,6 +13,14 @@
         <p style='color:#F26419'><b><i>Content available on <%= session.date.to_s %></i></b></p>
       <% end %>
     </div>
+    <% if params[:session_id].present? %>
+        <% session = Session.find(params[:session_id]) %>
+        <% if session.available_date.present? %>
+          <p>From <%= session.date.to_s %> to <%= session.available_date.to_s %></p>
+        <% else %>
+          <p>On <%= session.date.to_s %></p>
+        <% end %>
+    <% end %>
     <p><%= content.description %></p>
   <% end %>
   <div class="content-add-right-mobile">

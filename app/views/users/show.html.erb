@@ -167,7 +167,7 @@
       <% end %>
     </div>
     <div class="user-info-header">
-      <p style='font-size: 12px'>Completed</p>
+      <p style='font-size: 12px'>Past</p>
     </div>
     <div class="trainings-row">
       <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date < ?', Date.today).each do |session| %>

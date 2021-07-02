@@ -17,8 +17,6 @@ class SessionsController < ApplicationController
         Attendee.create(user_id: user.id, session_id: @session.id, creator_id: current_user.id)
       end
       return
-    else
-      print 'mes couilles'
     end
   end
 
