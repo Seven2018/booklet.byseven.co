@@ -2,6 +2,7 @@
   <% if mod.mod_type == 'text' %>
     <% if page == 'edit' %>
       <div class="content-text active">
+        <div class="content-show-view-mode-anchor" id="anchor-<%= mod.id %>"></div>
         <div class="mod-top">
           <div class="mod-title" onclick='toggleMod(this);'>
             <i class="fas fa-angle-down" data-rotated='0'></i>
@@ -49,6 +50,7 @@
       </div>
     <% else %>
       <div class='mods'>
+        <div class="content-show-view-mode-anchor" id="anchor-<%= mod.id %>"></div>
         <div class="form-row mod-type">
           <div class="form-group col-9">
             <h3><strong><%= mod.title %></strong></h3>
@@ -70,6 +72,7 @@
   <% elsif mod.mod_type == 'video' %>
     <% if page == 'edit' %>
       <div class="content-video active">
+        <div class="content-show-view-mode-anchor" id="anchor-<%= mod.id %>"></div>
         <div class="mod-top">
           <div class="mod-title" onclick='toggleMod(this);'>
             <i class="fas fa-angle-down" data-rotated='0'></i>
@@ -117,6 +120,7 @@
       </div>
     <% else %>
       <div class="mods">
+        <div class="content-show-view-mode-anchor" id="anchor-<%= mod.id %>"></div>
         <div class="form-row mod-type">
           <div class="form-group col-9">
             <h3><strong><%= mod.title %></strong></h3>
@@ -139,6 +143,7 @@
   <% elsif mod.mod_type == 'assessment' %>
     <% if page == 'edit' %>
       <div class="content-quiz active">
+        <div class="content-show-view-mode-anchor" id="anchor-<%= mod.id %>"></div>
         <div class="mod-top">
           <div class="mod-title" onclick='toggleMod(this);'>
             <i class="fas fa-angle-down" data-rotated='0'></i>
@@ -188,6 +193,7 @@
       </div>
     <% else %>
       <div class="mods">
+        <div class="content-show-view-mode-anchor" id="anchor-<%= mod.id %>"></div>
         <div class="form-row mod-type">
           <div class="form-group col-9">
             <h3><strong><%= mod.title %></strong></h3>

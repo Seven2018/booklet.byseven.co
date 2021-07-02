@@ -581,6 +581,7 @@
 }
 
 .add-video, .add-text, .add-quiz, .content-text, .content-video, .content-quiz {
+  position: relative;
   overflow:hidden;
   padding: 20px;
   background-color: white;
@@ -594,7 +595,7 @@
 }
 
 .add-video.active, .add-text.active, .add-quiz.active, .content-text.active, .content-video.active, .content-quiz.active {
-  max-height: 1000px;
+  max-height: 100000px;
 }
 
 .mod-top {
@@ -693,20 +694,24 @@
   padding: 10px;
   margin-bottom: 3.5rem;
   border-bottom: 1px solid #ced4da;
+  position: relative;
+
   .mod-type {
+
     h3 {
       color: #F26419;
     }
   }
+
   .mod-btn {
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   .mod-duration {
     font-style: italic;
   }
-}
 
   iframe {
     width: 100%;
@@ -715,9 +720,16 @@
       height: 50rem;
     }
   }
+}
+
 
 .quiz-questions {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.content-show-view-mode-anchor {
+  position: absolute;
+  top: -5rem;
 }

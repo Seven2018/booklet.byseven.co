@@ -7,19 +7,26 @@
       <a href="javascript:;" class='addOption btn btn-edit-white' onclick="addAnswer(this);">Add Option</a>
     </div>
     <div class="hidden" id="add_options_form">
-      <%= label_tag 'Option' %>
-      <%= text_field_tag 'options[]' %>
-      <%= label_tag 'Correct Answer' %>
-      <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
-      <%= hidden_field_tag 'answer[]', false %>
+      <div class="options_line">
+        <div class="flex-row-between-centered">
+        <%= label_tag 'Option' %>
+        <%= text_field_tag 'options[]' %>
+
+        </div>
+        <div class="flex-row-between-centered">
+        <%= label_tag 'Correct Answer' %>
+        <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
+        <%= hidden_field_tag 'answer[]', false %>
+        </div>
+      </div>
       <script>
         $('input[type="checkbox"]').on('change', function(e){
-              if($(this).prop('checked'))
-              {
-                  $(this).next().val(true);
-              } else {
-                  $(this).next().val(false);
-              }
+          if($(this).prop('checked'))
+          {
+              $(this).next().val(true);
+          } else {
+              $(this).next().val(false);
+          }
         });
       </script>
     </div>
@@ -36,11 +43,11 @@
 
 <script>
   $('input[type="checkbox"]').on('change', function(e){
-        if($(this).prop('checked'))
-        {
-            $(this).next().val(1);
-        } else {
-            $(this).next().val(0);
-        }
-});
+    if($(this).prop('checked'))
+    {
+        $(this).next().val(1);
+    } else {
+        $(this).next().val(0);
+    }
+  });
 </script>
