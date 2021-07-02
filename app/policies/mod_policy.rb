@@ -13,10 +13,6 @@ class ModPolicy < ApplicationPolicy
     check_access_hr
   end
 
-  def show?
-    true
-  end
-
   def update?
     check_access_hr
   end
@@ -25,11 +21,15 @@ class ModPolicy < ApplicationPolicy
     check_access_hr
   end
 
-  private
-
-  def check_access
-    ['Super Admin', 'Account Owner', 'HR', 'Employee'].include? user.access_level
+  def move_up?
+    check_access_hr
   end
+
+  def move_down?
+    check_access_hr
+  end
+
+  private
 
   def check_access_hr
     ['Super Admin', 'Account Owner', 'HR'].include? user.access_level

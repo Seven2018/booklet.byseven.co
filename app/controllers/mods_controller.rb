@@ -1,21 +1,8 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :update, :destroy, :move_up, :move_down]
+  before_action :set_mod, only: [:update, :destroy, :move_up, :move_down]
   helper VideoHelper
 
-  def show
-    authorize @module
-  end
-
-  def new
-    @module = Mod.new
-    authorize @module
-    if params[:content_id].present?
-      @content = Content.find(params[:content_id])
-    elsif params[:training_content_id].present?
-      @training_content = Session.find(params[:training_content_id])
-    end
-  end
-
+  # Create mod (contents/edit_mode)
   def create
     @new_mod = Mod.new(mod_params)
     authorize @new_mod
@@ -33,14 +20,7 @@ class ModsController < ApplicationController
     end
   end
 
-  def update_mod
-    skip_authorization
-    respond_to do |format|
-      format.html {redirect_to new_content_path}
-      format.js
-    end
-  end
-
+  # Update mod attributes (contents/edit_mode)
   def update
     authorize @module
     @content = @module.content
@@ -54,6 +34,7 @@ class ModsController < ApplicationController
     end
   end
 
+  # Delete mod (contents/edit_mode)
   def destroy
     authorize @module
     @module.destroy
@@ -69,6 +50,7 @@ class ModsController < ApplicationController
     end
   end
 
+  # Change mod position (contents/edit_mode)
   def move_up
     skip_authorization
     @content = @module.content
@@ -82,6 +64,7 @@ class ModsController < ApplicationController
     end
   end
 
+  # Change mod position (contents/edit_mode)
   def move_down
     skip_authorization
     @content = @module.content
@@ -102,6 +85,6 @@ class ModsController < ApplicationController
   end
 
   def mod_params
-    params.require(:mod).permit(:title, :position, :duration, :content_id, :document, :video, :image, :mod_type, :text)
+    params.require(:mod).permit(:title, :text, :link, :document, :video, :image, :mod_type, :duration, :content_id)
   end
 end

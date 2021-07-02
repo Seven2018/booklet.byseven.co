@@ -9,15 +9,15 @@ class ContentPolicy < ApplicationPolicy
     end
   end
 
-  def create?
-    check_access_hr
-  end
-
   def show?
     true
   end
 
   def edit_mode?
+    check_access_hr
+  end
+
+  def create?
     check_access_hr
   end
 
@@ -29,27 +29,11 @@ class ContentPolicy < ApplicationPolicy
     check_access_hr
   end
 
-  def destroy?
-    check_access_hr
-  end
-
   def destroy_content?
     check_access_hr
   end
 
-  def filter?
-    true
-  end
-
-  def book?
-    check_access_hr
-  end
-
   private
-
-  def check_access
-    ['Super Admin', 'Account Owner', 'HR', 'Employee'].include? user.access_level
-  end
 
   def check_access_hr
     ['Super Admin', 'Account Owner', 'HR'].include? user.access_level

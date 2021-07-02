@@ -1,20 +1,13 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :set_company, only: [:update, :destroy]
 
-  # Index with "search" option
-  def index
-    params[:search] ? @companies = policy_scope(Company).where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc) : @companies = policy_scope(Company).order(name: :asc)
-  end
-
-  def show
-    authorize @company
-  end
-
+  # Form for registering a new company (pages/dashboard)
   def new
     @company = Company.new
     authorize @company
   end
 
+  # Register a new company (pages/dashboard)
   def create
     @company = Company.new(company_params)
     authorize @company
@@ -28,16 +21,15 @@ class CompaniesController < ApplicationController
     end
   end
 
-  def edit
-    authorize @company
-  end
-
+  # Update a company (not used)
   def update
     authorize @company
     @company.update(company_params)
     @company.save ? (redirect_to company_path(@company)) : (render "_edit")
   end
 
+
+  # Delete a company (not used)
   def destroy
     @company.destroy
     authorize @company
@@ -51,6 +43,6 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:name, :siret, :address, :zipcode, :city, :description, :logo, :company_type)
+    params.require(:company).permit(:name, :siret, :address, :zipcode, :city, :logo)
   end
 end
