@@ -1,14 +1,11 @@
 <h3><b><%= content.title %></b></h3>
-<% if (['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && (params[:redirect_from] == 'catalogue' || params[:redirect_from] == 'edit')) || params[:content_access] == 'granted' || redirect_from = 'catalogue' %>
-  <% content.mods.order(position: :asc).each do |mod| %>
-    <% if mod.mod_type == 'text' %>
-      <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="far fa-file-alt"></i> <%= mod.title %></div></a>
-    <% elsif mod.mod_type == 'video' %>
-      <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="fas fa-video"></i> <%= mod.title %></div></a>
-    <% elsif mod.mod_type == 'assessment' %>
-      <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="fas fa-star-half-alt"></i> <%= mod.title %></div></a>
-    <% end %>
+<% content.mods.order(position: :asc).each do |mod| %>
+  <% if mod.mod_type == 'text' %>
+    <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="far fa-file-alt"></i> <%= mod.title %></div></a>
+  <% elsif mod.mod_type == 'video' %>
+    <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="fas fa-video"></i> <%= mod.title %></div></a>
+  <% elsif mod.mod_type == 'assessment' %>
+    <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="fas fa-star-half-alt"></i> <%= mod.title %></div></a>
   <% end %>
-<% elsif params[:session_id].present? %>
-  <p style='color:#F26419'><b><i>Content available on <%= Session.find(params[:session_id]).date.to_s %></i></b></p>
 <% end %>
+

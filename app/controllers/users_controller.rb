@@ -115,8 +115,11 @@ class UsersController < ApplicationController
         creating << "#{user_row[:lastname]}, #{user_row[:firstname]}"
       end
     end
-    flash[:error] = "There is #{errors.count} users with missing email addresses. No account will be created for these users."
-    flash[:notice] = "Creating #{creating.count} new accounts. Please wait a few minutes and refresh this page."
+    if errors.count > 0
+      flash[:notice] = "Creating #{creating.count} new accounts. Please wait a few minutes and refresh this page. \n There is #{errors.count} users with missing email addresses. No account will be created for these users."
+    else
+      flash[:notice] = "Creating #{creating.count} new accounts. Please wait a few minutes and refresh this page."
+    end
     #begin
     #  @users = User.import(params[:file])
     #  flash[:notice] = 'Import terminé'

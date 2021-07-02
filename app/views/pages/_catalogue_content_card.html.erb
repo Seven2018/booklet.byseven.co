@@ -4,7 +4,7 @@
     <div class="booklet-card-syn">
       <div class="booklet-card-top">
         <div class="booklet-card-top-info">
-          <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
+          <%= link_to '', content_path(content), class: 'stretched-link' %>
           <h3><b><%= content.title %></b></h3>
           <p><%= content.duration %> Minutes</p>
         </div>
@@ -59,7 +59,7 @@
           <p><%= content.interested.count %></p>
           <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
           <% if interest.present? %>
-            <%= link_to user_interest_path(id: interest.id, redirect_from: 'catalogue'), method: :delete, remote: true do %>
+            <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
               <i class="fas fa-heart" style='color:#F26419;'></i>
             <% end %>
           <% else %>
@@ -76,7 +76,7 @@
     <div class="booklet-card-asyn">
       <div class="booklet-card-top">
         <div class="booklet-card-top-info">
-          <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
+          <%= link_to '', content_path(content), class: 'stretched-link' %>
             <h3><b><%= content.title %></b></h3>
             <p><%= content.duration %> Minutes</p>
         </div>
@@ -131,7 +131,7 @@
           <p><%= content.interested.count %></p>
           <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
           <% if interest.present? %>
-            <%= link_to user_interest_path(id: interest.id, redirect_from: 'catalogue'), method: :delete, remote: true do %>
+            <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
               <i class="fas fa-heart"></i>
             <% end %>
           <% else %>

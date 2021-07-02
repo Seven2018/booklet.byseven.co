@@ -6,7 +6,7 @@
         <div class="booklet-card-syn">
           <div class="booklet-card-top">
             <div class="booklet-card-top-info">
-              <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
+              <%= link_to '', content_path(content), class: 'stretched-link' %>
               <h3><b><%= content.title %></b></h3>
               <p><%= content.duration %> Minutes</p>
             </div>
@@ -57,7 +57,7 @@
         <div class="booklet-card-asyn">
           <div class="booklet-card-top">
             <div class="booklet-card-top-info">
-              <%= link_to '', content_path(content, redirect_from: 'catalogue'), class: 'stretched-link' %>
+              <%= link_to '', content_path(content), class: 'stretched-link' %>
                 <h3><b><%= content.title %></b></h3>
                 <p><%= content.duration %> Minutes</p>
             </div>

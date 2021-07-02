@@ -48,22 +48,24 @@
         <% end %>
       </div>
     <% else %>
-    <div class='mods'>
-      <div class="form-row mod-type">
-        <div class="form-group col-9">
-          <h3><strong><%= mod.title %></strong></h3>
+      <div class='mods'>
+        <div class="form-row mod-type">
+          <div class="form-group col-9">
+            <h3><strong><%= mod.title %></strong></h3>
+          </div>
+          <div class="form-group col-3 mod-duration">
+            <% duration = mod.duration.to_s + ' Mins' %>
+            <p class='form-group col'><%= duration %></p>
+          </div>
         </div>
-        <div class="form-group col-3 mod-duration">
-          <% duration = mod.duration.to_s + ' Mins' %>
-          <p class='form-group col'><%= duration %></p>
-        </div>
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) || access == 'granted' %>
+          <div class="form-row mod-content">
+            <div class="form-group col-12">
+              <%= mod.text %>
+            </div>
+          </div>
+        <% end %>
       </div>
-      <div class="form-row mod-content">
-        <div class="form-group col-12">
-          <%= mod.text %>
-        </div>
-      </div>
-    </div>
     <% end %>
   <% elsif mod.mod_type == 'video' %>
     <% if page == 'edit' %>
@@ -114,23 +116,25 @@
         <% end %>
       </div>
     <% else %>
-    <div class="mods">
-      <div class="form-row mod-type">
-        <div class="form-group col-9">
-          <h3><strong><%= mod.title %></strong></h3>
+      <div class="mods">
+        <div class="form-row mod-type">
+          <div class="form-group col-9">
+            <h3><strong><%= mod.title %></strong></h3>
+          </div>
+          <div class="form-group col-3 mod-duration">
+            <% duration = mod.duration.to_s + ' Mins' %>
+            <p class='form-group col'><%= duration %></p>
+          </div>
         </div>
-        <div class="form-group col-3 mod-duration">
-          <% duration = mod.duration.to_s + ' Mins' %>
-          <p class='form-group col'><%= duration %></p>
-        </div>
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) || access == 'granted' %>
+          <div class="form-row mod-content">
+            <div class="form-group col-12">
+              <% video_id = mod.video.split("=")[1].split("&")[0] %>
+              <%= content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen") %>
+            </div>
+          </div>
+        <% end %>
       </div>
-      <div class="form-row mod-content">
-        <div class="form-group col-12">
-          <% video_id = mod.video.split("=")[1].split("&")[0] %>
-          <%= content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen") %>
-        </div>
-      </div>
-    </div>
     <% end %>
   <% elsif mod.mod_type == 'assessment' %>
     <% if page == 'edit' %>
@@ -183,31 +187,33 @@
         </div>
       </div>
     <% else %>
-    <div class="mods">
-      <div class="form-row mod-type">
-        <div class="form-group col-9">
-          <h3><strong><%= mod.title %></strong></h3>
-        </div>
-        <div class="form-group col-3 mod-duration">
-          <% duration = mod.duration.to_s + ' Mins' %>
-          <p class='form-group col'><%= duration %></p>
-        </div>
-      </div>
-      <div class="form-row mod-content">
-        <div class="form-group col-12 mod-btn">
-          <div class="quiz-start">
-            <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? && mod.assessment_questions.present? %>
-              <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
-            <% elsif mod.assessment_questions.present? %>
-              <div class="flex-row-between-centered" style='flex-direction: column'>
-                <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
-                <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
-              </div>
-            <% end %>
+      <div class="mods">
+        <div class="form-row mod-type">
+          <div class="form-group col-9">
+            <h3><strong><%= mod.title %></strong></h3>
+          </div>
+          <div class="form-group col-3 mod-duration">
+            <% duration = mod.duration.to_s + ' Mins' %>
+            <p class='form-group col'><%= duration %></p>
           </div>
         </div>
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) || access == 'granted' %>
+          <div class="form-row mod-content">
+            <div class="form-group col-12 mod-btn">
+              <div class="quiz-start">
+                <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? && mod.assessment_questions.present? %>
+                  <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
+                <% elsif mod.assessment_questions.present? %>
+                  <div class="flex-row-between-centered" style='flex-direction: column'>
+                    <p>Grade : <%= UserForm.find_by(user_id: current_user, mod_id: mod.id)&.grade %>%</p>
+                    <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
-    </div>
     <% end %>
   <% end %>
 <% end %>
