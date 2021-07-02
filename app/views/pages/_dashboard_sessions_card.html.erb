@@ -93,7 +93,7 @@
               </div>
             </div>
             <% if session.available_date.present? %>
-              <h6><b>Ends <%= session.available_date.strftime('%B %d') %></b></h6>
+              <h6><b><%= session.date.strftime('%B %d') %> - <%= session.available_date.strftime('%B %d') %></b></h6>
             <% end %>
           </div>
           <div class="booklet-top-right-icon-catalogue">

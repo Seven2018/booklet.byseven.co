@@ -1,16 +1,5 @@
-<% if selected_filter.present? %>
-  <% selected_filter.split(',').each do |filter| %>
-    <p class='user-filter'><%= filter %></p>
-  <% end %>
-<% end %>
 <% users.each do |user| %>
   <div class="user-book-card" id="user-<%= user.id %>">
-    <% selected_user = '' unless selected_user.present? %>
-    <% if selected_user.split(',').include?(user.id.to_s) %>
-      <div class="user-book-card-overlay"></div>
-    <% else %>
-      <div class="user-book-card-overlay hidden"></div>
-    <% end %>
     <div class="user-book-top">
       <div class="user-book-icon select-user" onclick='selectUser(this);'>
         <i class="far fa-circle"  id='nouser'></i>

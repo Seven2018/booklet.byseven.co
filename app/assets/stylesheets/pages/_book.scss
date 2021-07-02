@@ -185,7 +185,7 @@
   display: flex;
   flex-direction: column;
 }
-.users-book {
+.users-book-all, .users-book-filtered {
   display: flex;
   flex-wrap: wrap;
 }
@@ -599,7 +599,8 @@
       color:#F26419;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-direction: row-reverse;
       i {
         margin-left: 10px;
       }
@@ -684,7 +685,8 @@
       color:black;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-direction: row-reverse;
       i {
         margin-left: 10px;
       }
@@ -904,7 +906,8 @@
       color:#F26419;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-direction: row-reverse;
       i {
         margin-left: 10px;
       }
@@ -1006,4 +1009,10 @@
   50% {
     opacity: 0;
   }
+}
+
+.book-user-filter-tags {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
