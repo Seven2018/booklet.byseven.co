@@ -40,7 +40,7 @@
         <% i = 1 %>
         <% question.options.each do |key, value| %>
           <% if question.options[key] == 'true' %>
-            <p style='color: #56690A;'><%= i %> - <%= key %></p>
+            <p style='color: #56690A; font-weight: 800'><%= i %> - <%= key %></p>
           <% else %>
             <p style='color: #888888;'><%= i %> - <%= key %></p>
           <% end %>
