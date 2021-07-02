@@ -154,6 +154,7 @@ class PagesController < ApplicationController
       @selected_users = User.where(id: params[:filter_user][:selected].split(',')) if params[:filter_user].present?
     else
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+      @filter = 'none'
     end
     respond_to do |format|
       format.html

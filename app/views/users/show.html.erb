@@ -220,6 +220,8 @@
                   </div>
                   <div class="booklet-card-like">
                     <p><%= session.attendees.count %> Participant(s)</p>
+                    <% assessments = UserForm.where(user_id: current_user, mod_id: content.mods.ids).map{|x| x.grade} %>
+                    <p>Grade : <%= assessments.sum(0.0) / assessments.size %>%</p>
                   </div>
                 </div>
               </div>
@@ -271,6 +273,8 @@
                   </div>
                   <div class="booklet-card-like">
                     <p><%= session.attendees.count %> Participant(s)</p>
+                    <% assessments = UserForm.where(user_id: current_user, mod_id: content.mods.ids).map{|x| x.grade} %>
+                    <p>Grade : <%= assessments.sum(0.0) / assessments.size %>%</p>
                   </div>
                 </div>
               </div>
