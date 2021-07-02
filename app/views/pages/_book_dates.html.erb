@@ -1,9 +1,3 @@
-<%# booked_sessions = [] unless booked_sessions.present? %>
-<%# booked_sessions.each do |session| %>
-  <!-- <div class="book-selected-card" id="session-<%= session.id %>">
-    <%# render 'pages/book_dates_card_booked', session: session, selected_contents: selected_contents, booked_sessions: booked_sessions %>
-  </div> -->
-<%# end %>
 <% selected_contents.each do |content| %>
   <% if content.content_type == 'Synchronous' %>
     <div class="booklet-card" id="book_content-<%= content.id %>" >
@@ -29,6 +23,7 @@
                 <% end %>
               </div>
             </div>
+            <h6 class="duration-alert hidden">Duration exceeds alloted time</h6>
           </div>
           <div class="booklet-top-right-icon">
             <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal-<%= content.id %>" style='color:#F26419;'></i>
@@ -47,8 +42,8 @@
               <div class="sync-booking">
                 <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
                   <%= f.hidden_field :duration, value: content.duration %>
-                  <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);'}, default: Time.parse('9:00'), placeholder: '8:00AM' %>
-                  <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);'}, default: Time.parse('17:00'), placeholder: '9:00AM'%>
+                  <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);'}, default: Time.parse('9:00') %>
+                  <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);'}, default: Time.parse('17:00') %>
                   <%= f.hidden_field :content_id, value: content.id %>
                   <%= f.hidden_field :selected_users %>
                   <%= f.submit '', class: 'hidden-submit hidden' %>
@@ -88,6 +83,7 @@
                 <% end %>
               </div>
             </div>
+            <h6 class="duration-alert hidden">Duration exceeds alloted time</h6>
           </div>
           <div class="booklet-top-right-icon">
             <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal-<%= content.id %>"></i>

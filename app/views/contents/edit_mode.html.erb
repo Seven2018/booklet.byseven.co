@@ -373,7 +373,7 @@
     form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
     initial_top = form.offsetTop
     initial_left = form.offsetLeft
-    form.style.top = (element.offsetTop - 4).toString() + 'px'
+    form.style.top = (element.offsetTop).toString() + 'px'
     form.style.left = (element.offsetLeft + 25).toString() + 'px'
     element.querySelector('p').style.opacity = '0'
     form.classList.toggle('hidden')
@@ -382,6 +382,13 @@
     setTimeout(function(){
       formGuardian = false;
     }, 1);
+
+    form.querySelector('#new_category_title').addEventListener('keypress', function(e) {
+      if (event.which == '13') {
+        event.preventDefault();
+        form.querySelector('.hidden-submit').click()
+      }
+    })
 
     window.addEventListener('click', function(e) {
       if (outsideClick(e, form) && formGuardian == false) {

@@ -4,6 +4,11 @@ class SessionsController < ApplicationController
     params.permit!
     params_session = params[:session].except(:selected, :selected_users, :duration)
     @session = Session.new(params_session)
+    if params[:session][:date].split(' to ').count > 1
+      dates = params[:session][:date].split(' to ')
+      @session.date = Date.strptime(dates.first, '%d/%m/%Y')
+      @session.available_date = Date.strptime(dates.last, '%d/%m/%Y')
+    end
     authorize @session
     @session.company_id = current_user.company_id
     @content = Content.find(params[:session][:content_id])
@@ -12,6 +17,8 @@ class SessionsController < ApplicationController
         Attendee.create(user_id: user.id, session_id: @session.id, creator_id: current_user.id)
       end
       return
+    else
+      print 'mes couilles'
     end
   end
 
