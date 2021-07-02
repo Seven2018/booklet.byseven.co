@@ -1,5 +1,6 @@
 <% access = '' %>
-<% if params[:session_id].present? && Session.find(params[:session_id]).date <= Date.today %>
+<% if params[:session_id].present? && Session.find(params[:session_id]).date <= Date.today && Attendee.find_by(session_id: session.id, user_id: current_user.id).present? %>
+  <% raise %>
   <% session = Session.find(params[:session_id]) %>
   <% access = 'granted' unless session.available_date.present? && session.available_date < Date.today %>
 <% end %>

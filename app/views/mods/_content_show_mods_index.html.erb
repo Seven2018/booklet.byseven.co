@@ -60,7 +60,7 @@
             <p class='form-group col'><%= duration %></p>
           </div>
         </div>
-        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) || access == 'granted' %>
+        <% if access == 'granted' %>
           <div class="form-row mod-content">
             <div class="form-group col-12">
               <%= mod.text %>
@@ -130,7 +130,7 @@
             <p class='form-group col'><%= duration %></p>
           </div>
         </div>
-        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) || access == 'granted' %>
+        <% if access == 'granted' %>
           <div class="form-row mod-content">
             <div class="form-group col-12">
               <% video_id = mod.video.split("=")[1].split("&")[0] %>
@@ -203,7 +203,7 @@
             <p class='form-group col'><%= duration %></p>
           </div>
         </div>
-        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) || access == 'granted' %>
+        <% if access == 'granted' %>
           <div class="form-row mod-content">
             <div class="form-group col-12 mod-btn">
               <div class="quiz-start">
