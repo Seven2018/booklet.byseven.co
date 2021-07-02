@@ -307,6 +307,11 @@ function clearSearch(element) {
       element.parentNode.querySelector('p').style.opacity = '0';
       form.classList.toggle('hidden');
       form.querySelector('input').focus()
+      form.querySelector('input').addEventListener('keypress', function(e) {
+        if (event.which == '13') {
+          spinningLoader();
+        }
+      })
       setTimeout(function(){
         doubleClickGuardian = false;
       }, 1);
@@ -382,7 +387,12 @@ function clearSearch(element) {
 
   infiniteScroll()
 
-  // if (window.location.href.split('?')[1].split('=')[0] == 'timer') {
-  //   (function(){window.location.href = window.location.href.split('?')[0]}, parseInt(window.location.href.split('?')[1].split('=')[0],10));
-  // }
+  tag_category_names = document.querySelectorAll('#tag_category_name')
+  tag_category_names.forEach((element) => {
+    element.addEventListener('keypress', function(e) {
+      if (event.which == '13') {
+        spinningLoader();
+      }
+    })
+  })
 </script>

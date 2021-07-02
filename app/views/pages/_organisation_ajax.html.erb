@@ -104,9 +104,6 @@
               <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;width:200px;' %>
               <%= f.hidden_field :users, value: users.map(&:id) %>
               <%= f.submit '', class: 'hidden hidden-submit' %>
-              <div onclick='clearInput(this);'>
-                <i class="fas fa-save"></i>
-              </div>
             </div>
           <% end %>
         </div>
