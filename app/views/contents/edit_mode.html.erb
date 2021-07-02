@@ -1,15 +1,15 @@
 <div id="content-show-container">
   <div id="content-show-container-left">
-    <%= render 'contents/show_anchors', content: @content, page: 'edit' %>
+    <%= render 'contents/show_anchors', content: @content, page: 'edit', access: "" %>
   </div>
   <div id="content-show-container-right">
     <div class="content-add">
       <div class="content-add-left">
         <div class="content-show-attributes-left">
-          <%= render 'contents/show_attributes_left', content: @content, page: 'edit' %>
+          <%= render 'contents/show_attributes_left', content: @content, page: 'edit', access: "" %>
         </div>
         <div class="content-show-mods-edit-mode">
-          <%= render 'mods/content_show_mods_index', content: @content, page: 'edit' %>
+          <%= render 'mods/content_show_mods_index', content: @content, page: 'edit', access: "" %>
         </div>
         <% if (['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level))%>
           <div class="content-show-mods-control-btn" onclick="contentAdd()"; data-toggle='tooltip' title='Add content'>
@@ -39,7 +39,7 @@
       </div>
       <div class="content-add-right">
         <div class="content-show-attributes-right">
-          <%= render 'contents/show_attributes_right', content: @content, page: 'edit' %>
+          <%= render 'contents/show_attributes_right', content: @content, page: 'edit', access: "" %>
         </div>
       </div>
     </div>
@@ -194,9 +194,9 @@
     caret.setAttribute('data-rotated', (angle + 180).toString())
     block = element.parentNode.parentNode;
     if (block.style.maxHeight == '61px') {
-      block.style.maxHeight = '1000px';
+      block.style.maxHeight = '100000px';
       block.classList.add('active');
-    } else if (block.style.maxHeight == '1000px' || block.style.maxHeight == '' ) {
+    } else if (block.style.maxHeight == '100000px' || block.style.maxHeight == '' ) {
       block.style.maxHeight = '61px';
       block.classList.remove('active');
     }

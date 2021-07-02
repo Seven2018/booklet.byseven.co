@@ -5,18 +5,18 @@ class AssessmentsController < ApplicationController
     authorize @form
   end
 
-  def create
-    @form = Assessment.new(assessment_params)
-    @form.company_id = current_user.company_id
-    authorize @form
-    @form.media = ''
-    @content = Content.find(params[:content_id])
-    @form.position = @content.mods.order(position: :asc).count + 1
-    if @form.save
-      ContentMod.create(content_id: @content.id, mod_id: @form.id, position: @content.content_mods.count + 1)
-      redirect_to assessment_path(@form)
-    end
-  end
+  # def create
+  #   @form = Assessment.new(assessment_params)
+  #   @form.company_id = current_user.company_id
+  #   authorize @form
+  #   @form.media = ''
+  #   @content = Content.find(params[:content_id])
+  #   @form.position = @content.mods.order(position: :asc).count + 1
+  #   if @form.save
+  #     ContentMod.create(content_id: @content.id, mod_id: @form.id, position: @content.content_mods.count + 1)
+  #     redirect_to assessment_path(@form)
+  #   end
+  # end
 
   def create_ajax
     skip_authorization
@@ -47,16 +47,11 @@ class AssessmentsController < ApplicationController
   def add_questions
     authorize @form
     @question = AssessmentQuestion.create(question: params[:assessment_question][:question], question_type: params[:assessment_question][:question_type], mod_id: @form.id, position: @form.assessment_questions.count + 1)
-    # if params[:assessment_question][:question_type] == 'MCQ'
       options = {}
       params[:options].reject!(&:empty?).each_with_index do |key, index|
         options[key] = params[:answer][index]
       end
       @question.update(options: options)
-    # elsif params[:assessment_question][:question_type] == 'rating'
-    #   options = {start: params[:rating].map(&:to_i)[0], end: params[:rating].map(&:to_i)[1]}
-    #   @question.update(options: options)
-    # end
     respond_to do |format|
       format.html {redirect_to content_path(@form.content)}
       format.js
