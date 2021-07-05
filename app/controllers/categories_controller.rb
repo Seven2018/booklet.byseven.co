@@ -1,20 +1,7 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:show, :edit, :update, :destroy]
+  before_action :set_category, only: [:update, :destroy]
 
-  # Index with "search" option
-  def index
-    params[:search] ? @categories = policy_scope(Category).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc) : @categories = policy_scope(Category).order(title: :asc)
-  end
-
-  def show
-    authorize @category
-  end
-
-  def new
-    @category = Category.new
-    authorize @category
-  end
-
+  # Create a new category (contents/edit_mode or pages/catalogue)
   def create
     @category = Category.new(category_params)
     authorize @category
@@ -32,10 +19,7 @@ class CategoriesController < ApplicationController
     end
   end
 
-  def edit
-    authorize @category
-  end
-
+  # Update a category (contents/edit_mode or pages/catalogue)
   def update
     authorize @category
     @category.update(category_params)
@@ -51,9 +35,10 @@ class CategoriesController < ApplicationController
     end
   end
 
+  # Delete a category (contents/edit_mode or pages/catalogue)
   def destroy
-    @category.destroy
     authorize @category
+    @category.destroy
     if params[:ajax].present?
       respond_to do |format|
         format.html {redirect_to catalogue_path}
@@ -64,6 +49,7 @@ class CategoriesController < ApplicationController
     end
   end
 
+  # Search from categories with autocomplete
   def categories_search
     skip_authorization
     if params[:search].present?
@@ -71,11 +57,11 @@ class CategoriesController < ApplicationController
     else
       @categories = Category.where(company_id: current_user.company_id)
     end
-      respond_to do |format|
-        format.json {
-          @users = @categories.limit(5)
-        }
-      end
+    respond_to do |format|
+      format.json {
+        @users = @categories.limit(5)
+      }
+    end
   end
 
   private
@@ -85,6 +71,6 @@ class CategoriesController < ApplicationController
   end
 
   def category_params
-    params.require(:category).permit(:title, :description)
+    params.require(:category).permit(:title)
   end
 end

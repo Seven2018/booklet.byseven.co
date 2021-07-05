@@ -5,16 +5,12 @@ class AssessmentPolicy < ApplicationPolicy
     end
   end
 
-  def create?
-    check_access
-  end
-
-  def show?
-    true
+  def create_ajax?
+    check_access_hr
   end
 
   def add_questions?
-    check_access
+    check_access_hr
   end
 
   def edit_question?
@@ -25,17 +21,9 @@ class AssessmentPolicy < ApplicationPolicy
     true
   end
 
-  def destroy?
-    check_access
-  end
-
-  def update?
-    check_access
-  end
-
   private
 
-  def check_access
+  def check_access_hr
     ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 end

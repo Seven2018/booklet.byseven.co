@@ -10,24 +10,20 @@ class AssessmentQuestionPolicy < ApplicationPolicy
   end
 
   def update?
-    check_access
-  end
-
-  def destroy?
-    check_access
+    check_access_hr
   end
 
   def move_up?
-    check_access
+    check_access_hr
   end
 
   def move_down?
-    check_access
+    check_access_hr
   end
 
   private
 
-  def check_access
+  def check_access_hr
     ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 end

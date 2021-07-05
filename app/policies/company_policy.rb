@@ -9,14 +9,6 @@ class CompanyPolicy < ApplicationPolicy
     true
   end
 
-  def show?
-    check_access_owner
-  end
-
-  def edit?
-    check_access_owner
-  end
-
   def update?
     check_access_owner
   end

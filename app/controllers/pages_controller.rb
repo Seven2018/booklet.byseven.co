@@ -1,9 +1,6 @@
 class PagesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:home]
 
-  def home
-  end
-
+  # Access dashboard (root)
   def dashboard
     complete_profile
     @my_past_sessions = (Session.includes([:content]).joins(:attendees).where(available_date: nil, attendees: {user_id: current_user.id}).where('date < ?', Date.today) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
@@ -25,14 +22,17 @@ class PagesController < ApplicationController
     end
   end
 
+  # Display monthly calendar (pages/dashboard)
   def calendar_month
     @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
   end
 
+  # Display weekly calendar (pages/dashboard)
   def calendar_week
     @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
   end
 
+  # Display contents catalogue
   def catalogue
     complete_profile
     if current_user.company_id.present?
@@ -60,6 +60,7 @@ class PagesController < ApplicationController
     end
   end
 
+  # Manage content_categories (pages/catalogue)
   def catalogue_content_link_category
     skip_authorization
     if params[:new_category].present?
@@ -88,14 +89,7 @@ class PagesController < ApplicationController
     end
   end
 
-  def catalogue_filter_add_category
-    skip_authorization
-    params[:categories].present? ? @filtered_themes = Category.where(id: (params[:categories].split(',') + params[:category_id].split())) : @filtered_themes = Category.where(id: params[:category_id])
-    respond_to do |format|
-      format.js
-    end
-  end
-
+  # Display organisation page
   def organisation
     # Index with 'search' option and global visibility for SEVEN Users
     index_function(User.where(company_id: current_user.company_id))
@@ -126,12 +120,14 @@ class PagesController < ApplicationController
     end
   end
 
+  # Display user info card (not used)
   def organisation_user_card
     @user = User.find(params[:user_id])
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
     render partial: "organisation_user_card"
   end
 
+  # Display book page
   def book
     index_function(User.where(company_id: current_user.company_id))
     if params[:filter_content].present?
@@ -164,6 +160,7 @@ class PagesController < ApplicationController
 
   private
 
+  # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
     if ['Super Admin', 'HR'].include?(current_user.access_level)
       # If a name is entered in the search bar
@@ -175,7 +172,6 @@ class PagesController < ApplicationController
         # If the 'clear' button is clicked, return all the employees
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])
-        #tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?))
         tags = params[:filter_user][:tag].reject(&:blank?)
         if tags.empty?
           if params[:filter_user][:selected].present?
@@ -221,6 +217,7 @@ class PagesController < ApplicationController
     end
   end
 
+  # When registering a new account, force the new user to provide some details (firstname, lastname, ...)
   def complete_profile
     redirect_to complete_profile_path unless (current_user.firstname.present? || current_user.lastname.present?)
   end

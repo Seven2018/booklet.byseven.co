@@ -1,5 +1,6 @@
 class ContentSkillsController < ApplicationController
-  # Allows management of ContentSkills through a checkbox collection
+
+  # Allows management of ContentSkills through a checkbox collection (not used)
   def create
     @content_skill = ContentSkill.new
     authorize @content_skill

@@ -33,13 +33,7 @@
           <% end %>
         </div>
       </div>
-      <!-- <div class='modal fade' id='editQuestion<%= question.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-        <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-          <%# render 'assessment_questions/edit', question: question %>
-        </div>
-      </div> -->
       <p style="white-space: pre-line"><%= question&.question %></p>
-      <%# if question.options.present? && question.question_type == 'MCQ' %>
         <% i = 1 %>
         <% question.options.each do |key, value| %>
           <% if question.options[key] == 'true' %>
@@ -49,10 +43,6 @@
           <% end %>
           <% i += 1 %>
         <% end %>
-      <%# elsif question.options.present? && question.question_type == 'rating' %>
-        <!-- <p class='mod-assessment-questions-answer'>Rating values :</p>
-        <p><%# question.options[:start] %> => <%# question.options[:end] %></p> -->
-      <%# end %>
       <div class="hidden-form-ajax hidden" id='edit_question-<%= question.id %>'>
         <%= render 'assessments/edit_question', form: form, assessment_question: question %>
       </div>

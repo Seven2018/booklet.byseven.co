@@ -1,6 +1,7 @@
 class AssessmentQuestionsController < ApplicationController
-  before_action :set_question, only: [:view_mode, :update, :destroy, :move_up, :move_down]
+  before_action :set_question, only: [:view_mode, :destroy, :move_up, :move_down]
 
+  # User takes the assessment, one assessment_question at a time
   def view_mode
     authorize @question
     @form = @question.mod
@@ -12,25 +13,7 @@ class AssessmentQuestionsController < ApplicationController
     end
   end
 
-  def update
-    authorize @question
-    @question.update(question: params[:assessment_question][:question], question_type: params[:assessment_question][:question_type])
-    if params[:assessment_question][:question_type] == 'MCQ'
-      options = {}
-      params[:options].reject!(&:empty?).each_with_index do |key, index|
-        options[key] = params[:answer][index]
-        options[key] = 'true' if options[key] == "1"
-      end
-      @question.update(options: options)
-    elsif params[:assessment_question][:question_type] == 'rating'
-      options = {start: params[:rating].map(&:to_i)[0], end: params[:rating].map(&:to_i)[1]}
-      @question.update(options: options)
-    end
-    if @question.save
-      redirect_back(fallback_location: root_path)
-    end
-  end
-
+  # Remove the assessment_question
   def destroy
     authorize @question
     @question.destroy
@@ -45,6 +28,7 @@ class AssessmentQuestionsController < ApplicationController
     end
   end
 
+  # Change the assessment_questions order
   def move_up
     authorize @question
     @form = @question.mod
@@ -59,6 +43,7 @@ class AssessmentQuestionsController < ApplicationController
     end
   end
 
+  # Change the assessment_questions order
   def move_down
     authorize @question
     @form = @question.mod

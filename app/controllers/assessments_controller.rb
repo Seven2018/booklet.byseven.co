@@ -1,27 +1,11 @@
 class AssessmentsController < ApplicationController
-  before_action :set_assessment, only: [:show, :view_mode, :edit, :update, :destroy, :add_questions, :add_answers]
+  before_action :set_assessment, only: [:add_questions, :add_answers]
 
-  def show
-    authorize @form
-  end
-
-  # def create
-  #   @form = Assessment.new(assessment_params)
-  #   @form.company_id = current_user.company_id
-  #   authorize @form
-  #   @form.media = ''
-  #   @content = Content.find(params[:content_id])
-  #   @form.position = @content.mods.order(position: :asc).count + 1
-  #   if @form.save
-  #     ContentMod.create(content_id: @content.id, mod_id: @form.id, position: @content.content_mods.count + 1)
-  #     redirect_to assessment_path(@form)
-  #   end
-  # end
-
+  # Create a new Assessment (contents/edit_mode)
   def create_ajax
-    skip_authorization
     @content = Content.find(params[:new_assessment][:content_id])
     @form = Assessment.new(title: params[:new_assessment][:title], mod_type: 'assessment', company_id: current_user.company_id, content_id: @content.id, duration: params[:new_assessment][:duration])
+    authorize @form
     @form.position = @content.mods.order(position: :asc).count + 1
     if @form.save
       @content.update(duration: @content.mods.map(&:duration).sum)
@@ -32,18 +16,7 @@ class AssessmentsController < ApplicationController
     end
   end
 
-  def update_ajax
-    skip_authorization
-    @form = Assessment.find(params[:id])
-    @form.update(title: params[:update_assessment][:title])
-    if @form.save
-      respond_to do |format|
-        format.html {redirect_to new_content_path}
-        format.js
-      end
-    end
-  end
-
+  # Add questions to an Assessment (contents/edit_mode)
   def add_questions
     authorize @form
     @question = AssessmentQuestion.create(question: params[:assessment_question][:question], question_type: params[:assessment_question][:question_type], mod_id: @form.id, position: @form.assessment_questions.count + 1)
@@ -72,11 +45,7 @@ class AssessmentsController < ApplicationController
     end
   end
 
-  def add_questions_ajax
-    raise
-    skip_authorization
-  end
-
+  # Submit answers for an assessment (assessment_questions/view_mode)
   def add_answers
     authorize @form
     @question = AssessmentQuestion.find(params[:question_id])
@@ -108,31 +77,10 @@ class AssessmentsController < ApplicationController
       else
         UserForm.create(grade: (grade*100).round, user_id: current_user.id, mod_id: @form.id)
       end
-      redirect_to content_path(@form.content, content_access: 'granted')
+      redirect_to content_path(@form.content)
     end
   end
 
-  def edit
-    authorize @form
-  end
-
-  def update
-    authorize @form
-    @form.update(assessment_params)
-    redirect_to assessment_path(@form) if @form.save
-  end
-
-  def destroy
-    authorize @form
-    @form.destroy
-    @content = Content.find(params[:content_id])
-    i = 1
-    @content.content_mods.order(position: :asc).each do |content_mod|
-      content_mod.update(position: i)
-      i += 1
-    end
-    redirect_to content_path(@content)
-  end
 
   private
 

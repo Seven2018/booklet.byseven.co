@@ -13,8 +13,6 @@
           <div style='width: 100%; margin-top: 20px;'>
             <%= f.submit 'Next question', class: 'btn btn-edit' %>
           </div>
-        <%# elsif AssessmentAnswer.joins(:assessment_question).where(user_id: current_user.id, assessment_questions: {assessment_id: @form.id}).count == @question.assessment.assessment_questions.count %>
-          <!-- <p>Form submitted, thank you</p> -->
         <% else %>
           <div style='width: 100%; margin-top: 20px;'>
             <%= f.submit 'Submit Form', id: 'form_close', class: 'btn btn-edit' %>
@@ -34,8 +32,6 @@
           <div class="centered-item" style='width: 100%;'>
             <%= f.submit 'Next question', class: 'btn btn-edit' %>
           </div>
-        <%# elsif AssessmentAnswer.joins(:assessment_question).where(user_id: current_user.id, assessment_questions: {assessment_id: @form.id}).count == @question.assessment.assessment_questions.count %>
-          <!-- <p>Form submitted, thank you</p> -->
         <% else %>
           <div class="centered-item" style='width: 100%;'>
             <%= f.submit 'Submit Form', id: 'form_close', class: 'btn btn-edit' %>
@@ -50,8 +46,6 @@
           <div class="centered-item" style='width: 100%;'>
             <%= f.submit 'Next question', class: 'btn btn-edit' %>
           </div>
-        <%# elsif AssessmentAnswer.joins(:assessment_question).where(user_id: current_user.id, assessment_questions: {assessment_id: @form.id}).count == @question.assessment.assessment_questions.count %>
-          <!-- <p>Form submitted, thank you</p> -->
         <% else %>
           <div class="centered-item" style='width: 100%;'>
             <%= f.submit 'Submit Form', id: 'form_close', class: 'btn btn-edit' %>

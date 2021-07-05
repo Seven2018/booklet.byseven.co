@@ -1,21 +1,19 @@
 class ContentsController < ApplicationController
-  before_action :set_content, only: [:show, :edit_mode, :duplicate, :view_mode, :edit, :update, :update_content, :destroy]
+  before_action :set_content, only: [:show, :edit_mode, :update, :duplicate]
   before_action :force_json, only: [:change_author]
   helper VideoHelper
 
+  # Show content view_mode
   def show
     authorize @content
-    @content_skill = ContentSkill.new
   end
 
+  # Show content edit_mode
   def edit_mode
     authorize @content
   end
 
-  def view_mode
-    authorize @content
-  end
-
+  # Create new content (pages/catalogue)
   def create
     @content = Content.new(content_params)
     authorize @content
@@ -26,10 +24,7 @@ class ContentsController < ApplicationController
     end
   end
 
-  def edit
-    authorize @content
-  end
-
+  # Update content attributes (contents/edit_mode)
   def update
     authorize @content
     @content.update(content_params)
@@ -42,32 +37,12 @@ class ContentsController < ApplicationController
     end
   end
 
-  def update_content
-    skip_authorization
-    @content.update(title: params[:new_content][:title], description: params[:new_content][:description])
-    if @content.save
-      params[:new_content][:categories].reject!(&:empty?).each do |category_id|
-        unless ContentCategory.where(content_id: @content.id, category_id: category_id.to_i).present?
-          ContentCategory.create(content_id: @content.id, category_id: category_id.to_i)
-        end
-      end
-      to_destroy = Category.where(company_id: current_user.company_id).map(&:id) - params[:new_content][:categories].map{|x| x.to_i}
-      ContentCategory.where(content_id: @content.id, category_id: to_destroy).destroy_all
-    end
-    respond_to do |format|
-      format.html {redirect_to new_content_path}
-      format.js
-    end
-  end
-
+  # Duplicate content (pages/catalogue)
   def duplicate
     authorize @content
     @new_content = Content.new(@content.attributes.except("id", "created_at", "updated_at"))
     @new_content.title = @content.title + ' - Duplicate'
     if @new_content.save
-      # @new_content.description = @content.description.dup
-      # @new_content.description.record_id = @new_content.id
-      # @new_content.description.update(body: @content.description.body.dup)
       @content.categories.each do |category|
         ContentCategory.create(content_id: @new_content.id, category_id: category.id)
       end
@@ -83,19 +58,7 @@ class ContentsController < ApplicationController
     end
   end
 
-  def add_category
-    skip_authorization
-    # if params[:ajax].present?
-    @content = Content.find(params[:content_id])
-    category = Category.find(params[:category_id])
-    ContentCategory.create(content_id: content.id, category_id: category.id)
-    @action = params[:page]
-    respond_to do |format|
-      format.html {redirect_to catalogue_path}
-      format.js
-    end
-  end
-
+  # Manage content_categories (contents/edit_mode)
   def content_link_category
     skip_authorization
     if params[:new_category].present?
@@ -124,6 +87,7 @@ class ContentsController < ApplicationController
     end
   end
 
+  # Change content author (not used)
   def change_author
     skip_authorization
     if params[:ajax].present?
@@ -141,18 +105,12 @@ class ContentsController < ApplicationController
     end
   end
 
+  # Delete content (pages/catalogue)
   def destroy_content
     @content = Content.find(params[:content_id])
     authorize @content
     @content.destroy
-    #if params[:catalogue].present?
-    #  @contents = Content.where(id: params[:contents].split(','))
-    #  respond_to do |format|
-    #    format.js
-    #  end
-    #else
-      redirect_to catalogue_path
-    #end
+    redirect_to catalogue_path
   end
 
   private
