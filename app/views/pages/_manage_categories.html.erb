@@ -8,7 +8,7 @@
     <div class="categories-form">
       <% checked = content.categories.ids %>
       <% if !Category.where(company_id: current_user.company_id).present? %>
-        <p>No themes have been created. Categorize your trainings by adding specific themes. It will allow to filter and find trainings more easily.</p>
+        <p style='margin-bottom: 50px !important;'>No themes have been created. Categorize your trainings by adding specific themes. It will allow to filter and find trainings more easily.</p>
       <% end %>
       <%= simple_form_for :add_categories, url: catalogue_content_link_category_path, method: :get, remote: true do |f| %>
         <div class="categories-form-checkboxes">
