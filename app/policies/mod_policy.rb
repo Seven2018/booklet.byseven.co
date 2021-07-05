@@ -13,6 +13,14 @@ class ModPolicy < ApplicationPolicy
     check_access_hr
   end
 
+  def show?
+    true
+  end
+
+  def edit_question?
+    check_access
+  end
+
   def update?
     check_access_hr
   end

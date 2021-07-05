@@ -150,6 +150,7 @@ class PagesController < ApplicationController
       @selected_users = User.where(id: params[:filter_user][:selected].split(',')) if params[:filter_user].present?
     else
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+      @filter = 'none'
     end
     respond_to do |format|
       format.html
@@ -202,7 +203,11 @@ class PagesController < ApplicationController
           else
             @unfiltered = true
           end
-          @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          if params[:filter_user][:on].present?
+            @users = []
+          else
+            @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
+          end
         else
           @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
           @unfiltered = true

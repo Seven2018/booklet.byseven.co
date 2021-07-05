@@ -304,10 +304,13 @@
   padding: 1rem;
   max-height: 40rem;
   width: 36rem;
-  margin: 20px;
+  margin: 0px;
 
   h6 {
     font-size: 1.2rem
+  }
+  @include from-medium {
+    margin: 20px;
   }
 }
 
@@ -361,7 +364,6 @@
         }
       }
     }
-
     .booklet-top-right-icon-catalogue {
       z-index: 200;
       position: absolute;
@@ -371,10 +373,23 @@
       i {
         font-size: 2rem;
         border-radius: 50%;
+        padding: 4px 10px;
+        z-index: 200;
+      }
+
+      i:hover {
+        background-color: #ffa777;
+        padding: 4px 10px;
+      }
+
+      .catalogue-content-card-right-menu {
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &:hover {
           cursor:pointer;
-          opacity: 80%;
         }
       }
     }
@@ -417,7 +432,8 @@
       color:#F26419;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-direction: row-reverse;
 
       i {
         margin-left: 10px;
@@ -491,10 +507,23 @@
       i {
         font-size: 2rem;
         border-radius: 50%;
+        padding: 4px 10px;
+        z-index: 200;
+      }
+
+      i:hover {
+        background-color: #888888;
+        padding: 4px 10px;
+      }
+
+      .catalogue-content-card-right-menu {
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &:hover {
           cursor:pointer;
-          opacity: 80%;
         }
       }
     }
@@ -538,7 +567,8 @@
       color:black;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-direction: row-reverse;
 
       i {
         margin-left: 10px;

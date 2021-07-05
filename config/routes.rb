@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
   post 'assessments/create_ajax', to: 'assessments#create_ajax', as: 'create_ajax_assessment'
   post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
+  patch 'assessments/:id/assessment_questions/:id/edit', to: 'assessments#edit_question', as: 'edit_question_assessment'
   post 'assessments/:id/add_answers', to: 'assessments#add_answers', as: 'add_answers_assessment'
 
   get 'contents-filter', to: 'contents#filter', as: 'filter_contents'

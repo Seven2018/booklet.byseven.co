@@ -4,12 +4,18 @@
       <div class='flex-row-between-start'>
         <p class='mod-assessment-questions-position'>Question n°<%= question&.position %></p>
         <div class='mod-assessment-questions-controls flex-column-between-centered'>
+          <!-- <a data-toggle='modal' data-target='#editQuestion<%= question.id %>'>
+            <button class="btn btn-icon"><i class='fas fa-pen'></i></button>
+          </a> -->
+          <button href="" class="btn btn-icon" onclick="openEditQuestionForm(this)">
+            <i class='fas fa-pen'></i>
+          </button>
           <%= link_to assessment_assessment_question_path(question.mod, question), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true do %>
             <button class="btn btn-icon"><i class="far fa-trash-alt"></i></button>
           <% end %>
           <% if question.position == 1 %>
             <%= link_to assessment_move_up_assessment_question_path(question.mod, question), remote: true do %>
-              <i class="fas fa-caret-up" style='color:grey;cursor:default;'></i>
+              <i class="fas fa-caret-up" style='color:grey;'></i>
             <% end %>
           <% else %>
             <%= link_to assessment_move_up_assessment_question_path(question.mod, question), remote: true do %>
@@ -18,7 +24,7 @@
           <% end %>
           <% if question.position == question.mod.assessment_questions.count %>
             <%= link_to assessment_move_down_assessment_question_path(question.mod, question), remote: true do %>
-              <i class="fas fa-caret-down" style='color:grey;cursor:default;'></i>
+              <i class="fas fa-caret-down" style='color:grey;'></i>
             <% end %>
           <% else %>
             <%= link_to assessment_move_down_assessment_question_path(question.mod, question), remote: true do %>
@@ -31,12 +37,15 @@
         <% i = 1 %>
         <% question.options.each do |key, value| %>
           <% if question.options[key] == 'true' %>
-            <p style='color: #56690A;'><%= i %> - <%= key %></p>
+            <p style='color: #56690A; font-weight: 800'><%= i %> - <%= key %></p>
           <% else %>
             <p style='color: #888888;'><%= i %> - <%= key %></p>
           <% end %>
           <% i += 1 %>
         <% end %>
+      <div class="hidden-form-ajax hidden" id='edit_question-<%= question.id %>'>
+        <%= render 'assessments/edit_question', form: form, assessment_question: question %>
+      </div>
     </div>
   <% end %>
 </div>

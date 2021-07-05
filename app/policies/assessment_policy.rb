@@ -13,6 +13,10 @@ class AssessmentPolicy < ApplicationPolicy
     check_access_hr
   end
 
+  def edit_question?
+    check_access
+  end
+
   def add_answers?
     true
   end

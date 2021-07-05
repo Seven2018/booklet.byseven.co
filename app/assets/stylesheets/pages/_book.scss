@@ -185,7 +185,7 @@
   display: flex;
   flex-direction: column;
 }
-.users-book {
+.users-book-all, .users-book-filtered {
   display: flex;
   flex-wrap: wrap;
 }
@@ -409,14 +409,13 @@
   .session_available_date {
     input {
       background-color: transparent !important;
-      // border: 1px solid #888888 !important;
+      border-color: #F26419 !important;
     }
     }
   .session_date {
     input {
       background-color: transparent !important;
-      // border: 1px solid orange !important;
-    }
+      border-color: #F26419 !important;    }
   }
   .session_starts_at {
     select {
@@ -600,7 +599,8 @@
       color:#F26419;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-direction: row-reverse;
       i {
         margin-left: 10px;
       }
@@ -685,7 +685,8 @@
       color:black;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-direction: row-reverse;
       i {
         margin-left: 10px;
       }
@@ -905,7 +906,8 @@
       color:#F26419;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-direction: row-reverse;
       i {
         margin-left: 10px;
       }
@@ -1007,4 +1009,10 @@
   50% {
     opacity: 0;
   }
+}
+
+.book-user-filter-tags {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
