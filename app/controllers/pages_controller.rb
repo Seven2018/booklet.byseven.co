@@ -171,7 +171,6 @@ class PagesController < ApplicationController
         # If the 'clear' button is clicked, return all the employees
         @users = @users.sort_by{ |user| user.lastname } if @users.present?
       elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])
-        #tags = Tag.where(tag_name: params[:filter_user][:tag].reject(&:blank?))
         tags = params[:filter_user][:tag].reject(&:blank?)
         if tags.empty?
           if params[:filter_user][:selected].present?
@@ -213,6 +212,7 @@ class PagesController < ApplicationController
     end
   end
 
+  # When registering a new account, force the new user to provide some details (firstname, lastname, ...)
   def complete_profile
     redirect_to complete_profile_path unless (current_user.firstname.present? || current_user.lastname.present?)
   end
