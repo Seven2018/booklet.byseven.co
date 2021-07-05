@@ -1,8 +1,26 @@
-<%= simple_form_for AssessmentQuestion.new, url: add_questions_assessment_path(form), method: :post, remote: true do |f| %>
+<%= simple_form_for assessment_question, url: edit_question_assessment_path(form, assessment_question), method: :patch, remote: true do |f| %>
   <div class='mod-assessment-questions-form'>
     <%= f.input :question, as: :text %>
     <div class='mod-assessment-questions-options-mcq'>
       <div class='flex-column-between-left'>
+        <% assessment_question.options.each do |option| %>
+          <div class="options_line">
+            <div class="flex-row-between-centered">
+              <%= label_tag 'Option' %>
+              <%= f.text_field 'options[]', value: option[0], name: 'options[]'%>
+              <%# text_field_tag 'options[]', value: option[0] %>
+            </div>
+            <div class="flex-row-between-centered">
+              <%= label_tag 'Correct Answer' %>
+              <% option[1] == 'true' ? checked = true : checked = false %>
+              <%= check_box_tag 'test[]', true, false, class: 'checkbox', checked: checked %>
+              <%= hidden_field_tag 'answer[]', checked %>
+            </div>
+            <div style='cursor: pointer;' onclick='removeQuestion(this)'>
+              <i class="fas fa-times"></i>
+            </div>
+          </div>
+        <% end %>
       </div>
       <a href="javascript:;" class='addOption btn btn-edit-white' onclick="addAnswer(this);">Add Option</a>
     </div>

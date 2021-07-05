@@ -425,4 +425,14 @@
       setTimeout(function(){doubleClickGuardian = false}, 250)
     }
   }
+
+  function openEditQuestionForm(element) {
+    card = element.closest('.mod-assessment-questions-card')
+    form = card.querySelector('.hidden-form-ajax')
+    card.innerHTML = form.innerHTML
+  }
+
+  function removeQuestion(element) {
+    element.closest('.options_line').remove()
+  }
 </script>

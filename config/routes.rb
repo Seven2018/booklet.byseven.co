@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     get 'question/:id/move_down', to: 'assessment_questions#move_down', as: 'move_down_assessment_question'
   end
   post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
+  patch 'assessments/:id/assessment_questions/:id/edit', to: 'assessments#edit_question', as: 'edit_question_assessment'
   # get 'assessments/:id/view_mode', to: 'assessments#view_mode', as: 'view_mode_assessment'
   post 'assessments/:id/add_answers', to: 'assessments#add_answers', as: 'add_answers_assessment'
   post 'assessments/create_ajax', to: 'assessments#create_ajax', as: 'create_ajax_assessment'
