@@ -20,9 +20,15 @@ if ("<%= @filter %>" == 'content') {
   })
 
 } else if ("<%= @filter %>" == 'user') {
-  document.querySelector('.users-book-filtered').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: @interest_for, selected_filter: @selected_filter) %>';
-  document.querySelector('.users-book-filtered').classList.remove('hidden')
-  document.querySelector('.users-book-all').classList.add('hidden')
+  if ("<%= @unfiltered %>" == 'true') {
+    document.querySelector('.users-book-filtered').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: @interest_for, selected_filter: @selected_filter) %>';
+    document.querySelector('.users-book-filtered').classList.add('hidden')
+    document.querySelector('.users-book-all').classList.remove('hidden')
+  } else {
+    document.querySelector('.users-book-filtered').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: @interest_for, selected_filter: @selected_filter) %>';
+    document.querySelector('.users-book-filtered').classList.remove('hidden')
+    document.querySelector('.users-book-all').classList.add('hidden')
+  }
   document.querySelector('.book-user-filter-tags').innerHTML = '<%= j render("pages/book_user_filter_tags", selected_filter: @selected_filter) %>';
 } else if ("<%= @filter %>" == 'none') {
   document.querySelector('.users-book-filtered').classList.add('hidden')

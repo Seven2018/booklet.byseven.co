@@ -129,10 +129,13 @@
 
   function showDelete(element) {
     // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
+    edit = element.parentNode.querySelector('.category-edit');
     trash = element.parentNode.querySelector('.category-delete');
     if (trash.style.opacity == 0) {
+      edit.style.opacity = 1;
       trash.style.opacity = 1;
     } else {
+      edit.style.opacity = 0;
       trash.style.opacity = 0;
     }
   }

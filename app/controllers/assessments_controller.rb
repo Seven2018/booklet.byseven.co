@@ -47,13 +47,27 @@ class AssessmentsController < ApplicationController
   def add_questions
     authorize @form
     @question = AssessmentQuestion.create(question: params[:assessment_question][:question], question_type: params[:assessment_question][:question_type], mod_id: @form.id, position: @form.assessment_questions.count + 1)
-      options = {}
-      params[:options].reject!(&:empty?).each_with_index do |key, index|
-        options[key] = params[:answer][index]
-      end
-      @question.update(options: options)
+    options = {}
+    params[:options].reject!(&:empty?).each_with_index do |key, index|
+      options[key] = params[:answer][index]
+    end
+    @question.update(options: options)
     respond_to do |format|
-      format.html {redirect_to content_path(@form.content)}
+      format.js
+    end
+  end
+
+  def edit_question
+    @question = AssessmentQuestion.find(params[:id])
+    @form = @question.mod
+    authorize @form
+    @question.update(question: params[:assessment_question][:question])
+    options = {}
+    params[:options].reject!(&:empty?).each_with_index do |key, index|
+      options[key] = params[:answer][index]
+    end
+    @question.update(options: options)
+    respond_to do |format|
       format.js
     end
   end
