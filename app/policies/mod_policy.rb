@@ -18,7 +18,7 @@ class ModPolicy < ApplicationPolicy
   end
 
   def edit_question?
-    check_access
+    check_access_hr
   end
 
   def update?

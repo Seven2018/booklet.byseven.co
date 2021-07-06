@@ -3,18 +3,7 @@ class UsersController < ApplicationController
   before_action :set_current_user, only: [:import, :create]
   skip_before_action :verify_authenticity_token, only: [:update]
 
-  def index
-    # Index with 'search' option and global visibility for SEVEN Users
-    index_function(policy_scope(User))
-    # Index for other Users, with visibility limited to programs proposed by their company only
-    if current_user.access_level == 'HR'
-      @Tags = Tag.joins(:company).where(companies: { name: current_user.company.name })
-      if params[:search]
-        @Tags = @Tags.where("lower(name) LIKE ?", "%#{params[:search][:name].downcase}%").order(name: :asc)
-      end
-    end
-  end
-
+  # Show user profile (users/show)
   def show
     if ['Super Admin', 'Account Owner'].include?(current_user.access_level)
       @user = User.find(params[:id])
@@ -26,11 +15,7 @@ class UsersController < ApplicationController
     authorize @user
   end
 
-  def new
-    @user = User.new
-    authorize @user
-  end
-
+  # Create new User (user_registration, pages/organisation)
   def create
     @user = User.new(user_params)
     @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
@@ -38,28 +23,24 @@ class UsersController < ApplicationController
     authorize @user
     tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i} if params[:user][:tags].present?
     if @user.save
-      #raw, token = Devise.token_generator.generate(User, :reset_password_token)
-      #@user.reset_password_token = token
-      #@user.reset_password_sent_at = Time.now.utc
-      #@user.save(validate: false)
       if tags.present?
         tags.each do |tag|
           UserTag.create(user_id: @user.id, tag_id: tag)
         end
       end
-      # @user.send_reset_password_instructions
-      # UserMailer.account_created(@user, raw).deliver
       redirect_to organisation_path
     else
       render :new
     end
   end
 
+  # Ask user to complete his/her profile after account creation (user_registration)
   def complete_profile
     @user = current_user
     authorize @user
   end
 
+  # Link user to selected company, via provided url
   def link_to_company
     skip_authorization
     company = Company.find_by(auth_token: params[:auth_token])
@@ -71,6 +52,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # Update user profile (users/show)
   def update
     authorize @user
     @user.update(user_params)
@@ -96,6 +78,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # Remove user
   def destroy
     authorize @user
     @user.destroy
@@ -120,18 +103,11 @@ class UsersController < ApplicationController
     else
       flash[:notice] = "Creating #{creating.count} new accounts. Please wait a few minutes and refresh this page."
     end
-    #begin
-    #  @users = User.import(params[:file])
-    #  flash[:notice] = 'Import terminé'
-    #  redirect_back(fallback_location: root_path)
-    #rescue
-    #  redirect_back(fallback_location: root_path)
-    #  flash[:error] = "An error has occured. Please check your csv file."
-    #end
     ImportEmployeesJob.perform_async(params[:file], current_user.company_id)
     redirect_back(fallback_location: root_path)
   end
 
+  # Search from users with autocomplete
   def users_search
     skip_authorization
     @users = User.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
@@ -156,19 +132,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:firstname, :lastname, :email, :password, :access_level, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_title, :company_id)
-  end
-
-  def index_function(parameter)
-    if ['super admin', 'HR'].includes?(current_user.access_level)
-      raise
-      if params[:search].present?
-        @users = (parameter.where(company_id: current_user.company.id).where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + parameter.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
-        @users = @users.sort_by{ |user| user.lastname } if @users.present?
-      elsif params[:filter].present?
-        @users = (parameter.joins(:user_tags).where(company_id: current_user.company_id, user_tags: {tag_id: Tag.where(tag_name: params[:filter][:tag].reject(&:blank?)).map{|x| x.id}}))
-      else
-        @users = parameter.where(company_id: current_user.company.id).order('lastname ASC')
-      end
-    end
   end
 end

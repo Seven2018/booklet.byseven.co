@@ -1,5 +1,6 @@
 class TagCategoriesController < ApplicationController
 
+  # Create a new tag_category (pages/catalogue, contents/edit_mode)
   def create
     @tag_category = TagCategory.new(tag_category_params)
     authorize @tag_category
@@ -21,6 +22,7 @@ class TagCategoriesController < ApplicationController
     end
   end
 
+  # Update a tag_category (pages/catalogue, contents/edit_mode)
   def update_tag_category
     @tag_category = TagCategory.find(params[:tag_category][:tag_category_id])
     authorize @tag_category
@@ -33,10 +35,10 @@ class TagCategoriesController < ApplicationController
     end
   end
 
+  # Delete a tag_category (pages/catalogue, contents/edit_mode)
   def destroy
     @tag_category = TagCategory.find(params[:id])
     authorize @tag_category
-    #@users = User.where(id: params[:users].split(' '))
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
     TagCategory.where(company_id: current_user.company_id).where('position > ?', @tag_category.position).each{|x| x.update(position: x.position - 1)}
     @tag_category.destroy

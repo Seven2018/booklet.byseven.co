@@ -10,7 +10,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access
+    check_access_hr
+  end
+
+  def import?
+    check_access_hr
   end
 
   def show?
@@ -21,17 +25,21 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def link_to_company?
+    true
+  end
+
   def update?
     true
   end
 
   def destroy?
-    check_access
+    check_access_hr
   end
 
   private
 
-  def check_access
+  def check_access_hr
     ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 end

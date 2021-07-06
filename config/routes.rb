@@ -47,24 +47,25 @@ Rails.application.routes.draw do
   get 'organisation', to: 'pages#organisation', as: 'organisation'
   get 'book', to: 'pages#book', as: 'book'
   get :catalogue_content_link_category, controller: :pages
+  # NOT (USED)
+  # get :organisation_user_card, controller: :pages
 
   # SESSIONS
-  resources :sessions
+  resources :sessions, only: %i[update destroy]
   get :book_sessions, controller: :sessions
-  get :book_sessions_update, controller: :sessions
 
-  # SKILLS
-  resources :skills
-  resources :training_contents, only: %i[show create update destroy]
-  get 'training_contents/:id/copy', to: 'training_contents#copy', as: 'copy_training_content'
-  get 'training_contents/:id/viewmode', to: 'training_contents#view_mode', as: 'view_training_content'
+  # SKILLS (NOT USED)
+  # resources :skills
+  # resources :training_contents, only: %i[show create update destroy]
+  # get 'training_contents/:id/copy', to: 'training_contents#copy', as: 'copy_training_content'
+  # get 'training_contents/:id/viewmode', to: 'training_contents#view_mode', as: 'view_training_content'
 
   # TAG CATEGORIES
   resources :tag_categories, only: %i[create destroy]
   get :update_tag_category, controller: :tag_categories
 
   # TAGS
-  resources :tags, only: %i[create show update destroy]
+  resources :tags, only: %i[create destroy]
   get :update_tag, controller: :tags
 
   # USER_INTERESTS
@@ -84,5 +85,4 @@ Rails.application.routes.draw do
   get :link_to_company, controller: :users
   post 'users/import', to: 'users#import', as: 'import_users'
   get :users_search, controller: :users
-  get :organisation_user_card, controller: :pages
 end

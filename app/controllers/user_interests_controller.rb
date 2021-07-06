@@ -1,5 +1,6 @@
 class UserInterestsController < ApplicationController
 
+  # Create a user_interest (like) (pages/catalogue)
   def create
     user = current_user
     @content = Content.find(params[:content_id])
@@ -14,6 +15,7 @@ class UserInterestsController < ApplicationController
     end
   end
 
+  # Remove a user_interest (like) (pages/catalogue, users/show)
   def destroy
     user_interest = UserInterest.find(params[:id])
     @content = Content.find(user_interest.content_id)
@@ -29,6 +31,7 @@ class UserInterestsController < ApplicationController
     end
   end
 
+  # Mark a content as completed by user (contents/show)
   def complete_content
     skip_authorization
     @user_interest = UserInterest.find_by(user_id: current_user.id, content_id: params[:content_id])

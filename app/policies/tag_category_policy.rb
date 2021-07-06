@@ -6,20 +6,20 @@ class TagCategoryPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access
+    check_access_hr
   end
 
   def update_tag_category?
-    check_access
+    check_access_hr
   end
 
   def destroy?
-    check_access
+    check_access_hr
   end
 
   private
 
-  def check_access
+  def check_access_hr
     ['Super Admin', 'Account Owner', 'HR'].include?(user.access_level)
   end
 end

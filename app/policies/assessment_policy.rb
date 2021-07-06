@@ -14,7 +14,7 @@ class AssessmentPolicy < ApplicationPolicy
   end
 
   def edit_question?
-    check_access
+    check_access_hr
   end
 
   def add_answers?
