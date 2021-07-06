@@ -10,10 +10,14 @@ class UserInterestPolicy < ApplicationPolicy
   end
 
   def create?
-    user
+    true
   end
 
   def destroy?
-    user
+    true
+  end
+
+  def complete_content?
+    true
   end
 end

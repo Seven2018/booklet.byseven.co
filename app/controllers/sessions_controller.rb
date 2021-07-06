@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
 
+  # Book the selected contents with selected users as attendees (pages/book)
   def book_sessions
     params.permit!
     params_session = params[:session].except(:selected, :selected_users, :duration)
@@ -20,6 +21,7 @@ class SessionsController < ApplicationController
     end
   end
 
+  # Update date and time for the selected session (pages/dashboard)
   def update
     @session = Session.find(params[:id])
     authorize @session
@@ -27,6 +29,7 @@ class SessionsController < ApplicationController
     redirect_to dashboard_path
   end
 
+  # Delete the selected session (pages/dashboard)
   def destroy
     @session = Session.find(params[:id])
     authorize @session

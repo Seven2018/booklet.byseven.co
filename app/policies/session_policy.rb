@@ -13,10 +13,6 @@ class SessionPolicy < ApplicationPolicy
     check_access_hr
   end
 
-  def book_sessions_update?
-    check_access_hr
-  end
-
   def update?
     check_access_hr
   end

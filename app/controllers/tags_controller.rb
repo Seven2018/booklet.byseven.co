@@ -1,10 +1,7 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :destroy]
 
-  def show
-    authorize @tag
-  end
-
+  # Create a new tag for the selected tag_category (pages/organisation)
   def create
     @tag = Tag.new(tag_params)
     authorize @tag
@@ -24,6 +21,7 @@ class TagsController < ApplicationController
     end
   end
 
+  # Update a tag (pages/organisation)
   def update_tag
     @tag = Tag.find(params[:tag][:tag_id])
     authorize @tag
@@ -42,12 +40,12 @@ class TagsController < ApplicationController
     end
   end
 
+  # Delete selected tag (pages/organisation)
   def destroy
     @tag = Tag.find(params[:id])
     authorize @tag
     @tag.destroy
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
-    #@users = User.where(id: params[:users].split(' '))
     @opened = params[:tag_category_id]
     respond_to do |format|
       format.html {redirect_to organisation_path}

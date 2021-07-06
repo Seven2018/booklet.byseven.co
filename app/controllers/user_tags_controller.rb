@@ -1,4 +1,6 @@
 class UserTagsController < ApplicationController
+
+  # Manage the tags for selected user(s) (pages/organisation)
   def create
     @tag = Tag.find(params[:tag_id])
     @user_tag = UserTag.new

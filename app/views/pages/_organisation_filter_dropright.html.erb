@@ -28,6 +28,7 @@
           <p>No tags associated, create some in 'Manage Tags'</p>
         <% end %>
         <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
+        <%= f.hidden_field :on, value: true %>
       </div>
     </div>
   <% end %>
