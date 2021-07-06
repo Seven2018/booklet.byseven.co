@@ -9,8 +9,12 @@
       <div class="booklet-card-syn">
         <div class="booklet-card-top">
           <div class="booklet-card-top-info">
-            <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link' %>
-            <h3><%= content.title %></h3>
+            <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
+            <% if content.title.length <= 30 %>
+              <h3><b><%= content.title %></b></h3>
+            <% else %>
+              <h3><b><%= content.title.first(30) + '...' %></b></h3>
+            <% end %>
             <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
             <% if interest.present? && interest.interest_type == 'Completed' %>
               <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
@@ -72,8 +76,12 @@
       <div class="booklet-card-asyn">
         <div class="booklet-card-top">
           <div class="booklet-card-top-info">
-            <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link' %>
-            <h3><%= content.title %></h3>
+            <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
+            <% if content.title.length <= 30 %>
+              <h3><b><%= content.title %></b></h3>
+            <% else %>
+              <h3><b><%= content.title.first(30) + '...' %></b></h3>
+            <% end %>
             <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
             <% if interest.present? && interest.interest_type == 'Completed' %>
               <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>

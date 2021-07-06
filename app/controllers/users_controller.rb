@@ -55,7 +55,13 @@ class UsersController < ApplicationController
   # Update user profile (users/show)
   def update
     authorize @user
-    @user.update(user_params)
+    if params[:type] == 'address'
+      address = params[:user][:address]
+      address = address.gsub(address.split(/\d+/)[-2], address.split(/\d+/)[-2][0..-2] + "\n")
+      @user.update(address: address)
+    else
+      @user.update(user_params)
+    end
     if params[:user][:tags].present?
       tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
       del_tags = Tag.where(company_id: current_user.company_id).map(&:id) - tags
