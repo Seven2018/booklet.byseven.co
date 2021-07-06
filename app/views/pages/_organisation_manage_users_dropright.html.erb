@@ -33,12 +33,12 @@
           <div class="flex-row-start-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
             <p><b><%= tag_category.name %></b></p>
             <div>
-              <div class="tag_delete" data-target="#edit-tag_category-<%= tag_category.id %>" onclick='fetchCategoryForm(this);' data-target='tooltip' title='Delete Tag Category'>
-                <i class="fas fa-pencil-alt" data-target='tooltip' title='Edit Theme'></i>
+              <div class="tag_delete" data-target="#edit-tag_category-<%= tag_category.id %>" onclick='fetchCategoryForm(this);' data-toggle='tooltip' title='Delete Tag Category'>
+                <i class="fas fa-pencil-alt" data-toggle='tooltip' title='Edit Theme'></i>
               </div>
             </div>
             <%= link_to tag_category_path(tag_category, users: users.map(&:id)), class: 'tag_delete', data: {confirm: 'Are you sure ?'}, method: :delete, remote: true do %>
-              <i class="fas fa-trash" data-target='tooltip' title='Delete Tag Category'></i>
+              <i class="fas fa-trash" data-toggle='tooltip' title='Delete Tag Category'></i>
             <% end %>
           </div>
           <div class="organisation-manage-users-block-title-buttons">
@@ -57,18 +57,18 @@
               <%= b.check_box + b.label %>
               <div>
                 <div class="tag_delete" data-target="#edit_tag-<%= b.object.id %>" onclick='fetchCategoryForm(this);'>
-                  <i class="fas fa-pencil-alt" data-target='tooltip' title='Delete Tag'></i>
+                  <i class="fas fa-pencil-alt" data-toggle='tooltip' title='Delete Tag'></i>
                 </div>
               </div>
               <%= link_to tag_path(Tag.find(b.object.id), users: users.map(&:id), tag_category_id: tag_category.id), data: {confirm: 'Are you sure ?'}, method: :delete, class: 'tag_delete', remote: true do %>
-                <i class="fas fa-trash" data-target='tooltip' title='Delete Tag'></i>
+                <i class="fas fa-trash" data-toggle='tooltip' title='Delete Tag'></i>
               <% end %>
             </div>
           <% end %>
         </div>
         <div class="flex-row-between-centered" style="height:27px;">
           <div class="new-tag" data-target="#tag_tag_category-<%= tag_category.id %>" onclick='fetchCategoryForm(this);'>
-            <i class="fas fa-plus" data-target='tooltip' title='Add Theme'></i>
+            <i class="fas fa-plus" data-toggle='tooltip' title='Add Theme'></i>
             <p>New Tag</p>
           </div>
         </div>

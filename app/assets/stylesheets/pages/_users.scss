@@ -106,12 +106,18 @@ padding: 20px;
     margin: 0;
   }
 
-  input {
+  input, textarea {
     font-size: 1.4rem !important;
     background-color: transparent !important;
     padding: 0;
     border: none !important;
     box-shadow: none !important;
+  }
+
+  textarea {
+    padding-top: .5rem;
+    height: 7rem;
+    resize: none;
   }
 }
 
@@ -123,24 +129,27 @@ padding: 20px;
 }
 
 .user-info-header {
-font-family: Montserrat;
-font-style: normal;
-font-weight: bold;
-font-size: 12px;
-line-height: 15px;
-text-transform: uppercase;
-margin-bottom: 1.5rem;
-/* identical to box height */
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  /* identical to box height */
 
-letter-spacing: 0.15em;
+  letter-spacing: 0.15em;
 
-color: #808080;
+  color: #808080;
 }
 
 .user-text {
   display: flex;
-  align-items: center;
-  height: 30.5px;
+  align-items: flex-start;
+
+  & > div {
+    height: 30.5px;
+  }
 
   p, a {
     font-size: 1.4rem;
@@ -210,10 +219,6 @@ color: #808080;
     .booklet-card-top-info {
       display: flex;
       flex-direction: column;
-    }
-    .booklet-card-type-pill {
-      display: flex;
-      justify-content: flex-end;
     }
     .booklet-card-type {
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
@@ -301,10 +306,6 @@ color: #808080;
     .booklet-card-top-info {
       display: flex;
       flex-direction: column;
-    }
-    .booklet-card-type-pill {
-      display: flex;
-      justify-content: flex-end;
     }
     .booklet-card-type {
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);

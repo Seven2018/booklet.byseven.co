@@ -60,48 +60,48 @@
     <div class="booking-title users-title">
       <h2>&nbsp;</h2>
     </div>
-      <div class="book-confirm">
+    <div class="book-confirm">
       <div class="book-next-page" onclick="previousPage()">
         <div class="book-next">
           <i class="fas fa-arrow-left fa-3x" style='color:#F26419'></i>
           <p>Select Workshops</p>
         </div>
       </div>
-        <div class="book-page-guide">
-          <div class="page-book-info">
-            <div class="page-number disabled">
-              <p>1</p>
-            </div>
-            <div class="page-name">
-              <p>Select Workshop</p>
-            </div>
+      <div class="book-page-guide">
+        <div class="page-book-info">
+          <div class="page-number disabled">
+            <p>1</p>
           </div>
-          <span class='book-line'></span>
-          <div class="page-book-info">
-            <div class="page-number book-page-indicator-2">
-              <p>2</p>
-            </div>
-            <div class="page-name">
-              <p>Select Participants</p>
-            </div>
-          </div>
-          <span class='book-line-1'></span>
-          <div class="page-book-info">
-            <div class="page-number book-page-indicator-3 disabled">
-              <p>3</p>
-            </div>
-            <div class="page-name">
-              <p>Select Dates</p>
-            </div>
+          <div class="page-name">
+            <p>Select Workshop</p>
           </div>
         </div>
-        <div class="book-next-page" onclick="nextPage()">
-          <div class="book-next">
-            <i class="fas fa-arrow-right fa-3x" style='color:#F26419'></i>
+        <span class='book-line'></span>
+        <div class="page-book-info">
+          <div class="page-number book-page-indicator-2">
+            <p>2</p>
+          </div>
+          <div class="page-name">
+            <p>Select Participants</p>
+          </div>
+        </div>
+        <span class='book-line-1'></span>
+        <div class="page-book-info">
+          <div class="page-number book-page-indicator-3 disabled">
+            <p>3</p>
+          </div>
+          <div class="page-name">
             <p>Select Dates</p>
           </div>
         </div>
       </div>
+      <div class="book-next-page" onclick="nextPage()">
+        <div class="book-next">
+          <i class="fas fa-arrow-right fa-3x" style='color:#F26419'></i>
+          <p>Select Dates</p>
+        </div>
+      </div>
+    </div>
     <div class="index-controls-filter-bar-book">
       <div class="btn-white" onclick='openFilter();'>
         <i class="fas fa-filter"></i>
@@ -124,7 +124,6 @@
       <%= render 'pages/book_user_filter_tags', selected_filter: selected_filter %>
     </div>
     <div class="users-book-selected">
-
     </div>
     <div class="users-book-all">
       <%= paginate @users, remote: true %>
@@ -133,6 +132,7 @@
     <div class="users-book-filtered hidden">
       <%= render 'pages/book_user_index', users: @users, interest_for: interest_for, selected_filter: selected_filter %>
     </div>
+  </div>
   <div class="book-page-3 hidden">
     <div class="booking-title dates-title">
       <h2>Select Dates</h2>

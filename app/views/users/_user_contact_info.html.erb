@@ -1,21 +1,29 @@
 <p class='user-info-header'>Contact Information</p>
 <div class='user-contact-info'>
   <div class="user-text">
-    <p>E-mail:</p>
-    <p style='color:#F26419'><a href="mailto:<%=  user.email %>"><%=  user.email %></a></p>
+    <div class='centered-item'>
+      <p>E-mail:</p>
+    </div>
+    <div class='centered-item'>
+      <p style='color:#F26419'><a href="mailto:<%=  user.email %>"><%=  user.email %></a></p>
+    </div>
   </div>
   <div class="user-text">
-    <p>Phone:</p>
-    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'phone'), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-      <%= f.input :phone_number, label: false, placeholder: 'Add phone number', input_html: {class: "data", value: user.phone_number, style: 'color:#F26419', onclick: 'updateUser(this)'} %>
+    <div class='centered-item'>
+      <p>Phone:</p>
+    </div>
+    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'phone'), method: :patch, remote: true do |f| %>
+      <%= f.input :phone_number, label: false, placeholder: 'Add phone number', spellcheck: false, input_html: {class: "data", style: 'color:#F26419', onclick: 'updateUser(this)'} %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
-   <% end %>
+    <% end %>
   </div>
   <div class="user-text">
-    <p>Address:</p>
-    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'address'), method: :patch, remote: true, input_html: {multipart: true} do |f| %>
-      <%= f.input :address, label: false, placeholder: 'Add address', input_html: {class: "data", value: user.address, onclick: 'updateUser(this)'} %>
+    <div class='centered-item'>
+      <p>Address:</p>
+    </div>
+    <%= simple_form_for :user, url: user_path(user, page: 'show', type: 'address'), method: :patch, remote: true do |f| %>
+      <%= f.text_area :address, label: false, placeholder: 'Add address', spellcheck: false, onclick: 'updateUser(this)', input_html: {class: "data"} %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
-   <% end %>
+    <% end %>
   </div>
 </div>

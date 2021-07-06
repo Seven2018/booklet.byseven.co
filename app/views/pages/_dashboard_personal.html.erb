@@ -28,8 +28,12 @@
       </div>
       <div role="tabpanel" class="tab-pane active" id="CurrentPersonal">
         <div class="row">
-          <% @my_current_sessions.each do |session| %>
-            <%= render 'dashboard_sessions_card', session: session %>
+          <% if @my_current_sessions.empty? %>
+            <p style='padding: 15px;'>No current trainings scheduled for the moment.</p>
+          <% elsif %>
+            <% @my_current_sessions.each do |session| %>
+              <%= render 'dashboard_sessions_card', session: session %>
+            <% end %>
           <% end %>
         </div>
       </div>

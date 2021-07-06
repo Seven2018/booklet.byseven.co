@@ -4,8 +4,8 @@
       <%= link_to organisation_path, class: 'btn return-arrow' do %><i class="fas fa-arrow-left"></i><% end %>
       <div id='show-buttons'>
         <% if current_user.access_level == 'Super Admin' || @user == current_user || (['Account Owner', 'HR'].include?(current_user.access_level) && current_user.company == @user.company) %>
-          <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-target='tooltip' title='Edit User' style='margin-right: 5px; border-radius: 5px'><i class='fas fa-pen'></i></button></a>
-          <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last' data-target='tooltip' title='Change Password' style='margin-right: 5px; border-radius: 5px'><i class="fas fa-key"></i></button></a>
+          <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-toggle='tooltip' title='Edit User' style='margin-right: 5px; border-radius: 5px'><i class='fas fa-pen'></i></button></a>
+          <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last' data-toggle='tooltip' title='Change Password' style='margin-right: 5px; border-radius: 5px'><i class="fas fa-key"></i></button></a>
         <% end %>
       </div>
     </div>
@@ -59,11 +59,7 @@
               <div class="booklet-card-syn">
                 <div class="booklet-card-top">
                   <div class="booklet-card-top-info">
-                  <h3><%= content.title %></h3>
-                  <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
-                   <% if interest.present? && interest.interest_type == 'Completed' %>
-                    <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
-                  <% end %>
+                  <h3><b><%= content.title %></b></h3>
                   <p><%= content.duration %> Minutes</p>
                   </div>
                   <div class="booklet-card-type-pill">
@@ -110,11 +106,7 @@
               <div class="booklet-card-asyn">
                 <div class="booklet-card-top">
                   <div class="booklet-card-top-info">
-                  <h3><%= content.title %></h3>
-                  <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
-                   <% if interest.present? && interest.interest_type == 'Completed' %>
-                    <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
-                  <% end %>
+                  <h3><b><%= content.title %></b></h3>
                   <p><%= content.duration %> Minutes</p>
                   </div>
                   <div class="booklet-card-type-pill">
@@ -170,46 +162,98 @@
       <p style='font-size: 12px'>Completed</p>
     </div>
     <div class="trainings-row">
-      <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date <= ?', Date.today).each do |session| %>
-      <% content = Session.includes([:content]).find(session.id).content %>
-        <% if UserInterest.find_by(user_id: @user.id, content_id: session.content_id) == 'Completed' %>
-          <% if content.content_type == 'Synchronous' %>
-            <div class="booklet-card">
+      <% Content.joins(:user_interests).where(user_interests: {user_id: @user.id, interest_type: 'Completed'}).each do |content| %>
+        <% session = Session.joins(:attendees).where(content_id: content.id, attendees: {user_id: @user.id}).last %>
+        <% if content.content_type == 'Synchronous' %>
+          <div class="booklet-card">
+            <% if session.present? %>
               <div class="booking-date">
                 <p style='margin-right:5px; color:#F26419;'>Began</p>
                 <b><p style='color:#F26419;'><%= session.date.strftime('%B %d') %></p></b>
               </div>
-              <div class="booklet-card-syn-completed">
-                <div class="booklet-card-top">
-                  <div class="booklet-card-top-info">
-                  <h3><%= content.title %></h3>
-                  <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
-                   <% if interest.present? && interest.interest_type == 'Completed' %>
-                    <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
-                  <% end %>
-                  <p><%= content.duration %> Minutes</p>
-                  </div>
-                  <div class="booklet-card-type-pill">
-                    <div class="booklet-card-type">
-                      <div class="booklet-card-type-icon">
-                        <% if content.content_type == 'Synchronous' %>
-                          <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                          <p>In Person</p>
-                        <% else %>
-                          <i class="fas fa-laptop" style='color:black;'></i>
-                          <p>Online</p>
-                        <% end %>
-                      </div>
+            <% end %>
+            <div class="booklet-card-syn-completed">
+              <div class="booklet-card-top">
+                <div class="booklet-card-top-info">
+                <h3><b><%= content.title %></b></h3>
+                <p><%= content.duration %> Minutes</p>
+                </div>
+                <div class="booklet-card-type-pill">
+                  <div class="booklet-card-type">
+                    <div class="booklet-card-type-icon">
+                      <% if content.content_type == 'Synchronous' %>
+                        <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                        <p>In Person</p>
+                      <% else %>
+                        <i class="fas fa-laptop" style='color:black;'></i>
+                        <p>Online</p>
+                      <% end %>
                     </div>
                   </div>
+                  <i class="fas fa-check-circle" style='color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
                 </div>
-                <div class="booklet-card-bottom">
-                  <div class="booklet-card-theme">
-                  <% content.categories.order(title: :asc).each do |category| %>
-                  <p><%= category.title %></p>
+              </div>
+              <div class="booklet-card-bottom">
+                <div class="booklet-card-theme">
+                <% content.categories.order(title: :asc).each do |category| %>
+                <p><%= category.title %></p>
+                <% end %>
+                </div>
+                <div class="booklet-card-objective">
+                <% if content.description.present? %>
+                  <% if content.description.length >= (200) %>
+                    <p><%= content.description.first(200) + '...' %></p>
+                  <% else %>
+                    <p><%= content.description.first(200) %></p>
                   <% end %>
+                <% end %>
+                </div>
+                <div class="booklet-card-like">
+                  <% if session.present? %>
+                    <p><%= session.attendees.count %> Participant(s)</p>
+                  <% end %>
+                  <% assessments = UserForm.where(user_id: current_user, mod_id: content.mods.ids).map{|x| x.grade} %>
+                  <p>Grade : <%= assessments.sum(0.0) / assessments.size %>%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="booklet-card">
+            <% if session.present? %>
+              <div class="booking-date">
+                <p style='margin-right:5px;'>Available</p>
+                <b><p><%= session.date.strftime('%B %d') %></p></b>
+              </div>
+            <% end %>
+            <div class="booklet-card-asyn-completed">
+              <div class="booklet-card-top">
+                <div class="booklet-card-top-info">
+                  <h3><b><%= content.title %></b></h3>
+                  <p><%= content.duration %> Minutes</p>
+                </div>
+                <div class="booklet-card-type-pill">
+                  <div class="booklet-card-type">
+                    <div class="booklet-card-type-icon">
+                      <% if content.content_type == 'Synchronous' %>
+                        <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                        <p>In Person</p>
+                      <% else %>
+                        <i class="fas fa-laptop" style='color:black;'></i>
+                        <p>Online</p>
+                      <% end %>
+                    </div>
                   </div>
-                  <div class="booklet-card-objective">
+                  <i class="fas fa-check-circle" style='color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
+                </div>
+              </div>
+              <div class="booklet-card-bottom">
+                <div class="booklet-card-theme">
+                  <% content.categories.order(title: :asc).each do |category| %>
+                    <p><%= category.title %></p>
+                  <% end %>
+                </div>
+                <div class="booklet-card-objective">
                   <% if content.description.present? %>
                     <% if content.description.length >= (200) %>
                       <p><%= content.description.first(200) + '...' %></p>
@@ -217,69 +261,17 @@
                       <p><%= content.description.first(200) %></p>
                     <% end %>
                   <% end %>
-                  </div>
-                  <div class="booklet-card-like">
+                </div>
+                <div class="booklet-card-like">
+                  <% if session.present? %>
                     <p><%= session.attendees.count %> Participant(s)</p>
-                    <% assessments = UserForm.where(user_id: current_user, mod_id: content.mods.ids).map{|x| x.grade} %>
-                    <p>Grade : <%= assessments.sum(0.0) / assessments.size %>%</p>
-                  </div>
+                  <% end %>
+                  <% assessments = UserForm.where(user_id: current_user, mod_id: content.mods.ids).map{|x| x.grade} %>
+                  <p>Grade : <%= assessments.sum(0.0) / assessments.size %>%</p>
                 </div>
               </div>
             </div>
-          <% else %>
-            <div class="booklet-card">
-              <div class="booking-date">
-                <p style='margin-right:5px;'>Available</p>
-                <b><p><%= session.date.strftime('%B %d') %></p></b>
-              </div>
-              <div class="booklet-card-asyn-completed">
-                <div class="booklet-card-top">
-                  <div class="booklet-card-top-info">
-                    <h3><%= content.title %></h3>
-                    <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
-                     <% if interest.present? && interest.interest_type == 'Completed' %>
-                      <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
-                    <% end %>
-                    <p><%= content.duration %> Minutes</p>
-                  </div>
-                  <div class="booklet-card-type-pill">
-                    <div class="booklet-card-type">
-                      <div class="booklet-card-type-icon">
-                        <% if content.content_type == 'Synchronous' %>
-                          <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                          <p>In Person</p>
-                        <% else %>
-                          <i class="fas fa-laptop" style='color:black;'></i>
-                          <p>Online</p>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="booklet-card-bottom">
-                  <div class="booklet-card-theme">
-                    <% content.categories.order(title: :asc).each do |category| %>
-                      <p><%= category.title %></p>
-                    <% end %>
-                  </div>
-                  <div class="booklet-card-objective">
-                    <% if content.description.present? %>
-                      <% if content.description.length >= (200) %>
-                        <p><%= content.description.first(200) + '...' %></p>
-                      <% else %>
-                        <p><%= content.description.first(200) %></p>
-                      <% end %>
-                    <% end %>
-                  </div>
-                  <div class="booklet-card-like">
-                    <p><%= session.attendees.count %> Participant(s)</p>
-                    <% assessments = UserForm.where(user_id: current_user, mod_id: content.mods.ids).map{|x| x.grade} %>
-                    <p>Grade : <%= assessments.sum(0.0) / assessments.size %>%</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <% end %>
+          </div>
         <% end %>
       <% end %>
     </div>
@@ -327,10 +319,14 @@
     }
 
     function updateUser(element) {
+      console.log("test")
+      doubleClickGuardian == true
       form = element.closest('form')
       submit = form.querySelector('.hidden-submit')
+      setTimeout(function(){doubleClickGuardian = false}, 500)
       window.addEventListener('click', function(e) {
         if (outsideClick(e, element) && doubleClickGuardian == false) {
+          console.log("test")
           submit.click();
           this.removeEventListener('click', arguments.callee, false);
         }
@@ -390,7 +386,6 @@
       const x = e.pageX - slider.offsetLeft;
       const walk = (x - startX) * 3; //scroll-fast
       slider.scrollLeft = scrollLeft - walk;
-      console.log(walk);
     });
   })
 

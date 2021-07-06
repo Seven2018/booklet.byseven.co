@@ -20,7 +20,7 @@ class UserInterestsController < ApplicationController
     user_interest = UserInterest.find(params[:id])
     @content = Content.find(user_interest.content_id)
     authorize user_interest
-    user_interest.destroy
+    user_interest.destroy if user_interest.interest_type == 'Interested'
     if params[:redirect_from] == 'user_show'
       @test = params[:redirect_from]
       @user = current_user
