@@ -37,12 +37,14 @@
   </div>
   <p class='trainings-title'>Trainings</p>
   <div class="user-trainings">
-    <div class="user-info-header">
-      <p style='font-size: 12px'>Interested</p>
-    </div>
-    <div class="trainings-row">
-      <%= render 'user_interests', user: @user %>
-    </div>
+    <% if @user.user_interests.present? %>
+      <div class="user-info-header">
+        <p style='font-size: 12px'>Interested</p>
+      </div>
+      <div class="trainings-row">
+        <%= render 'user_interests', user: @user %>
+      </div>
+    <% end %>
     <div class="user-info-header">
       <p style='font-size: 12px'>Upcoming</p>
     </div>
@@ -59,8 +61,12 @@
               <div class="booklet-card-syn">
                 <div class="booklet-card-top">
                   <div class="booklet-card-top-info">
-                  <h3><b><%= content.title %></b></h3>
-                  <p><%= content.duration %> Minutes</p>
+                    <% if content.title.length <= 30 %>
+                      <h3><b><%= content.title %></b></h3>
+                    <% else %>
+                      <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
+                    <% end %>
+                    <p><%= content.duration %> Minutes</p>
                   </div>
                   <div class="booklet-card-type-pill">
                     <div class="booklet-card-type">
@@ -106,8 +112,12 @@
               <div class="booklet-card-asyn">
                 <div class="booklet-card-top">
                   <div class="booklet-card-top-info">
-                  <h3><b><%= content.title %></b></h3>
-                  <p><%= content.duration %> Minutes</p>
+                    <% if content.title.length <= 30 %>
+                      <h3><b><%= content.title %></b></h3>
+                    <% else %>
+                      <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
+                    <% end %>
+                    <p><%= content.duration %> Minutes</p>
                   </div>
                   <div class="booklet-card-type-pill">
                     <div class="booklet-card-type">
@@ -175,8 +185,12 @@
             <div class="booklet-card-syn-completed">
               <div class="booklet-card-top">
                 <div class="booklet-card-top-info">
-                <h3><b><%= content.title %></b></h3>
-                <p><%= content.duration %> Minutes</p>
+                  <% if content.title.length <= 30 %>
+                    <h3><b><%= content.title %></b></h3>
+                  <% else %>
+                    <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
+                  <% end %>
+                  <p><%= content.duration %> Minutes</p>
                 </div>
                 <div class="booklet-card-type-pill">
                   <div class="booklet-card-type">
@@ -229,7 +243,11 @@
             <div class="booklet-card-asyn-completed">
               <div class="booklet-card-top">
                 <div class="booklet-card-top-info">
-                  <h3><b><%= content.title %></b></h3>
+                  <% if content.title.length <= 30 %>
+                    <h3><b><%= content.title %></b></h3>
+                  <% else %>
+                    <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
+                  <% end %>
                   <p><%= content.duration %> Minutes</p>
                 </div>
                 <div class="booklet-card-type-pill">

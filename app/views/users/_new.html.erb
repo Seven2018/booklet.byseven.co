@@ -28,21 +28,23 @@
       <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
       <div class="new_user_tags">
         <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
-        <div class="organisation-filter-block-user">
-          <div class="organisation-filter-block-title-user-show">
-            <div>
-              <p><b><%= category.name.capitalize %></b></p>
-              <div class="organisation-filter-block-title-buttons">
-                <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>
-                  <i class="fas fa-angle-down" data-rotated='0'></i>
+          <% if category.tags.present? %>
+            <div class="organisation-filter-block-user">
+              <div class="organisation-filter-block-title-user-show">
+                <div>
+                  <p><b><%= category.name.capitalize %></b></p>
+                  <div class="organisation-filter-block-title-buttons">
+                    <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>
+                      <i class="fas fa-angle-down" data-rotated='0'></i>
+                    </div>
+                  </div>
                 </div>
               </div>
+               <div class="organisation-filter-block-checkboxes-user">
+              <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes %>
+              </div>
             </div>
-          </div>
-           <div class="organisation-filter-block-checkboxes-user">
-          <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes %>
-          </div>
-        </div>
+          <% end %>
         <% end %>
       </div>
       <div style=" display: flex; justify-content: flex-end;margin-top:3rem;">

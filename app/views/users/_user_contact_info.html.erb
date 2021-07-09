@@ -5,7 +5,11 @@
       <p>E-mail:</p>
     </div>
     <div class='centered-item'>
-      <p style='color:#F26419'><a href="mailto:<%=  user.email %>"><%=  user.email %></a></p>
+      <% if user.email.length > 25 %>
+        <p style='color:#F26419' data-toggle='tooltip' title='<%= user.email %>'><a href="mailto:<%=  user.email %>"><%=  user.email.first(25) + '...' %></a></p>
+      <% else %>
+        <p style='color:#F26419'><a href="mailto:<%=  user.email %>"><%=  user.email %></a></p>
+      <% end %>
     </div>
   </div>
   <div class="user-text">
