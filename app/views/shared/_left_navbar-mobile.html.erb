@@ -1,29 +1,29 @@
-<div class="left-navbar-mobile">
-  <div class="left-navbar-middle-mobile">
+<div class="navbar-mobile">
+  <div class="navbar-middle-mobile">
     <% if user_signed_in? %>
       <%= link_to dashboard_path, class: 'left-buttons-mobile' do %>
-        <div class="left-menu-list-mobile">
+        <div class="menu-list-mobile">
           <i class="fas fa-home"></i>
         </div>
       <% end %>
       <%= link_to catalogue_path, class: 'left-buttons-mobile' do %>
-        <div class="left-menu-list-mobile">
+        <div class="menu-list-mobile">
           <i class="fas fa-chalkboard"></i>
         </div>
       <% end %>
       <%= link_to organisation_path, class: 'left-buttons-mobile' do %>
-        <div class="left-menu-list-mobile">
+        <div class="menu-list-mobile">
           <i class="fas fa-users"></i>
         </div>
       <% end %>
       <%= link_to book_path, class: 'left-buttons-mobile' do %>
-        <div class="left-menu-list-mobile">
+        <div class="menu-list-mobile">
           <i class="fas fa-book"></i>
         </div>
       <% end %>
     <% end %>
     <div class="left-buttons-mobile">
-      <div class="left-navbar-top-mobile">
+      <div class="navbar-top-mobile">
         <a class="  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
       </a>

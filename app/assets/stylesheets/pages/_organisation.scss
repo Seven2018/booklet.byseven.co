@@ -1,3 +1,5 @@
+// CLEANED - 2021-07-08
+
 // USERS HEADERS + CARD
 
 .organisation-page {
@@ -7,18 +9,21 @@
 
 .user-index-headers, .user-index-card {
   height: 8.9rem;
-  p {
-  font-size: 1.4rem;
-
-  }
   display: flex;
   align-items: center;
   padding: 0 3rem;
   border-bottom: 1px solid rgba(0,0,0,0.1);
+
+  p {
+    font-size: 1.4rem;
+  }
+
   img {
     display:none;
   }
+
   @include from-medium {
+
     img {
       display: inherit;
     }
@@ -28,13 +33,15 @@
 .user-index-headers {
   color: #808080;
   background-color: #F3F2F2;
-      i {
-      cursor: pointer;
-      color: #808080;
-      &:hover {
-        color: black;
-      }
+
+  i {
+    cursor: pointer;
+    color: #808080;
+
+    &:hover {
+      color: black;
     }
+  }
 }
 
 
@@ -82,18 +89,14 @@
     opacity: 80%;
   }
 }
+
 .user-index-card {
   background-color: white;
   position: relative;
-    &:hover {
+
+  &:hover {
     background-color: #F8F8F8;
   }
-}
-
-.user-index-infos {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
 }
 
 .user-index-info {
@@ -103,22 +106,23 @@
   min-width: 18rem;
   max-width: 18rem;
   margin-right: 3rem;
-  // height: 2.4rem;
   overflow: hidden;
   text-overflow: ellipsis;
+
   &:first-of-type {
     min-width: 7rem;
   }
+
   a {
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
   p {
     font-size: 12px;
     text-overflow: ellipsis;
     overflow: hidden;
   }
-
 
   @include from-medium {
     p {
@@ -249,7 +253,6 @@
         }
       }
 
-
       .organisation-filter-block-checkboxes {
         margin-left: 27px;
         overflow: scroll;
@@ -298,10 +301,12 @@
         justify-content: space-between;
         align-items: center;
         height: 4rem;
+
         h2 {
           font-size: 20px !important;
           margin-bottom: 0;
         }
+
         i {
           margin-right: 2rem;
           margin-left: 1rem;
@@ -344,8 +349,8 @@
             cursor: pointer;
           }
         }
-
       }
+
     .organisation-manage-users-block-checkboxes {
       margin-left: 27px;
 
@@ -357,9 +362,9 @@
   }
 
 
-.organisation-manage-users-controls-buttons {
-  margin-right: 3px;
-}
+  .organisation-manage-users-controls-buttons {
+    margin-right: 3px;
+  }
 
   .new-tag {
     display: flex;
@@ -427,10 +432,6 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   flex-grow: 1;
   width: auto;
-  // @include from-medium-high {
-  //   width: 100%;
-  // }
-
 }
 
 .employee-tag {
@@ -445,6 +446,7 @@
 }
 
 .new_user_tags {
+
   input {
     margin-right: 1rem;
   }
@@ -464,6 +466,7 @@
 }
 
 #user-search {
+
   input {
     padding-left: 35px;
     position: relative;
@@ -474,12 +477,14 @@
     margin-right: 5px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
   }
-  .form-group {
-        margin-bottom: 0px !important;
 
+  .form-group {
+    margin-bottom: 0px !important;
   }
 }
+
 #user-search-clear {
+
   p {
     position: absolute;
     z-index: 100;
@@ -487,6 +492,7 @@
     font-size: 1.2rem;
     right: 340px;
     color: #F26419;
+
     &:hover {
       cursor: pointer;
       opacity: 80%;
@@ -512,7 +518,6 @@
   .organisation-filter-block-title-user-show {
     height: 4rem;
     margin-bottom: 1rem;
-
 
     & > div {
       display: flex;
@@ -552,6 +557,7 @@
 
 .see-all {
   cursor: pointer;
+
   &:hover {
     color: #F26419;
   }

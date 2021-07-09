@@ -1,15 +1,4 @@
-.book-times {
-  display:flex;
-  align-items: center;
-}
-
-
-// .book-container {
-//     padding: 10px;
-//   @include from-medium {
-//   padding: 30px;
-//   }
-// }
+// CLEANED - 2021-07-08
 
 .booking-title {
   margin-top: 20px;
@@ -38,37 +27,11 @@
 }
 
 
-#workshop-card-list {
-  list-style: none;
-  padding-left: 0;
-  li {
-    cursor: grab !important;
-  }
-  &:hover {
-    cursor: pointer;
-  }
-  &:active {
-    cursor: grabbing;
-  }
-}
-
-
-.card-interest {
-  // cursor: all-scroll;
-}
-
-
-.dragged {
-  opacity: .8;
-}
-
 
 // FILTER //
 
 
-
 .index-controls-filter-bar-book {
-  // min-height: 4rem;
   margin: 3rem 2rem 3rem 0rem;
   width: 100%;
   display: flex;
@@ -145,28 +108,35 @@
       font-size: 14px;
       opacity: .5;
     }
+
     &:hover{
       cursor:pointer;
       opacity: 80%;
     }
   }
+
   @include from-medium {
     width: 650px;
   }
 }
 
-// Next Page controls //
+
+// NEXT PAGE CONTROLS
+
 .book-next-page {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
+
   &:hover{
+
     i {
       opacity: .8;
     }
   }
 }
+
 .book-next {
   width: 12rem;
   display: flex;
@@ -179,209 +149,23 @@
 }
 
 
-// PARTICIPANTS PAGE //
+// PARTICIPANTS PAGE
 
-.users-book-grid {
-  display: flex;
-  flex-direction: column;
-}
 .users-book-all, .users-book-filtered {
   display: flex;
   flex-wrap: wrap;
 }
+
 .users-book-selected {
   display: flex;
   flex-wrap: wrap;
 }
-//---user cards---//
+
 .icon {
   margin: 10px;
 }
 
-
-.user-index-infos {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.user-index-info-book {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-right: 3rem;
-  overflow: hidden;
-  white-space: nowrap;
-
-  p {
-    font-size: 16px;
-    text-overflow: ellipsis;
-  }
-
-  @include from-medium {
-    &:first-of-type {
-    min-width: 7rem;
-  }
-  }
-}
-
-// .user-training-info {
-//   display: none;
-//   @include from-medium {
-//     display: block;
-//   }
-// }
-
-.user-index-info-book-user-interest {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-right: 3rem;
-  width:25rem;
-  p {
-    font-size: 16px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-}
-
-.user-info-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  p {
-    font-size: 1.3rem;
-    font-weight: 600;
-  }
-  @include from-medium {
-    flex-direction: row;
-    p {
-      font-size: 1.6rem;
-    }
-  }
-}
-
-
-.card-content-description {
-  height: 6rem;
-  display:none;
-  @include from-medium {
-    display: block;
-  }
-}
-
-.user-index-card-book {
-  border-bottom: none;
-  height: 10rem;
-  display: flex;
-  align-items: center;
-  padding: 0 3rem;
-  width: 100%;
-  img {
-    display:none;
-  }
-
-  @include from-medium {
-    border-bottom: 1px solid #c4c4c4;
-    img {
-      display: inherit;
-    }
-  }
-}
-
-.user-book-interest-right {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-    p {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    }
-}
-
 /* SELECTED CARD */
-
-.book-selected-card {
-  margin-top: 20px;
-  background: white;
-  display: flex;
-  flex-direction:column;
-  margin-bottom: 3rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
- .type-icon {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-  }
-
-  .book-selected-card-left {
-    width: 100%;
-  }
-
-  .book-selected-card-infos {
-    height: 100%;
-    width: 100%;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    position: relative;
-    font-size: 1.6rem;
-    @include from-medium-high {
-      height: 80%;
-    }
-
-    .duration-alert {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-    }
-  }
-
-
-
-  .book-selected-card-dates {
-    background: #F8D9C8;
-    height: 100%;
-    width: 100%;
-    padding: 1rem 2rem;
-    p {
-      color: black;
-    }
-    @include from-medium-high {
-      width: 30%;
-    }
-  }
-
-  .book-selected-card-categories {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap:wrap;
-    padding: 10px;
-    p {
-      background: #F8D9C8;
-      color: #F26419;
-      padding: 0 .5rem;
-      margin: 0 1rem 0.5rem 0;
-      border-radius: 5px;
-      font-size: 1.3rem;
-    }
-
-    i {
-      color: #F26419;
-    }
-  }
-  @include from-medium-high {
-    flex-direction: row;
-  }
-}
-
-.book-selected-card-dates {
-  position: relative;
-}
 
 .book-dates {
   padding: 0;
@@ -407,23 +191,28 @@
 
 .session {
   .session_available_date {
+
     input {
       background-color: transparent !important;
       border-color: #F26419 !important;
     }
-    }
+  }
   .session_date {
+
     input {
       background-color: transparent !important;
-      border-color: #F26419 !important;    }
+      border-color: #F26419 !important;
+    }
   }
   .session_starts_at {
+
     select {
       background-color: transparent !important;
       border: none !important;
     }
   }
   .session_ends_at {
+
     select {
       background-color: transparent !important;
       border: none !important;
@@ -436,13 +225,10 @@
   justify-content: flex-end;
   margin-top: 10px;
   cursor: pointer;
+
   &:hover {
     opacity: 70%;
   }
-}
-
-.book-element{
-  cursor: pointer;
 }
 
 .user-filter {
@@ -453,31 +239,19 @@
   border-radius: 4px;
 }
 
-.headers-div-book {
-  min-width: 20rem;
-  margin-right: 3rem;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-
-// Booking v2 //
 .book-page-guide {
-    display: none;
-    position:relative;
-    justify-content: space-evenly;
-    width: 400px;
+  display: none;
+  position:relative;
+  justify-content: space-evenly;
+  width: 400px;
+
   .page-book-info {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   .page-number {
-    p {
-      font-size: 1.4rem;
-      font-weight: 800;
-    }
     width: 30px;
     height: 30px;
     display: flex;
@@ -487,12 +261,20 @@
     border-radius: 50%;
     color: #F26419;
     border: 1px solid #F26419;
+
+    p {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
   }
+
   .page-name {
-        p {
+
+    p {
       font-size: 1.2rem;
     }
   }
+
   .book-line {
     width: 104px;
     border-bottom: 1px solid #808080;
@@ -500,230 +282,26 @@
     top: 14px;
     left: 94px;
   }
-    .book-line-1 {
+
+  .book-line-1 {
     width: 93px;
     border-bottom: 1px solid #808080;
     position: absolute;
     top: 14px;
     left: 227px;
   }
+
   .active {
     border-bottom: 1px solid #F26419;
   }
+
   .disabled {
     color: #808080;
     border: 1px solid #808080;
   }
+
   @include from-medium-high {
     display: flex;
-  }
-}
-
-
-// Book Card //
-
-.booklet-card-top-info {
-  display: flex;
-  flex-direction: column;
-}
-
-
-.booklet-card-syn {
-  width: 360px;
-  height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #F8D9C8;
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-    .booklet-top-right-icon {
-      z-index: 200;
-      &:hover {
-        cursor:pointer;
-        opacity: 80%;
-      }
-      position: absolute;
-      top: 12px;
-      right: 10px;
-      i {
-        font-size: 2rem;
-        background: white;
-        border-radius: 50%;
-      }
-    }
-  }
-  .booklet-card-bottom {
-    height: 70%;
-    padding: 10px;
-    .booklet-card-theme {
-      height: 50px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-      p {
-        height: 20px;
-        background: #F8D9C8;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: 5px;
-        font-size: 1.3rem;
-      }
-    }
-    .booklet-card-objective {
-      height: 160px;
-    }
-    .booklet-card-like {
-
-      color:#F26419;
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-      i {
-        margin-left: 10px;
-      }
-    }
-  }
-}
-
-
-.booklet-card-asyn {
-  width: 360px;
-  height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #C4C4C4;
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-    .booklet-top-right-icon {
-      &:hover {
-        cursor:pointer;
-        opacity: 80%;
-      }
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-      i {
-        font-size: 2rem;
-        background: white;
-        border-radius: 50%;
-      }
-    }
-  }
-  .booklet-card-bottom {
-    height: 70%;
-    padding: 10px;
-    .booklet-card-theme {
-      height: 50px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-      p {
-        height: 20px;
-        background: #F8D9C8;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: 5px;
-        font-size: 1.3rem;
-      }
-    }
-    .booklet-card-objective {
-      height: 160px;
-    }
-    .booklet-card-like {
-      color:black;
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-      i {
-        margin-left: 10px;
-      }
-    }
-  }
-}
-
-.booklet-card-book-overlay {
-    position: absolute;
-    background: grey;
-    width: 360px;
-    height: 360px;
-    border-radius: 5px;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
-    opacity: 50%;
-}
-
-.booklet-card-book {
-  position: relative;
-  margin: 20px;
-}
-
-.theme-white {
-  height: 50px;
-  overflow: hidden;
-  display: flex;
-  flex-wrap: wrap;
-  p {
-    height: 20px;
-    background: white !important;
-    color: #F26419;
-    padding: 0 .5rem;
-    margin: 0 1rem .5rem 0;
-    border-radius: 5px;
-    font-size: 1.3rem;
   }
 }
 
@@ -740,46 +318,52 @@
   display:flex;
   flex-direction: column;
   align-items: center;
+
   .user-book-info {
     display: flex;
     height: 70px;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+
     .user-book-name {
-      p {
-        text-overflow: ellipsis;
-      }
       text-align: center;
       font-size: 1.6rem;
       font-weight: 800;
+
+      p {
+        text-overflow: ellipsis;
+      }
     }
   }
+
   .user-book-interest {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
   }
+
   .user-book-icon {
-    &:hover {
-        cursor:pointer;
-      }
     z-index: 199;
     position: absolute;
     top: 12px;
     right: 10px;
+
+    &:hover {
+      cursor:pointer;
+    }
+
     i {
       font-size: 2rem;
       background: white;
       border-radius: 50%;
     }
   }
+
   .user-book-top {
     height: 15%;
   }
-  .user-book-bottom {
-    height: 85%;
-  }
+
   .user-book-card-overlay {
     position: absolute;
     background: grey;
@@ -798,18 +382,21 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 20px;
+
   .add-selected {
-  &:hover {
-    cursor: pointer;
-    color: #F26419;
-  }
-  }
-  .remove-selected {
-  &:hover {
-    cursor: pointer;
-    color: #F26419;
+
+    &:hover {
+      cursor: pointer;
+      color: #F26419;
+    }
   }
 
+  .remove-selected {
+
+    &:hover {
+      cursor: pointer;
+      color: #F26419;
+    }
   }
 }
 
@@ -824,12 +411,6 @@
 
 .sync-booking {
   display: flex;
-}
-
-.book-times {
-  p {
-    color: #F26419;
-  }
 }
 
 .booklet-card-syn-dates {
@@ -855,24 +436,29 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
       .booklet-card-type-icon {
         display: flex;
         justify-content: space-evenly;
         align-items: baseline;
+
         i {
           margin-right: 10px;
         }
       }
     }
+
     .booklet-top-right-icon {
       z-index: 200;
+      position: absolute;
+      top: 12px;
+      right: 10px;
+
       &:hover {
         cursor:pointer;
         opacity: 80%;
       }
-      position: absolute;
-      top: 12px;
-      right: 10px;
+
       i {
         font-size: 2rem;
         background: white;
@@ -880,13 +466,16 @@
       }
     }
   }
+
   .booklet-card-bottom-dates {
     padding: 10px;
+
     .booklet-card-theme {
       height: 50px;
       overflow: hidden;
       display: flex;
       flex-wrap: wrap;
+
       p {
         height: 20px;
         background: #F8D9C8;
@@ -899,12 +488,12 @@
     }
 
     .booklet-card-like {
-
       color:#F26419;
       height: 32px;
       display: flex;
       justify-content: space-between;
       flex-direction: row-reverse;
+
       i {
         margin-left: 10px;
       }
@@ -925,9 +514,8 @@
     height: 30%;
     position: relative;
     background: #C4C4C4;
-
-
   }
+
   .booklet-card-type {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     width: 133px;
@@ -937,10 +525,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
     .booklet-card-type-icon {
       display: flex;
       justify-content: space-evenly;
       align-items: baseline;
+
       i {
         margin-right: 10px;
       }
@@ -949,13 +539,15 @@
 
   .booklet-top-right-icon {
     z-index: 200;
+    position: absolute;
+    top: 12px;
+    right: 10px;
+
     &:hover {
       cursor:pointer;
       opacity: 80%;
     }
-    position: absolute;
-    top: 12px;
-    right: 10px;
+
     i {
       font-size: 2rem;
       background: white;
@@ -965,6 +557,7 @@
 
   .booklet-card-bottom-dates {
     padding: 10px;
+
     p {
       color:black;
     }
@@ -976,6 +569,7 @@
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
+
   p {
     height: 20px;
     background: #F8D9C8;
