@@ -11,7 +11,7 @@ class Session < ApplicationRecord
   end
 
   def end_date
-    self.date
+    self.available_date.present? ? self.available_date : self.date
   end
 end
 

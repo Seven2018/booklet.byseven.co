@@ -1,11 +1,10 @@
+// CLEANED - 2021-07-08
+
 // CONTAINER
 .catalogue-container {
   display: flex;
   flex-direction: column;
   padding: 0;
-  // @include from-medium-high {
-  // padding: 0rem 8rem 0rem 8rem;
-  // }
 }
 
 .save-btn {
@@ -130,6 +129,14 @@
 
 // WORKSHOP INDEX
 
+.catalogue-title {
+  font-size: 1.6rem;
+
+  @include from-medium {
+   font-size: 2rem;
+  }
+}
+
 #catalogue-index {
   margin: .5rem 0;
   display: flex;
@@ -138,335 +145,14 @@
   align-items: center;
 }
 
-.catalogue-content-card {
-  height: auto;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
-  border-radius: 5px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  @include from-medium-high {
-    height: 20rem;
-    flex-direction: row;
-  }
-}
-
-.catalogue-content-card-left {
-  height: 100%;
-  background: white;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  position: relative;
-  width: 100%;
-
-  h4 {
-    font-weight: 600;
-  }
-
-  p:first-of-type {
-    margin-bottom: .5rem;
-  }
-
-  p:nth-of-type(2) {
-    color: #5B5959;
-  }
-
-  p {
-    font-size: 1.3rem;
-  }
-
-  .type-icon {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-  }
-
-  .catalogue-content-card-categories {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap:wrap;
-
-    p {
-      background: #F8D9C8;
-      color: #F26419;
-      padding: 0 .5rem;
-      margin: 0 1rem .5rem 0;
-      border-radius: 5px;
-      font-size: 1.3rem ;
-    }
-
-    i {
-      color: #F26419;
-      z-index: 30;
-      &:hover {
-        opacity: 70%;
-      }
-    }
-
-    .hidden-form-ajax {
-
-      .easy-autocomplete {
-        width: 100% !important;
-      }
-    }
-  }
-  @include from-large {
-    width: 85%;
-    p {
-      font-size: 1.6rem;
-    }
-  }
-}
-
-.content-show-mods-container {
-  margin-top: 20px;
-}
-
-.catalogue-content-card-left-main {
-  width: 100%;
-  flex: 1;
-  position: relative;
-}
-
-.catalogue-content-card-right-syn, .catalogue-content-card-right-asyn {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 1rem;
-  position: relative;
-
-  .content-dropdown {
-    position: absolute;
-    right: 1rem;
-    top: 3.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background: white;
-    padding: 0 1rem;
-    z-index: 100;
-    a {
-      padding: 5px 20px;
-    }
-  }
-  @include from-medium-high {
-    width: 20%;
-  }
-}
-
-.catalogue-content-card-right-syn {
-  background: #F8D9C8;
-
-  p, i {
-    color: #F26419;
-  }
-
-}
-
-.catalogue-content-card-right-asyn {
-  background: #EEEEEE;
-  i {
-    color: black;
-  }
-  .catalogue-content-card-right-menu {
-  height: 1.6rem;
-  width: 1.6rem;
-  position: absolute;
-  padding: 15px;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &:hover {
-    background-color: #c1c1c1;
-    padding: 15px;
-    border-radius: 50%;
-  }
-}
-}
-
-.catalogue-content-card-right-interest {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  p {
-    font-size: 1.3rem !important;
-  }
-  i {
-    margin-right: 1rem;
-    &:hover {
-      opacity: 70%;
-    }
-  }
-
-  @include from-large {
-    p {
-      font-size: 1.6rem;
-    }
-  }
-}
-
-
-
 .theme-save-btn {
     display: flex;
     justify-content: flex-end;
     margin: 30px 20px 10px 20px;
 }
 
-.content-description {
-  width: 85%;
-  font-size: 1.3rem;
-  @include from-medium {
-    font-size: 1.6rem;
-  }
-}
-
-
-
-#content-title {
-      border-bottom: 1px solid transparent !important;
-      border: none;
-    input:focus {
-      border-bottom: 1px solid#F26419 !important;
-      border: none;
-      background-color: transparent;
-    }
-    .fa-save {
-      margin-right: 12px;
-      color:#F26419;
-    }
-  }
-
 // Catalogue v2 //
-.booklet-card-syn {
-  width: 360px;
-  height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
 
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #F8D9C8;
-
-    .booklet-card-top-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .booklet-top-right-icon-catalogue {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-
-      i {
-        font-size: 2rem;
-        border-radius: 50%;
-        padding: 4px 10px;
-        z-index: 200;
-      }
-
-      i:hover {
-        background-color: #ffa777;
-        padding: 4px 10px;
-      }
-
-      .catalogue-content-card-right-menu {
-        width: 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:hover {
-          cursor:pointer;
-        }
-      }
-    }
-  }
-
-  .booklet-card-bottom {
-    height: 70%;
-    padding: 10px;
-
-    .booklet-card-theme {
-      height: 50px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-
-      p {
-        height: 20px;
-        background: #F8D9C8;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: 5px;
-        font-size: 1.3rem;
-      }
-
-      i {
-        color: #F26419;
-
-        &:hover {
-          cursor:pointer;
-          opacity: 80%;
-        }
-      }
-    }
-
-    .booklet-card-objective {
-      height: 160px;
-    }
-
-    .booklet-card-like {
-      color:#F26419;
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-
-      i {
-        margin-left: 10px;
-      }
-    }
-  }
-}
 
 .content-dropdown {
   position: absolute;
@@ -480,133 +166,16 @@
   background: white;
   padding: 0 1rem;
   z-index: 100;
+
   a {
     padding: 5px 20px;
   }
 }
 
-  .new_category {
-      input:focus {
-      border-bottom: 1px solid#F26419 !important;
-      border: none;
-      background-color: transparent;
-    }
-}
-
-.booklet-card-asyn {
-  width: 360px;
-  height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #C4C4C4;
-
-    .booklet-card-top-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .booklet-top-right-icon-catalogue {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-      i {
-        font-size: 2rem;
-        border-radius: 50%;
-        padding: 4px 10px;
-        z-index: 200;
-      }
-
-      i:hover {
-        background-color: #888888;
-        padding: 4px 10px;
-      }
-
-      .catalogue-content-card-right-menu {
-        width: 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:hover {
-          cursor:pointer;
-        }
-      }
-    }
-  }
-
-  .booklet-card-bottom {
-    height: 70%;
-    padding: 10px;
-
-    .booklet-card-theme {
-      height: 50px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-
-      p {
-        height: 20px;
-        background: #F8D9C8;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: 5px;
-        font-size: 1.3rem;
-      }
-
-      i {
-        color: #F26419;
-
-        &:hover {
-          cursor:pointer;
-          opacity: 80%;
-        }
-      }
-    }
-
-    .booklet-card-objective {
-      height: 160px;
-    }
-
-    .booklet-card-like {
-      color:black;
-      height: 32px;
-      display: flex;
-      justify-content: flex-end;
-
-      i {
-        margin-left: 10px;
-      }
-    }
+.new_category {
+    input:focus {
+    border-bottom: 1px solid#F26419 !important;
+    border: none;
+    background-color: transparent;
   }
 }

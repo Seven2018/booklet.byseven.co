@@ -35,19 +35,20 @@ class User < ApplicationRecord
   def self.import(file, company_id)
     CSV.foreach(file.path, headers: true) do |row|
       #begin
-        #company_id = Current.user.company_id
         user_row = row.to_hash
+        # User attributes
         main_attr = "firstname,lastname,email,password,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
+        # Tag_categories to create/use
         tag_attr = row.to_hash.keys - main_attr
         tag_attr.each do |tag|
           user_row.delete(tag)
         end
+        # Create new user for the company provided as argument.
         user = User.new(user_row)
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
+        # Skip rows without email address
         if !user.email.present?
-          #last_user = User.last
-          #user.email = 'user' + (last_user.id + 1).to_s + '@' + last_user.email.split('@').last
           next
         end
         user.save
@@ -55,15 +56,16 @@ class User < ApplicationRecord
         user.reset_password_token = token
         user.reset_password_sent_at = Time.now.utc
         user.save(validate: false)
+        # Create tag_categories if necessary, correctly setting its position
         tag_category_last_position = TagCategory.where(company_id: company_id)&.order(position: :asc)&.last&.position
         tag_category_last_position = 0 if tag_category_last_position.nil?
 
-        category = TagCategory.where(company_id: company_id, name: 'Job Title').first
+        category = TagCategory.find_by(company_id: company_id, name: 'Job Title')
         unless category.present?
           category = TagCategory.create(company_id: company_id, name: 'Job Title', position: tag_category_last_position + 1)
           tag_category_last_position += 1
         end
-        tag = Tag.where(company_id: company_id, tag_category_id: category.id, tag_name: row['job_title']).first
+        tag = Tag.find_by(company_id: company_id, tag_category_id: category.id, tag_name: row['job_title'])
         unless tag.present?
           tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row['job_title'], tag_category_position: category.position)
         end

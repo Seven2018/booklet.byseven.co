@@ -1,12 +1,11 @@
 <% contents.each do |content| %>
   <% if content.content_type == 'Synchronous' %>
     <div class="booklet-card-book" id="content-<%= content.id %>">
-      <div class="booklet-card-book-overlay hidden"></div>
-          <div class="booklet-card-syn">
-            <div class="booklet-card-top">
+      <div class="booklet-card-syn">
+        <div class="booklet-card-top">
           <div class="booklet-card-top-info">
-            <% if content.title.length > 35 %>
-              <h3><b><%= content.title.first(35)+'...' %></b></h3>
+            <% if content.title.length > 30 %>
+              <h3><b><%= content.title.first(30)+'...' %></b></h3>
             <% else %>
               <h3><b><%= content.title %></b></h3>
             <% end %>
@@ -32,7 +31,7 @@
           </div>
         </div>
         <div class="booklet-card-bottom">
-            <%= link_to '', content_path(content), class: 'stretched-link' %>
+          <%= link_to '', content_path(content), class: 'stretched-link' %>
           <div class="booklet-card-theme">
             <% content.categories.order(title: :asc).each do |category| %>
               <p id='theme'><%= category.title %></p>
@@ -48,19 +47,18 @@
             <% end %>
           </div>
           <div class="booklet-card-like">
-             <p><%= content.interested.count %><i class="fas fa-heart"></i></p>
+            <p><%= content.interested.count %><i class="fas fa-heart"></i></p>
           </div>
         </div>
       </div>
     </div>
   <% else %>
     <div class="booklet-card-book" id="content-<%= content.id %>">
-      <div class="booklet-card-book-overlay hidden"></div>
       <div class="booklet-card-asyn">
         <div class="booklet-card-top">
           <div class="booklet-card-top-info">
-            <% if content.title.length > 35 %>
-              <h3><b><%= content.title.first(35)+'...' %></b></h3>
+            <% if content.title.length > 30 %>
+              <h3><b><%= content.title.first(30)+'...' %></b></h3>
             <% else %>
               <h3><b><%= content.title %></b></h3>
             <% end %>
@@ -101,7 +99,7 @@
             <% end %>
           </div>
           <div class="booklet-card-like">
-             <p><%= content.interested.count %><i class="fas fa-heart"></i></p>
+            <p><%= content.interested.count %><i class="fas fa-heart"></i></p>
           </div>
         </div>
       </div>

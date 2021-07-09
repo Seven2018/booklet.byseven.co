@@ -1,3 +1,5 @@
+// CLEANED - 2021-07-08
+
 #content-show-container {
   position: relative;
 }
@@ -30,60 +32,10 @@
   padding: 1rem;
   margin-bottom: 100px;
 
-  // #content_description {
-  //   max-height: 300px;
-  // }
   @include from-medium-high {
     margin-left: 20rem;
     padding: 5rem;
     margin-bottom: 0px;
-  }
-}
-
-.content-show-infos {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  //background: white;
-  border-radius: 4px;
-  //height: 5rem;
-  //padding: 1rem 2rem;
-  margin-bottom: 2rem;
-  flex: 1;
-  //box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  overflow: hidden;
-
-  &:nth-of-type(2) {
-    margin-left: 2rem;
-  }
-
-  p {
-    flex-grow: 1;
-    margin: 0;
-    padding: 4.7px 0px;
-  }
-
-  .content-show-input {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-
-    div {
-      margin: 0;
-      width: 100%;
-    }
-
-    input {
-      border: none;
-      padding: 0 !important;
-      width: 100%;
-
-      &:focus {
-        border: none;
-        box-shadow: none;
-      }
-    }
   }
 }
 
@@ -148,16 +100,6 @@
   i {
     color: #F26419;
   }
-}
-
-.content-show-infos-trix {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  min-height: 5rem;
-  height: auto;
-  font-size:1.6rem;
 }
 
 .content-show-mods-controls {
@@ -239,106 +181,12 @@
   }
 }
 
-
-
-
-.content-show-mods-card-text {
-  background: white;
-  padding: 2rem;
-  border-radius: 5px;
-  margin-top: 2rem;
-  font-size: 1.4rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  min-height: 11rem;
-
-}
-
-.content-show-mods-card-video {
-  margin-top: 2rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.content-show-mods-card-image {
-  margin-top: 2rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-  img {
-    width: 100%;
-  }
-}
-
-.content-show-mods-card-assessment {
-  margin-top: 2rem;
-  background: white;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  min-height: 11rem;
-  padding: 2rem;
-  border-radius: 5px;
-  margin-top: 2rem;
-}
-
-#myRange {
-  padding: 0 !important;
-}
-
 .was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
   color: black !important;
 }
 
-.duration-content-type {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    @include from-medium {
-      flex-direction: row;
-    }
-}
-
-
-// SLIDER //
-.slidecontainer {
-  width: 80%; /* Width of the outside container */
-}
-
-/* The slider itself */
-.slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
-}
-
-/* Mouse-over effects */
-.slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
-}
-
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #04AA6D; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-
-.slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #04AA6D; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-
 
 // ASYNC RADIO BUTTONS //
-
 
 .content-type-radio {
   display: flex;
@@ -350,10 +198,6 @@
       margin-left: 5px;
     }
   }
-}
-
-.content-title {
-  font-size: 20px !important;
 }
 
 .categories-form {
@@ -387,16 +231,20 @@
 }
 
 .form-control {
+
   #content-title {
-  input {
+
+    input {
       border-bottom: 1px solid transparent !important;
       border: none;
     }
+
     input:focus {
       border-bottom: 1px solid#F26419 !important;
       border: none;
       background-color: transparent;
     }
+
     .fa-save {
       margin-right: 12px;
       color:#F26419;
@@ -413,6 +261,7 @@
   position: absolute;
   right: 10px;
   top: 60px;
+
   p {
     font-weight: 500;
     font-size: 1.6rem;
@@ -421,6 +270,7 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
+
   @include from-medium {
     top: 20px;
   }
@@ -433,35 +283,8 @@
   margin-left: 1rem;
 }
 
-.content-type-radio-employee {
-  display: flex;
-  flex-direction: column;
-  width: 150px;
-}
-
-.content-show-infos-employee {
-  display: flex;
-  justify-content: flex-start;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 10px;
-  @include from-medium {
-    margin-bottom: 0;
-  }
-}
-
-.content-type-categories {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  justify-content: space-between;
-  @include from-medium {
-    flex-direction: row;
-    margin-bottom: 10px;
-  }
-}
-
 #mod-delete {
+
   &:hover {
     color: #888888;
   }
@@ -475,44 +298,16 @@
   }
 }
 
-.content_duration {
-  input {
-    background-color: transparent,;
-    width: 100px;
-    padding-right: none !important;
-    border-bottom: 1px solid grey;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    border-radius: 0;
-  }
-  margin-right: 10px;
-}
-
-.durationinput {
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-}
-
 .form-control {
+
   .is-valid {
     padding-right: 0px !important;
   }
 }
+
 .was-validated .form-control:valid, .form-control.is-valid {
   padding-right: 5px !important;
 }
-
-// .new_assessment {
-//   input {
-//     border: none !important;
-//   }
-//   input:focus {
-//     background-color: transparent;
-//     border-bottom: 1px solid grey !important;
-//   }
-// }
 
 .button-add-catalogue {
   display: flex;
@@ -522,19 +317,6 @@
 
 .trix-button-group:nth-of-type(3) {
   display:none;
-}
-
-.content-show-mods-card-quiz {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  padding: 2rem;
-  border-radius: 5px;
-  margin-top: 2rem;
-  font-size: 1.4rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  min-height: 11rem;
 }
 
 
@@ -567,12 +349,9 @@
   flex-wrap: wrap;
 }
 
-.content_content_type {
-  font-size: 1.45rem !important;
-}
-
 .add-theme {
   margin: 0 5px;
+
   &:hover {
     opacity: 80%;
   }
@@ -663,15 +442,19 @@
 }
 
 .content-info {
+
   margin-bottom: 30px;
+
   .form-group {
     margin-bottom: 0px;
   }
+
   #content_title {
-  font-weight: 800;
-  font-size: 1.8rem !important;
-  border-radius: 5px 5px 0px 0px;
-}
+    font-weight: 800;
+    font-size: 1.8rem !important;
+    border-radius: 5px 5px 0px 0px;
+  }
+
   #content_description {
     border-top: none;
     border-radius: 0px 0px 5px 5px;
@@ -684,8 +467,6 @@
     display: none;
   }
 }
-
-
 
 .content-info {
   h2 {
@@ -727,13 +508,6 @@
       height: 50rem;
     }
   }
-}
-
-
-.quiz-questions {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
 }
 
 .content-show-view-mode-anchor {

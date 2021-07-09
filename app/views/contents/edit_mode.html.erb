@@ -12,7 +12,7 @@
           <%= render 'mods/content_show_mods_index', content: @content, page: 'edit', access: "" %>
         </div>
         <% if (['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level))%>
-          <div class="content-show-mods-control-btn" onclick="contentAdd()"; data-toggle='tooltip' title='Add content'>
+          <div class="content-show-mods-control-btn" onclick="contentAdd();">
             <div class='add-content-btn' id='icon-edit'><p><i class="fas fa-plus-circle" ></i>Add Content</p></div>
             <i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i>
             <div class="content-show-mods-controls" style='display:none;'>
