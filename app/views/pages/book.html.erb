@@ -352,6 +352,7 @@
     selecteduser = document.querySelector('.users-book-selected')
     if (selecteduser.contains(user)) {
       card_id = user.id
+      document.querySelector('.users-book-all').querySelector('#' + card_id).classList.remove('hidden')
       user.remove()
       // user_card = document.getElementById(card_id);
       // overlay_user = user_card.querySelector('.user-book-card-overlay')
@@ -360,14 +361,15 @@
       // empty.classList.remove('hidden')
       // adduser = user_card.querySelector('#adduser')
       // adduser.classList.add('hidden')
-
+      updateUsers()
     } else if (document.querySelector('.users-book-all').contains(user)) {
+      document.querySelector('.users-book-all').querySelector('#' + user.id).classList.add('hidden')
       addUser(element);
       // overlay_user.classList.remove('hidden')
       // adduser.classList.remove('hidden')
       // empty.classList.add('hidden')
-      user.remove()
     } else if (document.querySelector('.users-book-filtered').contains(user)) {
+      document.querySelector('.users-book-all').querySelector('#' + user.id).classList.add('hidden')
       addUser(element);
       // overlay_user.classList.remove('hidden')
       // adduser.classList.remove('hidden')
@@ -378,7 +380,6 @@
       // adduser.classList.add('hidden')
       // empty.classList.remove('hidden')
     }
-    updateUsers()
   }
 
   function openFilter() {

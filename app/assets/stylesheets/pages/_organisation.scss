@@ -42,6 +42,10 @@
       color: black;
     }
   }
+
+  input {
+    font-size: 1.4rem !important;
+  }
 }
 
 
@@ -361,9 +365,16 @@
     }
   }
 
-
   .organisation-manage-users-controls-buttons {
     margin-right: 3px;
+  }
+
+  .organisation-manage-users-tags-form {
+
+    #tag_category_name {
+      border: none;
+      font-weight: bold;
+    }
   }
 
   .new-tag {
@@ -394,6 +405,11 @@
       input {
         height: 4rem !important;
         margin-left: 2rem;
+      }
+
+      #tag_tag_name {
+        margin: 0;
+        border: none !important;
       }
 
       form {

@@ -25,6 +25,7 @@ if ("<%= @filter %>" == 'content') {
     document.querySelector('.users-book-filtered').classList.add('hidden')
     document.querySelector('.users-book-all').classList.remove('hidden')
   } else {
+    console.log('test')
     document.querySelector('.users-book-filtered').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: @interest_for, selected_filter: @selected_filter) %>';
     document.querySelector('.users-book-filtered').classList.remove('hidden')
     document.querySelector('.users-book-all').classList.add('hidden')
