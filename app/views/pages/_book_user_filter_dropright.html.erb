@@ -29,7 +29,6 @@
     </div>
   <% end %>
   <%= f.hidden_field :selected %>
-  <%= f.hidden_field :on, value: true %>
   <% if interest_for != [] %>
     <%= f.hidden_field :interest_for, value: interest_for.map(&:id).join(' ') %>
   <% else %>

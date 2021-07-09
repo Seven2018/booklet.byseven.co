@@ -57,7 +57,7 @@
               <%= b.check_box + b.label %>
               <div>
                 <div class="tag_delete" data-target="#edit_tag-<%= b.object.id %>" onclick='fetchCategoryForm(this);'>
-                  <i class="fas fa-pencil-alt" data-toggle='tooltip' title='Delete Tag'></i>
+                  <i class="fas fa-pencil-alt" data-toggle='tooltip' title='Edit Tag'></i>
                 </div>
               </div>
               <%= link_to tag_path(Tag.find(b.object.id), users: users.map(&:id), tag_category_id: tag_category.id), data: {confirm: 'Are you sure ?'}, method: :delete, class: 'tag_delete', remote: true do %>
@@ -90,9 +90,7 @@
         <%= f.text_field :name, style: 'height: 100%;', value: tag_category.name %>
         <%= f.hidden_field :tag_category_id, value: tag_category.id %>
         <%= f.hidden_field :users, value: users.map(&:id) %>
-        <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '', onclick: 'spinningLoader();' do %>
-          <i class="fas fa-save"></i>
-        <% end %>
+        <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
     </div>
     <div class='hidden-form-category-ajax hidden-form-tag-ajax hidden' id="tag_tag_category-<%= tag_category.id %>">
@@ -101,8 +99,7 @@
           <%= f.text_field :tag_name, style: 'height: 100%;', value: '' %>
           <%= f.hidden_field :tag_category_id, value: tag_category.id %>
           <%= f.hidden_field :users, value: users.map(&:id) %>
-          <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '' do %>
-          <% end %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
         </div>
       <% end %>
     </div>
@@ -113,9 +110,7 @@
           <%= f.hidden_field :tag_id, value: tag.id %>
           <%= f.hidden_field :tag_category_id, value: tag_category.id %>
           <%= f.hidden_field :users, value: users.map(&:id) %>
-          <%= button_tag :submit, class: 'hidden-submit btn-icon', value: '', onclick: 'spinningLoader();' do %>
-            <i class="fas fa-save"></i>
-          <% end %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
       </div>
     <% end %>

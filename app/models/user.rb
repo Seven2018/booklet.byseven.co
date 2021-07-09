@@ -34,7 +34,7 @@ class User < ApplicationRecord
 
   def self.import(file, company_id)
     CSV.foreach(file.path, headers: true) do |row|
-      #begin
+      begin
         user_row = row.to_hash
         # User attributes
         main_attr = "firstname,lastname,email,password,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
@@ -90,8 +90,8 @@ class User < ApplicationRecord
         #   Tag.create(tag_name: row['tag'], company_id: user.company_id)
         # end
         # UserMailer.account_created(user, raw).deliver
-      #rescue
-      #end
+      rescue
+      end
     end
   end
 end

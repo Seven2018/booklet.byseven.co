@@ -203,8 +203,9 @@ class PagesController < ApplicationController
           else
             @unfiltered = true
           end
-          if params[:filter_user][:on].present?
+          if params[:filter_user][:tag].uniq == [""]
             @users = []
+            @unfiltered = true
           else
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           end

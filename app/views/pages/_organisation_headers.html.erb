@@ -1,0 +1,53 @@
+<div class="headers-div">
+  <input type="checkbox" onclick="toggle(this);">
+</div>
+<div class="headers-div">
+  <p>Name</p>
+  <div class="headers-div-order">
+    <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
+      <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
+    <% end %>
+    <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
+      <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
+   <% end %>
+  </div>
+</div>
+<div class="headers-div">
+  <p>Email</p>
+  <div class="headers-div-order">
+    <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
+      <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
+    <% end %>
+    <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
+      <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
+    <% end %>
+  </div>
+</div>
+<% @tag_categories.order(position: :asc).each do |tag_category| %>
+  <div class="headers-div">
+    <p><%= tag_category.name %></p>
+    <div class="headers-div-order">
+      <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
+      <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
+    <% end %>
+    <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
+      <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
+    <% end %>
+    </div>
+  </div>
+<% end %>
+<div class="headers-div">
+  <!-- <i class="fas fa-plus" onclick="openForm(this);" data-toggle='tooltip' title='Add Tag Category'></i> -->
+  <div class='hidden-form-category-ajax'>
+    <%= simple_form_for :tag_category, url: tag_categories_path(ajax: true), method: :post, remote: true, input_html: {multipart: true} do |f| %>
+      <div class='flex-row-between-centered'>
+        <div class="flex-row-between-centered">
+          <i class="fas fa-plus"></i>
+          <%= f.text_field :name, placeholder: 'New Category', style: 'height: 100%;width:200px;' %>
+        </div>
+        <%= f.hidden_field :users, value: users.map(&:id) %>
+        <%= f.submit '', class: 'hidden hidden-submit' %>
+      </div>
+    <% end %>
+  </div>
+</div>
