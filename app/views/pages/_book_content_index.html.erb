@@ -1,9 +1,10 @@
 <% contents.each do |content| %>
   <% if content.content_type == 'Synchronous' %>
-    <div class="booklet-card-book" id="content-<%= content.id %>">
+    <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="content-<%= content.id %>">
+      <div class="booklet-card" >
       <div class="booklet-card-syn">
         <div class="booklet-card-top">
-          <div class="booklet-card-top-info">
+          <div class="booklet-card__top-info">
             <% if content.title.length > 30 %>
               <h3><b><%= content.title.first(30)+'...' %></b></h3>
             <% else %>
@@ -31,7 +32,6 @@
           </div>
         </div>
         <div class="booklet-card-bottom">
-          <%= link_to '', content_path(content), class: 'stretched-link' %>
           <div class="booklet-card-theme">
             <% content.categories.order(title: :asc).each do |category| %>
               <p id='theme'><%= category.title %></p>
@@ -51,55 +51,58 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
   <% else %>
-    <div class="booklet-card-book" id="content-<%= content.id %>">
-      <div class="booklet-card-asyn">
-        <div class="booklet-card-top">
-          <div class="booklet-card-top-info">
-            <% if content.title.length > 30 %>
-              <h3><b><%= content.title.first(30)+'...' %></b></h3>
-            <% else %>
-              <h3><b><%= content.title %></b></h3>
-            <% end %>
-            <p><%= content.duration %> Minutes</p>
-          </div>
-          <div class="booklet-card-type-pill">
-            <div class="booklet-card-type">
-              <div class="booklet-card-type-icon">
-                <% if content.content_type == 'Synchronous' %>
-                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                  <p>In Person</p>
-                <% else %>
-                  <i class="fas fa-laptop" style='color:black;'></i>
-                  <p>Online</p>
-                <% end %>
+    <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="content-<%= content.id %>">
+      <div class="booklet-card">
+        <div class="booklet-card-asyn">
+          <div class="booklet-card-top">
+            <div class="booklet-card__top-info">
+              <% if content.title.length > 30 %>
+                <h3><b><%= content.title.first(30)+'...' %></b></h3>
+              <% else %>
+                <h3><b><%= content.title %></b></h3>
+              <% end %>
+              <p><%= content.duration %> Minutes</p>
+            </div>
+            <div class="booklet-card-type-pill">
+              <div class="booklet-card-type">
+                <div class="booklet-card-type-icon">
+                  <% if content.content_type == 'Synchronous' %>
+                    <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                    <p>In Person</p>
+                  <% else %>
+                    <i class="fas fa-laptop" style='color:black;'></i>
+                    <p>Online</p>
+                  <% end %>
+                </div>
               </div>
             </div>
+            <div class="booklet-top-right-icon" id='bookbtn' onclick='selectCard(this);'>
+              <i class="far fa-circle"  id='notselected'></i>
+              <i class="fas fa-check-circle hidden" id='added' style='color:#F26419;'></i>
+              <i class="fas fa-times hidden" id='removecard'></i>
+            </div>
           </div>
-          <div class="booklet-top-right-icon" id='bookbtn' onclick='selectCard(this);'>
-            <i class="far fa-circle"  id='notselected'></i>
-            <i class="fas fa-check-circle hidden" id='added' style='color:#F26419;'></i>
-            <i class="fas fa-times hidden" id='removecard'></i>
-          </div>
-        </div>
-        <div class="booklet-card-bottom">
-          <div class="booklet-card-theme">
-            <% content.categories.order(title: :asc).each do |category| %>
-              <p id='theme'><%= category.title %></p>
-            <% end %>
-          </div>
-          <div class="booklet-card-objective">
-            <% if content.description.present? %>
-              <% if content.description.length >= (300) %>
-                <p><%= content.description.first(300) + '...' %></p>
-              <% else %>
-                <p><%= content.description.first(300) %></p>
+          <div class="booklet-card-bottom">
+            <div class="booklet-card-theme">
+              <% content.categories.order(title: :asc).each do |category| %>
+                <p id='theme'><%= category.title %></p>
               <% end %>
-            <% end %>
-          </div>
-          <div class="booklet-card-like">
-            <p><%= content.interested.count %><i class="fas fa-heart"></i></p>
+            </div>
+            <div class="booklet-card-objective">
+              <% if content.description.present? %>
+                <% if content.description.length >= (300) %>
+                  <p><%= content.description.first(300) + '...' %></p>
+                <% else %>
+                  <p><%= content.description.first(300) %></p>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="booklet-card-like">
+              <p><%= content.interested.count %><i class="fas fa-heart"></i></p>
+            </div>
           </div>
         </div>
       </div>

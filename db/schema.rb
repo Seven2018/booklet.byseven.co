@@ -173,6 +173,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
     t.date "available_date"
     t.time "starts_at"
     t.time "ends_at"
+    t.decimal "cost", precision: 15, scale: 10
     t.bigint "training_id"
     t.bigint "content_id"
     t.bigint "company_id"

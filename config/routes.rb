@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   get 'organisation', to: 'pages#organisation', as: 'organisation'
   get 'book', to: 'pages#book', as: 'book'
   get :catalogue_content_link_category, controller: :pages
+  get :overview_select_period, controller: :pages
   # NOT (USED)
   # get :organisation_user_card, controller: :pages
 

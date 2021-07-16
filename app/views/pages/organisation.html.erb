@@ -23,13 +23,25 @@
 <!-- Modals -->
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'users/new', tag: User.new %>
+    <%= render 'users/new' %>
   </div>
 </div>
 
 <div class='modal fade' id='importUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'users/import', tag: User.new %>
+    <%= render 'users/import' %>
+  </div>
+</div>
+
+<div class='modal fade' id='exportUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'users/export' %>
+  </div>
+</div>
+
+<div class='modal fade' id='importUsersInfos' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-import-infos' role='document' style='border-radius: 20px'>
+    <%= render 'users/import_infos', errors: [], creating: [], updating: [] %>
   </div>
 </div>
 
@@ -268,9 +280,11 @@
     })
     document.querySelector('#add_tags_users').value = ids.join();
     if (ids.length == 0) {
-      document.querySelector('#manage-users-button').classList.remove('flashing_button');
+      document.querySelector('#manage-users-button').classList.remove('flashing_button')
+      document.getElementById('export-users-modal-link').innerHTML = 'Export Users'
     } else {
-      document.querySelector('#manage-users-button').classList.add('flashing_button');
+      document.querySelector('#manage-users-button').classList.add('flashing_button')
+      document.getElementById('export-users-modal-link').innerHTML = 'Export Selected Users'
     }
   }
 
@@ -367,6 +381,30 @@
       checkboxes[i].checked = source.checked;
     }
     selectUser();
+  }
+
+  function selectAllAttributes(element) {
+    form = element.closest('form')
+    checkboxes = form.querySelectorAll('input[type="checkbox"]')
+    if (checkboxes[1].checked == true) {
+      checkboxes.forEach((el) => {
+        el.checked = false
+      })
+    } else {
+      checkboxes.forEach((el) => {
+        el.checked = true
+      })
+    }
+  }
+
+  function exportUsers(element) {
+    users_array = []
+    document.querySelectorAll('.select-user:checked').forEach((el) => {
+      users_array.push(el.value)
+    })
+    element.closest('form').querySelector('#csv_selected_users').value = users_array.join(',')
+    element.closest('.modal-content').querySelector('.btn-icon').click()
+    element.parentNode.querySelector('.hidden-submit').click()
   }
 
   function clearSearchBis() {

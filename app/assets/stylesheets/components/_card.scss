@@ -1,10 +1,62 @@
 // CLEANED - 2021-07-08
 
-// CONTENT CARD
+.booklet-col {
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
 
-.booklet-card-top-info {
+.booking-date {
+  top: -3rem;
+  position: absolute;
+  display: flex;
+  right: .5rem;
+  background: white;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #c4c4c4;
+}
+
+.booklet-card {
+  position: relative;
+  padding: 0;
+  max-height: 40rem;
+  width: 36rem;
+  margin: 0;
+
+  h6 {
+    font-size: 1.2rem
+  }
+
+  @include from-medium {
+    margin: 3rem 0;
+  }
+}
+
+
+.booklet-card__top-info {
   display: flex;
   flex-direction: column;
+}
+
+.booklet-card__cost-input {
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 12rem;
+  top: 6rem;
+  left: 1rem;
+
+  .form-group {
+    margin: 0;
+    margin-right: 1rem;
+  }
+
+  input {
+    background: transparent;
+    border: 1px solid white;
+  }
 }
 
 .booklet-card-syn {
@@ -21,7 +73,7 @@
     position: relative;
     background: #F8D9C8;
 
-    .booklet-card-top-info {
+    .booklet-card__top-info {
       display: flex;
       flex-direction: column;
     }
@@ -158,7 +210,7 @@
     position: relative;
     background: #C4C4C4;
 
-    .booklet-card-top-info {
+    .booklet-card__top-info {
       display: flex;
       flex-direction: column;
     }
@@ -271,7 +323,7 @@
       color:black;
       height: 32px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       flex-direction: row-reverse;
 
       i {
@@ -281,7 +333,7 @@
   }
 }
 
-.booklet-card-book-overlay {
+.booklet-card-overlay {
     position: absolute;
     background: grey;
     width: 360px;
@@ -291,11 +343,6 @@
     left: 20px;
     z-index: 100;
     opacity: 50%;
-}
-
-.booklet-card-book {
-  position: relative;
-  margin: 20px;
 }
 
 .theme-white {
@@ -328,7 +375,7 @@
     position: relative;
     background: #F8D9C8;
 
-    .booklet-card-top-info {
+    .booklet-card__top-info {
       display: flex;
       flex-direction: column;
     }
@@ -428,7 +475,7 @@
     position: relative;
     background: #C4C4C4;
 
-    .booklet-card-top-info {
+    .booklet-card__top-info {
       display: flex;
       flex-direction: column;
     }

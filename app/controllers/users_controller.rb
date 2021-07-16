@@ -94,23 +94,30 @@ class UsersController < ApplicationController
   # Creates new Users from an imported list
   def import
     skip_authorization
-    errors = []
-    creating = []
+    @errors = []
+    @creating = []
+    @updating = []
     CSV.foreach(params[:file].path, headers: true) do |row|
       user_row = row.to_hash
+      user = User.find_by(email: user_row['email'].downcase)
       if !user_row['email'].present?
-        errors << "#{user_row[:lastname]}, #{user_row[:firstname]}"
-      elsif User.find_by(email: user_row['email']).nil?
-        creating << "#{user_row[:lastname]}, #{user_row[:firstname]}"
+        @errors << "#{user_row['lastname']}, #{user_row['firstname']}"
+      elsif user.nil?
+        @creating << "#{user_row['lastname']}, #{user_row['firstname']}"
+      else
+        user_row.each do |key, value|
+          user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
+          if (user.attributes.key?(key) == true && user.attributes[key].downcase != value.downcase) || (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
+            @updating << "#{user.lastname}, #{user.firstname} : #{key.capitalize}"
+          end
+        end
       end
     end
-    if errors.count > 0
-      flash[:notice] = "Creating #{creating.count} new accounts. Please wait a few minutes and refresh this page. \n There is #{errors.count} users with missing email addresses. No account will be created for these users."
-    else
-      flash[:notice] = "Creating #{creating.count} new accounts. Please wait a few minutes and refresh this page."
-    end
     ImportEmployeesJob.perform_async(params[:file], current_user.company_id)
-    redirect_back(fallback_location: root_path)
+    respond_to do |format|
+      format.html {redirect_back(fallback_location: root_path)}
+      format.js
+    end
   end
 
   # Search from users with autocomplete

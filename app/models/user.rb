@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
   has_many :attendees, dependent: :destroy
+  has_many :sessions, through: :attendees
   belongs_to :company, optional: true
   has_many :user_tags, dependent: :destroy
   has_many :tags, through: :user_tags
@@ -45,17 +46,24 @@ class User < ApplicationRecord
         end
         # Create new user for the company provided as argument.
         user = User.new(user_row)
-        user.company_id = company_id
-        user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         # Skip rows without email address
         if !user.email.present?
           next
         end
+        user.company_id = company_id
+        user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.save
         raw, token = Devise.token_generator.generate(User, :reset_password_token)
         user.reset_password_token = token
         user.reset_password_sent_at = Time.now.utc
-        user.save(validate: false)
+        existing_user = User.find_by(email: user_row['email'].downcase)
+        if existing_user.present?
+          update = true
+          user = existing_user
+          user.update(user_row)
+        else
+          user.save(validate: false)
+        end
         # Create tag_categories if necessary, correctly setting its position
         tag_category_last_position = TagCategory.where(company_id: company_id)&.order(position: :asc)&.last&.position
         tag_category_last_position = 0 if tag_category_last_position.nil?
@@ -69,7 +77,11 @@ class User < ApplicationRecord
         unless tag.present?
           tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row['job_title'], tag_category_position: category.position)
         end
-        UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
+        if update
+          UserTag.find_by(user_id: user.id, tag_category_id: category.id).update(tag_id: tag.id)
+        else
+          UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
+        end
         tag_attr.each do |x|
           category = TagCategory.where(company_id: company_id, name: x).first
           unless category.present?
@@ -80,7 +92,11 @@ class User < ApplicationRecord
           unless tag.present?
             tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row[x], tag_category_position: category.position)
           end
-          UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
+          if update
+            UserTag.find_by(user_id: user.id, tag_category_id: category.id).update(tag_id: tag.id)
+          else
+            UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
+          end
         end
         # tag = row['tag']
         # existing_Tag = Tag.where(company_id: user.company_id, tag_name: row['tag'])
@@ -91,6 +107,33 @@ class User < ApplicationRecord
         # end
         # UserMailer.account_created(user, raw).deliver
       rescue
+      end
+    end
+  end
+
+  def self.to_csv(attributes, tag_categories, cost, trainings, start_date, end_date)
+    attributes = attributes.split(',')
+    tag_categories_names = tag_categories.reject{|x| x.empty?}.map{|x| TagCategory.find(x).name}
+    columns = attributes + tag_categories_names
+    columns += ['Cost'] if cost == '1'
+    columns += ['Trainings'] if trainings == '1'
+    CSV.generate(headers: true) do |csv|
+      csv << columns.flatten.reject{|x| x.empty?}
+      all.each do |user|
+        line = []
+        attributes.flatten.each do |attribute|
+          line << user.attributes[attribute]
+        end
+        tag_categories.reject{|x| x.empty?}.each do |tag_category|
+          line << UserTag.find_by(user_id: user.id, tag_category_id: tag_category)&.tag&.tag_name if tag_category.present?
+        end
+        line << user.sessions.where('date >= ? AND date < ?', start_date, end_date).map{|x| x.cost / x.attendees.count}.sum if cost
+        if trainings
+          trainings = ''
+          user.sessions.where('date >= ? AND date < ?', start_date, end_date).each{|s| trainings += s.content.title + "\n"}
+          line << trainings.delete_suffix("\n")
+        end
+        csv << line
       end
     end
   end

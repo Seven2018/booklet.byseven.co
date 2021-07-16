@@ -44,13 +44,36 @@
 
 .modal-body {
   border-top: 1px solid #dee2e6;
+
   .label-checkbox {
       font-size: 12px;
     }
+
   p {
     font-size: 16px !important;
     font-weight: 300;
   }
+
+  .csv {
+
+    label {
+      margin: 0 0 0 2rem;
+    }
+
+    .csv-date {
+
+      label {
+        margin: 0;
+      }
+
+      input {
+        width: 15rem;
+      }
+    }
+
+  }
+
+
   @include from-medium-high {
     .label-checkbox {
       font-size: 16px;

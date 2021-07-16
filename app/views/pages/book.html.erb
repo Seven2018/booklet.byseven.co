@@ -49,9 +49,9 @@
       </div>
     </div>
     <div class="workshop-grid">
-      <div class="workshop-cards-selected" id='selected'>
+      <div class="workshop-cards-selected row" id='selected'>
       </div>
-      <div class="workshop-cards-book">
+      <div class="workshop-cards-book row">
         <%= render 'pages/book_content_index', contents: @contents %>
       </div>
     </div>
@@ -247,7 +247,8 @@
   }
 
   function updateCards() {
-    selected_cards = document.querySelector('.workshop-cards-selected').querySelectorAll('.booklet-card-book')
+    selected_container = document.querySelector('.workshop-cards-selected')
+    selected_cards = selected_container.querySelectorAll('.booklet-col')
     storage_var = []
     selected_cards.forEach((card) => {
       storage_var.push(card.id.split('-')[1])
@@ -256,6 +257,11 @@
     selected_storage.value = storage_var.join(',')
     interest_storage = document.getElementById('filter_user_interest_for')
     interest_storage.value = storage_var.join(',')
+    if (selected_container.children.length > 0) {
+      selected_container.style.borderBottom = '1px solid #c4c4c4'
+    } else {
+      selected_container.style.borderBottom = 'none'
+    }
     document.querySelector('.filter_content').querySelector('.hidden-submit').click();
   }
 
@@ -272,8 +278,8 @@
 
   function addCard(element) {
     newCard = document.createElement("div");
-    newCard.classList.add('booklet-card-book')
-    existingcard = element.closest('.booklet-card-book')
+    newCard.classList.add('booklet-col','col-xl-4', 'col-lg-6', 'col-md-12')
+    existingcard = element.closest('.booklet-col')
     newCard.innerHTML = existingcard.innerHTML
     circle = newCard.querySelector('#notselected')
     circle.classList.add('hidden')
@@ -296,16 +302,16 @@
   }
 
   function selectCard(element) {
-    card = element.closest('.booklet-card-book')
+    card = element.closest('.booklet-col')
     emptycircle = card.querySelector('#notselected')
     added = card.querySelector('#added')
-    // overlay = card.querySelector('.booklet-card-book-overlay')
+    // overlay = card.querySelector('.booklet-card-overlay')
     selected = document.querySelector('.workshop-cards-selected')
     if (selected.contains(card)) {
       card_id = card.id
       card.remove()
       // grey_card = document.getElementById(card_id);
-      // overlay = grey_card.querySelector('.booklet-card-book-overlay')
+      // overlay = grey_card.querySelector('.booklet-card-overlay')
       // overlay.classList.add('hidden')
       // emptycircle = grey_card.querySelector('#notselected')
       // emptycircle.classList.remove('hidden')

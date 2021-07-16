@@ -38,9 +38,14 @@
 }
 
 .nav-tabs-trainings {
-  width: 330px;
+  // width: 330px;
   margin: 90px 10px 40px;
-  justify-content: space-between;
+  justify-content: flex-start;
+
+  li {
+    margin-right: 2rem;
+  }
+
   a:hover {
     color: red;
   }

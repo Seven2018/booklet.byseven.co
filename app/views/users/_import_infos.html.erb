@@ -1,0 +1,48 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Importing from .csv</h3>
+    </div>
+    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body">
+    <div class="import-infos__block">
+      <div class="import-infos__block-title">
+        <div>
+          <p>New accounts : <%= creating.count %></p>
+          <div class="import-infos__block-title-buttons">
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="import-infos__block-list">
+        <ul>
+          <% creating.each do |user| %>
+            <li><p><%= user %></p></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    <div class="import-infos__block">
+      <div class="import-infos__block-title">
+        <div>
+          <p>Updated accounts : <%= updating.count %></p>
+          <div class="import-infos__block-title-buttons">
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="import-infos__block-list">
+        <ul>
+          <% updating.each do |user| %>
+            <li><p><%= user %></p></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

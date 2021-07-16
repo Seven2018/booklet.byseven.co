@@ -3,13 +3,16 @@
     <div class="booklet-card" id="book_content-<%= content.id %>" >
       <div class="booklet-card-syn-dates">
         <div class="booklet-card-top">
-          <div class="booklet-card-top-info">
+          <div class="booklet-card__top-info">
             <% if content.title.length > 35 %>
               <h3><b><%= content.title.first(35)+'...' %></b></h3>
             <% else %>
               <h3><b><%= content.title %></b></h3>
             <% end %>
-          <p><%= content.duration %> Minutes</p>
+            <div class="flex-row-between-centered">
+              <p><%= content.duration %> Minutes</p>
+              <h6 class="duration-alert hidden">Duration exceeds alloted time</h6>
+            </div>
           </div>
           <div class="booklet-card-type-pill">
             <div class="booklet-card-type">
@@ -23,7 +26,6 @@
                 <% end %>
               </div>
             </div>
-            <h6 class="duration-alert hidden">Duration exceeds alloted time</h6>
           </div>
           <div class="booklet-top-right-icon">
             <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal-<%= content.id %>" style='color:#F26419;'></i>
@@ -44,6 +46,10 @@
                   <%= f.hidden_field :duration, value: content.duration %>
                   <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);', value: '9:00'}, required: true %>
                   <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);', value: '10:00'}, required: true %>
+                  <div class="booklet-card__cost-input">
+                    <%= f.input :cost, label: false, placeholder: 'Cost', input_html: {min: 0}, as: :string %>
+                    <p>€</p>
+                  </div>
                   <%= f.hidden_field :content_id, value: content.id %>
                   <%= f.hidden_field :selected_users %>
                   <%= f.submit '', class: 'hidden-submit hidden' %>
@@ -63,7 +69,7 @@
     <div class="booklet-card" id="book_content-<%= content.id %>">
       <div class="booklet-card-asyn-dates">
         <div class="booklet-card-top">
-          <div class="booklet-card-top-info">
+          <div class="booklet-card__top-info">
             <% if content.title.length > 35 %>
               <h3><b><%= content.title.first(35)+'...' %></b></h3>
             <% else %>
@@ -95,6 +101,10 @@
             <p><b>Available From:</b></p>
               <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
                 <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker-range'}, placeholder: 'Select Date..' %></div>
+                <div class="booklet-card__cost-input">
+                  <%= f.input :cost, label: false, placeholder: 'Cost', input_html: {min: 0}, as: :string %>
+                  <p>€</p>
+                </div>
                 <%= f.hidden_field :content_id, value: content.id %>
                 <%= f.hidden_field :selected_users %>
                 <%= f.submit '', class: 'hidden-submit hidden' %>

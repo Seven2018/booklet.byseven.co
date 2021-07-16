@@ -1,0 +1,59 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Export selected users to .csv</h3>
+    </div>
+    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body">
+    <%= simple_form_for :csv, url: organisation_path(format: :csv), method: :get do |f| %>
+      <div class="flex-row-between-centered csv-date">
+        <div>
+          <%= f.label 'From' %>
+          <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Date.today.beginning_of_year}, onchange: 'selectOverviewDate()' %>
+        </div>
+        <div>
+          <%= f.label 'Until' %>
+          <%= f.input :end_date, label: false, input_html: {class: 'datepicker', value: Date.today} %>
+        </div>
+      </div>
+      <div style='margin-bottom: 1rem;'>
+        <input type="checkbox" id="select_all" name="select_all" onclick='selectAllAttributes(this)'>
+        <label for="scales">Select/Remove all</label>
+      </div>
+      <% attributes = %w(firstname lastname email birthdate hire_date social_security address phone_number) %>
+      <% attributes.each do |attribute| %>
+        <% checked = false %>
+        <% if ['firstname', 'lastname', 'email'].include?(attribute) %>
+          <% checked = true %>
+        <% end %>
+        <div class="flex-row-start-centered">
+          <%= f.check_box attribute, checked: checked %>
+          <%= f.label "#{attribute}" %>
+        </div>
+      <% end %>
+      <div class="flex-column-between-left">
+        <%= collection_check_boxes(:tag_category, :id, TagCategory.where(company_id: current_user.company_id).order(name: :asc), :id, :name) do |b| %>
+          <div class="flex-row-start-centered">
+            <%= b.check_box + b.label %>
+          </div>
+        <% end %>
+        <div class="flex-row-start-centered">
+          <%= f.check_box :cost, checked: true %>
+          <%= f.label "Cost" %>
+        </div>
+        <div class="flex-row-start-centered">
+          <%= f.check_box :trainings, checked: true %>
+          <%= f.label "Trainings attended" %>
+        </div>
+      </div>
+      <%= f.hidden_field :selected_users %>
+        <div class="centered-item" style='margin-top: 2rem;'>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+          <div class="btn-white-border" onclick='exportUsers(this);'>
+            <h4>Export</h4>
+          </div>
+        </div>
+    <% end %>
+  </div>
+</div>
