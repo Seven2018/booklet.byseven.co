@@ -1,6 +1,6 @@
 <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 <%= paginate @users, remote: true %>
-<div class="organisation-main-container">
+<div class="organisation-main-container organisation-main-container-unfiltered">
   <%= render 'organisation_ajax', users: @users, unfiltered: @unfiltered %>
 </div>
 <div class="organisation-main-container organisation-main-container-filtered hidden">
@@ -95,7 +95,6 @@
 
   function openForm(element) {
     if (doubleClickGuardian == false) {
-      console.log('test')
       doubleClickGuardian = true
       element.classList.toggle('hidden')
       form = element.parentNode.querySelector('.hidden-form-category-ajax')
@@ -318,8 +317,8 @@
       } else {
         form.style.top = (element.offsetTop - 2).toString() + 'px';
         form.style.left = (element.offsetLeft + 24).toString() + 'px'
+        element.parentNode.querySelector('p').style.opacity = '0';
       }
-      // element.parentNode.querySelector('p').style.opacity = '0';
       form.classList.toggle('hidden');
       target_input = form.querySelector('input')
       target_input.focus()
@@ -338,19 +337,27 @@
       window.addEventListener('click', function(e) {
         if (outsideClick(e, form) && doubleClickGuardian == false) {
           if (element.getAttribute('data-target').split('-')[0] == '#edit' || element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
-            controls = element.parentNode.parentNode
+            controls = element.parentNode.parentNode.querySelector('label')
             controls.style.opacity = 1
           } else {
             form.querySelector('input').value = ''
+            element.parentNode.querySelector('p').style.opacity = '1';
           }
           form.style.top = initial_top.toString() + 'px';
           form.style.left = initial_left.toString() + 'px';
-          // element.parentNode.querySelector('p').style.opacity = '1';
           form.classList.toggle('hidden');
           this.removeEventListener('click', arguments.callee, false);
         }
       });
     }
+  }
+
+  function removeTag(element) {
+    opened_blocks = []
+    document.querySelectorAll('.organisation-manage-users-block.active').forEach((block) => {
+      opened_blocks.push(block.getAttribute('data-category'))
+    })
+    element.href = element.href + '&commit=' + opened_blocks.join(',');
   }
 
   function applyToUsers(element) {

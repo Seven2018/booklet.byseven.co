@@ -1,3 +1,5 @@
+# Updated : 2021/07/19
+
 class UsersController < ApplicationController
   before_action :set_user, only: [:update, :destroy]
   before_action :set_current_user, only: [:import, :create]
@@ -5,13 +7,7 @@ class UsersController < ApplicationController
 
   # Show user profile (users/show)
   def show
-    if ['Super Admin', 'Account Owner'].include?(current_user.access_level)
-      @user = User.find(params[:id])
-    elsif current_user.access_level == 'HR'
-      @user = User.where(company_id: current_user.company_id).find(params[:id])
-    else
-      @user = current_user
-    end
+    @user = User.find(params[:id])
     authorize @user
   end
 
@@ -29,8 +25,6 @@ class UsersController < ApplicationController
         end
       end
       redirect_to organisation_path
-    else
-      render :new
     end
   end
 
@@ -56,8 +50,7 @@ class UsersController < ApplicationController
   def update
     authorize @user
     if params[:type] == 'address'
-      address = params[:user][:address]
-      address = address.gsub(address.split(/\d+/)[-2], address.split(/\d+/)[-2][0..-2] + "\n")
+      address = params[:user][:address].gsub(address.split(/\d+/)[-2], address.split(/\d+/)[-2][0..-2] + "\n")
       @user.update(address: address)
     else
       @user.update(user_params)
@@ -77,7 +70,7 @@ class UsersController < ApplicationController
         if params[:page] != 'show'
           format.html {redirect_to user_path(@user)}
         else
-          format.html {redirect_to user_path(@user)}
+          format.html {redirect_to organisation_path}
           format.js
         end
       end
@@ -127,7 +120,6 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html{}
       format.json {
-        # render json: @users
         @users = @users.limit(5)
       }
     end

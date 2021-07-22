@@ -333,7 +333,6 @@
 .content-add-right {
   display: none;
   flex-direction: column;
-  max-height: 500px;
   display: none;
   @include from-medium-high {
     display: flex;
@@ -513,4 +512,38 @@
 .content-show-view-mode-anchor {
   position: absolute;
   top: -5rem;
+}
+
+
+// EDIT MODE - RIGHT
+
+.content-edit-mode-right__recommanded-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  p {
+    margin-right: 1rem;
+    color: #808080;
+  }
+}
+
+.content-edit-mode-right__recommanded-checkboxes {
+
+  .btn-orange {
+    height: 2.5rem;
+  }
+
+  fieldset:first-of-type {
+    margin-bottom: 0;
+  }
+
+  span {
+    color: white;
+    font-weight: bold;
+  }
+
+  label {
+    margin: 0 0 0 1rem;
+  }
 }

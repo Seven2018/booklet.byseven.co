@@ -35,7 +35,7 @@ class User < ApplicationRecord
 
   def self.import(file, company_id)
     CSV.foreach(file.path, headers: true) do |row|
-      begin
+     # begin
         user_row = row.to_hash
         # User attributes
         main_attr = "firstname,lastname,email,password,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
@@ -52,11 +52,11 @@ class User < ApplicationRecord
         end
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
+        existing_user = User.find_by(email: user_row['email'].downcase)
         user.save
         raw, token = Devise.token_generator.generate(User, :reset_password_token)
         user.reset_password_token = token
         user.reset_password_sent_at = Time.now.utc
-        existing_user = User.find_by(email: user_row['email'].downcase)
         if existing_user.present?
           update = true
           user = existing_user
@@ -77,8 +77,8 @@ class User < ApplicationRecord
         unless tag.present?
           tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row['job_title'], tag_category_position: category.position)
         end
-        if update
-          UserTag.find_by(user_id: user.id, tag_category_id: category.id).update(tag_id: tag.id)
+        if update.present?
+          UserTag.find_by(user_id: user.id, tag_category_id: category.id)&.update(tag_id: tag.id)
         else
           UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
         end
@@ -92,8 +92,8 @@ class User < ApplicationRecord
           unless tag.present?
             tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row[x], tag_category_position: category.position)
           end
-          if update
-            UserTag.find_by(user_id: user.id, tag_category_id: category.id).update(tag_id: tag.id)
+          if update.present?
+            UserTag.find_by(user_id: user.id, tag_category_id: category.id)&.update(tag_id: tag.id)
           else
             UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
           end
@@ -106,8 +106,8 @@ class User < ApplicationRecord
         #   Tag.create(tag_name: row['tag'], company_id: user.company_id)
         # end
         # UserMailer.account_created(user, raw).deliver
-      rescue
-      end
+      # rescue
+      # end
     end
   end
 

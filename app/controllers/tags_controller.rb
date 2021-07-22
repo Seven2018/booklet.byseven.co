@@ -1,3 +1,5 @@
+# Updated : 2021/07/19
+
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :destroy]
 
@@ -9,7 +11,7 @@ class TagsController < ApplicationController
     if @tag.save
       @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
       @users = User.where(id: params[:tag][:users].split(' '))
-      @opened = params[:button]
+      @opened = params[:commit]
       if params[:ajax].present?
         respond_to do |format|
           format.html {redirect_to organisation_path}
@@ -33,7 +35,7 @@ class TagsController < ApplicationController
     @tag.update(tag_params)
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
     @users = User.where(id: params[:tag][:users].split(' '))
-    @opened = params[:button]
+    @opened = params[:commit]
     respond_to do |format|
       format.html {redirect_to organisation_path}
       format.js
@@ -46,7 +48,7 @@ class TagsController < ApplicationController
     authorize @tag
     @tag.destroy
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
-    @opened = params[:tag_category_id]
+    @opened = params[:commit]
     respond_to do |format|
       format.html {redirect_to organisation_path}
       format.js

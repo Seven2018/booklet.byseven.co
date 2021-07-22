@@ -187,10 +187,15 @@
       height: 32px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       flex-direction: row-reverse;
 
-      i {
-        margin-left: 10px;
+      i.booklet-card-like__right {
+        margin: 0 0 0 1rem;
+      }
+
+      i.booklet-card-like__left {
+        margin: 0 1rem 0 0;
       }
     }
   }

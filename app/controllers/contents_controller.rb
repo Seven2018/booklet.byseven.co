@@ -28,6 +28,7 @@ class ContentsController < ApplicationController
   def update
     authorize @content
     @content.update(content_params)
+    @content.update(recommended: params[:content][:recommended].reject{|x| x.empty?}) if params[:content][:recommended].present?
     if @content.save
       @content = @content
       respond_to do |format|

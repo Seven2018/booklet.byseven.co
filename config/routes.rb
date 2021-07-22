@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
   get 'organisation', to: 'pages#organisation', as: 'organisation'
   get 'book', to: 'pages#book', as: 'book'
+  get :recommendation, controller: :pages
   get :catalogue_content_link_category, controller: :pages
   get :overview_select_period, controller: :pages
   # NOT (USED)

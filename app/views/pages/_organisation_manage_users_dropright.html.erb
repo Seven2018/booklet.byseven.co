@@ -50,7 +50,6 @@
         </div>
       </div>
       <div class="organisation-manage-users-block-checkboxes">
-        <%# f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).order(tag_name: :asc).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'hideClearManagerButton();'} %>
         <div class="flex-column-start-left">
           <%= collection_check_boxes(:tag, :id, Tag.where(tag_category_id: tag_category.id).order(tag_name: :asc), :id, :tag_name) do |b| %>
             <div class="flex-row-start-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
@@ -60,9 +59,9 @@
                   <i class="fas fa-pencil-alt" data-toggle='tooltip' title='Edit Tag'></i>
                 </div>
               </div>
-              <%= link_to tag_path(Tag.find(b.object.id), users: users.map(&:id), tag_category_id: tag_category.id), data: {confirm: 'Are you sure ?'}, method: :delete, class: 'tag_delete', remote: true do %>
-                <i class="fas fa-trash" data-toggle='tooltip' title='Delete Tag'></i>
-              <% end %>
+                <%= link_to tag_path(Tag.find(b.object.id), users: users.map(&:id), tag_category_id: tag_category.id), data: {confirm: 'Are you sure ?'}, method: :delete, class: 'tag_delete', remote: true, onclick: 'removeTag(this);' do %>
+                  <i class="fas fa-trash" data-toggle='tooltip' title='Delete Tag'></i>
+                <% end %>
             </div>
           <% end %>
         </div>

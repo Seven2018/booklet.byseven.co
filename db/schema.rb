@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
     t.integer "duration", default: 0, null: false
     t.text "description", default: "", null: false
     t.string "content_type", default: "Synchronous", null: false
+    t.string "recommended"
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.bigint "folder_id"
@@ -246,7 +247,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
   create_table "user_interests", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "content_id"
-    t.string "interest_type"
+    t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["content_id"], name: "index_user_interests_on_content_id"

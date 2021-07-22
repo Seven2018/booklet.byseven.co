@@ -1,28 +1,33 @@
-<% access = '' %>
-<% if params[:session_id].present? && Session.find(params[:session_id]).date <= Date.today && Attendee.find_by(session_id: session.id, user_id: current_user.id).present? %>
-  <% raise %>
-  <% session = Session.find(params[:session_id]) %>
-  <% access = 'granted' unless session.available_date.present? && session.available_date < Date.today %>
-<% end %>
-<div id="content-show-container">
-  <div id="content-show-container-left">
-    <%= render 'contents/show_anchors', content: @content, page: 'show', access: access %>
-  </div>
-  <div id="content-show-container-right">
-    <div class="content-add">
-      <div class="content-add-left">
-        <div class="content-show-attributes-left">
-          <%= render 'contents/show_attributes_left', content: @content, page: 'show', access: access %>
+<% if ['Super Admin'].include?(current_user.access_level) || (@content.company_id == current_user.company_id) %>
+  <% access = '' %>
+  <% if params[:session_id].present? && Session.find(params[:session_id]).date <= Date.today && Attendee.find_by(session_id: params[:session_id], user_id: current_user.id).present? %>
+    <% session = Session.find(params[:session_id]) %>
+    <% access = 'granted' unless session.available_date.present? && session.available_date < Date.today %>
+  <% end %>
+  <div id="content-show-container">
+    <div id="content-show-container-left">
+      <%= render 'contents/show_anchors', content: @content, page: 'show', access: access %>
+    </div>
+    <div id="content-show-container-right">
+      <div class="content-add">
+        <div class="content-add-left">
+          <div class="content-show-attributes-left">
+            <%= render 'contents/show_attributes_left', content: @content, page: 'show', access: access %>
+          </div>
+          <div class="content-show-mods-edit-mode">
+            <%= render 'mods/content_show_mods_index', content: @content, page: 'show', access: access %>
+          </div>
         </div>
-        <div class="content-show-mods-edit-mode">
-          <%= render 'mods/content_show_mods_index', content: @content, page: 'show', access: access %>
-        </div>
-      </div>
-      <div class="content-add-right">
-        <div class="content-show-attributes-right">
-          <%= render 'contents/show_attributes_right', content: @content, page: 'show', access: access %>
+        <div class="content-add-right">
+          <div class="content-show-attributes-right">
+            <%= render 'contents/show_attributes_right', content: @content, page: 'show', access: access %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
+  </div>
+<% end %>
