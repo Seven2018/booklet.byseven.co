@@ -16,7 +16,6 @@
   height: 8.9rem;
   display: flex;
   align-items: center;
-  padding: 0 3rem;
   border-bottom: 1px solid rgba(0,0,0,0.1);
 
   p {
@@ -33,6 +32,10 @@
       display: inherit;
     }
   }
+}
+
+.user-index-headers {
+  padding: 0 3rem;
 }
 
 .user-index-headers {
@@ -114,12 +117,18 @@
   align-items: center;
   min-width: 18rem;
   max-width: 18rem;
+  min-height: 3rem;
   margin-right: 3rem;
   overflow: hidden;
   text-overflow: ellipsis;
 
   &:first-of-type {
     min-width: 7rem;
+  }
+
+  form {
+    height: 1.6rem;
+    width: 1.6rem;
   }
 
   a {
@@ -131,6 +140,10 @@
     font-size: 12px;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  i {
+    color: #53B8BB;
   }
 
   @include from-medium {
@@ -199,6 +212,7 @@
     background-color: white;
     width: 0;
     height: 225vh;
+    overflow-x: hidden;
     transition: width .25s linear;
     margin-top: 5rem;
 
@@ -272,6 +286,10 @@
       padding-left: 1rem;
     }
   }
+}
+
+.organisation-filter__reset-filter {
+  min-width: 14rem;
 }
 
 .organisation-manage-users-container {
@@ -485,12 +503,18 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: 5px;
+
+  .index-controls-buttons {
+    div:last-child {
+      margin-right: 1rem;
+    }
+  }
 }
 
-#user-search {
+#organisation-controls__user-search {
 
   input {
-    padding-left: 35px;
+    padding: 0 5rem 0 3.5rem;
     position: relative;
     margin-bottom: 0px !important;
     height: 40px;
@@ -505,14 +529,19 @@
   }
 }
 
-#user-search-clear {
+#organisation-controls__user-search-clear {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: white;
+  height: 3.8rem;
+  z-index: 100;
+  top: 9.1rem;
+  right: 35rem;
 
   p {
-    position: absolute;
-    z-index: 100;
-    top: 150px;
     font-size: 1.2rem;
-    right: 340px;
     color: #F26419;
 
     &:hover {
@@ -522,11 +551,11 @@
   }
 }
 
-.search-icon {
+.organisation-controls__search-icon {
   position: absolute;
   z-index: 150;
-  top: 152px;
-  right: 604px;
+  top: 103px;
+  right: 610px;
   color: #808080;
 }
 

@@ -1,0 +1,16 @@
+if ("<%= @unfiltered %>" == 'true') {
+  document.querySelector('.recommendation-main-container').classList.remove('hidden')
+  document.querySelector('.recommendation-main-container-filtered').classList.add('hidden')
+} else {
+  document.querySelector('.recommendation-main-container').classList.add('hidden')
+  document.querySelector('.recommendation-main-container-filtered').classList.remove('hidden')
+  document.querySelector('.recommendation-main-container-filtered').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users.uniq, unfiltered: @unfiltered, content: @content, tab: "") %>';
+}
+document.querySelector('.recommendation-main-container__yes').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users_yes.uniq, unfiltered: @unfiltered, content: @content, tab: "-yes") %>';
+document.querySelector('.recommendation-main-container__no').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users_no.uniq, unfiltered: @unfiltered, content: @content, tab: "-no") %>';
+document.querySelector('.recommendation-main-container__pending').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users_pending.uniq, unfiltered: @unfiltered, content: @content, tab: "-pending") %>';
+$(document).ready(function () {
+  $(".recommendation-page").floatingScroll();
+});
+document.querySelector('body').classList.remove('wait');
+

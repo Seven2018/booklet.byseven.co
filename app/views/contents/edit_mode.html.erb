@@ -435,18 +435,4 @@
   function removeQuestion(element) {
     element.closest('.options_line').remove()
   }
-
-  function selectAllJobs(element) {
-    form = element.closest('form')
-    checkboxes = form.querySelectorAll('input[type="checkbox"]')
-    if (checkboxes[1].checked == true) {
-      checkboxes.forEach((el) => {
-        el.checked = false
-      })
-    } else {
-      checkboxes.forEach((el) => {
-        el.checked = true
-      })
-    }
-  }
 </script>

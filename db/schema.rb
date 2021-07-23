@@ -248,6 +248,8 @@ ActiveRecord::Schema.define(version: 2021_05_20_121429) do
     t.bigint "user_id"
     t.bigint "content_id"
     t.string "status"
+    t.string "recommendation"
+    t.string "comments"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["content_id"], name: "index_user_interests_on_content_id"

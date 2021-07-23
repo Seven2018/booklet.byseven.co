@@ -5,7 +5,7 @@
       <% @filter_tags.each do |tag| %>
         <div class="selected-tags" name='<%= tag %>'>
           <p><%= tag %></p>
-          <i class="fas fa-times" onclick='removeTag(this);'></i>
+          <i class="fas fa-times" onclick='removeFilterTag(this);'></i>
         </div>
       <% end %>
     </div>
@@ -18,15 +18,15 @@
   <% end %>
 </div>
 <div class="organisation-controls">
-  <div id="user-search">
+  <div id="organisation-controls__user-search">
     <% if params[:action] == 'organisation' %>
-    <i class="fas fa-search search-icon"></i>
+    <i class="fas fa-search organisation-controls__search-icon"></i>
       <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
         <%= f.input :name, placeholder: 'Search', label: false %>
         <%= f.submit class: 'hidden hidden-submit' %>
       <% end %>
     <% end %>
-    <div class="hidden" id="user-search-clear" onclick='clearSearch(this);'>
+    <div class="hidden" id="organisation-controls__user-search-clear" onclick='clearSearch(this);'>
       <p>Clear</p>
     </div>
   </div>

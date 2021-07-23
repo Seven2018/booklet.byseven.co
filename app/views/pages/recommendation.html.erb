@@ -1,0 +1,263 @@
+<script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+<div class="recommendation-sticky">
+  <div class="recommendation-info">
+    <div class="recommendation-booklet-card">
+      <% if @content.content_type == 'Synchronous' %>
+        <div class="booklet-card-syn">
+          <div class="booklet-card-top">
+            <div class="booklet-card__top-info">
+              <% if @content.title.length <= 30 %>
+                <h3><b><%= @content.title %></b></h3>
+              <% else %>
+                <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
+              <% end %>
+              <p><%= @content.duration %> Minutes</p>
+            </div>
+            <div class="booklet-card-type-pill">
+              <div class="booklet-card-type">
+                <div class="booklet-card-type-icon">
+                  <% if @content.content_type == 'Synchronous' %>
+                    <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                    <p>In Person</p>
+                  <% else %>
+                    <i class="fas fa-laptop" style='color:black;'></i>
+                    <p>Online</p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="booklet-card-asyn">
+          <div class="booklet-card-top">
+            <div class="booklet-card__top-info">
+              <% if @content.title.length <= 30 %>
+                <h3><b><%= @content.title %></b></h3>
+              <% else %>
+                <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
+              <% end %>
+              <p><%= @content.duration %> Minutes</p>
+            </div>
+            <div class="booklet-card-type-pill">
+              <div class="booklet-card-type">
+                <div class="booklet-card-type-icon">
+                  <% if @content.content_type == 'Synchronous' %>
+                    <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                    <p>In Person</p>
+                  <% else %>
+                    <i class="fas fa-laptop" style='color:black;'></i>
+                    <p>Online</p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="recommendation-controls">
+    <div class="recommendation-tabs">
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="#All" data-toggle="tab" class='active'>All</a></li>
+        <li role="presentation"><a href="#Yes" data-toggle="tab" >Yes</a></li>
+        <li role="presentation"><a href="#No" data-toggle="tab" >No</a></li>
+        <li role="presentation"><a href="#Pending" data-toggle="tab" >Pending</a></li>
+      </ul>
+    </div>
+    <div class="flex-row-between-centered">
+      <div id="recommendation-controls__user-search">
+        <% if params[:action] == 'recommendation' %>
+        <i class="fas fa-search recommendation-controls__search-icon"></i>
+          <%= simple_form_for :search, url: recommendation_path, method: :get, remote: true do |f| %>
+            <%= f.input :name, placeholder: 'Search', label: false %>
+            <%= f.hidden_field :content_id, value: @content.id %>
+            <%= f.submit class: 'hidden hidden-submit' %>
+          <% end %>
+        <% end %>
+        <div class="hidden" id="recommendation-controls__user-search-clear" onclick='clearSearch(this);'>
+          <p>Clear</p>
+        </div>
+      </div>
+      <div class="index-controls-buttons flex-row-between-centered">
+        <div class="btn-white" onclick='openFilter();'>
+          <i class="fas fa-filter"></i>
+          <p>Filter</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="All">
+    <%= paginate @users, remote: true %>
+    <div class="recommendation-main-container recommendation-main-container-unfiltered">
+      <%= render 'recommendation_users_list', users: @users.uniq, unfiltered: @unfiltered, content: @content, tab: '' %>
+    </div>
+    <div class="recommendation-main-container recommendation-main-container-filtered hidden">
+      <%= render 'recommendation_users_list', users: [], unfiltered: @unfiltered, content: @content, tab: '' %>
+    </div>
+  </div>
+  <div role="tabpanel" class="tab-pane recommendation-main-container__yes" id="Yes">
+    <%= render 'recommendation_users_list', users: @users_yes.uniq, unfiltered: @unfiltered, content: @content, tab: '-yes' %>
+  </div>
+  <div role="tabpanel" class="tab-pane recommendation-main-container__no" id="No">
+    <%= render 'recommendation_users_list', users: @users_no.uniq, unfiltered: @unfiltered, content: @content, tab: '-no' %>
+  </div>
+  <div role="tabpanel" class="tab-pane recommendation-main-container__pending" id="Pending">
+    <%= render 'recommendation_users_list', users: @users_pending.uniq, unfiltered: @unfiltered, content: @content, tab: '-pending' %>
+  </div>
+</div>
+<div class="organisation-filter-container">
+  <div class="organisation-filter-background" onclick='closeFilter();'></div>
+  <div class="organisation-filter-dropright">
+    <%= render 'recommendation_filter_dropright', content: @content %>
+  </div>
+</div>
+
+<script>
+  if (document.querySelector('.search') != null) {
+    search_input = document.querySelector('.search').querySelector('input')
+    clear_button = document.getElementById('recommendation-controls__user-search-clear')
+    search_input.addEventListener('keyup', event => {
+      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
+        clear_button.classList.remove('hidden')
+      } else if (search_input.value == '') {
+        clear_button.classList.add('hidden')
+      }
+    })
+  }
+
+  formGuardian = false
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function clearSearch(element) {
+    console.log('test')
+    search_input = element.parentNode.querySelector('input')
+    search_input.value = ''
+    element.classList.add('hidden')
+    document.querySelector('.recommendation-main-container').classList.remove('hidden')
+    document.querySelector('.recommendation-main-container-filtered').classList.add('hidden')
+  }
+
+  function openFilter() {
+    filter_container = document.querySelector('.organisation-filter-container');
+    filter_dropright = document.querySelector('.organisation-filter-dropright');
+    filter_container.style.display = 'flex'
+    setTimeout(function(){
+      filter_dropright.style.width = '400px'
+    }, 1);
+  }
+
+  function closeFilter() {
+    filter_container = document.querySelector('.organisation-filter-container');
+    filter_dropright = document.querySelector('.organisation-filter-dropright');
+    filter_dropright.style.width = '0px'
+    setTimeout(function(){
+      filter_container.style.display = 'none'
+    }, 250)
+  }
+
+  function toggleTagCategoryDropdown(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '10000px'
+      block.classList.add('active')
+    } else {
+      block.style.maxHeight = '61px'
+      block.classList.remove('active')
+    }
+  }
+
+  function hideClearFilterButton() {
+    form = document.querySelector('.filter_user');
+    form.querySelectorAll('.organisation-filter-block').forEach((element) => {
+      checked = false;
+      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.checked == true) {
+          checked = true;
+        }
+      })
+      if (checked == false) {
+        element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
+      }
+    })
+  }
+
+  function autoSubmit(element) {
+    element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1'
+    hideClearFilterButton()
+    document.querySelector('.filter_user').querySelector('.hidden-submit').click()
+    document.querySelector('body').classList.add('wait')
+  }
+
+  function clearFilter(element) {
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    block.querySelectorAll('input.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false
+      }
+    })
+    hideClearFilterButton();
+    document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
+  }
+
+  function resetFilter() {
+    form = document.querySelector('.filter_user');
+    form.querySelectorAll('.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearFilterButton();
+    form.querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
+  }
+
+  function checkUser(element) {
+    if (doubleClickGuardian == false) {
+      element.closest('form').querySelector('.hidden-submit').click()
+      doubleClickGuardian = true
+      setTimeout(function(){
+        doubleClickGuardian = false
+      }, 100);
+    }
+  }
+
+  function removeTag(element) {
+    form = document.querySelector('.filter_user');
+    job = element.parentNode.getAttribute("name");
+    form.querySelectorAll('.filter_user_tag').forEach((category) => {
+      category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.value == job) {
+          checkbox.checked = false;
+          form.querySelector('.hidden-submit').click();
+          document.querySelector('body').classList.add('wait');
+        }
+      })
+    })
+  }
+</script>

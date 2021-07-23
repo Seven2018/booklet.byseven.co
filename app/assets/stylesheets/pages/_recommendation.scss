@@ -1,0 +1,295 @@
+// CONTROLS
+
+.recommendation-sticky {
+  width: 100%;
+  background-color: #f7f7f7;
+  padding-bottom: 1rem;
+  position: sticky;
+  top: 5rem;
+  z-index: 100;
+}
+
+.recommendation-controls {
+  display: flex;
+  justify-content: space-between;
+  margin: 3rem 0;
+
+  .index-controls-buttons {
+    div:last-child {
+      margin-right: 1rem;
+    }
+  }
+}
+
+.recommendation-tabs {
+  min-width: 27rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: inherit;
+  align-items: center;
+
+  ul {
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 0;
+    border-radius: 8px;
+  }
+
+  li > a {
+    font-size: 2rem;
+    padding: 1rem;
+  }
+
+  h3 {
+    margin: 0;
+  }
+  @include from-medium-high {
+    justify-content: space-between;
+  }
+}
+
+#recommendation-controls__user-search {
+
+  input {
+    padding: 0 5rem 0 3.5rem;
+    position: relative;
+    margin-bottom: 0px !important;
+    height: 40px;
+    border-radius: 4px;
+    width: 300px;
+    margin-right: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
+  }
+
+  .form-group {
+    margin-bottom: 0px !important;
+  }
+}
+
+#recommendation-controls__user-search-clear {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: white;
+  height: 3.8rem;
+  z-index: 100;
+  top: 13.1rem;
+  right: 11.5rem;
+
+  p {
+    font-size: 1.2rem;
+    color: #F26419;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 80%;
+    }
+  }
+}
+
+.recommendation-controls__search-icon {
+  position: absolute;
+  z-index: 150;
+  top: 143px;
+  right: 375px;
+  color: #808080;
+}
+
+#recommendation-tags-filter {
+  display: flex;
+  width: 100%;
+  min-height: 8rem;
+  position: relative;
+  margin-bottom: 1rem;
+  padding-top: 3rem;
+  position: sticky;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  background-color: #f7f7f7;
+
+  h3 {
+    font-weight: 700;
+  }
+}
+
+// USERS LIST
+
+.recommendation-page {
+  overflow: scroll;
+  display: flex;
+}
+
+// USER CARD
+
+.user-index-card__inner, .user-index-card__inner-pending, .user-index-card__inner-yes, .user-index-card__inner-no {
+  width: 100%;
+  height: 100%;
+  display: inherit;
+  padding: 0 3rem;
+}
+
+.user-index-card__inner-pending {
+  background-color: #C4C4C4;
+}
+
+.user-index-card__inner-yes {
+  background-color: #9FE6A0;
+}
+
+.user-index-card__inner-no {
+  background-color: #FABEA7;
+}
+
+// CONTENT CARD
+
+.recommendation-booklet-card {
+  position: relative;
+  padding: 0;
+  margin: 0;
+
+  @include from-medium {
+    margin: 3rem 0;
+  }
+
+  h6 {
+    font-size: 1.2rem
+  }
+
+  .booklet-card-syn {
+    height: 10rem;
+  }
+
+  .booklet-card-asyn {
+    height: 10rem;
+  }
+
+  .booklet-card-top {
+    height: 100%;
+  }
+
+  .booklet-card-top__answered {
+    background: white;
+    border: 1px solid black;
+    border-radius: .4rem;
+  }
+}
+
+
+// MODALS
+
+.recommendation-modal__content {
+  padding: 0;
+}
+
+.recommendation-modal__header {
+  background-color: #F8D9C8;
+  padding: 1.5rem;
+  flex-direction: column;
+  align-items: flex-start !important;
+}
+
+.recommendation-modal__title {
+  margin-bottom: 1rem;
+}
+
+.recommendation-modal__category-pills {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.recommendation-modal__category-pill {
+  background-color: white;
+  padding: 0 .5rem;
+  margin: 0 1rem 1rem 0;
+  border-radius: 4px;
+
+  span {
+    font-size: 1.2rem;
+    color: #F26419;
+    margin: 0;
+  }
+}
+
+.recommendation-modal__body {
+  padding: 1.5rem;
+}
+
+
+.recommendation-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  textarea {
+    width: 100%;
+  }
+}
+
+.switch-field {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  overflow: hidden;
+
+  fieldset {
+    display: inherit;
+  }
+
+  .form-check {
+    padding: 0;
+  }
+
+  .form-check:first-of-type label {
+    border-radius: 4px 0 0 4px;
+  }
+
+  .form-check:last-of-type label {
+    border-radius: 0 4px 4px 0;
+  }
+}
+
+.switch-field input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field label {
+  background-color: #e4e4e4;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  padding: 8px 16px;
+  margin: 0;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+  cursor: pointer;
+}
+
+.switch-field input:checked + label {
+  background-color: #F26419;
+  box-shadow: none;
+  color: white;
+}
+
+.recommendation-modal__buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}

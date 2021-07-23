@@ -1,10 +1,10 @@
 <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 <%= paginate @users, remote: true %>
 <div class="organisation-main-container organisation-main-container-unfiltered">
-  <%= render 'organisation_ajax', users: @users, unfiltered: @unfiltered %>
+  <%= render 'organisation_users_list', users: @users, unfiltered: @unfiltered %>
 </div>
 <div class="organisation-main-container organisation-main-container-filtered hidden">
-  <%= render 'organisation_ajax', users: [], unfiltered: @unfiltered %>
+  <%= render 'organisation_users_list', users: [], unfiltered: @unfiltered %>
 </div>
 <div class="organisation-filter-container">
   <div class="organisation-filter-background" onclick='closeFilter();'></div>
@@ -55,7 +55,7 @@
 
   function clearSearch(element) {
     search_input = element.parentNode.querySelector('input');
-    search_input.value = ' ';
+    search_input.value = '';
     element.classList.add('hidden');
     document.querySelector('.organisation-main-container').classList.remove('hidden')
     document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
@@ -63,7 +63,7 @@
 
   if (document.querySelector('.search') != null) {
     search_input = document.querySelector('.search').querySelector('input');
-    clear_button = document.getElementById('user-search-clear');
+    clear_button = document.getElementById('organisation-controls__user-search-clear');
     search_input.addEventListener('keyup', event => {
       if (search_input.value != '' && clear_button.classList.contains('hidden')) {
         clear_button.classList.remove('hidden');
@@ -252,7 +252,7 @@
     })
   }
 
-  function removeTag(element) {
+  function removeFilterTag(element) {
     form = document.querySelector('.filter_user');
     job = element.parentNode.getAttribute("name");
     form.querySelectorAll('.filter_user_tag').forEach((category) => {

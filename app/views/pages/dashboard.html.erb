@@ -6,6 +6,7 @@
         <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <li role="presentation"><a href="#All" data-toggle="tab" >Staff Trainings</a></li>
         <% end %>
+        <li role="presentation"><a href="#Recommended" data-toggle="tab" >Recommended</a></li>
       </ul>
     </div>
     <div class="tab-content">
@@ -17,6 +18,9 @@
           <%= render 'dashboard_all' %>
         </div>
       <% end %>
+      <div role="tabpanel" class="tab-pane" id="Recommended">
+        <%= render 'dashboard_recommended' %>
+      </div>
     </div>
   </div>
 </div>
@@ -58,5 +62,11 @@
 
   function selectOverviewDate() {
     document.querySelector('.select_period').querySelector('.hidden-submit').click()
+  }
+
+  function dismissModal(element) {
+    form = element.closest('form')
+    form.querySelector('.hidden-submit').click()
+    form.querySelector('.cancel-close').click()
   }
 </script>

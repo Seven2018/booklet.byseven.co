@@ -4,7 +4,7 @@ if ("<%= @unfiltered %>" == 'true') {
 } else {
   document.querySelector('.organisation-main-container').classList.add('hidden')
   document.querySelector('.organisation-main-container-filtered').classList.remove('hidden')
-  document.querySelector('.organisation-main-container-filtered').innerHTML = '<%= j render("pages/organisation_ajax", users: @users, unfiltered: @unfiltered) %>';
+  document.querySelector('.organisation-main-container-filtered').innerHTML = '<%= j render("pages/organisation_users_list", users: @users.uniq, unfiltered: @unfiltered) %>';
 }
 $(document).ready(function () {
   $(".organisation-page").floatingScroll();

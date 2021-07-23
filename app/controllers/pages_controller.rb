@@ -7,6 +7,8 @@ class PagesController < ApplicationController
     @my_upcoming_sessions = Session.includes([:content]).joins(:attendees).where(attendees: {user_id: current_user.id}).where('date > ?', Date.today).order(date: :asc)
     @my_current_sessions = (Session.includes([:content]).joins(:attendees).where(date: Date.today, attendees: {user_id: current_user.id}) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
     @all_my_sessions = @my_past_sessions + @my_upcoming_sessions + @my_current_sessions
+    @my_recommended_pending = UserInterest.where(user_id: current_user.id, recommendation: 'Pending')
+    @my_recommended_answered = UserInterest.where(user_id: current_user.id, recommendation: ['Yes', 'No'])
     if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       @past_sessions = (Session.includes([:content]).where(available_date: nil, company_id: current_user.company_id).where('date < ?', Date.today) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
       @upcoming_sessions = Session.includes([:content]).where(company_id: current_user.company_id).where('date > ?', Date.today).order(date: :asc)
@@ -153,10 +155,16 @@ class PagesController < ApplicationController
   # Display recommendation page
   def recommendation
     index_function(User.where(company_id: current_user.company_id))
-    @users_yes = User.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: params[:content_id], recommendation: 'Yes'})
-    @users_no = User.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: params[:content_id], recommendation: 'No'})
-    @users_pending = User.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: params[:content_id], recommendation: 'Pending'})
-    @content = Content.find(params[:content_id])
+    if params[:search].present?
+      @content = Content.find(params[:search][:content_id])
+    elsif params[:filter_user].present?
+      @content = Content.find(params[:filter_user][:content_id])
+    else
+      @content = Content.find(params[:content_id])
+    end
+    @users_yes = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'Yes'})
+    @users_no = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'No'})
+    @users_pending = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'Pending'})
     @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
     @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
     respond_to do |format|
@@ -203,12 +211,12 @@ class PagesController < ApplicationController
     if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       # If a name is entered in the search bar
       if params[:search].present?
-        @users = parameter.order(id: :asc)
+        @users = parameter
         if params[:search][:name] != ' '
-          @users = (@users.where('lower(firstname) LIKE ?', "%#{params[:search][:name].downcase}%") + @users.where('lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%"))
+          @users = @users.where('lower(firstname) LIKE ? OR lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%", "%#{params[:search][:name].downcase}%")
         end
         # If the 'clear' button is clicked, return all the employees
-        @users = @users.sort_by{ |user| user.lastname } if @users.present?
+        @users = @users.order(lastname: :asc).page params[:page] if @users.present?
       elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])
         tags = params[:filter_user][:tag].reject(&:blank?)
         if tags.empty?
@@ -224,7 +232,7 @@ class PagesController < ApplicationController
           tags.each do |tag|
             @users = @users.where_exists(:tags, tag_name: [tag])
           end
-          @users = @users.order(lastname: :asc).uniq
+          @users = @users.order(lastname: :asc)
         end
         @filter_tags = params[:filter_user][:tag].reject{|c| c.empty?}
       elsif params[:order].present?
@@ -242,7 +250,8 @@ class PagesController < ApplicationController
             @unfiltered = true
           end
           if params[:filter_user][:tag].uniq == [""]
-            @users = []
+            # @users = []
+            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
             @unfiltered = true
           else
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)

@@ -1,0 +1,34 @@
+<div class="modal-content recommendation-modal__content">
+  <div class="modal-header recommendation-modal__header">
+    <div id="modal-title" class='recommendation-modal__title' style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel"><strong><%= content.title %></strong></h3>
+    </div>
+    <div class="recommendation-modal__category-pills">
+      <% content.categories.each do |category| %>
+        <div class="recommendation-modal__category-pill">
+          <span><%= category.title %></span>
+        </div>
+      <% end %>
+    </div>
+    <div class="recommendation-modal__description">
+      <p><%= content.description %></p>
+    </div>
+  </div>
+  <div class="modal-body recommendation-modal__body" id="modalNewBookinBody">
+    <div class="recommendation-form">
+      <%= simple_form_for :answer_reco, url: update_recommendation_path, method: :get, remote: true do |f| %>
+        <%= f.label 'Are you interested in attending this training ?' %>
+        <div class="switch-field">
+          <%= f.input :answer, as: :radio_buttons, legend_tag: false, collection: [['Yes', 'Yes'], ['No', 'No']], checked: ['Yes', 'Yes'] %>
+        </div>
+        <%= f.input :comments, as: :text, label: false, placeholder: 'Comments (max 140 characters)', width: '100%', maxlength: 140, input_html: {row: 5, value: interest.comments} %>
+        <%= f.hidden_field :user_interest_id, value: interest.id %>
+        <div class="recommendation-modal__buttons">
+          <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+          <button class="btn-orange" onclick="dismissModal(this);"><p class='save-btn'>Send</p></button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
