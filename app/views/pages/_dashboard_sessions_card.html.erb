@@ -28,13 +28,8 @@
           <div class="booklet-card-type-pill">
             <div class="booklet-card-type">
               <div class="booklet-card-type-icon">
-                <% if content.content_type == 'Synchronous' %>
-                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                  <p>In Person</p>
-                <% else %>
-                  <i class="fas fa-laptop" style='color:black;'></i>
-                  <p>Online</p>
-                <% end %>
+                <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                <p>In Person</p>
               </div>
             </div>
             <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
@@ -98,13 +93,8 @@
           <div class="booklet-card-type-pill">
             <div class="booklet-card-type">
               <div class="booklet-card-type-icon">
-                <% if content.content_type == 'Synchronous' %>
-                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                  <p>In Person</p>
-                <% else %>
-                  <i class="fas fa-laptop" style='color:black;'></i>
-                  <p>Online</p>
-                <% end %>
+                <i class="fas fa-laptop" style='color:black;'></i>
+                <p>Online</p>
               </div>
             </div>
             <p>Cost : <%= session.cost %>€</p>

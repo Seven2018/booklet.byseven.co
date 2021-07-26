@@ -58,23 +58,13 @@
     </div>
   </div>
   <div class="recommendation-controls">
-    <div class="recommendation-tabs">
-      <ul class="nav nav-tabs">
-        <li role="presentation"><a href="#All" data-toggle="tab" class='active'>All</a></li>
-        <li role="presentation"><a href="#Yes" data-toggle="tab" >Yes</a></li>
-        <li role="presentation"><a href="#No" data-toggle="tab" >No</a></li>
-        <li role="presentation"><a href="#Pending" data-toggle="tab" >Pending</a></li>
-      </ul>
-    </div>
-    <div class="flex-row-between-centered">
+    <div class="flex-row-start-centered">
       <div id="recommendation-controls__user-search">
-        <% if params[:action] == 'recommendation' %>
         <i class="fas fa-search recommendation-controls__search-icon"></i>
-          <%= simple_form_for :search, url: recommendation_path, method: :get, remote: true do |f| %>
-            <%= f.input :name, placeholder: 'Search', label: false %>
-            <%= f.hidden_field :content_id, value: @content.id %>
-            <%= f.submit class: 'hidden hidden-submit' %>
-          <% end %>
+        <%= simple_form_for :search, url: recommendation_path, method: :get, remote: true do |f| %>
+          <%= f.input :name, placeholder: 'Search', label: false %>
+          <%= f.hidden_field :content_id, value: @content.id %>
+          <%= f.submit class: 'hidden hidden-submit' %>
         <% end %>
         <div class="hidden" id="recommendation-controls__user-search-clear" onclick='clearSearch(this);'>
           <p>Clear</p>
@@ -86,6 +76,14 @@
           <p>Filter</p>
         </div>
       </div>
+    </div>
+    <div class="recommendation-tabs">
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="#All" data-toggle="tab" class='active'>All</a></li>
+        <li role="presentation"><a href="#Yes" data-toggle="tab" >Yes</a></li>
+        <li role="presentation"><a href="#No" data-toggle="tab" >No</a></li>
+        <li role="presentation"><a href="#Pending" data-toggle="tab" >Pending</a></li>
+      </ul>
     </div>
   </div>
 </div>
@@ -146,7 +144,6 @@
   }
 
   function clearSearch(element) {
-    console.log('test')
     search_input = element.parentNode.querySelector('input')
     search_input.value = ''
     element.classList.add('hidden')

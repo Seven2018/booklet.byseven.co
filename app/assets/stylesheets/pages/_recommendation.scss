@@ -10,9 +10,14 @@
 }
 
 .recommendation-controls {
-  display: flex;
-  justify-content: space-between;
-  margin: 3rem 0;
+
+  & > div {
+    margin: 3rem 0;
+  }
+
+  .search_name {
+    margin: 0;
+  }
 
   .index-controls-buttons {
     div:last-child {
@@ -77,7 +82,7 @@
   height: 3.8rem;
   z-index: 100;
   top: 13.1rem;
-  right: 11.5rem;
+  left: 25.5rem;
 
   p {
     font-size: 1.2rem;
@@ -94,7 +99,7 @@
   position: absolute;
   z-index: 150;
   top: 143px;
-  right: 375px;
+  left: 12px;
   color: #808080;
 }
 
@@ -116,12 +121,14 @@
   }
 }
 
+
 // USERS LIST
 
 .recommendation-page {
   overflow: scroll;
   display: flex;
 }
+
 
 // USER CARD
 
@@ -235,7 +242,7 @@
 .switch-field {
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   overflow: hidden;
 
   fieldset {
@@ -281,10 +288,10 @@
   cursor: pointer;
 }
 
-.switch-field input:checked + label {
-  background-color: #F26419;
-  box-shadow: none;
-  color: white;
+.switch-field input:checked + label,  .input-checked {
+  background-color: #F26419 !important;
+  box-shadow: none !important;
+  color: white !important;
 }
 
 .recommendation-modal__buttons {

@@ -1,0 +1,79 @@
+<div class="overview-controls">
+  <div class="flex-row-start-centered">
+    <div id="overview-controls__user-search">
+      <i class="fas fa-search overview-controls__search-icon"></i>
+      <%= simple_form_for :search, url: overview_path, method: :get do |f| %>
+        <%= f.input :title, placeholder: 'Search', label: false %>
+        <%= f.submit class: 'hidden hidden-submit' %>
+      <% end %>
+      <div class="hidden" id="overview-controls__user-search-clear" onclick='clearSearch(this);'>
+        <p>Clear</p>
+      </div>
+    </div>
+    <div class="index-controls-buttons flex-row-between-centered">
+      <div class="btn-white" onclick='openFilter();'>
+        <i class="fas fa-filter"></i>
+        <p>Filter</p>
+      </div>
+    </div>
+    <div class="overview-select-date">
+      <%= simple_form_for :select_period, url: overview_path, method: :get, remote: true do |f| %>
+        <div class="flex-row-start-centered overview-controls__overview-dates">
+          <%= f.label 'From' %>
+          <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Date.today.beginning_of_year, onchange: 'selectOverviewDate()'}, onchange: 'selectOverviewDate()' %>
+          <%= f.label 'Until' %>
+          <%= f.input :end_date, label: false, input_html: {class: 'datepicker', value: Date.today, onchange: 'selectOverviewDate()'} %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="overview-results">
+  <%= render 'pages/overview_results', sessions: @sessions %>
+</div>
+<div class="overview-cards-list">
+  <%= render 'pages/overview_cards_list', contents: @contents, start_date: Date.today.beginning_of_year, end_date: Date.today %>
+</div>
+
+<script>
+  if (document.querySelector('.search') != null) {
+    search_input = document.querySelector('.search').querySelector('input')
+    clear_button = document.getElementById('overview-controls__user-search-clear')
+    search_input.addEventListener('keyup', event => {
+      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
+        clear_button.classList.remove('hidden')
+      } else if (search_input.value == '') {
+        clear_button.classList.add('hidden')
+      }
+    })
+  }
+
+  formGuardian = false
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function clearSearch(element) {
+    search_input = element.parentNode.querySelector('input')
+    search_input.value = ''
+    element.classList.add('hidden')
+    document.querySelector('.overview-main-container').classList.remove('hidden')
+    document.querySelector('.overview-main-container-filtered').classList.add('hidden')
+  }
+
+  function selectOverviewDate() {
+    document.querySelector('.select_period').querySelector('.hidden-submit').click()
+  }
+</script>

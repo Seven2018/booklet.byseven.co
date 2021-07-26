@@ -1,0 +1,28 @@
+<div class="flex-row-start-centered">
+  <div class='overview_results__card'>
+    <% cost = sessions.map(&:cost).sum %>
+    <p><%= '%.2f' % cost %>€</p>
+    <p>Total Cost</p>
+  </div>
+  <div class='overview_results__card'>
+    <p><%= (sessions.map{|x| x.content.duration}.sum / 60.0).round(1) %>h</p>
+    <p>Total Duration</p>
+  </div>
+  <div class='overview_results__card'>
+    <p><%= sessions.count %></p>
+    <p>Trainings</p>
+  </div>
+  <div class='overview_results__card'>
+    <% trained_employees = sessions.map{|x| x.attendees.count}.sum%>
+    <p><%= trained_employees %></p>
+    <p>Trained Employees</p>
+  </div>
+  <div class='overview_results__card'>
+    <% if trained_employees > 0 %>
+      <p><%= '%.2f' % (cost / trained_employees) %>€</p>
+    <% else %>
+      <p>NA</p>
+    <% end %>
+    <p>Average Cost / Employee</p>
+  </div>
+</div>

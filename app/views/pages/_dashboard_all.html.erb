@@ -5,7 +5,6 @@
         <li role="presentation"><a href="#CurrentSessionsAll" data-toggle="tab" class='active'>Current</a></li>
         <li role="presentation"><a href="#UpcomingAll" data-toggle="tab">Upcoming</a></li>
         <li role="presentation"><a href="#CompletedAll" data-toggle="tab">Past</a></li>
-        <li role="presentation"><a href="#Overview" data-toggle="tab">Overview</a></li>
       </ul>
     </div>
     <div class="tab-content">
@@ -36,24 +35,6 @@
               <%= render 'dashboard_sessions_card', session: session %>
             <% end %>
           <% end %>
-        </div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Overview">
-        <%= simple_form_for :select_period, url: overview_select_period_path, method: :get, remote: true do |f| %>
-          <div class="flex-row-start-centered tab-content__overview-dates">
-            <div>
-              <%= f.label 'From' %>
-              <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Date.today.beginning_of_year, onchange: 'selectOverviewDate()'}, onchange: 'selectOverviewDate()' %>
-            </div>
-            <div>
-              <%= f.label 'Until' %>
-              <%= f.input :end_date, label: false, input_html: {class: 'datepicker', value: Date.today, onchange: 'selectOverviewDate()'} %>
-            </div>
-            <%= f.submit '', class: 'hidden-submit hidden' %>
-          </div>
-        <% end %>
-        <div class="tab-content__overview">
-          <%= render 'pages/dashboard_overview', start_date: Date.today.beginning_of_year, end_date: Date.today %>
         </div>
       </div>
     </div>

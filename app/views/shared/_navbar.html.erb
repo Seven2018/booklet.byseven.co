@@ -3,7 +3,7 @@
     <ul>
     <% if user_signed_in? %>
       <li>
-        <% if params[:action] == 'dashboard' %>
+        <% if params[:action] == 'dashboard' || params[:action] == 'recommendation' %>
           <%= link_to dashboard_path, class: 'left-buttons' do %>
             <div class="left-menu-title" style='color: #F26419;'><h4>Dashboard</h4></div>
           <% end %>
@@ -38,6 +38,18 @@
           <% else %>
             <%= link_to organisation_path, class: 'left-buttons' do %>
               <div class="left-menu-title"><h4>Employees</h4></div>
+            <% end %>
+          <% end %>
+        </li>
+        <li>
+          <% if params[:action] == 'overview' %>
+            <%= link_to overview_path, class: 'left-buttons' do %>
+              <div class="left-menu-title " style='color: #F26419;'><h4>Report</h4></div>
+            <% end %>
+              <div class="isactive"></div>
+          <% else %>
+            <%= link_to overview_path, class: 'left-buttons' do %>
+              <div class="left-menu-title"><h4>Report</h4></div>
             <% end %>
           <% end %>
         </li>

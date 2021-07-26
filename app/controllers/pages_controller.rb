@@ -34,12 +34,26 @@ class PagesController < ApplicationController
     @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
   end
 
-  # Overview tab (pages/dashboard)
-  def overview_select_period
-    @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
-    @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
+  # Display the company Overview (pages/overview)
+  def overview
+    @contents = Content.where(company_id: current_user.company_id)
+    # @sessions = Session.where(company_id: current_user.company_id)
+    if params[:search].present?
+      @contents = Content.where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%")
+    end
+    if params[:select_period].present?
+      @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
+      @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
+      @contents = @contents.joins(:sessions).where('sessions(date) >= ? AND sessions(date) <= ?', @start_date, @end_date)
+      # @sessions = @sessions.where('date >= ? AND date <= ?', @start_date, @end_date)
+    end
+    if params[:filter_content].present?
+      @contents = @contents.where(id: params[:filter_content][:content_ids])
+      # @sessions = @sessions.where(content_id: params[:filter_content][:content_ids])
+    end
+    @sessions = @contents.map{|x| x.sessions}.flatten
     respond_to do |format|
-      format.html {redirect_to dashboard_path}
+      format.html {overview_path}
       format.js
     end
   end
