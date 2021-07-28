@@ -1,0 +1,29 @@
+<div id="recommendation-tags-filter" class='employee-tag flex-row-between-centered'>
+  <% if @filter_tags.present? %>
+    <div class="filter-selected-tags">
+      <h3><%= users.count %> result(s) for</h3>
+      <% @filter_tags.each do |tag| %>
+        <div class="selected-tags" name='<%= tag %>'>
+          <p><%= tag %></p>
+          <i class="fas fa-times" onclick='removeTag(this);'></i>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <h3>Employees (<%= users.length %>)</h3>
+  <% end %>
+</div>
+<div class='recommendation-page' data-fl-scrolls='{"orientation": "horizontal"}'>
+  <div class='organisation-users'>
+    <div class='user-index-headers'>
+      <%= render 'pages/recommendation_headers', users: users %>
+    </div>
+    <div class='users-index users-index<%= tab %>'>
+      <% users.each do |user| %>
+        <div class='user-index-card user-card-<%= user.id %>'>
+          <%= render 'pages/recommendation_user_card', user: user, content: content, user_interest: UserInterest.find_by(user_id: user.id, content_id: content.id) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

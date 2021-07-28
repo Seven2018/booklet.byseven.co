@@ -32,8 +32,10 @@
           </div>
         <% end %>
         <div class="button-add-catalogue">
-          <div class="btn-orange">
-            <%= link_to 'Add to catalogue', catalogue_path %>
+          <div class="btn-white-border">
+            <%= link_to catalogue_path do %>
+              <p>Return to Catalogue</p>
+            <% end %>
           </div>
         </div>
       </div>
@@ -434,19 +436,5 @@
 
   function removeQuestion(element) {
     element.closest('.options_line').remove()
-  }
-
-  function selectAllJobs(element) {
-    form = element.closest('form')
-    checkboxes = form.querySelectorAll('input[type="checkbox"]')
-    if (checkboxes[1].checked == true) {
-      checkboxes.forEach((el) => {
-        el.checked = false
-      })
-    } else {
-      checkboxes.forEach((el) => {
-        el.checked = true
-      })
-    }
   }
 </script>

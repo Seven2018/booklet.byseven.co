@@ -1,0 +1,39 @@
+<div class="modal-content recommendation-modal__content">
+  <div class="modal-header recommendation-modal__header">
+    <div id="modal-title" class='recommendation-modal__title' style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel"><strong><%= content.title %></strong></h3>
+    </div>
+    <div class="recommendation-modal__category-pills">
+      <% content.categories.each do |category| %>
+        <div class="recommendation-modal__category-pill">
+          <span><%= category.title %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="modal-body recommendation-modal__body" id="modalNewBookinBody">
+    <div class="recommendation-form">
+      <div class="switch-field">
+        <% if interest.recommendation == 'Yes' %>
+          <div>
+            <label for="yes" class='input-checked'>Yes</label>
+          </div>
+          <div>
+            <label for="no">No</label>
+          </div>
+        <% else %>
+          <div>
+            <label for="yes">Yes</label>
+          </div>
+          <div>
+            <label for="no"  class='input-checked'>No</label>
+          </div>
+        <% end %>
+      </div>
+      <p><%= interest.comments %></p>
+      <div class="recommendation-modal__buttons">
+        <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Exit</button>
+      </div>
+    </div>
+  </div>
+</div>

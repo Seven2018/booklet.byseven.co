@@ -13,7 +13,7 @@ class UserPolicy < ApplicationPolicy
     check_access_hr
   end
 
-  def import?
+  def import_users?
     check_access_hr
   end
 

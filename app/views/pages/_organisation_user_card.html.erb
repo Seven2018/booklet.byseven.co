@@ -1,19 +1,21 @@
-<% user = @user if @user.present? %>
-<div class="user-index-info">
-  <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
-</div>
-<div class="user-index-info streched-link">
-<%= link_to user_path(user) do %>
-  <p class='user-name' data-toggle="tooltip" title="<%= user.fullname %>" style='color: #F26419'><b><%= user.firstname %> <%= user.lastname %></b></p>
-<% end %>
-</div>
-<div class="user-index-info">
+<div class='user-index-card__inner'>
+  <% user = @user if @user.present? %>
+  <div class="user-index-info">
+    <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
+  </div>
+  <div class="user-index-info streched-link">
   <%= link_to user_path(user) do %>
-    <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+    <p class='user-name' data-toggle="tooltip" title="<%= user.fullname %>" style='color: #F26419'><b><%= user.firstname %> <%= user.lastname %></b></p>
+  <% end %>
+  </div>
+  <div class="user-index-info">
+    <%= link_to user_path(user) do %>
+      <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+    <% end %>
+  </div>
+  <% user.tags.order(tag_category_position: :asc).select(:tag_name).each do |tag| %>
+    <div class="user-index-info">
+      <p><%= tag.tag_name if tag.present? %></p>
+    </div>
   <% end %>
 </div>
-<% user.tags.order(tag_category_position: :asc).select(:tag_name).each do |tag| %>
-  <div class="user-index-info">
-    <p><%= tag.tag_name if tag.present? %></p>
-  </div>
-<% end %>

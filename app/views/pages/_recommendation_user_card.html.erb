@@ -1,0 +1,59 @@
+<% if user_interest&.recommendation&.nil? || user_interest.nil? %>
+  <div class='user-index-card__inner'>
+<% else %>
+  <div class='user-index-card__inner-<%= user_interest.recommendation.downcase %>'>
+<% end %>
+    <% user = @user if @user.present? %>
+    <div class="user-index-info">
+      <%= simple_form_for :recommend, url: recommend_path, method: :get, remote: true do |f| %>
+        <% reco = user_interest&.recommendation %>
+        <% status = user_interest&.status %>
+        <% if status == 'Completed' %>
+          <i class="fas fa-check-circle" data-toggle='tooltip' title='Completed'></i>
+        <% elsif reco != 'Yes' && reco != 'No' %>
+          <%= f.input :select, label: false, as: :boolean, input_html: {onclick: 'checkUser(this);', checked: user_interest&.recommendation&.present?} %>
+        <% end %>
+        <%= f.hidden_field :user_id, value: user.id %>
+        <%= f.hidden_field :content_id, value: content.id %>
+        <%= f.submit '', class: 'hidden-submit hidden' %>
+      <% end %>
+    </div>
+    <div class="user-index-info">
+      <% if user_interest&.recommendation&.nil? || user_interest.nil? %>
+        <p></p>
+      <% else %>
+        <p><%= user_interest.recommendation %></p>
+      <% end %>
+    </div>
+    <div class="user-index-info">
+      <% if user_interest&.recommendation&.nil? || user_interest.nil? %>
+        <p></p>
+      <% elsif user_interest.comments.present? %>
+        <a data-toggle='modal' data-target='#seeRecommendation-<%= content.id %>'><p>Click to see the comment</p></a>
+
+        <!-- MODAL -->
+
+        <div class='modal fade' id='seeRecommendation-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+          <div class='modal-dialog' role='document' style='border-radius: 20px'>
+            <%= render 'pages/recommendation_modal_view', content: content, interest: user_interest %>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+    <div class="user-index-info streched-link">
+    <%= link_to user_path(user) do %>
+      <p class='user-name' data-toggle="tooltip" title="<%= user.fullname %>" style='color: #F26419'><b><%= user.firstname %> <%= user.lastname %></b></p>
+    <% end %>
+    </div>
+    <div class="user-index-info">
+      <%= link_to user_path(user) do %>
+        <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+      <% end %>
+    </div>
+    <% user.tags.order(tag_category_position: :asc).select(:tag_name).each do |tag| %>
+      <div class="user-index-info">
+        <p><%= tag.tag_name if tag.present? %></p>
+      </div>
+    <% end %>
+  </div>

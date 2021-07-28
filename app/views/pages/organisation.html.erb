@@ -1,10 +1,10 @@
 <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 <%= paginate @users, remote: true %>
 <div class="organisation-main-container organisation-main-container-unfiltered">
-  <%= render 'organisation_ajax', users: @users, unfiltered: @unfiltered %>
+  <%= render 'organisation_users_list', users: @users, unfiltered: @unfiltered %>
 </div>
 <div class="organisation-main-container organisation-main-container-filtered hidden">
-  <%= render 'organisation_ajax', users: [], unfiltered: @unfiltered %>
+  <%= render 'organisation_users_list', users: [], unfiltered: @unfiltered %>
 </div>
 <div class="organisation-filter-container">
   <div class="organisation-filter-background" onclick='closeFilter();'></div>
@@ -40,8 +40,8 @@
 </div>
 
 <div class='modal fade' id='importUsersInfos' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-import-infos' role='document' style='border-radius: 20px'>
-    <%= render 'users/import_infos', errors: [], creating: [], updating: [] %>
+  <div class='modal-dialog modal-lg modal-import-infos' role='document' style='border-radius: 20px'>
+    <%= render 'users/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
   </div>
 </div>
 
@@ -55,7 +55,7 @@
 
   function clearSearch(element) {
     search_input = element.parentNode.querySelector('input');
-    search_input.value = ' ';
+    search_input.value = '';
     element.classList.add('hidden');
     document.querySelector('.organisation-main-container').classList.remove('hidden')
     document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
@@ -63,7 +63,7 @@
 
   if (document.querySelector('.search') != null) {
     search_input = document.querySelector('.search').querySelector('input');
-    clear_button = document.getElementById('user-search-clear');
+    clear_button = document.getElementById('organisation-controls__user-search-clear');
     search_input.addEventListener('keyup', event => {
       if (search_input.value != '' && clear_button.classList.contains('hidden')) {
         clear_button.classList.remove('hidden');
@@ -252,7 +252,7 @@
     })
   }
 
-  function removeTag(element) {
+  function removeFilterTag(element) {
     form = document.querySelector('.filter_user');
     job = element.parentNode.getAttribute("name");
     form.querySelectorAll('.filter_user_tag').forEach((category) => {
@@ -390,20 +390,6 @@
     selectUser();
   }
 
-  function selectAllAttributes(element) {
-    form = element.closest('form')
-    checkboxes = form.querySelectorAll('input[type="checkbox"]')
-    if (checkboxes[1].checked == true) {
-      checkboxes.forEach((el) => {
-        el.checked = false
-      })
-    } else {
-      checkboxes.forEach((el) => {
-        el.checked = true
-      })
-    }
-  }
-
   function exportUsers(element) {
     users_array = []
     document.querySelectorAll('.select-user:checked').forEach((el) => {
@@ -416,6 +402,65 @@
 
   function clearSearchBis() {
     document.location.reload()
+  }
+
+  function selectCsvAttributes(element) {
+    icon = element.querySelector('i')
+    checkbox = element.querySelector('input[type="checkbox"]')
+    if (checkbox.checked == false) {
+      checkbox.checked = true
+      element.style.backgroundColor = '#F26419'
+      element.style.color = 'white'
+      icon.style.transform = 'rotate(225deg)'
+    } else {
+      checkbox.checked = false
+      element.style.backgroundColor = 'white'
+      element.style.color = '#F26419'
+      icon.style.transform = 'rotate(-0deg)'
+    }
+  }
+
+  function checkCsvAttributes() {
+    document.querySelectorAll('.modal-filter__pill').forEach((pill) => {
+      icon = pill.querySelector('i')
+      checkbox = pill.querySelector('input[type="checkbox"]')
+      if (checkbox.checked == false) {
+        checkbox.checked = false
+        pill.style.backgroundColor = 'white'
+        pill.style.color = '#F26419'
+        icon.style.transform = 'rotate(-0deg)'
+      } else {
+        checkbox.checked = true
+        pill.style.backgroundColor = '#F26419'
+        pill.style.color = 'white'
+        icon.style.transform = 'rotate(225deg)'
+      }
+    })
+  }
+
+  function selectAllAttributes(element) {
+    selectCsvAttributes(element)
+    form = element.closest('form')
+    checkboxes = form.querySelectorAll('input[type="checkbox"]')
+    if (checkboxes[1].checked == true) {
+      checkboxes.forEach((el) => {
+        el.checked = false
+      })
+    } else {
+      checkboxes.forEach((el) => {
+        el.checked = true
+      })
+    }
+    checkCsvAttributes()
+  }
+
+  checkCsvAttributes()
+
+  function fileTransfer(element) {
+    submit_button = document.querySelector('.import_users_form').querySelector('button')
+    submit_button.value = 'import'
+    console.log(submit_button.value)
+    submit_button.click()
   }
 
   function spinningLoader() {

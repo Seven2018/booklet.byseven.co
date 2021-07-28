@@ -1,0 +1,30 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" class='modal-filter__header' style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Select themes</h3>
+      <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+  <div class="modal-body modal-filter__body" id="modalNewBookinBody">
+    <%= simple_form_for :filter_content, url: overview_path, method: :get, remote: true do |f| %>
+      <div class="modal-filter__wrap">
+        <%= collection_check_boxes(:content, :categories, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
+          <div class="modal-filter__pill" onclick='selectFilter(this);'>
+            <%= b.check_box %>
+            <div class="flex-row-start-centered">
+              <i class="fas fa-plus"></i>
+              <%= b.label %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <%= f.hidden_field :start_date, value: '' %>
+      <%= f.hidden_field :end_date, value: '' %>
+      <div class="centered-item">
+        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+          <p>Filter</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

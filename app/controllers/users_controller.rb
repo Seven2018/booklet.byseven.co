@@ -84,32 +84,46 @@ class UsersController < ApplicationController
     redirect_to organisation_path
   end
 
-  # Creates new Users from an imported list
-  def import
+  def import_users
     skip_authorization
-    @errors = []
-    @creating = []
-    @updating = []
-    CSV.foreach(params[:file].path, headers: true) do |row|
-      user_row = row.to_hash
-      user = User.find_by(email: user_row['email'].downcase)
-      if !user_row['email'].present?
-        @errors << "#{user_row['lastname']}, #{user_row['firstname']}"
-      elsif user.nil?
-        @creating << "#{user_row['lastname']}, #{user_row['firstname']}"
-      else
-        user_row.each do |key, value|
-          user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
-          if (user.attributes.key?(key) == true && user.attributes[key].downcase != value.downcase) || (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
-            @updating << "#{user.lastname}, #{user.firstname} : #{key.capitalize}"
+    return unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+    if params[:button] == 'summary'
+      @errors = []
+      @creating = []
+      @updating = []
+      present = []
+      CSV.foreach(params[:file].path, headers: true) do |row|
+        user_row = row.to_hash
+        user = User.find_by(email: user_row['email'].downcase)
+        if !user_row['email'].present?
+          @errors << row
+        elsif user.nil?
+          @creating << row
+          present << user_row['email'].downcase
+        else
+          user_row.each do |key, value|
+            user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
+            if (user.attributes.key?(key) == true && user.attributes[key].downcase != value.downcase)
+              @updating << {lastname: user.lastname, firstname: user.firstname, former: user.attributes[key], new: value}
+            elsif  (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
+              @updating << {lastname: user.lastname, firstname: user.firstname, former: user_tag.tag.tag_name, new: value}
+            end
           end
+          present << user_row['email'].downcase
         end
       end
-    end
-    ImportEmployeesJob.perform_async(params[:file], current_user.company_id)
-    respond_to do |format|
-      format.html {redirect_back(fallback_location: root_path)}
-      format.js
+      @deleting = User.where(email: (User.where(company_id: current_user.company_id).map{|x| x.email.downcase} - present))
+      @file = params[:file]
+      respond_to do |format|
+        format.html {redirect_back(fallback_location: root_path)}
+        format.js
+      end
+    elsif params[:button] == 'import'
+      @redirect = request.base_url + request.path
+      ImportEmployeesJob.perform_async(params[:file], current_user.company_id)
+      flash[:notice] = 'Import in progress. Please wait for awhile and refresh this page.'
+      flash.keep(:notice)
+      render js: "window.location = '#{organisation_path}'"
     end
   end
 

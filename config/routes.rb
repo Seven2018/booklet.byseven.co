@@ -48,7 +48,7 @@ Rails.application.routes.draw do
   get 'book', to: 'pages#book', as: 'book'
   get :recommendation, controller: :pages
   get :catalogue_content_link_category, controller: :pages
-  get :overview_select_period, controller: :pages
+  get :overview, controller: :pages
   # NOT (USED)
   # get :organisation_user_card, controller: :pages
 
@@ -73,6 +73,8 @@ Rails.application.routes.draw do
   # USER_INTERESTS
   resources :user_interests, only: %i[create destroy]
   get :complete_content, controller: :user_interests
+  get :recommend, controller: :user_interests
+  get :update_recommendation, controller: :user_interests
 
   # USER TAGS
   resources :user_tags, only: %i[create]
@@ -85,6 +87,6 @@ Rails.application.routes.draw do
   resources :users, only: %i[create show update destroy]
   get :complete_profile, controller: :users
   get :link_to_company, controller: :users
-  post 'users/import', to: 'users#import', as: 'import_users'
+  post :import_users, controller: :users
   get :users_search, controller: :users
 end

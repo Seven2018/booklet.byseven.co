@@ -1,0 +1,7 @@
+document.querySelector('#search_start_date').value = '<%= @start_date.to_s %>'
+document.querySelector('#search_end_date').value = '<%= @end_date.to_s %>'
+document.querySelector('#filter_content_start_date').value = '<%= @start_date.to_s %>'
+document.querySelector('#filter_content_start_date').value = '<%= @end_date.to_s %>'
+document.querySelector('#select_period_content_ids').value = '<%= @contents.ids.uniq.join(",") %>'
+document.querySelector('.overview-results').innerHTML = '<%= j render("pages/overview_results", sessions: @sessions) %>';
+document.querySelector('.overview-cards-list').innerHTML = '<%= j render("pages/overview_cards_list", contents: @contents.uniq, start_date: @start_date, end_date: @end_date) %>';

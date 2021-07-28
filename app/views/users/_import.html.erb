@@ -6,9 +6,11 @@
     <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body">
-    <%= form_tag import_users_path, multipart: true, class: 'flex-row-between-centered', remote: true do %>
+    <%= form_tag import_users_path, multipart: true, class: 'import_users_form flex-row-between-centered', remote: true do %>
       <%= file_field_tag :file %>
-      <%= submit_tag 'Import CSV', class: 'btn-csv', style: 'margin: 0 !important;' %>
+      <%= button_tag type: 'submit', class: 'btn-white-border', value: 'summary' do %>
+        <p>Import CSV</p>
+      <% end %>
     <% end %>
     <br>
     <p>Example: </p>
