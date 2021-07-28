@@ -2,8 +2,10 @@
   <div class="flex-row-start-centered">
     <div id="overview-controls__user-search">
       <i class="fas fa-search overview-controls__search-icon"></i>
-      <%= simple_form_for :search, url: overview_path, method: :get do |f| %>
+      <%= simple_form_for :search, url: overview_path, method: :get, remote: true do |f| %>
         <%= f.input :title, placeholder: 'Search', label: false %>
+        <%= f.hidden_field :start_date, value: '' %>
+        <%= f.hidden_field :end_date, value: '' %>
         <%= f.submit class: 'hidden hidden-submit' %>
       <% end %>
       <div class="hidden" id="overview-controls__user-search-clear" onclick='clearSearch(this);'>
@@ -11,10 +13,12 @@
       </div>
     </div>
     <div class="index-controls-buttons flex-row-between-centered">
-      <div class="btn-white" onclick='openFilter();'>
-        <i class="fas fa-filter"></i>
-        <p>Filter</p>
-      </div>
+      <a data-toggle='modal' data-target='#filterCategories'>
+        <div class="btn-white">
+          <i class="fas fa-filter"></i>
+          <p>Filter</p>
+        </div>
+      </a>
     </div>
     <div class="overview-select-date">
       <%= simple_form_for :select_period, url: overview_path, method: :get, remote: true do |f| %>
@@ -23,6 +27,7 @@
           <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Date.today.beginning_of_year, onchange: 'selectOverviewDate()'}, onchange: 'selectOverviewDate()' %>
           <%= f.label 'Until' %>
           <%= f.input :end_date, label: false, input_html: {class: 'datepicker', value: Date.today, onchange: 'selectOverviewDate()'} %>
+          <%= f.hidden_field :content_ids, value: '' %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         </div>
       <% end %>
@@ -34,6 +39,13 @@
 </div>
 <div class="overview-cards-list">
   <%= render 'pages/overview_cards_list', contents: @contents, start_date: Date.today.beginning_of_year, end_date: Date.today %>
+</div>
+
+<!-- Modals -->
+<div class='modal fade' id='filterCategories' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'pages/overview_filter_categories' %>
+  </div>
 </div>
 
 <script>
@@ -67,13 +79,30 @@
 
   function clearSearch(element) {
     search_input = element.parentNode.querySelector('input')
-    search_input.value = ''
+    search_input.value = ' '
     element.classList.add('hidden')
-    document.querySelector('.overview-main-container').classList.remove('hidden')
-    document.querySelector('.overview-main-container-filtered').classList.add('hidden')
+    form = search_input.closest('form')
+    form.querySelector('.hidden-submit').click()
+    search_input.value = ''
   }
 
   function selectOverviewDate() {
     document.querySelector('.select_period').querySelector('.hidden-submit').click()
+  }
+
+  function selectFilter(element) {
+    icon = element.querySelector('i')
+    checkbox = element.querySelector('input[type="checkbox"]')
+    if (checkbox.checked == false) {
+      checkbox.checked = true
+      element.style.backgroundColor = '#F26419'
+      element.style.color = 'white'
+      icon.style.transform = 'rotate(225deg)'
+    } else {
+      checkbox.checked = false
+      element.style.backgroundColor = 'white'
+      element.style.color = '#F26419'
+      icon.style.transform = 'rotate(-0deg)'
+    }
   }
 </script>

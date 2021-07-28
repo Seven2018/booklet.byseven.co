@@ -40,8 +40,8 @@
 </div>
 
 <div class='modal fade' id='importUsersInfos' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-import-infos' role='document' style='border-radius: 20px'>
-    <%= render 'users/import_infos', errors: [], creating: [], updating: [] %>
+  <div class='modal-dialog modal-lg modal-import-infos' role='document' style='border-radius: 20px'>
+    <%= render 'users/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
   </div>
 </div>
 
@@ -390,20 +390,6 @@
     selectUser();
   }
 
-  function selectAllAttributes(element) {
-    form = element.closest('form')
-    checkboxes = form.querySelectorAll('input[type="checkbox"]')
-    if (checkboxes[1].checked == true) {
-      checkboxes.forEach((el) => {
-        el.checked = false
-      })
-    } else {
-      checkboxes.forEach((el) => {
-        el.checked = true
-      })
-    }
-  }
-
   function exportUsers(element) {
     users_array = []
     document.querySelectorAll('.select-user:checked').forEach((el) => {
@@ -416,6 +402,65 @@
 
   function clearSearchBis() {
     document.location.reload()
+  }
+
+  function selectCsvAttributes(element) {
+    icon = element.querySelector('i')
+    checkbox = element.querySelector('input[type="checkbox"]')
+    if (checkbox.checked == false) {
+      checkbox.checked = true
+      element.style.backgroundColor = '#F26419'
+      element.style.color = 'white'
+      icon.style.transform = 'rotate(225deg)'
+    } else {
+      checkbox.checked = false
+      element.style.backgroundColor = 'white'
+      element.style.color = '#F26419'
+      icon.style.transform = 'rotate(-0deg)'
+    }
+  }
+
+  function checkCsvAttributes() {
+    document.querySelectorAll('.modal-filter__pill').forEach((pill) => {
+      icon = pill.querySelector('i')
+      checkbox = pill.querySelector('input[type="checkbox"]')
+      if (checkbox.checked == false) {
+        checkbox.checked = false
+        pill.style.backgroundColor = 'white'
+        pill.style.color = '#F26419'
+        icon.style.transform = 'rotate(-0deg)'
+      } else {
+        checkbox.checked = true
+        pill.style.backgroundColor = '#F26419'
+        pill.style.color = 'white'
+        icon.style.transform = 'rotate(225deg)'
+      }
+    })
+  }
+
+  function selectAllAttributes(element) {
+    selectCsvAttributes(element)
+    form = element.closest('form')
+    checkboxes = form.querySelectorAll('input[type="checkbox"]')
+    if (checkboxes[1].checked == true) {
+      checkboxes.forEach((el) => {
+        el.checked = false
+      })
+    } else {
+      checkboxes.forEach((el) => {
+        el.checked = true
+      })
+    }
+    checkCsvAttributes()
+  }
+
+  checkCsvAttributes()
+
+  function fileTransfer(element) {
+    submit_button = document.querySelector('.import_users_form').querySelector('button')
+    submit_button.value = 'import'
+    console.log(submit_button.value)
+    submit_button.click()
   }
 
   function spinningLoader() {

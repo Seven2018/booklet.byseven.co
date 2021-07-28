@@ -214,7 +214,6 @@
     height: 225vh;
     overflow-x: hidden;
     transition: width .25s linear;
-    margin-top: 5rem;
 
     .organisation-filter-controls {
       display: flex;
@@ -222,6 +221,7 @@
       align-items: center;
       border-bottom: 1px solid rgba(0,0,0,0.1);
       padding: 2rem;
+      color: #F26419;
 
       .organisation-filter-controls-title {
         display: inherit;
@@ -248,6 +248,7 @@
   max-height: 61px;
   overflow: hidden;
 
+
   .organisation-filter-block-title, .import-infos__block-title {
     height: 4rem;
     margin-bottom: 1rem;
@@ -261,6 +262,10 @@
 
       p {
         margin-left: 2rem;
+      }
+
+      p, span {
+        font-weight: 700;
       }
     }
 
@@ -282,6 +287,7 @@
   .organisation-filter-block-checkboxes, .import-infos__block-list {
     margin-left: 27px;
     overflow: scroll;
+
     label {
       padding-left: 1rem;
     }
@@ -314,8 +320,6 @@
     width: 0;
     height: 1000vh;
     transition: width .25s linear;
-    margin-top: 5rem;
-
 
     .organisation-manage-users-controls {
       display: flex;
@@ -323,6 +327,7 @@
       align-items: center;
       border-bottom: 1px solid rgba(0,0,0,0.1);
       padding: 2rem;
+      color: #F26419;
 
       .organisation-manage-users-controls-title {
         display: inherit;
@@ -465,7 +470,7 @@
 }
 
 .select-user {
-  z-index: 100;
+  z-index: 90;
 }
 
 .organisation-users {
@@ -512,6 +517,7 @@
 }
 
 #organisation-controls__user-search {
+  position: relative;
 
   input {
     padding: 0 5rem 0 3.5rem;
@@ -537,8 +543,8 @@
   background-color: white;
   height: 3.8rem;
   z-index: 100;
-  top: 9.1rem;
-  right: 35rem;
+  top: 1px;
+  right: 12px;
 
   p {
     font-size: 1.2rem;
@@ -554,8 +560,8 @@
 .organisation-controls__search-icon {
   position: absolute;
   z-index: 150;
-  top: 103px;
-  right: 610px;
+  top: 12px;
+  left: 12px;
   color: #808080;
 }
 
@@ -620,3 +626,93 @@
 .fl-scrolls div{overflow:hidden;pointer-events:none}
 .fl-scrolls div:before{content:"\A0"}.fl-scrolls,.fl-scrolls div{font-size:1px;line-height:0;margin:0;padding:0}
 .fl-scrolls-hidden div:before{content:"\A0\A0"}.fl-scrolls-viewport{position:relative}.fl-scrolls-body{overflow:auto}.fl-scrolls-viewport .fl-scrolls{position:absolute}.fl-scrolls-hoverable .fl-scrolls{opacity:0;transition:opacity .5s .3s}.fl-scrolls-hoverable:hover .fl-scrolls{opacity:1}.fl-scrolls:not([data-orientation]),.fl-scrolls[data-orientation=horizontal]{bottom:0;min-height:17px}.fl-scrolls:not([data-orientation]) div,.fl-scrolls[data-orientation=horizontal] div{height:1px}.fl-scrolls-hidden.fl-scrolls:not([data-orientation]),.fl-scrolls-hidden.fl-scrolls[data-orientation=horizontal]{bottom:9999px}.fl-scrolls-viewport .fl-scrolls:not([data-orientation]),.fl-scrolls-viewport .fl-scrolls[data-orientation=horizontal]{left:0}.fl-scrolls[data-orientation=vertical]{right:0;min-width:17px}.fl-scrolls[data-orientation=vertical] div{width:1px}.fl-scrolls-hidden.fl-scrolls[data-orientation=vertical]{right:9999px}.fl-scrolls-viewport .fl-scrolls[data-orientation=vertical]{top:0}
+
+
+// MODALS
+
+.modal-export__body {
+
+  .organisation-controls__export-dates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    div {
+      margin: 0 1rem;
+    }
+
+    label {
+      margin: 0;
+    }
+
+    input {
+      width: 10rem;
+      border-radius: 25px;
+      color: #F26419;
+      background-color: white !important;
+
+      &:focus {
+        color: #F26419;
+      }
+
+      &:focus-visible {
+        text-shadow: none;
+      }
+    }
+  }
+
+  .organisation-controls__export_attributes {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.import-infos__block.active {
+  background-color: white !important;
+}
+
+.import_users_form {
+
+  input {
+    width: 30rem;
+    max-width: 30rem;
+  }
+}
+
+.import-infos__user-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem;
+  border: 1px solid white;
+
+  p {
+    width: 50%;
+    font-weight: 300;
+  }
+}
+
+.import-infos__user-card--headers {
+  border-bottom: 1px solid black;
+}
+
+.import-infos__user-card--create {
+  background-color: #F8D9C8;
+}
+
+.import-infos__user-card--delete {
+  background-color: #C4C4C4;
+}
+
+.import-infos__user-card--update:nth-child(even) {
+  background-color: #E0E0E0;
+}
+
+.import-infos__user-card--update, .import-infos__user-card--headers {
+
+  p {
+    width: 30%;
+  }
+}
+

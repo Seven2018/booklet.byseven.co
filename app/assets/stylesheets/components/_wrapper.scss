@@ -23,14 +23,10 @@ body.wait *, body.wait
 #booklet-container {
   margin: 0;
   width: auto;
-  padding: 0 1rem 1rem 1rem;
+  padding: 0 3rem;
   background-color: #f7f7f7;
   position: relative;
   transition: all 0.25s ease-in-out;
-
-  @include from-medium-high {
-    padding: 0 3rem;
-  }
 }
 
 #container-login {
@@ -120,7 +116,7 @@ body.wait *, body.wait
   position: sticky;
   top: 0;
   right: 0;
-  z-index: 10;
+  z-index: 100;
   background-color: #f7f7f7;
 
   h1 {

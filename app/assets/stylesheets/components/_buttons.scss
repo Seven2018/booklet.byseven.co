@@ -3,10 +3,6 @@
 button {
   border-color: transparent;
   background-color: transparent;
-  color: #F26419 !important;
-  p {
-    color: white !important;
-  }
 }
 
 .return-arrow {
@@ -193,12 +189,14 @@ button {
 
   i, p, h4 {
     color: #F26419;
+    font-weight: 700 !important;
   }
 
   h4 {
     margin: 0;
     font-size: 1.6rem !important;
   }
+
   i {
     margin-right: 1rem;
   }
@@ -206,7 +204,6 @@ button {
   &:hover {
     background-color: #F26419;
     border: 1px solid #F26419;
-
 
     i, p, h4 {
       color: white;

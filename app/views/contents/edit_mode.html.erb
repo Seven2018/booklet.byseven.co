@@ -32,8 +32,10 @@
           </div>
         <% end %>
         <div class="button-add-catalogue">
-          <div class="btn-orange">
-            <%= link_to 'Add to catalogue', catalogue_path %>
+          <div class="btn-white-border">
+            <%= link_to catalogue_path do %>
+              <p>Return to Catalogue</p>
+            <% end %>
           </div>
         </div>
       </div>

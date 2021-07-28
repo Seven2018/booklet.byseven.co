@@ -87,6 +87,6 @@ Rails.application.routes.draw do
   resources :users, only: %i[create show update destroy]
   get :complete_profile, controller: :users
   get :link_to_company, controller: :users
-  post 'users/import', to: 'users#import', as: 'import_users'
+  post :import_users, controller: :users
   get :users_search, controller: :users
 end

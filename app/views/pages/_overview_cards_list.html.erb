@@ -1,6 +1,5 @@
-<div class="row">
   <% @contents.order(title: :asc).each do |content| %>
-    <div class="col-xl-4 col-lg-6 col-xs-12 booklet-col">
+
       <div class="overview-card">
         <% if content.content_type == 'Synchronous' %>
         <div class="overview-card-syn">
@@ -31,25 +30,25 @@
                 <i class="far fa-user"></i><p><%= content.sessions.where('date >= ? AND date <= ?', start_date, end_date).map{|x| x.attendees.where(status: 'Not completed').count}.sum %> to do</p>
               </div>
               <div>
-                <i class="fas fa-user"></i><p><%= content.sessions.where('date <= ?', start_date).map{|x| x.attendees.count}.sum %> doing</p>
+                <i class="fas fa-user"></i><p><%= Content.includes(:sessions).find(content.id).sessions.where('date <= ?', start_date).map{|x| x.attendees.count}.sum %> doing</p>
               </div>
               <div>
                 <i class="fas fa-user"></i><p><%= content.sessions.map{|x| x.attendees.where(status: 'Completed').count}.sum %> done</p>
               </div>
               <div>
-                <% if content.sessions.count > 0 %>
-                  <i class="fas fa-dollar-sign"></i><p><%= '%.2f' % (content.sessions.map{|x| x.cost / x.attendees.count}.sum / content.sessions.count) %>€ per person</p>
+                <% if content.sessions.where('date >= ? AND date <= ?', start_date, end_date).count > 0 %>
+                  <i class="fas fa-dollar-sign"></i><p><%= '%.2f' % (content.sessions.where('date >= ? AND date <= ?', start_date, end_date).map{|x| x.cost / x.attendees.count}.sum / content.sessions.where('date >= ? AND date <= ?', start_date, end_date).count) %>€ per person</p>
                 <% else %>
                   <i class="fas fa-dollar-sign"></i><p>0€ per person</p>
                 <% end %>
               </div>
               <div>
-                <i class="fas fa-file-invoice-dollar"></i><p><%= '%.2f' % content.sessions.map{|x| x.cost}.sum %>€ total</p>
+                <i class="fas fa-file-invoice-dollar"></i><p><%= '%.2f' % content.sessions.where('date >= ? AND date <= ?', start_date, end_date).map{|x| x.cost}.sum %>€ total</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
   <% end %>
-</div>
+
