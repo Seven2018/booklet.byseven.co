@@ -5,6 +5,7 @@ class CreateContents < ActiveRecord::Migration[6.0]
       t.integer :duration, null: false, default: 0
       t.text :description, null: false, default: ""
       t.string :content_type, null: false, default: "Synchronous"
+      t.string :recommended
       t.string :image, null: false, default: ""
       t.references :company, foreign_key: true
       t.references :folder, foreign_key: true

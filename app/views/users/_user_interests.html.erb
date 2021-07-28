@@ -1,11 +1,11 @@
-<div class="training-card-main">
-<% user.user_interests.includes([:content]).where(interest_type: 'Interested').each do |interest| %>
- <% content = interest.content  %>
+<% user.user_interests.includes([:content]).where(status: 'Interested').each do |interest| %>
+  <% content = interest.content  %>
+  <div class="training-card-main" id="user-interest-content-<%= content.id %>">
     <% if content.content_type == 'Synchronous' %>
       <div class="booklet-card">
         <div class="booklet-card-syn">
           <div class="booklet-card-top">
-            <div class="booklet-card-top-info">
+            <div class="booklet-card__top-info">
               <%= link_to '', content_path(content), class: 'stretched-link' %>
               <h3><b><%= content.title %></b></h3>
               <p><%= content.duration %> Minutes</p>
@@ -40,7 +40,6 @@
             <% end %>
             </div>
             <div class="booklet-card-like">
-              <p  style='color:#F26419;'><%= content.interested.count %> Interested</p>
               <% if current_user == @user %>
                 <%= link_to user_interest_path(id: interest.id, redirect_from: 'user_show'), method: :delete, remote: true do %>
                   <i class="fas fa-heart"  style='color:#F26419;'></i>
@@ -56,7 +55,7 @@
       <div class="booklet-card">
         <div class="booklet-card-asyn">
           <div class="booklet-card-top">
-            <div class="booklet-card-top-info">
+            <div class="booklet-card__top-info">
               <%= link_to '', content_path(content), class: 'stretched-link' %>
                 <h3><b><%= content.title %></b></h3>
                 <p><%= content.duration %> Minutes</p>
@@ -104,6 +103,6 @@
         </div>
       </div>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>
 

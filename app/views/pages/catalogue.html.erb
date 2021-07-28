@@ -24,7 +24,9 @@
     <% if @contents.empty? %>
       <p style="padding:15px;">No trainings have been created. You see that big <span style='color:#F26419'>orange</span> button in the corner? Click it to create your first training.</p>
     <% elsif %>
-      <%= render 'catalogue_index', contents: @contents %>
+      <div class="row">
+        <%= render 'catalogue_index', contents: @contents %>
+      </div>
     <% end %>
   </div>
 </div>

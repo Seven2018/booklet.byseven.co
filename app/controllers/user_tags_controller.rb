@@ -1,3 +1,5 @@
+# Updated : 2021/07/19
+
 class UserTagsController < ApplicationController
 
   # Manage the tags for selected user(s) (pages/organisation)

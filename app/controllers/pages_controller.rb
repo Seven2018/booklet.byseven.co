@@ -32,6 +32,16 @@ class PagesController < ApplicationController
     @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
   end
 
+  # Overview tab (pages/dashboard)
+  def overview_select_period
+    @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
+    @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
+    respond_to do |format|
+      format.html {redirect_to dashboard_path}
+      format.js
+    end
+  end
+
   # Display contents catalogue
   def catalogue
     complete_profile
@@ -91,32 +101,45 @@ class PagesController < ApplicationController
 
   # Display organisation page
   def organisation
-    # Index with 'search' option and global visibility for SEVEN Users
-    index_function(User.where(company_id: current_user.company_id))
-    # Index for other Users, with visibility limited to programs proposed by their company only
-    @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
-    @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
-    if params[:add_tags].present?
-      users = User.where(id: params[:add_tags][:users].split(','))
-      tags = Tag.where(id: params[:tag][:id].reject(&:blank?))
-      users.each do |user|
-        tags.each do |tag|
-          current = UserTag.where(user_id: user.id, tag_category_id: tag.tag_category_id).first
-          if current.present?
-            current.destroy
-          end
-          UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: tag.tag_category_id)
-          if tag.tag_category.name == 'Job Title'
-            user.update(job_title: tag.tag_name)
-          end
+    if params[:csv].present?
+      params[:csv][:selected_users].present? ? @users = User.where(id: params[:csv][:selected_users]) : @users = User.where(company_id: current_user.company_id)
+      attributes = []
+      params[:csv].each do |key, value|
+        if !['selected_users', 'cost', 'trainings'].include?(key) && value == '1'
+          attributes << key
         end
       end
-      @unfiltered = false
-      @users = users
+      cost = params[:csv][:cost]
+      trainings = params[:csv][:trainings]
+    else
+      cost, trainings = false, false
+      # Index with 'search' option and global visibility for SEVEN Users
+      index_function(User.where(company_id: current_user.company_id))
+      @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
+      @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
+      if params[:add_tags].present?
+        users = User.where(id: params[:add_tags][:users].split(','))
+        tags = Tag.where(id: params[:tag][:id].reject(&:blank?))
+        users.each do |user|
+          tags.each do |tag|
+            current = UserTag.where(user_id: user.id, tag_category_id: tag.tag_category_id).first
+            if current.present?
+              current.destroy
+            end
+            UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: tag.tag_category_id)
+            if tag.tag_category.name == 'Job Title'
+              user.update(job_title: tag.tag_name)
+            end
+          end
+        end
+        @unfiltered = false
+        @users = users
+      end
     end
     respond_to do |format|
       format.html {organisation_path}
       format.js
+      format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv"}
     end
   end
 
@@ -125,6 +148,21 @@ class PagesController < ApplicationController
     @user = User.find(params[:user_id])
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
     render partial: "organisation_user_card"
+  end
+
+  # Display recommendation page
+  def recommendation
+    index_function(User.where(company_id: current_user.company_id))
+    @users_yes = User.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: params[:content_id], recommendation: 'Yes'})
+    @users_no = User.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: params[:content_id], recommendation: 'No'})
+    @users_pending = User.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: params[:content_id], recommendation: 'Pending'})
+    @content = Content.find(params[:content_id])
+    @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
+    @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
+    respond_to do |format|
+      format.html {recommendation_path}
+      format.js
+    end
   end
 
   # Display book page
@@ -162,7 +200,7 @@ class PagesController < ApplicationController
 
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
-    if ['Super Admin', 'HR'].include?(current_user.access_level)
+    if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       # If a name is entered in the search bar
       if params[:search].present?
         @users = parameter.order(id: :asc)

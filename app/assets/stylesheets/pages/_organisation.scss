@@ -7,6 +7,11 @@
   display: flex;
 }
 
+.organisation-dropdown-menu {
+  right: 11rem;
+  width: max-content;
+}
+
 .user-index-headers, .user-index-card {
   height: 8.9rem;
   display: flex;
@@ -220,50 +225,51 @@
       }
     }
 
-    .organisation-filter-block {
-      border-bottom: 1px solid rgba(0,0,0,0.1);
-      padding: 1rem;
-      max-height: 61px;
-      overflow: hidden;
+  }
+}
 
-      .organisation-filter-block-title {
-        height: 4rem;
-        margin-bottom: 1rem;
+.organisation-filter-block, .import-infos__block {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 1rem;
+  max-height: 61px;
+  overflow: hidden;
+
+  .organisation-filter-block-title, .import-infos__block-title {
+    height: 4rem;
+    margin-bottom: 1rem;
 
 
-        & > div {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          width: 100%;
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
 
-          p {
-            margin-left: 2rem;
-          }
-        }
-
-        .organisation-filter-block-title-buttons {
-          display: inherit;
-          justify-content: space-between;
-          align-items: center;
-
-          p {
-            font-size: 1.2rem;
-            color: #F26419;
-            opacity: 0;
-            transition: opacity .25s ease-in-out;
-            cursor: pointer;
-          }
-        }
+      p {
+        margin-left: 2rem;
       }
+    }
 
-      .organisation-filter-block-checkboxes {
-        margin-left: 27px;
-        overflow: scroll;
-        label {
-          padding-left: 1rem;
-        }
+    .organisation-filter-block-title-buttons, .import-infos__block-title-buttons {
+      display: inherit;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        font-size: 1.2rem;
+        color: #F26419;
+        opacity: 0;
+        transition: opacity .25s ease-in-out;
+        cursor: pointer;
       }
+    }
+  }
+
+  .organisation-filter-block-checkboxes, .import-infos__block-list {
+    margin-left: 27px;
+    overflow: scroll;
+    label {
+      padding-left: 1rem;
     }
   }
 }

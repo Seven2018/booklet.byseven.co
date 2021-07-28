@@ -13,7 +13,8 @@
     <% end %>
   </div>
 </div>
-<div><p style='color:#808080;'><b>Workshop Type</b></p>
+<div>
+  <p style='color:#808080;'><b>Workshop Type</b></p>
   <div class="content-type-radio">
     <% if page == 'edit' %>
       <%= simple_form_for @content, remote: true do |f| %>
@@ -37,9 +38,28 @@
     <% end %>
   </div>
 </div>
+<div>
+  <div class="content-edit-mode-right__recommanded-header">
+    <p><b>Recommended</b></p>
+  </div>
+  <div class="content-edit-mode-right__recommanded-checkboxes">
+    <%= simple_form_for @content, remote: true do |f| %>
+      <fieldset class='form-group check_boxes optional content_recommended'>
+        <div class='form-check'>
+          <input type="checkbox" id="select_all" class='form-check-input check_boxes optional' name="select_all" onclick='selectAllJobs(this)'>
+          <label for="select_all">Select/Remove all</label>
+        </div>
+      </fieldset>
+      <%= f.input :recommended, legend_tag: false, as: :check_boxes, collection: User.where(company_id: current_user.company_id).map{|x| [x.job_title, x.job_title]}.reject{|y| y.uniq == [""]}.uniq.sort %>
+      <%= button_tag :submit, class: 'btn-orange' do %>
+        <span>Confirm</span>
+      <% end %>
+    <% end %>
+  </div>
+</div>
 
 <script>
   $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 </script>

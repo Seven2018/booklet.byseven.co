@@ -3,12 +3,16 @@
   <div class="col-xl-6 col-lg-12 booklet-col">
     <div class="booklet-card">
       <div class="booking-date">
-        <p style='margin-right:5px; color:#F26419;'>Begins</p>
+        <% if session.date >= Date.today %>
+          <p style='margin-right:5px; color:#F26419;'>Begins</p>
+        <% else %>
+          <p style='margin-right:5px; color:#F26419;'>Beginned</p>
+        <% end %>
         <b><p style='color:#F26419;'><%= session.date.strftime('%B %d') %></p></b>
       </div>
       <div class="booklet-card-syn">
         <div class="booklet-card-top">
-          <div class="booklet-card-top-info">
+          <div class="booklet-card__top-info">
             <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
             <% if content.title.length <= 30 %>
               <h3><b><%= content.title %></b></h3>
@@ -16,7 +20,7 @@
               <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
             <% end %>
             <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
-            <% if interest.present? && interest.interest_type == 'Completed' %>
+            <% if interest.present? && interest.status == 'Completed' %>
               <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
             <% end %>
             <p><%= content.duration %> Minutes</p>
@@ -33,6 +37,9 @@
                 <% end %>
               </div>
             </div>
+            <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+              <p>Cost : <%= session.cost %>€</p>
+            <% end %>
           </div>
           <div class="booklet-top-right-icon-catalogue" >
             <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
@@ -75,7 +82,7 @@
       </div>
       <div class="booklet-card-asyn">
         <div class="booklet-card-top">
-          <div class="booklet-card-top-info">
+          <div class="booklet-card__top-info">
             <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
             <% if content.title.length <= 30 %>
               <h3><b><%= content.title %></b></h3>
@@ -83,7 +90,7 @@
               <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
             <% end %>
             <% interest = UserInterest.find_by(content_id: session.content_id, user_id: current_user.id) %>
-            <% if interest.present? && interest.interest_type == 'Completed' %>
+            <% if interest.present? && interest.status == 'Completed' %>
               <i class="fas fa-check-circle" style='margin-left: 15px; color:#56690A; z-index:1000;' data-toggle='tooltip' title='Training Completed'></i>
             <% end %>
             <p><%= content.duration %> Minutes</p>
@@ -100,6 +107,7 @@
                 <% end %>
               </div>
             </div>
+            <p>Cost : <%= session.cost %>€</p>
             <% if session.available_date.present? %>
               <h6><b><%= session.date.strftime('%B %d') %> - <%= session.available_date.strftime('%B %d') %></b></h6>
             <% end %>

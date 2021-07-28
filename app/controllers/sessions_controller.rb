@@ -40,6 +40,6 @@ class SessionsController < ApplicationController
   private
 
   def session_params
-    params.require(:session).permit(:date, :available_date, :starts_at, :ends_at)
+    params.require(:session).permit(:date, :available_date, :starts_at, :ends_at, :cost)
   end
 end

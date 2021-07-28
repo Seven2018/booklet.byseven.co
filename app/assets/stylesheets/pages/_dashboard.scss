@@ -34,6 +34,32 @@
   padding-right: 10px;
 }
 
+.tab-content__overview {
+
+  div {
+    margin-bottom: 1rem;
+
+    p:first-child {
+      font-weight: bold;
+    }
+
+    p:last-child {
+      margin-left: 1rem;
+      color: #F26419;
+    }
+  }
+}
+
+.tab-content__overview-dates {
+
+  div:first-of-type {
+    margin-right: 2rem;
+  }
+
+  input {
+    width: 15rem;
+  }
+}
 
 // DASHBOARD GRID
 
@@ -63,7 +89,7 @@
   @include from-medium-low {
     border-left: 1px solid #C4C4C4;
     padding-left: 30px;
-    width: 40rem;
+    width: 35rem;
   }
 }
 
@@ -248,38 +274,4 @@
       border-radius: 50%;
     }
   }
-}
-
-// Catalogue v2 //
-.booklet-col {
-  display: flex;
-  justify-content:center;
-  align-items: center;
-}
-
-.booklet-card {
-  position: relative;
-  padding: 1rem;
-  max-height: 40rem;
-  width: 36rem;
-  margin: 0px;
-
-  h6 {
-    font-size: 1.2rem
-  }
-
-  @include from-medium {
-    margin: 20px 0;
-  }
-}
-
-.booking-date {
-  top: -20px;
-  position: absolute;
-  display: flex;
-  right: 0;
-  background: white;
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #c4c4c4;
 }
