@@ -121,7 +121,7 @@ class UsersController < ApplicationController
     elsif params[:button] == 'import'
       @redirect = request.base_url + request.path
       ImportEmployeesJob.perform_async(params[:file], current_user.company_id)
-      flash[:notice] = 'Import in progress. Please wait for awhile and refresh this page.'
+      flash[:notice] = 'Import in progress. Please wait for a while and refresh this page.'
       flash.keep(:notice)
       render js: "window.location = '#{organisation_path}'"
     end

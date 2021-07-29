@@ -53,18 +53,6 @@
             <% end %>
           <% end %>
         </li>
-        <li>
-           <% if params[:action] == 'book' %>
-            <%= link_to book_path, class: 'left-buttons' do %>
-              <div class="left-menu-title " style='color: #F26419;'><h4>Book</h4></div>
-            <% end %>
-              <div class="isactive"></div>
-          <% else %>
-            <%= link_to book_path, class: 'left-buttons' do %>
-              <div class="left-menu-title"><h4>Book</h4></div>
-            <% end %>
-          <% end %>
-        </li>
       <% end %>
     <% end %>
     </ul>
@@ -72,8 +60,14 @@
   <div class="navbar-controls-right flex-row-between-centered">
     <% if current_user.company_id.nil? && params[:action] == 'dashboard' %>
       <div class="centered-item">
-        <%= link_to new_company_path, class: 'btn-orange' do %>
+        <%= link_to new_company_path, class: 'btn-white-border' do %>
           <p>Register Company</p>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="centered-item">
+        <%= link_to book_path, class: 'btn-white-border' do %>
+          <p>Book</p>
         <% end %>
       </div>
     <% end %>

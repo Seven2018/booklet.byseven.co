@@ -95,12 +95,6 @@
                         <p><%= content.interested.count %><i class="far fa-heart booklet-card-like__right" style='color:#F26419;'></i></p>
                       <% end %>
                     <% end %>
-                    <% if content.recommended.include?(current_user.job_title) %>
-                      <div class="flex-row-between-centered">
-                        <i class="fas fa-star booklet-card-like__left"></i>
-                        <p>Recommended for you</p>
-                      </div>
-                    <% end %>
                   </div>
                 </div>
               </div>
@@ -165,12 +159,6 @@
                       <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
                         <p><%= content.interested.count %><i class="far fa-heart booklet-card-like__right"></i></p>
                       <% end %>
-                    <% end %>
-                    <% if content.recommended.include?(current_user.job_title) %>
-                      <div class="flex-row-between-centered">
-                        <i class="fas fa-star booklet-card-like__left"></i>
-                        <p>Recommended for you</p>
-                      </div>
                     <% end %>
                   </div>
                 </div>
