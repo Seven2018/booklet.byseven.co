@@ -10,7 +10,7 @@
                 <% if @content.title.length <= 30 %>
                   <h3><b><%= @content.title %></b></h3>
                 <% else %>
-                  <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
+                  <h3 data-toggle='tooltip' title='<%= @content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
                 <% end %>
                 <p><%= @content.duration %> Minutes</p>
               </div>
@@ -36,7 +36,7 @@
                 <% if @content.title.length <= 30 %>
                   <h3><b><%= @content.title %></b></h3>
                 <% else %>
-                  <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
+                  <h3 data-toggle='tooltip' title='<%= @content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
                 <% end %>
                 <p><%= @content.duration %> Minutes</p>
               </div>

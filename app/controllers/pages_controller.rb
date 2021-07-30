@@ -85,7 +85,7 @@ class PagesController < ApplicationController
       else
         @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
         if params[:search].present?
-          @contents = Content.where(company_id: current_user.company.id).where("lower(title) LIKE ?", "%#{params[:search][:title].downcase}%").order(title: :asc) if params[:search] != ' '
+          @contents = Content.where(company_id: current_user.company.id).where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%").order(title: :asc) if params[:search] != ' '
           respond_to do |format|
             format.html {catalogue_path}
             format.js
@@ -127,7 +127,7 @@ class PagesController < ApplicationController
   # Display organisation page
   def organisation
     if params[:csv].present?
-      params[:csv][:selected_users].present? ? @users = User.where(id: params[:csv][:selected_users]) : @users = User.where(company_id: current_user.company_id)
+      params[:csv][:selected_users].present? ? @users = User.where(id: params[:csv][:selected_users].split(',')).order(lastname: :asc).uniq : @users = User.where(company_id: current_user.company_id)
       attributes = []
       params[:csv].each do |key, value|
         if !['selected_users', 'cost', 'trainings'].include?(key) && value == '1'
@@ -143,9 +143,9 @@ class PagesController < ApplicationController
       @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
       @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
       if params[:add_tags].present?
-        users = User.where(id: params[:add_tags][:users].split(','))
+        @selected_users = User.where(id: params[:add_tags][:users].split(','))
         tags = Tag.where(id: params[:tag][:id].reject(&:blank?))
-        users.each do |user|
+        @selected_users.each do |user|
           tags.each do |tag|
             current = UserTag.where(user_id: user.id, tag_category_id: tag.tag_category_id).first
             if current.present?
@@ -157,8 +157,9 @@ class PagesController < ApplicationController
             end
           end
         end
-        @unfiltered = false
-        @users = users
+        @unfiltered = 'false'
+      else
+        @selected_users = []
       end
     end
     respond_to do |format|
@@ -237,7 +238,7 @@ class PagesController < ApplicationController
       if params[:search].present?
         @users = parameter
         if params[:search][:name] != ' '
-          @users = @users.where('lower(firstname) LIKE ? OR lower(lastname) LIKE ?', "%#{params[:search][:name].downcase}%", "%#{params[:search][:name].downcase}%")
+          @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search][:name].downcase)}%", "%#{I18n.transliterate(params[:search][:name].downcase)}%")
         end
         # If the 'clear' button is clicked, return all the employees
         @users = @users.order(lastname: :asc).page params[:page] if @users.present?
@@ -281,22 +282,23 @@ class PagesController < ApplicationController
           if params[:filter_user][:selected].present?
             @selected_users = params[:filter_user][:selected]
           else
-            @unfiltered = true
+            @unfiltered = 'true'
           end
           if params[:filter_user][:tag].uniq == [""]
             # @users = []
             @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
-            @unfiltered = true
+            @unfiltered = 'true'
           else
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           end
         else
           @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
-          @unfiltered = true
+          @unfiltered = 'true'
         end
       end
       @tag_categories = TagCategory.where(company_id: current_user.company_id)
     end
+    @unfiltered = 'false' if @unfiltered.nil?
   end
 
   # When registering a new account, force the new user to provide some details (firstname, lastname, ...)

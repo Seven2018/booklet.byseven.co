@@ -266,7 +266,10 @@
     })
   }
 
-  function selectUser() {
+  function selectUser(element) {
+    document.querySelectorAll('#checkbox-'+element.value).forEach((input) => {
+      input.checked = element.checked
+    })
     ids = []
     check_boxes = document.querySelectorAll('.select-user')
     check_boxes.forEach((checkbox) => {
@@ -279,10 +282,16 @@
     })
     document.querySelector('#add_tags_users').value = ids.join();
     if (ids.length == 0) {
-      document.querySelector('#manage-users-button').classList.remove('flashing_button')
+      document.querySelectorAll('#manage-users-button').forEach((button) => {
+        button.classList.remove('flashing_button')
+      })
+      document.querySelector('.organisation-apply-to-user').classList.add('hidden')
       document.getElementById('export-users-modal-link').innerHTML = 'Export Users'
     } else {
-      document.querySelector('#manage-users-button').classList.add('flashing_button')
+      document.querySelectorAll('#manage-users-button').forEach((button) => {
+        button.classList.add('flashing_button')
+      })
+      document.querySelector('.organisation-apply-to-user').classList.remove('hidden')
       document.getElementById('export-users-modal-link').innerHTML = 'Export Selected Users'
     }
   }
@@ -383,7 +392,7 @@
   }
 
   function toggle(source) {
-    checkboxes = document.querySelectorAll('.select-user');
+    checkboxes = document.querySelector('.organisation-main-container:not(.hidden)').querySelectorAll('.select-user');
     for(var i=0, n=checkboxes.length;i<n;i++) {
       checkboxes[i].checked = source.checked;
     }
@@ -396,6 +405,7 @@
       users_array.push(el.value)
     })
     element.closest('form').querySelector('#csv_selected_users').value = users_array.join(',')
+    console.log(element.closest('form').querySelector('#csv_selected_users').value)
     element.closest('.modal-content').querySelector('.btn-icon').click()
     element.parentNode.querySelector('.hidden-submit').click()
   }

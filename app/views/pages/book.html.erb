@@ -533,6 +533,9 @@
       document.querySelector('body').classList.add('wait');
       element.disabled = true
       submit_buttons = document.querySelector('.date-book').querySelectorAll('.hidden-submit')
+      document.querySelectorAll('.booklet-card-bottom-dates').forEach((el) => {
+        duplicateCost(el.querySelector('#session_cost'))
+      })
       redirect_button = document.querySelector('.confirm-button')
       submit_buttons.forEach((element) => {
         setTimeout(function(){element.click()}, 100)
