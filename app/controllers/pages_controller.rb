@@ -213,7 +213,8 @@ class PagesController < ApplicationController
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
       @interest_for = params[:filter_user][:interest_for].split(',')
       @selected_contents = []
-      @selected_filter = params[:filter_user][:tag].reject(&:blank?).join(',') if params[:filter_user][:tag].present?
+      # @selected_filter = params[:filter_user][:tag].reject(&:blank?).join(',') if params[:filter_user][:tag].present?
+      @selected_filter = @filter_tags
     elsif params[:confirm].present?
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
       @selected_users = User.where(id: params[:filter_user][:selected].split(',')) if params[:filter_user].present?
@@ -252,12 +253,22 @@ class PagesController < ApplicationController
           else
             @users = parameter.joins(:user_tags).where(company_id: current_user.company_id)
           end
-          tags.each do |tag|
-            @users = @users.where_exists(:tags, tag_name: [tag])
+          tags_hash = {}
+          tags.each do |pair|
+            key = pair.split(':')[0].to_i
+            value = pair.split(':')[1].to_i
+            if tags_hash[key].present?
+              tags_hash[key] += [value]
+            else
+              tags_hash[key] = [value]
+            end
+          end
+          tags_hash.each do |key, value|
+            @users = @users.where_exists(:tags, id: value)
           end
           @users = @users.order(lastname: :asc)
         end
-        @filter_tags = params[:filter_user][:tag].reject{|c| c.empty?}
+        @filter_tags = Tag.where(id: tags.map{|x| x.split(':')[1]}).map(&:tag_name)
       elsif params[:order].present?
         if params[:order] == 'tag_category'
           params[:mode] == 'asc' ? @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :asc)) : @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :desc))

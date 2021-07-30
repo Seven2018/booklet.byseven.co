@@ -14,7 +14,7 @@
         <div class="categories-form-checkboxes">
           <%= collection_check_boxes(:content, :categories, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title, checked: checked) do |b| %>
             <div class="flex-row-between-centered">
-              <%= b.check_box %>
+              <%= b.check_box(onclick: 'autoSubmitTheme(this);') %>
               <div class="flex-row-between-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
                 <p class='category-title'><%= b.text %></p>
                 <%= link_to content_link_category_path(delete: true, category_id: b.value, content_id: content.id, page: params[:action]), data: {confirm: 'Are you sure ?'}, class: 'category-delete', remote: true do %>
@@ -31,10 +31,11 @@
         <%= f.hidden_field :content_id, value: content.id %>
         <%= f.hidden_field :page, value: params[:action] %>
         <div class="theme-save-btn">
-          <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
-          <%= button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'dismissModal(this);' do %>
-            <p class='save-btn'>Select</p>
-          <% end %>
+          <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Close</button>
+          <%# button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'dismissModal(this);' do %>
+            <!-- <p class='save-btn'>Select</p> -->
+          <%# end %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
         </div>
       <% end %>
       <div class='hidden-form-category-ajax hidden'>

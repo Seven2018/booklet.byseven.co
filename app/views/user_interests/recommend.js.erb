@@ -1,4 +1,4 @@
-card = document.querySelector('.user-card-<%= @user.id %>')
+card = document.querySelector('#user-card-<%= @user.id %>')
 if ('<%= @action %>' == 'Add') {
   card.innerHTML = '<%= j render("pages/recommendation_user_card", user: @user, content: @content, user_interest: @user_interest) %>';
   copy_card = document.createElement("div");

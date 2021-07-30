@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="organisation-filter-block-checkboxes">
-        <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).map(&:tag_name), as: :check_boxes, legend_tag: false, label: false, input_html: {onclick: 'autoSubmit(this);'} %>
+        <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id), as: :check_boxes, legend_tag: false, label: false, value_method: lambda { |tag| "#{tag.tag_category_id}:#{tag.id}" }, label_method: lambda { |tag| "#{tag.tag_name}"}, input_html: {onclick: 'autoSubmit(this);'} %>
       </div>
     </div>
   <% end %>

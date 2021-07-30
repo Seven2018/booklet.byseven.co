@@ -471,8 +471,6 @@
     document.querySelector('body').classList.add('wait');
   }
 
-
-
   function removeFilter(element) {
     filter_tag = element.parentNode;
     storage = document.querySelector('#filter_content_themes')
@@ -492,6 +490,7 @@
     new_date_card = document.createElement('div')
     new_date_card.classList.add('book-dates')
     new_date_card.innerHTML = date_card.innerHTML
+    new_date_card.querySelector('.booklet-card__cost-input').classList.add('hidden')
     date_card.querySelector('.remove_date').classList.add('hidden')
     new_date_card.querySelector('.remove_date').classList.remove('hidden')
     form = new_date_card.querySelector('form')
@@ -507,6 +506,13 @@
       enableTime: true,
       noCalendar: true,
       dateFormat: "H:i",
+    })
+  }
+
+  function duplicateCost(element) {
+    cost = element.value
+    element.closest('.booklet-card-objective-booking').querySelectorAll('#session_cost').forEach((input) => {
+      input.value = cost
     })
   }
 
@@ -536,12 +542,7 @@
   }
 
   function addAll(source) {
-    if (document.querySelector('.users-book-all').classList.contains('hidden')) {
-      target = '.users-book-filtered'
-    } else {
-      target = '.users-book-all'
-    }
-    document.querySelector(target).querySelectorAll('.select-user').forEach((element) => {
+    document.querySelector('.users-book-all').querySelectorAll('.select-user').forEach((element) => {
       newUser = document.createElement("div");
       newUser.classList.add('user-book-card')
       existinguser = element.closest('.user-book-card')
@@ -559,7 +560,7 @@
       content.append(newUser)
       existinguser.remove()
     })
-    selected_users = selected_container.querySelectorAll('.user-index-card-book')
+    selected_users = document.querySelector('.users-book-selected').querySelectorAll('.user-book-card')
     storage_var = []
     selected_users.forEach((user) => {
       storage_var.push(user.id.split('-')[1])
@@ -572,12 +573,29 @@
   function removeAll(source) {
     document.querySelector('.users-book-selected').querySelectorAll('.select-user').forEach((element) => {
       element.checked = false
-      card = element.parentNode.parentNode
-      user_container = document.querySelector('.users-book-all')
-      selected_container = document.querySelector('.users-book-selected')
-      user_container.appendChild(card)
+      // card = element.parentNode.parentNode
+      // user_container = document.querySelector('.users-book-all')
+      // selected_container = document.querySelector('.users-book-selected')
+      // user_container.appendChild(card)
+
+      newUser = document.createElement("div");
+      newUser.classList.add('user-book-card')
+      existinguser = element.closest('.user-book-card')
+      cardcontent = existinguser.innerHTML
+      newUser.id = existinguser.id
+      newUser.innerHTML = cardcontent
+      circle = newUser.querySelector('#nouser')
+      circle.classList.remove('hidden')
+      newUser.style.backgroundColor = 'white'
+      removeuser = newUser.querySelector('#removeuser')
+      removeuser.classList.add('hidden')
+      removeuser.style.backgroundColor = 'transparent'
+      newUser.setAttribute("id", existinguser.id)
+      content = document.querySelector('.users-book-all')
+      content.append(newUser)
+      existinguser.remove()
     })
-    selected_users = selected_container.querySelectorAll('.user-index-card-book')
+    selected_users = document.querySelector('.users-book-selected').querySelectorAll('.user-book-card')
     storage_var = []
     selected_users.forEach((user) => {
       storage_var.push(user.id.split('-')[1])

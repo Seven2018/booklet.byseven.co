@@ -11,7 +11,7 @@
         <% if status == 'Completed' %>
           <i class="fas fa-check-circle" data-toggle='tooltip' title='Completed'></i>
         <% elsif reco != 'Yes' && reco != 'No' %>
-          <%= f.input :select, label: false, as: :boolean, input_html: {onclick: 'checkUser(this);', checked: user_interest&.recommendation&.present?} %>
+          <%= f.input :select, label: false, as: :boolean, input_html: {onclick: 'checkUser(this);', checked: user_interest&.recommendation&.present?, class: 'select-user'} %>
         <% end %>
         <%= f.hidden_field :user_id, value: user.id %>
         <%= f.hidden_field :content_id, value: content.id %>

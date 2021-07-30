@@ -1,5 +1,5 @@
 <% if selected_filter.present? %>
-  <% selected_filter.split(',').each do |filter_tag| %>
+  <% selected_filter.each do |filter_tag| %>
     <p class='user-filter'><%= filter_tag %></p>
   <% end %>
 <% end %>

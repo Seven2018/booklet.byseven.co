@@ -21,7 +21,7 @@
         <div class="switch-field">
           <%= f.input :answer, as: :radio_buttons, legend_tag: false, collection: [['Yes', 'Yes'], ['No', 'No']], checked: ['Yes', 'Yes'] %>
         </div>
-        <%= f.input :comments, as: :text, label: false, placeholder: 'Comments (max 140 characters)', width: '100%', maxlength: 140, input_html: {row: 5, value: interest.comments} %>
+        <%= f.input :comments, as: :text, label: false, required: false, placeholder: 'Comments (max 140 characters)', width: '100%', maxlength: 140, input_html: {row: 5, value: interest.comments} %>
         <%= f.hidden_field :user_interest_id, value: interest.id %>
         <div class="recommendation-modal__buttons">
           <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>

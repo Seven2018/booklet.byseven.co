@@ -257,7 +257,7 @@
     job = element.parentNode.getAttribute("name");
     form.querySelectorAll('.filter_user_tag').forEach((category) => {
       category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-        if (checkbox.value == job) {
+        if (checkbox.parentNode.querySelector('label').innerText == job) {
           checkbox.checked = false;
           form.querySelector('.hidden-submit').click();
           document.querySelector('body').classList.add('wait');

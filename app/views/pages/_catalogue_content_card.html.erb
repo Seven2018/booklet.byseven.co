@@ -44,11 +44,6 @@
         <% end %>
         <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus" data-toggle='tooltip' title='Add a Theme'></i></a>
-          <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-            <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-              <%= render 'pages/manage_categories', content: content %>
-            </div>
-          </div>
         <% end %>
         </div>
         <div class="booklet-card-objective">
@@ -62,13 +57,14 @@
         </div>
         <div class="booklet-card-like">
           <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
-          <% if interest.present? %>
+          <% interested = UserInterest.where(content_id: content.id, status: 'Interested').count %>
+          <% if interest.present? && interest.status == 'Interested' %>
             <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
-              <p><%= content.interested.count %><i class="fas fa-heart booklet-card-like__right" style='color:#F26419;'></i></p>
+              <p><%= interested %><i class="fas fa-heart booklet-card-like__right" style='color:#F26419;'></i></p>
             <% end %>
           <% else %>
             <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
-              <p><%= content.interested.count %><i class="far fa-heart booklet-card-like__right" style='color:#F26419;'></i></p>
+              <p><%= interested %><i class="far fa-heart booklet-card-like__right" style='color:#F26419;'></i></p>
             <% end %>
           <% end %>
         </div>
@@ -103,6 +99,7 @@
           <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
           <div class="content-dropdown hidden">
+            <%= link_to 'Recommendation', recommendation_path(content_id: content.id) %>
             <%= link_to 'Edit', edit_mode_content_path(content) %>
             <%= link_to 'Delete', destroy_content_path(content_id: content.id, catalogue: 'true'), data: {confirm: 'Are you sure ?'}, remote: true %>
             <%= link_to 'Duplicate', duplicate_content_path(content) %>
@@ -117,11 +114,6 @@
         <% end %>
         <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <a data-toggle='modal' data-target='#addTheme-<%= content.id %>'><i class="fas fa-plus" data-toggle='tooltip' title='Add a Theme'></i></a>
-          <div class='modal fade' id='addTheme-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-            <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-              <%= render 'pages/manage_categories', content: content %>
-            </div>
-          </div>
         <% end %>
         </div>
         <div class="booklet-card-objective">
