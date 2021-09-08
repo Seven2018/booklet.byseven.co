@@ -18,6 +18,35 @@
 
 // //COMPLETED AND UPCOMING TRAININGS//
 
+.nav-tabs-user-profile {
+  // width: 330px;
+  margin: 3rem 1rem;
+  justify-content: flex-start;
+
+  li {
+    margin-right: 2rem;
+  }
+}
+
+.nav-tabs-user-profile > li > a.active {
+  font-weight: 800;
+  color: black;
+}
+
+.nav-tabs-user-profile > li > a:not(.active):hover {
+  color: #F26419;
+}
+
+.nav-tabs-user-profile > li > a {
+  padding-left: 0;
+  padding-right: 0;
+  color: #888888;
+  text-decoration: none;
+}
+
+
+// TO DELETE ?
+
 .trainings-row {
   min-height: 45rem;
   width: auto;
