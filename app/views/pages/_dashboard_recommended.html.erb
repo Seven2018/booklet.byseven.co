@@ -2,7 +2,11 @@
   <div class="dashboard-navigation">
     <div class="trainings-nav">
       <ul class="nav nav-tabs-trainings">
-        <li role="presentation"><a href="#PendingRecommendation" data-toggle="tab" class='active'>Pending</a></li>
+        <li role="presentation"><a href="#PendingRecommendation" data-toggle="tab" class='active'>Pending
+          <% if @my_recommended_pending.count > 0 %>
+            (<%= @my_recommended_pending.count %>)
+          <% end %></a></li>
+        </a></li>
         <li role="presentation"><a href="#AnsweredRecommendation" data-toggle="tab">Answered</a></li>
       </ul>
     </div>
