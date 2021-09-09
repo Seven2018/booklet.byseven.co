@@ -21,8 +21,11 @@
   <body>
     <div id="booklet-wrapper">
       <% if user_signed_in? %>
-        <%= render 'shared/navbar' %>
-        <%= render 'shared/left_navbar-mobile' %>
+   
+
+          <%= render 'shared/navbar' %>
+          <%= render 'shared/left_navbar-mobile' %>
+
       <% end %>
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>

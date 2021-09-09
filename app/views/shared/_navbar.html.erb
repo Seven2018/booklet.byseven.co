@@ -1,111 +1,123 @@
 <div class="navbar navbar-expand-sm navbar-light">
-  <div class="top-left-nav">
-    <ul>
-    <% if user_signed_in? %>
-      <li>
-        <% if params[:action] == 'dashboard' || params[:action] == 'recommendation' %>
-          <%= link_to dashboard_path, class: 'left-buttons' do %>
-            <div class="left-menu-title" style='color: #F26419;'><h4>Dashboard</h4></div>
-          <% end %>
-            <div class="isactive"></div>
-        <% else %>
-          <%= link_to dashboard_path, class: 'left-buttons' do %>
-            <div class="left-menu-title"><h4>Dashboard</h4></div>
-          <% end %>
-        <% end %>
-      </li>
-      <% if current_user.company_id.present? %>
-        <li>
-          <% if params[:action] == 'catalogue' || params[:controller] == 'contents' %>
-            <%= link_to catalogue_path, class: 'left-buttons' do %>
-              <div class="left-menu-title " style='color: #F26419;'><h4>Catalogue</h4></div>
-            <% end %>
-              <div class="isactive"></div>
-          <% else %>
-            <%= link_to catalogue_path, class: 'left-buttons' do %>
-              <div class="left-menu-title"><h4>Catalogue</h4></div>
-            <% end %>
-          <% end %>
-        </li>
+  <% if params[:action] == 'edit_mode' %>
+    <div class="return_to_catalogue">
+      <%= link_to catalogue_path do %>
+        <i class="fas fa-arrow-left orange"></i>
       <% end %>
-      <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
-        <li>
-          <% if params[:controller] == 'users' || params[:action] == 'organisation' %>
-            <%= link_to organisation_path, class: 'left-buttons' do %>
-              <div class="left-menu-title " style='color: #F26419;'><h4>Employees</h4></div>
+    </div>
+   <div class= "col-12 text-center title_edit_mode" >
+      <h2>Create a new workshop</h2>
+    </div>
+  <% else %>
+    <div class="top-left-nav"> 
+        <ul>
+          <% if user_signed_in? %>
+            <li>
+              <% if params[:action] == 'dashboard' || params[:action] == 'recommendation' %>
+                <%= link_to dashboard_path, class: 'left-buttons' do %>
+                  <div class="left-menu-title" style='color: #F26419;'><h4>Dashboard</h4></div>
+                <% end %>
+                  <div class="isactive"></div>
+              <% else %>
+                <%= link_to dashboard_path, class: 'left-buttons' do %>
+                  <div class="left-menu-title"><h4>Dashboard</h4></div>
+                <% end %>
+              <% end %>
+            </li>
+            <% if current_user.company_id.present? %>
+              <li>
+                <% if params[:action] == 'catalogue' || params[:controller] == 'contents' %>
+                  <%= link_to catalogue_path, class: 'left-buttons' do %>
+                    <div class="left-menu-title " style='color: #F26419;'><h4>Catalogue</h4></div>
+                  <% end %>
+                    <div class="isactive"></div>
+                <% else %>
+                  <%= link_to catalogue_path, class: 'left-buttons' do %>
+                    <div class="left-menu-title"><h4>Catalogue</h4></div>
+                  <% end %>
+                <% end %>
+              </li>
             <% end %>
-              <div class="isactive"></div>
-          <% else %>
-            <%= link_to organisation_path, class: 'left-buttons' do %>
-              <div class="left-menu-title"><h4>Employees</h4></div>
+            <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+              <li>
+                <% if params[:controller] == 'users' || params[:action] == 'organisation' %>
+                  <%= link_to organisation_path, class: 'left-buttons' do %>
+                    <div class="left-menu-title " style='color: #F26419;'><h4>Employees</h4></div>
+                  <% end %>
+                    <div class="isactive"></div>
+                <% else %>
+                  <%= link_to organisation_path, class: 'left-buttons' do %>
+                    <div class="left-menu-title"><h4>Employees</h4></div>
+                  <% end %>
+                <% end %>
+              </li>
+              <li>
+                <% if params[:action] == 'overview' %>
+                  <%= link_to overview_path, class: 'left-buttons' do %>
+                    <div class="left-menu-title " style='color: #F26419;'><h4>Report</h4></div>
+                  <% end %>
+                    <div class="isactive"></div>
+                <% else %>
+                  <%= link_to overview_path, class: 'left-buttons' do %>
+                    <div class="left-menu-title"><h4>Report</h4></div>
+                  <% end %>
+                <% end %>
+              </li>
+              <li>
+                <% if params[:action] == 'book' %>
+                  <%= link_to book_path, class: 'left-buttons' do %>
+                    <div class="left-menu-title " style='color: #F26419;'><h4>Book</h4></div>
+                  <% end %>
+                    <div class="isactive"></div>
+                <% else %>
+                  <%= link_to book_path, class: 'left-buttons' do %>
+                    <div class="left-menu-title"><h4>Book</h4></div>
+                  <% end %>
+                <% end %>
+              </li>
             <% end %>
           <% end %>
-        </li>
-        <li>
-          <% if params[:action] == 'overview' %>
-            <%= link_to overview_path, class: 'left-buttons' do %>
-              <div class="left-menu-title " style='color: #F26419;'><h4>Report</h4></div>
-            <% end %>
-              <div class="isactive"></div>
-          <% else %>
-            <%= link_to overview_path, class: 'left-buttons' do %>
-              <div class="left-menu-title"><h4>Report</h4></div>
-            <% end %>
+        </ul>
+
+    </div>
+    <div class="navbar-controls-right flex-row-between-centered">
+      <% if current_user.company_id.nil? && params[:action] == 'dashboard' %>
+        <div class="centered-item">
+          <%= link_to new_company_path, class: 'btn-orange' do %>
+            <p>Register Company</p>
           <% end %>
-        </li>
-        <li>
-           <% if params[:action] == 'book' %>
-            <%= link_to book_path, class: 'left-buttons' do %>
-              <div class="left-menu-title " style='color: #F26419;'><h4>Book</h4></div>
-            <% end %>
-              <div class="isactive"></div>
-          <% else %>
-            <%= link_to book_path, class: 'left-buttons' do %>
-              <div class="left-menu-title"><h4>Book</h4></div>
-            <% end %>
-          <% end %>
-        </li>
-      <% end %>
-    <% end %>
-    </ul>
-  </div>
-  <div class="navbar-controls-right flex-row-between-centered">
-    <% if current_user.company_id.nil? && params[:action] == 'dashboard' %>
-      <div class="centered-item">
-        <%= link_to new_company_path, class: 'btn-orange' do %>
-          <p>Register Company</p>
-        <% end %>
-      </div>
-    <% end %>
-    <div class="user-top-nav">
-      <div class="dropdown show">
-        <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-      </a>
-      <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-        <div class="dropdown-card">
-          <div class="user-info">
-            <p><%= current_user.fullname%></p>
-            <h6><%= current_user.email%></h6>
-          </div>
         </div>
-        <%= link_to user_path(current_user) do %>
-          <div class="dropdown-card dropdown-item ">
-            <div class='dropdown-card-text'>
-              <h6>Profile</h6>
+      <% end %>
+      <div class="user-top-nav">
+        <div class="dropdown show">
+          <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+          <div class="dropdown-card">
+            <div class="user-info">
+              <p><%= current_user.fullname%></p>
+              <h6><%= current_user.email%></h6>
             </div>
           </div>
-        <% end %>
-        <%= link_to destroy_user_session_path, method: :delete do %>
-          <div class="dropdown-card dropdown-item flex-row-between-centered">
-            <div class='dropdown-card-text'>
-              <h6>Log out</h6>
+          <%= link_to user_path(current_user) do %>
+            <div class="dropdown-card dropdown-item ">
+              <div class='dropdown-card-text'>
+                <h6>Profile</h6>
+              </div>
             </div>
+          <% end %>
+          <%= link_to destroy_user_session_path, method: :delete do %>
+            <div class="dropdown-card dropdown-item flex-row-between-centered">
+              <div class='dropdown-card-text'>
+                <h6>Log out</h6>
+              </div>
+            </div>
+          <% end %>
           </div>
-        <% end %>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>
 
