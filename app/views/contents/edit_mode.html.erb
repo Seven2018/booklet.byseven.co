@@ -32,10 +32,11 @@
           </div>
         <% end %>
         <div class="button-add-catalogue">
-          <div class="btn-white-border">
-            <%= link_to catalogue_path do %>
-              <p>Return to Catalogue</p>
-            <% end %>
+          <div class="btn-white m-3">
+            <%= link_to 'Cancel', destroy_content_path(content_id: @content.id) %>
+          </div>
+          <div class="btn-orange m-3">
+            <%= link_to 'Confirm', content_path %>
           </div>
         </div>
       </div>
