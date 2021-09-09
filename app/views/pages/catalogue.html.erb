@@ -130,6 +130,10 @@
     });
   }
 
+  function autoSubmitTheme(element) {
+    element.closest('form').querySelector('.hidden-submit').click()
+  }
+
   function dismissModal(element) {
     content_id = element.parentNode.parentNode.querySelector('#add_categories_content_id').value;
     modal = document.querySelector('#addTheme-' + content_id);
@@ -138,13 +142,10 @@
 
   function showDelete(element) {
     // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
-    edit = element.parentNode.querySelector('.category-edit');
     trash = element.parentNode.querySelector('.category-delete');
     if (trash.style.opacity == 0) {
-      edit.style.opacity = 1;
       trash.style.opacity = 1;
     } else {
-      edit.style.opacity = 0;
       trash.style.opacity = 0;
     }
   }

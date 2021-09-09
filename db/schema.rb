@@ -127,7 +127,6 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
     t.integer "duration", default: 0, null: false
     t.text "description", default: "", null: false
     t.string "content_type", default: "Synchronous", null: false
-    t.string "recommended"
     t.string "image", default: "", null: false
     t.bigint "company_id"
     t.bigint "folder_id"

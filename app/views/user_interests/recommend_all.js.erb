@@ -1,0 +1,6 @@
+document.querySelector('.recommendation-main-container-unfiltered').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users_all,  unfiltered: true, content: @content, tab: "", tag_categories: @tag_categories) %>';
+document.querySelector('.recommendation-main-container-filtered').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users,  unfiltered: true, content: @content, tab: "", tag_categories: @tag_categories) %>';
+document.querySelector('.recommendation-main-container__pending').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users_pending,  unfiltered: true, content: @content, tab: "-pending", tag_categories: @tag_categories) %>';
+if ("<%= @checked %>" == 'true') {
+  document.querySelector('#toggle-all-users').checked = true
+}

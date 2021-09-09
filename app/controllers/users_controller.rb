@@ -101,6 +101,7 @@ class UsersController < ApplicationController
           @creating << row
           present << user_row['email'].downcase
         else
+          continue if user.company_id != current_user.company_id
           user_row.each do |key, value|
             user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
             if (user.attributes.key?(key) == true && user.attributes[key].downcase != value.downcase)
@@ -121,7 +122,7 @@ class UsersController < ApplicationController
     elsif params[:button] == 'import'
       @redirect = request.base_url + request.path
       ImportEmployeesJob.perform_async(params[:file], current_user.company_id)
-      flash[:notice] = 'Import in progress. Please wait for awhile and refresh this page.'
+      flash[:notice] = 'Import in progress. Please wait for a while and refresh this page.'
       flash.keep(:notice)
       render js: "window.location = '#{organisation_path}'"
     end

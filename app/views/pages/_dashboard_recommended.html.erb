@@ -37,24 +37,4 @@
       </div>
     </div>
   </div>
-  <div class="dashboard-right-schedule">
-    <div class="dashboard-calendar">
-      <%= month_calendar(events: @all_my_sessions, attribute: :date) do |date, sessions| %>
-        <%= link_to dashboard_path(tab: 'personal', date: date), remote: true do %>
-          <div class="flex-column-between-centered">
-            <%= date.day %>
-            <% if sessions.present? %>
-              <i class="fas fa-circle"></i>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="schedule">
-      <div class="calendar-schedule calendar-schedule-personal">
-        <% @date = Date.today unless @date.present? %>
-        <%= render 'pages/calendar_schedule', date: @date, tab: 'personal' %>
-      </div>
-    </div>
-  </div>
 </div>

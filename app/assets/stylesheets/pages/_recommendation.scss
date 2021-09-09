@@ -5,8 +5,16 @@
   background-color: #f7f7f7;
   padding-bottom: 1rem;
   position: sticky;
-  top: 5rem;
+  top: 0;
   z-index: 100;
+
+  @include from-medium {
+    top: 5rem;
+  }
+}
+
+.recommendation-info {
+  padding-top: 3rem;
 }
 
 .recommendation-controls {
@@ -81,7 +89,7 @@
   background-color: white;
   height: 3.8rem;
   z-index: 100;
-  top: 13.1rem;
+  top: 16.1rem;
   left: 25.5rem;
 
   p {
@@ -98,7 +106,7 @@
 .recommendation-controls__search-icon {
   position: absolute;
   z-index: 150;
-  top: 143px;
+  top: 173px;
   left: 12px;
   color: #808080;
 }
@@ -157,10 +165,6 @@
   position: relative;
   padding: 0;
   margin: 0;
-
-  @include from-medium {
-    margin: 3rem 0;
-  }
 
   h6 {
     font-size: 1.2rem

@@ -1,5 +1,11 @@
 <div class="headers-div">
-  <input type="checkbox" onclick="toggle(this);">
+  <%= simple_form_for :recommend_all, url: recommend_all_path, method: :get, remote: true do |f| %>
+    <%= f.hidden_field :content_id, value: @content.id %>
+    <%= f.hidden_field :users_ids %>
+    <%= f.hidden_field :checked %>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+    <input type="checkbox" id='toggle-all-users' onclick="toggleAllUsers(this);">
+  <% end %>
 </div>
 <div class="headers-div">
   <p>Status</p>

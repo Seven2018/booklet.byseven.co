@@ -16,10 +16,10 @@ class AssessmentQuestionsController < ApplicationController
   # Remove the assessment_question
   def destroy
     authorize @question
-    @question.destroy
     @form = @question.mod
+    @question.destroy
     i = 1
-    @question.mod.assessment_questions.order(position: :asc).each do |question|
+    @form.assessment_questions.order(position: :asc).each do |question|
       question.update(position: i)
       i += 1
     end
