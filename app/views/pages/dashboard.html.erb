@@ -6,7 +6,8 @@
         <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <li role="presentation"><a href="#All" data-toggle="tab" >Staff Trainings</a></li>
         <% end %>
-        <li role="presentation"><a href="#Recommended" data-toggle="tab" >Recommended</a></li>
+        <li role="presentation"><a href="#Recommended" data-toggle="tab" >Recommended 
+          <%= "(#{@my_recommended_pending.count})" if @my_recommended_pending.count > 0 %></a></li>
       </ul>
     </div>
     <div class="tab-content">

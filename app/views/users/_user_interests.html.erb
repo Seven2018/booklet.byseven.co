@@ -42,10 +42,10 @@
             <div class="booklet-card-like">
               <% if current_user == @user %>
                 <%= link_to user_interest_path(id: interest.id, redirect_from: 'user_show'), method: :delete, remote: true do %>
-                  <i class="fas fa-heart"  style='color:#F26419;'></i>
+                  <i class="fas fa-heart booklet-card-like__right"  style='color:#F26419;'></i>
                 <% end %>
               <% else %>
-                <i class="fas fa-heart"  style='color:#F26419;'></i>
+                <i class="fas fa-heart booklet-card-like__right"  style='color:#F26419;'></i>
               <% end %>
             </div>
           </div>
@@ -93,10 +93,10 @@
               <p><%= content.interested.count %> Interested</p>
               <% if current_user == @user %>
                 <%= link_to user_interest_path(id: interest.id, redirect_from: 'user_show'), method: :delete, remote: true do %>
-                  <i class="fas fa-heart"></i>
+                  <i class="fas fa-heart booklet-card-like__right"></i>
                 <% end %>
               <% else %>
-                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart booklet-card-like__right"></i>
               <% end %>
             </div>
           </div>
