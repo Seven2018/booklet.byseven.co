@@ -19,7 +19,7 @@
       <%= simple_form_for :answer_reco, url: update_recommendation_path, method: :get, remote: true do |f| %>
         <%= f.label 'Are you interested in attending this training ?' %>
         <div class="switch-field">
-          <%= f.input :answer, as: :radio_buttons, legend_tag: false, collection: [['Yes', 'Yes'], ['No', 'No']], checked: ['Yes', 'Yes'] %>
+          <%= f.input :answer, as: :radio_buttons, legend_tag: false, collection: [['Yes', 'Yes'], ['No', 'No']], checked: [interest.recommendation.capitalize, interest.recommendation.capitalize] %>
         </div>
         <%= f.input :comments, as: :text, label: false, required: false, placeholder: 'Comments (max 140 characters)', width: '100%', maxlength: 140, input_html: {row: 5, value: interest.comments} %>
         <%= f.hidden_field :user_interest_id, value: interest.id %>

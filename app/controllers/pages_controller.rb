@@ -165,7 +165,7 @@ class PagesController < ApplicationController
     respond_to do |format|
       format.html {organisation_path}
       format.js
-      format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv"}
+      format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
   end
 

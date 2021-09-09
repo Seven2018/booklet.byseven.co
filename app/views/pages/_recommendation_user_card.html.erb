@@ -1,7 +1,7 @@
-<% if user_interest&.recommendation&.nil? || user_interest.nil? %>
-  <div class='user-index-card__inner'>
-<% else %>
+<% if user_interest&.recommendation&.present? %>
   <div class='user-index-card__inner-<%= user_interest.recommendation.downcase %>'>
+<% else %>
+  <div class='user-index-card__inner'>
 <% end %>
     <% user = @user if @user.present? %>
     <div class="user-index-info">

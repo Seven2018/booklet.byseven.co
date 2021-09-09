@@ -89,33 +89,3 @@
     <%= render 'pages/recommendation_modal', content: content, interest: interest %>
   </div>
 </div>
-
-<script>
-  doubleClickGuardian = false
-
-  function outsideClick(event, notelem) {
-    notelem = $(notelem);
-    var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
-    }
-    if (clickedOut) return true;
-    else return false;
-  }
-
-  function openContentMenu(element) {
-    doubleClickGuardian = true
-    dropdown = element.parentNode.querySelector('.content-dropdown');
-    dropdown.classList.toggle('hidden');
-    setTimeout(function(){doubleClickGuardian = false}, 10)
-
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, dropdown) && doubleClickGuardian == false) {
-        dropdown.classList.toggle('hidden');
-        this.removeEventListener('click', arguments.callee, false)
-      }
-    });
-  };
-</script>

@@ -199,19 +199,19 @@
 <!-- Modal -->
 <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'edit', user: @user %>
+    <%= render 'users/edit', user: @user %>
   </div>
 </div>
 
 <div class="modal fade" id="editPicture" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'edit_picture', user: @user %>
+    <%= render 'users/edit_picture', user: @user %>
   </div>
 </div>
 
 <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'changepassword', user: @user %>
+    <%= render 'users/changepassword', user: @user %>
   </div>
 </div>
 
@@ -301,6 +301,20 @@
         slider.scrollLeft = scrollLeft - walk;
       });
     })
+
+    function checkPasswordConfirmation(element) {
+      new_password = document.querySelector('#user_password').value
+      save_button = element.closest('form').querySelector('#save_button')
+      if (element.value == new_password) {
+        save_button.classList.remove('btn-orange-disabled')
+        save_button.classList.add('btn-orange')
+        save_button.disabled = false
+      } else {
+        save_button.classList.add('btn-orange-disabled')
+        save_button.classList.remove('btn-orange')
+        save_button.disabled = true
+      }
+    }
 
     // window.onload = function navBarPadding() {
     // navbar = document.querySelector('.top-left-nav')
