@@ -1,12 +1,8 @@
 <div class="navbar navbar-expand-sm navbar-light">
   <% if params[:action] == 'edit_mode' %>
-    <div class="return_to_catalogue">
-      <%= link_to catalogue_path do %>
-        <i class="fas fa-arrow-left orange"></i>
-      <% end %>
-    </div>
    <div class= "col-12 text-center title_edit_mode" >
-      <h2>Create a new workshop</h2>
+      <h2><%= @content.title %> Editor mode</h2>
+      
     </div>
   <% else %>
     <div class="top-left-nav"> 
