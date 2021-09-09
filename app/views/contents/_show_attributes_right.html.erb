@@ -1,3 +1,15 @@
+<div class="content-show-infos-delete my-3 orange">
+  <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+    <% unless page == 'edit' %>
+      <%= link_to edit_mode_content_path(content_id: @content.id) do %>
+        <i class="fas fa-pencil-alt py-3 pr-3 mr-3"></i>
+      <% end %>
+    <% end %>
+    <%= link_to destroy_content_path(content_id: @content.id), data: {confirm: 'Are you sure ?'} do %>
+      <i class="fas fa-trash-alt py-3"></i>
+    <% end %>
+  <% end %>
+</div>
 <div class="content-show-infos-duration" >
   <p style='color:#808080;'><b>Duration</b> <i class="fas fa-info-circle" data-toggle='tooltip' title='Duration is automatically calculated from the duration of each text, video, or quiz element.'></i></p>
   <p><%= @content.duration %> min <i class="far fa-clock"></i></p>
@@ -14,7 +26,9 @@
   </div>
 </div>
 <div>
-  <p style='color:#808080;'><b>Workshop Type</b></p>
+  <p style='color:#808080;'>
+    <b>Workshop Type</b>
+  </p>
   <div class="content-type-radio">
     <% if page == 'edit' %>
       <%= simple_form_for @content, remote: true do |f| %>

@@ -1,4 +1,4 @@
-<div class="schedule-title">Schedule</div>
+<div class="schedule-title"></div>
 <% if tab == 'all' %>
   <% sessions = Session.where(company_id: current_user.company_id, date: @date) %>
 <% else %>

@@ -1,4 +1,4 @@
-<h3><b><%= content.title %></b></h3>
+<h3><b>Summary</b></h3>
 <% content.mods.order(position: :asc).each do |mod| %>
   <% if mod.mod_type == 'text' %>
     <a href="#anchor-<%= mod.id %>"><div class='anchor'><i class="far fa-file-alt"></i> <%= mod.title %></div></a>

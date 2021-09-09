@@ -3,22 +3,11 @@
     <div class="trainings-nav">
       <ul class="nav nav-tabs-trainings">
         <li role="presentation"><a href="#CurrentPersonal" data-toggle="tab" class='active'>Current</a></li>
-        <li role="presentation"><a href="#UpcomingPersonal" data-toggle="tab">Upcoming</a></li>
+        <%# <li role="presentation"><a href="#UpcomingPersonal" data-toggle="tab">Upcoming</a></li> %>
         <li role="presentation"><a href="#CompletedPersonal" data-toggle="tab">Past</a></li>
       </ul>
     </div>
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane" id="UpcomingPersonal">
-        <div class="row">
-          <% if @my_upcoming_sessions.empty? %>
-            <p style='padding: 15px;'>No upcoming trainings scheduled for the moment. Browse all possible trainings in the catalogue.</p>
-          <% elsif %>
-            <% @my_upcoming_sessions.each do |session| %>
-              <%= render 'dashboard_sessions_card', session: session %>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
       <div role="tabpanel" class="tab-pane" id="CompletedPersonal">
         <div class="row">
           <% @my_past_sessions.each do |session| %>

@@ -62,10 +62,108 @@
                     <% else %>
                       <div class="booklet-card-asyn">
                     <% end %>
-                      <div class="booklet-card-top">
-                        <div class="booklet-card__top-info">
-                          <% if content.title.length <= 30 %>
-                            <h3><b><%= content.title %></b></h3>
+                    <p><%= content.duration %> Minutes</p>
+                  </div>
+                  <div class="booklet-card-type-pill">
+                    <div class="booklet-card-type">
+                      <div class="booklet-card-type-icon">
+                        <% if content.content_type == 'Synchronous' %>
+                          <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                          <p>In Person</p>
+                        <% else %>
+                          <i class="fas fa-laptop" style='color:black;'></i>
+                          <p>Online</p>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="booklet-top-right-icon-catalogue">
+                    <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+                      <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v"></i></div>
+                      <div class="content-dropdown hidden">
+                        <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
+                        <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="booklet-card-bottom">
+                  <div class="booklet-card-theme">
+                  <% content.categories.order(title: :asc).each do |category| %>
+                  <p><%= category.title %></p>
+                  <% end %>
+                  </div>
+                  <div class="booklet-card-objective">
+                  <% if content.description.present? %>
+                    <% if content.description.length >= (200) %>
+                      <p><%= content.description.first(200) + '...' %></p>
+                    <% else %>
+                      <p><%= content.description.first(200) %></p>
+                    <% end %>
+                  <% end %>
+                  </div>
+                  <div class="booklet-card-like">
+                    <% interest = UserInterest.find_by(content_id: content.id, user_id: current_user.id) %>
+                    <% if interest.present? %>
+                      <%= link_to user_interest_path(id: interest.id), method: :delete, remote: true do %>
+                        <p><%= content.interested.count %><i class="fas fa-heart booklet-card-like__right"></i></p>
+                      <% end %>
+                    <% else %>
+                      <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
+                        <p><%= content.interested.count %><i class="far fa-heart booklet-card-like__right"></i></p>
+                      <% end %>
+                    <% end %>
+                    <% if content.recommended.include?(current_user.job_title) %>
+                      <div class="flex-row-between-centered">
+                        <i class="fas fa-star booklet-card-like__left"></i>
+                        <p>Recommended for you</p>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <% if @user.user_interests.present? %>
+        <div class="user-info-header">
+          <p style='font-size: 12px'>Interested</p>
+        </div>
+        <div class="trainings-row">
+          <%= render 'user_interests', user: @user %>
+        </div>
+      <% end %>
+      <div class="user-info-header">
+        <p style='font-size: 12px'>Upcoming</p>
+      </div>
+      <div class="trainings-row">
+        <% Session.joins(:attendees).where(attendees: {user_id: @user.id}).where('date >= ?', Date.today).each do |session| %>
+          <% content = Session.includes([:content]).find(session.id).content %>
+          <% if UserInterest.find_by(user_id: @user.id, content_id: session.content_id) != 'Completed' %>
+            <% if content.content_type == 'Synchronous' %>
+              <div class="booklet-card">
+                <div class="booking-date">
+                  <p style='margin-right:5px; color:#F26419;'>Begins</p>
+                  <b><p style='color:#F26419;'><%= session.date.strftime('%B %d') %></p></b>
+                </div>
+                <div class="booklet-card-syn">
+                  <div class="booklet-card-top">
+                    <div class="booklet-card__top-info">
+                      <% if content.title.length <= 30 %>
+                        <h3><b><%= content.title %></b></h3>
+                      <% else %>
+                        <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
+                      <% end %>
+                      <p><%= content.duration %> Minutes</p>
+                    </div>
+                    <div class="booklet-card-type-pill">
+                      <div class="booklet-card-type">
+                        <div class="booklet-card-type-icon">
+                          <% if content.content_type == 'Synchronous' %>
+                            <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                            <p>In Person</p>
                           <% else %>
                             <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
                           <% end %>
