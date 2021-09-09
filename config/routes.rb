@@ -74,6 +74,7 @@ Rails.application.routes.draw do
   resources :user_interests, only: %i[create destroy]
   get :complete_content, controller: :user_interests
   get :recommend, controller: :user_interests
+  get :recommend_all, controller: :user_interests
   get :update_recommendation, controller: :user_interests
 
   # USER TAGS

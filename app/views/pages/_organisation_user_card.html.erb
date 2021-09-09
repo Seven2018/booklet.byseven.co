@@ -1,7 +1,7 @@
 <div class='user-index-card__inner'>
   <% user = @user if @user.present? %>
   <div class="user-index-info">
-    <input class='select-user' type="checkbox" value="<%= user.id %>" onclick='selectUser();'>
+    <input class='select-user' id='checkbox-<%= user.id %>' type="checkbox" value="<%= user.id %>" onclick='selectUser(this);'>
   </div>
   <div class="user-index-info streched-link">
   <%= link_to user_path(user) do %>

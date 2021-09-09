@@ -1,9 +1,13 @@
 <% user.user_interests.includes([:content]).where(status: 'Interested').each do |interest| %>
   <% content = interest.content  %>
-  <div class="training-card-main" id="user-interest-content-<%= content.id %>">
-    <% if content.content_type == 'Synchronous' %>
+  <div class="col-xl-6 col-lg-12 booklet-col">
+    <div class="training-card-main" id="user-interest-content-<%= content.id %>">
       <div class="booklet-card">
+      <% if content.content_type == 'Synchronous' %>
         <div class="booklet-card-syn">
+      <% else %>
+        <div class="booklet-card-asyn">
+      <% end %>
           <div class="booklet-card-top">
             <div class="booklet-card__top-info">
               <%= link_to '', content_path(content), class: 'stretched-link' %>

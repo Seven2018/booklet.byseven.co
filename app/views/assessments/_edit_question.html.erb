@@ -16,13 +16,13 @@
               <%= check_box_tag 'test[]', true, false, class: 'checkbox', checked: checked %>
               <%= hidden_field_tag 'answer[]', checked %>
             </div>
-            <div style='cursor: pointer;' onclick='removeQuestion(this)'>
+            <div style='cursor: pointer;' onclick='removeAnswer(this)'>
               <i class="fas fa-times"></i>
             </div>
           </div>
         <% end %>
       </div>
-      <a href="javascript:;" class='assessment_add_option btn btn-edit-white' onclick="addAnswer(this);">Add Option</a>
+      <a href="javascript:;" class='assessment_add_option btn btn-edit-white' onclick="addAnswer(this);">Add Answer</a>
     </div>
     <div class="hidden" id="add_options_form">
       <div class="options_line">
@@ -35,7 +35,7 @@
           <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
           <%= hidden_field_tag 'answer[]', false %>
         </div>
-        <div style='cursor: pointer;' onclick='removeQuestion(this)'>
+        <div style='cursor: pointer;' onclick='removeAnswer(this)'>
           <i class="fas fa-times"></i>
         </div>
       </div>
@@ -52,11 +52,11 @@
     </div>
   </div>
   <div style=" display: flex; justify-content: flex-start;margin-top:3rem;">
-    <%= button_tag type: 'submit', class: 'btn btn-edit-green btn-icon' do %>
-      <i class="fas fa-save"></i>
+    <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+      <p>Save Question</p>
     <% end %>
-    <div class="btn btn-edit-red btn-icon btn-close" onclick="removeQuestion(this)">
-      <i class="fas fa-times"></i>
+    <div class="btn-white-border" onclick="removeQuestion(this)">
+      <p>Cancel</p>
     </div>
   </div>
 <% end %>

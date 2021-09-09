@@ -21,6 +21,10 @@ class AssessmentQuestionPolicy < ApplicationPolicy
     check_access_hr
   end
 
+  def destroy?
+    check_access_hr
+  end
+
   private
 
   def check_access_hr

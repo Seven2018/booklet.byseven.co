@@ -1,118 +1,125 @@
-<script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
-<div class="recommendation-sticky">
-  <div class="recommendation-info">
-    <div class="recommendation-booklet-card">
-      <% if @content.content_type == 'Synchronous' %>
-        <div class="booklet-card-syn">
-          <div class="booklet-card-top">
-            <div class="booklet-card__top-info">
-              <% if @content.title.length <= 30 %>
-                <h3><b><%= @content.title %></b></h3>
-              <% else %>
-                <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
-              <% end %>
-              <p><%= @content.duration %> Minutes</p>
-            </div>
-            <div class="booklet-card-type-pill">
-              <div class="booklet-card-type">
-                <div class="booklet-card-type-icon">
-                  <% if @content.content_type == 'Synchronous' %>
-                    <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                    <p>In Person</p>
-                  <% else %>
-                    <i class="fas fa-laptop" style='color:black;'></i>
-                    <p>Online</p>
-                  <% end %>
+<% if ['Super Admin'].include?(current_user.access_level) || @content.company_id == current_user.company_id %>
+  <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+  <div class="recommendation-sticky">
+    <div class="recommendation-info">
+      <div class="recommendation-booklet-card">
+        <% if @content.content_type == 'Synchronous' %>
+          <div class="booklet-card-syn">
+            <div class="booklet-card-top">
+              <div class="booklet-card__top-info">
+                <% if @content.title.length <= 30 %>
+                  <h3><b><%= @content.title %></b></h3>
+                <% else %>
+                  <h3 data-toggle='tooltip' title='<%= @content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
+                <% end %>
+                <p><%= @content.duration %> Minutes</p>
+              </div>
+              <div class="booklet-card-type-pill">
+                <div class="booklet-card-type">
+                  <div class="booklet-card-type-icon">
+                    <% if @content.content_type == 'Synchronous' %>
+                      <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                      <p>In Person</p>
+                    <% else %>
+                      <i class="fas fa-laptop" style='color:black;'></i>
+                      <p>Online</p>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      <% else %>
-        <div class="booklet-card-asyn">
-          <div class="booklet-card-top">
-            <div class="booklet-card__top-info">
-              <% if @content.title.length <= 30 %>
-                <h3><b><%= @content.title %></b></h3>
-              <% else %>
-                <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
-              <% end %>
-              <p><%= @content.duration %> Minutes</p>
-            </div>
-            <div class="booklet-card-type-pill">
-              <div class="booklet-card-type">
-                <div class="booklet-card-type-icon">
-                  <% if @content.content_type == 'Synchronous' %>
-                    <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                    <p>In Person</p>
-                  <% else %>
-                    <i class="fas fa-laptop" style='color:black;'></i>
-                    <p>Online</p>
-                  <% end %>
+        <% else %>
+          <div class="booklet-card-asyn">
+            <div class="booklet-card-top">
+              <div class="booklet-card__top-info">
+                <% if @content.title.length <= 30 %>
+                  <h3><b><%= @content.title %></b></h3>
+                <% else %>
+                  <h3 data-toggle='tooltip' title='<%= @content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
+                <% end %>
+                <p><%= @content.duration %> Minutes</p>
+              </div>
+              <div class="booklet-card-type-pill">
+                <div class="booklet-card-type">
+                  <div class="booklet-card-type-icon">
+                    <% if @content.content_type == 'Synchronous' %>
+                      <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                      <p>In Person</p>
+                    <% else %>
+                      <i class="fas fa-laptop" style='color:black;'></i>
+                      <p>Online</p>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
-  <div class="recommendation-controls">
-    <div class="flex-row-start-centered">
-      <div id="recommendation-controls__user-search">
-        <i class="fas fa-search recommendation-controls__search-icon"></i>
-        <%= simple_form_for :search, url: recommendation_path, method: :get, remote: true do |f| %>
-          <%= f.input :name, placeholder: 'Search', label: false %>
-          <%= f.hidden_field :content_id, value: @content.id %>
-          <%= f.submit class: 'hidden hidden-submit' %>
         <% end %>
-        <div class="hidden" id="recommendation-controls__user-search-clear" onclick='clearSearch(this);'>
-          <p>Clear</p>
-        </div>
-      </div>
-      <div class="index-controls-buttons flex-row-between-centered">
-        <div class="btn-white" onclick='openFilter();'>
-          <i class="fas fa-filter"></i>
-          <p>Filter</p>
-        </div>
       </div>
     </div>
-    <div class="recommendation-tabs">
-      <ul class="nav nav-tabs">
-        <li role="presentation"><a href="#All" data-toggle="tab" class='active'>All</a></li>
-        <li role="presentation"><a href="#Yes" data-toggle="tab" >Yes</a></li>
-        <li role="presentation"><a href="#No" data-toggle="tab" >No</a></li>
-        <li role="presentation"><a href="#Pending" data-toggle="tab" >Pending</a></li>
-      </ul>
+    <div class="recommendation-controls">
+      <div class="flex-row-start-centered">
+        <div id="recommendation-controls__user-search">
+          <i class="fas fa-search recommendation-controls__search-icon"></i>
+          <%= simple_form_for :search, url: recommendation_path, method: :get, remote: true do |f| %>
+            <%= f.input :name, placeholder: 'Search', label: false %>
+            <%= f.hidden_field :content_id, value: @content.id %>
+            <%= f.submit class: 'hidden hidden-submit' %>
+          <% end %>
+          <div class="hidden" id="recommendation-controls__user-search-clear" onclick='clearSearch(this);'>
+            <p>Clear</p>
+          </div>
+        </div>
+        <div class="index-controls-buttons flex-row-between-centered">
+          <div class="btn-white" onclick='openFilter();'>
+            <i class="fas fa-filter"></i>
+            <p>Filter</p>
+          </div>
+        </div>
+      </div>
+      <div class="recommendation-tabs">
+        <ul class="nav nav-tabs">
+          <li role="presentation"><a href="#All" data-toggle="tab" class='active'>All</a></li>
+          <li role="presentation"><a href="#Yes" data-toggle="tab" >Yes</a></li>
+          <li role="presentation"><a href="#No" data-toggle="tab" >No</a></li>
+          <li role="presentation"><a href="#Pending" data-toggle="tab" >Pending</a></li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-<div class="tab-content">
-  <div role="tabpanel" class="tab-pane active" id="All">
-    <%= paginate @users, remote: true %>
-    <div class="recommendation-main-container recommendation-main-container-unfiltered">
-      <%= render 'recommendation_users_list', users: @users.uniq, unfiltered: @unfiltered, content: @content, tab: '' %>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="All">
+      <%= paginate @users, remote: true %>
+      <div class="recommendation-main-container recommendation-main-container-unfiltered">
+        <%= render 'recommendation_users_list', users: @users.uniq, unfiltered: @unfiltered, content: @content, tab: '', tag_categories: @tag_categories %>
+      </div>
+      <div class="recommendation-main-container recommendation-main-container-filtered hidden">
+        <%= render 'recommendation_users_list', users: [], unfiltered: @unfiltered, content: @content, tab: '', tag_categories: @tag_categories %>
+      </div>
     </div>
-    <div class="recommendation-main-container recommendation-main-container-filtered hidden">
-      <%= render 'recommendation_users_list', users: [], unfiltered: @unfiltered, content: @content, tab: '' %>
+    <div role="tabpanel" class="tab-pane recommendation-main-container__yes" id="Yes">
+      <%= render 'recommendation_users_list', users: @users_yes.uniq, unfiltered: @unfiltered, content: @content, tab: '-yes', tag_categories: @tag_categories %>
+    </div>
+    <div role="tabpanel" class="tab-pane recommendation-main-container__no" id="No">
+      <%= render 'recommendation_users_list', users: @users_no.uniq, unfiltered: @unfiltered, content: @content, tab: '-no', tag_categories: @tag_categories %>
+    </div>
+    <div role="tabpanel" class="tab-pane recommendation-main-container__pending" id="Pending">
+      <%= render 'recommendation_users_list', users: @users_pending.uniq, unfiltered: @unfiltered, content: @content, tab: '-pending', tag_categories: @tag_categories %>
     </div>
   </div>
-  <div role="tabpanel" class="tab-pane recommendation-main-container__yes" id="Yes">
-    <%= render 'recommendation_users_list', users: @users_yes.uniq, unfiltered: @unfiltered, content: @content, tab: '-yes' %>
+  <div class="organisation-filter-container">
+    <div class="organisation-filter-background" onclick='closeFilter();'></div>
+    <div class="organisation-filter-dropright">
+      <%= render 'recommendation_filter_dropright', content: @content %>
+    </div>
   </div>
-  <div role="tabpanel" class="tab-pane recommendation-main-container__no" id="No">
-    <%= render 'recommendation_users_list', users: @users_no.uniq, unfiltered: @unfiltered, content: @content, tab: '-no' %>
+
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
   </div>
-  <div role="tabpanel" class="tab-pane recommendation-main-container__pending" id="Pending">
-    <%= render 'recommendation_users_list', users: @users_pending.uniq, unfiltered: @unfiltered, content: @content, tab: '-pending' %>
-  </div>
-</div>
-<div class="organisation-filter-container">
-  <div class="organisation-filter-background" onclick='closeFilter();'></div>
-  <div class="organisation-filter-dropright">
-    <%= render 'recommendation_filter_dropright', content: @content %>
-  </div>
-</div>
+<% end %>
 
 <script>
   if (document.querySelector('.search') != null) {
@@ -249,12 +256,30 @@
     job = element.parentNode.getAttribute("name");
     form.querySelectorAll('.filter_user_tag').forEach((category) => {
       category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-        if (checkbox.value == job) {
+        if (checkbox.parentNode.querySelector('label').innerText == job) {
           checkbox.checked = false;
           form.querySelector('.hidden-submit').click();
           document.querySelector('body').classList.add('wait');
         }
       })
     })
+  }
+
+  function toggleAllUsers(source) {
+    checkboxes = document.querySelectorAll('.select-user');
+    ids = []
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      checkboxes[i].checked = source.checked;
+      ids.push(checkboxes[i].closest('.user-index-card').id.split('-')[2])
+    }
+    form = source.closest('form')
+    checked = form.querySelector('#recommend_all_checked')
+    if (source.checked == true) {
+      checked.value = 'true'
+    } else {
+      checked.value = 'false'
+    }
+    document.querySelector('#recommend_all_users_ids').value = ids.join(',')
+    form.querySelector('.hidden-submit').click()
   }
 </script>

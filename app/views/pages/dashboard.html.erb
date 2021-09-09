@@ -61,9 +61,43 @@
     })
   })
 
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem)
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false
+        }
+    }
+    if (clickedOut) return true
+    else return false
+  }
+
+  function openContentMenu(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      dropdown = element.parentNode.querySelector('.content-dropdown');
+      dropdown.classList.toggle('hidden');
+      setTimeout(function(){doubleClickGuardian = false}, 10)
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, dropdown) && doubleClickGuardian == false) {
+          dropdown.classList.toggle('hidden');
+          this.removeEventListener('click', arguments.callee, false)
+        }
+      })
+    }
+  }
+
   function dismissModal(element) {
-    form = element.closest('form')
-    form.querySelector('.hidden-submit').click()
-    form.querySelector('.cancel-close').click()
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      form = element.closest('form')
+      form.querySelector('.hidden-submit').click()
+      form.querySelector('.cancel-close').click()
+      setTimeout(function(){doubleClickGuardian = false}, 10)
+    }
   }
 </script>
