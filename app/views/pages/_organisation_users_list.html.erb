@@ -22,12 +22,12 @@
     <% if params[:action] == 'organisation' %>
     <i class="fas fa-search organisation-controls__search-icon"></i>
       <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
-        <%= f.input :name, placeholder: 'Search', label: false %>
+        <%= f.input :name, placeholder: 'Search by name', label: false %>
         <%= f.submit class: 'hidden hidden-submit' %>
       <% end %>
     <% end %>
-    <div class="hidden" id="organisation-controls__user-search-clear" onclick='clearSearch(this);'>
-      <p>Clear</p>
+    <div id="organisation-controls__user-search-clear" onclick='clearSearch(this);'>
+      <p>Reset</p>
     </div>
   </div>
   <div class="index-controls-buttons flex-row-between-centered">
