@@ -2,7 +2,7 @@
 <div class="book-container">
   <div class="book-page-1">
     <div class="booking-title">
-      <h2>Select Workshop to Book</h2>
+      <h2 id='top-anchor'>Select Workshop to Book</h2>
     </div>
     <div class="book-confirm">
       <div style='width: 120px;'></div>
@@ -322,6 +322,7 @@
     } else {
     }
     updateCards()
+    window.location = (""+window.location).replace(/#[A-Za-z0-9_]*$/,'')+"#top-anchor"
   }
 
   function addUser(element) {
