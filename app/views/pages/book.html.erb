@@ -362,19 +362,24 @@
     empty = user.querySelector('#nouser')
     adduser = user.querySelector('#adduser')
     selecteduser = document.querySelector('.users-book-selected')
+    main_card = document.querySelector('.users-book-all').querySelector('#' + user.id)
     if (selecteduser.contains(user)) {
       card_id = user.id
       document.querySelector('.users-book-all').querySelector('#' + card_id).classList.remove('hidden')
       user.remove()
       updateUsers()
     } else if (document.querySelector('.users-book-all').contains(user)) {
-      document.querySelector('.users-book-all').querySelector('#' + user.id).classList.add('hidden')
+      if (main_card != null) {
+        main_card.classList.add('hidden')
+      }
       addUser(element);
     } else if (document.querySelector('.users-book-filtered').contains(user)) {
-      document.querySelector('.users-book-all').querySelector('#' + user.id).classList.add('hidden')
+      console.log(user.id)
+      if (main_card != null) {
+        main_card.classList.add('hidden')
+      }
       addUser(element);
       user.remove()
-    } else {
     }
   }
 
