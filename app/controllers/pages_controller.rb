@@ -217,6 +217,12 @@ class PagesController < ApplicationController
       @selected_contents = []
       # @selected_filter = params[:filter_user][:tag].reject(&:blank?).join(',') if params[:filter_user][:tag].present?
       @selected_filter = @filter_tags
+    elsif params[:search_user].present?
+      @filter = 'search_user'
+      @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search_user][:name].downcase)}%", "%#{I18n.transliterate(params[:search_user][:name].downcase)}%")
+      @unfiltered = 'false' if params[:search_user][:name] != ''
+      @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+      @selected_contents = []
     elsif params[:confirm].present?
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
       @selected_users = User.where(id: params[:filter_user][:selected].split(',')) if params[:filter_user].present?

@@ -17,6 +17,11 @@
             <%= f.input :ends_at, label: false, as: :time, minute_step: 15, input_html: { class: 'new_ends_at'}, default: Time.parse('17:00') %>
           </div>
         </div>
+        <div class="flex-row-start-centered">
+          <p>Price</p>
+          <%= f.input :cost, label: false, placeholder: 'Total cost', input_html: {min: 0, style: 'width:20rem;'}, as: :numeric %>
+          <p>€</p>
+        </div>
       <% else %>
         <%= f.input :date, label: 'Start Date', input_html: {class: 'datepicker'}, as: :string, placeholder: 'select date' %>
         <%= f.input :available_date, label: 'End Date', input_html: {class: 'datepicker'}, as: :string, placeholder: 'select date' %>
