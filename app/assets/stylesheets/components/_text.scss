@@ -60,3 +60,14 @@ input[type='checkbox']:checked + label {
 textarea {
   font-size: 1.6rem !important;
 }
+
+input::placeholder {
+  color: #C4C4C4 !important;
+}
+
+input:focus::placeholder {
+  color: transparent;
+  opacity: 0;
+}
+
+

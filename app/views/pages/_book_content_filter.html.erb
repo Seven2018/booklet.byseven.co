@@ -1,11 +1,9 @@
 <i class="fas fa-search"></i>
-<%= form_with url: categories_search_path, local: true, method: :get, input_html: {onkeydown: "return event.key != 'Enter';"} do |f| %>
-  <%= f.text_field :search, placeholder: 'Search for Themes', label: false, data: {behavior: 'autocomplete'} %>
+<%= simple_form_for :filter_content, url: book_path, remote: true, method: :get do |f| %>
+  <%= f.text_field :title, placeholder: 'Search', label: false %>
+  <%= f.hidden_field :selected %>
+  <%= f.submit class: 'hidden hidden-submit' %>
 <% end %>
-<div class="hidden-form-ajax hidden">
-  <%= simple_form_for :filter_content, url: book_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
-    <%= f.hidden_field :themes %>
-    <%= f.hidden_field :selected %>
-    <%= f.submit class: 'hidden-submit' %>
-  <% end %>
+<div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
+  <p>Reset</p>
 </div>

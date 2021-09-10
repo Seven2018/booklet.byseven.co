@@ -10,25 +10,25 @@
       <% end %>
     </div>
   <% else %>
-    <% if unfiltered.present? %>
+    <% if unfiltered.to_s.downcase == 'true' %>
       <h1>Employees (<%= User.where(company_id: current_user.company_id).count %>)</h1>
     <% else %>
-      <h1>Employees (<%= users.length %>) <h2 onclick="clearSearchBis(this)" class='see-all'>See All</h2></h1>
+      <h1><%= users.length %> result(s)</h1>
     <% end %>
   <% end %>
 </div>
 <div class="organisation-controls">
   <div id="organisation-controls__user-search">
     <% if params[:action] == 'organisation' %>
-    <i class="fas fa-search organisation-controls__search-icon"></i>
+      <i class="fas fa-search organisation-controls__search-icon"></i>
       <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
         <%= f.input :name, placeholder: 'Search by name', label: false %>
         <%= f.submit class: 'hidden hidden-submit' %>
       <% end %>
+      <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
+        <p>Reset</p>
+      </div>
     <% end %>
-    <div id="organisation-controls__user-search-clear" onclick='clearSearch(this);'>
-      <p>Reset</p>
-    </div>
   </div>
   <div class="index-controls-buttons flex-row-between-centered">
     <div class="btn-white" onclick='openFilter();'>

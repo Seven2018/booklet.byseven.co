@@ -8,6 +8,11 @@ if ("<%= @switch %>" == 'false') {
   nothing_to_show = container.querySelector('.recommendation__nothing-to-show')
   if (nothing_to_show != null) {
     nothing_to_show.remove()
+    document.querySelector('#pending_recommendation_main').innerHTML = "<a href='#Recommended' data-toggle='tab' >Recommended (<%= @my_recommended_pending.count %>)</a>"
+    document.querySelector('#pending_recommendation').innerHTML = "<a href='#PendingRecommendation' data-toggle='tab' class='active'>Pending (<%= @my_recommended_pending.count %>)</a>"
+  } else {
+    document.querySelector('#pending_recommendation_main').innerHTML = "<a href='#Recommended' data-toggle='tab' >Recommended</a>"
+    document.querySelector('#pending_recommendation').innerHTML = "<a href='#PendingRecommendation' data-toggle='tab' class='active'>Pending</a>"
   }
   container.append(copy_card)
   card.remove()

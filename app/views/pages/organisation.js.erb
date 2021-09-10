@@ -15,9 +15,13 @@ document.querySelector('.organisation-main-container:not(.hidden)').querySelecto
     user.click()
   }
 })
-document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>'
+// document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>'
 $(document).ready(function () {
   $(".organisation-page").floatingScroll();
 });
 document.querySelector('body').classList.remove('wait');
 
+if ("<%= @search_name.present? %>" == 'true') {
+  document.querySelector('.organisation-main-container-filtered').querySelector('#search_name').value = "<%= @search_name %>"
+  document.querySelector('.organisation-main-container-filtered').querySelector('#organisation-controls__user-search-clear').classList.remove('hidden')
+}
