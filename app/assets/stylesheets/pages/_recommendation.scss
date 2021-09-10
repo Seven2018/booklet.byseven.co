@@ -304,3 +304,35 @@
   align-items: center;
   margin-top: 2rem;
 }
+
+
+// TESTS MANON GRID CARDS
+
+.cards-recommended {
+  display: grid;
+  grid-gap: 16px;
+}
+
+@media(min-width: 850px) {
+  .cards-recommended {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media(min-width: 1200px) {
+  .cards-recommended {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media(min-width: 1550px) {
+  .cards-recommended {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media(min-width: 1800px) {
+  .cards-recommended {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}

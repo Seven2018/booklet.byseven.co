@@ -12,27 +12,28 @@
     </div>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="PendingRecommendation">
-        <div class="row">
+        <div class="cards-recommended">  
           <% if @my_recommended_pending.empty? %>
             <p style='padding: 15px;'>No recommended trainings.</p>
           <% elsif %>
             <% @my_recommended_pending.each do |interest| %>
               <% content = interest.content %>
-              <div id='recommendation-card-<%= interest.id %>' class="col-xl-6 col-lg-12 booklet-col">
+              <div id='recommendation-card-<%= interest.id %>' class="booklet-col">
                 <%= render 'pages/dashboard_recommended_card', content: content, interest: interest, status: 'pending' %>
               </div>
             <% end %>
           <% end %>
         </div>
+
       </div>
       <div role="tabpanel" class="tab-pane" id="AnsweredRecommendation">
-        <div class="row">
+        <div class="cards-recommended">  
           <% if @my_recommended_answered.empty? %>
             <p class='recommendation__nothing-to-show' style='padding: 15px;'>Nothing to show.</p>
           <% elsif %>
             <% @my_recommended_answered.each do |interest| %>
               <% content = interest.content %>
-              <div id='recommendation-card-<%= interest.id %>' class="col-xl-6 col-lg-12 booklet-col">
+              <div id='recommendation-card-<%= interest.id %>' class="booklet-col">
                 <%= render 'pages/dashboard_recommended_card', content: content, interest: interest, status: 'answered' %>
               </div>
             <% end %>
