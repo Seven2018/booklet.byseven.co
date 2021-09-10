@@ -94,7 +94,7 @@ class UsersController < ApplicationController
       present = []
       CSV.foreach(params[:file].path, headers: true) do |row|
         user_row = row.to_hash
-        user = User.find_by(email: user_row['email'].downcase)
+        user = User.find_by(email: user_row['email']&.downcase)
         if !user_row['email'].present?
           @errors << row
         elsif user.nil?
