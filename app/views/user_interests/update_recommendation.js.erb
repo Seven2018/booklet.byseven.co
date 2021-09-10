@@ -2,12 +2,14 @@ if ("<%= @switch %>" == 'false') {
   card = document.querySelector('#recommendation-card-<%= @user_interest.id %>')
   copy_card = document.createElement("div");
   copy_card.id = '#recommendation-card-<%= @user_interest.id %>'
-  copy_card.classList.add('col-xl-6', 'col-lg-12', 'booklet-col')
+  copy_card.classList.add('booklet-col')
   copy_card.innerHTML = '<%= j render("pages/dashboard_recommended_card", content: @user_interest.content, interest: @user_interest, status: "answered") %>';
-  container = document.querySelector('#AnsweredRecommendation').querySelector('.row')
+  container = document.querySelector('#AnsweredRecommendation').querySelector('.cards-recommended')
   nothing_to_show = container.querySelector('.recommendation__nothing-to-show')
   if (nothing_to_show != null) {
     nothing_to_show.remove()
+  }
+  if (parseInt("<%= @my_recommended_pending.count %>",10) > 0) {
     document.querySelector('#pending_recommendation_main').innerHTML = "<a href='#Recommended' data-toggle='tab' >Recommended (<%= @my_recommended_pending.count %>)</a>"
     document.querySelector('#pending_recommendation').innerHTML = "<a href='#PendingRecommendation' data-toggle='tab' class='active'>Pending (<%= @my_recommended_pending.count %>)</a>"
   } else {
