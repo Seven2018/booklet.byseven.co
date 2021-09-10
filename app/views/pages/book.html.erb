@@ -42,10 +42,8 @@
       </div>
     </div>
     <div class="index-controls-filter-bar-book">
-      <div class="index-controls-filter-bar-block-book">
+      <div id="organisation-controls__user-search">
         <%= render 'book_content_filter' %>
-      </div>
-      <div class="filtered_themes">
       </div>
     </div>
     <div class="workshop-grid">
@@ -589,7 +587,25 @@
     } else {
       alert.classList.add('hidden')
     }
+  }
 
+  function clearSearch(element) {
+    document.querySelector('#filter_content_title').value = ''
+    document.querySelector('#organisation-controls__user-search-clear').classList.add('hidden')
+    element.parentNode.querySelector('.hidden-submit').click()
+  }
+
+  if (document.querySelector('.filter_content') != null) {
+    search_input = document.querySelector('.filter_content').querySelector('input');
+    clear_button = document.getElementById('organisation-controls__user-search-clear');
+    search_input.addEventListener('keyup', event => {
+      console.log('test')
+      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
+        clear_button.classList.remove('hidden');
+      } else if (search_input.value == '') {
+        clear_button.classList.add('hidden');
+      }
+    })
   }
 
   $input = $("[data-behavior='autocomplete']");

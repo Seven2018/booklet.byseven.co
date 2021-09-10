@@ -72,9 +72,9 @@ class PagesController < ApplicationController
     if current_user.company_id.present?
       if params[:filter].present?
         if params[:filter][:themes].split(',').uniq.present?
-          @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter][:themes].split(',')}).order(title: :asc).uniq
+          @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter][:themes].split(',')}).order(updated_at: :desc).uniq
         else
-          @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+          @contents = Content.where(company_id: current_user.company_id).order(updated_at: :desc)
         end
         respond_to do |format|
           format.html {catalogue_path}
@@ -82,13 +82,14 @@ class PagesController < ApplicationController
         end
       # Index for other Users, with visibility limited to programs proposed by their company only
       else
-        @contents = Content.where(company_id: current_user.company.id).order(title: :asc)
         if params[:search].present?
-          @contents = Content.where(company_id: current_user.company.id).where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%").order(title: :asc) if params[:search] != ' '
+          @contents = Content.where(company_id: current_user.company.id).where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%") + Content.joins(content_categories: :category).where(company_id: current_user.company_id).where("unaccent(lower(categories.title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%")
           respond_to do |format|
             format.html {catalogue_path}
             format.js
           end
+        else
+          @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
         end
       end
     end
@@ -200,13 +201,14 @@ class PagesController < ApplicationController
   def book
     index_function(User.where(company_id: current_user.company_id))
     if params[:filter_content].present?
-      if params[:filter_content][:themes].split(',').uniq.present?
-        @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter_content][:themes].split(',')}).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc).uniq
-      else
-        @contents = Content.where(company_id: current_user.company_id).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc)
-      end
-      @filter = 'content'
+      # if params[:filter_content][:themes].split(',').uniq.present?
+      #   @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter_content][:themes].split(',')}).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc).uniq
+      # else
+      #   @contents = Content.where(company_id: current_user.company_id).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc)
+      # end
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc)
+      @contents = (Content.where(company_id: current_user.company.id).where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:filter_content][:title].downcase)}%") + Content.joins(content_categories: :category).where(company_id: current_user.company_id).where("unaccent(lower(categories.title)) LIKE ?", "%#{I18n.transliterate(params[:filter_content][:title].downcase)}%")).uniq - @selected_contents
+      @filter = 'content'
       @interest_for = @selected_contents.map(&:id)
     elsif params[:filter_user].present?
       @filter = 'user'
@@ -238,6 +240,7 @@ class PagesController < ApplicationController
         @users = parameter
         if params[:search][:name] != ' '
           @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search][:name].downcase)}%", "%#{I18n.transliterate(params[:search][:name].downcase)}%")
+          @search_name = params[:search][:name]
         end
         # If the 'clear' button is clicked, return all the employees
         @users = @users.order(lastname: :asc).page params[:page] if @users.present?

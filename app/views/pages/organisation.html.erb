@@ -52,12 +52,27 @@
 </script>
 
 <script>
-
   function clearSearch(element) {
-    search_input = element.parentNode.querySelector('input');
-    search_input.value = '';
-    document.querySelector('.organisation-main-container').classList.remove('hidden')
+    document.querySelectorAll('#search_name').forEach((el) => {
+      el.value = ''
+    })
+    document.querySelectorAll('#organisation-controls__user-search-clear').forEach((el) => {
+      el.classList.add('hidden')
+    })
+    document.querySelector('.organisation-main-container-unfiltered').classList.remove('hidden')
     document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
+  }
+
+  if (document.querySelector('.search') != null) {
+    search_input = document.querySelector('.search').querySelector('input');
+    clear_button = document.getElementById('organisation-controls__user-search-clear');
+    search_input.addEventListener('keyup', event => {
+      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
+        clear_button.classList.remove('hidden');
+      } else if (search_input.value == '') {
+        clear_button.classList.add('hidden');
+      }
+    })
   }
 
   formGuardian = false;

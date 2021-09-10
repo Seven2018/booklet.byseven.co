@@ -1,4 +1,6 @@
-if ("<%= @filter %>" == 'content') {
+if ("<%= @filter %>" == 'search') {
+  document.querySelector('.workshop-cards-book').innerHTML = '<%= j render("pages/book_content_index", contents: @contents) %>';
+} else if ("<%= @filter %>" == 'content') {
   document.querySelector('.users-title').innerHTML = "<h2>Book Participants for: <%= @selected_contents.map(&:title).join(', ') %>";
   document.querySelector('.dates-title').innerHTML = "<h2>Select Dates for: <%= @selected_contents.map(&:title).join(', ') %>";
   document.querySelector('.date-book').innerHTML = '<%= j render("pages/book_dates", selected_contents: @selected_contents) %>';

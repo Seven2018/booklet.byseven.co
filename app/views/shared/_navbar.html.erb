@@ -4,7 +4,7 @@
       <h2><%= @content.title %> Editor mode</h2>
     </div>
   <% else %>
-    <div class="top-left-nav"> 
+    <div class="top-left-nav">
       <ul>
         <% if user_signed_in? %>
           <li>
@@ -58,21 +58,16 @@
                 <% end %>
               <% end %>
             </li>
-            <li>
-              <% if params[:action] == 'book' %>
-                <%= link_to book_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title " style='color: #F26419;'><h4>Book</h4></div>
-                <% end %>
-                <div class="isactive"></div>
-              <% else %>
-                <%= link_to book_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title"><h4>Book</h4></div>
-                <% end %>
-              <% end %>
-            </li>
           <% end %>
         <% end %>
       </ul>
+      <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+        <div class="centered-item">
+          <%= link_to book_path, class: 'btn-white-border' do %>
+            <p>Book</p>
+          <% end %>
+        </div>
+      <% end %>
     </div>
     <div class="navbar-controls-right flex-row-between-centered">
       <% if current_user.company_id.nil? && params[:action] == 'dashboard' %>
@@ -114,4 +109,3 @@
     </div>
   <% end %>
 </div>
-

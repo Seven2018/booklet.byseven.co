@@ -1,7 +1,11 @@
 <div class="content-info">
   <% if page == 'edit' %>
     <%= simple_form_for content, remote: true do |f| %>
-      <%= f.input :title, label: false, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'updateContent(this)'} %>
+      <% if content.title.first(11) == 'Untitled - ' %>
+        <%= f.input :title, label: false, placeholder: content.title, input_html: {value: '', autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'updateContent(this)'} %>
+      <% else %>
+        <%= f.input :title, label: false, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'updateContent(this)'} %>
+      <% end %>
       <%= f.input :description, label: false, input_html: {autocomplete: "off", onclick: 'updateContent(this)'}, placeholder: 'Write the objective or purpose of the workshop here.' %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>

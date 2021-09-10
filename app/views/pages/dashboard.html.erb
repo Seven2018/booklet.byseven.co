@@ -6,10 +6,8 @@
         <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <li role="presentation"><a href="#All" data-toggle="tab" >Staff Trainings</a></li>
         <% end %>
-        <li role="presentation"><a href="#Recommended" data-toggle="tab" >Recommended 
-          <% if @my_recommended_pending.count > 0 %>
-            (<%= @my_recommended_pending.count %>)
-          <% end %></a></li>
+        <li role="presentation" id='pending_recommendation_main'><a href="#Recommended" data-toggle="tab" >Recommended
+          <%= "(#{@my_recommended_pending.count})" if @my_recommended_pending.count > 0 %></a></li>
       </ul>
     </div>
     <div class="tab-content">
@@ -101,5 +99,13 @@
       form.querySelector('.cancel-close').click()
       setTimeout(function(){doubleClickGuardian = false}, 10)
     }
+  }
+
+  function test(element) {
+    console.log(element)
+    element.closest('form').querySelectorAll('.radio_buttons').forEach((el) => {
+      el.checked = ''
+    })
+    element.checked = 'checked'
   }
 </script>

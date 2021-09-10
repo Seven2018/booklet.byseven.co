@@ -76,9 +76,10 @@ class UserInterestsController < ApplicationController
   def update_recommendation
     user = current_user
     @user_interest = UserInterest.find(params[:answer_reco][:user_interest_id])
+    @my_recommended_pending = UserInterest.where(user_id: current_user.id, recommendation: 'Pending')
     authorize @user_interest
     ['Yes', 'No'].include?(@user_interest.recommendation) ? @switch = 'true' : @switch = 'false'
-    @user_interest.update(recommendation: params[:answer_reco][:answer], comments: params[:answer_reco][:comments])
+    @user_interest.update(recommendation: params[:answer_reco]["answer-#{@user_interest.id}"], comments: params[:answer_reco][:comments])
     respond_to do |format|
       format.js
     end
