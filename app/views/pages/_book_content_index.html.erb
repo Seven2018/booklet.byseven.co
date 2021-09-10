@@ -49,9 +49,11 @@
           </div>
           
           <div class="booklet-card-like">
-            <% current_user_like = UserInterest.find_by(content_id: content.id, user_id: current_user.id, status: 'Interested') %>
-            <% users_interested = UserInterest.where(content_id: content.id, status: 'Interested').count %>
-            <p style='color:#696969;'><%= users_interested %><i class="far fa-heart booklet-card-like__right"></i></p>
+            <% likes_count = UserInterest.where(content_id: content.id, status: 'Interested').count %>
+            <% recommendations_count = UserInterest.where(content_id: content.id, recommendation: ['Yes', 'No']).count %>
+            <% yes_recommendations_count = UserInterest.where(content_id: content.id, recommendation: 'Yes').count %>
+            <p style='color:#696969;'><%= likes_count %><i class="far fa-heart booklet-card-like__right"></i></p>
+            <p style='color:#696969;'><%= "#{yes_recommendations_count} / #{recommendations_count}" %><i class="fas fa-user-check mx-3"></i></p>
           </div>
 
         </div>
@@ -107,9 +109,8 @@
             </div>
             
             <div class="booklet-card-like">
-              <% current_user_like = UserInterest.find_by(content_id: content.id, user_id: current_user.id, status: 'Interested') %>
-              <% users_interested = UserInterest.where(content_id: content.id, status: 'Interested').count %>
-              <p style='color:#696969;'><%= users_interested %><i class="far fa-heart booklet-card-like__right"></i></p>
+              <% likes_count = UserInterest.where(content_id: content.id, status: 'Interested').count %>
+              <p style='color:#696969;'><%= likes_count %><i class="far fa-heart booklet-card-like__right"></i></p>
             </div>
 
           </div>

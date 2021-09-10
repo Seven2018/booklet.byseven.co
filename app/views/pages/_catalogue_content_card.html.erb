@@ -60,15 +60,15 @@
 
         <div class="booklet-card-like">
           <% current_user_like = UserInterest.find_by(content_id: content.id, user_id: current_user.id, status: 'Interested') %>
-          <% users_interested = UserInterest.where(content_id: content.id, status: 'Interested').count %>
+          <% likes_count = UserInterest.where(content_id: content.id, status: 'Interested').count %>
 
           <% if current_user_like.present? %>
             <%= link_to user_interest_path(id: current_user_like.id), method: :delete, remote: true do %>
-              <p><%= users_interested %><i class="fas fa-heart booklet-card-like__right" style='color:#F26419;'></i></p>
+              <p style='color:#F26419;'><%= likes_count %><i class="fas fa-heart booklet-card-like__right"></i></p>
             <% end %>
           <% else %>
             <%= link_to user_interests_path(content_id: content.id), method: :post, remote: true do %>
-              <p><%= users_interested %><i class="far fa-heart booklet-card-like__right" style='color:#F26419;'></i></p>
+              <p style='color:#F26419;'><%= likes_count %><i class="far fa-heart booklet-card-like__right"></i></p>
             <% end %>
           <% end %>
         </div>
