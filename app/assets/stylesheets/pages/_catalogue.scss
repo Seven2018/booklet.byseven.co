@@ -42,6 +42,10 @@
   @include from-medium {
     flex-direction: row;
   }
+
+  ::placeholder {
+    color: #C4C4C4;
+  }
 }
 
 #catalogue-controls__user-search {
@@ -69,7 +73,7 @@
   z-index: 150;
   top: 12px;
   left: 12px;
-  color: #808080;
+  color: #C4C4C4;
 }
 
 .filtered_themes {
@@ -118,6 +122,7 @@
 
 #catalogue-index {
   padding: 0 2rem;
+  margin-bottom: 20px;
 }
 
 .theme-save-btn {

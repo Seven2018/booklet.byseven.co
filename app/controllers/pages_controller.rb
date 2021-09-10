@@ -67,6 +67,7 @@ class PagesController < ApplicationController
 
   # Display contents catalogue
   def catalogue
+    @index_title_content = Content.count + 1
     complete_profile
     if current_user.company_id.present?
       if params[:filter].present?

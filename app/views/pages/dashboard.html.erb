@@ -7,7 +7,9 @@
           <li role="presentation"><a href="#All" data-toggle="tab" >Staff Trainings</a></li>
         <% end %>
         <li role="presentation"><a href="#Recommended" data-toggle="tab" >Recommended 
-          <%= "(#{@my_recommended_pending.count})" if @my_recommended_pending.count > 0 %></a></li>
+          <% if @my_recommended_pending.count > 0 %>
+            (<%= @my_recommended_pending.count %>)
+          <% end %></a></li>
       </ul>
     </div>
     <div class="tab-content">

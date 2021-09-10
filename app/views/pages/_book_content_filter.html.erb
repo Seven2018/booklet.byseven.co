@@ -1,6 +1,6 @@
 <i class="fas fa-search"></i>
 <%= form_with url: categories_search_path, local: true, method: :get, input_html: {onkeydown: "return event.key != 'Enter';"} do |f| %>
-  <%= f.text_field :search, placeholder: 'Search for Themes', label: false, data: {behavior: 'autocomplete'} %>
+  <%= f.text_field :search, placeholder: 'Search', label: false, data: {behavior: 'autocomplete'} %>
 <% end %>
 <div class="hidden-form-ajax hidden">
   <%= simple_form_for :filter_content, url: book_path, method: :get, remote: true, input_html: {multipart: true} do |f| %>
