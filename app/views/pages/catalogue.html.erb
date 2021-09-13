@@ -15,13 +15,14 @@
       <div class="search-and-create">
         <div id="catalogue-controls__user-search">
           <i class="fas fa-search catalogue-controls__search-icon"></i>
-          <%= simple_form_for :search, url: catalogue_path, remote: true, method: :get do |f| %>
+          <%= simple_form_for :search, url: catalogue_path, method: :get do |f| %>
             <%= f.text_field :title, placeholder: 'Search', label: false %>
-            <%= f.submit class: 'hidden hidden-submit' %>
+            <%= f.submit 'Search', class: 'btn-search' %>
           <% end %>
-          <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
+          <%# <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
             <p>Reset</p>
-          </div>
+          </div> %>
+          <%= link_to 'Reset', catalogue_path(reset: ""), id: "organisation-controls__user-search-clear" %>
         </div>
       <div class="filtered_themes">
       </div>

@@ -70,28 +70,19 @@ class PagesController < ApplicationController
     @index_title_content = Content.count + 1
     complete_profile
     if current_user.company_id.present?
-      if params[:filter].present?
-        if params[:filter][:themes].split(',').uniq.present?
-          @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter][:themes].split(',')}).order(updated_at: :desc).uniq
-        else
-          @contents = Content.where(company_id: current_user.company_id).order(updated_at: :desc)
-        end
-        respond_to do |format|
-          format.html {catalogue_path}
-          format.js
-        end
-      # Index for other Users, with visibility limited to programs proposed by their company only
-      else
-        if params[:search].present?
-          @contents = Content.where(company_id: current_user.company.id).where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%") + Content.joins(content_categories: :category).where(company_id: current_user.company_id).where("unaccent(lower(categories.title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%")
+      # SEARCHING CONTENTS 
+      @contents = Content.where(company_id: current_user.company.id)
+      unless params[:reset]
+        if params[:search].present? && !params[:search][:title].blank?
+          @contents = @contents.search_contents("#{params[:search][:title]}")
           respond_to do |format|
             format.html {catalogue_path}
             format.js
           end
-        else
-          @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
         end
       end
+      @contents = @contents.order(updated_at: :desc)
+
     end
   end
 

@@ -535,12 +535,19 @@
   }
 }
 
+#catalogue-controls__user-search {
+  display: flex;
+
+  .btn-search {
+    width: 75px;
+    padding: 0;
+  }
+}
+
 #organisation-controls__user-search-clear {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  background-color: white;
   height: 3.8rem;
   z-index: 100;
   top: 1px;
