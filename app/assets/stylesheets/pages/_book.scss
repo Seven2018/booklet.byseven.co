@@ -449,6 +449,17 @@
     position: relative;
     background: #F8D9C8;
 
+    .booklet-card__top-info {
+      padding-right: 3rem;
+
+      h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+      }
+    }
+
     .booklet-card-type {
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
       width: 133px;
@@ -458,6 +469,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
 
       .booklet-card-type-icon {
         display: flex;
@@ -538,6 +552,17 @@
     background: #C4C4C4;
   }
 
+    .booklet-card__top-info {
+      padding-right: 3rem;
+
+      h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+      }
+    }
+
   .booklet-card-type {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     width: 133px;
@@ -547,6 +572,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
 
     .booklet-card-type-icon {
       display: flex;
