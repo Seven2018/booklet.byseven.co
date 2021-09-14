@@ -22,7 +22,9 @@
           <%# <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
             <p>Reset</p>
           </div> %>
-          <%= link_to 'Reset', catalogue_path(reset: ""), id: "organisation-controls__user-search-clear" %>
+          <% if params[:search].present? && !params[:search][:title].blank? %>
+            <%= link_to 'Reset', catalogue_path(reset: ""), id: "organisation-controls__user-search-clear" %>
+          <% end %>
         </div>
       <div class="filtered_themes">
       </div>
@@ -31,7 +33,11 @@
   </div>
   <div id="catalogue-index">
     <% if @contents.empty? %>
-      <p style="padding:15px;">No trainings have been created. You see that big <span style='color:#F26419'>orange</span> button in the corner? Click it to create your first training.</p>
+      <% if params[:search].present? %>
+        <p>No results.</p>
+      <% else %>
+        <p style="padding:15px;">No trainings have been created. You see that big <span style='color:#F26419'>orange</span> button in the corner? Click it to create your first training.</p>
+      <% end %>
     <% elsif %>
       <%= render 'pages/catalogue_index', contents: @contents %>
     <% end %>
@@ -150,23 +156,23 @@
     }
   }
 
-  function clearSearch(element) {
-    document.querySelector('#search_title').value = ''
-    document.querySelector('#organisation-controls__user-search-clear').classList.add('hidden')
-    element.parentNode.querySelector('.hidden-submit').click()
-  }
+  // function clearSearch(element) {
+  //   document.querySelector('#search_title').value = ''
+  //   document.querySelector('#organisation-controls__user-search-clear').classList.add('hidden')
+  //   element.parentNode.querySelector('.hidden-submit').click()
+  // }
 
-  if (document.querySelector('.search') != null) {
-    search_input = document.querySelector('.search').querySelector('input');
-    clear_button = document.getElementById('organisation-controls__user-search-clear');
-    search_input.addEventListener('keyup', event => {
-      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
-        clear_button.classList.remove('hidden');
-      } else if (search_input.value == '') {
-        clear_button.classList.add('hidden');
-      }
-    })
-  }
+  // if (document.querySelector('.search') != null) {
+  //   search_input = document.querySelector('.search').querySelector('input');
+  //   clear_button = document.getElementById('organisation-controls__user-search-clear');
+  //   search_input.addEventListener('keyup', event => {
+  //     if (search_input.value != '' && clear_button.classList.contains('hidden')) {
+  //       clear_button.classList.remove('hidden');
+  //     } else if (search_input.value == '') {
+  //       clear_button.classList.add('hidden');
+  //     }
+  //   })
+  // }
 
   $input = $("[data-behavior='autocomplete']");
 
