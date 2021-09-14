@@ -10,7 +10,7 @@
         <%= f.submit 'Search', class: 'btn-search' %>
       <% end %>
       <% if params[:search].present? && !params[:search][:title].blank? %>
-        <%= link_to 'Reset', reset_path: catalogue_path(reset: ""), class: "btn-reset-form" %>
+        <%= link_to 'Reset', class: "btn-reset-form", reset_path: overview_path(reset: "") %>
       <% end %>
     </div>
 
@@ -53,17 +53,17 @@
 </div>
 
 <script>
-  if (document.querySelector('.search') != null) {
-    search_input = document.querySelector('.search').querySelector('input')
-    clear_button = document.getElementById('overview-controls__user-search-clear')
-    search_input.addEventListener('keyup', event => {
-      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
-        clear_button.classList.remove('hidden')
-      } else if (search_input.value == '') {
-        clear_button.classList.add('hidden')
-      }
-    })
-  }
+  // if (document.querySelector('.search') != null) {
+  //   search_input = document.querySelector('.search').querySelector('input')
+  //   clear_button = document.getElementById('overview-controls__user-search-clear')
+  //   search_input.addEventListener('keyup', event => {
+  //     if (search_input.value != '' && clear_button.classList.contains('hidden')) {
+  //       clear_button.classList.remove('hidden')
+  //     } else if (search_input.value == '') {
+  //       clear_button.classList.add('hidden')
+  //     }
+  //   })
+  // }
 
   formGuardian = false
   doubleClickGuardian = false
