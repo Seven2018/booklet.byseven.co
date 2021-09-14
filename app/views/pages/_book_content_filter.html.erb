@@ -1,9 +1,9 @@
 <i class="fas fa-search"></i>
-<%= simple_form_for :filter_content, url: book_path, remote: true, method: :get do |f| %>
+<%= simple_form_for :searching, url: book_path, method: :get do |f| %>
   <%= f.text_field :title, placeholder: 'Search', label: false %>
   <%= f.hidden_field :selected %>
-  <%= f.submit class: 'hidden hidden-submit' %>
+  <%= f.submit 'Search', class: 'btn-search' %>
 <% end %>
-<div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
-  <p>Reset</p>
-</div>
+<% if params[:searching].present? && !params[:searching][:title].blank? %>
+  <%= link_to 'Reset', catalogue_path(reset: ""), class: "btn-reset-form" %>
+<% end %>

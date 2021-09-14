@@ -1,0 +1,13 @@
+<div class="searchbar">
+    <i class="fas fa-search catalogue-controls__search-icon"></i>
+    <%= simple_form_for :search, url: path, method: :get do |f| %>
+    <%= f.text_field :title, placeholder: 'Search', label: false %>
+    <%= f.submit 'Search', class: 'btn-search' %>
+    <% end %>
+    <%# <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
+    <p>Reset</p>
+    </div> %>
+    <% if params[:search].present? && !params[:search][:title].blank? %>
+    <%= link_to 'Reset', catalogue_path(reset: ""), class: "btn-reset-form" %>
+    <% end %>
+</div>
