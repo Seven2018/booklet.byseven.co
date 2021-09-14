@@ -3,15 +3,15 @@
 
     <div class="searchbar" id="overview-controls__user-search">
       <i class="fas fa-search catalogue-controls__search-icon"></i>
-      <%= simple_form_for :search, url: overview_path, method: :get, remote: true do |f| %>
+      <%= simple_form_for :search, url: overview_path, method: :get do |f| %>
         <%= f.text_field :title, placeholder: 'Search', label: false %>
         <%= f.hidden_field :start_date, value: '' %>
         <%= f.hidden_field :end_date, value: '' %>
         <%= f.submit 'Search', class: 'btn-search' %>
       <% end %>
-      <%# <div class="hidden" id="overview-controls__user-search-clear" onclick='clearSearch(this);'>
-        <p class= "btn-reset-form">Reset</p>
-      </div> %>
+      <% if params[:search].present? && !params[:search][:title].blank? %>
+        <%= link_to 'Reset', reset_path: catalogue_path(reset: ""), class: "btn-reset-form" %>
+      <% end %>
     </div>
 
     <div class=" flex-row-between-centered">
@@ -24,7 +24,7 @@
         </a>
       </div> %>
       <div class="overview-select-date">
-        <%= simple_form_for :select_period, url: overview_path, method: :get, remote: true do |f| %>
+        <%= simple_form_for :select_period, url: overview_path, method: :get do |f| %>
           <div class="flex-row-start-centered overview-controls__overview-dates">
             <%= f.label 'From' %>
             <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Date.today.beginning_of_year, onchange: 'selectOverviewDate()'}, onchange: 'selectOverviewDate()' %>

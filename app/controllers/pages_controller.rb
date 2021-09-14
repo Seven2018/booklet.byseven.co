@@ -34,30 +34,35 @@ class PagesController < ApplicationController
 
   # Display the company Overview (pages/overview)
   def overview
-    @contents = Content.where(company_id: current_user.company_id)
-    @start_date = Date.today.beginning_of_year
-    @end_date = Date.today
-    if params[:search].present?
-      @contents = @contents.where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%")
-      if params[:search][:start_date].present? && params[:search][:end_date].present?
-        @start_date = Date.strptime(params[:search][:start_date], '%d/%m/%Y')
-        @end_date = Date.strptime(params[:search][:end_date], '%d/%m/%Y')
+    if current_user.company_id.present?
+      # SEARCHING CONTENTS 
+      @contents = Content.where(company_id: current_user.company.id)
+      unless params[:reset]
+        if params[:search].present? && !params[:search][:title].blank?
+          @contents = @contents.search_contents("#{params[:search][:title]}")
+          respond_to do |format|
+            format.html {catalogue_path}
+            format.js
+          end
+        end
+        if params[:select_period].present?
+          @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
+          @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
+          if params[:select_period][:content_ids].present?
+            @contents = @contents.where(id: params[:select_period][:content_ids].split(','))
+          end
+        end
       end
+      @contents = @contents.order(updated_at: :desc)
     end
-    if params[:content].present? && params[:content][:categories] != ['']
-      @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params[:content][:categories].reject{|x| x.empty?}})
-      if params[:filter_content][:start_date].present? && params[:filter_content][:end_date].present?
-        @start_date = Date.strptime(params[:filter_content][:start_date], '%d/%m/%Y')
-        @end_date = Date.strptime(params[:filter_content][:end_date], '%d/%m/%Y')
-      end
-    end
-    if params[:select_period].present?
-      @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
-      @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
-      if params[:select_period][:content_ids].present?
-        @contents = @contents.where(id: params[:select_period][:content_ids].split(','))
-      end
-    end
+    # if params[:content].present? && params[:content][:categories] != ['']
+    #   @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params[:content][:categories].reject{|x| x.empty?}})
+    #   if params[:filter_content][:start_date].present? && params[:filter_content][:end_date].present?
+    #     @start_date = Date.strptime(params[:filter_content][:start_date], '%d/%m/%Y')
+    #     @end_date = Date.strptime(params[:filter_content][:end_date], '%d/%m/%Y')
+    #   end
+    # end
+    
     @sessions = Session.where(content_id: @contents.ids.uniq).where('date >= ? AND date <= ?', @start_date, @end_date)
     respond_to do |format|
       format.html {overview_path}
