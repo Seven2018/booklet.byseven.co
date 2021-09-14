@@ -18,15 +18,17 @@
   <% end %>
 </div>
 <div class="organisation-controls">
-  <div id="organisation-controls__user-search">
+  <div id="organisation-controls__user-search" class="searchbar">
     <% if params[:action] == 'organisation' %>
+
       <i class="fas fa-search organisation-controls__search-icon"></i>
       <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
-        <%= f.input :name, placeholder: 'Search by name', label: false %>
-        <%= f.submit class: 'hidden hidden-submit' %>
+        <%= f.text_field :name, placeholder: 'Search by name', label: false %>
+        <%= f.submit 'Search', class: 'btn-search' %>
       <% end %>
+
       <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
-        <p>Reset</p>
+        <p class= "btn-reset-form">Reset</p>
       </div>
     <% end %>
   </div>
