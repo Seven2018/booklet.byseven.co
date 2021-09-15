@@ -1,6 +1,6 @@
 <% content = session.content %>
 <% if content.content_type == 'Synchronous' %>
-  <div class="col-xl-6 col-lg-12 booklet-col">
+  <div id='card-session-<%= session.id %>' class="col-xl-6 col-lg-12 booklet-col">
     <div class="booklet-card">
       <div class="booking-date">
         <% if session.date >= Date.today %>
@@ -41,7 +41,7 @@
               <div class="catalogue-content-card-right-menu" onclick="openContentMenu(this);"><i class="fas fa-ellipsis-v" style='color:#F26419;'></i></div>
               <div class="content-dropdown hidden">
                 <a data-toggle='modal' data-target='#editSession-<%= session.id %>'>Modify</a>
-                <%= link_to 'Delete', session_path(session), data: {confirm: 'Are you sure ?'}, method: :delete %>
+                <%= link_to 'Delete', session_path(session, remove: session.id), data: {confirm: 'Are you sure ?'}, method: :delete, remote: true %>
               </div>
             <% end %>
           </div>

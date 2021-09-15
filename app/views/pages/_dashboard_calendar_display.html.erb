@@ -1,0 +1,10 @@
+<%= month_calendar(events: @all_my_sessions, attribute: :date) do |date, sessions| %>
+  <%= link_to dashboard_path(tab: tab, date: date), remote: true do %>
+    <div class="flex-column-between-centered">
+      <%= date.day %>
+      <% if sessions.present? %>
+        <i class="fas fa-circle"></i>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

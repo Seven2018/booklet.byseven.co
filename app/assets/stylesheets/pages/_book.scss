@@ -631,11 +631,10 @@
   }
 }
 
-.booklet-card-type-pill {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  align-items: center;
+.booklet-card-type-pill > p {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
 }
 
 .duration-alert {

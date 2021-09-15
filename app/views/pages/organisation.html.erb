@@ -1,5 +1,7 @@
 <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
-<%= paginate @users, remote: true %>
+<div id="paginate-container">
+  <%= paginate @users, remote: true, param_name: :page %>
+</div>
 <div class="organisation-main-container organisation-main-container-unfiltered">
   <%= render 'organisation_users_list', users: @users, unfiltered: @unfiltered %>
 </div>

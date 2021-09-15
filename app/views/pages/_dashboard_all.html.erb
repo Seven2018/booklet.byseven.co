@@ -29,22 +29,13 @@
     </div>
   </div>
   <div class="dashboard-right-schedule">
-    <div class="dashboard-calendar">
-      <%= month_calendar(events: @allsessions, attribute: :date) do |date, sessions| %>
-        <%= link_to dashboard_path(tab: 'all', date: date), remote: true do%>
-          <div class="flex-column-between-centered">
-            <%= date.day %>
-            <% if sessions.present? %>
-              <i class="fas fa-circle"></i>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
+    <div class="dashboard-calendar dashboard-calendar--all">
+      <%= render 'pages/dashboard_calendar_display', date: Date.today, tab: 'all' %>
     </div>
     <div class="schedule">
       <div class="calendar-schedule calendar-schedule-all">
         <% @date = Date.today unless @date.present? %>
-        <%= render 'pages/calendar_schedule', date: @date, tab: 'all' %>
+        <%# render 'pages/calendar_schedule', date: @date, tab: 'all' %>
       </div>
     </div>
   </div>

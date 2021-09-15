@@ -1,0 +1,2 @@
+class LinkContentFolder < ApplicationRecord
+end

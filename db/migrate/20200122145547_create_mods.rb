@@ -12,6 +12,7 @@ class CreateMods < ActiveRecord::Migration[6.0]
       t.integer :duration, null: false, default: 0
       t.references :company, foreign_key: true
       t.integer :content_id
+      t.integer :workshop_id
       t.timestamps
     end
   end
