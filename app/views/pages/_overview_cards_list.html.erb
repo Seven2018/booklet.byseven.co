@@ -8,7 +8,6 @@
         <% end %>
           <div class="overview-card-top">
             <div class="overview-card__top-info">
-              <%= link_to '', content_path(content, session_id: session.id), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
               <% if content.title.length <= 30 %>
                 <h3><b><%= content.title %></b></h3>
               <% else %>
