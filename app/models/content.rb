@@ -13,4 +13,20 @@ class Content < ApplicationRecord
   has_many :interested, through: :user_interests, source: :user
   validates :title, :duration, presence: true
   serialize :recommended, Array
+
+  # current_user = User.find(user_id)
+  # raise
+
+  include PgSearch::Model
+  pg_search_scope :search_contents,
+    against: [ :title ],
+    associated_against: {
+      categories: :title
+    },
+    using: {
+      tsearch: { prefix: true }
+    },
+    ignoring: :accents,
+    order_within_rank: "contents.updated_at DESC"
+
 end

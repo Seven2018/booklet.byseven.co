@@ -44,30 +44,35 @@ class PagesController < ApplicationController
 
   # Display the company Overview (pages/overview)
   def overview
-    @contents = Content.where(company_id: current_user.company_id)
-    @start_date = Date.today.beginning_of_year
-    @end_date = Date.today
-    if params[:search].present?
-      @contents = @contents.where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%")
-      if params[:search][:start_date].present? && params[:search][:end_date].present?
-        @start_date = Date.strptime(params[:search][:start_date], '%d/%m/%Y')
-        @end_date = Date.strptime(params[:search][:end_date], '%d/%m/%Y')
+    if current_user.company_id.present?
+      # SEARCHING CONTENTS 
+      @contents = Content.where(company_id: current_user.company.id)
+      unless params[:reset]
+        if params[:search].present? && !params[:search][:title].blank?
+          @contents = @contents.search_contents("#{params[:search][:title]}")
+          respond_to do |format|
+            format.html {catalogue_path}
+            format.js
+          end
+        end
+        if params[:select_period].present?
+          @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
+          @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
+          if params[:select_period][:content_ids].present?
+            @contents = @contents.where(id: params[:select_period][:content_ids].split(','))
+          end
+        end
       end
+      @contents = @contents.order(updated_at: :desc)
     end
-    if params[:content].present? && params[:content][:categories] != ['']
-      @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params[:content][:categories].reject{|x| x.empty?}})
-      if params[:filter_content][:start_date].present? && params[:filter_content][:end_date].present?
-        @start_date = Date.strptime(params[:filter_content][:start_date], '%d/%m/%Y')
-        @end_date = Date.strptime(params[:filter_content][:end_date], '%d/%m/%Y')
-      end
-    end
-    if params[:select_period].present?
-      @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
-      @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
-      if params[:select_period][:content_ids].present?
-        @contents = @contents.where(id: params[:select_period][:content_ids].split(','))
-      end
-    end
+    # if params[:content].present? && params[:content][:categories] != ['']
+    #   @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params[:content][:categories].reject{|x| x.empty?}})
+    #   if params[:filter_content][:start_date].present? && params[:filter_content][:end_date].present?
+    #     @start_date = Date.strptime(params[:filter_content][:start_date], '%d/%m/%Y')
+    #     @end_date = Date.strptime(params[:filter_content][:end_date], '%d/%m/%Y')
+    #   end
+    # end
+    
     @sessions = Session.where(content_id: @contents.ids.uniq).where('date >= ? AND date <= ?', @start_date, @end_date)
     respond_to do |format|
       format.html {overview_path}
@@ -77,31 +82,21 @@ class PagesController < ApplicationController
 
   # Display contents catalogue
   def catalogue
-    @index_title_content = Content.count + 1
+    # @index_title_content = Content.count + 1
     complete_profile
     if current_user.company_id.present?
-      if params[:filter].present?
-        if params[:filter][:themes].split(',').uniq.present?
-          @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter][:themes].split(',')}).order(updated_at: :desc).uniq
-        else
-          @contents = Content.where(company_id: current_user.company_id).order(updated_at: :desc)
-        end
-        respond_to do |format|
-          format.html {catalogue_path}
-          format.js
-        end
-      # Index for other Users, with visibility limited to programs proposed by their company only
-      else
-        if params[:search].present?
-          @contents = Content.where(company_id: current_user.company.id).where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%") + Content.joins(content_categories: :category).where(company_id: current_user.company_id).where("unaccent(lower(categories.title)) LIKE ?", "%#{I18n.transliterate(params[:search][:title].downcase)}%")
+      # SEARCHING CONTENTS 
+      @contents = Content.where(company_id: current_user.company.id)
+      unless params[:reset]
+        if params[:search].present? && !params[:search][:title].blank?
+          @contents = @contents.search_contents("#{params[:search][:title]}")
           respond_to do |format|
             format.html {catalogue_path}
             format.js
           end
-        else
-          @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
         end
       end
+      @contents = @contents.order(updated_at: :desc)
     end
   end
 
@@ -210,19 +205,28 @@ class PagesController < ApplicationController
   # Display book page
   def book
     index_function(User.where(company_id: current_user.company_id))
+
+    if current_user.company_id.present?
+      # SEARCHING CONTENTS 
+      @contents = Content.where(company_id: current_user.company.id)
+      unless params[:reset]
+        if params[:search].present? && !params[:search][:title].blank?
+          @contents = @contents.search_contents("#{params[:search][:title]}")
+          respond_to do |format|
+            format.html {catalogue_path}
+            format.js
+          end
+        end
+      end
+      @contents = @contents.order(updated_at: :desc)
+    end
+
     if params[:filter_content].present?
-      # if params[:filter_content][:themes].split(',').uniq.present?
-      #   @contents = Content.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: params[:filter_content][:themes].split(',')}).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc).uniq
-      # else
-      #   @contents = Content.where(company_id: current_user.company_id).where.not(id: params[:filter_content][:selected].split(',')).order(title: :asc)
-      # end
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc)
-      @contents = (Content.where(company_id: current_user.company.id).where("unaccent(lower(title)) LIKE ?", "%#{I18n.transliterate(params[:filter_content][:title].downcase)}%") + Content.joins(content_categories: :category).where(company_id: current_user.company_id).where("unaccent(lower(categories.title)) LIKE ?", "%#{I18n.transliterate(params[:filter_content][:title].downcase)}%")).uniq - @selected_contents
       @filter = 'content'
       @interest_for = @selected_contents.map(&:id)
     elsif params[:filter_user].present?
       @filter = 'user'
-      @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
       @interest_for = params[:filter_user][:interest_for].split(',')
       @selected_contents = []
       # @selected_filter = params[:filter_user][:tag].reject(&:blank?).join(',') if params[:filter_user][:tag].present?
@@ -237,7 +241,6 @@ class PagesController < ApplicationController
       @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
       @selected_users = User.where(id: params[:filter_user][:selected].split(',')) if params[:filter_user].present?
     else
-      @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
       @filter = 'none'
     end
     respond_to do |format|
@@ -254,7 +257,7 @@ class PagesController < ApplicationController
       # If a name is entered in the search bar
       if params[:search].present?
         @users = parameter
-        if params[:search][:name] != ' '
+        if params[:search][:name] && params[:search][:name] != ' '
           @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search][:name].downcase)}%", "%#{I18n.transliterate(params[:search][:name].downcase)}%")
           @search_name = params[:search][:name]
         end

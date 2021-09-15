@@ -506,8 +506,8 @@
 
 .organisation-controls {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 5px;
+  justify-content: space-between;
+  margin-bottom: 30px;
 
   .index-controls-buttons {
     div:last-child {
@@ -537,25 +537,28 @@
 
 #organisation-controls__user-search-clear, #organisation-controls__content-search-clear {
   display: flex;
-  justify-content: center;
   align-items: center;
-  position: absolute;
-  background-color: white;
-  height: 3.8rem;
-  z-index: 100;
-  top: 1px;
-  right: 12px;
-
-  p {
-    font-size: 1.2rem;
-    color: #F26419;
-
-    &:hover {
-      cursor: pointer;
-      opacity: 80%;
-    }
-  }
 }
+
+// #organisation-controls__user-search-clear {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 3.8rem;
+//   z-index: 100;
+//   top: 1px;
+//   right: 12px;
+
+//   p {
+//     font-size: 1.2rem;
+//     color: #F26419;
+
+//     &:hover {
+//       cursor: pointer;
+//       opacity: 80%;
+//     }
+//   }
+// }
 
 .organisation-controls__search-icon {
   position: absolute;

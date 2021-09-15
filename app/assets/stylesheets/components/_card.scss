@@ -36,6 +36,14 @@
 .booklet-card__top-info {
   display: flex;
   flex-direction: column;
+
+  h3 {
+    display: inline;
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .booklet-card__cost-input {
