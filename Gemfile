@@ -37,6 +37,8 @@ gem 'render_async'
 gem 'kaminari'
 gem 'where_exists'
 
+gem 'pg_search', '~> 2.3.0'
+
 
 group :development do
   gem 'web-console', '>= 3.3.0'

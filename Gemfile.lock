@@ -259,6 +259,9 @@ GEM
     orm_adapter (0.5.0)
     os (1.1.1)
     pg (0.21.0)
+    pg_search (2.3.5)
+      activerecord (>= 5.2)
+      activesupport (>= 5.2)
     popper_js (1.16.0)
     pry (0.13.1)
       coderay (~> 1.1)
@@ -426,6 +429,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
   pg (~> 0.21)
+  pg_search (~> 2.3.0)
   pry-byebug
   pry-rails
   puma
@@ -451,4 +455,4 @@ RUBY VERSION
    ruby 2.7.3p183
 
 BUNDLED WITH
-   2.2.8
+   2.2.27
