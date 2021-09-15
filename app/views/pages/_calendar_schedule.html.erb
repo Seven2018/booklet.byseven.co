@@ -1,4 +1,3 @@
-<div class="schedule-title"></div>
 <% if tab == 'all' %>
   <% sessions = Session.where(company_id: current_user.company_id, date: @date) %>
 <% else %>
@@ -13,7 +12,7 @@
       </div>
       <div class="calendar-card-info">
         <div class="calendar-card-title">
-          <p><%= content.title %></p>
+          <p data-toggle='tooltip' title='<%= content.title %>'><%= content.title %></p>
         </div>
         <div class="calendar-card-time"><p><%= session.starts_at.strftime('%H:%M') %> - <%= session.ends_at.strftime('%H:%M') %></p>
           <div class="calendar-card-title-sessions">

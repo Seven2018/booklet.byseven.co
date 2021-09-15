@@ -1,5 +1,15 @@
 if ("<%= @filter %>" == 'search') {
   document.querySelector('.workshop-cards-book').innerHTML = '<%= j render("pages/book_content_index", contents: @contents) %>';
+} else if ("<%= @filter %>" == 'search_user') {
+  if ("<%= @unfiltered %>" == 'true') {
+    document.querySelector('.users-book-filtered').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: [], selected_filter: []) %>';
+    document.querySelector('.users-book-filtered').classList.add('hidden')
+    document.querySelector('.users-book-all').classList.remove('hidden')
+  } else {
+    document.querySelector('.users-book-filtered').innerHTML = '<%= j render("pages/book_user_index", users: @users, interest_for: [], selected_filter: []) %>';
+    document.querySelector('.users-book-filtered').classList.remove('hidden')
+    document.querySelector('.users-book-all').classList.add('hidden')
+  }
 } else if ("<%= @filter %>" == 'content') {
   document.querySelector('.users-title').innerHTML = "<h2>Book Participants for: <%= @selected_contents.map(&:title).join(', ') %>";
   document.querySelector('.dates-title').innerHTML = "<h2>Select Dates for: <%= @selected_contents.map(&:title).join(', ') %>";
@@ -14,6 +24,7 @@ if ("<%= @filter %>" == 'search') {
     enableTime: true,
     noCalendar: true,
     dateFormat: "H:i",
+    time_24hr: true,
   })
   flatpickr(".datepicker-range", {
     disableMobile: true,

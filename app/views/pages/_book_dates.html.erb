@@ -4,10 +4,10 @@
       <div class="booklet-card-syn-dates">
         <div class="booklet-card-top">
           <div class="booklet-card__top-info">
-            <% if content.title.length > 35 %>
-              <h3><b><%= content.title.first(35)+'...' %></b></h3>
+            <% if content.title.length > 30 %>
+              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30)+'...' %></b></h3>
             <% else %>
-              <h3><b><%= content.title %></b></h3>
+              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
             <% end %>
             <div class="flex-row-between-centered">
               <p><%= content.duration %> Minutes</p>
@@ -70,10 +70,10 @@
       <div class="booklet-card-asyn-dates">
         <div class="booklet-card-top">
           <div class="booklet-card__top-info">
-            <% if content.title.length > 35 %>
-              <h3><b><%= content.title.first(35)+'...' %></b></h3>
+            <% if content.title.length > 30 %>
+              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30)+'...' %></b></h3>
             <% else %>
-              <h3><b><%= content.title %></b></h3>
+              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
             <% end %>
           <p><%= content.duration %> Minutes</p>
           </div>

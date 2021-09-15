@@ -516,8 +516,26 @@
   }
 }
 
-#organisation-controls__user-search {
+#organisation-controls__user-search, #organisation-controls__content-search {
   position: relative;
+
+  input {
+    padding: 0 5rem 0 3.5rem;
+    position: relative;
+    margin-bottom: 0px !important;
+    height: 40px;
+    border-radius: 4px;
+    width: 300px;
+    margin-right: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
+  }
+
+  .form-group {
+    margin-bottom: 0px !important;
+  }
+}
+
+#organisation-controls__user-search-clear, #organisation-controls__content-search-clear {
   display: flex;
   align-items: center;
 }

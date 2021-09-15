@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_26_151501) do
+ActiveRecord::Schema.define(version: 2021_09_15_115859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,13 +129,11 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
     t.string "content_type", default: "Synchronous", null: false
     t.string "image", default: "", null: false
     t.bigint "company_id"
-    t.bigint "folder_id"
     t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["author_id"], name: "index_contents_on_author_id"
     t.index ["company_id"], name: "index_contents_on_company_id"
-    t.index ["folder_id"], name: "index_contents_on_folder_id"
   end
 
   create_table "currents", force: :cascade do |t|
@@ -152,6 +150,15 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
     t.index ["company_id"], name: "index_folders_on_company_id"
   end
 
+  create_table "link_content_folders", force: :cascade do |t|
+    t.bigint "folder_id"
+    t.bigint "content_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_id"], name: "index_link_content_folders_on_content_id"
+    t.index ["folder_id"], name: "index_link_content_folders_on_folder_id"
+  end
+
   create_table "mods", force: :cascade do |t|
     t.string "title"
     t.text "text", default: ""
@@ -164,6 +171,7 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
     t.integer "duration", default: 0, null: false
     t.bigint "company_id"
     t.integer "content_id"
+    t.integer "workshop_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_mods_on_company_id"
@@ -176,13 +184,11 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
     t.time "ends_at"
     t.decimal "cost", precision: 15, scale: 10
     t.bigint "training_id"
-    t.bigint "content_id"
-    t.bigint "company_id"
+    t.bigint "workshop_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_sessions_on_company_id"
-    t.index ["content_id"], name: "index_sessions_on_content_id"
     t.index ["training_id"], name: "index_sessions_on_training_id"
+    t.index ["workshop_id"], name: "index_sessions_on_workshop_id"
   end
 
   create_table "skill_groups", force: :cascade do |t|
@@ -223,14 +229,10 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
 
   create_table "trainings", force: :cascade do |t|
     t.string "title"
-    t.bigint "folder_id"
-    t.bigint "content_id"
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_trainings_on_company_id"
-    t.index ["content_id"], name: "index_trainings_on_content_id"
-    t.index ["folder_id"], name: "index_trainings_on_folder_id"
   end
 
   create_table "user_forms", force: :cascade do |t|
@@ -302,6 +304,18 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "workshops", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.integer "duration", default: 0, null: false
+    t.text "description", default: "", null: false
+    t.string "content_type", default: "Synchronous", null: false
+    t.string "image", default: "", null: false
+    t.bigint "content_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_id"], name: "index_workshops_on_content_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assessment_answers", "assessment_questions"
   add_foreign_key "assessment_answers", "users"
@@ -314,19 +328,17 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
   add_foreign_key "content_skills", "contents"
   add_foreign_key "content_skills", "skills"
   add_foreign_key "contents", "companies"
-  add_foreign_key "contents", "folders"
   add_foreign_key "folders", "companies"
+  add_foreign_key "link_content_folders", "contents"
+  add_foreign_key "link_content_folders", "folders"
   add_foreign_key "mods", "companies"
-  add_foreign_key "sessions", "companies"
-  add_foreign_key "sessions", "contents"
   add_foreign_key "sessions", "trainings"
+  add_foreign_key "sessions", "workshops"
   add_foreign_key "skills", "skill_groups"
   add_foreign_key "tag_categories", "companies"
   add_foreign_key "tags", "companies"
   add_foreign_key "tags", "tag_categories"
   add_foreign_key "trainings", "companies"
-  add_foreign_key "trainings", "contents"
-  add_foreign_key "trainings", "folders"
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
   add_foreign_key "user_interests", "contents"
@@ -337,4 +349,5 @@ ActiveRecord::Schema.define(version: 2021_07_26_151501) do
   add_foreign_key "user_tags", "tags"
   add_foreign_key "user_tags", "users"
   add_foreign_key "users", "companies"
+  add_foreign_key "workshops", "contents"
 end

@@ -99,8 +99,21 @@
       </div>
     </div>
     <div class="index-controls-filter-bar-book">
-      <div class="btn-white" onclick='openFilter();'>
-        <p>Filter</p>
+      <div class="index-controls-filter-bar-book__user-filter">
+        <div id="organisation-controls__user-search">
+          <i class="fas fa-search"></i>
+          <%= simple_form_for :search_user, url: book_path, remote: true, method: :get do |f| %>
+            <%= f.text_field :name, placeholder: 'Search by name', label: false %>
+            <%= f.hidden_field :selected %>
+            <%= f.submit class: 'hidden hidden-submit' %>
+          <% end %>
+          <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearchUser(this);'>
+            <p>Reset</p>
+          </div>
+        </div>
+        <div class="btn-white" onclick='openFilter();'>
+          <p>Filter</p>
+        </div>
       </div>
       <div class="add-remove-users">
         <p onclick='addAll(this);' style='cursor:pointer;' class='add-selected'>Add All</p>
@@ -347,19 +360,24 @@
     empty = user.querySelector('#nouser')
     adduser = user.querySelector('#adduser')
     selecteduser = document.querySelector('.users-book-selected')
+    main_card = document.querySelector('.users-book-all').querySelector('#' + user.id)
     if (selecteduser.contains(user)) {
       card_id = user.id
       document.querySelector('.users-book-all').querySelector('#' + card_id).classList.remove('hidden')
       user.remove()
       updateUsers()
     } else if (document.querySelector('.users-book-all').contains(user)) {
-      document.querySelector('.users-book-all').querySelector('#' + user.id).classList.add('hidden')
+      if (main_card != null) {
+        main_card.classList.add('hidden')
+      }
       addUser(element);
     } else if (document.querySelector('.users-book-filtered').contains(user)) {
-      document.querySelector('.users-book-all').querySelector('#' + user.id).classList.add('hidden')
+      console.log(user.id)
+      if (main_card != null) {
+        main_card.classList.add('hidden')
+      }
       addUser(element);
       user.remove()
-    } else {
     }
   }
 
@@ -536,6 +554,7 @@
       enableTime: true,
       noCalendar: true,
       dateFormat: "H:i",
+      time_24hr: true,
     })
   }
 
@@ -587,21 +606,38 @@
     }
   }
 
-  function clearSearch(element) {
+  function clearSearchContent(element) {
     document.querySelector('#filter_content_title').value = ''
-    document.querySelector('#organisation-controls__user-search-clear').classList.add('hidden')
+    document.querySelector('#organisation-controls__content-search-clear').classList.add('hidden')
     element.parentNode.querySelector('.hidden-submit').click()
   }
 
   if (document.querySelector('.filter_content') != null) {
-    search_input = document.querySelector('.filter_content').querySelector('input');
-    clear_button = document.getElementById('organisation-controls__user-search-clear');
-    search_input.addEventListener('keyup', event => {
-      console.log('test')
-      if (search_input.value != '' && clear_button.classList.contains('hidden')) {
-        clear_button.classList.remove('hidden');
-      } else if (search_input.value == '') {
-        clear_button.classList.add('hidden');
+    search_content_input = document.querySelector('.filter_content').querySelector('input');
+    clear_content_button = document.getElementById('organisation-controls__content-search-clear');
+    search_content_input.addEventListener('keyup', event => {
+      if (search_content_input.value != '' && clear_content_button.classList.contains('hidden')) {
+        clear_content_button.classList.remove('hidden');
+      } else if (search_content_input.value == '') {
+        clear_content_button.classList.add('hidden');
+      }
+    })
+  }
+
+  function clearSearchUser(element) {
+    document.querySelector('#search_user_name').value = ''
+    document.querySelector('#organisation-controls__user-search-clear').classList.add('hidden')
+    element.parentNode.querySelector('.hidden-submit').click()
+  }
+
+  if (document.querySelector('.search_user') != null) {
+    search_user_input = document.querySelector('.search_user').querySelector('input');
+    clear_user_button = document.getElementById('organisation-controls__user-search-clear');
+    search_user_input.addEventListener('keyup', event => {
+      if (search_user_input.value != '' && clear_user_button.classList.contains('hidden')) {
+        clear_user_button.classList.remove('hidden');
+      } else if (search_user_input.value == '') {
+        clear_user_button.classList.add('hidden');
       }
     })
   }

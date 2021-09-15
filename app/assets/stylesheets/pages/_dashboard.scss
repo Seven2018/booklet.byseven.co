@@ -92,15 +92,6 @@
   align-items: center;
 }
 
-.schedule-title {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-top: 30px;
-  color: #F26419;
-  margin-left: 20px;
-}
-
-
 .calendar-schedule-card-sync {
   width: 300px;
   margin: 20px;
@@ -122,6 +113,15 @@
   .calendar-card-info {
     width: 80%;
     padding: 15px;
+
+    .calendar-card-title {
+
+      p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
 
     .calendar-card-time {
       display: flex;
@@ -260,4 +260,10 @@
     margin-bottom: 2rem;
     width: 25rem;
   }
+}
+
+// SESSIONS
+
+.session_cost {
+  margin: 0 1rem;
 }

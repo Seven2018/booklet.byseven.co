@@ -33,8 +33,12 @@ class SessionsController < ApplicationController
   def destroy
     @session = Session.find(params[:id])
     authorize @session
+    @remove = @session.id
     @session.destroy
-    redirect_to dashboard_path
+    respond_to do |format|
+      format.html {dashboard_path}
+      format.js
+    end
   end
 
   private

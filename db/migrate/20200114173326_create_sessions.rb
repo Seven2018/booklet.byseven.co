@@ -7,8 +7,7 @@ class CreateSessions < ActiveRecord::Migration[6.0]
       t.time :ends_at
       t.decimal :cost, precision: 15, scale: 10
       t.references :training, foreign_key: true
-      t.references :content, foreign_key: true
-      t.references :company, foreign_key: true
+      t.references :workshop, foreign_key: true
 
       t.timestamps
     end

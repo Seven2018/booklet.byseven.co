@@ -7,3 +7,6 @@
 <% if params[:searching].present? && !params[:searching][:title].blank? %>
   <%= link_to 'Reset', catalogue_path(reset: ""), class: "btn-reset-form" %>
 <% end %>
+<div id="organisation-controls__content-search-clear" class='hidden' onclick='clearSearchContent(this);'>
+  <p>Reset</p>
+</div>
