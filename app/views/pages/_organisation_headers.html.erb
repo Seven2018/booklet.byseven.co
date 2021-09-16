@@ -24,16 +24,24 @@
   </div>
 </div>
 <% @tag_categories.order(position: :asc).each do |tag_category| %>
+
   <div class="headers-div">
+
+    <% if tag_category.position > 1 %>
+      <%= link_to organisation_path(tag_postion: 'left', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
+        <i class="fas fa-chevron-left pr-3"></i>
+      <% end %>
+    <% end %>
+
     <p><%= tag_category.name %></p>
-    <div class="headers-div-order">
-      <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
-      <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
+
+    <% if tag_category.position < @tag_categories.count %>
+      <%= link_to organisation_path(tag_postion: 'right', tag_category_id: tag_category.id) do %>
+        <i class="fas fa-chevron-right pl-3"></i>
+      <% end %>
     <% end %>
-    <%= link_to organisation_path(order: 'tag_category', tag_category_id: tag_category.id, users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
-      <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
-    <% end %>
-    </div>
+
   </div>
+
 <% end %>
 

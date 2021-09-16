@@ -13,9 +13,11 @@
       <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
     <% end %>
   </div>
-  <% user.tags.order(tag_category_position: :asc).select(:tag_name).each do |tag| %>
+  <% @tag_categories.order(position: :asc).each do |tag_cat| %>
     <div class="user-index-info">
-      <p><%= tag.tag_name if tag.present? %></p>
+      <% user.user_tags.where(tag_category_id: tag_cat.id).each do |user_tag| %>
+        <p><%= user_tag.tag.tag_name %></p>
+      <% end %>
     </div>
   <% end %>
 </div>
