@@ -46,7 +46,9 @@
     <% end %>
 
     <% if params[:edit] == "edit"  %>
-      <i class="fas fa-times delete-tag-category"></i>
+      <%= link_to tag_category_path(tag_category), data: { confirm: "Are you sure?" }, method: :delete do %>
+        <i class="fas fa-times delete-tag-category"></i>
+      <% end %>
     <% end %>
 
   </div>
