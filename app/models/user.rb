@@ -46,25 +46,26 @@ class User < ApplicationRecord
           user_row.delete(tag)
         end
         # Create new user for the company provided as argument.
-        user = User.new(user_row)
         # Skip rows without email address
-        if !user.email.present?
+        # if (user_row['email'].downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).nil?
+        unless user_row['email'].present?
           next
         end
-        user.company_id = company_id
-        user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
-        existing_user = User.find_by(email: user_row['email'].downcase)
-        user.save
-        raw, token = Devise.token_generator.generate(User, :reset_password_token)
-        user.reset_password_token = token
-        user.reset_password_sent_at = Time.now.utc
-        if existing_user.present?
+        user = User.find_by(email: user_row['email'].downcase)
+        if user.present?
+          # Only update if user belongs to the same company than current_user
+          user.company_id == company_id ? user.update(user_row.except!('password')) : next
           update = true
-          user = existing_user
-          user.update(user_row.except!('password'))
         else
-          user.save(validate: false)
+          user = User.new(user_row)
+          user.company_id = company_id
+          user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
+          user.save
+          raw, token = Devise.token_generator.generate(User, :reset_password_token)
+          user.reset_password_token = token
+          user.reset_password_sent_at = Time.now.utc
         end
+        user.save(validate: false)
         present << user.id
         # Create tag_categories if necessary, correctly setting its position
         tag_category_last_position = TagCategory.where(company_id: company_id)&.order(position: :asc)&.last&.position
@@ -80,9 +81,10 @@ class User < ApplicationRecord
           tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row['job_title'], tag_category_position: category.position)
         end
         previous_job = UserTag.find_by(user_id: user.id, tag_category_id: category.id)
-        if update.present? && previous_job.present?
+        update_job = update.present? && previous_job.present?
+        if update.present? && previous_job.present? && previous_job.tag_id != tag.id
           previous_job.update(tag_id: tag.id)
-        else
+        elsif !previous_job.present?
           UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
         end
         tag_attr.each do |x|
@@ -96,8 +98,11 @@ class User < ApplicationRecord
             tag = Tag.create(company_id: company_id, tag_category_id: category.id, tag_name: row[x], tag_category_position: category.position)
           end
           previous_tag = UserTag.find_by(user_id: user.id, tag_category_id: category.id)
-          if update.present? && previous_tag.present?
+          update = update.present? && previous_tag.present?
+          if update && previous_tag.tag_id != tag.id
             previous_tag.update(tag_id: tag.id)
+          elsif update && previous_tag.tag_id == tag.id
+            next
           else
             UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: category.id)
           end

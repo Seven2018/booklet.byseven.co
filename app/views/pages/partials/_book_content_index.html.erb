@@ -1,3 +1,40 @@
+<% folders.each do |folder| %>
+  <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="folder-<%= folder.id %>">
+    <div class="booklet-card" >
+      <div class="booklet-card-syn">
+        <div class="booklet-card-top">
+          <div class="booklet-card__top-info">
+            <% if folder.title.length > 30 %>
+              <h3><b><%= folder.title.first(30)+'...' %></b></h3>
+            <% else %>
+              <h3><b><%= folder.title %></b></h3>
+            <% end %>
+            <p><%= folder.children_contents.count %> Workshops</p>
+          </div>
+          <div class="booklet-card-type-pill">
+
+          </div>
+          <div class="booklet-top-right-icon" id='bookbtn' onclick='selectContent(this);'>
+            <div>
+              <% if selected_folder != folder.id.to_s %>
+                <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>">
+              <% else %>
+                <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>" checked>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="booklet-card-bottom">
+          <div class="booklet-card-theme">
+            <% folder.children_categories.each do |category| %>
+              <p id='theme'><%= category.title %></p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 <% contents.each do |content| %>
   <% if content.content_type == 'Synchronous' %>
     <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="content-<%= content.id %>">
@@ -25,10 +62,14 @@
               </div>
             </div>
           </div>
-          <div class="booklet-top-right-icon" id='bookbtn' onclick='selectCard(this);'>
-            <i class="far fa-circle"  id='notselected'></i>
-            <i class="fas fa-check-circle hidden" id='added' style='color:#F26419;'></i>
-            <i class="fas fa-times hidden" id='removecard'></i>
+          <div class="booklet-top-right-icon" id='bookbtn' onclick='selectContent(this);'>
+            <div>
+              <% if selected_content != content.id.to_s %>
+                <input type="checkbox" class="book-contents-checkbox" id="checkbox-content-<%= content.id %>">
+              <% else %>
+                <input type="checkbox" class="book-contents-checkbox" id="checkbox-content-<%= content.id %>" checked>
+              <% end %>
+            </div>
           </div>
         </div>
         <div class="booklet-card-bottom">

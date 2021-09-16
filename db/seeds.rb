@@ -31,3 +31,17 @@ User.create(firstname: "Marjorie", lastname: "Buisson", company: bigmamma, email
 #Skill.create(title: 'Ruby', description: 'Maitrise de Ruby on Rails', skill_group_id: 1)
 #Skill.create(title: 'HTML/CSS', description: 'Talent de Front-end Developper', skill_group_id: 1)
 #Skill.create(title: 'Vente à domicile', description: '', skill_group_id: 2)
+
+Folder.create(title: 'Devenir Directeur', company_id: 2)
+Folder.create(title: 'Communication', company_id: 2, parent_id: 1)
+Folder.create(title: 'Leadership', company_id: 2, parent_id: 1)
+
+Content.create(title: "Communiquer efficacement", company_id: 2)
+Content.create(title: "Loi de diffusion de l'innovation", company_id: 2)
+Content.create(title: "Créer un climat de confiance", company_id: 2)
+Content.create(title: "Etre inspiré et insprirant", company_id: 2)
+
+LinkContentFolder.create(content_id: 1, folder_id: 2)
+LinkContentFolder.create(content_id: 2, folder_id: 2)
+LinkContentFolder.create(content_id: 3, folder_id: 3)
+LinkContentFolder.create(content_id: 4, folder_id: 3)

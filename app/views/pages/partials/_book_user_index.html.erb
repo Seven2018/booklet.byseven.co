@@ -1,10 +1,14 @@
 <% users.each do |user| %>
   <div class="user-book-card" id="user-<%= user.id %>">
     <div class="user-book-top">
-      <div class="user-book-icon select-user" onclick='selectUser(this);'>
-        <i class="far fa-circle"  id='nouser'></i>
-        <i class="fas fa-check-circle hidden" id='adduser' style='color:#F26419;'></i>
-        <i class="fas fa-times hidden" id='removeuser'></i>
+      <div class="user-book-icon select-user" onclick='updateSelectedUsers();'>
+        <div>
+          <% if selected_users.split(',').include?(user.id.to_s) %>
+            <input type="checkbox" class="book-users-checkbox" id="checkbox-user-<%= user.id %>" checked>
+          <% else %>
+            <input type="checkbox" class="book-users-checkbox" id="checkbox-user-<%= user.id %>">
+          <% end %>
+        </div>
       </div>
     </div>
     <div class="book-bottom">

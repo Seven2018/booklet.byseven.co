@@ -3,19 +3,23 @@ class SessionsController < ApplicationController
   # Book the selected contents with selected users as attendees (pages/book)
   def book_sessions
     params.permit!
-    params_session = params[:session].except(:selected, :selected_users, :duration)
-    @session = Session.new(params_session)
+    params_session = params[:session].except(:selected, :selected_users, :duration, :content_id)
+    session = Session.new(params_session)
     if params[:session][:date].split(' to ').count > 1
       dates = params[:session][:date].split(' to ')
-      @session.date = Date.strptime(dates.first, '%d/%m/%Y')
-      @session.available_date = Date.strptime(dates.last, '%d/%m/%Y')
+      session.date = Date.strptime(dates.first, '%d/%m/%Y')
+      session.available_date = Date.strptime(dates.last, '%d/%m/%Y')
     end
-    authorize @session
-    @session.company_id = current_user.company_id
-    @content = Content.find(params[:session][:content_id])
-    if @session.save
+    authorize session
+    content = Content.find(params[:session][:content_id])
+    workshop = Workshop.new(content.attributes.except("id", "company_id", "created_at", "updated_at"))
+    workshop.content_id = content.id
+    workshop.save
+    session.workshop_id = workshop.id
+    raise
+    if session.save
       User.where(id: params[:session][:selected_users].split(',')).each do |user|
-        Attendee.create(user_id: user.id, session_id: @session.id, creator_id: current_user.id)
+        Attendee.create(user_id: user.id, session_id: session.id, creator_id: current_user.id)
       end
       return
     end

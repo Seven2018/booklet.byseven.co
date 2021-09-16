@@ -1,4 +1,11 @@
-<% selected_contents.each do |content| %>
+<% if selected_folder.present? %>
+  <% contents = Folder.find(selected_folder).children_contents.uniq %>
+<% elsif selected_content.present? %>
+  <% contents = Content.find(selected_content) %>
+<% else %>
+  <% contents = [] %>
+<% end %>
+<% contents.each do |content| %>
   <% if content.content_type == 'Synchronous' %>
     <div class="booklet-card" id="book_content-<%= content.id %>" >
       <div class="booklet-card-syn-dates">
@@ -40,18 +47,19 @@
                   <i class="fas fa-times"></i>
                 </a>
               </div>
-              <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: :true do |f| %>
+              <%= simple_form_for :session, url: book_sessions_path, method: :get do |f| %>
               <div class="sync-booking">
                 <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date...' %>
                   <%= f.hidden_field :duration, value: content.duration %>
                   <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);', value: '9:00'}, required: true %>
                   <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);', value: '10:00'}, required: true %>
                   <div class="booklet-card__cost-input">
-                    <%= f.input :cost, label: false, placeholder: 'Total cost', input_html: {min: 0, onchange: 'duplicateCost(this);'}, as: :numeric %>
+                    <%= f.input :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i, onchange: 'duplicateCost(this);'} %>
                     <p>€</p>
                   </div>
                   <%= f.hidden_field :content_id, value: content.id %>
-                  <%= f.hidden_field :selected_users %>
+                  <%= f.hidden_field :selected_users, value: selected_users %>
+                  <%= f.hidden_field :training_id %>
                   <%= f.submit '', class: 'hidden-submit hidden' %>
               </div>
               <% end %>
@@ -99,14 +107,14 @@
           <div class="booklet-card-objective-booking">
             <div class='book-dates'>
             <p><b>Available From:</b></p>
-              <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
+              <%= simple_form_for :session, url: book_sessions_path, method: :get do |f| %>
                 <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker-range'}, placeholder: 'Select Date..' %></div>
                 <div class="booklet-card__cost-input">
-                  <%= f.input :cost, label: false, placeholder: 'Total cost', input_html: {min: 0}, as: :string %>
+                  <%= f.input :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i} %>
                   <p>€</p>
                 </div>
                 <%= f.hidden_field :content_id, value: content.id %>
-                <%= f.hidden_field :selected_users %>
+                <%= f.hidden_field :selected_users, value: selected_users %>
                 <%= f.submit '', class: 'hidden-submit hidden' %>
               <% end %>
             </div>

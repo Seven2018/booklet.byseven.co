@@ -45,12 +45,18 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
   get 'organisation', to: 'pages#organisation', as: 'organisation'
-  get 'book', to: 'pages#book', as: 'book'
+  # get 'book', to: 'pages#book', as: 'book'
+  get :book_contents, controller: :pages
+  get :book_users, controller: :pages
+  get :book_dates, controller: :pages
   get :recommendation, controller: :pages
   get :catalogue_content_link_category, controller: :pages
   get :overview, controller: :pages
   # NOT (USED)
   # get :organisation_user_card, controller: :pages
+
+  # TRAININGS
+  resources :trainings
 
   # SESSIONS
   resources :sessions, only: %i[update destroy]
