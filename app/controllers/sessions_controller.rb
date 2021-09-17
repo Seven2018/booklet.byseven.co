@@ -16,7 +16,6 @@ class SessionsController < ApplicationController
     workshop.content_id = content.id
     workshop.save
     session.workshop_id = workshop.id
-    raise
     if session.save
       User.where(id: params[:session][:selected_users].split(',')).each do |user|
         Attendee.create(user_id: user.id, session_id: session.id, creator_id: current_user.id)

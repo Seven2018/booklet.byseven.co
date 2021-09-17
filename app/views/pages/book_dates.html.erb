@@ -137,7 +137,7 @@
       })
       redirect_button = document.querySelector('.confirm-button')
       console.log('training')
-      setTimeout(function(){document.getElementById('new_training').querySelector('.hidden-submit').click()}, 1000)
+      document.getElementById('new_training').querySelector('.hidden-submit').click()
       console.log('sessions')
       submit_buttons.forEach((element) => {
         setTimeout(function(){element.click()}, 100)

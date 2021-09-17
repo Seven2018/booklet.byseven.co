@@ -20,7 +20,7 @@ gem 'jquery-rails'
 gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor'
 gem 'material-sass', git: 'https://github.com/bricechapuis/material-sass'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
-gem 'bootstrap'
+gem 'bootstrap',  '~> 4.4.1'
 gem "simple_calendar"
 gem 'google-api-client', require: 'google/apis/calendar_v3'
 gem 'oauth2'
