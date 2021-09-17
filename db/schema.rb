@@ -128,11 +128,10 @@ ActiveRecord::Schema.define(version: 2021_09_15_115859) do
     t.text "description", default: "", null: false
     t.string "content_type", default: "Synchronous", null: false
     t.string "image", default: "", null: false
+    t.decimal "cost", precision: 15, scale: 10, default: "0.0"
     t.bigint "company_id"
-    t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_id"], name: "index_contents_on_author_id"
     t.index ["company_id"], name: "index_contents_on_company_id"
   end
 
@@ -143,6 +142,7 @@ ActiveRecord::Schema.define(version: 2021_09_15_115859) do
 
   create_table "folders", force: :cascade do |t|
     t.string "title"
+    t.string "description"
     t.bigint "company_id"
     t.integer "parent_id"
     t.datetime "created_at", precision: 6, null: false
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(version: 2021_09_15_115859) do
 
   create_table "trainings", force: :cascade do |t|
     t.string "title"
+    t.string "auth_token"
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -310,6 +311,7 @@ ActiveRecord::Schema.define(version: 2021_09_15_115859) do
     t.text "description", default: "", null: false
     t.string "content_type", default: "Synchronous", null: false
     t.string "image", default: "", null: false
+    t.decimal "cost", precision: 15, scale: 10, default: "0.0"
     t.bigint "content_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

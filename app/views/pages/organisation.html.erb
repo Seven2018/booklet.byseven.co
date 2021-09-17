@@ -470,10 +470,16 @@
 
   checkCsvAttributes()
 
+  function importSummary(element) {
+    document.querySelector('body').classList.add('wait')
+    element.classList.add('btn-white-border-disabled')
+    element.disabled = true
+    element.closest('form').querySelector('.hidden-submit').click()
+  }
+
   function fileTransfer(element) {
     submit_button = document.querySelector('.import_users_form').querySelector('button')
     submit_button.value = 'import'
-    console.log(submit_button.value)
     submit_button.click()
   }
 

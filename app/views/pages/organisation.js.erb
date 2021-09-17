@@ -1,4 +1,4 @@
-$('#paginate-container').html('#{escape_javascript(paginate(@users, :remote => true, :param_name => "page").to_s)}');
+// $('#paginate-container').html('#{escape_javascript(paginate(@users, :remote => true, :param_name => "page").to_s)}');
 if ("<%= @unfiltered %>" == 'true') {
   document.querySelector('.organisation-main-container-unfiltered').classList.remove('hidden')
   document.querySelector('.organisation-main-container-filtered').classList.add('hidden')

@@ -63,7 +63,7 @@
       </ul>
       <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
         <div class="centered-item">
-          <%= link_to book_path, class: 'btn-white-border' do %>
+          <%= link_to book_contents_path, class: 'btn-white-border' do %>
             <p>Book</p>
           <% end %>
         </div>

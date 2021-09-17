@@ -249,6 +249,21 @@ class PagesController < ApplicationController
     end
   end
 
+  def book_contents
+    @folders = Folder.where(company_id: current_user.company_id).order(title: :asc)
+    @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    book_data
+  end
+
+  def book_users
+    index_function(User.where(company_id: current_user.company_id))
+    book_data
+  end
+
+  def book_dates
+    book_data
+  end
+
   private
 
   # Filter the users (pages/organisation, pages/book)
@@ -343,5 +358,13 @@ class PagesController < ApplicationController
   # When registering a new account, force the new user to provide some details (firstname, lastname, ...)
   def complete_profile
     redirect_to complete_profile_path unless (current_user.firstname.present? || current_user.lastname.present?)
+  end
+
+  def book_data
+    if params[:book].present?
+      @selected_folder = params[:book][:selected_folder]
+      @selected_content = params[:book][:selected_content]
+      @selected_users = params[:book][:selected_users]
+    end
   end
 end

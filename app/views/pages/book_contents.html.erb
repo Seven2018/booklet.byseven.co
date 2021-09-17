@@ -1,0 +1,88 @@
+<script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+<div class="book-container">
+  <div class="book-page-1">
+    <div class="booking-title">
+      <h2 id='top-anchor'>Select Workshop to Book</h2>
+    </div>
+    <div class="book-confirm">
+      <div style='width: 120px;'></div>
+      <div class="book-page-guide">
+        <div class="page-book-info">
+          <div class="page-number">
+            <p>1</p>
+          </div>
+          <div class="page-name">
+            <p>Select Workshop</p>
+          </div>
+        </div>
+        <span class='book-line'></span>
+        <div class="page-book-info">
+          <div class="page-number book-page-indicator-2 disabled">
+            <p>2</p>
+          </div>
+          <div class="page-name">
+            <p>Select Participants</p>
+          </div>
+        </div>
+        <span class='book-line-1'></span>
+        <div class="page-book-info">
+          <div class="page-number book-page-indicator-3 disabled">
+            <p>3</p>
+          </div>
+          <div class="page-name">
+            <p>Select Dates</p>
+          </div>
+        </div>
+      </div>
+      <div class="book-next-page">
+        <%= simple_form_for :book, url: book_users_path, method: :get do |f| %>
+          <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
+          <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
+          <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
+          <%= f.hidden_field :selected_folder, value: selected_folder %>
+          <%= f.hidden_field :selected_content, value: selected_content %>
+          <%= f.hidden_field :selected_users, value: selected_users %>
+          <%= button_tag type: 'submit' do %>
+            <div class="book-next">
+              <i class="fas fa-arrow-right fa-2x" style='color:#F26419'></i>
+              <p>Select Participants</p>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="index-controls-filter-bar-book">
+      <%= render 'shared/searchbar', path: book_contents_path, reset_path: book_contents_path(reset: ""), reset: true %>
+    </div>
+    <div class="workshop-grid">
+      <div class="workshop-cards-selected row" id='selected'>
+      </div>
+      <div class="workshop-cards-book row">
+        <%= render 'pages/partials/book_content_index', contents: @contents, selected_content: @selected_content, folders: @folders, selected_folder: @selected_folder %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function selectContent(element) {
+    checkboxes = document.querySelectorAll('.book-contents-checkbox')
+    input = element.querySelector('input')
+    selected_type = input.id.split('-')[1]
+    selected_id = input.id.split('-')[2]
+    selected_storage = document.getElementById('book_selected_' + selected_type)
+    if (input.checked == true) {
+      checkboxes.forEach((checkbox) => {
+        if (checkbox != input) {
+          checkbox.disabled = true
+        }
+        selected_storage.value = selected_id
+      })
+    } else {
+      checkboxes.forEach((checkbox) => {
+        checkbox.disabled = false
+      })
+      selected_storage.value = ''
+    }
+  }
+</script>

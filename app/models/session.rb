@@ -1,7 +1,6 @@
 class Session < ApplicationRecord
-  belongs_to :training, optional: true
-  belongs_to :company
-  belongs_to :content
+  belongs_to :training
+  belongs_to :workshop
   has_many :attendees, dependent: :destroy
   has_many :users, through: :attendees
   validates :date, presence: true
