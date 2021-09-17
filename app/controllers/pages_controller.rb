@@ -254,6 +254,8 @@ class PagesController < ApplicationController
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
     if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+
+      @tag_categories = TagCategory.where(company_id: current_user.company_id)
       # If a name is entered in the search bar
       if params[:search].present?
         @users = parameter
@@ -291,6 +293,10 @@ class PagesController < ApplicationController
           @users = @users.order(lastname: :asc)
         end
         @filter_tags = Tag.where(id: tags.map{|x| x.split(':')[1]}).map(&:tag_name)
+      # elsif params[:group].present?
+      #   raise
+      #   @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id])).group(:tag_name)
+
       elsif params[:order].present?
         if params[:order] == 'tag_category'
           params[:mode] == 'asc' ? @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :asc)) : @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :desc))
@@ -316,8 +322,20 @@ class PagesController < ApplicationController
           @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
           @unfiltered = 'true'
         end
+        if params[:tag_postion].present?
+          tag_cat_selected = TagCategory.find(params[:tag_category_id])
+          if params[:tag_postion] == 'left'
+            tag_cat_next_left = TagCategory.find_by(position: (tag_cat_selected.position - 1))
+            tag_cat_selected.update(position: tag_cat_selected.position - 1)
+            tag_cat_next_left.update(position: tag_cat_selected.position + 1)        
+          elsif params[:tag_postion] == 'right'
+            tag_cat_next_right = TagCategory.find_by(position: (tag_cat_selected.position + 1))
+            tag_cat_selected.update(position: tag_cat_selected.position + 1)
+            tag_cat_next_right.update(position: tag_cat_selected.position - 1)
+          end
+          # raise
+        end
       end
-      @tag_categories = TagCategory.where(company_id: current_user.company_id)
     end
     @unfiltered = 'false' if @unfiltered.nil?
   end

@@ -20,7 +20,6 @@
 <div class="organisation-controls">
   <div id="organisation-controls__user-search" class="searchbar">
     <% if params[:action] == 'organisation' %>
-
       <i class="fas fa-search organisation-controls__search-icon"></i>
       <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
         <%= f.text_field :name, placeholder: 'Search by name', label: false %>
@@ -30,19 +29,13 @@
       <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
         <p class= "btn-reset-form">Reset</p>
       </div>
-
-      
     <% end %>
-  </div>
-  <div class="index-controls-buttons flex-row-between-centered">
     <div class="btn-white" onclick='openFilter();'>
       <i class="fas fa-filter"></i>
       <p>Filter</p>
     </div>
-    <div class="btn-white" id='manage-users-button' onclick='openManager();' style='margin: 0px 5px 0px 5px'>
-      <i class="fas fa-user-tag"></i>
-      <p>Manage Tags</p>
-    </div>
+  </div>
+  <div class="index-controls-buttons flex-row-between-centered">
     <div class="dropdown">
       <div class="btn-white btn-icon dropdown-toggle" id="dropdownMenu" data-toggle="dropdown">
         <i class="fas fa-ellipsis-h"></i>
