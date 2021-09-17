@@ -172,6 +172,20 @@ class PagesController < ApplicationController
       format.js
       format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
+
+    if params[:tag_postion].present?
+      tag_cat_selected = TagCategory.find(params[:tag_category_id])
+      if params[:tag_postion] == 'left'
+        tag_cat_next_left = TagCategory.find_by(position: (tag_cat_selected.position - 1))
+        tag_cat_selected.update(position: tag_cat_selected.position - 1)
+        tag_cat_next_left.update(position: tag_cat_selected.position + 1)        
+      elsif params[:tag_postion] == 'right'
+        tag_cat_next_right = TagCategory.find_by(position: (tag_cat_selected.position + 1))
+        tag_cat_selected.update(position: tag_cat_selected.position + 1)
+        tag_cat_next_right.update(position: tag_cat_selected.position - 1)
+      end
+      # raise
+    end
   end
 
   # Display user info card (not used)
@@ -233,7 +247,8 @@ class PagesController < ApplicationController
       @selected_filter = @filter_tags
     elsif params[:search_user].present?
       @filter = 'search_user'
-      @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search_user][:name].downcase)}%", "%#{I18n.transliterate(params[:search_user][:name].downcase)}%")
+      @users = @users.search_by_name("#{params[:search][:name]}") if params[:search][:name].present?
+      # @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search_user][:name].downcase)}%", "%#{I18n.transliterate(params[:search_user][:name].downcase)}%")
       @unfiltered = 'false' if params[:search_user][:name] != ''
       @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
       @selected_contents = []
@@ -260,7 +275,8 @@ class PagesController < ApplicationController
       if params[:search].present?
         @users = parameter
         if params[:search][:name] && params[:search][:name] != ' '
-          @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search][:name].downcase)}%", "%#{I18n.transliterate(params[:search][:name].downcase)}%")
+          @users = @users.search_by_name("#{params[:search][:name]}") if params[:search][:name].present?
+          # @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search][:name].downcase)}%", "%#{I18n.transliterate(params[:search][:name].downcase)}%")
           @search_name = params[:search][:name]
         end
         # If the 'clear' button is clicked, return all the employees
@@ -297,13 +313,13 @@ class PagesController < ApplicationController
       #   raise
       #   @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id])).group(:tag_name)
 
-      elsif params[:order].present?
-        if params[:order] == 'tag_category'
-          params[:mode] == 'asc' ? @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :asc)) : @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :desc))
-          @users = (@users + User.where(company_id: current_user.company.id).order(lastname: :asc)).uniq
-        else
-          params[:mode] == 'asc' ? @users = User.where(id: params[:users].split(',')).order(params[:order]) : @users = User.where(id: params[:users].split(',')).order(params[:order]).reverse
-        end
+      # elsif params[:order].present?
+      #   if params[:order] == 'tag_category'
+      #     params[:mode] == 'asc' ? @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :asc)) : @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id]).order(tag_name: :desc))
+      #     @users = (@users + User.where(company_id: current_user.company.id).order(lastname: :asc)).uniq
+      #   else
+      #     params[:mode] == 'asc' ? @users = User.where(id: params[:users].split(',')).order(params[:order]) : @users = User.where(id: params[:users].split(',')).order(params[:order]).reverse
+      #   end
       else
         if params[:filter_user].present?
           if params[:filter_user][:selected].present?
@@ -322,19 +338,7 @@ class PagesController < ApplicationController
           @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
           @unfiltered = 'true'
         end
-        if params[:tag_postion].present?
-          tag_cat_selected = TagCategory.find(params[:tag_category_id])
-          if params[:tag_postion] == 'left'
-            tag_cat_next_left = TagCategory.find_by(position: (tag_cat_selected.position - 1))
-            tag_cat_selected.update(position: tag_cat_selected.position - 1)
-            tag_cat_next_left.update(position: tag_cat_selected.position + 1)        
-          elsif params[:tag_postion] == 'right'
-            tag_cat_next_right = TagCategory.find_by(position: (tag_cat_selected.position + 1))
-            tag_cat_selected.update(position: tag_cat_selected.position + 1)
-            tag_cat_next_right.update(position: tag_cat_selected.position - 1)
-          end
-          # raise
-        end
+
       end
     end
     @unfiltered = 'false' if @unfiltered.nil?
