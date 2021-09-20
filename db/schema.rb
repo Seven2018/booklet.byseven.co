@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_15_115859) do
+ActiveRecord::Schema.define(version: 2021_09_20_070243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,15 @@ ActiveRecord::Schema.define(version: 2021_09_15_115859) do
     t.index ["content_id"], name: "index_content_categories_on_content_id"
   end
 
+  create_table "content_folder_links", force: :cascade do |t|
+    t.bigint "folder_id"
+    t.bigint "content_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_id"], name: "index_content_folder_links_on_content_id"
+    t.index ["folder_id"], name: "index_content_folder_links_on_folder_id"
+  end
+
   create_table "content_skills", force: :cascade do |t|
     t.bigint "skill_id"
     t.bigint "content_id"
@@ -140,23 +149,22 @@ ActiveRecord::Schema.define(version: 2021_09_15_115859) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "folder_links", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.bigint "child_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["child_id"], name: "index_folder_links_on_child_id"
+    t.index ["parent_id"], name: "index_folder_links_on_parent_id"
+  end
+
   create_table "folders", force: :cascade do |t|
     t.string "title"
     t.string "description"
     t.bigint "company_id"
-    t.integer "parent_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_folders_on_company_id"
-  end
-
-  create_table "link_content_folders", force: :cascade do |t|
-    t.bigint "folder_id"
-    t.bigint "content_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["content_id"], name: "index_link_content_folders_on_content_id"
-    t.index ["folder_id"], name: "index_link_content_folders_on_folder_id"
   end
 
   create_table "mods", force: :cascade do |t|
@@ -229,7 +237,6 @@ ActiveRecord::Schema.define(version: 2021_09_15_115859) do
 
   create_table "trainings", force: :cascade do |t|
     t.string "title"
-    t.string "auth_token"
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -327,12 +334,14 @@ ActiveRecord::Schema.define(version: 2021_09_15_115859) do
   add_foreign_key "categories", "companies"
   add_foreign_key "content_categories", "categories"
   add_foreign_key "content_categories", "contents"
+  add_foreign_key "content_folder_links", "contents"
+  add_foreign_key "content_folder_links", "folders"
   add_foreign_key "content_skills", "contents"
   add_foreign_key "content_skills", "skills"
   add_foreign_key "contents", "companies"
+  add_foreign_key "folder_links", "folders", column: "child_id"
+  add_foreign_key "folder_links", "folders", column: "parent_id"
   add_foreign_key "folders", "companies"
-  add_foreign_key "link_content_folders", "contents"
-  add_foreign_key "link_content_folders", "folders"
   add_foreign_key "mods", "companies"
   add_foreign_key "sessions", "trainings"
   add_foreign_key "sessions", "workshops"

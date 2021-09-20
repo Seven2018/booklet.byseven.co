@@ -1,15 +1,11 @@
 class ContentsController < ApplicationController
-  before_action :set_content, only: [:show, :edit_mode, :update, :duplicate]
+  before_action :set_content, only: [:show, :edit, :update, :duplicate]
   before_action :force_json, only: [:change_author]
   helper VideoHelper
 
-  # Show content view_mode
-  def show
-    authorize @content
-  end
-
-  # Show content edit_mode
-  def edit_mode
+  # Show content new form
+  def new
+    @content = Content.new
     authorize @content
   end
 
@@ -18,19 +14,26 @@ class ContentsController < ApplicationController
     @content = Content.new(content_params)
     authorize @content
     @content.company_id = current_user.company.id
-    @content.author_id = current_user.id
     if @content.save
-      redirect_to edit_mode_content_path(@content)
+      redirect_to edit_content_path(@content)
     end
   end
 
-  # Update content attributes (contents/edit_mode)
+  # Show content view_mode
+  def show
+    authorize @content
+  end
+
+  # Show content edit_mode
+  def edit
+    authorize @content
+  end
+
+  # Update content attributes
   def update
     authorize @content
     @content.update(content_params)
-    @content.update(recommended: params[:content][:recommended].reject{|x| x.empty?}) if params[:content][:recommended].present?
     if @content.save
-      @content = @content
       respond_to do |format|
         format.html {edit_mode_content_path(@content)}
         format.js
@@ -85,24 +88,6 @@ class ContentsController < ApplicationController
     end
     respond_to do |format|
       format.js
-    end
-  end
-
-  # Change content author (not used)
-  def change_author
-    skip_authorization
-    if params[:ajax].present?
-      @content = Content.find(params[:content_id])
-      @content.update(author_id: params[:user_id])
-      redirect_to content_path(@content)
-    else
-      @users = User.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
-      respond_to do |format|
-        format.json {
-          # render json: @users
-          @users = @users.limit(5)
-        }
-      end
     end
   end
 

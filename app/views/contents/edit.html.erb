@@ -1,0 +1,407 @@
+<% if ['Super Admin'].include?(current_user.access_level) || (@content.company_id == current_user.company_id) %>
+  <div id="content-show-container">
+    <div id="content-show-container-left">
+      <%= render 'contents/partials/show_anchors', content: @content, page: 'edit', access: "" %>
+    </div>
+    <div id="content-show-container-right">
+      <div class="content-add">
+        <div class="content-add-left">
+          <div class="content-show-attributes-left">
+            <%= render 'contents/partials/show_attributes_left', content: @content, page: 'edit', access: "" %>
+          </div>
+          <div class="content-show-mods-edit-mode">
+            <%= render 'mods/partials/content_show_mods_index', content: @content, page: 'edit', access: "" %>
+          </div>
+          <div class="content-show-mods-control-btn" onclick="contentAdd();">
+            <div class='add-content-btn' id='icon-edit'><p><i class="fas fa-plus-circle" ></i>Add Modules</p></div>
+            <i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i>
+            <div class="content-show-mods-controls" style='display:none;'>
+              <a class="content-show-mods-controls-block" onclick="addMod('text');">
+                <i class="far fa-file-alt"></i>
+                <p>Text</p>
+              </a>
+              <a class="content-show-mods-controls-block" onclick="addMod('video');">
+                <i class="fas fa-video"></i>
+                <p>Video</p>
+              </a>
+              <a class="content-show-mods-controls-block content-show-mods-controls-block-quiz" onclick="addMod('quiz');">
+                <i class="fas fa-star-half-alt"></i>
+                <p>Quiz</p>
+              </a>
+            </div>
+          </div>
+          <div class="button-add-catalogue">
+            <%= link_to '', content_path(@content), class: 'hidden-link hidden' %>
+            <div class="btn-orange" onclick='saveAndConfirm();'>
+              <p>Confirm</p>
+            </div>
+          </div>
+        </div>
+        <div class="content-add-right">
+          <div class="content-show-attributes-right">
+            <%= render 'contents/partials/show_attributes_right', content: @content, page: 'edit', access: "" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="saved-message hidden">
+      <p>SAVED!</p>
+    </div>
+
+
+    <div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+      <div class='modal-dialog' role='document' style='border-radius: 20px'>
+      <%= render 'contents/partials/manage_categories', content: @content %>
+      </div>
+    </div>
+  </div>
+  <div class='mod-templates hidden'>
+    <div class="add-text add-text-template hidden active">
+      <div class="mod-top">
+        <div class="mod-title" onclick='toggleMod(this);'>
+          <i class="fas fa-angle-down" data-rotated='0'></i>
+          <p>Text</p>
+        </div>
+        <div class="mod-controls-new">
+          <a class="mod-delete" onclick="this.closest('.add-text').remove()"><i class="far fa-trash-alt"></i></a>
+        </div>
+      </div>
+      <%= simple_form_for Mod.new, remote: true do |f| %>
+        <%= f.hidden_field :content_id, value: @content.id %>
+        <%= f.hidden_field :mod_type, value: 'text' %>
+        <div class="form-row">
+          <div class="form-group col-9">
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          </div>
+          <div class="form-group col-3">
+          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          </div>
+        </div>
+        <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
+        <%= f.submit '', class: 'hidden-submit hidden' %>
+      <% end %>
+    </div>
+    <div class="add-video add-video-template hidden active">
+      <div class="mod-top" onclick='toggleMod(this);'>
+        <div class="mod-title" onclick='toggleMod(this);'>
+          <i class="fas fa-angle-down" data-rotated='0'></i>
+          <p>Video</p>
+        </div>
+        <div class="mod-controls-new">
+          <a class="mod-delete" onclick="this.closest('.add-video').remove()"><i class="far fa-trash-alt"></i></a>
+        </div>
+      </div>
+      <%= simple_form_for Mod.new, remote: true do |f| %>
+        <%= f.hidden_field :content_id, value: @content.id %>
+        <%= f.hidden_field :mod_type, value: 'video' %>
+        <div class="form-row">
+          <div class="form-group col-9">
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          </div>
+          <div class="form-group col-3">
+          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          </div>
+        </div>
+        <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
+        <%= f.submit '', class: 'hidden-submit hidden' %>
+      <% end %>
+    </div>
+    <div class="add-quiz add-quiz-template hidden">
+      <div class="mod-top">
+        <div class="mod-title" onclick='toggleMod(this);'>
+          <i class="fas fa-angle-down" data-rotated='0'></i>
+          <p>Quiz</p>
+        </div>
+        <div class="mod-controls-new">
+          <a class="mod-delete" onclick="this.closest('.add-quiz').remove()"><i class="far fa-trash-alt"></i></a>
+        </div>
+      </div>
+      <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
+        <div class="form-row">
+          <div class="form-group col-9">
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          </div>
+          <div class="form-group col-3">
+          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          </div>
+        </div>
+        <%= f.hidden_field :content_id, value: @content.id %>
+        <%= f.submit '', class: 'hidden-submit hidden' %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div class='modal fade' id='newModText' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+    <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+      <%= render 'mods/partials/new_mod_text', content: @content %>
+    </div>
+  </div>
+
+  <div class='modal fade' id='newModVideo' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+    <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+      <%= render 'mods/partials/new_mod_video', content: @content %>
+    </div>
+  </div>
+
+  <div class='modal fade' id='newModImage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+    <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+      <%= render 'mods/partials/new_mod_image', content: @content %>
+    </div>
+  </div>
+
+  <div class='modal fade' id='newModQuiz' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+    <div class='modal-dialog' role='document' style='border-radius: 20px'>
+      <%= render 'mods/partials/new_mod_quiz', content: @content %>
+    </div>
+  </div>
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
+  </div>
+<% end %>
+
+<script>
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function saveAndConfirm() {
+    document.querySelector('.edit_content').querySelector('.hidden-submit').click()
+    document.querySelector('.hidden-link').click()
+  }
+
+  function updateContent(element) {
+    form = element.closest('form')
+    submit = form.querySelector('.hidden-submit')
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, element) && doubleClickGuardian == false) {
+        submit.click();
+        this.removeEventListener('click', arguments.callee, false);
+      }
+    })
+  }
+
+  function toggleMod(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode;
+    if (block.style.maxHeight == '61px') {
+      block.style.maxHeight = '100000px';
+      block.classList.add('active');
+    } else if (block.style.maxHeight == '100000px' || block.style.maxHeight == '' ) {
+      block.style.maxHeight = '61px';
+      block.classList.remove('active');
+    }
+  }
+
+  function saveMod(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      initial_value = element.value;
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, element)) {
+          if (element.value != initial_value || element.tagName == 'SELECT') {
+            form = element.closest('form')
+            form.querySelector('.hidden-submit').click();
+          }
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+      setTimeout(function(){doubleClickGuardian = false}, 500)
+    }
+  }
+
+  function addMod(type) {
+    if (type == 'text') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-text')
+      template = document.querySelector('.add-text-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.content-add-mods')
+      content.append(newDiv)
+    } else if (type == 'video') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-video')
+      template = document.querySelector('.add-video-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.content-add-mods')
+      content.append(newDiv)
+    } else if (type == 'quiz') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-quiz')
+      template = document.querySelector('.add-quiz-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.content-add-mods')
+      content.append(newDiv)
+    }
+  }
+
+  function contentAdd() {
+    var contentbar = document.querySelector('.content-show-mods-controls')
+    var iconedit = document.querySelector('#icon-edit')
+    var iconclose = document.querySelector('#icon-close')
+    var contentblock = document.querySelectorAll('.content-show-mods-controls-block')
+
+    if (contentbar.style.display === "none") {
+      contentbar.style.display = "flex";
+      iconedit.classList.add('hidden')
+      iconclose.classList.remove('hidden')
+      iconclose.classList.add('icon-transform')
+      setTimeout(function(){
+      iconclose.style.transform = ('rotate(45deg)')
+      contentbar.style.width = '100%'
+      contentblock.forEach((content) => {
+        content.style.width = '33.3%'
+      })
+      },1);
+    } else {
+      iconclose.style.transform = ('rotate(-45deg)')
+      contentbar.style.width = '0'
+      contentbar.style.display = "none"
+      iconclose.classList.add('hidden')
+      iconedit.classList.remove('hidden')
+    }
+  }
+
+  function autoSubmitTheme(element) {
+    element.closest('form').querySelector('.hidden-submit').click()
+  }
+
+  function dismissModal(element) {
+    content_id = element.parentNode.parentNode.querySelector('#add_categories_content_id').value;
+    modal = document.querySelector('#addTheme');
+    modal.querySelector('.cancel-close').click();
+  }
+
+  function dismissForm(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true;
+      setTimeout(function(){
+        doubleClickGuardian = false;
+      }, 100);
+      document.querySelector('.hidden-mod-form').classList.add('hidden');
+      element.parentNode.parentNode.querySelector('.hidden-submit').click();
+    }
+  }
+
+  function showDelete(element) {
+    // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
+    trash = element.parentNode.querySelector('.category-delete');
+    if (trash.style.opacity == 0) {
+      trash.style.opacity = 1;
+    } else {
+      trash.style.opacity = 0;
+    }
+  }
+
+  function saveOnSelect(element) {
+    element.closest('form').querySelector('.hidden-submit').click();
+  }
+
+  function closeModalOnSubmit(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      title = element.closest('.modal-body').querySelector('#mod_title');
+      //f (title.value.innerHTML != null) {
+        modal = element.closest('.modal')
+        modal.querySelector('.cancel-close').click()
+        modal.querySelector('.hidden-submit').click()
+        if (modal.querySelector('#mod_title') != null) {
+          modal.querySelector('#mod_title').value = ''
+        }
+        if (modal.querySelector('trix-editor') != null) {
+          modal.querySelector('trix-editor').value = ''
+        }
+      //}
+      setTimeout(function(){doubleClickGuardian = false}, 250)
+    }
+  }
+
+  function fetchCategoryForm(element) {
+    form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
+    initial_top = form.offsetTop
+    initial_left = form.offsetLeft
+    form.style.top = (element.offsetTop).toString() + 'px'
+    form.style.left = (element.offsetLeft + 27).toString() + 'px'
+    element.querySelector('p').style.opacity = '0'
+    form.classList.remove('hidden')
+    form.querySelector('input').focus()
+    formGuardian = true;
+    setTimeout(function(){
+      formGuardian = false;
+    }, 1);
+
+    form.querySelector('#new_category_title').addEventListener('keypress', function(e) {
+      if (event.which == '13') {
+        event.preventDefault();
+        form.querySelector('.hidden-submit').click()
+      }
+    })
+
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, form) && formGuardian == false) {
+        form.style.top = initial_top.toString() + 'px';
+        form.style.left = initial_left.toString() + 'px'
+        element.querySelector('p').style.opacity = '1'
+        form.classList.add('hidden')
+        form.querySelector('input').value = ''
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
+  }
+
+  function addQuestionToQuiz(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      $(element).hide();
+      $(element).parent().parent().find("#assessment-show-content").append($(element).parent().find("#add_questions_form").html())
+      console.log($(element).parent().find("#add_questions_form"))
+      setTimeout(function(){doubleClickGuardian = false}, 250)
+    }
+  }
+
+  function removeQuestion(element) {
+    question = element.closest('#new_assessment_question')
+    element.closest('.content-quiz').querySelector('#addQuestion').style.display = 'flex'
+    question.parentNode.removeChild(question)
+  }
+
+  function addAnswer(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      $(element).parent().children('div').append($("#add_options_form").html());
+      setTimeout(function(){doubleClickGuardian = false}, 250)
+    }
+  }
+
+  function openEditQuestionForm(element) {
+    card = element.closest('.mod-assessment-questions-card')
+    form = card.querySelector('.hidden-form-ajax')
+    card.innerHTML = form.innerHTML
+  }
+
+  function removeAnswer(element) {
+    element.closest('.options_line').remove()
+  }
+</script>

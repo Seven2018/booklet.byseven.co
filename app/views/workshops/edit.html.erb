@@ -1,59 +1,51 @@
-<% if ['Super Admin'].include?(current_user.access_level) || (@content.company_id == current_user.company_id) %>
+<% if ['Super Admin'].include?(current_user.access_level) || (@workshop.content.company_id == current_user.company_id) %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'contents/show_anchors', content: @content, page: 'edit', access: "" %>
+      <%= render 'contents/partials/show_anchors', content: @workshop, page: 'edit', access: "" %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
         <div class="content-add-left">
           <div class="content-show-attributes-left">
-            <%= render 'contents/show_attributes_left', content: @content, page: 'edit', access: "" %>
+            <%= render 'contents/partials/show_attributes_left', content: @workshop, page: 'edit', access: "" %>
           </div>
           <div class="content-show-mods-edit-mode">
-            <%= render 'mods/content_show_mods_index', content: @content, page: 'edit', access: "" %>
+            <%= render 'mods/partials/content_show_mods_index', content: @workshop, page: 'edit', access: "" %>
           </div>
-          <% if (['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level))%>
-            <div class="content-show-mods-control-btn" onclick="contentAdd();">
-              <div class='add-content-btn' id='icon-edit'><p><i class="fas fa-plus-circle" ></i>Add Content</p></div>
-              <i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i>
-              <div class="content-show-mods-controls" style='display:none;'>
-                <a class="content-show-mods-controls-block" onclick="addMod('text');">
-                  <i class="far fa-file-alt"></i>
-                  <p>Text</p>
-                </a>
-                <a class="content-show-mods-controls-block" onclick="addMod('video');">
-                  <i class="fas fa-video"></i>
-                  <p>Video</p>
-                </a>
-                <a class="content-show-mods-controls-block content-show-mods-controls-block-quiz" onclick="addMod('quiz');">
-                  <i class="fas fa-star-half-alt"></i>
-                  <p>Quiz</p>
-                </a>
-              </div>
+          <div class="content-show-mods-control-btn" onclick="contentAdd();">
+            <div class='add-content-btn' id='icon-edit'><p><i class="fas fa-plus-circle" ></i>Add Modules</p></div>
+            <i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i>
+            <div class="content-show-mods-controls" style='display:none;'>
+              <a class="content-show-mods-controls-block" onclick="addMod('text');">
+                <i class="far fa-file-alt"></i>
+                <p>Text</p>
+              </a>
+              <a class="content-show-mods-controls-block" onclick="addMod('video');">
+                <i class="fas fa-video"></i>
+                <p>Video</p>
+              </a>
+              <a class="content-show-mods-controls-block content-show-mods-controls-block-quiz" onclick="addMod('quiz');">
+                <i class="fas fa-star-half-alt"></i>
+                <p>Quiz</p>
+              </a>
             </div>
-          <% end %>
+          </div>
           <div class="button-add-catalogue">
-            <div class="btn-orange m-">
-              <%= link_to 'Confirm', content_path %>
+            <%= link_to '', workshop_path(@workshop), class: 'hidden-link hidden' %>
+            <div class="btn-orange" onclick='saveAndConfirm();'>
+              <p>Confirm</p>
             </div>
           </div>
         </div>
         <div class="content-add-right">
           <div class="content-show-attributes-right">
-            <%= render 'contents/show_attributes_right', content: @content, page: 'edit', access: "" %>
+            <%= render 'contents/partials/show_attributes_right', content: @workshop, page: 'edit', access: "" %>
           </div>
         </div>
       </div>
     </div>
     <div class="saved-message hidden">
       <p>SAVED!</p>
-    </div>
-
-
-    <div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-      <div class='modal-dialog' role='document' style='border-radius: 20px'>
-      <%= render 'contents/manage_categories', content: @content %>
-      </div>
     </div>
   </div>
   <div class='mod-templates hidden'>
@@ -68,7 +60,7 @@
         </div>
       </div>
       <%= simple_form_for Mod.new, remote: true do |f| %>
-        <%= f.hidden_field :content_id, value: @content.id %>
+        <%= f.hidden_field :workshop_id, value: @workshop.id %>
         <%= f.hidden_field :mod_type, value: 'text' %>
         <div class="form-row">
           <div class="form-group col-9">
@@ -93,7 +85,7 @@
         </div>
       </div>
       <%= simple_form_for Mod.new, remote: true do |f| %>
-        <%= f.hidden_field :content_id, value: @content.id %>
+        <%= f.hidden_field :workshop_id, value: @workshop.id %>
         <%= f.hidden_field :mod_type, value: 'video' %>
         <div class="form-row">
           <div class="form-group col-9">
@@ -126,7 +118,7 @@
           <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
           </div>
         </div>
-        <%= f.hidden_field :content_id, value: @content.id %>
+        <%= f.hidden_field :workshop_id, value: @workshop.id %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
     </div>
@@ -135,25 +127,25 @@
   <!-- Modals -->
   <div class='modal fade' id='newModText' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-      <%= render 'mods/new_mod_text' %>
+      <%= render 'mods/partials/new_mod_text', content: @workshop %>
     </div>
   </div>
 
   <div class='modal fade' id='newModVideo' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-      <%= render 'mods/new_mod_video' %>
+      <%= render 'mods/partials/new_mod_video', content: @workshop %>
     </div>
   </div>
 
   <div class='modal fade' id='newModImage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-      <%= render 'mods/new_mod_image' %>
+      <%= render 'mods/partials/new_mod_image', content: @workshop %>
     </div>
   </div>
 
   <div class='modal fade' id='newModQuiz' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog' role='document' style='border-radius: 20px'>
-      <%= render 'mods/new_mod_quiz' %>
+      <%= render 'mods/partials/new_mod_quiz', content: @workshop %>
     </div>
   </div>
 <% else %>
@@ -176,6 +168,11 @@
     }
     if (clickedOut) return true;
     else return false;
+  }
+
+  function saveAndConfirm() {
+    document.querySelector('.edit_content').querySelector('.hidden-submit').click()
+    document.querySelector('.hidden-link').click()
   }
 
   function updateContent(element) {
@@ -278,61 +275,6 @@
       iconclose.classList.add('hidden')
       iconedit.classList.remove('hidden')
     }
-  }
-
-  function openInput(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true;
-      input = element.parentNode.querySelector('.content-show-input');
-      initial_value = input.querySelector('input').value;
-      element.querySelector('p').classList.add('hidden');
-      input.classList.remove('hidden');
-      setTimeout(function(){
-        doubleClickGuardian = false;
-      }, 1);
-
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, input) && doubleClickGuardian == false) {
-          if (input.value != initial_value) {
-            document.querySelector('.edit_content').querySelector('.hidden-submit').click();
-          } else {
-            input.classList.add('hidden');
-            element.querySelector('p').classList.remove('hidden');
-          }
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    }
-  }
-
-  function openInputTrix(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true;
-      input = element.parentNode.querySelector('.content-show-input-trix');
-      initial_value = input.querySelector('input').value;
-      element.classList.add('hidden');
-      input.classList.remove('hidden');
-      setTimeout(function(){
-        doubleClickGuardian = false;
-      }, 1);
-
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, input) && doubleClickGuardian == false) {
-          document.querySelector('.edit_content').querySelector('.hidden-submit').click();
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    }
-  }
-
-  function autoSubmitTheme(element) {
-    element.closest('form').querySelector('.hidden-submit').click()
-  }
-
-  function dismissModal(element) {
-    content_id = element.parentNode.parentNode.querySelector('#add_categories_content_id').value;
-    modal = document.querySelector('#addTheme');
-    modal.querySelector('.cancel-close').click();
   }
 
   function dismissForm(element) {

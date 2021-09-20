@@ -1,6 +1,5 @@
 class Content < ApplicationRecord
   belongs_to :company
-  belongs_to :author, class_name: 'User', optional: true
   belongs_to :folder, optional: true
   has_many :content_categories, dependent: :destroy
   has_many :categories, through: :content_categories
@@ -11,11 +10,9 @@ class Content < ApplicationRecord
   has_many :assessments, dependent: :destroy
   has_many :user_interests, dependent: :destroy
   has_many :interested, through: :user_interests, source: :user
+  has_many :content_folder_links, dependent: :destroy
+  has_many :folders, through: :content_folder_links
   validates :title, :duration, presence: true
-  serialize :recommended, Array
-
-  # current_user = User.find(user_id)
-  # raise
 
   include PgSearch::Model
   pg_search_scope :search_contents,

@@ -1,12 +1,8 @@
 <div class="content-info">
   <% if page == 'edit' %>
     <%= simple_form_for content, remote: true do |f| %>
-      <% if content.title.first(11) == 'Untitled - ' %>
-        <%= f.input :title, label: false, placeholder: content.title, input_html: {value: '', autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'updateContent(this)'} %>
-      <% else %>
-        <%= f.input :title, label: false, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'updateContent(this)'} %>
-      <% end %>
-      <%= f.input :description, label: false, input_html: {autocomplete: "off", onclick: 'updateContent(this)'}, placeholder: 'Write the objective or purpose of the workshop here.' %>
+      <%= f.input :title, label: false, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled' %>
+      <%= f.input :description, label: false, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Write the objective or purpose of the workshop here.' %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
   <% else %>
@@ -46,7 +42,7 @@
             </div>
           <% else %>
             <div class="flex-row-between-centered">
-              <% if @content.content_type == 'Synchronous' %>
+              <% if content.content_type == 'Synchronous' %>
                 <p>In Person</p>
                 <i class="fas fa-chalkboard-teacher" style='margin-left: 13px; color:#F26419;'></i>
               <% else %>
@@ -61,7 +57,8 @@
     <div class="content-show-infos-themes">
       <p style='color:#808080;'><b>Themes</b></p>
       <div class="theme-btns">
-        <% content.categories.order(title: :asc).each do |category| %>
+        <% content.class.to_s == 'Content' ? categories = content.categories : categories = content.content.categories %>
+        <% categories.order(title: :asc).each do |category| %>
           <p class="category-tag"><%= category.title %></p>
         <% end %>
         <a data-toggle='modal' data-target='#addTheme' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#F26419;'></i></a><br>

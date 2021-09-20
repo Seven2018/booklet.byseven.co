@@ -3,7 +3,6 @@ class Session < ApplicationRecord
   belongs_to :workshop
   has_many :attendees, dependent: :destroy
   has_many :users, through: :attendees
-  validates :date, presence: true
 
   def start_date
     self.date
