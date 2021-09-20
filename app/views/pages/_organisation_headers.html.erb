@@ -3,25 +3,9 @@
 </div>
 <div class="headers-div">
   <p>Name</p>
-  <div class="headers-div-order">
-    <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
-      <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
-    <% end %>
-    <%= link_to organisation_path(order: 'lastname', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
-      <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
-   <% end %>
-  </div>
 </div>
 <div class="headers-div">
   <p>Email</p>
-  <div class="headers-div-order">
-    <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'asc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
-      <i class="fas fa-caret-up" data-toggle='tooltip' title='Filter:A-Z'></i>
-    <% end %>
-    <%= link_to organisation_path(order: 'email', users: users.map(&:id).join(','), mode: 'desc'), remote: true, onclick: 'spinningLoader(); filterWord(this);' do %>
-      <i class="fas fa-caret-down" data-toggle='tooltip' title='Filter:Z-A'></i>
-    <% end %>
-  </div>
 </div>
 <% @tag_categories.order(position: :asc).each do |tag_category| %>
 

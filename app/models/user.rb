@@ -19,6 +19,16 @@ class User < ApplicationRecord
   # validates :gender, inclusion: { in: ['M', 'F'] }
   require 'csv'
 
+  # SEARCHING USERS BY firstname and lastname
+  include PgSearch::Model
+  pg_search_scope :search_by_name,
+    against: [ :firstname, :lastname ],
+    using: {
+      tsearch: { prefix: true }
+    },
+    ignoring: :accents
+
+
   def fullname
     "#{firstname} #{lastname}"
   end
