@@ -1,5 +1,5 @@
-document.querySelector('.content-show-attributes-right').innerHTML = '<%= j render("contents/show_attributes_right", content: @content, page: "edit", access: "") %>';
-document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/show_anchors", content: @content, page: "edit", access: "")) %>';
+document.querySelector('.content-show-attributes-right').innerHTML = '<%= j render("contents/partials/show_attributes_right", content: @content, page: "edit", access: "") %>';
+document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/partials/show_anchors", content: @content, page: "edit", access: "")) %>';
 document.querySelector('.saved-message').classList.remove('hidden');
 setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);
 

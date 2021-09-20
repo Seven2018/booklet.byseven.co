@@ -6,15 +6,19 @@ class ModsController < ApplicationController
   def create
     @new_mod = Mod.new(mod_params)
     authorize @new_mod
-    @content = Content.find(params[:mod][:content_id])
     @new_mod.company_id = current_user.company_id
-    @new_mod.content_id = params[:mod][:content_id]
+    if params[:mod][:content_id].present?
+      @content = Content.find(params[:mod][:content_id])
+    else
+      @content = Workshop.find(params[:mod][:workshop_id])
+    end
+    @new_mod.workshop_id = @content.id
     @new_mod.mod_type = params[:mod][:mod_type]
     @new_mod.position = @content.mods.order(position: :asc).count + 1
     if @new_mod.save
       @content.update(duration: @content.mods.map(&:duration).sum)
       respond_to do |format|
-        format.html {redirect_to content_path(@content)}
+        format.html {content_path(@content)}
         format.js
       end
     end
@@ -28,7 +32,7 @@ class ModsController < ApplicationController
     if @module.save
       @content.update(duration: @content.mods.map(&:duration).sum)
       respond_to do |format|
-        format.html {redirect_to content_path(@content)}
+        format.html {content_path(@content)}
         format.js
       end
     end
@@ -38,7 +42,7 @@ class ModsController < ApplicationController
   def destroy
     authorize @module
     @module.destroy
-    @content = @module.content
+    @module.content.present? ? @content = @module.content : @content = @module.workshop
     i = 1
     @content.mods.order(position: :asc).each do |mod|
       mod.update(position: i)
@@ -85,6 +89,6 @@ class ModsController < ApplicationController
   end
 
   def mod_params
-    params.require(:mod).permit(:title, :text, :link, :document, :video, :image, :mod_type, :duration, :content_id)
+    params.require(:mod).permit(:title, :text, :link, :document, :video, :image, :mod_type, :duration, :content_id, :workshop_id)
   end
 end

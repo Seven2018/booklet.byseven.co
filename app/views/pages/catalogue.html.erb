@@ -2,10 +2,10 @@
   <div class='index-controls-create-content'>
     <h2 class='catalogue-title'>Catalogue of Trainings</h2>
     <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-      <%= link_to contents_path(content: {title: 'Untitled - ' + (Content.where(company_id: current_user.company_id).select{|x| x.title.first(11) == 'Untitled - '}.count + 1).to_s}), method: :post do %>
-      <div class="btn-orange" data-toggle='tooltip' title='Create a content'>
-        <p><i class="fas fa-plus"></i> Create</p>
-      </div>
+      <%= link_to new_content_path do %>
+        <div class="btn-orange" data-toggle='tooltip' title='Create a content'>
+          <p><i class="fas fa-plus"></i> Create</p>
+        </div>
       <% end %>
     <% end %>
   </div>

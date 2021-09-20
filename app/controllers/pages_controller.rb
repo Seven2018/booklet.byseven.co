@@ -145,6 +145,7 @@ class PagesController < ApplicationController
       cost, trainings = false, false
       # Index with 'search' option and global visibility for SEVEN Users
       index_function(User.where(company_id: current_user.company_id))
+      authorize @users
       @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
       @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
       if params[:add_tags].present?
@@ -198,6 +199,7 @@ class PagesController < ApplicationController
   # Display recommendation page
   def recommendation
     index_function(User.where(company_id: current_user.company_id))
+    authorize @users
     if params[:search].present?
       @content = Content.find(params[:search][:content_id])
     elsif params[:filter_user].present?
@@ -216,67 +218,24 @@ class PagesController < ApplicationController
     end
   end
 
-  # Display book page
-  def book
-    index_function(User.where(company_id: current_user.company_id))
-
-    if current_user.company_id.present?
-      # SEARCHING CONTENTS 
-      @contents = Content.where(company_id: current_user.company.id)
-      unless params[:reset]
-        if params[:search].present? && !params[:search][:title].blank?
-          @contents = @contents.search_contents("#{params[:search][:title]}")
-          respond_to do |format|
-            format.html {catalogue_path}
-            format.js
-          end
-        end
-      end
-      @contents = @contents.order(updated_at: :desc)
-    end
-
-    if params[:filter_content].present?
-      @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc)
-      @filter = 'content'
-      @interest_for = @selected_contents.map(&:id)
-    elsif params[:filter_user].present?
-      @filter = 'user'
-      @interest_for = params[:filter_user][:interest_for].split(',')
-      @selected_contents = []
-      # @selected_filter = params[:filter_user][:tag].reject(&:blank?).join(',') if params[:filter_user][:tag].present?
-      @selected_filter = @filter_tags
-    elsif params[:search_user].present?
-      @filter = 'search_user'
-      @users = @users.search_by_name("#{params[:search][:name]}") if params[:search][:name].present?
-      # @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search_user][:name].downcase)}%", "%#{I18n.transliterate(params[:search_user][:name].downcase)}%")
-      @unfiltered = 'false' if params[:search_user][:name] != ''
-      @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
-      @selected_contents = []
-    elsif params[:confirm].present?
-      @selected_contents = Content.where(id: params[:filter_content][:selected].split(',')).order(title: :asc) if params[:filter_content].present?
-      @selected_users = User.where(id: params[:filter_user][:selected].split(',')) if params[:filter_user].present?
-    else
-      @filter = 'none'
-    end
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
+  # Display book pages
 
   def book_contents
     @folders = Folder.where(company_id: current_user.company_id).order(title: :asc)
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    authorize @contents
     book_data
   end
 
   def book_users
     index_function(User.where(company_id: current_user.company_id))
+    authorize @users
     book_data
   end
 
   def book_dates
     book_data
+    raise "Access denied" unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
   end
 
   private

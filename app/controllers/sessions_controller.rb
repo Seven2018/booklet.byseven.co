@@ -15,6 +15,11 @@ class SessionsController < ApplicationController
     workshop = Workshop.new(content.attributes.except("id", "company_id", "created_at", "updated_at"))
     workshop.content_id = content.id
     workshop.save
+    content.mods.each do |mod|
+      new_mod = Mod.new(mod.attributes.except("id", "content_id", "created_at", "updated_at"))
+      new_mod.workshop_id = workshop.id
+      new_mod.save
+    end
     session.workshop_id = workshop.id
     if session.save
       User.where(id: params[:session][:selected_users].split(',')).each do |user|

@@ -37,6 +37,18 @@ class UserPolicy < ApplicationPolicy
     check_access_hr
   end
 
+  def organisation?
+    check_access_hr
+  end
+
+  def recommendation?
+    check_access_hr
+  end
+
+  def book_users?
+    check_access_hr
+  end
+
   private
 
   def check_access_hr

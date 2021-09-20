@@ -26,13 +26,12 @@ Rails.application.routes.draw do
   resources :companies, only: %i[new create update destroy]
 
   # CONTENTS
-  resources :contents, only: %i[show create update] do
+  resources :contents, only: %i[show new create edit update] do
     # resources :content_skills, only: %i[create]
   end
   get :change_author, controller: :contents
   get :content_link_category, controller: :contents
   get :destroy_content, controller: :contents
-  get 'contents/:id/edit_mode', to: 'contents#edit_mode', as: 'edit_mode_content'
   get 'contents/:id/duplicate', to: 'contents#duplicate', as: 'duplicate_content'
 
   #MODS
@@ -45,7 +44,6 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
   get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
   get 'organisation', to: 'pages#organisation', as: 'organisation'
-  # get 'book', to: 'pages#book', as: 'book'
   get :book_contents, controller: :pages
   get :book_users, controller: :pages
   get :book_dates, controller: :pages
@@ -96,4 +94,7 @@ Rails.application.routes.draw do
   get :link_to_company, controller: :users
   post :import_users, controller: :users
   get :users_search, controller: :users
+
+  # WORKSHOPS
+  resources :workshops, only: %i[show edit update]
 end
