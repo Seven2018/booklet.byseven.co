@@ -1,8 +1,5 @@
 class Folder < ApplicationRecord
-  extend ActsAsTree::TreeView
-  extend ActsAsTree::TreeWalker
   validates :title, presence: true
-  acts_as_tree order: "title"
 
   has_many :content_folder_links, dependent: :destroy
   has_many :contents, through: :content_folder_links
@@ -10,13 +7,31 @@ class Folder < ApplicationRecord
   has_many :children_folder_links, class_name: 'FolderLink', foreign_key: 'parent_id', dependent: :destroy
   has_many :parents_folders, through: :parents_folder_links, source: :parent
   has_many :children_folders, through: :children_folder_links, source: :child
+  has_many :folder_categories, dependent: :destroy
+  has_many :categories, through: :folder_categories
+
+  include PgSearch::Model
+  pg_search_scope :search_folders,
+    against: [ :title ],
+    associated_against: {
+      categories: :title
+    },
+    using: {
+      tsearch: { prefix: true }
+    },
+    ignoring: :accents,
+    order_within_rank: "folders.updated_at DESC"
+
+  def duration
+    self.children_contents.map{|x| x.duration}.sum
+  end
 
   def children_contents
-    self.children.present? ? self.children.map{|x| x.contents}.flatten.sort_by{|y| y.title} : self.contents.sort_by{|y| y.title}
+    self.children_folders&.map{|x| x&.contents}&.flatten&.sort_by{|y| y.title} + self.contents&.sort_by{|y| y&.title}
   end
 
   def children_categories
-    self.children.present? ? self.children.map{|x| x.contents.map{|y| y.categories}}.flatten.uniq.sort_by{|z| z.title} : self.contents.map{|y| y.categories}.flatten.uniq.sort_by{|z| z.title}
+    self.children_contents&.map{|x| x.categories}&.flatten
   end
 
   def folder_level
@@ -32,48 +47,17 @@ class Folder < ApplicationRecord
     return max_level
   end
 
-  def folder_tree
-    if self.children_folders.present?
-      self.children_folders.each do |child|
-        print "-"
-        print "[#{child.title}]\n"
-        child.folder_tree
-      end
-      self.contents.each do |content|
-        print "-"
-        print "#{content.title}\n"
-      end
-    else
-      self.contents.each do |content|
-        print "-"
-        print "#{content.title}\n"
-      end
-    end
-  end
-
-  def tree_view(label_method = :to_s,  node = nil, level = -1)
+  def folder_to_hash(node = nil)
     if node.nil?
-      puts "root"
-      nodes = self.children_folders
-    else
-      label = "|_ #{node.send(label_method)}"
-      if level == 0
-        puts " #{label}"
-      else
-        puts " |#{"    "*level}#{label}"
-      end
-      nodes = node.children_folders
+      node = self
     end
-    nodes.each do |child|
-      tree_view(label_method, child, level+1)
-      # child.children_contents do |content|
-      #   label = "|_ #{content.title}"
-      #   if level == 0
-      #     puts " #{label}"
-      #   else
-      #     puts " |#{"    "*level}#{label}"
-      #   end
-      # end
+    result_hash = {type: node.class.name, name: node.title, children: []}
+    node.contents.each do |content|
+      result_hash[:children] << {type: content.class.name, name: content.title}
     end
+    node.children_folders.each do |folder|
+      result_hash[:children] << folder_to_hash(folder)
+    end
+    return result_hash
   end
 end

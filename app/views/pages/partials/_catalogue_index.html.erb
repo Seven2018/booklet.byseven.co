@@ -1,0 +1,9 @@
+<% cards.each do |content| %>
+  <div class="catalogue-card-container" id="content-<%= content.id %>">
+    <% if content.class.name == 'Folder' %>
+      <%= render 'pages/partials/catalogue_folder_card', folder: content %>
+    <% else %>
+      <%= render 'pages/partials/catalogue_content_card', content: content %>
+    <% end %>
+  </div>
+<% end %>

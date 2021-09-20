@@ -6,579 +6,775 @@
   align-items: center;
 }
 
-.booking-date {
-  top: -3rem;
-  position: absolute;
-  display: flex;
-  right: .5rem;
-  background: white;
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #c4c4c4;
+.catalogue-card-container {
+  height: 35rem;
+  width: 35rem;
+  flex-shrink: 0;
+  margin: 2rem 4rem;
 }
 
-.booklet-card {
+.booklet-content-card {
   position: relative;
   padding: 0;
-  max-height: 40rem;
-  width: 36rem;
+  height: 100%;
+  width: 100%;
   margin: 0;
+  background-color: rgba(242, 100, 25, 0.17);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 
   h6 {
     font-size: 1.2rem
   }
+}
 
-  @include from-medium {
-    margin: 3rem;
+.booklet-folder-card {
+  position: relative;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: white;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  h6 {
+    font-size: 1.2rem
   }
 }
 
-.booklet-card__top-info {
-  display: flex;
-  flex-direction: column;
+.booklet-content-card-syn {
+  background-color: rgba(242, 100, 25, 0.17);
+  border-bottom: 2px solid rgba(242, 100, 25, 0.33);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 15rem;
+}
 
-  h3 {
+.booklet-content-card-top {
+  padding: 1.5rem;
+  height: 100%;
+}
+
+.booklet-folder-card-top {
+  background-color: rgba(91, 146, 197, 0.31);;
+  border-bottom: 2px solid rgba(91, 146, 197, 0.67);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 15rem;
+  padding: 1.5rem;
+}
+
+.booklet-content-card__top-info, .booklet-folder-card__top-info {
+
+  h3{
     display: inline;
     width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  .booklet-content-card__duration, .booklet-folder-card__duration {
+    width: auto;
+    margin-right: 2rem;
+  }
+
+  i.fa-file {
+    margin-right: 1rem;
+    font-size: 3rem;
+    color: rgba(242, 100, 25, 0.33);
+  }
+
+  i.fa-folder {
+    margin-right: 1rem;
+    font-size: 3rem;
+    color: #5B92C5;
+  }
+
+  div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+}
+
+.booklet-content-card__options {
+  z-index: 200;
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  border-radius: 50%;
+
+  &:hover {
+    cursor:pointer;
+    background-color: rgba(242, 100, 25, 0.33);
+  }
+
+  i {
+    font-size: 2rem;
+    color: #F26419;
+  }
+}
+
+.booklet-folder-card__options {
+  z-index: 200;
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  border-radius: 50%;
+
+  &:hover {
+    cursor:pointer;
+    background-color: rgba(242, 100, 25, 0.33);
+  }
+
+  i {
+    font-size: 2rem;
+    color: #5B92C5;
+  }
+}
+
+.booklet-content-card-type-icon, .booklet-folder-card-type-icon {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+  margin: 0 !important;
+
+  i {
+    margin-right: 10px;
+  }
+}
+
+.booklet-content-card__categories, .booklet-folder-card__categories {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.booklet-content-card__category-pill {
+  padding: .5rem;
+  border-radius: 15px;
+  margin: 1rem 1rem 0 0;
+  background-color: rgba(242, 100, 25, 0.33);
+
+  p {
+    color: white;
+    font-size: 1.2rem;
+  }
+}
+
+.booklet-children-content-card__category-pill {
+  padding: .5rem;
+  border-radius: 15px;
+  margin: 1rem 1rem 0 0;
+  background-color: rgba(233, 152, 110, 1);
+
+  p {
+    color: white;
+    font-size: 1.2rem;
+  }
+}
+
+.booklet-folder-card__category-pill {
+  padding: .5rem;
+  border-radius: 15px;
+  margin: 1rem 1rem 0 0;
+  background-color: rgba(91, 146, 197, 1);
+
+  p {
+    color: white;
+    font-size: 1.2rem;
+  }
+}
+
+.booklet-content-card-bottom {
+  position: relative;
+  padding: 1.5rem;
+  height: 20rem;
+}
+
+.booklet-content-card-bottom__top-right-icon {
+  position: absolute;
+  top: 11px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p, i {
+    font-size: 1.6rem;
+    color: rgba(242, 100, 25, 0.33);
+  }
+
+  p {
+    margin-right: .75rem;
+  }
+}
+
+.booklet-content-card-bottom__mods {
+  padding-top: 3rem;
+}
+
+.booklet-content-card-bottom__mod {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  i {
+    font-size: 2.4rem;
+    margin-right: 1rem;
+    color: #F26419;
+  }
+
+  p {
+    font-size: 1.8rem;
+    width: 91%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 }
 
-.booklet-card__cost-input {
-  position: absolute;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 12rem;
-  top: 6rem;
-  left: 1rem;
-
-  .form-group {
-    margin: 0;
-    margin-right: 1rem;
-  }
-
-  input {
-    background: transparent;
-    border: 1px solid white;
-    width: 12rem;
-    text-align: right;
-  }
-}
-
-.booklet-card-syn {
-  width: 36rem;
-  height: 36rem;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #F8D9C8;
-
-    .booklet-card__top-info {
-      display: flex;
-      flex-direction: column;
-      padding-right: 3rem;
-    }
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .booklet-top-right-icon {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-      &:hover {
-        cursor:pointer;
-        opacity: 80%;
-      }
-
-      i {
-        height: 2rem;
-        width: 2rem;
-        font-size: 2rem;
-        background: white;
-        border-radius: 50%;
-      }
-    }
-
-    .booklet-top-right-icon-catalogue {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-      i {
-        font-size: 2rem;
-        z-index: 200;
-      }
-
-      .catalogue-content-card-right-menu {
-        width: 3rem;
-        height: 3rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-
-        &:hover {
-          cursor:pointer;
-          background-color: #ffa777;
-        }
-      }
-    }
-  }
-
-  .booklet-card-bottom {
-    height: 70%;
-    padding: 1rem;
-
-    .booklet-card-theme {
-      height: 5rem;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-
-      p {
-        height: 2rem;
-        background: #F8D9C8;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: .5rem;
-        font-size: 1.3rem;
-      }
-
-      i {
-        color: #F26419;
-
-        &:hover {
-          cursor:pointer;
-          opacity: 80%;
-        }
-      }
-    }
-
-    .booklet-card-objective {
-      height: 160px;
-    }
-
-    .booklet-card-like {
-      color:#F26419;
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-direction: row-reverse;
-
-      i.booklet-card-like__right {
-        margin: 0 0 0 1rem;
-      }
-
-      i.booklet-card-like__left {
-        margin: 0 1rem 0 0;
-      }
-    }
-  }
-}
-
-.booklet-card-asyn {
-  width: 360px;
-  height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #C4C4C4;
-
-    .booklet-card__top-info {
-      display: flex;
-      flex-direction: column;
-      padding-right: 3rem;
-    }
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .booklet-top-right-icon {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-      i {
-        font-size: 2rem;
-        background: white;
-        border-radius: 50%;
-      }
-
-      &:hover {
-        cursor:pointer;
-        opacity: 80%;
-      }
-    }
-
-    .booklet-top-right-icon-catalogue {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-      i {
-        font-size: 2rem;
-        z-index: 200;
-      }
-
-      .catalogue-content-card-right-menu {
-        height: 3rem;
-        width: 3rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-
-        &:hover {
-          cursor:pointer;
-          background-color: #888888;
-        }
-      }
-    }
-  }
-
-  .booklet-card-bottom {
-    height: 70%;
-    padding: 10px;
-
-    .booklet-card-theme {
-      height: 50px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-
-      p {
-        height: 20px;
-        background: #F8D9C8;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: 5px;
-        font-size: 1.3rem;
-      }
-
-      i {
-        color: #F26419;
-
-        &:hover {
-          cursor:pointer;
-          opacity: 80%;
-        }
-      }
-    }
-
-    .booklet-card-objective {
-      height: 160px;
-    }
-
-    .booklet-card-like {
-      color:black;
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-
-      i {
-        margin-left: 10px;
-      }
-    }
-  }
-}
-
-.booklet-card-overlay {
-    position: absolute;
-    background: grey;
-    width: 360px;
-    height: 360px;
-    border-radius: 5px;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
-    opacity: 50%;
-}
-
-.theme-white {
-  height: 50px;
-  overflow: hidden;
-  display: flex;
-  flex-wrap: wrap;
-  p {
-    height: 20px;
-    background: white !important;
-    color: #F26419;
-    padding: 0 .5rem;
-    margin: 0 1rem .5rem 0;
-    border-radius: 5px;
-    font-size: 1.3rem;
-  }
-}
-
-.booklet-card-syn-completed {
-  width: 360px;
-  height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #F8D9C8;
-
-    .booklet-card__top-info {
-      display: flex;
-      flex-direction: column;
-      padding-right: 3rem;
-    }
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .booklet-top-right-icon {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-      &:hover {
-        cursor:pointer;
-        opacity: 80%;
-      }
-
-      i {
-        font-size: 2rem;
-        background: white;
-        border-radius: 50%;
-      }
-    }
-  }
-
-  .booklet-card-bottom {
-    height: 70%;
-    padding: 10px;
-    background: #F8D9C8;
-
-    .booklet-card-theme {
-      height: 50px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-
-      p {
-        height: 20px;
-        background:white;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: 5px;
-        font-size: 1.3rem;
-      }
-    }
-
-    .booklet-card-objective {
-      height: 160px;
-    }
-
-    .booklet-card-like {
-      color:#F26419;
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-
-      i {
-        margin-left: 10px;
-      }
-    }
-  }
-}
-
-
-.booklet-card-asyn-completed {
-  width: 360px;
-  height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #C4C4C4;
-
-    .booklet-card__top-info {
-      display: flex;
-      flex-direction: column;
-      padding-right: 3rem;
-    }
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .booklet-top-right-icon {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-      &:hover {
-        cursor:pointer;
-        opacity: 80%;
-      }
-
-      i {
-        font-size: 2rem;
-        background: white;
-        border-radius: 50%;
-      }
-    }
-  }
-  .booklet-card-bottom {
-    height: 70%;
-    padding: 10px;
-    background: #C4C4C4;
-
-    .booklet-card-theme {
-      height: 50px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-
-      p {
-        height: 20px;
-        background: white;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: 5px;
-        font-size: 1.3rem;
-      }
-    }
-
-    .booklet-card-objective {
-      height: 160px;
-    }
-
-    .booklet-card-like {
-      color:black;
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-
-      i {
-        margin-left: 10px;
-      }
-    }
-  }
-}
+// A EFFACER
+
+// .booking-date {
+//   top: -3rem;
+//   position: absolute;
+//   display: flex;
+//   right: .5rem;
+//   background: white;
+//   padding: 5px;
+//   border-radius: 5px;
+//   border: 1px solid #c4c4c4;
+// }
+
+
+
+// .booklet-card__cost-input {
+//   position: absolute;
+//   display: flex;
+//   justify-content: flex-start;
+//   align-items: center;
+//   width: 12rem;
+//   top: 6rem;
+//   left: 1rem;
+
+//   .form-group {
+//     margin: 0;
+//     margin-right: 1rem;
+//   }
+
+//   input {
+//     background: transparent;
+//     border: 1px solid white;
+//     width: 12rem;
+//     text-align: right;
+//   }
+// }
+
+// .booklet-card-syn {
+//   width: 36rem;
+//   height: 36rem;
+//   background: #FFFFFF;
+//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//   border-radius: 5px;
+
+//   .booklet-card-top {
+//     border-radius: 5px 5px 0px 0px;
+//     padding: 10px;
+//     height: 30%;
+//     position: relative;
+//     background: #F8D9C8;
+
+//     .booklet-card__top-info {
+//       display: flex;
+//       flex-direction: column;
+//       padding-right: 3rem;
+//     }
+
+//     .booklet-card-type {
+//       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+//       width: 133px;
+//       height: 30px;
+//       background: white;
+//       border-radius: 16px;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       position: absolute;
+//       bottom: 1rem;
+//       right: 1rem;
+
+//       .booklet-card-type-icon {
+//         display: flex;
+//         justify-content: space-evenly;
+//         align-items: baseline;
+
+//         i {
+//           margin-right: 10px;
+//         }
+//       }
+//     }
+
+//     .booklet-top-right-icon {
+//       z-index: 200;
+//       position: absolute;
+//       top: 12px;
+//       right: 10px;
+
+//       &:hover {
+//         cursor:pointer;
+//         opacity: 80%;
+//       }
+
+//       i {
+//         height: 2rem;
+//         width: 2rem;
+//         font-size: 2rem;
+//         background: white;
+//         border-radius: 50%;
+//       }
+//     }
+
+
+//   }
+
+//   .booklet-card-bottom {
+//     height: 70%;
+//     padding: 1rem;
+
+//     .booklet-card-theme {
+//       height: 5rem;
+//       overflow: hidden;
+//       display: flex;
+//       flex-wrap: wrap;
+
+//       p {
+//         height: 2rem;
+//         background: #F8D9C8;
+//         color: #F26419;
+//         padding: 0 .5rem;
+//         margin: 0 1rem .5rem 0;
+//         border-radius: .5rem;
+//         font-size: 1.3rem;
+//       }
+
+//       i {
+//         color: #F26419;
+
+//         &:hover {
+//           cursor:pointer;
+//           opacity: 80%;
+//         }
+//       }
+//     }
+
+//     .booklet-card-objective {
+//       height: 160px;
+//     }
+
+//     .booklet-card-like {
+//       color:#F26419;
+//       height: 32px;
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: center;
+//       flex-direction: row-reverse;
+
+//       i.booklet-card-like__right {
+//         margin: 0 0 0 1rem;
+//       }
+
+//       i.booklet-card-like__left {
+//         margin: 0 1rem 0 0;
+//       }
+//     }
+//   }
+// }
+
+// .booklet-card-asyn {
+//   width: 360px;
+//   height: 360px;
+//   background: #FFFFFF;
+//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//   border-radius: 5px;
+
+//   .booklet-card-top {
+//     border-radius: 5px 5px 0px 0px;
+//     padding: 10px;
+//     height: 30%;
+//     position: relative;
+//     background: #C4C4C4;
+
+//     .booklet-card__top-info {
+//       display: flex;
+//       flex-direction: column;
+//       padding-right: 3rem;
+//     }
+
+//     .booklet-card-type {
+//       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+//       width: 133px;
+//       height: 30px;
+//       background: white;
+//       border-radius: 16px;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       position: absolute;
+//       bottom: 1rem;
+//       right: 1rem;
+
+//       .booklet-card-type-icon {
+//         display: flex;
+//         justify-content: space-evenly;
+//         align-items: baseline;
+
+//         i {
+//           margin-right: 10px;
+//         }
+//       }
+//     }
+
+//     .booklet-top-right-icon {
+//       z-index: 200;
+//       position: absolute;
+//       top: 12px;
+//       right: 10px;
+
+//       i {
+//         font-size: 2rem;
+//         background: white;
+//         border-radius: 50%;
+//       }
+
+//       &:hover {
+//         cursor:pointer;
+//         opacity: 80%;
+//       }
+//     }
+
+//     .booklet-top-right-icon-catalogue {
+//       z-index: 200;
+//       position: absolute;
+//       top: 12px;
+//       right: 10px;
+
+//       i {
+//         font-size: 2rem;
+//         z-index: 200;
+//       }
+
+//       .catalogue-content-card-right-menu {
+//         height: 3rem;
+//         width: 3rem;
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         border-radius: 50%;
+
+//         &:hover {
+//           cursor:pointer;
+//           background-color: #888888;
+//         }
+//       }
+//     }
+//   }
+
+//   .booklet-card-bottom {
+//     height: 70%;
+//     padding: 10px;
+
+//     .booklet-card-theme {
+//       height: 50px;
+//       overflow: hidden;
+//       display: flex;
+//       flex-wrap: wrap;
+
+//       p {
+//         height: 20px;
+//         background: #F8D9C8;
+//         color: #F26419;
+//         padding: 0 .5rem;
+//         margin: 0 1rem .5rem 0;
+//         border-radius: 5px;
+//         font-size: 1.3rem;
+//       }
+
+//       i {
+//         color: #F26419;
+
+//         &:hover {
+//           cursor:pointer;
+//           opacity: 80%;
+//         }
+//       }
+//     }
+
+//     .booklet-card-objective {
+//       height: 160px;
+//     }
+
+//     .booklet-card-like {
+//       color:black;
+//       height: 32px;
+//       display: flex;
+//       justify-content: space-between;
+//       flex-direction: row-reverse;
+
+//       i {
+//         margin-left: 10px;
+//       }
+//     }
+//   }
+// }
+
+// .booklet-card-overlay {
+//     position: absolute;
+//     background: grey;
+//     width: 360px;
+//     height: 360px;
+//     border-radius: 5px;
+//     top: 20px;
+//     left: 20px;
+//     z-index: 100;
+//     opacity: 50%;
+// }
+
+// .theme-white {
+//   height: 50px;
+//   overflow: hidden;
+//   display: flex;
+//   flex-wrap: wrap;
+//   p {
+//     height: 20px;
+//     background: white !important;
+//     color: #F26419;
+//     padding: 0 .5rem;
+//     margin: 0 1rem .5rem 0;
+//     border-radius: 5px;
+//     font-size: 1.3rem;
+//   }
+// }
+
+// .booklet-card-syn-completed {
+//   width: 360px;
+//   height: 360px;
+//   background: #FFFFFF;
+//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//   border-radius: 5px;
+
+//   .booklet-card-top {
+//     border-radius: 5px 5px 0px 0px;
+//     padding: 10px;
+//     height: 30%;
+//     position: relative;
+//     background: #F8D9C8;
+
+//     .booklet-card__top-info {
+//       display: flex;
+//       flex-direction: column;
+//       padding-right: 3rem;
+//     }
+
+//     .booklet-card-type {
+//       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+//       width: 133px;
+//       height: 30px;
+//       background: white;
+//       border-radius: 16px;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       position: absolute;
+//       bottom: 1rem;
+//       right: 1rem;
+
+//       .booklet-card-type-icon {
+//         display: flex;
+//         justify-content: space-evenly;
+//         align-items: baseline;
+
+//         i {
+//           margin-right: 10px;
+//         }
+//       }
+//     }
+
+//     .booklet-top-right-icon {
+//       z-index: 200;
+//       position: absolute;
+//       top: 12px;
+//       right: 10px;
+
+//       &:hover {
+//         cursor:pointer;
+//         opacity: 80%;
+//       }
+
+//       i {
+//         font-size: 2rem;
+//         background: white;
+//         border-radius: 50%;
+//       }
+//     }
+//   }
+
+//   .booklet-card-bottom {
+//     height: 70%;
+//     padding: 10px;
+//     background: #F8D9C8;
+
+//     .booklet-card-theme {
+//       height: 50px;
+//       overflow: hidden;
+//       display: flex;
+//       flex-wrap: wrap;
+
+//       p {
+//         height: 20px;
+//         background:white;
+//         color: #F26419;
+//         padding: 0 .5rem;
+//         margin: 0 1rem .5rem 0;
+//         border-radius: 5px;
+//         font-size: 1.3rem;
+//       }
+//     }
+
+//     .booklet-card-objective {
+//       height: 160px;
+//     }
+
+//     .booklet-card-like {
+//       color:#F26419;
+//       height: 32px;
+//       display: flex;
+//       justify-content: space-between;
+//       flex-direction: row-reverse;
+
+//       i {
+//         margin-left: 10px;
+//       }
+//     }
+//   }
+// }
+
+
+// .booklet-card-asyn-completed {
+//   width: 360px;
+//   height: 360px;
+//   background: #FFFFFF;
+//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//   border-radius: 5px;
+
+//   .booklet-card-top {
+//     border-radius: 5px 5px 0px 0px;
+//     padding: 10px;
+//     height: 30%;
+//     position: relative;
+//     background: #C4C4C4;
+
+//     .booklet-card__top-info {
+//       display: flex;
+//       flex-direction: column;
+//       padding-right: 3rem;
+//     }
+
+//     .booklet-card-type {
+//       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+//       width: 133px;
+//       height: 30px;
+//       background: white;
+//       border-radius: 16px;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       position: absolute;
+//       bottom: 1rem;
+//       right: 1rem;
+
+//       .booklet-card-type-icon {
+//         display: flex;
+//         justify-content: space-evenly;
+//         align-items: baseline;
+
+//         i {
+//           margin-right: 10px;
+//         }
+//       }
+//     }
+
+//     .booklet-top-right-icon {
+//       z-index: 200;
+//       position: absolute;
+//       top: 12px;
+//       right: 10px;
+
+//       &:hover {
+//         cursor:pointer;
+//         opacity: 80%;
+//       }
+
+//       i {
+//         font-size: 2rem;
+//         background: white;
+//         border-radius: 50%;
+//       }
+//     }
+//   }
+//   .booklet-card-bottom {
+//     height: 70%;
+//     padding: 10px;
+//     background: #C4C4C4;
+
+//     .booklet-card-theme {
+//       height: 50px;
+//       overflow: hidden;
+//       display: flex;
+//       flex-wrap: wrap;
+
+//       p {
+//         height: 20px;
+//         background: white;
+//         color: #F26419;
+//         padding: 0 .5rem;
+//         margin: 0 1rem .5rem 0;
+//         border-radius: 5px;
+//         font-size: 1.3rem;
+//       }
+//     }
+
+//     .booklet-card-objective {
+//       height: 160px;
+//     }
+
+//     .booklet-card-like {
+//       color:black;
+//       height: 32px;
+//       display: flex;
+//       justify-content: space-between;
+//       flex-direction: row-reverse;
+
+//       i {
+//         margin-left: 10px;
+//       }
+//     }
+//   }
+// }

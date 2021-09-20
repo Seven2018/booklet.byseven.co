@@ -87,15 +87,18 @@ class PagesController < ApplicationController
     if current_user.company_id.present?
       # SEARCHING CONTENTS 
       @contents = Content.where(company_id: current_user.company.id)
+      @folders = Folder.where(company_id: current_user.company.id)
       unless params[:reset]
         if params[:search].present? && !params[:search][:title].blank?
           @contents = @contents.search_contents("#{params[:search][:title]}")
+          @folders = @folders.search_folders("#{params[:search][:title]}")
           respond_to do |format|
             format.html {catalogue_path}
             format.js
           end
         end
       end
+      @folders = @folders.order(updated_at: :asc)
       @contents = @contents.order(updated_at: :desc)
     end
   end

@@ -2,6 +2,7 @@
 
 // CONTAINER
 .catalogue-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -16,15 +17,30 @@
 }
 
 .index-controls-create-content {
-  margin-bottom: 20px;
-  margin-top: 3rem;
+  width: 30rem;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+
   .form-group {
     margin-bottom: 0px !important;
   }
-}
 
+  h2 {
+    font-size: 14px !important;
+  }
+
+  i {
+    margin-right: 2rem;
+  }
+
+  .btn-blue, .btn-orange {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+}
 
 // FILTER BAR
 
@@ -111,6 +127,23 @@
     margin: 30px 20px 10px 20px;
 }
 
+.catalogue-row {
+  height: 42rem;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow-x: auto;
+  margin-right: 0;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
 // Catalogue v2 //
 
 
@@ -129,13 +162,5 @@
 
   a {
     padding: 5px 20px;
-  }
-}
-
-.new_category {
-    input:focus {
-    border-bottom: 1px solid#F26419 !important;
-    border: none;
-    background-color: transparent;
   }
 }

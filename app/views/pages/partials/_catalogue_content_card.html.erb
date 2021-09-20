@@ -1,0 +1,76 @@
+<div class="booklet-content-card">
+  <% content = @content if @content.present? %>
+  <% if content.content_type == 'Synchronous' %>
+    <div class="booklet-content-card-syn">
+  <% else %>
+    <div class="booklet-content-card-asyn">
+  <% end %>
+      <div class="booklet-content-card-top">
+        <div class="booklet-content-card__top-info">
+          <%= link_to '', content_path(content), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
+          <% if content.title.length <= 30 %>
+            <div>
+              <i class="far fa-file"></i>
+              <h3><b><%= content.title %></b></h3>
+            </div>
+          <% else %>
+            <div>
+              <i class="fas fa-file-alt"></i>
+              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
+            </div>
+          <% end %>
+          <div>
+            <p class='booklet-content-card__duration'><%= content.duration %> Minutes</p>
+            <div class="booklet-content-card-type-icon">
+              <% if content.content_type == 'Synchronous' %>
+                <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                <p style='color:#F26419;'>In Person</p>
+              <% else %>
+                <i class="fas fa-laptop" style='color:black;'></i>
+                <p style='color:black;'>Online</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="booklet-content-card__options" onclick="openContentMenu(this);">
+          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+            <i class="fas fa-ellipsis-v"></i>
+            <div class="content-dropdown hidden">
+              <%= link_to 'Recommendation', recommendation_path(content_id: content.id) %>
+              <%= link_to 'Edit', edit_content_path(content) %>
+              <%= link_to 'Delete', destroy_content_path(content_id: content.id, catalogue: 'true'), data: {confirm: 'Are you sure ?'}, remote: true %>
+              <%= link_to 'Duplicate', duplicate_content_path(content) %>
+            </div>
+          <% end %>
+        </div>
+        <div class="booklet-content-card__categories">
+          <% content.categories.each do |category| %>
+            <div class="booklet-content-card__category-pill">
+              <p><%= category.title %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="booklet-content-card-bottom">
+        <div class="booklet-content-card-bottom__top-right-icon">
+          <p><%= content.mods.count %></p>
+          <i class="fas fa-layer-group"></i>
+        </div>
+        <div class="booklet-content-card-bottom__mods">
+          <% content.mods.each do |mod| %>
+            <div class="booklet-content-card-bottom__mod">
+              <% if mod.mod_type == 'text' %>
+                <i class="fas fa-file-alt"></i>
+              <% elsif mod.mod_type == 'video' %>
+                <i class="fas fa-file-video"></i>
+              <% elsif mod.mod_type == 'quiz' %>
+                <i class="fas fa-question-circle"></i>
+              <% end %>
+              <p><%= mod.title %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+</div>
+
