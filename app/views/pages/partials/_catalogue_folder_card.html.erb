@@ -1,0 +1,59 @@
+<div class="booklet-folder-card">
+  <div class="booklet-folder-card-top">
+    <div class="booklet-folder-card__top-info">
+      <%# link_to '', folder_path(folder), class: 'stretched-link', data: {toggle: 'tooltip'}, title: folder.title %>
+      <% if folder.title.length <= 30 %>
+        <div>
+          <i class="fas fa-folder"></i>
+          <h3><b><%= folder.title %></b></h3>
+        </div>
+      <% else %>
+        <div>
+          <i class="fas fa-folder"></i>
+          <h3 data-toggle='tooltip' title='<%= folder.title %>'><b><%= folder.title.first(30) + '...' %></b></h3>
+        </div>
+      <% end %>
+      <div>
+        <p class='booklet-folder-card__duration'><%= folder.duration %> Minutes</p>
+        <% if folder.children_contents.map{|x| x.content_type}.include?('Synchronous') %>
+          <div class="booklet-folder-card-type-icon">
+            <i class="fas fa-chalkboard-teacher" style='color:rgba(91, 146, 197, 1);'></i>
+            <p style='color:rgba(91, 146, 197, 1);'>In Person</p>
+          </div>
+        <% end %>
+        <% if folder.children_contents.map{|x| x.content_type}.include?('Asynchronous') %>
+          <div class="booklet-folder-card-type-icon">
+            <i class="fas fa-laptop" style='color:rgba(91, 146, 197, 1);'></i>
+            <p style='color:rgba(91, 146, 197, 1);'>Online</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="booklet-folder-card__options" onclick="openContentMenu(this);">
+      <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+        <i class="fas fa-ellipsis-v"></i>
+        <div class="folder-dropdown hidden">
+          <%# link_to 'Recommendation', recommendation_path(folder_id: folder.id) %>
+          <%# link_to 'Edit', edit_folder_path(folder) %>
+          <%# link_to 'Delete', destroy_folder_path(folder_id: folder.id, catalogue: 'true'), data: {confirm: 'Are you sure ?'}, remote: true %>
+        </div>
+      <% end %>
+    </div>
+    <div class="booklet-folder-card__categories">
+      <% folder.categories.each do |category| %>
+        <div class="booklet-folder-card__category-pill">
+          <p><%= category.title %></p>
+        </div>
+      <% end %>
+      <% folder.children_categories.each do |category| %>
+        <div class="booklet-children-content-card__category-pill">
+          <p><%= category.title %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="booklet-folder-card-bottom">
+
+  </div>
+</div>
+
