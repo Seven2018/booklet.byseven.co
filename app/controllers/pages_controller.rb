@@ -37,6 +37,7 @@ class PagesController < ApplicationController
     # @current_trainings = Training.where(company: current_user.company).joins(:sessions).where('date >= ?', Date.today).order(date: :asc).uniq
     # @all_trainings = @past_trainings + @current_trainings
     @trainings = Training.where(company: current_user.company)
+    @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :asc)
     @past_trainings = @trainings.select { |training| training.past? }
     @current_trainings = @trainings.reject { |training| training.past? }
     

@@ -48,6 +48,10 @@
 .dashboard-navigation {
   flex-grow: 1;
   padding-right: 3rem;
+
+  .row {
+    margin: 35px auto 50px auto;
+  }
 }
 
 // DASHBOARD
@@ -276,11 +280,24 @@
   height: 15rem;
   width: 40rem;
   flex-shrink: 0;
-  margin: 1rem 1rem;
+  margin: 1rem 2rem;
+  position: relative;
 }
 
 .past-training {
   filter: opacity(40%);
+}
+
+.next-session-date {
+  position: absolute;
+  top: -31px;
+  left: 20px;
+  background-color: rgb(234, 237, 241);
+  padding: 5px 15px;
+  border-radius: 5px 5px 0 0;
+  border-style: dashed dashed none;
+  border-color: #5B92C5;
+  font-size: small;
 }
 
 .trainings-card {
@@ -301,7 +318,7 @@
   }
 
   .card-main-content {
-    height: 65%;
+    height: 60%;
   }
 
   .card-themes {
@@ -332,6 +349,7 @@
   .infos-second-line {
     margin-left: 42px;
     margin-top: 5px;
+    align-items: center;
   }
 
   .card-themes {
@@ -340,7 +358,7 @@
   }
 
   .tag-themes {
-    background-color: #ff68228a;
+    background-color: #E9986E;
     color: white;
     padding: 2% 4%;
     margin: 2%;
@@ -352,4 +370,13 @@
   .small-i {
     font-size: large;
   }
+
+  .light-blue-i {
+    color: #5B92C5;
+  }
+
+  .light-orange-i {
+    color: #E9986E;
+  }
+
 }
