@@ -1,5 +1,5 @@
 if ('<%= @modal %>' == 'true') {
-  document.querySelector('#addTheme').querySelector('.modal-dialog').innerHTML = '<%= j render("contents/partials/manage_categories", content: @content) %>';
+  document.querySelector('#addTheme').querySelector('.modal-dialog').innerHTML = '<%= j render("contents/modals/manage_categories", content: @content) %>';
 } else {
   document.querySelector('.content-show-attributes-right').innerHTML = '<%= j render("contents/partials/show_attributes_right", content: @content, page: "edit") %>';
 }

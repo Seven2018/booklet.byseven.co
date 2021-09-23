@@ -1,0 +1,33 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__content">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Create a new Workshop</h3>
+    </div>
+  </div>
+  <div class="modal-body">
+    <%= simple_form_for Content.new do |f| %>
+      <%= f.input :title, input_html: {onkeyup: "checkContentValidity(this);", autocomplete: 'off'} %>
+      <%= f.input :description %>
+      <div class="flex-row-between-start">
+        <%= f.input :content_type, label: 'Type', :collection => [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], label_method: :second, value_method: :first, legend_tag: false, :include_blank => false %>
+        <%= f.hidden_field :categories %>
+        <div class="flex-column-between-left">
+          <%= f.label 'Categories' %>
+          <div class="modal-body__content-categories-div">
+            <div class="modal-body__categories-add-icon--content">
+              <a data-toggle='modal' data-target='#newWorkshopCategories' onclick="hidePreviousModal(this);">
+                <i class="fas fa-plus"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style=" display: flex; justify-content: center;margin-top:3rem;">
+        <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <%= button_tag type: 'submit', class: 'btn-orange-disabled', id: 'save_button', disabled: true do %>
+          <p>SAVE</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<% if @filtered_categories.present? %>
+    <% @filtered_categories.each do |category| %>
+      <div class="selected-tags" name='<%= category.title %>' id='pill_category-<%= category.id %>'>
+        <p><%= category.title %></p>
+        <i class="fas fa-times" onclick='removeFilterTag(this);'></i>
+      </div>
+    <% end %>
+<% end %>

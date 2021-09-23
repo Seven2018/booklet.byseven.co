@@ -1,163 +1,110 @@
-<% folders.each do |folder| %>
-  <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="folder-<%= folder.id %>">
-    <div class="booklet-card" >
-      <div class="booklet-card-syn">
-        <div class="booklet-card-top">
-          <div class="booklet-card__top-info">
-            <% if folder.title.length > 30 %>
-              <h3><b><%= folder.title.first(30)+'...' %></b></h3>
-            <% else %>
-              <h3><b><%= folder.title %></b></h3>
-            <% end %>
-            <p><%= folder.children_contents.count %> Workshops</p>
-          </div>
-          <div class="booklet-card-type-pill">
-
-          </div>
-          <div class="booklet-top-right-icon" id='bookbtn' onclick='selectContent(this);'>
-            <div>
-              <% if selected_folder != folder.id.to_s %>
-                <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>">
-              <% else %>
-                <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>" checked>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="booklet-card-bottom">
-          <div class="booklet-card-theme">
-            <% folder.children_categories.each do |category| %>
-              <p id='theme'><%= category.title %></p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
-<% contents.each do |content| %>
-  <% if content.content_type == 'Synchronous' %>
-    <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="content-<%= content.id %>">
-      <div class="booklet-card" >
-      <div class="booklet-card-syn">
-        <div class="booklet-card-top">
-          <div class="booklet-card__top-info">
-            <% if content.title.length > 30 %>
-              <h3><b><%= content.title.first(30)+'...' %></b></h3>
-            <% else %>
-              <h3><b><%= content.title %></b></h3>
-            <% end %>
-            <p><%= content.duration %> Minutes</p>
-          </div>
-          <div class="booklet-card-type-pill">
-            <div class="booklet-card-type">
-              <div class="booklet-card-type-icon">
-                <% if content.content_type == 'Synchronous' %>
-                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                  <p>In Person</p>
+<div class="catalogue-row">
+  <% folders.each do |folder| %>
+    <div class="catalogue-card-container catalogue-card-container--mini" id="folder-<%= folder.id %>" onclick='selectContent(this);'>
+      <div class="booklet-folder-card">
+        <div class="booklet-folder-card-top">
+          <div class="booklet-folder-card__top-info">
+            <div class="booklet-top-right-icon hidden" id='bookbtn'>
+              <div>
+                <% if selected_folder != folder.id.to_s %>
+                  <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>">
                 <% else %>
-                  <i class="fas fa-laptop" style='color:black;'></i>
-                  <p>Online</p>
+                  <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>" checked>
                 <% end %>
               </div>
             </div>
-          </div>
-          <div class="booklet-top-right-icon" id='bookbtn' onclick='selectContent(this);'>
+            <% if folder.title.length <= 30 %>
+              <div>
+                <i class="fas fa-folder"></i>
+                <h3><b><%= folder.title %></b></h3>
+              </div>
+            <% else %>
+              <div>
+                <i class="fas fa-folder"></i>
+                <h3 data-toggle='tooltip' title='<%= folder.title %>'><b><%= folder.title.first(30) + '...' %></b></h3>
+              </div>
+            <% end %>
             <div>
-              <% if selected_content != content.id.to_s %>
-                <input type="checkbox" class="book-contents-checkbox" id="checkbox-content-<%= content.id %>">
-              <% else %>
-                <input type="checkbox" class="book-contents-checkbox" id="checkbox-content-<%= content.id %>" checked>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="booklet-card-bottom">
-          <div class="booklet-card-theme">
-            <% content.categories.order(title: :asc).each do |category| %>
-              <p id='theme'><%= category.title %></p>
-            <% end %>
-          </div>
-          <div class="booklet-card-objective">
-            <% if content.description.present? %>
-              <% if content.description.length >= (250) %>
-                <p><%= content.description.first(250) + '...' %></p>
-              <% else %>
-                <p><%= content.description %></p>
-              <% end %>
-            <% end %>
-          </div>
-          
-          <div class="booklet-card-like">
-            <% likes_count = UserInterest.where(content_id: content.id, status: 'Interested').count %>
-            <% recommendations_count = UserInterest.where(content_id: content.id, recommendation: ['Yes', 'No']).count %>
-            <% yes_recommendations_count = UserInterest.where(content_id: content.id, recommendation: 'Yes').count %>
-            <p style='color:#696969;'><%= likes_count %><i class="far fa-heart booklet-card-like__right"></i></p>
-            <p style='color:#696969;'><%= "#{yes_recommendations_count} / #{recommendations_count}" %><i class="fas fa-user-check mx-3"></i></p>
-          </div>
-
-        </div>
-      </div>
-      </div>
-    </div>
-  <% else %>
-    <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="content-<%= content.id %>">
-      <div class="booklet-card">
-        <div class="booklet-card-asyn">
-          <div class="booklet-card-top">
-            <div class="booklet-card__top-info">
-              <% if content.title.length > 30 %>
-                <h3><b><%= content.title.first(30)+'...' %></b></h3>
-              <% else %>
-                <h3><b><%= content.title %></b></h3>
-              <% end %>
-              <p><%= content.duration %> Minutes</p>
-            </div>
-            <div class="booklet-card-type-pill">
-              <div class="booklet-card-type">
-                <div class="booklet-card-type-icon">
-                  <% if content.content_type == 'Synchronous' %>
-                    <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                    <p>In Person</p>
-                  <% else %>
-                    <i class="fas fa-laptop" style='color:black;'></i>
-                    <p>Online</p>
-                  <% end %>
+              <p class='booklet-folder-card__duration'><%= folder.duration %> Minutes</p>
+              <% if folder.children_contents.map{|x| x.content_type}.include?('Synchronous') %>
+                <div class="booklet-folder-card-type-icon">
+                  <i class="fas fa-chalkboard-teacher" style='color:rgba(91, 146, 197, 1);'></i>
+                  <p style='color:rgba(91, 146, 197, 1);'>In Person</p>
                 </div>
-              </div>
-            </div>
-            <div class="booklet-top-right-icon" id='bookbtn' onclick='selectCard(this);'>
-              <i class="far fa-circle"  id='notselected'></i>
-              <i class="fas fa-check-circle hidden" id='added' style='color:#F26419;'></i>
-              <i class="fas fa-times hidden" id='removecard'></i>
+              <% end %>
+              <% if folder.children_contents.map{|x| x.content_type}.include?('Asynchronous') %>
+                <div class="booklet-folder-card-type-icon">
+                  <i class="fas fa-laptop" style='color:rgba(91, 146, 197, 1);'></i>
+                  <p style='color:rgba(91, 146, 197, 1);'>Online</p>
+                </div>
+              <% end %>
             </div>
           </div>
-          <div class="booklet-card-bottom">
-            <div class="booklet-card-theme">
-              <% content.categories.order(title: :asc).each do |category| %>
-                <p id='theme'><%= category.title %></p>
-              <% end %>
-            </div>
-            <div class="booklet-card-objective">
-              <% if content.description.present? %>
-                <% if content.description.length >= (250) %>
-                  <p><%= content.description.first(250) + '...' %></p>
-                <% else %>
-                  <p><%= content.description %></p>
-                <% end %>
-              <% end %>
-            </div>
-            
-            <div class="booklet-card-like">
-              <% likes_count = UserInterest.where(content_id: content.id, status: 'Interested').count %>
-              <p style='color:#696969;'><%= likes_count %><i class="far fa-heart booklet-card-like__right"></i></p>
-            </div>
-
+          <div class="booklet-folder-card__categories">
+            <% folder.categories.each do |category| %>
+              <div class="booklet-folder-card__category-pill">
+                <p><%= category.title %></p>
+              </div>
+            <% end %>
+            <% folder.children_categories.each do |category| %>
+              <div class="booklet-content-card__category-pill">
+                <p><%= category.title %></p>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
   <% end %>
-<% end %>
-
+</div>
+<div class="catalogue-row">
+  <% contents.each do |content| %>
+    <div class="catalogue-card-container catalogue-card-container--mini" id="content-<%= content.id %>">
+      <div class="booklet-content-card">
+        <% content = @content if @content.present? %>
+        <% if content.content_type == 'Synchronous' %>
+          <div class="booklet-content-card-syn">
+        <% else %>
+          <div class="booklet-content-card-asyn">
+        <% end %>
+            <div class="booklet-content-card-top">
+              <div class="booklet-content-card__top-info">
+                <%= link_to '', content_path(content), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
+                <% if content.title.length <= 30 %>
+                  <div>
+                    <i class="far fa-file"></i>
+                    <h3><b><%= content.title %></b></h3>
+                  </div>
+                <% else %>
+                  <div>
+                    <i class="fas fa-file-alt"></i>
+                    <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
+                  </div>
+                <% end %>
+                <div>
+                  <p class='booklet-content-card__duration'><%= content.duration %> Minutes</p>
+                  <div class="booklet-content-card-type-icon">
+                    <% if content.content_type == 'Synchronous' %>
+                      <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                      <p style='color:#F26419;'>In Person</p>
+                    <% else %>
+                      <i class="fas fa-laptop" style='color:black;'></i>
+                      <p style='color:black;'>Online</p>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <div class="booklet-content-card__categories">
+                <% content.categories.each do |category| %>
+                  <div class="booklet-content-card__category-pill">
+                    <p><%= category.title %></p>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  <% end %>
+</div>
 

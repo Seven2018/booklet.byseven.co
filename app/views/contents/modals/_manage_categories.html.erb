@@ -1,7 +1,7 @@
 <div class="modal-content">
   <div class="modal-header">
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Manage Themes for <em><%= content.title %></em></h3>
+      <h3 class="modal-title" id="myModalLabel">Manage Categories for <em><%= content.title %></em></h3>
     </div>
   </div>
   <div class="modal-body" id="modalNewBookinBody">
@@ -26,7 +26,7 @@
         </div>
         <div class="flex-row-start-centered" onclick='fetchCategoryForm(this);'>
           <i class="fas fa-plus" data-toggle='tooltip' title='Add Theme'></i>
-          <p>New Theme</p>
+          <p>New Category</p>
         </div>
         <%= f.hidden_field :content_id, value: content.id %>
         <%= f.hidden_field :page, value: params[:action] %>

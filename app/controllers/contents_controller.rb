@@ -3,18 +3,16 @@ class ContentsController < ApplicationController
   before_action :force_json, only: [:change_author]
   helper VideoHelper
 
-  # Show content new form
-  def new
-    @content = Content.new
-    authorize @content
-  end
-
   # Create new content (pages/catalogue)
   def create
-    @content = Content.new(content_params)
+    params.permit!
+    @content = Content.new(params[:content].except(:categories))
     authorize @content
     @content.company_id = current_user.company.id
     if @content.save
+      params[:content][:categories].split(',').each do |category_id|
+        ContentCategory.create(content_id: @content.id, category_id: category_id)
+      end
       redirect_to edit_content_path(@content)
     end
   end
@@ -39,6 +37,14 @@ class ContentsController < ApplicationController
         format.js
       end
     end
+  end
+
+  # Delete content (pages/catalogue)
+  def destroy
+    @content = Content.find(params[:id])
+    authorize @content
+    @content.destroy
+    redirect_to catalogue_path
   end
 
   # Duplicate content (pages/catalogue)
@@ -89,14 +95,6 @@ class ContentsController < ApplicationController
     respond_to do |format|
       format.js
     end
-  end
-
-  # Delete content (pages/catalogue)
-  def destroy_content
-    @content = Content.find(params[:content_id])
-    authorize @content
-    @content.destroy
-    redirect_to catalogue_path
   end
 
   private

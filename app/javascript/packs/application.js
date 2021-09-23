@@ -11,3 +11,7 @@ try {
 }
 catch(err) {
 }
+
+import { toggleShowBranchTree } from '../components/tree';
+
+toggleShowBranchTree();

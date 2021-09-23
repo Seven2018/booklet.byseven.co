@@ -2,24 +2,29 @@
   <div id="index-controls" class='flex-row-between-start'>
     <div class="index-controls-filter-bar">
       <%= render 'shared/searchbar', path: catalogue_path, reset_path: catalogue_path(reset: ""), reset: true %>
+      <div class="catalogue-filter-selected-tags">
+        <%= render 'pages/partials/catalogue_filtered_pills' %>
+      </div>
     </div>
     <div class='index-controls-create-content'>
       <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-        <div class="btn-blue" data-toggle='tooltip' title='Create a folder'>
-          <i class="fas fa-plus"></i>
-          <p>Create Folder</p>
-        </div>
-        <%= link_to new_content_path do %>
-          <div class="btn-orange" data-toggle='tooltip' title='Create a content'>
+        <a data-toggle='modal' data-target='#newFolder'>
+          <div class="btn-blue" data-toggle='tooltip' title='Create a folder'>
+            <i class="fas fa-plus"></i>
+            <p>Create Folder</p>
+          </div>
+        </a>
+        <a data-toggle='modal' data-target='#newWorkshop'>
+          <div class="btn-orange">
             <i class="fas fa-plus"></i>
             <p>Create Workshop</p>
           </div>
-        <% end %>
+        </a>
       <% end %>
     </div>
   </div>
   <div id="catalogue-index">
-    <% if @contents.empty? %>
+    <% if @contents.empty? && @folders.empty?%>
       <% if params[:search].present? %>
         <p>No results.</p>
       <% else %>
@@ -38,6 +43,41 @@
   </div>
 </div>
 
+<!-- MODALS -->
+
+<div class='modal fade' id='newWorkshop' data-target='content' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'contents/modals/new_content' %>
+  </div>
+</div>
+
+<div class='modal fade modal_folder' id='newFolder' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'folders/modals/new_folder' %>
+  </div>
+</div>
+
+<div class='modal fade' id='newWorkshopCategories' data-target='content' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-dialog__add-category' role='document' style='border-radius: 20px'>
+    <%= render 'contents/modals/manage_categories_new' %>
+  </div>
+</div>
+
+<div class='modal fade' id='newFolderCategories' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-dialog__add-category' role='document' style='border-radius: 20px'>
+    <%= render 'folders/modals/manage_categories_new' %>
+  </div>
+</div>
+
+<!-- DROPTIGHT -->
+
+<div class="organisation-filter-container">
+  <div class="organisation-filter-background" onclick='closeFilter();'></div>
+  <div class="organisation-filter-dropright">
+    <%= render 'pages/partials/catalogue_filter_dropright' %>
+  </div>
+</div>
+
 <script>
 
   formGuardian = false;
@@ -53,6 +93,128 @@
     }
     if (clickedOut) return true;
     else return false;
+  }
+
+  function searchInput(element) {
+    if (element.value != '') {
+      element.closest('.searchbar').querySelector('.btn-reset-form').classList.remove('hidden')
+    } else {
+      element.closest('.searchbar').querySelector('.btn-reset-form').classList.add('hidden')
+    }
+    document.querySelector('#filter_catalogue_searched').value = element.value
+  }
+
+  function openFilter() {
+    filter_container = document.querySelector('.organisation-filter-container');
+    filter_dropright = document.querySelector('.organisation-filter-dropright');
+    filter_container.style.display = 'flex';
+    setTimeout(function(){
+      filter_dropright.style.width = '400px';
+    }, 1);
+  }
+
+  function closeFilter() {
+    filter_container = document.querySelector('.organisation-filter-container');
+    filter_dropright = document.querySelector('.organisation-filter-dropright');
+    filter_dropright.style.width = '0px';
+    setTimeout(function(){
+      filter_container.style.display = 'none';
+    }, 250);
+  }
+
+  function toggleTagCategoryDropdown(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '10000px';
+      block.classList.add('active');
+    } else {
+      block.style.maxHeight = '61px';
+      block.classList.remove('active');
+    }
+  }
+
+  function hideClearFilterButton() {
+    form = document.querySelector('.filter_catalogue');
+    form.querySelectorAll('.organisation-filter-block').forEach((element) => {
+      checked = false;
+      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+        if (checkbox.checked == true) {
+          checked = true;
+        }
+      })
+      if (checked == false) {
+        element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
+      }
+    })
+  }
+
+  function autoSubmit(element) {
+    element.closest('.organisation-filter-block').querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
+    hideClearFilterButton();
+    search_input = document.querySelector('#search_filtered')
+    console.log(search_input)
+    filtered_array = []
+    element.closest('form').querySelectorAll('.check_boxes').forEach((checkbox) => {
+      if (checkbox.checked == true) {
+        filtered_array.push(checkbox.id.split('_')[3])
+      }
+    })
+    search_input.value = filtered_array
+    document.querySelector('.filter_catalogue').querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
+  }
+
+  function resetInput(element) {
+    element.closest('.searchbar').querySelector('input').value = ''
+    document.querySelector('#search_filtered').value = ''
+    document.querySelector('#filter_catalogue_searched').value = ''
+    element.closest('.searchbar').querySelector('.btn-search').click()
+  }
+
+  function resetFilter() {
+    form = document.querySelector('.filter_catalogue');
+    form.querySelectorAll('.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearFilterButton();
+    document.querySelector('#search_filtered').value = ''
+    document.querySelector('#filter_catalogue_searched').value = ''
+    form.querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
+  }
+
+  function clearFilter(element) {
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    block.querySelectorAll('input.check_boxes').forEach((element) => {
+      if (element.checked == true) {
+        element.checked = false;
+      }
+    })
+    hideClearFilterButton();
+    document.querySelector('.filter_catalogue').querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
+  }
+
+  function removeFilterTag(element) {
+    form = document.querySelector('.filter_catalogue');
+    category = element.parentNode.getAttribute("name");
+    form.querySelectorAll('.check_boxes').forEach((checkbox) => {
+      if (checkbox.parentNode.querySelector('label').innerText == category) {
+        checkbox.checked = false;
+      }
+    })
+    form.querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
   }
 
   function openContentMenu(element) {
@@ -76,22 +238,140 @@
     form.classList.toggle('hidden');
   }
 
-  function openFilter(element) {
-    filter = element.parentNode.querySelector('.index-controls-filter-bar-block-filter')
-    element.classList.toggle('hidden');
-    filter.classList.toggle('hidden');
+  // function openFilter(element) {
+  //   filter = element.parentNode.querySelector('.index-controls-filter-bar-block-filter')
+  //   element.classList.toggle('hidden');
+  //   filter.classList.toggle('hidden');
+  // }
+
+  // function removeFilter(element) {
+  //   filter_tag = element.parentNode;
+  //   storage = document.querySelector('#filter_themes')
+  //   array = storage.value.split(',');
+  //   array = array.filter(function(value, index, arr){
+  //     return value != element.getAttribute('data-id');
+  //   });
+  //   storage.value = array.join(',');
+  //   filter_tag.remove();
+  //   storage.parentNode.querySelector('.hidden-submit').click();
+  // }
+
+  function fetchCategoryForm(element) {
+    form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
+    initial_top = form.offsetTop
+    initial_left = form.offsetLeft
+    form.style.top = (element.offsetTop).toString() + 'px'
+    form.style.left = (element.offsetLeft + 25).toString() + 'px'
+    element.querySelector('p').style.opacity = '0'
+    form.classList.toggle('hidden')
+    form.querySelector('input').focus()
+    formGuardian = true;
+    setTimeout(function(){
+      formGuardian = false;
+    }, 1);
+
+    form.querySelector('#category_title').addEventListener('keypress', function(e) {
+      if (event.which == '13') {
+        event.preventDefault();
+        form.querySelector('.hidden-submit').click()
+      }
+    })
+
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, form) && formGuardian == false) {
+        form.style.top = initial_top.toString() + 'px';
+        form.style.left = initial_left.toString() + 'px'
+        element.querySelector('p').style.opacity = '1'
+        form.classList.toggle('hidden')
+        form.querySelector('input').value = ''
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
   }
 
-  function removeFilter(element) {
-    filter_tag = element.parentNode;
-    storage = document.querySelector('#filter_themes')
-    array = storage.value.split(',');
-    array = array.filter(function(value, index, arr){
-      return value != element.getAttribute('data-id');
-    });
-    storage.value = array.join(',');
-    filter_tag.remove();
-    storage.parentNode.querySelector('.hidden-submit').click();
+  function showCategoryDelete(element) {
+    trash = element.parentNode.querySelector('.category-delete')
+    if (trash.style.opacity == 0) {
+      trash.style.opacity = 1;
+    } else {
+      trash.style.opacity = 0;
+    }
+  }
+
+  function selectCategoryNewContent(element) {
+    if (element.checked == true) {
+      container = document.querySelector('.modal-body__content-categories-div')
+      new_pill = document.createElement("div");
+      new_pill.classList.add('booklet-content-card__category-pill--new')
+      new_pill.id = "category-" + element.id
+      new_pill.innerHTML = '<p>' + element.parentNode.querySelector('.category-title').innerHTML + '</p>'
+      container.append(new_pill)
+    } else {
+      target_pill = document.getElementById('category-' + element.id)
+      target_pill.remove()
+    }
+    category_storage = container.closest('form').querySelector('#content_categories')
+    categories_array = []
+    container.querySelectorAll('.booklet-content-card__category-pill--new').forEach((el) => {
+      categories_array.push(el.id.split('-')[1])
+    })
+    category_storage.value = categories_array
+  }
+
+  function selectCategoryNewFolder(element) {
+    if (element.checked == true) {
+      container = document.querySelector('.modal-body__folder-categories-div')
+      new_pill = document.createElement("div");
+      new_pill.classList.add('booklet-folder-card__category-pill--new')
+      new_pill.id = "category-" + element.id
+      new_pill.innerHTML = '<p>' + element.parentNode.querySelector('.category-title').innerHTML + '</p>'
+      container.append(new_pill)
+    } else {
+      target_pill = document.getElementById('category-' + element.id)
+      target_pill.remove()
+    }
+    category_storage = container.closest('form').querySelector('#folder_categories')
+    categories_array = []
+    container.querySelectorAll('.booklet-folder-card__category-pill--new').forEach((el) => {
+      categories_array.push(el.id.split('-')[1])
+    })
+    category_storage.value = categories_array
+  }
+
+  function hidePreviousModal(element) {
+    data_target = element.closest('.modal').getAttribute('data-target')
+    document.querySelector('[data-target="'+ data_target +'"]').classList.remove('show')
+  }
+
+  function showPreviousModal(element) {
+    data_target = element.closest('.modal').getAttribute('data-target')
+    document.querySelector('[data-target="'+ data_target +'"]').classList.add('show')
+  }
+
+  function checkContentValidity(element) {
+    button = element.closest('form').querySelector('#save_button')
+    if (element.value.replace(/\s+/g, '') != '') {
+      button.classList.remove('btn-orange-disabled')
+      button.classList.add('btn-orange')
+      button.disabled = false
+    } else {
+      button.classList.remove('btn-orange')
+      button.classList.add('btn-orange-disabled')
+      button.disabled = true
+    }
+  }
+
+  function checkFolderValidity(element) {
+    button = element.closest('form').querySelector('#save_button')
+    if (element.value.replace(/\s+/g, '') != '') {
+      button.classList.remove('btn-blue-disabled')
+      button.classList.add('btn-blue')
+      button.disabled = false
+    } else {
+      button.classList.remove('btn-blue')
+      button.classList.add('btn-blue-disabled')
+      button.disabled = true
+    }
   }
 
   sliders = document.querySelectorAll('.catalogue-row');
@@ -120,7 +400,6 @@
       const x = e.pageX - slider.offsetLeft;
       const walk = (x - startX) * 3; //scroll-fast
       slider.scrollLeft = scrollLeft - walk;
-      console.log(walk);
     });
   })
 </script>
