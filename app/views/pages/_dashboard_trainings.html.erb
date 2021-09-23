@@ -8,13 +8,14 @@
       </ul>
     </div>
 
-
+    <h1>Current trainings</h1>
     <div class="row current-trainings">
       <% @current_trainings.each do |training| %>
         <%= render 'dashboard_trainings_card', training: training %>
       <% end %>
     </div>
 
+    <h1 class="text-muted">Past trainings</h1>
     <div class="row past-trainings">
       <% @past_trainings.each do |training| %>
         <%= render 'dashboard_trainings_card', training: training %>

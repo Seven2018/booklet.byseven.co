@@ -1,8 +1,6 @@
-<div class="trainings-container-card" id="training-<%= training.id %>">
+<div class="trainings-container-card <%= "past-training" if training.past?%>" id="training-<%= training.id %>">
   <div class="trainings-card d-flex flex-column">
   <i class="fas fa-ellipsis-v infos-points"></i>
-
-
     <div class="card-main-content">
       <div class="title d-flex flex-row p-0">
         <i class="fas fa-folder mx-3"></i>

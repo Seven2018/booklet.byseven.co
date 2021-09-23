@@ -33,9 +33,12 @@ class PagesController < ApplicationController
 
     complete_profile
 
-    @past_trainings = Training.where(company: current_user.company).joins(:sessions).where('date < ?', Date.today).order(date: :asc).uniq
-    @current_trainings = Training.where(company: current_user.company).joins(:sessions).where('date >= ?', Date.today).order(date: :asc).uniq
-    @all_trainings = @past_trainings + @current_trainings
+    # @past_trainings = Training.where(company: current_user.company).joins(:sessions).where('date < ?', Date.today).order(date: :asc).uniq
+    # @current_trainings = Training.where(company: current_user.company).joins(:sessions).where('date >= ?', Date.today).order(date: :asc).uniq
+    # @all_trainings = @past_trainings + @current_trainings
+    @trainings = Training.where(company: current_user.company)
+    @past_trainings = @trainings.select { |training| training.past? }
+    @current_trainings = @trainings.reject { |training| training.past? }
     
   end
 
