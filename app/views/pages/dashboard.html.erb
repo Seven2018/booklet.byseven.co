@@ -2,7 +2,7 @@
   <div class="dashboard-navigation">
     <div class="dashboard-tabs">
       <ul class="nav nav-tabs">
-        <li role="presentation"><a href="#Trainings" data-toggle="tab" class='active'>My Trainings</a></li>
+        <li role="presentation"><a href="#Trainings" data-toggle="tab" class='active'>Trainings</a></li>
         
         <li role="presentation" id='pending_recommendation_main'><a href="#Recommended" data-toggle="tab" >Recommended</a></li>
       </ul>
@@ -11,11 +11,7 @@
       <div role="tabpanel" class="tab-pane active" id="Trainings">
         <%= render 'dashboard_trainings' %>
       </div>
-      <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-        <div role="tabpanel" class="tab-pane" id="All">
-          <%#= render 'dashboard_all' %>
-        </div>
-      <% end %>
+
       <div role="tabpanel" class="tab-pane" id="Recommended">
         <%#= render 'dashboard_recommended' %>
       </div>

@@ -1,8 +1,19 @@
 class Training < ApplicationRecord
   has_many :sessions, dependent: :destroy
+  has_many :attendees, through: :sessions
   belongs_to :company
   belongs_to :folder, optional: true
   belongs_to :content, optional: true
+
+  include PgSearch::Model
+  pg_search_scope :search_trainings,
+    against: [ :title ],
+    using: {
+      tsearch: { prefix: true }
+    },
+    ignoring: :accents
+
+
 
   def past?
     past_sessions = []

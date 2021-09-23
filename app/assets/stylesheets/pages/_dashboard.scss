@@ -50,7 +50,7 @@
   padding-right: 3rem;
 
   .row {
-    margin: 35px auto 50px auto;
+    margin: 35px auto 50px 20px;
   }
 }
 
@@ -274,13 +274,34 @@
 
 
 
-//////////////////////////////
+/////////////////////////////
+// MANON VERSION DASHBOARD //
+/////////////////////////////
+
+// TRAININGS
+////////////
+
+  // SEARCHBAR
+
+.trainings-nav {
+
+  .searchbar {
+    height: 70px;
+    border-color: palevioletred;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 25px;
+    margin-top: -20px;
+  }
+}
+
+  // INDEX TRAININGS
 
 .trainings-container-card {
   height: 15rem;
   width: 40rem;
   flex-shrink: 0;
-  margin: 1rem 2rem;
+  margin: 2rem 1rem;
   position: relative;
 }
 
@@ -297,6 +318,7 @@
   border-radius: 5px 5px 0 0;
   border-style: dashed dashed none;
   border-color: #5B92C5;
+  border-width: 2px;
   font-size: small;
 }
 
