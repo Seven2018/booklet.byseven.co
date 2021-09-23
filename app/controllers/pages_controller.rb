@@ -2,34 +2,41 @@ class PagesController < ApplicationController
 
   # Access dashboard (root)
   def dashboard
+    # complete_profile
+    # # @my_past_sessions = (Session.includes([:content]).joins(:attendees).where(available_date: nil, attendees: {user_id: current_user.id}).where('date < ?', Date.today) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
+    # @my_past_sessions = []
+    # # @my_current_sessions = (Session.includes([:content]).joins(:attendees).where(attendees: {user_id: current_user.id}).where('date >= ?', Date.today).order(date: :asc) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
+    # @my_current_sessions = []
+    # @all_my_sessions = @my_past_sessions + @my_current_sessions
+    # @my_recommended_pending = UserInterest.where(user_id: current_user.id, recommendation: 'Pending')
+    # @my_recommended_answered = UserInterest.where(user_id: current_user.id, recommendation: ['Yes', 'No'])
+    # if params[:start_date].present?
+    #   @update_calendar_date = params[:start_date]
+    # else
+    #   @update_calendar_date = 'none'
+    # end
+    # if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+    #   # @past_sessions = (Session.includes([:content]).where(available_date: nil, company_id: current_user.company_id).where('date < ?', Date.today) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
+    #   @past_sessions = []
+    #   # @current_sessions = (Session.includes([:content]).where(company_id: current_user.company_id).where('date >= ?', Date.today).order(date: :asc) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
+    #   @current_sessions = []
+    #   @allsessions = @past_sessions + @current_sessions
+    #   @remove = params[:remove] if params[:remove].present?
+    # end
+    # if params[:date].present?
+    #   @tab = params[:tab]
+    #   @date = params[:date].to_date
+    #   respond_to do |format|
+    #     format.js
+    #   end
+    # end
+
     complete_profile
-    # @my_past_sessions = (Session.includes([:content]).joins(:attendees).where(available_date: nil, attendees: {user_id: current_user.id}).where('date < ?', Date.today) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
-    @my_past_sessions = []
-    # @my_current_sessions = (Session.includes([:content]).joins(:attendees).where(attendees: {user_id: current_user.id}).where('date >= ?', Date.today).order(date: :asc) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
-    @my_current_sessions = []
-    @all_my_sessions = @my_past_sessions + @my_current_sessions
-    @my_recommended_pending = UserInterest.where(user_id: current_user.id, recommendation: 'Pending')
-    @my_recommended_answered = UserInterest.where(user_id: current_user.id, recommendation: ['Yes', 'No'])
-    if params[:start_date].present?
-      @update_calendar_date = params[:start_date]
-    else
-      @update_calendar_date = 'none'
-    end
-    if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
-      # @past_sessions = (Session.includes([:content]).where(available_date: nil, company_id: current_user.company_id).where('date < ?', Date.today) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
-      @past_sessions = []
-      # @current_sessions = (Session.includes([:content]).where(company_id: current_user.company_id).where('date >= ?', Date.today).order(date: :asc) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
-      @current_sessions = []
-      @allsessions = @past_sessions + @current_sessions
-      @remove = params[:remove] if params[:remove].present?
-    end
-    if params[:date].present?
-      @tab = params[:tab]
-      @date = params[:date].to_date
-      respond_to do |format|
-        format.js
-      end
-    end
+
+    @past_trainings = Training.where(company: current_user.company).joins(:sessions).where('date < ?', Date.today).order(date: :asc).uniq
+    @current_trainings = Training.where(company: current_user.company).joins(:sessions).where('date >= ?', Date.today).order(date: :asc).uniq
+    @all_trainings = @past_trainings + @current_trainings
+    
   end
 
   # Display monthly calendar (pages/dashboard)
