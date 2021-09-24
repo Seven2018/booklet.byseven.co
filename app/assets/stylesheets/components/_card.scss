@@ -13,6 +13,7 @@
   flex-shrink: 0;
   margin: 2rem 4rem;
   background-color: white;
+  position: relative;
 }
 
 .catalogue-card-container--mini {
@@ -28,7 +29,6 @@
   height: 100%;
   width: 100%;
   margin: 0;
-  background-color: rgba(242, 100, 25, 0.17);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 
@@ -51,25 +51,21 @@
   }
 }
 
-.booklet-content-card-syn {
+.booklet-content-card-top {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 13rem;
+  padding: 1.5rem;
+}
+
+.booklet-content-card-top.synchronous {
   background-color: rgba(242, 100, 25, 0.17);
   border-bottom: 2px solid rgba(242, 100, 25, 0.33);
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  height: 13rem;
 }
 
-.booklet-content-card-asyn {
+.booklet-content-card-top.asynchronous {
   background-color: rgba(136, 158, 175, .17);
   border-bottom: 2px solid rgba(136, 158, 175, .33);
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  height: 13rem;
-}
-
-.booklet-content-card-top {
-  padding: 1.5rem;
-  height: 100%;
 }
 
 .booklet-folder-card-top {
@@ -81,15 +77,11 @@
   padding: 1.5rem;
 }
 
-.booklet-folder-card-top.disabled {
-  background-color: rgba(127, 124, 130, .3);
-}
-
 .booklet-content-card__top-info, .booklet-folder-card__top-info {
 
   h3{
     display: inline;
-    width: 90%;
+    width: 80%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

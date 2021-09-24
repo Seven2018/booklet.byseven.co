@@ -1,109 +1,30 @@
-<div class="catalogue-row">
+<h2>Programs</h2>
+<div class="catalogue-row folders-row">
   <% folders.each do |folder| %>
-    <div class="catalogue-card-container catalogue-card-container--mini" id="folder-<%= folder.id %>" onclick='selectContent(this);'>
-      <div class="booklet-folder-card">
-        <div class="booklet-folder-card-top">
-          <div class="booklet-folder-card__top-info">
-            <div class="booklet-top-right-icon hidden" id='bookbtn'>
-              <div>
-                <% if selected_folder != folder.id.to_s %>
-                  <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>">
-                <% else %>
-                  <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>" checked>
-                <% end %>
-              </div>
-            </div>
-            <% if folder.title.length <= 30 %>
-              <div>
-                <i class="fas fa-folder"></i>
-                <h3><b><%= folder.title %></b></h3>
-              </div>
-            <% else %>
-              <div>
-                <i class="fas fa-folder"></i>
-                <h3 data-toggle='tooltip' title='<%= folder.title %>'><b><%= folder.title.first(30) + '...' %></b></h3>
-              </div>
-            <% end %>
-            <div>
-              <p class='booklet-folder-card__duration'><%= folder.duration %> Minutes</p>
-              <% if folder.children_contents.map{|x| x.content_type}.include?('Synchronous') %>
-                <div class="booklet-folder-card-type-icon">
-                  <i class="fas fa-chalkboard-teacher" style='color:rgba(91, 146, 197, 1);'></i>
-                  <p style='color:rgba(91, 146, 197, 1);'>In Person</p>
-                </div>
-              <% end %>
-              <% if folder.children_contents.map{|x| x.content_type}.include?('Asynchronous') %>
-                <div class="booklet-folder-card-type-icon">
-                  <i class="fas fa-laptop" style='color:rgba(91, 146, 197, 1);'></i>
-                  <p style='color:rgba(91, 146, 197, 1);'>Online</p>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <div class="booklet-folder-card__categories">
-            <% folder.categories.each do |category| %>
-              <div class="booklet-folder-card__category-pill">
-                <p><%= category.title %></p>
-              </div>
-            <% end %>
-            <% folder.children_categories.each do |category| %>
-              <div class="booklet-content-card__category-pill">
-                <p><%= category.title %></p>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
+    <div class="catalogue-card-container" id="folder-<%= folder.id %>">
+      <div class="catalogue-card-container__overlay"></div>
+      <% if selected_folder != folder.id.to_s %>
+        <input type="checkbox" class="book-contents-checkbox hidden" id="checkbox-folder-<%= folder.id %>">
+      <% else %>
+        <input type="checkbox" class="book-contents-checkbox hidden" id="checkbox-folder-<%= folder.id %>" checked='true'>
+      <% end %>
+      <%= render 'pages/partials/catalogue_folder_card', folder: folder %>
+      <button class="book-select__folder" onclick='selectContent(this);'>SELECT</button>
     </div>
   <% end %>
 </div>
-<div class="catalogue-row">
+<h2>Workshops</h2>
+<div class="catalogue-row contents-row">
   <% contents.each do |content| %>
-    <div class="catalogue-card-container catalogue-card-container--mini" id="content-<%= content.id %>">
-      <div class="booklet-content-card">
-        <% content = @content if @content.present? %>
-        <% if content.content_type == 'Synchronous' %>
-          <div class="booklet-content-card-syn">
-        <% else %>
-          <div class="booklet-content-card-asyn">
-        <% end %>
-            <div class="booklet-content-card-top">
-              <div class="booklet-content-card__top-info">
-                <%= link_to '', content_path(content), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
-                <% if content.title.length <= 30 %>
-                  <div>
-                    <i class="far fa-file"></i>
-                    <h3><b><%= content.title %></b></h3>
-                  </div>
-                <% else %>
-                  <div>
-                    <i class="fas fa-file-alt"></i>
-                    <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
-                  </div>
-                <% end %>
-                <div>
-                  <p class='booklet-content-card__duration'><%= content.duration %> Minutes</p>
-                  <div class="booklet-content-card-type-icon">
-                    <% if content.content_type == 'Synchronous' %>
-                      <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                      <p style='color:#F26419;'>In Person</p>
-                    <% else %>
-                      <i class="fas fa-laptop" style='color:black;'></i>
-                      <p style='color:black;'>Online</p>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-              <div class="booklet-content-card__categories">
-                <% content.categories.each do |category| %>
-                  <div class="booklet-content-card__category-pill">
-                    <p><%= category.title %></p>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-      </div>
+    <div class="catalogue-card-container" id="content-<%= content.id %>">
+      <div class="catalogue-card-container__overlay"></div>
+      <% if selected_content != content.id.to_s %>
+        <input type="checkbox" class="book-contents-checkbox hidden" id="checkbox-content-<%= content.id %>">
+      <% else %>
+        <input type="checkbox" class="book-contents-checkbox hidden" id="checkbox-content-<%= content.id %>" checked>
+      <% end %>
+      <%= render 'pages/partials/catalogue_content_card', content: content %>
+      <button class="book-select__content" onclick='selectContent(this);'>SELECT</button>
     </div>
   <% end %>
 </div>

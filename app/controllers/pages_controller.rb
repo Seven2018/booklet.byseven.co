@@ -237,8 +237,17 @@ class PagesController < ApplicationController
   def book_contents
     @folders = Folder.where(company_id: current_user.company_id).order(title: :asc)
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    if params[:search].present? && !params[:search][:title].blank?
+      @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
+      @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
+    end
     authorize @contents
+    authorize @folders
     book_data
+    respond_to do |format|
+      format.html {book_contents_path}
+      format.js
+    end
   end
 
   def book_users

@@ -1,94 +1,99 @@
 <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 <div class="book-container">
-  <div class="book-page-1">
-    <div class="booking-title">
-      <h2 id='top-anchor'>Select Workshop to Book</h2>
-    </div>
-    <div class="book-confirm">
-      <div style='width: 120px;'></div>
-      <div class="book-page-guide">
-        <div class="page-book-info">
-          <div class="page-number">
-            <p>1</p>
-          </div>
-          <div class="page-name">
-            <p>Select Workshop</p>
-          </div>
-        </div>
-        <span class='book-line'></span>
-        <div class="page-book-info">
-          <div class="page-number book-page-indicator-2 disabled">
-            <p>2</p>
-          </div>
-          <div class="page-name">
-            <p>Select Participants</p>
-          </div>
-        </div>
-        <span class='book-line-1'></span>
-        <div class="page-book-info">
-          <div class="page-number book-page-indicator-3 disabled">
-            <p>3</p>
-          </div>
-          <div class="page-name">
-            <p>Select Dates</p>
-          </div>
-        </div>
-      </div>
-      <div class="book-next-page">
-        <%= simple_form_for :book, url: book_users_path, method: :get do |f| %>
-          <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
-          <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
-          <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
-          <%= f.hidden_field :selected_folder, value: selected_folder %>
-          <%= f.hidden_field :selected_content, value: selected_content %>
-          <%= f.hidden_field :selected_users, value: selected_users %>
-          <%= button_tag type: 'submit' do %>
-            <div class="book-next">
-              <i class="fas fa-arrow-right fa-2x" style='color:#F26419'></i>
-              <p>Select Participants</p>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-    <div class="index-controls-filter-bar-book">
-      <%= render 'shared/searchbar', path: book_contents_path, reset_path: book_contents_path(reset: ""), reset: true %>
-    </div>
-    <div class="workshop-cards-book">
-      <%= render 'pages/partials/book_content_index', contents: @contents, selected_content: @selected_content, folders: @folders, selected_folder: @selected_folder %>
-    </div>
+  <div class="book-controls">
+    <button class='active'><p>Select a Program</p></button>
+    <%= simple_form_for :book, url: book_users_path, method: :get do |f| %>
+      <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
+      <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
+      <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
+      <%= f.hidden_field :selected_folder, value: selected_folder %>
+      <%= f.hidden_field :selected_content, value: selected_content %>
+      <%= f.hidden_field :selected_users, value: selected_users %>
+      <%= button_tag type: 'submit' do %>
+          <p>Select Participants</p>
+      <% end %>
+    <% end %>
+    <%= simple_form_for :book, url: book_dates_path, method: :get do |f| %>
+      <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
+      <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
+      <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
+      <%= f.hidden_field :selected_folder, value: selected_folder %>
+      <%= f.hidden_field :selected_content, value: selected_content %>
+      <%= f.hidden_field :selected_users, value: selected_users %>
+      <%= button_tag type: 'submit' do %>
+        <p>Select Dates</p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="index-controls-filter-bar-book">
+    <%= render 'shared/searchbar', path: book_contents_path, reset_path: book_contents_path(reset: ""), reset: true %>
+  </div>
+  <div class="workshop-cards-book">
+    <%= render 'pages/partials/book_content_index', contents: @contents, selected_content: @selected_content, folders: @folders, selected_folder: @selected_folder %>
   </div>
 </div>
 
 <script>
+
+  function searchInput(element) {
+    if (element.value != '') {
+      element.closest('.searchbar').querySelector('.btn-reset-form').classList.remove('hidden')
+    } else {
+      element.closest('.searchbar').querySelector('.btn-reset-form').classList.add('hidden')
+    }
+  }
+
+  function resetInput(element) {
+    element.closest('.searchbar').querySelector('input').value = ''
+    element.closest('.searchbar').querySelector('.btn-search').click()
+    element.closest('.searchbar').querySelector('.btn-reset-form').classList.add('hidden')
+  }
+
   function selectContent(element) {
-    if (!element.querySelector('.booklet-folder-card-top').classList.contains('disabled')) {
       checkboxes = document.querySelectorAll('.book-contents-checkbox')
-      input = element.querySelector('input')
-      if (input.checked == true) {
-        input.checked = false
-      } else {
-        input.checked = true
-      }
+      input = element.parentNode.querySelector('input')
       selected_type = input.id.split('-')[1]
       selected_id = input.id.split('-')[2]
+      document.getElementById('book_selected_folder').value = ''
+      document.getElementById('book_selected_content').value = ''
       selected_storage = document.getElementById('book_selected_' + selected_type)
+      input.checked = !input.checked
       if (input.checked == true) {
         checkboxes.forEach((checkbox) => {
+          card_container = checkbox.closest('.catalogue-card-container')
           if (checkbox != input) {
-            checkbox.disabled = true
-            checkbox.closest('.booklet-folder-card-top').classList.add('disabled')
+            checkbox.checked = false
+            card_container.classList.add('disabled')
+            card_container.classList.remove('selected')
+            card_container.querySelector('button').innerText = 'SELECT'
+          } else {
+            card_container.classList.add('selected')
+            card_container.classList.remove('disabled')
+            card_container.querySelector('button').innerText = 'SELECTED'
           }
           selected_storage.value = selected_id
         })
       } else {
         checkboxes.forEach((checkbox) => {
-          checkbox.disabled = false
-          checkbox.closest('.booklet-folder-card-top').classList.remove('disabled')
+          card_container = checkbox.closest('.catalogue-card-container')
+          card_container.classList.remove('disabled','selected')
+          card_container.querySelector('button').innerText = 'SELECT'
         })
         selected_storage.value = ''
       }
-    }
+  }
+
+  checkboxes = document.querySelectorAll('.book-contents-checkbox')
+  if (document.querySelectorAll('input:checked').length != 0) {
+    checkboxes.forEach((checkbox) => {
+      card_container = checkbox.closest('.catalogue-card-container')
+      if (checkbox.checked != true) {
+        card_container.classList.add('disabled')
+      } else {
+        card_container.classList.add('selected')
+        card_container.querySelector('button').innerText = 'SELECTED'
+      }
+    })
   }
 
   sliders = document.querySelectorAll('.catalogue-row');

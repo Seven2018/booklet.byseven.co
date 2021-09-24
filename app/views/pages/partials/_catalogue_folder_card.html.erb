@@ -1,18 +1,24 @@
 <div class="booklet-folder-card">
-  <div class="booklet-folder-card-top">
-    <div class="booklet-folder-card__top-info">
+  <div class="booklet-folder-card-top booklet-card-top">
+    <% if params[:action] == 'catalogue' %>
       <%# link_to '', folder_path(folder), class: 'stretched-link', data: {toggle: 'tooltip'}, title: folder.title %>
-      <% if folder.title.length <= 30 %>
-        <div>
-          <i class="fas fa-folder"></i>
-          <h3><b><%= folder.title %></b></h3>
-        </div>
-      <% else %>
-        <div>
-          <i class="fas fa-folder"></i>
-          <h3 data-toggle='tooltip' title='<%= folder.title %>'><b><%= folder.title.first(30) + '...' %></b></h3>
-        </div>
-      <% end %>
+      <div class="booklet-folder-card__options" onclick="openContentMenu(this);">
+        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+          <i class="fas fa-ellipsis-v"></i>
+          <div class="content-dropdown hidden">
+            <%= link_to 'Recommendation', recommendation_path(folder_id: folder.id) %>
+            <a href="">Infos</a>
+            <%= link_to 'Edit', edit_folder_path(folder) %>
+            <%= link_to 'Delete', folder_path(folder, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="booklet-folder-card__top-info">
+      <div>
+        <i class="fas fa-folder"></i>
+        <h3 data-toggle='tooltip' title='<%= folder.title %>'><b><%= folder.title %></b></h3>
+      </div>
       <div>
         <p class='booklet-folder-card__duration'><%= folder.duration %> Minutes</p>
         <% if folder.children_contents.map{|x| x.content_type}.include?('Synchronous') %>
@@ -31,17 +37,6 @@
           <p style='color:rgba(91, 146, 197, 1);'>R</p>
         <% end %>
       </div>
-    </div>
-    <div class="booklet-folder-card__options" onclick="openContentMenu(this);">
-      <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-        <i class="fas fa-ellipsis-v"></i>
-        <div class="content-dropdown hidden">
-          <%= link_to 'Recommendation', recommendation_path(folder_id: folder.id) %>
-          <a href="">Infos</a>
-          <%= link_to 'Edit', edit_folder_path(folder) %>
-          <%= link_to 'Delete', folder_path(folder, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
-        </div>
-      <% end %>
     </div>
     <div class="booklet-folder-card__categories">
       <% folder.categories.each do |category| %>

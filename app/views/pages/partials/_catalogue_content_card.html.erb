@@ -1,24 +1,30 @@
 <div class="booklet-content-card">
   <% content = @content if @content.present? %>
-  <% if content.content_type == 'Synchronous' %>
-    <div class="booklet-content-card-syn">
-  <% else %>
-    <div class="booklet-content-card-asyn">
-  <% end %>
-      <div class="booklet-content-card-top">
-        <div class="booklet-content-card__top-info">
+    <% if content.content_type == 'Synchronous' %>
+      <div class="booklet-content-card-top booklet-card-top synchronous">
+    <% else %>
+      <div class="booklet-content-card-top booklet-card-top asynchronous">
+    <% end %>
+        <% if params[:action] == 'catalogue' %>
           <%= link_to '', content_path(content), class: 'stretched-link', data: {toggle: 'tooltip'}, title: content.title %>
-          <% if content.title.length <= 30 %>
-            <div>
-              <i class="far fa-file"></i>
-              <h3><b><%= content.title %></b></h3>
-            </div>
-          <% else %>
-            <div>
-              <i class="fas fa-file-alt"></i>
-              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30) + '...' %></b></h3>
-            </div>
-          <% end %>
+          <div class="booklet-content-card__options" onclick="openContentMenu(this);">
+            <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+              <i class="fas fa-ellipsis-v"></i>
+              <div class="content-dropdown hidden">
+                <%= link_to 'Recommendation', recommendation_path(content_id: content.id) %>
+                <a href="">Infos</a>
+                <%= link_to 'Edit', edit_content_path(content) %>
+                <%= link_to 'Duplicate', duplicate_content_path(content) %>
+                <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <div class="booklet-content-card__top-info">
+          <div>
+            <i class="fas fa-file"></i>
+            <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
+          </div>
           <div>
             <p class='booklet-content-card__duration'><%= content.duration %> Minutes</p>
             <div class="booklet-content-card-type-icon">
@@ -34,18 +40,6 @@
               <p style='color:#F26419;'>R</p>
             <% end %>
           </div>
-        </div>
-        <div class="booklet-content-card__options" onclick="openContentMenu(this);">
-          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-            <i class="fas fa-ellipsis-v"></i>
-            <div class="content-dropdown hidden">
-              <%= link_to 'Recommendation', recommendation_path(content_id: content.id) %>
-              <a href="">Infos</a>
-              <%= link_to 'Edit', edit_content_path(content) %>
-              <%= link_to 'Duplicate', duplicate_content_path(content) %>
-              <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
-            </div>
-          <% end %>
         </div>
         <div class="booklet-content-card__categories">
           <% content.categories.each do |category| %>
@@ -75,6 +69,5 @@
           <% end %>
         </div>
       </div>
-    </div>
 </div>
 

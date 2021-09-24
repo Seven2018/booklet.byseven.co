@@ -1,0 +1,2 @@
+document.querySelector('.workshop-cards-book').innerHTML = '<%= j render("pages/partials/book_content_index", contents: @contents, selected_content: @selected_content, folders: @folders, selected_folder: @selected_folder) %>';
+document.querySelector('body').classList.remove('wait');

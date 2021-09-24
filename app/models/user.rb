@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
 
   def fullname
-    "#{firstname} #{lastname}"
+    "#{lastname.upcase} #{firstname.capitalize} "
   end
 
   def tag_from_category(category_id)
