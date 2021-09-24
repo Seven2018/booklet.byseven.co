@@ -1,6 +1,7 @@
 class Training < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :attendees, through: :sessions
+  has_many :workshops, through: :sessions
   belongs_to :company
   belongs_to :folder, optional: true
   belongs_to :content, optional: true
@@ -12,7 +13,6 @@ class Training < ApplicationRecord
       tsearch: { prefix: true }
     },
     ignoring: :accents
-
 
 
   def past?
@@ -46,7 +46,7 @@ class Training < ApplicationRecord
   end
 
   def next_session
-    self.sessions.where('date > ?', Date.today).order(date: :asc).first
+    self.sessions.where('date >= ?', Date.today).order(date: :asc).first
   end
 
   private

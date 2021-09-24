@@ -2,34 +2,33 @@ class PagesController < ApplicationController
 
   # Access dashboard (root)
   def dashboard
-    complete_profile
+    complete_profile_path
 
-    # @trainings = Training.where(id: trainings.pluck(:id))
-    # @trainings = Training.joins(:sessions).order(:date).where(company: current_user.company).distinct
+    @trainings = Training.where(company: current_user.company)
+    @employees_form = User.where(company: current_user.company)
+    @types_form = ["Synchronous", "Asynchronous"]
 
     if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
-      @trainings = Training.joins(:sessions).where(company: current_user.company).order(date: :desc).uniq.reverse
-
-      
-      
-      if params[:search].present? && !params[:search][:title].blank?
-        # @trainings = Training.where(id: @trainings.pluck(:id))
-        @trainings = Training.joins(:sessions).where(company: current_user.company).search_trainings("#{params[:search][:title]}").order(date: :desc).uniq.reverse
+      if params[:search].present? 
+        unless params[:search][:title].blank?
+          @trainings = @trainings.search_trainings("#{params[:search][:title]}")
+        end
+        unless params[:search][:employee].blank?
+          selected_employee = User.search_by_name("#{params[:search][:employee]}").first
+          @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id })
+        end
+        unless params[:search][:type].blank?
+          @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search][:type]})
+        end
       end
-
-      # @trainings = Training.joins(:sessions).where(company: current_user.company).order(date: :desc).uniq.reverse #order(date: :desc).uniq.reverse est affreux mais je n'arrive pas à utiliser distinct pour garder une relation et y appliquer un ordre :'(
     else
-      # @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id }).order(date: :desc).uniq.reverse
-      @trainings = Training.joins(sessions: :attendees).where(attendees: { user_id: current_user.id }).order(date: :desc).uniq.reverse
+      @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
     end
 
-    @past_trainings = @trainings.select { |training| training.past? }
-    @current_trainings = @trainings.reject { |training| training.past? }
-    # raise
+    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :desc).uniq.reverse
+    # @past_trainings = @trainings - @current_trainings
   end
 
-
-  
 
   # Display monthly calendar (pages/dashboard)
   def calendar_month
