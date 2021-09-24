@@ -3,58 +3,62 @@
   <div class="recommendation-sticky">
     <div class="recommendation-info">
       <div class="recommendation-booklet-card">
-        <% if @content.content_type == 'Synchronous' %>
-          <div class="booklet-card-syn">
-            <div class="booklet-card-top">
-              <div class="booklet-card__top-info">
-                <% if @content.title.length <= 30 %>
-                  <h3><b><%= @content.title %></b></h3>
-                <% else %>
-                  <h3 data-toggle='tooltip' title='<%= @content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
-                <% end %>
-                <p><%= @content.duration %> Minutes</p>
-              </div>
-              <div class="booklet-card-type-pill">
-                <div class="booklet-card-type">
-                  <div class="booklet-card-type-icon">
-                    <% if @content.content_type == 'Synchronous' %>
-                      <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                      <p>In Person</p>
-                    <% else %>
-                      <i class="fas fa-laptop" style='color:black;'></i>
-                      <p>Online</p>
-                    <% end %>
+
+        <% if @content.has_attribute? (:content_type) %>
+          <% if @content.content_type == 'Synchronous' %>
+            <div class="booklet-card-syn">
+              <div class="booklet-card-top">
+                <div class="booklet-card__top-info">
+                  <% if @content.title.length <= 30 %>
+                    <h3><b><%= @content.title %></b></h3>
+                  <% else %>
+                    <h3 data-toggle='tooltip' title='<%= @content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
+                  <% end %>
+                  <p><%= @content.duration %> Minutes</p>
+                </div>
+                <div class="booklet-card-type-pill">
+                  <div class="booklet-card-type">
+                    <div class="booklet-card-type-icon">
+                      <% if @content.has_attribute? (:content_type) && @content.content_type == 'Synchronous' %>
+                        <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                        <p>In Person</p>
+                      <% else %>
+                        <i class="fas fa-laptop" style='color:black;'></i>
+                        <p>Online</p>
+                      <% end %>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        <% else %>
-          <div class="booklet-card-asyn">
-            <div class="booklet-card-top">
-              <div class="booklet-card__top-info">
-                <% if @content.title.length <= 30 %>
-                  <h3><b><%= @content.title %></b></h3>
-                <% else %>
-                  <h3 data-toggle='tooltip' title='<%= @content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
-                <% end %>
-                <p><%= @content.duration %> Minutes</p>
-              </div>
-              <div class="booklet-card-type-pill">
-                <div class="booklet-card-type">
-                  <div class="booklet-card-type-icon">
-                    <% if @content.content_type == 'Synchronous' %>
-                      <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                      <p>In Person</p>
-                    <% else %>
-                      <i class="fas fa-laptop" style='color:black;'></i>
-                      <p>Online</p>
-                    <% end %>
+          <% else %>
+            <div class="booklet-card-asyn">
+              <div class="booklet-card-top">
+                <div class="booklet-card__top-info">
+                  <% if @content.title.length <= 30 %>
+                    <h3><b><%= @content.title %></b></h3>
+                  <% else %>
+                    <h3 data-toggle='tooltip' title='<%= @content.title %>'><b><%= @content.title.first(30) + '...' %></b></h3>
+                  <% end %>
+                  <p><%= @content.duration %> Minutes</p>
+                </div>
+                <div class="booklet-card-type-pill">
+                  <div class="booklet-card-type">
+                    <div class="booklet-card-type-icon">
+                      <% if @content.content_type == 'Synchronous' %>
+                        <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                        <p>In Person</p>
+                      <% else %>
+                        <i class="fas fa-laptop" style='color:black;'></i>
+                        <p>Online</p>
+                      <% end %>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          <% end %>
+
         <% end %>
       </div>
     </div>
@@ -98,7 +102,7 @@
         <%= render 'recommendation_users_list', users: [], unfiltered: @unfiltered, content: @content, tab: '', tag_categories: @tag_categories %>
       </div>
     </div>
-    <div role="tabpanel" class="tab-pane recommendation-main-container__yes" id="Yes">
+    <div role="tabpanel" class="tab-pane recommendation-main-container__yes" id="Yes">  
       <%= render 'recommendation_users_list', users: @users_yes.uniq, unfiltered: @unfiltered, content: @content, tab: '-yes', tag_categories: @tag_categories %>
     </div>
     <div role="tabpanel" class="tab-pane recommendation-main-container__no" id="No">

@@ -16,7 +16,7 @@
   </div>
   <div class="modal-body recommendation-modal__body" id="modalNewBookinBody">
     <div class="recommendation-form">
-      <%= simple_form_for :answer_reco, url: update_recommendation_path, method: :get, remote: true do |f| %>
+      <%= simple_form_for :answer_reco, url: update_recommendation_path, method: :get do |f| %>
         <%= f.label 'Are you interested in attending this training ?' %>
         <div class="switch-field">
           <% interest.recommendation.capitalize == 'Pending' ? default = 'Yes' : default = interest.recommendation.capitalize  %>
