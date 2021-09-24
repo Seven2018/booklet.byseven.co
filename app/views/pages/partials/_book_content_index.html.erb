@@ -1,163 +1,31 @@
-<% folders.each do |folder| %>
-  <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="folder-<%= folder.id %>">
-    <div class="booklet-card" >
-      <div class="booklet-card-syn">
-        <div class="booklet-card-top">
-          <div class="booklet-card__top-info">
-            <% if folder.title.length > 30 %>
-              <h3><b><%= folder.title.first(30)+'...' %></b></h3>
-            <% else %>
-              <h3><b><%= folder.title %></b></h3>
-            <% end %>
-            <p><%= folder.children_contents.count %> Workshops</p>
-          </div>
-          <div class="booklet-card-type-pill">
-
-          </div>
-          <div class="booklet-top-right-icon" id='bookbtn' onclick='selectContent(this);'>
-            <div>
-              <% if selected_folder != folder.id.to_s %>
-                <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>">
-              <% else %>
-                <input type="checkbox" class="book-contents-checkbox" id="checkbox-folder-<%= folder.id %>" checked>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="booklet-card-bottom">
-          <div class="booklet-card-theme">
-            <% folder.children_categories.each do |category| %>
-              <p id='theme'><%= category.title %></p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
-<% contents.each do |content| %>
-  <% if content.content_type == 'Synchronous' %>
-    <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="content-<%= content.id %>">
-      <div class="booklet-card" >
-      <div class="booklet-card-syn">
-        <div class="booklet-card-top">
-          <div class="booklet-card__top-info">
-            <% if content.title.length > 30 %>
-              <h3><b><%= content.title.first(30)+'...' %></b></h3>
-            <% else %>
-              <h3><b><%= content.title %></b></h3>
-            <% end %>
-            <p><%= content.duration %> Minutes</p>
-          </div>
-          <div class="booklet-card-type-pill">
-            <div class="booklet-card-type">
-              <div class="booklet-card-type-icon">
-                <% if content.content_type == 'Synchronous' %>
-                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                  <p>In Person</p>
-                <% else %>
-                  <i class="fas fa-laptop" style='color:black;'></i>
-                  <p>Online</p>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="booklet-top-right-icon" id='bookbtn' onclick='selectContent(this);'>
-            <div>
-              <% if selected_content != content.id.to_s %>
-                <input type="checkbox" class="book-contents-checkbox" id="checkbox-content-<%= content.id %>">
-              <% else %>
-                <input type="checkbox" class="book-contents-checkbox" id="checkbox-content-<%= content.id %>" checked>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="booklet-card-bottom">
-          <div class="booklet-card-theme">
-            <% content.categories.order(title: :asc).each do |category| %>
-              <p id='theme'><%= category.title %></p>
-            <% end %>
-          </div>
-          <div class="booklet-card-objective">
-            <% if content.description.present? %>
-              <% if content.description.length >= (250) %>
-                <p><%= content.description.first(250) + '...' %></p>
-              <% else %>
-                <p><%= content.description %></p>
-              <% end %>
-            <% end %>
-          </div>
-          
-          <div class="booklet-card-like">
-            <% likes_count = UserInterest.where(content_id: content.id, status: 'Interested').count %>
-            <% recommendations_count = UserInterest.where(content_id: content.id, recommendation: ['Yes', 'No']).count %>
-            <% yes_recommendations_count = UserInterest.where(content_id: content.id, recommendation: 'Yes').count %>
-            <p style='color:#696969;'><%= likes_count %><i class="far fa-heart booklet-card-like__right"></i></p>
-            <p style='color:#696969;'><%= "#{yes_recommendations_count} / #{recommendations_count}" %><i class="fas fa-user-check mx-3"></i></p>
-          </div>
-
-        </div>
-      </div>
-      </div>
-    </div>
-  <% else %>
-    <div class="booklet-col col-xl-4 col-lg-6 col-md-12" id="content-<%= content.id %>">
-      <div class="booklet-card">
-        <div class="booklet-card-asyn">
-          <div class="booklet-card-top">
-            <div class="booklet-card__top-info">
-              <% if content.title.length > 30 %>
-                <h3><b><%= content.title.first(30)+'...' %></b></h3>
-              <% else %>
-                <h3><b><%= content.title %></b></h3>
-              <% end %>
-              <p><%= content.duration %> Minutes</p>
-            </div>
-            <div class="booklet-card-type-pill">
-              <div class="booklet-card-type">
-                <div class="booklet-card-type-icon">
-                  <% if content.content_type == 'Synchronous' %>
-                    <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                    <p>In Person</p>
-                  <% else %>
-                    <i class="fas fa-laptop" style='color:black;'></i>
-                    <p>Online</p>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-            <div class="booklet-top-right-icon" id='bookbtn' onclick='selectCard(this);'>
-              <i class="far fa-circle"  id='notselected'></i>
-              <i class="fas fa-check-circle hidden" id='added' style='color:#F26419;'></i>
-              <i class="fas fa-times hidden" id='removecard'></i>
-            </div>
-          </div>
-          <div class="booklet-card-bottom">
-            <div class="booklet-card-theme">
-              <% content.categories.order(title: :asc).each do |category| %>
-                <p id='theme'><%= category.title %></p>
-              <% end %>
-            </div>
-            <div class="booklet-card-objective">
-              <% if content.description.present? %>
-                <% if content.description.length >= (250) %>
-                  <p><%= content.description.first(250) + '...' %></p>
-                <% else %>
-                  <p><%= content.description %></p>
-                <% end %>
-              <% end %>
-            </div>
-            
-            <div class="booklet-card-like">
-              <% likes_count = UserInterest.where(content_id: content.id, status: 'Interested').count %>
-              <p style='color:#696969;'><%= likes_count %><i class="far fa-heart booklet-card-like__right"></i></p>
-            </div>
-
-          </div>
-        </div>
-      </div>
+<h2>Programs</h2>
+<div class="catalogue-row folders-row">
+  <% folders.each do |folder| %>
+    <div class="catalogue-card-container" id="folder-<%= folder.id %>">
+      <div class="catalogue-card-container__overlay"></div>
+      <% if selected_folder != folder.id.to_s %>
+        <input type="checkbox" class="book-contents-checkbox hidden" id="checkbox-folder-<%= folder.id %>">
+      <% else %>
+        <input type="checkbox" class="book-contents-checkbox hidden" id="checkbox-folder-<%= folder.id %>" checked='true'>
+      <% end %>
+      <%= render 'pages/partials/catalogue_folder_card', folder: folder %>
+      <button class="book-select__folder" onclick='selectContent(this);'>SELECT</button>
     </div>
   <% end %>
-<% end %>
-
+</div>
+<h2>Workshops</h2>
+<div class="catalogue-row contents-row">
+  <% contents.each do |content| %>
+    <div class="catalogue-card-container" id="content-<%= content.id %>">
+      <div class="catalogue-card-container__overlay"></div>
+      <% if selected_content != content.id.to_s %>
+        <input type="checkbox" class="book-contents-checkbox hidden" id="checkbox-content-<%= content.id %>">
+      <% else %>
+        <input type="checkbox" class="book-contents-checkbox hidden" id="checkbox-content-<%= content.id %>" checked>
+      <% end %>
+      <%= render 'pages/partials/catalogue_content_card', content: content %>
+      <button class="book-select__content" onclick='selectContent(this);'>SELECT</button>
+    </div>
+  <% end %>
+</div>
 

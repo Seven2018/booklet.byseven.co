@@ -7,14 +7,10 @@ class CategoriesController < ApplicationController
     authorize @category
     @category.company_id = current_user.company_id
     @category.title = 'Sans titre' if @category.title == ''
+    @page = params[:category][:page]
     if @category.save
-      if params[:ajax].present?
-        respond_to do |format|
-          format.html {redirect_to catalogue_path}
-          format.js
-        end
-      else
-        redirect_to catalogue_path
+      respond_to do |format|
+        format.js
       end
     end
   end
@@ -38,14 +34,10 @@ class CategoriesController < ApplicationController
   # Delete a category (contents/edit_mode or pages/catalogue)
   def destroy
     authorize @category
+    @page = params[:page]
     @category.destroy
-    if params[:ajax].present?
-      respond_to do |format|
-        format.html {redirect_to catalogue_path}
-        format.js
-      end
-    else
-      redirect_to catalogue_path
+    respond_to do |format|
+      format.js
     end
   end
 

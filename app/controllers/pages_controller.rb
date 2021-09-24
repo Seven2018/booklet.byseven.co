@@ -84,20 +84,31 @@ class PagesController < ApplicationController
     complete_profile
     if current_user.company_id.present?
       # SEARCHING CONTENTS 
-      @contents = Content.where(company_id: current_user.company.id)
-      @folders = Folder.where(company_id: current_user.company.id)
-      unless params[:reset]
-        if params[:search].present? && !params[:search][:title].blank?
+      @contents = Content.where(company_id: current_user.company.id).order(updated_at: :asc)
+      @folders = Folder.where(company_id: current_user.company.id).order(updated_at: :desc)
+      if params[:filter_catalogue].present? && params[:filter_catalogue][:category].reject { |c| c.empty? }.present?
+        if params[:filter_catalogue][:searched].present?
           @contents = @contents.search_contents("#{params[:search][:title]}")
           @folders = @folders.search_folders("#{params[:search][:title]}")
-          respond_to do |format|
-            format.html {catalogue_path}
-            format.js
-          end
         end
+        selected_filters = params[:filter_catalogue][:category].reject { |c| c.empty? }
+        @contents = @contents.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: selected_filters}).order(title: :asc).uniq
+        @folders = @folders.joins(:folder_categories).where(company_id: current_user.company_id, folder_categories: {category_id: selected_filters}).order(title: :asc).uniq
+        @filtered_categories = Category.where(id: selected_filters)
+      elsif params[:search].present? && !params[:search][:title].blank?
+        if params[:search][:filtered].present?
+          selected_filters = params[:filtered].reject { |c| c.empty? }
+          @contents = @contents.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: selected_filters}).uniq
+          @folders = @folders.joins(:folder_categories).where(company_id: current_user.company_id, folder_categories: {category_id: selected_filters}).uniq
+          @filtered_categories = Category.where(id: selected_filters)
+        end
+        @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
+        @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
       end
-      @folders = @folders.order(updated_at: :asc)
-      @contents = @contents.order(updated_at: :desc)
+      respond_to do |format|
+        format.html {catalogue_path}
+        format.js
+      end
     end
   end
 
@@ -224,8 +235,17 @@ class PagesController < ApplicationController
   def book_contents
     @folders = Folder.where(company_id: current_user.company_id).order(title: :asc)
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    if params[:search].present? && !params[:search][:title].blank?
+      @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
+      @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
+    end
     authorize @contents
+    authorize @folders
     book_data
+    respond_to do |format|
+      format.html {book_contents_path}
+      format.js
+    end
   end
 
   def book_users

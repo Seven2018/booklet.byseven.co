@@ -1,150 +1,132 @@
 <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 <div class="book-container">
-  <div class="book-page-2">
-    <div class="booking-title users-title">
-      <h2>Employees</h2>
-    </div>
-    <div class="book-confirm">
-      <div class="book-next-page">
-        <%= simple_form_for :book, url: book_contents_path, method: :get do |f| %>
-          <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
-          <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
-          <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
-          <%= f.hidden_field :selected_folder, value: selected_folder %>
-          <%= f.hidden_field :selected_content, value: selected_content %>
-          <%= f.hidden_field :selected_users, value: selected_users %>
-          <%= button_tag type: 'submit' do %>
-            <div class="book-next">
-              <i class="fas fa-arrow-left fa-2x" style='color:#F26419'></i>
-              <p>Select Workshops</p>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-      <div class="book-page-guide">
-        <div class="page-book-info">
-          <div class="page-number disabled">
-            <p>1</p>
-          </div>
-          <div class="page-name">
-            <p>Select Workshop</p>
-          </div>
-        </div>
-        <span class='book-line'></span>
-        <div class="page-book-info">
-          <div class="page-number book-page-indicator-2">
-            <p>2</p>
-          </div>
-          <div class="page-name">
-            <p>Select Participants</p>
-          </div>
-        </div>
-        <span class='book-line-1'></span>
-        <div class="page-book-info">
-          <div class="page-number book-page-indicator-3 disabled">
-            <p>3</p>
-          </div>
-          <div class="page-name">
-            <p>Select Dates</p>
-          </div>
-        </div>
-      </div>
-      <div class="book-next-page">
-        <%= simple_form_for :book, url: book_dates_path, method: :get do |f| %>
-          <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
-          <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
-          <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
-          <%= f.hidden_field :selected_folder, value: selected_folder %>
-          <%= f.hidden_field :selected_content, value: selected_content %>
-          <%= f.hidden_field :selected_users, value: selected_users %>
-          <%= button_tag type: 'submit' do %>
-            <div class="book-next">
-              <i class="fas fa-arrow-right fa-2x" style='color:#F26419'></i>
-              <p>Select Dates</p>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-    <div class="index-controls-filter-bar-book">
-      <div class="index-controls-filter-bar-book__user-filter">
-        <div id="organisation-controls__user-search">
-          <i class="fas fa-search"></i>
-          <%= simple_form_for :search_user, url: book_users_path, remote: true, method: :get do |f| %>
-            <%= f.text_field :name, placeholder: 'Search by name', label: false %>
-            <%= f.hidden_field :selected %>
-            <%= f.submit class: 'hidden hidden-submit' %>
-          <% end %>
-          <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearchUser(this);'>
-            <p>Reset</p>
-          </div>
-        </div>
-        <div class="btn-white" onclick='openFilter();'>
-          <p>Filter</p>
-        </div>
-      </div>
-      <div class="add-remove-users">
-        <p onclick='selectAllUsers(true);' style='cursor:pointer;' class='add-selected'>Add All</p>
-        <p onclick='selectAllUsers(false);' style='cursor:pointer;' class='remove-selected'>Remove all</p>
-      </div>
-    </div>
-    <div class="organisation-filter-container">
+    <div class="book-controls">
+    <%= simple_form_for :book, url: book_contents_path, method: :get do |f| %>
+      <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
+      <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
+      <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
+      <%= f.hidden_field :selected_folder, value: @selected_folder %>
+      <%= f.hidden_field :selected_content, value: @selected_content %>
+      <%= f.hidden_field :selected_users, value: @selected_users %>
+      <%= button_tag type: 'submit' do %>
+          <p>Select a Program</p>
+      <% end %>
+    <% end %>
+    <button class='active'><p>Select Participants</p></button>
+    <%= simple_form_for :book, url: book_dates_path, method: :get do |f| %>
+      <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
+      <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
+      <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
+      <%= f.hidden_field :selected_folder, value: @selected_folder %>
+      <%= f.hidden_field :selected_content, value: @selected_content %>
+      <%= f.hidden_field :selected_users, value: @selected_users %>
+      <%= button_tag type: 'submit' do %>
+        <p>Select Dates</p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="index-controls-filter-bar-book">
+    <%= render 'shared/searchbar', path: book_contents_path, reset_path: book_contents_path(reset: ""), reset: true %>
+  </div>
+<!--     <div class="add-remove-users">
+      <p onclick='selectAllUsers(true);' style='cursor:pointer;' class='add-selected'>Add All</p>
+      <p onclick='selectAllUsers(false);' style='cursor:pointer;' class='remove-selected'>Remove all</p>
+    </div> -->
+  <div class="organisation-filter-container">
     <div class="organisation-filter-background" onclick='closeFilter();'></div>
-      <% interest_for = [] %>
-      <div class="organisation-filter-dropright">
-        <%= render 'pages/partials/book_user_filter_dropright', interest_for: interest_for %>
-      </div>
+    <div class="organisation-filter-dropright">
+      <%= render 'pages/partials/book_user_filter_dropright' %>
     </div>
-    <% selected_filter = [] %>
-    <div class="book-user-filter-tags">
-      <%= render 'pages/partials/book_user_filter_tags', selected_filter: selected_filter %>
+  </div>
+  <%# selected_filter = [] %>
+ <!--  <div class="book-user-filter-tags">
+    <%# render 'pages/partials/book_user_filter_tags', selected_filter: selected_filter %>
+  </div> -->
+  <div class="users-book-lists__container">
+    <div class='users-book-lists'>
+      <div class="users-book-headers">
+        <input type="checkbox" class='hidden'>
+        <button class="book-users-pseudo-checkbox"></button>
+        <div class="user-book-headers-infos">
+          <div>
+            <p>Fullname</p>
+          </div>
+          <div>
+            <p>Email</p>
+          </div>
+          <% TagCategory.where(company_id: current_user.company_id).each do |tag_category| %>
+            <div>
+              <p><%= tag_category.name %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="users-book-all">
+        <%= paginate @users, remote: true %>
+        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
+      </div>
+      <div class="users-book-filtered hidden">
+        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
+      </div>
     </div>
     <div class="users-book-selected">
-    </div>
-    <div class="users-book-all">
-      <%= paginate @users, remote: true %>
-      <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, interest_for: interest_for %>
-    </div>
-    <div class="users-book-filtered hidden">
-      <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, interest_for: interest_for, selected_filter: selected_filter %>
+      <div class="users-book-headers-selected">
+        <p>SELECTED EMPLOYEES</p>
+      </div>
+      <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')), selected: 'true' %>
+      <div class="user-book-card user-book-card-template hidden">
+        <button class="book-users-pseudo-checkbox" onclick="selectUser(this);"></button>
+        <div class="user-book-card-infos">
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-  }
-
-  function updateSelectedUsers() {
-    if (document.querySelector('.users-book-all').classList.contains('hidden')) {
-      container = document.querySelector('.users-book-filtered')
-    } else {
-      container = document.querySelector('.users-book-all')
-    }
-    checkboxes = container.querySelectorAll('.book-users-checkbox')
-    selected_users = []
-    selected_storages = document.querySelectorAll('#book_selected_users')
-    checkboxes.forEach((checkbox) => {
-      if (checkbox.checked == true) {
-        selected_users.push(checkbox.closest('.user-book-card').id.split('-')[1])
+  function selectUser(element) {
+    user_card = element.parentNode
+    user_card_infos = user_card.querySelector('.user-book-card-infos')
+    selected_container = document.querySelector('.users-book-selected')
+    selected_array = []
+    checkbox = user_card.querySelector('input[type="checkbox"]')
+    checkbox.checked = !checkbox.checked
+    document.querySelectorAll('#' + user_card.id).forEach((card) => {
+      if(checkbox.checked == true) {
+        card.classList.add('selected')
+      } else {
+        card.classList.remove('selected')
       }
     })
-    selected_storages.forEach((storage) => {
-      storage.value = selected_users.join(',')
+    if (checkbox.checked == true) {
+      new_card = document.createElement('div')
+      new_card.classList.add('user-book-card', 'selected')
+      new_card.id = user_card.id
+      template = document.querySelector('.user-book-card-template')
+      new_card.innerHTML = template.innerHTML
+      new_card_infos = new_card.querySelector('.user-book-card-infos')
+      new_info_name = document.createElement('div')
+      new_info_name.innerHTML = user_card_infos.querySelectorAll('div')[0].innerHTML
+      new_info_email = document.createElement('div')
+      new_info_email.innerHTML = user_card_infos.querySelectorAll('div')[1].innerHTML
+      new_card_infos.appendChild(new_info_name)
+      new_card_infos.appendChild(new_info_email)
+      document.querySelector('.users-book-selected').appendChild(new_card)
+    } else {
+      selected_container.querySelector('#' + user_card.id).remove();
+    }
+    selected_container.querySelectorAll('.selected').forEach((card) => {
+      selected_array.push(card.id.split('-')[1])
     })
-    console.log(selected_users)
+    document.querySelectorAll('#book_selected_users').forEach((storage) => {
+      storage.value = selected_array
+    })
+
   }
 
-  function selectAllUsers(boolean) {
-    if (document.querySelector('.users-book-all').classList.contains('hidden')) {
-      container = document.querySelector('.users-book-filtered')
-    } else {
-      container = document.querySelector('.users-book-all')
+  document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+    if (checkbox.checked == true) {
+      checkbox.closest('.user-book-card').classList.add('selected')
     }
-    container.querySelectorAll('.book-users-checkbox').forEach((checkbox) => {
-      checkbox.checked = boolean
-    })
-    updateSelectedUsers()
-  }
+  })
 </script>

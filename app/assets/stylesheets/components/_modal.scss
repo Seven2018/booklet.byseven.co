@@ -1,4 +1,5 @@
 .modal-header {
+  padding: 1rem 2rem;
   align-items: center !important;
   border-bottom: none;
 }
@@ -43,6 +44,7 @@
 }
 
 .modal-body {
+  padding: 1rem 2rem;
   border-top: 1px solid #dee2e6;
 
   .label-checkbox {
@@ -50,7 +52,7 @@
     }
 
   p {
-    font-size: 16px !important;
+    font-size: 1.6rem;
     font-weight: 300;
   }
 
@@ -87,7 +89,6 @@
 
 
 .modal-content {
-  padding: 15px;
   border-radius: 5px !important;
   label {
     font-size: 1.4rem;
@@ -217,10 +218,19 @@
 
   i {
     margin-right: 3px;
+    cursor: pointer;
 
     &:hover {
       opacity: 70%;
     }
+  }
+
+  .fa-plus-content {
+    color: #F26419;
+  }
+
+  .fa-plus-folder {
+    color: #5b92c5;
   }
 
   label {
@@ -269,5 +279,51 @@
   .fa-save {
     margin-right: 12px;
     color:#F26419;
+  }
+}
+
+
+// CATALOGUE
+
+.modal-header__content {
+  background-color: rgba(242, 100, 25, 0.33);
+}
+
+.modal-header__folder {
+  background-color: rgba(91, 146, 197, 0.67);
+}
+
+.modal-body__content-categories-div, .modal-body__folder-categories-div {
+  width: 30rem;
+  min-height: 10rem;
+  border: 1px solid #ced4da;
+  padding: 1rem 1rem 3rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.modal-body__categories-add-icon--content {
+  position: absolute;
+  bottom: .5rem;
+  right: .75rem;
+
+  i {
+    font-size: 2rem;
+    color: #F26419;
+    cursor: pointer;
+  }
+}
+
+.modal-body__categories-add-icon--folder {
+  position: absolute;
+  bottom: .5rem;
+  right: .75rem;
+
+  i {
+    font-size: 2rem;
+    color: #5B92C5;
+    cursor: pointer;
   }
 }

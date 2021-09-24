@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
 
   create_table "user_interests", force: :cascade do |t|
     t.bigint "user_id"
+    t.bigint "folder_id"
     t.bigint "content_id"
     t.string "status"
     t.string "recommendation"
@@ -272,6 +273,7 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["content_id"], name: "index_user_interests_on_content_id"
+    t.index ["folder_id"], name: "index_user_interests_on_folder_id"
     t.index ["user_id"], name: "index_user_interests_on_user_id"
   end
 
@@ -364,6 +366,7 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
   add_foreign_key "user_interests", "contents"
+  add_foreign_key "user_interests", "folders"
   add_foreign_key "user_interests", "users"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"

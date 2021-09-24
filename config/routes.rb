@@ -26,13 +26,14 @@ Rails.application.routes.draw do
   resources :companies, only: %i[new create update destroy]
 
   # CONTENTS
-  resources :contents, only: %i[show new create edit update] do
+  resources :contents, only: %i[create show edit update destroy] do
     # resources :content_skills, only: %i[create]
   end
-  get :change_author, controller: :contents
   get :content_link_category, controller: :contents
-  get :destroy_content, controller: :contents
   get 'contents/:id/duplicate', to: 'contents#duplicate', as: 'duplicate_content'
+
+  # FOLDERS
+  resources :folders
 
   #MODS
   resources :mods, only: %i[create update destroy]

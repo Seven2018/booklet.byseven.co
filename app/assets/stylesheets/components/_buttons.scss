@@ -155,14 +155,13 @@ button {
   }
 }
 
-.btn-orange-disabled {
+.btn-orange-disabled, .btn-blue-disabled {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: auto;
-  padding: 0 1rem;
+  padding: 2rem;
   height: 4rem;
-  background-color: #F26419;
   border-radius: 4px;
   transition: all .25s ease-in-out;
   cursor: not-allowed;
@@ -190,6 +189,14 @@ button {
   }
 }
 
+.btn-orange-disabled {
+  background-color: #F26419;
+}
+
+.btn-blue-disabled {
+  background-color: rgba(91, 146, 197, 1);
+}
+
 .completed {
   color: #56690A !important;
   font-size: 1.6rem;
@@ -211,6 +218,29 @@ button {
 
 .btn-orange-text {
   color: #F26419 !important;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background-color: transparent;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  margin-right:5px;
+  &:hover {
+    padding: .5rem 1rem;
+    border-radius: 4px;
+    background-color: #E5E5E5;
+  }
+  @include from-medium {
+    p {
+      font-size: 1.6rem !important;
+    }
+  }
+}
+
+.btn-blue-text {
+  color: rgba(91, 146, 197, 1) !important;
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 27px;
@@ -412,8 +442,9 @@ button {
 .btn-reset-form {
   position: absolute;
   text-decoration: underline;
-  left: 240px;
+  left: 25rem;
   opacity: 0.5;
+  cursor: pointer;
 
   &:hover { 
     opacity: 1;

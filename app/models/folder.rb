@@ -52,11 +52,11 @@ class Folder < ApplicationRecord
       node = self
     end
     result_hash = {type: node.class.name, name: node.title, children: []}
-    node.contents.each do |content|
-      result_hash[:children] << {type: content.class.name, name: content.title}
-    end
     node.children_folders.each do |folder|
       result_hash[:children] << folder_to_hash(folder)
+    end
+    node.contents.each do |content|
+      result_hash[:children] << {type: content.class.name, name: content.title}
     end
     return result_hash
   end

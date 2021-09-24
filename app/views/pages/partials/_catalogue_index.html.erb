@@ -1,9 +1,11 @@
 <% cards.each do |content| %>
-  <div class="catalogue-card-container" id="content-<%= content.id %>">
-    <% if content.class.name == 'Folder' %>
+  <% if content.class.name == 'Folder' %>
+    <div class="catalogue-card-container" id="folder-<%= content.id %>">
       <%= render 'pages/partials/catalogue_folder_card', folder: content %>
-    <% else %>
+    </div>
+  <% else %>
+    <div class="catalogue-card-container" id="content-<%= content.id %>">
       <%= render 'pages/partials/catalogue_content_card', content: content %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 <% end %>

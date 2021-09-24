@@ -1,4 +1,4 @@
-class ContentPolicy < ApplicationPolicy
+class FolderPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if ['Super Admin', 'Account Owner', 'HR', 'Employee'].include? user.access_level

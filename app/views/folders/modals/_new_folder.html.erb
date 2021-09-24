@@ -1,0 +1,32 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__folder">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Create a new Folder</h3>
+    </div>
+  </div>
+  <div class="modal-body">
+    <%= simple_form_for Folder.new do |f| %>
+      <%= f.input :title, input_html: {onkeyup: "checkFolderValidity(this);", autocomplete: 'off'} %>
+      <%= f.input :description %>
+      <div class="centered-item">
+        <%= f.hidden_field :categories %>
+        <div class="flex-column-between-left">
+          <%= f.label 'Categories' %>
+          <div class="modal-body__folder-categories-div">
+            <div class="modal-body__categories-add-icon--folder">
+              <a data-toggle='modal' data-target='#newFolderCategories' onclick="hidePreviousModal(this);">
+                <i class="fas fa-plus"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style=" display: flex; justify-content: center;margin-top:3rem;">
+        <button type="button" class="btn-blue-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <%= button_tag type: 'submit', class: 'btn-blue-disabled', id: 'save_button', disabled: true do %>
+          <p>SAVE</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

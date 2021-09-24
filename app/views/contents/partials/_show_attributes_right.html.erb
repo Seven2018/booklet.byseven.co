@@ -12,7 +12,7 @@
       <% end %>
     <% end %>
     <% if page == 'edit' && content.class.to_s == 'Content' %>
-      <%= link_to destroy_content_path(content_id: content.id), data: {confirm: 'Are you sure ?'} do %>
+      <%= link_to content_path(content), method: :delete, data: {confirm: 'Are you sure ?'} do %>
         <i class="fas fa-trash-alt py-3"></i>
       <% end %>
     <% end %>
