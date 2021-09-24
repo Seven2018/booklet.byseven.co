@@ -8,22 +8,32 @@ class PagesController < ApplicationController
     @employees_form = User.where(company: current_user.company)
     @types_form = ["Synchronous", "Asynchronous"]
 
-    if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
-      if params[:search].present? 
-        unless params[:search][:title].blank?
-          @trainings = @trainings.search_trainings("#{params[:search][:title]}")
-        end
+    @recommendations = UserInterest.all
+
+    unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+      @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
+      @recommendations = @recommendations.where(user_id: current_user.id)
+    end
+
+    if params[:search].present?
+      unless params[:search][:title].blank?
+        @trainings = @trainings.search_trainings("#{params[:search][:title]}")
+      end
+      if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
         unless params[:search][:employee].blank?
           selected_employee = User.search_by_name("#{params[:search][:employee]}").first
           @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id })
         end
-        unless params[:search][:type].blank?
-          @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search][:type]})
-        end
       end
-    else
-      @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
+      unless params[:search][:type].blank?
+        @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search][:type]})
+      end
     end
+
+    @pending_recommendations = @recommendations.where(recommendation: "Pending")
+    @accepted_recommendations = @recommendations.where(recommendation: "Yes")
+    @declined_recommendations = @recommendations.where(recommendation: "No")
+    @answered_recommendations = @accepted_recommendations + @declined_recommendations
 
     @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :desc).uniq.reverse
     # @past_trainings = @trainings - @current_trainings

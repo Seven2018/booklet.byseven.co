@@ -6,18 +6,9 @@
         <%# <li role="presentation"><a href="#UpcomingPersonal" data-toggle="tab">Upcoming</a></li> %>
         <%# <li role="presentation"><a href="#CompletedPersonal" data-toggle="tab">Past</a></li> %>
       </div>
-      <div class="searchbar"> 
-        <%= simple_form_for :search, url: dashboard_path, method: :get do |f| %>
-          <%= f.input :title, placeholder: 'Search', label: 'Keyword', required: false %>
-          <%= f.input :employee, collection: @employees_form.map(&:fullname), required: false %>
-          <%= f.input :type, collection: @types_form, required: false %>
-          <%= f.submit 'Search', class: 'btn-search' %>
-        <% end %>
 
-        <% if params[:search].present? %>
-          <%= link_to 'Reset', dashboard_path %>
-        <% end %>
-      </div>
+      <%= render 'shared/searchbar_trainings' %>
+    
     </div>
 
 
@@ -27,7 +18,7 @@
       <h1><%= @current_trainings.count %> training<%= "s" if @current_trainings.count > 1 %></h1>
       <div class="row current-trainings">
         <% @current_trainings.each do |training| %>
-          <%= render 'dashboard_trainings_card', training: training %>
+          <%= render '/pages/partials/dashboard_trainings_card', training: training %>
         <% end %>
       </div>
     <% end %>

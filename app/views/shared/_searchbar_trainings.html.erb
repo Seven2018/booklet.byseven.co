@@ -1,0 +1,16 @@
+<div class="searchbar"> 
+  <%= simple_form_for :search, url: dashboard_path, method: :get do |f| %>
+    <%= f.input :title, placeholder: 'Search', label: 'Keyword', required: false %>
+
+    <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+      <%= f.input :employee, collection: @employees_form.map(&:fullname), required: false %>
+    <% end %>
+
+    <%= f.input :type, collection: @types_form, required: false %>
+    <%= f.submit 'Search', class: 'btn-search' %>
+  <% end %>
+
+  <% if params[:search].present? %>
+    <%= link_to 'Reset', dashboard_path %>
+  <% end %>
+</div>

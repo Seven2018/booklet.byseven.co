@@ -1,0 +1,43 @@
+<div class="dashboard-grid">
+  <div class="dashboard-navigation">
+    <div class="trainings-nav">
+      <ul class="nav nav-tabs-trainings">
+        <% if @recommendations.count > 0 %>
+          <li role="presentation" id='pending_recommendation'><a href="#PendingRecommendation" data-toggle="tab" class='active'>Pending (<%= @recommendations.count %>)</a></li>
+        <% else %>
+          <li role="presentation"><a href="#PendingRecommendation" data-toggle="tab" class='active'>Pending</a></li>
+        <% end %>
+        <li role="presentation"><a href="#AnsweredRecommendation" data-toggle="tab">Answered</a></li>
+      </ul>
+
+      <%= render 'shared/searchbar_trainings' %>
+
+    </div>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="PendingRecommendation">
+        <div class="cards-recommended"> 
+          <div class="catalogue-row contents-row">
+            <% if @recommendations.empty? %>
+              <p style='padding: 15px;'>No recommended trainings.</p>
+            <% elsif %>
+              <% @recommendations.each do |recommendation| %>
+                <div class="catalogue-card-container">
+                <% if recommendation.content.class.name == 'Folder' %>
+                  <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.content %>
+                <% else %>
+                  <%= render 'pages/partials/catalogue_content_card', content: recommendation.content %>
+                <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="AnsweredRecommendation">
+        <div class="cards-recommended">  
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
