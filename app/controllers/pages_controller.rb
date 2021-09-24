@@ -8,6 +8,8 @@ class PagesController < ApplicationController
     @employees_form = User.where(company: current_user.company)
     @types_form = ["Synchronous", "Asynchronous"]
 
+    @recommendations = UserInterest.all
+
     if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       if params[:search].present? 
         unless params[:search][:title].blank?
@@ -23,10 +25,14 @@ class PagesController < ApplicationController
       end
     else
       @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
+      @recommendations = @recommendations.where(user_id: current_user.id)
     end
-
     @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :desc).uniq.reverse
     # @past_trainings = @trainings - @current_trainings
+
+
+    
+
   end
 
 

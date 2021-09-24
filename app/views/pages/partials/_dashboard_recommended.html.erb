@@ -2,21 +2,25 @@
   <div class="dashboard-navigation">
     <div class="trainings-nav">
       <ul class="nav nav-tabs-trainings">
-        <% if @my_recommended_pending.count > 0 %>
-          <li role="presentation" id='pending_recommendation'><a href="#PendingRecommendation" data-toggle="tab" class='active'>Pending (<%= @my_recommended_pending.count %>)</a></li>
+        <% if @recommendations.count > 0 %>
+          <li role="presentation" id='pending_recommendation'><a href="#PendingRecommendation" data-toggle="tab" class='active'>Pending (<%= @recommendations.count %>)</a></li>
         <% else %>
           <li role="presentation"><a href="#PendingRecommendation" data-toggle="tab" class='active'>Pending</a></li>
         <% end %>
         <li role="presentation"><a href="#AnsweredRecommendation" data-toggle="tab">Answered</a></li>
       </ul>
+      <%= render 'shared/searchbar_trainings' %>
     </div>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="PendingRecommendation">
+          
+        
+
         <div class="cards-recommended">  
-          <% if @my_recommended_pending.empty? %>
+          <% if @recommendations.empty? %>
             <p style='padding: 15px;'>No recommended trainings.</p>
           <% elsif %>
-            <% @my_recommended_pending.each do |interest| %>
+            <% @recommendations.each do |interest| %>
               <% content = interest.content %>
               <div id='recommendation-card-<%= interest.id %>' class="booklet-col">
                 <%= render 'pages/dashboard_recommended_card', content: content, interest: interest, status: 'pending' %>
@@ -28,16 +32,7 @@
       </div>
       <div role="tabpanel" class="tab-pane" id="AnsweredRecommendation">
         <div class="cards-recommended">  
-          <% if @my_recommended_answered.empty? %>
-            <p class='recommendation__nothing-to-show' style='padding: 15px;'>Nothing to show.</p>
-          <% elsif %>
-            <% @my_recommended_answered.each do |interest| %>
-              <% content = interest.content %>
-              <div id='recommendation-card-<%= interest.id %>' class="booklet-col">
-                <%= render 'pages/dashboard_recommended_card', content: content, interest: interest, status: 'answered' %>
-              </div>
-            <% end %>
-          <% end %>
+          
         </div>
       </div>
     </div>
