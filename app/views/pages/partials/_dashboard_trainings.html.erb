@@ -12,10 +12,10 @@
     </div>
 
 
-    <% if @current_trainings.empty? && params[:search].present? %>
+    <% if @current_trainings.empty? && params[:search_trainings].present? %>
       <h1>No results</h1>
     <% else %>
-      <h1><%= @current_trainings.count %> training<%= "s" if @current_trainings.count > 1 %></h1>
+      <h1><%= "Results : " if params[:search_trainings].present? %><%= @current_trainings.count %> training<%= "s" if @current_trainings.count > 1 %></h1>
       <div class="row current-trainings">
         <% @current_trainings.each do |training| %>
           <%= render '/pages/partials/dashboard_trainings_card', training: training %>

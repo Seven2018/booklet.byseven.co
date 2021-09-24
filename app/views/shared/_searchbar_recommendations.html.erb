@@ -1,5 +1,5 @@
 <div class="searchbar"> 
-  <%= simple_form_for :search_trainings, url: dashboard_path, method: :get do |f| %>
+  <%= simple_form_for :search_recommendations, url: dashboard_path, method: :get do |f| %>
     <%= f.input :title, placeholder: 'Search', label: 'Keyword', required: false %>
 
     <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
@@ -10,7 +10,7 @@
     <%= f.submit 'Search', class: 'btn-search' %>
   <% end %>
 
-  <% if params[:search_trainings].present? %>
+  <% if params[:search_recommendations].present? %>
     <%= link_to 'Reset', dashboard_path %>
   <% end %>
 </div>

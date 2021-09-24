@@ -15,18 +15,35 @@ class PagesController < ApplicationController
       @recommendations = @recommendations.where(user_id: current_user.id)
     end
 
-    if params[:search].present?
-      unless params[:search][:title].blank?
-        @trainings = @trainings.search_trainings("#{params[:search][:title]}")
+    # SEARCH TRAININGS
+    if params[:search_trainings].present?
+      unless params[:search_trainings][:title].blank?
+        @trainings = @trainings.search_trainings("#{params[:search_trainings][:title]}")
       end
       if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
-        unless params[:search][:employee].blank?
-          selected_employee = User.search_by_name("#{params[:search][:employee]}").first
+        unless params[:search_trainings][:employee].blank?
+          selected_employee = User.search_by_name("#{params[:search_trainings][:employee]}").first
           @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id })
         end
       end
-      unless params[:search][:type].blank?
-        @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search][:type]})
+      unless params[:search_trainings][:type].blank?
+        @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search_trainings][:type]})
+      end
+    end
+
+    # SEARCHING RECOMMENDATIONS
+    if params[:search_recommendations].present?
+      unless params[:search_recommendations][:title].blank?
+        @recommendations = @recommendations.search_recommendations("#{params[:search_recommendations][:title]}")
+      end
+      if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+        unless params[:search_recommendations][:employee].blank?
+          selected_employee = User.search_by_name("#{params[:search_recommendations][:employee]}").first
+          @recommendations = @recommendations.where(user_id: selected_employee.id)
+        end
+      end
+      unless params[:search_recommendations][:type].blank?
+        @recommendations = @recommendations.joins(:content).where(contents: {content_type: params[:search_recommendations][:type]})
       end
     end
 
@@ -36,7 +53,6 @@ class PagesController < ApplicationController
     @answered_recommendations = @accepted_recommendations + @declined_recommendations
 
     @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :desc).uniq.reverse
-    # @past_trainings = @trainings - @current_trainings
   end
 
 
