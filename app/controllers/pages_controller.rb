@@ -2,35 +2,33 @@ class PagesController < ApplicationController
 
   # Access dashboard (root)
   def dashboard
-    complete_profile
-    # @my_past_sessions = (Session.includes([:content]).joins(:attendees).where(available_date: nil, attendees: {user_id: current_user.id}).where('date < ?', Date.today) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
-    @my_past_sessions = []
-    # @my_current_sessions = (Session.includes([:content]).joins(:attendees).where(attendees: {user_id: current_user.id}).where('date >= ?', Date.today).order(date: :asc) + Session.joins(:attendees).where(attendees: {user_id: current_user.id}).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
-    @my_current_sessions = []
-    @all_my_sessions = @my_past_sessions + @my_current_sessions
-    @my_recommended_pending = UserInterest.where(user_id: current_user.id, recommendation: 'Pending')
-    @my_recommended_answered = UserInterest.where(user_id: current_user.id, recommendation: ['Yes', 'No'])
-    if params[:start_date].present?
-      @update_calendar_date = params[:start_date]
-    else
-      @update_calendar_date = 'none'
-    end
+    complete_profile_path
+
+    @trainings = Training.where(company: current_user.company)
+    @employees_form = User.where(company: current_user.company)
+    @types_form = ["Synchronous", "Asynchronous"]
+
     if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
-      # @past_sessions = (Session.includes([:content]).where(available_date: nil, company_id: current_user.company_id).where('date < ?', Date.today) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('available_date < ?', Date.today)).uniq.sort_by{|x| x.date}
-      @past_sessions = []
-      # @current_sessions = (Session.includes([:content]).where(company_id: current_user.company_id).where('date >= ?', Date.today).order(date: :asc) + Session.where(company_id: current_user.company_id).where.not(available_date: nil).where('date < ?', Date.today).where('available_date >= ?', Date.today)).uniq.sort_by{|x| x.date}
-      @current_sessions = []
-      @allsessions = @past_sessions + @current_sessions
-      @remove = params[:remove] if params[:remove].present?
-    end
-    if params[:date].present?
-      @tab = params[:tab]
-      @date = params[:date].to_date
-      respond_to do |format|
-        format.js
+      if params[:search].present? 
+        unless params[:search][:title].blank?
+          @trainings = @trainings.search_trainings("#{params[:search][:title]}")
+        end
+        unless params[:search][:employee].blank?
+          selected_employee = User.search_by_name("#{params[:search][:employee]}").first
+          @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id })
+        end
+        unless params[:search][:type].blank?
+          @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search][:type]})
+        end
       end
+    else
+      @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
     end
+
+    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :desc).uniq.reverse
+    # @past_trainings = @trainings - @current_trainings
   end
+
 
   # Display monthly calendar (pages/dashboard)
   def calendar_month
