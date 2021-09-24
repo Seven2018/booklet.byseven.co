@@ -28,15 +28,4 @@
       </div>
     </div>
   </div>
-  <div class="dashboard-right-schedule">
-    <div class="dashboard-calendar dashboard-calendar--all">
-      <%= render 'pages/dashboard_calendar_display', date: Date.today, tab: 'all' %>
-    </div>
-    <div class="schedule">
-      <div class="calendar-schedule calendar-schedule-all">
-        <% @date = Date.today unless @date.present? %>
-        <%# render 'pages/calendar_schedule', date: @date, tab: 'all' %>
-      </div>
-    </div>
-  </div>
 </div>

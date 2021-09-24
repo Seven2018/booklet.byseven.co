@@ -2,49 +2,23 @@
   <div class="dashboard-navigation">
     <div class="dashboard-tabs">
       <ul class="nav nav-tabs">
-        <li role="presentation"><a href="#Personal" data-toggle="tab" class='active'>My Trainings</a></li>
-        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-          <li role="presentation"><a href="#All" data-toggle="tab" >Staff Trainings</a></li>
-        <% end %>
-        <li role="presentation" id='pending_recommendation_main'><a href="#Recommended" data-toggle="tab" >Recommended
-          <%= "(#{@my_recommended_pending.count})" if @my_recommended_pending.count > 0 %></a></li>
+        <li role="presentation"><a href="#Trainings" data-toggle="tab" class='active'>Trainings</a></li>
+        
+        <li role="presentation" id='pending_recommendation_main'><a href="#Recommended" data-toggle="tab" >Recommended</a></li>
       </ul>
     </div>
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Personal">
-        <%= render 'dashboard_personal' %>
+      <div role="tabpanel" class="tab-pane active" id="Trainings">
+        <%= render 'dashboard_trainings' %>
       </div>
-      <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-        <div role="tabpanel" class="tab-pane" id="All">
-          <%= render 'dashboard_all' %>
-        </div>
-      <% end %>
+
       <div role="tabpanel" class="tab-pane" id="Recommended">
-        <%= render 'dashboard_recommended' %>
+        <%#= render 'dashboard_recommended' %>
       </div>
     </div>
   </div>
 </div>
 
-
-<!-- MODALS -->
-<% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-  <% @allsessions.each do |session| %>
-    <div class='modal fade' id='editSession-<%= session.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-      <div class='modal-dialog' role='document' style='border-radius: 20px'>
-        <%= render 'sessions/edit_session', session: session %>
-      </div>
-    </div>
-  <% end %>
-<% else %>
-  <% @all_my_sessions.each do |session| %>
-    <div class='modal fade' id='editSession-<%= session.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-      <div class='modal-dialog' role='document' style='border-radius: 20px'>
-        <%= render 'sessions/edit_session', session: session %>
-      </div>
-    </div>
-  <% end %>
-<% end %>
 
 
 <script>

@@ -48,6 +48,10 @@
 .dashboard-navigation {
   flex-grow: 1;
   padding-right: 3rem;
+
+  .row {
+    margin: 35px auto 50px 20px;
+  }
 }
 
 // DASHBOARD
@@ -266,4 +270,145 @@
 
 .session_cost {
   margin: 0 1rem;
+}
+
+
+
+/////////////////////////////
+// MANON VERSION DASHBOARD //
+/////////////////////////////
+
+// TRAININGS
+////////////
+
+  // SEARCHBAR
+
+.trainings-nav {
+
+  .searchbar {
+    margin-bottom: 25px;
+    margin-top: -20px;
+    align-items: end;
+
+    .simple_form {
+      display: flex;
+      align-items: self-end;
+    }
+
+    .btn-search {
+      margin-bottom: 1rem;
+    }
+
+    div {
+      margin: 0 10px 0 0;
+    }
+  }
+}
+
+  // INDEX TRAININGS
+
+.trainings-container-card {
+  height: 15rem;
+  width: 40rem;
+  flex-shrink: 0;
+  margin: 2rem 1rem;
+  position: relative;
+}
+
+.past-training {
+  filter: opacity(40%);
+}
+
+.next-session-date {
+  position: absolute;
+  top: -31px;
+  left: 20px;
+  background-color: rgb(234, 237, 241);
+  padding: 5px 15px;
+  border-radius: 5px 5px 0 0;
+  border-style: dashed dashed none;
+  border-color: #5B92C5;
+  border-width: 2px;
+  font-size: small;
+}
+
+.trainings-card {
+  position: relative;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: rgb(234, 237, 241);
+  border: 0.8rem solid rgba(61, 100, 136, 100);
+  border-radius: 15px;
+
+  .infos-points {
+    font-size: x-large;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+  .card-main-content {
+    height: 60%;
+  }
+
+  .card-themes {
+    height: 35%;
+  }
+
+  .title {
+    align-items: end;
+    height: 50%;
+    // width: 95%;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgba(80, 80, 80, 100);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
+
+  i {
+    font-size: xx-large;
+    color: rgba(61, 100, 136, 100);
+  }
+
+  .infos-second-line {
+    margin-left: 42px;
+    margin-top: 5px;
+    align-items: center;
+  }
+
+  .card-themes {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .tag-themes {
+    background-color: #E9986E;
+    color: white;
+    padding: 2% 4%;
+    margin: 2%;
+    border-radius: 25px;
+    font-size: larger;
+    font-weight: bolder;
+  }
+
+  .small-i {
+    font-size: large;
+  }
+
+  .light-blue-i {
+    color: #5B92C5;
+  }
+
+  .light-orange-i {
+    color: #E9986E;
+  }
+
 }
