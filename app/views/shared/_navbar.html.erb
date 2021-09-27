@@ -21,7 +21,7 @@
           </li>
           <% if current_user.company_id.present? %>
             <li>
-              <% if params[:action] == 'catalogue' || params[:controller] == 'contents' %>
+              <% if params[:action] == 'catalogue' || params[:controller] == 'contents'|| params[:controller] == 'folders' %>
                 <%= link_to catalogue_path, class: 'left-buttons' do %>
                   <div class="left-menu-title " style='color: #F26419;'><h4>Catalogue</h4></div>
                 <% end %>

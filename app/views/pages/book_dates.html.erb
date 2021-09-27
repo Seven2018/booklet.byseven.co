@@ -38,7 +38,7 @@
         <%= f.hidden_field :title, value: title %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
-      <button id='book-confirm-button' class='btn-white-border' onclick='bookDates(this)' style='margin-top: 30px' disabled='false' data-toggle='tooltip'><p>Confirm</p></button>
+      <button id='book-confirm-button' class='btn-white-border' onclick='bookDates(this)' style='margin-top: 30px' data-toggle='tooltip'><p>Confirm</p></button>
     </div>
   </div>
   <div class="book-dates-container">
@@ -47,6 +47,8 @@
 </div>
 
 <script>
+
+  formGuardian = false;
 
   function editDetails(element) {
     modal = element.closest('.modal')
@@ -156,7 +158,7 @@
   folder = document.querySelector('#book_selected_folder')
   content = document.querySelector('#book_selected_content')
   users = document.querySelector('#book_selected_users')
-  if ((folder.value =='' || content.value == '') || users.value == '') {
+  if ((folder.value =='' && content.value == '') || users.value == '') {
     console.log('disabled')
     confirm_button.disabled = true
     confirm_button.classList.add('btn-white-border-disabled')

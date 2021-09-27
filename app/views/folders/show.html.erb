@@ -1,0 +1,55 @@
+<% if ['Super Admin'].include?(current_user.access_level) || (@folder.company_id == current_user.company_id) %>
+  <% access = '' %>
+  <div id="content-show-container">
+    <div id="content-show-container-left">
+      <%= render 'folders/partials/show_anchors', folder: @folder, page: 'edit', access: "" %>
+    </div>
+    <div id="content-show-container-right">
+      <div class="content-add">
+        <div class="content-add-left">
+          <div class="content-show-attributes-left">
+            <div class="content-info">
+              <div class="flex-row-between-centered">
+                <h2 class="d-flex align-items-center"><i class="fas fa-folder folder-title"></i><%= @folder.title %></h2>
+              </div>
+              <p class="description"><%= @folder.description %></p>
+            </div>
+          </div>
+          <div class="folder-contents col-10">
+            <div class="children-folders form-group">
+              <% @folder.children_folders.each do |child_folder| %>
+                <h3 class="child-folder">
+                  <strong>
+                    <%= link_to folder_path(child_folder), class: "child-folder" do %>
+                      <i class="fas fa-folder child-icon"></i><%= child_folder.title %> (<%= child_folder.duration %> min)
+                    <% end %>
+                  </strong>
+                </h3>
+              <% end %>
+            </div>
+            <div class="children-contents form-group">
+              <% @folder.contents.each do |child_content| %>
+                <h3 class="child-workshop">
+                  <strong>
+                    <%= link_to content_path(child_content) ,class: "child-workshop" do %>
+                      <i class="far fa-file child-icon"></i><%= child_content.title %> (<%= child_content.duration %> min)
+                    <% end %>
+                  </strong>
+                </h3>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="content-add-right">
+          <div class="content-show-attributes-right">
+            <%= render 'folders/partials/show_attributes_right', folder: @folder, page: 'show', access: access %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
+  </div>
+<% end %>
