@@ -1,14 +1,14 @@
 <% selected_users = users.map(&:id).join(',') if selected == 'true' %>
 <% users.each do |user| %>
-  <div class="user-book-card" id="user-<%= user.id %>">
+  <div class="book-users-card" id="user-<%= user.id %>">
     <% fullname, email = user.fullname, user.email %>
     <% if selected_users.split(',').include?(user.id.to_s) %>
       <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>" checked>
     <% else %>
       <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>">
     <% end %>
-    <button class="book-users-pseudo-checkbox" onclick="selectUser(this);"></button>
-    <div class="user-book-card-infos">
+    <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
+    <div class="book-users-card-infos">
       <div>
         <p data-toggle='tooltip' title='<%= fullname %>'><%= fullname %></p>
       </div>

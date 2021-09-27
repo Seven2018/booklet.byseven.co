@@ -4,6 +4,11 @@
     <%= f.text_field :title, placeholder: 'Search', label: false, autocomplete: 'off', onkeyup: 'searchInput(this);' %>
     <% if params[:action] == 'catalogue' %>
       <%= f.hidden_field :filtered %>
+    <% elsif params[:action] == 'book_contents' %>
+      <%= f.hidden_field :book_selected_folder, value: @selected_folder %>
+      <%= f.hidden_field :book_selected_content, value: @selected_content %>
+    <% elsif params[:action] == 'book_users' %>
+      <%= f.hidden_field :book_selected_users, value: @selected_users %>
     <% end %>
     <%= f.submit 'Search', class: 'btn-search' %>
   <% end %>

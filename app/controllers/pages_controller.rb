@@ -277,6 +277,10 @@ class PagesController < ApplicationController
       @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
       @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
     end
+    if params[:search].present?
+      @selected_folder = params[:search][:book_selected_folder]
+      @selected_content = params[:search][:book_selected_content]
+    end
     authorize @contents
     authorize @folders
     book_data
@@ -287,9 +291,20 @@ class PagesController < ApplicationController
   end
 
   def book_users
-    index_function(User.where(company_id: current_user.company_id))
+    @users = User.where(company_id: current_user.company_id)
+    if params[:search].present? && !params[:search][:title].blank?
+      @users = @users.search_by_name("#{params[:search][:title]}")
+      @filter = 'true'
+    else
+      @filter = 'false'
+    end
+    @users = @users.order(lastname: :asc).page params[:page]
     authorize @users
-    book_data
+    params[:search].present? ? @selected_users = params[:search][:book_selected_users] : book_data
+    respond_to do |format|
+      format.html {book_users_path}
+      format.js
+    end
   end
 
   def book_dates

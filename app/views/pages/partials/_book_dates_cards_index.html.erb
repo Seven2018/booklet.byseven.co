@@ -1,44 +1,41 @@
 <% if selected_folder.present? %>
   <% contents = Folder.find(selected_folder).children_contents.uniq %>
 <% elsif selected_content.present? %>
-  <% contents = Content.find(selected_content) %>
+  <% contents = [Content.find(selected_content)] %>
 <% else %>
   <% contents = [] %>
 <% end %>
 <% contents.each do |content| %>
   <% if content.content_type == 'Synchronous' %>
-    <div class="booklet-card" id="book_content-<%= content.id %>" >
-      <div class="booklet-card-syn-dates">
+    <div class="book-dates-card" id="book_content-<%= content.id %>" >
+      <div class="book-dates-card-syn">
         <div class="booklet-card-top">
           <div class="booklet-card__top-info">
-            <% if content.title.length > 30 %>
-              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30)+'...' %></b></h3>
-            <% else %>
+            <div class="flex-row-start-centered">
+              <i class="fas fa-file"></i>
               <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
-            <% end %>
-            <div class="flex-row-between-centered">
-              <p><%= content.duration %> Minutes</p>
-              <h6 class="duration-alert hidden">Duration exceeds alloted time</h6>
             </div>
-          </div>
-          <div class="booklet-card-type-pill">
-            <div class="booklet-card-type">
-              <div class="booklet-card-type-icon">
+            <div class="flex-row-start-centered">
+              <% hours = content.duration / 60 %>
+              <% minutes = format('%02d', content.duration % 60) %>
+              <p class='book-dates-duration'><%= hours %>h<%= minutes %></p>
+              <div class="booklet-content-card-type-icon">
                 <% if content.content_type == 'Synchronous' %>
                   <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                  <p>In Person</p>
+                  <p style='color:#F26419;'>In Person</p>
                 <% else %>
                   <i class="fas fa-laptop" style='color:black;'></i>
-                  <p>Online</p>
+                  <p style='color:black;'>Online</p>
                 <% end %>
               </div>
             </div>
+            <h6 class="duration-alert hidden">Duration exceeds alloted time</h6>
           </div>
           <div class="booklet-top-right-icon">
-            <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal-<%= content.id %>" style='color:#F26419;'></i>
+            <i class="fas fa-info-circle" data-toggle="modal" data-target="#editDetails-<%= content.id %>" style='color:#F26419;'></i>
           </div>
         </div>
-        <div class="booklet-card-bottom-dates">
+        <div class="book-dates-card-bottom">
           <div class="booklet-card-objective-booking">
             <div class='book-dates'>
               <div class="flex-row-between-centered">
@@ -49,16 +46,15 @@
               </div>
               <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
               <div class="sync-booking">
-                <%= f.input :date, label: false, input_html: {class: 'datepicker', value: Date.today}, placeholder: 'Select date...' %>
+                <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date' %>
                   <%= f.hidden_field :duration, value: content.duration %>
+                  <% hours = content.duration / 60 %>
+                  <% minutes = content.duration % 60 %>
                   <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);', value: '9:00'}, required: true %>
-                  <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);', value: '10:00'}, required: true %>
-                  <div class="booklet-card__cost-input">
-                    <%= f.input :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i, onchange: 'duplicateCost(this);'} %>
-                    <p>€</p>
-                  </div>
+                  <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);', value: "#{9 + hours}:#{minutes}"}, required: true %>
                   <%= f.hidden_field :content_id, value: content.id %>
-                  <%= f.hidden_field :selected_users, value: selected_users %>
+                  <%= f.hidden_field :selected_users, value: selected_users, input_html: {onchange: 'duplicateUsers(this);'} %>
+                  <%= f.hidden_field :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i, onchange: 'duplicateCost(this);'} %>
                   <%= f.hidden_field :training_id %>
                   <%= f.submit '', class: 'hidden-submit hidden' %>
               </div>
@@ -75,7 +71,7 @@
     </div>
   <% else %>
     <div class="booklet-card" id="book_content-<%= content.id %>">
-      <div class="booklet-card-asyn-dates">
+      <div class="book-dates-card-asyn">
         <div class="booklet-card-top">
           <div class="booklet-card__top-info">
             <% if content.title.length > 30 %>
@@ -97,19 +93,17 @@
                 <% end %>
               </div>
             </div>
-            <h6 class="duration-alert hidden">Duration exceeds alloted time</h6>
           </div>
           <div class="booklet-top-right-icon">
-            <i class="fas fa-info-circle" data-toggle="modal" data-target="#myModal-<%= content.id %>"></i>
-          </div>
+            <i class="fas fa-info-circle" data-toggle="modal" data-target="#editDetails-<%= content.id %>"></i>
         </div>
-        <div class="booklet-card-bottom-dates">
+        <div class="book-dates-card-bottom">
           <div class="booklet-card-objective-booking">
             <div class='book-dates'>
             <p><b>Available From:</b></p>
               <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
-                <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker-range'}, placeholder: 'Select Date..' %></div>
-                <div class="booklet-card__cost-input">
+                <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker-range'}, placeholder: 'Select Date' %></div>
+                <div class="book-dates-card__cost-input">
                   <%= f.input :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i} %>
                   <p>€</p>
                 </div>
@@ -124,26 +118,13 @@
     </div>
   <% end %>
 
-<!-- Modal -->
-<div id="myModal-<%= content.id %>" class="modal fade" role="dialog">
-  <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"><%= content.title %></h4>
-        <button type="button"  data-dismiss="modal"><i class="fas fa-times" style='opacity: 1;'></i></button>
-      </div>
-      <div class="modal-body">
-      <div class="booklet-card-theme-modal">
-        <% content.categories.order(title: :asc).each do |category| %>
-          <p><%= category.title %></p>
-        <% end %>
-      </div>
-        <p><%= content.description%></p>
-      </div>
+  <!-- Modal -->
+
+  <div id="editDetails-<%= content.id %>" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <%= render 'pages/modals/book_dates_edit_details', content: content, selected_users: selected_users %>
     </div>
   </div>
-</div>
 
 <% end %>

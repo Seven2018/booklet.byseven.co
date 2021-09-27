@@ -26,7 +26,7 @@
     <% end %>
   </div>
   <div class="index-controls-filter-bar-book">
-    <%= render 'shared/searchbar', path: book_contents_path, reset_path: book_contents_path(reset: ""), reset: true %>
+    <%= render 'shared/searchbar', path: book_contents_path, reset_path: book_contents_path(reset: "") %>
   </div>
   <div class="workshop-cards-book">
     <%= render 'pages/partials/book_content_index', contents: @contents, selected_content: @selected_content, folders: @folders, selected_folder: @selected_folder %>
@@ -50,37 +50,40 @@
   }
 
   function selectContent(element) {
-      checkboxes = document.querySelectorAll('.book-contents-checkbox')
-      input = element.parentNode.querySelector('input')
-      selected_type = input.id.split('-')[1]
-      selected_id = input.id.split('-')[2]
-      document.getElementById('book_selected_folder').value = ''
-      document.getElementById('book_selected_content').value = ''
-      selected_storage = document.getElementById('book_selected_' + selected_type)
-      input.checked = !input.checked
-      if (input.checked == true) {
-        checkboxes.forEach((checkbox) => {
-          card_container = checkbox.closest('.catalogue-card-container')
-          if (checkbox != input) {
-            checkbox.checked = false
-            card_container.classList.add('disabled')
-            card_container.classList.remove('selected')
-            card_container.querySelector('button').innerText = 'SELECT'
-          } else {
-            card_container.classList.add('selected')
-            card_container.classList.remove('disabled')
-            card_container.querySelector('button').innerText = 'SELECTED'
-          }
-          selected_storage.value = selected_id
-        })
-      } else {
-        checkboxes.forEach((checkbox) => {
-          card_container = checkbox.closest('.catalogue-card-container')
-          card_container.classList.remove('disabled','selected')
+    checkboxes = document.querySelectorAll('.book-contents-checkbox')
+    input = element.parentNode.querySelector('input')
+    selected_type = input.id.split('-')[1]
+    selected_id = input.id.split('-')[2]
+    document.getElementById('book_selected_folder').value = ''
+    document.getElementById('book_selected_content').value = ''
+    selected_storage = document.getElementById('book_selected_' + selected_type)
+    search_storage = document.getElementById('search_book_selected_' + selected_type)
+    input.checked = !input.checked
+    if (input.checked == true) {
+      checkboxes.forEach((checkbox) => {
+        card_container = checkbox.closest('.catalogue-card-container')
+        if (checkbox != input) {
+          checkbox.checked = false
+          card_container.classList.add('disabled')
+          card_container.classList.remove('selected')
           card_container.querySelector('button').innerText = 'SELECT'
-        })
-        selected_storage.value = ''
-      }
+        } else {
+          card_container.classList.add('selected')
+          card_container.classList.remove('disabled')
+          card_container.querySelector('button').innerText = 'SELECTED'
+        }
+        selected_storage.value = selected_id
+        search_storage = selected_id
+      })
+    } else {
+      checkboxes.forEach((checkbox) => {
+        card_container = checkbox.closest('.catalogue-card-container')
+        card_container.classList.remove('disabled','selected')
+        card_container.querySelector('button').innerText = 'SELECT'
+      })
+      selected_storage.value = ''
+      search_storage = ''
+    }
   }
 
   checkboxes = document.querySelectorAll('.book-contents-checkbox')

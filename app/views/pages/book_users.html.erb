@@ -26,7 +26,7 @@
     <% end %>
   </div>
   <div class="index-controls-filter-bar-book">
-    <%= render 'shared/searchbar', path: book_contents_path, reset_path: book_contents_path(reset: ""), reset: true %>
+    <%= render 'shared/searchbar', path: book_users_path, reset_path: book_users_path(reset: "") %>
   </div>
 <!--     <div class="add-remove-users">
       <p onclick='selectAllUsers(true);' style='cursor:pointer;' class='add-selected'>Add All</p>
@@ -42,12 +42,12 @@
  <!--  <div class="book-user-filter-tags">
     <%# render 'pages/partials/book_user_filter_tags', selected_filter: selected_filter %>
   </div> -->
-  <div class="users-book-lists__container">
-    <div class='users-book-lists'>
-      <div class="users-book-headers">
+  <div class="book-users-lists__container">
+    <div class='book-users-lists'>
+      <div class="book-users-headers">
         <input type="checkbox" class='hidden'>
         <button class="book-users-pseudo-checkbox"></button>
-        <div class="user-book-headers-infos">
+        <div class="book-users-headers-infos">
           <div>
             <p>Fullname</p>
           </div>
@@ -61,22 +61,23 @@
           <% end %>
         </div>
       </div>
-      <div class="users-book-all">
+      <div class="book-users-all">
         <%= paginate @users, remote: true %>
         <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
       </div>
-      <div class="users-book-filtered hidden">
+      <div class="book-users-filtered hidden">
         <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
       </div>
     </div>
-    <div class="users-book-selected">
-      <div class="users-book-headers-selected">
+    <div class="book-users-selected">
+      <div class="book-users-headers-selected">
         <p>SELECTED EMPLOYEES</p>
       </div>
       <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')), selected: 'true' %>
-      <div class="user-book-card user-book-card-template hidden">
-        <button class="book-users-pseudo-checkbox" onclick="selectUser(this);"></button>
-        <div class="user-book-card-infos">
+      <div class="book-users-card book-users-card-template hidden">
+        <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
+        <input type="checkbox" class="book-users-checkbox hidden" checked=''>
+        <div class="book-users-card-infos">
         </div>
       </div>
     </div>
@@ -84,10 +85,25 @@
 </div>
 
 <script>
+
+  function searchInput(element) {
+    if (element.value != '') {
+      element.closest('.searchbar').querySelector('.btn-reset-form').classList.remove('hidden')
+    } else {
+      element.closest('.searchbar').querySelector('.btn-reset-form').classList.add('hidden')
+    }
+  }
+
+  function resetInput(element) {
+    element.closest('.searchbar').querySelector('input').value = ''
+    element.closest('.searchbar').querySelector('.btn-search').click()
+    element.closest('.searchbar').querySelector('.btn-reset-form').classList.add('hidden')
+  }
+
   function selectUser(element) {
     user_card = element.parentNode
-    user_card_infos = user_card.querySelector('.user-book-card-infos')
-    selected_container = document.querySelector('.users-book-selected')
+    user_card_infos = user_card.querySelector('.book-users-card-infos')
+    selected_container = document.querySelector('.book-users-selected')
     selected_array = []
     checkbox = user_card.querySelector('input[type="checkbox"]')
     checkbox.checked = !checkbox.checked
@@ -97,36 +113,40 @@
       } else {
         card.classList.remove('selected')
       }
+      card.querySelector('input[type="checkbox"]').checked = checkbox.checked
     })
     if (checkbox.checked == true) {
       new_card = document.createElement('div')
-      new_card.classList.add('user-book-card', 'selected')
+      new_card.classList.add('book-users-card', 'selected')
       new_card.id = user_card.id
-      template = document.querySelector('.user-book-card-template')
+      template = document.querySelector('.book-users-card-template')
       new_card.innerHTML = template.innerHTML
-      new_card_infos = new_card.querySelector('.user-book-card-infos')
+      new_card_infos = new_card.querySelector('.book-users-card-infos')
       new_info_name = document.createElement('div')
       new_info_name.innerHTML = user_card_infos.querySelectorAll('div')[0].innerHTML
       new_info_email = document.createElement('div')
       new_info_email.innerHTML = user_card_infos.querySelectorAll('div')[1].innerHTML
+      new_card_checkbox = new_card.querySelector('input[type="checkbox"]')
+      new_card_checkbox.checked = true
+      new_card_checkbox.id = 'user' + new_card.id.split('-')[2]
       new_card_infos.appendChild(new_info_name)
       new_card_infos.appendChild(new_info_email)
-      document.querySelector('.users-book-selected').appendChild(new_card)
+      document.querySelector('.book-users-selected').appendChild(new_card)
     } else {
       selected_container.querySelector('#' + user_card.id).remove();
     }
-    selected_container.querySelectorAll('.selected').forEach((card) => {
+    selected_container.querySelectorAll('.selected:not(.book-users-card-template)').forEach((card) => {
       selected_array.push(card.id.split('-')[1])
     })
     document.querySelectorAll('#book_selected_users').forEach((storage) => {
       storage.value = selected_array
     })
-
+    document.getElementById('search_book_selected_users').value = selected_array
   }
 
   document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
     if (checkbox.checked == true) {
-      checkbox.closest('.user-book-card').classList.add('selected')
+      checkbox.closest('.book-users-card').classList.add('selected')
     }
   })
 </script>

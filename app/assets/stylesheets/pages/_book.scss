@@ -197,18 +197,18 @@
 
 // USERS
 
-.users-book-lists__container {
+.book-users-lists__container {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.users-book-lists {
+.book-users-lists {
   width: 63%;
 }
 
-.users-book-headers, .users-book-all, .users-book-filtered {
+.book-users-headers, .book-users-all, .book-users-filtered {
   width: 100%;
   border: 0.5px solid rgba(0, 0, 0, 0.21);
   border-top: none;
@@ -216,12 +216,12 @@
   overflow-y: scroll;
 }
 
-.users-book-selected {
+.book-users-selected {
   width: 35%;
   border: 0.8px solid #E7E7E7;;
 }
 
-.users-book-headers {
+.book-users-headers {
   height: 7rem;
   padding: 1rem 2rem;
   background-color: #F5F5F5;
@@ -252,7 +252,7 @@
   }
 }
 
-.users-book-headers-selected {
+.book-users-headers-selected {
   height: 7rem;
   padding: 1rem 2rem;
   display: flex;
@@ -266,8 +266,7 @@
   }
 }
 
-.user-book-card {
-  padding: 0 2rem;
+.book-users-card {
   width: 100%;
   position: relative;
   height: 4rem;
@@ -285,8 +284,7 @@
   user-select: none; /* Standard */
 }
 
-.user-book-headers-infos, .user-book-card-infos {
-  margin: 0 2rem;
+.book-users-headers-infos, .book-users-card-infos {
   display:flex;
   justify-content: flex-start;
   align-items: center;
@@ -306,9 +304,9 @@
   }
 }
 
-.user-book-card.selected {
+.book-users-card.selected {
 
-  .user-book-card-infos {
+  .book-users-card-infos {
     background-color: rgba(91, 146, 197, 0.2);
   }
 
@@ -317,12 +315,269 @@
   }
 }
 
+.book-users-pseudo-checkbox-container {
+  height: 100%;
+  min-width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
 .book-users-pseudo-checkbox {
   width: 1rem !important;
   height: 1rem;
   border-radius: 50%;
   border: 1px solid #3177B7;
 }
+
+
+// BOOK DATES
+
+.book-dates-container {
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.book-dates-card {
+  margin: 2rem;
+}
+
+.book-dates-duration {
+  margin: 0 1rem 0 3.5rem;
+}
+
+.book-dates-card-bottom {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+.book-dates-card-bottom__participants, .book-dates-card-bottom__cost, .book-dates-card-bottom__dates {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  p {
+    margin: 0 1rem;
+  }
+
+  i, p {
+    font-size: 2rem;
+    color: #F26419;
+  }
+
+  .fa-pen {
+    font-size: 1.2rem;
+  }
+}
+
+.book-dates-modal-cost, .book-dates-modal-participants {
+  padding: 3rem;
+
+   p {
+    color: #F26419;
+    font-weight: bolder;
+  }
+}
+
+.book-dates-modal-cost {
+  padding-bottom: 0;
+
+  input {
+    width: 10rem;
+    margin: 0 1rem;
+    text-align: right;
+  }
+}
+
+.book-dates-modal-participants {
+
+  p {
+    margin-bottom: 1rem;
+  }
+}
+
+.book-dates-card-syn {
+  width: 360px;
+  min-height: 360px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  position: relative;
+
+  .booklet-card-top {
+    border-radius: 5px 5px 0px 0px;
+    padding: 10px;
+    height: 108px;
+    position: relative;
+    background: #F8D9C8;
+
+    .booklet-card__top-info {
+      padding-right: 3rem;
+
+      div {
+        margin-bottom: 1rem;
+      }
+
+      .fa-file {
+        font-size: 3rem;
+        color: rgba(242, 100, 25, 0.33);
+        margin-right: 1rem;
+      }
+
+      h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+        margin: 0;
+      }
+    }
+
+    .booklet-card-type {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+      width: 133px;
+      height: 30px;
+      background: white;
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+
+      .booklet-card-type-icon {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: baseline;
+
+        i {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .booklet-top-right-icon {
+      z-index: 200;
+      position: absolute;
+      top: 12px;
+      right: 10px;
+
+      &:hover {
+        cursor:pointer;
+        opacity: 80%;
+      }
+
+      i {
+        font-size: 2rem;
+        background: white;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.book-dates-card-asyn {
+  width: 360px;
+  height: 360px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  position: relative;
+
+  .booklet-card-top {
+    border-radius: 5px 5px 0px 0px;
+    padding: 10px;
+    height: 30%;
+    position: relative;
+    background: #C4C4C4;
+  }
+
+    .booklet-card__top-info {
+      padding-right: 3rem;
+
+      div {
+        margin-bottom: 1rem;
+      }
+
+      .fa-file {
+        font-size: 3rem;
+        color: rgba(242, 100, 25, 0.33);
+        margin-right: 1rem;
+      }
+
+      h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+        margin: 0;
+      }
+    }
+
+  .booklet-card-type {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    width: 133px;
+    height: 30px;
+    background: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+    .booklet-card-type-icon {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: baseline;
+
+      i {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .booklet-top-right-icon {
+    z-index: 200;
+    position: absolute;
+    top: 12px;
+    right: 10px;
+
+    &:hover {
+      cursor:pointer;
+      opacity: 80%;
+    }
+
+    i {
+      font-size: 2rem;
+      background: white;
+      border-radius: 50%;
+    }
+  }
+}
+
+// .book-dates-card__cost-input {
+//   width: 15rem;
+//   display: flex;
+//   justify-content: flex-start;
+//   align-items: center;
+//   position: absolute;
+//   top: 6.5rem;
+//   left: 0;
+
+//   input {
+//     text-align: right;
+//   }
+// }
+
 
 /* SELECTED CARD */
 
@@ -421,10 +676,7 @@
   }
 }
 
-.date-book {
-  display: flex;
-  flex-wrap: wrap;
-}
+
 
 .booklet-card-objective-booking {
   min-height: 195px;
@@ -432,185 +684,6 @@
 
 .sync-booking {
   display: flex;
-}
-
-.booklet-card-syn-dates {
-  width: 360px;
-  min-height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 108px;
-    position: relative;
-    background: #F8D9C8;
-
-    .booklet-card__top-info {
-      padding-right: 3rem;
-
-      h3 {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        cursor: help;
-      }
-    }
-
-    .booklet-card-type {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-      width: 133px;
-      height: 30px;
-      background: white;
-      border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-
-      .booklet-card-type-icon {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: baseline;
-
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .booklet-top-right-icon {
-      z-index: 200;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
-      &:hover {
-        cursor:pointer;
-        opacity: 80%;
-      }
-
-      i {
-        font-size: 2rem;
-        background: white;
-        border-radius: 50%;
-      }
-    }
-  }
-
-  .booklet-card-bottom-dates {
-    padding: 10px;
-
-    .booklet-card-theme {
-      height: 50px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-
-      p {
-        height: 20px;
-        background: #F8D9C8;
-        color: #F26419;
-        padding: 0 .5rem;
-        margin: 0 1rem .5rem 0;
-        border-radius: 5px;
-        font-size: 1.3rem;
-      }
-    }
-
-    .booklet-card-like {
-      color:#F26419;
-      height: 32px;
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-
-      i {
-        margin-left: 10px;
-      }
-    }
-  }
-}
-
-.booklet-card-asyn-dates {
-  width: 360px;
-  height: 360px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-
-  .booklet-card-top {
-    border-radius: 5px 5px 0px 0px;
-    padding: 10px;
-    height: 30%;
-    position: relative;
-    background: #C4C4C4;
-  }
-
-    .booklet-card__top-info {
-      padding-right: 3rem;
-
-      h3 {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        cursor: help;
-      }
-    }
-
-  .booklet-card-type {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-    width: 133px;
-    height: 30px;
-    background: white;
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-
-    .booklet-card-type-icon {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: baseline;
-
-      i {
-        margin-right: 10px;
-      }
-    }
-  }
-
-  .booklet-top-right-icon {
-    z-index: 200;
-    position: absolute;
-    top: 12px;
-    right: 10px;
-
-    &:hover {
-      cursor:pointer;
-      opacity: 80%;
-    }
-
-    i {
-      font-size: 2rem;
-      background: white;
-      border-radius: 50%;
-    }
-  }
-
-  .booklet-card-bottom-dates {
-    padding: 10px;
-
-    p {
-      color:black;
-    }
-  }
 }
 
 .booklet-card-theme-modal {
@@ -630,13 +703,8 @@
   }
 }
 
-.booklet-card-type-pill > p {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-}
-
 .duration-alert {
+  margin-left: 3.5rem;
   color: red;
   animation: blinker 1s linear infinite;
 }
