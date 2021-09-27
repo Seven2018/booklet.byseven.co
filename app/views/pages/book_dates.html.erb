@@ -28,6 +28,7 @@
     <div>
       <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
       <%= simple_form_for Training.new, remote: true do |f| %>
+        <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
         <% if @selected_folder.present? %>
           <% title = Folder.find(@selected_folder).title %>
         <% elsif @selected_content.present? %>
@@ -36,6 +37,7 @@
           <% title = '' %>
         <% end %>
         <%= f.hidden_field :title, value: title %>
+        <%= f.hidden_field :folder_id, value: @selected_folder %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
       <button id='book-confirm-button' class='btn-white-border' onclick='bookDates(this)' style='margin-top: 30px' data-toggle='tooltip'><p>Confirm</p></button>
@@ -47,6 +49,7 @@
 </div>
 
 <script>
+  formGuardian = false
 
   formGuardian = false;
 

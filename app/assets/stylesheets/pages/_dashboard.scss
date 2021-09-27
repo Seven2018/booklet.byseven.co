@@ -48,10 +48,14 @@
 .dashboard-navigation {
   flex-grow: 1;
   padding-right: 3rem;
+}
 
-  .row {
-    margin: 35px auto 50px 20px;
-  }
+.dashboard-trainings {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 // DASHBOARD
@@ -351,10 +355,6 @@
 
   .card-main-content {
     height: 60%;
-  }
-
-  .card-themes {
-    height: 35%;
   }
 
   .title {

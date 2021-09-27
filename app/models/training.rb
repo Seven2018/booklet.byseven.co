@@ -4,7 +4,6 @@ class Training < ApplicationRecord
   has_many :workshops, through: :sessions
   belongs_to :company
   belongs_to :folder, optional: true
-  belongs_to :content, optional: true
 
   include PgSearch::Model
   pg_search_scope :search_trainings,
@@ -19,7 +18,7 @@ class Training < ApplicationRecord
     past_sessions = []
     self.sessions.each do |session|
       if session.workshop.content_type == "Synchronous"
-        past_sessions << self.id if session.date < Date.today
+        past_sessions << self.id if session.date.present? && session.date < Date.today
       elsif session.workshop.content_type == "Asynchronous"
         unless session.available_date.nil? || session.available_date > Date.today
           past_sessions << self.id

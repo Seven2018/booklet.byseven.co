@@ -169,7 +169,7 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
 
   create_table "folders", force: :cascade do |t|
     t.string "title"
-    t.string "description"
+    t.text "description"
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -247,9 +247,11 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
   create_table "trainings", force: :cascade do |t|
     t.string "title"
     t.bigint "company_id"
+    t.bigint "folder_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_trainings_on_company_id"
+    t.index ["folder_id"], name: "index_trainings_on_folder_id"
   end
 
   create_table "user_forms", force: :cascade do |t|
@@ -363,6 +365,7 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
   add_foreign_key "tags", "companies"
   add_foreign_key "tags", "tag_categories"
   add_foreign_key "trainings", "companies"
+  add_foreign_key "trainings", "folders"
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
   add_foreign_key "user_interests", "contents"

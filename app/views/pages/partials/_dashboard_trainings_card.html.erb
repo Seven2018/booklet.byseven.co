@@ -23,19 +23,28 @@
         <% end %>
 
         <div class="d-inline-flex ml-3 align-items-center">
-          <p class="light-blue-i">2</p>
+          <p class="light-blue-i"><%= training.folder.children_folders.count %></p>
           <i class="fas fa-folder small-i mx-3 light-blue-i"></i>
         </div>
         <div class="d-inline-flex align-items-center">
-          <p class="light-orange-i">3</p>
+          <p class="light-orange-i"><%= training.folder.children_contents.count %></p>
           <i class="fas fa-file small-i mx-3 light-orange-i"></i>
         </div>
       </div>
     </div>
     <div class="card-themes">
-      <div class="tag-themes">theme 1</div>
-      <div class="tag-themes">theme 2</div>
-      <div class="tag-themes">theme 3</div>
+      <% folder_categories = training.folder.categories.first(3) %>
+      <% folder_categories.each do |category| %>
+        <div class="booklet-folder-card__category-pill">
+          <p><%= category.title %></p>
+        </div>
+      <% end %>
+      <% content_categories = training.folder.children_categories.first(3 - folder_categories.count) %>
+      <% content_categories.each do |category| %>
+        <div class="booklet-content-card__category-pill">
+          <p><%= category.title %></p>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

@@ -14,6 +14,6 @@ class TrainingsController < ApplicationController
   private
 
   def training_params
-    params.require(:training).permit(:title, :auth_token)
+    params.require(:training).permit(:title, :folder_id, :auth_token)
   end
 end

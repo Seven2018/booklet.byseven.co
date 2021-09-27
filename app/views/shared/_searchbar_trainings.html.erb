@@ -1,16 +1,25 @@
-<div class="searchbar"> 
-  <%= simple_form_for :search_trainings, url: dashboard_path, method: :get do |f| %>
+<div class="searchbar">
+  <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
+  <%= simple_form_for :search_trainings, url: dashboard_path, method: :get, remote: true do |f| %>
     <%= f.input :title, placeholder: 'Search', label: 'Keyword', required: false %>
 
     <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-      <%= f.input :employee, collection: @employees_form.map(&:fullname), required: false %>
+      <%= f.input :employee, collection: @employees_form.order(lastname: :asc).map(&:fullname), required: false %>
     <% end %>
-
+    <%= f.input :period, collection: ['Current', 'Completed'], required: false, selected: 'Current' %>
+    <div class="searchbar__checkboxes-container">
+      <%= f.label 'Themes' %>
+      <div class="searchbar__checkboxes-container-pseudo-input" onclick='openFilterInput();'>
+        <p>Filter</p>
+      </div>
+      <div class="searchbar__checkboxes flex-column-start-left hidden">
+        <p class='searchbar__checkboxes-reset' onclick="resetFilter(this);">Reset filter</p>
+        <%= f.collection_check_boxes :categories, Category.where(company_id: current_user.company_id).map{|x| [x.id, x.title]}, :first, :last %>
+      </div>
+    </div>
     <%= f.input :type, collection: @types_form, required: false %>
     <%= f.submit 'Search', class: 'btn-search' %>
   <% end %>
 
-  <% if params[:search_trainings].present? %>
-    <%= link_to 'Reset', dashboard_path %>
-  <% end %>
+  <button class='btn-reset' onclick='resetAllFilter(this);'>Reset</button>
 </div>

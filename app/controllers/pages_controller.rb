@@ -8,17 +8,26 @@ class PagesController < ApplicationController
     @employees_form = User.where(company: current_user.company)
     @types_form = ["Synchronous", "Asynchronous"]
 
-    @recommendations = UserInterest.all
+    @recommendations = UserInterest.where(user_id: current_user.id)
 
     unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
       @recommendations = @recommendations.where(user_id: current_user.id)
     end
 
+    if params[:search_trainings].present? && params[:search_trainings][:period] == 'Completed'
+      @trainings = @trainings.where_exists(:sessions, 'date < ?', Date.today).where_not_exists(:sessions, 'date >= ?', Date.today)
+    else
+      @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today)
+    end
+
     # SEARCH TRAININGS
     if params[:search_trainings].present?
       unless params[:search_trainings][:title].blank?
         @trainings = @trainings.search_trainings("#{params[:search_trainings][:title]}")
+      end
+      unless params[:search_trainings][:categories].reject{|c| c.empty?}.blank?
+        @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:search_trainings][:categories]})
       end
       if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
         unless params[:search_trainings][:employee].blank?
@@ -38,8 +47,8 @@ class PagesController < ApplicationController
       end
       if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
         unless params[:search_recommendations][:employee].blank?
-          selected_employee = User.search_by_name("#{params[:search_recommendations][:employee]}").first
-          @recommendations = @recommendations.where(user_id: selected_employee.id)
+          selected_employee = User.find(params[:search_recommendations][:employee])
+          @recommendations = UserInterest.where(user_id: selected_employee.id)
         end
       end
       unless params[:search_recommendations][:type].blank?
@@ -52,7 +61,12 @@ class PagesController < ApplicationController
     @declined_recommendations = @recommendations.where(recommendation: "No")
     @answered_recommendations = @accepted_recommendations + @declined_recommendations
 
-    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :desc).uniq.reverse
+    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
+
+    respond_to do |format|
+      format.html {dashboard_path}
+      format.js
+    end
   end
 
 
