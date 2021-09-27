@@ -81,6 +81,7 @@ class UserInterestsController < ApplicationController
     ['Yes', 'No'].include?(@user_interest.recommendation) ? @switch = 'true' : @switch = 'false'
     @user_interest.update(recommendation: params[:answer_reco]["answer-#{@user_interest.id}"], comments: params[:answer_reco][:comments])
     respond_to do |format|
+      format.html {redirect_to dashboard_path}
       format.js
     end
   end

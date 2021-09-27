@@ -10,29 +10,49 @@ class PagesController < ApplicationController
 
     @recommendations = UserInterest.all
 
-    if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
-      if params[:search].present? 
-        unless params[:search][:title].blank?
-          @trainings = @trainings.search_trainings("#{params[:search][:title]}")
-        end
-        unless params[:search][:employee].blank?
-          selected_employee = User.search_by_name("#{params[:search][:employee]}").first
-          @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id })
-        end
-        unless params[:search][:type].blank?
-          @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search][:type]})
-        end
-      end
-    else
+    unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
       @recommendations = @recommendations.where(user_id: current_user.id)
     end
+
+    # SEARCH TRAININGS
+    if params[:search_trainings].present?
+      unless params[:search_trainings][:title].blank?
+        @trainings = @trainings.search_trainings("#{params[:search_trainings][:title]}")
+      end
+      if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+        unless params[:search_trainings][:employee].blank?
+          selected_employee = User.search_by_name("#{params[:search_trainings][:employee]}").first
+          @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id })
+        end
+      end
+      unless params[:search_trainings][:type].blank?
+        @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search_trainings][:type]})
+      end
+    end
+
+    # SEARCHING RECOMMENDATIONS
+    if params[:search_recommendations].present?
+      unless params[:search_recommendations][:title].blank?
+        @recommendations = @recommendations.search_recommendations("#{params[:search_recommendations][:title]}")
+      end
+      if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+        unless params[:search_recommendations][:employee].blank?
+          selected_employee = User.search_by_name("#{params[:search_recommendations][:employee]}").first
+          @recommendations = @recommendations.where(user_id: selected_employee.id)
+        end
+      end
+      unless params[:search_recommendations][:type].blank?
+        @recommendations = @recommendations.joins(:content).where(contents: {content_type: params[:search_recommendations][:type]})
+      end
+    end
+
+    @pending_recommendations = @recommendations.where(recommendation: "Pending")
+    @accepted_recommendations = @recommendations.where(recommendation: "Yes")
+    @declined_recommendations = @recommendations.where(recommendation: "No")
+    @answered_recommendations = @accepted_recommendations + @declined_recommendations
+
     @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :desc).uniq.reverse
-    # @past_trainings = @trainings - @current_trainings
-
-
-    
-
   end
 
 
@@ -218,16 +238,28 @@ class PagesController < ApplicationController
   def recommendation
     index_function(User.where(company_id: current_user.company_id))
     authorize @users
+
     if params[:search].present?
-      @content = Content.find(params[:search][:content_id])
+      @content = Content.find(params[:search][:content_id]) if params[:search][:content_id].present?
+      @folder = Folder.find(params[:search][:folder_id]) if params[:search][:folder_id].present?
     elsif params[:filter_user].present?
-      @content = Content.find(params[:filter_user][:content_id])
+      @content = Content.find(params[:filter_user][:content_id]) if params[:filter_user][:content_id].present?
+      @folder = Folder.find(params[:filter_user][:folder_id]) if params[:filter_user][:folder_id].present?
     else
-      @content = Content.find(params[:content_id])
+      @content = Content.find(params[:content_id]) if params[:content_id].present?
+      @folder = Folder.find(params[:folder_id]) if params[:folder_id].present?
     end
-    @users_yes = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'Yes'})
-    @users_no = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'No'})
-    @users_pending = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'Pending'})
+    unless @content.nil?
+      @users_yes = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'Yes'})
+      @users_no = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'No'})
+      @users_pending = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'Pending'})
+    end
+    unless @folder.nil?
+      @users_yes = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {folder_id: @folder.id, recommendation: 'Yes'})
+      @users_no = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {folder_id: @folder.id, recommendation: 'No'})
+      @users_pending = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {folder_id: @folder.id, recommendation: 'Pending'})
+    end
+
     @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
     @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
     respond_to do |format|
