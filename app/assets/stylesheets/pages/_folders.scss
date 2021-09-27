@@ -33,5 +33,42 @@
     font-size: x-large;
     margin-right: 15px;
   }
+}
 
+
+// SUMMARY TREE
+
+.folder-tree {
+
+  margin-top: 30px;
+  
+  p {
+    font-size: larger;
+  }
+  
+  ul {
+    padding: 0 20px;
+  }
+  
+  .chevron-display-tree {
+    margin-left: 30px;
+    font-size: x-small;
+  }
+
+  .line {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .fa-folder {
+    color: rgba(91, 146, 197, 0.67);
+    font-size: 1.8rem;
+  }
+
+  .fa-file {
+    color: #E9986E;
+    font-size: 1.8rem;
+  }
 }
