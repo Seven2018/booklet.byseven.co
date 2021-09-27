@@ -1,0 +1,95 @@
+<div role="tabpanel" class="tab-pane active" id="PendingRecommendation">
+  <h2><%= "Results : " if params[:search_recommendations].present? %><%= @pending_recommendations.count %> recommendation<%= "s" if @pending_recommendations.count > 1 %></h2>
+  <div class="cards-recommended">
+    <div class="catalogue-row contents-row">
+      <% @pending_recommendations.each do |recommendation| %>
+        <div class="catalogue-card-container">
+          <% if recommendation.content.class.name == 'Folder' %>
+            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.content %>
+          <% else %>
+            <%= render 'pages/partials/catalogue_content_card', content: recommendation.content %>
+          <% end %>
+          <% if recommendation.user_id == current_user.id %>
+            <a data-toggle='modal' data-target='#answerRecommendation-<%= recommendation.content.id %>' class='catalogue-content-card-right-menu'>
+              <div class="recommendation-btn-card btn-card-workshop d-flex justify-content-center">
+                <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+                  <%= "ANSWER FOR #{recommendation.user.fullname}" %>
+                <% else %>
+                  <%= "ANSWER" %>
+                <% end %>
+              </div>
+            </a>
+            <div class='modal fade' id='answerRecommendation-<%= recommendation.content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+              <div class='modal-dialog' role='document' style='border-radius: 20px'>
+                <%= render 'pages/modals/recommendation_modal', content: recommendation.content, interest: recommendation %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div role="tabpanel" class="tab-pane" id="AnsweredRecommendation">
+  <h2><%= "Results : " if params[:search_recommendations].present? %><%= @accepted_recommendations.count %> accepted recommendation<%= "s" if @accepted_recommendations.count > 1 %></h2>
+  <div class="cards-recommended">
+    <div class="catalogue-row contents-row">
+      <% @accepted_recommendations.each do |recommendation| %>
+        <div class="catalogue-card-container">
+          <% if recommendation.content.class.name == 'Folder' %>
+            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.content %>
+          <% else %>
+            <%= render 'pages/partials/catalogue_content_card', content: recommendation.content %>
+          <% end %>
+          <% if recommendation.user_id == current_user.id %>
+            <a data-toggle='modal' data-target='#answerRecommendation-<%= recommendation.content.id %>' class='catalogue-content-card-right-menu'>
+              <div class="recommendation-btn-card btn-card-workshop d-flex justify-content-center">
+                <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+                  <%= "#{recommendation.user.fullname} answered #{recommendation.recommendation.upcase}" %>
+                <% else %>
+                  <%= recommendation.recommendation.upcase %>
+                <% end %>
+              </div>
+            </a>
+            <div class='modal fade' id='answerRecommendation-<%= recommendation.content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+              <div class='modal-dialog' role='document' style='border-radius: 20px'>
+                <%= render 'pages/modals/recommendation_modal', content: recommendation.content, interest: recommendation %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <h2><%= "Results : " if params[:search_recommendations].present? %><%= @declined_recommendations.count %> declined recommendation<%= "s" if @declined_recommendations.count > 1 %></h2>
+  <div class="cards-recommended">
+    <div class="catalogue-row contents-row">
+      <% @declined_recommendations.each do |recommendation| %>
+        <div class="catalogue-card-container">
+          <% if recommendation.content.class.name == 'Folder' %>
+            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.content %>
+          <% else %>
+            <%= render 'pages/partials/catalogue_content_card', content: recommendation.content %>
+          <% end %>
+          <% if recommendation.user_id == current_user.id %>
+            <a data-toggle='modal' data-target='#answerRecommendation-<%= recommendation.content.id %>' class='catalogue-content-card-right-menu'>
+              <div class="recommendation-btn-card btn-card-workshop d-flex justify-content-center">
+                <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+                  <%= "#{recommendation.user.fullname} answered #{recommendation.recommendation.upcase}" %>
+                <% else %>
+                  <%= recommendation.recommendation.upcase %>
+                <% end %>
+              </div>
+            </a>
+            <div class='modal fade' id='answerRecommendation-<%= recommendation.content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+              <div class='modal-dialog' role='document' style='border-radius: 20px'>
+                <%= render 'pages/modals/recommendation_modal', content: recommendation.content, interest: recommendation %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

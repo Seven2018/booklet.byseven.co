@@ -75,11 +75,15 @@ class UserInterestsController < ApplicationController
   # Validate or invalidate a recommendation for current user
   def update_recommendation
     user = current_user
-    @user_interest = UserInterest.find(params[:answer_reco][:user_interest_id])
-    @my_recommended_pending = UserInterest.where(user_id: current_user.id, recommendation: 'Pending')
-    authorize @user_interest
-    ['Yes', 'No'].include?(@user_interest.recommendation) ? @switch = 'true' : @switch = 'false'
-    @user_interest.update(recommendation: params[:answer_reco]["answer-#{@user_interest.id}"], comments: params[:answer_reco][:comments])
+    user_interest = UserInterest.find(params[:answer_reco][:user_interest_id])
+    authorize user_interest
+    user_interest.recommendation == 'Pending' ? @switch = 'false' : @switch = 'true'
+    user_interest.update(recommendation: params[:answer_reco]["answer-#{user_interest.id}"], comments: params[:answer_reco][:comments])
+
+    @recommendations = UserInterest.where(user_id: current_user)
+    @pending_recommendations = @recommendations.where(recommendation: "Pending")
+    @accepted_recommendations = @recommendations.where(recommendation: "Yes")
+    @declined_recommendations = @recommendations.where(recommendation: "No")
     respond_to do |format|
       format.html {redirect_to dashboard_path}
       format.js

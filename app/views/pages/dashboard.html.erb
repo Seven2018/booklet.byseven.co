@@ -9,7 +9,29 @@
     </div>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Trainings">
-        <%= render 'pages/partials/dashboard_trainings' %>
+        <div class="dashboard-grid">
+          <div class="dashboard-navigation">
+            <div class="trainings-nav">
+              <div class="nav nav-tabs-trainings">
+                <%# <li role="presentation"><a href="#CurrentPersonal" data-toggle="tab" class='active'>Current</a></li> %>
+                <%# <li role="presentation"><a href="#UpcomingPersonal" data-toggle="tab">Upcoming</a></li> %>
+                <%# <li role="presentation"><a href="#CompletedPersonal" data-toggle="tab">Past</a></li> %>
+              </div>
+
+              <%= render 'shared/searchbar_trainings' %>
+            </div>
+
+            <% if @current_trainings.empty? && params[:search_trainings].present? %>
+              <h1>No results</h1>
+            <% else %>
+              <h1><%= "Results : " if params[:search_trainings].present? %><%= @current_trainings.count %> training<%= "s" if @current_trainings.count > 1 %></h1>
+              <div class="dashboard-trainings">
+                <%= render 'pages/partials/dashboard_trainings' %>
+              </div>
+            <% end %>
+
+          </div>
+        </div>
       </div>
 
       <div role="tabpanel" class="tab-pane" id="Recommended">
@@ -19,50 +41,60 @@
   </div>
 </div>
 
-
-
 <script>
-  days = document.querySelectorAll('.day')
-  days.forEach((element) =>{
-    element.addEventListener('click', event => {
-      previous = document.querySelector('.selected_day')
-      console.log(event.currentTarget)
-      if (previous != null) {
-        document.querySelector('.selected_day').classList.remove('selected_day')
-      }
-
-      element.classList.add('selected_day')
-    })
-  })
-
   doubleClickGuardian = false
 
   function outsideClick(event, notelem) {
-    notelem = $(notelem)
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
     var clickedOut = true, i, len = notelem.length;
     for (i = 0;i < len;i++)  {
         if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false
+            clickedOut = false;
         }
     }
-    if (clickedOut) return true
-    else return false
+    if (clickedOut) return true;
+    else return false;
   }
 
-  function openContentMenu(element) {
+  function openFilterInput() {
     if (doubleClickGuardian == false) {
       doubleClickGuardian = true
-      dropdown = element.parentNode.querySelector('.content-dropdown');
-      dropdown.classList.toggle('hidden');
       setTimeout(function(){doubleClickGuardian = false}, 10)
-
+      container = document.querySelector('.searchbar__checkboxes')
+      if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden')
+      } else {
+        container.classList.add('hidden')
+      }
       window.addEventListener('click', function(e) {
-        if (outsideClick(e, dropdown) && doubleClickGuardian == false) {
-          dropdown.classList.toggle('hidden');
-          this.removeEventListener('click', arguments.callee, false)
+        if (outsideClick(e, container) && doubleClickGuardian == false) {
+          container.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
         }
-      })
+      });
     }
+  }
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
+
+  function resetFilter(element) {
+    element.parentNode.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.checked = false
+    })
   }
 
   function dismissModal(element) {
@@ -73,13 +105,5 @@
       form.querySelector('.cancel-close').click()
       setTimeout(function(){doubleClickGuardian = false}, 10)
     }
-  }
-
-  function test(element) {
-    console.log(element)
-    element.closest('form').querySelectorAll('.radio_buttons').forEach((el) => {
-      el.checked = ''
-    })
-    element.checked = 'checked'
   }
 </script>

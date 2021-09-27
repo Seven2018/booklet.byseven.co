@@ -1,10 +1,16 @@
 .searchbar {
   display: flex;
   align-items: center;
+  position: relative;
 
-  .btn-search {
+  .btn-search, .btn-reset {
     width: 75px;
     padding: 0;
+  }
+
+  .btn-reset {
+    height: 4rem;
+    color: #F26419;
   }
 
   input {
@@ -17,4 +23,70 @@
     margin-right: 5px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
   }
+
+  .searchbar__checkboxes-container {
+    position: relative;
+
+    .searchbar__checkboxes-container-pseudo-input {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 33.5px;
+      margin: 0;
+      background-color: white;
+      border: 1px solid #ced4da;
+      border-radius: 2px;
+      color: #7a7a7a;
+      cursor: pointer;
+
+      p {
+        font-style: italic;
+      }
+    }
+
+    .searchbar__checkboxes {
+      width: -moz-fit-content;
+      width: fit-content;
+      max-height: 20rem;
+      overflow-y: scroll;
+      padding: 1rem;
+      position: absolute;
+      top: 7rem;
+      left: 0;
+      margin: 0;
+      background-color: white;
+      border: 1px solid #ced4da;
+      border-radius: 2px;
+      color: #7a7a7a;
+
+      .searchbar__checkboxes-reset {
+        margin: 0 0 .5rem 2rem;
+        cursor: pointer;
+      }
+
+
+      span {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: .5rem;
+      }
+
+      span:last-of-type {
+        margin: 0;
+      }
+
+      label {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.catalogue-controls__search-trainings-icon {
+  position: absolute;
+  z-index: 150;
+  left: 12px;
+  bottom: 11px;
+  color: #C4C4C4;
 }
