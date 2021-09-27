@@ -1,55 +1,31 @@
 <div class="book-container">
-  <div class="book-page-3">
-    <div class="booking-title dates-title">
-      <h2>Select Dates</h2>
-    </div>
-    <div class="book-confirm">
-      <div class="book-next-page" onclick="previousPage()">
-        <div class="book-next">
-          <%= simple_form_for :book, url: book_users_path, method: :get do |f| %>
-            <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
-            <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
-            <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
-            <%= f.hidden_field :selected_folder, value: selected_folder %>
-            <%= f.hidden_field :selected_content, value: selected_content %>
-            <%= f.hidden_field :selected_users, value: selected_users %>
-            <%= button_tag type: 'submit' do %>
-              <div class="book-next">
-                <i class="fas fa-arrow-left fa-2x" style='color:#F26419'></i>
-                <p>Select Participants</p>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-      <div class="book-page-guide">
-        <div class="page-book-info">
-          <div class="page-number disabled">
-            <p>1</p>
-          </div>
-          <div class="page-name">
-            <p>Select Workshop</p>
-          </div>
-        </div>
-        <span class='book-line '></span>
-        <div class="page-book-info">
-          <div class="page-number book-page-indicator-2 disabled">
-            <p>2</p>
-          </div>
-          <div class="page-name">
+  <div class="flex-row-between-centered">
+    <div class="book-controls">
+      <%= simple_form_for :book, url: book_contents_path, method: :get do |f| %>
+        <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
+        <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
+        <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
+        <%= f.hidden_field :selected_folder, value: @selected_folder %>
+        <%= f.hidden_field :selected_content, value: @selected_content %>
+        <%= f.hidden_field :selected_users, value: @selected_users %>
+        <%= button_tag type: 'submit' do %>
+            <p>Select a Program</p>
+        <% end %>
+      <% end %>
+      <%= simple_form_for :book, url: book_users_path, method: :get do |f| %>
+        <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
+        <% params[:book].present? ? selected_content = params[:book][:selected_content] : selected_content = '' %>
+        <% params[:book].present? ? selected_users = params[:book][:selected_users] : selected_users = '' %>
+        <%= f.hidden_field :selected_folder, value: selected_folder %>
+        <%= f.hidden_field :selected_content, value: selected_content %>
+        <%= f.hidden_field :selected_users, value: selected_users %>
+        <%= button_tag type: 'submit' do %>
             <p>Select Participants</p>
-          </div>
-        </div>
-        <span class='book-line-1 '></span>
-        <div class="page-book-info">
-          <div class="page-number book-page-indicator-3">
-            <p>3</p>
-          </div>
-          <div class="page-name">
-            <p>Select Dates</p>
-          </div>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
+      <button class='active'><p>Select Dates</p></button>
+    </div>
+    <div>
       <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
       <%= simple_form_for Training.new, remote: true do |f| %>
         <% if @selected_folder.present? %>
@@ -62,24 +38,33 @@
         <%= f.hidden_field :title, value: title %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
-      <button id='book-confirm-button' class='btn-white-border-disabled' onclick='bookDates(this)' style='margin-bottom: 15px' disabled='true'><p>Confirm</p></button>
+      <button id='book-confirm-button' class='btn-white-border' onclick='bookDates(this)' style='margin-top: 30px' disabled='false' data-toggle='tooltip'><p>Confirm</p></button>
     </div>
-    <div class="date-book">
-      <% selected_users = [] %>
-      <% selected_contents = [] %>
-      <%= render 'pages/partials/book_dates', selected_folder: @selected_folder, selected_content: @selected_content, selected_users: @selected_users %>
-    </div>
+  </div>
+  <div class="book-dates-container">
+    <%= render 'pages/partials/book_dates_cards_index', selected_folder: @selected_folder, selected_content: @selected_content, selected_users: @selected_users %>
   </div>
 </div>
 
 <script>
-  formGuardian = false
 
-  if (document.getElementById('book_selected_folder') != '' || document.getElementById('book_selected_content') != '') {
-    confirm_button = document.getElementById('book-confirm-button')
-    confirm_button.disabled = false
-    confirm_button.classList.remove('btn-white-border-disabled')
-    confirm_button.classList.add('btn-white-border')
+  function editDetails(element) {
+    modal = element.closest('.modal')
+    content_id = modal.id.split('-')[1]
+    card = document.querySelector('#book_content-' + content_id)
+    cost = modal.querySelector('input[type="text"]')
+    card.querySelectorAll('#session_cost').forEach((cost_storage) => {
+      cost_storage.value = cost.value
+    })
+    participants = []
+    modal.querySelectorAll('input[type="checkbox"]').forEach((participant) => {
+      if (participant.checked == true) {
+        participants.push(participant.id)
+      }
+    })
+    card.querySelectorAll('#session_selected_users').forEach((participants_storage) => {
+      participants_storage.value = participants
+    })
   }
 
   function addDate(element) {
@@ -88,7 +73,7 @@
     new_date_card = document.createElement('div')
     new_date_card.classList.add('book-dates')
     new_date_card.innerHTML = date_card.innerHTML
-    new_date_card.querySelector('.booklet-card__cost-input').classList.add('hidden')
+
     date_card.querySelector('.remove_date').classList.add('hidden')
     new_date_card.querySelector('.remove_date').classList.remove('hidden')
     form = new_date_card.querySelector('form')
@@ -127,12 +112,32 @@
     })
   }
 
+  function duplicateUser(element) {
+    users = element.value
+    element.closest('.booklet-card-objective-booking').querySelectorAll('#session_selected_users').forEach((input) => {
+      input.value = users
+    })
+  }
+
+  function checkDuration(element) {
+    start_time_string = element.closest('form').querySelector('#session_starts_at').value
+    start_time = new Date(2000, 0, 1, start_time_string.split(':')[0], start_time_string.split(':')[1], 0, 0);
+    end_time_string = element.closest('form').querySelector('#session_ends_at').value
+    end_time = new Date(2000, 0, 1, end_time_string.split(':')[0], end_time_string.split(':')[1], 0, 0);
+    alert = element.closest('.book-dates-card').querySelector('.duration-alert')
+    if (Math.abs(end_time - start_time) / (1000*60) < parseInt(element.closest('form').querySelector('#session_duration').value,10)) {
+      alert.classList.remove('hidden')
+    } else {
+      alert.classList.add('hidden')
+    }
+  }
+
   function bookDates(element) {
     if (formGuardian == false) {
       document.querySelector('body').classList.add('wait');
       element.disabled = true
-      submit_buttons = document.querySelector('.date-book').querySelectorAll('.hidden-submit')
-      document.querySelectorAll('.booklet-card-bottom-dates').forEach((el) => {
+      submit_buttons = document.querySelector('.book-dates-container').querySelectorAll('.hidden-submit')
+      document.querySelectorAll('.book-dates-card-bottom').forEach((el) => {
         duplicateCost(el.querySelector('#session_cost'))
       })
       redirect_button = document.querySelector('.confirm-button')
@@ -145,5 +150,21 @@
       console.log('confirm')
       setTimeout(function(){redirect_button.click()}, 1000)
     }
+  }
+
+  confirm_button = document.querySelector('#book-confirm-button')
+  folder = document.querySelector('#book_selected_folder')
+  content = document.querySelector('#book_selected_content')
+  users = document.querySelector('#book_selected_users')
+  if ((folder.value =='' || content.value == '') || users.value == '') {
+    console.log('disabled')
+    confirm_button.disabled = true
+    confirm_button.classList.add('btn-white-border-disabled')
+    confirm_button.classList.remove('btn-white-border')
+  }
+  if (folder.value == '' && content.value == '') {
+    confirm_button.setAttribute('title', 'Please select a program')
+  } else if (users.value == '') {
+    confirm_button.setAttribute('title', 'Please select participants')
   }
 </script>

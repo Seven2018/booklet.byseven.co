@@ -1,2 +1,14 @@
 document.querySelector('.workshop-cards-book').innerHTML = '<%= j render("pages/partials/book_content_index", contents: @contents, selected_content: @selected_content, folders: @folders, selected_folder: @selected_folder) %>';
+checkboxes = document.querySelectorAll('.book-contents-checkbox')
+if ("<%= @selected_folder.present? %>" == 'true' || "<%= @selected_content.present? %>" == 'true') {
+  checkboxes.forEach((checkbox) => {
+    card_container = checkbox.closest('.catalogue-card-container')
+    if (checkbox.checked != true) {
+      card_container.classList.add('disabled')
+    } else {
+      card_container.classList.add('selected')
+      card_container.querySelector('button').innerText = 'SELECTED'
+    }
+  })
+}
 document.querySelector('body').classList.remove('wait');
