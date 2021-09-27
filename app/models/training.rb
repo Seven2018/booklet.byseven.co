@@ -49,15 +49,15 @@ class Training < ApplicationRecord
   end
 
   def children_contents
-    self.children_folders&.map{|x| x&.contents}&.flatten&.sort_by{|y| y.title} + self.contents&.sort_by{|y| y&.title}
+    self.folder.children_folders&.map{|x| x&.contents}&.flatten&.sort_by{|y| y.title} + self.contents&.sort_by{|y| y&.title}
   end
 
   def children_categories
-    self.children_contents&.map{|x| x.categories}&.flatten
+    self.folder.children_contents&.map{|x| x.categories}&.flatten
   end
 
   def children_types
-    self.children_contents&.map{|x| x.content_type}&.flatten
+    self.folder.children_contents&.map{|x| x.content_type}&.flatten
   end
 
   def folder_level

@@ -19,7 +19,7 @@
     <div class="theme-btns">
       <% categories = folder.children_categories %>
       <% unless categories.empty? %>
-        <% categories.order(title: :asc).each do |category| %>
+        <% categories.each do |category| %>
           <p class="category-tag"><%= category.title %></p>
         <% end %>
       <% end %>
