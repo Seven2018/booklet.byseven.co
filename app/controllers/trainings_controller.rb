@@ -1,5 +1,10 @@
 class TrainingsController < ApplicationController
 
+  def show
+    @training = Training.find(params[:id])
+    authorize @training
+  end
+
   def create
     @training = Training.new(training_params)
     authorize @training
