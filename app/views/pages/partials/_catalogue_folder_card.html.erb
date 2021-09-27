@@ -1,7 +1,7 @@
 <div class="booklet-folder-card">
   <div class="booklet-folder-card-top booklet-card-top">
     <% if params[:action] == 'catalogue' %>
-      <%# link_to '', folder_path(folder), class: 'stretched-link', data: {toggle: 'tooltip'}, title: folder.title %>
+      <%= link_to '', folder_path(folder), class: 'stretched-link', data: {toggle: 'tooltip'}, title: folder.title %>
       <div class="booklet-folder-card__options" onclick="openContentMenu(this);">
         <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <i class="fas fa-ellipsis-v"></i>
