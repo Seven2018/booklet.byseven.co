@@ -1,0 +1,29 @@
+<% if ['Super Admin'].include?(current_user.access_level) || (@folder.company_id == current_user.company_id) %>
+  <% access = '' %>
+  <div id="content-show-container">
+    <div id="content-show-container-left">
+      <%= render 'folders/partials/show_anchors', folder: @folder, page: 'edit', access: "" %>
+    </div>
+    <div id="content-show-container-right">
+      <div class="content-add">
+        <div class="content-add-left">
+          <div class="content-show-attributes-left">
+            <%= render 'folders/partials/show_attributes_left', folder: @folder, page: 'show', access: access %>
+          </div>
+          <div class="content-show-mods-edit-mode">
+            <%#= render 'mods/partials/content_show_mods_index', content: @content, page: 'show', access: access %>
+          </div>
+        </div>
+        <div class="content-add-right">
+          <div class="content-show-attributes-right">
+            <%= render 'folders/partials/show_attributes_right', folder: @folder, page: 'show', access: access %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
+  </div>
+<% end %>

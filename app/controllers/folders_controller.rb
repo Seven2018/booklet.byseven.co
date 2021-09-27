@@ -1,6 +1,14 @@
 class FoldersController < ApplicationController
   before_action :set_folder, only: [:show, :edit, :update, :duplicate]
 
+  def show
+    @folder = Folder.find(params[:id])
+    authorize @folder
+  end
+
+  def edit
+  end
+
   # Create new folder (pages/catalogue)
   def create
     params.permit!

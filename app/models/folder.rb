@@ -34,6 +34,10 @@ class Folder < ApplicationRecord
     self.children_contents&.map{|x| x.categories}&.flatten
   end
 
+  def children_types
+    self.children_contents&.map{|x| x.content_type}&.flatten
+  end
+
   def folder_level
     max_level = 0
     self.children_folders.each do |child|
