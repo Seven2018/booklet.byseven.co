@@ -9,6 +9,7 @@ class ContentsController < ApplicationController
     @content = Content.new(params[:content].except(:categories))
     authorize @content
     @content.company_id = current_user.company.id
+    @content.cost = 0 unless @content.cost.present?
     if @content.save
       params[:content][:categories].split(',').each do |category_id|
         ContentCategory.create(content_id: @content.id, category_id: category_id)

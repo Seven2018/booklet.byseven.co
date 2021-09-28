@@ -87,7 +87,8 @@ class PagesController < ApplicationController
   def overview
     if current_user.company_id.present?
       # SEARCHING CONTENTS 
-      @contents = Content.where(company_id: current_user.company.id)
+      @start_date = Date.today.beginning_of_year
+      @end_date = Date.today
       unless params[:reset]
         if params[:search].present? && !params[:search][:title].blank?
           @contents = @contents.search_contents("#{params[:search][:title]}")
@@ -104,7 +105,6 @@ class PagesController < ApplicationController
           end
         end
       end
-      @contents = @contents.order(updated_at: :desc)
     end
     # if params[:content].present? && params[:content][:categories] != ['']
     #   @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params[:content][:categories].reject{|x| x.empty?}})
@@ -114,7 +114,8 @@ class PagesController < ApplicationController
     #   end
     # end
     
-    @sessions = Session.where(content_id: @contents.ids.uniq).where('date >= ? AND date <= ?', @start_date, @end_date)
+    @trainings = Training.joins(:sessions).where(company_id: current_user.company_id).where('sessions.date >= ? AND date <= ?', @start_date, @end_date).uniq
+    @sessions = @trainings.map{|x| x.sessions}.flatten
     respond_to do |format|
       format.html {overview_path}
       format.js
