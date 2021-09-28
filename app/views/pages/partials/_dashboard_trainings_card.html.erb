@@ -23,7 +23,7 @@
           <p class="mx-3">Live</p>
         <% end %>
         <% if training.asynchronous? %>
-          <i class="fas fa-desktop small-i light-blue-i"></i>
+          <i class="fas fa-desktop ml-3 small-i light-blue-i"></i>
           <p class="mx-3">Online</p>
         <% end %>
 
@@ -32,11 +32,11 @@
             <p class="light-blue-i"><%= training.folder.children_folders.count %></p>
             <i class="fas fa-folder small-i mx-3 light-blue-i"></i>
           </div>
-          <div class="d-inline-flex align-items-center">
-            <p class="light-orange-i"><%= training.folder.children_contents.count %></p>
-            <i class="fas fa-file small-i mx-3 light-orange-i"></i>
-          </div>
         <% end %>
+        <div class="d-inline-flex ml-3 align-items-center">
+          <p class="light-orange-i"><%= training.workshops.count %></p>
+          <i class="fas fa-file small-i mx-3 light-orange-i"></i>
+        </div>
       </div>
     </div>
     <div class="card-themes">

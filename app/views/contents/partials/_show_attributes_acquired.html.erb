@@ -1,12 +1,9 @@
 <p style='color:#808080;'><b>Workshop acquired ?</b></p>
 <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
   <% @attendees.each do |attendee| %>
-    <%= simple_form_for attendee do |f| %>
-      <%= f.input :status, as: :radio_buttons, label: "#{attendee.user.fullname}", collection: [["Not completed", "No"], ["Pending", "Pending"], ["Completed", "Yes"]], label_method: :second, value_method: :first %>
-    <% end %>
+    <h3 class="mt-3 ml-2"><%= attendee.user.fullname %></h3>
+    <%= render 'contents/partials/workshop_acquired_radiobutton.html', attendee: attendee %>
   <% end %>
 <% else %>
-  <%= simple_form_for @current_attendee do |f| %>
-    <%= f.input :status, as: :radio_buttons, label: "", collection: [["Not completed", "No"], ["Pending", "Pending"], ["Completed", "Yes"]], label_method: :second, value_method: :first %>
-  <% end %>
+  <%= render 'contents/partials/workshop_acquired_radiobutton.html', attendee: @current_attendee %>
 <% end %>

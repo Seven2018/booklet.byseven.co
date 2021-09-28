@@ -24,7 +24,7 @@
             <% if @current_trainings.empty? && params[:search_trainings].present? %>
               <h1>No results</h1>
             <% else %>
-              <h1><%= "Results : " if params[:search_trainings].present? %><%= @current_trainings.count %> training<%= "s" if @current_trainings.count > 1 %></h1>
+              <h1>Trainings</h1>
               <div class="dashboard-trainings">
                 <%= render 'pages/partials/dashboard_trainings' %>
               </div>

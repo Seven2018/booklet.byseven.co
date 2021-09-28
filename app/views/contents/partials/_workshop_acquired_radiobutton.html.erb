@@ -1,0 +1,22 @@
+<div class="m-3">
+  <div class="d-flex flex-row ml-3">
+    <%= link_to attendee_path(attendee, params: { status: 'Not completed' }), method: :patch do %>
+      <% if attendee.status == "Not completed" %>
+        <i class="fas fa-dot-circle p-2"></i>
+      <% elsif attendee.status == "Completed" %>
+        <i class="far fa-circle p-2"></i>
+      <% end %>
+    <% end %>
+    <p>No </p>
+  </div>
+  <div class="d-flex flex-row ml-3">
+    <%= link_to attendee_path(attendee, params: { status: 'Completed' }), method: :patch do %>
+      <% if attendee.status == "Completed" %>
+        <i class="fas fa-dot-circle p-2"></i>
+      <% elsif attendee.status == "Not completed" %>
+        <i class="far fa-circle p-2"></i>
+      <% end %>
+    <% end %>
+    <p>Yes </p>
+  </div>
+</div>

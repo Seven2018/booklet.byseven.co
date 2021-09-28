@@ -61,7 +61,10 @@ class PagesController < ApplicationController
     @declined_recommendations = @recommendations.where(recommendation: "No")
     @answered_recommendations = @accepted_recommendations + @declined_recommendations
 
-    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
+    # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
+    # @current_trainings = @trainings.sort_by { |training| training.next_session }
+    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :asc).uniq
+    @pasts_trainings = (@trainings - @current_trainings)
 
     respond_to do |format|
       format.html {dashboard_path}
