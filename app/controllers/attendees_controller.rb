@@ -1,5 +1,12 @@
 class AttendeesController < ApplicationController
-  before_action :set_attendee, only: []
+  before_action :set_attendee, only: [:update]
+
+  def update
+    authorize @attendee
+    @attendee.status = params[:status]
+    @attendee.save!
+    redirect_to workshop_path(@attendee.session.workshop.id)
+  end
 
   private
 

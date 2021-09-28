@@ -23,7 +23,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    current_user = user
   end
 
   def edit?
