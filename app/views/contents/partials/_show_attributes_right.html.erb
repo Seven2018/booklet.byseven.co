@@ -1,4 +1,4 @@
-<div class="content-show-infos-delete my-3 orange">
+<div class="content-show-infos-delete orange">
   <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
     <% unless page == 'edit' %>
       <% if content.class.to_s == 'Content' %>

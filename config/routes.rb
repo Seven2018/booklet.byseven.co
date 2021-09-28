@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get 'contents/:id/viewmode', to: 'contents#view_mode', as: 'view_content'
 
   # ATTENDEES
-  resources :attendees, only: %i[]
+  resources :attendees
 
   # CATEGORIES
   resources :categories, only: %i[create update destroy]

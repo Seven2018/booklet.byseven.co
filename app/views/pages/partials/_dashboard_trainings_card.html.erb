@@ -11,7 +11,7 @@
         <i class="fas fa-folder mx-3"></i>
         
         <% if training.folder.nil? %>
-          <h3><%= link_to training.title, content_path(training.workshops.first.content) %></h3>
+          <h3><%= link_to training.title, workshop_path(training.workshops.first) %></h3>
         <% else %>
           <h3><%= link_to training.title, training_path(training) %></h3>
         <% end %>

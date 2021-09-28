@@ -1,4 +1,4 @@
-<div class="content-show-infos-delete my-3 orange">
+<div class="content-show-infos-delete orange">
   <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
     <%= link_to edit_folder_path(folder) do %>
       <i class="fas fa-pencil-alt py-3 pr-3 mr-3"></i>
