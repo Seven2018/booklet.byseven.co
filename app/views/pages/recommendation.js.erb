@@ -4,11 +4,8 @@ if ("<%= @unfiltered %>" == 'true') {
 } else {
   document.querySelector('.recommendation-main-container').classList.add('hidden')
   document.querySelector('.recommendation-main-container-filtered').classList.remove('hidden')
-  document.querySelector('.recommendation-main-container-filtered').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users.uniq, unfiltered: @unfiltered, content: @content, tab: "", tag_categories: @tag_categories) %>';
+  document.querySelector('.recommendation-main-container-filtered').innerHTML = '<%= j render("pages/partials/recommendation_users_list", users: @users.uniq, unfiltered: @unfiltered, content: @content, folder: @folder, tag_categories: @tag_categories) %>';
 }
-document.querySelector('.recommendation-main-container__yes').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users_yes.uniq, unfiltered: @unfiltered, content: @content, tab: "-yes", tag_categories: @tag_categories) %>';
-document.querySelector('.recommendation-main-container__no').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users_no.uniq, unfiltered: @unfiltered, content: @content, tab: "-no", tag_categories: @tag_categories) %>';
-document.querySelector('.recommendation-main-container__pending').innerHTML = '<%= j render("pages/recommendation_users_list", users: @users_pending.uniq, unfiltered: @unfiltered, content: @content, tab: "-pending", tag_categories: @tag_categories) %>';
 $(document).ready(function () {
   $(".recommendation-page").floatingScroll();
 });

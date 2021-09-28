@@ -1,0 +1,19 @@
+<div class='recommendation-page' data-fl-scrolls='{"orientation": "horizontal"}'>
+  <div class='organisation-users'>
+    <div class="recommendation-users-headers">
+      <%= render 'pages/partials/recommendation_headers', users: users, tag_categories: tag_categories %>
+    </div>
+    <div class='users-index'>
+      <% users.each do |user| %>
+        <% if content.nil? %>
+          <% user_interest = UserInterest.find_by(user_id: user.id, folder_id: folder.id) %>
+        <% else %>
+          <% user_interest = UserInterest.find_by(user_id: user.id, content_id: content.id) %>
+        <% end %>
+        <div class='recommendation-users-card' id='user-card-<%= user.id %>'>
+          <%= render 'pages/partials/recommendation_user_card', user: user, content: content, folder: folder, user_interest: user_interest %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

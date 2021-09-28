@@ -4,24 +4,28 @@
     <div class="catalogue-row contents-row">
       <% @pending_recommendations.each do |recommendation| %>
         <div class="catalogue-card-container">
-          <% if recommendation.content.class.name == 'Folder' %>
-            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.content %>
+          <% if recommendation.folder_id.present? %>
+            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.folder %>
           <% else %>
             <%= render 'pages/partials/catalogue_content_card', content: recommendation.content %>
           <% end %>
           <% if recommendation.user_id == current_user.id %>
-            <a data-toggle='modal' data-target='#answerRecommendation-<%= recommendation.content.id %>' class='catalogue-content-card-right-menu'>
-              <div class="recommendation-btn-card btn-card-workshop d-flex justify-content-center">
-                <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-                  <%= "ANSWER FOR #{recommendation.user.fullname}" %>
-                <% else %>
+            <% if recommendation.folder_id.present? %>
+              <a data-toggle='modal' data-target='#answerRecommendation-folder-<%= recommendation.folder_id %>' class='catalogue-content-card-right-menu'>
+            <% else %>
+              <a data-toggle='modal' data-target='#answerRecommendation-content-<%= recommendation.content_id %> %>' class='catalogue-content-card-right-menu'>
+            <% end %>
+                <div class="recommendation-btn-card btn-card-workshop d-flex justify-content-center">
                   <%= "ANSWER" %>
-                <% end %>
-              </div>
-            </a>
-            <div class='modal fade' id='answerRecommendation-<%= recommendation.content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+                </div>
+              </a>
+            <% if recommendation.folder_id.present? %>
+              <div class='modal fade' id='answerRecommendation-folder-<%= recommendation.folder_id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <% else %>
+              <div class='modal fade' id='answerRecommendation-content-<%= recommendation.content_id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <% end %>
               <div class='modal-dialog' role='document' style='border-radius: 20px'>
-                <%= render 'pages/modals/recommendation_modal', content: recommendation.content, interest: recommendation %>
+                <%= render 'pages/modals/recommendation_modal', content: recommendation&.content, folder: recommendation&.folder, interest: recommendation %>
               </div>
             </div>
           <% end %>
@@ -36,24 +40,28 @@
     <div class="catalogue-row contents-row">
       <% @accepted_recommendations.each do |recommendation| %>
         <div class="catalogue-card-container">
-          <% if recommendation.content.class.name == 'Folder' %>
-            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.content %>
+          <% if recommendation.folder_id.present? %>
+            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.folder %>
           <% else %>
             <%= render 'pages/partials/catalogue_content_card', content: recommendation.content %>
           <% end %>
           <% if recommendation.user_id == current_user.id %>
-            <a data-toggle='modal' data-target='#answerRecommendation-<%= recommendation.content.id %>' class='catalogue-content-card-right-menu'>
+            <% if recommendation.folder_id.present? %>
+              <a data-toggle='modal' data-target='#answerRecommendation-folder-<%= recommendation.folder_id %>' class='catalogue-content-card-right-menu'>
+            <% else %>
+              <a data-toggle='modal' data-target='#answerRecommendation-content-<%= recommendation.content_id %> %>' class='catalogue-content-card-right-menu'>
+            <% end %>
               <div class="recommendation-btn-card btn-card-workshop d-flex justify-content-center">
-                <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-                  <%= "#{recommendation.user.fullname} answered #{recommendation.recommendation.upcase}" %>
-                <% else %>
-                  <%= recommendation.recommendation.upcase %>
-                <% end %>
+                <%= recommendation.recommendation.upcase %>
               </div>
             </a>
-            <div class='modal fade' id='answerRecommendation-<%= recommendation.content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <% if recommendation.folder_id.present? %>
+              <div class='modal fade' id='answerRecommendation-folder-<%= recommendation.folder_id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <% else %>
+              <div class='modal fade' id='answerRecommendation-content-<%= recommendation.content_id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <% end %>
               <div class='modal-dialog' role='document' style='border-radius: 20px'>
-                <%= render 'pages/modals/recommendation_modal', content: recommendation.content, interest: recommendation %>
+                <%= render 'pages/modals/recommendation_modal', content: recommendation&.content, folder: recommendation&.folder, interest: recommendation %>
               </div>
             </div>
           <% end %>
@@ -67,24 +75,28 @@
     <div class="catalogue-row contents-row">
       <% @declined_recommendations.each do |recommendation| %>
         <div class="catalogue-card-container">
-          <% if recommendation.content.class.name == 'Folder' %>
-            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.content %>
+          <% if recommendation.folder_id.present? %>
+            <%= render 'pages/partials/catalogue_folder_card', folder: recommendation.folder %>
           <% else %>
             <%= render 'pages/partials/catalogue_content_card', content: recommendation.content %>
           <% end %>
           <% if recommendation.user_id == current_user.id %>
-            <a data-toggle='modal' data-target='#answerRecommendation-<%= recommendation.content.id %>' class='catalogue-content-card-right-menu'>
+            <% if recommendation.folder_id.present? %>
+              <a data-toggle='modal' data-target='#answerRecommendation-folder-<%= recommendation.folder_id %>' class='catalogue-content-card-right-menu'>
+            <% else %>
+              <a data-toggle='modal' data-target='#answerRecommendation-content-<%= recommendation.content_id %> %>' class='catalogue-content-card-right-menu'>
+            <% end %>
               <div class="recommendation-btn-card btn-card-workshop d-flex justify-content-center">
-                <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-                  <%= "#{recommendation.user.fullname} answered #{recommendation.recommendation.upcase}" %>
-                <% else %>
-                  <%= recommendation.recommendation.upcase %>
-                <% end %>
+                <%= recommendation.recommendation.upcase %>
               </div>
             </a>
-            <div class='modal fade' id='answerRecommendation-<%= recommendation.content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <% if recommendation.folder_id.present? %>
+              <div class='modal fade' id='answerRecommendation-folder-<%= recommendation.folder_id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <% else %>
+              <div class='modal fade' id='answerRecommendation-content-<%= recommendation.content_id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+            <% end %>
               <div class='modal-dialog' role='document' style='border-radius: 20px'>
-                <%= render 'pages/modals/recommendation_modal', content: recommendation.content, interest: recommendation %>
+                <%= render 'pages/modals/recommendation_modal', content: recommendation&.content, folder: recommendation&.folder, interest: recommendation %>
               </div>
             </div>
           <% end %>

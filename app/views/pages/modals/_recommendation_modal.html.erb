@@ -1,6 +1,7 @@
 <div class="modal-content recommendation-modal__content">
   <div class="modal-header recommendation-modal__header">
     <div id="modal-title" class='recommendation-modal__title' style=" display: flex; justify-content: space-between;">
+      <% content = folder if folder.present? %>
       <h3 class="modal-title" id="myModalLabel"><strong><%= content.title %></strong></h3>
     </div>
     <div class="recommendation-modal__category-pills">
