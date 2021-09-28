@@ -7,6 +7,8 @@ class FoldersController < ApplicationController
   end
 
   def edit
+    @folder = Folder.find(params[:id])
+    authorize @folder
   end
 
   # Create new folder (pages/catalogue)

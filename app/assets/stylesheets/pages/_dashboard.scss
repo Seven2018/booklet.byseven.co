@@ -53,9 +53,9 @@
 .dashboard-trainings {
   margin-top: 3rem;
   display: flex;
-  justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
+  padding: 0 12px;
 }
 
 // DASHBOARD
@@ -314,8 +314,7 @@
 .trainings-container-card {
   height: 15rem;
   width: 40rem;
-  flex-shrink: 0;
-  margin: 2rem;
+  margin: 2rem 1rem;
   position: relative;
 }
 
@@ -364,13 +363,17 @@
   }
 
   h3 {
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
     color: rgba(80, 80, 80, 100);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
+  }
+
+  a {
+    font-size: large;
   }
 
   i {

@@ -1,0 +1,43 @@
+<% if ['Super Admin'].include?(current_user.access_level) || (@training.company_id == current_user.company_id) %>
+  <% access = '' %>
+  <div id="content-show-container">
+    <div id="content-show-container-left">
+      <%= render 'folders/partials/show_anchors', folder: @training.folder, page: 'edit', access: "" %>
+    </div>
+    <div id="content-show-container-right">
+      <div class="content-add">
+        <div class="content-add-left">
+          <div class="content-show-attributes-left">
+            <div class="content-info">
+              <div class="flex-row-between-centered">
+                <h2 class="d-flex align-items-center"><i class="fas fa-folder training-title"></i><%= @training.title %></h2>
+              </div>
+            </div>
+          </div>
+          <div class="folder-contents col-10">
+            <div class="children-contents form-group">
+              <% @training.workshops.each do |workshop| %>
+                <h3 class="child-workshop">
+                  <strong>
+                    <%= link_to workshop_path(workshop) ,class: "child-workshop" do %>
+                      <i class="far fa-file child-icon"></i><%= workshop.title %> (<%= workshop.duration %> min)
+                    <% end %>
+                  </strong>
+                </h3>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="content-add-right">
+          <div class="content-show-attributes-right">
+            <%= render 'folders/partials/show_attributes_right', folder: @training, page: 'show', access: access %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
+  </div>
+<% end %>
