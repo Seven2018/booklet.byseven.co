@@ -11,10 +11,14 @@
       <div class="book-dates-card-syn">
         <div class="booklet-card-top">
           <div class="booklet-card__top-info">
+
+
+
             <div class="flex-row-start-centered">
               <i class="fas fa-file"></i>
               <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
             </div>
+
             <div class="flex-row-start-centered">
               <% hours = content.duration / 60 %>
               <% minutes = format('%02d', content.duration % 60) %>
@@ -71,47 +75,49 @@
     </div>
   <% else %>
     <div class="booklet-card" id="book_content-<%= content.id %>">
-      <div class="book-dates-card-asyn">
-        <div class="booklet-card-top">
-          <div class="booklet-card__top-info">
-            <% if content.title.length > 30 %>
-              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title.first(30)+'...' %></b></h3>
-            <% else %>
-              <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
-            <% end %>
-          <p><%= content.duration %> Minutes</p>
-          </div>
-          <div class="booklet-card-type-pill">
-            <div class="booklet-card-type">
-              <div class="booklet-card-type-icon">
-                <% if content.content_type == 'Synchronous' %>
-                  <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
-                  <p>In Person</p>
-                <% else %>
-                  <i class="fas fa-laptop" style='color:black;'></i>
-                  <p>Online</p>
-                <% end %>
+      <div class="book-dates-card" id="book_content-<%= content.id %>" >
+        <div class="book-dates-card-asyn">
+          <div class="booklet-card-top">
+            <div class="booklet-card__top-info">
+
+              <div class="flex-row-start-centered">
+                <i class="fas fa-file"></i>
+                <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
               </div>
+
+              <div class="flex-row-start-centered">
+                <% hours = content.duration / 60 %>
+                <% minutes = format('%02d', content.duration % 60) %>
+                <p class='book-dates-duration'><%= hours %>h<%= minutes %></p>
+                <div class="booklet-content-card-type-icon">
+                  <% if content.content_type == 'Synchronous' %>
+                    <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
+                    <p style='color:#F26419;'>In Person</p>
+                  <% else %>
+                    <i class="fas fa-laptop" style='color:black;'></i>
+                    <p style='color:black;'>Online</p>
+                  <% end %>
+                </div>
+              </div>
+
+            </div>
+            <div class="booklet-top-right-icon">
+              <i class="fas fa-info-circle" data-toggle="modal" data-target="#editDetails-<%= content.id %>"></i>
             </div>
           </div>
-          <div class="booklet-top-right-icon">
-            <i class="fas fa-info-circle" data-toggle="modal" data-target="#editDetails-<%= content.id %>"></i>
-        </div>
-        <div class="book-dates-card-bottom">
-          <div class="booklet-card-objective-booking">
-            <div class='book-dates'>
-            <p><b>Available From:</b></p>
-              <%= simple_form_for :session, url: book_sessions_path, method: :get do |f| %>
-                <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker-range'}, placeholder: 'Select Date' %></div>
-                <div class="book-dates-card__cost-input">
-                  <%= f.input :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i} %>
-                  <p>€</p>
-                </div>
-                <%= f.hidden_field :content_id, value: content.id %>
-                <%= f.hidden_field :selected_users, value: selected_users %>
-                <%= f.hidden_field :training_id %>
-                <%= f.submit '', class: 'hidden-submit hidden' %>
-              <% end %>
+          <div class="book-dates-card-bottom">
+            <div class="booklet-card-objective-booking">
+              <div class='book-dates'>
+              <p><b>Available From:</b></p>
+                <%= simple_form_for :session, url: book_sessions_path, method: :get do |f| %>
+                  <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker-range'}, placeholder: 'Select Date' %></div>
+    
+                  <%= f.hidden_field :content_id, value: content.id %>
+                  <%= f.hidden_field :selected_users, value: selected_users %>
+                  <%= f.hidden_field :training_id %>
+                  <%= f.submit '', class: 'hidden-submit hidden' %>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
