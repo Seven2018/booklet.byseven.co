@@ -8,7 +8,7 @@
       <ul>
         <% if user_signed_in? %>
           <li>
-            <% if params[:action] == 'dashboard' || params[:action] == 'recommendation'|| params[:controller] == 'trainings' %>
+            <% if params[:action] == 'dashboard' || params[:action] == 'recommendation'|| params[:controller] == 'trainings'|| params[:controller] == 'workshops' %>
               <%= link_to dashboard_path, class: 'left-buttons' do %>
                 <div class="left-menu-title" style='color: #F26419;'><h4>Dashboard</h4></div>
               <% end %>

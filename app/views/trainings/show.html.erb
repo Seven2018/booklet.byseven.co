@@ -2,7 +2,7 @@
   <% access = '' %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      
+      <%= render 'folders/partials/show_anchors', folder: @training.folder, page: 'edit', access: "" %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
@@ -10,28 +10,17 @@
           <div class="content-show-attributes-left">
             <div class="content-info">
               <div class="flex-row-between-centered">
-                <h2 class="d-flex align-items-center"><i class="fas fa-folder folder-title"></i><%= @training.title %></h2>
+                <h2 class="d-flex align-items-center"><i class="fas fa-folder training-title"></i><%= @training.title %></h2>
               </div>
             </div>
           </div>
           <div class="folder-contents col-10">
-            <div class="children-folders form-group">
-              <% @training.children_folders.each do |child_folder| %>
-                <h3 class="child-folder">
-                  <strong>
-                    <%= link_to folder_path(child_folder), class: "child-folder" do %>
-                      <i class="fas fa-folder child-icon"></i><%= child_folder.title %> (<%= child_folder.duration %> min)
-                    <% end %>
-                  </strong>
-                </h3>
-              <% end %>
-            </div>
             <div class="children-contents form-group">
-              <% @training.contents.each do |child_content| %>
+              <% @training.workshops.each do |workshop| %>
                 <h3 class="child-workshop">
                   <strong>
-                    <%= link_to content_path(child_content) ,class: "child-workshop" do %>
-                      <i class="far fa-file child-icon"></i><%= child_content.title %> (<%= child_content.duration %> min)
+                    <%= link_to workshop_path(workshop) ,class: "child-workshop" do %>
+                      <i class="far fa-file child-icon"></i><%= workshop.title %> (<%= workshop.duration %> min)
                     <% end %>
                   </strong>
                 </h3>

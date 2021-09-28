@@ -1,4 +1,4 @@
-<div class="content-show-infos-delete my-3 orange">
+<div class="content-show-infos-delete orange">
   <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
     <% unless page == 'edit' %>
       <% if content.class.to_s == 'Content' %>
@@ -26,7 +26,7 @@
     <p style='color:#808080;'><b>Themes</b></p>
     <div class="theme-btns">
       <% content.class.to_s == 'Content' ? categories = content.categories : categories = content.content.categories %>
-      <% categories.order(title: :asc).each do |category| %>
+      <% categories.each do |category| %>
         <p class="category-tag"><%= category.title %></p>
       <% end %>
       <% if params[:controller] == 'contents' && page == 'edit' %>

@@ -58,7 +58,7 @@
       <p style='color:#808080;'><b>Themes</b></p>
       <div class="theme-btns">
         <% content.class.to_s == 'Content' ? categories = content.categories : categories = content.content.categories %>
-        <% categories.order(title: :asc).each do |category| %>
+        <% categories.each do |category| %>
           <p class="category-tag"><%= category.title %></p>
         <% end %>
         <a data-toggle='modal' data-target='#addTheme' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#F26419;'></i></a><br>
