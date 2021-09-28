@@ -22,9 +22,11 @@
           <div class="content-show-attributes-right">
             <%= render 'contents/partials/show_attributes_right', content: @workshop, page: 'show', access: access %>
           </div>
-          <div class="content-show-attributes-right-acquired">
-            <%= render 'contents/partials/show_attributes_acquired', content: @workshop, page: 'show', access: access %>
-          </div>
+          <% if @workshop.content_type == "Asynchronous" || ['Super Admin'].include?(current_user.access_level) %>
+            <div class="content-show-attributes-right-acquired">
+              <%= render 'contents/partials/show_attributes_acquired', content: @workshop, page: 'show', access: access %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
