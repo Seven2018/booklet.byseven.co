@@ -1,11 +1,11 @@
 <div class="overview-controls">
   <div class="flex-row-between-centered">
-
     <div class="searchbar" id="overview-controls__user-search">
       <i class="fas fa-search catalogue-controls__search-icon"></i>
       <%= simple_form_for :search, url: overview_path, method: :get do |f| %>
         <%= f.text_field :title, placeholder: 'Search', label: false %>
-        <%= f.hidden_field :start_date, value: '' %>
+        <%= f.input :start_date, label: 'From', input_html: {class: 'datepicker', value: @start_date} %>
+        <%= f.input :end_date, label: 'Until', input_html: {class: 'datepicker', value: @end_date} %>
         <%= f.hidden_field :end_date, value: '' %>
         <%= f.submit 'Search', class: 'btn-search' %>
       <% end %>
@@ -13,100 +13,131 @@
         <%= link_to 'Reset', class: "btn-reset-form", reset_path: overview_path(reset: "") %>
       <% end %>
     </div>
+    <div class="overview-results">
+      <%= render 'pages/overview_results', trainings: @trainings %>
+    </div>
+  </div>
+</div>
+<div class="dashboard-grid">
+  <div class="dashboard-tabs">
+    <ul class="nav nav-tabs">
+      <li role="presentation"><a href="#Trainings" data-toggle="tab" class='active'>Trainings</a></li>
 
-    <div class=" flex-row-between-centered">
-      <%# <div class="index-controls-buttons">
-        <a data-toggle='modal' data-target='#filterCategories'>
-          <div class="btn-white">
-            <i class="fas fa-filter"></i>
-            <p>Filter</p>
-          </div>
-        </a>
-      </div> %>
-      <div class="overview-select-date">
-        <%= simple_form_for :select_period, url: overview_path, method: :get do |f| %>
-          <div class="flex-row-start-centered overview-controls__overview-dates">
-            <%= f.label 'From' %>
-            <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Date.today.beginning_of_year, onchange: 'selectOverviewDate()'}, onchange: 'selectOverviewDate()' %>
-            <%= f.label 'Until' %>
-            <%= f.input :end_date, label: false, input_html: {class: 'datepicker', value: Date.today, onchange: 'selectOverviewDate()'} %>
-            <%= f.hidden_field :content_ids, value: '' %>
-            <%= f.submit '', class: 'hidden-submit hidden' %>
+      <li role="presentation"><a href="#Users" data-toggle="tab" >Users</a></li>
+    </ul>
+  </div>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="Trainings">
+      <div class="overview-trainings">
+        <% @trainings.each do |training| %>
+          <% folder = training.folder %>
+          <% if folder.present? %>
+            <% content = folder %>
+          <% else %>
+            <% content = training.sessions.first.workshop %>
+          <% end %>
+          <div class="booklet-folder-card">
+            <% start_date = training.sessions.order(date: :asc).first.date %>
+            <% end_date = training.sessions.order(date: :desc).first.date %>
+            <% if start_date >= Date.today %>
+              <div class="tab-date__start tab-date--green">
+                <p><%= start_date.strftime('%d.%m.%Y') %></p>
+              </div>
+            <% else %>
+              <div class="tab-date__start tab-date--red">
+                <p><%= start_date.strftime('%d.%m.%Y') %></p>
+              </div>
+            <% end %>
+            <% if end_date >= Date.today %>
+              <div class="tab-date__end tab-date--green">
+                <p><%= end_date.strftime('%d.%m.%Y') %></p>
+              </div>
+            <% else %>
+              <div class="tab-date__end tab-date--red">
+                <p><%= end_date.strftime('%d.%m.%Y') %></p>
+              </div>
+            <% end %>
+            <div class="booklet-folder-card-top booklet-card-top">
+              <div class="booklet-folder-card__top-info">
+                <div>
+                  <i class="fas fa-folder"></i>
+                  <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
+                </div>
+                <div>
+                  <% hours = content.duration / 60 %>
+                  <% minutes = content.duration % 60 %>
+                  <p class='booklet-folder-card__duration'><%= hours %>h<%= '%02d' % minutes %></p>
+                  <% if (folder.present? && content.children_contents.map{|x| x.content_type}.include?('Synchronous')) || (!folder.present? && content.content_type == 'Synchronous') %>
+                    <div class="booklet-folder-card-type-icon">
+                      <i class="fas fa-chalkboard-teacher" style='color:rgba(91, 146, 197, 1);'></i>
+                      <p style='color:rgba(91, 146, 197, 1);'>In Person</p>
+                    </div>
+                  <% end %>
+                  <% if (folder.present? && content.children_contents.map{|x| x.content_type}.include?('Asynchronous')) || (!folder.present? && content.content_type == 'Asynchronous') %>
+                    <div class="booklet-folder-card-type-icon">
+                      <i class="fas fa-laptop" style='color:rgba(91, 146, 197, 1);'></i>
+                      <p style='color:rgba(91, 146, 197, 1);'>Online</p>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+              <div class="booklet-folder-card__categories">
+                <% if folder.present? %>
+                  <% content.categories.each do |category| %>
+                    <div class="booklet-folder-card__category-pill">
+                      <p><%= category.title %></p>
+                    </div>
+                  <% end %>
+                  <% content.children_categories.each do |category| %>
+                    <div class="booklet-content-card__category-pill">
+                      <p><%= category.title %></p>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <% content.categories.each do |category| %>
+                    <div class="booklet-content-card__category-pill">
+                      <p><%= category.title %></p>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <div class="booklet-folder-card-bottom">
+              <div class="recommendation-card__bottom-data">
+                <i class="fas fa-users"></i>
+                <% attendees = training.sessions.map{|x| x.attendees.count}.max %>
+                <p><%= attendees %></p>
+              </div>
+              <div class="recommendation-card__bottom-data">
+                <i class="fas fa-folder"></i>
+                <% if folder.present? %>
+                  <p><%= folder.children_folders.count %></p>
+                <% else %>
+                  <p>0</p>
+                <% end %>
+              </div>
+              <div class="recommendation-card__bottom-data">
+                <i class="fas fa-file"></i>
+                <% if folder.present? %>
+                  <p><%= folder.children_contents.count %></p>
+                <% else %>
+                  <p>1</p>
+                <% end %>
+              </div>
+              <div class="recommendation-card__bottom-data">
+                <i class="fas fa-euro-sign"></i>
+                <p><%= '%02d' % (training.sessions.map(&:cost).sum / attendees) %>€ (cost/employee)</p>
+              </div>
+            </div>
           </div>
         <% end %>
       </div>
     </div>
+    <div role="tabpanel" class="tab-pane" id="Users">
+      <div class="overview-trainings">
+        <p>users</p>
+      </div>
+    </div>
   </div>
+  <%# render 'pages/overview_cards_list', trainings: @trainings, start_date: Date.today.beginning_of_year, end_date: Date.today %>
 </div>
-<div class="overview-results">
-  <%= render 'pages/overview_results', sessions: @sessions %>
-</div>
-<div class="overview-cards-list">
-  <%= render 'pages/overview_cards_list', contents: @contents, start_date: Date.today.beginning_of_year, end_date: Date.today %>
-</div>
-
-<!-- Modals -->
-<div class='modal fade' id='filterCategories' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-    <%= render 'pages/overview_filter_categories' %>
-  </div>
-</div>
-
-<script>
-  // if (document.querySelector('.search') != null) {
-  //   search_input = document.querySelector('.search').querySelector('input')
-  //   clear_button = document.getElementById('overview-controls__user-search-clear')
-  //   search_input.addEventListener('keyup', event => {
-  //     if (search_input.value != '' && clear_button.classList.contains('hidden')) {
-  //       clear_button.classList.remove('hidden')
-  //     } else if (search_input.value == '') {
-  //       clear_button.classList.add('hidden')
-  //     }
-  //   })
-  // }
-
-  formGuardian = false
-  doubleClickGuardian = false
-
-  function outsideClick(event, notelem) {
-    notelem = $(notelem); // jquerize (optional)
-    // check outside click for multiple elements
-    var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
-    }
-    if (clickedOut) return true;
-    else return false;
-  }
-
-  function clearSearch(element) {
-    search_input = element.parentNode.querySelector('input')
-    search_input.value = ' '
-    element.classList.add('hidden')
-    form = search_input.closest('form')
-    form.querySelector('.hidden-submit').click()
-    search_input.value = ''
-  }
-
-  function selectOverviewDate() {
-    document.querySelector('.select_period').querySelector('.hidden-submit').click()
-  }
-
-  function selectFilter(element) {
-    icon = element.querySelector('i')
-    checkbox = element.querySelector('input[type="checkbox"]')
-    if (checkbox.checked == false) {
-      checkbox.checked = true
-      element.style.backgroundColor = '#F26419'
-      element.style.color = 'white'
-      icon.style.transform = 'rotate(225deg)'
-    } else {
-      checkbox.checked = false
-      element.style.backgroundColor = 'white'
-      element.style.color = '#F26419'
-      icon.style.transform = 'rotate(-0deg)'
-    }
-  }
-</script>
