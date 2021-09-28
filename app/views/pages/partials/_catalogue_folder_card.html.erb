@@ -33,9 +33,9 @@
             <p style='color:rgba(91, 146, 197, 1);'>Online</p>
           </div>
         <% end %>
-        <%# if UserInterest.where(folder_id: folder.id).where.not(recommendation: nil).present? %>
+        <% if UserInterest.where(folder_id: folder.id).where.not(recommendation: nil).present? %>
           <p style='color:rgba(91, 146, 197, 1);'>R</p>
-        <%# end %>
+        <% end %>
       </div>
     </div>
     <div class="booklet-folder-card__categories">

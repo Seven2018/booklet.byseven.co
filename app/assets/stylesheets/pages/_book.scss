@@ -208,7 +208,7 @@
   width: 63%;
 }
 
-.book-users-headers, .book-users-all, .book-users-filtered {
+.book-users-all, .book-users-filtered {
   width: 100%;
   border: 0.5px solid rgba(0, 0, 0, 0.21);
   border-top: none;
@@ -223,11 +223,9 @@
 
 .book-users-headers {
   height: 7rem;
-  padding: 1rem 2rem;
   background-color: #F5F5F5;
   border: 0.5px solid rgba(0, 0, 0, 0.21);
   display:flex;
-  justify-content: flex-start;
   align-items: center;
   overflow-x: scroll;
   -ms-overflow-style: none;  /* IE and Edge */
@@ -239,16 +237,7 @@
   user-select: none; /* Standard */
 
   div {
-    width: 20rem;
-    min-width: 20rem;
-    margin: 0 2rem;
-
-    p {
-      width: 90%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    background-color: transparent;
   }
 }
 

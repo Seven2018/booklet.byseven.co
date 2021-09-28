@@ -1,12 +1,2 @@
-card = document.querySelector('#user-card-<%= @user.id %>')
-if ('<%= @action %>' == 'Add') {
-  card.innerHTML = '<%= j render("pages/recommendation_user_card", user: @user, content: @content, user_interest: @user_interest) %>';
-  copy_card = document.createElement("div");
-  copy_card.classList.add('user-index-card','user-card-<%= @user.id %>')
-  copy_card.innerHTML = '<%= j render("pages/recommendation_user_card", user: @user, content: @content, user_interest: @user_interest) %>';
-  container = document.querySelector('.users-index-pending')
-  container.append(copy_card)
-} else {
-  card.innerHTML = '<%= j render("pages/recommendation_user_card", user: @user, content: @content, user_interest: nil) %>';
-  delete_card = document.querySelector('#Pending').querySelector('.user-card-<%= @user.id %>').remove()
-}
+document.querySelector('#user-card-<%= @user.id %>').innerHTML = '<%= j render("pages/partials/recommendation_user_card", user: @user, content: @content, folder: @folder, user_interest: @interest)%>';
+

@@ -252,10 +252,16 @@ class PagesController < ApplicationController
   def recommendation
     index_function(User.where(company_id: current_user.company_id))
     authorize @users
-
     if params[:search].present?
       @content = Content.find(params[:search][:content_id]) if params[:search][:content_id].present?
       @folder = Folder.find(params[:search][:folder_id]) if params[:search][:folder_id].present?
+      unless params[:search][:status] == 'All'
+        if @folder.present?
+          @users = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {folder_id: @folder.id, recommendation: params[:search][:status]})
+        else
+          @users = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: params[:search][:status]})
+        end
+      end
     elsif params[:filter_user].present?
       @content = Content.find(params[:filter_user][:content_id]) if params[:filter_user][:content_id].present?
       @folder = Folder.find(params[:filter_user][:folder_id]) if params[:filter_user][:folder_id].present?
