@@ -10,7 +10,11 @@
       <div class="title d-flex flex-row p-0">
         <i class="fas fa-folder mx-3"></i>
         
-        <h3><%= link_to training.title, training_path(training) %></h3>
+        <% if training.folder.nil? %>
+          <h3><%= link_to training.title, content_path(training.workshops.first.content) %></h3>
+        <% else %>
+          <h3><%= link_to training.title, training_path(training) %></h3>
+        <% end %>
       </div>
       <div class="infos-second-line d-flex flex-row">
         <p class="mx-3"><%= training.duration unless training.duration == 0 %></p>
@@ -23,28 +27,32 @@
           <p class="mx-3">Online</p>
         <% end %>
 
-        <div class="d-inline-flex ml-3 align-items-center">
-          <p class="light-blue-i"><%= training.folder.children_folders.count %></p>
-          <i class="fas fa-folder small-i mx-3 light-blue-i"></i>
-        </div>
-        <div class="d-inline-flex align-items-center">
-          <p class="light-orange-i"><%= training.folder.children_contents.count %></p>
-          <i class="fas fa-file small-i mx-3 light-orange-i"></i>
-        </div>
+        <% unless training.folder.nil? %>
+          <div class="d-inline-flex ml-3 align-items-center">
+            <p class="light-blue-i"><%= training.folder.children_folders.count %></p>
+            <i class="fas fa-folder small-i mx-3 light-blue-i"></i>
+          </div>
+          <div class="d-inline-flex align-items-center">
+            <p class="light-orange-i"><%= training.folder.children_contents.count %></p>
+            <i class="fas fa-file small-i mx-3 light-orange-i"></i>
+          </div>
+        <% end %>
       </div>
     </div>
     <div class="card-themes">
-      <% folder_categories = training.folder.categories.first(3) %>
-      <% folder_categories.each do |category| %>
-        <div class="booklet-folder-card__category-pill">
-          <p><%= category.title %></p>
-        </div>
-      <% end %>
-      <% content_categories = training.folder.children_categories.first(3 - folder_categories.count) %>
-      <% content_categories.each do |category| %>
-        <div class="booklet-content-card__category-pill">
-          <p><%= category.title %></p>
-        </div>
+      <% unless training.folder.nil? %>
+        <% folder_categories = training.folder.categories.first(3) %>
+        <% folder_categories.each do |category| %>
+          <div class="booklet-folder-card__category-pill">
+            <p><%= category.title %></p>
+          </div>
+        <% end %>
+        <% content_categories = training.folder.children_categories.first(3 - folder_categories.count) %>
+        <% content_categories.each do |category| %>
+          <div class="booklet-content-card__category-pill">
+            <p><%= category.title %></p>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>

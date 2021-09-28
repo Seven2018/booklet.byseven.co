@@ -1,7 +1,7 @@
 class TrainingsController < ApplicationController
 
   def show
-    @training = Training.find(params[:id]).folder
+    @training = Training.find(params[:id]).folder.nil? ? Training.find(params[:id]) : Training.find(params[:id]).folder
     authorize @training
   end
 
