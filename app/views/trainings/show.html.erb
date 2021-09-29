@@ -30,7 +30,8 @@
         </div>
         <div class="content-add-right">
           <div class="content-show-attributes-right">
-            <%= render 'folders/partials/show_attributes_right', folder: @training, page: 'show', access: access %>
+            <% @training.folder.present? ? content = @training.folder : content = @training.content %>
+            <%= render 'folders/partials/show_attributes_right', folder: content, page: 'show', access: access %>
           </div>
         </div>
       </div>

@@ -14,7 +14,14 @@ class FoldersController < ApplicationController
     end
     @folders = @folders.reject{|x| x.children_folders_all.include?(@folder)} - @folder.children_folders_all(true)
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    if params[:search].present? && !params[:search][:title].blank?
+      @contents = @contents.search_contents("#{params[:search][:title]}")
+    end
     authorize @folder
+    respond_to do |format|
+      format.html {edit_folder_path(@folder)}
+      format.js
+    end
   end
 
   # Create new folder (pages/catalogue)

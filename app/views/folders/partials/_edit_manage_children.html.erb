@@ -17,7 +17,7 @@
       </div>
     </div>
   <% end %>
-<% else %>
+<% elsif contents.present? %>
   <% children = folder.contents %>
   <% contents.each do |content| %>
     <% included = children.include?(content) %>
