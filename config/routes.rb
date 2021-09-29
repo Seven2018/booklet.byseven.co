@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
   # FOLDERS
   resources :folders
+  get :folder_link_category, controller: :folders
+  get :folder_manage_children, controller: :folders
 
   #MODS
   resources :mods, only: %i[create update destroy]

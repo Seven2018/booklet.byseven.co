@@ -33,6 +33,10 @@ class FolderPolicy < ApplicationPolicy
     check_access_hr
   end
 
+  def folder_manage_children?
+    check_access_hr
+  end
+
   def book_contents?
     check_access_hr
   end
