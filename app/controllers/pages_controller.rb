@@ -85,43 +85,32 @@ class PagesController < ApplicationController
 
   # Display the company Overview (pages/overview)
   def overview
-    if current_user.company_id.present?
-      # SEARCHING CONTENTS 
-      @start_date = Date.today.beginning_of_year
-      @end_date = Date.today
-      unless params[:reset]
-        if params[:search].present? && !params[:search][:title].blank?
-          @contents = @contents.search_contents("#{params[:search][:title]}")
-          respond_to do |format|
-            format.html {catalogue_path}
-            format.js
-          end
+    
+    # raise
+    @start_date = Date.today.beginning_of_year
+    @end_date = Date.today
+
+    @trainings = Training.joins(:sessions).where(company_id: current_user.company_id).uniq
+    @trainings = Training.where(id: @trainings.pluck(:id))
+    @sessions = @trainings.map{|x| x.sessions}.flatten
+
+    # SEARCHING CONTENTS 
+    unless params[:reset]
+      if params[:search].present? 
+        unless params[:search][:title].blank?
+          @trainings = @trainings.search_trainings("#{params[:search][:title]}")
         end
-        if params[:select_period].present?
-          @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
-          @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
-          if params[:select_period][:content_ids].present?
-            @contents = @contents.where(id: params[:select_period][:content_ids].split(','))
-          end
+        if params[:search][:start_date].present?
+          @start_date = Date.strptime(params[:search][:start_date], '%d/%m/%Y')
+          @end_date = Date.strptime(params[:search][:end_date], '%d/%m/%Y')
+          @trainings = @trainings.joins(:sessions).where('sessions.date >= ? AND date <= ?', @start_date, @end_date).uniq
         end
       end
     end
-    # if params[:content].present? && params[:content][:categories] != ['']
-    #   @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params[:content][:categories].reject{|x| x.empty?}})
-    #   if params[:filter_content][:start_date].present? && params[:filter_content][:end_date].present?
-    #     @start_date = Date.strptime(params[:filter_content][:start_date], '%d/%m/%Y')
-    #     @end_date = Date.strptime(params[:filter_content][:end_date], '%d/%m/%Y')
-    #   end
-    # end
-    
-    @trainings = Training.joins(:sessions).where(company_id: current_user.company_id).where('sessions.date >= ? AND date <= ?', @start_date, @end_date).uniq
-    @trainings = Training.where(id: @trainings.pluck(:id))
-    @sessions = @trainings.map{|x| x.sessions}.flatten
 
     attendees = Attendee.joins(:session).where(sessions: { training: @trainings})
     @users = User.where(attendees: attendees)
 
-    
     respond_to do |format|
       format.html {overview_path}
       format.js
