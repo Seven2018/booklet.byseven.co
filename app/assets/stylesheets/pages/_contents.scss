@@ -8,7 +8,7 @@
 #content-show-container-left {
   // display: none;
   padding: 25px;
-  width: 20%;
+  display: none;
   // width: 26rem;
   border-right: 1px solid black;
   min-height: calc(100vh - 50px);
@@ -26,6 +26,8 @@
   }
   @include from-medium-high {
     display: flex;
+    min-width: 315px;
+    width: 315px;
   }
 }
 

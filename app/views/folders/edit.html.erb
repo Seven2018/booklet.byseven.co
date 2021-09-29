@@ -178,4 +178,19 @@
       card.classList.remove('selected')
     }
   }
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
 </script>
