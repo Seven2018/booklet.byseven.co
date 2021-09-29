@@ -65,7 +65,7 @@ class ContentsController < ApplicationController
         new_mod.text.record_id = new_mod.id
         new_mod.text.update(body: mod.text.body.dup)
       end
-      redirect_to edit_mode_content_path(@new_content, redirect_from: 'edit')
+      redirect_to edit_content_path(@new_content)
     end
   end
 

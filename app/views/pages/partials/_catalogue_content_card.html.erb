@@ -12,7 +12,6 @@
               <i class="fas fa-ellipsis-v"></i>
               <div class="content-dropdown hidden">
                 <%= link_to 'Recommendation', recommendation_path(content_id: content.id) %>
-                <a href="">Infos</a>
                 <%= link_to 'Edit', edit_content_path(content) %>
                 <%= link_to 'Duplicate', duplicate_content_path(content) %>
                 <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'} %>

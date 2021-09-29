@@ -71,10 +71,12 @@
                       <p><%= category.title %></p>
                     </div>
                   <% end %>
-                  <% folder.children_categories.each do |category| %>
-                    <div class="booklet-content-card__category-pill">
-                      <p><%= category.title %></p>
-                    </div>
+                  <% unless folder.categories.count >= 3 %>
+                    <% folder.children_categories.first(3 - folder.categories.count).each do |category| %>
+                      <div class="booklet-content-card__category-pill">
+                        <p><%= category.title %></p>
+                      </div>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
