@@ -276,14 +276,14 @@
     })
     ids = []
     check_boxes = document.querySelectorAll('.select-user')
-    check_boxes.forEach((checkbox) => {
-      if (checkbox.checked == true) {
-        ids.push(checkbox.value);
-        checkbox.parentNode.parentNode.style.backgroundColor = '#F8D9C8'
-      } else {
-        checkbox.parentNode.parentNode.style.backgroundColor = 'white'
-      }
-    })
+    // check_boxes.forEach((checkbox) => {
+    //   if (checkbox.checked == true) {
+    //     ids.push(checkbox.value);
+    //     checkbox.parentNode.parentNode.style.backgroundColor = '#F8D9C8'
+    //   } else {
+    //     checkbox.parentNode.parentNode.style.backgroundColor = 'white'
+    //   }
+    // })
     document.querySelector('#add_tags_users').value = ids.join();
     if (ids.length == 0) {
       document.querySelectorAll('#manage-users-button').forEach((button) => {
