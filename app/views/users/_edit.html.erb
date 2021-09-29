@@ -34,7 +34,7 @@
                               end_year: Date.today.year %>
       <% end %>
       <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
-      <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+<!--       <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
         <div class="new_user_tags">
           <% checked_tags = Tag.joins(:user_tags).where(user_tags: {user_id: @user.id}).map(&:id) %>
           <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
@@ -57,7 +57,7 @@
             <% end %>
           <% end %>
         </div>
-      <% end %>
+      <% end %> -->
       <div style=" display: flex; justify-content: center;margin-top:3rem;">
         <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
         <%= button_tag type: 'submit', class: 'btn-orange' do %>

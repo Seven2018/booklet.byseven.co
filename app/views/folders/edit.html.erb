@@ -83,7 +83,7 @@
     document.querySelector('.select_children').querySelector('.hidden-submit').click()
     console.log('click')
     document.querySelector('.edit_folder').querySelector('.hidden-submit').click()
-    document.querySelector('.hidden-link').click()
+    setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
   }
 
   function updateContent(element) {

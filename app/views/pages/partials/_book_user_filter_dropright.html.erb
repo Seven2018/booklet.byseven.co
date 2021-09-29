@@ -28,6 +28,7 @@
       </div>
     </div>
   <% end %>
+  <%= f.hidden_field :book_selected_users, value: @selected_users %>
   <%= f.submit 'Filter', class: 'hidden hidden-submit' %>
 <% end %>
 <div class="centered-item" style='margin-top: 2rem;'>

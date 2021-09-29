@@ -21,7 +21,7 @@
   <% children = folder.contents %>
   <% contents.each do |content| %>
     <% included = children.include?(content) %>
-    <div class="edit-folder-card <%= 'selected' if included %>" id="content-<%= folder.id %>">
+    <div class="edit-folder-card <%= 'selected' if included %>" id="content-<%= content.id %>">
       <div class="edit-folder-pseudo-checkbox-container" onclick="selectElement(this);"><button class="edit-folder-pseudo-checkbox"></button></div>
       <% if included %>
         <input type="checkbox" class="edit-folder-checkbox hidden" checked>
