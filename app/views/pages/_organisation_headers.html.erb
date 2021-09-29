@@ -7,36 +7,32 @@
 <div class="headers-div">
   <p>Email</p>
 </div>
-<% @tag_categories.order(position: :asc).each do |tag_category| %>
 
-  <div class="headers-div">
-
-    <% if params[:edit] == "edit" %>
-      <% if tag_category.position > 1 %>
-        <%= link_to organisation_path(edit: "edit", tag_postion: 'left', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
-          <i class="fas fa-chevron-left pr-3 move-tag-category"></i>
+<% unless @tag_categories.nil? %>
+  <% @tag_categories.order(position: :asc).each do |tag_category| %>
+    <div class="headers-div">
+      <% if params[:edit] == "edit" %>
+        <% if tag_category.position > 1 %>
+          <%= link_to organisation_path(edit: "edit", tag_postion: 'left', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
+            <i class="fas fa-chevron-left pr-3 move-tag-category"></i>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
-
-    <p><%= tag_category.name %></p>
-
-    <% if params[:edit] == "edit"  %>
-      <% if tag_category.position < @tag_categories.count %>
-        <%= link_to organisation_path(edit: "edit", tag_postion: 'right', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
-          <i class="fas fa-chevron-right pl-3 move-tag-category"></i>
+      <p><%= tag_category.name %></p>
+      <% if params[:edit] == "edit"  %>
+        <% if tag_category.position < @tag_categories.count %>
+          <%= link_to organisation_path(edit: "edit", tag_postion: 'right', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
+            <i class="fas fa-chevron-right pl-3 move-tag-category"></i>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
-
-    <% if params[:edit] == "edit"  %>
-      <%= link_to tag_category_path(tag_category), data: { confirm: "Are you sure?" }, method: :delete do %>
-        <i class="fas fa-times delete-tag-category"></i>
+      <% if params[:edit] == "edit"  %>
+        <%= link_to tag_category_path(tag_category), data: { confirm: "Are you sure?" }, method: :delete do %>
+          <i class="fas fa-times delete-tag-category"></i>
+        <% end %>
       <% end %>
-    <% end %>
-
-  </div>
-
+    </div>
+  <% end %>
 <% end %>
 
 <% if params[:edit] == "edit" %>

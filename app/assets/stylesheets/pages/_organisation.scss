@@ -5,6 +5,7 @@
 .organisation-page {
   overflow: scroll;
   display: flex;
+  width: 100%;
 }
 
 .organisation-dropdown-menu {
@@ -75,7 +76,7 @@
   }
 
   &:first-of-type, &:last-of-type {
-    min-width: 7rem;
+    // min-width: 7rem;
   }
 
   .headers-div-order {
@@ -144,12 +145,12 @@
   min-width: 18rem;
   max-width: 18rem;
   min-height: 3rem;
-  margin-right: 3rem;
+  margin-left: 3rem;
   overflow: hidden;
   text-overflow: ellipsis;
 
   &:first-of-type {
-    min-width: 7rem;
+    // min-width: 7rem;
   }
 
   form {
@@ -503,6 +504,7 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   flex-grow: 1;
   width: auto;
+  border: 0.8px solid rgb(219, 219, 219);
 }
 
 .employee-tag {

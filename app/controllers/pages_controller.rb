@@ -115,11 +115,18 @@ class PagesController < ApplicationController
     # end
     
     @trainings = Training.joins(:sessions).where(company_id: current_user.company_id).where('sessions.date >= ? AND date <= ?', @start_date, @end_date).uniq
+    @trainings = Training.where(id: @trainings.pluck(:id))
     @sessions = @trainings.map{|x| x.sessions}.flatten
+
+    attendees = Attendee.joins(:session).where(sessions: { training: @trainings})
+    @users = User.where(attendees: attendees)
+
+    
     respond_to do |format|
       format.html {overview_path}
       format.js
     end
+
   end
 
   # Display contents catalogue

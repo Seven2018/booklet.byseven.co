@@ -1,4 +1,4 @@
-<div class='user-index-card__inner'>
+<div class='user-index-card__inner d-flex flex-row'>
   <% user = @user if @user.present? %>
   <div class="user-index-info">
     <input class='select-user' id='checkbox-<%= user.id %>' type="checkbox" value="<%= user.id %>" onclick='selectUser(this);'>
@@ -13,11 +13,14 @@
       <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
     <% end %>
   </div>
-  <% @tag_categories.order(position: :asc).each do |tag_cat| %>
-    <div class="user-index-info">
-      <% user.user_tags.where(tag_category_id: tag_cat.id).each do |user_tag| %>
-        <p><%= user_tag.tag.tag_name %></p>
-      <% end %>
-    </div>
+
+  <% unless @tag_categories.nil? %>
+    <% @tag_categories.order(position: :asc).each do |tag_cat| %>
+      <div class="user-index-info">
+        <% user.user_tags.where(tag_category_id: tag_cat.id).each do |user_tag| %>
+          <p><%= user_tag.tag.tag_name %></p>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
