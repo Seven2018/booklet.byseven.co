@@ -32,7 +32,7 @@
                     </div>
                   </div>
                   <div class="booklet-content-card__categories">
-                    <% content.categories.each do |category| %>
+                    <% content.categories.limit(3).each do |category| %>
                       <div class="booklet-content-card__category-pill">
                         <p><%= category.title %></p>
                       </div>
@@ -66,7 +66,7 @@
                   </div>
                 </div>
                 <div class="booklet-folder-card__categories">
-                  <% folder.categories.each do |category| %>
+                  <% folder.categories.limit(3).each do |category| %>
                     <div class="booklet-folder-card__category-pill">
                       <p><%= category.title %></p>
                     </div>

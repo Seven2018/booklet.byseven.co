@@ -350,6 +350,21 @@
 .cards-recommended {
   display: grid;
   grid-gap: 16px;
+
+  .catalogue-row-recommendations {
+    
+    height: 45rem;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5rem;
+    -ms-overflow-style: none;  /* IE and Edge */
+    -webkit-overflow-scrolling: touch;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+  }
 }
 
 @media(min-width: 850px) {

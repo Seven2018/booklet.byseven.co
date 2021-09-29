@@ -26,9 +26,8 @@
         <%= f.submit 'Search', class: 'btn-search' %>
       <% end %>
 
-      <div id="organisation-controls__user-search-clear" class='hidden' onclick='clearSearch(this);'>
-        <p class= "btn-reset-form">Reset</p>
-      </div>
+      <button class='btn-reset' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
+
     <% end %>
     <div class="btn-white" onclick='openFilter();'>
       <i class="fas fa-filter"></i>

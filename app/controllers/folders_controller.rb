@@ -38,6 +38,13 @@ class FoldersController < ApplicationController
     end
   end
 
+  def destroy
+    @folder = Folder.find(params[:id])
+    authorize @folder
+    @folder.destroy
+    redirect_to catalogue_path
+  end
+
   def folder_manage_children
     @folder = Folder.find(params[:select_children][:folder_id])
     return if @folder.company_id != current_user.company_id

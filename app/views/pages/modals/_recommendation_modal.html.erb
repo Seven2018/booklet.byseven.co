@@ -5,7 +5,7 @@
       <h3 class="modal-title" id="myModalLabel"><strong><%= content.title %></strong></h3>
     </div>
     <div class="recommendation-modal__category-pills">
-      <% content.categories.each do |category| %>
+      <% content.categories.limit(3).each do |category| %>
         <div class="recommendation-modal__category-pill">
           <span><%= category.title %></span>
         </div>
