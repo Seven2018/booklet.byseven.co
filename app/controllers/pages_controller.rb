@@ -15,12 +15,6 @@ class PagesController < ApplicationController
       @recommendations = @recommendations.where(user_id: current_user.id)
     end
 
-    if params[:search_trainings].present? && params[:search_trainings][:period] == 'Completed'
-      @trainings = @trainings.where_exists(:sessions, 'date < ?', Date.today).where_not_exists(:sessions, 'date >= ?', Date.today)
-    else
-      @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today)
-    end
-
     # SEARCH TRAININGS
     if params[:search_trainings].present?
       unless params[:search_trainings][:title].blank?
@@ -28,6 +22,13 @@ class PagesController < ApplicationController
       end
       unless params[:search_trainings][:categories].reject{|c| c.empty?}.blank?
         @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:search_trainings][:categories]})
+      end
+      if params[:search_trainings][:period] == 'All'
+        @trainings = @trainings
+      elsif params[:search_trainings][:period] == 'Current'
+        @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today)
+      elsif params[:search_trainings][:period] == 'Completed'
+        @trainings = @trainings.where_exists(:sessions, 'date < ?', Date.today).where_not_exists(:sessions, 'date >= ?', Date.today)
       end
       if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
         unless params[:search_trainings][:employee].blank?

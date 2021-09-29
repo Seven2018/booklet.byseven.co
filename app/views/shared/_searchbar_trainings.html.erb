@@ -6,7 +6,7 @@
     <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
       <%= f.input :employee, collection: @employees_form.order(lastname: :asc).map(&:fullname), required: false %>
     <% end %>
-    <%= f.input :period, collection: ['Current', 'Completed'], required: false, selected: 'Current' %>
+    <%= f.input :period, collection: ['All', 'Current', 'Completed'], required: false, selected: 'All' %>
     <div class="searchbar__checkboxes-container">
       <%= f.label 'Themes' %>
       <div class="searchbar__checkboxes-container-pseudo-input" onclick='openFilterInput();'>
