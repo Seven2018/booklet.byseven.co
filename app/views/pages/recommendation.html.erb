@@ -109,6 +109,15 @@
         <div class="book-users-card recommendation-users-card-template hidden">
           <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
           <input type="checkbox" class="book-users-checkbox hidden" checked=''>
+          <%= simple_form_for :recommend, url: recommend_path, remote: true do |f| %>
+            <% if @folder.present? %>
+              <%= f.hidden_field :folder_id, value: @folder.id %>
+            <% else %>
+              <%= f.hidden_field :content_id, value: @content.id %>
+            <% end %>
+            <%= f.hidden_field :user_id %>
+            <%= f.submit '', class: 'hidden-submit hidden' %>
+          <% end %>
           <div class="book-users-card-infos">
           </div>
         </div>
@@ -141,7 +150,9 @@
     </div>
   </div>
   <div class="tab-content">
-    <%= paginate @users, remote: true %>
+    <div id="paginate-container">
+      <%= paginate @users, remote: true, param_name: :page %>
+    </div>
     <div class="recommendation-main-container recommendation-main-container-unfiltered">
       <%= render 'pages/partials/recommendation_users_list', users: @users, unfiltered: @unfiltered, content: @content, folder: @folder, tab: '', tag_categories: @tag_categories %>
     </div>
@@ -309,6 +320,7 @@
       new_card_infos.appendChild(new_info_name)
       new_card_infos.appendChild(new_info_email)
       document.querySelector('.recommendation-users-selected').appendChild(new_card)
+      new_card.querySelector('#recommend_user_id').value = user_card.id.split('-')[1]
     } else {
       selected_card = selected_container.querySelector('#' + user_card.id)
       if (selected_card != null) {
@@ -333,11 +345,13 @@
 
   function sendRecommendation() {
     selected_container = document.querySelector('.recommendation-users-selected')
-    storage = document.querySelector("#recommend_user_id")
-    button = document.querySelector('.recommend').querySelector('.hidden-submit')
+    // storage = document.querySelector("#recommend_user_id")
     selected_container.querySelectorAll('.selected').forEach((card) => {
-      storage.value = card.id.split('-')[1]
+      button = card.querySelector('.recommend').querySelector('.hidden-submit')
+      // setTimeout(function(){console.log('test')}, 3000);
+      // storage.value = card.id.split('-')[1]
       button.click()
+      card.remove()
     })
   }
 
@@ -356,4 +370,19 @@
     searchbar.querySelector('.btn-search').click()
   }
 
+  function infiniteScroll() {
+    if ($("nav ul.pagination a[rel=next]").length) {
+      $('.users-index').infiniteScroll({
+        path: "nav ul.pagination a[rel=next]",
+        append: ".recommendation-users-card",
+        hideNav: "nav ul.pagination",
+        history: false,
+        scrollThreshold: 3000,
+        debug: false,
+        loadOnScroll: true,
+      });
+    };
+  }
+
+  infiniteScroll()
 </script>
