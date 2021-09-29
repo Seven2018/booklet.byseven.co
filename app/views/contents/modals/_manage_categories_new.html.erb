@@ -29,7 +29,7 @@
       <div class='hidden-form-category-ajax hidden'>
         <%= simple_form_for Category.new, remote: true do |f| %>
           <%= f.text_field :title, placeholder: 'New Theme', style: 'height: 100%;' %>
-          <%= f.hidden_field :page, value: params[:action] %>
+          <%= f.hidden_field :page, value: request.path %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
       </div>

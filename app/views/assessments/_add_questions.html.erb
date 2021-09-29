@@ -5,6 +5,7 @@
       <div class='flex-column-between-left'>
       </div>
       <a href="javascript:;" class='assessment_add_option btn btn-edit-white' onclick="addAnswer(this);">Add Answer</a>
+      <%= hidden_field_tag 'answer[]', false %>
     </div>
     <div class="hidden" id="add_options_form">
       <div class="options_line">
@@ -14,23 +15,12 @@
         </div>
         <div class="flex-row-between-centered">
           <%= label_tag 'Correct Answer' %>
-          <%= check_box_tag 'test[]', true, false, class: 'checkbox' %>
-          <%= hidden_field_tag 'answer[]', false %>
+          <%= check_box_tag 'test[]', true, false, class: 'checkbox', onclick: 'selectAnswer(this);' %>
         </div>
         <div style='cursor: pointer;' onclick='removeAnswer(this)'>
           <i class="fas fa-times"></i>
         </div>
       </div>
-      <script>
-        $('input[type="checkbox"]').on('change', function(e){
-          if($(this).prop('checked'))
-          {
-              $(this).next().val(true);
-          } else {
-              $(this).next().val(false);
-          }
-        });
-      </script>
     </div>
   </div>
   <div style=" display: flex; justify-content: flex-start;margin-top:3rem;">
@@ -48,14 +38,3 @@
     </div>
   </div>
 <% end %>
-
-<script>
-  $('input[type="checkbox"]').on('change', function(e){
-    if($(this).prop('checked'))
-    {
-        $(this).next().val(1);
-    } else {
-        $(this).next().val(0);
-    }
-  });
-</script>

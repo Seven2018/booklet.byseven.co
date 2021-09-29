@@ -22,7 +22,7 @@ class AssessmentsController < ApplicationController
     @question = AssessmentQuestion.create(question: params[:assessment_question][:question], question_type: params[:assessment_question][:question_type], mod_id: @form.id, position: @form.assessment_questions.count + 1)
     options = {}
     params[:options].reject!(&:empty?).each_with_index do |key, index|
-      options[key] = params[:answer][index]
+      options[key] = params[:answer][0].split(',')[index]
     end
     @question.update(options: options)
     respond_to do |format|
@@ -37,7 +37,7 @@ class AssessmentsController < ApplicationController
     @question.update(question: params[:assessment_question][:question])
     options = {}
     params[:options].reject!(&:empty?).each_with_index do |key, index|
-      options[key] = params[:answer][index]
+      options[key] = params[:answer][0].split(',')[index]
     end
     @question.update(options: options)
     respond_to do |format|

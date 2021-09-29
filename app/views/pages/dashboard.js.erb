@@ -1,2 +1,2 @@
-document.querySelector('.dashboard-trainings').innerHTML = '<%= j render("pages/partials/dashboard_trainings") %>';
+document.querySelector('.dashboard-trainings').innerHTML = '<%= j render("pages/partials/dashboard_trainings", trainings: @trainings) %>';
 document.querySelector('.recommendations-container').innerHTML = '<%= j render("pages/partials/dashboard_recommendations_results") %>';

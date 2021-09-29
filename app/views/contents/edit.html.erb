@@ -403,4 +403,14 @@
   function removeAnswer(element) {
     element.closest('.options_line').remove()
   }
+
+  function selectAnswer(element) {
+    container = element.closest('.mod-assessment-questions-options-mcq')
+    storage = container.querySelector('#answer_')
+    results = []
+    container.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+      results.push(checkbox.checked)
+    })
+    storage.value = results
+  }
 </script>
