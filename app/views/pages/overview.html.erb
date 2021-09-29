@@ -2,7 +2,7 @@
   <div class="flex-row-between-centered">
     <div class="searchbar" id="overview-controls__user-search">
       <i class="fas fa-search catalogue-controls__search-icon"></i>
-      <%= simple_form_for :search, url: overview_path, method: :get do |f| %>
+      <%= simple_form_for :search, url: overview_path, method: :get, remote: true do |f| %>
         <%= f.text_field :title, placeholder: 'Search', label: false %>
         <%= f.input :start_date, label: 'From', input_html: {class: 'datepicker', value: @start_date} %>
         <%= f.input :end_date, label: 'Until', input_html: {class: 'datepicker', value: @end_date} %>

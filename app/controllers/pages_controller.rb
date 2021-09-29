@@ -94,11 +94,9 @@ class PagesController < ApplicationController
     @trainings = Training.where(id: @trainings.pluck(:id))
     @sessions = @trainings.map{|x| x.sessions}.flatten
 
-
     # SEARCHING CONTENTS 
     unless params[:reset]
       if params[:search].present? 
-        
         unless params[:search][:title].blank?
           @trainings = @trainings.search_trainings("#{params[:search][:title]}")
         end
