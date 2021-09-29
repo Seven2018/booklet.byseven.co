@@ -7,7 +7,6 @@
           <i class="fas fa-ellipsis-v"></i>
           <div class="content-dropdown hidden">
             <%= link_to 'Recommendation', recommendation_path(folder_id: folder.id) %>
-            <a href="">Infos</a>
             <%= link_to 'Edit', edit_folder_path(folder) %>
             <%= link_to 'Delete', folder_path(folder, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}%>
           </div>
@@ -44,10 +43,12 @@
           <p><%= category.title %></p>
         </div>
       <% end %>
-      <% folder.children_categories.each do |category| %>
-        <div class="booklet-content-card__category-pill">
-          <p><%= category.title %></p>
-        </div>
+      <% unless folder.categories.count >= 3 %>
+        <% folder.children_categories.first(3 - folder.categories.count).each do |category| %>
+          <div class="booklet-content-card__category-pill">
+            <p><%= category.title %></p>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
