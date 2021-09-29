@@ -8,7 +8,7 @@
   <p>Email</p>
 </div>
 
-<% unless @tag_categories.nil? %>
+<% unless @tag_categories.empty? %>
   <% @tag_categories.order(position: :asc).each do |tag_category| %>
     <div class="headers-div">
       <% if params[:edit] == "edit" %>
@@ -33,15 +33,15 @@
       <% end %>
     </div>
   <% end %>
-<% end %>
 
-<% if params[:edit] == "edit" %>
-  <%= link_to organisation_path(edit: "none") do %>
-    <i class="fas fa-check editing-tag-category"></i>
-  <% end %>
-<% elsif params[:edit] == "none" || !params[:edit].present? %>
-  <%= link_to organisation_path(edit: "edit") do %>
-    <i class="fas fa-pencil-alt editing-tag-category"></i>
+  <% if params[:edit] == "edit" %>
+    <%= link_to organisation_path(edit: "none") do %>
+      <i class="fas fa-check editing-tag-category"></i>
+    <% end %>
+  <% elsif params[:edit] == "none" || !params[:edit].present? %>
+    <%= link_to organisation_path(edit: "edit") do %>
+      <i class="fas fa-pencil-alt editing-tag-category"></i>
+    <% end %>
   <% end %>
 <% end %>
 

@@ -124,7 +124,7 @@ class PagesController < ApplicationController
     complete_profile
     if current_user.company_id.present?
       # SEARCHING CONTENTS 
-      @contents = Content.where(company_id: current_user.company.id).order(updated_at: :asc)
+      @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
       @folders = Folder.where(company_id: current_user.company.id).order(updated_at: :desc)
       if params[:filter_catalogue].present? && params[:filter_catalogue][:category].reject { |c| c.empty? }.present?
         if params[:filter_catalogue][:searched].present?
@@ -142,8 +142,8 @@ class PagesController < ApplicationController
           @folders = @folders.joins(:folder_categories).where(company_id: current_user.company_id, folder_categories: {category_id: selected_filters}).uniq
           @filtered_categories = Category.where(id: selected_filters)
         end
-        @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
-        @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
+        # @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
+        # @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
       end
       respond_to do |format|
         format.html {catalogue_path}

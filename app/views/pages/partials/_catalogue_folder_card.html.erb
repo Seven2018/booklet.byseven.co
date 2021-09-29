@@ -9,7 +9,7 @@
             <%= link_to 'Recommendation', recommendation_path(folder_id: folder.id) %>
             <a href="">Infos</a>
             <%= link_to 'Edit', edit_folder_path(folder) %>
-            <%= link_to 'Delete', folder_path(folder, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
+            <%= link_to 'Delete', folder_path(folder, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}%>
           </div>
         <% end %>
       </div>
@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="booklet-folder-card__categories">
-      <% folder.categories.each do |category| %>
+      <% folder.categories.limit(3).each do |category| %>
         <div class="booklet-folder-card__category-pill">
           <p><%= category.title %></p>
         </div>

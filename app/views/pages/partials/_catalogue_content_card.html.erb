@@ -15,7 +15,7 @@
                 <a href="">Infos</a>
                 <%= link_to 'Edit', edit_content_path(content) %>
                 <%= link_to 'Duplicate', duplicate_content_path(content) %>
-                <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}, remote: true %>
+                <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'} %>
               </div>
             <% end %>
           </div>
@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="booklet-content-card__categories">
-          <% content.categories.each do |category| %>
+          <% content.categories.limit(3).each do |category| %>
             <div class="booklet-content-card__category-pill">
               <p><%= category.title %></p>
             </div>
@@ -55,7 +55,7 @@
           <i class="fas fa-layer-group"></i>
         </div>
         <div class="booklet-content-card-bottom__mods">
-          <% content.mods.each do |mod| %>
+          <% content.mods.order(position: 'asc').each do |mod| %>
             <div class="booklet-content-card-bottom__mod">
               <% if mod.mod_type == 'text' %>
                 <i class="fas fa-file-alt"></i>
