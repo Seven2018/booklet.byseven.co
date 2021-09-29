@@ -136,50 +136,52 @@
       <div class="overview-trainings">
 
         <div class='organisation-page' data-fl-scrolls='{"orientation": "horizontal"}'>
-          <div class='organisation-users'>
-            <div class='user-index-headers'>
-              <div class="headers-div">
-                <p>Name</p>
-              </div>
-              <div class="headers-div">
-                <p>Trainings</p>
-              </div>
-              <div class="headers-div">
-                <p>Workshops</p>
-              </div>
-              <div class="headers-div">
-                <p>Workshops completed</p>
-              </div>
-            </div>
-            <div class='users-index'>
-              <% @users.each do |user| %>
-                <div class='user-index-card user-card-<%= user.id %>'>
-                
-                  <div class='user-index-card__inner d-flex flex-row'>
-                    <div class="user-index-info streched-link">
-                    <%= link_to user_path(user) do %>
-                      <p class='user-name' data-toggle="tooltip" title="<%= user.fullname %>" style='color: #F26419'><b><%= user.firstname %> <%= user.lastname %></b></p>
-                    <% end %>
-                    </div>
-
-                    <div class="user-index-info streched-link">
-                      <p class="ml-3"><%= user.sessions.select(:training_id).distinct.count %></p>
-                    </div>
-
-                    <% workshops = Workshop.joins(session: :attendees).where(attendees: {user_id: user.id}) %>
-                    <div class="user-index-info streched-link">
-                      <p class="ml-3"><%= workshops.count %></p>
-                    </div>
-
-                    <div class="user-index-info streched-link">
-                      <p class="ml-3"><%= workshops.where(attendees: {status: "Completed"}).count %></p>
-                    </div>
-                  </div>
-            
+          <% unless @users.empty? %>
+            <div class='organisation-users'>
+              <div class='user-index-headers'>
+                <div class="headers-div">
+                  <p>Name</p>
                 </div>
-              <% end %>
+                <div class="headers-div">
+                  <p>Trainings</p>
+                </div>
+                <div class="headers-div">
+                  <p>Workshops</p>
+                </div>
+                <div class="headers-div">
+                  <p>Workshops completed</p>
+                </div>
+              </div>
+              <div class='users-index'>
+                <% @users.each do |user| %>
+                  <div class='user-index-card user-card-<%= user.id %>'>
+                  
+                    <div class='user-index-card__inner d-flex flex-row'>
+                      <div class="user-index-info streched-link">
+                      <%= link_to user_path(user) do %>
+                        <p class='user-name' data-toggle="tooltip" title="<%= user.fullname %>" style='color: #F26419'><b><%= user.firstname %> <%= user.lastname %></b></p>
+                      <% end %>
+                      </div>
+
+                      <div class="user-index-info streched-link">
+                        <p class="ml-3"><%= user.sessions.select(:training_id).distinct.count %></p>
+                      </div>
+
+                      <% workshops = Workshop.joins(session: :attendees).where(attendees: {user_id: user.id}) %>
+                      <div class="user-index-info streched-link">
+                        <p class="ml-3"><%= workshops.count %></p>
+                      </div>
+
+                      <div class="user-index-info streched-link">
+                        <p class="ml-3"><%= workshops.where(attendees: {status: "Completed"}).count %></p>
+                      </div>
+                    </div>
+              
+                  </div>
+                <% end %>
+              </div>
             </div>
-          </div>
+          <% end %>
         </div>
       </div>
     </div>
