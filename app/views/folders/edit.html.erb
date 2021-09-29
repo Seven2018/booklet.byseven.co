@@ -1,9 +1,34 @@
 <% if ['Super Admin'].include?(current_user.access_level) || (@folder.company_id == current_user.company_id) %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'folders/partials/show_anchors', folder: @folder, page: 'edit', access: "" %>
+      <%= render 'folders/partials/show_anchors', folder: @folder %>
     </div>
-    
+    <div id="content-show-container-right">
+      <div class="content-add">
+        <div class="content-add-left">
+          <div class="content-show-attributes-left">
+            <%= render 'folders/partials/show_attributes_left', folder: @folder %>
+          </div>
+          <div class="button-add-catalogue">
+            <%= simple_form_for :select_children, url: folder_manage_children_path, method: :get, remote: true do |f| %>
+              <%= f.hidden_field :folder_id, value: @folder.id %>
+              <%= f.hidden_field :folder_ids %>
+              <%= f.hidden_field :content_ids %>
+              <%= f.submit '', class: 'hidden-submit hidden' %>
+            <% end %>
+            <%= link_to '', folder_path(@folder), class: 'hidden-link hidden' %>
+            <div class="btn-blue" onclick='saveAndConfirm();'>
+              <p>Confirm</p>
+            </div>
+          </div>
+        </div>
+        <div class="content-add-right">
+          <div class="content-show-attributes-right">
+            <%= render 'folders/partials/show_attributes_right', folder: @folder %>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="saved-message hidden">
       <p>SAVED!</p>
     </div>
@@ -14,6 +39,14 @@
     <h1>Access restricted</h1>
   </div>
 <% end %>
+
+<!-- Modals -->
+
+<div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'folders/modals/manage_categories', folder: @folder %>
+  </div>
+</div>
 
 <script>
   doubleClickGuardian = false
@@ -32,7 +65,24 @@
   }
 
   function saveAndConfirm() {
-    document.querySelector('.edit_content').querySelector('.hidden-submit').click()
+    container = document.querySelector('.content-info__folder-content-list')
+    selected_folders = []
+    folder_storage = document.querySelector('#select_children_folder_ids')
+    selected_contents = []
+    content_storage = document.querySelector('#select_children_content_ids')
+    container.querySelectorAll('input[type="checkbox"]:checked').forEach((checkbox) => {
+      card =  checkbox.closest('.edit-folder-card')
+      if (card.id.split('-')[0] == 'folder') {
+        selected_folders.push(card.id.split('-')[1])
+      } else {
+        selected_contents.push(card.id.split('-')[1])
+      }
+    })
+    folder_storage.value = selected_folders
+    content_storage.value = selected_contents
+    document.querySelector('.select_children').querySelector('.hidden-submit').click()
+    console.log('click')
+    document.querySelector('.edit_folder').querySelector('.hidden-submit').click()
     document.querySelector('.hidden-link').click()
   }
 
@@ -47,24 +97,6 @@
     })
   }
 
-  function toggleMod(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode;
-    if (block.style.maxHeight == '61px') {
-      block.style.maxHeight = '100000px';
-      block.classList.add('active');
-    } else if (block.style.maxHeight == '100000px' || block.style.maxHeight == '' ) {
-      block.style.maxHeight = '61px';
-      block.classList.remove('active');
-    }
-  }
 
   function saveMod(element) {
     if (doubleClickGuardian == false) {
@@ -83,61 +115,6 @@
     }
   }
 
-  function addMod(type) {
-    if (type == 'text') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-text')
-      template = document.querySelector('.add-text-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.content-add-mods')
-      content.append(newDiv)
-    } else if (type == 'video') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-video')
-      template = document.querySelector('.add-video-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.content-add-mods')
-      content.append(newDiv)
-    } else if (type == 'quiz') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-quiz')
-      template = document.querySelector('.add-quiz-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.content-add-mods')
-      content.append(newDiv)
-    }
-  }
-
-  function contentAdd() {
-    var contentbar = document.querySelector('.content-show-mods-controls')
-    var iconedit = document.querySelector('#icon-edit')
-    var iconclose = document.querySelector('#icon-close')
-    var contentblock = document.querySelectorAll('.content-show-mods-controls-block')
-
-    if (contentbar.style.display === "none") {
-      contentbar.style.display = "flex";
-      iconedit.classList.add('hidden')
-      iconclose.classList.remove('hidden')
-      iconclose.classList.add('icon-transform')
-      setTimeout(function(){
-      iconclose.style.transform = ('rotate(45deg)')
-      contentbar.style.width = '100%'
-      contentblock.forEach((content) => {
-        content.style.width = '33.3%'
-      })
-      },1);
-    } else {
-      iconclose.style.transform = ('rotate(-45deg)')
-      contentbar.style.width = '0'
-      contentbar.style.display = "none"
-      iconclose.classList.add('hidden')
-      iconedit.classList.remove('hidden')
-    }
-  }
-
   function autoSubmitTheme(element) {
     element.closest('form').querySelector('.hidden-submit').click()
   }
@@ -148,17 +125,6 @@
     modal.querySelector('.cancel-close').click();
   }
 
-  function dismissForm(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true;
-      setTimeout(function(){
-        doubleClickGuardian = false;
-      }, 100);
-      document.querySelector('.hidden-mod-form').classList.add('hidden');
-      element.parentNode.parentNode.querySelector('.hidden-submit').click();
-    }
-  }
-
   function showDelete(element) {
     // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
     trash = element.parentNode.querySelector('.category-delete');
@@ -166,29 +132,6 @@
       trash.style.opacity = 1;
     } else {
       trash.style.opacity = 0;
-    }
-  }
-
-  function saveOnSelect(element) {
-    element.closest('form').querySelector('.hidden-submit').click();
-  }
-
-  function closeModalOnSubmit(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      title = element.closest('.modal-body').querySelector('#mod_title');
-      //f (title.value.innerHTML != null) {
-        modal = element.closest('.modal')
-        modal.querySelector('.cancel-close').click()
-        modal.querySelector('.hidden-submit').click()
-        if (modal.querySelector('#mod_title') != null) {
-          modal.querySelector('#mod_title').value = ''
-        }
-        if (modal.querySelector('trix-editor') != null) {
-          modal.querySelector('trix-editor').value = ''
-        }
-      //}
-      setTimeout(function(){doubleClickGuardian = false}, 250)
     }
   }
 
@@ -225,37 +168,14 @@
     });
   }
 
-  function addQuestionToQuiz(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      $(element).hide();
-      $(element).parent().parent().find("#assessment-show-content").append($(element).parent().find("#add_questions_form").html())
-      console.log($(element).parent().find("#add_questions_form"))
-      setTimeout(function(){doubleClickGuardian = false}, 250)
+  function selectElement(element) {
+    card = element.closest('.edit-folder-card')
+    checkbox = card.querySelector('input[type="checkbox"]')
+    checkbox.checked = !checkbox.checked
+    if (checkbox.checked) {
+      card.classList.add('selected')
+    } else {
+      card.classList.remove('selected')
     }
-  }
-
-  function removeQuestion(element) {
-    question = element.closest('#new_assessment_question')
-    element.closest('.content-quiz').querySelector('#addQuestion').style.display = 'flex'
-    question.parentNode.removeChild(question)
-  }
-
-  function addAnswer(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      $(element).parent().children('div').append($("#add_options_form").html());
-      setTimeout(function(){doubleClickGuardian = false}, 250)
-    }
-  }
-
-  function openEditQuestionForm(element) {
-    card = element.closest('.mod-assessment-questions-card')
-    form = card.querySelector('.hidden-form-ajax')
-    card.innerHTML = form.innerHTML
-  }
-
-  function removeAnswer(element) {
-    element.closest('.options_line').remove()
   }
 </script>

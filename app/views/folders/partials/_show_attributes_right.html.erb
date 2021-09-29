@@ -1,48 +1,32 @@
 <div class="content-show-infos-delete orange">
   <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-    <%= link_to edit_folder_path(folder) do %>
-      <i class="fas fa-pencil-alt py-3 pr-3 mr-3"></i>
-    <% end %>
-    <% if page == 'edit' %>
-      <%= link_to folder_path(folder), method: :delete, data: {confirm: 'Are you sure ?'} do %>
-        <i class="fas fa-trash-alt py-3"></i>
+    <% unless params[:action] == 'edit' %>
+      <%= link_to edit_folder_path(folder) do %>
+        <i class="fas fa-pencil-alt py-3 pr-3 mr-3"></i>
       <% end %>
+    <% end %>
+    <%= link_to folder_path(folder), method: :delete, data: {confirm: 'Are you sure ?'} do %>
+      <i class="fas fa-trash-alt py-3"></i>
     <% end %>
   <% end %>
 </div>
 <div class="content-show-infos-duration" >
   <p style='color:#808080;'><b>Duration</b> <i class="fas fa-info-circle" data-toggle='tooltip' title='Duration is automatically calculated from the duration of each text, video, or quiz element.'></i></p>
-  <p><%= folder.duration %> min <i class="far fa-clock"></i></p>
+  <% hours = folder.duration / 60 %>
+  <% minutes = folder.duration % 60 %>
+  <p><%= hours %>h<%= '%02d' % minutes %> <i class="far fa-clock"></i></p>
 </div>
 <div class="content-show-infos-themes">
     <p style='color:#808080;'><b>Themes</b></p>
     <div class="theme-btns">
-      <% categories = folder.children_categories %>
+      <% categories = folder.categories %>
       <% unless categories.empty? %>
         <% categories.each do |category| %>
-          <p class="category-tag"><%= category.title %></p>
+          <p class="category-tag__folder"><%= category.title %></p>
         <% end %>
       <% end %>
-    </div>
-</div>
-<div>
-  <p style='color:#808080;'>
-    <b>Program Type</b>
-  </p>
-  <div class="content-type-radio">
-    <div class="flex-row-between-centered">
-      <% if folder.children_types.include? ('Synchronous') %>
-        <p style='margin-right: 5px;'>In Person</p>
-        <i class="fas fa-chalkboard-teacher" style='margin-left: 13px; color:#5B92C5;'></i>
-      <% elsif folder.children_types.include? ('Asynchronous') %>%>
-        <p style='margin-right: 5px;'>Online</p>
-        <i class="fas fa-laptop"></i>
+      <% if params[:action] == 'edit' || params[:action] == 'folder_link_category' %>
+        <a data-toggle='modal' data-target='#addTheme' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#5b92c5;'></i></a><br>
       <% end %>
     </div>
-  </div>
 </div>
-
-
-
-
-
