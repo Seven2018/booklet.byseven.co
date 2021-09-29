@@ -109,11 +109,12 @@
             <div class="booklet-card-objective-booking">
               <div class='book-dates'>
               <p><b>Available From:</b></p>
-                <%= simple_form_for :session, url: book_sessions_path, method: :get do |f| %>
+                <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
                   <div class="input-underline"><%= f.input :date, label: false, input_html: {class: 'datepicker-range'}, placeholder: 'Select Date' %></div>
     
                   <%= f.hidden_field :content_id, value: content.id %>
                   <%= f.hidden_field :selected_users, value: selected_users %>
+                  <%= f.hidden_field :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i, onchange: 'duplicateCost(this);'} %>
                   <%= f.hidden_field :training_id %>
                   <%= f.submit '', class: 'hidden-submit hidden' %>
                 <% end %>

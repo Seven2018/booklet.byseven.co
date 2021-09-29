@@ -26,7 +26,7 @@
       <%= f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Date.today.year - 70,
                               end_year: Date.today.year %>
       <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
-      <div class="new_user_tags">
+<!--       <div class="new_user_tags">
         <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
           <% if category.tags.present? %>
             <div class="organisation-filter-block-user">
@@ -46,7 +46,7 @@
             </div>
           <% end %>
         <% end %>
-      </div>
+      </div> -->
       <div style=" display: flex; justify-content: flex-end;margin-top:3rem;">
         <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
         <%= button_tag type: 'submit', class: 'btn-orange' do %>
