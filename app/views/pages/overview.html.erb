@@ -6,10 +6,9 @@
         <%= f.text_field :title, placeholder: 'Search', label: false %>
         <%= f.input :start_date, label: 'From', input_html: {class: 'datepicker', value: @start_date} %>
         <%= f.input :end_date, label: 'Until', input_html: {class: 'datepicker', value: @end_date} %>
-        <%= f.hidden_field :end_date, value: '' %>
         <%= f.submit 'Search', class: 'btn-search' %>
       <% end %>
-      <% if params[:search].present? && !params[:search][:title].blank? %>
+      <% if params[:search].present? %>
         <%= link_to 'Reset', class: "btn-reset-form", reset_path: overview_path(reset: "") %>
       <% end %>
     </div>
