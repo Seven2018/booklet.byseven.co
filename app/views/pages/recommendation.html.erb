@@ -141,7 +141,7 @@
     </div>
   </div>
   <div class="tab-content">
-    <%= paginate @users, remote: true %>
+    <%= paginate @users %>
     <div class="recommendation-main-container recommendation-main-container-unfiltered">
       <%= render 'pages/partials/recommendation_users_list', users: @users, unfiltered: @unfiltered, content: @content, folder: @folder, tab: '', tag_categories: @tag_categories %>
     </div>
