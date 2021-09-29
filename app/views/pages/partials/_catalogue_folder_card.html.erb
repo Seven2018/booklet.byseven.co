@@ -1,7 +1,7 @@
 <div class="booklet-folder-card">
   <div class="booklet-folder-card-top booklet-card-top">
     <% if params[:action] == 'catalogue' %>
-      <%= link_to '', folder_path(folder), class: 'stretched-link', data: {toggle: 'tooltip'}, title: folder.title %>
+      
       <div class="booklet-folder-card__options" onclick="openContentMenu(this);">
         <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
           <i class="fas fa-ellipsis-v"></i>
@@ -16,7 +16,9 @@
     <div class="booklet-folder-card__top-info">
       <div>
         <i class="fas fa-folder"></i>
-        <h3 data-toggle='tooltip' title='<%= folder.title %>'><b><%= folder.title %></b></h3>
+        <%= link_to folder_path(folder) do %>
+          <h3 data-toggle='tooltip' title='<%= folder.title %>'><b><%= folder.title %></b></h3>
+        <% end %>
       </div>
       <div>
         <p class='booklet-folder-card__duration'><%= folder.duration %> Minutes</p>
@@ -33,7 +35,9 @@
           </div>
         <% end %>
         <% if UserInterest.where(folder_id: folder.id).where.not(recommendation: nil).present? %>
-          <p style='color:rgba(91, 146, 197, 1);'>R</p>
+          <p class="px-3" style='color:rgba(91, 146, 197, 1);'>
+            <strong>R</strong>
+          </p>
         <% end %>
       </div>
     </div>
