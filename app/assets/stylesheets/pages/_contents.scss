@@ -2,17 +2,19 @@
 
 #content-show-container {
   position: relative;
+  display: flex;
 }
 
 #content-show-container-left {
-  display: none;
+  // display: none;
   padding: 25px;
-  width: 26rem;
+  display: none;
+  // width: 26rem;
   border-right: 1px solid black;
   min-height: calc(100vh - 50px);
-  position: fixed;
-  top: 50px;
-  left: 0;
+  // position: fixed;
+  // top: 50px;
+  // left: 0;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
@@ -24,16 +26,19 @@
   }
   @include from-medium-high {
     display: flex;
+    min-width: 315px;
+    width: 315px;
   }
 }
 
 #content-show-container-right {
-  margin-left: 0rem;
-  padding: 1rem;
-  margin-bottom: 100px;
+  // margin-left: 0rem;
+  // padding: 1rem;
+  // margin-bottom: 100px;
+  width: 100%;
 
   @include from-medium-high {
-    margin-left: 20rem;
+    // margin-left: 20rem;
     padding: 5rem;
     margin-bottom: 0px;
   }
@@ -41,6 +46,21 @@
 
 .content-show-attributes {
   margin-bottom: 20px;
+}
+
+.content-show-attributes-right, .content-add-left, .content-show-attributes-right-acquired {
+  padding: 20px;
+  background-color: #FDFDFD;
+  border: 1px solid #E7E7E5D6;
+  border-radius: 5px;
+}
+
+.content-add-left {
+  min-height: 85vh;
+}
+
+.content-show-attributes-right-acquired {
+  margin-top: 40px;
 }
 
 .content-show-infos-duration {
@@ -90,6 +110,16 @@
   .category-tag {
     background: #F8D9C8;
     color: #F26419;
+    padding: 0 .5rem;
+    border-radius: 5px;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    margin-right: 5px;
+  }
+
+  .category-tag__folder {
+    background-color: rgba(91, 146, 197, .7);
+    color: white;
     padding: 0 .5rem;
     border-radius: 5px;
     font-size: 1.4rem;
@@ -323,6 +353,10 @@
   }
 }
 
+.content-add-left {
+  
+}
+
 .content-add-right {
   display: none;
   flex-direction: column;
@@ -441,13 +475,13 @@
     margin-bottom: 0px;
   }
 
-  #content_title {
+  #content_title, #folder_title {
     font-weight: 800;
     font-size: 1.8rem !important;
     border-radius: 5px 5px 0px 0px;
   }
 
-  #content_description {
+  #content_description, #folder_description {
     border-top: none;
     border-radius: 0px 0px 5px 5px;
   }

@@ -1,0 +1,1 @@
+document.querySelector('.content-info__folder-content-list').innerHTML = '<%= j render("folders/partials/edit_manage_children", folder: @folder, folders: @folders, contents: nil) %>' + '<%= j render("folders/partials/edit_manage_children", folder: @folder, folders: nil, contents: @contents) %>';

@@ -1,0 +1,49 @@
+<div class="content-info">
+  <%= simple_form_for folder, remote: true do |f| %>
+    <%= f.input :title, label: false, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled' %>
+    <%= f.input :description, label: false, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Write the objective or purpose of the workshop here.' %>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+  <% end %>
+  <div class="content-add-right-mobile">
+    <div style='display: flex; justify-content: space-between; margin-top:20px'>
+      <div class="content-show-infos-duration" >
+        <p style='color:#808080;'><b>Duration</b><i class="fas fa-info-circle" data-toggle='tooltip' title='Duration is automatically calculated from the duration of each text, video, or quiz element.'></i></p>
+        <p><%= folder.children_contents.map{|x| x.duration}.sum %> min <i class="far fa-clock"></i></p>
+      </div>
+      <div><p style='color:#808080;'><b>Workshop Type</b></p>
+        <div class="content-type-radio">
+          <div class="content-type-icons">
+            <i class="fas fa-chalkboard-teacher" style='margin: 3px 0px 13px 0px; color:#F26419;'></i>
+            <i class="fas fa-laptop"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-show-infos-themes">
+      <p style='color:#808080;'><b>Themes</b></p>
+      <div class="theme-btns">
+        <% categories = folder.categories %>
+        <% categories.each do |category| %>
+          <p class="category-tag"><%= category.title %></p>
+        <% end %>
+        <a data-toggle='modal' data-target='#addTheme' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#F26419;'></i></a><br>
+      </div>
+    </div>
+  </div>
+  <div class="content-info__folder">
+    <p>Add Content</p>
+    <div class="searchbar">
+      <i class="fas fa-search catalogue-controls__search-icon"></i>
+      <%= simple_form_for :search, url: edit_folder_path(@folder), method: :get, remote: true do |f| %>
+        <%= f.input :title, placeholder: 'Search', label: false, autocomplete: 'off', required: false %>
+        <%= f.hidden_field :filtered %>
+        <%= f.submit 'Search', class: 'btn-search' %>
+        <button class='btn-reset' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
+      <% end %>
+    </div>
+    <div class="content-info__folder-content-list">
+      <%= render 'folders/partials/edit_manage_children', folder: @folder, folders: @folders, contents: nil %>
+      <%= render 'folders/partials/edit_manage_children', folder: @folder, folders: nil, contents: @contents %>
+    </div>
+  </div>
+</div>

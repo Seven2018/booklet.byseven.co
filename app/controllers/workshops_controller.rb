@@ -4,6 +4,8 @@ class WorkshopsController < ApplicationController
   # Show workshop view_mode
   def show
     authorize @workshop
+    @attendees = @workshop.session.attendees
+    @current_attendee = @attendees.find_by(user: current_user)
   end
 
   # Show workshop edit_mode

@@ -2,29 +2,55 @@
 
 .recommendation-sticky {
   width: 100%;
-  background-color: #f7f7f7;
+  background-color: #fff;
   padding-bottom: 1rem;
-  position: sticky;
-  top: 0;
+  // position: sticky;
+  // top: 0;
   z-index: 100;
 
   @include from-medium {
     top: 5rem;
   }
+
+  h1 {
+    margin-top: 3rem;
+  }
 }
 
-.recommendation-info {
+.recommendation-infos {
   padding-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+
+  .recommendation-infos-display {
+    width: 25rem;
+    height: 15rem;
+    margin: 0 2rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #E7E7E7;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+  }
 }
 
 .recommendation-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  & > div {
-    margin: 3rem 0;
-  }
-
-  .search_name {
-    margin: 0;
+  h3, & > div {
+    margin: 3rem 0 1rem 0;
   }
 
   .index-controls-buttons {
@@ -64,6 +90,7 @@
 }
 
 #recommendation-controls__user-search {
+  position: relative;
 
   input {
     padding: 0 5rem 0 3.5rem;
@@ -106,29 +133,10 @@
 .recommendation-controls__search-icon {
   position: absolute;
   z-index: 150;
-  top: 173px;
-  left: 12px;
+  top: 1rem;
+  left: 1.2rem;
   color: #808080;
 }
-
-#recommendation-tags-filter {
-  display: flex;
-  width: 100%;
-  min-height: 8rem;
-  position: relative;
-  margin-bottom: 1rem;
-  padding-top: 3rem;
-  position: sticky;
-  top: 0;
-  right: 0;
-  z-index: 10;
-  background-color: #f7f7f7;
-
-  h3 {
-    font-weight: 700;
-  }
-}
-
 
 // USERS LIST
 
@@ -137,31 +145,70 @@
   display: flex;
 }
 
+.recommendation-users-selected {
+  width: 50rem;
+  height: 30rem;
+  margin-bottom: 6rem;
+  overflow-y: scroll;
+  border: 0.8px solid #E7E7E7;
+}
+
+.recommendation-users-headers-selected {
+  height: 7rem;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: rgba(96, 96, 96, 1);
+  }
+}
+
+.recommendation-users-headers {
+  display: flex;
+  align-items: center;
+  height: 7rem;
+  background-color: #F5F5F5;
+  border: 0.5px solid rgba(0, 0, 0, 0.21);
+
+  div {
+    background-color: transparent;
+  }
+
+  &.selected {
+
+    .book-users-pseudo-checkbox {
+      background-color: #3177B7;
+    }
+  }
+}
+
+.recommendation-confirm-selected {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.recommendation_user_card_template {
+  width: 50rem;
+}
+
 
 // USER CARD
 
-.user-index-card__inner, .user-index-card__inner-pending, .user-index-card__inner-yes, .user-index-card__inner-no {
-  width: 100%;
-  height: 100%;
-  display: inherit;
-  padding: 0 3rem;
-}
+.recommendation_user_card {
 
-.user-index-card__inner-pending {
-  background-color: #C4C4C4;
-}
-
-.user-index-card__inner-yes {
-  background-color: #9FE6A0;
-}
-
-.user-index-card__inner-no {
-  background-color: #FABEA7;
 }
 
 // CONTENT CARD
 
 .recommendation-booklet-card {
+  width: 35rem;
+  height: 15rem;
   position: relative;
   padding: 0;
   margin: 0;
@@ -170,16 +217,8 @@
     font-size: 1.2rem
   }
 
-  .booklet-card-syn {
-    height: 10rem;
-  }
-
-  .booklet-card-asyn {
-    height: 10rem;
-  }
-
   .booklet-card-top {
-    height: 100%;
+    height: 15rem;
   }
 
   .booklet-card-top__answered {

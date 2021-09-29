@@ -1,27 +1,2 @@
-if ("<%= @tab %>" == 'all') {
-  document.querySelector('.calendar-schedule-all').innerHTML = '<%= j render("pages/calendar_schedule", date: @date, tab: @tab) %>';
-} else if ("<%= @tab %>" == 'personal') {
-  document.querySelector('.calendar-schedule-personal').innerHTML = '<%= j render("pages/calendar_schedule", date: @date, tab: @tab) %>';
-}
-
-if ("<%= @update_calendar_date %>" != 'none') {
-  document.querySelector('.calendar-schedule-personal').innerHTML = '';
-  $(".dashboard-calendar--personal").html("<%= escape_javascript render(partial: 'dashboard_calendar_display', locals: {events: @all_my_sessions, tab: 'personal'}) %>");
-  if ("<%= @allsessions %>" != '') {
-    document.querySelector('.calendar-schedule-all').innerHTML = '';
-    $(".dashboard-calendar--all").html("<%= escape_javascript render(partial: 'dashboard_calendar_display', locals: {events: @all_my_sessions, tab: 'all'}) %>");
-  }
-}
-
-days = document.querySelectorAll('.day')
-days.forEach((element) =>{
-  element.addEventListener('click', event => {
-    previous = document.querySelector('.selected_day')
-    console.log(event.currentTarget)
-    if (previous != null) {
-      document.querySelector('.selected_day').classList.remove('selected_day')
-    }
-
-    element.classList.add('selected_day')
-  })
-})
+document.querySelector('.dashboard-trainings').innerHTML = '<%= j render("pages/partials/dashboard_trainings") %>';
+document.querySelector('.recommendations-container').innerHTML = '<%= j render("pages/partials/dashboard_recommendations_results") %>';

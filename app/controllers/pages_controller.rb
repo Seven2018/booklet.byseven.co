@@ -8,17 +8,26 @@ class PagesController < ApplicationController
     @employees_form = User.where(company: current_user.company)
     @types_form = ["Synchronous", "Asynchronous"]
 
-    @recommendations = UserInterest.all
+    @recommendations = UserInterest.where(user_id: current_user.id)
 
     unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
       @recommendations = @recommendations.where(user_id: current_user.id)
     end
 
+    if params[:search_trainings].present? && params[:search_trainings][:period] == 'Completed'
+      @trainings = @trainings.where_exists(:sessions, 'date < ?', Date.today).where_not_exists(:sessions, 'date >= ?', Date.today)
+    else
+      @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today)
+    end
+
     # SEARCH TRAININGS
     if params[:search_trainings].present?
       unless params[:search_trainings][:title].blank?
         @trainings = @trainings.search_trainings("#{params[:search_trainings][:title]}")
+      end
+      unless params[:search_trainings][:categories].reject{|c| c.empty?}.blank?
+        @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:search_trainings][:categories]})
       end
       if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
         unless params[:search_trainings][:employee].blank?
@@ -38,8 +47,8 @@ class PagesController < ApplicationController
       end
       if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
         unless params[:search_recommendations][:employee].blank?
-          selected_employee = User.search_by_name("#{params[:search_recommendations][:employee]}").first
-          @recommendations = @recommendations.where(user_id: selected_employee.id)
+          selected_employee = User.find(params[:search_recommendations][:employee])
+          @recommendations = UserInterest.where(user_id: selected_employee.id)
         end
       end
       unless params[:search_recommendations][:type].blank?
@@ -52,7 +61,15 @@ class PagesController < ApplicationController
     @declined_recommendations = @recommendations.where(recommendation: "No")
     @answered_recommendations = @accepted_recommendations + @declined_recommendations
 
-    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :desc).uniq.reverse
+    # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
+    # @current_trainings = @trainings.sort_by { |training| training.next_session }
+    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :asc).uniq
+    @pasts_trainings = (@trainings - @current_trainings)
+
+    respond_to do |format|
+      format.html {dashboard_path}
+      format.js
+    end
   end
 
 
@@ -68,40 +85,37 @@ class PagesController < ApplicationController
 
   # Display the company Overview (pages/overview)
   def overview
-    if current_user.company_id.present?
-      # SEARCHING CONTENTS 
-      @contents = Content.where(company_id: current_user.company.id)
-      unless params[:reset]
-        if params[:search].present? && !params[:search][:title].blank?
-          @contents = @contents.search_contents("#{params[:search][:title]}")
-          respond_to do |format|
-            format.html {catalogue_path}
-            format.js
-          end
+    
+    # raise
+    @start_date = Date.today.beginning_of_year
+    @end_date = Date.today
+
+    @trainings = Training.where(company_id: current_user.company_id)
+    # @trainings = Training.where(id: @trainings.pluck(:id))
+
+    # SEARCHING CONTENTS 
+    unless params[:reset]
+      if params[:search].present? 
+        unless params[:search][:title].blank?
+          @trainings = @trainings.search_trainings("#{params[:search][:title]}")
         end
-        if params[:select_period].present?
-          @start_date = Date.strptime(params[:select_period][:start_date], '%d/%m/%Y')
-          @end_date = Date.strptime(params[:select_period][:end_date], '%d/%m/%Y')
-          if params[:select_period][:content_ids].present?
-            @contents = @contents.where(id: params[:select_period][:content_ids].split(','))
-          end
+        if params[:search][:start_date].present?
+          @start_date = Date.strptime(params[:search][:start_date], '%d/%m/%Y')
+          @end_date = Date.strptime(params[:search][:end_date], '%d/%m/%Y')
+          @trainings = @trainings.joins(:sessions).where('sessions.date >= ? AND date <= ?', @start_date, @end_date).uniq
         end
       end
-      @contents = @contents.order(updated_at: :desc)
     end
-    # if params[:content].present? && params[:content][:categories] != ['']
-    #   @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params[:content][:categories].reject{|x| x.empty?}})
-    #   if params[:filter_content][:start_date].present? && params[:filter_content][:end_date].present?
-    #     @start_date = Date.strptime(params[:filter_content][:start_date], '%d/%m/%Y')
-    #     @end_date = Date.strptime(params[:filter_content][:end_date], '%d/%m/%Y')
-    #   end
-    # end
-    
-    @sessions = Session.where(content_id: @contents.ids.uniq).where('date >= ? AND date <= ?', @start_date, @end_date)
+
+    @sessions = @trainings.map{|x| x.sessions}.flatten
+    attendees = Attendee.joins(:session).where(sessions: { training: @trainings})
+    @users = User.where(attendees: attendees)
+
     respond_to do |format|
       format.html {overview_path}
       format.js
     end
+
   end
 
   # Display contents catalogue
@@ -238,10 +252,16 @@ class PagesController < ApplicationController
   def recommendation
     index_function(User.where(company_id: current_user.company_id))
     authorize @users
-
     if params[:search].present?
       @content = Content.find(params[:search][:content_id]) if params[:search][:content_id].present?
       @folder = Folder.find(params[:search][:folder_id]) if params[:search][:folder_id].present?
+      unless params[:search][:status] == 'All'
+        if @folder.present?
+          @users = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {folder_id: @folder.id, recommendation: params[:search][:status]})
+        else
+          @users = @users.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: params[:search][:status]})
+        end
+      end
     elsif params[:filter_user].present?
       @content = Content.find(params[:filter_user][:content_id]) if params[:filter_user][:content_id].present?
       @folder = Folder.find(params[:filter_user][:folder_id]) if params[:filter_user][:folder_id].present?

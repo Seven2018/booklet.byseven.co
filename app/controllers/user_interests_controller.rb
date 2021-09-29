@@ -21,52 +21,22 @@ class UserInterestsController < ApplicationController
     end
   end
 
-  # Recommend a content for specified user
+  # Recommend a content to selected users
   def recommend
+    # @users = User.where(id: params[:recommend][:users_id])
     @user = User.find(params[:recommend][:user_id])
-    @content = Content.find(params[:recommend][:content_id])
-    @user_interest = UserInterest.find_by(content_id: @content.id, user_id: @user.id)
-    if @user_interest.present? && params[:recommend][:select] == '1'
-      @user_interest.update(recommendation: 'Pending')
-      @action = 'Add'
-    elsif @user_interest.present? && @user_interest.status.nil? && params[:recommend][:select] == '0'
-      @user_interest.destroy
-      @action = 'Delete'
+    if params[:recommend][:folder_id].present?
+      @folder = Folder.find(params[:recommend][:folder_id])
     else
-      @user_interest = UserInterest.create(content_id: @content.id, user_id: @user.id, recommendation: 'Pending')
-      @action = 'Add'
+      @content = Content.find(params[:recommend][:content_id])
     end
-    authorize @user_interest
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def recommend_all
-    @content = Content.find(params[:recommend_all][:content_id])
-    @users_all = User.where(company_id: current_user.company_id)
-    @users_yes = @users_all.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'Yes'})
-    @users_no = @users_all.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'No'})
-    @users_pending = @users_all.joins(:user_interests).where(company_id: current_user.company_id, user_interests: {content_id: @content.id, recommendation: 'Pending'})
-    @users = User.where(id: params[:recommend_all][:users_ids].split(','))
-    @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
-    @checked = params[:recommend_all][:checked]
-    skip_authorization
-    if @checked == 'true'
-      @users.each do |user|
-        user_interest = UserInterest.find_by(content_id: @content.id, user_id: user.id)
-        user_interest.present? && user_interest.recommendation.nil? ? user_interest.update(recommendation: 'Pending') : user_interest = UserInterest.create(content_id: @content.id, user_id: user.id, recommendation: 'Pending')
-      end
+    params[:recommend][:folder_id].present? ? @interest = UserInterest.find_by(user_id: @user.id, folder_id: @folder.id) : @interest = UserInterest.find_by(user_id: @user.id, content_id: @content.id)
+    if @interest.present?
+      @interest.update(recommendation: 'Pending')
     else
-      @users.each do |user|
-        user_interest = UserInterest.find_by(content_id: @content.id, user_id: user.id)
-        if user_interest.present? && user_interest.status.nil?
-          user_interest.destroy
-        elsif user_interest.present? && user_interest.recommendation == 'Pending'
-          user_interest.update(recommendation: nil)
-        end
-      end
+      params[:recommend][:folder_id].present? ? @interest = UserInterest.create(folder_id: @folder.id, user_id: @user.id, recommendation: 'Pending') : @interest = UserInterest.create(content_id: @content.id, user_id: @user.id, recommendation: 'Pending')
     end
+    authorize @interest
     respond_to do |format|
       format.js
     end
@@ -75,11 +45,15 @@ class UserInterestsController < ApplicationController
   # Validate or invalidate a recommendation for current user
   def update_recommendation
     user = current_user
-    @user_interest = UserInterest.find(params[:answer_reco][:user_interest_id])
-    @my_recommended_pending = UserInterest.where(user_id: current_user.id, recommendation: 'Pending')
-    authorize @user_interest
-    ['Yes', 'No'].include?(@user_interest.recommendation) ? @switch = 'true' : @switch = 'false'
-    @user_interest.update(recommendation: params[:answer_reco]["answer-#{@user_interest.id}"], comments: params[:answer_reco][:comments])
+    user_interest = UserInterest.find(params[:answer_reco][:user_interest_id])
+    authorize user_interest
+    user_interest.recommendation == 'Pending' ? @switch = 'false' : @switch = 'true'
+    user_interest.update(recommendation: params[:answer_reco]["answer-#{user_interest.id}"], comments: params[:answer_reco][:comments])
+
+    @recommendations = UserInterest.where(user_id: current_user)
+    @pending_recommendations = @recommendations.where(recommendation: "Pending")
+    @accepted_recommendations = @recommendations.where(recommendation: "Yes")
+    @declined_recommendations = @recommendations.where(recommendation: "No")
     respond_to do |format|
       format.html {redirect_to dashboard_path}
       format.js

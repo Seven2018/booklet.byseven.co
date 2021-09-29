@@ -24,7 +24,7 @@
 }
 
 .booklet-content-card {
-  background-color: white;
+  background-color: rgba(242, 101, 25, 0.068);
   position: relative;
   padding: 0;
   height: 100%;
@@ -32,6 +32,7 @@
   margin: 0;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  border: 1px solid rgba(242, 100, 25, 0.33);
 
   h6 {
     font-size: 1.2rem
@@ -39,6 +40,7 @@
 }
 
 .booklet-folder-card {
+  background-color: #5b92c50e;;
   position: relative;
   padding: 0;
   height: 100%;
@@ -46,6 +48,7 @@
   margin: 0;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  border: 1px solid #5B92C5;
 
   h6 {
     font-size: 1.2rem
@@ -181,7 +184,7 @@
 }
 
 .booklet-content-card__category-pill {
-  padding: .5rem;
+  padding: .5rem 1rem;
   border-radius: 15px;
   margin-right: 1rem;
   background-color: rgba(242, 100, 25, 0.33);
@@ -193,7 +196,7 @@
 }
 
 .booklet-content-card__category-pill--new {
-  padding: .5rem;
+  padding: .5rem 1rem;
   border-radius: 15px;
   margin: 0 1rem 1rem 0;
   background-color: rgba(242, 100, 25, 0.33);
@@ -205,7 +208,7 @@
 }
 
 .booklet-folder-card__category-pill {
-  padding: .5rem;
+  padding: .5rem 1rem;
   border-radius: 15px;
   margin-right: 1rem;
   background-color: rgba(91, 146, 197, 1);
@@ -217,7 +220,7 @@
 }
 
 .booklet-folder-card__category-pill--new {
-  padding: .5rem;
+  padding: .5rem 1rem;
   border-radius: 15px;
   margin: 0 1rem 1rem 0;
   background-color: rgba(91, 146, 197, 1);

@@ -1,20 +1,114 @@
 .searchbar {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  position: relative;
+  margin-right: 1rem;
 
-  .btn-search {
+  form {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  div {
+    margin-bottom: 0;
+  }
+
+  input, select {
+    height: 40px;
+    border-radius: 4px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
+    margin: 0 1rem 0 0;
+
+    &:focus {
+      border-color: #ced4da;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
+    }
+  }
+
+  input {
+    position: relative;
+    width: 300px;
+    padding: 0 6rem 0 3.5rem;
+  }
+
+  .flatpickr-input {
+    padding: 1rem;
+    width: 10.5rem !important;
+  }
+
+  .btn-search, .btn-reset {
     width: 75px;
     padding: 0;
   }
 
-  input {
-    padding: 0 6rem 0 3.5rem;
-    position: relative;
-    margin-bottom: 0px !important;
-    height: 40px;
-    border-radius: 4px;
-    width: 300px;
-    margin-right: 5px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
+  .btn-reset {
+    height: 4rem;
+    color: #F26419;
   }
+
+  .searchbar__checkboxes-container {
+    position: relative;
+
+    .searchbar__checkboxes-container-pseudo-input {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 33.5px;
+      margin: 0;
+      background-color: white;
+      border: 1px solid #ced4da;
+      border-radius: 2px;
+      color: #7a7a7a;
+      cursor: pointer;
+
+      p {
+        font-style: italic;
+      }
+    }
+
+    .searchbar__checkboxes {
+      width: -moz-fit-content;
+      width: fit-content;
+      max-height: 20rem;
+      overflow-y: scroll;
+      padding: 1rem;
+      position: absolute;
+      top: 7rem;
+      left: 0;
+      margin: 0;
+      background-color: white;
+      border: 1px solid #ced4da;
+      border-radius: 2px;
+      color: #7a7a7a;
+
+      .searchbar__checkboxes-reset {
+        margin: 0 0 .5rem 2rem;
+        cursor: pointer;
+      }
+
+
+      span {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: .5rem;
+      }
+
+      span:last-of-type {
+        margin: 0;
+      }
+
+      label {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.catalogue-controls__search-trainings-icon {
+  position: absolute;
+  z-index: 150;
+  left: 12px;
+  bottom: 11px;
+  color: #C4C4C4;
 }

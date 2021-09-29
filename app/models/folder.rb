@@ -34,6 +34,10 @@ class Folder < ApplicationRecord
     self.children_contents&.map{|x| x.categories}&.flatten
   end
 
+  def children_types
+    self.children_contents&.map{|x| x.content_type}&.flatten
+  end
+
   def folder_level
     max_level = 0
     self.children_folders.each do |child|
@@ -51,7 +55,7 @@ class Folder < ApplicationRecord
     if node.nil?
       node = self
     end
-    result_hash = {type: node.class.name, name: node.title, children: []}
+    result_hash = {type: node.class.name, name: node.title, id: node.id, children: []}
     node.children_folders.each do |folder|
       result_hash[:children] << folder_to_hash(folder)
     end
@@ -59,5 +63,24 @@ class Folder < ApplicationRecord
       result_hash[:children] << {type: content.class.name, name: content.title}
     end
     return result_hash
+  end
+
+  def children_folders_all(exclude_direct_children = false, node = nil)
+    if node.nil?
+      node = self
+    end
+    result_array = [node]
+    node.children_folders.each do |folder|
+      result_array << children_folders_all(false, folder)
+    end
+    if exclude_direct_children
+      return result_array.flatten.uniq - [self] - self.children_folders
+    else
+      return result_array.flatten.uniq - [self]
+    end
+  end
+
+  def children_contents_all
+    self.children_folders_all.map{|x| x.children_contents}.flatten.uniq
   end
 end

@@ -1,0 +1,23 @@
+<div class="book-users-card">
+  <input type="checkbox" class='hidden'>
+  <div class="book-users-pseudo-checkbox-container" onclick='toggleAllUsers(this);'><button class="book-users-pseudo-checkbox"></button></div>
+  <div class="book-users-headers-infos">
+    <div>
+      <p>Status</p>
+    </div>
+    <div>
+      <p>Comments</p>
+    </div>
+    <div>
+      <p>Fullname</p>
+    </div>
+    <div>
+      <p>Email</p>
+    </div>
+    <% TagCategory.where(company_id: current_user.company_id).each do |tag_category| %>
+      <div>
+        <p><%= tag_category.name %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<% if user_interest.nil? %>
+  <div class="book-users-card" id="user-<%= user.id %>">
+<% else %>
+  <div class="book-users-card selected" id="user-<%= user.id %>">
+<% end %>
+  <% fullname, email = user.fullname, user.email %>
+  <% if user_interest.nil? %>
+    <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>">
+  <% else %>
+    <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>" checked>
+  <% end %>
+  <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
+  <div class="book-users-card-infos">
+    <div>
+      <% if user_interest&.recommendation&.nil? || user_interest.nil? %>
+        <p></p>
+      <% else %>
+        <p><%= user_interest.recommendation %></p>
+      <% end %>
+    </div>
+    <div>
+      <% if user_interest&.recommendation&.nil? || user_interest.nil? %>
+        <p></p>
+      <% elsif user_interest.comments.present? %>
+        <a data-toggle='modal' data-target='#seeRecommendation-<%= content.id %>'><p>Click to see the comment</p></a>
+
+        <!-- MODAL -->
+
+        <div class='modal fade' id='seeRecommendation-<%= content.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+          <div class='modal-dialog' role='document' style='border-radius: 20px'>
+            <%= render 'pages/modals/recommendation_modal_view', content: content, interest: user_interest %>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+    <div>
+      <p data-toggle='tooltip' title='<%= fullname %>'><%= fullname %></p>
+    </div>
+    <div>
+      <p data-toggle='tooltip' title='<%= email %>'><%= email %></p>
+    </div>
+    <% user.tags.order(tag_category_position: :asc).select(:tag_name).each do |tag| %>
+      <div>
+        <p data-toggle='tooltip' title='<%= tag.tag_name %>'><%= tag.tag_name %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

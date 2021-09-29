@@ -1,5 +1,10 @@
 class TrainingsController < ApplicationController
 
+  def show
+    @training = Training.find(params[:id])
+    authorize @training
+  end
+
   def create
     @training = Training.new(training_params)
     authorize @training
@@ -14,6 +19,6 @@ class TrainingsController < ApplicationController
   private
 
   def training_params
-    params.require(:training).permit(:title, :auth_token)
+    params.require(:training).permit(:title, :folder_id, :auth_token)
   end
 end

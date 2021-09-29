@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get 'contents/:id/viewmode', to: 'contents#view_mode', as: 'view_content'
 
   # ATTENDEES
-  resources :attendees, only: %i[]
+  resources :attendees
 
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
   # FOLDERS
   resources :folders
+  get :folder_link_category, controller: :folders
+  get :folder_manage_children, controller: :folders
 
   #MODS
   resources :mods, only: %i[create update destroy]
@@ -78,8 +80,7 @@ Rails.application.routes.draw do
   # USER_INTERESTS
   resources :user_interests, only: %i[create destroy]
   get :complete_content, controller: :user_interests
-  get :recommend, controller: :user_interests
-  get :recommend_all, controller: :user_interests
+  post :recommend, controller: :user_interests
   get :update_recommendation, controller: :user_interests
 
   # USER TAGS

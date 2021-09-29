@@ -1,0 +1,196 @@
+<% if ['Super Admin'].include?(current_user.access_level) || (@folder.company_id == current_user.company_id) %>
+  <div id="content-show-container">
+    <div id="content-show-container-left">
+      <%= render 'folders/partials/show_anchors', folder: @folder %>
+    </div>
+    <div id="content-show-container-right">
+      <div class="content-add">
+        <div class="content-add-left">
+          <div class="content-show-attributes-left">
+            <%= render 'folders/partials/show_attributes_left', folder: @folder %>
+          </div>
+          <div class="button-add-catalogue">
+            <%= simple_form_for :select_children, url: folder_manage_children_path, method: :get, remote: true do |f| %>
+              <%= f.hidden_field :folder_id, value: @folder.id %>
+              <%= f.hidden_field :folder_ids %>
+              <%= f.hidden_field :content_ids %>
+              <%= f.submit '', class: 'hidden-submit hidden' %>
+            <% end %>
+            <%= link_to '', folder_path(@folder), class: 'hidden-link hidden' %>
+            <div class="btn-blue" onclick='saveAndConfirm();'>
+              <p>Confirm</p>
+            </div>
+          </div>
+        </div>
+        <div class="content-add-right">
+          <div class="content-show-attributes-right">
+            <%= render 'folders/partials/show_attributes_right', folder: @folder %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="saved-message hidden">
+      <p>SAVED!</p>
+    </div>
+  </div>
+
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
+  </div>
+<% end %>
+
+<!-- Modals -->
+
+<div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'folders/modals/manage_categories', folder: @folder %>
+  </div>
+</div>
+
+<script>
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function saveAndConfirm() {
+    container = document.querySelector('.content-info__folder-content-list')
+    selected_folders = []
+    folder_storage = document.querySelector('#select_children_folder_ids')
+    selected_contents = []
+    content_storage = document.querySelector('#select_children_content_ids')
+    container.querySelectorAll('input[type="checkbox"]:checked').forEach((checkbox) => {
+      card =  checkbox.closest('.edit-folder-card')
+      if (card.id.split('-')[0] == 'folder') {
+        selected_folders.push(card.id.split('-')[1])
+      } else {
+        selected_contents.push(card.id.split('-')[1])
+      }
+    })
+    folder_storage.value = selected_folders
+    content_storage.value = selected_contents
+    document.querySelector('.select_children').querySelector('.hidden-submit').click()
+    console.log('click')
+    document.querySelector('.edit_folder').querySelector('.hidden-submit').click()
+    document.querySelector('.hidden-link').click()
+  }
+
+  function updateContent(element) {
+    form = element.closest('form')
+    submit = form.querySelector('.hidden-submit')
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, element) && doubleClickGuardian == false) {
+        submit.click();
+        this.removeEventListener('click', arguments.callee, false);
+      }
+    })
+  }
+
+
+  function saveMod(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      initial_value = element.value;
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, element)) {
+          if (element.value != initial_value || element.tagName == 'SELECT') {
+            form = element.closest('form')
+            form.querySelector('.hidden-submit').click();
+          }
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+      setTimeout(function(){doubleClickGuardian = false}, 500)
+    }
+  }
+
+  function autoSubmitTheme(element) {
+    element.closest('form').querySelector('.hidden-submit').click()
+  }
+
+  function dismissModal(element) {
+    content_id = element.parentNode.parentNode.querySelector('#add_categories_content_id').value;
+    modal = document.querySelector('#addTheme');
+    modal.querySelector('.cancel-close').click();
+  }
+
+  function showDelete(element) {
+    // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
+    trash = element.parentNode.querySelector('.category-delete');
+    if (trash.style.opacity == 0) {
+      trash.style.opacity = 1;
+    } else {
+      trash.style.opacity = 0;
+    }
+  }
+
+  function fetchCategoryForm(element) {
+    form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
+    initial_top = form.offsetTop
+    initial_left = form.offsetLeft
+    form.style.top = (element.offsetTop).toString() + 'px'
+    form.style.left = (element.offsetLeft + 27).toString() + 'px'
+    element.querySelector('p').style.opacity = '0'
+    form.classList.remove('hidden')
+    form.querySelector('input').focus()
+    formGuardian = true;
+    setTimeout(function(){
+      formGuardian = false;
+    }, 1);
+
+    form.querySelector('#new_category_title').addEventListener('keypress', function(e) {
+      if (event.which == '13') {
+        event.preventDefault();
+        form.querySelector('.hidden-submit').click()
+      }
+    })
+
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, form) && formGuardian == false) {
+        form.style.top = initial_top.toString() + 'px';
+        form.style.left = initial_left.toString() + 'px'
+        element.querySelector('p').style.opacity = '1'
+        form.classList.add('hidden')
+        form.querySelector('input').value = ''
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
+  }
+
+  function selectElement(element) {
+    card = element.closest('.edit-folder-card')
+    checkbox = card.querySelector('input[type="checkbox"]')
+    checkbox.checked = !checkbox.checked
+    if (checkbox.checked) {
+      card.classList.add('selected')
+    } else {
+      card.classList.remove('selected')
+    }
+  }
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
+</script>

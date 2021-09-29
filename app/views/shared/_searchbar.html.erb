@@ -1,7 +1,7 @@
 <div class="searchbar">
   <i class="fas fa-search catalogue-controls__search-icon"></i>
   <%= simple_form_for :search, url: path, method: :get, remote: true do |f| %>
-    <%= f.text_field :title, placeholder: 'Search', label: false, autocomplete: 'off', onkeyup: 'searchInput(this);' %>
+    <%= f.input :title, placeholder: 'Search', label: false, autocomplete: 'off', onkeyup: 'searchInput(this);', required: false %>
     <% if params[:action] == 'catalogue' %>
       <%= f.hidden_field :filtered %>
     <% elsif params[:action] == 'book_contents' %>
@@ -11,8 +11,8 @@
       <%= f.hidden_field :book_selected_users, value: @selected_users %>
     <% end %>
     <%= f.submit 'Search', class: 'btn-search' %>
+    <button class='btn-reset' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
   <% end %>
-  <p class="btn-reset-form hidden" onclick="resetInput(this);">Clear</p>
   <% if params[:action] == 'catalogue' %>
     <div class="btn-white" onclick='openFilter();'>
       <i class="fas fa-filter"></i>
