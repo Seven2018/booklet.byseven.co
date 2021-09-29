@@ -13,7 +13,7 @@
     <p>Trainings</p>
   </div>
   <div class='overview_results__card'>
-    <% trained_employees = @sessions.map{|x| x.attendees.count}.sum %>
+    <% trained_employees = @users.count %>
     <p><%= trained_employees %></p>
     <p>Trained Employees</p>
   </div>

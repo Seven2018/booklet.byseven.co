@@ -1,5 +1,6 @@
 document.querySelector('#search_start_date').value = '<%= @start_date.to_s %>'
 document.querySelector('#search_end_date').value = '<%= @end_date.to_s %>'
-document.querySelector('#filter_content_start_date').value = '<%= @start_date.to_s %>'
-document.querySelector('#filter_content_start_date').value = '<%= @end_date.to_s %>'
+console.log("<%= @trainings %>")
 document.querySelector('.overview-results').innerHTML = '<%= j render("pages/overview_results", trainings: @trainings) %>';
+document.querySelector('.overview-trainings').innerHTML = '<%= j render("pages/overview_cards_list", trainings: @trainings) %>';
+document.querySelector('.overview-users').innerHTML = '<%= j render("pages/overview_users", users: @users) %>';

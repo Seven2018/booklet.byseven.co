@@ -8,9 +8,7 @@
         <%= f.input :end_date, label: 'Until', input_html: {class: 'datepicker', value: @end_date} %>
         <%= f.submit 'Search', class: 'btn-search' %>
       <% end %>
-      <% if params[:search].present? %>
-        <%= link_to 'Reset', class: "btn-reset-form", reset_path: overview_path(reset: "") %>
-      <% end %>
+      <button class='btn-reset' onclick='resetAllFilter(this);'>Reset</button>
     </div>
     <div class="overview-results">
       <%= render 'pages/overview_results', trainings: @trainings %>
@@ -28,163 +26,31 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="Trainings">
       <div class="overview-trainings">
-        <% @trainings.each do |training| %>
-          <% folder = training.folder %>
-          <% if folder.present? %>
-            <% content = folder %>
-          <% else %>
-            <% content = training.sessions.first.workshop %>
-          <% end %>
-          <div class="booklet-folder-card">
-            <% start_date = training.sessions.order(date: :asc).first.date %>
-            <% end_date = training.sessions.order(date: :desc).first.date %>
-            <% if start_date >= Date.today %>
-              <div class="tab-date__start tab-date--green">
-                <p><%= start_date.strftime('%d.%m.%Y') %></p>
-              </div>
-            <% else %>
-              <div class="tab-date__start tab-date--red">
-                <p><%= start_date.strftime('%d.%m.%Y') %></p>
-              </div>
-            <% end %>
-            <% if end_date >= Date.today %>
-              <div class="tab-date__end tab-date--green">
-                <p><%= end_date.strftime('%d.%m.%Y') %></p>
-              </div>
-            <% else %>
-              <div class="tab-date__end tab-date--red">
-                <p><%= end_date.strftime('%d.%m.%Y') %></p>
-              </div>
-            <% end %>
-            <div class="booklet-folder-card-top booklet-card-top">
-              <div class="booklet-folder-card__top-info">
-                <div>
-                  <i class="fas fa-folder"></i>
-                  <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
-                </div>
-                <div>
-                  <% hours = content.duration / 60 %>
-                  <% minutes = content.duration % 60 %>
-                  <p class='booklet-folder-card__duration'><%= hours %>h<%= '%02d' % minutes %></p>
-                  <% if (folder.present? && content.children_contents.map{|x| x.content_type}.include?('Synchronous')) || (!folder.present? && content.content_type == 'Synchronous') %>
-                    <div class="booklet-folder-card-type-icon">
-                      <i class="fas fa-chalkboard-teacher" style='color:rgba(91, 146, 197, 1);'></i>
-                      <p style='color:rgba(91, 146, 197, 1);'>In Person</p>
-                    </div>
-                  <% end %>
-                  <% if (folder.present? && content.children_contents.map{|x| x.content_type}.include?('Asynchronous')) || (!folder.present? && content.content_type == 'Asynchronous') %>
-                    <div class="booklet-folder-card-type-icon">
-                      <i class="fas fa-laptop" style='color:rgba(91, 146, 197, 1);'></i>
-                      <p style='color:rgba(91, 146, 197, 1);'>Online</p>
-                    </div>
-                  <% end %>
-                </div>
-              </div>
-              <div class="booklet-folder-card__categories">
-                <% if folder.present? %>
-                  <% content.categories.each do |category| %>
-                    <div class="booklet-folder-card__category-pill">
-                      <p><%= category.title %></p>
-                    </div>
-                  <% end %>
-                  <% content.children_categories.each do |category| %>
-                    <div class="booklet-content-card__category-pill">
-                      <p><%= category.title %></p>
-                    </div>
-                  <% end %>
-                <% else %>
-                  <% content.content.categories.each do |category| %>
-                    <div class="booklet-content-card__category-pill">
-                      <p><%= category.title %></p>
-                    </div>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
-            <div class="booklet-folder-card-bottom">
-              <div class="recommendation-card__bottom-data">
-                <i class="fas fa-users"></i>
-                <% attendees = training.sessions.map{|x| x.attendees.count}.max %>
-                <p><%= attendees %></p>
-              </div>
-              <div class="recommendation-card__bottom-data">
-                <i class="fas fa-folder"></i>
-                <% if folder.present? %>
-                  <p><%= folder.children_folders.count %></p>
-                <% else %>
-                  <p>0</p>
-                <% end %>
-              </div>
-              <div class="recommendation-card__bottom-data">
-                <i class="fas fa-file"></i>
-                <% if folder.present? %>
-                  <p><%= folder.children_contents.count %></p>
-                <% else %>
-                  <p>1</p>
-                <% end %>
-              </div>
-              <div class="recommendation-card__bottom-data">
-                <i class="fas fa-euro-sign"></i>
-                <p><%= '%0d' % (training.sessions.map(&:cost).sum / attendees) %>€ (cost/employee)</p>
-              </div>
-            </div>
-          </div>
-        <% end %>
+        <%= render 'pages/overview_cards_list', trainings: @trainings %>
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="Users">
-      <div class="overview-trainings">
-
-        <div class='organisation-page' data-fl-scrolls='{"orientation": "horizontal"}'>
-          <% unless @users.empty? %>
-            <div class='organisation-users'>
-              <div class='user-index-headers'>
-                <div class="headers-div">
-                  <p>Name</p>
-                </div>
-                <div class="headers-div">
-                  <p>Trainings</p>
-                </div>
-                <div class="headers-div">
-                  <p>Workshops</p>
-                </div>
-                <div class="headers-div">
-                  <p>Workshops completed</p>
-                </div>
-              </div>
-              <div class='users-index'>
-                <% @users.each do |user| %>
-                  <div class='user-index-card user-card-<%= user.id %>'>
-                  
-                    <div class='user-index-card__inner d-flex flex-row'>
-                      <div class="user-index-info streched-link">
-                      <%= link_to user_path(user) do %>
-                        <p class='user-name' data-toggle="tooltip" title="<%= user.fullname %>" style='color: #F26419'><b><%= user.firstname %> <%= user.lastname %></b></p>
-                      <% end %>
-                      </div>
-
-                      <div class="user-index-info streched-link">
-                        <p class="ml-3"><%= user.sessions.select(:training_id).distinct.count %></p>
-                      </div>
-
-                      <% workshops = Workshop.joins(session: :attendees).where(attendees: {user_id: user.id}) %>
-                      <div class="user-index-info streched-link">
-                        <p class="ml-3"><%= workshops.count %></p>
-                      </div>
-
-                      <div class="user-index-info streched-link">
-                        <p class="ml-3"><%= workshops.where(attendees: {status: "Completed"}).count %></p>
-                      </div>
-                    </div>
-              
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-        </div>
+      <div class="overview-users">
+        <%= render 'pages/overview_users', users: @users %>
       </div>
     </div>
   </div>
   <%# render 'pages/overview_cards_list', trainings: @trainings, start_date: Date.today.beginning_of_year, end_date: Date.today %>
 </div>
+
+<script>
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
+</script>

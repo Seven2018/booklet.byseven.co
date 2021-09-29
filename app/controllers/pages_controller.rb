@@ -90,9 +90,8 @@ class PagesController < ApplicationController
     @start_date = Date.today.beginning_of_year
     @end_date = Date.today
 
-    @trainings = Training.joins(:sessions).where(company_id: current_user.company_id).uniq
-    @trainings = Training.where(id: @trainings.pluck(:id))
-    @sessions = @trainings.map{|x| x.sessions}.flatten
+    @trainings = Training.where(company_id: current_user.company_id)
+    # @trainings = Training.where(id: @trainings.pluck(:id))
 
     # SEARCHING CONTENTS 
     unless params[:reset]
@@ -108,6 +107,7 @@ class PagesController < ApplicationController
       end
     end
 
+    @sessions = @trainings.map{|x| x.sessions}.flatten
     attendees = Attendee.joins(:session).where(sessions: { training: @trainings})
     @users = User.where(attendees: attendees)
 
