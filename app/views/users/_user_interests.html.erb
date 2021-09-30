@@ -12,7 +12,7 @@
             <div class="booklet-card__top-info">
               <%= link_to '', content_path(content), class: 'stretched-link' %>
               <h3><b><%= content.title %></b></h3>
-              <p><%= content.duration %> Minutes</p>
+              <p><%= TimeConversion.convert(content.duration) %></p>
             </div>
             <div class="booklet-card-type-pill">
               <div class="booklet-card-type">
@@ -62,7 +62,7 @@
             <div class="booklet-card__top-info">
               <%= link_to '', content_path(content), class: 'stretched-link' %>
                 <h3><b><%= content.title %></b></h3>
-                <p><%= content.duration %> Minutes</p>
+                <p><%= TimeConversion.convert(content.duration) %></p>
             </div>
             <div class="booklet-card-type-pill">
               <div class="booklet-card-type">

@@ -22,7 +22,7 @@
         <% end %>
       </div>
       <div>
-        <p class='booklet-folder-card__duration'><%= folder.duration %> Minutes</p>
+        <p class='booklet-folder-card__duration'><%= TimeConversion.convert(folder.duration) %></p>
         <% if folder.children_contents.map{|x| x.content_type}.include?('Synchronous') %>
           <div class="booklet-folder-card-type-icon">
             <i class="fas fa-chalkboard-teacher" style='color:rgba(91, 146, 197, 1);'></i>

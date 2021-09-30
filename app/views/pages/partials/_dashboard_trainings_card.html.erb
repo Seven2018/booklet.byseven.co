@@ -40,7 +40,15 @@
       </div>
     </div>
     <div class="card-themes">
-      <% unless training.folder.nil? %>
+      <% if training.folder.nil? %>
+        <% training.workshops.each do |workshop| %>
+          <% workshop.content.categories.limit(3).each do |category| %>
+            <div class="booklet-content-card__category-pill">
+              <p><%= category.title %></p>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
         <% folder_categories = training.folder.categories.first(3) %>
         <% folder_categories.each do |category| %>
           <div class="booklet-folder-card__category-pill">

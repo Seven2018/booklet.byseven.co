@@ -20,9 +20,7 @@
             </div>
 
             <div class="flex-row-start-centered">
-              <% hours = content.duration / 60 %>
-              <% minutes = format('%02d', content.duration % 60) %>
-              <p class='book-dates-duration'><%= hours %>h<%= minutes %></p>
+              <p class='book-dates-duration'><%= TimeConversion.convert(content.duration) %></p>
               <div class="booklet-content-card-type-icon">
                 <% if content.content_type == 'Synchronous' %>
                   <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
@@ -86,9 +84,7 @@
               </div>
 
               <div class="flex-row-start-centered">
-                <% hours = content.duration / 60 %>
-                <% minutes = format('%02d', content.duration % 60) %>
-                <p class='book-dates-duration'><%= hours %>h<%= minutes %></p>
+                <p class='book-dates-duration'><%= TimeConversion.convert(content.duration) %></p>
                 <div class="booklet-content-card-type-icon">
                   <% if content.content_type == 'Synchronous' %>
                     <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>
