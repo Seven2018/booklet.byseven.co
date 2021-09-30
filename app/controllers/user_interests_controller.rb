@@ -79,18 +79,4 @@ class UserInterestsController < ApplicationController
       format.js
     end
   end
-
-  # Mark a content as completed by user (contents/show)
-  def complete_content
-    skip_authorization
-    @user_interest = UserInterest.find_by(user_id: current_user.id, content_id: params[:content_id])
-    if @user_interest.present?
-      @user_interest.update(status: 'Completed', recommendation: nil)
-    else
-      UserInterest.create(user_id: current_user.id, content_id: params[:content_id], status: 'Completed')
-    end
-    respond_to do |format|
-      format.js
-    end
-  end
 end
