@@ -77,6 +77,35 @@
           <% end %>
         </div>
       <% end %>
+
+      <%# TOGGLE EMPLOYEE ADMIN %>
+      <div class="toggle-admin">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+
+
+          <% if current_user.access_level == "HR" %>
+
+            <%= link_to user_path(current_user, params: { access_level: "HR-light", last_page: "#{params[:action]}" }), class: "btn btn-secondary btn-left", method: :patch do %>
+              <input type="radio" name="options" id="option1" autocomplete="off"> Employee
+            <% end %>
+            <label class="btn btn-secondary btn-right active">
+              <input type="radio" name="options" id="option2" autocomplete="off" checked> Admin
+            </label>
+
+          <% elsif current_user.access_level == "HR-light" %>
+
+            <label class="btn btn-secondary btn-left active">
+              <input type="radio" name="options" id="option1" autocomplete="off" checked> Employee
+            </label>
+            <%= link_to user_path(current_user, params: { access_level: "HR", last_page: "#{params[:action]}"}), class: "btn btn-secondary btn-right", method: :patch do %>
+              <input type="radio" name="options" id="option2" autocomplete="off"> Admin
+            <% end %>
+
+          <% end %>
+        </div>
+      </div>
+
+
       <div class="user-top-nav">
         <div class="dropdown show">
           <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

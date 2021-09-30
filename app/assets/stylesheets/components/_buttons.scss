@@ -459,3 +459,37 @@ button {
   //   padding: 0;
   // }
 // }
+
+
+// NAVBAR
+/////////
+  // TOGGLE ADMIN
+
+.toggle-admin {
+  margin-left: 30px;
+  font-size: medium;
+
+  .btn-secondary{
+    background-color: #fff !important;
+    color: #858585 !important;
+    border-color: #d3d3d3 !important;
+  }
+
+  .btn-secondary.active {
+    background-color: #F2F8FC !important;
+    color: #0678C4 !important;
+    border-color: #0678C4 !important;
+  }
+
+  .btn-left {
+    border-radius: 8px 0 0 8px;
+    padding-left: 20px;
+    padding-right: 15px;
+  }
+
+  .btn-right {
+    border-radius: 0 8px 8px 0;
+    padding-right: 20px;
+    padding-left: 15px;
+  }
+}

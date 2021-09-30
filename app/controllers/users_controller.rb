@@ -52,27 +52,41 @@ class UsersController < ApplicationController
     if params[:type] == 'address'
       address = params[:user][:address].gsub(address.split(/\d+/)[-2], address.split(/\d+/)[-2][0..-2] + "\n")
       @user.update(address: address)
+    elsif params[:access_level].present?
+      @user.update(access_level: params[:access_level])
     else
       @user.update(user_params)
     end
-    if params[:user][:tags].present?
-      tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
-      del_tags = Tag.where(company_id: current_user.company_id).map(&:id) - tags
+    unless params[:user].nil?
+      if params[:user][:tags].present?
+        tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
+        del_tags = Tag.where(company_id: current_user.company_id).map(&:id) - tags
+      end
     end
     if @user.save
-      if params[:user][:tags].present?
-        UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
-        tags.each do |tag|
-          UserTag.create(user_id: @user.id, tag_id: tag)
+      unless params[:user].nil?
+        if params[:user][:tags].present?
+          UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
+          tags.each do |tag|
+            UserTag.create(user_id: @user.id, tag_id: tag)
+          end
         end
       end
-      respond_to do |format|
-        if params[:page] != 'show'
-          format.html {redirect_to user_path(@user)}
+      if params[:access_level].present?
+        if params[:last_page] == "catalogue"
+          redirect_to catalogue_path
         else
-          format.html {redirect_to organisation_path}
-          format.js
+          redirect_to root_path
         end
+      else
+        respond_to do |format|
+          if params[:page] != 'show'
+            format.html {redirect_to user_path(@user)}
+          else
+            format.html {redirect_to organisation_path}
+            format.js
+          end
+        end 
       end
     end
   end
