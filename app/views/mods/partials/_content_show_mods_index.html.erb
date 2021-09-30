@@ -37,15 +37,14 @@
         <%= simple_form_for mod, remote: true do |f| %>
           <div class="form-row">
             <div class="form-group col-9">
-              <%= f.input :title, placeholder: '*Required', label: 'Title', required: true %>
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
             </div>
             <div class="form-group col-3">
               <% duration = mod.duration.to_s + ' Mins' %>
-              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
+              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
             </div>
           </div>
-          <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
-          <%= f.hidden_field :position, value: mod.position %>
+          <%= f.rich_text_area :text, placeholder: 'Content', label: false, onclick: 'saveMod(this)' %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
       </div>
@@ -108,15 +107,14 @@
         <%= simple_form_for mod, remote: true do |f| %>
           <div class="form-row">
             <div class="form-group col-9">
-              <%= f.input :title, placeholder: '*Required', label: 'Title', required: true %>
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
             </div>
             <div class="form-group col-3">
               <% duration = mod.duration.to_s + ' Mins' %>
-              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
+              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
             </div>
           </div>
-          <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
-          <%= f.hidden_field :position, value: mod.position %>
+          <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '', input_html: {onclick: 'saveMod(this)'} %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
       </div>
@@ -180,14 +178,13 @@
         <%= simple_form_for mod, remote: true do |f| %>
           <div class="form-row">
             <div class="form-group col-9">
-              <%= f.input :title, placeholder: '*Required', label: 'Title', required: true %>
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
             </div>
             <div class="form-group col-3">
               <% duration = mod.duration.to_s + ' Mins' %>
-              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
+              <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
             </div>
           </div>
-          <%= f.hidden_field :position, value: mod.position %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
         <div id='assessment-<%= mod.id %>'>
@@ -206,10 +203,10 @@
             <p class='form-group col'><%= duration %></p>
           </div>
         </div>
-        <% if access == 'granted' %>
+        <% if access == 'granted' && content.class.to_s == 'Workshop' %>
           <div class="form-row mod-content">
             <div class="form-group col-12 mod-btn">
-              <!-- <div class="quiz-start">
+              <div class="quiz-start">
                 <% if !UserForm.find_by(user_id: current_user, mod_id: mod.id).present? && mod.assessment_questions.present? %>
                   <button class='btn-orange'><%= link_to 'Start Quiz', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green', target: '_blank' %></button>
                 <% elsif mod.assessment_questions.present? %>
@@ -218,7 +215,7 @@
                     <%= link_to 'Try again', assessment_view_mode_assessment_question_path(mod, mod.assessment_questions.order(position: :asc).first), class: 'btn btn-edit-green' %>
                   </div>
                 <% end %>
-              </div> -->
+              </div>
             </div>
           </div>
         <% end %>

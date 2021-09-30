@@ -43,7 +43,6 @@
     <%# render 'pages/partials/book_user_filter_tags', selected_filter: selected_filter %>
   </div> -->
   <div class="book-users-lists__container">
-    <%= paginate @users, remote: true, param_name: :page %>
     <div class='book-users-lists'>
       <div class="book-users-headers">
         <div class="book-users-card">
@@ -64,18 +63,21 @@
           </div>
         </div>
       </div>
+      <div id="paginate-container">
+        <%= paginate @users, remote: true, param_name: :page %>
+      </div>
       <div class="book-users-all">
-        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
+        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false', filtered: 'all' %>
       </div>
       <div class="book-users-filtered hidden">
-        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
+        <%= render 'pages/partials/book_user_index', users: [], selected_users: @selected_users, selected: 'false', filtered: 'filtered' %>
       </div>
     </div>
     <div class="book-users-selected">
       <div class="book-users-headers-selected">
         <p>SELECTED EMPLOYEES</p>
       </div>
-      <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')), selected: 'true' %>
+      <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')), selected: 'true', filtered: 'selected' %>
       <div class="book-users-card book-users-card-template hidden">
         <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
         <input type="checkbox" class="book-users-checkbox hidden" checked=''>
@@ -227,9 +229,9 @@
 
   function infiniteScroll() {
     if ($("nav ul.pagination a[rel=next]").length) {
-      $('.users-index').infiniteScroll({
+      $(".book-users-all").infiniteScroll({
         path: "nav ul.pagination a[rel=next]",
-        append: ".book-users-card",
+        append: ".user-index-card",
         hideNav: "nav ul.pagination",
         history: false,
         scrollThreshold: 3000,

@@ -11,7 +11,7 @@
         <a data-toggle='modal' data-target='#newFolder'>
           <div class="btn-blue" data-toggle='tooltip' title='Create a folder'>
             <i class="fas fa-plus"></i>
-            <p>Create Folder</p>
+            <p>Create Program</p>
           </div>
         </a>
         <a data-toggle='modal' data-target='#newWorkshop'>
@@ -31,7 +31,7 @@
         <p style="padding:15px;">No workshop have been created. You see that big <span style='color:#F26419'>orange</span> button in the corner? Click it to create your first workshop.</p>
       <% end %>
     <% else %>
-      <h2>Folders</h2>
+      <h2>Programs</h2>
       <div class="catalogue-row folders-row">
         <%= render 'pages/partials/catalogue_index', cards: @folders %>
       </div>
