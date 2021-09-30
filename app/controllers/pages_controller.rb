@@ -27,9 +27,9 @@ class PagesController < ApplicationController
       if params[:search_trainings][:period] == 'All'
         @trainings = @trainings
       elsif params[:search_trainings][:period] == 'Current'
-        @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today)
+        @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Date.today))
       elsif params[:search_trainings][:period] == 'Completed'
-        @trainings = @trainings.where_exists(:sessions, 'date < ?', Date.today).where_not_exists(:sessions, 'date >= ?', Date.today)
+        @trainings = @trainings.where_not_exists(:sessions, 'date >= ?', Date.today).where_not_exists(:sessions, 'available_date >= ?', Date.today)
       end
       if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
         unless params[:search_trainings][:employee].blank?
@@ -319,8 +319,8 @@ class PagesController < ApplicationController
     else
       @filter = 'false'
     end
-    @users = @users.order(lastname: :asc).page params[:page]
     authorize @users
+    @users = @users.order(lastname: :asc).page params[:page]
     params[:search].present? ? @selected_users = params[:search][:book_selected_users] : book_data
     respond_to do |format|
       format.html {book_users_path}

@@ -63,19 +63,21 @@
           </div>
         </div>
       </div>
+      <div id="paginate-container">
+        <%= paginate @users, remote: true, param_name: :page %>
+      </div>
       <div class="book-users-all">
-        <%= paginate @users, remote: true %>
-        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
+        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false', filtered: 'all' %>
       </div>
       <div class="book-users-filtered hidden">
-        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
+        <%= render 'pages/partials/book_user_index', users: [], selected_users: @selected_users, selected: 'false', filtered: 'filtered' %>
       </div>
     </div>
     <div class="book-users-selected">
       <div class="book-users-headers-selected">
         <p>SELECTED EMPLOYEES</p>
       </div>
-      <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')), selected: 'true' %>
+      <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')), selected: 'true', filtered: 'selected' %>
       <div class="book-users-card book-users-card-template hidden">
         <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
         <input type="checkbox" class="book-users-checkbox hidden" checked=''>
@@ -224,4 +226,20 @@
     })
     searchbar.querySelector('.btn-search').click()
   }
+
+  function infiniteScroll() {
+    if ($("nav ul.pagination a[rel=next]").length) {
+      $(".book-users-all").infiniteScroll({
+        path: "nav ul.pagination a[rel=next]",
+        append: ".user-index-card",
+        hideNav: "nav ul.pagination",
+        history: false,
+        scrollThreshold: 3000,
+        debug: false,
+        loadOnScroll: true,
+      });
+    };
+  }
+
+  infiniteScroll()
 </script>

@@ -1,6 +1,6 @@
 class Session < ApplicationRecord
   belongs_to :training
-  belongs_to :workshop
+  belongs_to :workshop, dependent: :destroy
   has_many :attendees, dependent: :destroy
   has_many :users, through: :attendees
 

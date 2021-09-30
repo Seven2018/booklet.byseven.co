@@ -87,6 +87,21 @@ class Training < ApplicationRecord
     return result_hash
   end
 
+  def children_folders_all(exclude_direct_children = false, node = nil)
+    if node.nil?
+      node = self
+    end
+    result_array = [node]
+    node.children_folders.each do |folder|
+      result_array << children_folders_all(false, folder)
+    end
+    if exclude_direct_children
+      return result_array.flatten.uniq - [self] - self.children_folders
+    else
+      return result_array.flatten.uniq - [self]
+    end
+  end
+
   private
 
   def time_conversion(minutes)

@@ -9,6 +9,7 @@ class Folder < ApplicationRecord
   has_many :children_folders, through: :children_folder_links, source: :child
   has_many :folder_categories, dependent: :destroy
   has_many :categories, through: :folder_categories
+  has_many :user_interests, dependent: :destroy
 
   include PgSearch::Model
   pg_search_scope :search_folders,
