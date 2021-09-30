@@ -1,6 +1,20 @@
 class FoldersController < ApplicationController
   before_action :set_folder, only: [:show, :edit, :update, :destroy, :duplicate]
 
+  # Duplicate content (pages/catalogue)
+  def duplicate
+    authorize @folder
+    @new_folder = Folder.new(@folder.attributes.except("id", "created_at", "updated_at"))
+    @new_folder.title = @folder.title + ' - Duplicate'
+    if @new_folder.save
+      @folder.categories.each do |category|
+        FolderCategory.create(folder_id: @new_folder.id, category_id: category.id)
+      end
+    
+      redirect_to edit_folder_path(@new_folder)
+    end
+  end
+
   def show
     @folder = Folder.find(params[:id])
     authorize @folder
@@ -21,6 +35,17 @@ class FoldersController < ApplicationController
     respond_to do |format|
       format.html {edit_folder_path(@folder)}
       format.js
+    end
+  end
+
+  def update
+    authorize @folder
+    @folder.update(folder_params)
+    if @folder.save
+      respond_to do |format|
+        format.html {edit_mode_folder_path(@folder)}
+        format.js
+      end
     end
   end
 
