@@ -38,7 +38,9 @@
           <% end %>
         </div>
         <% if UserInterest.where(content_id: content.id).where.not(recommendation: nil).present? %>
-          <p style='color:#F26419;'>R</p>
+          <p class="px-3" style='color:#F26419;'>
+            <strong>R</strong>
+          </p>
         <% end %>
       </div>
     </div>

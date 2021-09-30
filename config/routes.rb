@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   resources :folders
   get :folder_link_category, controller: :folders
   get :folder_manage_children, controller: :folders
+  get 'folders/:id/duplicate', to: 'folders#duplicate', as: 'duplicate_folder'
 
   #MODS
   resources :mods, only: %i[create update destroy]
