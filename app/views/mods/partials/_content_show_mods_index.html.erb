@@ -230,17 +230,3 @@
 <div class="content-add-mods">
 
 </div>
-
-<% if access == 'granted' && content.class.to_s == 'Workshop' %>
-  <div style='display: inline-block; margin-top: 5rem;'>
-    <% if Attendee.find_by(user_id: current_user.id, session_id: content.session.id, status: 'Completed').present? %>
-      <div class="btn-complete completed">
-        <p>Session Completed</p>
-      </div>
-    <% else %>
-      <%= link_to complete_session_path(id: Attendee.find_by(user_id: current_user.id, session_id: content.session.id).id), class: 'btn-orange btn-complete' do %>
-        <p>Complete Session</p>
-      <% end %>
-    <% end %>
-  </div>
-<% end %>

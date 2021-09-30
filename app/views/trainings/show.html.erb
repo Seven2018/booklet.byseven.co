@@ -16,11 +16,15 @@
           </div>
           <div class="folder-contents col-10">
             <div class="children-contents form-group">
-              <% @training.workshops.each do |workshop| %>
+              <% @training.sessions.order(date: :asc).map{|x| x.workshop}.each do |workshop| %>
                 <h3 class="child-workshop">
                   <strong>
-                    <%= link_to workshop_path(workshop) ,class: "child-workshop" do %>
-                      <i class="far fa-file child-icon"></i><%= workshop.title %> (<%= workshop.duration %> min)
+                    <%= link_to workshop_path(workshop), class: "child-workshop" do %>
+                      <% if workshop.session.date.present? %>
+                        <i class="far fa-file child-icon"></i><%= workshop.session.date.strftime('%d/%m/%Y') %> - <%= workshop.title %> (<%= workshop.duration %> min)
+                      <% else %>
+                        <i class="far fa-file child-icon"></i>No date - <%= workshop.title %> (<%= workshop.duration %> min)
+                      <% end %>
                     <% end %>
                   </strong>
                 </h3>

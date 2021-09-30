@@ -43,6 +43,7 @@
     <%# render 'pages/partials/book_user_filter_tags', selected_filter: selected_filter %>
   </div> -->
   <div class="book-users-lists__container">
+    <%= paginate @users, remote: true, param_name: :page %>
     <div class='book-users-lists'>
       <div class="book-users-headers">
         <div class="book-users-card">
@@ -64,7 +65,6 @@
         </div>
       </div>
       <div class="book-users-all">
-        <%= paginate @users, remote: true %>
         <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false' %>
       </div>
       <div class="book-users-filtered hidden">
@@ -224,4 +224,20 @@
     })
     searchbar.querySelector('.btn-search').click()
   }
+
+  function infiniteScroll() {
+    if ($("nav ul.pagination a[rel=next]").length) {
+      $('.users-index').infiniteScroll({
+        path: "nav ul.pagination a[rel=next]",
+        append: ".book-users-card",
+        hideNav: "nav ul.pagination",
+        history: false,
+        scrollThreshold: 3000,
+        debug: false,
+        loadOnScroll: true,
+      });
+    };
+  }
+
+  infiniteScroll()
 </script>

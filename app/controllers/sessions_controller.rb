@@ -21,6 +21,7 @@ class SessionsController < ApplicationController
       new_mod.save
     end
     session.workshop_id = workshop.id
+    session.cost = workshop.cost
     if session.save
       User.where(id: params[:session][:selected_users].split(',')).each do |user|
         Attendee.create(user_id: user.id, session_id: session.id, creator_id: current_user.id)

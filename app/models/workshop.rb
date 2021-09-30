@@ -7,6 +7,6 @@ class Workshop < ApplicationRecord
 
   def access_granted?
     session = self.session
-    return session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today)
+    return session.date.present? && session.date <= Date.today && (session.available_date.nil? || session.available_date >= Date.today)
   end
 end

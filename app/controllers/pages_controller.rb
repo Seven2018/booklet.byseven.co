@@ -319,8 +319,8 @@ class PagesController < ApplicationController
     else
       @filter = 'false'
     end
-    @users = @users.order(lastname: :asc).page params[:page]
     authorize @users
+    @users = @users.order(lastname: :asc).page params[:page]
     params[:search].present? ? @selected_users = params[:search][:book_selected_users] : book_data
     respond_to do |format|
       format.html {book_users_path}

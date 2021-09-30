@@ -1,29 +1,31 @@
-<% selected_users = users.map(&:id).join(',') if selected == 'true' %>
-<% users.each do |user| %>
-  <div class="book-users-card" id="user-<%= user.id %>">
-    <% fullname, email = user.fullname, user.email %>
-    <% if selected_users.split(',').include?(user.id.to_s) %>
-      <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>" checked>
-    <% else %>
-      <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>">
-    <% end %>
-    <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
-    <div class="book-users-card-infos">
-      <div>
-        <p data-toggle='tooltip' title='<%= fullname %>'><%= fullname %></p>
-      </div>
-      <div>
-        <p data-toggle='tooltip' title='<%= email %>'><%= email %></p>
-      </div>
-      <% if selected == 'false' %>
-        <% user.tags.order(tag_category_position: :asc).each do |tag| %>
-          <div>
-            <p data-toggle='tooltip' title='<%= tag.tag_name %>'><%= tag.tag_name %></p>
-          </div>
+<div class='recommendation-page' data-fl-scrolls='{"orientation": "horizontal"}'>
+  <div class='users-index'>
+    <% users.each do |user| %>
+      <% selected_users = users.map(&:id).join(',') if selected == 'true' %>
+      <div class="book-users-card" id="user-<%= user.id %>">
+        <% fullname, email = user.fullname, user.email %>
+        <% if selected_users.split(',').include?(user.id.to_s) %>
+          <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>" checked>
+        <% else %>
+          <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>">
         <% end %>
-      <% end %>
-    </div>
+        <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
+        <div class="book-users-card-infos">
+          <div>
+            <p data-toggle='tooltip' title='<%= fullname %>'><%= fullname %></p>
+          </div>
+          <div>
+            <p data-toggle='tooltip' title='<%= email %>'><%= email %></p>
+          </div>
+          <% if selected == 'false' %>
+            <% user.tags.order(tag_category_position: :asc).each do |tag| %>
+              <div>
+                <p data-toggle='tooltip' title='<%= tag.tag_name %>'><%= tag.tag_name %></p>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
-
+</div>
