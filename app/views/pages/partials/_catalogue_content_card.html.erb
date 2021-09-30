@@ -27,7 +27,7 @@
       </div>
 
       <div>
-        <p class='booklet-content-card__duration'><%= content.duration %> Minutes</p>
+        <p class='booklet-content-card__duration'><%= TimeConversion.convert(content.duration) %></p>
         <div class="booklet-content-card-type-icon">
           <% if content.content_type == 'Synchronous' %>
             <i class="fas fa-chalkboard-teacher" style='color:#F26419;'></i>

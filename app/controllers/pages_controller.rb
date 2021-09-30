@@ -13,6 +13,7 @@ class PagesController < ApplicationController
     unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
       @recommendations = @recommendations.where(user_id: current_user.id)
+
     end
 
     # SEARCH TRAININGS
@@ -72,7 +73,6 @@ class PagesController < ApplicationController
       format.js
     end
   end
-
 
   # Display monthly calendar (pages/dashboard)
   def calendar_month

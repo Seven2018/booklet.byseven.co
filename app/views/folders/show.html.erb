@@ -21,7 +21,7 @@
                 <h3 class="child-folder">
                   <strong>
                     <%= link_to folder_path(child_folder), class: "child-folder" do %>
-                      <i class="fas fa-folder child-icon"></i><%= child_folder.title %> (<%= child_folder.duration %> min)
+                      <i class="fas fa-folder child-icon"></i><%= child_folder.title %> (<%= TimeConversion.convert(child_folder.duration) %>)
                     <% end %>
                   </strong>
                 </h3>
@@ -32,7 +32,7 @@
                 <h3 class="child-workshop">
                   <strong>
                     <%= link_to content_path(child_content) ,class: "child-workshop" do %>
-                      <i class="far fa-file child-icon"></i><%= child_content.title %> (<%= child_content.duration %> min)
+                      <i class="far fa-file child-icon"></i><%= child_content.title %> (<%= TimeConversion.convert(child_content.duration) %>)
                     <% end %>
                   </strong>
                 </h3>

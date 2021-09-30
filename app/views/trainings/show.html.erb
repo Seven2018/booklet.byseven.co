@@ -21,10 +21,12 @@
                   <strong>
                     <%= link_to workshop_path(workshop), class: "child-workshop" do %>
                       <% if workshop.session.date.present? %>
-                        <i class="far fa-file child-icon"></i><%= workshop.session.date.strftime('%d/%m/%Y') %> - <%= workshop.title %> (<%= workshop.duration %> min)
+                        <i class="far fa-file child-icon"></i><%= workshop.session.date.strftime('%d/%m/%Y') %> - <%= workshop.title %> (<%= TimeConversion.convert(workshop.duration) %> min)
                       <% else %>
-                        <i class="far fa-file child-icon"></i>No date - <%= workshop.title %> (<%= workshop.duration %> min)
-                      <% end %>
+                        <%= link_to workshop_path(workshop) ,class: "child-workshop" do %>
+                          <i class="far fa-file child-icon"></i><%= workshop.title %> (<%=TimeConversion.convert(workshop.duration) %>)
+                        <% end %>
+                      <% end %>  
                     <% end %>
                   </strong>
                 </h3>
@@ -34,7 +36,7 @@
         </div>
         <div class="content-add-right">
           <div class="content-show-attributes-right">
-            <% @training.folder.present? ? content = @training.folder : content = @training.content %>
+            <% @training.folder.present? ? content = @training : content = @training.content %>
             <%= render 'folders/partials/show_attributes_right', folder: content, page: 'show', access: access %>
           </div>
         </div>

@@ -33,7 +33,7 @@ class Training < ApplicationRecord
     self.sessions.each do |session|
       duration += session.workshop.duration
     end
-    return duration == 0 ? 0 : time_conversion(duration)
+    return duration
   end
 
   def synchronous?

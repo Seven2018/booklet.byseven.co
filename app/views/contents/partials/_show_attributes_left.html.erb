@@ -27,7 +27,7 @@
     <div style='display: flex; justify-content: space-between; margin-top:20px'>
       <div class="content-show-infos-duration" >
         <p style='color:#808080;'><b>Duration</b><i class="fas fa-info-circle" data-toggle='tooltip' title='Duration is automatically calculated from the duration of each text, video, or quiz element.'></i></p>
-        <p><%= content.duration %> min <i class="far fa-clock"></i></p>
+        <p><%= TimeConversion.convert(content.duration) %> <i class="far fa-clock"></i></p>
       </div>
       <div><p style='color:#808080;'><b>Workshop Type</b></p>
         <div class="content-type-radio">
