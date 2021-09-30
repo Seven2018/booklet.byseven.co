@@ -17,14 +17,16 @@
         <p><%= start_date.strftime('%d.%m.%Y') %></p>
       </div>
     <% end %>
-    <% if end_date >= Date.today %>
-      <div class="tab-date__end tab-date--green">
-        <p><%= end_date.strftime('%d.%m.%Y') %></p>
-      </div>
-    <% else %>
-      <div class="tab-date__end tab-date--red">
-        <p><%= end_date.strftime('%d.%m.%Y') %></p>
-      </div>
+    <% unless end_date.nil? %>
+      <% if end_date >= Date.today %>
+        <div class="tab-date__end tab-date--green">
+          <p><%= end_date.strftime('%d.%m.%Y') %></p>
+        </div>
+      <% else %>
+        <div class="tab-date__end tab-date--red">
+          <p><%= end_date.strftime('%d.%m.%Y') %></p>
+        </div>
+      <% end %>
     <% end %>
     <div class="booklet-folder-card-top booklet-card-top">
       <div class="booklet-folder-card__top-info">
@@ -33,9 +35,7 @@
           <h3 data-toggle='tooltip' title='<%= content.title %>'><b><%= content.title %></b></h3>
         </div>
         <div>
-          <% hours = content.duration / 60 %>
-          <% minutes = content.duration % 60 %>
-          <p class='booklet-folder-card__duration'><%= hours %>h<%= '%02d' % minutes %></p>
+          <p class='booklet-folder-card__duration'><%= TimeConversion.convert(content.duration) %></p>
           <% if (folder.present? && content.children_contents.map{|x| x.content_type}.include?('Synchronous')) || (!folder.present? && content.content_type == 'Synchronous') %>
             <div class="booklet-folder-card-type-icon">
               <i class="fas fa-chalkboard-teacher" style='color:rgba(91, 146, 197, 1);'></i>
@@ -50,26 +50,25 @@
           <% end %>
         </div>
       </div>
+
       <div class="booklet-folder-card__categories">
-        <% if folder.present? %>
-          <% content.categories.each do |category| %>
+        <% unless folder.nil? %>
+          <% folder_categories = folder.categories.first(3) %>
+          <% folder_categories.each do |category| %>
             <div class="booklet-folder-card__category-pill">
               <p><%= category.title %></p>
             </div>
           <% end %>
-          <% content.children_categories.each do |category| %>
-            <div class="booklet-content-card__category-pill">
-              <p><%= category.title %></p>
-            </div>
-          <% end %>
-        <% else %>
-          <% content.content.categories.each do |category| %>
+          <% content_categories = folder.children_categories.first(3 - folder_categories.count) %>
+          <% content_categories.each do |category| %>
             <div class="booklet-content-card__category-pill">
               <p><%= category.title %></p>
             </div>
           <% end %>
         <% end %>
       </div>
+
+      
     </div>
     <div class="booklet-folder-card-bottom">
       <div class="recommendation-card__bottom-data">
@@ -95,7 +94,8 @@
       </div>
       <div class="recommendation-card__bottom-data">
         <i class="fas fa-euro-sign"></i>
-        <p><%= '%0d' % (training.sessions.map(&:cost).sum / attendees) %>€ (cost/employee)</p>
+        <% cost = training.sessions.map{|y| y.cost.nil? ? 0 : y.cost}.sum / attendees%>
+        <p><%= '%0d' % cost %>€ (cost/employee)</p>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 <div class="flex-row-start-centered">
   <div class='overview_results__card'>
-    <% cost = @sessions.map{|y| y.cost}.sum %>
+    <% cost = @sessions.map{|y| y.cost.nil? ? 0 : y.cost}.sum %>
     <p><%= '%.2f' % cost %>€</p>
     <p>Total Cost</p>
   </div>
