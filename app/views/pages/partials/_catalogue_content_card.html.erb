@@ -13,7 +13,11 @@
             <%= link_to 'Recommendation', recommendation_path(content_id: content.id) %>
             <%= link_to 'Edit', edit_content_path(content) %>
             <%= link_to 'Duplicate', duplicate_content_path(content) %>
-            <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'} %>
+            <% if Workshop.where(content_id: content.id).present? %>
+              <a class='open-tooltip' data-toggle='tooltip' title="Workshop booked, cannot be deleted" disabled>Delete</a>
+            <% else %>
+              <%= link_to 'Delete', content_path(content, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'} %>
+            <% end %>
           </div>
         <% end %>
       </div>

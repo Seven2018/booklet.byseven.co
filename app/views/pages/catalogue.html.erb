@@ -227,13 +227,17 @@
 
   function openContentMenu(element) {
     dropdown = element.parentNode.querySelector('.content-dropdown')
-    dropdown.classList.toggle('hidden')
+    dropdown.classList.remove('hidden')
     formGuardian = true
     setTimeout(function(){
       formGuardian = false
     }, 1);
     window.addEventListener('click', function(e) {
       if (outsideClick(e, dropdown) && formGuardian == false) {
+        formGuardian = true
+        setTimeout(function(){
+          formGuardian = false
+        }, 1);
         dropdown.classList.add('hidden')
         this.removeEventListener('click', arguments.callee, false)
       }
@@ -409,5 +413,9 @@
       const walk = (x - startX) * 3; //scroll-fast
       slider.scrollLeft = scrollLeft - walk;
     });
+  })
+
+  $('.open-tooltip').click(function() {
+    $(this).tooltip();
   })
 </script>

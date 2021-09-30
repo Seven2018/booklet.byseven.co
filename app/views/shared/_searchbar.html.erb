@@ -1,7 +1,7 @@
 <div class="searchbar">
   <i class="fas fa-search catalogue-controls__search-icon"></i>
   <%= simple_form_for :search, url: path, method: :get, remote: true do |f| %>
-    <%= f.input :title, placeholder: 'Search', label: false, autocomplete: 'off', onkeyup: 'searchInput(this);', required: false %>
+    <%= f.input :title, placeholder: 'Search', label: false, input_html: {autocomplete: 'off'}, onkeyup: 'searchInput(this);', required: false %>
     <% if params[:action] == 'catalogue' %>
       <%= f.hidden_field :filtered %>
     <% elsif params[:action] == 'book_contents' %>
