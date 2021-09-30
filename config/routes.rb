@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   # ATTENDEES
   resources :attendees
+  get :complete_session, controller: :attendees
 
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
@@ -80,7 +81,7 @@ Rails.application.routes.draw do
 
   # USER_INTERESTS
   resources :user_interests, only: %i[create destroy]
-  get :complete_content, controller: :user_interests
+  # get :complete_content, controller: :user_interests
   post :recommend, controller: :user_interests
   get :update_recommendation, controller: :user_interests
 

@@ -31,9 +31,12 @@
             </div>
           </div>
           <div class="button-add-catalogue">
+            <div class="btn-white">
+              <p>Cancel</p>
+            </div>
             <%= link_to '', content_path(@content), class: 'hidden-link hidden' %>
             <div class="btn-orange" onclick='saveAndConfirm();'>
-              <p>Confirm</p>
+              <p>Save</p>
             </div>
           </div>
         </div>
@@ -62,12 +65,13 @@
       <%= simple_form_for Mod.new, remote: true do |f| %>
         <%= f.hidden_field :content_id, value: @content.id %>
         <%= f.hidden_field :mod_type, value: 'text' %>
+        <%= f.hidden_field :position %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, class:'form-group col'}, label: 'Duration', include_blank: false %>
           </div>
         </div>
         <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
@@ -87,12 +91,13 @@
       <%= simple_form_for Mod.new, remote: true do |f| %>
         <%= f.hidden_field :content_id, value: @content.id %>
         <%= f.hidden_field :mod_type, value: 'video' %>
+        <%= f.hidden_field :position %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, class:'form-group col'}, label: 'Duration', include_blank: false %>
           </div>
         </div>
         <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
@@ -110,12 +115,13 @@
         </div>
       </div>
       <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
+        <%= f.hidden_field :position %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, class:'form-group col'}, label: 'Duration', include_blank: false %>
           </div>
         </div>
         <%= f.hidden_field :content_id, value: @content.id %>
@@ -178,7 +184,13 @@
 
   function saveAndConfirm() {
     document.querySelector('.edit_content').querySelector('.hidden-submit').click()
-    document.querySelector('.hidden-link').click()
+    document.querySelectorAll('.edit_mod').forEach((form) => {
+      form.querySelector('.hidden-submit').click()
+    })
+    document.querySelectorAll('.new_mod').forEach((form) => {
+      form.querySelector('.hidden-submit').click()
+    })
+    setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
   }
 
   function updateContent(element) {
@@ -211,24 +223,8 @@
     }
   }
 
-  function saveMod(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      initial_value = element.value;
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, element)) {
-          if (element.value != initial_value || element.tagName == 'SELECT') {
-            form = element.closest('form')
-            form.querySelector('.hidden-submit').click();
-          }
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-      setTimeout(function(){doubleClickGuardian = false}, 500)
-    }
-  }
-
   function addMod(type) {
+    position = document.querySelectorAll('.content-text,.content-video,.content-quiz').length + document.querySelectorAll('.add-text:not(.hidden),.add-video:not(.hidden),.add-quiz:not(.hidden)').length + 1
     if (type == 'text') {
       const newDiv = document.createElement("div");
       newDiv.classList.add('add-text')
@@ -237,6 +233,7 @@
       newDiv.innerHTML = templateinfo
       content = document.querySelector('.content-add-mods')
       content.append(newDiv)
+      newDiv.querySelector('#mod_position').value = position
     } else if (type == 'video') {
       const newDiv = document.createElement("div");
       newDiv.classList.add('add-video')
@@ -245,6 +242,7 @@
       newDiv.innerHTML = templateinfo
       content = document.querySelector('.content-add-mods')
       content.append(newDiv)
+      newDiv.querySelector('#mod_position').value = position
     } else if (type == 'quiz') {
       const newDiv = document.createElement("div");
       newDiv.classList.add('add-quiz')
@@ -253,6 +251,7 @@
       newDiv.innerHTML = templateinfo
       content = document.querySelector('.content-add-mods')
       content.append(newDiv)
+      newDiv.querySelector('#mod_position').value = position
     }
   }
 

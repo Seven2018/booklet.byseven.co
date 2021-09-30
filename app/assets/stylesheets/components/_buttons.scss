@@ -49,6 +49,7 @@ button {
   transition: all .25s ease-in-out;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  opacity: 0.7;
 
   i, p, a {
     color: #F26419;
@@ -65,10 +66,12 @@ button {
   }
 
   &:hover {
-    background-color: #F26419;
+    opacity: 1;
+  }
 
-    i, p, a {
-      color: white;
+  @include from-medium {
+    p {
+      font-size: 1.6rem;
     }
   }
 }
@@ -85,6 +88,7 @@ button {
   transition: all .25s ease-in-out;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  opacity: 0.7;
 
   i, p, a {
     color: white !important;
@@ -101,12 +105,13 @@ button {
   }
 
   &:hover {
-    opacity: 0.7;
+    opacity: 1;
 
     i, p {
       color: white !important;
     }
   }
+
   @include from-medium {
     p {
       font-size: 1.6rem;
