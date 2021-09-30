@@ -69,8 +69,7 @@
     }
 
     .searchbar__checkboxes {
-      width: -moz-fit-content;
-      width: fit-content;
+      width: 20rem;
       max-height: 20rem;
       overflow-y: scroll;
       padding: 1rem;
@@ -85,10 +84,14 @@
       z-index: 100;
 
       .searchbar__checkboxes-reset {
-        margin: 0 0 .5rem 2rem;
+        margin: 0 0 .5rem 2.4rem;
         cursor: pointer;
       }
 
+      .centered-item:first-of-type {
+        height: 2.4rem;
+        margin: 0;
+      }
 
       span {
         display: flex;
@@ -103,6 +106,7 @@
 
       label {
         margin: 0;
+        white-space: nowrap;
       }
     }
   }

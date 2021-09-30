@@ -9,7 +9,11 @@
             <%= link_to 'Recommendation', recommendation_path(folder_id: folder.id) %>
             <%= link_to 'Edit', edit_folder_path(folder) %>
             <%= link_to 'Duplicate', duplicate_folder_path(folder) %>
-            <%= link_to 'Delete', folder_path(folder, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}%>
+            <% if Training.where(folder_id: folder.id).present? %>
+              <a class='open-tooltip' data-toggle='tooltip' title="Program booked, cannot be deleted" disabled>Delete</a>
+            <% else %>
+              <%= link_to 'Delete', folder_path(folder, catalogue: 'true'), method: :delete, data: {confirm: 'Are you sure ?'}%>
+            <% end %>
           </div>
         <% end %>
       </div>
