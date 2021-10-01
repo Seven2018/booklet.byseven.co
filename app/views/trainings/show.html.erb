@@ -2,7 +2,29 @@
   <% access = '' %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'folders/partials/show_anchors', folder: @training.folder, page: 'edit', access: "" %>
+      <h3><b>Summary</b></h3>
+        <% if @training.folder.nil?  %>
+          <div class="folder-tree">
+            <ul>
+              <div class="line">
+                <i class="far fa-folder pr-2"></i>
+                <p><%= @training.title %></p>
+                <i class="fas fa-chevron-down chevron-display-tree"></i>
+              </div>
+              <div class="rest">
+                <ul>
+                  <div class="line">
+                    <i class="far fa-file pr-2"></i>
+                    <p><%= @training.title  %></p>
+                  </div>
+                </ul>
+              </div>
+            </ul>
+          </div>
+        <% else %>
+          <%= render 'folders/partials/show_anchors', folder: @training, page: 'edit', access: "" %>
+        <% end %>
+
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
@@ -36,8 +58,11 @@
         </div>
         <div class="content-add-right">
           <div class="content-show-attributes-right">
-            <% @training.folder.present? ? content = @training : content = @training.content %>
-            <%= render 'folders/partials/show_attributes_right', folder: content, page: 'show', access: access %>
+            <% if @training.folder.present?  %>
+              <%= render 'trainings/partials/show_attributes_right_with_folders', training: @training, page: 'show', access: access %>
+            <% else %>
+              <%= render 'trainings/partials/show_attributes_right_without_folders', training: @training, page: 'show', access: access %>
+            <% end %>
           </div>
         </div>
       </div>

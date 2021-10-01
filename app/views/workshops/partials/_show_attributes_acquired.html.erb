@@ -2,8 +2,8 @@
 <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
   <% @attendees.each do |attendee| %>
     <h3 class="mt-3 ml-2"><%= attendee.user.fullname %></h3>
-    <%= render 'contents/partials/workshop_acquired_radiobutton.html', attendee: attendee %>
+    <%= render 'workshops/partials/workshop_acquired_radiobutton.html', attendee: attendee %>
   <% end %>
 <% else %>
-  <%= render 'contents/partials/workshop_acquired_radiobutton.html', attendee: @current_attendee %>
+  <%= render 'workshops/partials/workshop_acquired_radiobutton.html', attendee: @current_attendee %>
 <% end %>
