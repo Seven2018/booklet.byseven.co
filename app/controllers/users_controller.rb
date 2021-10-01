@@ -68,7 +68,7 @@ class UsersController < ApplicationController
         if params[:user][:tags].present?
           UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
           tags.each do |tag|
-            UserTag.create(user_id: @user.id, tag_id: tag)
+            UserTag.create(user_id: @user.id, tag_id: tag, tag_category_id: Tag.find(tag).tag_category_id)
           end
         end
       end
@@ -145,7 +145,7 @@ class UsersController < ApplicationController
   # Search from users with autocomplete
   def users_search
     skip_authorization
-    @users = User.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
+    @users = User.where(company_id: current_user.company_id).order(lastname: :asc).ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
     respond_to do |format|
       format.html{}
       format.json {

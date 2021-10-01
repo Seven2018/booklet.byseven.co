@@ -1,7 +1,7 @@
 .modal-dialog {
   margin-top: 0;
   margin-bottom: 0;
-  height: 100vh;
+  // height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -81,8 +81,14 @@
  padding: 0 !important;
 }
 
-.modal-open {
- overflow: auto !important;
+body.modal-open {
+ // overflow: auto !important;
+ position: fixed;
+}
+
+body.filter-open {
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 .modal-seven {

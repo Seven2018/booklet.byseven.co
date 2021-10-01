@@ -11,7 +11,7 @@ class PagesController < ApplicationController
     @recommendations = UserInterest.where(user_id: current_user.id)
 
     unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
-      @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
+      @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id }).distinct
       @recommendations = @recommendations.where(user_id: current_user.id)
     end
 
@@ -21,7 +21,8 @@ class PagesController < ApplicationController
         @trainings = @trainings.search_trainings("#{params[:search_trainings][:title]}")
       end
       unless params[:training][:categories].reject{|c| c.empty?}.blank?
-        @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:training][:categories].reject{|c| c.empty?}.map{|x| x.to_i}})
+        @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:training][:categories].reject{|c| c.empty?}.map{|x| x.to_i}}) + @trainings.joins(sessions: {workshop: {content: :content_categories}}).where(content_categories: {category_id: params[:training][:categories].reject{|c| c.empty?}.map{|x| x.to_i}})
+        @trainings = Training.where(id: @trainings.map{|x| x.id})
       end
       if params[:search_trainings][:period] == 'All'
         @trainings = @trainings
@@ -33,7 +34,7 @@ class PagesController < ApplicationController
       if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
         unless params[:search_trainings][:employee].blank?
           selected_employee = User.search_by_name("#{params[:search_trainings][:employee]}").first
-          @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id })
+          @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id }).distinct
         end
       end
       unless params[:search_trainings][:type].blank?

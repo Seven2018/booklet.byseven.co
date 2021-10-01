@@ -7,8 +7,8 @@
   <% end %>
   <div class="booklet-folder-card">
     <% start_date = training.sessions.order(date: :asc).first.date %>
-    <% end_date = training.sessions.order(date: :desc).first.date %>
-    <% if start_date >= Date.today %>
+    <% end_date = training.sessions.order(date: :desc).reject{|x| x.date.nil?}.first.date %>
+    <% if start_date >= @start_date && start_date <= @end_date %>
       <div class="tab-date__start tab-date--green">
         <p><%= start_date.strftime('%d.%m.%Y') %></p>
       </div>
@@ -17,8 +17,8 @@
         <p><%= start_date.strftime('%d.%m.%Y') %></p>
       </div>
     <% end %>
-    <% unless end_date.nil? %>
-      <% if end_date >= Date.today %>
+    <% unless end_date.nil? || start_date == end_date %>
+      <% if end_date >= @start_date && end_date <= @end_date %>
         <div class="tab-date__end tab-date--green">
           <p><%= end_date.strftime('%d.%m.%Y') %></p>
         </div>
