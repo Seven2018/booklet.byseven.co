@@ -17,7 +17,7 @@
         <% end %>
       </div>
       <div class="infos-second-line d-flex flex-row">
-        <p class="mx-3"><%= training.duration unless training.duration == 0 %></p>
+        <p class="mx-3"><%= TimeConversion.convert(training.duration) %></p>
         <% if training.synchronous? %>
           <i class="fas fa-user small-i light-blue-i"></i>
           <p class="mx-3">Live</p>
