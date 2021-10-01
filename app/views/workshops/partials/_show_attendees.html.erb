@@ -1,0 +1,6 @@
+<p style='color:#808080; margin-bottom:5px'><b>Participants</b></p>
+<div>
+  <% attendees.each do |attendee| %>
+    <p>• <%= link_to attendee.user.fullname, user_path(attendee.user), class: "user-link" %>
+  <% end %>
+</div>

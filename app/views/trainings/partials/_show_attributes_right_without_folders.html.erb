@@ -1,0 +1,23 @@
+<div class="content-show-infos-delete orange">
+  <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+    <%= link_to training_path(training), method: :delete, data: {confirm: 'Are you sure ?'} do %>
+      <i class="fas fa-trash-alt py-3"></i>
+    <% end %>
+  <% end %>
+</div>
+<div class="content-show-infos-duration" >
+  <p style='color:#808080;'><b>Duration</b> <i class="fas fa-info-circle" data-toggle='tooltip' title='Duration is automatically calculated from the duration of each text, video, or quiz element.'></i></p>
+  <p><i class="far fa-clock"></i> <%= TimeConversion.convert(training.duration) %></p>
+</div>
+
+<div class="content-show-infos-themes">
+    <p style='color:#808080;'><b>Themes</b></p>
+    <div class="theme-btns">
+      <% training.workshops.each do |workshop| %>
+        <% workshop.content.categories.each do |category| %>
+          <p class="category-tag"><%= category.title %></p>
+        <% end %>
+      <% end %>
+    </div>
+</div>
+

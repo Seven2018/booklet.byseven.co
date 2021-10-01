@@ -9,12 +9,7 @@
     <div class="card-main-content">
       <div class="title d-flex flex-row p-0">
         <i class="fas fa-folder mx-3"></i>
-        
-        <% if training.folder.nil? %>
-          <h3><%= link_to training.title, workshop_path(training.workshops.first) %></h3>
-        <% else %>
-          <h3><%= link_to training.title, training_path(training) %></h3>
-        <% end %>
+        <h3><%= link_to training.title, training_path(training) %></h3>
       </div>
       <div class="infos-second-line d-flex flex-row">
         <p class="mx-3"><%= TimeConversion.convert(training.duration) %></p>
