@@ -1,7 +1,12 @@
 <div class="trainings-container-card <%= "past-training" if training.past?%>" id="training-<%= training.id %>">
-  <% unless training.next_session.nil? %>
+  <% online_sessions = training.sessions.where('available_date >= ?', Date.today) %>
+  <% if training.next_session.present? %>
     <div class="next-session-date">
       <%= training.next_session.date %>
+    </div>
+  <% elsif online_sessions.present? %>
+    <div class="next-session-date">
+      Ends on <%= online_sessions.order(available_date: :asc).first.available_date %>
     </div>
   <% end %>
   <div class="trainings-card d-flex flex-column">

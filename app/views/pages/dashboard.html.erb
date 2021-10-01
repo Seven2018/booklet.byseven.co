@@ -41,6 +41,8 @@
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
 <script>
   doubleClickGuardian = false
 
@@ -106,4 +108,23 @@
       setTimeout(function(){doubleClickGuardian = false}, 10)
     }
   }
+
+  $input = $("[data-behavior='autocomplete']");
+
+  var options = {
+    listLocation: "users",
+    getValue: 'name',
+    url: function(phrase) {
+      return "/users_search.json?search=" + phrase
+    },
+    list: {
+      onChooseEvent: function() {
+      },
+      match: {
+        enabled: true
+      }
+    }
+  }
+
+  $input.easyAutocomplete(options);
 </script>

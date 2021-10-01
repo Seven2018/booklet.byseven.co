@@ -11,7 +11,7 @@
       <button class='btn-reset' onclick='resetAllFilter(this);'>Reset</button>
     </div>
     <div class="overview-results">
-      <%= render 'pages/overview_results', trainings: @trainings %>
+      <%= render 'pages/partials/overview_results', trainings: @trainings %>
     </div>
   </div>
 </div>
@@ -26,12 +26,12 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="Trainings">
       <div class="overview-trainings">
-        <%= render 'pages/overview_cards_list', trainings: @trainings %>
+        <%= render 'pages/partials/overview_cards_list', trainings: @trainings %>
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="Users">
       <div class="overview-users">
-        <%= render 'pages/overview_users', users: @users %>
+        <%= render 'pages/partials/overview_users', users: @users %>
       </div>
     </div>
   </div>

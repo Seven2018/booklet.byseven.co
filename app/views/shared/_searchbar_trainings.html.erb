@@ -4,7 +4,8 @@
     <%= f.input :title, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: 'Keyword', required: false %>
 
     <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-      <%= f.input :employee, collection: @employees_form.order(lastname: :asc).map(&:fullname), required: false %>
+      <%# f.input :employee, collection: @employees_form.order(lastname: :asc).map(&:fullname), required: false %>
+      <%= f.text_field :employee, placeholder: 'Search for Users', label: false, data: {behavior: 'autocomplete'} %>
     <% end %>
     <%= f.input :period, collection: ['Current', 'Completed', 'All'], required: false, selected: 'Current' %>
     <div class="searchbar__checkboxes-container">
@@ -33,4 +34,7 @@
   <% end %>
 
   <button class='btn-reset' onclick='resetAllFilter(this);'>Reset</button>
+<!--   <%= form_with url: users_search_path, local: true, method: :get, input_html: {onkeydown: "return event.key != 'Enter';"} do |f| %>
+    <%= f.text_field :search, placeholder: 'Search for Users', label: false, data: {behavior: 'autocomplete'} %>
+  <% end %> -->
 </div>
