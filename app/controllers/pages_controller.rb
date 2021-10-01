@@ -13,7 +13,6 @@ class PagesController < ApplicationController
     unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
       @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id })
       @recommendations = @recommendations.where(user_id: current_user.id)
-
     end
 
     # SEARCH TRAININGS
@@ -21,8 +20,8 @@ class PagesController < ApplicationController
       unless params[:search_trainings][:title].blank?
         @trainings = @trainings.search_trainings("#{params[:search_trainings][:title]}")
       end
-      unless params[:search_trainings][:categories].reject{|c| c.empty?}.blank?
-        @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:search_trainings][:categories]})
+      unless params[:training][:categories].reject{|c| c.empty?}.blank?
+        @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:training][:categories].reject{|c| c.empty?}.map{|x| x.to_i}})
       end
       if params[:search_trainings][:period] == 'All'
         @trainings = @trainings
@@ -65,7 +64,7 @@ class PagesController < ApplicationController
 
     # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
     # @current_trainings = @trainings.sort_by { |training| training.next_session }
-    @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).order(date: :asc).uniq
+    @current_trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Date.today))
     @pasts_trainings = (@trainings - @current_trainings)
 
     respond_to do |format|
