@@ -1,12 +1,12 @@
 <% if ['Super Admin'].include?(current_user.access_level) || (@folder.company_id == current_user.company_id) %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'folders/partials/show_anchors', folder: @folder %>
+      <%= render 'folders/partials/show_summary', folder: @folder %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
-        <div class="content-add-left">
-          <div class="content-show-attributes-left">
+        <div class="content-center-div">
+          <div class="content-show-attributes-center">
             <%= render 'folders/partials/show_attributes_left', folder: @folder %>
           </div>
           <div class="button-add-catalogue">

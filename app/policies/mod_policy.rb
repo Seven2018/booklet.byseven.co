@@ -13,8 +13,8 @@ class ModPolicy < ApplicationPolicy
     check_access_hr
   end
 
-  def show?
-    true
+  def duplicate?
+    check_access_hr
   end
 
   def edit_question?

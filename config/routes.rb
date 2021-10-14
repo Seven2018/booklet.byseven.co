@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 
   #MODS
   resources :mods, only: %i[create update destroy]
+  post :duplicate, controller: :mods, as: :duplicate_mod
   get 'mods/:id/move_up', to: 'mods#move_up', as: 'move_up_mod'
   get 'mods/:id/move_down', to: 'mods#move_down', as: 'move_down_mod'
 

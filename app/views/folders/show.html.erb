@@ -2,12 +2,12 @@
   <% access = '' %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'folders/partials/show_anchors', folder: @folder, page: 'edit', access: "" %>
+      <%= render 'folders/partials/show_summary', folder: @folder, page: 'edit', access: "" %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
-        <div class="content-add-left">
-          <div class="content-show-attributes-left">
+        <div class="content-center-div">
+          <div class="content-show-attributes-center">
             <div class="content-info">
               <div class="flex-row-between-centered">
                 <h2 class="d-flex align-items-center"><i class="fas fa-folder folder-title"></i><%= @folder.title %></h2>

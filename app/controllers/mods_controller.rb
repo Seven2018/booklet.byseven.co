@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:update, :destroy, :move_up, :move_down]
+  before_action :set_mod, only: [:update, :duplicate, :destroy, :move_up, :move_down]
   helper VideoHelper
 
   # Create mod (contents/edit_mode)
@@ -21,6 +21,23 @@ class ModsController < ApplicationController
         format.html {content_path(@content)}
         format.js
       end
+    end
+  end
+
+  # Duplicate mod(contents/edit_mode)
+  def duplicate
+    authorize @module
+    new_mod = Mod.new(@module.attributes.except("id", "created_at", "updated_at"))
+    if new_mod.content_id.present?
+      new_mod.position = new_mod.content.mods.count + 1
+      @content = new_mod.content
+    else
+      new_mod.position = new_mod.workshop.mods.count + 1
+      @content = new_mod.workshop
+    end
+    new_mod.save
+    respond_to do |format|
+      format.js
     end
   end
 

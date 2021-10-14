@@ -1,20 +1,23 @@
 <% if ['Super Admin'].include?(current_user.access_level) || (@content.company_id == current_user.company_id) %>
+  <div id="content-show-title">
+    <h2 class="d-flex align-items-center"><i class="far fa-file workshop-title"></i></i><%= @content.title %> -&nbsp;<span>Editor Mode</span></h2>
+  </div>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'contents/partials/show_anchors', content: @content, page: 'edit', access: "" %>
+      <%= render 'contents/partials/show_summary', content: @content, page: 'edit', access: "" %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
-        <div class="content-add-left">
-          <div class="content-show-attributes-left">
-            <%= render 'contents/partials/show_attributes_left', content: @content, page: 'edit', access: "" %>
+        <div class="content-center-div">
+          <div class="content-show-attributes-center">
+            <%= render 'contents/partials/show_attributes_center', content: @content, page: 'edit', access: "" %>
           </div>
           <div class="content-show-mods-edit-mode">
             <%= render 'mods/partials/content_show_mods_index', content: @content, page: 'edit', access: "" %>
           </div>
           <div class="content-show-mods-control-btn" onclick="contentAdd();">
-            <div class='add-content-btn' id='icon-edit'><p><i class="fas fa-plus-circle" ></i>Add Modules</p></div>
-            <i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i>
+            <div class='add-content-btn' id='icon-edit'><i class="fas fa-plus"></i><p>Add Modules</p></div>
+            <div class='close-content-btn'><i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i></div>
             <div class="content-show-mods-controls" style='display:none;'>
               <a class="content-show-mods-controls-block" onclick="addMod('text');">
                 <i class="far fa-file-alt"></i>
@@ -279,18 +282,23 @@
       iconclose.classList.remove('hidden')
       iconclose.classList.add('icon-transform')
       setTimeout(function(){
-      iconclose.style.transform = ('rotate(45deg)')
-      contentbar.style.width = '100%'
-      contentblock.forEach((content) => {
-        content.style.width = '33.3%'
-      })
+        iconclose.style.transform = ('rotate(45deg)')
+        contentbar.style.width = '100%'
+        contentblock.forEach((content) => {
+          content.style.width = '33.3%'
+        })
       },1);
     } else {
       iconclose.style.transform = ('rotate(-45deg)')
       contentbar.style.width = '0'
-      contentbar.style.display = "none"
-      iconclose.classList.add('hidden')
-      iconedit.classList.remove('hidden')
+      contentblock.forEach((content) => {
+        content.style.width = '0'
+      })
+      setTimeout(function(){
+        contentbar.style.display = "none"
+        iconclose.classList.add('hidden')
+        iconedit.classList.remove('hidden')
+      },250);
     }
   }
 

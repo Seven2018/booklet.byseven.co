@@ -22,14 +22,14 @@
             </ul>
           </div>
         <% else %>
-          <%= render 'folders/partials/show_anchors', folder: @training, page: 'edit', access: "" %>
+          <%= render 'folders/partials/show_summary', folder: @training, page: 'edit', access: "" %>
         <% end %>
 
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
-        <div class="content-add-left">
-          <div class="content-show-attributes-left">
+        <div class="content-center-div">
+          <div class="content-show-attributes-center">
             <div class="content-info">
               <div class="flex-row-between-centered">
                 <h2 class="d-flex align-items-center"><i class="fas fa-folder training-title"></i><%= @training.title %></h2>
