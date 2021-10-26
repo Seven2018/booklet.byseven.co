@@ -72,14 +72,17 @@
         <%= f.hidden_field :mod_type, value: 'text' %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {autocomplete: 'off'}, required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true %>
           </div>
         </div>
         <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
+        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+          <p>Save</p>
+        <% end %>
       <% end %>
     </div>
     <div class="add-video add-video-template hidden active">
@@ -97,14 +100,17 @@
         <%= f.hidden_field :mod_type, value: 'video' %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {autocomplete: 'off'}, required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true %>
           </div>
         </div>
         <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
+        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+          <p>Save</p>
+        <% end %>
       <% end %>
     </div>
     <div class="add-quiz add-quiz-template hidden">
@@ -120,14 +126,17 @@
       <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)', autocomplete: 'off'}, required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true %>
           </div>
         </div>
         <%= f.hidden_field :content_id, value: @content.id %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
+        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+          <p>Create</p>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -186,12 +195,6 @@
 
   function saveAndConfirm() {
     document.querySelector('.edit_content').querySelector('.hidden-submit').click()
-    document.querySelectorAll('.edit_mod').forEach((form) => {
-      form.querySelector('.hidden-submit').click()
-    })
-    document.querySelectorAll('.new_mod').forEach((form) => {
-      form.querySelector('.hidden-submit').click()
-    })
     setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
   }
 
@@ -268,6 +271,7 @@
       content = document.querySelector('.content-add-mods')
       content.append(newDiv)
     }
+    document.querySelector('.content-show-mods-control-btn').classList.add('hidden')
   }
 
   function contentAdd() {

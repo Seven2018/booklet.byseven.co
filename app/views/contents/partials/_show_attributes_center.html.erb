@@ -6,20 +6,7 @@
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
   <% else %>
-    <div class="flex-row-between-centered">
-      <% if params[:session_id].present? && Session.find(params[:session_id]).date > Date.today %>
-        <% session = Session.find(params[:session_id]) %>
-        <p style='color:#F26419'><b><i>Content available on <%= session.date.to_s %></i></b></p>
-      <% end %>
-    </div>
-    <% if params[:session_id].present? %>
-        <% session = Session.find(params[:session_id]) %>
-        <% if session.available_date.present? %>
-          <p>From <%= session.date.to_s %> to <%= session.available_date.to_s %></p>
-        <% else %>
-          <p>On <%= session.date.to_s %></p>
-        <% end %>
-    <% end %>
+    <h2 class="d-flex align-items-center"><i class="far fa-file workshop-title__show"></i></i><%= @content.title %></h2>
     <p class="description"><%= content.description %></p>
   <% end %>
   <div class="content-add-right-mobile">

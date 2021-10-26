@@ -136,9 +136,9 @@
             <% else %>
               <%= f.hidden_field :content_id, value: @content.id %>
             <% end %>
-            <%= f.submit 'Search', class: 'btn-search' %>
+            <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
           <% end %>
-          <button class='btn-reset' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
+          <button class='btn-reset' onclick='clearSearch(this);'>Reset</button>
           <div class="index-controls-buttons flex-row-between-centered">
             <div class="btn-white" onclick='openFilter();'>
               <i class="fas fa-filter"></i>
@@ -193,7 +193,6 @@
   function clearSearch(element) {
     search_input = element.parentNode.querySelector('input')
     search_input.value = ''
-    element.classList.add('hidden')
     document.querySelector('.recommendation-main-container').classList.remove('hidden')
     document.querySelector('.recommendation-main-container-filtered').classList.add('hidden')
   }
@@ -355,21 +354,6 @@
     })
   }
 
-  function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.searchbar')
-    searchbar.querySelectorAll('input').forEach((input) => {
-      if (input.type == 'text') {
-        input.value = ''
-      } else if (input.type == 'checkbox') {
-        input.checked = false
-      }
-    })
-    searchbar.querySelectorAll('select').forEach((select) => {
-      select.selectedIndex = 0
-    })
-    searchbar.querySelector('.btn-search').click()
-  }
-
   function infiniteScroll() {
     if ($("nav ul.pagination a[rel=next]").length) {
       $('.users-index').infiniteScroll({
@@ -385,4 +369,21 @@
   }
 
   infiniteScroll()
+
+  function checkSelected() {
+    selected_array = []
+    document.querySelector('.recommendation-users-selected').querySelectorAll('.selected').forEach((selected) => {
+      selected_array.push(selected.id)
+    })
+    document.querySelector('.recommendation-main-container').querySelectorAll('.book-users-card').forEach((card) => {
+      if (selected_array.includes(card.id)) {
+        card.classList.add('selected')
+        card.querySelector('.book-users-checkbox').checked = true
+      }
+    })
+  }
+
+  window.addEventListener('scroll', function(e) {
+    checkSelected()
+  })
 </script>

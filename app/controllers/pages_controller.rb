@@ -349,7 +349,7 @@ class PagesController < ApplicationController
           @search_name = params[:search][:name]
         end
         # If the 'clear' button is clicked, return all the employees
-        @users = @users.order(lastname: :asc).page params[:page] if @users.present?
+        @users = @users.reorder(lastname: :asc) if @users.present?
       elsif params[:filter_user].present? && (params[:filter_user][:tag].present? && params[:filter_user][:tag].reject{|x|x.empty?} != [])
         tags = params[:filter_user][:tag].reject(&:blank?)
         if tags.empty?

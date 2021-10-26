@@ -20,7 +20,8 @@
       <%= f.hidden_field :selected_folder, value: @selected_folder %>
       <%= f.hidden_field :selected_content, value: @selected_content %>
       <%= f.hidden_field :selected_users, value: @selected_users %>
-      <%= button_tag type: 'submit' do %>
+      <% params[:book][:selected_users].present? ? disabled = '' : disabled = 'disabled' %>
+      <%= button_tag type: 'submit', class: "book__next-button " + disabled, disabled: !params[:book][:selected_users].present?, data: { toggle: 'tooltip' }, title: 'Please select a content' do %>
         <p>Select Dates</p>
       <% end %>
     <% end %>
@@ -168,6 +169,7 @@
     selected_container = document.querySelector('.book-users-selected')
     selected_array = []
     checkbox = user_card.querySelector('input[type="checkbox"]')
+    next_button = document.querySelector('.book__next-button')
     checkbox.checked = !checkbox.checked
     document.querySelectorAll('#' + user_card.id).forEach((card) => {
       if(checkbox.checked == true) {
@@ -204,6 +206,13 @@
       storage.value = selected_array
     })
     document.getElementById('search_book_selected_users').value = selected_array
+    if (selected_array.length == 0) {
+      next_button.disabled = true
+      next_button.classList.add('disabled')
+    } else {
+      next_button.disabled = false
+      next_button.classList.remove('disabled')
+    }
   }
 
   document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {

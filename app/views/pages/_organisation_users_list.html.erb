@@ -22,11 +22,11 @@
     <% if params[:action] == 'organisation' %>
       <i class="fas fa-search organisation-controls__search-icon"></i>
       <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
-        <%= f.text_field :name, placeholder: 'Search by name', label: false %>
-        <%= f.submit 'Search', class: 'btn-search' %>
+        <%= f.text_field :name, placeholder: 'Search by name', label: false, autocomplete: 'off' %>
+        <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
       <% end %>
 
-      <button class='btn-reset' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
+      <button class='btn-reset' onclick='clearSearch(this)'>Reset</button>
 
     <% end %>
     <div class="btn-white" onclick='openFilter();'>

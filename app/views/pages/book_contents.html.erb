@@ -9,7 +9,8 @@
       <%= f.hidden_field :selected_folder, value: selected_folder %>
       <%= f.hidden_field :selected_content, value: selected_content %>
       <%= f.hidden_field :selected_users, value: selected_users %>
-      <%= button_tag type: 'submit' do %>
+      <% params[:book][:selected_folder].present? ? disabled = '' : disabled = 'disabled' %>
+      <%= button_tag type: 'submit', class: "book__next-button " + disabled, disabled: !params[:book][:selected_folder].present?, data: { toggle: 'tooltip' }, title: 'Please select a content' do %>
           <p>Select Participants</p>
       <% end %>
     <% end %>
@@ -20,7 +21,7 @@
       <%= f.hidden_field :selected_folder, value: selected_folder %>
       <%= f.hidden_field :selected_content, value: selected_content %>
       <%= f.hidden_field :selected_users, value: selected_users %>
-      <%= button_tag type: 'submit' do %>
+      <%= button_tag type: 'submit', class: 'disabled', disabled: true, data: { toggle: 'tooltip' }, title: 'Please select a content' do %>
         <p>Select Dates</p>
       <% end %>
     <% end %>
@@ -58,6 +59,7 @@
     document.getElementById('book_selected_content').value = ''
     selected_storage = document.getElementById('book_selected_' + selected_type)
     search_storage = document.getElementById('search_book_selected_' + selected_type)
+    next_button = document.querySelector('.book__next-button')
     input.checked = !input.checked
     if (input.checked == true) {
       checkboxes.forEach((checkbox) => {
@@ -74,6 +76,8 @@
         }
         selected_storage.value = selected_id
         search_storage = selected_id
+        next_button.disabled = false
+        next_button.classList.remove('disabled')
       })
     } else {
       checkboxes.forEach((checkbox) => {
@@ -83,6 +87,8 @@
       })
       selected_storage.value = ''
       search_storage = ''
+      next_button.disabled = true
+      next_button.classList.add('disabled')
     }
   }
 

@@ -23,6 +23,9 @@ class User < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_by_name,
     against: [ :firstname, :lastname ],
+    associated_against: {
+      tags: :tag_name,
+    },
     using: {
       tsearch: { prefix: true }
     },

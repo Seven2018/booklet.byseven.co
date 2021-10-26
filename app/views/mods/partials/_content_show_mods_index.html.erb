@@ -40,12 +40,12 @@
         <%= simple_form_for mod, remote: true do |f| %>
           <div class="form-row">
             <div class="form-group col-9">
-              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)', autocomplete: 'off'}, required: true %>
             </div>
             <div class="form-group col-3">
               <% duration = mod.duration.to_s + ' Mins' %>
               <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
-              <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, value: duration %>
+              <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true, value: duration %>
             </div>
           </div>
           <%= f.rich_text_area :text, placeholder: 'Content', label: false, onclick: 'saveMod(this)' %>
@@ -114,15 +114,15 @@
         <%= simple_form_for mod, remote: true do |f| %>
           <div class="form-row">
             <div class="form-group col-9">
-              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)', autocomplete: 'off'}, required: true %>
             </div>
             <div class="form-group col-3">
               <% duration = mod.duration.to_s + ' Mins' %>
               <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
-              <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, value: duration %>
+              <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true, value: duration %>
             </div>
           </div>
-          <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '', input_html: {onclick: 'saveMod(this)'} %>
+          <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '', input_html: {onclick: 'saveMod(this)', autocomplete: 'off'} %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
       </div>
@@ -189,12 +189,12 @@
         <%= simple_form_for mod, remote: true do |f| %>
           <div class="form-row">
             <div class="form-group col-9">
-              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+              <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)', autocomplete: 'off'}, required: true %>
             </div>
             <div class="form-group col-3">
               <% duration = mod.duration.to_s + ' Mins' %>
               <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, selected: duration %>
-              <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false, value: duration %>
+              <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true, value: duration %>
             </div>
           </div>
           <%= f.submit '', class: 'hidden-submit hidden' %>
