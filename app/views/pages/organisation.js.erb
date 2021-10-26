@@ -24,5 +24,5 @@ document.querySelector('body').classList.remove('wait');
 
 if ("<%= @search_name.present? %>" == 'true') {
   document.querySelector('.organisation-main-container-filtered').querySelector('#search_name').value = "<%= @search_name %>"
-  document.querySelector('.organisation-main-container-filtered').querySelector('#organisation-controls__user-search-clear').classList.remove('hidden')
+  // document.querySelector('.organisation-main-container-filtered').querySelector('#organisation-controls__user-search-clear').classList.remove('hidden')
 }

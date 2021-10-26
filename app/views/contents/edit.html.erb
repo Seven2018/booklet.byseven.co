@@ -1,20 +1,23 @@
 <% if ['Super Admin'].include?(current_user.access_level) || (@content.company_id == current_user.company_id) %>
+  <div id="content-show-title">
+    <h2 class="d-flex align-items-center"><i class="far fa-file workshop-title"></i></i><%= @content.title %> -&nbsp;<span>Editor Mode</span></h2>
+  </div>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'contents/partials/show_anchors', content: @content, page: 'edit', access: "" %>
+      <%= render 'contents/partials/show_summary', content: @content, page: 'edit', access: "" %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
-        <div class="content-add-left">
-          <div class="content-show-attributes-left">
-            <%= render 'contents/partials/show_attributes_left', content: @content, page: 'edit', access: "" %>
+        <div class="content-center-div">
+          <div class="content-show-attributes-center">
+            <%= render 'contents/partials/show_attributes_center', content: @content, page: 'edit', access: "" %>
           </div>
           <div class="content-show-mods-edit-mode">
             <%= render 'mods/partials/content_show_mods_index', content: @content, page: 'edit', access: "" %>
           </div>
           <div class="content-show-mods-control-btn" onclick="contentAdd();">
-            <div class='add-content-btn' id='icon-edit'><p><i class="fas fa-plus-circle" ></i>Add Modules</p></div>
-            <i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i>
+            <div class='add-content-btn' id='icon-edit'><i class="fas fa-plus"></i><p>Add Modules</p></div>
+            <div class='close-content-btn'><i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#F26419'></i></div>
             <div class="content-show-mods-controls" style='display:none;'>
               <a class="content-show-mods-controls-block" onclick="addMod('text');">
                 <i class="far fa-file-alt"></i>
@@ -69,14 +72,17 @@
         <%= f.hidden_field :mod_type, value: 'text' %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {autocomplete: 'off'}, required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true %>
           </div>
         </div>
         <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
+        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+          <p>Save</p>
+        <% end %>
       <% end %>
     </div>
     <div class="add-video add-video-template hidden active">
@@ -94,14 +100,17 @@
         <%= f.hidden_field :mod_type, value: 'video' %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {autocomplete: 'off'}, required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true %>
           </div>
         </div>
         <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
+        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+          <p>Save</p>
+        <% end %>
       <% end %>
     </div>
     <div class="add-quiz add-quiz-template hidden">
@@ -117,14 +126,17 @@
       <%= simple_form_for :new_assessment, url: create_ajax_assessment_path, remote: true do |f| %>
         <div class="form-row">
           <div class="form-group col-9">
-          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)'}, required: true %>
+          <%= f.input :title, placeholder: '*Required', label: 'Title', input_html: {onclick: 'saveMod(this)', autocomplete: 'off'}, required: true %>
           </div>
           <div class="form-group col-3">
-          <%= f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%# f.input :duration, :collection => ['5 Mins', '10 Mins', '15 Mins', '20 Mins', '25 Mins', '30 Mins', '35 Mins', '40 Mins', '45 Mins', '50 Mins', '55 Mins', '60 Mins'], input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', include_blank: false %>
+          <%= f.input :duration, input_html: {min: 0, onclick: 'saveMod(this)', class:'form-group col'}, label: 'Duration', required: true %>
           </div>
         </div>
         <%= f.hidden_field :content_id, value: @content.id %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
+        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+          <p>Create</p>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -183,12 +195,6 @@
 
   function saveAndConfirm() {
     document.querySelector('.edit_content').querySelector('.hidden-submit').click()
-    document.querySelectorAll('.edit_mod').forEach((form) => {
-      form.querySelector('.hidden-submit').click()
-    })
-    document.querySelectorAll('.new_mod').forEach((form) => {
-      form.querySelector('.hidden-submit').click()
-    })
     setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
   }
 
@@ -265,6 +271,7 @@
       content = document.querySelector('.content-add-mods')
       content.append(newDiv)
     }
+    document.querySelector('.content-show-mods-control-btn').classList.add('hidden')
   }
 
   function contentAdd() {
@@ -279,18 +286,23 @@
       iconclose.classList.remove('hidden')
       iconclose.classList.add('icon-transform')
       setTimeout(function(){
-      iconclose.style.transform = ('rotate(45deg)')
-      contentbar.style.width = '100%'
-      contentblock.forEach((content) => {
-        content.style.width = '33.3%'
-      })
+        iconclose.style.transform = ('rotate(45deg)')
+        contentbar.style.width = '100%'
+        contentblock.forEach((content) => {
+          content.style.width = '33.3%'
+        })
       },1);
     } else {
       iconclose.style.transform = ('rotate(-45deg)')
       contentbar.style.width = '0'
-      contentbar.style.display = "none"
-      iconclose.classList.add('hidden')
-      iconedit.classList.remove('hidden')
+      contentblock.forEach((content) => {
+        content.style.width = '0'
+      })
+      setTimeout(function(){
+        contentbar.style.display = "none"
+        iconclose.classList.add('hidden')
+        iconedit.classList.remove('hidden')
+      },250);
     }
   }
 

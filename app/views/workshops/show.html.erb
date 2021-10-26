@@ -6,13 +6,13 @@
   <% end %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'contents/partials/show_anchors', content: @workshop, page: 'show', access: access %>
+      <%= render 'contents/partials/show_summary', content: @workshop, page: 'show', access: access %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
-        <div class="content-add-left">
-          <div class="content-show-attributes-left">
-            <%= render 'contents/partials/show_attributes_left', content: @workshop, page: 'show', access: access %>
+        <div class="content-center-div">
+          <div class="content-show-attributes-center">
+            <%= render 'contents/partials/show_attributes_center', content: @workshop, page: 'show', access: access %>
           </div>
           <div class="content-show-mods-edit-mode">
             <%= render 'mods/partials/content_show_mods_index', content: @workshop, page: 'show', access: access %>

@@ -11,7 +11,7 @@
       <div class="flex-row-between-start">
         <%= f.input :content_type, label: 'Type', :collection => [['Synchronous', 'In Person'], ['Asynchronous', 'Online']], label_method: :second, value_method: :first, legend_tag: false, :include_blank => false %>
         <%= f.hidden_field :categories %>
-        <div class="flex-column-between-left">
+        <div class="flex-column-between-left" style='margin-left:2rem;'>
           <%= f.label 'Categories' %>
           <div class="modal-body__content-categories-div">
             <div class="modal-body__categories-add-icon--content">

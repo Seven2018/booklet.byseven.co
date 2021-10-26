@@ -1,13 +1,13 @@
 <% if ['Super Admin'].include?(current_user.access_level) || (@workshop.content.company_id == current_user.company_id) %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'contents/partials/show_anchors', content: @workshop, page: 'edit', access: "" %>
+      <%= render 'contents/partials/show_summary', content: @workshop, page: 'edit', access: "" %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
-        <div class="content-add-left">
-          <div class="content-show-attributes-left">
-            <%= render 'contents/partials/show_attributes_left', content: @workshop, page: 'edit', access: "" %>
+        <div class="content-center-div">
+          <div class="content-show-attributes-center">
+            <%= render 'contents/partials/show_attributes_center', content: @workshop, page: 'edit', access: "" %>
           </div>
           <div class="content-show-mods-edit-mode">
             <%= render 'mods/partials/content_show_mods_index', content: @workshop, page: 'edit', access: "" %>

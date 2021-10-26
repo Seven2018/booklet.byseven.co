@@ -1,5 +1,5 @@
-document.querySelector('.content-show-attributes-left').innerHTML = '<%= j render("contents/partials/show_attributes_left", content: @content, page: "edit") %>';
+document.querySelector('.content-show-attributes-center').innerHTML = '<%= j render("contents/partials/show_attributes_center", content: @content, page: "edit") %>';
 document.querySelector('.content-show-attributes-right').innerHTML = '<%= j render("contents/partials/show_attributes_right", content: @content, page: "edit") %>';
-document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/partials/show_anchors", content: @content, page: "edit")) %>';
+document.querySelector('#content-show-container-left').innerHTML = '<%= j (render("contents/partials/show_summary", content: @content, page: "edit")) %>';
 // document.querySelector('.saved-message').classList.remove('hidden');
 // setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);

@@ -2,15 +2,15 @@
   <% access = 'granted' if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
   <div id="content-show-container">
     <div id="content-show-container-left">
-      <%= render 'contents/partials/show_anchors', content: @content, page: 'show', access: access %>
+      <%= render 'contents/partials/show_summary', content: @content, page: 'show', access: access %>
     </div>
     <div id="content-show-container-right">
       <div class="content-add">
-        <div class="content-add-left">
-          <div class="content-show-attributes-left">
-            <%= render 'contents/partials/show_attributes_left', content: @content, page: 'show', access: access %>
+        <div class="content-center-div content-center-div__show">
+          <div class="content-show-attributes-center">
+            <%= render 'contents/partials/show_attributes_center', content: @content, page: 'show', access: access %>
           </div>
-          <div class="content-show-mods-edit-mode">
+          <div class="content-show-mods-edit-mode content-show-mods-edit-mode__show">
             <%= render 'mods/partials/content_show_mods_index', content: @content, page: 'show', access: access %>
           </div>
         </div>

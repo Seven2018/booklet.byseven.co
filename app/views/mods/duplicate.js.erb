@@ -1,6 +1,3 @@
 document.querySelector('.content-show-attributes-right').innerHTML = '<%= j render("contents/partials/show_attributes_right", content: @content, page: "edit", access: "") %>';
 document.querySelector('.content-show-mods-edit-mode').innerHTML = '<%= j render("mods/partials/content_show_mods_index", content: @content, page: "edit", access: "") %>';
 document.querySelector('#content-show-container-left').innerHTML = '<%= j render("contents/partials/show_summary", content: @content, page: "edit", access: "") %>';
-document.querySelector('.content-show-mods-control-btn').classList.remove('hidden')
-// document.querySelector('.saved-message').classList.remove('hidden');
-// setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);

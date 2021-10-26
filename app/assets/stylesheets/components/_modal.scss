@@ -1,10 +1,47 @@
+body.modal-open {
+ // overflow: auto !important;
+ position: fixed;
+}
+
+body.filter-open {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+.modal {
+  overflow-y: auto !important;
+  padding: 0 !important;
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal.show {
+  display: flex !important;
+  align-items: center;
+}
+
 .modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
   margin-top: 0;
   margin-bottom: 0;
   // height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.modal-seven {
+  width: auto !important;
 }
 
 .modal-header {
@@ -76,24 +113,6 @@
   z-index: 9500 !important;
 }
 
-.modal {
- overflow-y: auto !important;
- padding: 0 !important;
-}
-
-body.modal-open {
- // overflow: auto !important;
- position: fixed;
-}
-
-body.filter-open {
-  height: 100vh;
-  overflow-y: hidden;
-}
-
-.modal-seven {
-  width: auto !important;
-}
 
 .modal-image {
 

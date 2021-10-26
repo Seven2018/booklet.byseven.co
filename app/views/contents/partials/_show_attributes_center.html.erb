@@ -1,26 +1,12 @@
 <div class="content-info">
   <% if page == 'edit' %>
     <%= simple_form_for content, remote: true do |f| %>
-      <%= f.input :title, label: false, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled' %>
-      <%= f.input :description, label: false, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Write the objective or purpose of the workshop here.' %>
+      <%= f.input :title, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled' %>
+      <%= f.input :description, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}',  style: "height: 150px;"}, placeholder: 'Write the objective or purpose of the workshop here.' %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
   <% else %>
-    <div class="flex-row-between-centered">
-      <h2 class="d-flex align-items-center"><i class="far fa-file workshop-title"></i></i><%= content.title %></h2>
-      <% if params[:session_id].present? && Session.find(params[:session_id]).date > Date.today %>
-        <% session = Session.find(params[:session_id]) %>
-        <p style='color:#F26419'><b><i>Content available on <%= session.date.to_s %></i></b></p>
-      <% end %>
-    </div>
-    <% if params[:session_id].present? %>
-        <% session = Session.find(params[:session_id]) %>
-        <% if session.available_date.present? %>
-          <p>From <%= session.date.to_s %> to <%= session.available_date.to_s %></p>
-        <% else %>
-          <p>On <%= session.date.to_s %></p>
-        <% end %>
-    <% end %>
+    <h2 class="d-flex align-items-center"><i class="far fa-file workshop-title__show"></i></i><%= @content.title %></h2>
     <p class="description"><%= content.description %></p>
   <% end %>
   <div class="content-add-right-mobile">
@@ -29,7 +15,7 @@
         <p style='color:#808080;'><b>Duration</b><i class="fas fa-info-circle" data-toggle='tooltip' title='Duration is automatically calculated from the duration of each text, video, or quiz element.'></i></p>
         <p><%= TimeConversion.convert(content.duration) %> <i class="far fa-clock"></i></p>
       </div>
-      <div><p style='color:#808080;'><b>Workshop Type</b></p>
+      <div><p style='color:#808080;'><b>Type</b></p>
         <div class="content-type-radio">
           <% if page == 'edit' %>
             <%= simple_form_for content, remote: true do |f| %>
