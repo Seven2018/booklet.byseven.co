@@ -9,8 +9,8 @@
       <%= f.hidden_field :selected_folder, value: selected_folder %>
       <%= f.hidden_field :selected_content, value: selected_content %>
       <%= f.hidden_field :selected_users, value: selected_users %>
-      <% params[:book][:selected_folder].present? ? disabled = '' : disabled = 'disabled' %>
-      <%= button_tag type: 'submit', class: "book__next-button " + disabled, disabled: !params[:book][:selected_folder].present?, data: { toggle: 'tooltip' }, title: 'Please select a content' do %>
+      <% params[:book].present? && params[:book][:selected_folder].present? ? disabled = '' : disabled = 'disabled' %>
+      <%= button_tag type: 'submit', class: "book__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a content' do %>
           <p>Select Participants</p>
       <% end %>
     <% end %>

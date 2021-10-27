@@ -1,62 +1,66 @@
 <% if ['Super Admin'].include?(current_user.access_level) || (current_user.access_level != 'Employee' && @user.company_id == current_user.company_id) || @user == current_user %>
   <div id='container-show-user'>
-    <div class="user-top-background">
-      <div class="user-buttons-top">
-        <%= link_to organisation_path, class: 'btn return-arrow' do %>
-          <i class="fas fa-arrow-left"></i>
-        <% end %>
-        <div id='show-buttons'>
-          <% if current_user.access_level == 'Super Admin' || @user == current_user || (['Account Owner', 'HR'].include?(current_user.access_level) && current_user.company == @user.company) %>
-            <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-toggle='tooltip' title='Edit User' style='margin-right: 5px; border-radius: 5px'><i class='fas fa-pen'></i></button></a>
-            <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last' data-toggle='tooltip' title='Change Password' style='margin-right: 5px; border-radius: 5px'><i class="fas fa-key"></i></button></a>
+    <div class="container-show-user-left"></div>
+    <div class="container-show-user-right">
+      <div class="user-top-background">
+        <div class="user-buttons-top">
+          <%= link_to organisation_path, class: 'btn return-arrow' do %>
+            <i class="fas fa-arrow-left"></i>
           <% end %>
-        </div>
-      </div>
-    </div>
-    <div class="user-grid">
-      <div class="user-top">
-        <div class="user-photo">
-          <% if @user.picture.present? %>
-            <img src='<%= @user.picture %>' alt="" class='avatar-xlarge' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          <% else %>
-              <%=  image_tag 'empty-avatar.png', class:'avatar-xlarge' %>
-          <% end %>
-          <div class="user-main-info">
-            <div class='user-name'>
-              <p><strong><%=  @user.firstname %> <%=  @user.lastname %></strong></p>
-            </div>
-            <div class="user-information">
-              <%= render 'users/user_informations', user: @user %>
-            </div>
+          <div id='show-buttons'>
+            <% if current_user.access_level == 'Super Admin' || @user == current_user || (['Account Owner', 'HR'].include?(current_user.access_level) && current_user.company == @user.company) %>
+              <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-toggle='tooltip' title='Edit User' style='margin-right: 5px; border-radius: 5px'><i class='fas fa-pen'></i></button></a>
+              <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last' data-toggle='tooltip' title='Change Password' style='margin-right: 5px; border-radius: 5px'><i class="fas fa-key"></i></button></a>
+            <% end %>
           </div>
         </div>
-        <div class="user-top-info">
-          <%= render 'user_contact_info', user: @user %>
-        </div>
-        <div class="user-basic-info">
-          <%= render 'user_basic', user: @user %>
+      </div>
+      <div class="user-grid">
+        <div class="user-top">
+          <div class="user-photo">
+            <% if @user.picture.present? %>
+              <img src='<%= @user.picture %>' alt="" class='avatar-xlarge' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <% else %>
+                <%=  image_tag 'empty-avatar.png', class:'avatar-xlarge' %>
+            <% end %>
+            <div class="user-main-info">
+              <div class='user-name'>
+                <p><strong><%=  @user.firstname %> <%=  @user.lastname %></strong></p>
+              </div>
+              <div class="user-information">
+                <%= render 'users/user_informations', user: @user %>
+              </div>
+            </div>
+          </div>
+          <div class="user-top-info">
+            <%= render 'user_contact_info', user: @user %>
+          </div>
+          <div class="user-basic-info">
+            <%= render 'user_basic', user: @user %>
+          </div>
         </div>
       </div>
-    </div>
-    <p class='trainings-title'>Trainings</p>
+      <p class='trainings-title'>Trainings</p>
 
-    <div class="user-trainings">
-      <div class="user-info-header">
-        <p style='font-size: 12px'>Upcoming</p>
+      <div class="user-trainings">
+        <div class="user-info-header">
+          <p style='font-size: 12px'>Upcoming</p>
+        </div>
+        <div class="trainings-row">
+          <% Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| !x.past?}.each do |training| %>
+            <%= render '/pages/partials/dashboard_trainings_card', training: training %>
+          <% end %>
+        </div>
+        <div class="user-info-header">
+          <p style='font-size: 12px'>Completed</p>
+        </div>
+        <div class="trainings-row">
+          <% Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| x.past?}.each do |training| %>
+            <%= render '/pages/partials/dashboard_trainings_card', training: training %>
+          <% end %>
+        </div>
       </div>
-      <div class="trainings-row">
-        <% Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| !x.past?}.each do |training| %>
-          <%= render '/pages/partials/dashboard_trainings_card', training: training %>
-        <% end %>
-      </div>
-      <div class="user-info-header">
-        <p style='font-size: 12px'>Completed</p>
-      </div>
-      <div class="trainings-row">
-        <% Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| x.past?}.each do |training| %>
-          <%= render '/pages/partials/dashboard_trainings_card', training: training %>
-        <% end %>
-      </div>
+
     </div>
     
   </div>

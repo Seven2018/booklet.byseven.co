@@ -53,13 +53,13 @@
     margin-bottom: 0px;
     display: flex;
     min-width: 315px;
-    width: 315px;
+    width: 40rem;
   }
 
   .content-summary-container {
     width: 100%;
     min-height: 100%;
-    padding: 2rem;
+    padding: 5rem;
     background-color: #FDFDFD;
     border: 1px solid #E7E7E5D6;
     border-radius: .5rem;
@@ -367,7 +367,7 @@
 
 .anchor {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 2rem;
 
   .icon-container {
@@ -381,6 +381,12 @@
 
   i {
     font-size: 3.2rem;
+  }
+
+  p {
+    min-height: 3.2rem;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -427,6 +433,10 @@
     display: flex;
     width: 25rem;
   }
+
+  @include from-xlarge {
+    width: 40rem;
+  }
 }
 
 .content-show-infos-delete {
@@ -450,10 +460,15 @@
 }
 
 .content-show-infos-duration, .content-show-infos-type, .content-show-infos-themes {
+  max-width: 30rem;
   margin-bottom: 2rem;
 
   p {
     margin-bottom: .5rem;
+  }
+
+  .content-type-radio {
+    max-width: 15rem;
   }
 }
 
