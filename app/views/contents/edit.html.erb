@@ -80,7 +80,7 @@
           </div>
         </div>
         <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
-        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+        <%= button_tag type: 'submit', class: 'btn-orange__white-border' do %>
           <p>Save</p>
         <% end %>
       <% end %>
@@ -108,7 +108,7 @@
           </div>
         </div>
         <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
-        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+        <%= button_tag type: 'submit', class: 'btn-orange__white-border' do %>
           <p>Save</p>
         <% end %>
       <% end %>
@@ -134,7 +134,7 @@
           </div>
         </div>
         <%= f.hidden_field :content_id, value: @content.id %>
-        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+        <%= button_tag type: 'submit', class: 'btn-orange__white-border' do %>
           <p>Create</p>
         <% end %>
       <% end %>

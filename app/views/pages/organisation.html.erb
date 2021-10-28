@@ -278,14 +278,6 @@
     })
     ids = []
     check_boxes = document.querySelectorAll('.select-user')
-    // check_boxes.forEach((checkbox) => {
-    //   if (checkbox.checked == true) {
-    //     ids.push(checkbox.value);
-    //     checkbox.parentNode.parentNode.style.backgroundColor = '#F8D9C8'
-    //   } else {
-    //     checkbox.parentNode.parentNode.style.backgroundColor = 'white'
-    //   }
-    // })
     document.querySelector('#add_tags_users').value = ids.join();
     if (ids.length == 0) {
       document.querySelectorAll('#manage-users-button').forEach((button) => {
@@ -420,41 +412,41 @@
     document.location.reload()
   }
 
-  function selectCsvAttributes(element) {
+  function selectCsvAttributes(element, color) {
     icon = element.querySelector('i')
     checkbox = element.querySelector('input[type="checkbox"]')
     if (checkbox.checked == false) {
       checkbox.checked = true
-      element.style.backgroundColor = '#F26419'
+      element.style.backgroundColor = color
       element.style.color = 'white'
       icon.style.transform = 'rotate(225deg)'
     } else {
       checkbox.checked = false
       element.style.backgroundColor = 'white'
-      element.style.color = '#F26419'
+      element.style.color = color
       icon.style.transform = 'rotate(-0deg)'
     }
   }
 
-  function checkCsvAttributes() {
+  function checkCsvAttributes(color) {
     document.querySelectorAll('.modal-filter__pill').forEach((pill) => {
       icon = pill.querySelector('i')
       checkbox = pill.querySelector('input[type="checkbox"]')
       if (checkbox.checked == false) {
         checkbox.checked = false
         pill.style.backgroundColor = 'white'
-        pill.style.color = '#F26419'
+        pill.style.color = color
         icon.style.transform = 'rotate(-0deg)'
       } else {
         checkbox.checked = true
-        pill.style.backgroundColor = '#F26419'
+        pill.style.backgroundColor = color
         pill.style.color = 'white'
         icon.style.transform = 'rotate(225deg)'
       }
     })
   }
 
-  function selectAllAttributes(element) {
+  function selectAllAttributes(element, color) {
     selectCsvAttributes(element)
     form = element.closest('form')
     checkboxes = form.querySelectorAll('input[type="checkbox"]')
@@ -467,14 +459,12 @@
         el.checked = true
       })
     }
-    checkCsvAttributes()
+    checkCsvAttributes(color)
   }
-
-  checkCsvAttributes()
 
   function importSummary(element) {
     document.querySelector('body').classList.add('wait')
-    element.classList.add('btn-white-border-disabled')
+    element.classList.add('btn-orange__white-border-disabled')
     element.disabled = true
     element.closest('form').querySelector('.hidden-submit').click()
   }
@@ -513,4 +503,31 @@
       }
     })
   })
+
+  function colorNameInBlue() {
+    document.querySelectorAll('.user-name').forEach((name) => {
+      name.style.color = '#3177B7'
+    })
+  }
+
+  redirection = window.location.href.split('redirected_from=')[1]
+  if (redirection != undefined && redirection.includes('campaigns')) {
+    document.querySelector('.btn-reset').style.color = '#3177B7'
+    document.querySelectorAll('.btn-white, .btn-icon').forEach((button) => {
+      button.querySelectorAll('i, p').forEach((element) => {
+        element.style.color = '#3177B7'
+      })
+    })
+    document.querySelectorAll('#csv_start_date, #csv_end_date').forEach((input) => {
+      console.log(input)
+      input.style.color = '#3177B7'
+    })
+    colorNameInBlue()
+    window.addEventListener('scroll', function(e) {
+      colorNameInBlue()
+    })
+    checkCsvAttributes('#3177B7')
+  } else {
+    checkCsvAttributes('#F26419')
+  }
 </script>

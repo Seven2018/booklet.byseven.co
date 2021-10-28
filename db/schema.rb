@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_20_121306) do
+ActiveRecord::Schema.define(version: 2021_10_28_092140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,17 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
     t.index ["creator_id"], name: "index_attendees_on_creator_id"
     t.index ["session_id"], name: "index_attendees_on_session_id"
     t.index ["user_id"], name: "index_attendees_on_user_id"
+  end
+
+  create_table "campaigns", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", default: ""
+    t.bigint "creator_id"
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_campaigns_on_company_id"
+    t.index ["creator_id"], name: "index_campaigns_on_creator_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -344,6 +355,8 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
   add_foreign_key "assessment_questions", "mods"
   add_foreign_key "attendees", "sessions"
   add_foreign_key "attendees", "users"
+  add_foreign_key "campaigns", "companies"
+  add_foreign_key "campaigns", "users", column: "creator_id"
   add_foreign_key "categories", "companies"
   add_foreign_key "content_categories", "categories"
   add_foreign_key "content_categories", "contents"

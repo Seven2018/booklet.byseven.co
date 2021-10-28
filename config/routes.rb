@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   resources :attendees
   get :complete_session, controller: :attendees
 
+  # CAMPAIGNS
+  resources :campaigns
+
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
   get :categories_search, controller: :categories
@@ -47,9 +50,9 @@ Rails.application.routes.draw do
 
   # PAGES
   root to: redirect('/dashboard')
-  get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
-  get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
-  get 'organisation', to: 'pages#organisation', as: 'organisation'
+  get :dashboard, controller: :pages
+  get :catalogue, controller: :pages
+  get :organisation, controller: :pages
   get :book_contents, controller: :pages
   get :book_users, controller: :pages
   get :book_dates, controller: :pages
