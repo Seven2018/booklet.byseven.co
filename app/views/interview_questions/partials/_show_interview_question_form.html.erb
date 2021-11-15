@@ -1,0 +1,49 @@
+<div class="interview-question__display-container">
+  <div class="interview-question__form">
+    <h3><%= j %>/ <%= question.question %></h3>
+    <% question_type = question.question_type %>
+    <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id) %>
+    <% existing_answer.present? ? existing_answer = existing_answer.answer : existing_answer = '' %>
+    <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
+      <% if question_type == 'open_question' %>
+        <%= f.input :answer, as: :text, label: false, input_html: {value: existing_answer} %>
+      <% elsif question_type == 'rating' %>
+        <fieldset class="rating">
+        <% for i in 1..question.options.keys.first.to_i %>
+          <% if existing_answer.to_i == question.options.keys.first.to_i - i + 1 %>
+            <input type="radio" class='radio-rating' id="star<%= i %>" name="interview_answer[answer]" value="<%= i %>" checked/><label class = "full" for="star<%= i %>" title="Awesome - <%= i %> stars"></label>
+          <% else %>
+            <input type="radio" class='radio-rating' id="star<%= i %>" name="interview_answer[answer]" value="<%= i %>" /><label class = "full" for="star<%= i %>" title="Awesome - <%= i %> stars"></label>
+          <% end %>
+          <% end %>
+        </fieldset>
+      <% elsif question_type == 'mcq' %>
+        <fieldset class="mcq">
+          <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
+            <label class="rad-label">
+              <% if b.text == existing_answer %>
+                <%= b.radio_button class: 'rad-input', checked: 'checked'%>
+              <% else %>
+                <%= b.radio_button class: 'rad-input' %>
+              <% end %>
+              <div class="rad-design"></div>
+              <div class="rad-text"><%= b.text %></div>
+            </label>
+          <% end %>
+        </fieldset>
+      <% end %>
+      <%= f.hidden_field :interview_id, value: @interview.id %>
+      <%= f.hidden_field :interview_question_id, value: question.id %>
+      <%= f.submit '', class: 'hidden-submit hidden' %>
+    <% end %>
+  </div>
+  <div class="interview-question__controls">
+    <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
+    <% if j == questions.count %>
+      <button class="btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
+    <% else %>
+      <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>
+      <button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button>
+    <% end %>
+  </div>
+</div>

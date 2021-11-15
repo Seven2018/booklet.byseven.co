@@ -1,0 +1,94 @@
+<div class="interview-container">
+  <div class="interview-start">
+    <h1><%= @interview.interview_form.title %></h1>
+    <p><%= @interview.interview_form.description %></p>
+    <button class="btn-blue btn-blue-start" onclick='nextQuestion(this);'><p>Start !</p></button>
+  </div>
+  <% questions = @interview.interview_form.interview_questions.order(position: :asc) %>
+  <% separators = questions.where(question_type: 'separator') %>
+
+  <% if separators.present? %>
+    <% separator_array = separators.map(&:position) %>
+    <% i = 0 %>
+    <% separators.each do |separator| %>
+      <div class="interview-separator">
+        <h2><%= separator.question %></h2>
+      </div>
+      <% i + 1 == separator_array.count ? end_point = questions.last.position : end_point = separator_array[i + 1] %>
+      <% j = 1 %>
+      <% questions.where(position: (separator_array[i]..end_point)).each do |question| %>
+        <div class="interview-question__with-separator">
+          <%= render 'interview_questions/partials/show_interview_question_form', question: question, j: j %>
+        </div>
+        <% j += 1 %>
+      <% end %>
+      <% i += 1 %>
+    <% end %>
+  <% else %>
+    <% j = 1 %>
+    <% questions.each do |question| %>
+      <div class="interview-question" id='question-<%= j %>'>
+        <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j %>
+      </div>
+      <% j += 1 %>
+    <% end %>
+  <% end %>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  document.querySelector('body').classList.add('interview-form-body')
+
+  $('.radio-rating').click(function() {
+    var theNumber = $(this).attr('id').slice(-1);
+    $(this).siblings('label').each(function() {
+      var sibNumber = $(this).attr('for').slice(-1);
+      if (sibNumber <= theNumber) {
+        $(this).addClass('on');
+      } else {
+        $(this).removeClass('on');
+      }
+    });
+  });
+
+  function nextQuestion(element) {
+    if (element.classList.contains('btn-blue-start')) {
+      question = document.querySelectorAll('.interview-question')[0]
+      start = document.querySelector('.interview-start')
+      question.classList.remove('hidden')
+      start.classList.add('hidden')
+    } else {
+      position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
+      question = document.querySelectorAll('.interview-question')[position]
+      previous_question = document.querySelectorAll('.interview-question')[position - 1]
+      previous_question.classList.add('hidden')
+      question.classList.remove('hidden')
+    }
+  }
+
+  function previousQuestion(element) {
+    position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
+    question = document.querySelectorAll('.interview-question')[position - 1]
+    console.log(question)
+    if (position - 1 == 0) {
+      start = document.querySelector('.interview-start')
+      start.classList.remove('hidden')
+      question.classList.add('hidden')
+    } else {
+      previous_question = document.querySelectorAll('.interview-question')[position - 2]
+      previous_question.classList.remove('hidden')
+      question.classList.add('hidden')
+    }
+  }
+
+  function submitAnswers() {
+    document.querySelectorAll('.hidden-submit').forEach((button) => {
+      setTimeout(function(){button.click()}, 100)
+    })
+    setTimeout(function(){document.querySelector('.hidden-link').click()},500)
+  }
+</script>

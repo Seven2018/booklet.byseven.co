@@ -1,0 +1,196 @@
+<script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+<div class="campaign-container">
+  <div class="campaign-controls">
+    <%= simple_form_for :campaign, url: campaign_select_template_path, method: :get do |f| %>
+      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
+      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
+      <%= f.hidden_field :selected_template, value: selected_template %>
+      <%= f.hidden_field :selected_users, value: selected_users %>
+      <%= button_tag type: 'submit' do %>
+          <p>Select a Program</p>
+      <% end %>
+    <% end %>
+    <button class='active'><p>Select Participants</p></button>
+    <%= simple_form_for :campaign, url: campaign_select_dates_path, method: :get do |f| %>
+      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
+      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
+      <%= f.hidden_field :selected_template, value: selected_template %>
+      <%= f.hidden_field :selected_users, value: selected_users %>
+      <% params[:campaign].present? && params[:campaign][:selected_users].present? ? disabled = '' : disabled = 'disabled' %>
+      <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
+        <p>Select Dates</p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="campaign-searchbar">
+    <%= render 'shared/searchbar_campaigns', path: campaign_select_users_path, reset_path: campaign_select_users_path(reset: "") %>
+  </div>
+  <div id="paginate-container" class='hidden'>
+    <%= paginate @users, remote: true, param_name: :page %>
+  </div>
+  <div class="book-users-lists__container">
+    <div class='book-users-lists'>
+      <div class="book-users-headers">
+        <div class="book-users-card">
+          <input type="checkbox" class='hidden'>
+          <div class="book-users-pseudo-checkbox-container"><button class="book-users-pseudo-checkbox"></button></div>
+          <div class="book-users-card-infos">
+            <div>
+              <p>Fullname</p>
+            </div>
+            <div>
+              <p>Email</p>
+            </div>
+            <% TagCategory.where(company_id: current_user.company_id).each do |tag_category| %>
+              <div>
+                <p><%= tag_category.name %></p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="book-users-all">
+        <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false', filtered: 'all' %>
+      </div>
+      <div class="book-users-filtered hidden">
+        <%= render 'pages/partials/book_user_index', users: [], selected_users: @selected_users, selected: 'false', filtered: 'filtered' %>
+      </div>
+    </div>
+    <div class="book-users-selected">
+      <div class="book-users-headers-selected">
+        <p>SELECTED EMPLOYEES</p>
+      </div>
+      <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')), selected: 'true', filtered: 'selected' %>
+      <div class="book-users-card book-users-card-template hidden">
+        <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
+        <input type="checkbox" class="book-users-checkbox hidden" checked=''>
+        <div class="book-users-card-infos">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+
+  function selectUser(element) {
+    user_card = element.parentNode
+    user_card_infos = user_card.querySelector('.book-users-card-infos')
+    selected_container = document.querySelector('.book-users-selected')
+    selected_array = []
+    checkbox = user_card.querySelector('input[type="checkbox"]')
+    next_button = document.querySelector('.campaign__next-button')
+    checkbox.checked = !checkbox.checked
+    document.querySelectorAll('#' + user_card.id).forEach((card) => {
+      if(checkbox.checked == true) {
+        card.classList.add('selected')
+      } else {
+        card.classList.remove('selected')
+      }
+      card.querySelector('input[type="checkbox"]').checked = checkbox.checked
+    })
+    if (checkbox.checked == true) {
+      new_card = document.createElement('div')
+      new_card.classList.add('book-users-card', 'selected')
+      new_card.id = user_card.id
+      template = document.querySelector('.book-users-card-template')
+      new_card.innerHTML = template.innerHTML
+      new_card_infos = new_card.querySelector('.book-users-card-infos')
+      new_info_name = document.createElement('div')
+      new_info_name.innerHTML = user_card_infos.querySelectorAll('div')[0].innerHTML
+      new_info_email = document.createElement('div')
+      new_info_email.innerHTML = user_card_infos.querySelectorAll('div')[1].innerHTML
+      new_card_checkbox = new_card.querySelector('input[type="checkbox"]')
+      new_card_checkbox.checked = true
+      new_card_checkbox.id = 'user' + new_card.id.split('-')[2]
+      new_card_infos.appendChild(new_info_name)
+      new_card_infos.appendChild(new_info_email)
+      document.querySelector('.book-users-selected').appendChild(new_card)
+      console.log(new_card)
+    } else {
+      selected_container.querySelector('#' + user_card.id).remove();
+    }
+    selected_container.querySelectorAll('.selected:not(.book-users-card-template)').forEach((card) => {
+      selected_array.push(card.id.split('-')[1])
+    })
+    document.querySelectorAll('#campaign_selected_users').forEach((storage) => {
+      storage.value = selected_array
+    })
+    document.getElementById('search_campaign_selected_users').value = selected_array
+    if (selected_array.length == 0) {
+      next_button.disabled = true
+      next_button.classList.add('disabled')
+    } else {
+      next_button.disabled = false
+      next_button.classList.remove('disabled')
+    }
+  }
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
+
+  function infiniteScroll() {
+    if ($("nav ul.pagination a[rel=next]").length) {
+      $(".book-users-all").infiniteScroll({
+        path: "nav ul.pagination a[rel=next]",
+        append: ".user-index-card",
+        hideNav: "nav ul.pagination",
+        history: false,
+        scrollThreshold: 3000,
+        debug: false,
+        loadOnScroll: true,
+      });
+    };
+  }
+
+  infiniteScroll()
+
+  function countElements(array, element) {
+    const counts = {}
+    for (const el of array) {
+      counts[el] = counts[el] ? counts[el] + 1 : 1;
+    }
+    return counts[element]
+  }
+
+  document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+    if (checkbox.checked == true) {
+      checkbox.closest('.book-users-card').classList.add('selected')
+    }
+  })
+
+  window.addEventListener('scroll', function(e) {
+    uniq_array = []
+    document.querySelector('.book-users-selected').querySelectorAll('.book-users-card').forEach((card) => {
+      uniq_array.push(card.id)
+    })
+    document.querySelector('.book-users-all').querySelectorAll('.book-users-card').forEach((card) => {
+      if (uniq_array.includes(card.id)) {
+        console.log(countElements(uniq_array, card.id))
+        if (countElements(uniq_array, card.id) > 1) {
+          card.remove()
+        } else {
+          card.classList.add('selected')
+        }
+      }
+    })
+  })
+
+</script>

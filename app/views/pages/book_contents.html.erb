@@ -36,14 +36,6 @@
 
 <script>
 
-  function searchInput(element) {
-    if (element.value != '') {
-      element.closest('.searchbar').querySelector('.btn-reset-form').classList.remove('hidden')
-    } else {
-      element.closest('.searchbar').querySelector('.btn-reset-form').classList.add('hidden')
-    }
-  }
-
   function resetInput(element) {
     element.closest('.searchbar').querySelector('input').value = ''
     element.closest('.searchbar').querySelector('.btn-search').click()

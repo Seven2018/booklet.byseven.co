@@ -3,47 +3,47 @@
   <%= paginate @users, remote: true, param_name: :page %>
 </div>
 <div class="organisation-main-container organisation-main-container-unfiltered">
-  <%= render 'organisation_users_list', users: @users, unfiltered: @unfiltered %>
+  <%= render 'pages/partials/organisation_users_list', users: @users, unfiltered: @unfiltered %>
 </div>
 <div class="organisation-main-container organisation-main-container-filtered hidden">
-  <%= render 'organisation_users_list', users: [], unfiltered: @unfiltered %>
+  <%= render 'pages/partials/organisation_users_list', users: [], unfiltered: @unfiltered %>
 </div>
 <div class="organisation-filter-container">
   <div class="organisation-filter-background" onclick='closeFilter();'></div>
   <div class="organisation-filter-dropright">
-    <%= render 'organisation_filter_dropright' %>
+    <%= render 'pages/partials/organisation_filter_dropright' %>
   </div>
 </div>
-<div class="organisation-manage-users-container">
+<!-- <div class="organisation-manage-users-container">
   <div class="organisation-manage-users-background" onclick='closeManager();'></div>
   <div class="organisation-manage-users-dropright">
-    <%= render 'organisation_manage_users_dropright', users: @users %>
+    <%# render 'pages/partials/organisation_manage_users_dropright', users: @users %>
   </div>
-</div>
+</div> -->
 
 
 <!-- Modals -->
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'users/new' %>
+    <%= render 'users/modals/new' %>
   </div>
 </div>
 
 <div class='modal fade' id='importUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'users/import' %>
+    <%= render 'users/modals/import' %>
   </div>
 </div>
 
 <div class='modal fade' id='exportUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'users/export' %>
+    <%= render 'users/modals/export' %>
   </div>
 </div>
 
 <div class='modal fade' id='importUsersInfos' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg modal-import-infos' role='document' style='border-radius: 20px'>
-    <%= render 'users/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
+    <%= render 'users/partials/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
   </div>
 </div>
 

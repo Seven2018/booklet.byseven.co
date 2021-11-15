@@ -8,7 +8,7 @@
         <%= f.input :end_date, label: 'Until', input_html: {class: 'datepicker', value: @end_date} %>
         <%= f.submit 'Search', class: 'btn-search' %>
       <% end %>
-      <button class='btn-reset' onclick='resetAllFilter(this);'>Reset</button>
+      <button class='btn-reset btn-reset-orange' onclick='resetAllFilter(this);'>Reset</button>
     </div>
     <div class="overview-results">
       <%= render 'pages/partials/overview_results', trainings: @trainings %>
@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <%# render 'pages/overview_cards_list', trainings: @trainings, start_date: Date.today.beginning_of_year, end_date: Date.today %>
+  <%# render 'pages/partials/overview_cards_list', trainings: @trainings, start_date: Date.today.beginning_of_year, end_date: Date.today %>
 </div>
 
 <script>

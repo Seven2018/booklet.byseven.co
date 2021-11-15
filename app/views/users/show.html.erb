@@ -28,15 +28,15 @@
                 <p><strong><%=  @user.firstname %> <%=  @user.lastname %></strong></p>
               </div>
               <div class="user-information">
-                <%= render 'users/user_informations', user: @user %>
+                <%= render 'users/partials/user_informations', user: @user %>
               </div>
             </div>
           </div>
           <div class="user-top-info">
-            <%= render 'user_contact_info', user: @user %>
+            <%= render 'users/partials/user_contact_info', user: @user %>
           </div>
           <div class="user-basic-info">
-            <%= render 'user_basic', user: @user %>
+            <%= render 'users/partials/user_basic', user: @user %>
           </div>
         </div>
       </div>
@@ -74,19 +74,19 @@
 <!-- Modal -->
 <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'edit', user: @user %>
+    <%= render 'users/modals/edit', user: @user %>
   </div>
 </div>
 
 <div class="modal fade" id="editPicture" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'edit_picture', user: @user %>
+    <%= render 'users/modals/edit_picture', user: @user %>
   </div>
 </div>
 
 <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'changepassword', user: @user %>
+    <%= render 'users/modals/changepassword', user: @user %>
   </div>
 </div>
 

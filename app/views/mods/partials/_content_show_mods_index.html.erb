@@ -200,7 +200,7 @@
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
         <div id='assessment-<%= mod.id %>'>
-          <%= render 'assessments/show', form: mod %>
+          <%= render 'assessments/partials/show', form: mod %>
         </div>
       </div>
     <% else %>

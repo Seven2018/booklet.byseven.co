@@ -1,0 +1,30 @@
+<div class="campaigns-container">
+  <div id="index-controls">
+    <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
+  </div>
+  <div class="campaign-show">
+    <%= render 'campaigns/partials/show_interview_list', campaign: @campaign, interviews: @interviews %>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
+</script>

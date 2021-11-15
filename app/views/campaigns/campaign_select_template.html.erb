@@ -1,0 +1,106 @@
+<div class="campaign-container">
+  <div class="campaign-controls">
+    <button class='active'><p>Select a Template</p></button>
+    <%= simple_form_for :campaign, url: campaign_select_users_path, method: :get do |f| %>
+      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
+      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
+      <%= f.hidden_field :selected_template, value: selected_template %>
+      <%= f.hidden_field :selected_users, value: selected_users %>
+      <% params[:campaign].present? && params[:campaign][:selected_template].present? ? disabled = '' : disabled = 'disabled' %>
+      <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
+          <p>Select Employees</p>
+      <% end %>
+    <% end %>
+    <%= simple_form_for :campaign, url: campaign_select_dates_path, method: :get do |f| %>
+      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
+      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
+      <%= f.hidden_field :selected_template, value: selected_template %>
+      <%= f.hidden_field :selected_users, value: selected_users %>
+      <%= button_tag type: 'submit', class: 'disabled', disabled: true, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
+        <p>Select Dates</p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="campaign-searchbar">
+    <%= render 'shared/searchbar_campaigns', path: campaign_select_template_path, reset_path: campaign_select_template_path(reset: "") %>
+  </div>
+  <div class="interview-forms-index">
+    <%= render 'interview_forms/partials/campaign_select_template_list', templates: @templates, selected_template: @selected_template %>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+
+  function selectTemplate(element) {
+    checkboxes = document.querySelectorAll('.select-template-checkbox')
+    input = element.parentNode.querySelector('input')
+    selected_id = input.id.split('-')[2]
+    // document.getElementById('campaign_select_template').value = ''
+    selected_storage = document.getElementById('campaign_selected_template')
+    search_storage = document.getElementById('search_campaign_selected_template')
+    next_button = document.querySelector('.campaign__next-button')
+    input.checked = !input.checked
+    if (input.checked == true) {
+      checkboxes.forEach((checkbox) => {
+        card_container = checkbox.closest('.template-card-container')
+        if (checkbox != input) {
+          checkbox.checked = false
+          card_container.classList.add('disabled')
+          card_container.classList.remove('selected')
+          card_container.querySelector('.interview-form-card__select-button').querySelector('p').innerText = 'SELECT'
+        } else {
+          card_container.classList.add('selected')
+          card_container.classList.remove('disabled')
+          card_container.querySelector('.interview-form-card__select-button').querySelector('p').innerText = 'SELECTED'
+        }
+        selected_storage.value = selected_id
+        search_storage.value = selected_id
+        next_button.disabled = false
+        next_button.classList.remove('disabled')
+      })
+    } else {
+      checkboxes.forEach((checkbox) => {
+        card_container = checkbox.closest('.template-card-container')
+        card_container.classList.remove('disabled','selected')
+        card_container.querySelector('.interview-form-card__select-button').querySelector('p').innerText = 'SELECT'
+      })
+      selected_storage.value = ''
+      search_storage.value = ''
+      next_button.disabled = true
+      next_button.classList.add('disabled')
+    }
+  }
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
+
+  checkboxes = document.querySelectorAll('.select-template-checkbox')
+  if (document.querySelectorAll('input:checked').length != 0) {
+    checkboxes.forEach((checkbox) => {
+      card_container = checkbox.closest('.template-card-container')
+      if (checkbox.checked != true) {
+        card_container.classList.add('disabled')
+      } else {
+        card_container.classList.add('selected')
+        card_container.querySelector('.interview-form-card__select-button').querySelector('p').innerText = 'SELECTED'
+      }
+    })
+  }
+</script>

@@ -1,0 +1,14 @@
+document.querySelector('.interview-forms-index').innerHTML = '<%= j render("interview_forms/partials/campaign_select_template_list", templates: @templates, selected_template: @selected_template) %>';
+
+checkboxes = document.querySelectorAll('.select-template-checkbox')
+if (document.querySelectorAll('input:checked').length != 0) {
+  checkboxes.forEach((checkbox) => {
+    card_container = checkbox.closest('.template-card-container')
+    if (checkbox.checked != true) {
+      card_container.classList.add('disabled')
+    } else {
+      card_container.classList.add('selected')
+      card_container.querySelector('.interview-form-card__select-button').querySelector('p').innerText = 'SELECTED'
+    }
+  })
+}

@@ -33,6 +33,7 @@ class TagsController < ApplicationController
       end
     end
     @tag.update(tag_params)
+    InterviewFormTag.where(tag_id: @tag.id).update_all(tag_name: @tag.tag_name)
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
     @users = User.where(id: params[:tag][:users].split(' '))
     @opened = params[:commit]

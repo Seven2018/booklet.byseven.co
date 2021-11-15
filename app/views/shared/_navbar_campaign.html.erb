@@ -10,45 +10,47 @@
           <li>
             <% if params[:controller] == 'campaigns' && params[:action] == 'index' %>
               <%= link_to campaigns_path, class: 'left-buttons' do %>
-                <div class="left-menu-title" style='color: #3177B7;'><h4>Campaigns</h4></div>
+                <div class="left-menu-title" style='color: #3177B7;'><h4>Dashboard</h4></div>
               <% end %>
               <div class="isactive"></div>
             <% else %>
               <%= link_to campaigns_path, class: 'left-buttons' do %>
-                <div class="left-menu-title"><h4>Campaigns</h4></div>
+                <div class="left-menu-title"><h4>Dashboard</h4></div>
               <% end %>
             <% end %>
           </li>
-          <li>
-            <% if params[:controller] == 'interviews' && params[:action] == 'index' %>
-              <%= link_to '', class: 'left-buttons' do %>
-                <div class="left-menu-title " style='color: #3177B7;'><h4>Templates</h4></div>
-              <% end %>
-              <div class="isactive"></div>
-            <% else %>
-              <%= link_to '', class: 'left-buttons' do %>
-                <div class="left-menu-title"><h4>Templates</h4></div>
-              <% end %>
-            <% end %>
-          </li>
-          <li>
-            <% if params[:controller] == 'campaigns' && params[:action] == 'employees' %>
-              <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
-                <div class="left-menu-title " style='color: #3177B7;'><h4>Employees</h4></div>
-              <% end %>
+          <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+            <li>
+              <% if params[:controller] == 'interview_forms' %>
+                <%= link_to interview_forms_path, class: 'left-buttons' do %>
+                  <div class="left-menu-title " style='color: #3177B7;'><h4>Templates</h4></div>
+                <% end %>
                 <div class="isactive"></div>
-            <% else %>
-              <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
-                <div class="left-menu-title"><h4>Employees</h4></div>
+              <% else %>
+                <%= link_to interview_forms_path, class: 'left-buttons' do %>
+                  <div class="left-menu-title"><h4>Templates</h4></div>
+                <% end %>
               <% end %>
-            <% end %>
-          </li>
+            </li>
+            <li>
+              <% if params[:controller] == 'campaigns' && params[:action] == 'employees' %>
+                <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
+                  <div class="left-menu-title " style='color: #3177B7;'><h4>Employees</h4></div>
+                <% end %>
+                  <div class="isactive"></div>
+              <% else %>
+                <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
+                  <div class="left-menu-title"><h4>Employees</h4></div>
+                <% end %>
+              <% end %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
       <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
         <div class="centered-item">
-          <%= link_to '', class: 'btn-blue__white-border' do %>
-            <p>Send</p>
+          <%= link_to campaign_select_template_path, class: 'btn-blue__white-border' do %>
+            <p>Campaign</p>
           <% end %>
         </div>
       <% end %>
@@ -60,12 +62,14 @@
             <i class="fas fa-th"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right" id='dropdown-icon-menu' aria-labelledby="dropdownMenuApp">
-            <%= link_to dashboard_path, class: 'menu-icon menu-icon__booklet' do %>
-              <i class="fas fa-graduation-cap"></i>
-            <% end %>
-            <%= link_to campaigns_path, class: 'menu-icon menu-icon__campaign' do %>
-              <i class="far fa-handshake"></i>
-            <% end %>
+            <div>
+              <%= link_to dashboard_path, class: 'menu-icon menu-icon__booklet' do %>
+                <i class="fas fa-graduation-cap"></i>
+              <% end %>
+              <%= link_to campaigns_path, class: 'menu-icon menu-icon__campaign' do %>
+                <i class="far fa-handshake"></i>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
@@ -75,22 +79,22 @@
 
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
 
-          <% if current_user.access_level == "HR" %>
+          <% if ['HR', 'Manager'].include?(current_user.access_level) %>
 
-            <%= link_to user_path(current_user, params: { access_level: "HR-light", last_page: "#{params[:action]}" }), class: "btn btn-secondary btn-left", method: :patch do %>
+            <%= link_to user_path(current_user, params: { access_level: "HR-light", last_page: "#{params[:controller]}-#{params[:action]}" }), class: "btn btn-secondary btn-left", method: :patch do %>
               <input type="radio" name="options" id="option1" autocomplete="off"> Employee
             <% end %>
             <label class="btn btn-secondary btn-right active">
-              <input type="radio" name="options" id="option2" autocomplete="off" checked> Admin
+              <input type="radio" name="options" id="option2" autocomplete="off" checked> <%= current_user.access_level.split('-').first %>
             </label>
 
-          <% elsif current_user.access_level == "HR-light" %>
+          <% elsif ['HR-light', 'Manager-light'].include?(current_user.access_level) %>
 
             <label class="btn btn-secondary btn-left active">
               <input type="radio" name="options" id="option1" autocomplete="off" checked> Employee
             </label>
-            <%= link_to user_path(current_user, params: { access_level: "HR", last_page: "#{params[:action]}"}), class: "btn btn-secondary btn-right", method: :patch do %>
-              <input type="radio" name="options" id="option2" autocomplete="off"> Admin
+            <%= link_to user_path(current_user, params: { access_level: "HR", last_page: "#{params[:controller]}-#{params[:action]}"}), class: "btn btn-secondary btn-right", method: :patch do %>
+              <input type="radio" name="options" id="option2" autocomplete="off"> <%= current_user.access_level.split('-').first %>
             <% end %>
 
           <% end %>

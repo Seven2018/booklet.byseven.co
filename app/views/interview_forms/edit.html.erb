@@ -1,0 +1,330 @@
+<% if @template.company_id == current_user.company_id %>
+  <% access = 'granted' if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+  <div id="template-show-container">
+    <div id="template-show-container-left">
+      <%= render 'interview_forms/partials/show_summary', template: @template, page: 'edit' %>
+    </div>
+    <div id="template-show-container-right">
+      <div class="template-add">
+        <div class="template-center-div template-center-div__show">
+          <div class="template-show-attributes-center">
+            <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'edit' %>
+          </div>
+          <div class="template-show-lines template-show-lines__show">
+            <%= render 'interview_forms/partials/show_questions_index', template: @template, page: 'edit' %>
+          </div>
+          <div class="template-show-lines-control-btn" onclick="lineMenu();">
+            <div class='add-template-btn' id='icon-edit'><i class="fas fa-plus"></i><p>Add Modules</p></div>
+            <div class='close-template-btn'><i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#3177B7'></i></div>
+            <div class="template-show-lines-controls" style='display:none;'>
+              <a class="template-show-lines-controls-block" onclick="addLine('separator');">
+                <i class="fas fa-grip-lines"></i>
+                <p>Separator</p>
+              </a>
+              <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
+                <i class="fas fa-question-circle"></i>
+                <p>Open Question</p>
+              </a>
+              <a class="template-show-lines-controls-block" onclick="addLine('rating');">
+                <i class="fas fa-star-half-alt"></i>
+                <p>Rating</p>
+              </a>
+              <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
+                <i class="far fa-check-square"></i>
+                <p>MCQ</p>
+              </a>
+            </div>
+          </div>
+          <div class="button-add-catalogue">
+            <%= link_to :back do %>
+              <div class="btn-blue-text">
+                <p>Back</p>
+              </div>
+            <% end %>
+            <%= link_to '', interview_form_path(@template), class: 'hidden-link hidden' %>
+            <div class="btn-blue" onclick='saveAndConfirm();'>
+              <p>Confirm</p>
+            </div>
+          </div>
+        </div>
+        <div class="template-add-right">
+          <div class="template-show-attributes-right">
+            <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'edit' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='line-templates hidden'>
+    <div class="add-separator add-separator-template hidden active">
+      <div class="line-top">
+        <div class="line-title" onclick='toggleMod(this);'>
+          <i class="fas fa-angle-down" data-rotated='0'></i>
+          <p>Separator</p>
+        </div>
+        <div class="line-controls-new">
+          <a class="line-delete" onclick="this.closest('.add-separator').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
+        </div>
+      </div>
+      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
+        <%= f.hidden_field :interview_form_id, value: @template.id %>
+        <%= f.hidden_field :question_type, value: 'separator' %>
+        <%= f.input :question, placeholder: '*Required', label: 'Title', input_html: {autocomplete: 'off'}, required: true %>
+        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
+        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
+          <p>Save</p>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="add-open_question add-open_question-template hidden active">
+      <div class="line-top">
+        <div class="line-title" onclick='toggleMod(this);'>
+          <i class="fas fa-angle-down" data-rotated='0'></i>
+          <p>Open Question</p>
+        </div>
+        <div class="line-controls-new">
+          <a class="line-delete" onclick="this.closest('.add-open_question').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
+        </div>
+      </div>
+      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
+        <%= f.hidden_field :interview_form_id, value: @template.id %>
+        <%= f.hidden_field :question_type, value: 'open_question' %>
+        <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {autocomplete: 'off'}, required: true %>
+        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
+        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
+          <p>Save</p>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="add-rating add-rating-template hidden active">
+      <div class="line-top" onclick='toggleMod(this);'>
+        <div class="line-title" onclick='toggleMod(this);'>
+          <i class="fas fa-angle-down" data-rotated='0'></i>
+          <p>Rating</p>
+        </div>
+        <div class="line-controls-new">
+          <a class="line-delete" onclick="this.closest('.add-rating').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
+        </div>
+      </div>
+      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
+        <%= f.hidden_field :interview_form_id, value: @template.id %>
+        <%= f.hidden_field :question_type, value: 'rating' %>
+        <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {autocomplete: 'off'}, required: true %>
+        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
+        <div class="add-rating__select">
+          <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating' %>
+        </div>
+        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
+          <p>Save</p>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="add-mcq add-mcq-template hidden">
+      <div class="line-top">
+        <div class="line-title" onclick='toggleMod(this);'>
+          <i class="fas fa-angle-down" data-rotated='0'></i>
+          <p>MCQ</p>
+        </div>
+        <div class="line-controls-new">
+          <a class="line-delete" onclick="this.closest('.add-mcq').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
+        </div>
+      </div>
+      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
+        <%= f.hidden_field :interview_form_id, value: @template.id %>
+        <%= f.hidden_field :question_type, value: 'mcq' %>
+        <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {autocomplete: 'off'}, required: true %>
+        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
+        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
+          <p>Create</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+
+  <!------------>
+  <!-- MODALS -->
+  <!------------>
+
+  <div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+    <div class='modal-dialog' role='document' style='border-radius: 20px'>
+      <%= render 'interview_forms/modals/manage_tags', form: @template %>
+    </div>
+  </div>
+
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
+  </div>
+<% end %>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function saveAndConfirm() {
+    document.querySelector('.edit_interview_form').querySelector('.hidden-submit').click()
+    setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
+  }
+
+  function updateContent(element) {
+    form = element.closest('form')
+    submit = form.querySelector('.hidden-submit')
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, element) && doubleClickGuardian == false) {
+        submit.click();
+        this.removeEventListener('click', arguments.callee, false);
+      }
+    })
+  }
+
+  function lineMenu() {
+    var contentbar = document.querySelector('.template-show-lines-controls')
+    var iconedit = document.querySelector('#icon-edit')
+    var iconclose = document.querySelector('#icon-close')
+    var contentblock = document.querySelectorAll('.template-show-lines-controls-block')
+
+    if (contentbar.style.display === "none") {
+      contentbar.style.display = "flex";
+      iconedit.classList.add('hidden')
+      iconclose.classList.remove('hidden')
+      iconclose.classList.add('icon-transform')
+      setTimeout(function(){
+        iconclose.style.transform = ('rotate(45deg)')
+        contentbar.style.width = '100%'
+        contentblock.forEach((content) => {
+          content.style.width = '33.3%'
+        })
+      },1);
+    } else {
+      iconclose.style.transform = ('rotate(-45deg)')
+      contentbar.style.width = '0'
+      contentblock.forEach((content) => {
+        content.style.width = '0'
+      })
+      setTimeout(function(){
+        contentbar.style.display = "none"
+        iconclose.classList.add('hidden')
+        iconedit.classList.remove('hidden')
+      },250);
+    }
+  }
+
+  function addLine(type) {
+    if (type == 'separator') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-separator')
+      template = document.querySelector('.add-separator-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.template-add-lines')
+      content.append(newDiv)
+    } else if (type == 'open_question') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-open_question')
+      template = document.querySelector('.add-open_question-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.template-add-lines')
+      content.append(newDiv)
+    } else if (type == 'rating') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-rating')
+      template = document.querySelector('.add-rating-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.template-add-lines')
+      content.append(newDiv)
+    } else if (type == 'mcq') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-mcq')
+      template = document.querySelector('.add-mcq-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.template-add-lines')
+      content.append(newDiv)
+    }
+    document.querySelector('.template-show-lines-control-btn').classList.add('hidden')
+  }
+
+  function saveQuestion(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      initial_value = element.value;
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, element)) {
+          if (element.value != initial_value || element.tagName == 'SELECT') {
+            form = element.closest('form')
+            form.querySelector('.hidden-submit').click();
+          }
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+      setTimeout(function(){doubleClickGuardian = false}, 500)
+    }
+  }
+
+  function openEditOptionForm(element) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      li = element.querySelector('li')
+      form = element.querySelector('.hidden-form-ajax')
+      input = form.querySelector('#edit_option_option')
+      li.classList.add('hidden')
+      form.classList.remove('hidden')
+      input.focus()
+      // input.selectionStart = input.selectionEnd = input.value.length
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, element)) {
+          e.stopPropagation()
+          e.preventDefault()
+          li.classList.remove('hidden')
+          form.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
+          setTimeout(function(){doubleClickGuardian = false}, 250)
+        }
+      })
+    }
+  }
+
+  function toggleTagCategoryDropdown(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode;
+    if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '10000px';
+      block.classList.add('active');
+    } else {
+      block.style.maxHeight = '60px';
+      block.classList.remove('active');
+    }
+  }
+
+  function autoSubmitTag(element) {
+    element.closest('form').querySelector('.hidden-submit').click()
+  }
+</script>

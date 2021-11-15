@@ -1,0 +1,31 @@
+<div class="row">
+  <% templates.each do |template| %>
+    <div id='template-card-<%= template.id %>' class="col-xl-3 col-sm-6 col-xs-12">
+      <div class="interview-form-card">
+        <%= link_to '', interview_form_path(template), class: 'stretched-link' %>
+        <div class="interview-form-card__controls">
+          <h3><%= template.title %></h3>
+          <div class="interview-form-card__options" onclick="openContentMenu(this);">
+            <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+              <i class="fas fa-ellipsis-v"></i>
+              <div class="content-dropdown hidden">
+                <%= link_to 'Edit', edit_interview_form_path(template) %>
+                <%= link_to 'Duplicate', duplicate_interview_form_path(template) %>
+                <%= link_to 'Delete', interview_form_path(template), method: :delete, remote: true, data: {confirm: 'Are you sure ?'}%>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="interview-form-card__tags">
+          <% template.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
+            <p class="interview-form-card__tag-pill"><%= tag.tag_name %></p>
+          <% end %>
+        </div>
+        <div class="interview-form-card__preview">
+          <i class="fas fa-question"></i>
+          <p><%= template.interview_questions.count %> questions</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

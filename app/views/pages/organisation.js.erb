@@ -5,7 +5,7 @@ if ("<%= @unfiltered %>" == 'true') {
 } else if ("<%= @unfiltered %>" == 'false') {
   document.querySelector('.organisation-main-container-unfiltered').classList.add('hidden')
   document.querySelector('.organisation-main-container-filtered').classList.remove('hidden')
-  document.querySelector('.organisation-main-container-filtered').innerHTML = '<%= j render("pages/organisation_users_list", users: @users.uniq, unfiltered: @unfiltered) %>';
+  document.querySelector('.organisation-main-container-filtered').innerHTML = '<%= j render("pages/partials/organisation_users_list", users: @users.uniq, unfiltered: @unfiltered) %>';
 }
 if ("<%= @selected_users.count %>" !== '0') {
   document.querySelector('.organisation-main-container:not(.hidden)').querySelector('#manage-users-button').classList.add('flashing_button')

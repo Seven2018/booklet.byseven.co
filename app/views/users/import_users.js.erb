@@ -1,4 +1,4 @@
 document.querySelector('#importUsers').querySelector('.btn-icon').click()
 document.querySelector('body').classList.remove('wait');
-document.querySelector('.modal-import-infos').innerHTML = '<%= j render("users/import_infos", errors: @errors.sort_by { |hsh| hsh["lastname"] }, creating: @creating.sort_by { |hsh| hsh["lastname"] }, updating: @updating.sort_by { |hsh| hsh["lastname"] }, deleting: @deleting.order(lastname: :asc)) %>';
+document.querySelector('.modal-import-infos').innerHTML = '<%= j render("users/partials/import_infos", errors: @errors.sort_by { |hsh| hsh["lastname"] }, creating: @creating.sort_by { |hsh| hsh["lastname"] }, updating: @updating.sort_by { |hsh| hsh["lastname"] }, deleting: @deleting.order(lastname: :asc)) %>';
 document.querySelector('#organisation-dropdown__import-infos-link').click()

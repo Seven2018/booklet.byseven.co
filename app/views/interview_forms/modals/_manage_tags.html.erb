@@ -1,0 +1,41 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__campaign">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Manage Tags for <em><%= form.title %></em></h3>
+    </div>
+  </div>
+  <div class="modal-body" id="modalNewBookinBody">
+    <div class="interview-forms-categories">
+      <% checked = form.tags.ids %>
+      <%= simple_form_for :add_tags, url: interview_form_link_tags_path, method: :get, remote: true do |f| %>
+        <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |category| %>
+          <div class="interview-forms-categories__block">
+            <div class="interview-forms-categories__block-title">
+              <div class='flex-row-start-centered'>
+                <p><%= category.name %></p>
+              </div>
+              <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+                <i class="fas fa-angle-down" data-rotated='0'></i>
+              </div>
+            </div>
+            <div class="interview-forms-categories__checkboxes">
+              <%= collection_check_boxes(:interview_form, :tags, Tag.where(tag_category_id: category.id).order(tag_name: :asc), :id, :tag_name, checked: checked) do |b| %>
+                <div class="flex-row-between-centered">
+                  <%= b.check_box(onclick: 'autoSubmitTag(this);') %>
+                  <div class="flex-row-between-centered">
+                    <p class='category-title'><%= b.text %></p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <%= f.hidden_field :form_id, value: form.id %>
+        <div class="theme-save-btn">
+          <button type="button" class="btn-blue-text cancel-close" data-dismiss="modal" aria-label="Close">Close</button>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
