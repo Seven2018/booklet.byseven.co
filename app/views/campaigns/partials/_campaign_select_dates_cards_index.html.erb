@@ -1,0 +1,33 @@
+<div class="campaign-select-date-title">
+  <div class="flex-row-start-centered">
+    <h1><%= selected_template.title %> -</h1>
+    <h5>&nbsp;<%= @selected_users.count %> selected employees</h5>
+  </div>
+  <div class="flex-row-start-centered">
+    <p><%= selected_template.interview_questions.count %> questions</p>
+    <% selected_template.interview_form_tags.each do |tag| %>
+      <p class="campaign-select-date-tag-pill"><%= tag.tag_name %></p>
+    <% end %>
+  </div>
+</div>
+<% selected_users.each do |user| %>
+  <div class="campaign-select-date-card">
+    <div class="campaign-select-date-card__username">
+      <p><%= user.fullname %></p>
+    </div>
+    <%= simple_form_for :interview, url: interviews_path, method: :post, remote: true do |f| %>
+      <div class="flex-row-start-centered">
+        <%= f.input :date, label: false, input_html: {class: 'datepicker', style: 'max-width: 110px;text-align: center;'}, placeholder: 'Select date' %>
+        <p>from</p>
+        <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);', value: '09:00', style: 'max-width: 70px;text-align: center;'}, required: true %>
+        <p>to</p>
+        <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);', value: "10:00", style: 'max-width: 70px;text-align: center;'}, required: true %>
+        <%= f.hidden_field :employee_id, value: user.id %>
+        <%= f.hidden_field :creator_id, value: current_user.id %>
+        <%= f.hidden_field :interview_form_id, value: selected_template.id %>
+        <%= f.hidden_field :campaign_id %>
+        <%= f.submit '', class: 'hidden-submit hidden' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

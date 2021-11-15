@@ -19,6 +19,12 @@ Rails.application.routes.draw do
   resources :attendees
   get :complete_session, controller: :attendees
 
+  # CAMPAIGNS
+  resources :campaigns
+  get :campaign_select_template, controller: :campaigns
+  get :campaign_select_users, controller: :campaigns
+  get :campaign_select_dates, controller: :campaigns
+
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
   get :categories_search, controller: :categories
@@ -39,6 +45,24 @@ Rails.application.routes.draw do
   get :folder_manage_children, controller: :folders
   get 'folders/:id/duplicate', to: 'folders#duplicate', as: 'duplicate_folder'
 
+  # INTERVIEWS
+  resources :interviews
+  post :answer_question, controller: :interviews, as: :answer_interview_question
+
+  # INTERVIEW FORMS
+  resources :interview_forms
+  get :interview_form_link_tags, controller: :interview_forms
+  get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'
+
+  # INTERVIEW QUESTIONS
+  resources :interview_questions
+  post :create_interview_mcq, controller: :interview_questions
+  post :add_mcq_option, controller: :interview_questions
+  patch :edit_mcq_option, controller: :interview_questions
+  patch :delete_mcq_option, controller: :interview_questions
+  get 'interview_questions/:id/move_up', to: 'interview_questions#move_up', as: 'move_up_interview_question'
+  get 'interview_questions/:id/move_down', to: 'interview_questions#move_down', as: 'move_down_interview_question'
+
   #MODS
   resources :mods, only: %i[create update destroy]
   post :duplicate, controller: :mods, as: :duplicate_mod
@@ -47,9 +71,9 @@ Rails.application.routes.draw do
 
   # PAGES
   root to: redirect('/dashboard')
-  get 'dashboard', to: 'pages#dashboard', as: 'dashboard'
-  get 'catalogue', to: 'pages#catalogue', as: 'catalogue'
-  get 'organisation', to: 'pages#organisation', as: 'organisation'
+  get :dashboard, controller: :pages
+  get :catalogue, controller: :pages
+  get :organisation, controller: :pages
   get :book_contents, controller: :pages
   get :book_users, controller: :pages
   get :book_dates, controller: :pages

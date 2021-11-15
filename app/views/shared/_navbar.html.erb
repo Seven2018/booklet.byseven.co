@@ -1,4 +1,4 @@
-<div class="navbar navbar-expand-sm navbar-light">
+<div class="navbar navbar-expand-sm navbar-light navbar__orange">
   <% if params[:action] == 'edit_mode' %>
     <div class= "col-12 text-center title_edit_mode" >
       <h2><%= @content.title %> Editor mode</h2>
@@ -63,7 +63,7 @@
       </ul>
       <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
         <div class="centered-item">
-          <%= link_to book_contents_path, class: 'btn-white-border' do %>
+          <%= link_to book_contents_path, class: 'btn-orange__white-border' do %>
             <p>Book</p>
           <% end %>
         </div>
@@ -78,10 +78,36 @@
         </div>
       <% end %>
 
-      <%# TOGGLE EMPLOYEE ADMIN %>
-      <div class="toggle-admin">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
 
+      <!------------------------->
+      <!-- Icons Menu Dropdown -->
+      <!------------------------->
+
+      <div class="navbar__icons-menu">
+        <div class="dropdown show">
+          <a class="dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuApp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-th"></i>
+          </a>
+          <div class="dropdown-menu" id='dropdown-icon-menu' aria-labelledby="dropdownMenuApp">
+            <div>
+              <%= link_to dashboard_path, class: 'menu-icon menu-icon__booklet' do %>
+                <i class="fas fa-graduation-cap"></i>
+              <% end %>
+              <%= link_to campaigns_path, class: 'menu-icon menu-icon__campaign' do %>
+                <i class="far fa-handshake"></i>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!------------------>
+      <!-- Toggle Admin -->
+      <!------------------>
+
+      <div class="toggle-admin">
+
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
 
           <% if current_user.access_level == "HR" %>
 
@@ -109,29 +135,29 @@
       <div class="user-top-nav">
         <div class="dropdown show">
           <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-          <div class="dropdown-card">
-            <div class="user-info">
-              <p><%= current_user.fullname%></p>
-              <h6><%= current_user.email%></h6>
-            </div>
-          </div>
-          <%= link_to user_path(current_user) do %>
-            <div class="dropdown-card dropdown-item ">
-              <div class='dropdown-card-text'>
-                <h6>Profile</h6>
+            <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+            <div class="dropdown-card">
+              <div class="user-info">
+                <p><%= current_user.fullname%></p>
+                <h6><%= current_user.email%></h6>
               </div>
             </div>
-          <% end %>
-          <%= link_to destroy_user_session_path, method: :delete do %>
-            <div class="dropdown-card dropdown-item flex-row-between-centered">
-              <div class='dropdown-card-text'>
-                <h6>Log out</h6>
+            <%= link_to user_path(current_user) do %>
+              <div class="dropdown-card dropdown-item ">
+                <div class='dropdown-card-text'>
+                  <h6>Profile</h6>
+                </div>
               </div>
-            </div>
-          <% end %>
+            <% end %>
+            <%= link_to destroy_user_session_path, method: :delete do %>
+              <div class="dropdown-card dropdown-item flex-row-between-centered">
+                <div class='dropdown-card-text'>
+                  <h6>Log out</h6>
+                </div>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

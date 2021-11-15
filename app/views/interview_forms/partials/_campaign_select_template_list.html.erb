@@ -1,0 +1,28 @@
+<div class="row">
+  <% templates.each do |template| %>
+    <div id='template-card-<%= template.id %>' class="template-card-container col-xl-3 col-sm-6 col-xs-12">
+      <div class="interview-form-card interview-form-card__campaign">
+        <div class="interview-form-card__controls">
+          <h3><%= template.title %></h3>
+        </div>
+        <div class="interview-form-card__tags">
+          <% template.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
+            <p class="interview-form-card__tag-pill"><%= tag.tag_name %></p>
+          <% end %>
+        </div>
+        <div class="interview-form-card__preview">
+          <i class="fas fa-question"></i>
+          <p><%= template.interview_questions.count %> questions</p>
+        </div>
+      </div>
+      <div class="interview-form-card__select-button" onclick="selectTemplate(this);">
+        <% if selected_template != template.id.to_s %>
+          <input type="checkbox" class="select-template-checkbox hidden" id="checkbox-template-<%= template.id %>">
+        <% else %>
+          <input type="checkbox" class="select-template-checkbox hidden" id="checkbox-template-<%= template.id %>" checked>
+        <% end %>
+        <p>SELECT</p>
+      </div>
+    </div>
+  <% end %>
+</div>

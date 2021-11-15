@@ -1,0 +1,69 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Importing summary</h3>
+    </div>
+    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body">
+    <div class="import-infos__block">
+      <div class="import-infos__block-title">
+        <div>
+          <p>New employees : <span style='color:#F8D9C8;'>(<%= creating.count %>)</span> & Former employees : <span style='color:#C4C4C4;'>(<%= deleting.count %>)</span></p>
+          <div class="import-infos__block-title-buttons">
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="import-infos__block-list">
+        <% creating.each do |user| %>
+          <div class="import-infos__user-card import-infos__user-card--create">
+            <p><%= "#{user['lastname']}, #{user['firstname']}" %></p>
+            <p><%= user['email'] %></p>
+          </div>
+        <% end %>
+      </div>
+      <div class="import-infos__block-list">
+        <% deleting.each do |user| %>
+          <div class="import-infos__user-card import-infos__user-card--delete">
+            <p><%= "#{user.lastname}, #{user.firstname}" %></p>
+            <p><%= user.email %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="import-infos__block">
+      <div class="import-infos__block-title">
+        <div>
+          <p>Updated accounts : (<%= updating.count %>)</p>
+          <div class="import-infos__block-title-buttons">
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="import-infos__block-list">
+        <div class="import-infos__user-card import-infos__user-card--headers">
+          <p>Fullname</p>
+          <p>From</p>
+          <p>To</p>
+        </div>
+        <% updating.each do |user| %>
+          <div class="import-infos__user-card import-infos__user-card--update">
+            <p><%= "#{user[:lastname]}, #{user[:firstname]}" %></p>
+            <p><%= user[:former] %></p>
+            <p><%= user[:new] %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="cancel-submit-btns">
+      <button class="btn-orange__white-border" onclick='fileTransfer(this);'>
+        <p>Publish Changes</p>
+      </button>
+    </div>
+  </div>
+</div>

@@ -157,12 +157,6 @@
     }
   }
 
-  function resetInput(element) {
-    element.closest('.searchbar').querySelector('input').value = ''
-    element.closest('.searchbar').querySelector('.btn-search').click()
-    element.closest('.searchbar').querySelector('.btn-reset-form').classList.add('hidden')
-  }
-
   function selectUser(element) {
     user_card = element.parentNode
     user_card_infos = user_card.querySelector('.book-users-card-infos')
@@ -215,12 +209,6 @@
     }
   }
 
-  document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-    if (checkbox.checked == true) {
-      checkbox.closest('.book-users-card').classList.add('selected')
-    }
-  })
-
   function resetAllFilter(element, recommendation = false) {
     searchbar = element.closest('.searchbar')
     searchbar.querySelectorAll('input').forEach((input) => {
@@ -251,4 +239,35 @@
   }
 
   infiniteScroll()
+
+  function countElements(array, element) {
+    const counts = {}
+    for (const el of array) {
+      counts[el] = counts[el] ? counts[el] + 1 : 1;
+    }
+    return counts[element]
+  }
+
+  document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+    if (checkbox.checked == true) {
+      checkbox.closest('.book-users-card').classList.add('selected')
+    }
+  })
+
+  window.addEventListener('scroll', function(e) {
+    uniq_array = []
+    document.querySelector('.book-users-selected').querySelectorAll('.book-users-card').forEach((card) => {
+      uniq_array.push(card.id)
+    })
+    document.querySelector('.book-users-all').querySelectorAll('.book-users-card').forEach((card) => {
+      if (uniq_array.includes(card.id)) {
+        console.log(countElements(uniq_array, card.id))
+        if (countElements(uniq_array, card.id) > 1) {
+          card.remove()
+        } else {
+          card.classList.add('selected')
+        }
+      }
+    })
+  })
 </script>

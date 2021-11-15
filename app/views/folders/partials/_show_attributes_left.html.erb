@@ -38,7 +38,7 @@
         <%= f.input :title, placeholder: 'Search', label: false, autocomplete: 'off', required: false %>
         <%= f.hidden_field :filtered %>
         <%= f.submit 'Search', class: 'btn-search' %>
-        <button class='btn-reset' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
+        <button class='btn-reset btn-reset-orange' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
       <% end %>
     </div>
     <div class="content-info__folder-content-list">

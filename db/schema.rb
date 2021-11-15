@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_20_121306) do
+ActiveRecord::Schema.define(version: 2021_11_04_084032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,19 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
     t.index ["creator_id"], name: "index_attendees_on_creator_id"
     t.index ["session_id"], name: "index_attendees_on_session_id"
     t.index ["user_id"], name: "index_attendees_on_user_id"
+  end
+
+  create_table "campaigns", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", default: ""
+    t.bigint "owner_id"
+    t.bigint "company_id"
+    t.bigint "interview_form_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_campaigns_on_company_id"
+    t.index ["interview_form_id"], name: "index_campaigns_on_interview_form_id"
+    t.index ["owner_id"], name: "index_campaigns_on_owner_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -174,6 +187,72 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_folders_on_company_id"
+  end
+
+  create_table "interview_answers", force: :cascade do |t|
+    t.text "answer", default: "", null: false
+    t.text "comments"
+    t.bigint "interview_id"
+    t.bigint "interview_question_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["interview_id"], name: "index_interview_answers_on_interview_id"
+    t.index ["interview_question_id"], name: "index_interview_answers_on_interview_question_id"
+    t.index ["user_id"], name: "index_interview_answers_on_user_id"
+  end
+
+  create_table "interview_form_tags", force: :cascade do |t|
+    t.string "tag_name", default: "", null: false
+    t.bigint "interview_form_id"
+    t.bigint "tag_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["interview_form_id"], name: "index_interview_form_tags_on_interview_form_id"
+    t.index ["tag_id"], name: "index_interview_form_tags_on_tag_id"
+  end
+
+  create_table "interview_forms", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", default: ""
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_interview_forms_on_company_id"
+  end
+
+  create_table "interview_questions", force: :cascade do |t|
+    t.string "question"
+    t.text "description"
+    t.text "options"
+    t.string "question_type"
+    t.integer "position"
+    t.boolean "logic_jump", default: false
+    t.boolean "active", default: true
+    t.bigint "interview_form_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["interview_form_id"], name: "index_interview_questions_on_interview_form_id"
+  end
+
+  create_table "interviews", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", default: ""
+    t.boolean "completed", default: false
+    t.string "label", null: false
+    t.date "date"
+    t.time "starts_at"
+    t.time "ends_at"
+    t.bigint "interview_form_id"
+    t.bigint "employee_id"
+    t.bigint "creator_id"
+    t.bigint "campaign_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["campaign_id"], name: "index_interviews_on_campaign_id"
+    t.index ["creator_id"], name: "index_interviews_on_creator_id"
+    t.index ["employee_id"], name: "index_interviews_on_employee_id"
+    t.index ["interview_form_id"], name: "index_interviews_on_interview_form_id"
   end
 
   create_table "mods", force: :cascade do |t|
@@ -344,6 +423,9 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
   add_foreign_key "assessment_questions", "mods"
   add_foreign_key "attendees", "sessions"
   add_foreign_key "attendees", "users"
+  add_foreign_key "campaigns", "companies"
+  add_foreign_key "campaigns", "interview_forms"
+  add_foreign_key "campaigns", "users", column: "owner_id"
   add_foreign_key "categories", "companies"
   add_foreign_key "content_categories", "categories"
   add_foreign_key "content_categories", "contents"
@@ -357,6 +439,17 @@ ActiveRecord::Schema.define(version: 2021_09_20_121306) do
   add_foreign_key "folder_links", "folders", column: "child_id"
   add_foreign_key "folder_links", "folders", column: "parent_id"
   add_foreign_key "folders", "companies"
+  add_foreign_key "interview_answers", "interview_questions"
+  add_foreign_key "interview_answers", "interviews"
+  add_foreign_key "interview_answers", "users"
+  add_foreign_key "interview_form_tags", "interview_forms"
+  add_foreign_key "interview_form_tags", "tags"
+  add_foreign_key "interview_forms", "companies"
+  add_foreign_key "interview_questions", "interview_forms"
+  add_foreign_key "interviews", "campaigns"
+  add_foreign_key "interviews", "interview_forms"
+  add_foreign_key "interviews", "users", column: "creator_id"
+  add_foreign_key "interviews", "users", column: "employee_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "sessions", "trainings"
   add_foreign_key "sessions", "workshops"

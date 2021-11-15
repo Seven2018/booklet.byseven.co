@@ -3,16 +3,17 @@
 .navbar {
   position: sticky;
   top: 0;
-  border-bottom: 1px solid #c4c4c4;
-  height: 50px;
+  // border-bottom: 1px solid #c4c4c4;
+  height: 5rem;
   display: none;
   justify-content: space-between;
   background-color: white;
   z-index: 1000;
-  padding: 0.5rem .5rem;
+  padding: .5rem .5rem;
 
   @include from-medium {
-    padding: 0.5rem 3rem;
+    height: 7.5rem;
+    padding: 0.5rem 3rem 3rem 3rem;
     display: flex;
   }
 
@@ -102,24 +103,6 @@
   align-items: center;
 }
 
-.navbar-user-card {
-  div {
-    margin: 0 2rem 0 0;
-  }
-
-  h6 {
-    margin: 0;
-  }
-}
-
-.user-top-nav {
-  margin-left: 2rem;
-}
-
-.user-info {
-  border-bottom: 1px solid lightgrey;
-}
-
 .top-left-nav {
   font-family: 'Montserrat';
   display: flex;
@@ -156,24 +139,15 @@
     width: 100%;
     top: 100%;
     left: 0;
-    background: #F26419;
     transition: transform 0.5s;
     transform: scaleX(0);
     transform-origin: right;
-  }
-
-  ul li a:hover {
-    color:  #F26419;
   }
 
   ul li a:hover::after {
     transform: scaleX(1);
     transform-origin: left;
   }
-}
-
-.isactive {
-  border-bottom: 4px solid #F26419;
 }
 
 .left-buttons {
@@ -218,5 +192,172 @@
     font-size: 1.6rem !important;
     margin-bottom: 8px;
     font-weight: 400;
+  }
+}
+
+
+////////////////////////
+// Icons Menu Dropdown //
+////////////////////////
+
+.navbar__icons-menu {
+
+  i {
+    font-size: 2.8rem;
+  }
+
+  #dropdown-icon-menu {
+    left: -6.85rem;
+    top: 4rem;
+
+    div {
+      width: 16.5rem;
+      max-width: 16.5rem;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .menu-icon {
+      height: 3.5rem;
+      width: 3.5rem;
+      margin: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .menu-icon__booklet {
+
+      i {
+        color: #F26419;
+      }
+    }
+
+    .menu-icon__campaign {
+
+      i {
+        color: #3177B7;
+      }
+    }
+  }
+}
+
+
+//////////////////
+// Toggle Admin //
+//////////////////
+
+.toggle-admin {
+  margin-left: 30px;
+  font-size: medium;
+
+  .btn-secondary{
+    background-color: #fff !important;
+    color: #858585 !important;
+    border-color: #d3d3d3 !important;
+  }
+
+  .btn-secondary.active {
+    background-color: #F2F8FC !important;
+  }
+
+  .btn-left {
+    border-radius: 8px 0 0 8px;
+    padding-left: 20px;
+    padding-right: 15px;
+  }
+
+  .btn-right {
+    border-radius: 0 8px 8px 0;
+    padding-right: 20px;
+    padding-left: 15px;
+  }
+}
+
+
+///////////////
+// User Menu //
+///////////////
+
+.navbar-user-card {
+
+  div {
+    margin: 0 2rem 0 0;
+  }
+
+  h6 {
+    margin: 0;
+  }
+}
+
+.user-top-nav {
+  margin-left: 2rem;
+}
+
+.user-info {
+  border-bottom: 1px solid lightgrey;
+}
+
+
+///////////////////
+// Navbar Orange //
+///////////////////
+
+.navbar__orange {
+
+  .top-left-nav {
+
+    ul li a::after {
+      background: #F26419;
+    }
+
+    ul li a:hover {
+      color:  #F26419;
+    }
+  }
+
+  .isactive {
+    border-bottom: 4px solid #F26419;
+  }
+
+  .fa-th {
+    color: #F26419;
+  }
+
+  .btn-secondary.active {
+    color: #F26419 !important;
+    border-color: #F26419 !important;
+  }
+}
+
+
+/////////////////
+// Navbar Blue //
+/////////////////
+
+.navbar__blue {
+
+  .top-left-nav {
+
+    ul li a::after {
+      background: #3177B7;
+    }
+
+    ul li a:hover {
+      color:  #3177B7;
+    }
+  }
+
+  .isactive {
+    border-bottom: 4px solid #3177B7;
+  }
+
+  .fa-th {
+    color: #3177B7;
+  }
+
+  .btn-secondary.active {
+    color: #3177B7 !important;
+    border-color: #3177B7 !important;
   }
 }

@@ -1,13 +1,12 @@
 # Updated : 2021/07/19
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy]
   before_action :set_current_user, only: [:import, :create]
   skip_before_action :verify_authenticity_token, only: [:update]
 
   # Show user profile (users/show)
   def show
-    @user = User.find(params[:id])
     authorize @user
   end
 
@@ -75,6 +74,8 @@ class UsersController < ApplicationController
       if params[:access_level].present?
         if params[:last_page] == "catalogue"
           redirect_to catalogue_path
+        elsif ['campaigns', 'interview_forms'].include?(params[:last_page].split('-').first)
+          redirect_to campaigns_path
         else
           redirect_to root_path
         end

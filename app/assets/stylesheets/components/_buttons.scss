@@ -20,7 +20,7 @@ button {
 
 .btn {
   font-size: 1.6rem;
-  color: #F26419 !important;
+  // color: #F26419 !important;
 
   &:focus {
     box-shadow: none;
@@ -245,7 +245,7 @@ button {
 }
 
 .btn-blue-text {
-  color: rgba(91, 146, 197, 1) !important;
+  color: #3177B7 !important;
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 27px;
@@ -290,7 +290,7 @@ button {
   }
 }
 
-.btn-white-border {
+.btn-orange__white-border, .btn-blue__white-border {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -302,10 +302,8 @@ button {
   transition: all .25s ease-in-out;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  border: 1px solid #F26419;
 
   i, p, h4 {
-    color: #F26419;
     font-weight: 700 !important;
   }
 
@@ -319,16 +317,39 @@ button {
   }
 
   &:hover {
-    background-color: #F26419;
-    border: 1px solid #F26419;
-
     i, p, h4 {
       color: white;
     }
   }
 }
 
-.btn-white-border-disabled {
+.btn-orange__white-border {
+  border: 1px solid #F26419;
+
+  &:hover {
+    background-color: #F26419;
+    border: 1px solid #F26419;
+  }
+
+  i, p, h4 {
+    color: #F26419;
+  }
+}
+
+.btn-blue__white-border {
+  border: 1px solid #3177B7;
+
+  &:hover {
+    background-color: #3177B7;
+    border: 1px solid #3177B7;
+  }
+
+  i, p, h4 {
+    color: #3177B7;
+  }
+}
+
+.btn-orange__white-border-disabled {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -442,7 +463,9 @@ button {
 }
 
 
-// SEARCHBARS
+///////////////
+// SEARCHBAR //
+///////////////
 
 .btn-reset-form {
   position: absolute;
@@ -453,48 +476,5 @@ button {
 
   &:hover { 
     opacity: 1;
-  }
-}
-
-// #catalogue-controls__user-search {
-//   display: flex;
-
-  // .btn-search {
-  //   width: 75px;
-  //   padding: 0;
-  // }
-// }
-
-
-// NAVBAR
-/////////
-  // TOGGLE ADMIN
-
-.toggle-admin {
-  margin-left: 30px;
-  font-size: medium;
-
-  .btn-secondary{
-    background-color: #fff !important;
-    color: #858585 !important;
-    border-color: #d3d3d3 !important;
-  }
-
-  .btn-secondary.active {
-    background-color: #F2F8FC !important;
-    color: #0678C4 !important;
-    border-color: #0678C4 !important;
-  }
-
-  .btn-left {
-    border-radius: 8px 0 0 8px;
-    padding-left: 20px;
-    padding-right: 15px;
-  }
-
-  .btn-right {
-    border-radius: 0 8px 8px 0;
-    padding-right: 20px;
-    padding-left: 15px;
   }
 }

@@ -1,0 +1,29 @@
+<% if @template.company_id == current_user.company_id %>
+  <% access = 'granted' if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+  <div id="template-show-container">
+    <div id="template-show-container-left">
+      <%= render 'interview_forms/partials/show_summary', template: @template, page: 'show' %>
+    </div>
+    <div id="template-show-container-right">
+      <div class="template-add">
+        <div class="template-center-div template-center-div__show">
+          <div class="template-show-attributes-center">
+            <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'show' %>
+          </div>
+          <div class="template-show-mods-edit-mode template-show-mods-edit-mode__show">
+            <%= render 'interview_forms/partials/show_questions_index', template: @template, page: 'show' %>
+          </div>
+        </div>
+        <div class="template-add-right">
+          <div class="template-show-attributes-right">
+            <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'show' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="access-restricted centered-item">
+    <h1>Access restricted</h1>
+  </div>
+<% end %>

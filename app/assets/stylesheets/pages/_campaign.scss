@@ -1,0 +1,306 @@
+//////////////
+// CONTROLS //
+//////////////
+
+.campaign-controls {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 3rem;
+
+  button {
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: transparent;
+    margin-right: 2rem;
+
+    p {
+      color: rgba(151, 156, 159, 1);
+    }
+  }
+
+  button.active, button:hover {
+    background-color: #F2F8FC;
+
+    p {
+      color: #3177B7;
+    }
+  }
+
+  button.disabled:hover {
+    background-color: #F0F0F0;
+
+    p {
+      color: rgba(151, 156, 159, 1);
+    }
+  }
+}
+
+.campaign-searchbar {
+  margin: 3rem 2rem 3rem 0;
+
+  #search_campaigns_employee {
+    margin-right: 1rem;
+  }
+}
+
+
+///////////
+// INDEX //
+///////////
+
+.campaigns-index {
+  margin-top: 3rem;
+}
+
+.campaign-card {
+  max-width: 40rem;
+  height: 20rem;
+  margin: 2rem;
+  background-color: #DEE9F3;
+  border-radius: .5rem;
+  position: relative;
+
+  .campaign-card__header {
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #91B6D8;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+    color: white;
+
+    strong {
+      font-weight: bolder;
+    }
+  }
+}
+
+.campaign-card--completed {
+  background-color: #3177B7;
+  color: white;
+
+  .campaign-card__tag-pill {
+    background: white !important;
+    color: #3177B7 !important;
+  }
+
+  p {
+    color: white !important;
+  }
+}
+
+
+.campaign-card__controls {
+  padding: 1rem;
+
+  h3 {
+    font-weight: bolder;
+  }
+}
+
+.campaign-card__tags {
+  height: 3rem;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  margin-bottom: 1rem;
+  overflow-x: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .campaign-card__tag-pill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    background: #5B92C5;
+    color: white;
+    padding: 0.2rem 1rem;
+    border-radius: .5rem;
+    font-size: 1.4rem;
+    margin-bottom: .5rem;
+    margin-right: .5rem;
+  }
+}
+
+.campaign-card-summary {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3, p, span {
+    font-weight: bolder;
+    margin-bottom: .5rem;
+  }
+
+  span {
+    font-size: 1.2rem;
+  }
+
+  .campaign-card-summary__count {
+
+    p:first-of-type {
+      color: #5B92C4;
+    }
+
+    p:nth-of-type(2) {
+      color: #073A69;
+    }
+
+    p:nth-of-type(3) {
+      color: #0085FF;
+    }
+  }
+
+  .campaign-card-summary__completion {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
+/////////////////////
+// SELECT TEMPLATE //
+/////////////////////
+
+.template-card-container.selected {
+
+  .interview-form-card__campaign {
+    background-color: #3177B7;
+
+    h3, p, i {
+      color: white;
+    }
+  }
+
+  .interview-form-card__select-button {
+    background-color: white;
+
+    p {
+      color: #3177B7;
+    }
+  }
+}
+
+.interview-form-card__campaign {
+  border-top: none !important;
+  margin: 2rem 2rem 0 2rem !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.interview-form-card__select-button {
+  max-width: 40rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3177B7;
+  border: 1px solid #3177B7;
+  padding: 1rem;
+  margin: 0 2rem 2rem 2rem;
+  cursor: pointer;
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
+
+  p {
+    font-weight: bolder;
+    color: white;
+  }
+}
+
+
+//////////////////
+// SELECT DATES //
+//////////////////
+
+.campaign-dates-container {
+  margin: 3rem 2rem;
+}
+
+.campaign-select-date-title {
+  margin-bottom: 5rem;
+
+  h1 {
+    font-weight: bolder;
+  }
+
+  h5 {
+    font-size: 3.2rem;
+    font-style: italic;
+  }
+
+  & > div {
+    margin-bottom: 2rem;
+  }
+}
+
+.campaign-select-date-tag-pill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  background: #5B92C5;
+  color: white;
+  padding: 0.2rem 1rem;
+  border-radius: .5rem;
+  font-size: 1.4rem;
+  margin-left: 1rem;
+}
+
+.campaign-select-date-card {
+  height: 4rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .campaign-select-date-card__username {
+    height: 4rem;
+    width: 35rem;
+    padding: .5rem 1rem;
+    margin: 0 2rem;
+    display: flex;
+    align-items: center;
+    background-color: rgba(91, 146, 197, 0.31);
+    border-radius: .5rem;
+  }
+
+  div {
+    margin: 0;
+  }
+
+  input {
+    height: 4rem;
+    border-radius: 20px;
+    border: 1px solid #3177B7;
+    color: #3177B7;
+    background-color: white !important;
+  }
+
+  input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #3177B7 !important;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: #3177B7;
+  }
+  :-ms-input-placeholder { /* IE 10+ */
+    color: #3177B7;
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    color: #3177B7;
+  }
+
+  p {
+    margin: 0 1rem;
+  }
+}

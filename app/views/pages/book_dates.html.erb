@@ -40,7 +40,7 @@
         <%= f.hidden_field :folder_id, value: @selected_folder %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
-      <button id='book-confirm-button' class='btn-white-border' onclick='bookDates(this)' style='margin-top: 30px' data-toggle='tooltip'><p>Confirm</p></button>
+      <button id='book-confirm-button' class='btn-orange__white-border' onclick='bookDates(this)' style='margin-top: 30px' data-toggle='tooltip'><p>Confirm</p></button>
     </div>
   </div>
   <div class="book-dates-container">
@@ -164,8 +164,8 @@
   if ((folder.value =='' && content.value == '') || users.value == '') {
     console.log('disabled')
     confirm_button.disabled = true
-    confirm_button.classList.add('btn-white-border-disabled')
-    confirm_button.classList.remove('btn-white-border')
+    confirm_button.classList.add('btn-orange__white-border-disabled')
+    confirm_button.classList.remove('btn-orange__white-border')
   }
   if (folder.value == '' && content.value == '') {
     confirm_button.setAttribute('title', 'Please select a program')

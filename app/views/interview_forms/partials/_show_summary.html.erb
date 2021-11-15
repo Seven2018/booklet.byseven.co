@@ -1,0 +1,19 @@
+<div class='template-summary-container'>
+  <div>
+    <h3><b>SUMMARY</b></h3>
+  </div>
+  <% template.interview_questions.order(position: :asc).each do |question| %>
+    <a href="#anchor-<%= question.id %>">
+      <% if question.question_type == 'separator' %>
+        <div class='anchor anchor__separator'>
+          <p><%= question.question %></p>
+        </div>
+      <% else %>
+        <div class='anchor anchor__no-separator'>
+          <p><%= question.question %></p>
+        </div>
+      <% end %>
+    </a>
+  <% end %>
+</div>
+

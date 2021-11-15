@@ -1,0 +1,19 @@
+<% if @interviews.present? %>
+  <% @interviews.each do |interview| %>
+    <%= interview.id %>
+  <% end %>
+<% end %>
+
+<!-- <div class="flex-row-between-centered">
+  <%# employee_interview = @interviews.find_by(label: 'Employee') %>
+  <div class="interview-card">
+    <div class="interview-card__header">
+      <p>TO DO</p>
+      <p>DONE</p>
+    </div>
+    <div class="interview-card__main">
+
+    </div>
+  </div>
+</div>
+ -->

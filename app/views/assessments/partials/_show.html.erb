@@ -1,0 +1,9 @@
+<div id="assessment-show-content">
+  <%= render 'assessments/partials/content', form: form %>
+</div>
+<div>
+  <a href="javascript:;" id='addQuestion' class='btn btn-edit' onclick='addQuestionToQuiz(this);'>Add Question</a>
+  <div class="hidden" id="add_questions_form">
+    <%= render 'assessments/partials/add_questions', form: form %>
+  </div>
+</div>

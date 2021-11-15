@@ -11,7 +11,7 @@
       <%= f.hidden_field :book_selected_users, value: @selected_users %>
     <% end %>
     <%= f.submit 'Search', class: 'btn-search' %>
-    <button class='btn-reset' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
+    <button class='btn-reset btn-reset-orange' onclick='resetAllFilter(this, "recommendation");'>Reset</button>
   <% end %>
   <% if params[:action] == 'catalogue' %>
     <div class="btn-white" onclick='openFilter();'>

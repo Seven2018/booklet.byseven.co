@@ -80,7 +80,7 @@
           </div>
         </div>
         <%= f.rich_text_area :text, placeholder: 'Content', label: false %>
-        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+        <%= button_tag type: 'submit', class: 'btn-orange__white-border' do %>
           <p>Save</p>
         <% end %>
       <% end %>
@@ -108,7 +108,7 @@
           </div>
         </div>
         <%= f.input :video, placeholder: 'Youtube URL', label: 'Video Link:', value: '' %>
-        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+        <%= button_tag type: 'submit', class: 'btn-orange__white-border' do %>
           <p>Save</p>
         <% end %>
       <% end %>
@@ -134,14 +134,18 @@
           </div>
         </div>
         <%= f.hidden_field :content_id, value: @content.id %>
-        <%= button_tag type: 'submit', class: 'btn-white-border' do %>
+        <%= button_tag type: 'submit', class: 'btn-orange__white-border' do %>
           <p>Create</p>
         <% end %>
       <% end %>
     </div>
   </div>
 
-  <!-- Modals -->
+
+  <!------------>
+  <!-- MODALS -->
+  <!------------>
+
   <div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog' role='document' style='border-radius: 20px'>
       <%= render 'contents/modals/manage_categories', content: @content %>
@@ -150,25 +154,25 @@
 
   <div class='modal fade' id='newModText' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-      <%= render 'mods/partials/new_mod_text', content: @content %>
+      <%= render 'mods/modals/new_mod_text', content: @content %>
     </div>
   </div>
 
   <div class='modal fade' id='newModVideo' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-      <%= render 'mods/partials/new_mod_video', content: @content %>
+      <%= render 'mods/modals/new_mod_video', content: @content %>
     </div>
   </div>
 
   <div class='modal fade' id='newModImage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
-      <%= render 'mods/partials/new_mod_image', content: @content %>
+      <%= render 'mods/modals/new_mod_image', content: @content %>
     </div>
   </div>
 
   <div class='modal fade' id='newModQuiz' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
     <div class='modal-dialog' role='document' style='border-radius: 20px'>
-      <%= render 'mods/partials/new_mod_quiz', content: @content %>
+      <%= render 'mods/modals/new_mod_quiz', content: @content %>
     </div>
   </div>
 <% else %>
@@ -176,6 +180,11 @@
     <h1>Access restricted</h1>
   </div>
 <% end %>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
 
 <script>
   doubleClickGuardian = false
@@ -398,7 +407,6 @@
       doubleClickGuardian = true
       $(element).hide();
       $(element).parent().parent().find("#assessment-show-content").append($(element).parent().find("#add_questions_form").html())
-      console.log($(element).parent().find("#add_questions_form"))
       setTimeout(function(){doubleClickGuardian = false}, 250)
     }
   }

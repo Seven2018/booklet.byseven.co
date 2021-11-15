@@ -1,0 +1,64 @@
+<div class="row">
+
+  <% ['HR-light', 'Employee'].include?(current_user.access_level) ? employee = true : employee = false %>
+
+  <% campaigns.each do |campaign| %>
+
+    <% if employee %>
+      <% interviews_for_date = campaign.interviews.find_by(employee_id: current_user.id) %>
+      <% last_date = interviews_for_date.date %>
+      <% completion = (campaign.interviews.where(employee_id: current_user.id, completed: true).count.fdiv(campaign.interviews.where(employee_id: current_user.id).count) * 100).round %>
+    <% else %>
+      <% interviews_for_date = campaign.interviews.order(date: :asc) %>
+      <% completion = (campaign.interviews.where(completed: true).count.fdiv(campaign.interviews.count) * 100).round %>
+    <% end %>
+
+    <div id='campaign-card-<%= campaign.id %>' class="col-xl-4 col-sm-6 col-xs-12">
+      <% if completion == 100 %>
+      <div class="campaign-card campaign-card--completed">
+      <% else %>
+      <div class="campaign-card">
+      <% end %>
+        <%= link_to '', campaign_path(campaign), class: 'stretched-link' %>
+        <div class="campaign-card__header">
+          <% if employee %>
+            <p>Review on <strong><%= last_date %></strong></p>
+          <% else %>
+            <p>Reviews from <strong><%= interviews_for_date.first.date %></strong> to <strong><%= interviews_for_date.last.date %></strong></p>
+          <% end %>
+        </div>
+        <div class="campaign-card__controls">
+          <h3><%= campaign.title %></h3>
+        </div>
+        <div class="campaign-card__tags">
+          <% campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
+            <p class="campaign-card__tag-pill"><%= tag.tag_name %></p>
+          <% end %>
+        </div>
+        <div class="campaign-card-summary">
+          <% if ['HR-light', 'Employee'].include?(current_user.access_level) %>
+            <div class='campaign-card-summary__count'>
+              <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> employee reviews</p>
+              <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'HR', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> manager reviews</p>
+              <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'Crossed', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> crossed reviews</p>
+            </div>
+            <div class="campaign-card-summary__completion">
+              <h3><%= completion %>%</h3>
+              <span>Total completion</span>
+            </div>
+          <% else %>
+            <div class='campaign-card-summary__count'>
+              <p><%= campaign.interviews.where(label: 'Employee', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> employee reviews</p>
+              <p><%= campaign.interviews.where(label: 'HR', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> manager reviews</p>
+              <p><%= campaign.interviews.where(label: 'Crossed', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> crossed reviews</p>
+            </div>
+              <div class="campaign-card-summary__completion">
+                <h3><%= completion %>%</h3>
+                <span>Total completion</span>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

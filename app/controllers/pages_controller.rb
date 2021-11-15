@@ -74,6 +74,10 @@ class PagesController < ApplicationController
     end
   end
 
+  def dashboard_campaign
+
+  end
+
   # Display monthly calendar (pages/dashboard)
   def calendar_month
     @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})

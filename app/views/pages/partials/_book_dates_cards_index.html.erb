@@ -49,16 +49,16 @@
               <%= simple_form_for :session, url: book_sessions_path, method: :get, remote: true do |f| %>
               <div class="sync-booking">
                 <%= f.input :date, label: false, input_html: {class: 'datepicker'}, placeholder: 'Select date' %>
-                  <%= f.hidden_field :duration, value: content.duration %>
-                  <% hours = content.duration / 60 %>
-                  <% minutes = content.duration % 60 %>
-                  <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);', value: '9:00'}, required: true %>
-                  <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);', value: "#{9 + hours}:#{minutes}"}, required: true %>
-                  <%= f.hidden_field :content_id, value: content.id %>
-                  <%= f.hidden_field :selected_users, value: selected_users, input_html: {onchange: 'duplicateUsers(this);'} %>
-                  <%= f.hidden_field :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i, onchange: 'duplicateCost(this);'} %>
-                  <%= f.hidden_field :training_id %>
-                  <%= f.submit '', class: 'hidden-submit hidden' %>
+                <%= f.hidden_field :duration, value: content.duration %>
+                <% hours = content.duration / 60 %>
+                <% minutes = content.duration % 60 %>
+                <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'checkDuration(this);', value: '9:00'}, required: true %>
+                <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'checkDuration(this);', value: "#{9 + hours}:#{minutes}"}, required: true %>
+                <%= f.hidden_field :content_id, value: content.id %>
+                <%= f.hidden_field :selected_users, value: selected_users, input_html: {onchange: 'duplicateUsers(this);'} %>
+                <%= f.hidden_field :cost, label: false, placeholder: 'Total cost', input_html: {min: 0,  value: content.cost.to_i, onchange: 'duplicateCost(this);'} %>
+                <%= f.hidden_field :training_id %>
+                <%= f.submit '', class: 'hidden-submit hidden' %>
               </div>
               <% end %>
             </div>

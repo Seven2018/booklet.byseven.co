@@ -1,0 +1,8 @@
+<div class="campaigns-container">
+  <div id="index-controls">
+    <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
+  </div>
+  <div class="campaigns-index">
+    <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="searchbar">
+  <% if params[:controller] == 'campaigns' && params[:action] == 'index' %>
+    <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
+    <%= simple_form_for :search, url: campaigns_path, method: :get, remote: true do |f| %>
+      <%= f.input :title, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
+      <%= f.input :period, collection: ['Current', 'Completed', 'All'], required: false, selected: 'Current' %>
+      <%= f.submit 'Search', class: 'btn-search' %>
+    <% end %>
+  <% elsif params[:controller] == 'campaigns' && params[:action] == 'show' %>
+    <%= simple_form_for :search, url: campaign_path(@campaign), method: :get, remote: true do |f| %>
+      <%= f.input :user_id, as: :select, label: false, collection: [['','']] + User.joins(interviews: :campaign).where(campaigns: {id: @campaign.id}).distinct.map{|x| [x.id, x.fullname]}, label_method: :second, value_method: :first, include_blank: false %>
+      <%= f.submit 'Search', class: 'btn-search' %>
+    <% end %>
+  <% elsif params[:action] == 'campaign_select_template' || (params[:controller] == 'interview_forms' && params[:action] == 'index') %>
+    <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
+    <%= simple_form_for :search, url: path, method: :get, remote: true do |f| %>
+      <%= f.input :title, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
+      <%= f.hidden_field :campaign_selected_template, value: @selected_template %>
+      <%= f.submit 'Search', class: 'btn-search' %>
+    <% end %>
+  <% elsif params[:action] == 'campaign_select_users' %>
+    <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
+    <%= simple_form_for :search, url: path, method: :get, remote: true do |f| %>
+      <%= f.input :name, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
+      <%= f.hidden_field :campaign_selected_users, value: @selected_users %>
+      <%= f.submit 'Search', class: 'btn-search' %>
+    <% end %>
+  <% end %>
+
+  <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
+</div>

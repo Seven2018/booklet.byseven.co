@@ -1,0 +1,93 @@
+<div class="interview-forms-container">
+  <div id="index-controls">
+    <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
+    <div class='index-controls-create-content'>
+      <a data-toggle='modal' data-target='#newTemplate'>
+        <div class="btn-blue" data-toggle='tooltip' title='Create a template'>
+          <i class="fas fa-plus"></i>
+          <p>Create Template</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <h1>Templates</h1>
+  <div class="interview-forms-index">
+    <%= render 'interview_forms/partials/index_card_list', templates: @templates %>
+  </div>
+</div>
+
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade modal_folder' id='newTemplate' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'interview_forms/modals/new_template' %>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  formGuardian = false;
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function openContentMenu(element) {
+    dropdown = element.parentNode.querySelector('.content-dropdown')
+    dropdown.classList.remove('hidden')
+    formGuardian = true
+    card_link = element.closest('.interview-form-card').querySelector('.stretched-link')
+    card_link.classList.add('disabled')
+    card_link_href = card_link.href
+    console.log(card_link_href)
+    card_link.href = "javascript:void(0)";
+    setTimeout(function(){
+      formGuardian = false
+    }, 1);
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, dropdown) && formGuardian == false) {
+        formGuardian = true
+        setTimeout(function(){
+          formGuardian = false
+        }, 1);
+        dropdown.classList.add('hidden')
+        setTimeout(function(){
+          card_link.classList.remove('disabled')
+          card_link.href = card_link_href
+        }, 1);
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
+  }
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
+</script>

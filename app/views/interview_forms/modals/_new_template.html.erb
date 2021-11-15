@@ -1,0 +1,19 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__folder">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Create a new Template</h3>
+    </div>
+  </div>
+  <div class="modal-body">
+    <%= simple_form_for InterviewForm.new do |f| %>
+      <%= f.input :title, input_html: {autocomplete: 'off'}, required: true %>
+      <%= f.input :description, input_html: {style: 'min-height: 150px;'} %>
+      <div style=" display: flex; justify-content: center;margin-top:3rem;">
+        <button type="button" class="btn-blue-text" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <%= button_tag type: 'submit', class: 'btn-blue-disabled', id: 'save_button' do %>
+          <p>SAVE</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
