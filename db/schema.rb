@@ -227,8 +227,8 @@ ActiveRecord::Schema.define(version: 2021_11_04_084032) do
     t.text "options"
     t.string "question_type"
     t.integer "position"
-    t.boolean "logic_jump", default: false
-    t.boolean "active", default: true
+    t.boolean "required", default: false
+    t.boolean "allow_comments", default: false
     t.bigint "interview_form_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

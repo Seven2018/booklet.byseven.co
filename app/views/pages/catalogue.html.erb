@@ -1,12 +1,12 @@
 <div class="catalogue-container">
-  <div id="index-controls" class='flex-row-between-start'>
-    <div class="index-controls-filter-bar">
+  <div id="main-controls" class='flex-row-between-start'>
+    <div class="main-controls-filter-bar">
       <%= render 'shared/searchbar', path: catalogue_path, reset_path: catalogue_path(reset: ""), reset: true %>
       <div class="catalogue-filter-selected-tags">
         <%= render 'pages/partials/catalogue_filtered_pills' %>
       </div>
     </div>
-    <div class='index-controls-create-content'>
+    <div class='main-controls-create-content'>
       <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
         <a data-toggle='modal' data-target='#newFolder'>
           <div class="btn-blue" data-toggle='tooltip' title='Create a folder'>
@@ -253,7 +253,7 @@
   }
 
   // function openFilter(element) {
-  //   filter = element.parentNode.querySelector('.index-controls-filter-bar-block-filter')
+  //   filter = element.parentNode.querySelector('.main-controls-filter-bar-block-filter')
   //   element.classList.toggle('hidden');
   //   filter.classList.toggle('hidden');
   // }

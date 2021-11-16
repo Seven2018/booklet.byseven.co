@@ -6,6 +6,7 @@ class InterviewQuestionsController < ApplicationController
     @form = InterviewForm.find(@question.interview_form_id)
     authorize @question
     @question.position = @form.interview_questions.order(position: :asc).count + 1
+    params[:interview_question][:required].present? ? @question.required = true : @question.required = false
     if @question.question_type == 'rating'
       @question.options = {params[:interview_question][:options] => 1}
     end
@@ -19,11 +20,12 @@ class InterviewQuestionsController < ApplicationController
   def update
     authorize @question
     @question.update(question_params)
+    params[:interview_question][:required].present? ? @question.update(required: true) : @question.update(required: false)
     if @question.question_type == 'rating'
       @question.update(options: {params[:interview_question][:options] => 1})
     end
     respond_to do |format|
-      format.html {redirect_to interview_form_path(@form)}
+      format.html {redirect_to interview_form_path(@question.interview_form)}
       format.js
     end
   end
@@ -117,6 +119,6 @@ class InterviewQuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:interview_question).permit(:question, :description, :question_type, :interview_form_id)
+    params.require(:interview_question).permit(:question, :description, :question_type, :allow_comments, :interview_form_id)
   end
 end

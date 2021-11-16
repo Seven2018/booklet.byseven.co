@@ -1,12 +1,13 @@
 <% template.interview_questions.order(position: :asc).each do |question| %>
+  <% question.required ? required = 'Required' : required = 'Not required' %>
   <% if question.question_type == 'separator' %>
     <% if page == 'edit' %>
-      <div class="content-text active">
+      <div class="content-text content-text__separator" id="item-<%= question.position %>">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
         <div class="line-top">
-          <div class="line-title" onclick='toggleMod(this);'>
+          <div class="line-title line-title-separator" onclick='toggleMod(this);'>
             <i class="fas fa-angle-down" data-rotated='0'></i>
-            <p>Separator</p>
+            <p><%= question.question %></p>
           </div>
           <div class="line-controls">
           <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
@@ -44,20 +45,18 @@
       <div class='questions'>
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
         <div class="form-row line-type">
-          <div class="form-group col-9">
-            <h3 class='bolder'><%= question.question %></h3>
-          </div>
+          <h3 class='bolder'><%= question.question %></h3>
         </div>
-        <div class="form-row line-content">
-          <div class="form-group col-12">
+        <% if question.description.present? %>
+          <div class="form-row line-content">
             <%= question.description %>
           </div>
-        </div>
+        <% end %>
       </div>
     <% end %>
   <% elsif question.question_type == 'open_question' %>
     <% if page == 'edit' %>
-      <div class="content-text active">
+      <div class="content-text" id="item-<%= question.position %>">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
         <div class="line-top">
           <div class="line-title" onclick='toggleMod(this);'>
@@ -91,7 +90,18 @@
           </div>
         </div>
         <%= simple_form_for question, remote: true do |f| %>
-          <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'}, required: true %>
+          <div class="flex-row-between-centered">
+            <label>Question</label>
+            <div class="required-question-switch-container">
+              <label><%= required %></label>
+              <% if required == 'Required' %>
+                <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
+              <% else %>
+                <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+              <% end %>
+            </div>
+          </div>
+          <%= f.input :question, placeholder: '*Required', label: false, input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'}, required: true %>
           <%= f.input :description, placeholder: 'Description (optional)', label: false, onclick: 'saveQuestion(this)' %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
@@ -100,20 +110,21 @@
       <div class='questions'>
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
         <div class="form-row line-type line-type__no-separator">
-          <div class="form-group col-9">
-            <h3><%= question.question %></h3>
-          </div>
+          <h3><%= question.question %></h3>
+          <% if question.required %>
+            <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
+          <% end %>
         </div>
-        <div class="form-row line-content">
-          <div class="form-group col-12">
+        <% if question.description.present? %>
+          <div class="form-row line-content">
             <%= question.description %>
           </div>
-        </div>
+        <% end %>
       </div>
     <% end %>
   <% elsif question.question_type == 'rating' %>
     <% if page == 'edit' %>
-      <div class="content-text active">
+      <div class="content-text" id="item-<%= question.position %>">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
         <div class="line-top">
           <div class="line-title" onclick='toggleMod(this);'>
@@ -147,10 +158,29 @@
           </div>
         </div>
         <%= simple_form_for question, remote: true do |f| %>
-          <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'}, required: true %>
+          <div class="flex-row-between-centered">
+            <label>Question</label>
+            <div class="required-question-switch-container">
+              <label><%= required %></label>
+              <% if required == 'Required' %>
+                <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
+              <% else %>
+                <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+              <% end %>
+            </div>
+          </div>
+          <%= f.input :question, placeholder: '*Required', label: false, input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'}, required: true %>
           <%= f.input :description, placeholder: 'Description (optional)', input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'}, label: false %>
           <div class="add-rating__select">
-            <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'saveQuestion(this)'}, selected: question.options.keys.first %>
+            <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'saveQuestion(this); setRating(this);'}, selected: question.options.keys.first %>
+          </div>
+          <div class="show-rating">
+            <% question.options.keys.first.to_i.times do %>
+              <i class="far fa-star"></i>
+            <% end %>
+          </div>
+          <div class="add-rating__toggle">
+            <%= f.input :allow_comments, label: 'Allow comments', input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'} %>
           </div>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
@@ -159,20 +189,26 @@
       <div class='questions'>
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
         <div class="form-row line-type line-type__no-separator">
-          <div class="form-group col-9">
-            <h3><%= question.question %></h3>
-          </div>
+          <h3><%= question.question %></h3>
+          <% if question.required %>
+            <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
+          <% end %>
         </div>
-        <div class="form-row line-content">
-          <div class="form-group col-12">
+        <% if question.description.present? %>
+          <div class="form-row line-content">
             <%= question.description %>
           </div>
+        <% end %>
+        <div class="show-rating">
+          <% question.options.keys.first.to_i.times do %>
+            <i class="far fa-star"></i>
+          <% end %>
         </div>
       </div>
     <% end %>
   <% elsif question.question_type == 'mcq' %>
     <% if page == 'edit' %>
-      <div class="content-quiz active">
+      <div class="content-quiz" id="item-<%= question.position %>">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
         <div class="line-top">
           <div class="line-title" onclick='toggleMod(this);'>
@@ -206,7 +242,18 @@
           </div>
         </div>
         <%= simple_form_for question, remote: true do |f| %>
-          <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'}, required: true %>
+          <div class="flex-row-between-centered">
+            <label>Question</label>
+            <div class="required-question-switch-container">
+              <label><%= required %></label>
+              <% if required == 'Required' %>
+                <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
+              <% else %>
+                <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+              <% end %>
+            </div>
+          </div>
+          <%= f.input :question, placeholder: '*Required', label: false, input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'}, required: true %>
           <%= f.input :description, placeholder: 'Description (optional)', input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'}, label: false %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
@@ -219,8 +266,12 @@
       <div class="questions">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
         <div class="form-row line-type line-type__no-separator">
-          <div class="form-group col-9">
-            <h3><%= question.question %></h3>
+          <h3><%= question.question %></h3>
+          <% if question.required %>
+            <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
+          <% end %>
+          <div id='mcq-<%= question.id %>'>
+            <%= render 'interview_forms/partials/show_mcq', question: question %>
           </div>
         </div>
       </div>

@@ -28,6 +28,6 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def check_access
-    ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Employee'].include? user.access_level
+    ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Manager-light', 'Employee'].include? user.access_level
   end
 end

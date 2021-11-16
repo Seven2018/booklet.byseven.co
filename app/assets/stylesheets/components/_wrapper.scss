@@ -106,13 +106,13 @@ body.wait *, body.wait
   }
 }
 
-#index-controls, #show-controls {
+#main-controls, #show-controls {
   display: flex;
   width: 100%;
-  min-height: 8rem;
+  min-height: 4rem;
   position: relative;
   // margin-bottom: 1rem;
-  padding-top: 3rem;
+  margin-top: 3rem;
   z-index: 100;
   background-color: #fff;
 
@@ -125,7 +125,7 @@ body.wait *, body.wait
     margin-right: 5rem;
   }
 
-  .index-controls-buttons {
+  .main-controls-buttons {
 
     & > div {
       margin-left: 1rem;
@@ -134,6 +134,53 @@ body.wait *, body.wait
     .dropdown-menu {
       min-width: 15rem;
     }
+  }
+}
+
+#main-page-title {
+  min-height: 4rem;
+  width: 100%;
+  margin: 3rem 0;
+
+  h1 {
+    font-weight: bolder;
+    margin-right: 2rem;
+  }
+
+  h3 {
+    margin: 1rem 0 2rem 6rem;
+    color: #979C9F;
+
+    strong {
+      font-weight: bolder;
+    }
+  }
+}
+
+.main-page-title__tags {
+  height: 4rem;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .main-page-title__tag-pill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    background: #5B92C5;
+    color: white;
+    padding: 0.2rem 1rem;
+    border-radius: .5rem;
+    font-size: 1.4rem;
+    margin-right: .5rem;
   }
 }
 

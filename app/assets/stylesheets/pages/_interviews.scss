@@ -40,8 +40,14 @@
   width: 100vw;
   min-width: 100vw;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .interview-separator {
+    margin-bottom: 3rem;
+    font-weight: bolder;
+  }
 }
 
 .interview-question__display-container {

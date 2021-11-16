@@ -1,6 +1,6 @@
 <div class="row">
 
-  <% ['HR-light', 'Employee'].include?(current_user.access_level) ? employee = true : employee = false %>
+  <% ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) ? employee = true : employee = false %>
 
   <% campaigns.each do |campaign| %>
 
@@ -36,7 +36,7 @@
           <% end %>
         </div>
         <div class="campaign-card-summary">
-          <% if ['HR-light', 'Employee'].include?(current_user.access_level) %>
+          <% if ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) %>
             <div class='campaign-card-summary__count'>
               <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> employee reviews</p>
               <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'HR', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> manager reviews</p>

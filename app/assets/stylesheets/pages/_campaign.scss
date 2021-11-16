@@ -304,3 +304,62 @@
     margin: 0 1rem;
   }
 }
+
+
+//////////
+// SHOW //
+//////////
+
+.campaign-interview-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.campaign-interview-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 35rem;
+  width: 35rem;
+  padding: 4rem 2rem;
+  margin: 0 1rem;
+  background-color: #DEE9F3;
+
+  p, a, i {
+    color: #3177B7;
+  }
+
+  i {
+    font-size: 8rem;
+  }
+
+  .campaign-interview-card__username {
+    font-size: 3rem;
+    font-weight: bolder;
+  }
+
+  .campaign-interview-card__status {
+    font-weight: bold;
+  }
+
+  .campaign-interview-card__comment {
+    text-align: center;
+  }
+
+  .campaign-interview-card__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15rem;
+    height: 4rem;
+    border-radius: 2rem;
+    background-color: white;
+    border: 2px solid #3177B7;
+
+    p {
+      font-weight: bold;
+    }
+  }
+}
