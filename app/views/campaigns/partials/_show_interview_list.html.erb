@@ -1,7 +1,52 @@
 <% if @interviews.present? %>
-  <% @interviews.each do |interview| %>
-    <%= interview.id %>
-  <% end %>
+  <% employee_interview = @interviews.find_by(label: 'Employee') %>
+  <% manager_interview = @interviews.find_by(label: 'HR') %>
+  <% crossed_interview = @interviews.find_by(label: 'Crossed') %>
+  <div class="campaign-interview-card">
+    <p class="campaign-interview-card__username"><%= employee_interview.employee.fullname %></p>
+    <% if employee_interview.completed %>
+      <i class="fas fa-check-circle"></i>
+      <p class="campaign-interview-card__status">Review completed</p>
+      <p class="campaign-interview-card__comment"><%= employee_interview.employee.fullname %> has completed his scorecard, you will see the result on the CROSSED REVIEW</p>
+    <% else %>
+      <i class="far fa-times-circle"></i>
+      <p class="campaign-interview-card__status">Review not completed</p>
+      <p class="campaign-interview-card__comment"><%= employee_interview.employee.fullname %> has not completed his
+review yet</p>
+    <% end %>
+  </div>
+  <div class="campaign-interview-card">
+    <p class="campaign-interview-card__username">Me</p>
+    <% if manager_interview.completed %>
+      <i class="fas fa-check-circle"></i>
+      <p class="campaign-interview-card__status">Review completed</p>
+      <%= link_to interview_path(manager_interview), class: 'campaign-interview-card__button' do %>
+        <p>Modify</p>
+      <% end %>
+    <% else %>
+      <i class="far fa-times-circle"></i>
+      <p class="campaign-interview-card__status">Review not completed</p>
+      <%= link_to interview_path(manager_interview), class: 'campaign-interview-card__button' do %>
+        <p>Start</p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="campaign-interview-card">
+    <p class="campaign-interview-card__username">Crossed Review</p>
+    <% if crossed_interview.completed %>
+      <i class="fas fa-check-circle"></i>
+      <p class="campaign-interview-card__status">Review completed</p>
+      <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>
+        <p>View result</p>
+      <% end %>
+    <% else %>
+      <p class="campaign-interview-card__status">Planned on <strong><%= crossed_interview.date %></strong></p>
+      <p class="campaign-interview-card__comment">You can still launch a cross review session even before the date planned</p>
+      <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>
+        <p>Start</p>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
 
 <!-- <div class="flex-row-between-centered">

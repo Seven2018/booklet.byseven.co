@@ -6,8 +6,8 @@ class CreateInterviewQuestions < ActiveRecord::Migration[6.0]
       t.text :options
       t.string :question_type
       t.integer :position
-      t.boolean :logic_jump, default: false
-      t.boolean :active, default: true
+      t.boolean :required, default: false
+      t.boolean :allow_comments, default: false
       t.references :interview_form, foreign_key: true
       t.timestamps
     end

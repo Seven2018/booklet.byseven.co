@@ -5,33 +5,16 @@
     <button class="btn-blue btn-blue-start" onclick='nextQuestion(this);'><p>Start !</p></button>
   </div>
   <% questions = @interview.interview_form.interview_questions.order(position: :asc) %>
-  <% separators = questions.where(question_type: 'separator') %>
-
-  <% if separators.present? %>
-    <% separator_array = separators.map(&:position) %>
-    <% i = 0 %>
-    <% separators.each do |separator| %>
+  <% j = 1 %>
+  <% questions.where.not(question_type: 'separator').each do |question| %>
+    <div class="interview-question" id='question-<%= j %>'>
       <div class="interview-separator">
-        <h2><%= separator.question %></h2>
+        <% previous_separators = questions.where(question_type: 'separator').where('position <= ?', j) %>
+        <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
       </div>
-      <% i + 1 == separator_array.count ? end_point = questions.last.position : end_point = separator_array[i + 1] %>
-      <% j = 1 %>
-      <% questions.where(position: (separator_array[i]..end_point)).each do |question| %>
-        <div class="interview-question__with-separator">
-          <%= render 'interview_questions/partials/show_interview_question_form', question: question, j: j %>
-        </div>
-        <% j += 1 %>
-      <% end %>
-      <% i += 1 %>
-    <% end %>
-  <% else %>
-    <% j = 1 %>
-    <% questions.each do |question| %>
-      <div class="interview-question" id='question-<%= j %>'>
-        <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j %>
-      </div>
-      <% j += 1 %>
-    <% end %>
+      <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j %>
+    </div>
+    <% j += 1 %>
   <% end %>
 </div>
 

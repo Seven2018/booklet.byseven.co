@@ -1,7 +1,7 @@
 class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Employee'].include? user.access_level
+      if ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Manager-light', 'Employee'].include? user.access_level
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -40,6 +40,6 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def check_access
-    ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Employee'].include? user.access_level
+    ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Manager-light', 'Employee'].include? user.access_level
   end
 end

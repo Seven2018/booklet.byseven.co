@@ -19,7 +19,7 @@
             <div class="template-show-lines-controls" style='display:none;'>
               <a class="template-show-lines-controls-block" onclick="addLine('separator');">
                 <i class="fas fa-grip-lines"></i>
-                <p>Separator</p>
+                <p>Chapter</p>
               </a>
               <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
                 <i class="fas fa-question-circle"></i>
@@ -61,7 +61,7 @@
       <div class="line-top">
         <div class="line-title" onclick='toggleMod(this);'>
           <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>Separator</p>
+          <p>Chapter</p>
         </div>
         <div class="line-controls-new">
           <a class="line-delete" onclick="this.closest('.add-separator').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
@@ -90,7 +90,14 @@
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
         <%= f.hidden_field :interview_form_id, value: @template.id %>
         <%= f.hidden_field :question_type, value: 'open_question' %>
-        <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {autocomplete: 'off'}, required: true %>
+        <div class="flex-row-between-centered">
+          <label>Question</label>
+          <div class="required-question-switch-container">
+            <label>Not Required</label>
+            <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+          </div>
+        </div>
+        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
         <%= f.input :description, placeholder: 'Description (optional)', label: false %>
         <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
           <p>Save</p>
@@ -110,10 +117,21 @@
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
         <%= f.hidden_field :interview_form_id, value: @template.id %>
         <%= f.hidden_field :question_type, value: 'rating' %>
-        <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {autocomplete: 'off'}, required: true %>
+        <div class="flex-row-between-centered">
+          <label>Question</label>
+          <div class="required-question-switch-container">
+            <label>Not Required</label>
+            <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+          </div>
+        </div>
+        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
         <%= f.input :description, placeholder: 'Description (optional)', label: false %>
         <div class="add-rating__select">
-          <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating' %>
+          <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'setRating(this);'} %>
+        </div>
+        <div class="show-rating"></div>
+        <div class="add-rating__toggle">
+          <%= f.input :allow_comments, label: 'Allow comments' %>
         </div>
         <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
           <p>Save</p>
@@ -133,7 +151,14 @@
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
         <%= f.hidden_field :interview_form_id, value: @template.id %>
         <%= f.hidden_field :question_type, value: 'mcq' %>
-        <%= f.input :question, placeholder: '*Required', label: 'Question', input_html: {autocomplete: 'off'}, required: true %>
+        <div class="flex-row-between-centered">
+          <label>Question</label>
+          <div class="required-question-switch-container">
+            <label>Not Required</label>
+            <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+          </div>
+        </div>
+        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
         <%= f.input :description, placeholder: 'Description (optional)', label: false %>
         <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
           <p>Create</p>
@@ -147,7 +172,7 @@
   <!-- MODALS -->
   <!------------>
 
-  <div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">
     <div class='modal-dialog' role='document' style='border-radius: 20px'>
       <%= render 'interview_forms/modals/manage_tags', form: @template %>
     </div>
@@ -211,7 +236,7 @@
         iconclose.style.transform = ('rotate(45deg)')
         contentbar.style.width = '100%'
         contentblock.forEach((content) => {
-          content.style.width = '33.3%'
+          content.style.width = '25%'
         })
       },1);
     } else {
@@ -265,6 +290,19 @@
     document.querySelector('.template-show-lines-control-btn').classList.add('hidden')
   }
 
+  function multiplyNode(node, count, deep) {
+    for (var i = 0, copy; i < count - 1; i++) {
+        copy = node.cloneNode(deep);
+        node.parentNode.insertBefore(copy, node);
+    }
+  }
+
+  function setRating(element) {
+    target = element.closest('form').querySelector('.show-rating')
+    target.innerHTML = '<i class="far fa-star"></i>'
+    multiplyNode(target.querySelector('i'), parseInt(element.value,10), true);
+  }
+
   function saveQuestion(element) {
     if (doubleClickGuardian == false) {
       doubleClickGuardian = true
@@ -279,6 +317,21 @@
         }
       });
       setTimeout(function(){doubleClickGuardian = false}, 500)
+    }
+  }
+
+  function switchSide(element) {
+    container = element.closest('.required-question-switch-container')
+    switch_button = element.closest('.required-question-switch')
+    form = element.closest('form')
+    hidde_submit = form.querySelector('.hidden-submit')
+    if (element.checked == true) {
+      setTimeout(function(){switch_button.classList.add('switch_checked');container.querySelector('label').innerText = 'Required'}, 100)
+    } else {
+      setTimeout(function(){switch_button.classList.remove('switch_checked');container.querySelector('label').innerText = 'Not Required'}, 100)
+    }
+    if (hidde_submit != undefined) {
+      hidden_submit.click();
     }
   }
 
@@ -302,6 +355,25 @@
           setTimeout(function(){doubleClickGuardian = false}, 250)
         }
       })
+    }
+  }
+
+  function toggleMod(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode;
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '100000px';
+      block.classList.add('active');
+    } else if (block.style.maxHeight == '100000px') {
+      block.style.maxHeight = '61px';
+      block.classList.remove('active');
     }
   }
 

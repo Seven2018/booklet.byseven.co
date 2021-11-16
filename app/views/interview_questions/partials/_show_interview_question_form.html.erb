@@ -9,12 +9,12 @@
         <%= f.input :answer, as: :text, label: false, input_html: {value: existing_answer} %>
       <% elsif question_type == 'rating' %>
         <fieldset class="rating">
-        <% for i in 1..question.options.keys.first.to_i %>
-          <% if existing_answer.to_i == question.options.keys.first.to_i - i + 1 %>
-            <input type="radio" class='radio-rating' id="star<%= i %>" name="interview_answer[answer]" value="<%= i %>" checked/><label class = "full" for="star<%= i %>" title="Awesome - <%= i %> stars"></label>
-          <% else %>
-            <input type="radio" class='radio-rating' id="star<%= i %>" name="interview_answer[answer]" value="<%= i %>" /><label class = "full" for="star<%= i %>" title="Awesome - <%= i %> stars"></label>
-          <% end %>
+          <% for i in 1..question.options.keys.first.to_i %>
+            <% if existing_answer.to_i == question.options.keys.first.to_i - i + 1 %>
+              <input type="radio" class='radio-rating' id="star<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" checked/><label class = "full" for="star<%= i %>" title="Awesome - <%= i %> stars"></label>
+            <% else %>
+              <input type="radio" class='radio-rating' id="star<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" /><label class = "full" for="star<%= i %>" title="Awesome - <%= i %> stars"></label>
+            <% end %>
           <% end %>
         </fieldset>
       <% elsif question_type == 'mcq' %>
@@ -39,7 +39,7 @@
   </div>
   <div class="interview-question__controls">
     <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
-    <% if j == questions.count %>
+    <% if j == questions.where.not(question_type: 'separator').count %>
       <button class="btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
     <% else %>
       <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>

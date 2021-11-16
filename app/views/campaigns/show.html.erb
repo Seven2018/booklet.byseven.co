@@ -1,8 +1,36 @@
+<% ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) ? employee = true : employee = false %>
+<% if employee %>
+  <% interviews_for_date = @campaign.interviews.find_by(employee_id: current_user.id) %>
+  <% last_date = interviews_for_date.date %>
+  <% completion = (@campaign.interviews.where(employee_id: current_user.id, completed: true).count.fdiv(@campaign.interviews.where(employee_id: current_user.id).count) * 100).round %>
+<% else %>
+  <% interviews_for_date = @campaign.interviews.order(date: :asc) %>
+  <% completion = (@campaign.interviews.where(completed: true).count.fdiv(@campaign.interviews.count) * 100).round %>
+<% end %>
+
 <div class="campaigns-container">
-  <div id="index-controls">
+  <div id="main-controls">
     <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
   </div>
-  <div class="campaign-show">
+  <div id="main-page-title">
+    <div class="flex-row-start-centered">
+      <%= link_to campaigns_path, class: 'btn-back' do %>
+        <i class="fas fa-angle-left"></i>
+      <% end %>
+      <h1><%= completion %>% - <%= @campaign.title %></h1>
+      <div class="main-page-title__tags">
+        <% @campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
+          <p class="main-page-title__tag-pill"><%= tag.tag_name %></p>
+        <% end %>
+      </div>
+    </div>
+    <% if employee %>
+      <h3>Review on <strong><%= last_date %></strong></h3>
+    <% else %>
+      <h3>Reviews from <strong><%= interviews_for_date.first.date %></strong> to <strong><%= interviews_for_date.last.date %></strong></h3>
+    <% end %>
+  </div>
+  <div class="campaign-interview-list">
     <%= render 'campaigns/partials/show_interview_list', campaign: @campaign, interviews: @interviews %>
   </div>
 </div>
@@ -13,18 +41,7 @@
 <!---------------->
 
 <script>
-  function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.searchbar')
-    searchbar.querySelectorAll('input').forEach((input) => {
-      if (input.type == 'text') {
-        input.value = ''
-      } else if (input.type == 'checkbox') {
-        input.checked = false
-      }
-    })
-    searchbar.querySelectorAll('select').forEach((select) => {
-      select.selectedIndex = 0
-    })
-    searchbar.querySelector('.btn-search').click()
+  window.onload = function(e){
+    document.querySelector('.btn-search').click()
   }
 </script>

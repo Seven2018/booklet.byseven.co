@@ -6,10 +6,11 @@
       <%= f.input :period, collection: ['Current', 'Completed', 'All'], required: false, selected: 'Current' %>
       <%= f.submit 'Search', class: 'btn-search' %>
     <% end %>
+    <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
   <% elsif params[:controller] == 'campaigns' && params[:action] == 'show' %>
     <%= simple_form_for :search, url: campaign_path(@campaign), method: :get, remote: true do |f| %>
-      <%= f.input :user_id, as: :select, label: false, collection: [['','']] + User.joins(interviews: :campaign).where(campaigns: {id: @campaign.id}).distinct.map{|x| [x.id, x.fullname]}, label_method: :second, value_method: :first, include_blank: false %>
-      <%= f.submit 'Search', class: 'btn-search' %>
+      <%= f.input :user_id, as: :select, label: false, collection: User.joins(interviews: :campaign).where(campaigns: {id: @campaign.id}).distinct.order(lastname: :asc).map{|x| [x.id, x.fullname]}, label_method: :second, value_method: :first, include_blank: false %>
+      <%= f.submit 'Select', class: 'btn-search' %>
     <% end %>
   <% elsif params[:action] == 'campaign_select_template' || (params[:controller] == 'interview_forms' && params[:action] == 'index') %>
     <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
@@ -18,6 +19,7 @@
       <%= f.hidden_field :campaign_selected_template, value: @selected_template %>
       <%= f.submit 'Search', class: 'btn-search' %>
     <% end %>
+    <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
   <% elsif params[:action] == 'campaign_select_users' %>
     <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
     <%= simple_form_for :search, url: path, method: :get, remote: true do |f| %>
@@ -25,7 +27,6 @@
       <%= f.hidden_field :campaign_selected_users, value: @selected_users %>
       <%= f.submit 'Search', class: 'btn-search' %>
     <% end %>
+    <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
   <% end %>
-
-  <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
 </div>

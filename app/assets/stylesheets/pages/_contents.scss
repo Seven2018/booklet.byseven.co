@@ -262,10 +262,6 @@
   }
 }
 
-.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
-  color: black !important;
-}
-
 
 // ASYNC RADIO BUTTONS //
 
@@ -513,6 +509,7 @@
   border: 1px solid #E7E7E5D6;
   border-radius: .5rem;
   margin-bottom: 2rem;
+  max-height: 61px;
 
   label {
     font-size: 1.6rem;
