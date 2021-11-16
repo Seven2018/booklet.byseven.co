@@ -33,7 +33,7 @@
               <% end %>
             </li>
             <li>
-              <% if params[:controller] == 'campaigns' && params[:action] == 'employees' %>
+              <% if params[:action] == 'organisation' %>
                 <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
                   <div class="left-menu-title " style='color: #3177B7;'><h4>Employees</h4></div>
                 <% end %>

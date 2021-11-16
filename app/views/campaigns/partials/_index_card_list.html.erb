@@ -13,7 +13,7 @@
       <% completion = (campaign.interviews.where(completed: true).count.fdiv(campaign.interviews.count) * 100).round %>
     <% end %>
 
-    <div id='campaign-card-<%= campaign.id %>' class="col-xl-4 col-sm-6 col-xs-12">
+    <div id='campaign-card-<%= campaign.id %>' class="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
       <% if completion == 100 %>
       <div class="campaign-card campaign-card--completed">
       <% else %>
@@ -44,7 +44,7 @@
             </div>
             <div class="campaign-card-summary__completion">
               <h3><%= completion %>%</h3>
-              <span>Total completion</span>
+              <span>Completed</span>
             </div>
           <% else %>
             <div class='campaign-card-summary__count'>
@@ -52,9 +52,14 @@
               <p><%= campaign.interviews.where(label: 'HR', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> manager reviews</p>
               <p><%= campaign.interviews.where(label: 'Crossed', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> crossed reviews</p>
             </div>
+            <div class="completion-and-assignment">
               <div class="campaign-card-summary__completion">
-                <h3><%= completion %>%</h3>
-                <span>Total completion</span>
+                <h3 class="h3"><%= completion %>%</h3>
+                <span>Completed</span>
+              </div>
+              <div class="campaign-card-summary__assignment">
+                  Manager : <%= campaign.owner.fullname %>
+              </div>
               </div>
           <% end %>
         </div>
