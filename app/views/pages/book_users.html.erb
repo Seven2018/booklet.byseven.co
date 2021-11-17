@@ -261,7 +261,6 @@
     })
     document.querySelector('.book-users-all').querySelectorAll('.book-users-card').forEach((card) => {
       if (uniq_array.includes(card.id)) {
-        console.log(countElements(uniq_array, card.id))
         if (countElements(uniq_array, card.id) > 1) {
           card.remove()
         } else {

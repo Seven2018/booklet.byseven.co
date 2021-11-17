@@ -4,8 +4,10 @@
       <i class="fas fa-pencil-alt"></i>
     <% end %>
   <% end %>
-  <%= link_to interview_form_path(template, page: 'edit'), method: :delete, data: {confirm: 'Are you sure ?'} do %>
-    <i class="fas fa-trash-alt"></i>
+  <% unless Campaign.where(interview_form_id: template).present? %>
+    <%= link_to interview_form_path(template, page: 'edit'), method: :delete, data: {confirm: 'Are you sure ?'} do %>
+      <i class="fas fa-trash-alt"></i>
+    <% end %>
   <% end %>
 </div>
 <div class="template-show-infos-themes">

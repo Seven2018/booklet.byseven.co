@@ -1,6 +1,5 @@
 document.querySelector('.recommendations-container').innerHTML = '<%= j render("pages/partials/dashboard_recommendations_results") %>';
 if ("<%= @switch %>" == 'true') {
-  console.log("<%= @switch %>")
   document.querySelector('#answered_recommendations').querySelector('a').classList.add('active')
   document.querySelector('#pending_recommendations').querySelector('a').classList.remove('active')
   document.querySelector('#AnsweredRecommendation').classList.add('active')

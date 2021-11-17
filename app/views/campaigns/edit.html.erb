@@ -1,0 +1,53 @@
+<% interview_form = @campaign.interview_form %>
+<% users = @campaign.interviews.map(&:employee).uniq %>
+<div class="campaign-container">
+  <div class="campaign-dates-container">
+    <div class="campaign-select-date-title">
+      <div class="flex-row-start-centered">
+        <h1><%= @campaign.title %> -</h1>
+        <h5>&nbsp;<%= users.count %> selected employees</h5>
+      </div>
+      <div class="flex-row-start-centered">
+        <p><%= interview_form.interview_questions.count %> questions</p>
+        <% interview_form.interview_form_tags.each do |tag| %>
+          <p class="campaign-select-date-tag-pill"><%= tag.tag_name %></p>
+        <% end %>
+      </div>
+    </div>
+    <% users.each do |user| %>
+      <% interviews = @campaign.interviews.where(employee_id: user.id) %>
+      <div class="campaign-select-date-card" id='campaign-user-card-<%= user.id %>'>
+        <div class="campaign-select-date-card__username">
+          <p><%= user.fullname %></p>
+        </div>
+        <%= simple_form_for :update_interviews, url: update_interviews_path, method: :get, remote: true do |f| %>
+          <div class="flex-row-start-centered">
+            <%= f.input :date, label: false, input_html: {class: 'datepicker', style: 'max-width: 110px;text-align: center;', onchange: 'enableEdit(this);', value: interviews.first.date.to_date}, placeholder: 'Select date', required: true %>
+            <p>from</p>
+            <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'enableEdit(this);', value: interviews.first.starts_at.strftime('%H:%M'), style: 'max-width: 70px;text-align: center;'}, required: true %>
+            <p>to</p>
+            <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'enableEdit(this);', value: interviews.first.ends_at.strftime('%H:%M'), style: 'max-width: 70px;text-align: center;'}, required: true %>
+            <%= f.hidden_field :employee_id, value: user.id %>
+            <%= f.hidden_field :campaign_id, value: @campaign.id %>
+            <button type='submit' class='btn-blue btn-blue-disabled' disabled><p>Edit</p></button>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  function enableEdit(element) {
+    form = element.closest('form')
+    button = form.querySelector('.btn-blue')
+    button.classList.remove('btn-blue-disabled')
+    button.disabled = false
+    button.innerHTML = '<p>EDIT</p>'
+  }
+</script>

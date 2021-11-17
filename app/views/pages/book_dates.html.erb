@@ -146,13 +146,10 @@
         duplicateCost(el.querySelector('#session_cost'))
       })
       redirect_button = document.querySelector('.confirm-button')
-      console.log('training')
       document.getElementById('new_training').querySelector('.hidden-submit').click()
-      console.log('sessions')
       submit_buttons.forEach((element) => {
         setTimeout(function(){element.click()}, 100)
       })
-      console.log('confirm')
       setTimeout(function(){redirect_button.click()}, 1000)
     }
   }
@@ -162,7 +159,6 @@
   content = document.querySelector('#book_selected_content')
   users = document.querySelector('#book_selected_users')
   if ((folder.value =='' && content.value == '') || users.value == '') {
-    console.log('disabled')
     confirm_button.disabled = true
     confirm_button.classList.add('btn-orange__white-border-disabled')
     confirm_button.classList.remove('btn-orange__white-border')

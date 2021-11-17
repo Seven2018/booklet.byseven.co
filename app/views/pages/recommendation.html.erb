@@ -344,11 +344,8 @@
 
   function sendRecommendation() {
     selected_container = document.querySelector('.recommendation-users-selected')
-    // storage = document.querySelector("#recommend_user_id")
     selected_container.querySelectorAll('.selected').forEach((card) => {
       button = card.querySelector('.recommend').querySelector('.hidden-submit')
-      // setTimeout(function(){console.log('test')}, 3000);
-      // storage.value = card.id.split('-')[1]
       button.click()
       card.remove()
     })

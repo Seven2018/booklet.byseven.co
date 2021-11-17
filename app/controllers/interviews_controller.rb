@@ -22,6 +22,16 @@ class InterviewsController < ApplicationController
     authorize @interview
   end
 
+  def update_interviews
+    @user_id = params[:update_interviews][:employee_id]
+    @interviews = Interview.where(employee_id: @user_id, campaign_id: params[:update_interviews][:campaign_id])
+    authorize @interviews.first
+    @interviews.update_all(date: params[:update_interviews][:date], starts_at: DateTime.strptime(params[:update_interviews][:starts_at], '%H:%M'), ends_at: DateTime.strptime(params[:update_interviews][:ends_at], '%H:%M'))
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def answer_question
     interview = Interview.find(params[:interview_answer][:interview_id])
     authorize interview
