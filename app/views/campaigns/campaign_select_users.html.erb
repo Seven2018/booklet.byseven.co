@@ -132,7 +132,6 @@
       new_card_infos.appendChild(new_info_name)
       new_card_infos.appendChild(new_info_email)
       document.querySelector('.book-users-selected').appendChild(new_card)
-      console.log(new_card)
     } else {
       selected_container.querySelector('#' + user_card.id).remove();
     }
@@ -214,7 +213,6 @@
     })
     document.querySelector('.book-users-all').querySelectorAll('.book-users-card').forEach((card) => {
       if (uniq_array.includes(card.id)) {
-        console.log(countElements(uniq_array, card.id))
         if (countElements(uniq_array, card.id) > 1) {
           card.remove()
         } else {

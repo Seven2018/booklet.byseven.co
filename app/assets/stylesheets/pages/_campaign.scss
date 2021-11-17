@@ -97,9 +97,45 @@
 
 .campaign-card__controls {
   padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   h3 {
+    max-width: 37rem;
+    margin: 0;
+    font-size: 2rem;
     font-weight: bolder;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .campaign-card__options {
+    z-index: 200;
+    margin-right: -1rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .content-dropdown {
+    position: absolute;
+    right: 1rem;
+    top: 4rem;
+    border-radius: 4px;
+    box-shadow: 0px 4px 4px rgba(0,0,0,.25);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: white;
+    padding: 0 1rem;
+    z-index: 100;
   }
 }
 
@@ -395,5 +431,17 @@
     p {
       font-weight: bold;
     }
+  }
+}
+
+
+//////////
+// EDIT //
+//////////
+
+.update_interviews {
+
+  button {
+    margin-left: 2rem;
   }
 }

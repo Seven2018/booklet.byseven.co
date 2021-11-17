@@ -25,6 +25,7 @@
       <button class='active'><p>Select Dates</p></button>
     </div>
     <div>
+      <%= link_to '', send_notification_email_path(id: ''), class: 'send-email-button hidden' %>
       <%= link_to '', campaigns_path, class: 'confirm-button hidden' %>
       <% selected_template = InterviewForm.find(@selected_template) %>
       <%= simple_form_for Campaign.new, remote: true do |f| %>
@@ -33,11 +34,22 @@
         <%= f.hidden_field :selected_owner, value: selected_owner %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
-      <button id='campaign-confirm-button' class='btn-blue__white-border' onclick='createCampaign(this)' style='margin-top: 30px' data-toggle='tooltip'><p>Confirm</p></button>
+      <button id='campaign-confirm-button' class='btn-blue__white-border' style='margin-top: 30px' data-toggle='modal' data-target='#sendEmail'><p>Confirm</p></button>
     </div>
   </div>
   <div class="campaign-dates-container">
     <%= render 'campaigns/partials/campaign_select_dates_cards_index', selected_template: selected_template, selected_users: @selected_users %>
+  </div>
+</div>
+
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade modal_folder' id='sendEmail' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'campaigns/modals/send_notification_email_on_confirm' %>
   </div>
 </div>
 
@@ -47,13 +59,18 @@
 <!---------------->
 
 <script>
-  function createCampaign(element) {
-    element.parentNode.querySelector('.hidden-submit').click()
+  function createCampaign(element, notification) {
+    document.querySelector('#new_campaign').querySelector('.hidden-submit').click()
     submit_buttons = document.querySelector('.campaign-dates-container').querySelectorAll('.hidden-submit')
+    send_email_button =  document.querySelector('.send-email-button')
     redirect_button = document.querySelector('.confirm-button')
     submit_buttons.forEach((element) => {
       setTimeout(function(){element.click()}, 500)
     })
-    setTimeout(function(){redirect_button.click()}, 1000)
+    if (notification) {
+      setTimeout(function(){send_email_button.click()}, 1000)
+    } else {
+      setTimeout(function(){redirect_button.click()}, 1000)
+    }
   }
 </script>

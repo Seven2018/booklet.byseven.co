@@ -21,6 +21,10 @@ class InterviewPolicy < ApplicationPolicy
     check_access
   end
 
+  def update_interviews?
+    check_access_manager
+  end
+
   private
 
   def check_access_manager

@@ -403,7 +403,6 @@
       users_array.push(el.value)
     })
     element.closest('form').querySelector('#csv_selected_users').value = users_array.join(',')
-    console.log(element.closest('form').querySelector('#csv_selected_users').value)
     element.closest('.modal-content').querySelector('.btn-icon').click()
     element.parentNode.querySelector('.hidden-submit').click()
   }
@@ -519,7 +518,6 @@
       })
     })
     document.querySelectorAll('#csv_start_date, #csv_end_date').forEach((input) => {
-      console.log(input)
       input.style.color = '#3177B7'
     })
     colorNameInBlue()

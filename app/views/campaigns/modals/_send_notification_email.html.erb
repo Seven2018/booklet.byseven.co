@@ -1,0 +1,16 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__folder">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel"><%= campaign.title %> : Send invitation emails</h3>
+    </div>
+  </div>
+  <div class="modal-body">
+    <p>Do you wish to send invitations by email for this campaign ?</p>
+    <div class="flex-row-between-centered">
+      <button type="button" class="btn-blue-text cancel-close" data-dismiss="modal" aria-label="Close">NO, THANKS</button>
+      <%= link_to send_notification_email_path(id: campaign.id) do %>
+        <button type="button" class="btn-blue">YES, SEND BY EMAIL</button>
+      <% end %>
+    </div>
+  </div>
+</div>

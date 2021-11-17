@@ -33,6 +33,14 @@ class CampaignPolicy < ApplicationPolicy
     check_access
   end
 
+  def send_notification_email?
+    check_access_manager
+  end
+
+  def destroy?
+    check_access_manager
+  end
+
   private
 
   def check_access_manager

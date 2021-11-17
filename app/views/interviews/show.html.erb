@@ -56,7 +56,6 @@
   function previousQuestion(element) {
     position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
     question = document.querySelectorAll('.interview-question')[position - 1]
-    console.log(question)
     if (position - 1 == 0) {
       start = document.querySelector('.interview-start')
       start.classList.remove('hidden')

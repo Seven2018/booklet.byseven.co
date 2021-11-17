@@ -6,3 +6,67 @@
     <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
   </div>
 </div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  formGuardian = false;
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.searchbar')
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+    searchbar.querySelector('.btn-search').click()
+  }
+
+  function openContentMenu(element) {
+    dropdown = element.parentNode.querySelector('.content-dropdown')
+    dropdown.classList.remove('hidden')
+    formGuardian = true
+    card_link = element.closest('.campaign-card').querySelector('.stretched-link')
+    card_link.classList.add('disabled')
+    card_link_href = card_link.href
+    card_link.href = "javascript:void(0)";
+    setTimeout(function(){
+      formGuardian = false
+    }, 1);
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, dropdown) && formGuardian == false) {
+        formGuardian = true
+        setTimeout(function(){
+          formGuardian = false
+        }, 1);
+        dropdown.classList.add('hidden')
+        setTimeout(function(){
+          card_link.classList.remove('disabled')
+          card_link.href = card_link_href
+        }, 1);
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
+  }
+</script>

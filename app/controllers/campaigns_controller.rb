@@ -1,4 +1,5 @@
 class CampaignsController < ApplicationController
+  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy]
 
   def index
     @campaigns = policy_scope(Campaign)
@@ -70,7 +71,6 @@ class CampaignsController < ApplicationController
   end
 
   def show
-    @campaign = Campaign.find(params[:id])
     authorize @campaign
     if ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
       target = Interview.find_by(campaign_id: @campaign.id, employee_id: current_user.id, label: 'Employee')
@@ -87,7 +87,32 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def send_notification_email
+    authorize @campaign
+    @campaign.interviews.where(label: 'Employee').each do |interview|
+      CampaignMailer.with(user: interview.employee).invite_employee(@campaign.owner, interview.employee, interview).deliver
+    end
+    redirect_to campaigns_path, notice: 'Email(s) sent'
+  end
+
+  def edit
+    authorize @campaign
+  end
+
+  def destroy
+    authorize @campaign
+    @target = "campaign-card-#{@campaign.id}"
+    @campaign.destroy
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
+
+  def set_campaign
+    @campaign = Campaign.find(params[:id])
+  end
 
   def campaign_data
     if params[:campaign].present?

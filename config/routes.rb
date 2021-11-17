@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get :campaign_select_template, controller: :campaigns
   get :campaign_select_users, controller: :campaigns
   get :campaign_select_dates, controller: :campaigns
+  get :send_notification_email, controller: :campaigns
 
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
@@ -47,6 +48,7 @@ Rails.application.routes.draw do
 
   # INTERVIEWS
   resources :interviews
+  get :update_interviews, controller: :interviews
   post :answer_question, controller: :interviews, as: :answer_interview_question
 
   # INTERVIEW FORMS
