@@ -24,26 +24,26 @@
       <% end %>
     <% end %>
   </div>
-  <div id="main-controls">
-    <%= render 'shared/searchbar_campaigns', path: campaign_select_template_path, reset_path: campaign_select_template_path(reset: "") %>
-    <div class="flex-row-between-centered">
-      <label for="owner-select">Assigned to</label>
-      <select name="owner" id="owner-select" onchange='selectOwner();'>
-        <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
-          <% if user == current_user %>
-            <option value="<%= user.id %>" selected><%= user.fullname %></option>
-          <% else %>
-            <option value="<%= user.id %>"><%= user.fullname %></option>
-          <% end %>
-        <% end %>
-      </select>
-    </div>
     <div class="campaign-searchbar-right">
-      <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
-        <%= image_tag('Arrow-right.svg', height: '20', :class => "arrow-right") %>
-      </button>
+      <div id="main-controls">
+        <%= render 'shared/searchbar_campaigns', path: campaign_select_template_path, reset_path: campaign_select_template_path(reset: "") %>
+          <div class="assign-next">
+            <label class="assign-label" for="owner-select">Assigned to</label>
+            <select name="owner" id="owner-select" onchange='selectOwner();'>
+              <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
+                <% if user == current_user %>
+                  <option value="<%= user.id %>" selected><%= user.fullname %></option>
+                  <% else %>
+                    <option value="<%= user.id %>"><%= user.fullname %></option>
+                  <% end %>
+                <% end %>
+              </select>
+            <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
+              <%= image_tag('Arrow-right.svg', :class => "arrow-right") %>
+            </button>
+          </div>
+      </div>
     </div>
-  </div>
   <div class="interview-forms-index">
     <%= render 'interview_forms/partials/campaign_select_template_list', templates: @templates, selected_template: @selected_template %>
   </div>

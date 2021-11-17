@@ -25,11 +25,12 @@
       <% end %>
     <% end %>
   </div>
-  <div class="campaign-searchbar">
+  <div class="campaign-searchbar-right">
+  <div id="main-controls">
     <%= render 'shared/searchbar_campaigns', path: campaign_select_users_path, reset_path: campaign_select_users_path(reset: "") %>
-    <div class="flex-row-between-centered">
-      <label for="owner-select">Assigned to</label>
-      <select name="owner" id="owner-select" disabled>
+      <div class="assign-next">
+        <label class="assign-label-disabled" for="owner-select">Assigned to</label>
+      <select name="owner" id="owner-select-disabled" disabled>
         <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
           <% if user.id == selected_owner.to_i %>
             <option value="user.id" selected><%= user.fullname %></option>
@@ -38,13 +39,12 @@
           <% end %>
         <% end %>
       </select>
-    </div>
-    <div class="campaign-searchbar-right">
       <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
-        <%= image_tag('Arrow-right.svg', height: '20', :class => "arrow-right") %>
-      </button>
-    </div>
+      <%= image_tag('Arrow-right.svg', :class => "arrow-right") %>
+    </button>
   </div>
+</div>
+</div>
   <div id="paginate-container" class='hidden'>
     <%= paginate @users, remote: true, param_name: :page %>
   </div>
