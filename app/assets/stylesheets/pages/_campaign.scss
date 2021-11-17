@@ -46,6 +46,53 @@
     margin-right: 1rem;
   }
 
+  #owner-select {
+    color:#3177B7;
+    padding: 1rem;
+    background-color: white;
+    border: 2px solid #3177B7;
+    border-radius: 5px 5px 5px 5px;
+    height: 5rem;
+    outline: none;
+    margin-left: 1.5rem;
+  }
+
+  #owner-select-disabled {
+    color:#979C9F;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid #979C9F;
+    border-radius: 5px 5px 5px 5px;
+    height: 5rem;
+    outline: none;
+    margin-left: 1.5rem;
+  }
+
+  .assign-next{
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .assign-label {
+    color: #3177B7;
+    font-size: 1.5rem;
+    align-self: center;
+    margin-bottom: 0rem;
+  }
+
+  .assign-label-disabled{
+    color: #6e6e6e;
+    font-size: 1.5rem;
+    align-self: center;
+    margin-bottom: 0rem;
+  }
+
+  .campaign__next-button-arrow {
+    margin-left: 1rem;
+    height: 5rem;
+    padding-top: 0;
+  }
+
 
 ///////////
 // INDEX //
@@ -391,10 +438,12 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 35rem;
+  height: 33rem;
   width: 35rem;
   padding: 4rem 2rem;
-  margin: 0 1rem;
+  margin: 0 3rem;
+  margin-top: 5rem;
+  border-radius: 0.5rem;;
   background-color: #DEE9F3;
 
   p, a, i {
@@ -408,6 +457,7 @@
   .campaign-interview-card__username {
     font-size: 3rem;
     font-weight: bolder;
+    text-align: center;
   }
 
   .campaign-interview-card__status {
@@ -430,6 +480,15 @@
 
     p {
       font-weight: bold;
+    }
+
+    &:hover {
+      color: white;
+      background-color: #3177B7;
+
+      p {
+        color: white;
+      }
     }
   }
 }

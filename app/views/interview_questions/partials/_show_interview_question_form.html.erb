@@ -40,9 +40,9 @@
   <div class="interview-question__controls">
     <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
     <% if j == questions.where.not(question_type: 'separator').count %>
+    <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>
       <button class="btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
     <% else %>
-      <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>
       <button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button>
     <% end %>
   </div>
