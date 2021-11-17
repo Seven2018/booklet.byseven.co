@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style type='text/css' media='screen'>
+      @media screen {
+        @font-face {
+          font-family: 'Lato';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+        }
+      }
+
+      body {
+        font-family: "Lato", Sans-Serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      img {
+        margin: 0 10px;
+      }
+
+      .mailer-banner {
+          width: 100%;
+          height: 100px;
+          background-color: #F1F3F4;
+          display:table;
+      }
+
+      .mailer-banner-row {
+        height: 100%;
+        width: 100%;
+        vertical-align: middle;
+        text-align: center;
+        display:table-cell;
+      }
+
+      .mailer-container {
+        width: 100%;
+        display:table;
+        padding: 50px 0;
+      }
+
+      .mailer-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        min-width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mailer-banner">
+      <div class="mailer-banner-row">
+        <div>
+
+        </div>
+      </div>
+    </div>
+    <div class="mailer-container">
+      <div class="mailer-text">
+        <h2>Hello, <%= @employee.firstname %></h2>
+        <br>
+        <p><%= @owner.firstname %> <%= @owner.lastname %> t'invite à remplir ton EFA <a href="localhost:3000/interview/<%= @interview.id %>">ici</a> !</p>
+        <br>
+        <p>Il te donne rendez vous le <%= @interview.date %> à <%= @interview.starts_at.strftime("%Hh%M") %> pour l'entretien !</p>
+        <br>
+        <p>Bonne journée :)</p>
+      </div>
+    </div>
+  </body>
+</html>

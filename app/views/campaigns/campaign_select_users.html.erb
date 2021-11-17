@@ -1,11 +1,13 @@
 <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 <div class="campaign-container">
   <div class="campaign-controls">
+    <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
+    <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
+    <% params[:campaign].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
     <%= simple_form_for :campaign, url: campaign_select_template_path, method: :get do |f| %>
-      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
-      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
+      <%= f.hidden_field :selected_owner, value: selected_owner %>
       <%= button_tag type: 'submit' do %>
           <p>Select a Template</p>
       <% end %>
@@ -14,10 +16,9 @@
     <button class='active'><p>Select Employees</p></button>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
     <%= simple_form_for :campaign, url: campaign_select_dates_path, method: :get do |f| %>
-      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
-      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
+      <%= f.hidden_field :selected_owner, value: selected_owner %>
       <% params[:campaign].present? && params[:campaign][:selected_users].present? ? disabled = '' : disabled = 'disabled' %>
       <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
         <p>Select Dates</p>
@@ -26,6 +27,23 @@
   </div>
   <div class="campaign-searchbar">
     <%= render 'shared/searchbar_campaigns', path: campaign_select_users_path, reset_path: campaign_select_users_path(reset: "") %>
+    <div class="flex-row-between-centered">
+      <label for="owner-select">Assigned to</label>
+      <select name="owner" id="owner-select" disabled>
+        <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
+          <% if user.id == selected_owner.to_i %>
+            <option value="user.id" selected><%= user.fullname %></option>
+          <% else %>
+            <option value="user.id"><%= user.fullname %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </div>
+    <div class="campaign-searchbar-right">
+      <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
+        <%= image_tag('Arrow-right.svg', height: '20', :class => "arrow-right") %>
+      </button>
+    </div>
   </div>
   <div id="paginate-container" class='hidden'>
     <%= paginate @users, remote: true, param_name: :page %>
@@ -87,6 +105,7 @@
     selected_array = []
     checkbox = user_card.querySelector('input[type="checkbox"]')
     next_button = document.querySelector('.campaign__next-button')
+    next_button_arrow = document.querySelector('.campaign__next-button-arrow')
     checkbox.checked = !checkbox.checked
     document.querySelectorAll('#' + user_card.id).forEach((card) => {
       if(checkbox.checked == true) {
@@ -127,9 +146,11 @@
     if (selected_array.length == 0) {
       next_button.disabled = true
       next_button.classList.add('disabled')
+      next_button_arrow.classList.add('disabled')
     } else {
       next_button.disabled = false
       next_button.classList.remove('disabled')
+      next_button_arrow.classList.remove('disabled')
     }
   }
 
@@ -146,6 +167,14 @@
       select.selectedIndex = 0
     })
     searchbar.querySelector('.btn-search').click()
+  }
+
+  function nextPage() {
+    selected_template = document.querySelector('#campaign_selected_template').value
+    submit = document.querySelector('.campaign__next-button')
+    if (selected_template != '') {
+      submit.click()
+    }
   }
 
   function infiniteScroll() {
