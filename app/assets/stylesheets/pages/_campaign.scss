@@ -227,6 +227,21 @@
 // SELECT TEMPLATE //
 /////////////////////
 
+.campaign__next-button-arrow {
+
+  img {
+    opacity: 1;
+  }
+}
+
+.campaign__next-button-arrow.disabled {
+  cursor: not-allowed;
+
+  img {
+    opacity: .3;
+  }
+}
+
 .template-card-container.selected {
 
   .interview-form-card__campaign {

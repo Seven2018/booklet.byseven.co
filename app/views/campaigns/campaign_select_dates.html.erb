@@ -1,21 +1,22 @@
 <div class="campaign-container">
   <div class="flex-row-between-centered">
     <div class="campaign-controls">
+      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
+      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
+      <% params[:campaign].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
       <%= simple_form_for :campaign, url: campaign_select_template_path, method: :get do |f| %>
-        <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
-        <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
         <%= f.hidden_field :selected_template, value: selected_template %>
         <%= f.hidden_field :selected_users, value: selected_users %>
+        <%= f.hidden_field :selected_owner, value: selected_owner %>
         <%= button_tag type: 'submit' do %>
             <p>Select a Template</p>
         <% end %>
       <% end %>
       <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
       <%= simple_form_for :campaign, url: campaign_select_users_path, method: :get do |f| %>
-        <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
-        <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
         <%= f.hidden_field :selected_template, value: selected_template %>
         <%= f.hidden_field :selected_users, value: selected_users %>
+        <%= f.hidden_field :selected_owner, value: selected_owner %>
         <%= button_tag type: 'submit' do %>
             <p>Select Employees</p>
         <% end %>
@@ -29,6 +30,7 @@
       <%= simple_form_for Campaign.new, remote: true do |f| %>
         <%= f.hidden_field :title, value: selected_template.title %>
         <%= f.hidden_field :interview_form_id, value: selected_template.id %>
+        <%= f.hidden_field :selected_owner, value: selected_owner %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
       <button id='campaign-confirm-button' class='btn-blue__white-border' onclick='createCampaign(this)' style='margin-top: 30px' data-toggle='tooltip'><p>Confirm</p></button>

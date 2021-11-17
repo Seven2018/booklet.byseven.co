@@ -2,11 +2,13 @@
   <div class="campaign-controls">
     <button class='active'><p>Select a Template</p></button>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
+    <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
+    <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
+    <% params[:campaign].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
     <%= simple_form_for :campaign, url: campaign_select_users_path, method: :get do |f| %>
-      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
-      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
+      <%= f.hidden_field :selected_owner, value: selected_owner %>
       <% params[:campaign].present? && params[:campaign][:selected_template].present? ? disabled = '' : disabled = 'disabled' %>
       <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
           <p>Select Employees</p>
@@ -14,10 +16,9 @@
     <% end %>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
     <%= simple_form_for :campaign, url: campaign_select_dates_path, method: :get do |f| %>
-      <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
-      <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
+      <%= f.hidden_field :selected_owner, value: selected_owner %>
       <%= button_tag type: 'submit', class: 'disabled', disabled: true, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
         <p>Select Dates</p>
       <% end %>
@@ -25,8 +26,22 @@
   </div>
   <div class="campaign-searchbar">
     <%= render 'shared/searchbar_campaigns', path: campaign_select_template_path, reset_path: campaign_select_template_path(reset: "") %>
+    <div class="flex-row-between-centered">
+      <label for="owner-select">Assigned to</label>
+      <select name="owner" id="owner-select" onchange='selectOwner();'>
+        <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
+          <% if user == current_user %>
+            <option value="<%= user.id %>" selected><%= user.fullname %></option>
+          <% else %>
+            <option value="<%= user.id %>"><%= user.fullname %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </div>
     <div class="campaign-searchbar-right">
-      <%= image_tag('Arrow-right.svg', height: '20', :class => "arrow-right") %>
+      <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
+        <%= image_tag('Arrow-right.svg', height: '20', :class => "arrow-right") %>
+      </button>
     </div>
   </div>
   <div class="interview-forms-index">
@@ -49,6 +64,7 @@
     selected_storage = document.getElementById('campaign_selected_template')
     search_storage = document.getElementById('search_campaign_selected_template')
     next_button = document.querySelector('.campaign__next-button')
+    next_button_arrow = document.querySelector('.campaign__next-button-arrow')
     input.checked = !input.checked
     if (input.checked == true) {
       checkboxes.forEach((checkbox) => {
@@ -67,6 +83,9 @@
         search_storage.value = selected_id
         next_button.disabled = false
         next_button.classList.remove('disabled')
+        next_button.setAttribute('title', '')
+        next_button_arrow.classList.remove('disabled')
+        next_button_arrow.setAttribute('title', '')
       })
     } else {
       checkboxes.forEach((checkbox) => {
@@ -78,6 +97,9 @@
       search_storage.value = ''
       next_button.disabled = true
       next_button.classList.add('disabled')
+      next_button.setAttribute('title', 'Please select a template')
+      next_button_arrow.classList.add('disabled')
+      next_button_arrow.setAttribute('title', 'Please select a template')
     }
   }
 
@@ -94,6 +116,22 @@
       select.selectedIndex = 0
     })
     searchbar.querySelector('.btn-search').click()
+  }
+
+  function selectOwner() {
+    owner = document.querySelector('#owner-select').value
+    console.log(owner)
+    document.querySelectorAll('#campaign_selected_owner').forEach((element) =>{
+      element.value = owner
+    })
+  }
+
+  function nextPage() {
+    selected_template = document.querySelector('#campaign_selected_template').value
+    submit = document.querySelector('.campaign__next-button')
+    if (selected_template != '') {
+      submit.click()
+    }
   }
 
   checkboxes = document.querySelectorAll('.select-template-checkbox')

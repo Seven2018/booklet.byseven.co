@@ -60,9 +60,8 @@ class CampaignsController < ApplicationController
   end
 
   def create
-    @campaign = Campaign.new(title: params[:campaign][:title], interview_form_id: params[:campaign][:interview_form_id])
+    @campaign = Campaign.new(title: params[:campaign][:title], interview_form_id: params[:campaign][:interview_form_id], owner_id: params[:campaign][:selected_owner])
     authorize @campaign
-    @campaign.owner_id = current_user.id
     @campaign.company_id = current_user.company_id
     @campaign.save
     respond_to do |format|
