@@ -21,13 +21,18 @@ body.wait *, body.wait
 #booklet-wrapper {}
 
 #booklet-container {
-  min-height: calc(100vh - 7.5rem);
-  margin: 0;
+  min-height: calc(100vh - 6rem);
+  margin: 0 0 6rem 0;
   width: auto;
   padding: 0 3rem;
   background-color: #fff;
   position: relative;
   transition: all 0.25s ease-in-out;
+
+  @include from-medium {
+    margin: 0;
+    min-height: calc(100vh - 7.5rem);
+  }
 }
 
 #container-login {

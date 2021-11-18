@@ -4,6 +4,7 @@
     <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
     <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
     <% params[:campaign].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
+    <% params[:campaign].present? && params[:campaign][:selected_users].present? ? disabled = '' : disabled = 'disabled' %>
     <%= simple_form_for :campaign, url: campaign_select_template_path, method: :get do |f| %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
@@ -19,7 +20,6 @@
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
       <%= f.hidden_field :selected_owner, value: selected_owner %>
-      <% params[:campaign].present? && params[:campaign][:selected_users].present? ? disabled = '' : disabled = 'disabled' %>
       <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
         <p>Select Dates</p>
       <% end %>
@@ -39,7 +39,7 @@
           <% end %>
         <% end %>
       </select>
-      <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
+      <button class='campaign__next-button-arrow <%= disabled %>' onclick='nextPage();'>
       <%= image_tag('Arrow-right.svg', :class => "arrow-right") %>
     </button>
   </div>
@@ -53,7 +53,7 @@
       <div class="book-users-headers">
         <div class="book-users-card">
           <input type="checkbox" class='hidden'>
-          <div class="book-users-pseudo-checkbox-container"><button class="book-users-pseudo-checkbox"></button></div>
+          <div class="book-users-pseudo-checkbox-container" onclick="selectAllUsers(this);"><button class="book-users-pseudo-checkbox"></button></div>
           <div class="book-users-card-infos">
             <div>
               <p>Fullname</p>
@@ -69,10 +69,10 @@
           </div>
         </div>
       </div>
-      <div class="book-users-all">
+      <div class="book-users-list book-users-all">
         <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false', filtered: 'all' %>
       </div>
-      <div class="book-users-filtered hidden">
+      <div class="book-users-list book-users-filtered hidden">
         <%= render 'pages/partials/book_user_index', users: [], selected_users: @selected_users, selected: 'false', filtered: 'filtered' %>
       </div>
     </div>
@@ -151,6 +151,38 @@
       next_button.classList.remove('disabled')
       next_button_arrow.classList.remove('disabled')
     }
+    document.querySelector('.book-users-headers-selected').innerHTML = '<p>' + selected_array.length + ' SELECTED EMPLOYEES</p>'
+  }
+
+  function selectAllUsers(element) {
+    list = document.querySelector('.book-users-list:not(.hidden)')
+    list.querySelectorAll('.book-users-pseudo-checkbox-container').forEach((button) => {
+      selectUser(button)
+    })
+    element.querySelector('.book-users-pseudo-checkbox').style.backgroundColor = '#3177B7'
+  }
+
+  function checkSelectedAll() {
+    list = document.querySelector('.book-users-list:not(.hidden)')
+    selected_list = document.querySelector('.book-users-selected')
+    user_array_list = []
+    user_selected_list = []
+    list.querySelectorAll('.book-users-card').forEach((user_card) => {
+      user_array_list.push(user_card.id)
+    })
+    selected_list.querySelectorAll('.book-users-card').forEach((user_card) => {
+      user_selected_list.push(user_card.id)
+    })
+    user_selected_list = user_selected_list.slice().sort().filter(function (el) {
+        return el != "";
+    });
+    target_button = document.querySelector('.book-users-headers').querySelector('.book-users-pseudo-checkbox')
+    if (JSON.stringify(user_array_list) === JSON.stringify(user_selected_list)) {
+      target_button.style.backgroundColor = '#3177B7'
+    } else {
+      target_button.style.backgroundColor = 'transparent'
+    }
+    document.querySelector('.book-users-headers-selected').innerHTML = '<p>' + user_selected_list.length + ' SELECTED EMPLOYEES</p>'
   }
 
   function resetAllFilter(element, recommendation = false) {
@@ -191,6 +223,7 @@
   }
 
   infiniteScroll()
+  checkSelectedAll()
 
   function countElements(array, element) {
     const counts = {}

@@ -24,9 +24,10 @@
    
         <% if ['campaigns', 'interview_forms', 'interviews'].include?(params[:controller]) || params[:redirected_from] == 'campaigns' %>
           <%= render 'shared/navbar_campaign' %>
+          <%= render 'shared/navbar_campaign_mobile' %>
         <% else %>
           <%= render 'shared/navbar' %>
-          <%= render 'shared/left_navbar-mobile' %>
+          <%= render 'shared/navbar_mobile' %>
         <% end %>
 
       <% end %>

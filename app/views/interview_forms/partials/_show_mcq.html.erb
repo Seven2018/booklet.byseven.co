@@ -4,7 +4,11 @@
     <ul>
       <% question.options.sort_by {|k, v| v}.each do |option| %>
         <div onclick="openEditOptionForm(this);">
-          <li style='color: #888888;' data-toggle='tooltip' title='Click to edit'><%= option[0] %></li>
+          <% if page == 'edit' %>
+            <li style='color: #888888;' data-toggle='tooltip' title='Click to edit'><%= option[0] %></li>
+          <% else %>
+            <li style='color: #888888;cursor: default;'><%= option[0] %></li>
+          <% end %>
           <% i += 1 %>
           <div class="hidden-form-ajax hidden">
             <%= simple_form_for :edit_option, url: edit_mcq_option_path, method: :patch, remote: true do |f| %>

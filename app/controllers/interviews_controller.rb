@@ -43,7 +43,7 @@ class InterviewsController < ApplicationController
       interview_answer = InterviewAnswer.new(interview_id: params[:interview_answer][:interview_id], interview_question_id: params[:interview_answer][:interview_question_id], user_id: current_user.id, answer: params[:interview_answer][:answer])
     end
     interview_answers = InterviewAnswer.where(interview_id: params[:interview_answer][:interview_id])
-    if interview_answers.count == interview.interview_form.interview_questions.where.not(question_type: 'separator').count
+    if interview_answers.count >= interview.interview_form.interview_questions.where.not(question_type: 'separator').where(required: true).count
       interview.update(completed: true) if interview.completed != true
     end
     interview_answer.save
