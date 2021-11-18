@@ -6,7 +6,7 @@
   </div>
   <div class="modal-body">
     <p>Do you wish to send invitations by email for this campaign ?</p>
-    <div class="flex-row-between-centered">
+    <div class="modal-email-btns">
       <button type="button" class="btn-blue-text cancel-close" data-dismiss="modal" aria-label="Close">NO, THANKS</button>
       <%= link_to send_notification_email_path(id: campaign.id) do %>
         <button type="button" class="btn-blue">YES, SEND BY EMAIL</button>
