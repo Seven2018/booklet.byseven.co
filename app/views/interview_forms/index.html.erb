@@ -89,4 +89,29 @@
     })
     searchbar.querySelector('.btn-search').click()
   }
+
+  function hideOverflowingTags() {
+    document.querySelectorAll('.interview-form-card__tags').forEach((tag_container) => {
+      card_width = tag_container.parentNode.querySelector('.interview-form-card__controls').offsetWidth
+      result = 0
+      tooltip_content = ''
+      tag_container.querySelectorAll('.interview-form-card__tag-pill').forEach((tag) => {
+        result += tag.offsetWidth
+        tooltip_content += tag.innerText + '\n'
+        if (result > card_width - 37) {
+          tag.remove()
+        }
+      })
+      if (result > card_width - 37) {
+        newDiv = document.createElement('div')
+        newDiv.classList.add('interview-form-card__tag-plus')
+        newDiv.innerHTML = '<i class="fas fa-ellipsis-h"></i>'
+        newDiv.setAttribute('data-toggle', 'tooltip');
+        newDiv.setAttribute('title', tooltip_content)
+        tag_container.appendChild(newDiv)
+      }
+    })
+  }
+
+  hideOverflowingTags()
 </script>

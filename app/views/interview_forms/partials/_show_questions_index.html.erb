@@ -180,7 +180,7 @@
             <% end %>
           </div>
           <div class="add-rating__toggle">
-            <%= f.input :allow_comments, label: 'Allow comments', input_html: {onclick: 'saveQuestion(this)', autocomplete: 'off'} %>
+            <%= f.input :allow_comments, label: 'Allow comments', input_html: {onclick: 'this.closest("form").querySelector(".hidden-submit").click();', autocomplete: 'off'} %>
           </div>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         <% end %>
@@ -259,7 +259,7 @@
         <% end %>
         <label>Options</label>
         <div id='mcq-<%= question.id %>'>
-          <%= render 'interview_forms/partials/show_mcq', question: question %>
+          <%= render 'interview_forms/partials/show_mcq', question: question, page: 'edit' %>
         </div>
       </div>
     <% else %>
@@ -271,7 +271,7 @@
             <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
           <% end %>
           <div id='mcq-<%= question.id %>'>
-            <%= render 'interview_forms/partials/show_mcq', question: question %>
+            <%= render 'interview_forms/partials/show_mcq', question: question, page: 'show' %>
           </div>
         </div>
       </div>

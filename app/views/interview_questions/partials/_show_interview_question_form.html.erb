@@ -16,12 +16,15 @@
         <fieldset class="rating">
           <% for i in 1..question.options.keys.first.to_i %>
             <% if existing_answer.to_i == question.options.keys.first.to_i - i + 1 %>
-              <input type="radio" class='radio-rating' id="star<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);' checked/><label class = "full" for="star<%= i %>" title="Awesome - <%= i %> stars"></label>
+              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);' checked/><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="Awesome - <%= i %> stars"></label>
             <% else %>
-              <input type="radio" class='radio-rating' id="star<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);' /><label class = "full" for="star<%= i %>" title="Awesome - <%= i %> stars"></label>
+              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);' /><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="Awesome - <%= i %> stars"></label>
             <% end %>
           <% end %>
         </fieldset>
+        <% if question.allow_comments %>
+          <%= f.input :comments, as: :text %>
+        <% end %>
       <% elsif question_type == 'mcq' %>
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
@@ -50,7 +53,7 @@
     <% elsif j == questions.where.not(question_type: 'separator').count %>
       <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>
       <button class="btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
-    <% elsif question.required %>
+    <% elsif question.required && InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id).nil? %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
     <% else %>
       <button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button>
