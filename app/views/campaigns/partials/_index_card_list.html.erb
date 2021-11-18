@@ -2,6 +2,10 @@
 
   <% ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) ? employee = true : employee = false %>
 
+  <% if campaigns.empty? || campaigns.joins(:interviews).where(interviews: {completed: true}).nil? %>
+    <p class="empty-card-list">No campaign for the moment, click on 'Template' to start.</p>
+  <% end %>
+
   <% campaigns.each do |campaign| %>
 
     <% if employee %>
@@ -69,9 +73,15 @@
                 <h3 class="h3"><%= completion %>%</h3>
                 <span>Completed</span>
               </div>
-              <div class="campaign-card-summary__assignment">
-                Manager : <%= campaign.owner.fullname %>
-              </div>
+              <% if completion == 100 %>
+                <div class="campaign-card-summary__assignment manager-completed">
+                  Manager : <%= campaign.owner.fullname %>
+                </div>
+              <% else %>
+                 <div class="campaign-card-summary__assignment">
+                  Manager : <%= campaign.owner.fullname %>
+                </div>
+              <% end %>
               </div>
           <% end %>
         </div>
