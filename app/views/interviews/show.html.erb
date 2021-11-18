@@ -7,7 +7,7 @@
   <% questions = @interview.interview_form.interview_questions.order(position: :asc) %>
   <% j = 1 %>
   <% questions.where.not(question_type: 'separator').each do |question| %>
-    <div class="interview-question" id='question-<%= j %>'>
+    <div class="interview-question hidden" id='question-<%= j %>'>
       <div class="interview-separator">
         <% previous_separators = questions.where(question_type: 'separator').where('position <= ?', j) %>
         <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
@@ -37,6 +37,18 @@
       }
     });
   });
+
+  function enableNext(element) {
+    button = element.closest('.interview-question__display-container').querySelectorAll('.btn-blue')[1]
+    console.log(element.value)
+    if (element.value.length > 0 && button != undefined) {
+      button.classList.remove('btn-blue-disabled')
+      button.disabled = false
+    } else if (element.value.length == 0 && button != undefined) {
+      button.classList.add('btn-blue-disabled')
+      button.disabled = true
+    }
+  }
 
   function nextQuestion(element) {
     if (element.classList.contains('btn-blue-start')) {
