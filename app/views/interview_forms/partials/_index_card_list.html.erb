@@ -1,4 +1,7 @@
 <div class="row">
+<% if templates.empty? %>
+  <p class="empty-card-list">No templates found, click on the blue button to create a template.</p>
+<% end %>
   <% templates.each do |template| %>
     <div id='template-card-<%= template.id %>' class="col-xl-3 col-sm-6 col-xs-12">
       <div class="interview-form-card">

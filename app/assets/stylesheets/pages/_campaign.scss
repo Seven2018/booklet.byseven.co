@@ -109,6 +109,14 @@
   align-items: center;
 }
 
+.empty-card-list {
+  margin-top: 3rem;;
+  color: #979C9F;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-left: 1.5rem;
+}
+
 .campaign-card {
   margin: 2rem;
   background-color: #DEE9F3;
@@ -277,6 +285,13 @@
     color: #696969;
     text-align: right;
     margin-bottom: 1rem;
+
+    &.manager-completed {
+      font-size: 1rem;
+      color: white;
+      text-align: right;
+      margin-bottom: 1rem;
+    }
   }
 }
 
