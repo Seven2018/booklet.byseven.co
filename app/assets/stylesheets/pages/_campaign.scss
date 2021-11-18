@@ -103,11 +103,18 @@
   margin-top: 3rem;
 }
 
+.campaign-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .campaign-card {
   margin: 2rem;
   background-color: #DEE9F3;
   border-radius: .5rem;
   position: relative;
+  min-width: 28rem;
 
   .campaign-card__header {
     height: 3rem;
@@ -233,6 +240,7 @@
   }
 
   .campaign-card-summary__count {
+    flex-shrink: 1;
 
     p:first-of-type {
       color: #5B92C4;
@@ -247,7 +255,7 @@
     }
   }
 
-  .completion-and-assignment {
+  .campaign-card-summary__completion-and-assignment {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -259,7 +267,7 @@
     flex-direction: column;
     justify-content: center;
 
-    .h3 {
+    h3 {
       align-self: center;
     }
   }
@@ -267,11 +275,8 @@
   .campaign-card-summary__assignment{
     font-size: 1rem;
     color: #696969;
-
-    .campaign-card--completed-manager {
-      font-size: 1rem;
-      color: white;
-    }
+    text-align: right;
+    margin-bottom: 1rem;
   }
 }
 

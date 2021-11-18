@@ -324,7 +324,7 @@
     container = element.closest('.required-question-switch-container')
     switch_button = element.closest('.required-question-switch')
     form = element.closest('form')
-    hidde_submit = form.querySelector('.hidden-submit')
+    hidden_submit = form.querySelector('.hidden-submit')
     if (element.checked == true) {
       setTimeout(function(){switch_button.classList.add('switch_checked');container.querySelector('label').innerText = 'Required'}, 100)
     } else {

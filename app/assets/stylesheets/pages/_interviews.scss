@@ -37,8 +37,8 @@
 
 .interview-question {
   height: calc(100vh - 7.5rem);
-  width: 100vw;
-  min-width: 100vw;
+  width: calc(100vw - 6rem);
+  width: calc(100vw - 6rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,6 +97,11 @@
     align-items: center;
     flex-grow: 1;
     margin-bottom: 2rem;
+
+    & > .flex-row-between-centered > i {
+      margin-left: 1rem;
+      color: #5b92c5;
+    }
   }
 
   .interview-question__controls {
