@@ -22,10 +22,15 @@ gem 'material-sass', git: 'https://github.com/bricechapuis/material-sass'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'bootstrap',  '~> 4.4.1'
 gem "simple_calendar"
+
+# IDENTIFICATION
 gem 'google-api-client', require: 'google/apis/calendar_v3'
 gem 'oauth2'
 gem "omniauth-rails_csrf_protection"
 gem 'omniauth-google-oauth2'
+gem 'simple_token_authentication', '~> 1.0'
+
+
 gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 gem 'ransack'
 gem 'bullet', group: 'development'

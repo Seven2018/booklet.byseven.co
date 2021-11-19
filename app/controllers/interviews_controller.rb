@@ -38,15 +38,15 @@ class InterviewsController < ApplicationController
     interview_question = InterviewQuestion.find(params[:interview_answer][:interview_question_id])
     interview_answer = InterviewAnswer.find_by(interview_id: params[:interview_answer][:interview_id], interview_question_id: params[:interview_answer][:interview_question_id], user_id: current_user.id)
     if interview_answer.present?
-      interview_answer.update(answer: params[:interview_answer][:answer])
+      interview_answer.update(answer: params[:interview_answer][:answer], comments: params[:interview_answer][:comments])
     else
-      interview_answer = InterviewAnswer.new(interview_id: params[:interview_answer][:interview_id], interview_question_id: params[:interview_answer][:interview_question_id], user_id: current_user.id, answer: params[:interview_answer][:answer])
+      interview_answer = InterviewAnswer.new(interview_id: params[:interview_answer][:interview_id], interview_question_id: params[:interview_answer][:interview_question_id], user_id: current_user.id, answer: params[:interview_answer][:answer], comments: params[:interview_answer][:comments])
     end
+    interview_answer.save
     interview_answers = InterviewAnswer.where(interview_id: params[:interview_answer][:interview_id])
     if interview_answers.count >= interview.interview_form.interview_questions.where.not(question_type: 'separator').where(required: true).count
       interview.update(completed: true) if interview.completed != true
     end
-    interview_answer.save
     return
   end
 

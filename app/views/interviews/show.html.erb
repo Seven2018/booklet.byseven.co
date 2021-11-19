@@ -28,31 +28,16 @@
 <script>
   document.querySelector('body').classList.add('interview-form-body')
 
-  $('.radio-rating').click(function() {
-    var theNumber = $(this).attr('id').slice(-1);
-    $(this).siblings('label').each(function() {
-      var sibNumber = $(this).attr('for').slice(-1);
-      if (sibNumber <= theNumber) {
-        $(this).addClass('on');
-        // this.classList.add('on')
+  function selectRating(element) {
+    fieldset = element.closest('fieldset')
+    fieldset.querySelectorAll('.radio-rating').forEach((radio_button) => {
+      if (parseInt(radio_button.id.split('-')[2],10) <= element.id.split('-')[2]) {
+        radio_button.classList.add('on')
       } else {
-        $(this).removeClass('on');
-        // this.classList.remove('on')
+        radio_button.classList.remove('on')
       }
-    });
-  });
-
-  // function selectRating(element) {
-  //   var theNumber = element.attr('id').slice(-1);
-  //   element.siblings('label').each(function() {
-  //     var sibNumber = element.attr('for').slice(-1);
-  //     if (sibNumber <= theNumber) {
-  //       element.addClass('on');
-  //     } else {
-  //       element.removeClass('on');
-  //     }
-  //   });
-  // }
+    })
+  }
 
   function enableNext(element) {
     button = element.closest('.interview-question__display-container').querySelectorAll('.btn-blue')[1]
@@ -96,6 +81,7 @@
 
   function submitAnswers() {
     document.querySelectorAll('.hidden-submit').forEach((button) => {
+      console.log(button)
       setTimeout(function(){button.click()}, 100)
     })
     setTimeout(function(){document.querySelector('.hidden-link').click()},500)

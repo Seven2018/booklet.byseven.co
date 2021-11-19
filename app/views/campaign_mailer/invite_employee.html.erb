@@ -61,7 +61,7 @@
     <div class="mailer-container">
       <div class="mailer-text">
         <h2>Hello, <%= @employee.firstname %></h2>
-        <p><%= @owner.firstname %> <%= @owner.lastname %> t'invite à remplir ton EFA <a href="localhost:3000/interview/<%= @interview.id %>">ici</a> !</p>
+        <p><%= @owner.firstname %> <%= @owner.lastname %> t'invite à remplir ton EFA <a href="<%= @url %>">ici</a> !</p>
         <p>Il(Elle) te donne rendez vous le <%= @interview.date %> à <%= @interview.starts_at.strftime("%Hh%M") %> pour l'entretien !</p>
         <br>
         <p>Bonne journée :)</p>

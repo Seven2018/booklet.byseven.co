@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  acts_as_token_authenticatable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
@@ -75,6 +76,7 @@ class User < ApplicationRecord
           user = User.new(user_row)
           user.company_id = company_id
           user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
+          user.authentication_token = Base64.encode64(user.email).gsub("\n","") + SecureRandom.hex(32)
           user.save
           raw, token = Devise.token_generator.generate(User, :reset_password_token)
           user.reset_password_token = token

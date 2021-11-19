@@ -1,3 +1,14 @@
+<div class="template-show-infos-themes">
+  <label>Tags</label>
+  <div class="tag-btns">
+    <% template.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
+      <p class="category-tag"><%= tag.tag_name %></p>
+    <% end %>
+    <% if params[:controller] == 'interview_forms' && page == 'edit' %>
+      <a data-toggle='modal' data-target='#addTags' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#3177B7;'></i></a><br>
+    <% end %>
+  </div>
+</div>
 <div class="template-show-infos-delete orange">
   <% unless page == 'edit' %>
     <%= link_to edit_interview_form_path(template) do %>
@@ -9,17 +20,6 @@
       <i class="fas fa-trash-alt"></i>
     <% end %>
   <% end %>
-</div>
-<div class="template-show-infos-themes">
-  <p style='color:#808080;'><b>Tags</b></p>
-  <div class="tag-btns">
-    <% template.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
-      <p class="category-tag"><%= tag.tag_name %></p>
-    <% end %>
-    <% if params[:controller] == 'interview_forms' && page == 'edit' %>
-      <a data-toggle='modal' data-target='#addTags' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#3177B7;'></i></a><br>
-    <% end %>
-  </div>
 </div>
 
 <script>
