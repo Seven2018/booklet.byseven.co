@@ -35,6 +35,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :lastname, null: false, default: ""
       t.date :birth_date
       t.date :hire_date
+      t.string :authentication_token
       t.string :address, null: false, default: ""
       t.string :phone_number, null: false, default: ""
       t.string :social_security, null: false, default: ""

@@ -388,6 +388,7 @@ ActiveRecord::Schema.define(version: 2021_11_04_084032) do
     t.string "lastname", default: "", null: false
     t.date "birth_date"
     t.date "hire_date"
+    t.string "authentication_token"
     t.string "address", default: "", null: false
     t.string "phone_number", default: "", null: false
     t.string "social_security", default: "", null: false

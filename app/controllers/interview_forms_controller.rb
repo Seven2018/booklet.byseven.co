@@ -22,6 +22,7 @@ class InterviewFormsController < ApplicationController
 
   def show
     authorize @template
+    redirect_to edit_interview_form_path(@template)
   end
 
   def edit

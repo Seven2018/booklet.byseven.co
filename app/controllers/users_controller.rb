@@ -13,9 +13,10 @@ class UsersController < ApplicationController
   # Create new User (user_registration, pages/organisation)
   def create
     @user = User.new(user_params)
+    authorize @user
     @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
     @user.company_id = current_user.company_id
-    authorize @user
+    @user.authentication_token = Base64.encode64(user.email).gsub("\n","") + SecureRandom.hex(32)
     tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i} if params[:user][:tags].present?
     if @user.save
       if tags.present?

@@ -1,5 +1,5 @@
 class InterviewForm < ApplicationRecord
-  has_many :interview_questions
+  has_many :interview_questions, dependent: :destroy
   has_many :interviews
   has_many :employees, through: :interviews
   has_many :interview_form_tags, dependent: :destroy

@@ -8,22 +8,21 @@
     </div>
     <% question_type = question.question_type %>
     <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id) %>
-    <% existing_answer.present? ? existing_answer = existing_answer.answer : existing_answer = '' %>
     <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
       <% if question_type == 'open_question' %>
-        <%= f.input :answer, as: :text, label: false, input_html: {value: existing_answer, onkeyup: 'enableNext(this);'} %>
+        <%= f.input :answer, as: :text, label: false, input_html: {value: existing_answer.answer, onkeyup: 'enableNext(this);'} %>
       <% elsif question_type == 'rating' %>
         <fieldset class="rating">
           <% for i in 1..question.options.keys.first.to_i %>
-            <% if existing_answer.to_i == question.options.keys.first.to_i - i + 1 %>
-              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);' checked/><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="Awesome - <%= i %> stars"></label>
+            <% if existing_answer.answer.to_i == question.options.keys.first.to_i - i + 1 %>
+              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);selectRating(this);' checked/><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="Awesome - <%= i %> stars"></label>
             <% else %>
-              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);' /><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="Awesome - <%= i %> stars"></label>
+              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);selectRating(this);' /><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="Awesome - <%= i %> stars"></label>
             <% end %>
           <% end %>
         </fieldset>
         <% if question.allow_comments %>
-          <%= f.input :comments, as: :text %>
+          <%= f.input :comments, as: :text, input_html: {value: existing_answer.comments} %>
         <% end %>
       <% elsif question_type == 'mcq' %>
         <fieldset class="mcq">
