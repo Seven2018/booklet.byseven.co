@@ -52,4 +52,20 @@
       </div>
     <%# end %>
   </body>
+
+  <script>
+    $(document).ready(function(){
+      $('#dropdownMenuButton').click(function(){
+        $(this).toggleClass('open');
+      });
+
+      $(function() {
+        $(document).on("click", function() {
+          $("#dropdownMenuButton").removeClass('open');
+        });
+      });
+    });
+  </script>
+
 </html>
+

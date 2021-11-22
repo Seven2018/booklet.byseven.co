@@ -1,55 +1,55 @@
 <div class="navbar-mobile">
-  <div class="navbar-middle-mobile">
-    <% if user_signed_in? %>
-      <%= link_to dashboard_path, class: 'left-buttons-mobile' do %>
-        <div class="menu-list-mobile">
-          <i class="fas fa-home"></i>
-        </div>
-      <% end %>
-      <%= link_to catalogue_path, class: 'left-buttons-mobile' do %>
-        <div class="menu-list-mobile">
-          <i class="fas fa-chalkboard"></i>
-        </div>
-      <% end %>
-      <%= link_to organisation_path, class: 'left-buttons-mobile' do %>
-        <div class="menu-list-mobile">
-          <i class="fas fa-users"></i>
-        </div>
-      <% end %>
-      <%= link_to book_contents_path, class: 'left-buttons-mobile' do %>
-        <div class="menu-list-mobile">
-          <i class="fas fa-book"></i>
-        </div>
-      <% end %>
-    <% end %>
+  <% if user_signed_in? %>
     <div class="left-buttons-mobile">
       <div class="navbar-top-mobile">
         <a class="  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-      </a>
-    <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-    <div class="dropdown-card">
-      <div class="user-info">
-        <p><%= current_user.fullname%></p>
-        <h6><%= current_user.email%></h6>
-      </div>
-    </div>
-    <%= link_to user_path(current_user) do %>
-      <div class="dropdown-card dropdown-item ">
-        <div class='dropdown-card-text'>
-          <h6>Profile</h6>
+          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+          <div class="dropdown-card">
+            <div class="user-info">
+              <p><%= current_user.fullname%></p>
+              <h6><%= current_user.email%></h6>
+            </div>
+          </div>
+          <%= link_to user_path(current_user) do %>
+            <div class="dropdown-card dropdown-item ">
+              <div class='dropdown-card-text'>
+                <h6>Profile</h6>
+              </div>
+            </div>
+          <% end %>
+          <%= link_to destroy_user_session_path, method: :delete do %>
+            <div class="dropdown-card dropdown-item flex-row-between-centered">
+              <div class='dropdown-card-text'>
+                <h6>Log out</h6>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
-    <% end %>
-    <%= link_to destroy_user_session_path, method: :delete do %>
-      <div class="dropdown-card dropdown-item flex-row-between-centered">
-        <div class='dropdown-card-text'>
-          <h6>Log out</h6>
+    </div>
+
+    <div class="left-buttons-mobile">
+      <div class="dropdown">
+        <div class="dropdown-toggle burger-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="dropdown-menu dropdown-menu-right seven-burger-menu" aria-labelledby="dropdownMenuButton">
+          <div>
+            <%= link_to 'Dashboard', dashboard_path, class: 'dropdown-item' %>
+            <%= link_to 'Catalogue', catalogue_path, class: 'dropdown-item' %>
+            <%= link_to 'Employees', organisation_path, class: 'dropdown-item' %>
+            <%= link_to 'Report', overview_path, class: 'dropdown-item' %>
+            <%= link_to 'Book', book_contents_path, class: 'dropdown-item dropdown-item-orange' %>
+          </div>
         </div>
       </div>
-    <% end %>
     </div>
-  </div>
-    </div>
-  </div>
+  <% end %>
 </div>

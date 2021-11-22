@@ -9,9 +9,13 @@
 }
 
 #dropdown-user-menu {
-  min-width: 24rem;
+  width: fit-content;
   margin-top: 4px;
   right: 0;
+
+  @include from-medium {
+    min-width: 24rem;
+  }
 }
 
 .dropdown-card {

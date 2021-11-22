@@ -1,5 +1,6 @@
 <div class="interview-container">
   <div class="interview-start">
+    <div class='empty-div'></div>
     <div class="interview-title">
       <h1><%= @interview.interview_form.title %></h1>
       <p><%= @interview.interview_form.description %></p>
@@ -40,7 +41,7 @@
   }
 
   function enableNext(element) {
-    button = element.closest('.interview-question__display-container').querySelectorAll('.btn-blue')[1]
+    button = element.closest('.interview-question').querySelectorAll('.btn-blue')[1]
     if (element.value.length > 0 && button != undefined) {
       button.classList.remove('btn-blue-disabled')
       button.disabled = false
