@@ -458,8 +458,13 @@
 
 .campaign-interview-list {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @include from-medium {
+    flex-direction: row;
+  }
 }
 
 .campaign-interview-card {
@@ -468,12 +473,16 @@
   justify-content: space-between;
   align-items: center;
   height: 33rem;
-  width: 35rem;
+  width: 25rem;
   padding: 4rem 2rem;
   margin: 0 3rem;
   margin-top: 5rem;
   border-radius: 0.5rem;;
   background-color: #DEE9F3;
+
+  @include from-medium {
+    width: 35rem;
+  }
 
   p, a, i {
     color: #3177B7;
