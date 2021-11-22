@@ -41,9 +41,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: #EFB08E;
   position: fixed;
-  bottom: 0;
+  top: 0;
   width: 100vw;
   height: 6rem;
   z-index: 100;
@@ -155,7 +154,8 @@
 }
 
 .left-buttons-mobile {
-  flex-grow: 1;
+  height: 6rem;
+  width: 6rem;
   display: flex;
   justify-content: center;
   align-items: center;

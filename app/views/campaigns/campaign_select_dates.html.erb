@@ -81,11 +81,7 @@
     ends_at = new Date('01 Jan 1970 ' + end + ':00 GMT')
     error_message = element.closest('form').querySelector('.date-error')
     if (ends_at < starts_at) {
-      if (element.id == 'interview_starts_at') {
-        element.closest('form').querySelector('#interview_ends_at').value = element.closest('form').querySelector('#interview_starts_at').value
-      } else {
-        element.closest('form').querySelector('#interview_starts_at').value = element.closest('form').querySelector('#interview_ends_at').value
-      }
+      element.closest('form').querySelector('#interview_ends_at').value = element.closest('form').querySelector('#interview_starts_at').value
     }
   }
 
