@@ -747,6 +747,22 @@
   }
 }
 
+.mcq-add-answer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #B1CBE3;
+  width: 12rem;
+  border-radius: 3px;
+
+  :hover {
+    cursor: pointer;
+  }
+}
+.mcd-add-answer-text {
+  color: #3177B7;
+}
+
 .add-video.active, .add-text.active, .add-quiz.active {
   max-height: 100000px;
 }
@@ -899,14 +915,26 @@
   margin-bottom: 1rem;
 
   ul {
-    list-style: disc;
-    padding-left: 2rem;
+    list-style: none;
+    padding-left: 1rem;
+    counter-reset: li;
   }
 
   li {
-    height: 1.6rem;
+    height: 3rem;
     cursor: pointer;
     margin: 0;
+    counter-increment: li;
+  }
+
+  li::before {content: "Option " counter(li);
+    color: black;
+    display: inline-block;
+    margin-right: 1em;
+    margin-right: 0.5em;
+    text-align: right;
+    direction: rtl;
+  
   }
 
   input {
@@ -915,10 +943,11 @@
     border: none;
     border-bottom: 1px solid transparent !important;
     flex-grow: 1;
+    margin-top: -1.2rem;
   }
 
   div {
-    height: 1.6rem;
+    height: 3rem;
   }
 
   ul > div {
