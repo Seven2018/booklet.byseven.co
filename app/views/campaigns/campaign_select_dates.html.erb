@@ -9,7 +9,7 @@
         <%= f.hidden_field :selected_users, value: selected_users %>
         <%= f.hidden_field :selected_owner, value: selected_owner %>
         <%= button_tag type: 'submit' do %>
-            <p>Select a Template</p>
+          <div class="select-step-number-disabled">1</div><p>Select a Template</p>
         <% end %>
       <% end %>
       <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
@@ -18,11 +18,11 @@
         <%= f.hidden_field :selected_users, value: selected_users %>
         <%= f.hidden_field :selected_owner, value: selected_owner %>
         <%= button_tag type: 'submit' do %>
-            <p>Select Employees</p>
+          <div class="select-step-number-disabled">2</div><p>Select Employees</p>
         <% end %>
       <% end %>
       <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
-      <button class='active'><p>Select Dates</p></button>
+      <button class='active'><div class="select-step-number">3</div><p>Select Dates</p></button>
     </div>
     <div>
       <%= link_to '', send_notification_email_path(id: ''), class: 'send-email-button hidden' %>
@@ -34,7 +34,7 @@
         <%= f.hidden_field :selected_owner, value: selected_owner %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
-      <button id='campaign-confirm-button' class='btn-blue' style='margin-top: 30px' data-toggle='modal' data-target='#sendEmail'><p>LAUNCH CAMPAIGN</p> <i class="fas fa-paper-plane no-margin"></i></button>
+      <button id='campaign-confirm-button' class='btn-blue' style='margin-top: 30px' data-toggle='modal' data-target='#sendEmail'><p>LAUNCH INTERVIEW</p> <i class="fas fa-paper-plane no-margin"></i></button>
     </div>
   </div>
   <div class="campaign-dates-container">

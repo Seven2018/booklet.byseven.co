@@ -9,10 +9,7 @@
 <% end %>
 
 <div class="campaigns-container">
-  <div id="main-controls">
-    <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
-  </div>
-  <div id="main-page-title">
+<div id="main-page-title">
     <div class="flex-row-start-centered">
       <%= link_to campaigns_path, class: 'btn-back' do %>
         <i class="fas fa-angle-left"></i>
@@ -29,6 +26,9 @@
     <% else %>
       <h3>Reviews from <strong><%= interviews_for_date.first.date %></strong> to <strong><%= interviews_for_date.last.date %></strong></h3>
     <% end %>
+  </div>
+  <div id="main-controls">
+    <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
   </div>
   <div class="campaign-interview-list">
     <%= render 'campaigns/partials/show_interview_list', campaign: @campaign, interviews: @interviews %>
