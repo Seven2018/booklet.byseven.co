@@ -1,1 +1,6 @@
 document.querySelector('.campaigns-index').innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns) %>';
+if ('<%= @filtered %>' == 'true') {
+  showResetMobile(true)
+} else {
+  showResetMobile(false)
+}

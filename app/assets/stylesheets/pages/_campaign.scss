@@ -8,6 +8,10 @@
   align-items: center;
   margin-top: 3rem;
 
+  // @include from-medium {
+  //   display: flex;
+  // }
+
   button {
     padding: 1rem;
     border-radius: 5px;
@@ -17,7 +21,10 @@
 
     p {
       color: rgba(151, 156, 159, 1);
-      font-size: 2.8rem;
+
+      @include from-medium {
+        font-size: 2.8rem;
+      }
     }
   }
 
@@ -39,6 +46,11 @@
   .arrow-next {
     margin-right: 2rem;
     height: 1.2rem;
+    display: none;
+
+    @include from-medium {
+      display: block;
+    }
   }
 }
 
@@ -71,6 +83,11 @@
   .assign-next{
     display: flex;
     align-items: flex-start;
+    max-width: calc(100vw - 6rem);
+
+    @include from-medium {
+      max-width: none;
+    }
   }
 
   .assign-label {
@@ -91,6 +108,11 @@
     margin-left: 1rem;
     height: 5rem;
     padding-top: 0;
+    display: none;
+
+    @include from-medium {
+      display: flex;
+    }
   }
 
 
@@ -98,6 +120,19 @@
 // INDEX //
 ///////////
 
+.campaigns-period-filter__mobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include from-medium {
+    display: none;
+  }
+
+  p {
+    cursor: pointer;
+  }
+}
 
 .campaigns-index {
   margin-top: 3rem;
@@ -378,15 +413,34 @@
 
   h1 {
     font-weight: bolder;
+    margin-bottom: 2rem;
+
+    @include from-medium {
+      margin-bottom: 0;
+    }
   }
 
   h5 {
-    font-size: 3.2rem;
+    font-size: 2rem;
     font-style: italic;
+
+    @include from-medium {
+      font-size: 3.2rem;
+    }
   }
 
   & > div {
     margin-bottom: 2rem;
+  }
+
+  & > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include from-medium {
+      flex-direction: row;
+      align-items: center;
+    }
   }
 }
 
@@ -409,6 +463,11 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-direction: column;
+
+  @include from-medium {
+    flex-direction: row;
+  }
 
   .campaign-select-date-card__username {
     height: 4rem;
@@ -421,8 +480,20 @@
     border-radius: .5rem;
   }
 
+  form > div {
+    flex-direction: column;
+
+    @include from-medium {
+      flex-direction: row;
+    }
+  }
+
   div {
-    margin: 0;
+    margin-top: 1rem;
+
+    @include from-medium {
+      margin: 0;
+    }
   }
 
   input {
@@ -447,7 +518,11 @@
   }
 
   p {
-    margin: 0 1rem;
+    margin: 1rem 1rem 0 1rem;
+
+    @include from-medium {
+      margin: 0 1rem;
+    }
   }
 }
 

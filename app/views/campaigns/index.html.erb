@@ -2,6 +2,11 @@
   <div id="main-controls">
     <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
   </div>
+  <div class="campaigns-period-filter__mobile">
+    <p onclick='selectPeriodMobile(this);'>Current</p>
+    <p onclick='selectPeriodMobile(this);'>Completed</p>
+    <p onclick='selectPeriodMobile(this);'>All</p>
+  </div>
   <div class="campaigns-index">
     <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
   </div>
@@ -68,5 +73,25 @@
         this.removeEventListener('click', arguments.callee, false)
       }
     });
+  }
+
+  function showResetMobile(boolean) {
+    search_button = document.querySelector('.btn-search--mobile')
+    reset_button = document.querySelector('.btn-reset--mobile')
+    if (boolean) {
+      search_button.classList.add('hidden')
+      reset_button.classList.remove('hidden')
+    } else {
+      search_button.classList.remove('hidden')
+      reset_button.classList.add('hidden')
+    }
+  }
+
+  function selectPeriodMobile(element) {
+    selected = element.innerText
+    select_input = document.querySelector('#search_period')
+    search_button = document.querySelector('.btn-search--mobile')
+    select_input.value = selected
+    search_button.click()
   }
 </script>

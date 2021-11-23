@@ -4,7 +4,7 @@
     <%= f.input :description, label: false, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Write the objective or purpose of the workshop here.' %>
     <%= f.submit '', class: 'hidden-submit hidden' %>
   <% end %>
-  <div class="content-add-right-mobile">
+  <div class="content-add-right--mobile">
     <div style='display: flex; justify-content: space-between; margin-top:20px'>
       <div class="content-show-infos-duration" >
         <p style='color:#808080;'><b>Duration</b><i class="fas fa-info-circle" data-toggle='tooltip' title='Duration is automatically calculated from the duration of each text, video, or quiz element.'></i></p>

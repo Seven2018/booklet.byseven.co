@@ -1,7 +1,7 @@
-<div class="navbar-mobile">
+<div class="navbar--mobile">
   <% if user_signed_in? %>
-    <div class="left-buttons-mobile">
-      <div class="navbar-top-mobile">
+    <div class="left-buttons--mobile">
+      <div class="navbar-top--mobile">
         <a class="  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
         </a>
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="left-buttons-mobile">
+    <div class="left-buttons--mobile">
       <div class="dropdown">
         <div class="dropdown-toggle burger-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span></span>

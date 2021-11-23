@@ -97,6 +97,18 @@
     else return false;
   }
 
+  function showResetMobile(element, boolean) {
+    search_button = element.querySelector('.btn-search--mobile')
+    reset_button = element.querySelector('.btn-reset--mobile')
+    if (boolean) {
+      search_button.classList.add('hidden')
+      reset_button.classList.remove('hidden')
+    } else {
+      search_button.classList.remove('hidden')
+      reset_button.classList.add('hidden')
+    }
+  }
+
   function openForm(element) {
     if (doubleClickGuardian == false) {
       doubleClickGuardian = true

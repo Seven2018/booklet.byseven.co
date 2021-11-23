@@ -3,10 +3,39 @@
 ///////////
 
 .interview-forms-container {
+  min-height: calc(100vh - 12rem);
+  position: relative;
+
+  @include from-medium {
+    min-height: calc(100vh - 7.5rem);
+  }
 
   #main-controls {
     justify-content: space-between;
     align-items: flex-start;
+  }
+
+  .main-controls-create-content--mobile {
+    position: sticky;
+    bottom: 3rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 250;
+
+    @include from-medium {
+      display: none;
+    }
+
+    a {
+      width: 100%;
+    }
+
+    .btn-blue {
+      justify-content: center;
+    }
   }
 }
 
@@ -852,7 +881,7 @@
   }
 }
 
-.template-add-right-mobile {
+.template-add-right--mobile {
   display: inherit;
   @include from-medium-high {
     display: none;
