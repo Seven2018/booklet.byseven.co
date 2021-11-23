@@ -18,7 +18,11 @@
     padding: 1rem;
     border-radius: 5px;
     background-color: transparent;
-    margin-right: 2rem;
+    margin-right: 1rem;
+
+    @include from-medium {
+      margin-right: 2rem;
+    }
     
 
     p {
@@ -39,7 +43,7 @@
   }
 
   .select-step-number {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width : 2.5rem;
@@ -49,10 +53,14 @@
     color: white;
     background-color:#3177B7;
     font-weight: bold;
+
+    @include from-medium {
+      display: flex;
+    }
   }
 
   .select-step-number-disabled {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width : 2.5rem;
@@ -62,6 +70,10 @@
     color: white;
     background-color:rgba(151, 156, 159, 1);
     font-weight: bold;
+
+    @include from-medium {
+      display: flex;
+    }
   }
 
   button.disabled:hover {
@@ -144,11 +156,16 @@
 }
 
 .next-step-info {
+  display: none;
   align-self: center;
   font-size : 1.3rem;
   color: #3177B7;
   margin-left: 1rem;
   text-align: right;
+
+  @include from-medium {
+    display: block;
+  }
 }
 
 
@@ -447,6 +464,17 @@
 // SELECT DATES //
 //////////////////
 
+.campaign-container {
+
+  & > div:first-of-type {
+    flex-direction: column;
+
+    @include from-medium {
+      flex-direction: row;
+    }
+  }
+}
+
 .campaign-dates-container {
   margin: 3rem 2rem;
 }
@@ -501,7 +529,6 @@
 }
 
 .campaign-select-date-card {
-  height: 4rem;
   margin-bottom: 1rem;
   display: flex;
   justify-content: flex-start;
@@ -510,6 +537,7 @@
 
   @include from-medium {
     flex-direction: row;
+    height: 4rem;
   }
 
   .campaign-select-date-card__username {
