@@ -91,10 +91,11 @@
           <div class="dropdown-menu" id='dropdown-icon-menu' aria-labelledby="dropdownMenuApp">
             <div>
               <%= link_to dashboard_path, class: 'menu-icon menu-icon__booklet' do %>
-                <i class="fas fa-graduation-cap"></i>
+                <div class="booklet-icon-container"><i class="fas fa-graduation-cap"></i><p>Training</p></div>
               <% end %>
               <%= link_to campaigns_path, class: 'menu-icon menu-icon__campaign' do %>
-                <i class="far fa-handshake"></i>
+                <div class="interview-icon-container"><i class="far fa-handshake"></i><p>Interview</p></div>
+                
               <% end %>
             </div>
           </div>

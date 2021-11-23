@@ -9,6 +9,8 @@
   margin-top: 3rem;
 
   button {
+    display: flex;
+    align-items: center;
     padding: 1rem;
     border-radius: 5px;
     background-color: transparent;
@@ -27,6 +29,32 @@
     p {
       color: #3177B7;
     }
+  }
+
+  .select-step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width : 2.5rem;
+    height: 2.5rem;
+    margin-right: 1rem;
+    border-radius: 10rem;
+    color: white;
+    background-color:#3177B7;
+    font-weight: bold;
+  }
+
+  .select-step-number-disabled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width : 2.5rem;
+    height: 2.5rem;
+    margin-right: 1rem;
+    border-radius: 10rem;
+    color: white;
+    background-color:rgba(151, 156, 159, 1);
+    font-weight: bold;
   }
 
   button.disabled:hover {
@@ -93,11 +121,24 @@
     padding-top: 0;
   }
 
+  .next-step-info {
+    align-self: center;
+    font-size : 1.3rem;
+    color: #3177B7;
+    margin-left: 1rem;
+    text-align: right;
+  }
+
 
 ///////////
 // INDEX //
 ///////////
 
+.select-template-indication {
+  font-size : 1.5rem;
+  font-weight: bold;
+  color:rgba(151, 156, 159, 1)
+}
 
 .campaigns-index {
   margin-top: 3rem;

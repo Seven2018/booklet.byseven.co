@@ -1,6 +1,6 @@
 <div class="campaign-container">
   <div class="campaign-controls">
-    <button class='active'><p>Select a Template</p></button>
+    <button class='active'><div class="select-step-number">1</div><p>Select a Template</p></button>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
     <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
     <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
@@ -11,7 +11,7 @@
       <%= f.hidden_field :selected_owner, value: selected_owner %>
       <% params[:campaign].present? && params[:campaign][:selected_template].present? ? disabled = '' : disabled = 'disabled' %>
       <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
-          <p>Select Employees</p>
+        <div class="select-step-number-disabled">2</div><p>Select Employees</p>
       <% end %>
     <% end %>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
@@ -20,7 +20,7 @@
       <%= f.hidden_field :selected_users, value: selected_users %>
       <%= f.hidden_field :selected_owner, value: selected_owner %>
       <%= button_tag type: 'submit', class: 'disabled', disabled: true, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
-        <p>Select Dates</p>
+        <div class="select-step-number-disabled">3</div><p>Select Dates</p>
       <% end %>
     <% end %>
   </div>
@@ -28,7 +28,7 @@
       <div id="main-controls">
         <%= render 'shared/searchbar_campaigns', path: campaign_select_template_path, reset_path: campaign_select_template_path(reset: "") %>
           <div class="assign-next">
-            <label class="assign-label" for="owner-select">Assigned to</label>
+            <label class="assign-label" for="owner-select">Manager :</label>
             <select name="owner" id="owner-select" onchange='selectOwner();'>
               <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
                 <% if user == current_user %>
@@ -41,9 +41,11 @@
             <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
               <%= image_tag('Arrow-right.svg', :class => "arrow-right") %>
             </button>
+            <div class="next-step-info">Next : Select <br/> Employee</div>
           </div>
       </div>
     </div>
+    <div class="select-template-indication">Click on a card to select template</div>
   <div class="interview-forms-index">
     <%= render 'interview_forms/partials/campaign_select_template_list', templates: @templates, selected_template: @selected_template %>
   </div>

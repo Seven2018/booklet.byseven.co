@@ -10,18 +10,18 @@
       <%= f.hidden_field :selected_users, value: selected_users %>
       <%= f.hidden_field :selected_owner, value: selected_owner %>
       <%= button_tag type: 'submit' do %>
-          <p>Select a Template</p>
+        <div class="select-step-number-disabled">1</div><p>Select a Template</p>
       <% end %>
     <% end %>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
-    <button class='active'><p>Select Employees</p></button>
+    <button class='active'><div class="select-step-number">2</div><p>Select Employees</p></button>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
     <%= simple_form_for :campaign, url: campaign_select_dates_path, method: :get do |f| %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
       <%= f.hidden_field :selected_owner, value: selected_owner %>
       <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
-        <p>Select Dates</p>
+        <div class="select-step-number-disabled">3</div><p>Select Dates</p>
       <% end %>
     <% end %>
   </div>
@@ -29,7 +29,7 @@
   <div id="main-controls">
     <%= render 'shared/searchbar_campaigns', path: campaign_select_users_path, reset_path: campaign_select_users_path(reset: "") %>
       <div class="assign-next">
-        <label class="assign-label-disabled" for="owner-select">Assigned to</label>
+        <label class="assign-label-disabled" for="owner-select">Manager :</label>
       <select name="owner" id="owner-select-disabled" disabled>
         <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
           <% if user.id == selected_owner.to_i %>
@@ -42,6 +42,7 @@
       <button class='campaign__next-button-arrow <%= disabled %>' onclick='nextPage();'>
       <%= image_tag('Arrow-right.svg', :class => "arrow-right") %>
     </button>
+    <div class="next-step-info">Next : Select <br/> Dates</div>
   </div>
 </div>
 </div>
