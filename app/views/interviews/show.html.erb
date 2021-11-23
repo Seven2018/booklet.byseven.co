@@ -81,10 +81,11 @@
   }
 
   function submitAnswers() {
+    i = 1
     document.querySelectorAll('.hidden-submit').forEach((button) => {
-      console.log(button)
       setTimeout(function(){button.click()}, 100)
+      i += 1
     })
-    setTimeout(function(){document.querySelector('.hidden-link').click()},500)
+    setTimeout(function(){document.querySelector('.hidden-link').click()},(i+1)*100)
   }
 </script>
