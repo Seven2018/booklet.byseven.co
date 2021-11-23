@@ -1,6 +1,6 @@
 all_container = document.querySelector('.book-users-all')
 filtered_container = document.querySelector('.book-users-filtered')
-if ("<%= @filter %>" == 'true') {
+if ("<%= @filtered %>" == 'true') {
   all_container.classList.add('hidden')
   filtered_container.classList.remove('hidden')
   filtered_container.innerHTML = '<%= j render("pages/partials/book_user_index", users: @users, selected_users: @selected_users, selected: "false") %>';
@@ -9,8 +9,11 @@ if ("<%= @filter %>" == 'true') {
       checkbox.closest('.book-users-card').classList.add('selected')
     }
   })
+  showResetMobile(true)
 } else {
   all_container.classList.remove('hidden')
   filtered_container.classList.add('hidden')
+  showResetMobile(false)
 }
+
 checkSelectedAll()

@@ -115,73 +115,79 @@ body.wait *, body.wait
 }
 
 #main-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 0;
+
+  @include from-medium {
+    height: 11rem;
+    flex-direction: row;
+    padding: 3rem 2rem 3rem 0;
+  }
+
+  .fas {
+    bottom: 1.7rem;
+
+    .fa-filter{
+      height: 5rem;
+    }
+  }
+
+  .searchbar {
+    height: 5rem;
+  }
+
+  .btn-white {
+    height: 5rem;
+  }
+
+  #dropdownMenu {
+    width: 5rem;
+  }
+
+  #search_name{
+    height: 5rem;
+  }
+
+  .btn-search {
+    margin-left: 2rem;
+    width: 10rem;
+    height: 5rem;
+  }
+
+  .btn-reset {
+    width: 10rem;
+    height: 5rem;
+  }
+
+  .search-text {
+    padding-left: 3rem;
+  }
+
+  .arrow-right {
+    height: 5rem;
+  }
+
+  .simple_form {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    padding: 3rem 2rem 3rem 0;
-    .fas {
-      bottom: 1.7rem;
+  }
 
-      .fa-filter{
-        height: 5rem;
-      }
-    }
-    .searchbar {
-      height: 5rem;
-    }
+  .search_title {
+    display: flex;
+    flex-direction: row;
+  }
 
-    .btn-white {
-      height: 5rem;
-    }
+  .search_period {
+    width: 15rem;
+    margin-left: 2rem;
+  }
 
-    #dropdownMenu {
-      width: 5rem;
-    }
-
-    #search_name{
-      height: 5rem;
-      width: 30rem;
-    }
-
-    .btn-search {
-      margin-left: 2rem;
-      width: 10rem;
-      height: 5rem;
-    }
-
-    .btn-reset {
-      width: 10rem;
-      height: 5rem;
-    }
-    
-    .search-text {
-      padding-left: 3rem;
-    }
-
-    .arrow-right {
-      height: 5rem;
-    }
-
-    .simple_form {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .search_title {
-      display: flex;
-      flex-direction: row;
-      width: 30rem;
-    }
-
-    .search_period {
-      width: 15rem;
-      margin-left: 2rem;
-    }
-      
-      .form-control {
-        height: 5rem;
-      }
-    }
+  .form-control {
+    height: 5rem;
+  }
 
   h1 {
     font-weight: 700;
@@ -191,17 +197,21 @@ body.wait *, body.wait
     margin-bottom: 0;
     margin-right: 0rem;
   }
+}
 
-  .main-controls-buttons {
+.main-controls-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    & > div {
-      margin-left: 1rem;
-    }
-
-    .dropdown-menu {
-      min-width: 15rem;
-    }
+  & > div {
+    margin-left: 1rem;
   }
+
+  .dropdown-menu {
+    min-width: 15rem;
+  }
+}
 
 #main-page-title {
   min-height: 4rem;

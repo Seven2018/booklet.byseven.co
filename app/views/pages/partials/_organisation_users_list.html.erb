@@ -24,17 +24,20 @@
       <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
         <%= f.text_field :name, placeholder: 'Search by name', label: false, autocomplete: 'off' %>
         <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
+        <button type='submit' class="btn-search btn-search--mobile" onclick="document.querySelector('body').classList.add('wait');" >
+          <i class="fas fa-search"></i>
+        </button>
       <% end %>
 
       <button class='btn-reset' onclick='clearSearch(this)'>Reset</button>
-
+      <button class='btn-reset--mobile btn-reset-blue hidden' onclick='clearSearch(this)'><i class="fas fa-redo-alt"></i></button>
     <% end %>
     <div class="btn-white" onclick='openFilter();'>
       <i class="fas fa-filter"></i>
       <p>Filter</p>
     </div>
   </div>
-  <div class="main-controls-buttons flex-row-between-centered">
+  <div class="main-controls-buttons">
     <div class="dropdown">
       <div class="btn-white btn-icon dropdown-toggle" id="dropdownMenu" data-toggle="dropdown">
         <i class="fas fa-ellipsis-h"></i>

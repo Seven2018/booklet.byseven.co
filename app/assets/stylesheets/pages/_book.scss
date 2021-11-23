@@ -217,12 +217,21 @@
 .book-users-lists__container {
   width: 100%;
   display: flex;
+  flex-direction: column-reverse;
   justify-content: space-between;
   align-items: flex-start;
+
+  @include from-medium {
+    flex-direction: row;
+  }
 }
 
 .book-users-lists {
-  width: 63%;
+  width: 100%;
+
+  @include from-medium {
+    width: 63%;
+  }
 }
 
 .book-users-all, .book-users-filtered {
@@ -234,8 +243,13 @@
 }
 
 .book-users-selected {
-  width: 35%;
-  border: 0.8px solid #E7E7E7;;
+  width: 100%;
+  border: 0.8px solid #E7E7E7;
+  margin-bottom: 5rem;
+
+  @include from-medium {
+    width: 35%;
+  }
 }
 
 .book-users-headers {

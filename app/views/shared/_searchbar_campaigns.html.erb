@@ -5,8 +5,12 @@
       <%= f.input :title, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
       <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current' %>
       <%= f.submit 'Search', class: 'btn-search' %>
+      <button type='submit' class="btn-search btn-search--mobile">
+        <i class="fas fa-search"></i>
+      </button>
     <% end %>
     <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
+    <button class='btn-reset--mobile btn-reset-blue hidden' onclick='resetAllFilter(this);'><i class="fas fa-redo-alt"></i></button>
   <% elsif params[:controller] == 'campaigns' && params[:action] == 'show' %>
     <%= simple_form_for :search, url: campaign_path(@campaign), method: :get, remote: true do |f| %>
       <%= f.input :user_id, as: :select, label: false, collection: User.joins(interviews: :campaign).where(campaigns: {id: @campaign.id}).distinct.order(lastname: :asc).map{|x| [x.id, x.fullname]}, label_method: :second, value_method: :first, include_blank: false %>
@@ -18,15 +22,23 @@
       <%= f.input :title, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
       <%= f.hidden_field :campaign_selected_template, value: @selected_template %>
       <%= f.submit 'Search', class: 'btn-search' %>
+      <button type='submit' class="btn-search btn-search--mobile">
+        <i class="fas fa-search"></i>
+      </button>
     <% end %>
     <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
+    <button class='btn-reset--mobile btn-reset-blue hidden' onclick='resetAllFilter(this);'><i class="fas fa-redo-alt"></i></button>
   <% elsif params[:action] == 'campaign_select_users' %>
     <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
     <%= simple_form_for :search, url: path, method: :get, remote: true do |f| %>
       <%= f.input :name, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
       <%= f.hidden_field :campaign_selected_users, value: @selected_users %>
       <%= f.submit 'Search', class: 'btn-search' %>
+      <button type='submit' class="btn-search btn-search--mobile">
+        <i class="fas fa-search"></i>
+      </button>
     <% end %>
     <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
+    <button class='btn-reset--mobile btn-reset-blue hidden' onclick='resetAllFilter(this);'><i class="fas fa-redo-alt"></i></button>
   <% end %>
 </div>

@@ -18,6 +18,9 @@ class CampaignsController < ApplicationController
     end
     if params[:search].present? && !(params[:search][:title] == '')
       @campaigns = @campaigns.where(interview_form_id: InterviewForm.where(company_id: current_user.company_id).search_templates(params[:search][:title]).map(&:id))
+      @filtered = 'true'
+    else
+      @filtered = 'false'
     end
     respond_to do |format|
       format.html
@@ -31,6 +34,9 @@ class CampaignsController < ApplicationController
     @templates = InterviewForm.where(company_id: current_user.company_id)
     if params[:search].present? && !params[:search][:title].blank?
       @templates = @templates.search_templates(params[:search][:title]).order(title: :asc)
+      @filtered = 'true'
+    else
+      @filtered = 'false'
     end
     params[:search].present? ? @selected_template = params[:search][:campaign_selected_template] : campaign_data
   end
@@ -41,9 +47,9 @@ class CampaignsController < ApplicationController
     @users = User.where(company_id: current_user.company_id)
     if params[:search].present? && !params[:search][:name].blank?
       @users = @users.search_by_name("#{params[:search][:name]}")
-      @filter = 'true'
+      @filtered = 'true'
     else
-      @filter = 'false'
+      @filtered = 'false'
     end
     @users = @users.order(lastname: :asc).page params[:page]
     params[:search].present? ? @selected_users = params[:search][:campaign_selected_users] : campaign_data

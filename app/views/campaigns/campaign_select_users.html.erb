@@ -186,6 +186,18 @@
     document.querySelector('.book-users-headers-selected').innerHTML = '<p>' + user_selected_list.length + ' SELECTED EMPLOYEES</p>'
   }
 
+  function showResetMobile(boolean) {
+    search_button = document.querySelector('.btn-search--mobile')
+    reset_button = document.querySelector('.btn-reset--mobile')
+    if (boolean) {
+      search_button.classList.add('hidden')
+      reset_button.classList.remove('hidden')
+    } else {
+      search_button.classList.remove('hidden')
+      reset_button.classList.add('hidden')
+    }
+  }
+
   function resetAllFilter(element, recommendation = false) {
     searchbar = element.closest('.searchbar')
     searchbar.querySelectorAll('input').forEach((input) => {

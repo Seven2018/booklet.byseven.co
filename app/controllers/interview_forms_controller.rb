@@ -6,6 +6,9 @@ class InterviewFormsController < ApplicationController
     @templates = @templates.where(company_id: current_user.company_id)
     if params[:search].present? && !params[:search][:title].blank?
       @templates = @templates.search_templates(params[:search][:title]).order(title: :asc)
+      @filtered = 'true'
+    else
+      @filtered = 'false'
     end
     respond_to do |format|
       format.html

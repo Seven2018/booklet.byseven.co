@@ -27,22 +27,22 @@
     <div class="campaign-searchbar-right">
       <div id="main-controls">
         <%= render 'shared/searchbar_campaigns', path: campaign_select_template_path, reset_path: campaign_select_template_path(reset: "") %>
-          <div class="assign-next">
-            <label class="assign-label" for="owner-select">Manager :</label>
-            <select name="owner" id="owner-select" onchange='selectOwner();'>
-              <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
-                <% if user == current_user %>
-                  <option value="<%= user.id %>" selected><%= user.fullname %></option>
-                  <% else %>
-                    <option value="<%= user.id %>"><%= user.fullname %></option>
-                  <% end %>
+        <div class="assign-next">
+          <label class="assign-label" for="owner-select">Manager :</label>
+          <select name="owner" id="owner-select" onchange='selectOwner();'>
+            <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
+              <% if user == current_user %>
+                <option value="<%= user.id %>" selected><%= user.fullname %></option>
+                <% else %>
+                  <option value="<%= user.id %>"><%= user.fullname %></option>
                 <% end %>
-              </select>
-            <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
-              <%= image_tag('Arrow-right.svg', :class => "arrow-right") %>
-            </button>
-            <div class="next-step-info">Next : Select <br/> Employee</div>
-          </div>
+              <% end %>
+            </select>
+          <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
+            <%= image_tag('Arrow-right.svg', :class => "arrow-right") %>
+          </button>
+          <div class="next-step-info">Next : Select <br/> Employee</div>
+        </div>
       </div>
     </div>
     <div class="select-template-indication">Click on a card to select template</div>
@@ -118,6 +118,18 @@
       select.selectedIndex = 0
     })
     searchbar.querySelector('.btn-search').click()
+  }
+
+  function showResetMobile(boolean) {
+    search_button = document.querySelector('.btn-search--mobile')
+    reset_button = document.querySelector('.btn-reset--mobile')
+    if (boolean) {
+      search_button.classList.add('hidden')
+      reset_button.classList.remove('hidden')
+    } else {
+      search_button.classList.remove('hidden')
+      reset_button.classList.add('hidden')
+    }
   }
 
   function selectOwner() {

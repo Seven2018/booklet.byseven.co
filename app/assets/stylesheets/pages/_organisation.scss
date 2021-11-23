@@ -23,6 +23,14 @@
   align-items: center;
   border-bottom: 1px solid rgba(0,0,0,0.1);
 
+  .headers-div:first-child, .user-index-info:first-child {
+    min-width: 0;
+
+    @include from-medium {
+      min-width: 18rem;
+    }
+  }
+
   p {
     font-size: 1.6rem;
   }
@@ -77,10 +85,6 @@
     &:hover {
       opacity: 0.5;
     }
-  }
-
-  &:first-of-type, &:last-of-type {
-    // min-width: 7rem;
   }
 
   .headers-div-order {
@@ -569,6 +573,23 @@
 
   .form-group {
     margin-bottom: 0px !important;
+  }
+
+  .btn-white {
+    display: none;
+
+    @include from-medium {
+      display: flex;
+    }
+  }
+
+}
+
+.main-controls-buttons {
+  display: none;
+
+  @include from-medium {
+    display: flex;
   }
 }
 

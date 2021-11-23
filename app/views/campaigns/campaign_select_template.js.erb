@@ -12,3 +12,9 @@ if (document.querySelectorAll('input:checked').length != 0) {
     }
   })
 }
+
+if ('<%= @filtered %>' == 'true') {
+  showResetMobile(true)
+} else {
+  showResetMobile(false)
+}

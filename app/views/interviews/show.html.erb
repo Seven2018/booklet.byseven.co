@@ -5,7 +5,7 @@
       <h1><%= @interview.interview_form.title %></h1>
       <p><%= @interview.interview_form.description %></p>
     </div>
-    <button class="btn-blue btn-blue-start btn-blue-start-mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
+    <button class="btn-blue btn-blue-start btn-blue-start--mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
   </div>
   <% questions = @interview.interview_form.interview_questions.order(position: :asc) %>
   <% j = 1 %>

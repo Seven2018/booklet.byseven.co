@@ -2,10 +2,12 @@
 if ("<%= @unfiltered %>" == 'true') {
   document.querySelector('.organisation-main-container-unfiltered').classList.remove('hidden')
   document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
+  showResetMobile(document.querySelector('.organisation-main-container-filtered'), false)
 } else if ("<%= @unfiltered %>" == 'false') {
   document.querySelector('.organisation-main-container-unfiltered').classList.add('hidden')
   document.querySelector('.organisation-main-container-filtered').classList.remove('hidden')
   document.querySelector('.organisation-main-container-filtered').innerHTML = '<%= j render("pages/partials/organisation_users_list", users: @users.uniq, unfiltered: @unfiltered) %>';
+  showResetMobile(document.querySelector('.organisation-main-container-filtered'), true)
 }
 if ("<%= @selected_users.count %>" !== '0') {
   document.querySelector('.organisation-main-container:not(.hidden)').querySelector('#manage-users-button').classList.add('flashing_button')
@@ -26,3 +28,4 @@ if ("<%= @search_name.present? %>" == 'true') {
   document.querySelector('.organisation-main-container-filtered').querySelector('#search_name').value = "<%= @search_name %>"
   // document.querySelector('.organisation-main-container-filtered').querySelector('#organisation-controls__user-search-clear').classList.remove('hidden')
 }
+
