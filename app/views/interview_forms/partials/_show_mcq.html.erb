@@ -5,7 +5,7 @@
       <% question.options.sort_by {|k, v| v}.each do |option| %>
         <div onclick="openEditOptionForm(this);">
           <% if page == 'edit' %>
-            <li style='color: #888888; data-toggle='tooltip' title='Click to edit'><%= option[0] %></li>
+          <li style='color: #888888; data-toggle='tooltip' title='Click to edit'><%= option[0] %></li>
           <% else %>
             <li style='color: #888888;cursor: default;'><%= option[0] %></li>
           <% end %>

@@ -34,7 +34,7 @@
           <% if read_only %>
             <p><%= current_comments %></p>
           <% else %>
-            <%= f.input :comments, as: :text, input_html: {value: current_comments} %>
+            <%= f.input :comments, as: :text, input_html: {value: current_comments}, required: false %>
           <% end %>
         <% end %>
       <% elsif question_type == 'mcq' %>

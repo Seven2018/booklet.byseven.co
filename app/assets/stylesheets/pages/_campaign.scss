@@ -19,6 +19,7 @@
     border-radius: 5px;
     background-color: transparent;
     margin-right: 1rem;
+    border: 0.5px solid transparent;
 
     @include from-medium {
       margin-right: 2rem;
@@ -41,6 +42,15 @@
       color: #3177B7;
     }
   }
+
+  button.hilight-next-step {
+    -webkit-animation: 1s linear 0s infinite alternate hilight;
+    animation: 1s linear 0s infinite alternate hilight;
+  }
+
+  @-webkit-keyframes hilight { from { border-color: transparent; border: 0.5px solid transparent;} to { border-color: #3177B7; border: 0.5px solid #3177B7;}  }
+        @keyframes hilight { from { border-color: transparent; border: 0.5px solid transparent;} to { border-color: #3177B7; border: 0.5px solid #3177B7;}  }
+
 
   .select-step-number {
     display: none;
@@ -186,7 +196,6 @@
   p {
     cursor: pointer;
   }
-}
 
   p:first-of-type {
     font-weight: bolder;
@@ -245,6 +254,10 @@
       font-weight: bolder;
     }
   }
+}
+
+.campaign-card:hover .tooltiptext {
+  visibility: visible;
 }
 
 .campaign-card--completed {
