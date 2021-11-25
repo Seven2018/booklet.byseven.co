@@ -757,6 +757,24 @@
   border-radius: 5px;
 }
 
+.plus-icon-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rem;
+  height: 4rem;
+  width: 4rem;
+  margin-left: -1rem;
+  margin-right: 1rem;
+  background-color: #3177B7;
+  box-shadow: 0px 3px 7px #999999;
+
+    i {
+      color: white;
+      margin: 0;
+    }
+}
+
 .add-separator, .add-open_question, .add-rating, .add-mcq {
   position: relative;
   overflow:hidden;
@@ -987,6 +1005,10 @@
   .mcq-input-div {
     flex-grow: 1;
   }
+}
+
+.fa-trash {
+  margin-left: 1rem;
 }
 
 // LINK TAGS //

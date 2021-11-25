@@ -18,7 +18,7 @@
             <%= render 'interview_forms/partials/show_questions_index', template: @template, page: 'edit' %>
           </div>
           <div class="template-show-lines-control-btn" onclick="lineMenu();">
-            <div class='add-template-btn' id='icon-edit'><i class="fas fa-plus"></i><p>Add Modules</p></div>
+            <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
             <div class='close-template-btn'><i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#3177B7'></i></div>
             <div class="template-show-lines-controls" style='display:none;'>
               <a class="template-show-lines-controls-block" onclick="addLine('separator');">
@@ -47,7 +47,7 @@
             <% end %>
             <%= link_to '', interview_forms_path, class: 'hidden-link hidden' %>
             <div class="btn-blue" onclick='saveAndConfirm();'>
-              <p>Confirm</p>
+              <p>Save Template</p>
             </div>
           </div>
         </div>

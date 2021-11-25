@@ -82,74 +82,74 @@
   }
 }
 
-  #search_campaigns_employee {
-    margin-right: 1rem;
-  }
+#search_campaigns_employee {
+  margin-right: 1rem;
+}
 
-  #owner-select {
-    color:#3177B7;
-    padding: 1rem;
-    background-color: white;
-    border: 2px solid #3177B7;
-    border-radius: 5px 5px 5px 5px;
-    height: 5rem;
-    outline: none;
-    margin-left: 1.5rem;
-  }
+#owner-select {
+  color:#3177B7;
+  padding: 1rem;
+  background-color: white;
+  border: 2px solid #3177B7;
+  border-radius: 5px 5px 5px 5px;
+  height: 5rem;
+  outline: none;
+  margin-left: 1.5rem;
+}
 
-  #owner-select-disabled {
-    color:#979C9F;
-    padding: 1rem;
-    background-color: white;
-    border: 1px solid #979C9F;
-    border-radius: 5px 5px 5px 5px;
-    height: 5rem;
-    outline: none;
-    margin-left: 1.5rem;
-  }
+#owner-select-disabled {
+  color:#979C9F;
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid #979C9F;
+  border-radius: 5px 5px 5px 5px;
+  height: 5rem;
+  outline: none;
+  margin-left: 1.5rem;
+}
 
-  .assign-next{
+.assign-next{
+  display: flex;
+  align-items: flex-start;
+  max-width: calc(100vw - 6rem);
+
+  @include from-medium {
+    max-width: none;
+  }
+}
+
+.assign-label {
+  color: #3177B7;
+  font-size: 1.5rem;
+  align-self: center;
+  margin-bottom: 0rem;
+}
+
+.assign-label-disabled{
+  color: #6e6e6e;
+  font-size: 1.5rem;
+  align-self: center;
+  margin-bottom: 0rem;
+}
+
+.campaign__next-button-arrow {
+  margin-left: 1rem;
+  height: 5rem;
+  padding-top: 0;
+  display: none;
+
+  @include from-medium {
     display: flex;
-    align-items: flex-start;
-    max-width: calc(100vw - 6rem);
-
-    @include from-medium {
-      max-width: none;
-    }
   }
+}
 
-  .assign-label {
-    color: #3177B7;
-    font-size: 1.5rem;
-    align-self: center;
-    margin-bottom: 0rem;
-  }
-
-  .assign-label-disabled{
-    color: #6e6e6e;
-    font-size: 1.5rem;
-    align-self: center;
-    margin-bottom: 0rem;
-  }
-
-  .campaign__next-button-arrow {
-    margin-left: 1rem;
-    height: 5rem;
-    padding-top: 0;
-    display: none;
-
-    @include from-medium {
-      display: flex;
-    }
-  }
-
-  .next-step-info {
-    align-self: center;
-    font-size : 1.3rem;
-    color: #3177B7;
-    margin-left: 1rem;
-    text-align: right;
-  }
+.next-step-info {
+  align-self: center;
+  font-size : 1.3rem;
+  color: #3177B7;
+  margin-left: 1rem;
+  text-align: right;
+}
 
 
 ///////////
@@ -169,6 +169,7 @@
   p {
     cursor: pointer;
   }
+}
 
 .select-template-indication {
   font-size : 1.5rem;

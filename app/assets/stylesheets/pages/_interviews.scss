@@ -18,7 +18,7 @@
   align-items: center;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  height: calc(100vh - 12rem);
+  height: 85vh;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -177,12 +177,12 @@
 
 .rating > input:checked ~ label, /* show gold star when clicked */
 .rating:not(:checked) > label:hover, /* hover current star */
-.rating:not(:checked) > label:hover ~ label { color: #5b92c5;  } /* hover previous stars in list */
+.rating:not(:checked) > label:hover ~ label { color: #5b92c5; cursor: pointer } /* hover previous stars in list */
 
 .rating > input:checked + label:hover, /* hover current star when changing rating */
 .rating > input:checked ~ label:hover,
 .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating > input:checked ~ label:hover ~ label { color: #5b92c5; opacity: .7 }
+.rating > input:checked ~ label:hover ~ label { color: #5b92c5; opacity: .7}
 
 
 ////////////////
