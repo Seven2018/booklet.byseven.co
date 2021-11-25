@@ -7,7 +7,9 @@
     <% if employee_interview.completed %>
       <i class="fas fa-check-circle"></i>
       <p class="campaign-interview-card__status">Review completed</p>
-      <p class="campaign-interview-card__comment"><%= employee_interview.employee.fullname %> has completed his scorecard, you will see the result on the CROSSED REVIEW</p>
+      <%= link_to interview_path(employee_interview), class: 'campaign-interview-card__button' do %>
+        <p>View</p>
+      <% end %>
     <% else %>
       <i class="far fa-times-circle"></i>
       <p class="campaign-interview-card__status">Review not completed</p>

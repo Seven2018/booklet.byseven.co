@@ -807,7 +807,7 @@
 .line-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 30px;
 
   .line-controls, .line-controls-new {
@@ -840,11 +840,30 @@
   .line-title {
     display: flex;
     align-items: baseline;
+    cursor: pointer;
+
     p, i {
       color: #3177B7;
     }
+
+    p {
+      min-height: 1.8rem;
+      max-height: 1.8rem;
+      width: auto;
+      max-width: 12rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      @include from-medium {
+        width: 90%;
+        max-width: 90%;
+      }
+    }
+
     i {
-      margin-right: 15px;
+      margin-right: 1.5rem;
+
       &:hover {
         cursor: pointer;
         opacity: 80%;

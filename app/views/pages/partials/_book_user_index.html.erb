@@ -1,6 +1,10 @@
 <% users.each do |user| %>
   <% selected_users = users.map(&:id).join(',') if selected == 'true' %>
-  <div class="book-users-card user-index-card" id="user-<%= user.id %>">
+  <% if selected == 'false' %>
+    <div class="book-users-card user-index-card" id="user-<%= user.id %>">
+  <% else %>
+    <div class="book-users-card user-index-card-selected" id="user-<%= user.id %>">
+  <% end %>
     <% fullname, email = user.fullname, user.email %>
     <% if selected_users.split(',').include?(user.id.to_s) %>
       <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>" checked>

@@ -18,7 +18,8 @@
   align-items: center;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  height: calc(100vh - 12rem);
+  height: calc(100vh - 14.5rem);
+  position: relative;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -140,6 +141,73 @@
   }
 }
 
+.interview-progress-bar-container {
+  width: 100vw;
+  height: 5rem;
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: flex-start;
+  border: .2rem solid #3177B7;
+  border-radius: .5rem;
+
+  @include from-medium {
+    max-width: 50rem;
+  }
+
+  .interview-progress-bar {
+    height: 4.6rem;
+    background-color: #3177B7;
+    width: 0%;
+  }
+
+  .interview-progress-bar__white {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 0;
+    height: 4.6rem;
+    overflow: hidden;
+    z-index: 20;
+    position: absolute;
+    left: calc(50% - 5rem);
+
+    p {
+      color: white;
+      font-weight: bolder;
+      min-width: 10rem;
+      text-align: center;
+    }
+  }
+
+  .interview-progress-bar__blue {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 10rem;
+    height: 4.6rem;
+    z-index: 10;
+    position: absolute;
+    right: calc(50% - 5rem);
+
+    p {
+      color: #3177B7;
+      font-weight: bolder;
+      min-width: 10rem;
+      text-align: center;
+    }
+  }
+}
+
+.interview-progress-bar {
+  height: 100%;
+  width: 0;
+}
+
 
 ////////////////////
 // RATINGS SYSTEM //
@@ -176,13 +244,13 @@
 /***** CSS Magic to Highlight Stars on Hover *****/
 
 .rating > input:checked ~ label, /* show gold star when clicked */
-.rating:not(:checked) > label:hover, /* hover current star */
-.rating:not(:checked) > label:hover ~ label { color: #5b92c5;  } /* hover previous stars in list */
+.rating:not(:checked, .read_only) > label:hover, /* hover current star */
+.rating:not(:checked, .read_only) > label:hover ~ label { color: #5b92c5;  } /* hover previous stars in list */
 
-.rating > input:checked + label:hover, /* hover current star when changing rating */
-.rating > input:checked ~ label:hover,
-.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating > input:checked ~ label:hover ~ label { color: #5b92c5; opacity: .7 }
+.rating:not(.read_only) > input:checked + label:hover, /* hover current star when changing rating */
+.rating:not(.read_only) > input:checked ~ label:hover,
+.rating:not(.read_only) > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating:not(.read_only) > input:checked ~ label:hover ~ label { color: #5b92c5; opacity: .7 }
 
 
 ////////////////
