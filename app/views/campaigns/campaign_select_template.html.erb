@@ -30,7 +30,7 @@
         <div class="assign-next">
           <label class="assign-label" for="owner-select">Manager :</label>
           <select name="owner" id="owner-select" onchange='selectOwner();'>
-            <% User.where(company_id: current_user.company_id, access_level: ['HR', 'Manager']).order(lastname: :asc).each do |user| %>
+            <% User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).order(lastname: :asc).each do |user| %>
               <% if user == current_user %>
                 <option value="<%= user.id %>" selected><%= user.fullname %></option>
                 <% else %>

@@ -1,0 +1,71 @@
+<div class="campaigns-report-container">
+  <div class="campaigns-report-managers">
+    <%= render 'campaigns/partials/campaigns_report_managers', campaigns: @campaigns, managers: @managers %>
+  </div>
+  <div class="campaigns-report-index">
+    <h1>All Managers</h1>
+    <div class="campaigns-report-list">
+      <div class="campaigns-report-list__controls">
+        <%= simple_form_for :select_period, url: campaigns_report_path, method: :get do |f| %>
+          <%= f.input :start, label: 'From', input_html: {class: 'datepicker'}, placeholder: 'Select date' %>
+          <%= f.input :end, label: 'To', input_html: {class: 'datepicker'}, placeholder: 'Select date' %>
+          <button type='submit'>
+            <i class="fas fa-search"></i>
+          </button>
+        <% end %>
+      </div>
+      <div class="row">
+        <% @campaigns.each do |campaign| %>
+
+        <% completion = (campaign.interviews.where(completed: true).count.fdiv(campaign.interviews.count) * 100).round %>
+        <% ratings = campaign.interviews.where(label: 'Manager').map{|x| x.interview_answers.joins(:interview_question).where(interview_questions: {question_type: 'rating'}).map{|y| y.answer.to_i.fdiv(y.interview_question.options.first.first.to_i)*10 if y.answer.present?}}.flatten %>
+
+          <div class="col-lg-4 col-md-6 col-xs-12">
+            <div class="campaigns-report-campaign-card">
+              <div class="campaigns-report-campaign-card__top">
+                <div class="campaigns-report-campaign-card__top-progression"><p><%= completion %>%</p></div>
+                <div class="campaigns-report-campaign-card__top-title">
+                  <p><%= campaign.title %></p>
+                  <p><%= campaign.owner.fullname %></p>
+                </div>
+                <div class="campaigns-report-campaign-card__top-menu"></div>
+              </div>
+              <div class="campaigns-report-campaign-card__bottom">
+                <div class="campaigns-report-campaign-card__bottom-item">
+                  <p>Employees</p>
+                  <i class="fas fa-user"></i>
+                  <p><%= campaign.interviews.where(label: 'Crossed').count %></p>
+                </div>
+                <div class="campaigns-report-campaign-card__bottom-item">
+                  <p>Rating</p>
+                  <i class="fas fa-star"></i>
+                  <p><%= ratings.present? ? ratings.sum.fdiv(ratings.count) : 'N/A' %></p>
+                </div>
+                <div class="campaigns-report-campaign-card__bottom-item">
+                  <p>Questions</p>
+                  <i class="fas fa-question-circle"></i>
+                  <p><%= campaign.interview_form.interview_questions.where.not(question_type: 'separator').count %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  function selectAllManagers(element) {
+    element.classList.add('active')
+    search_manager_input = document.querySelector('#search_manager_name')
+    search_manager_button = search_manager_input.closest('form').querySelector('.hidden-submit')
+    search_manager_input.value = ''
+    search_manager_button.click()
+  }
+</script>

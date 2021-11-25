@@ -186,7 +186,6 @@
   p {
     cursor: pointer;
   }
-}
 
   p:first-of-type {
     font-weight: bolder;
@@ -698,5 +697,222 @@
 
   button {
     margin-left: 2rem;
+  }
+}
+
+
+////////////
+// REPORT //
+////////////
+
+.campaigns-report-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.campaigns-report-managers {
+  width: 35rem;
+  margin: 5rem 5rem 0 0;
+  padding: 2rem;
+  position: relative;
+
+  h1 {
+    margin-bottom: 5rem;
+  }
+
+  .search_manager {
+    margin-bottom: 2rem;
+
+    input {
+      height: 5rem;
+      width: 31rem;
+      color: #C4C4C4 !important;
+      padding: 0 6rem 0 3.5rem;
+      font-style: normal;
+      border-radius: 4px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+
+  .fa-search {
+    position: absolute;
+    top: 12rem;
+    left: 3.2rem;
+    z-index: 150;
+    color: #C4C4C4;
+  }
+}
+
+.campaigns-report-index {
+  flex-grow: 1;
+  margin-top: 5rem;
+   padding: 2rem;
+
+  h1 {
+    margin-bottom: 5rem;
+  }
+}
+
+.campaigns-report-manager-card {
+  width: 31rem;
+  height: 8rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 2rem;
+  cursor: pointer;
+
+  img {
+    margin: 0 2rem;
+  }
+
+  p {
+    font-weight: bold;
+  }
+
+  p:first-of-type {
+    margin-bottom: .5rem;
+  }
+
+  p:last-of-type {
+    color: rgba(128, 128, 128, 1);
+  }
+
+  &.active {
+    background-color: #3177B7;
+
+    p {
+      color: white;
+    }
+  }
+}
+
+.campaigns-report-list__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  form {
+    display: inherit;
+    align-items: flex-end;
+
+    input {
+      height: 5rem;
+      width: 12rem;
+      text-align: center;
+      background-color: white !important;
+      border-radius: 4px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    div {
+      margin: 0 2rem 0 0;
+    }
+
+    button {
+      height: 5rem;
+      width: 5rem;
+      display: inherit;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(49, 119, 183, 0.5);
+      border-radius: 2.5rem;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+
+      &.active {
+        background-color: #3177B7;
+      }
+    }
+
+    i {
+      color: white;
+    }
+  }
+}
+
+.campaigns-report-campaign-card__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.campaigns-report-campaign-card {
+  min-width: 30rem;
+  max-width: 32rem;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+
+  .campaigns-report-campaign-card__top {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding: 1rem;
+
+    .campaigns-report-campaign-card__top-progression {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 5rem;
+      width: 5rem;
+      border-radius: 2.5rem;
+      margin-right: 1rem;
+      background-color: rgba(49, 119, 183, 0.35);
+
+      p {
+        font-weight: bolder;
+        color: #3177B7;
+      }
+    }
+
+    .campaigns-report-campaign-card__top-title {
+
+      p {
+        font-weight: bolder;
+      }
+
+      p:first-of-type {
+         margin-bottom: .5rem;
+      }
+
+      p:last-of-type {
+        color: rgba(196, 196, 196, 1);
+        font-size: 1.4rem;
+      }
+    }
+
+    .campaigns-report-campaign-card__top-menu {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  .campaigns-report-campaign-card__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    .campaigns-report-campaign-card__bottom-item {
+      text-align: center;
+      padding: .5rem;
+      background-color: #F3F3F3;
+
+      p, i {
+        margin-bottom: .5rem;
+        color: #3177B7;
+      }
+
+      p:last-of-type {
+        margin: 0;
+        font-weight: bolder;
+      }
+    }
   }
 }

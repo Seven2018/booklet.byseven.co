@@ -28,6 +28,23 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def campaigns_report
+    @campaigns = policy_scope(Campaign)
+    @campaigns = @campaigns.where(company_id: current_user.company_id)
+    authorize @campaigns
+    if params[:search_manager].present? && params[:search_manager][:name] != ''
+      @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).search_by_name("#{params[:search_manager][:name]}").order(lastname: :asc)
+      @filter_manager = 'true'
+    else
+      @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).order(lastname: :asc)
+      @filter_manager = 'false'
+    end
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
   def campaign_select_template
     @campaign = Campaign.new
     authorize @campaign

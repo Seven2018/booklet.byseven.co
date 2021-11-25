@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   # CAMPAIGNS
   resources :campaigns
+  get :campaigns_report, controller: :campaigns
   get :campaign_select_template, controller: :campaigns
   get :campaign_select_users, controller: :campaigns
   get :campaign_select_dates, controller: :campaigns

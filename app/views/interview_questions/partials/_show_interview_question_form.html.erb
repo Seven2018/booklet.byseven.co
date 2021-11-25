@@ -34,7 +34,7 @@
           <% if read_only %>
             <p><%= current_comments %></p>
           <% else %>
-            <%= f.input :comments, as: :text, input_html: {value: current_comments} %>
+            <%= f.input :comments, as: :text, input_html: {value: current_comments}, required: false %>
           <% end %>
         <% end %>
       <% elsif question_type == 'mcq' %>
@@ -42,9 +42,9 @@
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label">
               <% if b.text == current_answer %>
-                <%= b.radio_button class: 'rad-input', checked: 'checked', onchange: 'enableNext(this);', disabled: !read_only %>
+                <%= b.radio_button class: 'rad-input', checked: 'checked', onchange: 'enableNext(this);', disabled: read_only %>
               <% else %>
-                <%= b.radio_button class: 'rad-input' , onchange: 'enableNext(this);', disabled: !read_only %>
+                <%= b.radio_button class: 'rad-input' , onchange: 'enableNext(this);', disabled: read_only %>
               <% end %>
               <div class="rad-design"></div>
               <div class="rad-text"><%= b.text %></div>

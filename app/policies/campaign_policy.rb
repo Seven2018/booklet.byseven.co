@@ -13,6 +13,10 @@ class CampaignPolicy < ApplicationPolicy
     check_access
   end
 
+  def campaigns_report?
+    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
+  end
+
   def campaign_select_template?
     check_access_manager
   end
