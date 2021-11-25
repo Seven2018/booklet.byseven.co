@@ -245,7 +245,7 @@
 
 .rating > input:checked ~ label, /* show gold star when clicked */
 .rating:not(:checked, .read_only) > label:hover, /* hover current star */
-.rating:not(:checked, .read_only) > label:hover ~ label { color: #5b92c5;  } /* hover previous stars in list */
+.rating:not(:checked, .read_only) > label:hover ~ label { color: #5b92c5; cursor: pointer } /* hover previous stars in list */
 
 .rating:not(.read_only) > input:checked + label:hover, /* hover current star when changing rating */
 .rating:not(.read_only) > input:checked ~ label:hover,
