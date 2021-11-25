@@ -74,14 +74,14 @@
         <%= render 'pages/partials/book_user_index', users: @users, selected_users: @selected_users, selected: 'false', filtered: 'all' %>
       </div>
       <div class="book-users-list book-users-filtered hidden">
-        <%= render 'pages/partials/book_user_index', users: [], selected_users: @selected_users, selected: 'false', filtered: 'filtered' %>
+        <%= render 'pages/partials/book_user_index', users: @searched_users, selected_users: @selected_users, selected: 'false', filtered: 'filtered' %>
       </div>
     </div>
     <div class="book-users-selected">
       <div class="book-users-headers-selected">
         <p>SELECTED EMPLOYEES</p>
       </div>
-      <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')), selected: 'true', filtered: 'selected' %>
+      <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')).order(lastname: :asc), selected: 'true', filtered: 'selected' %>
       <div class="book-users-card book-users-card-template hidden">
         <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
         <input type="checkbox" class="book-users-checkbox hidden" checked=''>
@@ -96,6 +96,12 @@
 <!---------------->
 <!-- JAVASCRIPT -->
 <!---------------->
+
+<script>
+  $(document).ready(function () {
+    $(".book-users-list").floatingScroll();
+  });
+</script>
 
 <script>
 
@@ -253,17 +259,10 @@
   })
 
   window.addEventListener('scroll', function(e) {
-    uniq_array = []
-    document.querySelector('.book-users-selected').querySelectorAll('.book-users-card').forEach((card) => {
-      uniq_array.push(card.id)
-    })
     document.querySelector('.book-users-all').querySelectorAll('.book-users-card').forEach((card) => {
-      if (uniq_array.includes(card.id)) {
-        if (countElements(uniq_array, card.id) > 1) {
-          card.remove()
-        } else {
-          card.classList.add('selected')
-        }
+      if (document.querySelector('.book-users-selected').querySelector('#' + card.id) != undefined) {
+        card.classList.add('selected')
+        card.querySelector(('input[type="checkbox"]')).checked = true
       }
     })
   })

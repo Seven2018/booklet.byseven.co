@@ -15,28 +15,36 @@
     <% end %>
     <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
       <% if question_type == 'open_question' %>
-        <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer, onkeyup: 'enableNext(this);'} %>
+        <% if read_only %>
+          <p><%= current_answer %></p>
+        <% else %>
+          <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer, onkeyup: 'enableNext(this);'} %>
+        <% end %>
       <% elsif question_type == 'rating' %>
-        <fieldset class="rating">
+        <fieldset class="rating<%= ' read_only' if read_only %>">
           <% for i in 1..question.options.keys.first.to_i %>
             <% if current_answer.to_i == question.options.keys.first.to_i - i + 1 %>
-              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);selectRating(this);' checked/><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="Awesome - <%= i %> stars"><%= question.options.keys.first.to_i - i + 1 %></label>
+              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);selectRating(this);' checked <%= 'disabled' if read_only %>/><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars"><%= question.options.keys.first.to_i - i + 1 %></label>
             <% else %>
-              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);selectRating(this);' /><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="Awesome - <%= i %> stars"><%= question.options.keys.first.to_i - i + 1 %></label>
+              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);selectRating(this);' <%= 'disabled' if read_only %>/><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars"><%= question.options.keys.first.to_i - i + 1 %></label>
             <% end %>
           <% end %>
         </fieldset>
         <% if question.allow_comments %>
-          <%= f.input :comments, as: :text, input_html: {value: current_comments} %>
+          <% if read_only %>
+            <p><%= current_comments %></p>
+          <% else %>
+            <%= f.input :comments, as: :text, input_html: {value: current_comments} %>
+          <% end %>
         <% end %>
       <% elsif question_type == 'mcq' %>
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label">
-              <% if b.text == existing_answer %>
-                <%= b.radio_button class: 'rad-input', checked: 'checked', onchange: 'enableNext(this);' %>
+              <% if b.text == current_answer %>
+                <%= b.radio_button class: 'rad-input', checked: 'checked', onchange: 'enableNext(this);', disabled: !read_only %>
               <% else %>
-                <%= b.radio_button class: 'rad-input' , onchange: 'enableNext(this);'%>
+                <%= b.radio_button class: 'rad-input' , onchange: 'enableNext(this);', disabled: !read_only %>
               <% end %>
               <div class="rad-design"></div>
               <div class="rad-text"><%= b.text %></div>
@@ -51,16 +59,27 @@
   </div>
   <div class="interview-question__controls">
     <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
-    <% if j == questions.where.not(question_type: 'separator').count && question.required %>
-      <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
+    <% if j == questions.where.not(question_type: 'separator').count && read_only %>
+      <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
+        <button class="btn-blue"><p>Exit</p></button>
+      <% end %>
+    <% elsif j == questions.where.not(question_type: 'separator').count && question.required %>
+      <% if @interview.employee == current_user %>
+        <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>
+      <% else %>
+        <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
+      <% end %>
       <button class="btn-blue btn-blue-disabled" onclick='submitAnswers()' disabled><p>Submit Form</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count %>
-      <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
+      <% if @interview.employee == current_user %>
+        <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>
+      <% else %>
+        <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
+      <% end %>
       <button class="btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
-    <% elsif question.required && InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id).nil? %>
+    <% elsif question.required && InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id).nil? && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
     <% else %>
       <button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button>
     <% end %>
   </div>
-

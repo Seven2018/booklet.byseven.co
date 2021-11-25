@@ -88,6 +88,12 @@
   }
 
   function selectPeriodMobile(element) {
+    element.parentNode.querySelectorAll('p').forEach((p) => {
+      p.style.color = 'black'
+      p.style.fontWeight = 'normal'
+    })
+    element.style.color = '#3177B7'
+    element.style.fontWeight = 'bolder'
     selected = element.innerText
     select_input = document.querySelector('#search_period')
     search_button = document.querySelector('.btn-search--mobile')

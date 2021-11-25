@@ -186,6 +186,11 @@
   p {
     cursor: pointer;
   }
+
+  p:first-of-type {
+    font-weight: bolder;
+    color: #3177B7;
+  }
 }
 
 .select-template-indication {
@@ -438,6 +443,7 @@
   margin: 2rem 2rem 0 2rem !important;
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+  cursor: pointer;
 }
 
 .interview-form-card__select-button {
@@ -464,14 +470,18 @@
 // SELECT DATES //
 //////////////////
 
-.campaign-container {
+.campaign-controls__dates {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
 
-  & > div:first-of-type {
-    flex-direction: column;
+  @include from-medium {
+    flex-direction: row;
+  }
 
-    @include from-medium {
-      flex-direction: row;
-    }
+  .campaign-controls {
+    margin: 0;
   }
 }
 

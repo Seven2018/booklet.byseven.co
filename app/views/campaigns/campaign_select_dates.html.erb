@@ -1,5 +1,5 @@
 <div class="campaign-container">
-  <div class="flex-row-between-centered">
+  <div class="campaign-controls__dates">
     <div class="campaign-controls">
       <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
       <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
@@ -24,7 +24,7 @@
       <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
       <button class='active'><div class="select-step-number">3</div><p>Select Dates</p></button>
     </div>
-    <div>
+    <div class='campaign-launch'>
       <%= link_to '', send_notification_email_path(id: ''), class: 'send-email-button hidden' %>
       <%= link_to '', campaigns_path, class: 'confirm-button hidden' %>
       <% selected_template = InterviewForm.find(@selected_template) %>
