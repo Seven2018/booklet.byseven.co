@@ -97,8 +97,8 @@
         <div class="flex-row-between-centered">
           <label>Question</label>
           <div class="required-question-switch-container">
-            <label>Not Required</label>
-            <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+            <label>Required</label>
+            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
           </div>
         </div>
         <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
@@ -124,8 +124,8 @@
         <div class="flex-row-between-centered">
           <label>Question</label>
           <div class="required-question-switch-container">
-            <label>Not Required</label>
-            <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+            <label>Required</label>
+            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
           </div>
         </div>
         <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
@@ -158,8 +158,8 @@
         <div class="flex-row-between-centered">
           <label>Question</label>
           <div class="required-question-switch-container">
-            <label>Not Required</label>
-            <label class="required-question-switch"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);'/>    <div></div></label>
+            <label>Required</label>
+            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
           </div>
         </div>
         <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
@@ -332,7 +332,7 @@
     if (element.checked == true) {
       setTimeout(function(){switch_button.classList.add('switch_checked');container.querySelector('label').innerText = 'Required'}, 100)
     } else {
-      setTimeout(function(){switch_button.classList.remove('switch_checked');container.querySelector('label').innerText = 'Not Required'}, 100)
+      setTimeout(function(){switch_button.classList.remove('switch_checked');container.querySelector('label').innerText = 'Required'}, 100)
     }
     if (hidden_submit != undefined) {
       hidden_submit.click();
@@ -365,38 +365,46 @@
   function toggleMod(element) {
     caret = element.querySelector('i')
     angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
     caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode;
+    block = element.parentNode.parentNode
+    p = element.querySelector('p')
+    block_width = block.offsetWidth
     if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '100000px';
-      block.classList.add('active');
+      block.style.maxHeight = '100000px'
+      p.style.maxHeight = '100000px'
+      p.style.whiteSpace = 'normal'
+      block.style.width = block_width.toString() + 'px'
+      block.classList.add('active')
     } else if (block.style.maxHeight == '100000px') {
-      block.style.maxHeight = '61px';
-      block.classList.remove('active');
+      block.style.maxHeight = '61px'
+      p.style.maxHeight = '18px'
+      p.style.whiteSpace = 'nowrap'
+      block.style.width = 'auto'
+      block.classList.remove('active')
     }
   }
 
   function toggleTagCategoryDropdown(element) {
     caret = element.querySelector('i')
     angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
     caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode;
+    block = element.parentNode.parentNode
     if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '10000px';
-      block.classList.add('active');
+      block.style.maxHeight = '10000px'
+      block.classList.add('active')
     } else {
-      block.style.maxHeight = '60px';
-      block.classList.remove('active');
+      block.style.maxHeight = '60px'
+      block.classList.remove('active')
     }
   }
 

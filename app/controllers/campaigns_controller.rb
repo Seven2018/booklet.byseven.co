@@ -46,9 +46,10 @@ class CampaignsController < ApplicationController
     authorize @campaign
     @users = User.where(company_id: current_user.company_id)
     if params[:search].present? && !params[:search][:name].blank?
-      @users = @users.search_by_name("#{params[:search][:name]}")
+      @searched_users = @users.search_by_name("#{params[:search][:name]}")
       @filtered = 'true'
     else
+      @searched_users = []
       @filtered = 'false'
     end
     @users = @users.order(lastname: :asc).page params[:page]

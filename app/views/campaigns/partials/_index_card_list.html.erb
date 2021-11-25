@@ -16,12 +16,13 @@
       <% interviews_for_date = campaign.interviews.order(date: :asc) %>
       <% completion = (campaign.interviews.where(completed: true).count.fdiv(campaign.interviews.count) * 100).round %>
     <% end %>
+    <% employee_list = campaign.employees.distinct.order(lastname: :asc).map{|x| "#{x.lastname} #{x.firstname}"}.join("\n") %>
 
     <div id='campaign-card-<%= campaign.id %>' class="campaign-col col-xl-3 col-lg-4 col-sm-6 col-xs-12">
       <% if completion == 100 %>
-      <div class="campaign-card campaign-card--completed">
+      <div class="campaign-card campaign-card--completed" title='<%= employee_list %>'>
       <% else %>
-      <div class="campaign-card">
+      <div class="campaign-card" title='<%= employee_list %>'>
       <% end %>
         <%= link_to '', campaign_path(campaign), class: 'stretched-link' %>
         <div class="campaign-card__header">

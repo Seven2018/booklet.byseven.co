@@ -15,10 +15,15 @@
         <% previous_separators = questions.where(question_type: 'separator').where('position <= ?', j) %>
         <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
       </div>
-      <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j %>
+      <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j, read_only: (@interview.label == 'Employee' && @interview.employee != current_user) %>
     </div>
     <% j += 1 %>
   <% end %>
+</div>
+<div class="interview-progress-bar-container">
+  <div class="interview-progress-bar"></div>
+  <div class='interview-progress-bar__white'><p>0%</p></div>
+  <div class='interview-progress-bar__blue'><p>0%</p></div>
 </div>
 
 
@@ -64,6 +69,7 @@
       previous_question.classList.add('hidden')
       question.classList.remove('hidden')
     }
+    updateProgressionBar()
   }
 
   function previousQuestion(element) {
@@ -78,13 +84,39 @@
       previous_question.classList.remove('hidden')
       question.classList.add('hidden')
     }
+    updateProgressionBar()
   }
 
   function submitAnswers() {
+    i = 1
     document.querySelectorAll('.hidden-submit').forEach((button) => {
-      console.log(button)
       setTimeout(function(){button.click()}, 100)
+      i += 1
     })
-    setTimeout(function(){document.querySelector('.hidden-link').click()},500)
+    setTimeout(function(){document.querySelector('.hidden-link').click()},(i+1)*200)
+  }
+
+  function updateProgressionBar() {
+    container = document.querySelector('.interview-progress-bar-container')
+    center_blue = document.querySelector('.interview-progress-bar__blue')
+    center_white = document.querySelector('.interview-progress-bar__white')
+    if (document.querySelector('.interview-question:not(.hidden)') != null) {
+      result = (parseInt(document.querySelector('.interview-question:not(.hidden)').id.split('-')[1],10) / document.querySelectorAll('.interview-question').length * 100).toString() + '%'
+      center_white.querySelector('p').innerText = result
+      center_blue.querySelector('p').innerText = result
+    } else {
+      center_white.querySelector('p').innerText = '0%'
+      center_blue.querySelector('p').innerText = '0%'
+    }
+    progression = document.querySelector('.interview-progress-bar__white').querySelector('p').innerText
+    filling_bar = document.querySelector('.interview-progress-bar')
+    filling_bar.style.width = progression
+    if (filling_bar.offsetWidth == 0) {
+      center_white.style.width = '0px'
+      center_blue.style.width = '100px'
+    } else if (filling_bar.offsetWidth > (container.offsetWidth / 2) - 25) {
+      center_white.style.width = parseInt(progression.split('%'),10).toString() + 'px'
+      center_blue.style.width = (100 - parseInt(progression.split('%')[0],10)).toString() + 'px'
+    }
   }
 </script>
