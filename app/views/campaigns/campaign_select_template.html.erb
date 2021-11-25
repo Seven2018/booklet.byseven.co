@@ -85,6 +85,7 @@
         search_storage.value = selected_id
         next_button.disabled = false
         next_button.classList.remove('disabled')
+        next_button.classList.add('hilight-next-step')
         next_button.setAttribute('title', '')
         next_button_arrow.classList.remove('disabled')
         next_button_arrow.setAttribute('title', '')
@@ -94,6 +95,7 @@
         card_container = checkbox.closest('.template-card-container')
         card_container.classList.remove('disabled','selected')
         card_container.querySelector('.interview-form-card__select-button').querySelector('p').innerText = 'SELECT'
+        next_button.classList.remove('hilight-next-step')
       })
       selected_storage.value = ''
       search_storage.value = ''

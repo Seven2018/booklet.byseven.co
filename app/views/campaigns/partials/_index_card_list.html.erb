@@ -3,7 +3,7 @@
   <% ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) ? employee = true : employee = false %>
 
   <% if campaigns.empty? || campaigns.joins(:interviews).where(interviews: {completed: true}).nil? %>
-    <p class="empty-card-list">No campaign for the moment, click on 'Template' to start.</p>
+    <p class="empty-card-list">No interview for the moment, click on 'Template' to start.</p>
   <% end %>
 
   <% campaigns.each do |campaign| %>
@@ -51,6 +51,15 @@
           <% campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
             <p class="campaign-card__tag-pill"><%= tag.tag_name %></p>
           <% end %>
+          <% if completion == 100 %>
+          <div class="campaign-card-summary__assignment manager-completed">
+            Manager : <%= campaign.owner.fullname %>
+          </div>
+        <% else %>
+           <div class="campaign-card-summary__assignment">
+            Manager : <%= campaign.owner.fullname %>
+          </div>
+        <% end %>
         </div>
         <div class="campaign-card-summary">
           <% if ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) %>
@@ -74,15 +83,6 @@
                 <h3 class="h3"><%= completion %>%</h3>
                 <span>Completed</span>
               </div>
-              <% if completion == 100 %>
-                <div class="campaign-card-summary__assignment manager-completed">
-                  Manager : <%= campaign.owner.fullname %>
-                </div>
-              <% else %>
-                 <div class="campaign-card-summary__assignment">
-                  Manager : <%= campaign.owner.fullname %>
-                </div>
-              <% end %>
               </div>
           <% end %>
         </div>

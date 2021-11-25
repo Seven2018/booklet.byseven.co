@@ -139,8 +139,10 @@
       new_card_infos.appendChild(new_info_name)
       new_card_infos.appendChild(new_info_email)
       document.querySelector('.book-users-selected').appendChild(new_card)
+      next_button.classList.add('hilight-next-step')
     } else {
       selected_container.querySelector('#' + user_card.id).remove();
+      next_button.classList.remove('hilight-next-step')
     }
     selected_container.querySelectorAll('.selected:not(.book-users-card-template)').forEach((card) => {
       selected_array.push(card.id.split('-')[1])
