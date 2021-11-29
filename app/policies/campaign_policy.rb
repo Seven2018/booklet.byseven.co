@@ -17,6 +17,14 @@ class CampaignPolicy < ApplicationPolicy
     ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 
+  def campaigns_report_filter_campaigns?
+    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
+  end
+
+  def campaign_report_info?
+    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
+  end
+
   def campaign_select_template?
     check_access_manager
   end

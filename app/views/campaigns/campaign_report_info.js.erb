@@ -1,0 +1,20 @@
+document.querySelector('#summary-<%= @campaign.id %>').innerHTML = '<%= j render("campaigns/partials/campaign_report_info", campaign: @campaign) %>'
+summary_container = document.querySelector('#summary-<%= @campaign.id %>')
+summary_arrow_1 = summary_container.querySelector('.campaigns-report-campaign-card__show-summary-arrow')
+summary_arrow_2 = summary_container.querySelector('.campaigns-report-campaign-card__show-summary-arrow-prime')
+row = document.querySelector('.row')
+console.log(row.offsetLeft)
+console.log(document.querySelector('#campaign-<%= @campaign.id %>').parentNode.offsetLeft)
+summary_container.style.position = 'absolute'
+summary_container.style.left = (row.offsetLeft - document.querySelector('#campaign-<%= @campaign.id %>').parentNode.offsetLeft + 15).toString() + 'px'
+summary_arrow_1.style.left = (document.querySelector('#campaign-<%= @campaign.id %>').parentNode.offsetLeft - row.offsetLeft + 150).toString() + 'px'
+summary_arrow_2.style.left = (document.querySelector('#campaign-<%= @campaign.id %>').parentNode.offsetLeft - row.offsetLeft + 151).toString() + 'px'
+if (summary_container.parentNode.classList.contains('hidden')) {
+  summary_container.parentNode.classList.remove('hidden')
+} else {
+  summary_container.parentNode.classList.add('hidden')
+}
+document.querySelectorAll('.campaigns-report-campaign-card__show-summary-container').forEach((container) => {
+  if (container != summary_container.parentNode)
+  container.classList.add('hidden')
+})

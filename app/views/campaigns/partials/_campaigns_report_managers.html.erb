@@ -1,23 +1,18 @@
 <h1>Reports</h1>
-<i class="fas fa-search"></i>
-<%= simple_form_for :search_manager, url: campaigns_report_path, method: :get, remote: true do |f| %>
-  <%= f.input :name, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
-  <%= f.submit '', class: 'hidden-submit hidden' %>
-<% end %>
 <div>
-  <div class="campaigns-report-manager-card active" onclick='selectAllManagers(this)'>
+  <div class='campaigns-report-manager-card <%= "active" if selected_manager_id.empty? %>' onclick='setActiveManager(this)'>
     <img src="<%= asset_url('empty-avatar.png', type: :image) %>" class='avatar-sm'>
     <div class="campaigns-report-manager-card-name">
       <p>All Managers</p>
-      <p>Interviews : <%= campaigns.map{|x| x.interviews.where(label: 'Crossed').count}.sum %></p>
+      <p>Interviews : <%= all_campaigns.map{|x| x.interviews.where(label: 'Crossed').count}.sum %></p>
     </div>
   </div>
   <% managers.each do |manager| %>
-    <div class="campaigns-report-manager-card">
+    <div class="campaigns-report-manager-card <%= "active" if selected_manager_id == manager.id.to_s %>" id='manager-<%= manager.id %>' onclick='setActiveManager(this)'>
       <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
       <div class="campaigns-report-manager-card-name">
         <p><%= manager.fullname %></p>
-        <p>Interviews : <%= @campaigns.where(owner: manager).map{|x| x.interviews.where(label: 'Crossed').count}.sum %></p>
+        <p>Interviews : <%= all_campaigns.where(owner: manager).map{|x| x.interviews.where(label: 'Crossed').count}.sum %></p>
       </div>
     </div>
   <% end %>
