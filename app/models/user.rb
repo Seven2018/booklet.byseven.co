@@ -14,8 +14,9 @@ class User < ApplicationRecord
   has_many :mods, through: :user_forms
   has_many :user_interests, dependent: :destroy
   has_many :interests, through: :user_interests, source: :content
-  has_many :interviews, foreign_key: 'employee_id'
   has_many :campaigns, through: :interviews
+  has_many :interviews, foreign_key: 'employee_id'
+  has_many :interview_answers
   # validates :firstname, :lastname, :email, :access_level, presence: true
   validates :email, presence: true
   paginates_per 50

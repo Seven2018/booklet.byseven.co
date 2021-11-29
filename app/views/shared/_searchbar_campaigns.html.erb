@@ -13,8 +13,13 @@
     <button class='btn-reset--mobile btn-reset-blue hidden' onclick='resetAllFilter(this);'><i class="fas fa-redo-alt"></i></button>
   <% elsif params[:controller] == 'campaigns' && params[:action] == 'show' %>
     <%= simple_form_for :search, url: campaign_path(@campaign), method: :get, remote: true do |f| %>
-      <%= f.input :user_id, as: :select, label: false, collection: User.joins(interviews: :campaign).where(campaigns: {id: @campaign.id}).distinct.order(lastname: :asc).map{|x| [x.id, x.fullname]}, label_method: :second, value_method: :first, include_blank: false, selected: params[:employee_id].to_i %>
-      <%= f.submit 'Select', class: 'btn-search' %>
+      <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+        <%= f.input :user_id, as: :select, label: false, collection: User.joins(interviews: :campaign).where(campaigns: {id: @campaign.id}).distinct.order(lastname: :asc).map{|x| [x.id, x.fullname]}, label_method: :second, value_method: :first, include_blank: false, selected: params[:employee_id].to_i %>
+        <%= f.submit 'Select', class: 'btn-search' %>
+      <% else %>
+        <%= f.input :user_id, as: :select, label: false, collection: [[current_user.id, current_user.fullname]], label_method: :second, value_method: :first, include_blank: false, input_html: {class: 'hidden'} %>
+        <%= f.submit 'Select', class: 'btn-search hidden' %>
+      <% end %>
     <% end %>
   <% elsif params[:action] == 'campaign_select_template' || (params[:controller] == 'interview_forms' && params[:action] == 'index') %>
     <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>

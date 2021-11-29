@@ -44,6 +44,18 @@
                 <% end %>
               <% end %>
             </li>
+            <li>
+              <% if params[:action] == 'campaigns_report' %>
+                <%= link_to campaigns_report_path, class: 'left-buttons' do %>
+                  <div class="left-menu-title " style='color: #3177B7;'><h4>Report</h4></div>
+                <% end %>
+                  <div class="isactive"></div>
+              <% else %>
+                <%= link_to campaigns_report_path, class: 'left-buttons' do %>
+                  <div class="left-menu-title"><h4>Report</h4></div>
+                <% end %>
+              <% end %>
+            </li>
           <% end %>
         <% end %>
       </ul>

@@ -1,0 +1,2 @@
+document.querySelector('.campaigns-report-managers').innerHTML = '<%= j render("campaigns/partials/campaigns_report_managers", all_campaigns: @all_campaigns, campaigns: @campaigns, managers: @managers, selected_manager_id: @selected_manager_id) %>';
+document.querySelector('.campaigns-report-list__index').innerHTML = '<%= j render("campaigns/partials/campaigns_report_index", campaigns: @campaigns) %>';

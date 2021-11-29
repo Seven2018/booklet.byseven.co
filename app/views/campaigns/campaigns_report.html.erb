@@ -1,0 +1,122 @@
+<div class="campaigns-report-container">
+  <div class="campaigns-report-managers">
+    <%= render 'campaigns/partials/campaigns_report_managers', all_campaigns: @all_campaigns, campaigns: @campaigns, managers: @managers, selected_manager_id: '' %>
+  </div>
+  <div class="campaigns-report-index">
+    <h1>All Managers</h1>
+    <div class="campaigns-report-list">
+      <div class="campaigns-report-list__controls">
+        <%= simple_form_for :select_period, url: campaigns_report_path, method: :get, remote: true do |f| %>
+          <div class="select_period_search_manager">
+            <i class="fas fa-search"></i>
+            <%= f.input :name, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
+          </div>
+          <div class='flex-row-between-end'>
+            <%= f.input :start, label: 'From', input_html: {class: 'datepicker', value: Date.today, onchange: 'selectManagerbyDate(this)'}, placeholder: 'Select date' %>
+            <%= f.input :end, label: 'To', input_html: {class: 'datepicker', value: Date.today.end_of_year, onchange: 'selectManagerbyDate(this)'}, placeholder: 'Select date' %>
+            <%= f.hidden_field :manager_id %>
+            <button type='submit'>
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <div class="campaigns-report-list__controls-infos">
+            <%= f.collection_radio_buttons(:campaigns, [['all', 'all'], ['ongoing', 'ongoing'], ['completed', 'completed']], :first, :last) do |b| %>
+              <% if b.text == 'all' %>
+                <div class="campaigns-report-list__controls-info">
+                  <%= b.radio_button checked: 'checked', onclick: 'autoSubmit(this)', class: 'hidden' %>
+                  <label for="select_period_campaigns_all">
+                    <p><%= @campaigns.count %></p>
+                    <p>Interview campaigns created</p>
+                  </label>
+                </div>
+              <% elsif b.text == 'ongoing' %>
+                <div class="campaigns-report-list__controls-info">
+                  <%= b.radio_button onclick: 'autoSubmit(this)', class: 'hidden' %>
+                  <label for="select_period_campaigns_ongoing">
+                    <p><%= @campaigns.where_exists(:interviews, 'completed = ?', false).count %></p>
+                    <p>Ongoing Interview campaigns</p>
+                  </label>
+                </div>
+              <% elsif b.text == 'completed' %>
+                <div class="campaigns-report-list__controls-info">
+                  <%= b.radio_button onclick: 'autoSubmit(this)', class: 'hidden' %>
+                  <label for="select_period_campaigns_completed">
+                    <p><%= @campaigns.where_not_exists(:interviews, 'completed = ?', false).count %></p>
+                    <p>Completed Interview campaigns</p>
+                  </label>
+                </div>
+              <% end %>
+            <% end %>
+            <div class="campaigns-report-list__controls-info-grey">
+              <% employees_interview = Interview.where(campaign_id: @campaigns.map(&:id), label: 'Employee') %>
+              <p><%= employees_interview.where(completed: true).count %> / <%= employees_interview.count %></p>
+              <p>Employees interviews completed</p>
+            </div>
+            <div class="campaigns-report-list__controls-info-grey">
+              <p><%= @campaigns.where_not_exists(:interviews, 'completed = ?', false).map{|x| x.owner}.uniq.count %> / <%= @campaigns.map{|x| x.owner}.uniq.count %></p>
+              <p>Managers interviews completed</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="campaigns-report-list__index">
+        <%= render 'campaigns/partials/campaigns_report_index', campaigns: @campaigns %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  function setActiveManager(element) {
+      document.querySelector('.campaigns-report-manager-card.active').classList.remove('active')
+    element.classList.add('active')
+    input = document.querySelector('#select_period_manager_id')
+    search_input = document.querySelector('#select_period_name')
+    if (element.id != '') {
+      manager_id = element.id.split('-')[1]
+      input.value = manager_id
+    } else {
+      input.value = ''
+      search_input.value = ''
+    }
+    input.closest('form').querySelector('button[type="submit"]').click()
+  }
+
+  function updateURLParameter(url, param, paramVal){
+    var newAdditionalURL = "";
+    var tempArray = url.split("?");
+    var baseURL = tempArray[0];
+    var additionalURL = tempArray[1];
+    var temp = "";
+    if (additionalURL) {
+        tempArray = additionalURL.split("&");
+        for (var i=0; i<tempArray.length; i++){
+            if(tempArray[i].split('=')[0] != param){
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    }
+    var rows_txt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rows_txt;
+  }
+
+  function selectManagerbyDate() {
+    start = document.querySelector('#select_period_start')
+    end = document.querySelector('#select_period_end')
+    document.querySelectorAll('.select-manager-link').forEach((link) => {
+      link.href = updateURLParameter(link.href, start.id.split('_')[2], start.value)
+      link.href = updateURLParameter(link.href, end.id.split('_')[2], end.value)
+    })
+  }
+
+  function autoSubmit(element) {
+    form = element.closest('form')
+    form.querySelector('button[type="submit"]').click()
+  }
+</script>

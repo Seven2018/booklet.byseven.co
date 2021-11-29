@@ -8,6 +8,9 @@
     </div>
     <% question_type = question.question_type %>
     <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id) %>
+    <% if existing_answer.nil? && @interview.label == 'Crossed' %>
+      <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.campaign.interviews.find_by(label: 'HR').id, interview_question_id: question.id, user_id: @interview.campaign.owner) %>
+    <% end %>
     <% if existing_answer.present? %>
       <% current_answer, current_comments = existing_answer.answer, existing_answer.comments %>
     <% else %>
@@ -42,9 +45,9 @@
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label">
               <% if b.text == current_answer %>
-                <%= b.radio_button class: 'rad-input', checked: 'checked', onchange: 'enableNext(this);', disabled: !read_only %>
+                <%= b.radio_button class: 'rad-input', checked: 'checked', onchange: 'enableNext(this);', disabled: read_only %>
               <% else %>
-                <%= b.radio_button class: 'rad-input' , onchange: 'enableNext(this);', disabled: !read_only %>
+                <%= b.radio_button class: 'rad-input' , onchange: 'enableNext(this);', disabled: read_only %>
               <% end %>
               <div class="rad-design"></div>
               <div class="rad-text"><%= b.text %></div>
@@ -58,26 +61,25 @@
     <% end %>
   </div>
   <div class="interview-question__controls">
-    <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
+    <% if @interview.label == 'Crossed' %>
+      <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
+    <% else %>
+      <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
+    <% end %>
     <% if j == questions.where.not(question_type: 'separator').count && read_only %>
       <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
         <button class="btn-blue"><p>Exit</p></button>
       <% end %>
-    <% elsif j == questions.where.not(question_type: 'separator').count && question.required %>
-      <% if @interview.employee == current_user %>
-        <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>
-      <% else %>
-        <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
-      <% end %>
+    <% elsif j == questions.where.not(question_type: 'separator').count && @interview.completed == true %>
+      <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
+      <button class="btn-blue btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
+    <% elsif j == questions.where.not(question_type: 'separator').count && question.required && current_answer.nil? %>
+      <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
       <button class="btn-blue btn-blue-disabled" onclick='submitAnswers()' disabled><p>Submit Form</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count %>
-      <% if @interview.employee == current_user %>
-        <%= link_to '', campaigns_path, class: 'hidden-link hidden' %>
-      <% else %>
-        <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
-      <% end %>
+      <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
       <button class="btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
-    <% elsif question.required && InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id).nil? && !read_only %>
+    <% elsif question.required && current_answer.nil? && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
     <% else %>
       <button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button>
