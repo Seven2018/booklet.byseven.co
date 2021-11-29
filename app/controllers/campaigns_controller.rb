@@ -120,10 +120,10 @@ class CampaignsController < ApplicationController
 
   def show
     authorize @campaign
-    if ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
-      target = Interview.find_by(campaign_id: @campaign.id, employee_id: current_user.id, label: 'Employee')
-      target.present? ? (redirect_to interview_path(target)) : (redirect_to root_path)
-    end
+    # if ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
+    #   target = Interview.find_by(campaign_id: @campaign.id, employee_id: current_user.id, label: 'Employee')
+    #   target.present? ? (redirect_to interview_path(target)) : (redirect_to root_path)
+    # end
     @interviews = []
     selected_user = User.find(params[:search][:user_id]) if params[:search].present? && params[:search][:user_id] != ''
     if selected_user.present?
