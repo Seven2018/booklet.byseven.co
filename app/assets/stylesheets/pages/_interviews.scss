@@ -20,11 +20,139 @@
   scrollbar-width: none;  /* Firefox */
   height: calc(100vh - 14.5rem);
   position: relative;
+  overflow-x: hidden;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .interview-container::-webkit-scrollbar {
   display: none;
+}
+
+.interview-summary {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  h1 {
+    margin: 5rem 0;
+
+    em {
+      font-style: italic;
+    }
+  }
+
+  .interview-summary__separator {
+    min-width: 60rem;
+    width: 60rem;
+    margin-bottom : 5rem;
+    font-size: 2rem;
+    font-weight: bolder;
+  }
+
+  .interview-summary__open-question {
+    min-width: 60rem;
+    width: 60rem;
+    padding: 2rem;
+    margin-bottom : 5rem;
+    border: 1px solid #DCDCDC;
+    border-radius: 3px;
+
+    .flex-row-start-centered {
+      margin-bottom: 2rem;
+
+      p {
+        font-style: italic;
+        padding: 0;
+        margin: 0 0 0 1rem;
+        cursor: pointer;
+      }
+
+      i {
+        font-size: 2rem;
+      }
+    }
+
+    p {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+    }
+  }
+
+  .interview-summary__rating {
+    min-width: 60rem;
+    width: 60rem;
+    padding: 2rem;
+    margin-bottom : 5rem;
+    border: 1px solid #DCDCDC;
+    border-radius: 3px;
+
+    p {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+    }
+
+    .flex-row-start-centered {
+      margin-bottom: 2rem;
+
+      p {
+        font-style: italic;
+        padding: 0;
+        margin: 0 0 0 1rem;
+        cursor: pointer;
+      }
+
+      i {
+        font-size: 2rem;
+      }
+    }
+
+    & > div > p {
+      margin: 1.25rem 2rem 0 0;
+    }
+  }
+
+  .interview-summary__mcq {
+    min-width: 60rem;
+    width: 60rem;
+    padding: 2rem;
+    margin-bottom : 5rem;
+    border: 1px solid #DCDCDC;
+    border-radius: 3px;
+
+    p {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+    }
+
+    .flex-row-start-centered {
+      margin-bottom: 2rem;
+
+      p {
+        font-style: italic;
+        padding: 0;
+        margin: 0 0 0 1rem;
+        cursor: pointer;
+      }
+
+      i {
+        font-size: 2rem;
+      }
+    }
+
+    & > div > p {
+      margin: 1.25rem 2rem 0 0;
+    }
+  }
+
+  .employee_answer {
+    color: #939393;
+  }
+
+  .manager_answer {
+    color: #0D4F8B;
+  }
 }
 
 .interview-start {
@@ -213,9 +341,6 @@
 // RATINGS SYSTEM //
 ////////////////////
 
-@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-
-
 /****** Style Star Rating Widget *****/
 
 .rating > input { display: none; }
@@ -223,9 +348,18 @@
 .rating > label:before {
   margin: .5rem;
   font-size: 3rem;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   display: inline-block;
-  content: "\f111";
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 900;
+  content: "\f818";
+
+  &.read_only_on {
+    color: #5b92c5;
+  }
 }
 
 .rating > .half:before {
@@ -239,6 +373,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  &.read_only_on {
+    color: #5b92c5;
+  }
+
+  .saved_answers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+  }
 }
 
 /***** CSS Magic to Highlight Stars on Hover *****/
