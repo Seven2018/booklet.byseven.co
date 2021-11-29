@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy]
+  before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy]
 
   def index
     @campaigns = policy_scope(Campaign)
@@ -24,6 +24,47 @@ class CampaignsController < ApplicationController
     end
     respond_to do |format|
       format.html
+      format.js
+    end
+  end
+
+  def campaigns_report
+    @campaigns = policy_scope(Campaign)
+    @campaigns = @campaigns.where(company_id: current_user.company_id)
+    @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).order(lastname: :asc)
+    @selected_manager_id = ''
+    authorize @campaigns
+    if params[:select_period].present?
+      # raise
+      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', params[:select_period][:start].to_date, params[:select_period][:end].to_date)
+      @all_campaigns = @campaigns
+      if params[:select_period][:campaigns] == 'ongoing'
+        @campaigns = @campaigns.where_exists(:interviews, completed: false)
+      elsif params[:select_period][:campaigns] == 'completed'
+        @campaigns = @campaigns.where_not_exists(:interviews, completed: false)
+      end
+      if params[:select_period][:name] != ''
+        @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).search_by_name("#{params[:select_period][:name]}").order(lastname: :asc)
+        params[:select_period].present? ? @selected_manager_id = params[:select_period][:manager_id] : @selected_manager_id = ''
+      end
+      @all_campaigns = @campaigns
+      if params[:select_period][:manager_id].present?
+        @selected_manager_id = params[:select_period][:manager_id]
+        @campaigns = @campaigns.where(owner_id: params[:select_period][:manager_id])
+      end
+    else
+      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', Date.today, Date.today.end_of_year)
+      @all_campaigns = @campaigns
+    end
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def campaign_report_info
+    authorize @campaign
+    respond_to do |format|
       format.js
     end
   end
