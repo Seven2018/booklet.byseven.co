@@ -68,7 +68,7 @@
           <p>Chapter</p>
         </div>
         <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-separator').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
+          <a class="line-delete" onclick="this.closest('.add-separator').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
         </div>
       </div>
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
@@ -88,7 +88,7 @@
           <p>Open Question</p>
         </div>
         <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-open_question').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
+          <a class="line-delete" onclick="this.closest('.add-open_question').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
         </div>
       </div>
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
@@ -115,7 +115,7 @@
           <p>Rating</p>
         </div>
         <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-rating').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
+          <a class="line-delete" onclick="this.closest('.add-rating').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
         </div>
       </div>
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
@@ -149,7 +149,7 @@
           <p>MCQ</p>
         </div>
         <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-mcq').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt"></i></a>
+          <a class="line-delete" onclick="this.closest('.add-mcq').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
         </div>
       </div>
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>

@@ -15,7 +15,7 @@
         <% previous_separators = questions.where(question_type: 'separator').where('position <= ?', j) %>
         <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
       </div>
-      <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j, read_only: (@interview.label == 'Employee' && @interview.employee != current_user) %>
+    <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j, read_only: (@interview.label == 'Employee' && @interview.employee != current_user)%>
     </div>
     <% j += 1 %>
   <% end %>
