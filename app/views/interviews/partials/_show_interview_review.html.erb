@@ -1,6 +1,7 @@
 <% questions = interview.interview_form.interview_questions.order(position: :asc) %>
 
 <h1><%= interview.interview_form.title %> - <em>Summary</em></h1>
+<h3 class="summary-info">Click on a question to change your answer</h3>
 <% k = 1 %>
 <% questions.order(position: :asc).each do |question| %>
 
