@@ -1,0 +1,15 @@
+if ("<%= @show_review %>" == 'true') {
+  document.querySelector('.interview-review').innerHTML = '<%= j (render("interviews/partials/show_interview_review", interview: @interview)) %>';
+  document.querySelector('.interview-question:not(.hidden)').classList.add('hidden')
+  document.querySelector('.interview-progress-bar-container').classList.add('hidden')
+  document.querySelector('.interview-review').classList.remove('hidden')
+  document.querySelectorAll('.interview-question__controls').forEach((div) => {
+    newBtn = document.createElement("button");
+    newBtn.classList.add('btn-blue')
+    newBtn.innerHTML = '<p>Review</p>'
+    newBtn.onclick = function(event) {
+      goToQuestion(this, 'summary')
+    }
+    div.appendChild(newBtn)
+  })
+}

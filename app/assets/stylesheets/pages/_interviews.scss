@@ -18,7 +18,8 @@
   align-items: center;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  height: calc(100vh - 14.5rem);
+  height: calc(100vh - 7.5rem);
+  padding-bottom: 7rem;
   position: relative;
   overflow-x: hidden;
 }
@@ -28,7 +29,7 @@
   display: none;
 }
 
-.interview-summary {
+.interview-summary, .interview-review {
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -66,7 +67,6 @@
         font-style: italic;
         padding: 0;
         margin: 0 0 0 1rem;
-        cursor: pointer;
       }
 
       i {
@@ -100,7 +100,6 @@
         font-style: italic;
         padding: 0;
         margin: 0 0 0 1rem;
-        cursor: pointer;
       }
 
       i {
@@ -133,7 +132,6 @@
         font-style: italic;
         padding: 0;
         margin: 0 0 0 1rem;
-        cursor: pointer;
       }
 
       i {
@@ -196,8 +194,6 @@
     }
   }
 }
-
-
 
 .interview-question {
   height: 100%;
@@ -336,6 +332,14 @@
   width: 0;
 }
 
+.interview-review {
+  margin-top: 15.5rem;
+
+  .flex-row-start-centered > p {
+    cursor: pointer;
+  }
+}
+
 
 ////////////////////
 // RATINGS SYSTEM //
@@ -356,10 +360,6 @@
   -webkit-font-smoothing: antialiased;
   font-weight: 900;
   content: "\f818";
-
-  &.read_only_on {
-    color: #5b92c5;
-  }
 }
 
 .rating > .half:before {
@@ -373,10 +373,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  &.read_only_on {
-    color: #5b92c5;
-  }
 
   .saved_answers {
     display: flex;
@@ -396,6 +392,9 @@
 .rating:not(.read_only) > input:checked ~ label:hover,
 .rating:not(.read_only) > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating:not(.read_only) > input:checked ~ label:hover ~ label { color: #5b92c5; opacity: .7 }
+.read_only {
+  label { cursor: default !important }
+}
 
 
 ////////////////
@@ -414,6 +413,10 @@
 
   cursor: pointer;
   transition: .3s;
+
+  &.disabled {
+    cursor: default;
+  }
 }
 
 .rad-label:hover,
@@ -436,7 +439,6 @@
   height: 22px;
   border-radius: 100px;
 
-  // background: linear-gradient(to right bottom, hsl(154, 97%, 62%), hsl(225, 97%, 62%));
   background: #5b92c5;
   position: relative;
 }
@@ -461,8 +463,6 @@
 .rad-text {
   color: hsl(0, 0%, 60%);
   margin-left: 14px;
-  // letter-spacing: 3px;
-  // text-transform: uppercase;
   font-size: 18px;
   font-weight: 900;
 

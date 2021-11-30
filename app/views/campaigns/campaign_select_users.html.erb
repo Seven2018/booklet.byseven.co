@@ -54,7 +54,7 @@
       <div class="book-users-headers">
         <div class="book-users-card">
           <input type="checkbox" class='hidden'>
-          <div class="book-users-pseudo-checkbox-container" onclick="selectAllUsers(this);"><button class="book-users-pseudo-checkbox"></button></div>
+          <div class="book-users-pseudo-checkbox-container"><button class="book-users-pseudo-checkbox__select-all" disabled></button></div>
           <div class="book-users-card-infos">
             <div>
               <p>Fullname</p>
@@ -168,7 +168,13 @@
     list.querySelectorAll('.book-users-pseudo-checkbox-container').forEach((button) => {
       selectUser(button)
     })
-    element.querySelector('.book-users-pseudo-checkbox').style.backgroundColor = '#3177B7'
+    checkbox = element.closest('.book-users-card').querySelector('input')
+    checkbox.checked = !checkbox.checked
+    if (checkbox.checked) {
+      element.style.backgroundColor = '#3177B7'
+    } else {
+      element.style.backgroundColor = 'transparent'
+    }
   }
 
   function checkSelectedAll() {
@@ -185,7 +191,7 @@
     user_selected_list = user_selected_list.slice().sort().filter(function (el) {
         return el != "";
     });
-    target_button = document.querySelector('.book-users-headers').querySelector('.book-users-pseudo-checkbox')
+    target_button = document.querySelector('.book-users-headers').querySelector('.book-users-pseudo-checkbox__select-all')
     if (JSON.stringify(user_array_list) === JSON.stringify(user_selected_list)) {
       target_button.style.backgroundColor = '#3177B7'
     } else {
