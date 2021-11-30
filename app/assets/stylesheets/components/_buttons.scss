@@ -158,6 +158,7 @@ button {
     font-weight: 600 !important;
     letter-spacing: 0.15em;
     text-transform: uppercase;
+    text-align: center;
   }
 
   i {
@@ -175,6 +176,113 @@ button {
     p {
       font-size: 1.6rem;
     }
+  }
+}
+
+#campaign-confirm-button {
+  position: fixed;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 60vw;
+  padding: 20px;
+  height: 5rem;
+  background-color: #3177B7;
+  border-radius: 4px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  color: white;
+  bottom: 4vh;
+  right: 10vw;
+
+
+  i, p, a {
+    color: white !important;
+    transition: all .25s ease-in-out;
+    font-weight: 500;
+    font-size: 1.3rem;
+    font-weight: 600 !important;
+    letter-spacing: 0.15em;
+  }
+}
+
+@include from-medium {
+  #campaign-confirm-button {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    padding: 20px;
+    height: 5rem;
+    background-color: #3177B7;
+    border-radius: 4px;
+    transition: all .25s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    color: white;
+  
+    i, p, a {
+      color: white !important;
+      transition: all .25s ease-in-out;
+      font-weight: 500;
+      font-size: 1.3rem;
+      font-weight: 600 !important;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.back-arrow-btn-mobile {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 5rem;
+  width: 5rem;
+  border-radius: 100%;
+  bottom: 4vh;
+  left: 10vw;
+  background-color: #3177B7;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  color: white;
+  z-index: 50;
+
+}
+
+@include from-medium {
+  .back-arrow-btn-mobile {
+    display: none;
+  }
+}
+
+.next-arrow-btn-mobile {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 5rem;
+  width: 5rem;
+  border-radius: 100%;
+  bottom: 4vh;
+  right: 10vw;
+  background-color: #3177B7;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  color: white;
+  z-index: 50;
+
+}
+
+.next-arrow-btn-mobile.disabled {
+      opacity: 0.5;
+    }
+
+
+@include from-medium {
+  .next-arrow-btn-mobile {
+    display: none;
   }
 }
 

@@ -5,11 +5,11 @@
     <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
     <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
     <% params[:campaign].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
+    <% params[:campaign].present? && params[:campaign][:selected_template].present? ? disabled = '' : disabled = 'disabled' %>
     <%= simple_form_for :campaign, url: campaign_select_users_path, method: :get do |f| %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
       <%= f.hidden_field :selected_owner, value: selected_owner %>
-      <% params[:campaign].present? && params[:campaign][:selected_template].present? ? disabled = '' : disabled = 'disabled' %>
       <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
         <div class="select-step-number-disabled">2</div><p>Select Employees</p>
       <% end %>
@@ -24,6 +24,7 @@
       <% end %>
     <% end %>
   </div>
+  <button class="next-arrow-btn-mobile <%= disabled %>" onclick="document.querySelectorAll('.simple_form.campaign')[0].querySelector('button').click()"><i class="fas fa-arrow-right"></i></button>
     <div class="campaign-searchbar-right">
       <div id="main-controls">
         <%= render 'shared/searchbar_campaigns', path: campaign_select_template_path, reset_path: campaign_select_template_path(reset: "") %>
@@ -67,6 +68,7 @@
     search_storage = document.getElementById('search_campaign_selected_template')
     next_button = document.querySelector('.campaign__next-button')
     next_button_arrow = document.querySelector('.campaign__next-button-arrow')
+    next_arrow_btn_mobile = document.querySelector('.next-arrow-btn-mobile')
     input.checked = !input.checked
     if (input.checked == true) {
       checkboxes.forEach((checkbox) => {
@@ -89,6 +91,7 @@
         next_button.setAttribute('title', '')
         next_button_arrow.classList.remove('disabled')
         next_button_arrow.setAttribute('title', '')
+        next_arrow_btn_mobile.classList.remove('disabled')
       })
     } else {
       checkboxes.forEach((checkbox) => {
@@ -104,6 +107,7 @@
       next_button.setAttribute('title', 'Please select a template')
       next_button_arrow.classList.add('disabled')
       next_button_arrow.setAttribute('title', 'Please select a template')
+      next_arrow_btn_mobile.classList.add('disabled')
     }
   }
 

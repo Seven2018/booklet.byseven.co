@@ -59,7 +59,7 @@
     width : 2.5rem;
     height: 2.5rem;
     margin-right: 1rem;
-    border-radius: 10rem;
+    border-radius: 100%;
     color: white;
     background-color:#3177B7;
     font-weight: bold;
@@ -76,7 +76,7 @@
     width : 2.5rem;
     height: 2.5rem;
     margin-right: 1rem;
-    border-radius: 10rem;
+    border-radius: 100%;
     color: white;
     background-color:rgba(151, 156, 159, 1);
     font-weight: bold;
@@ -397,19 +397,16 @@
       align-self: center;
     }
   }
+}
 
-  .campaign-card-summary__assignment{
+.campaign-card-summary__assignment {
+  font-size: 1rem;
+  color: #696969;
+  margin-left: 1rem;
+
+  &.manager-completed {
     font-size: 1rem;
-    color: #696969;
-    text-align: right;
-    margin-bottom: 1rem;
-
-    &.manager-completed {
-      font-size: 1rem;
-      color: white;
-      text-align: right;
-      margin-bottom: 1rem;
-    }
+    color: white;
   }
 }
 
@@ -537,6 +534,12 @@
       align-items: center;
     }
   }
+}
+
+.select-date-card-info {
+  display: flex;
+  flex-direction: column;
+  max-width: 80vw;
 }
 
 .campaign-select-date-tag-pill {
