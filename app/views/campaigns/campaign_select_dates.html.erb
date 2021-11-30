@@ -34,7 +34,7 @@
         <%= f.hidden_field :selected_owner, value: selected_owner %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
-      <button id='campaign-confirm-button' class='btn-blue' style='margin-top: 30px' data-toggle='modal' data-target='#sendEmail'><p>LAUNCH INTERVIEW</p> <i class="fas fa-paper-plane no-margin"></i></button>
+      <button class="back-arrow-btn-mobile" onclick="document.querySelectorAll('.simple_form.campaign')[1].querySelector('button').click()"><i class="fas fa-arrow-left"></i></button><button id='campaign-confirm-button' style='margin-top: 30px' data-toggle='modal' data-target='#sendEmail'><p>LAUNCH INTERVIEW</p> <i class="fas fa-paper-plane no-margin"></i></button>
     </div>
   </div>
   <div class="campaign-dates-container">

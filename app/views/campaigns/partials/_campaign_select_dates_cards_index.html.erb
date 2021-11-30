@@ -3,7 +3,7 @@
     <h1><%= selected_template.title %> -</h1>
     <h5>&nbsp;<%= @selected_users.count %> selected employees</h5>
   </div>
-  <div class="flex-row-start-centered">
+  <div class="select-date-card-info">
     <p><%= selected_template.interview_questions.count %> questions</p>
     <% selected_template.interview_form_tags.each do |tag| %>
       <p class="campaign-select-date-tag-pill"><%= tag.tag_name %></p>

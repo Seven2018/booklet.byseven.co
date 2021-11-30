@@ -51,16 +51,16 @@
           <% campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
             <p class="campaign-card__tag-pill"><%= tag.tag_name %></p>
           <% end %>
-          <% if completion == 100 %>
-          <div class="campaign-card-summary__assignment manager-completed">
-            Manager : <%= campaign.owner.fullname %>
-          </div>
-        <% else %>
-           <div class="campaign-card-summary__assignment">
-            Manager : <%= campaign.owner.fullname %>
-          </div>
-        <% end %>
         </div>
+        <% if completion == 100 %>
+        <div class="campaign-card-summary__assignment manager-completed">
+          Manager : <%= campaign.owner.fullname %>
+        </div>
+      <% else %>
+         <div class="campaign-card-summary__assignment">
+          Manager : <%= campaign.owner.fullname %>
+        </div>
+      <% end %>
         <div class="campaign-card-summary">
           <% if ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) %>
             <div class='campaign-card-summary__count'>

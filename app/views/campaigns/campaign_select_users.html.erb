@@ -81,6 +81,8 @@
       <div class="book-users-headers-selected">
         <p>SELECTED EMPLOYEES</p>
       </div>
+      <button class="back-arrow-btn-mobile" onclick="document.querySelectorAll('.simple_form.campaign')[0].querySelector('button').click()"><i class="fas fa-arrow-left"></i></button>
+      <button class="next-arrow-btn-mobile" onclick="document.querySelectorAll('.simple_form.campaign')[1].querySelector('button').click()"><i class="fas fa-arrow-right"></i></button>
       <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')).order(lastname: :asc), selected: 'true', filtered: 'selected' %>
       <div class="book-users-card book-users-card-template hidden">
         <div class="book-users-pseudo-checkbox-container" onclick="selectUser(this);"><button class="book-users-pseudo-checkbox"></button></div>
@@ -113,6 +115,7 @@
     checkbox = user_card.querySelector('input[type="checkbox"]')
     next_button = document.querySelector('.campaign__next-button')
     next_button_arrow = document.querySelector('.campaign__next-button-arrow')
+    next_arrow_btn_mobile = document.querySelector('.next-arrow-btn-mobile')
     checkbox.checked = !checkbox.checked
     document.querySelectorAll('#' + user_card.id).forEach((card) => {
       if(checkbox.checked == true) {
@@ -139,7 +142,6 @@
       new_card_infos.appendChild(new_info_name)
       new_card_infos.appendChild(new_info_email)
       document.querySelector('.book-users-selected').appendChild(new_card)
-      next_button.classList.add('hilight-next-step')
     } else {
       selected_container.querySelector('#' + user_card.id).remove();
       next_button.classList.remove('hilight-next-step')
@@ -155,10 +157,12 @@
       next_button.disabled = true
       next_button.classList.add('disabled')
       next_button_arrow.classList.add('disabled')
+      next_button.classList.remove('hilight-next-step')
     } else {
       next_button.disabled = false
       next_button.classList.remove('disabled')
       next_button_arrow.classList.remove('disabled')
+      next_button.classList.add('hilight-next-step')
     }
     document.querySelector('.book-users-headers-selected').innerHTML = '<p>' + selected_array.length + ' SELECTED EMPLOYEES</p>'
   }
