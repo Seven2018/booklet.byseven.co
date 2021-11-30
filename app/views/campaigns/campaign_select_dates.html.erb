@@ -122,11 +122,11 @@
     result = multipleDateRangeOverlaps(date_array)
     if (result.length != 0) {
       result.forEach((element) => {
-        document.querySelectorAll('.simple_form.interview')[Math.floor(element / 2)].querySelector('.flex-row-start-centered').style.backgroundColor = 'red'
+        document.querySelectorAll('.campaign-select-date-card__alert')[Math.floor(element / 2)].classList.remove('hidden')
       })
     } else {
-      document.querySelectorAll('.simple_form.interview').forEach((element) => {
-        element.querySelector('.flex-row-start-centered').style.backgroundColor = 'white'
+      document.querySelectorAll('.campaign-select-date-card__alert').forEach((element) => {
+        element.classList.add('hidden')
       })
     }
   }

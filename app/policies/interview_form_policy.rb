@@ -10,7 +10,7 @@ class InterviewFormPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_manager
+    check_access_hr
   end
 
   def show?
@@ -18,24 +18,28 @@ class InterviewFormPolicy < ApplicationPolicy
   end
 
   def update?
-    check_access_manager
+    check_access_hr
   end
 
   def duplicate?
-    check_access_manager
+    check_access_hr
   end
 
   def interview_form_link_tags?
-    check_access_manager
+    check_access_hr
   end
 
   def destroy?
-    check_access_manager
+    check_access_hr
   end
 
   private
 
   def check_access_manager
     ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
+  end
+
+  def check_access_hr
+    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 end

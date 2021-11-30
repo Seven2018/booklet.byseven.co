@@ -6,7 +6,13 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 3rem;
+  height: 8rem;
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 7.5rem;
+  left: 0px;
+  z-index: 150;
+  background-color: white;
 
   // @include from-medium {
   //   display: flex;
@@ -621,6 +627,17 @@
     @include from-medium {
       margin: 0 1rem;
     }
+  }
+}
+
+.campaign-select-date-card__alert {
+  margin-left: 2rem !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p, i {
+    color: #FF4040;
   }
 }
 

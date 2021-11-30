@@ -3,12 +3,13 @@
     <% i = 1 %>
     <ul>
       <% question.options.sort_by {|k, v| v}.each do |option| %>
+        <% if page == 'edit' %>
         <div onclick="openEditOptionForm(this);">
-          <% if page == 'edit' %>
-          <li style='color: #888888; data-toggle='tooltip' title='Click to edit'><%= option[0] %></li>
-          <% else %>
-            <li style='color: #888888;cursor: default;'><%= option[0] %></li>
-          <% end %>
+          <li style='color: #888888;' data-toggle='tooltip' title='Click to edit'><%= option[0] %></li>
+        <% else %>
+        <div>
+          <li style='color: #888888;cursor: default;'><%= option[0] %></li>
+        <% end %>
           <% i += 1 %>
           <div class="hidden-form-ajax hidden">
             <%= simple_form_for :edit_option, url: edit_mcq_option_path, method: :patch, remote: true do |f| %>
@@ -50,6 +51,8 @@
         <% end %>
       </div>
     </ul>
-    <div class="mcq-add-answer" onclick="this.closest('.mcq-options-list').querySelector('.add-option-form').classList.remove('hidden');"><p class="mcd-add-answer-text">Add answer</p></div>  
+    <% if page == 'edit' %>
+      <div class="mcq-add-answer" onclick="this.closest('.mcq-options-list').querySelector('.add-option-form').classList.remove('hidden');"><p class="mcd-add-answer-text">Add answer</p></div>
+    <% end %>
   </div>
 </div>
