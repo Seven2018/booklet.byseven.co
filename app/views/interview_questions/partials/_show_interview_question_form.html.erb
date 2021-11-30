@@ -70,7 +70,7 @@
     <% end %>
     <% if j == questions.where.not(question_type: 'separator').count && read_only %>
       <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
-        <button class="btn-blue"><p>Exit</p></button>
+        <button class="btn-blue"><p>Validate</p></button>
       <% end %>
     <% elsif j == questions.where.not(question_type: 'separator').count && @interview.completed == true %>
       <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
