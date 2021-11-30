@@ -110,6 +110,10 @@
       padding-left: 2rem;
     }
 
+    & > div > p {
+      margin: 1.25rem 2rem 0 0;
+    }
+
     .flex-row-start-centered {
       margin-bottom: 2rem;
 
@@ -124,8 +128,10 @@
       }
     }
 
-    & > div > p {
-      margin: 1.25rem 2rem 0 0;
+    .rating {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
     }
   }
 
