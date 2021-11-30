@@ -34,18 +34,20 @@
         </div>
         <div class="campaign-card__controls">
           <h3><%= campaign.title %></h3>
-          <div class="campaign-card__options" onclick="openContentMenu(this);">
-            <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
-              <i class="fas fa-ellipsis-v"></i>
-              <div class="content-dropdown hidden">
-                <%= link_to 'Edit', edit_campaign_path(campaign) %>
-                <% unless campaign.interviews.where(completed: true).present? %>
-                  <%= link_to 'Delete', campaign_path(campaign), method: :delete, remote: true, data: {confirm: 'Are you sure ?'}%>
-                <% end %>
-                <a data-toggle='modal' data-target='#sendEmail'>Send Email</a>
-              </div>
-            <% end %>
-          </div>
+          <% unless completion == 100 %>
+            <div class="campaign-card__options" onclick="openContentMenu(this);">
+              <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+                <i class="fas fa-ellipsis-v"></i>
+                <div class="content-dropdown hidden">
+                    <%= link_to 'Edit', edit_campaign_path(campaign) %>
+                    <% unless campaign.interviews.where(completed: true).present? %>
+                      <%= link_to 'Delete', campaign_path(campaign), method: :delete, remote: true, data: {confirm: 'Are you sure ?'}%>
+                    <% end %>
+                    <a data-toggle='modal' data-target='#sendEmail'>Send Email</a>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
         </div>
         <div class="campaign-card__tags">
           <% campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>

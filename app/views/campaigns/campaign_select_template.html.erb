@@ -5,11 +5,11 @@
     <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
     <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
     <% params[:campaign].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
+    <% params[:campaign].present? && params[:campaign][:selected_template].present? ? disabled = '' : disabled = 'disabled' %>
     <%= simple_form_for :campaign, url: campaign_select_users_path, method: :get do |f| %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
       <%= f.hidden_field :selected_owner, value: selected_owner %>
-      <% params[:campaign].present? && params[:campaign][:selected_template].present? ? disabled = '' : disabled = 'disabled' %>
       <%= button_tag type: 'submit', class: "campaign__next-button " + disabled, disabled: disabled.present?, data: { toggle: 'tooltip' }, title: 'Please select a template' do %>
         <div class="select-step-number-disabled">2</div><p>Select Employees</p>
       <% end %>
@@ -38,7 +38,7 @@
                 <% end %>
               <% end %>
             </select>
-          <button class='campaign__next-button-arrow disabled' onclick='nextPage();'>
+          <button class='campaign__next-button-arrow <%= disabled %>' onclick='nextPage();'>
             <%= image_tag('Arrow-right.svg', :class => "arrow-right") %>
           </button>
           <div class="next-step-info">Next : Select <br/> Employee</div>

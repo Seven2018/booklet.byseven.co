@@ -25,7 +25,9 @@ class InterviewFormsController < ApplicationController
 
   def show
     authorize @template
-    redirect_to edit_interview_form_path(@template)
+    if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+      redirect_to edit_interview_form_path(@template)
+    end
   end
 
   def edit

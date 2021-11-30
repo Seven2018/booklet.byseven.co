@@ -10,12 +10,12 @@
   </div>
 </div>
 <div class="template-show-infos-delete orange">
-  <% unless page == 'edit' %>
+  <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && page == 'show' %>
     <%= link_to edit_interview_form_path(template) do %>
       <i class="fas fa-pencil-alt"></i>
     <% end %>
   <% end %>
-  <% unless Campaign.where(interview_form_id: template).present? %>
+  <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && Campaign.where(interview_form_id: template).nil? %>
     <%= link_to interview_form_path(template, page: 'edit'), method: :delete, data: {confirm: 'Are you sure ?'} do %>
       <i class="fas fa-trash-alt"></i>
     <% end %>
