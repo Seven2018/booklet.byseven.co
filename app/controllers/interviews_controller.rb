@@ -20,6 +20,11 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find(params[:id])
     authorize @interview
+    params[:show_review].present? ? @show_review = 'true' : @show_review = 'false'
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def update_interviews

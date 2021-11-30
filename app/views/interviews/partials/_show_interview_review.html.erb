@@ -1,0 +1,74 @@
+<% questions = interview.interview_form.interview_questions.order(position: :asc) %>
+
+<h1><%= interview.interview_form.title %> - <em>Summary</em></h1>
+<% k = 1 %>
+<% questions.order(position: :asc).each do |question| %>
+
+  <% current_answer = InterviewAnswer.find_by(interview_id: interview.campaign.interviews.map(&:id), interview_question_id: question.id, user_id: current_user.id) if question.question_type != 'separator' %>
+
+  <% if question.question_type == 'separator' %>
+    <p class='interview-summary__separator'><%= question.question %></p>
+  <% elsif question.question_type == 'open_question' %>
+    <div class="interview-summary__open-question">
+      <div class="flex-row-start-centered">
+        <i class="fas fa-question"></i>
+        <p onclick='goToQuestion(this)' id='target-<%= k %>'><%= question.question %></p>
+      </div>
+      <p><%= current_user.firstname %>: <%= current_answer.answer %></p>
+    </div>
+    <% k += 1 %>
+  <% elsif question.question_type == 'mcq' %>
+    <div class="interview-summary__mcq">
+      <div class="flex-row-start-centered">
+        <i class="fas fa-check"></i>
+        <p onclick='goToQuestion(this)' id='target-<%= k %>'><%= question.question %></p>
+      </div>
+      <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
+        <fieldset class="mcq">
+          <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
+            <label class="rad-label disabled">
+              <% if b.text == current_answer.answer %>
+                <%= b.radio_button class: 'rad-input', checked: 'checked', disabled: true %>
+              <% else %>
+                <%= b.radio_button class: 'rad-input' , disabled: true %>
+              <% end %>
+              <div class="rad-design"></div>
+              <div class="rad-text">
+                <%= b.text %>
+              </div>
+            </label>
+          <% end %>
+        </fieldset>
+      <% end %>
+    </div>
+  <% elsif question.question_type == 'rating' %>
+    <div class="interview-summary__rating">
+      <div class="flex-row-start-centered">
+        <i class="far fa-star"></i>
+        <p onclick='goToQuestion(this)' id='target-<%= k %>'><%= question.question %></p>
+      </div>
+      <fieldset class="rating read_only">
+        <% for i in 1..question.options.keys.first.to_i %>
+          <% if current_answer.answer.to_i == question.options.keys.first.to_i - i + 1 %>
+            <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" checked disabled/>
+            <label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
+              <%= question.options.keys.first.to_i - i + 1 %>
+            </label>
+          <% else %>
+            <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" disabled/>
+            <label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
+              <%= question.options.keys.first.to_i - i + 1 %>
+            </label>
+          <% end %>
+        <% end %>
+      </fieldset>
+      <p><%= current_answer.comments %></p>
+    </div>
+    <% k += 1 %>
+  <% end %>
+<% end %>
+<div class="interview-question__controls">
+  <%= link_to campaign_path(interview.campaign, employee_id: interview.employee_id) do %>
+    <button class="btn-blue btn-blue"><p>Exit</p></button>
+  <% end %>
+</div>

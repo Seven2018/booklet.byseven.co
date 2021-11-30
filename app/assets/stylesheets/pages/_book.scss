@@ -352,7 +352,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 }
 
 .book-users-pseudo-checkbox {
@@ -360,6 +359,17 @@
   height: 1.4rem !important;
   border-radius: 50%;
   border: 1px solid #3177B7;
+  cursor: pointer;
+}
+
+.book-users-pseudo-checkbox__select-all {
+  width: 1.4rem !important;
+  height: 1.4rem !important;
+  border-radius: 50%;
+  border: 1px solid #3177B7;
+  cursor: pointer;
+  opacity: 0;
+  cursor: default;
 }
 
 

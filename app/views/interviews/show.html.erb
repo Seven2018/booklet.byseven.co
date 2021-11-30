@@ -145,6 +145,8 @@
         </div>
         <% j += 1 %>
       <% end %>
+      <div class="interview-review hidden">
+      </div>
     </div>
   <% end %>
  <% if @interview.label != 'Crossed' %>
@@ -217,15 +219,17 @@
   }
 
   function goToQuestion(element, option = '') {
-    summary = document.querySelector('.interview-summary')
+    summary = document.querySelector('.interview-review')
+    progression_bar = document.querySelector('.interview-progress-bar-container')
     if (option == 'summary') {
       current_question = element.closest('.interview-question')
+      progression_bar.classList.add('hidden')
       current_question.classList.add('hidden')
       summary.classList.remove('hidden')
     } else {
       target_position = parseInt(element.id.split('-')[1],10)
       question = document.querySelector('#question-' + target_position)
-      console.log(question)
+      progression_bar.classList.remove('hidden')
       summary.classList.add('hidden')
       question.classList.remove('hidden')
     }

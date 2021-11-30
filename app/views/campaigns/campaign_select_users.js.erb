@@ -1,5 +1,6 @@
 all_container = document.querySelector('.book-users-all')
 filtered_container = document.querySelector('.book-users-filtered')
+select_all_button = document.querySelector('.book-users-pseudo-checkbox__select-all')
 if ("<%= @filtered %>" == 'true') {
   all_container.classList.add('hidden')
   filtered_container.classList.remove('hidden')
@@ -9,8 +10,16 @@ if ("<%= @filtered %>" == 'true') {
       checkbox.closest('.book-users-card').classList.add('selected')
     }
   })
+  select_all_button.style.opacity = '1'
+  select_all_button.disabled = false
+  select_all_button.onclick = function(event) {
+    selectAllUsers(this)
+  }
   showResetMobile(true)
 } else {
+  select_all_button.style.opacity = '0'
+  select_all_button.disabled = true
+  select_all_button.onclick = ''
   all_container.classList.remove('hidden')
   filtered_container.classList.add('hidden')
   showResetMobile(false)

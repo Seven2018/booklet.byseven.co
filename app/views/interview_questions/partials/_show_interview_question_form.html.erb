@@ -10,6 +10,8 @@
     <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id) %>
     <% if existing_answer.nil? && @interview.label == 'Crossed' %>
       <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.campaign.interviews.find_by(label: 'HR').id, interview_question_id: question.id, user_id: @interview.campaign.owner) %>
+    <% elsif @interview.label == 'Employee' && read_only %>
+      <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: @interview.employee_id) %>
     <% end %>
     <% if existing_answer.present? %>
       <% current_answer, current_comments = existing_answer.answer, existing_answer.comments %>
@@ -71,13 +73,13 @@
         <button class="btn-blue"><p>Exit</p></button>
       <% end %>
     <% elsif j == questions.where.not(question_type: 'separator').count && @interview.completed == true %>
-      <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
+      <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
       <button class="btn-blue btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count && question.required && current_answer.nil? %>
-      <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
+      <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
       <button class="btn-blue btn-blue-disabled" onclick='submitAnswers()' disabled><p>Submit Form</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count %>
-      <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
+      <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
       <button class="btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
     <% elsif question.required && current_answer.nil? && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
