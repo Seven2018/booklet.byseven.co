@@ -552,6 +552,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  overflow: scroll;
 }
 
 .campaign-select-date-tag-pill {
@@ -773,9 +774,24 @@
 .update_interviews {
 
   button {
+    margin-left: 0;
+
+    p {
+      margin-top: -0.4rem;
+    }
+  }
+
+  @include from-medium {
+    button {
     margin-left: 2rem;
+
+      p {
+        margin-top: 0;
+      }
   }
 }
+}
+
 
 .edit-card-info {
   display: flex;
@@ -786,6 +802,11 @@
   p {
     margin-bottom: 1rem;
   }
+}
+
+.tag-pill {
+  display: flex;
+  overflow: scroll;
 }
 
 
@@ -1011,7 +1032,6 @@
 
   .campaigns-report-list__controls-infos {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     align-items: center;
 
