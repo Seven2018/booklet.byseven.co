@@ -4,7 +4,13 @@
 
   <% if @interview.label == 'Crossed' %>
     <div class="interview-summary">
-      <h1><%= @interview.interview_form.title %> - <em>Summary</em></h1>
+      <h1><%= @interview.interview_form.title %> - <em>Crossed Review</em></h1>
+      <div class="manager-answers-colors-info">
+        <div class="manager-color-point"></div><p>This color refer to <span style="font-weight:900">manager's</span> answers</p>
+      </div>
+      <div class="employee-answers-colors-info">
+        <div class="employee-color-point"></div><p>This color refer to <span style="font-weight:900">employee's</span> answers</p>
+      </div>
       <% k = 1 %>
       <% questions.order(position: :asc).each do |question| %>
 
