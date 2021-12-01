@@ -6,12 +6,12 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 8rem;
+  height: 10rem;
   padding: 1.5rem 0;
   position: sticky;
-  top: 7.5rem;
+  top: 6rem;
   left: 0px;
-  z-index: 150;
+  z-index: 151;
   background-color: white;
 
   // @include from-medium {
@@ -574,10 +574,12 @@
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  padding-bottom: 5rem;
 
   @include from-medium {
     flex-direction: row;
     height: 4rem;
+    padding-bottom: 0;
   }
 
   .campaign-select-date-card__username {
@@ -652,6 +654,34 @@
 //////////
 // SHOW //
 //////////
+
+.title-return {
+  display: flex;
+}
+
+@include from-medium{
+  .main-page-title__tags.show {
+  padding-left: 6rem;
+  }
+}
+
+.show-campaign-title {
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+}
+
+@include from-medium {
+  flex-direction: row;
+}
+
+.searchbar {
+  display: flex;
+  justify-content: center;
+}
 
 .campaign-interview-list {
   display: flex;
@@ -747,6 +777,17 @@
   }
 }
 
+.edit-card-info {
+  display: flex;
+  flex-direction: column;
+  max-width: 80vw;
+  justify-content: flex-start;
+
+  p {
+    margin-bottom: 1rem;
+  }
+}
+
 
 ////////////
 // REPORT //
@@ -754,23 +795,38 @@
 
 .campaigns-report-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.campaigns-report-managers {
-  width: 35rem;
-  margin: 5rem 5rem 0 0;
-  padding: 2rem;
-  position: relative;
-
-  h1 {
-    margin-bottom: 5rem;
+@include from-medium {
+  .campaigns-report-container {
+    flex-direction: row;
   }
+}
 
-  & > div {
-    margin-top: 12rem;
-  }
+
+.campaign-report-managers {
+  display: none;
+}
+
+
+  @include from-medium {
+    .campaigns-report-managers {
+    width: 35rem;
+    margin: 5rem 5rem 0 0;
+    padding: 2rem;
+    position: relative;
+
+      h1 {
+        margin-bottom: 5rem;
+      }
+
+      & > div {
+        margin-top: 12rem;
+      }
+    }
 }
 
 .campaigns-report-index {
@@ -784,7 +840,19 @@
   }
 }
 
+
+@include from-medium {
+  .campaigns-report-index {
+  padding: 2rem;
+  }
+}
+
 .campaigns-report-manager-card {
+  display: none;
+}
+
+@include from-medium {
+  .campaigns-report-manager-card {
   width: 31rem;
   height: 8rem;
   display: flex;
@@ -818,15 +886,23 @@
       color: white;
     }
   }
+  }
 }
 
 .campaigns-report-list__controls {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 2rem;
   margin-bottom: 2rem;
   border-bottom: 1px solid #C4C4C4;
+
+  @include from-medium {
+    .campaigns-report-list__controls {
+      flex-direction: row;
+    }
+  }
 
   form {
     width: 100%;
@@ -867,6 +943,13 @@
     }
 
     .select_period_search_manager {
+      display: none;
+    }
+
+    @include from-medium {
+
+      .select_period_search_manager {
+      display: block;
       height: 5rem;
       width: 31rem;
       position: absolute;
@@ -892,7 +975,35 @@
         color: #C4C4C4;
       }
     }
+
+    }
   }
+
+  .select_period {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  @include from-medium {
+    .select_period {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .flex-row-between-end {
+    margin-bottom: 2rem;
+  }
+
+  @include from-medium {
+    .flex-row-between-end {
+      margin-bottom: 0;
+    }
+  }
+
+  
 
   .campaigns-report-list {
     min-height: calc(100vh - 7.5rem);
@@ -900,8 +1011,19 @@
 
   .campaigns-report-list__controls-infos {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
+    .report-white-info-card {
+      display: flex;
+
+    }
+
+    .report-grey-info-card {
+      display: flex;
+    }
+
 
     .campaigns-report-list__controls-info, .campaigns-report-list__controls-info-grey {
       height: 7.6rem;
@@ -935,6 +1057,12 @@
     }
   }
 }
+
+    @include from-medium {
+    .campaigns-report-list__controls-infos {
+      flex-direction: row;
+    }
+  }
 
 .campaigns-report-campaign-card__container {
   position: relative;

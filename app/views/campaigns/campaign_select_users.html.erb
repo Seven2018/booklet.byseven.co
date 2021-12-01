@@ -82,7 +82,7 @@
         <p>SELECTED EMPLOYEES</p>
       </div>
       <button class="back-arrow-btn-mobile" onclick="document.querySelectorAll('.simple_form.campaign')[0].querySelector('button').click()"><i class="fas fa-arrow-left"></i></button>
-      <button class="next-arrow-btn-mobile" onclick="document.querySelectorAll('.simple_form.campaign')[1].querySelector('button').click()"><i class="fas fa-arrow-right"></i></button>
+      <button class="next-arrow-btn-mobile <%= disabled %>" onclick="document.querySelectorAll('.simple_form.campaign')[1].querySelector('button').click()"><i class="fas fa-arrow-right"></i></button>
       <%= render  'pages/partials/book_user_index', users: User.where(id: @selected_users.split(',')).order(lastname: :asc), selected: 'true', filtered: 'selected' %>
       <div class="book-users-card book-users-card-template hidden">
         <div class="book-users-pseudo-checkbox-container"><button class="book-users-pseudo-checkbox"></button></div>
@@ -142,10 +142,12 @@
       new_card_checkbox.id = 'user' + new_card.id.split('-')[2]
       new_card_infos.appendChild(new_info_name)
       new_card_infos.appendChild(new_info_email)
+      next_arrow_btn_mobile.classList.remove('disabled')
       document.querySelector('.book-users-selected').appendChild(new_card)
     } else {
       selected_container.querySelector('#' + user_card.id).remove();
       next_button.classList.remove('hilight-next-step')
+      next_arrow_btn_mobile.classList.add('disabled')
     }
     selected_container.querySelectorAll('.selected:not(.book-users-card-template)').forEach((card) => {
       selected_array.push(card.id.split('-')[1])

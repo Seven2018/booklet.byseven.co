@@ -10,12 +10,14 @@
 
 <div class="campaigns-container">
 <div id="main-page-title">
-    <div class="flex-row-start-centered">
-      <%= link_to campaigns_path, class: 'btn-back' do %>
+    <div class="show-campaign-title">
+      <div class="title-return">
+        <%= link_to campaigns_path, class: 'btn-back' do %>
         <i class="fas fa-angle-left"></i>
-      <% end %>
-      <h1><%= completion %>% - <%= @campaign.title %></h1>
-      <div class="main-page-title__tags">
+        <% end %>
+        <h1><%= completion %>% - <%= @campaign.title %></h1>
+      </div>
+      <div class="main-page-title__tags show">
         <% @campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
           <p class="main-page-title__tag-pill"><%= tag.tag_name %></p>
         <% end %>
