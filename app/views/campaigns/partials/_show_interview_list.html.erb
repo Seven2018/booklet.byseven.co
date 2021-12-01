@@ -65,7 +65,7 @@ review yet</p>
     <% else %>
       <p class="campaign-interview-card__comment">Launch a crossed review when employee and manager reviews are done</p>
       <p class="campaign-interview-card__status">Until <strong><%= crossed_interview.date %></strong></p>
-      <% if employee_view %>
+      <% if employee_view || employee_interview.completed == false || manager_interview.completed == false %>
         <div class="campaign-interview-card__fill"></div>
       <% else %>
         <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>

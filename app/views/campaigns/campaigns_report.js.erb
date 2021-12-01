@@ -1,2 +1,10 @@
 document.querySelector('.campaigns-report-managers').innerHTML = '<%= j render("campaigns/partials/campaigns_report_managers", all_campaigns: @all_campaigns, campaigns: @campaigns, managers: @managers, selected_manager_id: @selected_manager_id) %>';
+if ("<%= @reload_control %>" == 'true') {
+  document.querySelector('.campaigns-report-list__controls').innerHTML = '<%= j render("campaigns/partials/campaigns_report_controls_infos", campaigns: @campaigns, start_date: @start_date, end_date: @end_date) %>';
+}
 document.querySelector('.campaigns-report-list__index').innerHTML = '<%= j render("campaigns/partials/campaigns_report_index", campaigns: @campaigns) %>';
+
+flatpickr(".datepicker", {
+  disableMobile: true,
+  dateFormat: "d/m/Y",
+})

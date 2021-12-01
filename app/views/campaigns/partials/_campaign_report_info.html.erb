@@ -1,6 +1,9 @@
 <div class="campaigns-report-campaign-card__show-summary-arrow"></div>
 <div class="campaigns-report-campaign-card__show-summary-arrow-prime"></div>
-<div class="campaign-report-info-top"><p><%= campaign.title %></p></div>
+<div class="campaign-report-info-top">
+  <p><%= campaign.title %></p>
+  <%= link_to 'Go to campaign', campaign_path(campaign) %>
+</div>
 <div class="campaign-report-info-bottom">
   <div class="campaign-report-info-employees">
     <p>Employees</p>
@@ -18,7 +21,7 @@
     </div>
   </div>
   <div class="campaign-report-info-ratings">
-    <p>Average ratings</p>
+    <p>Average ratings (Crossed reviews)</p>
     <div class="campaign-report-info-ratings__table">
       <% campaign.interview_form.interview_questions.where(question_type: 'rating').order(position: :asc).each do |question| %>
         <div class="campaign-report-info-ratings__table-card">
