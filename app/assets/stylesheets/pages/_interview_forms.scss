@@ -58,7 +58,7 @@
   h3 {
     max-width: 37rem;
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bolder;
     white-space: nowrap;
     overflow: hidden;
@@ -430,6 +430,71 @@
   }
 }
 
+.template-show-lines-controls--mobile {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: space-between;
+  align-items: center;
+  background:white;
+  border: 1px solid #3177B7;
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: width .25s linear;
+
+
+  .template-show-lines-controls-block {
+    height: 3rem;
+    min-height: 3rem;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem 20%;
+    position: relative;
+    transition: width .25s linear;
+    color: #3177B7;
+    i {
+      margin-right: 1rem;
+    }
+
+    &:hover {
+      background-color: #3177B7 !important;
+      border-radius: 5px !important;
+      color: white;
+    }
+
+    .hidden-lines-form {
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      background: white;
+      padding: 2rem;
+      position: absolute;
+      top: 7rem;
+      right: 0;
+      z-index: 10;
+      opacity: 1;
+
+      .trix-content {
+        // min-height: 30rem;
+        font-size: 1.6rem;
+      }
+
+      form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      i {
+        margin: 0;
+      }
+    }
+  }
+}
+
 .trix-content {
   // min-height: 30rem;
   font-size: 1.6rem;
@@ -560,8 +625,32 @@
 .template-show-lines-control-btn {
   cursor: pointer;
   height: 5rem;
-  display:flex;
+  display: none;
   align-items: center;
+
+  @include from-medium {
+    display:flex;
+  }
+
+  .close-template-btn {
+    padding: 1rem;
+  }
+
+  i {
+    font-size: 2rem;
+    margin-right: 1rem;
+  }
+}
+
+.template-show-lines-control-btn--mobile {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @include from-medium {
+    display: none;
+  }
 
   .close-template-btn {
     padding: 1rem;
@@ -993,63 +1082,34 @@
   padding: 1rem 0.75rem;
   margin-bottom: 1rem;
 
-  ul {
-    list-style: disc;
-    padding-left: 1rem;
-    counter-reset: li;
-
-    @include from-medium {
-      list-style: none;
-    }
-  }
-
-  li {
-    height: 3rem;
-    cursor: pointer;
-    margin: 0;
-    counter-increment: li;
-  }
-
-  li::before {
-    color: black;
-    display: none;
-    margin-right: 1em;
-    margin-right: 0.5em;
-    text-align: right;
-    direction: rtl;
-
-
-
-    @include from-medium {
-      content: "Option " counter(li);
-    }
+  form {
+    height: 52px;
+    margin-bottom: 1rem;
   }
 
   input {
-    height: 100%;
     width: 10rem;
-    padding: 0;
-    border: none;
-    border-bottom: 1px solid transparent !important;
+    padding: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    margin-left: 1rem;
     flex-grow: 1;
 
     @include from-medium {
       width: auto;
-      margin-top: -1.2rem;
     }
   }
 
-  div {
-    height: 3rem;
-  }
-
-  ul > div {
-    margin-bottom: 1rem;
-  }
-
   .mcq-input-div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     flex-grow: 1;
   }
+}
+
+.mcd-add-answer-text {
+  padding: 1rem;
 }
 
 .fa-trash {

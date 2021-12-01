@@ -1,0 +1,52 @@
+<%= simple_form_for :select_period, url: campaigns_report_path, method: :get, remote: true do |f| %>
+  <div class="select_period_search_manager">
+    <i class="fas fa-search"></i>
+    <%= f.input :name, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
+  </div>
+  <div class='flex-row-between-end'>
+    <%= f.input :start, label: 'From', input_html: {class: 'datepicker', value: start_date, onchange: 'checkDateInterval();selectManagerbyDate(this)'}, placeholder: 'Select date' %>
+    <%= f.input :end, label: 'To', input_html: {class: 'datepicker', value: end_date, onchange: 'checkDateInterval();selectManagerbyDate(this)'}, placeholder: 'Select date' %>
+    <%= f.hidden_field :manager_id %>
+    <button type='submit'>
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+  <div class="campaigns-report-list__controls-infos">
+    <%= f.collection_radio_buttons(:campaigns, [['all', 'all'], ['ongoing', 'ongoing'], ['completed', 'completed']], :first, :last) do |b| %>
+      <% if b.text == 'all' %>
+        <div class="campaigns-report-list__controls-info">
+          <%= b.radio_button checked: 'checked', onclick: 'autoSubmit(this)', class: 'hidden' %>
+          <label for="select_period_campaigns_all">
+            <p><%= campaigns.count %></p>
+            <p>Interview campaigns created</p>
+          </label>
+        </div>
+      <% elsif b.text == 'ongoing' %>
+        <div class="campaigns-report-list__controls-info">
+          <%= b.radio_button onclick: 'autoSubmit(this)', class: 'hidden' %>
+          <label for="select_period_campaigns_ongoing">
+            <p><%= campaigns.where_exists(:interviews, 'completed = ?', false).count %></p>
+            <p>Ongoing Interview campaigns</p>
+          </label>
+        </div>
+      <% elsif b.text == 'completed' %>
+        <div class="campaigns-report-list__controls-info">
+          <%= b.radio_button onclick: 'autoSubmit(this)', class: 'hidden' %>
+          <label for="select_period_campaigns_completed">
+            <p><%= campaigns.where_not_exists(:interviews, 'completed = ?', false).count %></p>
+            <p>Completed Interview campaigns</p>
+          </label>
+        </div>
+      <% end %>
+    <% end %>
+    <div class="campaigns-report-list__controls-info-grey">
+      <% employees_interview = Interview.where(campaign_id: campaigns.map(&:id), label: 'Employee') %>
+      <p><%= employees_interview.where(completed: true).count %> / <%= employees_interview.count %></p>
+      <p>Employees interviews completed</p>
+    </div>
+    <div class="campaigns-report-list__controls-info-grey">
+      <p><%= campaigns.where_not_exists(:interviews, 'completed = ?', false).map{|x| x.owner}.uniq.count %> / <%= campaigns.map{|x| x.owner}.uniq.count %></p>
+      <p>Managers interviews completed</p>
+    </div>
+  </div>
+<% end %>

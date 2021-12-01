@@ -20,7 +20,7 @@
             <i class="fas fa-user"></i>
             <p><%= campaign.interviews.where(label: 'Crossed').count %></p>
           </div>
-          <div class="campaigns-report-campaign-card__bottom-item">
+          <div class="campaigns-report-campaign-card__bottom-item" data-toggle='tooltip' title='Crossed Reviews only'>
             <p>Rating</p>
             <i class="fas fa-star"></i>
             <p><%= ratings.present? ? ratings.sum.fdiv(ratings.count) : 'N/A' %></p>

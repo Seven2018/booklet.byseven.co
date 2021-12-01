@@ -13,7 +13,7 @@ User.create(firstname: "Hedi", lastname: "Mestiri", company: seven, email: "hedi
 User.create(firstname: "Yahya", lastname: "Fallah", company: seven, email: "yahya.fallah@byseven.co", password: "Seven2021", access_level: "HR", gender: 'M', picture: 'https://media-exp1.licdn.com/dms/image/C5603AQFc5Cf9X4gL_w/profile-displayphoto-shrink_200_200/0?e=1585180800&v=beta&t=eJBIoMSgMxXKenQr7PrWixQSFBpIvcjhme-cQ5hjOm4')
 User.create(firstname: "Jorick", lastname: "Roustan", company: seven, email: "jorick.roustan@byseven.co", password: "Seven2021", access_level: "Manager", gender: 'M', picture: 'http://static8.viadeo-static.com/_Z-gjrDmn0yPKoiw9P481xLMzs0=/300x300/member/00223346scu6m79w%3Fts%3D1449006810000')
 User.create(firstname: "Mathilde", lastname: "Meurer", company: seven, email: "mathilde.meurer@byseven.co", password: "Seven2021", access_level: "HR", gender: 'F', picture: 'https://www.tedxbordeaux.com/wp-content/uploads/2018/07/equipe_mathilde_meurer.jpg')
-User.create(firstname: "Marjorie", lastname: "Buisson", company: bigmamma, email: "marjorie.buisson@bigmamma.com", password: "BigMamma2021", access_level: "HR", gender: 'F', picture: 'https://pbs.twimg.com/profile_images/801444623302455297/lJ4dYiKX.jpg')
+User.create(firstname: "Marjorie", lastname: "Buisson", company: bigmamma, email: "marjoriebuisson@gmail.com", password: "BigMamma2021", access_level: "HR", gender: 'F', picture: 'https://pbs.twimg.com/profile_images/801444623302455297/lJ4dYiKX.jpg')
 
 User.all.each do |user|
   user.update(authentication_token: Base64.encode64(user.email).gsub("\n","") + SecureRandom.hex(32))

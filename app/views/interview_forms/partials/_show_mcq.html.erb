@@ -1,21 +1,13 @@
 <div id="assessment-show-content">
   <div class='mcq-options-list'>
     <% i = 1 %>
-    <ul>
+
       <% question.options.sort_by {|k, v| v}.each do |option| %>
         <% if page == 'edit' %>
-        <div onclick="openEditOptionForm(this);">
-          <li style='color: #888888;' data-toggle='tooltip' title='Click to edit'><%= option[0] %></li>
-        <% else %>
-        <div>
-          <li style='color: #888888;cursor: default;'><%= option[0] %></li>
-        <% end %>
-          <% i += 1 %>
-          <div class="hidden-form-ajax hidden">
             <%= simple_form_for :edit_option, url: edit_mcq_option_path, method: :patch, remote: true do |f| %>
               <div class="flex-row-between-centered">
                 <div class="flex-row-start-centered mcq-input-div">
-                  <li></li>
+                  <p>Option <%= i %> :</p>
                   <%= f.text_field :option, value: option[0], autocomplete: 'off' %>
                 </div>
                 <div class="flex-row-end-centered">
@@ -30,16 +22,20 @@
               <%= f.hidden_field :position, value: option[1] %>
               <%= f.hidden_field :question_id, value: question.id %>
             <% end %>
+        <% else %>
+          <div>
+            <li style='color: #888888;cursor: default;'><%= option[0] %></li>
           </div>
-        </div>
+        <% end %>
+        <% i += 1 %>
       <% end %>
       <div class='hidden-form-ajax add-option-form hidden'>
         <%= simple_form_for :add_option, url: add_mcq_option_path, remote: true do |f| %>
           <div class='flex-row-start-centered'>
-            <li></li>
+
             <%= f.text_field :option, autocomplete: 'off' %>
             <div class="flex-row-end-centered">
-              <%= button_tag type: 'submit' do %>
+              <%= button_tag type: 'submit', onclick: "SubmitEditOptionForm(this);" do %>
                 <i class="fas fa-check"></i>
               <% end %>
               <a href="javascript:void(0)" onclick="this.closest('.hidden-form-ajax').classList.add('hidden');">
@@ -50,7 +46,7 @@
           <%= f.hidden_field :question_id, value: question.id %>
         <% end %>
       </div>
-    </ul>
+
     <% if page == 'edit' %>
       <div class="mcq-add-answer" onclick="this.closest('.mcq-options-list').querySelector('.add-option-form').classList.remove('hidden');"><p class="mcd-add-answer-text">Add answer</p></div>
     <% end %>

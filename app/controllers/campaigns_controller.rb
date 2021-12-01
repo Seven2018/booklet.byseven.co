@@ -35,13 +35,17 @@ class CampaignsController < ApplicationController
     @selected_manager_id = ''
     authorize @campaigns
     if params[:select_period].present?
-      # raise
-      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', params[:select_period][:start].to_date, params[:select_period][:end].to_date)
+      @start_date = params[:select_period][:start].to_date
+      @end_date = params[:select_period][:end].to_date
+      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', @start_date, @end_date)
       @all_campaigns = @campaigns
+      @reload_control = 'true'
       if params[:select_period][:campaigns] == 'ongoing'
         @campaigns = @campaigns.where_exists(:interviews, completed: false)
+        @reload_control = 'false'
       elsif params[:select_period][:campaigns] == 'completed'
         @campaigns = @campaigns.where_not_exists(:interviews, completed: false)
+        @reload_control = 'false'
       end
       if params[:select_period][:name] != ''
         @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).search_by_name("#{params[:select_period][:name]}").order(lastname: :asc)

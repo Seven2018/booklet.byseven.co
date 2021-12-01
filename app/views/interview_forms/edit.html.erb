@@ -39,6 +39,27 @@
               </a>
             </div>
           </div>
+          <div class="template-show-lines-control-btn--mobile" onclick="columnMenu();">
+            <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
+            <div class="template-show-lines-controls--mobile hidden">
+              <a class="template-show-lines-controls-block" onclick="addLine('separator');">
+                <i class="fas fa-list-ol"></i>
+                <p>Chapter</p>
+              </a>
+              <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
+                <i class="fas fa-question-circle"></i>
+                <p>Open Question</p>
+              </a>
+              <a class="template-show-lines-controls-block" onclick="addLine('rating');">
+                <i class="fas fa-star-half-alt"></i>
+                <p>Rating</p>
+              </a>
+              <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
+                <i class="far fa-check-square"></i>
+                <p>Multi-Select</p>
+              </a>
+            </div>
+          </div>
           <div class="button-add-catalogue">
             <%= link_to :back do %>
               <div class="btn-blue-text">
@@ -226,10 +247,11 @@
   }
 
   function lineMenu() {
-    var contentbar = document.querySelector('.template-show-lines-controls')
-    var iconedit = document.querySelector('#icon-edit')
-    var iconclose = document.querySelector('#icon-close')
-    var contentblock = document.querySelectorAll('.template-show-lines-controls-block')
+    container = document.querySelector('.template-show-lines-control-btn')
+    contentbar = container.querySelector('.template-show-lines-controls')
+    iconedit = container.querySelector('#icon-edit')
+    iconclose = container.querySelector('#icon-close')
+    contentblock = container.querySelectorAll('.template-show-lines-controls-block')
 
     if (contentbar.style.display === "none") {
       contentbar.style.display = "flex";
@@ -255,6 +277,21 @@
         iconedit.classList.remove('hidden')
       },250);
     }
+  }
+
+  function columnMenu() {
+    container = document.querySelector('.template-show-lines-control-btn--mobile')
+    controls = container.querySelector('.template-show-lines-controls--mobile')
+    button = container.querySelector('.add-template-btn')
+    button.classList.add('hidden')
+    controls.classList.remove('hidden')
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, container)) {
+        button.classList.remove('hidden')
+        controls.classList.add('hidden')
+        this.removeEventListener('click', arguments.callee, false);
+      }
+    });
   }
 
   function addLine(type) {
