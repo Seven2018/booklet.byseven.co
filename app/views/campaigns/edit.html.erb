@@ -7,11 +7,13 @@
         <h1><%= @campaign.title %> -</h1>
         <h5>&nbsp;<%= users.count %> selected employees</h5>
       </div>
-      <div class="flex-row-start-centered">
+      <div class="edit-card-info">
         <p><%= interview_form.interview_questions.count %> questions</p>
-        <% interview_form.interview_form_tags.each do |tag| %>
+        <div class="tag-pill">
+          <% interview_form.interview_form_tags.each do |tag| %>
           <p class="campaign-select-date-tag-pill"><%= tag.tag_name %></p>
         <% end %>
+      </div>
       </div>
     </div>
     <% users.each do |user| %>

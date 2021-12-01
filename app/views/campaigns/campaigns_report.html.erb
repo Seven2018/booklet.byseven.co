@@ -22,7 +22,8 @@
           <div class="campaigns-report-list__controls-infos">
             <%= f.collection_radio_buttons(:campaigns, [['all', 'all'], ['ongoing', 'ongoing'], ['completed', 'completed']], :first, :last) do |b| %>
               <% if b.text == 'all' %>
-                <div class="campaigns-report-list__controls-info">
+                <div class="report-white-info-card">
+                  <div class="campaigns-report-list__controls-info">
                   <%= b.radio_button checked: 'checked', onclick: 'autoSubmit(this)', class: 'hidden' %>
                   <label for="select_period_campaigns_all">
                     <p><%= @campaigns.count %></p>
@@ -44,10 +45,12 @@
                     <p><%= @campaigns.where_not_exists(:interviews, 'completed = ?', false).count %></p>
                     <p>Completed Interview campaigns</p>
                   </label>
+                  </div>
                 </div>
               <% end %>
             <% end %>
-            <div class="campaigns-report-list__controls-info-grey">
+            <div class="report-grey-info-card">
+              <div class="campaigns-report-list__controls-info-grey">
               <% employees_interview = Interview.where(campaign_id: @campaigns.map(&:id), label: 'Employee') %>
               <p><%= employees_interview.where(completed: true).count %> / <%= employees_interview.count %></p>
               <p>Employees interviews completed</p>
@@ -56,6 +59,7 @@
               <p><%= @campaigns.where_not_exists(:interviews, 'completed = ?', false).map{|x| x.owner}.uniq.count %> / <%= @campaigns.map{|x| x.owner}.uniq.count %></p>
               <p>Managers interviews completed</p>
             </div>
+          </div>
           </div>
         <% end %>
       </div>

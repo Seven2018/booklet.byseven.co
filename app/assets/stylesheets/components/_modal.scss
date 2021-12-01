@@ -32,12 +32,18 @@ body.filter-open {
   display: inline-block;
   text-align: left;
   vertical-align: middle;
-  margin-top: 0;
+  margin-top: 25vh;
   margin-bottom: 0;
   // height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+@include from-medium {
+  .modal-dialog {
+    margin-top: 0;
+  }
 }
 
 .modal-header {
@@ -86,8 +92,13 @@ body.filter-open {
 }
 
 .modal-body {
+  display: flex;
+  flex-direction: column;
   padding: 1rem 2rem;
   border-top: 1px solid #dee2e6;
+  min-height: 20rem;
+  justify-content: space-between;
+
 
 
   .label-checkbox {
