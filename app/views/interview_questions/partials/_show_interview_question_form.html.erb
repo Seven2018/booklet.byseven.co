@@ -73,14 +73,11 @@
         <button class="btn-blue"><p>Validate</p></button>
       <% end %>
     <% elsif j == questions.where.not(question_type: 'separator').count && @interview.completed == true %>
-      <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
-      <button class="btn-blue btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
+      <button class="btn-blue btn-blue" onclick='submitAnswers(this)'><p>Submit Form</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count && question.required && current_answer.nil? %>
-      <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
-      <button class="btn-blue btn-blue-disabled" onclick='submitAnswers()' disabled><p>Submit Form</p></button>
+      <button class="btn-blue btn-blue-disabled" onclick='submitAnswers(this)' disabled><p>Submit Form</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count %>
-      <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
-      <button class="btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
+      <button class="btn-blue" onclick='submitAnswers(this)'><p>Submit Form</p></button>
     <% elsif question.required && current_answer.nil? && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
     <% else %>

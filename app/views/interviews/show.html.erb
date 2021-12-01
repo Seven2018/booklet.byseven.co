@@ -145,6 +145,7 @@
         </div>
         <% j += 1 %>
       <% end %>
+      <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
       <div class="interview-review hidden">
       </div>
     </div>
@@ -197,6 +198,7 @@
       position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
       question = document.querySelectorAll('.interview-question')[position]
       previous_question = document.querySelectorAll('.interview-question')[position - 1]
+      previous_question.querySelector('.hidden-submit').click()
       previous_question.classList.add('hidden')
       question.classList.remove('hidden')
     }
@@ -223,9 +225,10 @@
     progression_bar = document.querySelector('.interview-progress-bar-container')
     if (option == 'summary') {
       current_question = element.closest('.interview-question')
+      current_question.querySelector('.hidden-submit').click()
+      document.querySelector('body').classList.add('wait')
+      setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
       progression_bar.classList.add('hidden')
-      current_question.classList.add('hidden')
-      summary.classList.remove('hidden')
     } else {
       target_position = parseInt(element.id.split('-')[1],10)
       question = document.querySelector('#question-' + target_position)
@@ -236,13 +239,11 @@
     updateProgressionBar()
   }
 
-  function submitAnswers() {
-    i = 1
-    document.querySelectorAll('.hidden-submit').forEach((button) => {
-      setTimeout(function(){button.click()}, 100)
-      i += 1
-    })
-    setTimeout(function(){document.querySelector('.hidden-link').click()},(i+1)*200)
+  function submitAnswers(element) {
+    position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
+    last_question = document.querySelectorAll('.interview-question')[position - 1]
+    last_question.querySelector('.hidden-submit').click()
+    document.querySelector('.hidden-link').click()
   }
 
   function updateProgressionBar() {

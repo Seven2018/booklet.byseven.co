@@ -5,9 +5,11 @@
   </div>
   <div class="select-date-card-info">
     <p><%= selected_template.interview_questions.count %> questions</p>
-    <% selected_template.interview_form_tags.each do |tag| %>
-      <p class="campaign-select-date-tag-pill"><%= tag.tag_name %></p>
-    <% end %>
+    <div class="campaign-select-date-tag-pill__container">
+      <% selected_template.interview_form_tags.each do |tag| %>
+        <p class="campaign-select-date-tag-pill"><%= tag.tag_name %></p>
+      <% end %>
+    </div>
   </div>
 </div>
 <% selected_users.each do |user| %>
