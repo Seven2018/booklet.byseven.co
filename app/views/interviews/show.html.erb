@@ -127,7 +127,7 @@
       <% end %>
       <div class="interview-question__controls">
         <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
-        <button class="btn-blue btn-blue" onclick='submitAnswers()'><p>Submit Form</p></button>
+        <button class="btn-blue btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
       </div>
     </div>
   <% else %>
@@ -245,10 +245,14 @@
     updateProgressionBar()
   }
 
-  function submitAnswers(element) {
-    position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
-    last_question = document.querySelectorAll('.interview-question')[position - 1]
-    last_question.querySelector('.hidden-submit').click()
+  function submitAnswers(element, option = '') {
+    if (option == 'Crossed') {
+      element.closest('.interview-summary').querySelector('.hidden-submit').click()
+    } else {
+      position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
+      last_question = document.querySelectorAll('.interview-question')[position - 1]
+      last_question.querySelector('.hidden-submit').click()
+    }
     document.querySelector('.hidden-link').click()
   }
 
