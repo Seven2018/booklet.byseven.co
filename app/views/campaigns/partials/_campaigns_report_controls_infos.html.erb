@@ -3,7 +3,7 @@
     <i class="fas fa-search"></i>
     <%= f.input :name, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: false, required: false %>
   </div>
-  <div class='flex-row-between-end'>
+  <div class='report-date-control'>
     <%= f.input :start, label: 'From', input_html: {class: 'datepicker', value: start_date, onchange: 'checkDateInterval();selectManagerbyDate(this)'}, placeholder: 'Select date' %>
     <%= f.input :end, label: 'To', input_html: {class: 'datepicker', value: end_date, onchange: 'checkDateInterval();selectManagerbyDate(this)'}, placeholder: 'Select date' %>
     <%= f.hidden_field :manager_id %>
