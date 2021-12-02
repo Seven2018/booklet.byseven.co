@@ -117,7 +117,7 @@ class UsersController < ApplicationController
           @creating << row
           present << user_row['email'].downcase
         else
-          continue if user.company_id != current_user.company_id
+          next if user.company_id != current_user.company_id
           user_row.each do |key, value|
             begin
               user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
