@@ -117,17 +117,17 @@ class UsersController < ApplicationController
           @creating << row
           present << user_row['email'].downcase
         else
-          continue if user.company_id != current_user.company_id
+          next if user.company_id != current_user.company_id
           user_row.each do |key, value|
-            begin
+            # begin
               user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
               if (user.attributes.key?(key) == true && user.attributes[key].downcase != value.downcase)
                 @updating << {lastname: user.lastname, firstname: user.firstname, former: user.attributes[key], new: value}
               elsif  (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
                 @updating << {lastname: user.lastname, firstname: user.firstname, former: user_tag.tag.tag_name, new: value}
               end
-            rescue
-            end
+            # rescue
+            # end
           end
           present << user_row['email'].downcase
         end

@@ -144,7 +144,7 @@
       <% questions.where.not(question_type: 'separator').each do |question| %>
         <div class="interview-question hidden" id='question-<%= j %>'>
           <div class="interview-separator">
-            <% previous_separators = questions.where(question_type: 'separator').where('position <= ?', j) %>
+            <% previous_separators = questions.where(question_type: 'separator').where('position <= ?', question.position) %>
             <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
           </div>
           <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j, read_only: (@interview.label == 'Employee' && @interview.employee != current_user) %>
@@ -247,7 +247,9 @@
 
   function submitAnswers(element, option = '') {
     if (option == 'Crossed') {
-      element.closest('.interview-summary').querySelector('.hidden-submit').click()
+      element.closest('.interview-summary').querySelectorAll('.hidden-submit').forEach((button) => {
+        button.click()
+      })
     } else {
       position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
       last_question = document.querySelectorAll('.interview-question')[position - 1]
