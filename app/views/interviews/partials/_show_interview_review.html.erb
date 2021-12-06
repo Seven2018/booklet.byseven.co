@@ -10,19 +10,19 @@
   <% if question.question_type == 'separator' %>
     <p class='interview-summary__separator'><%= question.question %></p>
   <% elsif question.question_type == 'open_question' %>
-    <div class="interview-summary__open-question">
+    <div class="interview-summary__open-question" onclick='goToQuestion(this)' id='target-<%= k %>'>
       <div class="flex-row-start-centered">
         <i class="fas fa-question"></i>
-        <p onclick='goToQuestion(this)' id='target-<%= k %>'><%= question.question %></p>
+        <p><%= question.question %></p>
       </div>
       <p><%= current_user.firstname %>: <%= current_answer.answer %></p>
     </div>
     <% k += 1 %>
   <% elsif question.question_type == 'mcq' %>
-    <div class="interview-summary__mcq">
+    <div class="interview-summary__mcq" onclick='goToQuestion(this)' id='target-<%= k %>'>
       <div class="flex-row-start-centered">
         <i class="fas fa-check"></i>
-        <p onclick='goToQuestion(this)' id='target-<%= k %>'><%= question.question %></p>
+        <p><%= question.question %></p>
       </div>
       <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
         <fieldset class="mcq">
@@ -43,10 +43,10 @@
       <% end %>
     </div>
   <% elsif question.question_type == 'rating' %>
-    <div class="interview-summary__rating">
+    <div class="interview-summary__rating" onclick='goToQuestion(this)' id='target-<%= k %>'>
       <div class="flex-row-start-centered">
         <i class="far fa-star"></i>
-        <p onclick='goToQuestion(this)' id='target-<%= k %>'><%= question.question %></p>
+        <p><%= question.question %></p>
       </div>
       <fieldset class="rating read_only">
         <% for i in 1..question.options.keys.first.to_i %>

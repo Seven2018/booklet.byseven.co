@@ -242,7 +242,9 @@
   border-radius: .5rem;
   position: relative;
   min-width: 28rem;
-  min-height: 24rem;
+  max-width: 35rem;
+  height: 24rem;
+
 
   .campaign-card__header {
     height: 3rem;
@@ -288,7 +290,6 @@
   align-items: center;
 
   h3 {
-    max-width: 37rem;
     margin: 0;
     font-size: 2rem;
     font-weight: bolder;
@@ -406,9 +407,10 @@
 }
 
 .campaign-card-summary__assignment {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #696969;
   margin-left: 1rem;
+  font-weight: 600;
 
   &.manager-completed {
     font-size: 1rem;
@@ -868,10 +870,6 @@
     }
 }
 
-.report-date-control {
-  margin-bottom: 2rem;
-}
-
 .form-group.string.required.select_period_start {
   margin-right: 1rem;
 }
@@ -1142,8 +1140,8 @@
       justify-content: center;
       align-items: center;
       height: 5rem;
-      width: 5rem;
-      border-radius: 2.5rem;
+      min-width: 5rem;
+      border-radius: 100%;
       margin-right: 1rem;
       background-color: rgba(49, 119, 183, 0.35);
 
@@ -1155,8 +1153,13 @@
 
     .campaigns-report-campaign-card__top-title {
 
+
       p {
         font-weight: bolder;
+        max-width: 22rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
 
       p:first-of-type {
