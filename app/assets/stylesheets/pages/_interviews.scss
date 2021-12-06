@@ -68,6 +68,7 @@
     margin-bottom : 5rem;
     border: 1px solid #DCDCDC;
     border-radius: 3px;
+    cursor: pointer;
 
     @include from-medium {
       min-width: 60rem;
@@ -100,6 +101,7 @@
     margin-bottom : 5rem;
     border: 1px solid #DCDCDC;
     border-radius: 3px;
+    cursor: pointer;
 
     @include from-medium {
       min-width: 60rem;
@@ -142,6 +144,7 @@
     margin-bottom : 5rem;
     border: 1px solid #DCDCDC;
     border-radius: 3px;
+    cursor: pointer;
 
     @include from-medium {
     min-width: 60rem;
@@ -171,6 +174,10 @@
     & > div > p {
       margin: 1.25rem 2rem 0 0;
     }
+  }
+
+  .rad-label.disabled {
+    cursor: pointer;
   }
 
   .manager-answers-colors-info {

@@ -12,7 +12,6 @@
             <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
               <i class="fas fa-ellipsis-v"></i>
               <div class="content-dropdown hidden">
-                <%= link_to 'Edit', edit_interview_form_path(template) %>
                 <%= link_to 'Duplicate', duplicate_interview_form_path(template) %>
                 <% unless Campaign.where(interview_form_id: template).present? %>
                   <%= link_to 'Delete', interview_form_path(template), method: :delete, remote: true, data: {confirm: 'Are you sure ?'}%>
