@@ -1,6 +1,6 @@
 <div class="row">
   <% templates.each do |template| %>
-    <div id='template-card-<%= template.id %>' class="template-card-container col-xl-3 col-sm-6 col-xs-12">
+    <div id='template-card-<%= template.id %>' class="template-card-container col-xl-3 col-lg-4 col-sm-6 col-xs-12">
       <div class="interview-form-card interview-form-card__campaign" onclick="selectTemplate(this);">
         <div class="interview-form-card__controls">
           <h3 title='<%= template.title %>'><%= template.title %></h3>
