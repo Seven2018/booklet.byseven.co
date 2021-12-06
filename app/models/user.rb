@@ -75,6 +75,7 @@ class User < ApplicationRecord
           update = true
         else
           user = User.new(user_row)
+          user.access_level = 'Employee' unless ['HR', 'Manager', 'Employee'].include?(user_row['access_level'])
           user.company_id = company_id
           user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
           user.authentication_token = Base64.encode64(user.email).gsub("\n","") + SecureRandom.hex(32)

@@ -32,6 +32,8 @@
                 <% end %>
               <% end %>
             </li>
+          <% end %>
+          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
             <li>
               <% if params[:action] == 'organisation' %>
                 <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
