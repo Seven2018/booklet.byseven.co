@@ -60,6 +60,33 @@
         <% end %>
       </div>
     </div>
+    <div class="import-infos__block">
+      <div class="import-infos__block-title">
+        <div>
+          <p>Errors : (<%= errors.count %>)</p>
+          <div class="import-infos__block-title-buttons">
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="import-infos__block-list">
+        <div class="import-infos__user-card import-infos__user-card--headers">
+          <p>Fullname</p>
+          <p>From</p>
+          <p>To</p>
+        </div>
+        <% errors.each do |user| %>
+          <div class="import-infos__user-card import-infos__user-card--update">
+            <p><%= "#{user[:lastname]}, #{user[:firstname]}" %></p>
+            <p><%= user[:former] %></p>
+            <p><%= user[:new] %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
     <div class="cancel-submit-btns">
       <button class="btn-orange__white-border" onclick='fileTransfer(this);'>
         <p>Publish Changes</p>

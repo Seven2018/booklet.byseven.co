@@ -93,7 +93,7 @@
 
           <% if ['HR', 'Manager'].include?(current_user.access_level) %>
 
-            <%= link_to user_path(current_user, params: { access_level: "HR-light", last_page: "#{params[:controller]}-#{params[:action]}" }), class: "btn btn-secondary btn-left", method: :patch do %>
+            <%= link_to user_path(current_user, params: { access_level: "#{current_user.access_level}-light", last_page: "#{params[:controller]}-#{params[:action]}" }), class: "btn btn-secondary btn-left", method: :patch do %>
               <input type="radio" name="options" id="option1" autocomplete="off"> Employee
             <% end %>
             <label class="btn btn-secondary btn-right active">
@@ -105,7 +105,7 @@
             <label class="btn btn-secondary btn-left active">
               <input type="radio" name="options" id="option1" autocomplete="off" checked> Employee
             </label>
-            <%= link_to user_path(current_user, params: { access_level: "HR", last_page: "#{params[:controller]}-#{params[:action]}"}), class: "btn btn-secondary btn-right", method: :patch do %>
+            <%= link_to user_path(current_user, params: { access_level: "#{current_user.access_level.split('-').first}", last_page: "#{params[:controller]}-#{params[:action]}"}), class: "btn btn-secondary btn-right", method: :patch do %>
               <input type="radio" name="options" id="option2" autocomplete="off"> <%= current_user.access_level.split('-').first %>
             <% end %>
 
