@@ -3,7 +3,7 @@
   <p class="empty-card-list">No templates found, click on the blue button to create a template.</p>
 <% end %>
   <% templates.each do |template| %>
-    <div id='template-card-<%= template.id %>' class="col-xl-3 col-sm-6 col-xs-12">
+    <div id='template-card-<%= template.id %>' class="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
       <div class="interview-form-card">
         <%= link_to '', interview_form_path(template), class: 'stretched-link' %>
         <div class="interview-form-card__controls">
