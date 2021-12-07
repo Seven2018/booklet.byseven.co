@@ -31,7 +31,7 @@ review yet</p>
     <% end %>
   </div>
   <div class="campaign-interview-card">
-    <p class="campaign-interview-card__username">Me</p>
+    <p class="campaign-interview-card__username"><%= campaign.owner.fullname %></p>
     <% if manager_interview.completed %>
       <i class="fas fa-check-circle"></i>
       <p class="campaign-interview-card__status">Review completed</p>
