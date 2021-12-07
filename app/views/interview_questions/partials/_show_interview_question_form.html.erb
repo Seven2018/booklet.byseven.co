@@ -73,7 +73,7 @@
         <button class="btn-blue"><p>Validate</p></button>
       <% end %>
     <% elsif j == questions.where.not(question_type: 'separator').count && @interview.completed == true %>
-      <button class="btn-blue btn-blue" onclick='submitAnswers(this)'><p>Submit Form</p></button>
+      <button class="btn-blue btn-blue" onclick='submitAnswers(this)'><p>See Summary</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count && question.required && current_answer == '' %>
       <button class="btn-blue btn-blue-disabled" onclick='submitAnswers(this)' disabled><p>Submit Form</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count %>
