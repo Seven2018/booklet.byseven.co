@@ -1,6 +1,6 @@
 <% template.interview_questions.order(position: :asc).each do |question| %>
   <% question.required ? required = 'Required' : required = 'Not required' %>
-  <% if question.question_type == 'separator' %>
+  <% if question.separator? %>
     <% if page == 'edit' %>
       <div class="content-text content-text__separator" id="item-<%= question.position %>">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
@@ -56,7 +56,7 @@
         <% end %>
       </div>
     <% end %>
-  <% elsif question.question_type == 'open_question' %>
+  <% elsif question.open_question? %>
     <% if page == 'edit' %>
       <div class="content-text" id="item-<%= question.position %>">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
@@ -134,7 +134,7 @@
         <% end %>
       </div>
     <% end %>
-  <% elsif question.question_type == 'rating' %>
+  <% elsif question.rating? %>
     <% if page == 'edit' %>
       <div class="content-text" id="item-<%= question.position %>">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>
@@ -234,7 +234,7 @@
         <% end %>
       </div>
     <% end %>
-  <% elsif question.question_type == 'mcq' %>
+  <% elsif question.mcq? %>
     <% if page == 'edit' %>
       <div class="content-quiz" id="item-<%= question.position %>">
         <div class="content-show-view-question-anchor" id="anchor-<%= question.id %>"></div>

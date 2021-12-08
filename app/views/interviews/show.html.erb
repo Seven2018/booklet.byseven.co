@@ -19,9 +19,9 @@
         <% crossed_answer = InterviewAnswer.joins(:interview).find_by(interview_id: @interview.campaign.interviews.map(&:id), interview_question_id: question.id, user_id: manager.id, interviews: {label: 'Crossed'}) if question.question_type != 'separator' %>
         <% crossed_answer.present? ? current_answer = crossed_answer : current_answer = manager_answer %>
 
-        <% if question.question_type == 'separator' %>
+        <% if question.separator? %>
           <p class='interview-summary__separator'><%= question.question %></p>
-        <% elsif question.question_type == 'open_question' %>
+        <% elsif question.open_question? %>
           <div class="interview-summary__open-question">
             <div class="flex-row-start-centered">
               <i class="fas fa-question"></i>
@@ -37,7 +37,7 @@
             <% end %>
           </div>
           <% k += 1 %>
-        <% elsif question.question_type == 'mcq' %>
+        <% elsif question.mcq? %>
           <div class="interview-summary__mcq">
             <div class="flex-row-start-centered">
               <i class="fas fa-check"></i>
@@ -72,7 +72,7 @@
               <%= f.submit '', class: 'hidden-submit hidden' %>
             <% end %>
           </div>
-        <% elsif question.question_type == 'rating' %>
+        <% elsif question.rating? %>
           <div class="interview-summary__rating">
             <div class="flex-row-start-centered">
               <i class="far fa-star"></i>

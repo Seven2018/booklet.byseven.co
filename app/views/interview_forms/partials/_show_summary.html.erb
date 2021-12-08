@@ -4,7 +4,7 @@
   </div>
   <% template.interview_questions.order(position: :asc).each do |question| %>
     <a href="#anchor-<%= question.id %>">
-      <% if question.question_type == 'separator' %>
+      <% if question.separator? %>
         <div class='anchor anchor__separator'>
           <p><%= question.question %></p>
         </div>

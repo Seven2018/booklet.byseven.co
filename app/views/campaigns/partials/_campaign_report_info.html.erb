@@ -44,19 +44,19 @@
     <div class="campaign-report-info-questions__table">
       <% campaign.interview_form.interview_questions.order(position: :asc).each do |question| %>
         <div class="campaign-report-info-questions__table-card">
-          <% if question.question_type == 'separator' %>
+          <% if question.separator? %>
             <p><%= question.question %></p>
-          <% elsif question.question_type == 'open_question' %>
+          <% elsif question.open_question? %>
             <div class="flex-row-start-centered">
               <i class="fas fa-question-circle"></i>
               <p><%= question.question %></p>
             </div>
-          <% elsif question.question_type == 'rating' %>
+          <% elsif question.rating? %>
             <div class="flex-row-start-centered">
               <i class="fas fa-star-half-alt"></i>
               <p><%= question.question %></p>
             </div>
-          <% elsif question.question_type == 'mcq' %>
+          <% elsif question.mcq? %>
             <div class="flex-row-start-centered">
               <i class="far fa-check-square"></i>
               <p><%= question.question %></p>

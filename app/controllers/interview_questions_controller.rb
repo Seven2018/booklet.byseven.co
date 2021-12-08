@@ -7,7 +7,7 @@ class InterviewQuestionsController < ApplicationController
     authorize @question
     @question.position = @form.interview_questions.order(position: :asc).count + 1
     params[:interview_question][:required].present? ? @question.required = true : @question.required = false
-    if @question.question_type == 'rating'
+    if @question.rating?
       @question.options = {params[:interview_question][:options] => 1}
     end
     @question.save
@@ -21,7 +21,7 @@ class InterviewQuestionsController < ApplicationController
     authorize @question
     @question.update(question_params)
     params[:interview_question][:required].present? ? @question.update(required: true) : @question.update(required: false)
-    if @question.question_type == 'rating'
+    if @question.rating?
       @question.update(options: {params[:interview_question][:options] => 1})
     end
     respond_to do |format|

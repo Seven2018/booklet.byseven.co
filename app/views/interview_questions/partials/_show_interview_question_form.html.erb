@@ -6,7 +6,6 @@
         <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
       <% end %>
     </div>
-    <% question_type = question.question_type %>
     <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id) %>
     <% if existing_answer.nil? && @interview.label == 'Crossed' %>
       <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.campaign.interviews.find_by(label: 'HR').id, interview_question_id: question.id, user_id: @interview.campaign.owner) %>
@@ -19,13 +18,13 @@
       <% current_answer, current_comments = '', '' %>
     <% end %>
     <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
-      <% if question_type == 'open_question' %>
+      <% if question.open_question? %>
         <% if read_only %>
           <p><%= current_answer %></p>
         <% else %>
           <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer, onkeyup: 'enableNext(this);'} %>
         <% end %>
-      <% elsif question_type == 'rating' %>
+      <% elsif question.rating? %>
         <fieldset class="rating<%= ' read_only' if read_only %>">
           <% for i in 1..question.options.keys.first.to_i %>
             <% if current_answer.to_i == question.options.keys.first.to_i - i + 1 %>
@@ -42,7 +41,7 @@
             <%= f.input :comments, as: :text, input_html: {value: current_comments}, required: false %>
           <% end %>
         <% end %>
-      <% elsif question_type == 'mcq' %>
+      <% elsif question.mcq? %>
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label">
