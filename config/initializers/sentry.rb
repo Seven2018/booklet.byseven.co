@@ -1,4 +1,4 @@
-unless Rails.env.production?
+if Rails.env.production?
   Sentry.init do |config|
     config.dsn = ENV['SENTRY']
     config.breadcrumbs_logger = [:active_support_logger, :http_logger]
