@@ -3,6 +3,9 @@ class InterviewQuestion < ApplicationRecord
   has_many :interview_answers, dependent: :destroy
   serialize :options,Hash
 
+  scope :not_separator, -> { where.not(question_type: 'separator') }
+  scope :required, -> { where(required: true) }
+
   # TODO refacto question_type => enum
   # for perf + having below getters out of the box
   def open_question?

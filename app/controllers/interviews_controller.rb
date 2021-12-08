@@ -41,21 +41,27 @@ class InterviewsController < ApplicationController
   end
 
   def answer_question
-    interview = Interview.find(params[:interview_answer][:interview_id])
+    answer_params = params[:interview_answer]
+
+    answer = answer_params[:answer]
+    comments = answer_params[:comments]
+    question_id = answer_params[:interview_question_id]
+    interview_id = answer_params[:interview_id]
+
+    interview = Interview.find interview_id
     authorize interview
-    interview_question = InterviewQuestion.find(params[:interview_answer][:interview_question_id])
-    interview_answer = InterviewAnswer.find_by(interview_id: params[:interview_answer][:interview_id], interview_question_id: params[:interview_answer][:interview_question_id], user_id: current_user.id)
-    if interview_answer.present?
-      interview_answer.update(answer: params[:interview_answer][:answer], comments: params[:interview_answer][:comments])
-    else
-      interview_answer = InterviewAnswer.new(interview_id: params[:interview_answer][:interview_id], interview_question_id: params[:interview_answer][:interview_question_id], user_id: current_user.id, answer: params[:interview_answer][:answer], comments: params[:interview_answer][:comments])
-    end
-    interview_answer.save
-    interview_answers = InterviewAnswer.where(interview_id: params[:interview_answer][:interview_id])
-    if interview_answers.count >= interview.interview_form.interview_questions.where.not(question_type: 'separator').where(required: true).count
-      interview.update(completed: true) if interview.completed != true
-    end
-    return
+
+    InterviewAnswer.find_or_initialize_by(
+      interview: interview,
+      interview_question_id: question_id,
+      user: current_user
+    ).update(
+      answer: answer,
+      comments: comments
+    )
+
+    interview.complete!
+    head :no_content
   end
 
   private

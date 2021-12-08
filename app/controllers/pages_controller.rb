@@ -90,8 +90,6 @@ class PagesController < ApplicationController
 
   # Display the company Overview (pages/overview)
   def overview
-    
-    # raise
     @start_date = Date.today.beginning_of_year
     @end_date = Date.today
 
@@ -242,7 +240,6 @@ class PagesController < ApplicationController
         tag_cat_selected.update(position: tag_cat_selected.position + 1)
         tag_cat_next_right.update(position: tag_cat_selected.position - 1)
       end
-      # raise
     end
   end
 
@@ -383,7 +380,6 @@ class PagesController < ApplicationController
         end
         @filter_tags = Tag.where(id: tags.map{|x| x.split(':')[1]}).map(&:tag_name)
       # elsif params[:group].present?
-      #   raise
       #   @users = User.joins(:tags).merge(Tag.where(tag_category_id: params[:tag_category_id])).group(:tag_name)
 
       # elsif params[:order].present?
