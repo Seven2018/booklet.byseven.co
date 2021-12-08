@@ -1,8 +1,17 @@
 log
+log/*.log
+tmp/**/*
+tmp/*
+!log/.keep
+!tmp/.keep
+.DS_Store
+.env*
 
-/public/packs
-/public/packs-test
-/node_modules
-/yarn-error.log
+public/assets
+public/packs
+public/packs/manifest.json
+public/packs-test
+node_modules
+yarn-error.log
 yarn-debug.log*
 .yarn-integrity
