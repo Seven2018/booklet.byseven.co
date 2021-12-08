@@ -1,0 +1,70 @@
+# source database URL
+# database URLs take the format of:
+#   postgres://user:password@host:port/dbname
+#
+# we recommend a command which outputs a database URL
+# so sensitive information is not included in this file
+#
+# we *highly recommend* you use sslmode=verify-full when possible
+# see https://ankane.org/postgres-sslmode-explained for more info
+from: $(heroku config:get DATABASE_URL -r production)
+
+# destination database URL
+to: postgres://localhost:5432/booklet_byseven_co_development
+
+# exclude tables
+# exclude:
+#   - ar_internal_metadata
+#   - schema_migrations
+
+# define groups
+groups:
+  all:
+    - companies
+    - interview_forms
+    - users
+    - campaigns
+    - interviews
+    - categories
+    - tag_categories
+    - tags
+    - interview_form_tags
+    - user_tags
+    - action_text_rich_texts
+    - mods
+    - assessment_answers
+    - assessment_questions
+    - attendees
+    - contents
+    - content_categories
+    - content_skills
+    - folders
+    - content_folder_links
+    - currents
+    - folder_categories
+    - folder_links
+    - interview_questions
+    - interview_answers
+    - sessions
+    - skill_groups
+    - skills
+    - trainings
+    - user_forms
+    - user_interests
+    - user_skills
+    - workshops
+    - active_storage_attachments
+    - active_storage_blobs
+
+
+# sync specific schemas
+# schemas:
+#   - public
+
+# protect sensitive information
+data_rules:
+  email: unique_email
+  phone: unique_phone
+  last_name: random_letter
+  birthday: random_date
+  encrypted_*: null
