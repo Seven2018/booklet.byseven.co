@@ -19,6 +19,9 @@ class InterviewsController < ApplicationController
 
   def show
     @interview = Interview.find(params[:id])
+    @employee = @interview.employee
+    @manager = @interview.campaign.owner
+    @questions = @interview.interview_form.interview_questions.order(position: :asc)
     authorize @interview
     params[:show_review].present? ? @show_review = 'true' : @show_review = 'false'
     respond_to do |format|

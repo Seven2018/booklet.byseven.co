@@ -1,6 +1,6 @@
-<% employee = @interview.employee %>
-<% manager = @interview.campaign.owner %>
-<% questions = @interview.interview_form.interview_questions.order(position: :asc) %>
+
+
+
 
   <% if @interview.label == 'Crossed' %>
     <div class="interview-summary">
@@ -12,25 +12,25 @@
         <div class="employee-color-point"></div><p>This color refer to <span style="font-weight:900">employee's</span> answers</p>
       </div>
       <% k = 1 %>
-      <% questions.order(position: :asc).each do |question| %>
+      <% @questions.order(position: :asc).each do |question| %>
 
         <% unless question.separator? %>
           <% employee_answer = InterviewAnswer.joins(:interview).find_by(
               interview_id: @interview.interviews.ids,
               interview_question_id: question.id,
-              user_id: employee.id,
+              user_id: @employee.id,
               interviews: { label: 'Employee' }
             ) %>
           <% manager_answer = InterviewAnswer.joins(:interview).find_by(
             interview_id: @interview.interviews.ids,
             interview_question_id: question.id,
-            user_id: manager.id,
+            user_id: @manager.id,
             interviews: { label: 'HR' }
             ) %>
           <% crossed_answer = InterviewAnswer.joins(:interview).find_by(
             interview_id: @interview.interviews.ids,
             interview_question_id: question.id,
-            user_id: manager.id,
+            user_id: @manager.id,
             interviews: { label: 'Crossed' }
             ) %>
         <% end %>
@@ -46,8 +46,8 @@
               <p><%= question.question %></p>
             </div>
             <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
-              <p style="color: #939393"><%= employee.firstname %>: <%= employee_answer&.answer %></p>
-              <p style="color: #3177B7"><%= manager.firstname %>: <%= current_answer.answer %></p>
+              <p style="color: #939393"><%= @employee.firstname %>: <%= employee_answer&.answer %></p>
+              <p style="color: #3177B7"><%= @manager.firstname %>: <%= current_answer.answer %></p>
               <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer.answer} %>
               <%= f.hidden_field :interview_id, value: @interview.id %>
               <%= f.hidden_field :interview_question_id, value: question.id %>
@@ -159,10 +159,10 @@
         <button class="btn-blue btn-blue-start btn-blue-start--mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
       </div>
       <% j = 1 %>
-      <% questions.where.not(question_type: 'separator').each do |question| %>
+      <% @questions.where.not(question_type: 'separator').each do |question| %>
         <div class="interview-question hidden" id='question-<%= j %>'>
           <div class="interview-separator">
-            <% previous_separators = questions.where(question_type: 'separator').where('position <= ?', question.position) %>
+            <% previous_separators = @questions.where(question_type: 'separator').where('position <= ?', question.position) %>
             <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
           </div>
           <%= render 'interview_questions/partials/show_interview_question_form', questions: questions, question: question, j: j, read_only: (@interview.label == 'Employee' && @interview.employee != current_user) %>
