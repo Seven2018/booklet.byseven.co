@@ -20,7 +20,7 @@
           </div>
         <% end %>
       <% end %>
-    <% elsif @question.options.present? && @question.question_type == 'rating' %>
+    <% elsif @question.options.present? && @question.rating? %>
       <% array = (@question.options[:start]..@question.options[:end]).to_a %>
       <% array.each_with_index do |word, index| %>
         <% a = [word, word] %>
@@ -39,7 +39,7 @@
           </div>
         <% end %>
       <% end %>
-    <% elsif @question.question_type == 'open question' %>
+    <% elsif @question.open_question? %>
       <%= simple_form_for @answer, url: mod_add_answers_assessment_path(@form.mod, @form, question_id: @question.id), method: :post do |f| %>
         <%= f.input :answer, as: :text %>
         <% if @question.position != @form.assessment_questions.count %>

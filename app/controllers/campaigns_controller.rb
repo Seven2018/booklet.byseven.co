@@ -128,11 +128,28 @@ class CampaignsController < ApplicationController
     #   target = Interview.find_by(campaign_id: @campaign.id, employee_id: current_user.id, label: 'Employee')
     #   target.present? ? (redirect_to interview_path(target)) : (redirect_to root_path)
     # end
-    @interviews = []
-    selected_user = User.find(params[:search][:user_id]) if params[:search].present? && params[:search][:user_id] != ''
-    if selected_user.present?
-      @interviews = Interview.where(campaign_id: @campaign.id, employee_id: selected_user.id)
-    end
+
+    @current_user_employee = ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
+    @interviews_for_date =
+      if @current_user_employee
+        @campaign.interviews.find_by(employee_id: current_user.id)
+      else
+        @campaign.interviews.order(date: :asc)
+      end
+
+    @completion =
+      if @current_user_employee
+        @campaign.completion_for(current_user)
+      else
+        @campaign.completion_for(:all)
+      end
+
+    @interviews =
+      if selected_user.present?
+        Interview.where(campaign_id: @campaign.id, employee_id: selected_user.id)
+      else
+        []
+      end
     respond_to do |format|
       format.html
       format.js
@@ -161,6 +178,14 @@ class CampaignsController < ApplicationController
   end
 
   private
+
+  def selected_user
+    @selected_user ||= begin
+      return unless params[:search].present? && params[:search][:user_id].present?
+
+      User.find(params[:search][:user_id])
+    end
+  end
 
   def set_campaign
     @campaign = Campaign.find(params[:id])

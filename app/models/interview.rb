@@ -15,4 +15,8 @@ class Interview < ApplicationRecord
       tsearch: { prefix: true }
     },
     ignoring: :accents
+
+  delegate :interviews, to: :campaign
+
+  scope :completed, -> { where(completed: true) }
 end

@@ -1,21 +1,11 @@
-<% ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) ? employee = true : employee = false %>
-<% if employee %>
-  <% interviews_for_date = @campaign.interviews.find_by(employee_id: current_user.id) %>
-  <% last_date = interviews_for_date.date %>
-  <% completion = (@campaign.interviews.where(employee_id: current_user.id, completed: true).count.fdiv(@campaign.interviews.where(employee_id: current_user.id).count) * 100).round %>
-<% else %>
-  <% interviews_for_date = @campaign.interviews.order(date: :asc) %>
-  <% completion = (@campaign.interviews.where(completed: true).count.fdiv(@campaign.interviews.count) * 100).round %>
-<% end %>
-
 <div class="campaigns-container">
-<div id="main-page-title">
+  <div id="main-page-title">
     <div class="show-campaign-title">
       <div class="title-return">
         <%= link_to campaigns_path, class: 'btn-back' do %>
         <i class="fas fa-angle-left"></i>
         <% end %>
-        <h1><%= completion %>% - <%= @campaign.title %></h1>
+        <h1><%= @completion %>% - <%= @campaign.title %></h1>
       </div>
       <div class="main-page-title__tags show">
         <% @campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
@@ -23,11 +13,21 @@
         <% end %>
       </div>
     </div>
-    <% if employee %>
-      <h3>Review on <strong><%= last_date %></strong></h3>
-    <% else %>
-      <h3>Reviews from <strong><%= interviews_for_date.first.date %></strong> to <strong><%= interviews_for_date.last.date %></strong></h3>
-    <% end %>
+
+    <h3>
+      <% if @current_user_employee %>
+        Review on <strong>
+          <%= @interviews_for_date.date %>
+        </strong>
+      <% else %>
+          Reviews from <strong>
+            <%= @interviews_for_date.first.date %>
+          </strong> to <strong>
+            <%= @interviews_for_date.last.date %>
+          </strong>
+      <% end %>
+    </h3>
+
   </div>
   <div id="main-controls">
     <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>

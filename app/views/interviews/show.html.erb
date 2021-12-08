@@ -14,21 +14,39 @@
       <% k = 1 %>
       <% questions.order(position: :asc).each do |question| %>
 
-        <% employee_answer = InterviewAnswer.find_by(interview_id: @interview.campaign.interviews.map(&:id), interview_question_id: question.id, user_id: employee.id) if question.question_type != 'separator' %>
-        <% manager_answer = InterviewAnswer.joins(:interview).find_by(interview_id: @interview.campaign.interviews.map(&:id), interview_question_id: question.id, user_id: manager.id, interviews: {label: 'HR'}) if question.question_type != 'separator' %>
-        <% crossed_answer = InterviewAnswer.joins(:interview).find_by(interview_id: @interview.campaign.interviews.map(&:id), interview_question_id: question.id, user_id: manager.id, interviews: {label: 'Crossed'}) if question.question_type != 'separator' %>
-        <% crossed_answer.present? ? current_answer = crossed_answer : current_answer = manager_answer %>
+        <% unless question.separator? %>
+          <% employee_answer = InterviewAnswer.joins(:interview).find_by(
+              interview_id: @interview.interviews.ids,
+              interview_question_id: question.id,
+              user_id: employee.id,
+              interviews: { label: 'Employee' }
+            ) %>
+          <% manager_answer = InterviewAnswer.joins(:interview).find_by(
+            interview_id: @interview.interviews.ids,
+            interview_question_id: question.id,
+            user_id: manager.id,
+            interviews: { label: 'HR' }
+            ) %>
+          <% crossed_answer = InterviewAnswer.joins(:interview).find_by(
+            interview_id: @interview.interviews.ids,
+            interview_question_id: question.id,
+            user_id: manager.id,
+            interviews: { label: 'Crossed' }
+            ) %>
+        <% end %>
 
-        <% if question.question_type == 'separator' %>
+        <% current_answer = crossed_answer.present? ? crossed_answer : manager_answer %>
+
+        <% if question.separator? %>
           <p class='interview-summary__separator'><%= question.question %></p>
-        <% elsif question.question_type == 'open_question' %>
+        <% elsif question.open_question? %>
           <div class="interview-summary__open-question">
             <div class="flex-row-start-centered">
               <i class="fas fa-question"></i>
               <p><%= question.question %></p>
             </div>
             <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
-              <p style="color: #939393"><%= employee.firstname %>: <%= employee_answer.answer %></p>
+              <p style="color: #939393"><%= employee.firstname %>: <%= employee_answer&.answer %></p>
               <p style="color: #3177B7"><%= manager.firstname %>: <%= current_answer.answer %></p>
               <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer.answer} %>
               <%= f.hidden_field :interview_id, value: @interview.id %>
@@ -37,7 +55,7 @@
             <% end %>
           </div>
           <% k += 1 %>
-        <% elsif question.question_type == 'mcq' %>
+        <% elsif question.mcq? %>
           <div class="interview-summary__mcq">
             <div class="flex-row-start-centered">
               <i class="fas fa-check"></i>
@@ -55,12 +73,12 @@
                     <div class="rad-design"></div>
                     <div class="rad-text">
                       <%= b.text %>
-                      <% if b.text == manager_answer.answer && b.text == employee_answer.answer %>
+                      <% if b.text == manager_answer&.answer && b.text == employee_answer&.answer %>
                         <i class="fas fa-circle manager_answer"></i>
                         <i class="fas fa-circle employee_answer"></i>
-                      <% elsif b.text == manager_answer.answer %>
+                      <% elsif b.text == manager_answer&.answer %>
                         <i class="fas fa-circle manager_answer"></i>
-                      <% elsif b.text == employee_answer.answer %>
+                      <% elsif b.text == employee_answer&.answer %>
                         <i class="fas fa-circle employee_answer"></i>
                       <% end %>
                     </div>
@@ -72,7 +90,7 @@
               <%= f.submit '', class: 'hidden-submit hidden' %>
             <% end %>
           </div>
-        <% elsif question.question_type == 'rating' %>
+        <% elsif question.rating? %>
           <div class="interview-summary__rating">
             <div class="flex-row-start-centered">
               <i class="far fa-star"></i>
@@ -86,12 +104,12 @@
                     <label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
                       <%= question.options.keys.first.to_i - i + 1 %>
                       <div class="saved_answers">
-                        <% if (manager_answer.answer.to_i == question.options.keys.first.to_i - i + 1) && (employee_answer.answer.to_i == question.options.keys.first.to_i - i + 1) %>
+                        <% if (manager_answer&.answer.to_i == question.options.keys.first.to_i - i + 1) && (employee_answer&.answer.to_i == question.options.keys.first.to_i - i + 1) %>
                           <i class="fas fa-circle manager_answer"></i>
                           <i class="fas fa-circle employee_answer"></i>
-                        <% elsif manager_answer.answer.to_i == question.options.keys.first.to_i - i + 1 %>
+                        <% elsif manager_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
                           <i class="fas fa-circle manager_answer"></i>
-                        <% elsif employee_answer.answer.to_i == question.options.keys.first.to_i - i + 1 %>
+                        <% elsif employee_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
                           <i class="fas fa-circle employee_answer"></i>
                         <% end %>
                       </div>
@@ -101,12 +119,12 @@
                     <label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
                       <%= question.options.keys.first.to_i - i + 1 %>
                       <div class="saved_answers">
-                        <% if (manager_answer.answer.to_i == question.options.keys.first.to_i - i + 1) && (employee_answer.answer.to_i == question.options.keys.first.to_i - i + 1) %>
+                        <% if (manager_answer&.answer.to_i == question.options.keys.first.to_i - i + 1) && (employee_answer&.answer.to_i == question.options.keys.first.to_i - i + 1) %>
                           <i class="fas fa-circle manager_answer"></i>
                           <i class="fas fa-circle employee_answer"></i>
-                        <% elsif manager_answer.answer.to_i == question.options.keys.first.to_i - i + 1 %>
+                        <% elsif manager_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
                           <i class="fas fa-circle manager_answer"></i>
-                        <% elsif employee_answer.answer.to_i == question.options.keys.first.to_i - i + 1 %>
+                        <% elsif employee_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
                           <i class="fas fa-circle employee_answer"></i>
                         <% end %>
                       </div>

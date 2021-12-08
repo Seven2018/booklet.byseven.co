@@ -44,9 +44,12 @@ gem 'where_exists'
 gem 'pg_search', '~> 2.3.0'
 
 gem 'pgsync'
+gem "sentry-ruby"
+gem "sentry-rails"
 
 group :development do
-  gem 'web-console', '>= 3.3.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'bullet'
 end
 
