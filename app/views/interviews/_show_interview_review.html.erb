@@ -18,7 +18,7 @@
         <i class="fas fa-question"></i>
         <p><%= question.question %></p>
       </div>
-      <p><%= current_user.firstname %>: <%= current_answer.answer %></p>
+      <p><%= current_user.firstname %>: <%= current_answer&.answer %></p>
     </div>
     <% k += 1 %>
 
@@ -33,7 +33,7 @@
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label disabled">
-              <% if b.text == current_answer.answer %>
+              <% if b.text == current_answer&.answer %>
                 <%= b.radio_button class: 'rad-input', checked: 'checked', disabled: true %>
               <% else %>
                 <%= b.radio_button class: 'rad-input' , disabled: true %>
