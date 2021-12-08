@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.7.3'
 
 gem 'bootsnap', require: false
-gem 'devise', :git => "https://github.com/heartcombo/devise.git", ref: '8bb358cf80a632d3232c3f548ce7b95fd94b6eb2'
+gem 'devise', git: "https://github.com/heartcombo/devise.git", ref: '8bb358cf80a632d3232c3f548ce7b95fd94b6eb2'
 gem 'pundit'
 gem 'jbuilder', '~> 2.0'
 gem 'pg', '~> 0.21'
@@ -19,7 +19,7 @@ gem 'webpacker'
 gem 'jquery-rails'
 gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor'
 gem 'material-sass', git: 'https://github.com/bricechapuis/material-sass'
-gem 'sprockets-rails', :require => 'sprockets/railtie'
+gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'bootstrap',  '~> 4.4.1'
 gem "simple_calendar"
 
@@ -33,7 +33,6 @@ gem 'simple_token_authentication', '~> 1.0'
 
 gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 gem 'ransack'
-gem 'bullet', group: 'development'
 gem 'trix-rails', require: 'trix'
 gem "acts_as_tree"
 gem "net-http"
@@ -48,6 +47,7 @@ gem 'pgsync'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
+  gem 'bullet'
 end
 
 group :development, :test do
