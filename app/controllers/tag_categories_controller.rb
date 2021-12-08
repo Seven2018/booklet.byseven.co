@@ -18,6 +18,7 @@ class TagCategoriesController < ApplicationController
         redirect_back(fallback_location: root_path)
       end
     else
+      # TODO ???
       raise
     end
   end

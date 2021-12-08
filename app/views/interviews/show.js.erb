@@ -1,5 +1,5 @@
 if ("<%= @show_review %>" == 'true') {
-  document.querySelector('.interview-review').innerHTML = '<%= j (render("interviews/partials/show_interview_review", interview: @interview)) %>';
+  document.querySelector('.interview-review').innerHTML = '<%= j (render("interviews/show_interview_review", interview: @interview)) %>';
   document.querySelector('.interview-question:not(.hidden)').classList.add('hidden')
   document.querySelector('.interview-progress-bar-container').classList.add('hidden')
   document.querySelector('.interview-review').classList.remove('hidden')
