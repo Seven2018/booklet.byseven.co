@@ -186,8 +186,13 @@ class PagesController < ApplicationController
 
   # Display organisation page
   def organisation
+    @users =
+      if params.dig(:csv, :selected_users)
+        User.where(id: params[:csv][:selected_users].split(',')).order(lastname: :asc).distinct
+      else
+        current_user.company.users
+      end
     if params[:csv].present?
-      params[:csv][:selected_users].present? ? @users = User.where(id: params[:csv][:selected_users].split(',')).order(lastname: :asc).distinct : @users = User.where(company_id: current_user.company_id)
       attributes = []
       params[:csv].each do |key, value|
         if !['selected_users', 'cost', 'trainings'].include?(key) && value == '1'
