@@ -5,11 +5,14 @@
 <% k = 1 %>
 <% questions.each do |question| %>
 
-  <% current_answer = InterviewAnswer.find_by(interview_id: interview.id, interview_question_id: question.id, user_id: current_user.id) if question.question_type != 'separator' %>
+  <% current_answer = InterviewAnswer.find_by(interview_id: interview.id, interview_question_id: question.id, user_id: current_user.id) unless question.separator? %>
 
   <% if question.separator? %>
+
     <p class='interview-summary__separator'><%= question.question %></p>
+
   <% elsif question.open_question? %>
+
     <div class="interview-summary__open-question" onclick='goToQuestion(this)' id='target-<%= k %>'>
       <div class="flex-row-start-centered">
         <i class="fas fa-question"></i>
@@ -18,7 +21,9 @@
       <p><%= current_user.firstname %>: <%= current_answer.answer %></p>
     </div>
     <% k += 1 %>
+
   <% elsif question.mcq? %>
+
     <div class="interview-summary__mcq" onclick='goToQuestion(this)' id='target-<%= k %>'>
       <div class="flex-row-start-centered">
         <i class="fas fa-check"></i>
@@ -42,7 +47,9 @@
         </fieldset>
       <% end %>
     </div>
+
   <% elsif question.rating? %>
+
     <div class="interview-summary__rating" onclick='goToQuestion(this)' id='target-<%= k %>'>
       <div class="flex-row-start-centered">
         <i class="far fa-star"></i>
@@ -50,7 +57,7 @@
       </div>
       <fieldset class="rating read_only">
         <% for i in 1..question.options.keys.first.to_i %>
-          <% if current_answer.answer.to_i == question.options.keys.first.to_i - i + 1 %>
+          <% if current_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
             <input type="radio" class='radio-rating'checked disabled/>
             <label class = "full" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
               <%= question.options.keys.first.to_i - i + 1 %>
@@ -63,9 +70,10 @@
           <% end %>
         <% end %>
       </fieldset>
-      <p><%= current_answer.comments %></p>
+      <p><%= current_answer&.comments %></p>
     </div>
     <% k += 1 %>
+
   <% end %>
 <% end %>
 <div class="interview-question__controls review-controls">

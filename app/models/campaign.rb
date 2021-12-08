@@ -4,4 +4,13 @@ class Campaign < ApplicationRecord
   belongs_to :interview_form
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
+
+  def completion_for(employee = nil)
+    return (interviews.completed.count.fdiv(interviews.count) * 100).round if employee == :all
+
+    (
+      interviews.completed.where(employee: employee).count
+      .fdiv(interviews.where(employee: employee).count) * 100
+    ).round
+  end
 end
