@@ -30,4 +30,17 @@ class Interview < ApplicationRecord
 
     update completed: true
   end
+
+  # TODO replace with enum
+  def employee?
+    label == 'Employee'
+  end
+
+  def hr?
+    label == 'HR'
+  end
+
+  def crossed?
+    label == 'Crossed'
+  end
 end

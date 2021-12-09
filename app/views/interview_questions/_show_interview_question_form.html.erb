@@ -7,9 +7,9 @@
       <% end %>
     </div>
     <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id) %>
-    <% if existing_answer.nil? && @interview.label == 'Crossed' %>
+    <% if existing_answer.nil? && @interview.crossed? %>
       <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.campaign.interviews.find_by(label: 'HR').id, interview_question_id: question.id, user_id: @interview.campaign.owner) %>
-    <% elsif @interview.label == 'Employee' && read_only %>
+    <% elsif @interview.employee? && read_only %>
       <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: @interview.employee_id) %>
     <% end %>
     <% if existing_answer.present? %>
@@ -62,7 +62,7 @@
     <% end %>
   </div>
   <div class="interview-question__controls">
-    <% if @interview.label == 'Crossed' %>
+    <% if @interview.crossed? %>
       <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
     <% else %>
       <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
