@@ -1,5 +1,6 @@
 class InterviewQuestion < ApplicationRecord
   belongs_to :interview_form
+  acts_as_list scope: :interview_form
   has_many :interview_answers, dependent: :destroy
   serialize :options,Hash
 

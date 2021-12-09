@@ -79,10 +79,7 @@ class InterviewQuestionsController < ApplicationController
   def move_up
     skip_authorization
     @template = @question.interview_form
-    position = @question.position
-    @previous_question = @template.interview_questions.find_by(position: position - 1)
-    @previous_question.update(position: position)
-    @question.update(position: position - 1)
+    @question.move_higher
     respond_to do |format|
       format.html {redirect_to interview_form_path(@template)}
       format.js
@@ -92,10 +89,7 @@ class InterviewQuestionsController < ApplicationController
   def move_down
     skip_authorization
     @template = @question.interview_form
-    position = @question.position
-    @previous_question = @template.interview_questions.find_by(position: position + 1)
-    @previous_question.update(position: position)
-    @question.update(position: position + 1)
+    @question.move_lower
     respond_to do |format|
       format.html {redirect_to interview_form_path(@template)}
       format.js

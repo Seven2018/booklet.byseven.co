@@ -46,6 +46,7 @@ gem 'pg_search', '~> 2.3.0'
 gem 'pgsync'
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'acts_as_list'
 
 group :development do
   gem 'better_errors'
