@@ -13,4 +13,16 @@ class Campaign < ApplicationRecord
       .fdiv(interviews.where(employee: employee).count) * 100
     ).round
   end
+
+  def hr_interview
+    interviews.find(&:hr?)
+  end
+
+  def employee_interview
+    interviews.find(&:employee?)
+  end
+
+  def crossed_interview
+    interviews.find(&:crossed?)
+  end
 end

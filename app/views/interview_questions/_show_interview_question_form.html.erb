@@ -6,42 +6,80 @@
         <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
       <% end %>
     </div>
-    <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: current_user.id) %>
+
+    <% existing_answer =
+      InterviewAnswer.find_by(
+      interview: @interview,
+      interview_question: question,
+      user: current_user
+    ) %>
     <% if existing_answer.nil? && @interview.crossed? %>
-      <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.campaign.interviews.find_by(label: 'HR').id, interview_question_id: question.id, user_id: @interview.campaign.owner) %>
+      <% existing_answer =
+        InterviewAnswer.find_by(
+        interview: @interview.campaign.hr_interview,
+        interview_question: question,
+        user: @interview.campaign.owner
+      ) %>
     <% elsif @interview.employee? && read_only %>
-      <% existing_answer = InterviewAnswer.find_by(interview_id: @interview.id, interview_question_id: question.id, user_id: @interview.employee_id) %>
+      <% existing_answer =
+        InterviewAnswer.find_by(
+        interview: @interview,
+        interview_question: question,
+        user: @interview.employee
+      ) %>
     <% end %>
-    <% if existing_answer.present? %>
-      <% current_answer, current_comments = existing_answer.answer, existing_answer.comments %>
-    <% else %>
-      <% current_answer, current_comments = '', '' %>
-    <% end %>
+
+    <% current_answer   = existing_answer.present? ? existing_answer.answer   : '' %>
+    <% current_comments = existing_answer.present? ? existing_answer.comments : '' %>
+
     <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
       <% if question.open_question? %>
-        <% if read_only %>
-          <p><%= current_answer %></p>
-        <% else %>
-          <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer, onkeyup: 'enableNext(this);'} %>
-        <% end %>
+        <%= f.input(
+            :answer,
+            as: :text,
+            label: false,
+            input_html: {
+              value: current_answer,
+              onkeyup: 'enableNext(this);'
+            },
+            disabled: read_only
+          ) %>
+
       <% elsif question.rating? %>
+
         <fieldset class="rating<%= ' read_only' if read_only %>">
           <% for i in 1..question.options.keys.first.to_i %>
-            <% if current_answer.to_i == question.options.keys.first.to_i - i + 1 %>
-              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);selectRating(this);' checked <%= 'disabled' if read_only %>/><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars"><%= question.options.keys.first.to_i - i + 1 %></label>
-            <% else %>
-              <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='enableNext(this);selectRating(this);' <%= 'disabled' if read_only %>/><label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars"><%= question.options.keys.first.to_i - i + 1 %></label>
-            <% end %>
+            <% stars_count = question.options.keys.first.to_i - i + 1 %>
+            <input
+              type="radio"
+              class='radio-rating <%= rand(1000) %>'
+              id="star-position(<%= question.position %>)-<%= i %>"
+              name="interview_answer[answer]"
+              value="<%= stars_count%>"
+              onchange="selectRating(this);enableNext(this);"
+              <% if current_answer.to_i == stars_count %> checked <% end %>
+              <%= 'disabled' if read_only %>
+            />
+            <label
+              class="full"
+              for="star-position(<%= question.position %>)-<%= i %>"
+              title="<%= stars_count %> stars"
+            ><%= stars_count %></label>
           <% end %>
         </fieldset>
-        <% if question.allow_comments %>
-          <% if read_only %>
-            <p><%= current_comments %></p>
-          <% else %>
-            <%= f.input :comments, as: :text, input_html: {value: current_comments}, required: false %>
-          <% end %>
-        <% end %>
+
+        <%= f.input(
+          :comments,
+          as: :text,
+          input_html: {
+            value: current_comments
+          },
+          required: false,
+          disabled: read_only
+        ) if question.allow_comments %>
+
       <% elsif question.mcq? %>
+
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label">
@@ -55,12 +93,16 @@
             </label>
           <% end %>
         </fieldset>
+
       <% end %>
-      <%= f.hidden_field :interview_id, value: @interview.id %>
-      <%= f.hidden_field :interview_question_id, value: question.id %>
+
+        <%= f.hidden_field :interview_id, value: @interview.id %>
+        <%= f.hidden_field :interview_question_id, value: question.id %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
+
   </div>
+
   <div class="interview-question__controls">
     <% if @interview.crossed? %>
       <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
