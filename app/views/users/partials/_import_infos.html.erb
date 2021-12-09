@@ -9,7 +9,13 @@
     <div class="import-infos__block">
       <div class="import-infos__block-title">
         <div>
-          <p>New employees : <span style='color:#F8D9C8;'>(<%= creating.count %>)</span> & Former employees : <span style='color:#C4C4C4;'>(<%= deleting.count %>)</span></p>
+          <p>
+            New employees :
+            <span style='color:#F8D9C8;'>(<%= creating.count %>)</span>
+            <br>
+            & Former employees :
+            <span style='color:#C4C4C4;'>(<%= deleting.count %>)</span>
+          </p>
           <div class="import-infos__block-title-buttons">
             <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
               <i class="fas fa-angle-down" data-rotated='0'></i>
