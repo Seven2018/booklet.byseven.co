@@ -132,7 +132,9 @@ class UsersController < ApplicationController
           present << user_row['email'].downcase
         end
       end
-      @deleting = User.where(email: (User.where(company_id: current_user.company_id).map{|x| x.email.downcase} - present))
+      # pause_deleting_employees_on_csv_import
+      # @deleting = User.where(email: (User.where(company_id: current_user.company_id).map{|x| x.email.downcase} - present))
+      @deleting = User.none
       @file = params[:file]
       respond_to do |format|
         format.html {redirect_back(fallback_location: root_path)}
