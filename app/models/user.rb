@@ -145,7 +145,7 @@ class User < ApplicationRecord
           line << user.attributes[attribute]
         end
         tag_categories.reject{|x| x.empty?}.each do |tag_category|
-          line << UserTag.find_by(user_id: user.id, tag_category_id: tag_category)&.tag&.tag_name if tag_category.present?
+          line << UserTag.find_by(user: user, tag_category: tag_category)&.tag&.tag_name if tag_category.present?
         end
         line << user.sessions.where('date >= ? AND date < ?', start_date, end_date).map{|x| x.cost / x.attendees.count}.sum if cost
         if trainings
