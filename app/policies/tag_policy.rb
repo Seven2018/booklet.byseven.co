@@ -6,20 +6,14 @@ class TagPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def update_tag?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def destroy?
-    check_access_hr
-  end
-
-  private
-
-  def check_access_hr
-    ['Super Admin', 'Account Owner', 'HR'].include?(user.access_level)
+    user.hr_or_above?
   end
 end

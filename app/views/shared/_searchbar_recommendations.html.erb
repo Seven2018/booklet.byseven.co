@@ -3,7 +3,7 @@
   <%= simple_form_for :search_recommendations, url: dashboard_path, method: :get, remote: true do |f| %>
     <%= f.input :title, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: 'Keyword', required: false %>
 
-    <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && params[:action] == 'organisation' %>
+    <% if current_user.hr_or_above? && params[:action] == 'organisation' %>
       <%= f.input :employee, collection: @employees_form.order(lastname: :asc), label_method: :fullname, required: false, selected: current_user.id %>
     <% end %>
     <%= f.submit 'Search', class: 'btn-search' %>

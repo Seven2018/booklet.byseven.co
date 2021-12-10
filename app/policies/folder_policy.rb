@@ -14,37 +14,30 @@ class FolderPolicy < ApplicationPolicy
   end
 
   def edit?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def create?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def update?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def destroy?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def duplicate?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def folder_manage_children?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def book_contents?
-    check_access_hr
-  end
-
-
-  private
-
-  def check_access_hr
-    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
+    user.hr_or_above?
   end
 end

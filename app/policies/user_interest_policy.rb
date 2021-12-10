@@ -1,7 +1,7 @@
 class UserInterestPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
+      if user.hr_or_above?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -14,7 +14,7 @@ class UserInterestPolicy < ApplicationPolicy
   end
 
   def recommend?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def update_recommendation?
@@ -27,11 +27,5 @@ class UserInterestPolicy < ApplicationPolicy
 
   def complete_content?
     true
-  end
-
-  private
-
-  def check_access_hr
-    ['Super Admin', 'Account Owner', 'HR'].include?(user.access_level)
   end
 end

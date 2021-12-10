@@ -19,10 +19,6 @@ class CompanyPolicy < ApplicationPolicy
 
   private
 
-  def check_access_hr
-    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
-  end
-
   def check_access_owner
     user.access_level == 'Account Owner'
   end

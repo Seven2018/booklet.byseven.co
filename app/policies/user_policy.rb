@@ -1,7 +1,7 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
+      if user.hr_or_above?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -10,11 +10,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def import_users?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def show?
@@ -34,24 +34,18 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def organisation?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def recommendation?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def book_users?
-    check_access_hr
-  end
-
-  private
-
-  def check_access_hr
-    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
+    user.hr_or_above?
   end
 end

@@ -3,7 +3,7 @@
   <%= simple_form_for :search_trainings, url: dashboard_path, method: :get, remote: true do |f| %>
     <%= f.input :title, placeholder: 'Search', input_html: {autocomplete: 'off'}, label: 'Keyword', required: false %>
 
-    <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+    <% if current_user.hr_or_above? %>
       <%# f.input :employee, collection: @employees_form.order(lastname: :asc).map(&:fullname), required: false %>
       <%= f.text_field :employee, placeholder: 'Search for Users', label: false, data: {behavior: 'autocomplete'} %>
     <% end %>

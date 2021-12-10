@@ -9,7 +9,7 @@
         <div class="interview-form-card__controls">
           <h3><%= template.title %></h3>
           <div class="interview-form-card__options" onclick="openContentMenu(this);">
-            <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+            <% if current_user.hr_or_above? %>
               <i class="fas fa-ellipsis-v"></i>
               <div class="content-dropdown hidden">
                 <%= link_to 'Duplicate', duplicate_interview_form_path(template) %>

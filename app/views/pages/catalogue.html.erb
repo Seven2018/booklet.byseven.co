@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class='main-controls-create-content'>
-      <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+      <% if current_user.hr_or_above? %>
         <a data-toggle='modal' data-target='#newFolder'>
           <div class="btn-blue" data-toggle='tooltip' title='Create a folder'>
             <i class="fas fa-plus"></i>

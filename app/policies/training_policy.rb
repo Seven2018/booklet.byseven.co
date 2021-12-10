@@ -10,7 +10,7 @@ class TrainingPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def show?
@@ -18,24 +18,20 @@ class TrainingPolicy < ApplicationPolicy
   end
 
   def edit?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def update?
-    check_access_hr
+    user.hr_or_above?
   end
 
   def destroy?
-    check_access_hr
+    user.hr_or_above?
   end
 
   private
 
   def check_access
     ['Super Admin', 'Account Owner', 'HR', 'Employee'].include? user.access_level
-  end
-
-  def check_access_hr
-    ['Super Admin', 'Account Owner', 'HR'].include? user.access_level
   end
 end

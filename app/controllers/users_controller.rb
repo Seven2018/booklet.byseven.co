@@ -102,7 +102,7 @@ class UsersController < ApplicationController
 
   def import_users
     skip_authorization
-    return unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+    return unless current_user.hr_or_above?
     if params[:button] == 'summary'
       @errors = []
       @creating = []

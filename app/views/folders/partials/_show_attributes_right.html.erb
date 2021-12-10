@@ -1,5 +1,5 @@
 <div class="content-show-infos-delete orange">
-  <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+  <% if current_user.hr_or_above? %>
     <% unless params[:action] == 'edit' %>
       <% if params[:controller] == "trainings" %>
         <%= link_to training_path(folder), method: :delete, data: {confirm: 'Are you sure ?'} do %>
@@ -13,9 +13,9 @@
           <i class="fas fa-pencil-alt py-3 pr-3 mr-3"></i>
         <% end %>
       <% end %>
-      
+
     <% end %>
-    
+
   <% end %>
 </div>
 <div class="content-show-infos-duration" >

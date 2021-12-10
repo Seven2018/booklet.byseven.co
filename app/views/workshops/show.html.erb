@@ -22,8 +22,8 @@
           <div class="content-show-attributes-right">
             <%= render 'contents/partials/show_attributes_right', content: @workshop, page: 'show', access: access %>
           </div>
-          
-          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+
+          <% if current_user.hr_or_above? %>
             <div class="content-show-attributes-right-acquired">
               <%= render 'workshops/partials/show_attendees', attendees: @attendees, page: 'show', access: access %>
             </div>

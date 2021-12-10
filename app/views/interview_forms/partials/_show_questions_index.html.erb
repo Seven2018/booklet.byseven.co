@@ -10,7 +10,7 @@
             <p><%= question.question %></p>
           </div>
           <div class="line-controls">
-          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+          <% if current_user.hr_or_above? && !params[:content_access].present? %>
             <% if question.position == 1 %>
               <a disabled class="line-move-up" style='cursor: default;'>
                 <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
@@ -66,7 +66,7 @@
             <p>Open Question</p>
           </div>
           <div class="line-controls">
-          <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+          <% if current_user.hr_or_above? && !params[:content_access].present? %>
             <% if question.position == 1 %>
               <a disabled class="line-move-up" style='cursor: default;'>
                 <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
@@ -144,7 +144,7 @@
             <p>Rating</p>
           </div>
           <div class="line-controls">
-            <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+            <% if current_user.hr_or_above? && !params[:content_access].present? %>
               <% if question.position == 1 %>
                 <a disabled class="line-move-up" style='cursor: default;'>
                   <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
@@ -244,7 +244,7 @@
             <p>MCQ</p>
           </div>
           <div class="line-controls">
-            <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) && !params[:content_access].present? %>
+            <% if current_user.hr_or_above? && !params[:content_access].present? %>
               <% if question.position == 1 %>
                 <a disabled class="line-move-up" style='cursor: default;'>
                   <i class="fas fa-arrow-up" style='color:#5B5959;'></i>

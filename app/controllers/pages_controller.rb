@@ -10,7 +10,7 @@ class PagesController < ApplicationController
 
     @recommendations = UserInterest.where(user_id: current_user.id)
 
-    unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+    unless current_user.hr_or_above?
       @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id }).distinct
       @recommendations = @recommendations.where(user_id: current_user.id)
     end
@@ -31,7 +31,7 @@ class PagesController < ApplicationController
       elsif params[:search_trainings][:period] == 'Completed'
         @trainings = @trainings.where_not_exists(:sessions, 'date >= ?', Date.today).where_not_exists(:sessions, 'available_date >= ?', Date.today)
       end
-      if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+      if current_user.hr_or_above?
         unless params[:search_trainings][:employee].blank?
           selected_employee = User.search_by_name("#{params[:search_trainings][:employee]}").first
           @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id }).distinct
@@ -47,7 +47,7 @@ class PagesController < ApplicationController
       unless params[:search_recommendations][:title].blank?
         @recommendations = @recommendations.search_recommendations("#{params[:search_recommendations][:title]}")
       end
-      if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+      if current_user.hr_or_above?
         unless params[:search_recommendations][:employee].blank?
           selected_employee = User.find(params[:search_recommendations][:employee])
           @recommendations = UserInterest.where(user_id: selected_employee.id)
@@ -336,14 +336,14 @@ class PagesController < ApplicationController
 
   def book_dates
     book_data
-    raise "Access denied" unless ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+    raise "Access denied" unless current_user.hr_or_above?
   end
 
   private
 
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
-    if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level)
+    if current_user.hr_or_above?
 
       @tag_categories = TagCategory.where(company_id: current_user.company_id)
       # If a name is entered in the search bar

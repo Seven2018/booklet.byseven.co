@@ -10,28 +10,18 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def show?
-    check_access
+    user.employee_or_above?
   end
 
   def answer_question?
-    check_access
+    user.employee_or_above?
   end
 
   def update_interviews?
-    check_access_manager
-  end
-
-  private
-
-  def check_access_manager
-    ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
-  end
-
-  def check_access
-    ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Manager-light', 'Employee'].include? user.access_level
+    user.manager_or_above?
   end
 end

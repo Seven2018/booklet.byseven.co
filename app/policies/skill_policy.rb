@@ -30,8 +30,4 @@ class SkillPolicy < ApplicationPolicy
   def check_access_super
     user.access_level == 'Super Admin'
   end
-
-  def check_access_hr
-    ['Super Admin', 'Account Owner', 'HR'].include?(user.access_level)
-  end
 end

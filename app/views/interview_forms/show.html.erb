@@ -1,5 +1,5 @@
 <% if @template.company_id == current_user.company_id %>
-  <% access = 'granted' if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+  <% access = 'granted' if current_user.hr_or_above? %>
   <div class="template-edit-title">
     <i class="fas fa-file-alt"></i>
     <h2><%= @template.title %> - <em>View mode</em></h2>

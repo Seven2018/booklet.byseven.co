@@ -1,5 +1,5 @@
 <% if ['Super Admin'].include?(current_user.access_level) || (@content.company_id == current_user.company_id) %>
-  <% access = 'granted' if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+  <% access = 'granted' if current_user.hr_or_above? %>
   <div id="content-show-container">
     <div id="content-show-container-left">
       <%= render 'contents/partials/show_summary', content: @content, page: 'show', access: access %>

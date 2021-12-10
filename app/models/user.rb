@@ -1,6 +1,7 @@
+require 'csv'
+
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  include Users::Access
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
   has_many :user_skills, dependent: :destroy
@@ -17,13 +18,8 @@ class User < ApplicationRecord
   has_many :campaigns, through: :interviews
   has_many :interviews, foreign_key: 'employee_id'
   has_many :interview_answers
-  # validates :firstname, :lastname, :email, :access_level, presence: true
   validates :email, presence: true
   paginates_per 50
-  # validates :gender, inclusion: { in: ['M', 'F'] }
-  require 'csv'
-
-  # SEARCHING USERS BY firstname and lastname
   include PgSearch::Model
   pg_search_scope :search_by_name,
     against: [ :firstname, :lastname ],
@@ -34,8 +30,6 @@ class User < ApplicationRecord
       tsearch: { prefix: true }
     },
     ignoring: :accents
-
-  ACCESS_LEVELS = ["Manager", "Manager-light", "HR-light", "Super Admin", "Employee", "HR"]
 
   def fullname
     "#{lastname.upcase} #{firstname.capitalize} "

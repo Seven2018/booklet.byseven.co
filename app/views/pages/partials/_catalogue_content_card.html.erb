@@ -7,7 +7,7 @@
     <% end %>
     <% if params[:action] == 'catalogue' %>
       <div class="booklet-content-card__options" onclick="openContentMenu(this);">
-        <% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+        <% if current_user.hr_or_above? %>
           <i class="fas fa-ellipsis-v"></i>
           <div class="content-dropdown hidden">
             <%= link_to 'Recommendation', recommendation_path(content_id: content.id) %>

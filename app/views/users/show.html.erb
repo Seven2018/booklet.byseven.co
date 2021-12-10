@@ -91,7 +91,7 @@
 </div>
 
 
-<% if ['Super Admin', 'Account Owner', 'HR'].include?(current_user.access_level) %>
+<% if current_user.hr_or_above? %>
   <script>
     doubleClickGuardian = false
 
