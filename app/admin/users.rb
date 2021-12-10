@@ -1,4 +1,11 @@
 ActiveAdmin.register User do
+  filter :email
+  filter :firstname
+  filter :lastname
+  filter :job_title
+  filter :company, as: :select, collection: Company.pluck(:name, :id)
+  filter :access_level, as: :select, collection: User::ACCESS_LEVELS
+
   index do
     selectable_column
     id_column
