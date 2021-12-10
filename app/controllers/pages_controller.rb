@@ -190,7 +190,7 @@ class PagesController < ApplicationController
       if params.dig(:csv, :selected_users)
         User.where(id: params[:csv][:selected_users].split(',')).order(lastname: :asc).distinct
       else
-        current_user.company.users
+        current_user.company ? current_user.company.users : [current_user]
       end
     if params[:csv].present?
       attributes = []
