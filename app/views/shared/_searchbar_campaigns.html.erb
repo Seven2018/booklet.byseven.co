@@ -13,7 +13,7 @@
     <button class='btn-reset--mobile btn-reset-blue hidden' onclick='resetAllFilter(this);'><i class="fas fa-redo-alt"></i></button>
   <% elsif params[:controller] == 'campaigns' && params[:action] == 'show' %>
     <%= simple_form_for :search, url: campaign_path(@campaign), method: :get, remote: true do |f| %>
-      <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+      <% if current_user.manager_or_above? %>
         <%= f.input :user_id, as: :select, label: false, collection: User.joins(interviews: :campaign).where(campaigns: {id: @campaign.id}).distinct.order(lastname: :asc).map{|x| [x.id, x.fullname]}, label_method: :second, value_method: :first, include_blank: false, selected: params[:employee_id].to_i %>
         <%= f.submit 'Select', class: 'btn-search' %>
       <% else %>

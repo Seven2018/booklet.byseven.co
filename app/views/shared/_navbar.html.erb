@@ -33,7 +33,7 @@
               <% end %>
             </li>
           <% end %>
-          <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+          <% if current_user.manager_or_above? %>
             <li>
               <% if params[:controller] == 'users' || params[:action] == 'organisation' %>
                 <%= link_to organisation_path, class: 'left-buttons' do %>
@@ -61,7 +61,7 @@
           <% end %>
         <% end %>
       </ul>
-      <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+      <% if current_user.manager_or_above? %>
         <div class="centered-item">
           <%= link_to book_contents_path, class: 'btn-orange__white-border' do %>
             <p>Book</p>

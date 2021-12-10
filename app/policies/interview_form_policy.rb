@@ -1,7 +1,7 @@
 class InterviewFormPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
+      if user.manager_or_above?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -14,7 +14,7 @@ class InterviewFormPolicy < ApplicationPolicy
   end
 
   def show?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def update?
@@ -31,11 +31,5 @@ class InterviewFormPolicy < ApplicationPolicy
 
   def destroy?
     user.hr_or_above?
-  end
-
-  private
-
-  def check_access_manager
-    ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
   end
 end

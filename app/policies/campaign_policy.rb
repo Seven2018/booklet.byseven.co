@@ -26,19 +26,19 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def campaign_select_template?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def campaign_select_users?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def campaign_select_dates?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def create?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def show?
@@ -46,18 +46,14 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def send_notification_email?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def destroy?
-    check_access_manager
+    user.manager_or_above?
   end
 
   private
-
-  def check_access_manager
-    ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
-  end
 
   def check_access
     ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Manager-light', 'Employee'].include? user.access_level

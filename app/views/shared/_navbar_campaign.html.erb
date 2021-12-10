@@ -19,7 +19,7 @@
               <% end %>
             <% end %>
           </li>
-          <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+          <% if current_user.manager_or_above? %>
             <li>
               <% if params[:controller] == 'interview_forms' %>
                 <%= link_to interview_forms_path, class: 'left-buttons' do %>
@@ -61,7 +61,7 @@
           <% end %>
         <% end %>
       </ul>
-      <% if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include?(current_user.access_level) %>
+      <% if current_user.manager_or_above? %>
         <div class="centered-item">
           <%= link_to campaign_select_template_path, class: 'btn-blue__white-border' do %>
             <p>Interview</p>

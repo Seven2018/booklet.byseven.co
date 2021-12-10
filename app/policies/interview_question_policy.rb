@@ -1,7 +1,7 @@
 class InterviewQuestionPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
+      if user.manager_or_above?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -10,32 +10,26 @@ class InterviewQuestionPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def add_mcq_option?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def edit_mcq_option?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def delete_mcq_option?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def update?
-    check_access_manager
+    user.manager_or_above?
   end
 
   def destroy?
-    check_access_manager
-  end
-
-  private
-
-  def check_access_manager
-    ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
+    user.manager_or_above?
   end
 end

@@ -15,10 +15,6 @@ class InterviewAnswerPolicy < ApplicationPolicy
 
   private
 
-  def check_access_manager
-    ['Super Admin', 'Account Owner', 'HR', 'Manager'].include? user.access_level
-  end
-
   def check_access
     ['Super Admin', 'Account Owner', 'HR', 'Manager', 'HR-light', 'Manager-light', 'Employee'].include? user.access_level
   end
