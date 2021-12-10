@@ -93,7 +93,7 @@
 
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
 
-          <% if ['HR', 'Manager'].include?(current_user.access_level) %>
+          <% if current_user.hr? || current_user.manager? %>
 
             <%= link_to user_path(current_user, params: { access_level: "#{current_user.access_level}-light", last_page: "#{params[:controller]}-#{params[:action]}" }), class: "btn btn-secondary btn-left", method: :patch do %>
               <input type="radio" name="options" id="option1" autocomplete="off"> Employee
@@ -102,7 +102,7 @@
               <input type="radio" name="options" id="option2" autocomplete="off" checked> <%= current_user.access_level.split('-').first %>
             </label>
 
-          <% elsif ['HR-light', 'Manager-light'].include?(current_user.access_level) %>
+          <% elsif current_user.hr_light? || current_user.manager_light? %>
 
             <label class="btn btn-secondary btn-left active">
               <input type="radio" name="options" id="option1" autocomplete="off" checked> Employee

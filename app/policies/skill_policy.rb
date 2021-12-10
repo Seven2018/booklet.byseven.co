@@ -6,28 +6,22 @@ class SkillPolicy < ApplicationPolicy
   end
 
   def create?
-    check_access_super
+    user.admin?
   end
 
   def show?
-    check_access_super
+    user.admin?
   end
 
   def edit?
-    check_access_super
+    user.admin?
   end
 
   def update?
-    check_access_super
+    user.admin?
   end
 
   def destroy?
-    check_access_super
-  end
-
-  private
-
-  def check_access_super
-    user.access_level == 'Super Admin'
+    user.admin?
   end
 end

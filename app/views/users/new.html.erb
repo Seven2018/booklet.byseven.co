@@ -6,14 +6,14 @@
     <%= f.input :lastname %>
     <%= f.input :email %>
     <%= f.input :password %>
-    <% if current_user.access_level == 'Super Admin' %>
+    <% if current_user.admin? %>
       <%= f.input :access_level, collection: ['Super Admin', 'Account Owner', 'HR', 'Employee'], include_blank: false %>
-    <% elsif current_user.access_level == 'Account Owner' %>
+    <% elsif current_user.account_owner? %>
       <%= f.input :access_level, collection: ['Account Owner', 'HR', 'Employee'], include_blank: false %>
-    <% elsif current_user.access_level == 'HR' %>
+    <% elsif current_user.hr? %>
       <%= f.input :access_level, collection: ['HR', 'Employee'], include_blank: false %>
     <% end %>
-    <% if current_user.access_level == 'Super Admin' %>
+    <% if current_user.admin? %>
       <%= f.association :company, collection: Company.all, include_blank: false, label: 'Company' %>
     <% end %>
     <%= f.input :phone_number, label: 'Phone number' %>

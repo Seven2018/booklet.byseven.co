@@ -10,16 +10,10 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def update?
-    check_access_owner
+    user.account_owner?
   end
 
   def destroy?
-    check_access_owner
-  end
-
-  private
-
-  def check_access_owner
-    user.access_level == 'Account Owner'
+    user.account_owner?
   end
 end
