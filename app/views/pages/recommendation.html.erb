@@ -1,4 +1,4 @@
-<% if ['Super Admin'].include?(current_user.access_level) || (@content.present? && @content.company_id == current_user.company_id) || (@folder.present? && @folder.company_id == current_user.company_id) %>
+<% if current_level.admin? || (@content.present? && @content.company_id == current_user.company_id) || (@folder.present? && @folder.company_id == current_user.company_id) %>
   <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
   <div class="recommendation-sticky">
     <h1>Recommendations</h1>

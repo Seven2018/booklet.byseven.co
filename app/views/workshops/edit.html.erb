@@ -1,4 +1,4 @@
-<% if ['Super Admin'].include?(current_user.access_level) || (@workshop.content.company_id == current_user.company_id) %>
+<% if current_level.admin? || (@workshop.content.company_id == current_user.company_id) %>
   <div id="content-show-container">
     <div id="content-show-container-left">
       <%= render 'contents/partials/show_summary', content: @workshop, page: 'edit', access: "" %>

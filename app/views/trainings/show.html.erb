@@ -1,4 +1,4 @@
-<% if ['Super Admin'].include?(current_user.access_level) || (@training.company_id == current_user.company_id) %>
+<% if current_level.admin? || (@training.company_id == current_user.company_id) %>
   <% access = '' %>
   <div id="content-show-container">
     <div id="content-show-container-left">
