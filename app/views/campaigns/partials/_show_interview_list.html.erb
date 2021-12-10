@@ -2,7 +2,7 @@
   <% employee_interview = @interviews.find_by(label: 'Employee') %>
   <% manager_interview = @interviews.find_by(label: 'HR') %>
   <% crossed_interview = @interviews.find_by(label: 'Crossed') %>
-  <% ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) ? employee_view = true : employee_view = false %>
+  <% current_user.employee_to_hr_light? ? employee_view = true : employee_view = false %>
   <div class="campaign-interview-card">
     <p class="campaign-interview-card__username"><%= employee_interview.employee.fullname %></p>
     <% if employee_view && employee_interview.completed %>

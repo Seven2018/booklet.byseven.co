@@ -1,6 +1,6 @@
 <div class="row">
 
-  <% ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) ? employee = true : employee = false %>
+  <% current_user.employee_to_hr_light? ? employee = true : employee = false %>
 
   <% if campaigns.empty? || campaigns.joins(:interviews).where(interviews: {completed: true}).nil? %>
     <p class="empty-card-list">No interview for the moment, click on 'Template' to start.</p>
@@ -64,7 +64,7 @@
         </div>
       <% end %>
         <div class="campaign-card-summary">
-          <% if ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level) %>
+          <% if current_user.employee_to_hr_light? %>
             <div class='campaign-card-summary__count'>
               <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> employee reviews</p>
               <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'HR', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> manager reviews</p>

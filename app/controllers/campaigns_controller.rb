@@ -7,7 +7,7 @@ class CampaignsController < ApplicationController
     authorize @campaigns
     if current_user.manager?
       @campaigns = @campaigns.where(owner_id: current_user.id)
-    elsif ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
+    elsif current_user.employee_to_hr_light?
       @campaigns = @campaigns.joins(:interviews).where(interviews: {employee_id: current_user.id}).distinct
     end
     if params[:search].present? && params[:search][:period] == 'Completed'
@@ -124,12 +124,12 @@ class CampaignsController < ApplicationController
 
   def show
     authorize @campaign
-    # if ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
+    # if current_user.employee_to_hr_light?
     #   target = Interview.find_by(campaign_id: @campaign.id, employee_id: current_user.id, label: 'Employee')
     #   target.present? ? (redirect_to interview_path(target)) : (redirect_to root_path)
     # end
 
-    @current_user_employee = ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
+    @current_user_employee = current_user.employee_to_hr_light?
     @interviews_for_date =
       if @current_user_employee
         @campaign.interviews.find_by(employee: current_user)

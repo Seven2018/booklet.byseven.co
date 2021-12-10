@@ -39,11 +39,6 @@ class User < ApplicationRecord
     self.tags.where(category_id: category_id)
   end
 
-  def admin
-    access_level == 'Super Admin'
-  end
-  alias admin? admin
-
   def self.from_omniauth(access_token)
     data = access_token.info
     user = User.where(email: data['email']).first
