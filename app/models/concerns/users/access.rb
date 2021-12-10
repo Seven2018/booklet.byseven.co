@@ -27,6 +27,6 @@ module Users::Access
   end
 
   def employee_or_above?
-    true
+    ACCESS_LEVELS.include? access_level
   end
 end

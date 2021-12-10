@@ -1,7 +1,7 @@
 class TrainingPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Account Owner', 'HR', 'Employee'].include? user.access_level
+      if user.employee_or_above?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -27,11 +27,5 @@ class TrainingPolicy < ApplicationPolicy
 
   def destroy?
     user.hr_or_above?
-  end
-
-  private
-
-  def check_access
-    ['Super Admin', 'Account Owner', 'HR', 'Employee'].include? user.access_level
   end
 end

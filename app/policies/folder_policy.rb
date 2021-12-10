@@ -1,7 +1,7 @@
 class FolderPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if ['Super Admin', 'Account Owner', 'HR', 'Employee'].include? user.access_level
+      if user.employee_or_above?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
