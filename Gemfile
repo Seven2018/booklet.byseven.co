@@ -21,12 +21,12 @@ gem 'ckeditor', git: 'https://github.com/galetahub/ckeditor'
 gem 'material-sass', git: 'https://github.com/bricechapuis/material-sass'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'bootstrap',  '~> 4.4.1'
-gem "simple_calendar"
+gem 'simple_calendar'
 
 # IDENTIFICATION
 gem 'google-api-client', require: 'google/apis/calendar_v3'
 gem 'oauth2'
-gem "omniauth-rails_csrf_protection"
+gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-google-oauth2'
 gem 'simple_token_authentication', '~> 1.0'
 
@@ -34,8 +34,8 @@ gem 'simple_token_authentication', '~> 1.0'
 gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 gem 'ransack'
 gem 'trix-rails', require: 'trix'
-gem "acts_as_tree"
-gem "net-http"
+gem 'acts_as_tree'
+gem 'net-http'
 gem 'sucker_punch', '~> 3.0'
 gem 'render_async'
 gem 'kaminari'
@@ -44,9 +44,10 @@ gem 'where_exists'
 gem 'pg_search', '~> 2.3.0'
 
 gem 'pgsync'
-gem "sentry-ruby"
-gem "sentry-rails"
+gem 'sentry-ruby'
+gem 'sentry-rails'
 gem 'acts_as_list'
+gem 'activeadmin'
 
 group :development do
   gem 'better_errors'

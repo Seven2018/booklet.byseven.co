@@ -35,6 +35,7 @@ class User < ApplicationRecord
     },
     ignoring: :accents
 
+  ACCESS_LEVELS = ["Manager", "Manager-light", "HR-light", "Super Admin", "Employee", "HR"]
 
   def fullname
     "#{lastname.upcase} #{firstname.capitalize} "
@@ -43,6 +44,11 @@ class User < ApplicationRecord
   def tag_from_category(category_id)
     self.tags.where(category_id: category_id)
   end
+
+  def admin
+    access_level == 'Super Admin'
+  end
+  alias admin? admin
 
   def self.from_omniauth(access_token)
     data = access_token.info
