@@ -59,12 +59,12 @@
         <% for i in 1..question.options.keys.first.to_i %>
           <% if current_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
             <input type="radio" class='radio-rating'checked disabled/>
-            <label class = "full" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
+            <label class="full" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
               <%= question.options.keys.first.to_i - i + 1 %>
             </label>
           <% else %>
             <input type="radio" class='radio-rating' disabled/>
-            <label class = "full" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
+            <label class="full" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
               <%= question.options.keys.first.to_i - i + 1 %>
             </label>
           <% end %>

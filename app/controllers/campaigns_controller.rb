@@ -132,7 +132,7 @@ class CampaignsController < ApplicationController
     @current_user_employee = ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
     @interviews_for_date =
       if @current_user_employee
-        @campaign.interviews.find_by(employee_id: current_user.id)
+        @campaign.interviews.find_by(employee: current_user)
       else
         @campaign.interviews.order(date: :asc)
       end
