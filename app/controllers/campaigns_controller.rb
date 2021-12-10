@@ -5,7 +5,7 @@ class CampaignsController < ApplicationController
     @campaigns = policy_scope(Campaign)
     @campaigns = @campaigns.where(company_id: current_user.company_id)
     authorize @campaigns
-    if ['Manager'].include?(current_user.access_level)
+    if current_user.manager?
       @campaigns = @campaigns.where(owner_id: current_user.id)
     elsif ['HR-light', 'Manager-light', 'Employee'].include?(current_user.access_level)
       @campaigns = @campaigns.joins(:interviews).where(interviews: {employee_id: current_user.id}).distinct

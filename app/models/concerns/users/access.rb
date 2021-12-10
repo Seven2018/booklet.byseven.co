@@ -29,4 +29,8 @@ module Users::Access
   def employee_or_above?
     ACCESS_LEVELS.include? access_level
   end
+
+  def manager?
+    access_level == 'Manager'
+  end
 end
