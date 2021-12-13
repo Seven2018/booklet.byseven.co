@@ -52,6 +52,11 @@ Rails.application.routes.draw do
 
   # INTERVIEWS
   resources :interviews
+  namespace :interview do
+    namespace :answer do
+      resource :authorization_checks, only: :create
+    end
+  end
   get :update_interviews, controller: :interviews
   post :answer_question, controller: :interviews, as: :answer_interview_question
 

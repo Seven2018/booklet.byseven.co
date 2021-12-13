@@ -21,8 +21,12 @@ class InterviewsController < ApplicationController
     @interview = Interview.find(params[:id])
     @employee = @interview.employee
     @manager = @interview.campaign.owner
-    @questions = @interview.interview_form.interview_questions.order(position: :asc)
+    @questions = @interview.interview_questions.order(position: :asc)
     authorize @interview
+
+    flash[:alert] = "View mode only! Your answer won't be saved!" unless
+      InterviewPolicy.new(current_user, @interview).answer_question?
+
     params[:show_review].present? ? @show_review = 'true' : @show_review = 'false'
     respond_to do |format|
       format.html

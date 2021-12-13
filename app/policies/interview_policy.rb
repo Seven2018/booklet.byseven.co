@@ -14,11 +14,18 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def show?
-    user.employee_or_above?
+    return true if user.hr_or_above?
+
+    answer_question?
   end
 
   def answer_question?
-    user.employee_or_above?
+    case
+    when record.crossed? || record.hr?
+      user == record.owner
+    when record.employee?
+      user == record.employee
+    end
   end
 
   def update_interviews?
