@@ -78,6 +78,7 @@
   }
 
   function enableNext(element) {
+    // TODO Avoid DOM selection by position. Breakbla. Select DOM elements by id
     button = element.closest('.interview-question').querySelectorAll('.btn-blue')[1]
     if (element.value.length > 0 && button != undefined) {
       button.classList.remove('btn-blue-disabled')
@@ -141,12 +142,23 @@
 
   const csrfToken = () => document.querySelector("[name='csrf-token']").content
 
+  const getInterviewFormInputValueForAnswer = (form) => {
+    if (form.dataset.questionType == 'rating') {
+      let checkedValue = ''
+      form.querySelectorAll('[name="interview_answer[answer]"]')
+          .forEach((input) => { if (input.checked) { checkedValue = input.value } })
+      return checkedValue
+    } else {
+      return form.querySelector('[name="interview_answer[answer]"]')?.value
+    }
+  }
+
   const getInterviewFormInputValue = (form, name) =>
     form.querySelector(`[name="interview_answer[${name}]"]`)?.value
 
   const answerFormPayload = (form) => JSON.stringify({
     interview_answer: {
-      answer: getInterviewFormInputValue(form, 'answer'),
+      answer: getInterviewFormInputValueForAnswer(form),
       comments: getInterviewFormInputValue(form, 'comments'),
       interview_id: getInterviewFormInputValue(form, 'interview_id'),
       interview_question_id: getInterviewFormInputValue(form, 'interview_question_id'),

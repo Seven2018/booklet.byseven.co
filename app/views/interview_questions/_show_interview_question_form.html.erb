@@ -29,11 +29,12 @@
       ) %>
     <% end %>
 
-    <% current_answer   = existing_answer.present? ? existing_answer.answer   : '' %>
-    <% current_comments = existing_answer.present? ? existing_answer.comments : '' %>
+    <% current_answer   = existing_answer&.answer || '' %>
+    <% current_comments = existing_answer&.comments || '' %>
 
     <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
       <% if question.open_question? %>
+
         <%= f.input(
             :answer,
             as: :text,
@@ -50,19 +51,20 @@
         <fieldset class="rating<%= ' read_only' if read_only %>">
           <% for i in 1..question.options.keys.first.to_i %>
             <% stars_count = question.options.keys.first.to_i - i + 1 %>
+            <% input_label_key = "star-position(#{question.position})-#{i}" %>
             <input
               type="radio"
-              class='radio-rating <%= rand(1000) %>'
-              id="star-position(<%= question.position %>)-<%= i %>"
+              class='radio-rating'
+              id="<%= input_label_key %>"
               name="interview_answer[answer]"
-              value="<%= stars_count%>"
-              onchange="selectRating(this);enableNext(this);"
+              value="<%= stars_count %>"
+              onchange='selectRating(this);enableNext(this);'
               <% if current_answer.to_i == stars_count %> checked <% end %>
               <%= 'disabled' if read_only %>
             />
             <label
               class="full"
-              for="star-position(<%= question.position %>)-<%= i %>"
+              for="<%= input_label_key %>"
               title="<%= stars_count %> stars"
             ><%= stars_count %></label>
           <% end %>
