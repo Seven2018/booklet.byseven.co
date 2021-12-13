@@ -40,6 +40,7 @@ class Interview < ApplicationRecord
   def hr?
     label == 'HR'
   end
+  alias manager? hr?
 
   def crossed?
     label == 'Crossed'
