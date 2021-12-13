@@ -4,6 +4,7 @@ class Interview < ApplicationRecord
   belongs_to :employee, class_name: "User"
   belongs_to :creator, class_name: "User"
   has_many :interview_answers
+  alias answers interview_answers
 
   include PgSearch::Model
   pg_search_scope :search_interviews,
