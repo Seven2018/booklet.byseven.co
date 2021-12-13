@@ -19,7 +19,7 @@ class InterviewPolicy < ApplicationPolicy
     case
     when record.employee?
       user == record.employee || user == record.owner
-    when record.hr?
+    when record.manager?
       user == record.owner
     when record.crossed?
       user == record.owner || user == record.employee
@@ -28,7 +28,7 @@ class InterviewPolicy < ApplicationPolicy
 
   def answer_question?
     case
-    when record.crossed? || record.hr?
+    when record.crossed? || record.manager?
       user == record.owner
     when record.employee?
       user == record.employee
