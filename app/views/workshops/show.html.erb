@@ -29,7 +29,7 @@
             </div>
           <% end %>
 
-          <% if @workshop.content_type == "Asynchronous" || current_level.admin? %>
+          <% if @workshop.content_type == "Asynchronous" || current_user.admin? %>
             <div class="content-show-attributes-right-acquired">
               <%= render 'workshops/partials/show_attributes_acquired', page: 'show', access: access %>
             </div>
