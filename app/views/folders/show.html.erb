@@ -1,4 +1,4 @@
-<% if current_level.admin? || (@folder.company_id == current_user.company_id) %>
+<% if current_user.admin? || (@folder.company_id == current_user.company_id) %>
   <% access = '' %>
   <div id="content-show-container">
     <div id="content-show-container-left">

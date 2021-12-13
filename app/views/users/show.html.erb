@@ -1,4 +1,4 @@
-<% if current_level.admin? || (current_user.access_level != 'Employee' && @user.company_id == current_user.company_id) || @user == current_user %>
+<% if current_user.admin? || (current_user.access_level != 'Employee' && @user.company_id == current_user.company_id) || @user == current_user %>
   <div id='container-show-user'>
     <div class="container-show-user-left"></div>
     <div class="container-show-user-right">

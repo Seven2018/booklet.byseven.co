@@ -1,4 +1,4 @@
-<% if current_level.admin? || (@content.present? && @content.company_id == current_user.company_id) || (@folder.present? && @folder.company_id == current_user.company_id) %>
+<% if current_user.admin? || (@content.present? && @content.company_id == current_user.company_id) || (@folder.present? && @folder.company_id == current_user.company_id) %>
   <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
   <div class="recommendation-sticky">
     <h1>Recommendations</h1>

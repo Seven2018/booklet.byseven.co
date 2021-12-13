@@ -1,4 +1,4 @@
-<% if current_level.admin? || (@content.company_id == current_user.company_id) %>
+<% if current_user.admin? || (@content.company_id == current_user.company_id) %>
   <div id="content-show-title">
     <h2 class="d-flex align-items-center"><i class="far fa-file workshop-title"></i></i><%= @content.title %> -&nbsp;<span>Editor Mode</span></h2>
   </div>
