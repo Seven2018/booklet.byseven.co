@@ -56,6 +56,11 @@ group :development do
 end
 
 group :development, :test do
+  gem 'rspec-rails', '~> 4.0.beta2'
+  gem 'factory_bot_rails'
+  gem 'capybara'
+  gem 'webdrivers'
+  gem 'selenium-webdriver'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'listen', '~> 3.0.5'
