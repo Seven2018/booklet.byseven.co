@@ -69,6 +69,7 @@
     submit_buttons.forEach((element) => {
       setTimeout(function(){element.click()}, 500)
     })
+    // TODO: no setTimeout => fetch and wait for Promise to respond
     if (notification) {
       setTimeout(function(){send_email_button.click()}, 1000)
     } else {
