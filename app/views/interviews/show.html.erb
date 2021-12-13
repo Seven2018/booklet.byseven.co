@@ -1,180 +1,34 @@
+<% if @interview.crossed? %>
 
+  <%= render 'crossed', interview: @interview, employee: @employee, manager: @manager, questions: @questions  %>
 
+<% else %>
 
-
-  <% if @interview.crossed? %>
-    <div class="interview-summary">
-      <h1><%= @interview.interview_form.title %> - <em>Crossed Review</em></h1>
-      <div class="manager-answers-colors-info">
-        <div class="manager-color-point"></div><p>This color refer to <span style="font-weight:900">manager's</span> answers</p>
+  <div class="interview-container">
+    <div class="interview-start">
+      <div class='empty-div'></div>
+      <div class="interview-title">
+        <h1><%= @interview.interview_form.title %></h1>
+        <p><%= @interview.interview_form.description %></p>
       </div>
-      <div class="employee-answers-colors-info">
-        <div class="employee-color-point"></div><p>This color refer to <span style="font-weight:900">employee's</span> answers</p>
-      </div>
-      <% k = 1 %>
-      <% @questions.order(position: :asc).each do |question| %>
-
-        <% unless question.separator? %>
-          <% employee_answer = InterviewAnswer.joins(:interview).find_by(
-              interview_id: @interview.interviews.ids,
-              interview_question_id: question.id,
-              user_id: @employee.id,
-              interviews: { label: 'Employee' }
-            ) %>
-          <% manager_answer = InterviewAnswer.joins(:interview).find_by(
-            interview_id: @interview.interviews.ids,
-            interview_question_id: question.id,
-            user_id: @manager.id,
-            interviews: { label: 'HR' }
-            ) %>
-          <% crossed_answer = InterviewAnswer.joins(:interview).find_by(
-            interview_id: @interview.interviews.ids,
-            interview_question_id: question.id,
-            user_id: @manager.id,
-            interviews: { label: 'Crossed' }
-            ) %>
-        <% end %>
-
-        <% current_answer = crossed_answer.present? ? crossed_answer : manager_answer %>
-
-        <% if question.separator? %>
-          <p class='interview-summary__separator'><%= question.question %></p>
-        <% elsif question.open_question? %>
-          <div class="interview-summary__open-question">
-            <div class="flex-row-start-centered">
-              <i class="fas fa-question"></i>
-              <p><%= question.question %></p>
-            </div>
-            <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
-              <p style="color: #939393"><%= @employee.firstname %>: <%= employee_answer&.answer %></p>
-              <p style="color: #3177B7"><%= @manager.firstname %>: <%= manager_answer&.answer %></p>
-              <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer.answer} %>
-              <%= f.hidden_field :interview_id, value: @interview.id %>
-              <%= f.hidden_field :interview_question_id, value: question.id %>
-              <%= f.submit '', class: 'hidden-submit hidden' %>
-            <% end %>
-          </div>
-          <% k += 1 %>
-        <% elsif question.mcq? %>
-          <div class="interview-summary__mcq">
-            <div class="flex-row-start-centered">
-              <i class="fas fa-check"></i>
-              <p><%= question.question %></p>
-            </div>
-            <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
-              <fieldset class="mcq">
-                <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
-                  <label class="rad-label">
-                    <% if b.text == current_answer.answer %>
-                      <%= b.radio_button class: 'rad-input', checked: 'checked' %>
-                    <% else %>
-                      <%= b.radio_button class: 'rad-input' %>
-                    <% end %>
-                    <div class="rad-design"></div>
-                    <div class="rad-text">
-                      <%= b.text %>
-                      <% if b.text == manager_answer&.answer && b.text == employee_answer&.answer %>
-                        <i class="fas fa-circle manager_answer"></i>
-                        <i class="fas fa-circle employee_answer"></i>
-                      <% elsif b.text == manager_answer&.answer %>
-                        <i class="fas fa-circle manager_answer"></i>
-                      <% elsif b.text == employee_answer&.answer %>
-                        <i class="fas fa-circle employee_answer"></i>
-                      <% end %>
-                    </div>
-                  </label>
-                <% end %>
-              </fieldset>
-              <%= f.hidden_field :interview_id, value: @interview.id %>
-              <%= f.hidden_field :interview_question_id, value: question.id %>
-              <%= f.submit '', class: 'hidden-submit hidden' %>
-            <% end %>
-          </div>
-        <% elsif question.rating? %>
-          <div class="interview-summary__rating">
-            <div class="flex-row-start-centered">
-              <i class="far fa-star"></i>
-              <p><%= question.question %></p>
-            </div>
-            <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
-              <fieldset class="rating">
-                <% for i in 1..question.options.keys.first.to_i %>
-                  <% if current_answer.answer.to_i == question.options.keys.first.to_i - i + 1 %>
-                    <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='selectRating(this);' checked/>
-                    <label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
-                      <%= question.options.keys.first.to_i - i + 1 %>
-                      <div class="saved_answers">
-                        <% if (manager_answer&.answer.to_i == question.options.keys.first.to_i - i + 1) && (employee_answer&.answer.to_i == question.options.keys.first.to_i - i + 1) %>
-                          <i class="fas fa-circle manager_answer"></i>
-                          <i class="fas fa-circle employee_answer"></i>
-                        <% elsif manager_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
-                          <i class="fas fa-circle manager_answer"></i>
-                        <% elsif employee_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
-                          <i class="fas fa-circle employee_answer"></i>
-                        <% end %>
-                      </div>
-                    </label>
-                  <% else %>
-                    <input type="radio" class='radio-rating' id="star-position(<%= question.position %>)-<%= i %>" name="interview_answer[answer]" value="<%= question.options.keys.first.to_i - i + 1%>" onchange='selectRating(this);'/>
-                    <label class = "full" for="star-position(<%= question.position %>)-<%= i %>" title="<%= question.options.keys.first.to_i - i + 1 %> stars">
-                      <%= question.options.keys.first.to_i - i + 1 %>
-                      <div class="saved_answers">
-                        <% if (manager_answer&.answer.to_i == question.options.keys.first.to_i - i + 1) && (employee_answer&.answer.to_i == question.options.keys.first.to_i - i + 1) %>
-                          <i class="fas fa-circle manager_answer"></i>
-                          <i class="fas fa-circle employee_answer"></i>
-                        <% elsif manager_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
-                          <i class="fas fa-circle manager_answer"></i>
-                        <% elsif employee_answer&.answer.to_i == question.options.keys.first.to_i - i + 1 %>
-                          <i class="fas fa-circle employee_answer"></i>
-                        <% end %>
-                      </div>
-                    </label>
-                  <% end %>
-                <% end %>
-              </fieldset>
-              <% if question.allow_comments %>
-                <%= f.input :comments, as: :text, input_html: {value: current_answer.comments}, required: false %>
-              <% end %>
-              <%= f.hidden_field :interview_id, value: @interview.id %>
-              <%= f.hidden_field :interview_question_id, value: question.id %>
-              <%= f.submit '', class: 'hidden-submit hidden' %>
-            <% end %>
-          </div>
-          <% k += 1 %>
-        <% end %>
-      <% end %>
-      <div class="interview-question__controls">
-        <%= link_to '', campaign_path(@interview.campaign, employee_id: @interview.employee_id), class: 'hidden-link hidden' %>
-        <button class="btn-blue btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
-      </div>
+      <button class="btn-blue btn-blue-start btn-blue-start--mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
     </div>
-  <% else %>
-    <div class="interview-container">
-      <div class="interview-start">
-        <div class='empty-div'></div>
-        <div class="interview-title">
-          <h1><%= @interview.interview_form.title %></h1>
-          <p><%= @interview.interview_form.description %></p>
+    <% j = 1 %>
+    <% @questions.where.not(question_type: 'separator').each do |question| %>
+      <div class="interview-question hidden" id='question-<%= j %>'>
+        <div class="interview-separator">
+          <% previous_separators = @questions.where(question_type: 'separator').where('position <= ?', question.position) %>
+          <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
         </div>
-        <button class="btn-blue btn-blue-start btn-blue-start--mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
+        <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: (@interview.employee? && @interview.employee != current_user) %>
       </div>
-      <% j = 1 %>
-      <% @questions.where.not(question_type: 'separator').each do |question| %>
-        <div class="interview-question hidden" id='question-<%= j %>'>
-          <div class="interview-separator">
-            <% previous_separators = @questions.where(question_type: 'separator').where('position <= ?', question.position) %>
-            <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
-          </div>
-          <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: (@interview.employee? && @interview.employee != current_user) %>
-        </div>
-        <% j += 1 %>
-      <% end %>
-      <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
-      <div class="interview-review hidden">
-      </div>
+      <% j += 1 %>
+    <% end %>
+    <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
+    <div class="interview-review hidden">
     </div>
-  <% end %>
- <% if @interview.label != 'Crossed' %>
+  </div>
+
   <div class="interview-progress-bar-container">
     <div class="interview-progress-bar"></div>
     <div class='interview-progress-bar__white'><p>0%</p></div>
@@ -190,7 +44,29 @@
 <script>
   document.querySelector('body').classList.add('interview-form-body')
 
-  function selectRating(element) {
+  const canAnswer = async (element) => {
+    const response = await fetch('/interview/answer/authorization_checks', {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": csrfToken(),
+        "Content-Type": "application/json"
+      },
+      body: answerFormPayload(element.form)
+    })
+    return await response.json()
+  }
+
+  const alertCanAnswer = async (element) => {
+    // TODO call form all questions type (currently only rating)
+    const canAnswerResult = await canAnswer(element)
+    if (canAnswerResult.can_answer_question) return
+
+    alert("View mode only! Your answer won't be saved!")
+  }
+
+  const selectRating = (element) => {
+    alertCanAnswer(element)
+
     fieldset = element.closest('fieldset')
     fieldset.querySelectorAll('.radio-rating').forEach((radio_button) => {
       if (parseInt(radio_button.id.split('-')[2],10) <= element.id.split('-')[2]) {

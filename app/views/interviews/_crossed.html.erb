@@ -1,0 +1,146 @@
+<div class="interview-summary">
+  <h1><%= interview.interview_form.title %> - <em>Crossed Review</em></h1>
+  <div class="manager-answers-colors-info">
+    <div class="manager-color-point"></div><p>This color refer to <span style="font-weight:900">manager's</span> answers</p>
+  </div>
+  <div class="employee-answers-colors-info">
+    <div class="employee-color-point"></div><p>This color refer to <span style="font-weight:900">employee's</span> answers</p>
+  </div>
+  <% k = 1 %>
+  <% questions.order(position: :asc).each do |question| %>
+
+    <% unless question.separator? %>
+      <% employee_answer = InterviewAnswer.joins(:interview).find_by(
+          interview: interview.campaign.employee_interview,
+          interview_question: question,
+          user: employee
+        ) %>
+      <% manager_answer = InterviewAnswer.joins(:interview).find_by(
+          interview: interview.campaign.hr_interview,
+          interview_question: question,
+          user: manager
+        ) %>
+      <% crossed_answer = InterviewAnswer.joins(:interview).find_by(
+          interview: interview.campaign.crossed_interview,
+          interview_question: question,
+          user: manager
+        ) %>
+    <% end %>
+
+    <% current_answer = crossed_answer || manager_answer %>
+
+    <% if question.separator? %>
+
+      <p class='interview-summary__separator'><%= question.question %></p>
+
+    <% elsif question.open_question? %>
+
+      <div class="interview-summary__open-question">
+        <div class="flex-row-start-centered">
+          <i class="fas fa-question"></i>
+          <p><%= question.question %></p>
+        </div>
+        <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
+          <p style="color: #939393"><%= employee.firstname %>: <%= employee_answer&.answer %></p>
+          <p style="color: #3177B7"><%= manager.firstname %>: <%= manager_answer&.answer %></p>
+          <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer.answer} %>
+          <%= f.hidden_field :interview_id, value: interview.id %>
+          <%= f.hidden_field :interview_question_id, value: question.id %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        <% end %>
+      </div>
+      <% k += 1 %>
+
+    <% elsif question.mcq? %>
+
+      <div class="interview-summary__mcq">
+        <div class="flex-row-start-centered">
+          <i class="fas fa-check"></i>
+          <p><%= question.question %></p>
+        </div>
+        <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
+          <fieldset class="mcq">
+            <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
+              <label class="rad-label">
+                <% if b.text == current_answer.answer %>
+                  <%= b.radio_button class: 'rad-input', checked: 'checked' %>
+                <% else %>
+                  <%= b.radio_button class: 'rad-input' %>
+                <% end %>
+                <div class="rad-design"></div>
+                <div class="rad-text">
+                  <%= b.text %>
+                  <% if b.text == manager_answer&.answer && b.text == employee_answer&.answer %>
+                    <i class="fas fa-circle manager_answer"></i>
+                    <i class="fas fa-circle employee_answer"></i>
+                  <% elsif b.text == manager_answer&.answer %>
+                    <i class="fas fa-circle manager_answer"></i>
+                  <% elsif b.text == employee_answer&.answer %>
+                    <i class="fas fa-circle employee_answer"></i>
+                  <% end %>
+                </div>
+              </label>
+            <% end %>
+          </fieldset>
+          <%= f.hidden_field :interview_id, value: interview.id %>
+          <%= f.hidden_field :interview_question_id, value: question.id %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        <% end %>
+      </div>
+
+    <% elsif question.rating? %>
+
+      <div class="interview-summary__rating <%= question.id %>">
+        <div class="flex-row-start-centered">
+          <i class="far fa-star"></i>
+          <p><%= question.question %></p>
+        </div>
+        <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
+          <fieldset class="rating">
+            <% for i in 1..question.options.keys.first.to_i %>
+              <% stars_count = question.options.keys.first.to_i - i + 1 %>
+              <% input_label_key = "star-position(#{question.position})-#{i}" %>
+              <input
+                type="radio"
+                class="radio-rating"
+                value="<%= stars_count %>"
+                name="interview_answer[answer]"
+                id="<%= input_label_key %>"
+                onchange='selectRating(this);'
+                <% if current_answer.answer.to_i == stars_count %>checked<% end %>
+              />
+              <label
+                class="full"
+                title="<%= stars_count %> stars"
+                for="<%= input_label_key %>"
+              >
+                <%= stars_count %>
+                <div class="saved_answers">
+                  <% if (manager_answer&.answer.to_i == stars_count) && (employee_answer&.answer.to_i == stars_count) %>
+                    <i class="fas fa-circle manager_answer"></i>
+                    <i class="fas fa-circle employee_answer"></i>
+                  <% elsif manager_answer&.answer.to_i == stars_count %>
+                    <i class="fas fa-circle manager_answer"></i>
+                  <% elsif employee_answer&.answer.to_i == stars_count %>
+                    <i class="fas fa-circle employee_answer"></i>
+                  <% end %>
+                </div>
+              </label>
+            <% end %>
+          </fieldset>
+          <% if question.allow_comments %>
+            <%= f.input :comments, as: :text, input_html: {value: current_answer.comments}, required: false %>
+          <% end %>
+          <%= f.hidden_field :interview_id, value: interview.id %>
+          <%= f.hidden_field :interview_question_id, value: question.id %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+        <% end %>
+      </div>
+      <% k += 1 %>
+    <% end %>
+  <% end %>
+  <div class="interview-question__controls">
+    <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
+    <button class="btn-blue btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
+  </div>
+</div>
