@@ -16,7 +16,7 @@ class Interview < ApplicationRecord
     },
     ignoring: :accents
 
-  delegate :interviews, to: :campaign
+  delegate :interviews, :owner, to: :campaign
   delegate :interview_questions, to: :interview_form
 
   scope :completed, -> { where(completed: true) }
