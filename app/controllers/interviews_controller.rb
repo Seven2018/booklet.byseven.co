@@ -1,17 +1,13 @@
 class InterviewsController < ApplicationController
 
   def create
-    new_interview_employee = Interview.new(interview_params)
-    new_interview_hr = Interview.new(interview_params)
-    new_interview_final = Interview.new(interview_params)
-    authorize new_interview_employee
-    title = InterviewForm.find(params[:interview][:interview_form_id])
-    new_interview_employee.title, new_interview_employee.label = title, 'Employee'
-    new_interview_hr.title, new_interview_hr.label = title, 'HR'
-    new_interview_final.title, new_interview_final.label = title, 'Crossed'
-    new_interview_employee.save
-    new_interview_hr.save
-    new_interview_final.save
+    authorize Interview.new
+
+    interview_form = InterviewForm.find params[:interview][:interview_form_id]
+
+    Interview.create interview_params.merge(title: interview_form.title, label: 'Employee')
+    Interview.create interview_params.merge(title: interview_form.title, label: 'HR')
+    Interview.create interview_params.merge(title: interview_form.title, label: 'Crossed')
     respond_to do |format|
       format.js
     end
