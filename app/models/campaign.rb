@@ -27,4 +27,24 @@ class Campaign < ApplicationRecord
   def crossed_interview
     interviews.find(&:crossed?)
   end
+
+  def stats
+    {
+      hr_interview: {
+        interview_id: hr_interview.id,
+        answers_count: hr_interview.answers.count,
+        completed: hr_interview.completed
+      },
+      employee_interview: {
+        interview_id: employee_interview.id,
+        answers_count: employee_interview.answers.count,
+        completed: employee_interview.completed
+      },
+      crossed_interview: {
+        interview_id: crossed_interview.id,
+        answers_count: crossed_interview.answers.count,
+        completed: crossed_interview.completed
+      }
+    }
+  end
 end
