@@ -32,6 +32,10 @@ class Interview < ApplicationRecord
     update completed: true
   end
 
+  def time
+    "#{date} - #{starts_at.strftime("%Hh%M")} => #{ends_at.strftime("%Hh%M")}"
+  end
+
   # TODO replace with enum
   def employee?
     label == 'Employee'
