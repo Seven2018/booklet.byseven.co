@@ -1,4 +1,6 @@
 class Campaign < ApplicationRecord
+  class AmbiguousInterviewQuery < StandardError; end
+
   belongs_to :company
   belongs_to :owner, class_name: "User"
   belongs_to :interview_form
@@ -16,35 +18,69 @@ class Campaign < ApplicationRecord
     ).round
   end
 
-  def hr_interview
-    interviews.find(&:hr?)
+  def hr_interview(employee_id = nil)
+    if interviews.select(&:hr?).count == 1
+      return interviews.find(&:hr?)
+    end
+
+    raise AmbiguousInterviewQuery unless employee_id
+
+    interviews.where(employee_id: employee_id).find(&:hr?)
   end
 
-  def employee_interview
-    interviews.find(&:employee?)
+  def employee_interview(employee_id = nil)
+    if interviews.select(&:employee?).count == 1
+      return interviews.find(&:employee?)
+    end
+
+    raise AmbiguousInterviewQuery unless employee_id
+
+    interviews.where(employee_id: employee_id).find(&:employee?)
   end
 
-  def crossed_interview
-    interviews.find(&:crossed?)
+  def crossed_interview(employee_id = nil)
+    if interviews.select(&:crossed?).count == 1
+      return interviews.find(&:crossed?)
+    end
+
+    raise AmbiguousInterviewQuery unless employee_id
+
+    interviews.where(employee_id: employee_id).find(&:crossed?)
   end
 
   def stats
-    {
-      hr_interview: {
-        interview_id: hr_interview.id,
-        answers_count: hr_interview.answers.count,
-        completed: hr_interview.completed
-      },
-      employee_interview: {
-        interview_id: employee_interview.id,
-        answers_count: employee_interview.answers.count,
-        completed: employee_interview.completed
-      },
-      crossed_interview: {
-        interview_id: crossed_interview.id,
-        answers_count: crossed_interview.answers.count,
-        completed: crossed_interview.completed
+    data = interviews.group_by(&:employee_id).map do |employee_id, interviews|
+      employee = User.find(employee_id)
+      hr_interview = interviews.find(&:hr?)
+      employee_interview = interviews.find(&:employee?)
+      crossed_interview = interviews.find(&:crossed?)
+      {
+        employee_id: employee.id,
+        employee_email: employee.email,
+        interviews: {
+          hr_interview: {
+            interview_id: hr_interview.id,
+            answers_count: hr_interview.answers.count,
+            completed: hr_interview.completed
+          },
+          employee_interview: {
+            interview_id: employee_interview.id,
+            answers_count: employee_interview.answers.count,
+            completed: employee_interview.completed
+          },
+          crossed_interview: {
+            interview_id: crossed_interview.id,
+            answers_count: crossed_interview.answers.count,
+            completed: crossed_interview.completed
+          }
+        }
       }
+    end
+
+    {
+      owner_id: owner.id,
+      owner_email: owner.email,
+      data: data
     }
   end
 end

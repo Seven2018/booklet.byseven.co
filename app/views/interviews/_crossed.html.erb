@@ -13,30 +13,28 @@
 
   <% questions.order(position: :asc).each do |question| %>
 
-    <% unless question.separator? %>
-      <% employee_answer = InterviewAnswer.joins(:interview).find_by(
-          interview: interview.campaign.employee_interview,
-          interview_question: question,
-          user: employee
-        ) %>
-      <% manager_answer = InterviewAnswer.joins(:interview).find_by(
-          interview: interview.campaign.hr_interview,
-          interview_question: question,
-          user: manager
-        ) %>
-      <% crossed_answer = InterviewAnswer.joins(:interview).find_by(
-          interview: interview.campaign.crossed_interview,
-          interview_question: question,
-          user: manager
-        ) %>
-    <% end %>
-
-    <% current_answer = crossed_answer || manager_answer %>
-
     <% if question.separator? %>
       <p class='interview-summary__separator'><%= question.question %></p>
       <% next %>
     <% end %>
+
+    <% employee_answer = InterviewAnswer.joins(:interview).find_by(
+        interview: interview.campaign.employee_interview(employee.id),
+        interview_question: question,
+        user: employee
+      ) %>
+    <% manager_answer = InterviewAnswer.joins(:interview).find_by(
+        interview: interview.campaign.hr_interview(employee.id),
+        interview_question: question,
+        user: manager
+      ) %>
+    <% crossed_answer = InterviewAnswer.joins(:interview).find_by(
+        interview: interview.campaign.crossed_interview(employee.id),
+        interview_question: question,
+        user: manager
+      ) %>
+
+    <% current_answer = crossed_answer || manager_answer %>
 
     <%# actual questions %>
 
@@ -68,14 +66,14 @@
 
             <p style="color: #939393"><%= "#{employee.firstname}: #{employee_answer&.answer}" %></p>
             <p style="color: #3177B7"><%= "#{manager.firstname}: #{manager_answer&.answer}" %></p>
-            <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer.answer} %>
+            <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer&.answer} %>
 
           <% elsif question.mcq? %>
 
             <fieldset class="mcq">
               <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
                 <label class="rad-label">
-                  <% if b.text == current_answer.answer %>
+                  <% if b.text == current_answer&.answer %>
                     <%= b.radio_button class: 'rad-input', checked: 'checked' %>
                   <% else %>
                     <%= b.radio_button class: 'rad-input' %>
@@ -107,7 +105,7 @@
                   name="interview_answer[answer]"
                   id="<%= input_label_key %>"
                   onchange='selectRating(this);'
-                  <% if current_answer.answer.to_i == stars_count %> checked <% end %>
+                  <% if current_answer&.answer.to_i == stars_count %> checked <% end %>
                 />
                 <label
                   class="full"
@@ -129,7 +127,7 @@
 
             <%= f.input(:comments,
                 as: :text,
-                input_html: { value: current_answer.comments },
+                input_html: { value: current_answer&.comments },
                 required: false
               ) if question.allow_comments %>
 
