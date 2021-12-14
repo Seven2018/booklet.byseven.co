@@ -1,20 +1,18 @@
 <div class="row">
 
-  <% current_user.employee_to_hr_light? ? employee = true : employee = false %>
-
   <% if campaigns.empty? || campaigns.joins(:interviews).where(interviews: {completed: true}).nil? %>
     <p class="empty-card-list">No interview for the moment, click on 'Template' to start.</p>
   <% end %>
 
   <% campaigns.each do |campaign| %>
 
-    <% if employee %>
+    <% if current_user.employee_to_hr_light? %>
       <% interviews_for_date = campaign.interviews.find_by(employee_id: current_user.id) %>
       <% last_date = interviews_for_date.date %>
-      <% completion = (campaign.interviews.where(employee_id: current_user.id, completed: true).count.fdiv(campaign.interviews.where(employee_id: current_user.id).count) * 100).round %>
+      <% completion = campaign.completion_for(current_user) %>
     <% else %>
       <% interviews_for_date = campaign.interviews.order(date: :asc) %>
-      <% completion = (campaign.interviews.where(completed: true).count.fdiv(campaign.interviews.count) * 100).round %>
+      <% completion = campaign.completion_for(:all) %>
     <% end %>
     <% employee_list = campaign.employees.distinct.order(lastname: :asc).map{|x| "#{x.lastname} #{x.firstname}"}.join("\n") %>
 
@@ -26,7 +24,7 @@
       <% end %>
         <%= link_to '', campaign_path(campaign), class: 'stretched-link' %>
         <div class="campaign-card__header">
-          <% if employee %>
+          <% if current_user.employee_to_hr_light? %>
             <p>Review on <strong><%= last_date %></strong></p>
           <% else %>
             <p>Reviews from <strong><%= interviews_for_date.first.date %></strong> to <strong><%= interviews_for_date.last.date %></strong></p>

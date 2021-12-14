@@ -7,7 +7,9 @@ class Campaign < ApplicationRecord
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
 
-  def completion_for(employee = nil)
+  def completion_for(employee)
+    return 0 if interviews.count.zero?
+
     return (interviews.completed.count.fdiv(interviews.count) * 100).round if employee == :all
 
     return 0 if interviews.where(employee: employee).count.zero?

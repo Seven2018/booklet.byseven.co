@@ -2,22 +2,32 @@ class CampaignsController < ApplicationController
   before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy]
 
   def index
-    @campaigns = policy_scope(Campaign)
-    @campaigns = @campaigns.where(company_id: current_user.company_id)
-    authorize @campaigns
+    campaigns = policy_scope(Campaign).where_exists(:interviews)
+                                      .where(company: current_user.company)
+                                      .order(created_at: :desc)
+
+    search_title = params.dig(:search, :title)
+    search_period = params.dig(:search, :period)
+
     if current_user.manager?
-      @campaigns = @campaigns.where(owner_id: current_user.id)
+      campaigns = campaigns.where(owner_id: current_user.id)
     elsif current_user.employee_to_hr_light?
-      @campaigns = @campaigns.joins(:interviews).where(interviews: {employee_id: current_user.id}).distinct
+      campaigns = campaigns.joins(:interviews).where(interviews: { employee: current_user }).distinct
     end
-    if params[:search].present? && params[:search][:period] == 'Completed'
-      @campaigns = @campaigns.where_not_exists(:interviews, 'completed = ?', false)
-    elsif params[:search].present? && params[:search][:period] == 'All'
-    else
-      @campaigns = @campaigns.where_exists(:interviews, 'completed = ?', false)
-    end
-    if params[:search].present? && !(params[:search][:title] == '')
-      @campaigns = @campaigns.where(interview_form_id: InterviewForm.where(company_id: current_user.company_id).search_templates(params[:search][:title]).map(&:id))
+
+    @campaigns =
+      if search_period == 'All'
+        campaigns
+      elsif search_period == 'Completed'
+        campaigns.where_not_exists(:interviews, 'completed = ?', false)
+      else
+        campaigns.where_exists(:interviews, 'completed = ?', false)
+      end
+
+    if search_title.present?
+      interview_forms =  InterviewForm.where(company_id: current_user.company_id)
+                                      .search_templates(search_title)
+      @campaigns = @campaigns.where(interview_form: interview_forms)
       @filtered = 'true'
     else
       @filtered = 'false'
