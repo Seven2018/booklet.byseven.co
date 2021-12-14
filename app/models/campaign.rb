@@ -7,6 +7,8 @@ class Campaign < ApplicationRecord
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
 
+  validates :title, presence: true
+
   def completion_for(employee)
     return 0 if interviews.count.zero?
 

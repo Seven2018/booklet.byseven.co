@@ -6,6 +6,8 @@ class InterviewForm < ApplicationRecord
   has_many :tags, through: :interview_form_tags
   has_many :campaigns
 
+  validates :title, presence: true
+
   include PgSearch::Model
   pg_search_scope :search_templates,
     against: [ :title ],

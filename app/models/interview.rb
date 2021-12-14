@@ -4,6 +4,9 @@ class Interview < ApplicationRecord
   belongs_to :employee, class_name: "User"
   belongs_to :creator, class_name: "User"
   has_many :interview_answers
+  validates :title, :label, presence: true
+  validate :single_campaign_interview_set_per_employee
+
   alias answers interview_answers
 
   include PgSearch::Model
@@ -55,5 +58,12 @@ class Interview < ApplicationRecord
                        .each_with_index do |question, i|
       question.update_columns(position: i + 1)
     end
+  end
+
+  private
+
+  def single_campaign_interview_set_per_employee
+    errors.add(:base, 'only one interview per campaign per employee per label') if
+      campaign.interviews.where(label: label, employee: employee).exists?
   end
 end
