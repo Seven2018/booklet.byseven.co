@@ -64,6 +64,8 @@ class Interview < ApplicationRecord
 
   def single_campaign_interview_set_per_employee
     errors.add(:base, 'only one interview per campaign per employee per label') if
-      campaign.interviews.where(label: label, employee: employee).exists?
+      campaign.interviews.where(label: label, employee: employee)
+                         .where.not(id: id)
+                         .exists?
   end
 end

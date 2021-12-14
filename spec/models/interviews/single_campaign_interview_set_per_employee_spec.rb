@@ -45,12 +45,13 @@ RSpec.describe Interview, type: :model do
         create :interview, interview_params.merge(label: 'HR')
         create :interview, interview_params.merge(label: 'Crossed')
       end
-      it 'interview can not be created' do
+      it 'interview can not be created but it can be updated' do
         expect(campaign.interviews.count).to eq(3)
         expect(new_employee_interview.save).to be false
         expect(new_hr_interview.save).to be false
         expect(new_crossed_interview.save).to be false
         expect(campaign.interviews.count).to eq(3)
+        expect(campaign.interviews.first.valid?).to be true
       end
     end
   end
