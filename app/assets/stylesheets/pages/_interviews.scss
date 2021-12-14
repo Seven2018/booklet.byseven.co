@@ -13,13 +13,12 @@
 
 .interview-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
   height: calc(100vh - 7.5rem);
-  padding-bottom: 7rem;
   position: relative;
   overflow-x: hidden;
 }
@@ -271,7 +270,7 @@
 }
 
 .interview-question {
-  height: 100%;
+  flex-grow: 1;
   width: calc(100vw - 6rem);
   min-width: calc(100vw - 6rem);
   display: flex;
@@ -334,7 +333,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-bottom: 15rem;
+    margin-bottom: 1rem;
 
     button {
       margin: 0 2rem;
@@ -343,14 +342,8 @@
 }
 
 .interview-progress-bar-container {
-  width: 100vw;
-  height: 5rem;
-  position: absolute;
-  bottom: 5rem;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
+  width: calc(100vw - 6rem);
+  margin: 2rem auto;
   display: flex;
   justify-content: flex-start;
   border: .2rem solid #3177B7;

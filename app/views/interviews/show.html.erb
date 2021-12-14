@@ -25,14 +25,14 @@
       <% j += 1 %>
     <% end %>
     <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
-    <div class="interview-review hidden">
-    </div>
-  </div>
+    <div class="interview-review hidden"></div>
 
-  <div class="interview-progress-bar-container">
-    <div class="interview-progress-bar"></div>
-    <div class='interview-progress-bar__white'><p>0%</p></div>
-    <div class='interview-progress-bar__blue'><p>0%</p></div>
+    <div class="interview-progress-bar-container">
+      <div class="interview-progress-bar"></div>
+      <div class='interview-progress-bar__white'><p>0%</p></div>
+      <div class='interview-progress-bar__blue'><p>0%</p></div>
+    </div>
+
   </div>
 <% end %>
 
