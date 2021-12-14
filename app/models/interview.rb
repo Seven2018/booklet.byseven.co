@@ -3,7 +3,7 @@ class Interview < ApplicationRecord
   belongs_to :interview_form
   belongs_to :employee, class_name: "User"
   belongs_to :creator, class_name: "User"
-  has_many :interview_answers
+  has_many :interview_answers, dependent: :destroy
   validates :title, :label, presence: true
   validate :single_campaign_interview_set_per_employee
 
