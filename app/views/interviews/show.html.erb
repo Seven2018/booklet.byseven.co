@@ -143,13 +143,13 @@
   const csrfToken = () => document.querySelector("[name='csrf-token']").content
 
   const getInterviewFormInputValueForAnswer = (form) => {
-    if (form.dataset.questionType == 'rating') {
+    if (form.dataset.questionType == 'rating' || form.dataset.questionType == 'mcq') {
       let checkedValue = ''
       form.querySelectorAll('[name="interview_answer[answer]"]')
           .forEach((input) => { if (input.checked) { checkedValue = input.value } })
       return checkedValue
     } else {
-      return form.querySelector('[name="interview_answer[answer]"]')?.value
+      return getInterviewFormInputValue(form, 'answer')
     }
   }
 

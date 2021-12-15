@@ -3,14 +3,15 @@
 <h1><%= interview.interview_form.title %> - <em>Summary</em></h1>
 <h3 class="summary-info">Click on a question to change your answer</h3>
 <% questions.each_with_index do |question, i| %>
-  <% target_id = "target-#{i + 1}" %>
-  <% current_answer = InterviewAnswer.find_by(interview: interview, interview_question: question, user: current_user) unless question.separator? %>
-
   <% if question.separator? %>
-
     <p class='interview-summary__separator'><%= question.question %></p>
+    <% next %>
+  <% end %>
 
-  <% elsif question.open_question? %>
+  <% target_id = "target-#{i + 1}" %>
+  <% current_answer = InterviewAnswer.find_by(interview: interview, interview_question: question, user: current_user) %>
+
+  <% if question.open_question? %>
 
     <div class="interview-summary__open-question" onclick='goToQuestion(this)' id='<%= target_id %>'>
       <div class="flex-row-start-centered">
@@ -27,19 +28,22 @@
         <i class="fas fa-check"></i>
         <p><%= question.question %></p>
       </div>
-      <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
+      <%= simple_form_for(:interview_answer,
+        url: answer_interview_question_path,
+        remote: true,
+        data: {
+          question_type: question.question_type
+        }) do |f| %>
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label disabled">
-              <% if b.text == current_answer&.answer %>
-                <%= b.radio_button class: 'rad-input', checked: 'checked', disabled: true %>
-              <% else %>
-                <%= b.radio_button class: 'rad-input' , disabled: true %>
-              <% end %>
+              <%= b.radio_button({
+                class: 'rad-input',
+                checked: ('checked' if b.text == current_answer&.answer),
+                disabled: true
+                }.compact) %>
               <div class="rad-design"></div>
-              <div class="rad-text">
-                <%= b.text %>
-              </div>
+              <div class="rad-text"><%= b.text %></div>
             </label>
           <% end %>
         </fieldset>

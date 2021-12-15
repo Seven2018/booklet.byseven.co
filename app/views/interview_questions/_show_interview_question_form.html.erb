@@ -32,7 +32,12 @@
     <% current_answer   = existing_answer&.answer || '' %>
     <% current_comments = existing_answer&.comments || '' %>
 
-    <%= simple_form_for :interview_answer, url: answer_interview_question_path, remote: true do |f| %>
+    <%= simple_form_for(:interview_answer,
+      url: answer_interview_question_path,
+      remote: true,
+      data: {
+        question_type: question.question_type
+      }) do |f| %>
       <% if question.open_question? %>
 
         <%= f.input(
@@ -85,11 +90,12 @@
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label">
-              <% if b.text == current_answer %>
-                <%= b.radio_button class: 'rad-input', checked: 'checked', onchange: 'enableNext(this);', disabled: read_only %>
-              <% else %>
-                <%= b.radio_button class: 'rad-input' , onchange: 'enableNext(this);', disabled: read_only %>
-              <% end %>
+              <%= b.radio_button({
+                  class: 'rad-input',
+                  checked: ('checked' if b.text == current_answer),
+                  onchange: 'enableNext(this);',
+                  disabled: read_only
+                }.compact) %>
               <div class="rad-design"></div>
               <div class="rad-text"><%= b.text %></div>
             </label>
