@@ -2,9 +2,8 @@
 
 <h1><%= interview.interview_form.title %> - <em>Summary</em></h1>
 <h3 class="summary-info">Click on a question to change your answer</h3>
-<% k = 1 %>
-<% questions.each do |question| %>
-
+<% questions.each_with_index do |question, i| %>
+  <% target_id = "target-#{i + 1}" %>
   <% current_answer = InterviewAnswer.find_by(interview: interview, interview_question: question, user: current_user) unless question.separator? %>
 
   <% if question.separator? %>
@@ -13,18 +12,17 @@
 
   <% elsif question.open_question? %>
 
-    <div class="interview-summary__open-question" onclick='goToQuestion(this)' id='target-<%= k %>'>
+    <div class="interview-summary__open-question" onclick='goToQuestion(this)' id='<%= target_id %>'>
       <div class="flex-row-start-centered">
         <i class="fas fa-question"></i>
         <p><%= question.question %></p>
       </div>
       <p><%= current_user.firstname %>: <%= current_answer&.answer %></p>
     </div>
-    <% k += 1 %>
 
   <% elsif question.mcq? %>
 
-    <div class="interview-summary__mcq" onclick='goToQuestion(this)' id='target-<%= k %>'>
+    <div class="interview-summary__mcq" onclick='goToQuestion(this)' id='<%= target_id %>'>
       <div class="flex-row-start-centered">
         <i class="fas fa-check"></i>
         <p><%= question.question %></p>
@@ -50,7 +48,7 @@
 
   <% elsif question.rating? %>
 
-    <div class="interview-summary__rating" onclick='goToQuestion(this)' id='target-<%= k %>'>
+    <div class="interview-summary__rating" onclick='goToQuestion(this)' id='<%= target_id %>'>
       <div class="flex-row-start-centered">
         <i class="far fa-star"></i>
         <p><%= question.question %></p>
@@ -72,7 +70,6 @@
       </fieldset>
       <p><%= current_answer&.comments %></p>
     </div>
-    <% k += 1 %>
 
   <% end %>
 <% end %>
