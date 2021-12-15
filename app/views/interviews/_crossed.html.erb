@@ -73,13 +73,13 @@
             <fieldset class="mcq">
               <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
                 <label class="rad-label">
-                  <% if b.text == current_answer&.answer %>
-                    <%= b.radio_button class: 'rad-input', checked: 'checked' %>
-                  <% else %>
-                    <%= b.radio_button class: 'rad-input' %>
-                  <% end %>
+                  <%= b.radio_button({
+                    class: 'rad-input',
+                    checked: ('checked' if b.text == current_answer&.answer)
+                    }.compact) %>
                   <div class="rad-design"></div>
                   <div class="rad-text">
+                    <%= b.text %>
                     <% if b.text == manager_answer&.answer %>
                       <i class="fas fa-circle manager_answer"></i>
                     <% end %>
