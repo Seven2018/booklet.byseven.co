@@ -1,4 +1,4 @@
-document.querySelector('.template-show-lines').innerHTML = '<%= j render("interview_forms/partials/show_questions_index", template: @form, page: "edit") %>';
+document.querySelector('.template-show-lines').innerHTML = '<%= j render("interview_forms/edit/questions_index", template: @form) %>';
 document.querySelector('#template-show-container-left').innerHTML = '<%= j render("interview_forms/partials/show_summary", template: @form, page: "edit") %>';
 document.querySelector('.template-show-lines-control-btn').classList.remove('hidden')
 target = document.querySelector('#item-<%= @question.position %>').querySelector('.line-title');
