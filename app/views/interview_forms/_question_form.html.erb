@@ -1,0 +1,78 @@
+<% form_title = {
+  'separator' => 'Chapter',
+  'open_question' => 'Open Question',
+  'mcq' => 'MCQ'
+} %>
+
+<div class="line-top">
+  <div class="line-title" onclick='toggleMod(this);'>
+    <i class="fas fa-angle-down" data-rotated='0'></i>
+    <p><%= form_title[question_type] %></p>
+  </div>
+  <div class="line-controls-new">
+    <a class="line-delete"
+       onclick="
+        this.closest().remove(<%= ".add-#{question_type}" %>);
+        document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');
+       "
+     >
+     <i class="far fa-trash-alt" title="Delete"></i>
+   </a>
+  </div>
+</div>
+
+<%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
+  <%= f.hidden_field :interview_form_id, value: template_id %>
+  <%= f.hidden_field :question_type, value: question_type %>
+
+  <% unless question_type == 'separator' %>
+    <div class="flex-row-between-centered">
+      <label>Question</label>
+      <div class="required-question-switch-container">
+        <label>Required</label>
+        <label class="required-question-switch switch_checked">
+          <input type="checkbox"
+                 name='interview_question[required]'
+                 onclick='switchSide(this);'
+                 checked
+          />
+          <div><%# do not remove %></div>
+        </label>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.input(:question, {
+    placeholder: '*Required',
+    input_html: {
+      autocomplete: 'off',
+      onclick: 'saveQuestion(this)'
+    },
+    required: true,
+    label: (question_type == 'separator' ? 'Title' : false )
+  }.compact) %>
+
+  <%= f.input(:description,
+    placeholder: 'Description (optional)',
+    input_html: {
+      onclick: 'saveQuestion(this)'
+    },
+    label: false
+    ) %>
+
+  <% if question_type == 'rating' %>
+    <div class="add-rating__select">
+      <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'setRating(this);'} %>
+    </div>
+    <div class="show-rating"></div>
+    <div class="add-rating__toggle">
+      <%= f.input :allow_comments, label: 'Allow comments' %>
+    </div>
+  <% end %>
+
+  <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
+    <p>
+      <%= question_type == 'mcq' ? 'Create' : 'Save' %>
+    </p>
+  <% end %>
+<% end %>
