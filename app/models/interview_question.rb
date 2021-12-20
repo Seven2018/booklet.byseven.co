@@ -7,6 +7,13 @@ class InterviewQuestion < ApplicationRecord
   scope :not_separator, -> { where.not(question_type: 'separator') }
   scope :required, -> { where(required: true) }
 
+  enum required_for: {
+    none: 0,
+    manager: 10,
+    employee: 20,
+    all: 30
+  }, _prefix: true
+
   # TODO refacto question_type => enum
   # for perf + having below getters out of the box
   def open_question?
