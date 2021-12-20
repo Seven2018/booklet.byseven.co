@@ -90,19 +90,19 @@
   <div class='line-templates hidden'>
 
     <div class="add-separator add-separator-template hidden active">
-      <%= render 'question_form', question_type: 'separator', template_id: @template.id %>
+      <%= render 'question_form_template', question_type: 'separator', template_id: @template.id %>
     </div>
 
     <div class="add-open_question add-open_question-template hidden active">
-      <%= render 'question_form', question_type: 'open_question', template_id: @template.id %>
+      <%= render 'question_form_template', question_type: 'open_question', template_id: @template.id %>
     </div>
 
     <div class="add-rating add-rating-template hidden active">
-      <%= render 'question_form', question_type: 'rating', template_id: @template.id %>
+      <%= render 'question_form_template', question_type: 'rating', template_id: @template.id %>
     </div>
 
     <div class="add-mcq add-mcq-template hidden">
-      <%= render 'question_form', question_type: 'mcq', template_id: @template.id %>
+      <%= render 'question_form_template', question_type: 'mcq', template_id: @template.id %>
     </div>
   </div>
 
