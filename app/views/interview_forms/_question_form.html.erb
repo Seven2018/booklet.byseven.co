@@ -1,0 +1,120 @@
+<% form_title = {
+  'separator' => question.question,
+  'open_question' => 'Open Question',
+  'rating' => 'Rating',
+  'mcq' => 'MCQ'
+} %>
+
+<% first_question = question.position == 1 %>
+<% last_question = question.position >= template.interview_questions.count %>
+
+<div class="line-top">
+
+  <div class="line-title <%= 'line-title-separator' if question.separator? %>"
+       onclick='toggleMod(this);'>
+    <i class="fas fa-angle-down" data-rotated='0'></i>
+    <p><%= form_title[question.question_type] %></p>
+  </div>
+
+  <div class="line-controls">
+    <% if current_user.hr_or_above? && !params[:content_access].present? %>
+
+      <% if first_question %>
+        <a disabled class="line-move-up" style='cursor: default;'>
+          <i class="fas fa-arrow-up" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_up_interview_question_path(question), class: 'line-move-up', remote: true do %>
+          <i class="fas fa-arrow-up"></i>
+        <% end %>
+      <% end %>
+
+      <% if last_question %>
+        <a disabled class="line-move-down" style='cursor: default;'>
+          <i class="fas fa-arrow-down" style='color:#5B5959;'></i>
+        </a>
+      <% else %>
+        <%= link_to move_down_interview_question_path(question), class: 'line-move-down', remote: true do %>
+          <i class="fas fa-arrow-down"></i>
+        <% end %>
+      <% end %>
+
+      <%= link_to interview_question_path(question), method: :delete, class: 'line-delete', data: {confirm: 'Are you sure ?'}, remote: true do %>
+        <i class="far fa-trash-alt" id='line-delete' data-toggle='tooltip' title='Delete'></i>
+      <% end %>
+
+    <% end %>
+  </div>
+
+</div>
+
+<%= simple_form_for question, remote: true do |f| %>
+
+  <% unless question.separator? %>
+    <div class="flex-row-between-centered">
+      <label>Question</label>
+      <div class="required-question-switch-container">
+        <label>Required for</label>
+        <%= f.input(:required_for,
+          as: :select,
+          collection: InterviewQuestion::required_fors.keys,
+          label: false,
+          input_html: {
+            onchange: 'saveQuestion(this);'
+          },
+          selected: question.required_for
+        ) %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.input(:question, {
+      placeholder: '*Required',
+      input_html: {
+        autocomplete: 'off',
+        onclick: 'saveQuestion(this)'
+      },
+      required: true,
+      label: (question.separator? ? 'Title' : false )
+    }.compact) %>
+
+  <%= f.input :description, placeholder: 'Description (optional)', label: false, input_html: { onclick: 'saveQuestion(this)' } %>
+
+  <% if question.rating? %>
+    <div class="add-rating__select">
+      <%= f.input(:options,
+        as: :select,
+        collection: (1..10),
+        label: 'Max rating',
+        input_html: {
+          onchange: 'saveQuestion(this); setRating(this);'
+        },
+        selected: question.options.keys.first
+      ) %>
+    </div>
+    <div class="show-rating">
+      <% question.options.keys.first.to_i.times do %>
+        <i class="far fa-star"></i>
+      <% end %>
+    </div>
+    <div class="add-rating__toggle">
+      <%= f.input(
+        :allow_comments,
+        label: 'Allow comments',
+        input_html: {
+          onclick: 'this.closest("form").querySelector(".hidden-submit").click();',
+          autocomplete: 'off'
+        }
+      ) %>
+    </div>
+  <% end %>
+
+  <%= f.submit '', class: 'hidden-submit hidden' %>
+<% end %>
+
+<% if question.mcq? %>
+  <label>Options</label>
+  <div id='mcq-<%= question.id %>'>
+    <%= render 'interview_forms/partials/show_mcq', question: question, page: 'edit' %>
+  </div>
+<% end %>

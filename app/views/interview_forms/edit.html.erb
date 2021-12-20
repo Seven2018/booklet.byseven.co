@@ -4,10 +4,12 @@
     <i class="fas fa-file-alt"></i>
     <h2><%= @template.title %> - <em>Editor mode</em></h2>
   </div>
+
   <div id="template-show-container">
     <div id="template-show-container-left">
       <%= render 'interview_forms/partials/show_summary', template: @template, page: 'edit' %>
     </div>
+
     <div id="template-show-container-right">
       <div class="template-add">
         <div class="template-center-div template-center-div__show">
@@ -15,8 +17,9 @@
             <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'edit' %>
           </div>
           <div class="template-show-lines template-show-lines__show">
-            <%= render 'interview_forms/partials/show_questions_index', template: @template, page: 'edit' %>
+            <%= render 'interview_forms/edit/questions_index', template: @template %>
           </div>
+
           <div class="template-show-lines-control-btn" onclick="lineMenu();">
             <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
             <div class='close-template-btn'><i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#3177B7'></i></div>
@@ -39,6 +42,7 @@
               </a>
             </div>
           </div>
+
           <div class="template-show-lines-control-btn--mobile" onclick="columnMenu();">
             <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
             <div class="template-show-lines-controls--mobile hidden">
@@ -60,6 +64,7 @@
               </a>
             </div>
           </div>
+
           <div class="button-add-catalogue">
             <%= link_to :back do %>
               <div class="btn-blue-text">
@@ -72,6 +77,7 @@
             </div>
           </div>
         </div>
+
         <div class="template-add-right">
           <div class="template-show-attributes-right">
             <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'edit' %>
@@ -82,113 +88,21 @@
   </div>
 
   <div class='line-templates hidden'>
+
     <div class="add-separator add-separator-template hidden active">
-      <div class="line-top">
-        <div class="line-title" onclick='toggleMod(this);'>
-          <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>Chapter</p>
-        </div>
-        <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-separator').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
-        </div>
-      </div>
-      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
-        <%= f.hidden_field :interview_form_id, value: @template.id %>
-        <%= f.hidden_field :question_type, value: 'separator' %>
-        <%= f.input :question, placeholder: '*Required', label: 'Title', input_html: {autocomplete: 'off'}, required: true %>
-        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
-        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-          <p>Save</p>
-        <% end %>
-      <% end %>
+      <%= render 'question_form_template', question_type: 'separator', template_id: @template.id %>
     </div>
+
     <div class="add-open_question add-open_question-template hidden active">
-      <div class="line-top">
-        <div class="line-title" onclick='toggleMod(this);'>
-          <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>Open Question</p>
-        </div>
-        <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-open_question').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
-        </div>
-      </div>
-      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
-        <%= f.hidden_field :interview_form_id, value: @template.id %>
-        <%= f.hidden_field :question_type, value: 'open_question' %>
-        <div class="flex-row-between-centered">
-          <label>Question</label>
-          <div class="required-question-switch-container">
-            <label>Required</label>
-            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
-          </div>
-        </div>
-        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
-        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
-        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-          <p>Save</p>
-        <% end %>
-      <% end %>
+      <%= render 'question_form_template', question_type: 'open_question', template_id: @template.id %>
     </div>
+
     <div class="add-rating add-rating-template hidden active">
-      <div class="line-top" onclick='toggleMod(this);'>
-        <div class="line-title" onclick='toggleMod(this);'>
-          <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>Rating</p>
-        </div>
-        <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-rating').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
-        </div>
-      </div>
-      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
-        <%= f.hidden_field :interview_form_id, value: @template.id %>
-        <%= f.hidden_field :question_type, value: 'rating' %>
-        <div class="flex-row-between-centered">
-          <label>Question</label>
-          <div class="required-question-switch-container">
-            <label>Required</label>
-            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
-          </div>
-        </div>
-        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
-        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
-        <div class="add-rating__select">
-          <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'setRating(this);'} %>
-        </div>
-        <div class="show-rating"></div>
-        <div class="add-rating__toggle">
-          <%= f.input :allow_comments, label: 'Allow comments' %>
-        </div>
-        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-          <p>Save</p>
-        <% end %>
-      <% end %>
+      <%= render 'question_form_template', question_type: 'rating', template_id: @template.id %>
     </div>
+
     <div class="add-mcq add-mcq-template hidden">
-      <div class="line-top">
-        <div class="line-title" onclick='toggleMod(this);'>
-          <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>MCQ</p>
-        </div>
-        <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-mcq').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
-        </div>
-      </div>
-      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
-        <%= f.hidden_field :interview_form_id, value: @template.id %>
-        <%= f.hidden_field :question_type, value: 'mcq' %>
-        <div class="flex-row-between-centered">
-          <label>Question</label>
-          <div class="required-question-switch-container">
-            <label>Required</label>
-            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
-          </div>
-        </div>
-        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
-        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
-        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-          <p>Create</p>
-        <% end %>
-      <% end %>
+      <%= render 'question_form_template', question_type: 'mcq', template_id: @template.id %>
     </div>
   </div>
 
