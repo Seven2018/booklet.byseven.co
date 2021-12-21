@@ -1,4 +1,4 @@
-if Rails.env.production?
+unless Rails.env.development? || Rails.env.test?
   Sentry.init do |config|
     config.dsn = ENV['SENTRY']
     config.breadcrumbs_logger = [:active_support_logger, :http_logger]
@@ -11,5 +11,6 @@ if Rails.env.production?
     # config.traces_sampler = lambda do |context|
     #   true
     # end
+    config.environment = Rails.env
   end
 end

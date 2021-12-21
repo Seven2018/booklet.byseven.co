@@ -19,6 +19,13 @@ class ApplicationController < ActionController::Base
 
   # Uncomment when you *really understand* Pundit!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  if Rails.env.staging?
+    http_basic_authenticate_with \
+      name: ENV['STAGING_BASIC_AUTH_NAME'],
+      password: ENV['STAGING_BASIC_AUTH_PWD']
+  end
+
   def user_not_authorized
     flash[:alert] = "You are not authorized to perform this action."
     redirect_to(root_path)
