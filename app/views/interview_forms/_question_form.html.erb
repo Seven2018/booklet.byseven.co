@@ -54,16 +54,15 @@
     <div class="flex-row-between-centered">
       <label>Question</label>
       <div class="required-question-switch-container">
-        <label>Required for</label>
-        <%= f.input(:required_for,
-          as: :select,
-          collection: InterviewQuestion::required_fors.keys,
-          label: false,
-          input_html: {
-            onchange: 'saveQuestion(this);'
-          },
-          selected: question.required_for
-        ) %>
+        <label><%= question.required %></label>
+        <label class="required-question-switch <% 'switch_checked' if question.required %>">
+          <input type="checkbox"
+                 name='interview_question[required]'
+                 onclick='switchSide(this);'
+                <% if question.required %> checked <% end %>
+          />
+          <div><%# do not remove %></div>
+        </label>
       </div>
     </div>
   <% end %>
