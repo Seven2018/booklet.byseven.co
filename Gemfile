@@ -29,7 +29,7 @@ gem 'oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-google-oauth2'
 gem 'simple_token_authentication', '~> 1.0'
-
+gem 'devise_invitable', '~> 2.0.0'
 
 gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 gem 'ransack'

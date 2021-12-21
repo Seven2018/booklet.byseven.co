@@ -3,7 +3,8 @@ require 'csv'
 class User < ApplicationRecord
   include Users::Access
   acts_as_token_authenticatable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable,
+    :validatable, :omniauthable, :invitable, omniauth_providers: [:google_oauth2]
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
   has_many :attendees, dependent: :destroy

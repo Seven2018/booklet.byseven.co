@@ -125,7 +125,10 @@ Rails.application.routes.draw do
   resources :user_tags, only: %i[create]
 
   # USERS
-  devise_for :users, path: 'u', controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, path: 'u', controllers: {
+    invitations: 'users/invitations',
+    omniauth_callbacks: 'users/omniauth_callbacks'
+  }
   devise_scope :user do
     match '/sessions/user', to: 'devise/sessions#create', via: :post
   end

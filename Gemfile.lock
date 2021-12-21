@@ -142,6 +142,9 @@ GEM
     concurrent-ruby (1.1.9)
     crass (1.0.6)
     declarative (0.0.20)
+    devise_invitable (2.0.6)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     diff-lcs (1.4.4)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -519,6 +522,7 @@ DEPENDENCIES
   ckeditor!
   create_api_gem!
   devise!
+  devise_invitable (~> 2.0.0)
   dotenv-rails
   factory_bot_rails
   font-awesome-sass (~> 5.15.1)
