@@ -63,7 +63,7 @@ class User < ApplicationRecord
       if user.present?
         next unless user.company_id == company_id
 
-        update = user.update
+        update = user.update row_h
       else
         user = User.new(row_h)
         user.access_level = 'Employee' unless ['HR', 'Manager', 'Employee'].include?(row_h['access_level'])
