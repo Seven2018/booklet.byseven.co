@@ -69,7 +69,10 @@ review yet</p>
         <div class="campaign-interview-card__fill"></div>
       <% else %>
         <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>
-          <p>Start</p>
+          <p>
+            <%= InterviewPolicy.new(current_user, crossed_interview).answer_question? ? 'Start' : 'View' %>
+            <!-- TODO use policies to switch CTA's texts -->
+          </p>
         <% end %>
       <% end %>
     <% end %>
