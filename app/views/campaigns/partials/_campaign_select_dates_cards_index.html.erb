@@ -5,6 +5,7 @@
   </div>
   <div class="select-date-card-info">
     <p><%= selected_template.interview_questions.count %> questions</p>
+    <p>Dates can be edited by the manager</p>
     <div class="campaign-select-date-tag-pill__container">
       <% selected_template.interview_form_tags.each do |tag| %>
         <p class="campaign-select-date-tag-pill"><%= tag.tag_name %></p>
@@ -19,7 +20,7 @@
     </div>
     <%= simple_form_for :interview, url: interviews_path, method: :post, remote: true do |f| %>
       <div class="flex-row-start-centered">
-        <%= f.input :date, label: false, input_html: {class: 'datepicker', style: 'max-width: 110px;text-align: center;', onchange: 'checkDatePresence();checkInterviewOverlap();'}, placeholder: 'Select date', required: true %>
+        <%= f.input :date, label: false, input_html: {class: 'datepicker-defaulting-to-end-of-month', style: 'max-width: 110px;text-align: center;', onchange: 'checkDatePresence();checkInterviewOverlap();'}, placeholder: 'Select date', required: true %>
         <p>from</p>
         <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", value: '09:00', style: 'max-width: 70px;text-align: center;', onchange: 'checkInterval(this);checkInterviewOverlap();'}, required: true %>
         <p>to</p>
