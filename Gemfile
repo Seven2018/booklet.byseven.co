@@ -48,6 +48,7 @@ gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'acts_as_list'
 gem 'activeadmin'
+gem 'postmark-rails'
 
 group :development do
   gem 'better_errors'
