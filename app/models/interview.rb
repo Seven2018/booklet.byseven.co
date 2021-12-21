@@ -6,6 +6,7 @@ class Interview < ApplicationRecord
   has_many :interview_answers, dependent: :destroy
   validates :title, :label, presence: true
   validate :single_campaign_interview_set_per_employee
+  validate :not_locked
 
   alias answers interview_answers
 
@@ -60,6 +61,14 @@ class Interview < ApplicationRecord
     end
   end
 
+  def lock!
+    campaign.interviews.where(employee: employee).update(locked_at: Time.zone.now)
+  end
+
+  def locked?
+    locked_at.present? && !will_save_change_to_locked_at?
+  end
+
   private
 
   def single_campaign_interview_set_per_employee
@@ -67,5 +76,13 @@ class Interview < ApplicationRecord
       campaign.interviews.where(label: label, employee: employee)
                          .where.not(id: id)
                          .exists?
+  end
+
+  def unlocking
+    locked_at.nil? && will_save_change_to_locked_at?
+  end
+
+  def not_locked
+    errors.add(:base, 'a locked interview can not be changed') if locked? || unlocking
   end
 end

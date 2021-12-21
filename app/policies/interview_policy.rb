@@ -27,6 +27,8 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def answer_question?
+    return false if record.locked?
+
     case
     when record.crossed? || record.manager?
       user == record.owner
