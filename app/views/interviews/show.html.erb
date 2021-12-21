@@ -25,7 +25,7 @@
       <% j += 1 %>
     <% end %>
     <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
-    <div class="interview-review hidden"></div>
+    <div class="interview-review hidden"><%= @interview.completed %></div>
 
     <div class="interview-progress-bar-container">
       <div class="interview-progress-bar"></div>
@@ -128,8 +128,7 @@
       current_question = element.closest('.interview-question')
       current_question.querySelector('.hidden-submit').click()
       document.querySelector('body').classList.add('wait')
-      setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
-      progression_bar.classList.add('hidden')
+      setTimeout(function(){document.querySelector('.hidden-link').click();progression_bar.classList.add('hidden')}, 500)
     } else {
       target_position = parseInt(element.id.split('-')[1],10)
       question = document.querySelector('#question-' + target_position)
@@ -222,5 +221,15 @@
       center_white.style.width = parseInt(progression.split('%'),10).toString() + 'px'
       center_blue.style.width = (100 - parseInt(progression.split('%')[0],10)).toString() + 'px'
     }
+  }
+
+  if (document.querySelector('.interview-review').innerText == 'true') {
+    document.querySelector('body').classList.add('wait')
+    document.querySelector('.interview-review').innerText = ''
+    document.querySelectorAll('.btn-blue')[document.querySelectorAll('.btn-blue').length - 1].click()
+    document.querySelector('.interview-start').classList.add('hidden')
+    document.querySelector('.interview-progress-bar-container').classList.add('hidden')
+    document.querySelector('.interview-review').classList.remove('hidden')
+    document.querySelector('body').classList.remove('wait')
   }
 </script>
