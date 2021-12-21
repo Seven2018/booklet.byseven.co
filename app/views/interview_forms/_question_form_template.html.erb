@@ -13,8 +13,9 @@
   <div class="line-controls-new">
     <a class="line-delete"
        onclick="
-        this.closest().remove(<%= ".add-#{question_type}" %>);
+        this.closest('<%= ".add-#{question_type}" %>').remove();
         document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');
+        document.querySelector('.template-show-lines-control-btn--mobile').classList.remove('hidden');
        "
      >
      <i class="far fa-trash-alt" title="Delete"></i>

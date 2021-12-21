@@ -54,8 +54,8 @@
     <div class="flex-row-between-centered">
       <label>Question</label>
       <div class="required-question-switch-container">
-        <label><%= question.required %></label>
-        <label class="required-question-switch <% 'switch_checked' if question.required %>">
+        <label>Required</label>
+        <label class="required-question-switch <%= 'switch_checked' if question.required %>">
           <input type="checkbox"
                  name='interview_question[required]'
                  onclick='switchSide(this);'

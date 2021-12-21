@@ -124,9 +124,9 @@
     <% elsif j == questions.where.not(question_type: 'separator').count && @interview.completed == true %>
       <button class="btn-blue btn-blue" onclick='submitAnswers(this)'><p>See Summary</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count && question.required && current_answer == '' %>
-      <button class="btn-blue btn-blue-disabled" onclick='submitAnswers(this)' disabled><p>Submit Form</p></button>
+      <button class="btn-blue btn-blue-disabled" onclick='submitAnswers(this)' disabled><p>See Summary</p></button>
     <% elsif j == questions.where.not(question_type: 'separator').count %>
-      <button class="btn-blue" onclick='submitAnswers(this)'><p>Submit Form</p></button>
+      <button class="btn-blue" onclick='submitAnswers(this)'><p>See Summary</p></button>
     <% elsif question.required && current_answer == '' && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
     <% else %>
