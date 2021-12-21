@@ -3,7 +3,8 @@ require 'csv'
 class User < ApplicationRecord
   include Users::Access
   acts_as_token_authenticatable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable,
+    :validatable, :omniauthable, :invitable, omniauth_providers: [:google_oauth2]
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
   has_many :attendees, dependent: :destroy
@@ -45,11 +46,11 @@ class User < ApplicationRecord
     user
   end
 
-  def self.import(file, company_id)
+  def self.import(file, company_id, invited_by_id)
     present = []
     CSV.foreach(file.path, headers: true) do |row|
       row_h = row.to_hash
-      user_attr = "firstname,lastname,email,password,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
+      user_attr = "firstname,lastname,email,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
       tag_categories_to_create_user = row.to_hash.keys - user_attr
       tag_categories_to_create_user.each { |tag| row_h.delete(tag) }
 
@@ -62,18 +63,14 @@ class User < ApplicationRecord
       if user.present?
         next unless user.company_id == company_id
 
-        user.update(row_h.except!('password'))
-        update = true
+        update = user.update
       else
         user = User.new(row_h)
         user.access_level = 'Employee' unless ['HR', 'Manager', 'Employee'].include?(row_h['access_level'])
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
-        user.authentication_token = Base64.encode64(user.email).gsub("\n","") + SecureRandom.hex(32)
-        user.save
-        raw, token = Devise.token_generator.generate(User, :reset_password_token)
-        user.reset_password_token = token
-        user.reset_password_sent_at = Time.now.utc
+        user.invited_by_id = invited_by_id
+        user.invite!
       end
       user.save(validate: false)
       present << user.id
