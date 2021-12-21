@@ -142,7 +142,7 @@ class UsersController < ApplicationController
       end
     elsif params[:button] == 'import'
       @redirect = request.base_url + request.path
-      ImportEmployeesJob.perform_async(params[:file], current_user.company_id)
+      ImportEmployeesJob.perform_async(params[:file], current_user.company_id, current_user.id)
       flash[:notice] = 'Import in progress. Please wait for a while and refresh this page.'
       flash.keep(:notice)
       render js: "window.location = '#{organisation_path}'"
@@ -172,6 +172,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:firstname, :lastname, :email, :password, :access_level, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_title, :company_id)
+    params.require(:user).permit(:firstname, :lastname, :email, :access_level, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_title, :company_id)
   end
 end
