@@ -142,7 +142,17 @@
   <% end # questions %>
 
   <div class="interview-question__controls">
-    <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
-    <button class="btn-blue btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
+    <% if interview.locked? %>
+      <button class="btn-blue btn-blue btn-blue-disabled">
+        <p>Form Locked</p>
+      </button>
+    <% elsif Interview::LockPolicy.new(current_user, interview).create? %>
+      <%= link_to interview_locks_path(interview), method: :post, class: 'btn-blue btn-blue' do %>
+        <p>Lock Form</p>
+      <% end %>
+    <% else %>
+      <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
+      <button class="btn-blue btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
+    <% end %>
   </div>
 </div>

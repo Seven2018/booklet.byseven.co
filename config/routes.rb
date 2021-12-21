@@ -51,12 +51,16 @@ Rails.application.routes.draw do
   get 'folders/:id/duplicate', to: 'folders#duplicate', as: 'duplicate_folder'
 
   # INTERVIEWS
-  resources :interviews
+  resources :interviews do
+    resource :locks, module: :interview, only: :create
+  end
+
   namespace :interview do
     namespace :answer do
       resource :authorization_checks, only: :create
     end
   end
+
   get :update_interviews, controller: :interviews
   post :answer_question, controller: :interviews, as: :answer_interview_question
 
