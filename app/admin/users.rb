@@ -1,4 +1,6 @@
 ActiveAdmin.register User do
+  actions :index, :show, :update, :edit, :destroy
+
   filter :email
   filter :firstname
   filter :lastname
