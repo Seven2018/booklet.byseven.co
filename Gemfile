@@ -51,7 +51,9 @@ gem 'activeadmin'
 gem 'postmark-rails'
 
 group :development do
-  gem 'better_errors'
+  # gem 'better_errors'
+  # gem 'debug_inspector'
+  gem 'web-console'
   gem 'bullet'
 end
 

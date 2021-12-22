@@ -60,9 +60,9 @@ class User < ApplicationRecord
         (row_h['email'].downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
 
       user = User.find_by(email: row_h['email'].downcase)
+
       if user.present?
         next unless user.company_id == company_id
-
         update = user.update row_h
       else
         user = User.new(row_h)
@@ -70,9 +70,9 @@ class User < ApplicationRecord
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
-        user.invite!
+        Rails.env == 'production' ? user.invite! : user.save(validate: false)
       end
-      user.save(validate: false)
+
       present << user.id
       # Create tag_categories if necessary, correctly setting its position
       tag_category_last_position = TagCategory.where(company_id: company_id)&.order(position: :asc)&.last&.position
