@@ -26,7 +26,7 @@ RSpec.describe Interview, type: :model do
 
   describe '#single_campaign_interview_set_per_employee' do
     let(:new_employee_interview) { Interview.new(interview_params.merge(label: 'Employee')) }
-    let(:new_hr_interview) { Interview.new(interview_params.merge(label: 'HR')) }
+    let(:new_hr_interview) { Interview.new(interview_params.merge(label: 'Manager')) }
     let(:new_crossed_interview) { Interview.new(interview_params.merge(label: 'Crossed')) }
 
     context 'when no campaign interview set exists for employee' do
@@ -42,7 +42,7 @@ RSpec.describe Interview, type: :model do
     context 'when a campaign interview set exists for employee' do
       before do
         create :interview, interview_params.merge(label: 'Employee')
-        create :interview, interview_params.merge(label: 'HR')
+        create :interview, interview_params.merge(label: 'Manager')
         create :interview, interview_params.merge(label: 'Crossed')
       end
       it 'interview can not be created but it can be updated' do

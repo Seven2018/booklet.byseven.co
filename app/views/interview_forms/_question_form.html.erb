@@ -53,16 +53,31 @@
   <% unless question.separator? %>
     <div class="flex-row-between-centered">
       <label>Question</label>
-      <div class="required-question-switch-container">
-        <label>Required</label>
-        <label class="required-question-switch <%= 'switch_checked' if question.required %>">
-          <input type="checkbox"
-                 name='interview_question[required]'
-                 onclick='switchSide(this);'
-                <% if question.required %> checked <% end %>
-          />
-          <div><%# do not remove %></div>
-        </label>
+      <div class="flex-row-between-centered">
+        <div class="visible-for-question">
+          <label>Visible for</label>
+          <%= f.input(:visible_for,
+            as: :select,
+            collection: InterviewQuestion::visible_fors.keys,
+            label_method: lambda {|k| k.capitalize},
+            label: false,
+            include_blank: false,
+            input_html: {
+              onchange: 'saveQuestion(this);'
+            }
+          ) %>
+        </div>
+        <div class="required-question-switch-container">
+          <label>Required</label>
+          <label class="required-question-switch switch_checked">
+            <input type="checkbox"
+                   name='interview_question[required]'
+                   onclick='switchSide(this);'
+                   checked
+            />
+            <div><%# do not remove %></div>
+          </label>
+        </div>
       </div>
     </div>
   <% end %>
@@ -96,6 +111,8 @@
         <i class="far fa-star"></i>
       <% end %>
     </div>
+  <% end %>
+  <% if question.rating? || question.mcq? %>
     <div class="add-rating__toggle">
       <%= f.input(
         :allow_comments,

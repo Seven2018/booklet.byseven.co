@@ -6,7 +6,7 @@
         <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
       <% end %>
     </div>
-
+    <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
     <% existing_answer =
       InterviewAnswer.find_by(
       interview: @interview,
@@ -20,12 +20,12 @@
         interview_question: question,
         user: @interview.campaign.owner
       ) %>
-    <% elsif @interview.employee? && read_only %>
+    <% elsif read_only %>
       <% existing_answer =
         InterviewAnswer.find_by(
         interview: @interview,
         interview_question: question,
-        user: @interview.employee
+        user: user
       ) %>
     <% end %>
 
@@ -102,6 +102,16 @@
           <% end %>
         </fieldset>
 
+        <%= f.input(
+          :comments,
+          as: :text,
+          input_html: {
+            value: current_comments
+          },
+          required: false,
+          disabled: read_only
+        ) if question.allow_comments %>
+
       <% end %>
 
         <%= f.hidden_field :interview_id, value: @interview.id %>
@@ -112,20 +122,23 @@
   </div>
 
   <div class="interview-question__controls">
+
+    <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
+
     <% if @interview.crossed? %>
       <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
     <% else %>
       <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
     <% end %>
-    <% if j == questions.where.not(question_type: 'separator').count && read_only %>
+    <% if j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && read_only %>
       <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
-        <button class="btn-blue"><p>Validate</p></button>
+        <button class="btn-blue" onclick='submitAnswers(this)'><p>Exit</p></button>
       <% end %>
-    <% elsif j == questions.where.not(question_type: 'separator').count && @interview.completed == true %>
+    <% elsif j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && @interview.completed == true %>
       <button class="btn-blue btn-blue" onclick='submitAnswers(this)'><p>See Summary</p></button>
-    <% elsif j == questions.where.not(question_type: 'separator').count && question.required && current_answer == '' %>
+    <% elsif j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && question.required && current_answer == '' %>
       <button class="btn-blue btn-blue-disabled" onclick='submitAnswers(this)' disabled><p>See Summary</p></button>
-    <% elsif j == questions.where.not(question_type: 'separator').count %>
+    <% elsif j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count %>
       <button class="btn-blue" onclick='submitAnswers(this)'><p>See Summary</p></button>
     <% elsif question.required && current_answer == '' && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>

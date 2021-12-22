@@ -7,7 +7,7 @@
     <%= f.input :start, label: 'From', input_html: {class: 'datepicker', value: start_date, onchange: 'checkDateInterval();selectManagerbyDate(this)'}, placeholder: 'Select date' %>
     <%= f.input :end, label: 'To', input_html: {class: 'datepicker', value: end_date, onchange: 'checkDateInterval();selectManagerbyDate(this)'}, placeholder: 'Select date' %>
     <%= f.hidden_field :manager_id %>
-    <button type='submit'>
+    <button type='submit' onclick="document.querySelector('body').classList.add('wait');">
       <i class="fas fa-search"></i>
     </button>
   </div>

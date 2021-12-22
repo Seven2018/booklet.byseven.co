@@ -6,7 +6,7 @@ class InterviewsController < ApplicationController
     interview_form = InterviewForm.find params[:interview][:interview_form_id]
 
     Interview.create interview_params.merge(title: interview_form.title, label: 'Employee')
-    Interview.create interview_params.merge(title: interview_form.title, label: 'HR')
+    Interview.create interview_params.merge(title: interview_form.title, label: 'Manager')
     Interview.create interview_params.merge(title: interview_form.title, label: 'Crossed')
     respond_to do |format|
       format.js

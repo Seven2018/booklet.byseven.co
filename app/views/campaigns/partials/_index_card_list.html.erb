@@ -65,7 +65,7 @@
           <% if current_user.employee_to_hr_light? %>
             <div class='campaign-card-summary__count'>
               <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> employee reviews</p>
-              <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'HR', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> manager reviews</p>
+              <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'Manager', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> manager reviews</p>
               <p><%= campaign.interviews.where(employee_id: current_user.id, label: 'Crossed', completed: true).count %>/<%= campaign.interviews.where(employee_id: current_user.id, label: 'Employee').count %> crossed reviews</p>
             </div>
             <div class="campaign-card-summary__completion">
@@ -75,7 +75,7 @@
           <% else %>
             <div class='campaign-card-summary__count'>
               <p><%= campaign.interviews.where(label: 'Employee', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> employee reviews</p>
-              <p><%= campaign.interviews.where(label: 'HR', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> manager reviews</p>
+              <p><%= campaign.interviews.where(label: 'Manager', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> manager reviews</p>
               <p><%= campaign.interviews.where(label: 'Crossed', completed: true).count %>/<%= campaign.interviews.where(label: 'Employee').count %> crossed reviews</p>
             </div>
             <div class="campaign-card-summary__completion-and-assignment">

@@ -41,6 +41,7 @@
       input.value = ''
       search_input.value = ''
     }
+    document.querySelector('body').classList.add('wait')
     input.closest('form').querySelector('button[type="submit"]').click()
   }
 
@@ -74,6 +75,7 @@
 
   function autoSubmit(element) {
     form = element.closest('form')
+    document.querySelector('body').classList.add('wait')
     form.querySelector('button[type="submit"]').click()
   }
 </script>

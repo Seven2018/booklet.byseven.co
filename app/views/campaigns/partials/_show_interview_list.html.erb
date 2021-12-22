@@ -1,6 +1,6 @@
 <% if @interviews.present? %>
   <% employee_interview = @interviews.find_by(label: 'Employee') %>
-  <% manager_interview = @interviews.find_by(label: 'HR') %>
+  <% manager_interview = @interviews.find_by(label: 'Manager') %>
   <% crossed_interview = @interviews.find_by(label: 'Crossed') %>
   <% current_user.employee_to_hr_light? ? employee_view = true : employee_view = false %>
   <div class="campaign-interview-card">
@@ -37,9 +37,13 @@ review yet</p>
       <p class="campaign-interview-card__status">Review completed</p>
       <% if employee_view %>
         <div class="campaign-interview-card__fill"></div>
-      <% else %>
+      <% elsif current_user == campaign.owner %>
         <%= link_to interview_path(manager_interview), class: 'campaign-interview-card__button' do %>
           <p>Modify</p>
+        <% end %>
+      <% elsif current_user.hr_or_above? %>
+        <%= link_to interview_path(manager_interview), class: 'campaign-interview-card__button' do %>
+          <p>View</p>
         <% end %>
       <% end %>
     <% else %>
