@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: Rails.application.credentials.gmail_username
+  default from: CompanyInfo.mailer_from
 
   def account_created(user, token)
     @host = Current.user

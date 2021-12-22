@@ -20,7 +20,7 @@ class InterviewsController < ApplicationController
     @questions = @interview.interview_questions.order(position: :asc)
     authorize @interview
 
-    flash[:alert] = "View mode only! Your answer won't be saved!" unless
+    flash[:alert] = "View mode only! New answers won't be saved!" unless
       InterviewPolicy.new(current_user, @interview).answer_question?
 
     params[:show_review].present? ? @show_review = 'true' : @show_review = 'false'
