@@ -34,7 +34,7 @@
           <h3><%= campaign.title %></h3>
           <% unless completion == 100 %>
             <div class="campaign-card__options" onclick="openContentMenu(this);">
-              <% if current_user.hr_or_above? %>
+              <% if current_user.manager_or_above? %>
                 <i class="fas fa-ellipsis-v"></i>
                 <div class="content-dropdown hidden">
                     <%= link_to 'Edit', edit_campaign_path(campaign) %>
