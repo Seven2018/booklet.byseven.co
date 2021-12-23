@@ -6,6 +6,9 @@
         <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
       <% end %>
     </div>
+    <div class="interview-question__form-description">
+      <p><%= question.description %></p>
+    </div>
     <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
     <% existing_answer =
       InterviewAnswer.find_by(
