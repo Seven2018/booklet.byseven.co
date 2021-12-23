@@ -1,5 +1,5 @@
 class CampaignMailer < ApplicationMailer
-  default from: 'no-reply@byseven.co'
+  default from: CompanyInfo.no_reply
 
   def invite_employee(owner, employee, interview)
     @employee = employee

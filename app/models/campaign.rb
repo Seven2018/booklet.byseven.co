@@ -65,17 +65,20 @@ class Campaign < ApplicationRecord
           hr_interview: {
             interview_id: hr_interview.id,
             answers_count: hr_interview.answers.count,
-            completed: hr_interview.completed
+            completed: hr_interview.completed,
+            locked_at: hr_interview.locked_at
           },
           employee_interview: {
             interview_id: employee_interview.id,
             answers_count: employee_interview.answers.count,
-            completed: employee_interview.completed
+            completed: employee_interview.completed,
+            locked_at: employee_interview.locked_at
           },
           crossed_interview: {
             interview_id: crossed_interview.id,
             answers_count: crossed_interview.answers.count,
-            completed: crossed_interview.completed
+            completed: crossed_interview.completed,
+            locked_at: crossed_interview.locked_at
           }
         }
       }
