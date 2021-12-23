@@ -113,6 +113,6 @@ class InterviewQuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:interview_question).permit(:question, :description, :question_type, :allow_comments, :interview_form_id)
+    params.require(:interview_question).permit(:question, :description, :question_type, :allow_comments, :interview_form_id, :visible_for)
   end
 end

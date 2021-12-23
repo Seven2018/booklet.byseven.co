@@ -13,8 +13,9 @@
   <div class="line-controls-new">
     <a class="line-delete"
        onclick="
-        this.closest().remove(<%= ".add-#{question_type}" %>);
+        this.closest('<%= ".add-#{question_type}" %>').remove();
         document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');
+        document.querySelector('.template-show-lines-control-btn--mobile').classList.remove('hidden');
        "
      >
      <i class="far fa-trash-alt" title="Delete"></i>
@@ -29,16 +30,31 @@
   <% unless question_type == 'separator' %>
     <div class="flex-row-between-centered">
       <label>Question</label>
-      <div class="required-question-switch-container">
-        <label>Required</label>
-        <label class="required-question-switch switch_checked">
-          <input type="checkbox"
-                 name='interview_question[required]'
-                 onclick='switchSide(this);'
-                 checked
-          />
-          <div><%# do not remove %></div>
-        </label>
+      <div class="flex-row-between-centered">
+        <div class="visible-for-question">
+          <label>Visible for</label>
+          <%= f.input(:visible_for,
+            as: :select,
+            collection: InterviewQuestion::visible_fors.keys,
+            label_method: lambda {|k| k.capitalize},
+            label: false,
+            include_blank: false,
+            input_html: {
+              onchange: 'saveQuestion(this);'
+            }
+          ) %>
+        </div>
+        <div class="required-question-switch-container">
+          <label>Required</label>
+          <label class="required-question-switch switch_checked">
+            <input type="checkbox"
+                   name='interview_question[required]'
+                   onclick='switchSide(this);'
+                   checked
+            />
+            <div><%# do not remove %></div>
+          </label>
+        </div>
       </div>
     </div>
   <% end %>
@@ -67,6 +83,8 @@
       <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'setRating(this);'} %>
     </div>
     <div class="show-rating"></div>
+  <% end %>
+  <% if question_type == 'rating' || question_type == 'mcq' %>
     <div class="add-rating__toggle">
       <%= f.input :allow_comments, label: 'Allow comments' %>
     </div>

@@ -66,16 +66,31 @@
 
             <p class="employee_answer"><%= "#{employee.firstname}: #{employee_answer&.answer}" %></p>
             <p class="manager_answer"><%= "#{manager.firstname}: #{manager_answer&.answer}" %></p>
-            <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer&.answer} %>
+            <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer&.answer}, disabled: read_only %>
 
           <% elsif question.mcq? %>
+
+            <% if employee_answer&.comments.present? %>
+              <p style="color: #939393; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
+            <% end %>
+            <% if manager_answer&.comments.present? %>
+              <p style="color: #3177B7; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
+            <% end %>
+
+            <%= f.input(:comments,
+                as: :text,
+                input_html: { value: current_answer&.comments },
+                required: false,
+                disabled: read_only
+              ) if question.allow_comments %>
 
             <fieldset class="mcq">
               <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
                 <label class="rad-label">
                   <%= b.radio_button({
                     class: 'rad-input',
-                    checked: ('checked' if b.text == current_answer&.answer)
+                    checked: ('checked' if b.text == current_answer&.answer),
+                    disabled: read_only
                     }.compact) %>
                   <div class="rad-design"></div>
                   <div class="rad-text">
@@ -93,7 +108,14 @@
 
           <% elsif question.rating? %>
 
-            <fieldset class="rating">
+            <%= f.input(:comments,
+                as: :text,
+                input_html: { value: current_answer&.comments },
+                required: false,
+                disabled: read_only
+              ) if question.allow_comments %>
+
+            <fieldset class="rating<%= ' read_only' if read_only %>">
               <% for i in 1..question.options.keys.first.to_i %>
                 <% stars_count = question.options.keys.first.to_i - i + 1 %>
                 <% input_label_key = "star-position(#{question.position})-#{i}" %>
@@ -106,6 +128,7 @@
                   id="<%= input_label_key %>"
                   onchange='selectRating(this);'
                   <% if current_answer&.answer.to_i == stars_count %> checked <% end %>
+                  <%= 'disabled' if read_only %>
                 />
                 <label
                   class="full"
@@ -125,11 +148,12 @@
               <% end %>
             </fieldset>
 
-            <%= f.input(:comments,
-                as: :text,
-                input_html: { value: current_answer&.comments },
-                required: false
-              ) if question.allow_comments %>
+            <% if employee_answer&.comments.present? %>
+              <p style="color: #939393; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
+            <% end %>
+            <% if manager_answer&.comments.present? %>
+              <p style="color: #3177B7; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
+            <% end %>
 
           <% end # question_types %>
 
@@ -152,7 +176,11 @@
       <% end %>
     <% else %>
       <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
-      <button class="btn-blue btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
+      <% if read_only %>
+        <button class="btn-blue btn-blue" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
+      <% else %>
+        <button class="btn-blue btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
+      <% end %>
     <% end %>
   </div>
 </div>

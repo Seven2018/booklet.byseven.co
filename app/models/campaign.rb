@@ -23,13 +23,13 @@ class Campaign < ApplicationRecord
   end
 
   def hr_interview(employee_id = nil)
-    if interviews.select(&:hr?).count == 1
-      return interviews.find(&:hr?)
+    if interviews.select(&:manager?).count == 1
+      return interviews.find(&:manager?)
     end
 
     raise AmbiguousInterviewQuery unless employee_id
 
-    interviews.where(employee_id: employee_id).find(&:hr?)
+    interviews.where(employee_id: employee_id).find(&:manager?)
   end
 
   def employee_interview(employee_id = nil)
@@ -55,7 +55,7 @@ class Campaign < ApplicationRecord
   def stats
     data = interviews.group_by(&:employee_id).map do |employee_id, interviews|
       employee = User.find(employee_id)
-      hr_interview = interviews.find(&:hr?)
+      hr_interview = interviews.find(&:manager?)
       employee_interview = interviews.find(&:employee?)
       crossed_interview = interviews.find(&:crossed?)
       {

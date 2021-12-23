@@ -52,7 +52,7 @@ gem 'postmark-rails'
 
 group :development do
   # gem 'better_errors'
-  # gem 'debug_inspector'
+  # gem 'binding_of_caller'
   gem 'web-console'
   gem 'bullet'
 end

@@ -17,7 +17,7 @@
             <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'edit' %>
           </div>
           <div class="template-show-lines template-show-lines__show">
-            <%= render 'interview_forms/edit/questions_index', template: @template %>
+            <%= render 'interview_forms/edit/questions_index', template: @template, page: 'edit' %>
           </div>
 
           <div class="template-show-lines-control-btn" onclick="lineMenu();">
@@ -200,7 +200,7 @@
     button.classList.add('hidden')
     controls.classList.remove('hidden')
     window.addEventListener('click', function(e) {
-      if (outsideClick(e, container)) {
+      if (outsideClick(e, button)) {
         button.classList.remove('hidden')
         controls.classList.add('hidden')
         this.removeEventListener('click', arguments.callee, false);
@@ -243,6 +243,7 @@
       content.append(newDiv)
     }
     document.querySelector('.template-show-lines-control-btn').classList.add('hidden')
+    document.querySelector('.template-show-lines-control-btn--mobile').classList.add('hidden')
   }
 
   function multiplyNode(node, count, deep) {

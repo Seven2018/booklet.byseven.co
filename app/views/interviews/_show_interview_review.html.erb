@@ -1,15 +1,19 @@
-<% questions = interview.interview_form.interview_questions.order(position: :asc) %>
+<% visibility = ['all', interview.label.downcase] %>
+<% questions = interview.interview_form.interview_questions.where.not(question_type: 'separator').where(visible_for: visibility).order(position: :asc) %>
 
 <h1><%= interview.interview_form.title %> - <em>Summary</em></h1>
 <h3 class="summary-info">Click on a question to change your answer</h3>
-<% questions.each_with_index do |question, i| %>
+<% user = interview.label == 'Employee' ? interview.employee : interview.owner %>
+<% n = 1 %>
+<% questions.each do |question| %>
   <% if question.separator? %>
     <p class='interview-summary__separator'><%= question.question %></p>
+    <% n += 1 %>
     <% next %>
   <% end %>
 
-  <% target_id = "target-#{i + 1}" %>
-  <% current_answer = InterviewAnswer.find_by(interview: interview, interview_question: question, user: current_user) %>
+  <% target_id = "target-#{n}" %>
+  <% current_answer = InterviewAnswer.find_by(interview: interview, interview_question: question, user: user) %>
 
   <% if question.open_question? %>
 
@@ -47,6 +51,7 @@
             </label>
           <% end %>
         </fieldset>
+        <p><%= current_answer&.comments %></p>
       <% end %>
     </div>
 
@@ -76,9 +81,14 @@
     </div>
 
   <% end %>
+  <% n += 1 %>
 <% end %>
 <div class="interview-question__controls review-controls">
-  <%= link_to campaign_path(interview.campaign, employee_id: interview.employee_id) do %>
-    <button class="btn-blue btn-blue"><p>Submit Form</p></button>
-  <% end %>
+    <%= link_to campaign_path(interview.campaign, employee_id: interview.employee_id) do %>
+      <% if user == current_user %>
+        <button class="btn-blue btn-blue"><p>Submit Form</p></button>
+      <% else %>
+        <button class="btn-blue btn-blue"><p>Exit</p></button>
+      <% end %>
+    <% end %>
 </div>

@@ -1,8 +1,10 @@
 <% if @interview.crossed? %>
 
-  <%= render 'crossed', interview: @interview, employee: @employee, manager: @manager, questions: @questions  %>
+  <%= render 'crossed', interview: @interview, employee: @employee, manager: @manager, questions: @questions, read_only: ![@interview.employee, @interview.owner].include?(current_user)  %>
 
 <% else %>
+  <%# raise %>
+  <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
 
   <div class="interview-container">
     <div class="interview-start">
@@ -14,18 +16,22 @@
       <button class="btn-blue btn-blue-start btn-blue-start--mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
     </div>
     <% j = 1 %>
-    <% @questions.where.not(question_type: 'separator').each do |question| %>
+    <% @questions.where.not(question_type: 'separator').where(visible_for: visibility).each do |question| %>
       <div class="interview-question hidden" id='question-<%= j %>'>
         <div class="interview-separator">
           <% previous_separators = @questions.where(question_type: 'separator').where('position <= ?', question.position) %>
           <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
         </div>
-        <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: (@interview.employee? && @interview.employee != current_user) %>
+        <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user)) %>
       </div>
       <% j += 1 %>
     <% end %>
     <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
-    <div class="interview-review hidden"></div>
+    <div class="interview-review hidden">
+      <% if @interview.completed %>
+        <%= render 'interviews/show_interview_review', interview: @interview %>
+      <% end %>
+    </div>
 
     <div class="interview-progress-bar-container">
       <div class="interview-progress-bar"></div>
@@ -128,8 +134,7 @@
       current_question = element.closest('.interview-question')
       current_question.querySelector('.hidden-submit').click()
       document.querySelector('body').classList.add('wait')
-      setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
-      progression_bar.classList.add('hidden')
+      setTimeout(function(){document.querySelector('.hidden-link').click();progression_bar.classList.add('hidden')}, 500)
     } else {
       target_position = parseInt(element.id.split('-')[1],10)
       question = document.querySelector('#question-' + target_position)
@@ -222,5 +227,24 @@
       center_white.style.width = parseInt(progression.split('%'),10).toString() + 'px'
       center_blue.style.width = (100 - parseInt(progression.split('%')[0],10)).toString() + 'px'
     }
+  }
+
+  review = document.querySelector('.interview-review')
+  if (review != undefined && review.innerHTML != "\n    ") {
+    document.querySelector('body').classList.add('wait')
+    document.querySelectorAll('.interview-question__controls:not(.review-controls)').forEach((div) => {
+      newBtn = document.createElement("button");
+      newBtn.classList.add('btn-blue')
+      newBtn.innerHTML = '<p>Review</p>'
+      newBtn.onclick = function(event) {
+        goToQuestion(this, 'summary')
+      }
+      div.innerHTML = ''
+      div.appendChild(newBtn)
+    })
+    document.querySelector('.interview-start').classList.add('hidden')
+    document.querySelector('.interview-progress-bar-container').classList.add('hidden')
+    document.querySelector('.interview-review').classList.remove('hidden')
+    document.querySelector('body').classList.remove('wait')
   }
 </script>

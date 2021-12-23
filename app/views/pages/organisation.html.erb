@@ -285,24 +285,31 @@
   }
 
   function selectUser(element) {
-    document.querySelectorAll('#checkbox-'+element.value).forEach((input) => {
-      input.checked = element.checked
-    })
     ids = []
-    check_boxes = document.querySelectorAll('.select-user')
-    document.querySelector('#add_tags_users').value = ids.join();
-    if (ids.length == 0) {
-      document.querySelectorAll('#manage-users-button').forEach((button) => {
-        button.classList.remove('flashing_button')
-      })
-      document.querySelector('.organisation-apply-to-user').classList.add('hidden')
-      document.getElementById('export-users-modal-link').innerHTML = 'Export Users'
+    if (document.querySelector('.organisation-main-container-unfiltered').classList.contains('hidden')) {
+      main_container = document.querySelector('.organisation-main-container-filtered')
     } else {
-      document.querySelectorAll('#manage-users-button').forEach((button) => {
-        button.classList.add('flashing_button')
-      })
-      document.querySelector('.organisation-apply-to-user').classList.remove('hidden')
-      document.getElementById('export-users-modal-link').innerHTML = 'Export Selected Users'
+      main_container = document.querySelector('.organisation-main-container-unfiltered')
+    }
+    check_boxes = main_container.querySelectorAll('.select-user')
+    check_boxes.forEach((input) => {
+      if (input.checked) {
+        ids.push(input.id)
+      }
+    })
+    // document.querySelector('#add_tags_users').value = ids.join();
+    if (ids.length == 0) {
+      // document.querySelectorAll('#manage-users-button').forEach((button) => {
+      //   button.classList.remove('flashing_button')
+      // })
+      // document.querySelector('.organisation-apply-to-user').classList.add('hidden')
+      main_container.querySelector('#export-users-modal-link').innerHTML = 'Export All Users'
+    } else {
+      // document.querySelectorAll('#manage-users-button').forEach((button) => {
+      //   button.classList.add('flashing_button')
+      // })
+      // document.querySelector('.organisation-apply-to-user').classList.remove('hidden')
+      main_container.querySelector('#export-users-modal-link').innerHTML = 'Export Selected Users'
     }
   }
 
@@ -405,8 +412,8 @@
     checkboxes = document.querySelector('.organisation-main-container:not(.hidden)').querySelectorAll('.select-user');
     for(var i=0, n=checkboxes.length;i<n;i++) {
       checkboxes[i].checked = source.checked;
+      selectUser(checkboxes[i]);
     }
-    selectUser();
   }
 
   function exportUsers(element) {

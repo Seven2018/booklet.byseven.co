@@ -1,8 +1,9 @@
 
 if ("<%= @show_review %>" == 'true') {
-  document.querySelector('.interview-container').style.height = 'auto'
   document.querySelector('.interview-review').innerHTML = '<%= j (render("interviews/show_interview_review", interview: @interview)) %>';
-  document.querySelector('.interview-question:not(.hidden)').classList.add('hidden')
+  try {
+    document.querySelector('.interview-question:not(.hidden)').classList.add('hidden')
+  } catch {}
   document.querySelector('.interview-progress-bar-container').classList.add('hidden')
   document.querySelector('.interview-review').classList.remove('hidden')
   document.querySelectorAll('.interview-question__controls:not(.review-controls)').forEach((div) => {

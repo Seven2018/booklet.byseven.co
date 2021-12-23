@@ -160,6 +160,7 @@ class CampaignsController < ApplicationController
       else
         []
       end
+
     respond_to do |format|
       format.html
       format.js

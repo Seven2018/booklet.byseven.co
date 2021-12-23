@@ -188,7 +188,11 @@ class PagesController < ApplicationController
   def organisation
     @users =
       if params.dig(:csv, :selected_users)
-        User.where(id: params[:csv][:selected_users].split(',')).order(lastname: :asc).distinct
+        if params[:selected_users].present?
+          User.where(id: params[:csv][:selected_users].split(',')).order(lastname: :asc).distinct
+        else
+          User.where(company_id: current_user.company_id)
+        end
       else
         current_user.company ? current_user.company.users : [current_user]
       end

@@ -2,14 +2,6 @@
 // SHOW //
 //////////
 
-.interview-form-body {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.interview-form-body::-webkit-scrollbar {
-  display: none;
-}
 
 .interview-container {
   display: flex;
@@ -328,6 +320,14 @@
     }
   }
 
+  .interview-question__form-description {
+    margin-top: 2rem;
+
+    p {
+      color: #C4C4C4;
+    }
+  }
+
   .interview-question__controls {
     display: flex;
     flex-direction: row;
@@ -403,10 +403,9 @@
 }
 
 .interview-review {
-  margin-top: 50vh;
 
   @include from-medium {
-    margin-top: 15.5rem;
+    margin-top: 3rem;
   }
 
   .interview-question__controls {

@@ -7,11 +7,10 @@ class InterviewQuestion < ApplicationRecord
   scope :not_separator, -> { where.not(question_type: 'separator') }
   scope :required, -> { where(required: true) }
 
-  enum required_for: {
-    none: 0,
+  enum visible_for: {
+    all: 0,
     manager: 10,
     employee: 20,
-    all: 30
   }, _prefix: true
 
   # TODO refacto question_type => enum
@@ -30,5 +29,15 @@ class InterviewQuestion < ApplicationRecord
 
   def mcq?
     question_type == 'mcq'
+  end
+
+  def self.visible?(option)
+    if option == 'employee'
+      # ['all', 'employee'].include?(visible_for)
+      self.where(visible_for: ['all', 'employee'])
+    else
+      # ['all', 'manager'].include?(visible_for)
+      self.where(visible_for: ['all', 'manager'])
+    end
   end
 end
