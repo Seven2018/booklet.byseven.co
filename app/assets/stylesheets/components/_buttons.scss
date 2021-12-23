@@ -179,6 +179,49 @@ button {
   }
 }
 
+.btn-white-blue {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  padding: 20px;
+  height: 5rem;
+  background-color: white;
+  border-radius: 4px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  color:  #3177B7;
+
+  i, p, a {
+    color:  #3177B7 !important;
+    transition: all .25s ease-in-out;
+    font-weight: 500;
+    font-size: 1.3rem;
+    font-weight: 600 !important;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  i {
+    margin-right: 1rem;
+  }
+
+  &:hover {
+    opacity: 0.7;
+
+    i, p {
+      color:  #3177B7 !important;
+    }
+  }
+  @include from-medium {
+    p {
+      font-size: 1.6rem;
+    }
+  }
+}
+
 #campaign-confirm-button {
   position: fixed;
   display: flex;

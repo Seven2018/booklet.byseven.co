@@ -1,3 +1,5 @@
+<% read_only = true if interview.locked? %>
+
 <div class="interview-summary">
   <h1><%= interview.interview_form.title %> - <em>Crossed Review</em></h1>
 
@@ -167,19 +169,35 @@
 
   <div class="interview-question__controls">
     <% if interview.locked? %>
-      <button class="btn-blue btn-blue btn-blue-disabled">
-        <p>Form Locked</p>
-      </button>
+      <div class="flex-row-between-centered">
+        <button class="btn-white-blue" style='margin-right: 2rem;'>
+          <%= link_to campaign_path(interview.campaign) do %>
+            <p>EXIT</p>
+          <% end %>
+        </button>
+        <button class="btn-blue btn-blue-disabled">
+          <p>Form Locked <i class="fas fa-lock"></i></p>
+        </button>
+      </div>
     <% elsif Interview::LockPolicy.new(current_user, interview).create? %>
-      <%= link_to interview_locks_path(interview), method: :post, class: 'btn-blue btn-blue' do %>
-        <p>Lock Form</p>
-      <% end %>
+      <div class="flex-row-between-centered">
+        <button class="btn-white-blue" style='margin-right: 2rem;'>
+          <%= link_to campaign_path(interview.campaign) do %>
+            <p>EXIT</p>
+          <% end %>
+        </button>
+        <button class="btn-blue">
+          <%= link_to interview_locks_path(interview), method: :post do %>
+            <p>Lock Form <i class="fas fa-unlock"></i></p>
+          <% end %>
+        </button>
+      </div>
     <% else %>
       <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
       <% if read_only %>
-        <button class="btn-blue btn-blue" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
+        <button class="btn-blue" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
       <% else %>
-        <button class="btn-blue btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
+        <button class="btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
       <% end %>
     <% end %>
   </div>
