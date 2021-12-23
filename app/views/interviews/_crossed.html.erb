@@ -70,6 +70,13 @@
 
           <% elsif question.mcq? %>
 
+            <% if employee_answer&.comments.present? %>
+              <p style="color: #939393; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
+            <% end %>
+            <% if manager_answer&.comments.present? %>
+              <p style="color: #3177B7; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
+            <% end %>
+
             <%= f.input(:comments,
                 as: :text,
                 input_html: { value: current_answer&.comments },
