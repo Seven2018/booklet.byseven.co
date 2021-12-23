@@ -19,9 +19,9 @@ class CampaignsController < ApplicationController
       if search_period == 'All'
         campaigns
       elsif search_period == 'Completed'
-        campaigns.where_not_exists(:interviews, 'completed = ?', false)
+        campaigns.where_not_exists(:interviews, locked_at: nil)
       else
-        campaigns.where_exists(:interviews, 'completed = ?', false)
+        campaigns.where_exists(:interviews, locked_at: nil)
       end
 
     if search_title.present?

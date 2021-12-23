@@ -5,7 +5,7 @@
   <% employee_view = current_user.employee_to_hr_light? %>
   <div class="campaign-interview-card">
     <p class="campaign-interview-card__username"><%= employee_interview.employee.fullname %></p>
-    <% if employee_interview.locked? %>
+    <% if employee_interview.locked? || crossed_interview.completed? %>
       <i class="fas fa-check-circle"></i>
       <p class="campaign-interview-card__status">Review locked</p>
     <% elsif employee_view && employee_interview.completed %>
@@ -35,7 +35,7 @@ review yet</p>
   </div>
   <div class="campaign-interview-card">
     <p class="campaign-interview-card__username"><%= campaign.owner.fullname %></p>
-    <% if manager_interview.locked? %>
+    <% if manager_interview.locked? || crossed_interview.completed? %>
       <i class="fas fa-check-circle"></i>
       <p class="campaign-interview-card__status">Review locked</p>
     <% elsif manager_interview.completed %>
@@ -75,8 +75,8 @@ review yet</p>
         </p>
       <% end %>
     <% elsif crossed_interview.completed %>
-      <i class="fas fa-check-circle"></i>
-      <p class="campaign-interview-card__status">Review completed</p>
+      <!-- <i class="fas fa-check-circle"></i> -->
+      <p class="campaign-interview-card__status">Review completed, waiting for employee's lock</p>
       <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>
         <p>
           <%= employee_view ? 'View and Lock' : 'View result' %>
