@@ -5,9 +5,16 @@ class InterviewsController < ApplicationController
 
     interview_form = InterviewForm.find params[:interview][:interview_form_id]
 
-    Interview.create interview_params.merge(title: interview_form.title, label: 'Employee')
-    Interview.create interview_params.merge(title: interview_form.title, label: 'Manager')
-    Interview.create interview_params.merge(title: interview_form.title, label: 'Crossed')
+    unless
+      Interview.create(interview_params.merge(title: interview_form.title, label: 'Employee')) &&
+      Interview.create(interview_params.merge(title: interview_form.title, label: 'Manager')) &&
+      Interview.create(interview_params.merge(title: interview_form.title, label: 'Crossed'))
+
+      Campaign.find(params[:interview][:campaign_id])&.destroy
+      # Sentry 2866617584 => params[:interview][:campaign_id].nil?
+      flash[:alert] = '/!\ Interviews NOT created - Campaign deleted - Please try again'
+    end
+
     respond_to do |format|
       format.js
     end
