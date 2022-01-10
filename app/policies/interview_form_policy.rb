@@ -1,7 +1,7 @@
 class InterviewFormPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.manager_or_above?
+      if user.hr_or_above?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -14,7 +14,7 @@ class InterviewFormPolicy < ApplicationPolicy
   end
 
   def show?
-    user.manager_or_above?
+    user.hr_or_above?
   end
 
   def update?
