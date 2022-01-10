@@ -19,7 +19,7 @@
               <% end %>
             <% end %>
           </li>
-          <% if current_user.manager_or_above? %>
+          <% if current_user.hr_or_above? %>
             <li>
               <% if params[:controller] == 'interview_forms' %>
                 <%= link_to interview_forms_path, class: 'left-buttons' do %>
@@ -32,8 +32,6 @@
                 <% end %>
               <% end %>
             </li>
-          <% end %>
-          <% if current_user.hr_or_above? %>
             <li>
               <% if params[:action] == 'organisation' %>
                 <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
