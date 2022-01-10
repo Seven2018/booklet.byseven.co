@@ -3,7 +3,7 @@
   <%= render 'crossed', interview: @interview, employee: @employee, manager: @manager, questions: @questions, read_only: ![@interview.employee, @interview.owner].include?(current_user)  %>
 
 <% else %>
-  <%# raise %>
+
   <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
 
   <div class="interview-container">

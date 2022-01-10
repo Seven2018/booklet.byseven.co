@@ -1,4 +1,4 @@
-
+  <a id="anchor-<%= question.position %>" style='position: absolute; top: -6rem;'></a>
   <div class="interview-question__form">
     <div class="flex-row-between-centered">
       <h3 ><%= j %>/ <%= question.question %></h3>
@@ -56,7 +56,7 @@
 
       <% elsif question.rating? %>
 
-        <fieldset class="rating<%= ' read_only' if read_only %>">
+        <fieldset class="rating<%= ' rating-pizza' if current_user.company_id == 2 %><%= ' read_only' if read_only %>">
           <% for i in 1..question.options.keys.first.to_i %>
             <% stars_count = question.options.keys.first.to_i - i + 1 %>
             <% input_label_key = "star-position(#{question.position})-#{i}" %>
@@ -131,7 +131,7 @@
     <% if @interview.crossed? %>
       <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
     <% else %>
-      <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
+      <a href="#anchor-<%= question.position - 1 %>"><button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button></a>
     <% end %>
     <% if j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && read_only %>
       <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
@@ -146,6 +146,6 @@
     <% elsif question.required && current_answer == '' && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
     <% else %>
-      <button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button>
+      <a href="#anchor-<%= question.position + 1 %>"><button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button></a>
     <% end %>
   </div>

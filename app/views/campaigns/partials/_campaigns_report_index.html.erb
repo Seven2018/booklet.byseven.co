@@ -22,7 +22,11 @@
           </div>
           <div class="campaigns-report-campaign-card__bottom-item" data-toggle='tooltip' title='Crossed Reviews only'>
             <p>Rating</p>
-            <i class="fas fa-star"></i>
+            <% if current_user.company_id == 2 %>
+              <i class="fas fa-pizza-slice"></i>
+            <% else %>
+              <i class="fas fa-star"></i>
+            <% end %>
             <p><%= ratings.present? ? ratings.sum.fdiv(ratings.count) : 'N/A' %></p>
           </div>
           <div class="campaigns-report-campaign-card__bottom-item">
