@@ -32,8 +32,8 @@
       ) %>
     <% end %>
 
-    <% current_answer   = existing_answer&.answer || '' %>
-    <% current_comments = existing_answer&.comments || '' %>
+    <% current_answer   = existing_answer&.answer&.html_safe || '' %>
+    <% current_comments = existing_answer&.comments&.html_safe || '' %>
 
     <%= simple_form_for(:interview_answer,
       url: answer_interview_question_path,
@@ -43,7 +43,7 @@
       }) do |f| %>
       <% if question.open_question? %>
 
-        <%= f.input(
+        <%# f.input(
             :answer,
             as: :text,
             label: false,
@@ -53,6 +53,22 @@
             },
             disabled: read_only
           ) %>
+
+        <% if read_only %>
+
+          <div class='interview-question__read-only'>
+            <p><%= current_answer.html_safe %></p>
+          </div>
+
+        <% else %>
+
+          <%= f.input :answer,
+              as: :trix_editor,
+              input_html: {
+                value: current_answer.html_safe
+              } %>
+
+        <% end %>
 
       <% elsif question.rating? %>
 
@@ -78,7 +94,7 @@
           <% end %>
         </fieldset>
 
-        <%= f.input(
+        <%# f.input(
           :comments,
           as: :text,
           input_html: {
@@ -87,6 +103,25 @@
           required: false,
           disabled: read_only
         ) if question.allow_comments %>
+
+        <% if read_only %>
+
+          <label>Comments</label>
+          <div class='interview-question__read-only'>
+            <p><%= current_comments.html_safe %></p>
+          </div>
+
+        <% else %>
+
+          <%= f.input(
+              :comments,
+              as: :trix_editor,
+              input_html: {
+                value: current_comments.html_safe
+              },
+              required: false) if question.allow_comments %>
+
+        <% end %>
 
       <% elsif question.mcq? %>
 
@@ -105,7 +140,7 @@
           <% end %>
         </fieldset>
 
-        <%= f.input(
+        <%# f.input(
           :comments,
           as: :text,
           input_html: {
@@ -114,6 +149,14 @@
           required: false,
           disabled: read_only
         ) if question.allow_comments %>
+
+        <%= f.rich_text_area(
+            :comments,
+            input_html: {
+              value: current_comments
+            },
+            required: false,
+            disabled: read_only) if question.allow_comments %>
 
       <% end %>
 

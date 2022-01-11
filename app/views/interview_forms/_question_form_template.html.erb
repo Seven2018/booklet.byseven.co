@@ -63,20 +63,23 @@
   <%= f.input(:question, {
     placeholder: '*Required',
     input_html: {
-      autocomplete: 'off',
-      onclick: 'saveQuestion(this)'
+      autocomplete: 'off'
     },
     required: true,
     label: (question_type == 'separator' ? 'Title' : false )
   }.compact) %>
 
-  <%= f.input(:description,
+  <%# f.input(:description,
     placeholder: 'Description (optional)',
     input_html: {
       onclick: 'saveQuestion(this)'
     },
     label: false
     ) %>
+
+  <%= f.rich_text_area :description,
+    placeholder: 'Description (optional)'
+    %>
 
   <% if question_type == 'rating' %>
     <div class="add-rating__select">

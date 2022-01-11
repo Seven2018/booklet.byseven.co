@@ -92,7 +92,12 @@
       label: (question.separator? ? 'Title' : false )
     }.compact) %>
 
-  <%= f.input :description, placeholder: 'Description (optional)', label: false, input_html: { onclick: 'saveQuestion(this)' } %>
+  <%# f.input :description, placeholder: 'Description (optional)', label: false, input_html: { onclick: 'saveQuestion(this)' } %>
+
+  <%= f.rich_text_area :description,
+      placeholder: 'Description (optional)',
+      onclick: 'saveQuestion(this)'
+      %>
 
   <% if question.rating? %>
     <div class="add-rating__select">

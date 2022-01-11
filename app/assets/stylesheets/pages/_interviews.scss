@@ -299,7 +299,7 @@
       justify-content: center;
       align-items: center;
       border: none;
-      float: left;
+      // float: left;
     }
 
     .mcq {
@@ -318,6 +318,17 @@
     & > .flex-row-between-centered > i {
       margin-left: 1rem;
       color: #5b92c5;
+    }
+
+    .interview-question__read-only {
+      border: 1px solid #ced4da;
+      border-radius: 3px;
+      margin: 0;
+      padding: 1rem 0.6em;
+
+      p, div {
+        font-size: 1.6rem;
+      }
     }
   }
 
@@ -407,6 +418,18 @@
 
   @include from-medium {
     margin-top: 3rem;
+  }
+
+  div > div {
+    margin-left: 2rem;
+  }
+
+  strong {
+    font-weight: bolder;
+  }
+
+  div, strong {
+    font-size: 1.6rem;
   }
 
   .interview-question__controls {

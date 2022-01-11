@@ -4,6 +4,8 @@ class InterviewQuestion < ApplicationRecord
   has_many :interview_answers, dependent: :destroy
   serialize :options,Hash
 
+  has_rich_text :description
+
   scope :not_separator, -> { where.not(question_type: 'separator') }
   scope :required, -> { where(required: true) }
 
