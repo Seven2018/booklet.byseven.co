@@ -363,4 +363,25 @@
   function autoSubmitTag(element) {
     element.closest('form').querySelector('.hidden-submit').click()
   }
+
+  document.querySelectorAll('.trix-content').forEach((trix) => {
+    if (trix.parentNode.querySelector('.trix_editor') == null) {
+      trix.value = ''
+    } else {
+      trix.value = trix.parentNode.querySelector('.trix_editor').value
+    }
+    trix.addEventListener('click', (event) => {
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, trix)) {
+          form = trix.closest('form')
+          form.querySelector('.hidden-submit').click();
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    })
+    trix.addEventListener('keyup', (event) => {
+      console.log('test')
+      trix.parentNode.querySelector('.trix_editor').value = trix.value
+    })
+  })
 </script>

@@ -2,13 +2,18 @@
   <% if page == 'edit' %>
     <%= simple_form_for template, remote: true do |f| %>
       <%= f.input :title, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled' %>
-      <%= f.input :description, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}',  style: "height: 150px;"} %>
+      <%# f.input :description, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}',  style: "height: 150px;"} %>
+      <%= f.input :description, as: :trix_editor, placeholder: 'Description (optional)', input_html: { value: template.description } %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
   <% else %>
     <%= simple_form_for template, remote: true do |f| %>
       <%= f.input :title, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled', disabled: true %>
-      <%= f.input :description, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}',  style: "height: 150px;"}, disabled: true %>
+      <%# f.input :description, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}',  style: "height: 150px;"}, disabled: true %>
+      <div class='interview-question__read-only'>
+        <label>Description</label>
+        <p><%= sanitize template.description %></p>
+      </div>
     <% end %>
   <% end %>
   <div class="template-add-right--mobile">

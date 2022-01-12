@@ -202,11 +202,65 @@
   }
 
   .employee_answer {
-    color: #B118C8;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    div, p, strong {
+      font-size: 1.6rem;
+      color: #B118C8;
+    }
+
+    div {
+      margin-left: 1rem;
+    }
+
+    strong {
+      font-weight: bolder;
+    }
   }
 
   .manager_answer {
-    color: #0B5D1E;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    div, p, strong {
+      font-size: 1.6rem;
+      color: #0B5D1E;
+    }
+
+    div {
+      margin-left: 1rem;
+    }
+
+    strong {
+      font-weight: bolder;
+    }
+  }
+
+  .employee_comments, .manager_comments {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 2rem 0;
+
+    div, p, strong {
+      font-size: 1.6rem;
+      color: #3177B7;
+    }
+
+    div {
+      margin-left: 1rem;
+    }
+
+    & > p {
+      padding: 0;
+    }
+
+    strong {
+      font-weight: bolder;
+    }
   }
 }
 
@@ -274,6 +328,14 @@
   .interview-separator {
     margin: 3rem;
     font-weight: bolder;
+
+    div, p, strong {
+      font-size: 1.6rem;
+    }
+
+    h2 {
+      margin-bottom: 2rem;
+    }
   }
 
   form {
@@ -335,8 +397,16 @@
   .interview-question__form-description {
     margin-top: 2rem;
 
+    div, p, strong {
+      font-size: 1.6rem;
+    }
+
     p {
       color: #C4C4C4;
+    }
+
+    strong {
+      font-weight: bolder;
     }
   }
 

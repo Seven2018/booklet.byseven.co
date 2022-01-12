@@ -22,7 +22,7 @@
         <i class="fas fa-question"></i>
         <p><%= question.question %></p>
       </div>
-      <p><%= current_user.firstname %>: <%= current_answer&.answer.html_safe %></p>
+      <p><%= user.firstname %>: <%= sanitize current_answer&.answer %></p>
     </div>
 
   <% elsif question.mcq? %>
@@ -51,7 +51,7 @@
             </label>
           <% end %>
         </fieldset>
-        <p><%= current_answer&.comments.html_safe %></p>
+        <p><%= sanitize current_answer&.comments %></p>
       <% end %>
     </div>
 
@@ -77,7 +77,7 @@
           <% end %>
         <% end %>
       </fieldset>
-      <p><%= current_answer&.comments&.html_safe %></p>
+      <p><%= sanitize current_answer&.comments %></p>
     </div>
 
   <% end %>

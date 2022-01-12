@@ -79,7 +79,7 @@ review yet</p>
       <p class="campaign-interview-card__status">Review completed, waiting for employee's lock</p>
       <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>
         <p>
-          <%= employee_view ? 'View and Lock' : 'View result' %>
+          <%= employee_view ? 'View result' : 'View and Lock' %>
         </p>
       <% end %>
     <% else %>

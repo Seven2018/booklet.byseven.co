@@ -5,7 +5,7 @@ class Interview::LockPolicy < ApplicationPolicy
     return true if
       record.crossed? &&
       record.campaign.completion_for(:all) == 100 &&
-      user == record.employee
+      user == record.campaign.owner
 
     super
   end

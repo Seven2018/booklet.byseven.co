@@ -7,7 +7,7 @@
       <% end %>
     </div>
     <div class="interview-question__form-description">
-      <p><%= question.description %></p>
+      <p><%= sanitize question.description %></p>
     </div>
     <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
     <% existing_answer =
@@ -32,8 +32,8 @@
       ) %>
     <% end %>
 
-    <% current_answer   = existing_answer&.answer&.html_safe || '' %>
-    <% current_comments = existing_answer&.comments&.html_safe || '' %>
+    <% current_answer   = sanitize existing_answer&.answer || '' %>
+    <% current_comments = sanitize existing_answer&.comments || '' %>
 
     <%= simple_form_for(:interview_answer,
       url: answer_interview_question_path,
@@ -57,7 +57,7 @@
         <% if read_only %>
 
           <div class='interview-question__read-only'>
-            <p><%= current_answer.html_safe %></p>
+            <p><%= sanitize current_answer %></p>
           </div>
 
         <% else %>
@@ -65,7 +65,7 @@
           <%= f.input :answer,
               as: :trix_editor,
               input_html: {
-                value: current_answer.html_safe
+                value: sanitize current_answer
               } %>
 
         <% end %>
@@ -108,7 +108,7 @@
 
           <label>Comments</label>
           <div class='interview-question__read-only'>
-            <p><%= current_comments.html_safe %></p>
+            <p><%= sanitize current_comments %></p>
           </div>
 
         <% else %>
@@ -117,7 +117,7 @@
               :comments,
               as: :trix_editor,
               input_html: {
-                value: current_comments.html_safe
+                value: sanitize current_comments
               },
               required: false) if question.allow_comments %>
 

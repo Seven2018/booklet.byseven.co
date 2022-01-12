@@ -94,9 +94,12 @@
 
   <%# f.input :description, placeholder: 'Description (optional)', label: false, input_html: { onclick: 'saveQuestion(this)' } %>
 
-  <%= f.rich_text_area :description,
+  <%= f.input :description,
+      as: :trix_editor,
       placeholder: 'Description (optional)',
-      onclick: 'saveQuestion(this)'
+      input_html: {
+        value: question.description
+      }
       %>
 
   <% if question.rating? %>

@@ -66,22 +66,34 @@
 
           <% if question.open_question? %>
 
-            <p class="employee_answer"><%= "#{employee.firstname}: #{employee_answer&.answer}" %></p>
-            <p class="manager_answer"><%= "#{manager.firstname}: #{manager_answer&.answer}" %></p>
-            <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer&.answer}, disabled: read_only %>
+            <div class="employee_answer">
+              <p><%= "#{employee.firstname}: " %></p>
+              <%= sanitize employee_answer&.answer %>
+            </div>
+            <div class="manager_answer">
+              <p><%= "#{manager.firstname}: " %></p>
+              <%= sanitize manager_answer&.answer %>
+            </div>
+            <%= f.input :answer, as: :trix_editor, label: false, input_html: {value: current_answer&.answer}, disabled: read_only %>
 
           <% elsif question.mcq? %>
 
             <% if employee_answer&.comments.present? %>
-              <p style="color: #939393; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
+              <div class="employee_comments">
+                <p><%= "#{employee.firstname}: " %></p>
+                <%= sanitize employee_answer&.comments %>
+              </div>
             <% end %>
             <% if manager_answer&.comments.present? %>
-              <p style="color: #3177B7; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
+              <div class="manager_comments">
+                <p><%= "#{manager.firstname}: " %></p>
+                <%= sanitize manager_answer&.comments %>
+              </div>
             <% end %>
 
             <%= f.input(:comments,
-                as: :text,
-                input_html: { value: current_answer&.comments },
+                as: :trix_editor,
+                input_html: { value: sanitize current_answer&.comments },
                 required: false,
                 disabled: read_only
               ) if question.allow_comments %>
@@ -109,13 +121,6 @@
             </fieldset>
 
           <% elsif question.rating? %>
-
-            <%= f.input(:comments,
-                as: :text,
-                input_html: { value: current_answer&.comments },
-                required: false,
-                disabled: read_only
-              ) if question.allow_comments %>
 
             <fieldset class="rating<%= ' read_only' if read_only %>">
               <% for i in 1..question.options.keys.first.to_i %>
@@ -151,11 +156,25 @@
             </fieldset>
 
             <% if employee_answer&.comments.present? %>
-              <p style="color: #939393; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
+              <div class="employee_comments">
+                <p><%= "#{employee.firstname}: " %></p>
+                <%= sanitize employee_answer&.comments %>
+              </div>
             <% end %>
             <% if manager_answer&.comments.present? %>
-              <p style="color: #3177B7; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
+              <div class="manager_comments">
+                <p><%= "#{manager.firstname}: " %></p>
+                <%= sanitize manager_answer&.comments %>
+              </div>
             <% end %>
+
+            <%= f.input(:comments,
+                as: :trix_editor,
+                input_html: { value: sanitize current_answer&.comments },
+                required: false,
+                disabled: read_only
+              ) if question.allow_comments %>
+
 
           <% end # question_types %>
 

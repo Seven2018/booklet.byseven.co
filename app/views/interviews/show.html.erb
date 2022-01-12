@@ -21,6 +21,7 @@
         <div class="interview-separator">
           <% previous_separators = @questions.where(question_type: 'separator').where('position <= ?', question.position) %>
           <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
+          <p><%= sanitize previous_separators.last.description if previous_separators.present? %></p>
         </div>
         <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user)) %>
       </div>
