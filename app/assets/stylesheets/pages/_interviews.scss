@@ -188,12 +188,12 @@
 
   .employee-answers-colors-info {
     display:flex;
-    color: #B118C8;
+    color: #0FDF00;
     align-items: center;
     margin-bottom: 3rem;
 
     .employee-color-point {
-      background-color: #B118C8;
+      background-color: #0FDF00;
       height: 1rem;
       width: 1rem;
       border-radius: 100%;
@@ -202,7 +202,7 @@
   }
 
   .employee_answer {
-    color: #B118C8;
+    color: #0FDF00;
   }
 
   .manager_answer {
@@ -346,17 +346,18 @@
   margin: 2rem auto;
   display: flex;
   justify-content: flex-start;
-  border: .2rem solid #3177B7;
-  border-radius: .5rem;
+  background-color: #C4C4C4;
+  border-radius: 10rem;
 
   @include from-medium {
     max-width: 50rem;
   }
 
   .interview-progress-bar {
-    height: 4.6rem;
+    height: 2rem;
     background-color: #3177B7;
     width: 0%;
+    border-radius: 10rem;
   }
 
   .interview-progress-bar__white {
@@ -364,7 +365,7 @@
     justify-content: flex-start;
     align-items: center;
     width: 0;
-    height: 4.6rem;
+    height: 2rem;
     overflow: hidden;
     z-index: 20;
     position: absolute;
@@ -383,7 +384,7 @@
     justify-content: flex-end;
     align-items: center;
     width: 10rem;
-    height: 4.6rem;
+    height: 2rem;
     z-index: 10;
     position: absolute;
     right: calc(50% - 5rem);
