@@ -11,7 +11,7 @@
       <div class='empty-div'></div>
       <div class="interview-title">
         <h1><%= @interview.interview_form.title %></h1>
-        <p><%= @interview.interview_form.description %></p>
+        <p><%= sanitize @interview.interview_form.description %></p>
       </div>
       <button class="btn-blue btn-blue-start btn-blue-start--mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
     </div>
@@ -193,6 +193,7 @@
     } else {
       position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
       last_question = document.querySelectorAll('.interview-question')[position - 1]
+      last_question.querySelector('.hidden-submit').click()
       const form = last_question.querySelector('.hidden-submit').form
       await fetch(form.action, {
         method: "POST",
