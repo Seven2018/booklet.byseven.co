@@ -52,6 +52,7 @@ class InterviewsController < ApplicationController
 
     answer = answer_params[:answer]
     comments = answer_params[:comments]
+    objective = answer_params[:objective]
     question_id = answer_params[:interview_question_id]
     interview_id = answer_params[:interview_id]
 
@@ -64,7 +65,8 @@ class InterviewsController < ApplicationController
       user: current_user
     ).update(
       answer: answer,
-      comments: comments
+      comments: comments,
+      objective: objective
     )
 
     interview.complete!

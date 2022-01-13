@@ -22,10 +22,13 @@
         <i class="fas fa-question"></i>
         <p><%= question.question %></p>
       </div>
-      <p><%= user.firstname %>: <%= sanitize current_answer&.answer %></p>
+      <div class="employee_answer">
+        <p><%= "#{user.firstname}: " %></p>
+        <%= sanitize current_answer&.answer %>
+      </div>
     </div>
 
-  <% elsif question.mcq? %>
+  <% elsif question.mcq? || question.objective? %>
 
     <div class="interview-summary__mcq" onclick='goToQuestion(this)' id='<%= target_id %>'>
       <div class="flex-row-start-centered">
@@ -38,6 +41,14 @@
         data: {
           question_type: question.question_type
         }) do |f| %>
+
+        <% if question.objective? %>
+          <div class="employee_answer">
+            <p><%= "#{user.firstname}: " %></p>
+            <%= sanitize current_answer&.objective %>
+          </div>
+        <% end %>
+
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
             <label class="rad-label disabled">

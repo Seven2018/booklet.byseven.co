@@ -2,7 +2,8 @@
   'separator' => question.question,
   'open_question' => 'Open Question',
   'rating' => 'Rating',
-  'mcq' => 'MCQ'
+  'mcq' => 'MCQ',
+  'objective' => 'Objective'
 } %>
 
 <% first_question = question.position == 1 %>
@@ -120,7 +121,7 @@
       <% end %>
     </div>
   <% end %>
-  <% if question.rating? || question.mcq? %>
+  <% if ['rating', 'mcq', 'objective'].include?(question.question_type) %>
     <div class="add-rating__toggle">
       <%= f.input(
         :allow_comments,
@@ -136,7 +137,7 @@
   <%= f.submit '', class: 'hidden-submit hidden' %>
 <% end %>
 
-<% if question.mcq? %>
+<% if question.mcq? || question.objective? %>
   <label>Options</label>
   <div id='mcq-<%= question.id %>'>
     <%= render 'interview_forms/partials/show_mcq', question: question, page: 'edit' %>

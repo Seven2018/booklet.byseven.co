@@ -40,6 +40,10 @@
                 <i class="far fa-check-square"></i>
                 <p>Multi-Select</p>
               </a>
+              <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('objective');">
+                <i class="fas fa-bullseye"></i>
+                <p>Objective</p>
+              </a>
             </div>
           </div>
 
@@ -61,6 +65,10 @@
               <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
                 <i class="far fa-check-square"></i>
                 <p>Multi-Select</p>
+              </a>
+              <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('objective');">
+                <i class="fas fa-bullseye"></i>
+                <p>Objective</p>
               </a>
             </div>
           </div>
@@ -104,6 +112,11 @@
     <div class="add-mcq add-mcq-template hidden">
       <%= render 'question_form_template', question_type: 'mcq', template_id: @template.id %>
     </div>
+
+    <div class="add-objective add-objective-template hidden">
+      <%= render 'question_form_template', question_type: 'objective', template_id: @template.id %>
+    </div>
+
   </div>
 
 
@@ -237,6 +250,14 @@
       const newDiv = document.createElement("div");
       newDiv.classList.add('add-mcq')
       template = document.querySelector('.add-mcq-template')
+      templateinfo = template.innerHTML
+      newDiv.innerHTML = templateinfo
+      content = document.querySelector('.template-add-lines')
+      content.append(newDiv)
+    } else if (type == 'objective') {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add('add-objective')
+      template = document.querySelector('.add-objective-template')
       templateinfo = template.innerHTML
       newDiv.innerHTML = templateinfo
       content = document.querySelector('.template-add-lines')

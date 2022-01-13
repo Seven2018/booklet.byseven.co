@@ -34,6 +34,7 @@
 
     <% current_answer   = sanitize existing_answer&.answer || '' %>
     <% current_comments = sanitize existing_answer&.comments || '' %>
+    <% current_objective = sanitize existing_answer&.objective || '' %>
 
     <%= simple_form_for(:interview_answer,
       url: answer_interview_question_path,
@@ -65,7 +66,7 @@
           <%= f.input :answer,
               as: :trix_editor,
               input_html: {
-                value: sanitize current_answer
+                value: (sanitize current_answer)
               } %>
 
         <% end %>
@@ -117,13 +118,23 @@
               :comments,
               as: :trix_editor,
               input_html: {
-                value: sanitize current_comments
+                value: (sanitize current_comments)
               },
               required: false) if question.allow_comments %>
 
         <% end %>
 
-      <% elsif question.mcq? %>
+      <% elsif question.mcq? || question.objective? %>
+
+        <%= f.input(
+          :objective,
+          as: :trix_editor,
+          input_html: {
+            value: current_objective
+          },
+          required: true,
+          disabled: read_only
+        ) if question.objective? %>
 
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
@@ -140,18 +151,9 @@
           <% end %>
         </fieldset>
 
-        <%# f.input(
-          :comments,
-          as: :text,
-          input_html: {
-            value: current_comments
-          },
-          required: false,
-          disabled: read_only
-        ) if question.allow_comments %>
-
-        <%= f.rich_text_area(
+        <%= f.input(
             :comments,
+            as: :trix_editor,
             input_html: {
               value: current_comments
             },

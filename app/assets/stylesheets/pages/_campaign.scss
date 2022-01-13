@@ -825,13 +825,12 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-}
 
-@include from-medium {
-  .campaigns-report-container {
+  @include from-medium {
     flex-direction: row;
   }
 }
+
 
 .report-date-control {
   display: flex;
@@ -857,21 +856,21 @@
 }
 
 
-  @include from-medium {
-    .campaigns-report-managers {
+@include from-medium {
+  .campaigns-report-managers {
     width: 35rem;
     margin: 5rem 5rem 0 0;
     padding: 2rem;
     position: relative;
 
-      h1 {
-        margin-bottom: 5rem;
-      }
-
-      & > div {
-        margin-top: 12rem;
-      }
+    h1 {
+      margin-bottom: 5rem;
     }
+
+    & > div {
+      margin-top: 12rem;
+    }
+  }
 }
 
 .form-group.string.required.select_period_start {

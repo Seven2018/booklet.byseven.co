@@ -250,6 +250,7 @@
   }
 
   document.querySelectorAll('.trix-content').forEach((trix) => {
+    trix.value = trix.parentNode.querySelector('.trix_editor').value
     trix.addEventListener('keyup', (event) => {
       trix.parentNode.querySelector('.trix_editor').value = trix.value
       enableNext(trix.parentNode.querySelector('.trix_editor'))
