@@ -76,7 +76,7 @@ review yet</p>
       <% end %>
     <% elsif crossed_interview.completed %>
       <!-- <i class="fas fa-check-circle"></i> -->
-      <p class="campaign-interview-card__status">Review completed, waiting for employee's lock</p>
+      <p class="campaign-interview-card__status">Review completed, waiting for lock</p>
       <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>
         <p>
           <%= employee_view && current_user = employee_interview.employee ? 'View result' : 'View and Lock' %>

@@ -3,14 +3,15 @@
 <div class="interview-summary">
   <h1><%= interview.interview_form.title %> - <em>Crossed Review</em></h1>
 
+  <div class="employee-answers-colors-info">
+    <div class="employee-color-point">  
+  </div>
+    <p>This color refers to <span style="font-weight:900">employee's</span> answers</p>
+  </div>
+
   <div class="manager-answers-colors-info">
     <div class="manager-color-point"></div>
     <p>This color refers to <span style="font-weight:900">manager's</span> answers</p>
-  </div>
-
-  <div class="employee-answers-colors-info">
-    <div class="employee-color-point"></div>
-    <p>This color refers to <span style="font-weight:900">employee's</span> answers</p>
   </div>
 
   <% questions.order(position: :asc).each do |question| %>
@@ -208,9 +209,9 @@
     <% elsif Interview::LockPolicy.new(current_user, interview).create? %>
       <div class="flex-row-between-centered">
         <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
-        <button class="btn-blue-text" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
+        <button class="btn-white-blue" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
         <% unless read_only %>
-          <button class="btn-blue-text" onclick='submitAnswers(this, "Crossed")'><p>Save <i class="fas fa-save"></i></p></button>
+          <button class="btn-white-blue" onclick='submitAnswers(this, "Crossed")'><p>Save <i class="fas fa-save"></i></p></button>
           <button class="btn-blue">
             <%= link_to interview_locks_path(interview), method: :post do %>
               <p>Save & Lock <i class="fas fa-unlock"></i></p>
