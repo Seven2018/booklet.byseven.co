@@ -1,7 +1,7 @@
 
   <div class="interview-question__form">
-    <div class="flex-row-between-centered">
-      <h3 ><%= j %>/ <%= question.question %></h3>
+    <div class="question-section"><div class="flex-row-between-centered">
+      <h3 class="question-title"><%= j %>/ <%= question.question %></h3>
       <% if question.required %>
         <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
       <% end %>
@@ -9,6 +9,7 @@
     <div class="interview-question__form-description">
       <p><%= question.description %></p>
     </div>
+  </div>
     <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
     <% existing_answer =
       InterviewAnswer.find_by(
@@ -131,7 +132,7 @@
     <% if @interview.crossed? %>
       <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
     <% else %>
-      <button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button>
+      <button class="btn-blue" onclick='previousQuestion(this);'><p>Back</p></button>
     <% end %>
     <% if j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && read_only %>
       <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
