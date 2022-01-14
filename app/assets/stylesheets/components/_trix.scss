@@ -1,6 +1,10 @@
 .trix-content {
-  border: 1px solid #ced4da;
-
+  border-top: 1px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: 2px solid #3177B7;
+  outline: none;
+  background-color: rgba(49, 119, 183, 0.05); 
   &::before {
     color: #ced4da;
   }
