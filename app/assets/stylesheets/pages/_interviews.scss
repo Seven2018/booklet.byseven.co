@@ -239,7 +239,7 @@
     }
   }
 
-  .employee_comments, .manager_comments {
+  .employee_comments, .manager_comments, .employee_objective {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -261,6 +261,32 @@
     strong {
       font-weight: bolder;
     }
+  }
+
+  .interview-question__controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    button {
+      margin: 0 2rem;
+    }
+  }
+}
+
+.employee_comments {
+
+  p, div, strong {
+    color: #B118C8 !important;
+  }
+}
+
+.manager_comments {
+
+  p, div, strong {
+    color: #0B5D1E !important;
   }
 }
 
@@ -593,6 +619,14 @@
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
+
+    .manager_answer {
+      color: #0B5D1E;
+    }
+
+    .employee_answer {
+      color: #B118C8;
+    }
   }
 }
 
@@ -676,12 +710,24 @@
 }
 
 .rad-text {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   color: hsl(0, 0%, 60%);
   margin-left: 14px;
   font-size: 18px;
   font-weight: 900;
-
   transition: .3s;
+
+  .manager_answer {
+    color: #0B5D1E;
+    margin-left: 1rem;
+  }
+
+  .employee_answer {
+    color: #B118C8;
+    margin-left: 1rem;
+  }
 }
 
 .rad-input:checked~.rad-text {

@@ -40,4 +40,8 @@ class InterviewPolicy < ApplicationPolicy
   def update_interviews?
     user.manager_or_above?
   end
+
+  def show_crossed_and_lock?
+    user.manager_or_above?
+  end
 end

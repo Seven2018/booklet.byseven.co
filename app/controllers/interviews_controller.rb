@@ -73,6 +73,17 @@ class InterviewsController < ApplicationController
     head :no_content
   end
 
+  def show_crossed_and_lock
+    interview = Interview.find(params[:id])
+    authorize interview
+    campaign = interview.campaign
+    employee = interview.employee
+    manager = campaign.owner
+
+    interview.campaign.interviews.where(employee: employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user = manager
+    redirect_to interview_path(interview)
+  end
+
   private
 
   def interview_params

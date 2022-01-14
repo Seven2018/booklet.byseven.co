@@ -51,6 +51,15 @@
 <script>
   document.querySelector('body').classList.add('interview-form-body')
 
+  function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+  }
+
   const canAnswer = async (element) => {
     const response = await fetch('/interview/answer/authorization_checks', {
       method: "POST",
@@ -87,10 +96,17 @@
   function enableNext(element) {
     // TODO Avoid DOM selection by position. Breakbla. Select DOM elements by id
     button = element.closest('.interview-question').querySelectorAll('.btn-blue')[1]
-    if (element.value.length > 0 && button != undefined) {
+    if (element.closest('form').getAttribute('data-question-type') == 'objective') {
+      form = element.closest('form')
+      radio_selected = false
+      condition = form.querySelector('#interview_answer_objective').value.length > 0 && form.querySelector('input[type=radio]:checked') != null
+    } else {
+      condition = element.value.length > 0
+    }
+    if (condition && button != undefined) {
       button.classList.remove('btn-blue-disabled')
       button.disabled = false
-    } else if (element.value.length == 0 && button != undefined) {
+    } else if (!condition && button != undefined) {
       button.classList.add('btn-blue-disabled')
       button.disabled = true
     }
@@ -195,14 +211,14 @@
       last_question = document.querySelectorAll('.interview-question')[position - 1]
       last_question.querySelector('.hidden-submit').click()
       const form = last_question.querySelector('.hidden-submit').form
-      await fetch(form.action, {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": csrfToken(),
-          "Content-Type": "application/json"
-        },
-        body: answerFormPayload(form)
-      })
+      // await fetch(form.action, {
+      //   method: "POST",
+      //   headers: {
+      //     "X-CSRF-Token": csrfToken(),
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: answerFormPayload(form)
+      // })
     }
     document.querySelector('.hidden-link').click()
   }

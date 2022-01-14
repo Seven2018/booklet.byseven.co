@@ -80,7 +80,7 @@
 
           <% elsif question.mcq? || question.objective? %>
 
-            <div class="employee_comments">
+            <div class="employee_objective">
               <p><%= "Objective: " %></p>
               <%= sanitize employee_answer&.objective %>
             </div>
@@ -207,24 +207,17 @@
       </div>
     <% elsif Interview::LockPolicy.new(current_user, interview).create? %>
       <div class="flex-row-between-centered">
-        <button class="btn-white-blue" style='margin-right: 2rem;'>
-          <%= link_to campaign_path(interview.campaign) do %>
-            <p>EXIT</p>
-          <% end %>
-        </button>
-        <button class="btn-blue">
-          <%= link_to interview_locks_path(interview), method: :post do %>
-            <p>Lock Form <i class="fas fa-unlock"></i></p>
-          <% end %>
-        </button>
+        <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
+        <button class="btn-blue-text" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
+        <% unless read_only %>
+          <button class="btn-blue-text" onclick='submitAnswers(this, "Crossed")'><p>Save <i class="fas fa-save"></i></p></button>
+          <button class="btn-blue">
+            <%= link_to interview_locks_path(interview), method: :post do %>
+              <p>Save & Lock <i class="fas fa-unlock"></i></p>
+            <% end %>
+          </button>
+        <% end %>
       </div>
-    <% else %>
-      <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
-      <% if read_only %>
-        <button class="btn-blue" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
-      <% else %>
-        <button class="btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
-      <% end %>
     <% end %>
   </div>
 </div>
