@@ -1,7 +1,11 @@
 
   <div class="interview-question__form">
+    <div class="number-and-question">
+      <div class="question-number">
+      <%= j %>
+    </div>
     <div class="question-section"><div class="flex-row-between-centered">
-      <h3 class="question-title"><%= j %>/ <%= question.question %></h3>
+      <h3 class="question-title"><%= question.question %></h3>
       <% if question.required %>
         <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
       <% end %>
@@ -9,6 +13,7 @@
     <div class="interview-question__form-description">
       <p><%= question.description %></p>
     </div>
+  </div>
   </div>
     <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
     <% existing_answer =

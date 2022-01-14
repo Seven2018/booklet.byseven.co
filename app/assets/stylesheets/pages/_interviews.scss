@@ -293,22 +293,6 @@ font-size: 2vw;
     font-weight: bolder;
     border: none;
 
-    textarea {
-      width: 100%;
-      height: 100%;
-      border: none;
-      overflow: auto;
-      outline: none;
-      -webkit-box-shadow: none;
-      -moz-box-shadow: none;
-      box-shadow: none;
-      resize: none;
-      border-bottom: solid 1px #3177B7;
-    }
-
-    fieldset {
-      margin: 5rem 0;
-    }
 
     .rating {
       width: 100%;
@@ -323,6 +307,17 @@ font-size: 2vw;
     .mcq {
       position: relative;
     }
+  }
+
+  .number-and-question {
+    display: flex;
+  }
+
+  .question-number {
+    font-weight: bolder;
+    font-size: 3vw;
+    margin-right: 1vw;
+    color: #CDCDCD;
   }
 
   .interview-question__form {
@@ -367,13 +362,17 @@ font-size: 2vw;
 }
 
 .interview-progress-bar-container {
-  width: calc(100vw - 6rem);
+  width: 30vw;
   margin: 2rem auto;
+  position: fixed;
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   background-color: #EBEBEB;
   border-radius: 10rem;
-  margin-top: 15vh;
+  bottom: 5vh;
+  left: 35vw;
+
 
 
   @include from-medium {
