@@ -44,11 +44,13 @@
       'open_question' => 'interview-summary__open-question',
       'rating' => 'interview-summary__rating',
       'mcq' => 'interview-summary__mcq',
+      'objective' => 'interview-summary__objective'
       } %>
     <% fa_klasses = {
       'open_question' => 'fas fa-question',
       'rating' => 'far fa-star',
       'mcq' => 'fas fa-check',
+      'objective' => 'fas fa-bullseye'
       } %>
 
     <div class="<%= summary_klasses[question.question_type] %>">
@@ -66,25 +68,22 @@
 
           <% if question.open_question? %>
 
-            <p class="employee_answer"><%= "#{employee.firstname}: #{employee_answer&.answer}" %></p>
-            <p class="manager_answer"><%= "#{manager.firstname}: #{manager_answer&.answer}" %></p>
-            <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer&.answer}, disabled: read_only %>
+            <div class="employee_answer">
+              <p><%= "#{employee.firstname}: " %></p>
+              <%= sanitize employee_answer&.answer %>
+            </div>
+            <div class="manager_answer">
+              <p><%= "#{manager.firstname}: " %></p>
+              <%= sanitize manager_answer&.answer %>
+            </div>
+            <%= f.input :answer, as: :trix_editor, label: false, input_html: {value: current_answer&.answer}, disabled: read_only %>
 
-          <% elsif question.mcq? %>
+          <% elsif question.mcq? || question.objective? %>
 
-            <% if employee_answer&.comments.present? %>
-              <p style="color: #0FDF00; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
-            <% end %>
-            <% if manager_answer&.comments.present? %>
-              <p style="color: #0B5D1E; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
-            <% end %>
-
-            <%= f.input(:comments,
-                as: :text,
-                input_html: { value: current_answer&.comments },
-                required: false,
-                disabled: read_only
-              ) if question.allow_comments %>
+            <div class="employee_objective">
+              <p><%= "Objective: " %></p>
+              <%= sanitize employee_answer&.objective %>
+            </div>
 
             <fieldset class="mcq">
               <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
@@ -108,14 +107,27 @@
               <% end %>
             </fieldset>
 
-          <% elsif question.rating? %>
+            <% if employee_answer&.comments.present? %>
+              <div class="employee_comments">
+                <p><%= "#{employee.firstname}: " %></p>
+                <%= sanitize employee_answer&.comments %>
+              </div>
+            <% end %>
+            <% if manager_answer&.comments.present? %>
+              <div class="manager_comments">
+                <p><%= "#{manager.firstname}: " %></p>
+                <%= sanitize manager_answer&.comments %>
+              </div>
+            <% end %>
 
             <%= f.input(:comments,
-                as: :text,
+                as: :trix_editor,
                 input_html: { value: current_answer&.comments },
                 required: false,
                 disabled: read_only
               ) if question.allow_comments %>
+
+          <% elsif question.rating? %>
 
             <fieldset class="rating<%= ' read_only' if read_only %>">
               <% for i in 1..question.options.keys.first.to_i %>
@@ -151,11 +163,25 @@
             </fieldset>
 
             <% if employee_answer&.comments.present? %>
-              <p style="color: #0FDF00; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
+              <div class="employee_comments">
+                <p><%= "#{employee.firstname}: " %></p>
+                <%= sanitize employee_answer&.comments %>
+              </div>
             <% end %>
             <% if manager_answer&.comments.present? %>
-              <p style="color: #0B5D1E; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
+              <div class="manager_comments">
+                <p><%= "#{manager.firstname}: " %></p>
+                <%= sanitize manager_answer&.comments %>
+              </div>
             <% end %>
+
+            <%= f.input(:comments,
+                as: :trix_editor,
+                input_html: { value: current_answer&.comments },
+                required: false,
+                disabled: read_only
+              ) if question.allow_comments %>
+
 
           <% end # question_types %>
 
@@ -181,24 +207,17 @@
       </div>
     <% elsif Interview::LockPolicy.new(current_user, interview).create? %>
       <div class="flex-row-between-centered">
-        <button class="btn-white-blue" style='margin-right: 2rem;'>
-          <%= link_to campaign_path(interview.campaign) do %>
-            <p>EXIT</p>
-          <% end %>
-        </button>
-        <button class="btn-blue">
-          <%= link_to interview_locks_path(interview), method: :post do %>
-            <p>Lock Form <i class="fas fa-unlock"></i></p>
-          <% end %>
-        </button>
+        <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
+        <button class="btn-blue-text" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
+        <% unless read_only %>
+          <button class="btn-blue-text" onclick='submitAnswers(this, "Crossed")'><p>Save <i class="fas fa-save"></i></p></button>
+          <button class="btn-blue">
+            <%= link_to interview_locks_path(interview), method: :post do %>
+              <p>Save & Lock <i class="fas fa-unlock"></i></p>
+            <% end %>
+          </button>
+        <% end %>
       </div>
-    <% else %>
-      <%= link_to '', campaign_path(interview.campaign, employee_id: interview.employee_id), class: 'hidden-link hidden' %>
-      <% if read_only %>
-        <button class="btn-blue" onclick='document.querySelector(".hidden-link").click()'><p>Exit</p></button>
-      <% else %>
-        <button class="btn-blue" onclick='submitAnswers(this, "Crossed")'><p>Submit Form</p></button>
-      <% end %>
     <% end %>
   </div>
 </div>

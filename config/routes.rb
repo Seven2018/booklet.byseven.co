@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   resources :interviews do
     resource :locks, module: :interview, only: :create
   end
+  get :show_crossed_and_lock, controller: :interviews
 
   namespace :interview do
     namespace :answer do

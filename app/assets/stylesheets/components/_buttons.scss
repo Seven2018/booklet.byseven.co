@@ -411,6 +411,10 @@ button {
 }
 
 .btn-blue-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
   color: #3177B7 !important;
   font-size: 1.6rem;
   font-weight: 600;
@@ -418,11 +422,11 @@ button {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   background-color: transparent;
-  padding: .5rem 1rem;
+  padding: 20px;
+  height: 5rem;
   border-radius: 4px;
   margin-right:5px;
   &:hover {
-    padding: .5rem 1rem;
     border-radius: 4px;
     background-color: #E5E5E5;
   }

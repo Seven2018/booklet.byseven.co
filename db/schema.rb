@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_22_092426) do
+ActiveRecord::Schema.define(version: 2022_01_13_094357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(version: 2021_12_22_092426) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "objective"
     t.index ["interview_id"], name: "index_interview_answers_on_interview_id"
     t.index ["interview_question_id"], name: "index_interview_answers_on_interview_question_id"
     t.index ["user_id"], name: "index_interview_answers_on_user_id"
@@ -410,11 +411,13 @@ ActiveRecord::Schema.define(version: 2021_12_22_092426) do
     t.string "invited_by_type"
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
+    t.bigint "manager_id"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
+    t.index ["manager_id"], name: "index_users_on_manager_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -484,5 +487,6 @@ ActiveRecord::Schema.define(version: 2021_12_22_092426) do
   add_foreign_key "user_tags", "tags"
   add_foreign_key "user_tags", "users"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "users", column: "manager_id"
   add_foreign_key "workshops", "contents"
 end

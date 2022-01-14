@@ -407,13 +407,13 @@ class PagesController < ApplicationController
           end
           if params[:filter_user][:tag].uniq == [""]
             # @users = []
-            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
+            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id).page params[:page]
             @unfiltered = 'true'
           else
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           end
         else
-          @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email).page params[:page]
+          @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id).page params[:page]
           @unfiltered = 'true'
         end
 

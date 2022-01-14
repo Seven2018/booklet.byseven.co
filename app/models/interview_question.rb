@@ -31,6 +31,10 @@ class InterviewQuestion < ApplicationRecord
     question_type == 'mcq'
   end
 
+  def objective?
+    question_type == 'objective'
+  end
+
   def self.visible?(option)
     if option == 'employee'
       # ['all', 'employee'].include?(visible_for)

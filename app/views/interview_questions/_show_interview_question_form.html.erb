@@ -1,4 +1,4 @@
-
+  <a id="anchor-<%= question.position %>" style='position: absolute; top: -6rem;'></a>
   <div class="interview-question__form">
     <div class="question-section"><div class="flex-row-between-centered">
       <h3 class="question-title"><%= j %>/ <%= question.question %></h3>
@@ -7,7 +7,7 @@
       <% end %>
     </div>
     <div class="interview-question__form-description">
-      <p><%= question.description %></p>
+      <p><%= sanitize question.description %></p>
     </div>
   </div>
     <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
@@ -33,8 +33,9 @@
       ) %>
     <% end %>
 
-    <% current_answer   = existing_answer&.answer || '' %>
-    <% current_comments = existing_answer&.comments || '' %>
+    <% current_answer   = sanitize existing_answer&.answer || '' %>
+    <% current_comments = sanitize existing_answer&.comments || '' %>
+    <% current_objective = sanitize existing_answer&.objective || '' %>
 
     <%= simple_form_for(:interview_answer,
       url: answer_interview_question_path,
@@ -44,7 +45,7 @@
       }) do |f| %>
       <% if question.open_question? %>
 
-        <%= f.input(
+        <%# f.input(
             :answer,
             as: :text,
             label: false,
@@ -55,9 +56,26 @@
             disabled: read_only
           ) %>
 
+        <% if read_only %>
+
+          <div class='interview-question__read-only'>
+            <p><%= sanitize current_answer %></p>
+          </div>
+
+        <% else %>
+
+          <%= f.input :answer,
+              as: :trix_editor,
+              input_html: {
+                value: (sanitize current_answer),
+                onkeyup: 'enableNext(this);'
+              } %>
+
+        <% end %>
+
       <% elsif question.rating? %>
 
-        <fieldset class="rating<%= ' read_only' if read_only %>">
+        <fieldset class="rating<%= ' rating-pizza' if current_user.company_id == 2 %><%= ' read_only' if read_only %>">
           <% for i in 1..question.options.keys.first.to_i %>
             <% stars_count = question.options.keys.first.to_i - i + 1 %>
             <% input_label_key = "star-position(#{question.position})-#{i}" %>
@@ -67,7 +85,7 @@
               id="<%= input_label_key %>"
               name="interview_answer[answer]"
               value="<%= stars_count %>"
-              onchange='selectRating(this);enableNext(this);'
+              onchange='selectRating(this);<%= "enableNext(this);" if question.required %>'
               <% if current_answer.to_i == stars_count %> checked <% end %>
               <%= 'disabled' if read_only %>
             />
@@ -79,7 +97,7 @@
           <% end %>
         </fieldset>
 
-        <%= f.input(
+        <%# f.input(
           :comments,
           as: :text,
           input_html: {
@@ -89,7 +107,36 @@
           disabled: read_only
         ) if question.allow_comments %>
 
-      <% elsif question.mcq? %>
+        <% if read_only %>
+
+          <label>Comments</label>
+          <div class='interview-question__read-only'>
+            <p><%= sanitize current_comments %></p>
+          </div>
+
+        <% else %>
+
+          <%= f.input(
+              :comments,
+              as: :trix_editor,
+              input_html: {
+                value: (sanitize current_comments)
+              },
+              required: false) if question.allow_comments %>
+
+        <% end %>
+
+      <% elsif question.mcq? || question.objective? %>
+
+        <%= f.input(
+          :objective,
+          as: :trix_editor,
+          input_html: {
+            value: current_objective
+          },
+          required: true,
+          disabled: read_only
+        ) if question.objective? %>
 
         <fieldset class="mcq">
           <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
@@ -107,14 +154,13 @@
         </fieldset>
 
         <%= f.input(
-          :comments,
-          as: :text,
-          input_html: {
-            value: current_comments
-          },
-          required: false,
-          disabled: read_only
-        ) if question.allow_comments %>
+            :comments,
+            as: :trix_editor,
+            input_html: {
+              value: current_comments
+            },
+            required: false,
+            disabled: read_only) if question.allow_comments %>
 
       <% end %>
 
@@ -132,7 +178,7 @@
     <% if @interview.crossed? %>
       <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
     <% else %>
-      <button class="btn-blue" onclick='previousQuestion(this);'><p>Back</p></button>
+      <a href="#anchor-<%= question.position - 1 %>"><button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button></a>
     <% end %>
     <% if j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && read_only %>
       <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
@@ -147,6 +193,6 @@
     <% elsif question.required && current_answer == '' && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
     <% else %>
-      <button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button>
+      <a href="#anchor-<%= question.position + 1 %>"><button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button></a>
     <% end %>
   </div>

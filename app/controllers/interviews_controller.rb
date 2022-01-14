@@ -52,6 +52,7 @@ class InterviewsController < ApplicationController
 
     answer = answer_params[:answer]
     comments = answer_params[:comments]
+    objective = answer_params[:objective]
     question_id = answer_params[:interview_question_id]
     interview_id = answer_params[:interview_id]
 
@@ -64,11 +65,23 @@ class InterviewsController < ApplicationController
       user: current_user
     ).update(
       answer: answer,
-      comments: comments
+      comments: comments,
+      objective: objective
     )
 
     interview.complete!
     head :no_content
+  end
+
+  def show_crossed_and_lock
+    interview = Interview.find(params[:id])
+    authorize interview
+    campaign = interview.campaign
+    employee = interview.employee
+    manager = campaign.owner
+
+    interview.campaign.interviews.where(employee: employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user = manager
+    redirect_to interview_path(interview)
   end
 
   private

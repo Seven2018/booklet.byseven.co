@@ -2,7 +2,8 @@
   'separator' => 'Chapter',
   'open_question' => 'Open Question',
   'rating' => 'Rating',
-  'mcq' => 'MCQ'
+  'mcq' => 'MCQ',
+  'objective' => 'Objective'
 } %>
 
 <div class="line-top">
@@ -63,14 +64,13 @@
   <%= f.input(:question, {
     placeholder: '*Required',
     input_html: {
-      autocomplete: 'off',
-      onclick: 'saveQuestion(this)'
+      autocomplete: 'off'
     },
     required: true,
     label: (question_type == 'separator' ? 'Title' : false )
   }.compact) %>
 
-  <%= f.input(:description,
+  <%# f.input(:description,
     placeholder: 'Description (optional)',
     input_html: {
       onclick: 'saveQuestion(this)'
@@ -78,13 +78,17 @@
     label: false
     ) %>
 
+  <%= f.rich_text_area :description,
+    placeholder: 'Description (optional)'
+    %>
+
   <% if question_type == 'rating' %>
     <div class="add-rating__select">
       <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'setRating(this);'} %>
     </div>
     <div class="show-rating"></div>
   <% end %>
-  <% if question_type == 'rating' || question_type == 'mcq' %>
+  <% if ['rating', 'mcq', 'objective'].include?(question_type) %>
     <div class="add-rating__toggle">
       <%= f.input :allow_comments, label: 'Allow comments' %>
     </div>

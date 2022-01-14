@@ -3,7 +3,7 @@
   <%= render 'crossed', interview: @interview, employee: @employee, manager: @manager, questions: @questions, read_only: ![@interview.employee, @interview.owner].include?(current_user)  %>
 
 <% else %>
-  <%# raise %>
+
   <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
 
   <div class="interview-container">
@@ -11,7 +11,7 @@
       <div class='empty-div'></div>
       <div class="interview-title">
         <h1><%= @interview.interview_form.title %></h1>
-        <p><%= @interview.interview_form.description %></p>
+        <p><%= sanitize @interview.interview_form.description %></p>
       </div>
       <button class="btn-blue btn-blue-start btn-blue-start--mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
     </div>
@@ -21,6 +21,7 @@
         <div class="interview-separator">
           <% previous_separators = @questions.where(question_type: 'separator').where('position <= ?', question.position) %>
           <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
+          <p><%= sanitize previous_separators.last.description if previous_separators.present? %></p>
         </div>
         <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user)) %>
       </div>
@@ -47,6 +48,15 @@
 
 <script>
   document.querySelector('body').classList.add('interview-form-body')
+
+  function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+  }
 
   const canAnswer = async (element) => {
     const response = await fetch('/interview/answer/authorization_checks', {
@@ -84,10 +94,17 @@
   function enableNext(element) {
     // TODO Avoid DOM selection by position. Breakbla. Select DOM elements by id
     button = element.closest('.interview-question').querySelectorAll('.btn-blue')[1]
-    if (element.value.length > 0 && button != undefined) {
+    if (element.closest('form').getAttribute('data-question-type') == 'objective') {
+      form = element.closest('form')
+      radio_selected = false
+      condition = form.querySelector('#interview_answer_objective').value.length > 0 && form.querySelector('input[type=radio]:checked') != null
+    } else {
+      condition = element.value.length > 0
+    }
+    if (condition && button != undefined) {
       button.classList.remove('btn-blue-disabled')
       button.disabled = false
-    } else if (element.value.length == 0 && button != undefined) {
+    } else if (!condition && button != undefined) {
       button.classList.add('btn-blue-disabled')
       button.disabled = true
     }
@@ -190,15 +207,16 @@
     } else {
       position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
       last_question = document.querySelectorAll('.interview-question')[position - 1]
+      last_question.querySelector('.hidden-submit').click()
       const form = last_question.querySelector('.hidden-submit').form
-      await fetch(form.action, {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": csrfToken(),
-          "Content-Type": "application/json"
-        },
-        body: answerFormPayload(form)
-      })
+      // await fetch(form.action, {
+      //   method: "POST",
+      //   headers: {
+      //     "X-CSRF-Token": csrfToken(),
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: answerFormPayload(form)
+      // })
     }
     document.querySelector('.hidden-link').click()
   }
@@ -245,4 +263,12 @@
     document.querySelector('.interview-review').classList.remove('hidden')
     document.querySelector('body').classList.remove('wait')
   }
+
+  document.querySelectorAll('.trix-content').forEach((trix) => {
+    trix.value = trix.parentNode.querySelector('.trix_editor').value
+    trix.addEventListener('keyup', (event) => {
+      trix.parentNode.querySelector('.trix_editor').value = trix.value
+      enableNext(trix.parentNode.querySelector('.trix_editor'))
+    })
+  })
 </script>

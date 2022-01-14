@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :campaigns, through: :interviews
   has_many :interviews, foreign_key: 'employee_id'
   has_many :interview_answers
+  belongs_to :manager, class_name: "User", optional: true
   validates :email, presence: true
   paginates_per 50
   include PgSearch::Model
@@ -36,6 +37,10 @@ class User < ApplicationRecord
     "#{lastname.upcase} #{firstname.capitalize} "
   end
 
+  def staff
+    User.where(manager_id: self.id)
+  end
+
   def tag_from_category(category_id)
     self.tags.where(category_id: category_id)
   end
@@ -50,8 +55,10 @@ class User < ApplicationRecord
     present = []
     CSV.foreach(file.path, headers: true) do |row|
       row_h = row.to_hash
+      manager_email = row_h['manager'].present? ? row_h['manager'].downcase : nil
+      row_h.delete('manager')
       user_attr = "firstname,lastname,email,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
-      tag_categories_to_create_user = row.to_hash.keys - user_attr
+      tag_categories_to_create_user = row_h.keys - user_attr - ['manager']
       tag_categories_to_create_user.each { |tag| row_h.delete(tag) }
 
       # Create new user for the company provided as argument.
@@ -61,15 +68,29 @@ class User < ApplicationRecord
 
       user = User.find_by(email: row_h['email'].downcase)
 
+      if manager_email.present?
+        manager = User.find_by(email: manager_email)
+
+        unless manager.present?
+          manager = User.new(email: manager_email, company_id: company_id)
+          manager.save(validate: false)
+        end
+      else
+        manager = nil
+      end
+
       if user.present?
         next unless user.company_id == company_id
+        user.firstname.present? && user.lastname.present? ? send_invite = true : send_invite = false
         update = user.update row_h
+        user.invite! if Rails.env == 'production' && send_invite
       else
         user = User.new(row_h)
         user.access_level = 'Employee' unless ['HR', 'Manager', 'Employee'].include?(row_h['access_level'])
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
+        user.manager_id = manager.id if manager.present?
         Rails.env == 'production' ? user.invite! : user.save(validate: false)
       end
 
