@@ -95,10 +95,10 @@
   <% n += 1 %>
 <% end %>
 <div class="interview-question__controls review-controls">
-    <%= link_to campaign_path(interview.campaign, employee_id: interview.employee_id) do %>
-      <% if user == current_user %>
-        <button class="btn-blue btn-blue"><p>Submit Form</p></button>
-      <% else %>
+    <% if user == current_user %>
+      <button class="btn-blue btn-blue" onclick='thanks();'><p>Submit Form</p></button>
+    <% else %>
+      <%= link_to campaign_path(interview.campaign, employee_id: interview.employee_id) do %>
         <button class="btn-blue btn-blue"><p>Exit</p></button>
       <% end %>
     <% end %>

@@ -77,14 +77,16 @@
               <p><%= "#{manager.firstname}: " %></p>
               <%= sanitize manager_answer&.answer %>
             </div>
-            <%= f.input :answer, as: :trix_editor, label: false, input_html: {value: current_answer&.answer}, disabled: read_only %>
+            <%= f.input :answer, as: :trix_editor, label: false, input_html: {value: current_answer&.answer, onclick: 'saveSummaryQuestion(this);'}, disabled: read_only %>
 
           <% elsif question.mcq? || question.objective? %>
 
-            <div class="employee_objective">
-              <p><%= "Objective: " %></p>
-              <%= sanitize employee_answer&.objective %>
-            </div>
+            <% if question.objective? %>
+              <div class="employee_objective">
+                <p><%= "Objective: " %></p>
+                <%= sanitize employee_answer&.objective %>
+              </div>
+            <% end %>
 
             <fieldset class="mcq">
               <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
@@ -92,7 +94,8 @@
                   <%= b.radio_button({
                     class: 'rad-input',
                     checked: ('checked' if b.text == current_answer&.answer),
-                    disabled: read_only
+                    disabled: read_only,
+                    input_html: {onclick: 'saveSummaryQuestion(this);'}
                     }.compact) %>
                   <div class="rad-design"></div>
                   <div class="rad-text">
@@ -121,8 +124,15 @@
               </div>
             <% end %>
 
-            <%= f.input(:comments,
+            <%# f.input(:comments,
                 as: :trix_editor,
+                input_html: { value: current_answer&.comments, onclick: 'saveSummaryQuestion(this);' },
+                required: false,
+                disabled: read_only
+              ) if question.allow_comments %>
+
+            <%= f.input(:comments,
+                as: :text,
                 input_html: { value: current_answer&.comments },
                 required: false,
                 disabled: read_only
@@ -141,7 +151,7 @@
                   value="<%= stars_count %>"
                   name="interview_answer[answer]"
                   id="<%= input_label_key %>"
-                  onchange='selectRating(this);'
+                  onchange='selectRating(this);saveSummaryQuestion(this);'
                   <% if current_answer&.answer.to_i == stars_count %> checked <% end %>
                   <%= 'disabled' if read_only %>
                 />
@@ -176,8 +186,15 @@
               </div>
             <% end %>
 
-            <%= f.input(:comments,
+            <%# f.input(:comments,
                 as: :trix_editor,
+                input_html: { value: current_answer&.comments, onclick: 'saveSummaryQuestion(this);' },
+                required: false,
+                disabled: read_only
+              ) if question.allow_comments %>
+
+            <%= f.input(:comments,
+                as: :text,
                 input_html: { value: current_answer&.comments },
                 required: false,
                 disabled: read_only

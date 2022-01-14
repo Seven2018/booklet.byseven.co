@@ -79,7 +79,7 @@ review yet</p>
       <p class="campaign-interview-card__status">Review completed, waiting for lock</p>
       <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>
         <p>
-          <%= employee_view && current_user = employee_interview.employee ? 'View result' : 'View and Lock' %>
+          <%= employee_view && current_user == employee_interview.employee ? 'View result' : 'View and Lock' %>
         </p>
       <% end %>
     <% else %>
@@ -89,7 +89,7 @@ review yet</p>
         <div class="campaign-interview-card__fill"></div>
       <% else %>
         <% if employee_interview.locked? && manager_interview.locked? %>
-          <%= link_to show_crossed_and_lock_path(id: crossed_interview.id), class: 'campaign-interview-card__button' do %>
+          <%= link_to interview_path(crossed_interview), class: 'campaign-interview-card__button' do %>
             <p>
               <%= InterviewPolicy.new(current_user, crossed_interview).answer_question? ? 'Start' : 'View' %>
               <!-- TODO use policies to switch CTA's texts -->

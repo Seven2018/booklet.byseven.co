@@ -2,7 +2,7 @@ class Interview::LocksController < ApplicationController
   def create
     authorize interview, policy_class: Interview::LockPolicy
     interview.lock!
-    redirect_back fallback_location: root_path
+    redirect_to campaign_path(interview.campaign, employee_id: interview.employee_id)
   end
 
   private
