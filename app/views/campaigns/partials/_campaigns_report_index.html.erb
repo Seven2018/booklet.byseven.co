@@ -3,7 +3,7 @@
     <% completion = (campaign.interviews.where(completed: true).count.fdiv(campaign.interviews.count) * 100).round %>
     <% ratings = campaign.interviews.where(label: 'Manager').map{|x| x.interview_answers.joins(:interview_question).where(interview_questions: {question_type: 'rating'}).map{|y| y.answer.to_i.fdiv(y.interview_question.options.first.first.to_i)*10 if y.answer.present?}}.flatten %>
 
-    <div class="col-xl-4 col-lg-6 col-xs-12 campaigns-report-campaign-card__container">
+    <div class="col-xl-4 col-lg-6 col-md-6 col-xs-12 campaigns-report-campaign-card__container">
       <div class="campaigns-report-campaign-card" id='campaign-<%= campaign.id %>'>
         <%= link_to '', campaign_report_info_path(id: campaign.id), class: 'stretched-link', remote: true %>
         <div class="campaigns-report-campaign-card__top">

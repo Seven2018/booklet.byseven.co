@@ -43,10 +43,8 @@
         <div class="dropdown-menu dropdown-menu-right seven-burger-menu" aria-labelledby="dropdownMenuButton">
           <div>
             <%= link_to 'Dashboard', campaigns_path, class: 'dropdown-item' %>
-            <% if current_user.manager_or_above? %>
-              <%= link_to 'Templates', interview_forms_path, class: 'dropdown-item' %>
-            <% end %>
             <% if current_user.hr_or_above? %>
+              <%= link_to 'Templates', interview_forms_path, class: 'dropdown-item' %>
               <%= link_to 'Employees', organisation_path(redirected_from: 'campaigns'), class: 'dropdown-item' %>
               <%= link_to 'Report', campaigns_report_path, class: 'dropdown-item' %>
             <% end %>
