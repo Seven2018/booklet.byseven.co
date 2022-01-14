@@ -25,10 +25,10 @@
         <%= simple_form_for :update_interviews, url: update_interviews_path, method: :get, remote: true do |f| %>
           <div class="flex-row-start-centered">
             <%= f.input :date, label: false, input_html: {class: 'datepicker', style: 'max-width: 110px;text-align: center;', onchange: 'enableEdit(this);checkInterviewOverlap();', value: interviews.first.date.to_date}, placeholder: 'Select date', required: true %>
-            <p>from</p>
-            <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", onchange: 'enableEdit(this);checkInterval(this);checkInterviewOverlap();', value: interviews.first.starts_at.strftime('%H:%M'), style: 'max-width: 70px;text-align: center;'}, required: true %>
-            <p>to</p>
-            <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', onchange: 'enableEdit(this);checkInterval(this);checkInterviewOverlap();', value: interviews.first.ends_at.strftime('%H:%M'), style: 'max-width: 70px;text-align: center;'}, required: true %>
+             <p class="hidden">from</p>
+            <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at hidden", onchange: 'enableEdit(this);checkInterval(this);checkInterviewOverlap();', value: interviews.first.starts_at.strftime('%H:%M'), style: 'max-width: 70px;text-align: center;'}, required: true %>
+            <p class="hidden">to</p>
+            <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at hidden', onchange: 'enableEdit(this);checkInterval(this);checkInterviewOverlap();', value: interviews.first.ends_at.strftime('%H:%M'), style: 'max-width: 70px;text-align: center;'}, required: true %>
             <%= f.hidden_field :employee_id, value: user.id %>
             <%= f.hidden_field :campaign_id, value: @campaign.id %>
             <button type='submit' class='btn-blue btn-blue-disabled' disabled><p>Edit</p></button>

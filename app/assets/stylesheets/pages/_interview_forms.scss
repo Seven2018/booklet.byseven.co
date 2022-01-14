@@ -381,23 +381,25 @@
   display: flex;
   overflow: hidden;
   justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   background:white;
   border: 1px solid #3177B7;
-  width: 0;
-  height: 4rem;
+  height: auto;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   transition: width .25s linear;
+  z-index: 10;
 
 
   .template-show-lines-controls-block {
-    width: 0;
     overflow: hidden;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 1rem 0;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
     position: relative;
     transition: width .25s linear;
     color: #3177B7;

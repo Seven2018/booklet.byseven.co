@@ -5,12 +5,12 @@
 
   <div class="manager-answers-colors-info">
     <div class="manager-color-point"></div>
-    <p>This color refer to <span style="font-weight:900">manager's</span> answers</p>
+    <p>This color refers to <span style="font-weight:900">manager's</span> answers</p>
   </div>
 
   <div class="employee-answers-colors-info">
     <div class="employee-color-point"></div>
-    <p>This color refer to <span style="font-weight:900">employee's</span> answers</p>
+    <p>This color refers to <span style="font-weight:900">employee's</span> answers</p>
   </div>
 
   <% questions.order(position: :asc).each do |question| %>
@@ -73,10 +73,10 @@
           <% elsif question.mcq? %>
 
             <% if employee_answer&.comments.present? %>
-              <p style="color: #939393; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
+              <p style="color: #0FDF00; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
             <% end %>
             <% if manager_answer&.comments.present? %>
-              <p style="color: #3177B7; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
+              <p style="color: #0B5D1E; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
             <% end %>
 
             <%= f.input(:comments,
@@ -151,10 +151,10 @@
             </fieldset>
 
             <% if employee_answer&.comments.present? %>
-              <p style="color: #939393; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
+              <p style="color: #0FDF00; margin: 2rem 0;"><%= "#{employee.firstname} comments: #{employee_answer&.comments}" %></p>
             <% end %>
             <% if manager_answer&.comments.present? %>
-              <p style="color: #3177B7; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
+              <p style="color: #0B5D1E; margin: 2rem 0;"><%= "#{manager.firstname} comments: #{manager_answer&.comments}" %></p>
             <% end %>
 
           <% end # question_types %>

@@ -5,7 +5,7 @@
   </div>
   <div class="select-date-card-info">
     <p><%= selected_template.interview_questions.count %> questions</p>
-    <p>Dates can be edited by the manager</p>
+    <p><strong>Crossed Review’s deadline. These dates can be edited by the manager later.</strong></p>
     <div class="campaign-select-date-tag-pill__container">
       <% selected_template.interview_form_tags.each do |tag| %>
         <p class="campaign-select-date-tag-pill"><%= tag.tag_name %></p>
@@ -21,10 +21,10 @@
     <%= simple_form_for :interview, url: interviews_path, method: :post, remote: true do |f| %>
       <div class="flex-row-start-centered">
         <%= f.input :date, label: false, input_html: {class: 'datepicker-defaulting-to-end-of-month', style: 'max-width: 110px;text-align: center;', onchange: 'checkDatePresence();checkInterviewOverlap();'}, placeholder: 'Select date', required: true %>
-        <p>from</p>
-        <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at", value: '09:00', style: 'max-width: 70px;text-align: center;', onchange: 'checkInterval(this);checkInterviewOverlap();'}, required: true %>
-        <p>to</p>
-        <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at', value: "10:00", style: 'max-width: 70px;text-align: center;', onchange: 'checkInterval(this);checkInterviewOverlap();'}, required: true %>
+        <p class="hidden">from</p>
+        <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at hidden", value: '09:00', style: 'max-width: 70px;text-align: center;', onchange: 'checkInterval(this);checkInterviewOverlap();'}, required: true %>
+        <p class="hidden">to</p>
+        <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at hidden', value: "10:00", style: 'max-width: 70px;text-align: center;', onchange: 'checkInterval(this);checkInterviewOverlap();'}, required: true %>
         <%= f.hidden_field :employee_id, value: user.id %>
         <%= f.hidden_field :creator_id, value: current_user.id %>
         <%= f.hidden_field :interview_form_id, value: selected_template.id %>
