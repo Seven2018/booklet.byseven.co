@@ -70,10 +70,17 @@
 
         <% else %>
 
-          <%= f.input :answer,
+          <%# f.input :answer,
               as: :trix_editor,
               input_html: {
                 value: (sanitize current_answer),
+                onkeyup: 'enableNext(this);'
+              } %>
+
+          <%= f.input :answer,
+              as: :text,
+              input_html: {
+                value: current_answer,
                 onkeyup: 'enableNext(this);'
               } %>
 
@@ -122,7 +129,7 @@
 
         <% else %>
 
-          <%= f.input(
+          <%# f.input(
               :comments,
               as: :trix_editor,
               input_html: {
@@ -130,15 +137,34 @@
               },
               required: false) if question.allow_comments %>
 
+          <%= f.input(
+              :comments,
+              as: :text,
+              input_html: {
+                value: current_comments
+              },
+              required: false) if question.allow_comments %>
+
         <% end %>
 
       <% elsif question.mcq? || question.objective? %>
 
-        <%= f.input(
+        <%# f.input(
           :objective,
           as: :trix_editor,
           input_html: {
             value: current_objective
+          },
+          required: true,
+          disabled: read_only
+        ) if question.objective? %>
+
+        <%= f.input(
+          :objective,
+          as: :text,
+          input_html: {
+            value: current_objective,
+            onkeyup: 'enableNext(this);'
           },
           required: true,
           disabled: read_only
@@ -159,9 +185,18 @@
           <% end %>
         </fieldset>
 
-        <%= f.input(
+        <%# f.input(
             :comments,
             as: :trix_editor,
+            input_html: {
+              value: current_comments
+            },
+            required: false,
+            disabled: read_only) if question.allow_comments %>
+
+        <%= f.input(
+            :comments,
+            as: :text,
             input_html: {
               value: current_comments
             },
