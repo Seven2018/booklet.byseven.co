@@ -1,52 +1,48 @@
-.trix-content {
-  border-top: 1px solid transparent;
-  border-left: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-bottom: 2px solid #3177B7;
-  outline: none;
-  background-color: rgba(49, 119, 183, 0.05); 
-  &::before {
-    color: #ced4da;
-  }
+// .trix-content {
+//   border-top: 1px solid transparent;
+//   border-left: 1px solid transparent;
+//   border-right: 1px solid transparent;
+//   border-bottom: 2px solid #3177B7;
+//   outline: none;
+//   background-color: rgba(49, 119, 183, 0.05);
+//   &::before {
+//     color: #ced4da;
+//   }
 
-  .trix-editor{
-    font-size: 16px;
-  }
+//   .trix-editor{
+//     font-size: 16px;
+//   }
 
-  .attachment-gallery {
-    > action-text-attachment,
-    > .attachment {
-      flex: 1 0 33%;
-      padding: 0 0.5em;
-      max-width: 33%;
-    }
+//   .attachment-gallery {
+//     > action-text-attachment,
+//     > .attachment {
+//       flex: 1 0 33%;
+//       padding: 0 0.5em;
+//       max-width: 33%;
+//     }
 
-    &.attachment-gallery--2,
-    &.attachment-gallery--4 {
-      > action-text-attachment,
-      > .attachment {
-        flex-basis: 50%;
-        max-width: 50%;
-      }
-    }
-  }
+//     &.attachment-gallery--2,
+//     &.attachment-gallery--4 {
+//       > action-text-attachment,
+//       > .attachment {
+//         flex-basis: 50%;
+//         max-width: 50%;
+//       }
+//     }
+//   }
 
-  action-text-attachment {
-    .attachment {
-      padding: 0 !important;
-      max-width: 100% !important;
-    }
-  }
+//   action-text-attachment {
+//     .attachment {
+//       padding: 0 !important;
+//       max-width: 100% !important;
+//     }
+//   }
+// }
 
-  strong {
-    font-weight: bolder !important;
-  }
-}
+// .trix-button-row { display: none !important; }
 
-.trix-button-row { display: none !important; }
-
-.interview-question__form-description {
-  .trix-content {
-    border: none;
-  }
-}
+// .interview-question__form-description {
+//   .trix-content {
+//     border: none;
+//   }
+// }
