@@ -2,20 +2,21 @@
   <div class="interview-question__form">
     <div class="number-and-question">
       <div class="question-number">
-      <%= j %>
+        <%= j %>
+      </div>
+      <div class="question-section">
+        <div class="flex-row-between-centered">
+          <h3 class="question-title"><%= question.question %>
+            <% if question.required %>
+              <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
+            <% end %>
+          </h3>
+        </div>
+        <div class="interview-question__form-description">
+          <%= sanitize question.description %>
+        </div>
+      </div>
     </div>
-    <div class="question-section"><div class="flex-row-between-centered">
-      <h3 class="question-title"><%= question.question %>
-        <% if question.required %>
-          <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
-        <% end %>
-    </h3>
-    </div>
-    <div class="interview-question__form-description">
-      <p><%= sanitize question.description %></p>
-    </div>
-  </div>
-  </div>
     <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
     <% existing_answer =
       InterviewAnswer.find_by(
@@ -39,9 +40,9 @@
       ) %>
     <% end %>
 
-    <% current_answer   = sanitize existing_answer&.answer || '' %>
-    <% current_comments = sanitize existing_answer&.comments || '' %>
-    <% current_objective = sanitize existing_answer&.objective || '' %>
+    <% current_answer   = existing_answer&.answer || '' %>
+    <% current_comments = existing_answer&.comments || '' %>
+    <% current_objective = existing_answer&.objective || '' %>
 
     <%= simple_form_for(:interview_answer,
       url: answer_interview_question_path,
@@ -65,7 +66,7 @@
         <% if read_only %>
 
           <div class='interview-question__read-only'>
-            <p><%= sanitize current_answer %></p>
+            <p><%= current_answer %></p>
           </div>
 
         <% else %>
@@ -124,7 +125,7 @@
 
           <label>Comments</label>
           <div class='interview-question__read-only'>
-            <p><%= sanitize current_comments %></p>
+            <p><%= current_comments %></p>
           </div>
 
         <% else %>
@@ -219,7 +220,7 @@
     <% if @interview.crossed? %>
       <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
     <% else %>
-      <a href="#anchor-<%= question.position - 1 %>"><button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button></a>
+      <a href="#anchor"><button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button></a>
     <% end %>
     <% if j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && read_only %>
       <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
@@ -234,6 +235,6 @@
     <% elsif question.required && current_answer == '' && !read_only %>
       <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
     <% else %>
-      <a href="#anchor-<%= question.position + 1 %>"><button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button></a>
+      <a href="#anchor"><button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button></a>
     <% end %>
   </div>

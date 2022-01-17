@@ -70,15 +70,13 @@
     label: (question_type == 'separator' ? 'Title' : false )
   }.compact) %>
 
-  <%# f.input(:description,
+  <%= f.input(:description,
+    as: :text,
     placeholder: 'Description (optional)',
-    input_html: {
-      onclick: 'saveQuestion(this)'
-    },
     label: false
     ) %>
 
-  <%= f.rich_text_area :description,
+  <%# f.rich_text_area :description,
     placeholder: 'Description (optional)'
     %>
 
