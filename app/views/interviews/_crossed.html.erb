@@ -14,6 +14,8 @@
     <p>This color refers to <span style="font-weight:900">manager's</span> answers</p>
   </div>
 
+  <% j = 1 %>
+
   <% questions.order(position: :asc).each do |question| %>
 
     <% if question.separator? %>
@@ -71,20 +73,23 @@
 
             <div class="employee_answer">
               <p><%= "#{employee.firstname}: " %></p>
-              <%= sanitize employee_answer&.answer %>
+              <p><%= employee_answer&.answer %></p>
             </div>
             <div class="manager_answer">
               <p><%= "#{manager.firstname}: " %></p>
-              <%= sanitize manager_answer&.answer %>
+              <p><%= manager_answer&.answer %></p>
             </div>
-            <%= f.input :answer, as: :trix_editor, label: false, input_html: {value: current_answer&.answer, onclick: 'saveSummaryQuestion(this);'}, disabled: read_only %>
+
+            <%# f.input :answer, as: :trix_editor, label: false, input_html: {value: current_answer&.answer, onclick: 'saveSummaryQuestion(this);'}, disabled: read_only %>
+
+            <%= f.input :answer, as: :text, label: false, input_html: {value: current_answer&.answer, onclick: 'saveSummaryQuestion(this);'}, disabled: read_only %>
 
           <% elsif question.mcq? || question.objective? %>
 
             <% if question.objective? %>
               <div class="employee_objective">
                 <p><%= "Objective: " %></p>
-                <%= sanitize employee_answer&.objective %>
+                <p><%= employee_answer&.objective %></p>
               </div>
             <% end %>
 
@@ -114,13 +119,13 @@
             <% if employee_answer&.comments.present? %>
               <div class="employee_comments">
                 <p><%= "#{employee.firstname}: " %></p>
-                <%= sanitize employee_answer&.comments %>
+                <p><%= employee_answer&.comments %></p>
               </div>
             <% end %>
             <% if manager_answer&.comments.present? %>
               <div class="manager_comments">
                 <p><%= "#{manager.firstname}: " %></p>
-                <%= sanitize manager_answer&.comments %>
+                <p><%= manager_answer&.comments %></p>
               </div>
             <% end %>
 
@@ -176,13 +181,13 @@
             <% if employee_answer&.comments.present? %>
               <div class="employee_comments">
                 <p><%= "#{employee.firstname}: " %></p>
-                <%= sanitize employee_answer&.comments %>
+                <p><%= employee_answer&.comments %></p>
               </div>
             <% end %>
             <% if manager_answer&.comments.present? %>
               <div class="manager_comments">
                 <p><%= "#{manager.firstname}: " %></p>
-                <%= sanitize manager_answer&.comments %>
+                <p><%= manager_answer&.comments %></p>
               </div>
             <% end %>
 
@@ -209,6 +214,8 @@
       <% end # form %>
 
     </div>
+
+    <% j += 1 %>
   <% end # questions %>
 
   <div class="interview-question__controls">
