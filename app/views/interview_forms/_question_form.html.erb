@@ -93,9 +93,15 @@
       label: (question.separator? ? 'Title' : false )
     }.compact) %>
 
-  <%# f.input :description, placeholder: 'Description (optional)', label: false, input_html: { onclick: 'saveQuestion(this)' } %>
-
   <%= f.input :description,
+      as: :text,
+      placeholder: 'Description (optional)',
+      input_html: {
+        value: question.description
+      }
+      %>
+
+  <%# f.input :description,
       as: :trix_editor,
       placeholder: 'Description (optional)',
       input_html: {
