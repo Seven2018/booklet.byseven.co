@@ -56,10 +56,16 @@
       'objective' => 'fas fa-bullseye'
       } %>
 
+
     <div class="<%= summary_klasses[question.question_type] %>">
-      <div class="flex-row-start-centered">
-        <i class="<%= fa_klasses[question.question_type] %>"></i>
-        <p><%= question.question %></p>
+      <div class="flex-row-between-centered">
+        <div class="flex-row-start-centered">
+          <i class="<%= fa_klasses[question.question_type] %>"></i>
+          <p><%= question.question %></p>
+        </div>
+        <div class="number-cross">
+          <%= j %>
+        </div>
       </div>
 
         <%= simple_form_for(:interview_answer,

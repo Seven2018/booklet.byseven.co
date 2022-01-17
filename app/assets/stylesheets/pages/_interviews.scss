@@ -227,6 +227,7 @@
     justify-content: flex-start;
     align-items: flex-start;
 
+
     div, p, strong {
       font-size: 1.6rem;
       color: #0B5D1E;
@@ -253,7 +254,7 @@
 
     div, p, strong {
       font-size: 1.6rem;
-      color: #3177B7;
+      color: #0FDF00;
     }
 
     div {
@@ -289,7 +290,7 @@
 .employee_comments {
 
   p, div, strong {
-    color: #B118C8 !important;
+    color: #0FDF00 !important;
   }
 }
 
@@ -351,6 +352,12 @@
     }
   }
 }
+.number-cross {
+  font-size: 1.5vw;
+  font-weight: bolder;
+  color: #6B6B6B;
+  margin-top: -2rem;
+}
 
 .btn-blue-start--mobile {
   font-size: 1.5rem;
@@ -380,6 +387,7 @@ font-size: 1.6vw;
   justify-content: space-between;
   align-items: center;
   position: relative;
+  z-index: 15;
 
   .interview-separator {
     margin: 3rem;
@@ -502,6 +510,8 @@ font-size: 1.6vw;
   border-radius: 10rem;
   bottom: 5vh;
   left: 35vw;
+  z-index: 1;
+
 
 
 
