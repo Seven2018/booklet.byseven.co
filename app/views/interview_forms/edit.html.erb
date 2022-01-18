@@ -391,17 +391,9 @@
     } else {
       trix.value = trix.parentNode.querySelector('.trix_editor').value
     }
-    trix.addEventListener('click', (event) => {
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, trix)) {
-          form = trix.closest('form')
-          form.querySelector('.hidden-submit').click();
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    })
     trix.addEventListener('keyup', (event) => {
       trix.parentNode.querySelector('.trix_editor').value = trix.value
+      trix.closest('form').querySelector('.hidden-submit').click()
     })
   })
 </script>
