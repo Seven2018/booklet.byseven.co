@@ -355,8 +355,10 @@ class PagesController < ApplicationController
         @users = parameter
         if params[:search][:name] && params[:search][:name] != ' '
           @users = @users.search_by_name("#{params[:search][:name]}") if params[:search][:name].present?
+          @users = User.where(id: @users.ids).or(User.where(manager_id: @users.ids)) if params[:search][:staff].to_i == 1
           # @users = @users.where('unaccent(lower(firstname)) LIKE ? OR unaccent(lower(lastname)) LIKE ?', "%#{I18n.transliterate(params[:search][:name].downcase)}%", "%#{I18n.transliterate(params[:search][:name].downcase)}%")
           @search_name = params[:search][:name]
+          @search_staff = params[:search][:staff]
         end
         # If the 'clear' button is clicked, return all the employees
         @users = @users.reorder(lastname: :asc) if @users.present?

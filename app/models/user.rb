@@ -20,13 +20,15 @@ class User < ApplicationRecord
   has_many :interviews, foreign_key: 'employee_id'
   has_many :interview_answers
   belongs_to :manager, class_name: "User", optional: true
+  has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
   validates :email, presence: true
   paginates_per 50
+
   include PgSearch::Model
   pg_search_scope :search_by_name,
-    against: [ :firstname, :lastname ],
+    against: [ :firstname, :lastname, :email ],
     associated_against: {
-      tags: :tag_name,
+      tags: :tag_name
     },
     using: {
       tsearch: { prefix: true }
@@ -37,8 +39,8 @@ class User < ApplicationRecord
     "#{lastname.upcase} #{firstname.capitalize} "
   end
 
-  def staff
-    User.where(manager_id: self.id)
+  def manager_name
+    self.manager.lastname
   end
 
   def tag_from_category(category_id)

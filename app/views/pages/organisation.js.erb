@@ -25,7 +25,11 @@ $(document).ready(function () {
 document.querySelector('body').classList.remove('wait');
 
 if ("<%= @search_name.present? %>" == 'true') {
-  document.querySelector('.organisation-main-container-filtered').querySelector('#search_name').value = "<%= @search_name %>"
+  search_bar = document.querySelector('.organisation-main-container-filtered')
+  search_bar.querySelector('#search_name').value = "<%= @search_name %>"
+  if ("<%= @search_staff %>" == '1') {
+    search_bar.querySelector('#search_staff').checked = true
+  }
   // document.querySelector('.organisation-main-container-filtered').querySelector('#organisation-controls__user-search-clear').classList.remove('hidden')
 }
 
