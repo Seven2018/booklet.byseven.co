@@ -29,6 +29,12 @@
   </div>
 </div>
 
+<div class='modal fade' id='userCreated' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'users/modals/user_created' %>
+  </div>
+</div>
+
 <div class='modal fade' id='importUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'users/modals/import' %>
@@ -79,10 +85,10 @@
 
   formGuardian = false;
   doubleClickGuardian = false;
-  setTimeout(function(){
-    document.querySelector('#user_email').value = ''
-    document.querySelector('#user_password').value = ''
-  }, 100)
+  // setTimeout(function(){
+  //   document.querySelector('#user_email').value = ''
+  //   document.querySelector('#user_password').value = ''
+  // }, 100)
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
