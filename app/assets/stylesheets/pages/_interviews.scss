@@ -143,7 +143,6 @@
 
     p {
       margin-bottom: 1rem;
-      padding-left: 2rem;
     }
 
     .flex-row-start-centered {
@@ -199,81 +198,6 @@
     }
   }
 
-  .employee_answer {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    div, p, strong {
-      font-size: 1.6rem;
-      color: #0FDF00;
-    }
-
-    div {
-      margin-left: 1rem;
-    }
-
-    strong {
-      font-weight: bolder;
-    }
-
-    p:last-of-type {
-      margin: 0 0 0 1rem;
-    }
-  }
-
-  .manager_answer {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-
-    div, p, strong {
-      font-size: 1.6rem;
-      color: #0B5D1E;
-    }
-
-    div {
-      margin-left: 1rem;
-    }
-
-    strong {
-      font-weight: bolder;
-    }
-
-    p:last-of-type {
-      margin: 0 0 0 1rem;
-    }
-  }
-
-  .employee_comments, .manager_comments, .employee_objective {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin: 2rem 0;
-
-    div, p, strong {
-      font-size: 1.6rem;
-      color: #0FDF00;
-    }
-
-    div {
-      margin-left: 1rem;
-    }
-
-    & > p {
-      padding: 0;
-    }
-
-    strong {
-      font-weight: bolder;
-    }
-
-    p:last-of-type {
-      margin: 0 0 0 1rem;
-    }
-  }
-
   .interview-question__controls {
     display: flex;
     flex-direction: row;
@@ -287,17 +211,63 @@
   }
 }
 
-.employee_comments {
+.user_answer, .employee_answer, .manager_answer, .user_comments, .employee_comments, .manager_comments, .employee_objective  {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-left: 2rem;
 
-  p, div, strong {
-    color: #0FDF00 !important;
+  div, p, strong {
+    font-size: 1.6rem;
+  }
+
+  div {
+    margin-left: 1rem;
+  }
+
+  p {
+    white-space: pre-wrap;
+  }
+
+  p:last-of-type {
+    margin: 0 0 0 1rem;
   }
 }
 
-.manager_comments {
+
+.user_comments, .employee_comments, .manager_comments, .employee_objective {
+  margin: 2rem 0 2rem 2rem;
+
+  & > p {
+    padding: 0;
+  }
+}
+
+.user_answer, .user_comments {
+
+  div, p, strong {
+    color: #5b92c5;
+  }
+}
+
+.employee_answer, .employee_comments {
+
+  div, p, strong {
+    color: #0FDF00;
+  }
+}
+
+.manager_answer, .manager_comments {
+
+  div, p, strong {
+    color: #0B5D1E;
+  }
+}
+
+.employee_objective {
 
   p, div, strong {
-    color: #0B5D1E !important;
+    color: #5b92c5;
   }
 }
 
@@ -574,10 +544,6 @@ font-size: 1.6vw;
 
   @include from-medium {
     margin-top: 3rem;
-  }
-
-  div > div {
-    margin-left: 2rem;
   }
 
   strong {

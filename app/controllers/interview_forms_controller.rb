@@ -52,10 +52,13 @@ class InterviewFormsController < ApplicationController
     @template.interview_form_tags.each do |tag|
       InterviewFormTag.create(tag_id: tag.tag_id, tag_name: tag.tag_name, interview_form_id: new_template.id)
     end
-    @template.interview_questions.each do |question|
+    i = 1
+    @template.interview_questions.order(position: :asc).each do |question|
       new_question = InterviewQuestion.new(question.attributes.except("id", "created_at", "updated_at", "interview_form_id"))
+      new_question.position = i
       new_question.interview_form_id = new_template.id
       new_question.save
+      i += 1
     end
     redirect_to interview_form_path(new_template)
   end
