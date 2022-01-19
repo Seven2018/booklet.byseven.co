@@ -420,6 +420,71 @@
 }
 
 
+/////////////////
+// NEW (MODAL) //
+/////////////////
+
+.interview-type-cards__main-title {
+  font-size: 1.8rem !important;
+  color: #404040;
+  margin-bottom: 1rem;
+}
+
+.interview_type_cards {
+  margin-bottom: 5rem;
+}
+
+.interview-type-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4.5rem;
+  border: 0.3px solid #979C9F;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 4px rgba(182, 182, 182, 0.25);
+  border-radius: 2px;
+  padding: 0 2rem;
+  margin-bottom: 1rem;
+
+  svg {
+    height: 2rem;
+    width: 2rem;
+    margin-right: 1rem;
+    color: #3177B7;
+  }
+
+  div:last-child {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 1rem;
+    border: 1px solid #3177B7;
+  }
+}
+
+.interview-type-card.selected {
+  border: 0.3px solid #3177B7;
+
+  div:last-child {
+    background-color: #3177B7;
+  }
+}
+
+.interview_type-card__teaser {
+  max-height: 0;
+  overflow-y: hidden;
+
+  p {
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    color: #9C9C9C;
+    padding-bottom: 1rem !important;
+  }
+}
+
+.interview_type-card__teaser.selected {
+  max-height: 20rem;
+}
+
 /////////////////////
 // SELECT TEMPLATE //
 /////////////////////

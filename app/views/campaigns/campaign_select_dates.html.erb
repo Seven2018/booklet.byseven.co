@@ -1,10 +1,12 @@
 <div class="campaign-container">
   <div class="campaign-controls__dates">
     <div class="campaign-controls">
+      <% params[:campaign].present? ? selected_campaign_type = params[:campaign][:selected_campaign_type] : selected_campaign_type = '' %>
       <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
       <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
       <% params[:campaign].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
       <%= simple_form_for :campaign, url: campaign_select_template_path, method: :get do |f| %>
+        <%= f.hidden_field :selected_campaign_type, value: selected_campaign_type %>
         <%= f.hidden_field :selected_template, value: selected_template %>
         <%= f.hidden_field :selected_users, value: selected_users %>
         <%= f.hidden_field :selected_owner, value: selected_owner %>
@@ -14,6 +16,7 @@
       <% end %>
       <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
       <%= simple_form_for :campaign, url: campaign_select_users_path, method: :get do |f| %>
+        <%= f.hidden_field :selected_campaign_type, value: selected_campaign_type %>
         <%= f.hidden_field :selected_template, value: selected_template %>
         <%= f.hidden_field :selected_users, value: selected_users %>
         <%= f.hidden_field :selected_owner, value: selected_owner %>
@@ -32,6 +35,7 @@
         <%= f.hidden_field :title, value: selected_template.title %>
         <%= f.hidden_field :interview_form_id, value: selected_template.id %>
         <%= f.hidden_field :selected_owner, value: selected_owner %>
+        <%= f.hidden_field :campaign_type, value: selected_campaign_type %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
       <button class="back-arrow-btn-mobile" onclick="document.querySelectorAll('.simple_form.campaign')[1].querySelector('button').click()"><i class="fas fa-arrow-left"></i></button><button id='campaign-confirm-button' data-toggle='modal' data-target='#sendEmail'><p>LAUNCH INTERVIEW</p> <i class="fas fa-paper-plane no-margin"></i></button>

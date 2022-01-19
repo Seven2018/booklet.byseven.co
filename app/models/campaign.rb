@@ -9,6 +9,19 @@ class Campaign < ApplicationRecord
 
   validates :title, presence: true
 
+  enum campaign_type: {
+    simple: 0,
+    crossed: 10,
+  }, _prefix: true
+
+  def crossed?
+    self.campaign_type_crossed?
+  end
+
+  def simple?
+    self.campaign_type_simple?
+  end
+
   def completion_for(employee)
     return 0 if interviews.count.zero?
 
