@@ -48,6 +48,20 @@ class UsersController < ApplicationController
     end
   end
 
+  def unlink_from_company
+    selected_users = User.where(id: params[:selected_users])
+    authorize selected_users
+    selected_users.each do |user|
+      user.update company_id: nil
+      user.user_tags.destroy_all
+    end
+    @selected_users = params[:selected_users]
+    respond_to do |format|
+      format.html {redirect_to organisation_path}
+      format.js {}
+    end
+  end
+
   # Update user profile (users/show)
   def update
     authorize @user

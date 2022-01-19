@@ -29,6 +29,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def unlink_from_company?
+    user.hr_or_above?
+  end
+
   def update?
     true
   end
