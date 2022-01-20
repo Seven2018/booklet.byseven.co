@@ -334,6 +334,18 @@
     }
   }
 
+  function userCreated() {
+    document.querySelector("#newUser").querySelector(".cancel-close").click()
+    user_email = document.querySelector('#user_email').value
+    search_input = document.querySelector('#search_name')
+    search_input.value = user_email
+    search_input.closest('form').querySelector('.btn-search').click()
+    new_user_form = document.querySelector('#new_user')
+    new_user_form.querySelectorAll('input').forEach((input) => {
+      input.value = ''
+    })
+  }
+
   function clearInput(element) {
     form = element.parentNode.parentNode;
     form.querySelector('.hidden-submit').click();

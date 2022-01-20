@@ -19,7 +19,7 @@ class InterviewPolicy < ApplicationPolicy
     case
     when record.employee?
       user == record.employee || user == record.owner
-    when record.manager?
+    when record.manager? || record.simple?
       user == record.owner
     when record.crossed?
       user == record.owner || user == record.employee
@@ -30,7 +30,7 @@ class InterviewPolicy < ApplicationPolicy
     return false if record.locked?
 
     case
-    when record.crossed? || record.manager?
+    when record.crossed? || record.manager? || record.simple?
       user == record.owner
     when record.employee?
       user == record.employee

@@ -22,9 +22,10 @@ class User < ApplicationRecord
   belongs_to :manager, class_name: "User", optional: true
   validates :email, presence: true
   paginates_per 50
+
   include PgSearch::Model
   pg_search_scope :search_by_name,
-    against: [ :firstname, :lastname ],
+    against: [ :firstname, :lastname, :email ],
     associated_against: {
       tags: :tag_name,
     },

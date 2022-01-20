@@ -29,7 +29,7 @@ class Interview < ApplicationRecord
 
   def fully_answered?
     interview_answers.count >=
-      if self.crossed?
+      if self.crossed? || self.simple?
         interview_questions.not_separator.required.count
       else
         interview_questions.not_separator.visible?(self.label == 'Employee' ? 'employee' : 'manager').required.count
@@ -57,6 +57,10 @@ class Interview < ApplicationRecord
 
   def crossed?
     label == 'Crossed'
+  end
+
+  def simple?
+    label == 'Simple'
   end
 
   def reorder_questions!

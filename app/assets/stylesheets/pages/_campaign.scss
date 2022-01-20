@@ -1175,14 +1175,28 @@
     .campaigns-report-list__controls-info-grey {
       background-color: #EAEAEA;
     }
+
+    .campaigns-report-list__controls-export {
+
+      button {
+        border-radius: none;
+        box-shadow: none;
+        background-color: white;
+      }
+
+      i {
+        font-size: 3rem;
+        color: #3177B7;
+      }
+    }
   }
 }
 
-    @include from-medium {
-    .campaigns-report-list__controls-infos {
-      height: auto;
-    }
+@include from-medium {
+  .campaigns-report-list__controls-infos {
+    height: auto;
   }
+}
 
 .campaigns-report-campaign-card__container {
   position: relative;
