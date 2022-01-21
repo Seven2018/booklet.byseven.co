@@ -16,15 +16,17 @@ class UsersController < ApplicationController
     authorize @user
     @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
     @user.company_id = current_user.company_id
-    @user.authentication_token = Base64.encode64(user.email).gsub("\n","") + SecureRandom.hex(32)
-    tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i} if params[:user][:tags].present?
-    if @user.save
-      if tags.present?
-        tags.each do |tag|
-          UserTag.create(user_id: @user.id, tag_id: tag)
-        end
-      end
-      redirect_to organisation_path
+    @user.authentication_token = Base64.encode64(@user.email).gsub("\n","") + SecureRandom.hex(32)
+    # tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i} if params[:user][:tags].present?
+    @user.save(validate: false) unless User.find_by(email: params[:user][:email])
+    # if tags.present?
+    #   tags.each do |tag|
+    #     UserTag.create(user_id: @user.id, tag_id: tag)
+    #   end
+    # end
+    respond_to do |format|
+      format.html {redirect_to organisation_path}
+      format.js
     end
   end
 
@@ -43,6 +45,20 @@ class UsersController < ApplicationController
       redirect_to dashboard_path, notice: "Your account is now linked to #{company.name}"
     else
       redirect_to dashboard_path, notice: "An error has occured, please check the provided url link."
+    end
+  end
+
+  def unlink_from_company
+    selected_users = User.where(id: params[:selected_users])
+    authorize selected_users
+    selected_users.each do |user|
+      user.update company_id: nil
+      user.user_tags.destroy_all
+    end
+    @selected_users = params[:selected_users]
+    respond_to do |format|
+      format.html {redirect_to organisation_path}
+      format.js {}
     end
   end
 

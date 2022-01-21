@@ -2,58 +2,39 @@
   <div class="modal-header">
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
       <h3 class="modal-title" id="myModalLabel">Add a new user</h3>
+      <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="modal-body">
-    <%= simple_form_for User.new, class:'form-group' do |f| %>
+
+    <%= simple_form_for User.new, class:'form-group', remote: true do |f| %>
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control', required:true %>
       <%= f.input :email, label: 'Email:', class:'form-control', input_html: {value: ''} %>
-      <%= f.input :password, label: 'Password:', class:'form-control', input_html: {value: ''} %>
+      <%# f.input :password, label: 'Password:', class:'form-control', input_html: {value: ''} %>
       <% if current_user.admin? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Account Owner', 'HR', 'Employee'], include_blank: false %>
+        <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false %>
       <% elsif current_user.account_owner? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Account Owner', 'HR', 'Employee'], include_blank: false %>
+        <%= f.input :access_level, label: 'Access Level:', collection: ['Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false %>
       <% elsif current_user.hr? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Employee'], include_blank: false %>
+        <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
       <% end %>
       <% if current_user.admin? %>
         <%= f.input :company, collection: Company.all, include_blank: false, label: 'Company:' %>
       <% end %>
-      <%= f.input :phone_number, label: 'Phone:', class:'form-control' %>
-      <%= f.input :birth_date, as: :date, label: 'Birth date:', class:'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
+      <%# f.input :phone_number, label: 'Phone:', class:'form-control' %>
+      <%# f.input :birth_date, as: :date, label: 'Birth date:', class:'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
                               end_year: Date.today.year - 12 %>
-      <%= f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Date.today.year - 70,
+      <%# f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Date.today.year - 70,
                               end_year: Date.today.year %>
-      <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
-<!--       <div class="new_user_tags">
-        <% TagCategory.where(company_id: current_user.company_id).each do |category| %>
-          <% if category.tags.present? %>
-            <div class="organisation-filter-block-user">
-              <div class="organisation-filter-block-title-user-show">
-                <div>
-                  <p><b><%= category.name.capitalize %></b></p>
-                  <div class="organisation-filter-block-title-buttons">
-                    <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>
-                      <i class="fas fa-angle-down" data-rotated='0'></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-               <div class="organisation-filter-block-checkboxes-user">
-              <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes %>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
-      </div> -->
-      <div style=" display: flex; justify-content: flex-end;margin-top:3rem;">
-        <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
-        <%= button_tag type: 'submit', class: 'btn-orange' do %>
-          <p>SAVE</p>
+      <%# f.input :picture, label: 'Photo URL', class:'form-control' %>
+      <div style="display:flex;justify-content:center;margin-top:3rem;">
+        <%= button_tag type: 'submit', class: 'btn-orange', onclick: "document.querySelector('body').classList.add('wait');" do %>
+          <p>Create User</p>
         <% end %>
       </div>
     <% end %>
+
   </div>
 </div>
 <script>

@@ -1,0 +1,18 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">Add a new user</h3>
+      <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+  <div class="modal-body">
+
+    <p>User successfully created</p>
+    <p>Do you want to create an onboarding campaign for this user ?</p>
+    <div class="flex-row-between-centered">
+      <button type="button" class="btn-blue" data-dismiss="modal" aria-label="Close" onclick='userCreated();'>No, Thanks</button>
+      <%= link_to 'Yes', campaign_select_template_path, class: 'btn-blue-text' %>
+    </div>
+
+  </div>
+</div>

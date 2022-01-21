@@ -22,10 +22,17 @@
 </div> -->
 
 
-<!-- Modals -->
+<!-- MODALS -->
+
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'users/modals/new' %>
+  </div>
+</div>
+
+<div class='modal fade' id='userCreated' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'users/modals/user_created' %>
   </div>
 </div>
 
@@ -79,10 +86,10 @@
 
   formGuardian = false;
   doubleClickGuardian = false;
-  setTimeout(function(){
-    document.querySelector('#user_email').value = ''
-    document.querySelector('#user_password').value = ''
-  }, 100)
+  // setTimeout(function(){
+  //   document.querySelector('#user_email').value = ''
+  //   document.querySelector('#user_password').value = ''
+  // }, 100)
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
@@ -294,23 +301,49 @@
     check_boxes = main_container.querySelectorAll('.select-user')
     check_boxes.forEach((input) => {
       if (input.checked) {
-        ids.push(input.id)
+        ids.push(input.id.split('-')[1])
       }
     })
+
+    // Remove Selected Users Setup //
+    unlink_button = main_container.querySelector('.organisation-dropdown-menu').querySelector('#unlink_users')
+    unlink_href = new URL(unlink_button.href)
+    unlink_href.searchParams.set('selected_users', ids.join(','))
+    unlink_button.href = unlink_href.href
+
     // document.querySelector('#add_tags_users').value = ids.join();
     if (ids.length == 0) {
       // document.querySelectorAll('#manage-users-button').forEach((button) => {
       //   button.classList.remove('flashing_button')
       // })
       // document.querySelector('.organisation-apply-to-user').classList.add('hidden')
-      main_container.querySelector('#export-users-modal-link').innerHTML = 'Export All Users'
+      // main_container.querySelector('#export-users-modal-link').innerHTML = 'Export All Users'
+      unlink_button.closest('li').classList.add('hidden')
     } else {
       // document.querySelectorAll('#manage-users-button').forEach((button) => {
       //   button.classList.add('flashing_button')
       // })
       // document.querySelector('.organisation-apply-to-user').classList.remove('hidden')
-      main_container.querySelector('#export-users-modal-link').innerHTML = 'Export Selected Users'
+      // main_container.querySelector('#export-users-modal-link').innerHTML = 'Export Selected Users'
+      if (ids.length == 1) {
+        unlink_button.innerHTML = 'Remove Selected User'
+      } else {
+        unlink_button.innerHTML = 'Remove ' + ids.length.toString() + ' Selected Users'
+      }
+      unlink_button.closest('li').classList.remove('hidden')
     }
+  }
+
+  function userCreated() {
+    document.querySelector("#newUser").querySelector(".cancel-close").click()
+    user_email = document.querySelector('#user_email').value
+    search_input = document.querySelector('#search_name')
+    search_input.value = user_email
+    search_input.closest('form').querySelector('.btn-search').click()
+    new_user_form = document.querySelector('#new_user')
+    new_user_form.querySelectorAll('input').forEach((input) => {
+      input.value = ''
+    })
   }
 
   function clearInput(element) {

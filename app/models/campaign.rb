@@ -1,3 +1,5 @@
+require 'csv'
+
 class Campaign < ApplicationRecord
   class AmbiguousInterviewQuery < StandardError; end
 
@@ -8,6 +10,19 @@ class Campaign < ApplicationRecord
   has_many :employees, through: :interviews
 
   validates :title, presence: true
+
+  enum campaign_type: {
+    simple: 0,
+    crossed: 10,
+  }, _prefix: true
+
+  def crossed?
+    self.campaign_type_crossed?
+  end
+
+  def simple?
+    self.campaign_type_simple?
+  end
 
   def completion_for(employee)
     return 0 if interviews.count.zero?
@@ -89,5 +104,47 @@ class Campaign < ApplicationRecord
       owner_email: owner.email,
       data: data
     }
+  end
+
+  def self.to_csv(company_id)
+
+    tag_categories = TagCategory.where(company_id: company_id).order(position: :asc)
+
+    columns = ['Campaign ID',
+        'Campaign Title',
+        'Campaign Type',
+        'Owner Email',
+        'Employee Email',
+        "Interview Locked At"] + tag_categories.map(&:name)
+    CSV.generate(headers: true) do |csv|
+      csv << columns
+      all.each do |campaign|
+
+        campaign_id = campaign.id
+        campaign_title = campaign.title
+        campaign_type = campaign.campaign_type
+        owner_email = campaign.owner.email
+
+        campaign.employees.distinct.each do |employee|
+          line = []
+          line << campaign_id
+          line << campaign_title
+          line << campaign_type
+          line << owner_email
+          line << employee.email
+          if campaign.simple?
+            line << campaign.interviews.find_by(employee_id: employee.id).locked_at
+          elsif campaign.crossed?
+            line << campaign.interviews.find_by(employee_id: employee.id, label: 'Crossed').locked_at
+          end
+          tag_categories.each do |tag_category|
+            tag = UserTag.find_by(tag_category_id: tag_category.id, user_id: employee.id)
+            tag = tag.present? ? tag.tag.tag_name : ''
+            line << tag
+          end
+          csv << line
+        end
+      end
+    end
   end
 end

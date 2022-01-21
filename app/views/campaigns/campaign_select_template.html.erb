@@ -2,11 +2,13 @@
   <div class="campaign-controls">
     <button class='active'><div class="select-step-number">1</div><p>Select a Template</p></button>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
+    <% params[:campaign].present? ? selected_campaign_type = params[:campaign][:selected_campaign_type] : selected_campaign_type = '' %>
     <% params[:campaign].present? ? selected_template = params[:campaign][:selected_template] : selected_template = '' %>
     <% params[:campaign].present? ? selected_users = params[:campaign][:selected_users] : selected_users = '' %>
-    <% params[:campaign].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
+    <% params[:campaign].present? && params[:campaign][:selected_owner].present? ? selected_owner = params[:campaign][:selected_owner] : selected_owner = current_user.id %>
     <% params[:campaign].present? && params[:campaign][:selected_template].present? ? disabled = '' : disabled = 'disabled' %>
     <%= simple_form_for :campaign, url: campaign_select_users_path, method: :get do |f| %>
+      <%= f.hidden_field :selected_campaign_type, value: selected_campaign_type %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
       <%= f.hidden_field :selected_owner, value: selected_owner %>
@@ -16,6 +18,7 @@
     <% end %>
     <%= image_tag('arrow-next.svg', height: '20', :class => "arrow-next") %>
     <%= simple_form_for :campaign, url: campaign_select_dates_path, method: :get do |f| %>
+      <%= f.hidden_field :selected_campaign_type, value: selected_campaign_type %>
       <%= f.hidden_field :selected_template, value: selected_template %>
       <%= f.hidden_field :selected_users, value: selected_users %>
       <%= f.hidden_field :selected_owner, value: selected_owner %>

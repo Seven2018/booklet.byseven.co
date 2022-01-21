@@ -1,0 +1,43 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__folder">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel">New Campaign</h3>
+    </div>
+  </div>
+  <div class="modal-body">
+    <p class='interview-type-cards__main-title'>Interview Type</p>
+    <div class="interview_type_cards">
+      <div class="interview-type-card selected" id='type-cross' onclick='selectCampaignType(this);' data-type='1'>
+        <div class="flex-row-start-centered">
+          <span class="iconify" data-icon="uil:exchange"></span>
+          <p>Cross Interview</p>
+        </div>
+        <div class="interview-type-card__checkbox selected"></div>
+      </div>
+      <div class="interview_type-card__teaser selected" id='teaser-cross'>
+        <p>
+          Crossed Interview :
+          <br><br>
+          Interview between a manager and an employee in 3 steps, employee’s review, manager’s review then a crossed review where employee and manager agrees together on a final version.
+        </p>
+      </div>
+      <div class="interview-type-card" id='type-simple' onclick='selectCampaignType(this);' data-type='2'>
+        <div class="flex-row-start-centered">
+          <span class="iconify" data-icon="mdi:star-shooting"></span>
+          <p>Onboarding Interview</p>
+        </div>
+        <div class="interview-type-card__checkbox"></div>
+      </div>
+      <div class="interview_type-card__teaser" id='teaser-simple'>
+        <p>
+          Onboarding Interview :
+          <br><br>
+          Interview for new arrivals in the company, the employee is evaluated by a manager on the same questionnary several times. Manager can follow the evolution of employee’s answers.
+        </p>
+      </div>
+    </div>
+    <div class="centered-item">
+      <%= link_to 'Apply', campaign_select_template_path(campaign: {selected_campaign_type: 1}), class: 'btn-blue interview-type-cards__confirm' %>
+    </div>
+  </div>
+</div>

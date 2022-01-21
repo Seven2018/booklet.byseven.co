@@ -4,13 +4,17 @@ class InterviewsController < ApplicationController
     authorize Interview.new
 
     interview_form = InterviewForm.find params[:interview][:interview_form_id]
+    campaign = Campaign.find(params[:interview][:campaign_id])
 
     unless
+      (campaign.crossed? &&
       Interview.create(interview_params.merge(title: interview_form.title, label: 'Employee')) &&
       Interview.create(interview_params.merge(title: interview_form.title, label: 'Manager')) &&
-      Interview.create(interview_params.merge(title: interview_form.title, label: 'Crossed'))
+      Interview.create(interview_params.merge(title: interview_form.title, label: 'Crossed'))) ||
+      (campaign.simple? &&
+      Interview.create(interview_params.merge(title: interview_form.title, label: 'Simple')))
 
-      Campaign.find(params[:interview][:campaign_id])&.destroy
+      campaign&.destroy
       # Sentry 2866617584 => params[:interview][:campaign_id].nil?
       flash[:alert] = '/!\ Interviews NOT created - Campaign deleted - Please try again'
     end

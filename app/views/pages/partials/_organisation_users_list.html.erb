@@ -40,18 +40,22 @@
     </div>
   </div>
   <div class="main-controls-buttons">
-    <% if current_user.admin? %>
       <div class="dropdown">
         <div class="btn-white btn-icon dropdown-toggle" id="dropdownMenu" data-toggle="dropdown">
           <i class="fas fa-ellipsis-h"></i>
         </div>
         <ul class="dropdown-menu dropdown-menu-right organisation-dropdown-menu" aria-labelledby="dropdownMenu">
-          <li><a data-toggle='modal' data-target='#importUsers'>Import Users</a></li>
-          <li><a data-toggle='modal' data-target='#exportUsers' id="export-users-modal-link">Export All Users</a></li>
-          <li class='hidden'><a id='organisation-dropdown__import-infos-link' data-toggle='modal' data-target='#importUsersInfos'></a></li>
+          <li><a data-toggle='modal' data-target='#newUser'>Create new user</a></li>
+          <li class="hidden"><a id='organisation-dropdown__create-user-redirect' data-toggle='modal' data-target='#userCreated'>
+          <li class='hidden'><%= link_to 'Remove Selected User', unlink_from_company_path(company_id: current_user.company_id, selected_users: ''), id: 'unlink_users', data: {confirm: 'Are you sure you wish to remove the selected users ?'}, remote: true %></li>
+          </a></li>
+          <% if current_user.admin? %>
+            <li><a data-toggle='modal' data-target='#importUsers'>Import Users</a></li>
+            <li><a data-toggle='modal' data-target='#exportUsers' id="export-users-modal-link">Export All Users</a></li>
+            <li class='hidden'><a id='organisation-dropdown__import-infos-link' data-toggle='modal' data-target='#importUsersInfos'></a></li>
+          <% end %>
         </ul>
       </div>
-    <% end %>
   </div>
 </div>
 <div class='organisation-page' data-fl-scrolls='{"orientation": "horizontal"}'>

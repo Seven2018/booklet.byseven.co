@@ -61,9 +61,7 @@
       </ul>
       <% if current_user.manager_or_above? %>
         <div class="centered-item">
-          <%= link_to campaign_select_template_path, class: 'btn-blue__white-border' do %>
-            <p>New Interview</p>
-          <% end %>
+          <a class='btn-blue__white-border' data-toggle='modal' data-target='#newCampaign'><p>New Interview</p></a>
         </div>
       <% end %>
     </div>
@@ -146,3 +144,43 @@
     </div>
   <% end %>
 </div>
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade' id='newCampaign' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'campaigns/modals/new' %>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  function selectCampaignType(element) {
+    document.querySelectorAll('.interview-type-card').forEach((card) => {
+      card.classList.remove('selected')
+    })
+    document.querySelectorAll('.interview-type-card__checkbox').forEach((checkbox) => {
+      checkbox.classList.remove('selected')
+    })
+    document.querySelectorAll('.interview_type-card__teaser').forEach((teaser) => {
+      teaser.classList.remove('selected')
+    })
+    card = element.closest('.interview-type-card')
+    checkbox = card.querySelector('.interview-type-card__checkbox')
+    teaser = document.querySelector('#teaser-' + card.id.split('-')[1])
+    link = element.closest('.modal').querySelector('.interview-type-cards__confirm')
+    link_href = new URL(link.href)
+    console.log(element.getAttribute('data-type'))
+    link_href.searchParams.set('campaign[selected_campaign_type]', element.getAttribute('data-type'))
+    link.href = link_href.href
+    card.classList.add('selected')
+    checkbox.classList.add('selected')
+    teaser.classList.add('selected')
+  }
+</script>

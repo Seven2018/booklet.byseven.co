@@ -1,0 +1,8 @@
+array = "<%= @selected_users %>".split(',')
+array.forEach((user_id) => {
+  document.querySelectorAll('.user-card-' + user_id).forEach((card) => {
+    card.remove()
+  })
+})
+main_container.querySelector('.organisation-dropdown-menu').classList.remove('show')
+window.alert('User(s) removed')
