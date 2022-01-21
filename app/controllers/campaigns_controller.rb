@@ -66,6 +66,8 @@ class CampaignsController < ApplicationController
         @selected_manager_id = params[:select_period][:manager_id]
         @campaigns = @campaigns.where(owner_id: params[:select_period][:manager_id])
       end
+    elsif params[:format] == 'csv'
+      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', params[:start_date], params[:end_date])
     else
       @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', Date.today, Date.today.end_of_year)
       @all_campaigns = @campaigns
@@ -73,6 +75,7 @@ class CampaignsController < ApplicationController
     respond_to do |format|
       format.html
       format.js
+      format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params[:start_date]} to #{params[:end_date]}.csv" }
     end
   end
 
@@ -102,6 +105,7 @@ class CampaignsController < ApplicationController
     @users = User.where(company_id: current_user.company_id)
     if params[:search].present? && !params[:search][:name].blank?
       @searched_users = @users.search_by_name("#{params[:search][:name]}")
+      @searched_users = User.where(id: @searched_users.ids).or(User.where(manager_id: @searched_users.ids)) if params[:search][:staff].to_i == 1
       @filtered = 'true'
     else
       @searched_users = []

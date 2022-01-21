@@ -23,6 +23,8 @@
       <i class="fas fa-search organisation-controls__search-icon"></i>
       <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
         <%= f.text_field :name, placeholder: 'Search by name', label: false, autocomplete: 'off' %>
+        <!-- <label>Include Staff</label> -->
+        <%# f.check_box :staff %>
         <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
         <button type='submit' class="btn-search btn-search--mobile" onclick="document.querySelector('body').classList.add('wait');" >
           <i class="fas fa-search"></i>

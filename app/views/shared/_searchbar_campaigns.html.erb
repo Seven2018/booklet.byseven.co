@@ -37,6 +37,8 @@
     <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
     <%= simple_form_for :search, url: path, method: :get, remote: true do |f| %>
       <%= f.input :name, placeholder: 'Search by name, job ...', input_html: {autocomplete: 'off'}, label: false, required: false %>
+      <label>Include Staff</label>
+      <%= f.check_box :staff %>
       <%= f.hidden_field :campaign_selected_users, value: @selected_users %>
       <%= f.submit 'Search', class: 'btn-search' %>
       <button type='submit' class="btn-search btn-search--mobile">

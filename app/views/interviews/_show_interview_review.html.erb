@@ -1,5 +1,6 @@
 <% visibility = ['all', interview.label.downcase] %>
-<% questions = interview.interview_form.interview_questions.where.not(question_type: 'separator').where(visible_for: visibility).order(position: :asc) %>
+<% questions = interview.interview_form.interview_questions.where.not(question_type: 'separator') %>
+<% questions = interview.crossed? ? questions.where(visible_for: visibility).order(position: :asc) : questions.order(position: :asc) %>
 
 <h1><%= interview.interview_form.title %> - <em>Summary</em></h1>
 <h3 class="summary-info">Click on a question to change your answer</h3>

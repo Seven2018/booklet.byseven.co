@@ -48,5 +48,10 @@
       <p><%= campaigns.where_not_exists(:interviews, 'completed = ?', false).map{|x| x.owner}.uniq.count %> / <%= campaigns.map{|x| x.owner}.uniq.count %></p>
       <p>Managers interviews completed</p>
     </div>
+    <div class='campaigns-report-list__controls-export'>
+      <%= link_to campaigns_report_path(format: :csv, start_date: start_date, end_date: end_date) do %>
+        <i class="fas fa-file-export"></i>
+      <% end %>
+    </div>
   </div>
 <% end %>
