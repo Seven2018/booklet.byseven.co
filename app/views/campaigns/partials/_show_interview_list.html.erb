@@ -110,24 +110,13 @@
     <% interview = @interviews.first %>
     <div class="campaign-interview-card">
       <p class="campaign-interview-card__username"><%= interview.employee.fullname %></p>
-      <% if interview.locked? %>
-        <i class="fas fa-check-circle"></i>
-        <p class="campaign-interview-card__status">Review locked</p>
-      <% elsif interview.completed && employee_view %>
+      <% if interview.completed %>
         <i class="fas fa-check-circle"></i>
         <p class="campaign-interview-card__status">Review completed</p>
-        <%= link_to interview_path(interview), class: 'campaign-interview-card__button' do %>
-          <p>View</p>
-        <% end %>
-      <% elsif interview.completed %>
-        <i class="fas fa-check-circle"></i>
-        <p class="campaign-interview-card__status">Review completed</p>
+        <p>Last update : <%= interview.last_updated? %></p>
         <%= link_to interview_path(interview), class: 'campaign-interview-card__button' do %>
           <p>Modify</p>
         <% end %>
-      <% elsif employee_view %>
-        <i class="far fa-times-circle"></i>
-        <p class="campaign-interview-card__status">Review not completed</p>
       <% else %>
         <i class="far fa-times-circle"></i>
         <p class="campaign-interview-card__status">Review not completed</p>

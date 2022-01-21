@@ -33,7 +33,7 @@
   }
 
   [type="checkbox"] {
-    margin-right: 100rem;
+    margin-right: 1rem;
   }
 
   #search_trainings_employee {
@@ -207,4 +207,132 @@
   left: 12px;
   bottom: 11px;
   color: #C4C4C4;
+}
+
+
+////////////////////////
+// CAMPAIGN SEARCHBAR //
+////////////////////////
+
+#searchbar-campaign-filter__dropdown-container {
+
+  #searchbar-campaign-filter {
+
+    svg {
+      margin-right: 1rem;
+    }
+  }
+
+  .searchbar-campaign-filter__selected {
+    height: 3rem;
+    width: 3rem;
+    margin-left: 1rem;
+    border-radius: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #C4C4C4;
+    color: white;
+    letter-spacing: 0;
+  }
+
+  #searchbar-campaign-filter__dropdown {
+    min-width: 35rem;
+    margin-top: 1rem;
+    transform: translate3d(0px, 50px, 0px) !important;
+    max-height: calc(100vh - 20rem);
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    div {
+      margin: 0;
+    }
+
+    .searchbar-campaign-filter__dropdown-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 5rem;
+      padding: 0 2rem;
+
+      button {
+        color: #3177B7;
+      }
+    }
+
+    .searchbar-campaign-filter__filter-container {
+
+      form {
+        display: block;
+      }
+
+      .searchbar-campaign-filter__filter-block {
+        max-height: 5rem;
+        background-color: #F4F4F4;
+        overflow-y: hidden;
+      }
+
+      .searchbar-campaign-filter__filter-block-title {
+        height: 5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem 0 1rem;
+        background-color: white;
+
+
+        & > div {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+
+      .searchbar-campaign-filter__filter-block-checkboxes {
+        padding: 2rem 2rem 1rem 3rem;
+
+        .form-check {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+
+.searchbar-campaign__pill-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .searchbar-campaign__pill {
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(49, 119, 183, 0.6);;
+    box-shadow: 0px 2px 5px rgba(156, 156, 156, 0.25);
+    border-radius: 2.5rem;
+    padding: 2rem;
+
+    p, i {
+      color: white;
+    }
+
+    p {
+      font-weight: bolder;
+      white-space: nowrap;
+    }
+
+    i {
+      margin-left: 1rem;
+    }
+  }
 }

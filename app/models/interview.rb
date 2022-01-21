@@ -36,6 +36,10 @@ class Interview < ApplicationRecord
       end
   end
 
+  def last_updated?
+    self.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d/%m/%Y')
+  end
+
   def complete!
     return unless fully_answered?
 
