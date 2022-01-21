@@ -1,17 +1,17 @@
 <div class="modal-content">
   <div class="modal-header">
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Add a new user</h3>
+      <h3 class="modal-title" id="myModalLabel">Remove User(s)</h3>
       <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="modal-body">
 
-    <p>User successfully created</p>
-    <p>Do you want to create an onboarding campaign for this user ?</p>
+    <p>Are you sure to delete this or these user(s) ?</p>
+    <p>Removed users will no longer appear</p>
     <div class="flex-row-between-centered modal-button-centered">
       <button type="button" class="btn-blue" data-dismiss="modal" aria-label="Close">No, Thanks</button>
-      <%= link_to 'Yes', campaign_select_template_path, class: 'btn-blue-text' %>
+      <%= link_to 'Yes, remove user(s)', unlink_from_company_path(company_id: current_user.company_id, selected_users: ''), id: 'unlink_users', class: 'btn-blue-text', remote: true %>
     </div>
 
   </div>
