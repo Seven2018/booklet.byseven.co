@@ -102,6 +102,7 @@ class CampaignsController < ApplicationController
     @users = User.where(company_id: current_user.company_id)
     if params[:search].present? && !params[:search][:name].blank?
       @searched_users = @users.search_by_name("#{params[:search][:name]}")
+      @searched_users = User.where(id: @searched_users.ids).or(User.where(manager_id: @searched_users.ids)) if params[:search][:staff].to_i == 1
       @filtered = 'true'
     else
       @searched_users = []
