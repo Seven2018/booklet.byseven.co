@@ -139,6 +139,12 @@ class CampaignsController < ApplicationController
     @campaign = Campaign.new(title: params[:campaign][:title], interview_form_id: params[:campaign][:interview_form_id], owner_id: params[:campaign][:selected_owner])
     authorize @campaign
     @campaign.company_id = current_user.company_id
+    @campaign.campaign_type =
+      if params[:campaign][:campaign_type] == '1'
+        'crossed'
+      else
+        'simple'
+      end
     @campaign.save
     respond_to do |format|
       format.js
