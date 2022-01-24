@@ -47,10 +47,11 @@
                   <p class="searchbar-campaign-filter__selected">0</p>
                 </div>
                 <div class="searchbar-campaign-filter__filter-block-checkboxes">
+                  <% tags_to_show = Tag.where(tag_category_id: tag_category.id).where_exists(:interview_form_tags).order(tag_name: 'asc') %>
                   <% if tag_category.tags.empty? %>
                     <p>No tags associated</p>
                   <% end %>
-                  <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).where_exists(:interview_form_tags).order(tag_name: 'asc'), as: :check_boxes, legend_tag: false, label: false, value_method: lambda { |tag| "#{tag.tag_category_id}:#{tag.id}" }, label_method: lambda { |tag| "#{tag.tag_name}"}, input_html: {onclick: 'tagAutoSubmit(this);', class: "tag-checkbox"}, include_hidden: false %>
+                  <%= f.input :tag, collection: tags_to_show, as: :check_boxes, legend_tag: false, label: false, value_method: lambda { |tag| "#{tag.tag_category_id}:#{tag.id}" }, label_method: lambda { |tag| "#{tag.tag_name}"}, input_html: {onclick: 'tagAutoSubmit(this);', class: "tag-checkbox"}, include_hidden: false %>
                   <%# f.hidden_field :on, value: true %>
                 </div>
               </div>
@@ -98,8 +99,8 @@
     <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
     <%= simple_form_for :search, url: path, method: :get, remote: true do |f| %>
       <%= f.input :name, placeholder: 'Search by name, job ...', input_html: {autocomplete: 'off'}, label: false, required: false %>
-      <label>Include Staff</label>
-      <%= f.check_box :staff %>
+      <!-- <label>Include Staff</label>
+      <%# f.check_box :staff %> -->
       <%= f.hidden_field :campaign_selected_users, value: @selected_users %>
       <%= f.submit 'Search', class: 'btn-search' %>
       <button type='submit' class="btn-search btn-search--mobile">
