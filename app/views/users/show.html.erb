@@ -147,53 +147,54 @@
       })
     };
   </script>
-  <script>
-    sliders = document.querySelectorAll('.trainings-row');
-    sliders.forEach((slider) => {
-      isDown = false;
-      let startX;
-      let scrollLeft;
-
-      slider.addEventListener('mousedown', (e) => {
-        isDown = true;
-        slider.classList.add('active');
-        startX = e.pageX - slider.offsetLeft;
-        scrollLeft = slider.scrollLeft;
-      });
-      slider.addEventListener('mouseleave', () => {
-        isDown = false;
-        slider.classList.remove('active');
-      });
-      slider.addEventListener('mouseup', () => {
-        isDown = false;
-        slider.classList.remove('active');
-      });
-      slider.addEventListener('mousemove', (e) => {
-        if(!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - slider.offsetLeft;
-        const walk = (x - startX) * 3; //scroll-fast
-        slider.scrollLeft = scrollLeft - walk;
-      });
-    })
-
-    function checkPasswordConfirmation(element) {
-      new_password = document.querySelector('#user_password').value
-      save_button = element.closest('form').querySelector('#save_button')
-      if (element.value == new_password) {
-        save_button.classList.remove('btn-orange-disabled')
-        save_button.classList.add('btn-orange')
-        save_button.disabled = false
-      } else {
-        save_button.classList.add('btn-orange-disabled')
-        save_button.classList.remove('btn-orange')
-        save_button.disabled = true
-      }
-    }
-
-    // window.onload = function navBarPadding() {
-    // navbar = document.querySelector('.top-left-nav')
-    // navbar.style.paddingBottom = '4px';
-    // };
-  </script>
 <% end %>
+
+<script>
+  sliders = document.querySelectorAll('.trainings-row');
+  sliders.forEach((slider) => {
+    isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true;
+      slider.classList.add('active');
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => {
+      isDown = false;
+      slider.classList.remove('active');
+    });
+    slider.addEventListener('mouseup', () => {
+      isDown = false;
+      slider.classList.remove('active');
+    });
+    slider.addEventListener('mousemove', (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 3; //scroll-fast
+      slider.scrollLeft = scrollLeft - walk;
+    });
+  })
+
+  function checkPasswordConfirmation(element) {
+    new_password = document.querySelector('#user_password').value
+    save_button = element.closest('form').querySelector('#save_button')
+    if (element.value == new_password) {
+      save_button.classList.remove('btn-orange-disabled')
+      save_button.classList.add('btn-orange')
+      save_button.disabled = false
+    } else {
+      save_button.classList.add('btn-orange-disabled')
+      save_button.classList.remove('btn-orange')
+      save_button.disabled = true
+    }
+  }
+
+  // window.onload = function navBarPadding() {
+  // navbar = document.querySelector('.top-left-nav')
+  // navbar.style.paddingBottom = '4px';
+  // };
+</script>
