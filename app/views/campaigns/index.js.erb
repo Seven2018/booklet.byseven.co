@@ -1,13 +1,3 @@
-if ("<%= @offset_indicator %>" == 'true') {
-  new_div_offset = document.createElement('div')
-  load_more_button = document.querySelector('#load-more-button')
-  new_div_offset.classList.add('campaigns-index__page')
-  new_div_offset.id = 'campaigns-index__page-' + "<%= @offset %>"
-  document.querySelector('.campaigns-index').appendChild(new_div_offset)
-  new_div_offset.innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns_offset) %>';
-  load_more_button.href = load_more_button.href.split('=')[0] + "<%= @offset %>"
-} else {
-  document.querySelector('#campaigns-index__page-1').innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns) %>';
-}
+document.querySelector('.campaigns-index').innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns) %>';
 showResetMobile('<%= @filtered %>' == 'true')
 document.querySelector('body').classList.remove('wait');

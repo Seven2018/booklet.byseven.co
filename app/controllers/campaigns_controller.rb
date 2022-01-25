@@ -43,7 +43,6 @@ class CampaignsController < ApplicationController
     end
 
     if params[:offset].present?
-      raise
       @campaigns_offset = @campaigns.limit(50).offset((params[:offset].to_i - 1) * 50)
       @offset_indicator = 'true'
       @offset = params[:offset]
