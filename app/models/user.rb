@@ -82,7 +82,7 @@ class User < ApplicationRecord
 
       if user.present?
         next unless user.company_id == company_id
-        user.firstname.present? && user.lastname.present? ? send_invite = true : send_invite = false
+        user.firstname.present? && user.lastname.present? && user.invitation_created_at.nil? ? send_invite = true : send_invite = false
         update = user.update row_h
         user.invite! if Rails.env == 'production' && send_invite
       else
