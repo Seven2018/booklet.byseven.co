@@ -6,6 +6,7 @@
     <div class="book-users-card user-index-card-selected" id="user-<%= user.id %>" onclick="selectUser(this);">
   <% end %>
     <% fullname, email = user.fullname, user.email %>
+    <% manager = user.manager.present? ? user.manager.fullname : '' %>
     <% if selected_users.split(',').include?(user.id.to_s) %>
       <input type="checkbox" class="book-users-checkbox hidden" id="checkbox-user-<%= user.id %>" checked>
     <% else %>
@@ -18,6 +19,9 @@
       </div>
       <div>
         <p data-toggle='tooltip' title='<%= email %>'><%= email %></p>
+      </div>
+      <div>
+        <p data-toggle='tooltip' title='<%= manager %>'><%= manager %></p>
       </div>
       <% if selected == 'false' %>
         <% user.tags.order(tag_category_position: :asc).each do |tag| %>

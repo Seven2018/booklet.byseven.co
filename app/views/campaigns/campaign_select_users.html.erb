@@ -65,6 +65,9 @@
             <div>
               <p>Email</p>
             </div>
+            <div>
+              <p>Manager</p>
+            </div>
             <% TagCategory.where(company_id: current_user.company_id).each do |tag_category| %>
               <div>
                 <p><%= tag_category.name %></p>

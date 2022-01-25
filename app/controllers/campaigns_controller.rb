@@ -44,14 +44,14 @@ class CampaignsController < ApplicationController
 
     if params[:offset].present?
       raise
-      @campaigns_offset = @campaigns.limit(2).offset((params[:offset].to_i - 1) * 2)
+      @campaigns_offset = @campaigns.limit(50).offset((params[:offset].to_i - 1) * 50)
       @offset_indicator = 'true'
       @offset = params[:offset]
     else
       @offset_indicator = 'false'
     end
 
-    @campaigns = @campaigns.limit(2)
+    @campaigns = @campaigns.limit(50)
 
 
     respond_to do |format|
@@ -124,10 +124,11 @@ class CampaignsController < ApplicationController
   def campaign_select_users
     @campaign = Campaign.new
     authorize @campaign
-    @users = User.where(company_id: current_user.company_id)
+    @users = User.where(company_id: current_user.company_id).order(lastname: :asc)
     if params[:search].present? && !params[:search][:name].blank?
       @searched_users = @users.search_by_name("#{params[:search][:name]}")
-      @searched_users = User.where(id: @searched_users.ids).or(User.where(manager_id: @searched_users.ids)) if params[:search][:staff].to_i == 1
+      @searched_users = User.where(id: @searched_users.ids).or(User.where(manager_id: @searched_users.ids)).order(lastname: :asc) if params[:search][:name].strip =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+      # @searched_users = User.where(id: @searched_users.ids).or(User.where(manager_id: @searched_users.ids)) if params[:search][:staff].to_i == 1
       @filtered = 'true'
     else
       @searched_users = []
