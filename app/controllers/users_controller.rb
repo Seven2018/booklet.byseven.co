@@ -18,7 +18,9 @@ class UsersController < ApplicationController
     @user.company_id = current_user.company_id
     @user.authentication_token = Base64.encode64(@user.email).gsub("\n","") + SecureRandom.hex(32)
     # tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i} if params[:user][:tags].present?
-    @user.save(validate: false) unless User.find_by(email: params[:user][:email])
+    unless User.find_by(email: params[:user][:email])
+      Rails.env == 'production' ? user.invite! : user.save(validate: false)
+    end
     # if tags.present?
     #   tags.each do |tag|
     #     UserTag.create(user_id: @user.id, tag_id: tag)

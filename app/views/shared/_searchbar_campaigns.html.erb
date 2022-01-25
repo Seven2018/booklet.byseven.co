@@ -48,9 +48,10 @@
                 </div>
                 <div class="searchbar-campaign-filter__filter-block-checkboxes">
                   <% tags_to_show = Tag.where(tag_category_id: tag_category.id).where_exists(:interview_form_tags).order(tag_name: 'asc') %>
-                  <% if tag_category.tags.empty? %>
+                  <% if tag_category.tags.empty? || tags_to_show.empty? %>
                     <p>No tags associated</p>
                   <% end %>
+                  <%# raise if tag_category.id == 3 %>
                   <%= f.input :tag, collection: tags_to_show, as: :check_boxes, legend_tag: false, label: false, value_method: lambda { |tag| "#{tag.tag_category_id}:#{tag.id}" }, label_method: lambda { |tag| "#{tag.tag_name}"}, input_html: {onclick: 'tagAutoSubmit(this);', class: "tag-checkbox"}, include_hidden: false %>
                   <%# f.hidden_field :on, value: true %>
                 </div>

@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: CompanyInfo.mailer_from
+  default from: CompanyInfo.no_reply
 
   def account_created(user, token)
     @host = Current.user

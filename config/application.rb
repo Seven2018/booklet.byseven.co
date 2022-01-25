@@ -26,7 +26,8 @@ module BookletBysevenCo
       jquery = true # This will render jQuery code, and skip Vanilla JS code
     end
 
-    config.action_mailer.default_url_options = { host: ENV['APP_DOMAIN'] }
+    # config.action_mailer.default_url_options = { host: ENV['APP_DOMAIN'] }
+    config.action_mailer.default_url_options = { host: 'https://seven-booklet.herokuapp.com' }
     config.action_mailer.delivery_method = :postmark
     config.action_mailer.postmark_settings = { api_token: ENV['POSTMARK_API_TOKEN'] }
   end

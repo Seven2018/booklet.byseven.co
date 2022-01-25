@@ -9,7 +9,7 @@ class CompanyInfo
     end
 
     def mailer_from
-      dev_email
+      no_reply
     end
   end
 end

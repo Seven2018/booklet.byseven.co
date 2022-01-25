@@ -65,8 +65,7 @@ class User < ApplicationRecord
 
       # Create new user for the company provided as argument.
       next unless
-        row_h['email'].present? ||
-        (row_h['email'].downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
+        row_h['email'].present?
 
       user = User.find_by(email: row_h['email'].downcase)
 
@@ -74,7 +73,7 @@ class User < ApplicationRecord
         manager = User.find_by(email: manager_email)
 
         unless manager.present?
-          manager = User.new(email: manager_email, company_id: company_id)
+          manager = User.new(email: manager_email, company_id: company_id, access_level: 'Manager')
           manager.save(validate: false)
         end
       else
@@ -83,7 +82,7 @@ class User < ApplicationRecord
 
       if user.present?
         next unless user.company_id == company_id
-        user.firstname.present? && user.lastname.present? ? send_invite = true : send_invite = false
+        user.firstname.present? && user.lastname.present? && user.invitation_created_at.nil? ? send_invite = true : send_invite = false
         update = user.update row_h
         user.invite! if Rails.env == 'production' && send_invite
       else

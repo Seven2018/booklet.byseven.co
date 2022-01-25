@@ -328,7 +328,7 @@
 }
 
 .campaign-card__tags {
-  height: 3rem;
+  height: 4rem;
   padding: 0 1rem;
   display: flex;
   justify-content: flex-start;
@@ -354,6 +354,23 @@
     font-size: 1.4rem;
     margin-bottom: .5rem;
     margin-right: .5rem;
+  }
+
+  .campaign-card__tag-plus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #5B92C5;
+    padding: 0.2rem 1rem;
+    border-radius: .5rem;
+    margin-bottom: .5rem;
+    margin-right: .5rem;
+    z-index: 100;
+
+    i {
+      color: white;
+      font-size: 1.4rem;
+    }
   }
 }
 
