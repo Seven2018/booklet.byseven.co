@@ -8,8 +8,11 @@
     <p onclick='selectPeriodMobile(this);'>All</p>
   </div>
   <div class="campaigns-index">
-    <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
+    <div class="campaigns-index__page" id='campaigns-index__page-1'>
+      <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
+    </div>
   </div>
+  <%# link_to 'Load more...', campaigns_path(offset: 2), id: 'load-more-button' %>
 </div>
 
 
@@ -195,6 +198,31 @@
     })
     form.querySelector('.hidden-submit').click()
   }
+
+  function hideOverflowingTags() {
+    document.querySelectorAll('.campaign-card__tags').forEach((tag_container) => {
+      card_width = tag_container.parentNode.querySelector('.campaign-card__controls').offsetWidth
+      result = 0
+      tooltip_content = ''
+      tag_container.querySelectorAll('.campaign-card__tag-pill').forEach((tag) => {
+        result += tag.offsetWidth
+        tooltip_content += tag.innerText + '\n'
+        if (result > card_width - 37) {
+          tag.remove()
+        }
+      })
+      if (result > card_width - 37) {
+        newDiv = document.createElement('div')
+        newDiv.classList.add('campaign-card__tag-plus')
+        newDiv.innerHTML = '<i class="fas fa-ellipsis-h"></i>'
+        newDiv.setAttribute('data-toggle', 'tooltip');
+        newDiv.setAttribute('title', tooltip_content)
+        tag_container.appendChild(newDiv)
+      }
+    })
+  }
+
+  hideOverflowingTags()
 
   document.querySelectorAll('.tag-checkbox').forEach((checkbox) => {
     checkbox.classList.add('tag-' + checkbox.value.split(':')[1])

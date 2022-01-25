@@ -41,6 +41,19 @@ class CampaignsController < ApplicationController
       @filtered_by_tags = 'false'
       @filtered = 'false'
     end
+
+    if params[:offset].present?
+      raise
+      @campaigns_offset = @campaigns.limit(2).offset((params[:offset].to_i - 1) * 2)
+      @offset_indicator = 'true'
+      @offset = params[:offset]
+    else
+      @offset_indicator = 'false'
+    end
+
+    @campaigns = @campaigns.limit(2)
+
+
     respond_to do |format|
       format.html
       format.js

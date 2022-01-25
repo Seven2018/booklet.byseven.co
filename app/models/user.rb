@@ -65,8 +65,7 @@ class User < ApplicationRecord
 
       # Create new user for the company provided as argument.
       next unless
-        row_h['email'].present? ||
-        (row_h['email'].downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)
+        row_h['email'].present?
 
       user = User.find_by(email: row_h['email'].downcase)
 
@@ -74,7 +73,7 @@ class User < ApplicationRecord
         manager = User.find_by(email: manager_email)
 
         unless manager.present?
-          manager = User.new(email: manager_email, company_id: company_id)
+          manager = User.new(email: manager_email, company_id: company_id, access_level: 'Manager')
           manager.save(validate: false)
         end
       else
