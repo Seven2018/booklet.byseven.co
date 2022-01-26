@@ -16,6 +16,18 @@ class Campaign < ApplicationRecord
     crossed: 10,
   }, _prefix: true
 
+  include PgSearch::Model
+  pg_search_scope :search_campaigns,
+    against: [ :title ],
+    associated_against: {
+      owner: [:lastname, :firstname, :email],
+      employees: [:lastname, :firstname, :email]
+    },
+    using: {
+      tsearch: { prefix: true }
+    },
+    ignoring: :accents
+
   def crossed?
     self.campaign_type_crossed?
   end

@@ -33,9 +33,10 @@ class CampaignsController < ApplicationController
     end
 
     if search_title.present?
-      interview_forms =  InterviewForm.where(company_id: current_user.company_id)
-                                      .search_templates(search_title)
-      @campaigns = @campaigns.where(interview_form: interview_forms)
+      interview_forms =  InterviewForm.where(company_id: current_user.company_id).search_templates(search_title)
+      campaigns_by_form = @campaigns.where(interview_form: interview_forms)
+      campaigns = @campaigns.search_campaigns(search_title)
+      @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
       @filtered = 'true'
     else
       @filtered_by_tags = 'false'
@@ -43,14 +44,14 @@ class CampaignsController < ApplicationController
     end
 
     if params[:offset].present?
-      @campaigns_offset = @campaigns.limit(50).offset((params[:offset].to_i - 1) * 50)
+      @campaigns_offset = @campaigns.limit(100).offset((params[:offset].to_i - 1) * 100)
       @offset_indicator = 'true'
       @offset = params[:offset]
     else
       @offset_indicator = 'false'
     end
 
-    @campaigns = @campaigns.limit(50)
+    @campaigns = @campaigns.limit(100)
 
 
     respond_to do |format|
