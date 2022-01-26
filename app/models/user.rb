@@ -84,7 +84,7 @@ class User < ApplicationRecord
         next unless user.company_id == company_id
         user.firstname.present? && user.lastname.present? && user.invitation_created_at.nil? ? send_invite = true : send_invite = false
         update = user.update row_h
-        user.invite! if Rails.env == 'production' && send_invite
+        # user.invite! if Rails.env == 'production' && send_invite
       else
         user = User.new(row_h)
         user.access_level = 'Employee' unless ['HR', 'Manager', 'Employee'].include?(row_h['access_level'])
@@ -92,7 +92,8 @@ class User < ApplicationRecord
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
         user.manager_id = manager.id if manager.present?
-        Rails.env == 'production' ? user.invite! : user.save(validate: false)
+        # Rails.env == 'production' ? user.invite! : user.save(validate: false)
+        user.save(validate: false)
       end
 
       present << user.id
