@@ -8,6 +8,7 @@ class CampaignsController < ApplicationController
     @tag_categories = TagCategory.where(company_id: current_user.company_id)
 
     search_title = params.dig(:search, :title)
+    offset_counter = params.dig(:search, :offset)
     search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
 
     if current_user.manager?
@@ -42,16 +43,17 @@ class CampaignsController < ApplicationController
       @filtered_by_tags = 'false'
       @filtered = 'false'
     end
-
-    if params[:offset].present?
-      @campaigns_offset = @campaigns.limit(100).offset((params[:offset].to_i - 1) * 100)
-      @offset_indicator = 'true'
-      @offset = params[:offset]
+raise
+    if offset_counter.present? && offset_counter.to_i > 1
+      @campaigns_offset = @campaigns.limit(2).offset((offset_counter.to_i - 1) * 2)
+      @offset_indicator = true
+      @offset = offset_counter
     else
-      @offset_indicator = 'false'
+      @campaigns_offset = @campaigns
+      @offset_indicator = false
     end
 
-    @campaigns = @campaigns.limit(100)
+    @campaigns = @campaigns.limit(2)
 
 
     respond_to do |format|

@@ -12,7 +12,8 @@
       <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
     </div>
   </div>
-  <%# link_to 'Load more...', campaigns_path(offset: 2), id: 'load-more-button' %>
+  <button id="load-more-button" onclick='loadMore();'>Load more...</button>
+  <%# link_to 'Load more...', campaigns_path(offset: 2), id: 'load-more-button', remote: true %>
 </div>
 
 
@@ -197,6 +198,12 @@
       pill.remove()
     })
     form.querySelector('.hidden-submit').click()
+  }
+
+  function loadMore() {
+    offset_counter = document.querySelector('#search_offset')
+    submit_button = document.querySelector('.search').querySelector('.btn-search').click()
+    offset_counter.value = parseInt(offset_counter.value, 10) + 1
   }
 
   function hideOverflowingTags() {

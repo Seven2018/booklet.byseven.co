@@ -5,6 +5,7 @@ class User < ApplicationRecord
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable,
     :validatable, :omniauthable, :invitable, omniauth_providers: [:google_oauth2]
+
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
   has_many :attendees, dependent: :destroy
@@ -21,7 +22,9 @@ class User < ApplicationRecord
   has_many :interview_answers
   belongs_to :manager, class_name: "User", optional: true
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
+
   validates :email, presence: true
+
   paginates_per 50
 
   include PgSearch::Model

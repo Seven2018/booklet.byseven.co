@@ -2,10 +2,11 @@
   <% if params[:controller] == 'campaigns' && params[:action] == 'index' %>
 
     <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
-    <%= simple_form_for :search, url: campaigns_path, method: :get, remote: true do |f| %>
+    <%= simple_form_for :search, url: campaigns_path, method: :get do |f| %>
       <%= f.input :title, placeholder: 'Search by title, job ...', input_html: {autocomplete: 'off'}, label: false, required: false %>
       <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current' %>
       <%= f.hidden_field :tags %>
+      <%= f.hidden_field :offset, value: 1 %>
       <%= f.submit 'Search', class: 'btn-search', onclick: "updateFilterPeriod(this)" %>
       <button type='submit' class="btn-search btn-search--mobile">
         <i class="fas fa-search"></i>
