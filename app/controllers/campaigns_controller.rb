@@ -43,9 +43,9 @@ class CampaignsController < ApplicationController
       @filtered_by_tags = 'false'
       @filtered = 'false'
     end
-raise
+
     if offset_counter.present? && offset_counter.to_i > 1
-      @campaigns_offset = @campaigns.limit(2).offset((offset_counter.to_i - 1) * 2)
+      @campaigns_offset = @campaigns.limit(60).offset((offset_counter.to_i - 1) * 60)
       @offset_indicator = true
       @offset = offset_counter
     else
@@ -53,7 +53,7 @@ raise
       @offset_indicator = false
     end
 
-    @campaigns = @campaigns.limit(2)
+    # @campaigns = @campaigns.limit(60)
 
 
     respond_to do |format|

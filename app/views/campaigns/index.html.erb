@@ -9,11 +9,12 @@
   </div>
   <div class="campaigns-index">
     <div class="campaigns-index__page" id='campaigns-index__page-1'>
-      <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
+      <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns.limit(60) %>
     </div>
   </div>
-  <button id="load-more-button" onclick='loadMore();'>Load more...</button>
-  <%# link_to 'Load more...', campaigns_path(offset: 2), id: 'load-more-button', remote: true %>
+  <% if @campaigns.count > 60 %>
+    <button id="load-more-button" onclick='loadMore();'>Load more...</button>
+  <% end %>
 </div>
 
 
@@ -202,8 +203,9 @@
 
   function loadMore() {
     offset_counter = document.querySelector('#search_offset')
-    submit_button = document.querySelector('.search').querySelector('.btn-search').click()
+    submit_button = document.querySelector('.search').querySelector('.btn-search')
     offset_counter.value = parseInt(offset_counter.value, 10) + 1
+    submit_button.click()
   }
 
   function hideOverflowingTags() {
