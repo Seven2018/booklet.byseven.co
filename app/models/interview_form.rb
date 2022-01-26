@@ -12,8 +12,7 @@ class InterviewForm < ApplicationRecord
   pg_search_scope :search_templates,
     against: [ :title ],
     associated_against: {
-      tags: :tag_name,
-      employees: [:lastname, :firstname]
+      tags: :tag_name
     },
     using: {
       tsearch: { prefix: true }
