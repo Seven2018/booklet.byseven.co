@@ -114,10 +114,10 @@
         <i class="fas fa-check-circle"></i>
         <p class="campaign-interview-card__status">Review completed</p>
         <p>Last update : <%= interview.last_updated? %></p>
-        <% if employee_view %>
-          <%= link_to interview_path(interview), class: 'campaign-interview-card__button' do %>
-            <p>Modify</p>
-          <% end %>
+        <%= link_to interview_path(interview), class: 'campaign-interview-card__button' do %>
+          <p>
+            <%= InterviewPolicy.new(current_user, interview).answer_question? ? 'Modify' : 'View' %>
+          </p>
         <% end %>
       <% else %>
         <i class="far fa-times-circle"></i>
