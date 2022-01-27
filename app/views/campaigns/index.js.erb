@@ -8,6 +8,7 @@ if (<%= @offset_indicator %>) {
   if (<%= @campaigns_offset.count < 60 %>) {
     load_more_button.remove()
   }
+  document.querySelector('body').classList.remove('wait')
 } else {
   document.querySelector('#campaigns-index__page-1').innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns) %>';
 }

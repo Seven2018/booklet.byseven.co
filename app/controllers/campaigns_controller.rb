@@ -2,8 +2,7 @@ class CampaignsController < ApplicationController
   before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy]
 
   def index
-    campaigns = policy_scope(Campaign).where_exists(:interviews)
-                                      .where(company: current_user.company)
+    campaigns = policy_scope(Campaign).where(company: current_user.company)
                                       .order(created_at: :desc)
     @tag_categories = TagCategory.where(company_id: current_user.company_id)
 
@@ -26,7 +25,7 @@ class CampaignsController < ApplicationController
         campaigns.where_exists(:interviews, locked_at: nil)
       end
 
-    if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)) || params.dig(:search, :tags).present?
+    if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
       selected_tags = params.dig(:search, :tags).present? ? params.dig(:search, :tags).split(',') : params.dig(:filter_tags, :tag).map{|x| x.split(':').last.to_i}
       selected_templates = InterviewForm.where(company_id: current_user.company_id).where_exists(:interview_form_tags, tag_id: selected_tags)
       @campaigns = @campaigns.where(interview_form_id: selected_templates.ids)
@@ -53,7 +52,7 @@ class CampaignsController < ApplicationController
       @offset_indicator = false
     end
 
-    # @campaigns = @campaigns.limit(60)
+    @campaigns = @campaigns.limit(60)
 
 
     respond_to do |format|
