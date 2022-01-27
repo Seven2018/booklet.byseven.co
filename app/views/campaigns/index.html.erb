@@ -12,7 +12,7 @@
       <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
     </div>
   </div>
-  <% if @campaigns.count >= 60 %>
+  <% if @campaigns.count >= 24 %>
     <button id="load-more-button" onclick='loadMore();'>Load more...</button>
   <% end %>
 </div>
@@ -50,7 +50,10 @@
     searchbar.querySelectorAll('select').forEach((select) => {
       select.selectedIndex = 0
     })
+    searchbar.querySelector('#search_offset').value = 1
+    searchbar.querySelector('#search_reset').value = ''
     searchbar.querySelector('.btn-search').click()
+    document.querySelector('body').classList.add('wait')
   }
 
   function openContentMenu(element) {

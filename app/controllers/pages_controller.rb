@@ -199,12 +199,13 @@ class PagesController < ApplicationController
     if params[:csv].present?
       attributes = []
       params[:csv].each do |key, value|
-        if !['selected_users', 'cost', 'trainings'].include?(key) && value == '1'
+        if !['selected_users', 'cost', 'trainings', 'interviews'].include?(key) && value == '1'
           attributes << key
         end
       end
       cost = params[:csv][:cost]
       trainings = params[:csv][:trainings]
+      interviews = params[:csv][:interviews]
     else
       cost, trainings = false, false
       # Index with 'search' option and global visibility for SEVEN Users
@@ -235,7 +236,7 @@ class PagesController < ApplicationController
     respond_to do |format|
       format.html {organisation_path}
       format.js
-      format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
+      format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
 
     if params[:tag_postion].present?

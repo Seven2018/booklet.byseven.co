@@ -7,7 +7,8 @@
       <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current' %>
       <%= f.hidden_field :tags %>
       <%= f.hidden_field :offset, value: 1 %>
-      <%= f.submit 'Search', class: 'btn-search', onclick: "updateFilterPeriod(this)" %>
+      <%= f.hidden_field :reset %>
+      <%= f.submit 'Search', class: 'btn-search', onclick: "updateFilterPeriod(this);document.querySelector('body').classList.add('wait');" %>
       <button type='submit' class="btn-search btn-search--mobile">
         <i class="fas fa-search"></i>
       </button>

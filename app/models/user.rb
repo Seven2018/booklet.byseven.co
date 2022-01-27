@@ -144,12 +144,13 @@ class User < ApplicationRecord
     end
   end
 
-  def self.to_csv(attributes, tag_categories, cost, trainings, start_date, end_date)
+  def self.to_csv(attributes, tag_categories, cost, trainings, interviews, start_date, end_date)
     attributes = attributes.split(',')
     tag_categories_names = tag_categories.reject{|x| x.empty?}.map{|x| TagCategory.find(x).name}
     columns = attributes + tag_categories_names
     columns += ['Cost'] if cost == '1'
     columns += ['Trainings'] if trainings == '1'
+    columns += ['Interviews'] if interviews == '1'
     CSV.generate(headers: true) do |csv|
       csv << columns.flatten.reject{|x| x.empty?}
       all.each do |user|
@@ -165,6 +166,11 @@ class User < ApplicationRecord
           trainings = ''
           user.sessions.where('date >= ? AND date < ?', start_date, end_date).each{|s| trainings += s.content.title + "\n"}
           line << trainings.delete_suffix("\n")
+        end
+        if interviews
+          interviews = ''
+          user.interviews.where(label: ['Crossed', 'Simple']).each{|x| interviews += x.campaign.title + ' (' + x.campaign.id + ') - ' + x.date.strftime('%d/%m/%Y') + "\n"}
+          line << interviews.delete_suffix("\n")
         end
         csv << line
       end
