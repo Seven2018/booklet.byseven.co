@@ -94,18 +94,18 @@ button {
 }
 
 .btn-orange {
+  background-color: #F26419;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: auto;
   padding: 20px;
-  height: 4rem;
-  background-color: #F26419;
+  height: 5rem;
   border-radius: 4px;
   transition: all .25s ease-in-out;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  opacity: 0.7;
+  color: white;
 
   i, p, a {
     color: white !important;
@@ -115,6 +115,7 @@ button {
     font-weight: 600 !important;
     letter-spacing: 0.15em;
     text-transform: uppercase;
+    text-align: center;
   }
 
   i {
@@ -122,13 +123,12 @@ button {
   }
 
   &:hover {
-    opacity: 1;
+    opacity: 0.7;
 
     i, p {
       color: white !important;
     }
   }
-
   @include from-medium {
     p {
       font-size: 1.6rem;
@@ -137,13 +137,13 @@ button {
 }
 
 .btn-blue {
+  background-color: #3177B7;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: auto;
   padding: 20px;
   height: 5rem;
-  background-color: #3177B7;
   border-radius: 4px;
   transition: all .25s ease-in-out;
   cursor: pointer;
@@ -389,17 +389,22 @@ button {
 
 .btn-orange-text {
   color: #F26419 !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 27px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   background-color: transparent;
-  padding: .5rem 1rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  height: 5rem;
   border-radius: 4px;
   margin-right:5px;
   &:hover {
-    padding: .5rem 1rem;
     border-radius: 4px;
     background-color: #E5E5E5;
   }
@@ -411,11 +416,11 @@ button {
 }
 
 .btn-blue-text {
+  color: #3177B7 !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: auto;
-  color: #3177B7 !important;
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 27px;

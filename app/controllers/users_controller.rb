@@ -14,18 +14,21 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     authorize @user
+
+    @user.lastname = @user.lastname.upcase
+    @user.firstname = @user.firstname.capitalize
     @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
     @user.company_id = current_user.company_id
     @user.authentication_token = Base64.encode64(@user.email).gsub("\n","") + SecureRandom.hex(32)
-    # tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i} if params[:user][:tags].present?
-    unless User.find_by(email: params[:user][:email])
-      Rails.env == 'production' ? @user.invite! : @user.save(validate: false)
+
+    new_user = User.find_by(email: params.dig(:user, :email)).nil? ? true : false
+    send_invite = params.dig(:user, :send_invite) == 'true' ? true : false
+
+    # Send invitation
+    if new_user
+      send_invite && Rails.env == 'production' ? @user.invite! : @user.save(validate: false)
     end
-    # if tags.present?
-    #   tags.each do |tag|
-    #     UserTag.create(user_id: @user.id, tag_id: tag)
-    #   end
-    # end
+
     respond_to do |format|
       format.html {redirect_to organisation_path}
       format.js
@@ -160,7 +163,10 @@ class UsersController < ApplicationController
       end
     elsif params[:button] == 'import'
       @redirect = request.base_url + request.path
-      ImportEmployeesJob.perform_async(params[:file], current_user.company_id, current_user.id)
+
+      send_invite = params[:send_invite] == 'true' ? true : false
+
+      ImportEmployeesJob.perform_async(params[:file], current_user.company_id, current_user.id, send_invite)
       flash[:notice] = 'Import in progress. Please wait for a while and refresh this page.'
       flash.keep(:notice)
       render js: "window.location = '#{organisation_path}'"
@@ -190,6 +196,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:firstname, :lastname, :email, :access_level, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_title, :company_id, :reset_password_token, :password, :password_confirmation)
+    params.require(:user).permit(:firstname, :lastname, :email, :access_level, :manager_id, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_title, :company_id, :reset_password_token, :password, :password_confirmation)
   end
 end
