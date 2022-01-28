@@ -6,6 +6,13 @@
   'objective' => 'Objective'
 } %>
 
+<% question_icon = {
+  'open_question' => 'fas fa-question-circle',
+  'rating' => 'fas fa-star-half-alt',
+  'mcq' => 'far fa-check-square',
+  'objective' => 'fas fa-bullseye'
+} %>
+
 <% first_question = question.position == 1 %>
 <% last_question = question.position >= template.interview_questions.count %>
 
@@ -14,7 +21,10 @@
   <div class="line-title <%= 'line-title-separator' if question.separator? %>"
        onclick='toggleMod(this);'>
     <i class="fas fa-angle-down" data-rotated='0'></i>
-    <p><%= form_title[question.question_type] %></p>
+    <% unless question.separator? %>
+      <i class="<%= question_icon[question.question_type] %>"></i>
+    <% end %>
+    <p title='<%= question.question %>'><%= question.question %></p>
   </div>
 
   <div class="line-controls">
