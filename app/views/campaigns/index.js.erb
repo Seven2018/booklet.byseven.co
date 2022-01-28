@@ -1,6 +1,6 @@
+load_more_button = document.querySelector('#load-more-button')
 if (<%= @offset_indicator %>) {
   new_div_offset = document.createElement('div')
-  load_more_button = document.querySelector('#load-more-button')
   new_div_offset.classList.add('campaigns-index__page')
   new_div_offset.id = 'campaigns-index__page-' + "<%= @offset %>"
   document.querySelector('.campaigns-index').appendChild(new_div_offset)
@@ -14,8 +14,10 @@ if (<%= @offset_indicator %>) {
   document.querySelectorAll('.campaigns-index__page:not(#campaigns-index__page-1)').forEach((div) => {
     div.remove()
   })
+  if (<%= @filtered %>) {
+    load_more_button.remove()
+  }
 }
-document.querySelector('#search_reset').value = 'false'
-showResetMobile('<%= @filtered %>' == 'true')
+showResetMobile(<%= @filtered %>)
 document.querySelector('body').classList.remove('wait');
 hideOverflowingTags()

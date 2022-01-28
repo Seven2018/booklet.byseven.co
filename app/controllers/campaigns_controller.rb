@@ -7,6 +7,7 @@ class CampaignsController < ApplicationController
     search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
 
     campaigns = policy_scope(Campaign).where(company: current_user.company)
+                                      .where_exists(:interviews)
                                       .order(created_at: :desc)
     @tag_categories = TagCategory.where(company_id: current_user.company_id)
 
@@ -16,10 +17,16 @@ class CampaignsController < ApplicationController
       campaigns = campaigns.joins(:interviews).where(interviews: { employee: current_user }).distinct
     end
 
-    @campaigns = campaigns
+    @campaigns =
+      if search_period == 'All'
+        campaigns
+      elsif search_period == 'Completed'
+        campaigns.where_not_exists(:interviews, locked_at: nil)
+      else
+        campaigns.where_exists(:interviews, locked_at: nil)
+      end
 
     if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
-      # raise
       selected_tags = params.dig(:search, :tags).present? ? params.dig(:search, :tags).split(',') : params.dig(:filter_tags, :tag).map{|x| x.split(':').last.to_i}
       selected_templates = InterviewForm.where(company_id: current_user.company_id).where_exists(:interview_form_tags, tag_id: selected_tags)
       @campaigns = @campaigns.where(interview_form_id: selected_templates.ids)
@@ -27,28 +34,19 @@ class CampaignsController < ApplicationController
     end
 
     if search_title.present?
-      # raise
       interview_forms =  InterviewForm.where(company_id: current_user.company_id).search_templates(search_title)
       campaigns_by_form = @campaigns.where(interview_form: interview_forms)
       campaigns = @campaigns.search_campaigns(search_title)
       @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
-      @filtered = 'true'
+      @filtered = true
     else
       @filtered_by_tags = 'false'
-      @filtered = 'false'
+      @filtered = false
+      @campaigns = @campaigns.limit(24)
     end
 
-    @campaigns =
-      if search_period == 'All'
-        @campaigns.limit(24)
-      elsif search_period == 'Completed'
-        @campaigns.where_not_exists(:interviews, locked_at: nil).limit(24)
-      else
-        @campaigns.where_exists(:interviews, locked_at: nil).limit(24)
-      end
 
-    if offset_counter.present? && offset_counter.to_i > 1
-      # raise
+    if offset_counter.present? && offset_counter.to_i > 1 && !search_title.present?
       @campaigns_offset = @campaigns.limit(24).offset((offset_counter.to_i - 1) * 24)
       @offset_indicator = true
       @offset = offset_counter
@@ -57,7 +55,7 @@ class CampaignsController < ApplicationController
       @offset_indicator = false
     end
 
-
+    # @campaigns = @campaigns.limit(24)
 
     respond_to do |format|
       format.html
