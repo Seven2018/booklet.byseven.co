@@ -149,6 +149,18 @@ input[type='checkbox']:checked + label {
   color: black;
 }
 
+select {
+
+  &::after {
+    content: "";
+    justify-self: end;
+    width: 0.8em;
+    height: 0.5em;
+    background-color: var(--select-arrow);
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+  }
+}
+
 textarea {
   font-size: 1.6rem !important;
 }

@@ -277,7 +277,7 @@
     color: #3177B7 !important;
   }
 
-  p {
+  p, svg {
     color: white !important;
   }
 }
@@ -290,13 +290,19 @@
   align-items: center;
 
   h3 {
-
     margin: 0;
     font-size: 1.4rem;
     font-weight: 600;
     white-space: normal;
     overflow: visible;
     text-overflow: ellipsis;
+  }
+
+  svg {
+    height: 2rem;
+    width: 2rem;
+    margin-right: 1rem;
+    color: black;
   }
 
   .campaign-card__options {
