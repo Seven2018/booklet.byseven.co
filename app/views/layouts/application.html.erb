@@ -23,7 +23,7 @@
     <div id="booklet-wrapper">
       <% if user_signed_in? %>
    
-        <% if ['campaigns', 'interview_forms', 'interviews', 'users'].include?(params[:controller]) || params[:redirected_from] == 'campaigns' %>
+        <% if ['campaigns', 'interview_forms', 'interviews', 'users', 'pages'].include?(params[:controller]) || params[:redirected_from] == 'campaigns' %>
           <%= render 'shared/navbar_campaign' %>
           <%= render 'shared/navbar_campaign_mobile' %>
         <% else %>
