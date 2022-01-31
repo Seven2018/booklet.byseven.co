@@ -286,8 +286,14 @@
   min-height: 85vh;
   flex: 1;
 
-  @include from-medium {
-    width: auto;
+  @include from-medium-high {
+    // width: auto;
+    max-width: calc(100vw - 55rem);
+  }
+
+  @include from-xlarge {
+    // width: auto;
+    max-width: calc(100vw - 90rem);
   }
 }
 
@@ -979,6 +985,7 @@
     display: flex;
     align-items: baseline;
     cursor: pointer;
+    width: calc(100% - 11rem);
 
     p, i {
       color: #3177B7;
@@ -1000,6 +1007,7 @@
     }
 
     i {
+      width: 1.6rem;
       margin-right: 1.5rem;
 
       &:hover {

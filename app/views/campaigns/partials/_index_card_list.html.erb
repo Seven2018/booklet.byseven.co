@@ -20,7 +20,7 @@
       <% if completion == 100 %>
       <div class="campaign-card campaign-card--completed" title='<%= employee_list %>'>
       <% else %>
-      <div class="campaign-card" title='Click to see reviews'>
+      <div class="campaign-card" title='<%= employee_list %>'>
       <% end %>
         <%= link_to '', campaign_path(campaign), class: 'stretched-link' %>
         <div class="campaign-card__header">
