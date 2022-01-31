@@ -69,6 +69,13 @@
             <%= f.label "Trainings attended" %>
           </div>
         </div>
+        <div class="modal-filter__pill <%= pill_color %>" onclick='selectCsvAttributes(this, "<%= color %>");'>
+          <%= f.check_box :interviews, checked: true %>
+          <div class="flex-row-start-centered">
+            <i class="fas fa-plus"></i>
+            <%= f.label "Interviews" %>
+          </div>
+        </div>
         <%= f.hidden_field :selected_users %>
       </div>
       <div class="centered-item" style='margin-top: 2rem;'>

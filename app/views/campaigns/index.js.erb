@@ -1,4 +1,23 @@
-document.querySelector('.campaigns-index').innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns) %>';
-showResetMobile('<%= @filtered %>' == 'true')
+load_more_button = document.querySelector('#load-more-button')
+if (<%= @offset_indicator %>) {
+  new_div_offset = document.createElement('div')
+  new_div_offset.classList.add('campaigns-index__page')
+  new_div_offset.id = 'campaigns-index__page-' + "<%= @offset %>"
+  document.querySelector('.campaigns-index').appendChild(new_div_offset)
+  new_div_offset.innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns_offset) %>';
+  if (<%= @campaigns_offset.count < 24 %>) {
+    load_more_button.remove()
+  }
+  document.querySelector('body').classList.remove('wait')
+} else {
+  document.querySelector('#campaigns-index__page-1').innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns) %>';
+  document.querySelectorAll('.campaigns-index__page:not(#campaigns-index__page-1)').forEach((div) => {
+    div.remove()
+  })
+  if (<%= @filtered %>) {
+    load_more_button.remove()
+  }
+}
+showResetMobile(<%= @filtered %>)
 document.querySelector('body').classList.remove('wait');
 hideOverflowingTags()

@@ -49,7 +49,7 @@
           <li class="hidden"><a id='organisation-dropdown__create-user-redirect' data-toggle='modal' data-target='#userCreated'>
           <li><a id='organisation-dropdown__remove-user-redirect' data-toggle='modal' data-target='#removeUser'>Remove Selected User</li>
           </a></li>
-          <% if current_user.admin? %>
+          <% if current_user.admin? || Rails.env == 'development' %>
             <li><a data-toggle='modal' data-target='#importUsers'>Import Users</a></li>
             <li><a data-toggle='modal' data-target='#exportUsers' id="export-users-modal-link">Export All Users</a></li>
             <li class='hidden'><a id='organisation-dropdown__import-infos-link' data-toggle='modal' data-target='#importUsersInfos'></a></li>

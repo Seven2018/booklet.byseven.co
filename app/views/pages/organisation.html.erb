@@ -21,8 +21,9 @@
   </div>
 </div> -->
 
-
+<!------------>
 <!-- MODALS -->
+<!------------>
 
 <div class='modal fade' id='newUser' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
@@ -60,6 +61,10 @@
   </div>
 </div>
 
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
 <script>
   $(document).ready(function () {
     $(".organisation-page").floatingScroll();
@@ -78,24 +83,8 @@
     document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
   }
 
-  // if (document.querySelector('.search') != null) {
-  //   search_input = document.querySelector('.search').querySelector('input');
-  //   clear_button = document.getElementById('organisation-controls__user-search-clear');
-  //   search_input.addEventListener('keyup', event => {
-  //     if (search_input.value != '' && clear_button.classList.contains('hidden')) {
-  //       clear_button.classList.remove('hidden');
-  //     } else if (search_input.value == '') {
-  //       clear_button.classList.add('hidden');
-  //     }
-  //   })
-  // }
-
   formGuardian = false;
   doubleClickGuardian = false;
-  // setTimeout(function(){
-  //   document.querySelector('#user_email').value = ''
-  //   document.querySelector('#user_password').value = ''
-  // }, 100)
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
@@ -527,9 +516,12 @@
     element.closest('form').querySelector('.hidden-submit').click()
   }
 
-  function fileTransfer(element) {
-    submit_button = document.querySelector('.import_users_form').querySelector('button')
+  function fileTransfer(element, send_invite) {
+    form = document.querySelector('.import_users_form')
+    submit_button = form.querySelector('button')
+    send_invite_input = form.querySelector('#send_invite')
     submit_button.value = 'import'
+    if (send_invite) send_invite_input.value = true
     submit_button.click()
   }
 

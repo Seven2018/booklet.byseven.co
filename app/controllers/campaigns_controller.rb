@@ -2,13 +2,14 @@ class CampaignsController < ApplicationController
   before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy]
 
   def index
-    campaigns = policy_scope(Campaign).where_exists(:interviews)
-                                      .where(company: current_user.company)
+    search_title = params.dig(:search, :title)
+    search_title.present? ? offset_counter = nil : offset_counter = params.dig(:search, :offset)
+    search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
+
+    campaigns = policy_scope(Campaign).where(company: current_user.company)
+                                      .where_exists(:interviews)
                                       .order(created_at: :desc)
     @tag_categories = TagCategory.where(company_id: current_user.company_id)
-
-    search_title = params.dig(:search, :title)
-    search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
 
     if current_user.manager?
       campaigns = campaigns.where(owner_id: current_user.id)
@@ -25,7 +26,7 @@ class CampaignsController < ApplicationController
         campaigns.where_exists(:interviews, locked_at: nil)
       end
 
-    if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)) || params.dig(:search, :tags).present?
+    if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
       selected_tags = params.dig(:search, :tags).present? ? params.dig(:search, :tags).split(',') : params.dig(:filter_tags, :tag).map{|x| x.split(':').last.to_i}
       selected_templates = InterviewForm.where(company_id: current_user.company_id).where_exists(:interview_form_tags, tag_id: selected_tags)
       @campaigns = @campaigns.where(interview_form_id: selected_templates.ids)
@@ -37,22 +38,24 @@ class CampaignsController < ApplicationController
       campaigns_by_form = @campaigns.where(interview_form: interview_forms)
       campaigns = @campaigns.search_campaigns(search_title)
       @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
-      @filtered = 'true'
+      @filtered = true
     else
       @filtered_by_tags = 'false'
-      @filtered = 'false'
+      @filtered = false
+      @campaigns = @campaigns.limit(24)
     end
 
-    if params[:offset].present?
-      @campaigns_offset = @campaigns.limit(100).offset((params[:offset].to_i - 1) * 100)
-      @offset_indicator = 'true'
-      @offset = params[:offset]
+
+    if offset_counter.present? && offset_counter.to_i > 1 && !search_title.present?
+      @campaigns_offset = @campaigns.limit(24).offset((offset_counter.to_i - 1) * 24)
+      @offset_indicator = true
+      @offset = offset_counter
     else
-      @offset_indicator = 'false'
+      @campaigns_offset = []
+      @offset_indicator = false
     end
 
-    @campaigns = @campaigns.limit(100)
-
+    # @campaigns = @campaigns.limit(24)
 
     respond_to do |format|
       format.html
