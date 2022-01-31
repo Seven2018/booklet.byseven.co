@@ -115,13 +115,17 @@
         <p class="campaign-interview-card__status">Review completed</p>
         <p>Last update : <%= interview.last_updated? %></p>
         <%= link_to interview_path(interview), class: 'campaign-interview-card__button' do %>
-          <p>Modify</p>
+          <p>
+            <%= InterviewPolicy.new(current_user, interview).answer_question? ? 'Modify' : 'View' %>
+          </p>
         <% end %>
       <% else %>
         <i class="far fa-times-circle"></i>
         <p class="campaign-interview-card__status">Review not completed</p>
         <%= link_to interview_path(interview), class: 'campaign-interview-card__button' do %>
-          <p>Start</p>
+          <p>
+            <%= InterviewPolicy.new(current_user, interview).answer_question? ? 'Start' : 'View' %>
+          </p>
         <% end %>
       <% end %>
     </div>

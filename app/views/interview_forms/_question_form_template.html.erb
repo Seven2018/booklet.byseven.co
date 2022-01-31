@@ -70,16 +70,6 @@
     label: (question_type == 'separator' ? 'Title' : false )
   }.compact) %>
 
-  <%= f.input(:description,
-    as: :text,
-    placeholder: 'Description (optional)',
-    label: false
-    ) %>
-
-  <%# f.rich_text_area :description,
-    placeholder: 'Description (optional)'
-    %>
-
   <% if question_type == 'rating' %>
     <div class="add-rating__select">
       <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'setRating(this);'} %>
@@ -93,8 +83,6 @@
   <% end %>
 
   <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-    <p>
-      <%= question_type == 'mcq' ? 'Create' : 'Save' %>
-    </p>
+    <p>Create</p>
   <% end %>
 <% end %>

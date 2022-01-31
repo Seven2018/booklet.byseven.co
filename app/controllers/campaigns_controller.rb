@@ -205,7 +205,7 @@ class CampaignsController < ApplicationController
 
   def send_notification_email
     authorize @campaign
-    @campaign.interviews.where(label: 'Employee').each do |interview|
+    @campaign.interviews.where(label: ['Employee', 'Simple']).each do |interview|
       CampaignMailer.with(user: interview.employee).invite_employee(@campaign.owner, interview.employee, interview).deliver
     end
     redirect_to campaigns_path, notice: 'Email(s) sent'

@@ -24,7 +24,7 @@
           <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
           <p><%= sanitize previous_separators.last.description if previous_separators.present? %></p>
         </div>
-        <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user)) %>
+        <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user) || (@interview.label == 'Simple' && @interview.owner != current_user)) %>
       </div>
       <% j += 1 %>
     <% end %>
@@ -316,14 +316,15 @@
     });
   }
 
-/*  document.querySelectorAll('.trix-content').forEach((trix) => {
-    input = trix.parentNode.querySelector('.trix_editor')
-    trix.value = input.value
-    trix.addEventListener('keyup', (event) => {
-      event.currentTarget.parentNode.querySelector('.trix_editor').value = event.currentTarget.value
-      if (event.currentTarget.parentNode.querySelector('.trix_editor').required && event.currentTarget.closest('.interview-summary') == undefined) {
-        enableNext(trix.parentNode.querySelector('.trix_editor'))
-      }
-    })
-  })*/
+  const tx = document.getElementsByTagName("textarea");
+  for (let i = 0; i < tx.length; i++) {
+    tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
+    tx[i].addEventListener("click", OnInput, false);
+    tx[i].addEventListener("input", OnInput, false);
+  }
+
+  function OnInput() {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight) + "px";
+  }
 </script>

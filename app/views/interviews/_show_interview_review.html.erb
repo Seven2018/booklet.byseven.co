@@ -4,7 +4,7 @@
 
 <h1><%= interview.interview_form.title %> - <em>Summary</em></h1>
 <h3 class="summary-info">Click on a question to change your answer</h3>
-<% user = interview.label == 'Employee' ? interview.employee : interview.owner %>
+<% user = ['Employee'].include?(interview.label) ? interview.employee : interview.owner %>
 <% n = 1 %>
 <% questions.each do |question| %>
   <% if question.separator? %>
@@ -64,7 +64,7 @@
           <% end %>
         </fieldset>
         <div class="user_comments">
-          <p><%= current_answer&.comments %></p>
+          <p>Comments: <%= current_answer&.comments %></p>
         </div>
       <% end %>
     </div>
