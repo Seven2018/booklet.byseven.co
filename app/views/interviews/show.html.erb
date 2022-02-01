@@ -63,6 +63,19 @@
 <script>
   document.querySelector('body').classList.add('interview-form-body')
 
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
   function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
@@ -311,7 +324,6 @@
         })
         form.querySelector('.hidden-submit').click()
         this.removeEventListener('click', arguments.callee, false)
-        console.log('success')
       }
     });
   }
