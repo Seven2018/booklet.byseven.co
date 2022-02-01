@@ -97,7 +97,6 @@ class CampaignsController < ApplicationController
       start_temp = params.dig(:select_period_temp, :start).split('/').reverse.join
       end_temp = params.dig(:select_period_temp, :end).split('/').reverse.join
       @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', start_temp, end_temp)
-      raise
     ########
 
     elsif params[:format] == 'csv'
