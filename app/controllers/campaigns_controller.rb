@@ -91,6 +91,12 @@ class CampaignsController < ApplicationController
         @selected_manager_id = params[:select_period][:manager_id]
         @campaigns = @campaigns.where(owner_id: params[:select_period][:manager_id])
       end
+
+    # TEMP #
+    elsif params[:select_period_temp].present?
+      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', params.dig(:select_period_temp, :start), params.dig(:select_period_temp, :end))
+    ########
+
     elsif params[:format] == 'csv'
       @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', params[:start_date], params[:end_date])
     else
@@ -100,7 +106,11 @@ class CampaignsController < ApplicationController
     respond_to do |format|
       format.html
       format.js
-      format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params[:start_date]} to #{params[:end_date]}.csv" }
+      # format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params[:start_date]} to #{params[:end_date]}.csv" }
+
+      # TEMP #
+      format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv" }
+      ########
     end
   end
 

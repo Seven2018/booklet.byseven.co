@@ -913,11 +913,60 @@
 .campaigns-report-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: flex-start;
+
+  // Report Temp
+  justify-content: center;
 
   @include from-medium {
     flex-direction: row;
+  }
+}
+
+.campaigns-report__temp {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 40vh;
+
+  form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  p {
+    margin-right: 1rem;
+  }
+
+  input {
+    text-align: center;
+    margin-right: 1rem;
+    height: 4rem;
+    width: 12rem;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+  }
+
+  label {
+    margin: 0 1rem 0 0;
+  }
+
+  i {
+    margin-left: 2rem;
+    font-size: 3rem;
+    color: #3177B7;
+  }
+
+  .report-date-control {
+    align-items: center;
+
+    div {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
   }
 }
 

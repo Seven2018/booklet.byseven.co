@@ -1,9 +1,5 @@
 <div class="row">
 
-  <% if campaigns.empty? || campaigns.joins(:interviews).where(interviews: {completed: true}).nil? %>
-    <p class="empty-card-list">No interview for the moment, click on 'Template' to start.</p>
-  <% end %>
-
   <% campaigns.each do |campaign| %>
 
     <% campaign_type = {
