@@ -6,7 +6,7 @@ if (<%= @offset_indicator %>) {
   document.querySelector('.campaigns-index').appendChild(new_div_offset)
   new_div_offset.innerHTML = '<%= j render("campaigns/partials/index_card_list", campaigns: @campaigns_offset) %>';
   if (<%= @campaigns_offset.count < 24 %>) {
-    load_more_button.remove()
+    load_more_button.classList.add('hidden')
   }
   document.querySelector('body').classList.remove('wait')
 } else {
@@ -14,8 +14,10 @@ if (<%= @offset_indicator %>) {
   document.querySelectorAll('.campaigns-index__page:not(#campaigns-index__page-1)').forEach((div) => {
     div.remove()
   })
-  if (<%= @filtered %>) {
-    load_more_button.remove()
+  if (<%= @filtered %> || <%= @campaigns.count %> < 24) {
+    load_more_button.classList.add('hidden')
+  } else {
+    load_more_button.classList.remove('hidden')
   }
 }
 showResetMobile(<%= @filtered %>)

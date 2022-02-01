@@ -150,12 +150,13 @@ class Campaign < ApplicationRecord
           campaign_url = 'https://seven-booklet.herokuapp.com/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
           employee_interviews = campaign.interviews.where(employee_id: employee.id)
 
-          interview =
-            if campaign.simple?
-              employee_interviews.first
-            elsif campaign.crossed?
-              employee_interviews.find_by(label: 'Crossed')
-            end
+          if campaign.simple?
+            interview = employee_interviews.first
+            user_for_answer = employee
+          elsif campaign.crossed?
+            interview = employee_interviews.find_by(label: 'Crossed')
+            user_for_answer = campaign.owner
+          end
 
           line = []
           line << campaign_id
@@ -177,7 +178,7 @@ class Campaign < ApplicationRecord
             line << tag
           end
           interview.interview_questions.order(position: :asc).each do |question|
-            answer = question.interview_answers.find_by(interview_id: interview.id, user_id: employee.id)
+            answer = question.interview_answers.find_by(interview_id: interview.id, user_id: user_for_answer.id)
             next if answer.nil?
             question_text = "Question: " + question.question + "\n"
             answer_text =
