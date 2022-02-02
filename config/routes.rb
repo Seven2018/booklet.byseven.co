@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
 
+  require 'sidekiq/web'
+  authenticate :user, ->(u) { u.super_admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   # ASSESSMENTS
   resources :assessments, only: %i[] do
     resources :assessment_questions, only: %i[destroy]

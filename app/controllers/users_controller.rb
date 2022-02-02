@@ -166,7 +166,7 @@ class UsersController < ApplicationController
 
       send_invite = params[:send_invite] == 'true' ? true : false
 
-      ImportEmployeesJob.perform_async(params[:file], current_user.company_id, current_user.id, send_invite)
+      ImportEmployeesJob.perform_later(params[:file], current_user.company_id, current_user.id, send_invite)
       flash[:notice] = 'Import in progress. Please wait for a while and refresh this page.'
       flash.keep(:notice)
       render js: "window.location = '#{organisation_path}'"
