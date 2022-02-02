@@ -4,14 +4,14 @@ html {
   height: 100%;
   overflow-y: scroll !important;
   font-size: 62.5%;
-  // -ms-overflow-style: none;  /* IE and Edge */
-  // scrollbar-width: none;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
 }
 
-// html::-webkit-scrollbar {
-//   width: 0 !important;
-//   display: none;  /* Safari and Chrome */
-// }
+html::-webkit-scrollbar {
+  width: 0 !important;
+  display: none;  /* Safari and Chrome */
+}
 
 body {
   margin: 0 auto;
@@ -25,7 +25,10 @@ body.wait *, body.wait
     cursor: wait !important;
 }
 
-#booklet-wrapper {}
+#booklet-wrapper {
+  height: calc(100vh - 7.5rem);
+  overflow-y: scroll;
+}
 
 #booklet-container {
   min-height: calc(100vh - 12rem);
