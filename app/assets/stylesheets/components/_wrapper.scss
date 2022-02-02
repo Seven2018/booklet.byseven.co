@@ -4,6 +4,13 @@ html {
   height: 100%;
   overflow-y: scroll !important;
   font-size: 62.5%;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0 !important;
+  display: none;  /* Safari and Chrome */
 }
 
 body {
@@ -18,10 +25,15 @@ body.wait *, body.wait
     cursor: wait !important;
 }
 
-#booklet-wrapper {}
+#booklet-wrapper {
+  height: calc(100vh - 7.5rem);
+  overflow-y: scroll;
+}
 
 #booklet-container {
   min-height: calc(100vh - 12rem);
+  // height: calc(100vh - 12rem);
+  // overflow-y: scroll;
   margin: 6rem 0 6rem 0;
   width: 100vw;
   padding: 0 2.5rem;

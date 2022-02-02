@@ -20,18 +20,18 @@
 
   </head>
   <body>
-    <div id="booklet-wrapper">
-      <% if user_signed_in? %>
-   
-        <% if ['campaigns', 'interview_forms', 'interviews', 'users', 'pages'].include?(params[:controller]) || params[:redirected_from] == 'campaigns' %>
-          <%= render 'shared/navbar_campaign' %>
-          <%= render 'shared/navbar_campaign_mobile' %>
-        <% else %>
-          <%= render 'shared/navbar' %>
-          <%= render 'shared/navbar_mobile' %>
-        <% end %>
+    <% if user_signed_in? %>
 
+      <% if ['campaigns', 'interview_forms', 'interviews', 'users', 'pages'].include?(params[:controller]) || params[:redirected_from] == 'campaigns' %>
+        <%= render 'shared/navbar_campaign' %>
+        <%= render 'shared/navbar_campaign_mobile' %>
+      <% else %>
+        <%= render 'shared/navbar' %>
+        <%= render 'shared/navbar_mobile' %>
       <% end %>
+
+    <% end %>
+    <div id="booklet-wrapper">
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
         <% if params[:controller] == 'users' && params[:action] == 'show' %>
