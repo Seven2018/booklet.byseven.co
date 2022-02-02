@@ -122,10 +122,12 @@
       <% else %>
         <i class="far fa-times-circle"></i>
         <p class="campaign-interview-card__status">Review not completed</p>
-        <%= link_to interview_path(interview), class: 'campaign-interview-card__button' do %>
-          <p>
-            <%= InterviewPolicy.new(current_user, interview).answer_question? ? 'Start' : 'View' %>
-          </p>
+        <% if InterviewPolicy.new(current_user, interview).answer_question? %>
+          <%= link_to interview_path(interview), class: 'campaign-interview-card__button' do %>
+            <p>Start</p>
+          <% end %>
+        <% else %>
+          <p class="campaign-interview-card__status">No answers yet</p>
         <% end %>
       <% end %>
     </div>
