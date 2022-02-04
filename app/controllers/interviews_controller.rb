@@ -33,6 +33,22 @@ class InterviewsController < ApplicationController
 
     flash[:alert] = "View mode only! New answers won't be saved!" unless
       InterviewPolicy.new(current_user, @interview).answer_question?
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render(
+          pdf: "#{@interview.employee.fullname} - #{@interview.campaign.title}",
+          layout: 'pdf.html.erb',
+          template: 'interviews/show',
+          show_as_html: params.key?('debug'),
+          page_size: 'A4',
+          encoding: 'utf8',
+          dpi: 300,
+          zoom: 1,
+        )
+      end
+    end
   end
 
   def update_interviews

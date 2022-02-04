@@ -1,0 +1,135 @@
+<div id="container-pdf">
+
+  <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
+  <% interview_form = @interview.interview_form %>
+  <% fully_answered = @interview.fully_answered? %>
+
+  <% icon = { 'open_question' => 'open-question-pdf.png',
+              'mcq' => 'mcq-pdf.png',
+              'objective' => 'objective-pdf.png',
+              'rating' => 'rating-pdf.png' } %>
+
+  <div class="interview-container--pdf">
+
+    <div class="interview-main--pdf">
+
+      <div class="interview-main__right--pdf">
+        <h1><%= @interview.title %></h1>
+        <h2><%= @interview.employee.fullname %></h2>
+
+        <% question_hash = {} %>
+        <% j = 0 %>
+
+        <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
+          <% if question.separator? %>
+            <% j += 1 %>
+          <% end -%>
+          <% question_hash[j] = question_hash[j].present? ? question_hash[j] + [question] : [question] %>
+        <% end %>
+
+        <% question_number = 0 %>
+
+        <% question_hash.each do |key, value| %>
+          <% if key.to_i > 0 %>
+            <div class="interview-main__right-separator--pdf">
+              <p><%= key %>. <%= value.first.question %></p>
+            </div>
+          <% end %>
+          <div class="interview-main__right-questions--pdf">
+            <% value[1..-1].each do |question| %>
+
+              <% question_number += 1 %>
+
+              <div class="interview-main__right-question--pdf nobreak--pdf">
+                <div class="flex-box--pdf">
+                  <p><%= question_number %>. </p>
+                  <%= wicked_pdf_image_tag "#{icon[question.question_type]}" %>
+                  <p><%= question.question %> <%= "*" if question.required? %></p>
+                </div>
+                <div class="interview-main__right-question-description--pdf">
+                  <%= sanitize question.description %>
+                </div>
+                <div class="interview-question__form--pdf">
+
+                  <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
+                  <% existing_answer =
+                    InterviewAnswer.find_by(
+                    interview: @interview,
+                    interview_question: question,
+                    user: user
+                  ) %>
+
+                  <% current_answer   = existing_answer&.answer || '' %>
+                  <% current_comments = existing_answer&.comments || '' %>
+                  <% current_objective = existing_answer&.objective || '' %>
+
+                  <%= simple_form_for(:interview_answer,
+                    url: answer_interview_question_path,
+                    remote: true,
+                    data: {
+                      question_type: question.question_type
+                    }) do |f| %>
+                    <% if question.open_question? %>
+
+                      <p>Answer</p>
+                      <p class='interview__textarea--pdf'><%= current_answer %></p>
+
+
+                    <% elsif question.rating? %>
+
+                      <div class='rating--pdf'>
+                        <% for i in 1..current_answer.to_i %>
+                          <%= wicked_pdf_image_tag 'rating-star-filled-pdf.png' %>
+                        <% end %>
+                        <% for i in current_answer.to_i+1..question.options.keys.first.to_i %>
+                          <%= wicked_pdf_image_tag 'rating-star-pdf.png' %>
+                        <% end %>
+                      </div>
+
+
+
+                      <% if current_comments.present? %>
+                        <p>Comments</p>
+                        <p class='interview__textarea--pdf'><%= current_comments %></p>
+                      <% end %>
+
+
+                    <% elsif question.mcq? || question.objective? %>
+
+                      <% if question.objective? %>
+                        <p>Objective</p>
+                        <p class='interview__textarea--pdf'><%= current_objective %></p>
+                      <% end %>
+
+                      <div class="mcq--pdf">
+                        <% question.options.keys.each do |option| %>
+                          <div class="mcq-flex-box--pdf">
+                            <div class="rad-design--pdf <%= 'rad-design--pdf-checked' if option == current_answer %>"></div>
+                            <div class="rad-text--pdf"><%= option %></div>
+                          </div>
+                        <% end %>
+                      </div>
+
+                      <% if current_comments.present? %>
+                        <p>Comments</p>
+                        <p class='interview__textarea--pdf'><%= current_comments %></p>
+                      <% end %>
+
+                    <% end %>
+
+                  <% end %>
+
+                </div>
+
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

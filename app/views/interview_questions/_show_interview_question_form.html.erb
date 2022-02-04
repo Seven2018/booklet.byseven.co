@@ -65,7 +65,7 @@
             id="<%= input_label_key %>"
             name="interview_answer[answer]"
             value="<%= stars_count %>"
-            onchange='selectRating(this);<%= "autoSave(this);" if question.required %>'
+            onchange='<%= "autoSave(this);" if question.required %>'
             <% if current_answer.to_i == stars_count %> checked <% end %>
             <%= 'disabled' if read_only %>
           />

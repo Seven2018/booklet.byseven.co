@@ -1,136 +1,129 @@
-<% if @interview.crossed? %>
+<% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
+<% interview_form = @interview.interview_form %>
+<% fully_answered = @interview.fully_answered? %>
 
-  <%= render 'crossed', interview: @interview, employee: @employee, manager: @manager, questions: @questions, read_only: ![@interview.employee, @interview.owner].include?(current_user)  %>
+<% icon = { 'open_question' => 'bi:question-circle-fill',
+            'mcq' => 'ant-design:check-square-filled',
+            'objective' => 'fluent:target-arrow-24-filled',
+            'rating' => 'codicon:star-full' } %>
 
-<% else %>
+<div class="interview-container">
 
-  <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
-  <% interview_form = @interview.interview_form %>
-  <% fully_answered = @interview.fully_answered? %>
-
-  <% icon = { 'open_question' => 'bi:question-circle-fill',
-              'mcq' => 'ant-design:check-square-filled',
-              'objective' => 'fluent:target-arrow-24-filled',
-              'rating' => 'codicon:star-full' } %>
-
-  <div class="interview-container">
-
-    <div class="interview-controls">
-      <% if request.referrer.present? && (request.referrer.split('/') - [request.referrer.split('/')[-1]]).join('/') == request.base_url + '/campaigns' %>
-        <button class='btn-back' onclick='history.back()'>
-          <i class="fas fa-angle-left"></i>
-        </button>
-      <% else %>
-        <%= link_to campaigns_path(@interview.campaign), class: 'btn-back' do %>
-          <i class="fas fa-angle-left"></i>
-        <% end %>
+  <div class="interview-controls">
+    <% if request.referrer.present? && (request.referrer.split('/') - [request.referrer.split('/')[-1]]).join('/') == request.base_url + '/campaigns' %>
+      <button class='btn-back' onclick='history.back()'>
+        <i class="fas fa-angle-left"></i>
+      </button>
+    <% else %>
+      <%= link_to campaigns_path(@interview.campaign), class: 'btn-back' do %>
+        <i class="fas fa-angle-left"></i>
       <% end %>
-      <div class="interview-controls__buttons">
-        <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
-          <span class="iconify" data-icon="bx:bx-download"></span>
-          <p>Download PDF</p>
-        <% end %>
-        <button class="btn-blue-text" onclick="saveButton();">
-          <span class="iconify" data-icon="fluent:save-16-regular"></span>
-          <p>Save</p>
+    <% end %>
+    <div class="interview-controls__buttons">
+      <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
+        <span class="iconify" data-icon="bx:bx-download"></span>
+        <p>Download PDF</p>
+      <% end %>
+      <button class="btn-blue-text" onclick="saveButton();">
+        <span class="iconify" data-icon="fluent:save-16-regular"></span>
+        <p>Save</p>
+      </button>
+      <% if !@interview.completed? %>
+        <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+          <p>Submit</p>
+          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
         </button>
-        <% if @interview.completed? %>
-          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
-            <p>Submit</p>
-            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-          </button>
-          <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
+        <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="interview-main">
+
+    <div class="interview-main__left">
+      <h2>Chapters</h2>
+      <div class="interview-main__left-anchors">
+        <% chapter = 1 %>
+        <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
+
+          <% question_text = question.question %>
+
+          <div class="interview-main__left-question">
+            <a href="#anchor-<%= question.position %>">
+              <% if question.separator? %>
+                <p class="interview-main__left-separator" title="<%= question_text %>"><%= chapter %>. <%= question_text %></p>
+                <% chapter += 1 %>
+              <% else %>
+                <div class="interview-main__left-icon">
+                  <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
+                </div>
+                <p title="<%= question_text %>"><%= question.question %></p>
+              <% end %>
+            </a>
+          </div>
+
         <% end %>
       </div>
     </div>
 
-    <div class="interview-main">
+    <div class="interview-main__right">
+      <h1><%= @interview.title %></h1>
 
-      <div class="interview-main__left">
-        <h2>Chapters</h2>
-        <div class="interview-main__left-anchors">
-          <% chapter = 1 %>
-          <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
+      <% question_hash = {} %>
+      <% j = 0 %>
 
-            <% question_text = question.question %>
+      <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
+        <% if question.separator? %>
+          <% j += 1 %>
+        <% end -%>
+        <% question_hash[j] = question_hash[j].present? ? question_hash[j] + [question] : [question] %>
+      <% end %>
 
-            <div class="interview-main__left-question">
-              <a href="#anchor-<%= question.position %>">
-                <% if question.separator? %>
-                  <p class="interview-main__left-separator" title="<%= question_text %>"><%= chapter %>. <%= question_text %></p>
-                  <% chapter += 1 %>
-                <% else %>
-                  <div class="interview-main__left-icon">
-                    <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
-                  </div>
-                  <p title="<%= question_text %>"><%= question.question %></p>
-                <% end %>
-              </a>
-            </div>
+      <% question_number = 0 %>
 
-          <% end %>
-        </div>
-      </div>
-
-      <div class="interview-main__right">
-        <h1><%= @interview.title %></h1>
-
-        <% question_hash = {} %>
-        <% j = 0 %>
-
-        <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
-          <% if question.separator? %>
-            <% j += 1 %>
-          <% end -%>
-          <% question_hash[j] = question_hash[j].present? ? question_hash[j] + [question] : [question] %>
-        <% end %>
-
-        <% question_number = 0 %>
-
-        <% question_hash.each do |key, value| %>
-          <% if key.to_i > 0 %>
-            <div class="interview-main__right-separator">
-              <p><%= key %>. <%= value.first.question %></p>
-            </div>
-          <% end %>
-          <div class="interview-main__right-questions">
-            <% value[1..-1].each do |question| %>
-
-              <% question_number += 1 %>
-
-              <div class="interview-main__right-question">
-                <a id="anchor-<%= question.position %>" style='position:absolute; top: -2.5rem;'></a>
-                <p title='Required'><%= question_number %>. <%= question.question %> <%= "*" if question.required? %></p>
-                <div class="interview-main__right-question-description">
-                  <%= sanitize question.description %>
-                </div>
-                <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: question_number, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user) || (@interview.label == 'Simple' && @interview.owner != current_user)) %>
-              </div>
-            <% end %>
+      <% question_hash.each do |key, value| %>
+        <% if key.to_i > 0 %>
+          <div class="interview-main__right-separator">
+            <p><%= key %>. <%= value.first.question %></p>
           </div>
         <% end %>
+        <div class="interview-main__right-questions">
+          <% value[1..-1].each do |question| %>
 
-      </div>
+            <% question_number += 1 %>
 
-    </div>
-
-  </div>
-
-  <div class="interview-thanks hidden">
-    <div class="flex-column-start-centered">
-      <p>Review submitted ! <i class="fas fa-check-square"></i></p>
-      <p>Thank you for completing this review ! <i class="far fa-thumbs-up"></i></p>
-      <p>You can go back to the interview, or exit to the dashboard.</p>
-    </div>
-    <div class="interview-thanks__controls">
-      <button class="btn-blue-text" onclick='thankYou("back");'><p><i class="fas fa-long-arrow-alt-left"></i> Back</p></button>
-      <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
-        <button class="btn-blue"><p>Exit</p></button>
+            <div class="interview-main__right-question">
+              <a id="anchor-<%= question.position %>" style='position:absolute; top: -2.5rem;'></a>
+              <p title='<%= "Required" if question.required? %>'><%= question_number %>. <%= question.question %> <%= "*" if question.required? %></p>
+              <div class="interview-main__right-question-description">
+                <%= sanitize question.description %>
+              </div>
+              <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: question_number, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user) || (@interview.label == 'Simple' && @interview.owner != current_user)) %>
+            </div>
+          <% end %>
+        </div>
       <% end %>
+
     </div>
+
   </div>
 
-<% end %>
+</div>
+
+<div class="interview-thanks hidden">
+  <div class="flex-column-start-centered">
+    <p>Review submitted ! <i class="fas fa-check-square"></i></p>
+    <p>Thank you for completing this review ! <i class="far fa-thumbs-up"></i></p>
+    <p>You can go back to the interview, or exit to the dashboard.</p>
+  </div>
+  <div class="interview-thanks__controls">
+    <button class="btn-blue-text" onclick='thankYou("back");'><p><i class="fas fa-long-arrow-alt-left"></i> Back</p></button>
+    <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
+      <button class="btn-blue"><p>Exit</p></button>
+    <% end %>
+  </div>
+</div>
+
 
 <div class="saved-message hidden">
   <p>SAVED!</p>
@@ -149,6 +142,7 @@
       setTimeout(function(){
         auto_save = true
         element.closest('form').querySelector('.hidden-submit').click()
+        console.log('saved')
       }, 1000)
     } else {
       element.closest('form').querySelector('.hidden-submit').click()
