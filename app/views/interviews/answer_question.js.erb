@@ -1,0 +1,8 @@
+submit_button = document.querySelector('#submit-interview')
+if (<%= @fully_answered %>) {
+  submit_button.classList.remove('btn-blue-disabled')
+  submit_button.disabled = false
+} else {
+  submit_button.classList.add('btn-blue-disabled')
+  submit_button.disabled = true
+}

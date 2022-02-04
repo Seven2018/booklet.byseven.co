@@ -33,12 +33,6 @@ class InterviewsController < ApplicationController
 
     flash[:alert] = "View mode only! New answers won't be saved!" unless
       InterviewPolicy.new(current_user, @interview).answer_question?
-
-    params[:show_review].present? ? @show_review = 'true' : @show_review = 'false'
-    respond_to do |format|
-      format.html
-      format.js
-    end
   end
 
   def update_interviews
@@ -58,6 +52,7 @@ class InterviewsController < ApplicationController
     comments = answer_params[:comments]
     objective = answer_params[:objective]
     question_id = answer_params[:interview_question_id]
+    question = InterviewQuestion.find(question_id)
     interview_id = answer_params[:interview_id]
 
     interview = Interview.find interview_id
@@ -71,9 +66,23 @@ class InterviewsController < ApplicationController
       answer: answer,
       comments: comments,
       objective: objective
-    )
+    ) if answer.present? || !question.required?
+
+    @fully_answered = interview.fully_answered? ? true : false
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def complete_interview
+    interview_id = params[:interview_id]
+
+    interview = Interview.find interview_id
+    authorize interview
 
     interview.complete!
+
     head :no_content
   end
 
