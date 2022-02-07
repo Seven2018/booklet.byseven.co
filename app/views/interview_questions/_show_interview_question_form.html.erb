@@ -1,240 +1,243 @@
-  <a id="anchor-<%= question.position %>" style='position: absolute; top: -6rem;'></a>
-  <div class="interview-question__form">
-    <div class="number-and-question">
-      <div class="question-number">
-        <%= j %>
-      </div>
-      <div class="question-section">
-        <div class="flex-row-between-centered">
-          <h3 class="question-title"><%= question.question %>
-            <% if question.required %>
-              <i class="fas fa-asterisk" data-toggle='tooltip' title='Required'></i>
-            <% end %>
-          </h3>
-        </div>
-        <div class="interview-question__form-description">
-          <%= sanitize question.description %>
-        </div>
-      </div>
-    </div>
-    <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
+<div class="interview-question__form">
+
+  <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
+  <% existing_answer =
+    InterviewAnswer.find_by(
+    interview: @interview,
+    interview_question: question,
+    user: current_user
+  ) %>
+  <% if existing_answer.nil? && @interview.crossed? %>
+    <% existing_answer =
+      InterviewAnswer.find_by(
+      interview: @interview.campaign.hr_interview,
+      interview_question: question,
+      user: @interview.campaign.owner
+    ) %>
+  <% elsif read_only %>
     <% existing_answer =
       InterviewAnswer.find_by(
       interview: @interview,
       interview_question: question,
-      user: current_user
+      user: user
     ) %>
-    <% if existing_answer.nil? && @interview.crossed? %>
-      <% existing_answer =
-        InterviewAnswer.find_by(
-        interview: @interview.campaign.hr_interview,
+  <% end %>
+
+  <% current_answer   = existing_answer&.answer || '' %>
+  <% current_comments = existing_answer&.comments || '' %>
+  <% current_objective = existing_answer&.objective || '' %>
+
+  <% if @interview.crossed? %>
+
+    <% employee = @interview.employee %>
+    <% manager = @interview.owner %>
+
+    <% employee_answer = InterviewAnswer.joins(:interview).find_by(
+        interview: @interview.campaign.employee_interview(employee.id),
         interview_question: question,
-        user: @interview.campaign.owner
+        user: employee
       ) %>
-    <% elsif read_only %>
-      <% existing_answer =
-        InterviewAnswer.find_by(
-        interview: @interview,
+    <% manager_answer = InterviewAnswer.joins(:interview).find_by(
+        interview: @interview.campaign.hr_interview(employee.id),
         interview_question: question,
-        user: user
+        user: manager
       ) %>
-    <% end %>
 
-    <% current_answer   = existing_answer&.answer || '' %>
-    <% current_comments = existing_answer&.comments || '' %>
-    <% current_objective = existing_answer&.objective || '' %>
+      <% if manager_answer.present? %>
 
-    <%= simple_form_for(:interview_answer,
-      url: answer_interview_question_path,
-      remote: true,
-      data: {
-        question_type: question.question_type
-      }) do |f| %>
-      <% if question.open_question? %>
+        <div class="interview-crossed-answer">
+          <div class="interview-crossed-answer__header">
+            <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <p><%= manager.fullname %></p>
+            <p>- Manager</p>
+          </div>
+          <% if question.open_question? %>
+            <p class='interview-crossed-answer__text'><%= manager_answer.answer %></p>
+          <% elsif question.rating? %>
+            <div class="flex-row-start-centered">
+              <% for i in 1..manager_answer.answer.to_i %>
+                <i class="fas fa-star"></i>
+              <% end %>
+              <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
+                <i class="far fa-star"></i>
+              <% end %>
+            </div>
+          <% elsif question.mcq? || question.objective? %>
+            <% if question.objective? %>
+              <div class="interview-crossed-answer__objective">
+                <p><%= manager_answer.objective %></p>
+              </div>
+            <% end %>
+            <div class="interview-crossed-answer__mcq">
+              <p><%= manager_answer.answer %></p>
+            </div>
+          <% end %>
 
-        <%# f.input(
-            :answer,
+          <% if manager_answer.comments.present? %>
+            <div class="interview-crossed-answer__objective">
+              <p><%= manager_answer.comments %></p>
+            </div>
+          <% end %>
+        </div>
+
+      <% end %>
+
+      <% if employee_answer.present? %>
+
+        <div class="interview-crossed-answer">
+          <div class="interview-crossed-answer__header">
+            <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <p><%= employee.fullname %></p>
+            <p>- Manager</p>
+          </div>
+          <% if question.open_question? %>
+            <p class='interview-crossed-answer__text'><%= employee_answer.answer %></p>
+          <% elsif question.rating? %>
+            <div class="flex-row-start-centered">
+              <% for i in 1..employee_answer.answer.to_i %>
+                <i class="fas fa-star"></i>
+              <% end %>
+              <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
+                <i class="far fa-star"></i>
+              <% end %>
+            </div>
+          <% elsif question.mcq? || question.objective? %>
+            <% if question.objective? %>
+              <div class="interview-crossed-answer__objective">
+                <p><%= employee_answer.objective %></p>
+              </div>
+            <% end %>
+            <div class="interview-crossed-answer__mcq">
+              <p><%= employee_answer.answer %></p>
+            </div>
+          <% end %>
+
+          <% if employee_answer.comments.present? %>
+            <div class="interview-crossed-answer__objective">
+              <p><%= employee_answer.comments %></p>
+            </div>
+          <% end %>
+        </div>
+
+      <% end %>
+
+  <% end %>
+
+  <%= simple_form_for(:interview_answer,
+    url: answer_interview_question_path,
+    remote: true,
+    data: {
+      question_type: question.question_type
+    }) do |f| %>
+    <% if question.open_question? %>
+
+        <%= f.input :answer,
             as: :text,
-            label: false,
             input_html: {
               value: current_answer,
-              onkeyup: 'enableNext(this);'
+              onkeyup: 'autoSave(this, true);enableSubmit();'
             },
-            disabled: read_only
-          ) %>
+            required: question.required?,
+            disabled: read_only %>
 
-        <% if read_only %>
+    <% elsif question.rating? %>
 
-          <div class='interview-question__read-only'>
-            <p><%= current_answer %></p>
-          </div>
-
-        <% else %>
-
-          <%# f.input :answer,
-              as: :trix_editor,
-              input_html: {
-                value: (sanitize current_answer),
-                onkeyup: 'enableNext(this);'
-              } %>
-
-          <%= f.input :answer,
-              as: :text,
-              input_html: {
-                value: current_answer,
-                onkeyup: 'enableNext(this);'
-              } %>
-
+      <fieldset class="rating<%= ' rating-pizza' if current_user.company_id == 2 %><%= ' read_only' if read_only %>">
+        <% for i in 1..question.options.keys.first.to_i %>
+          <% stars_count = question.options.keys.first.to_i - i + 1 %>
+          <% input_label_key = "star-position(#{question.position})-#{i}" %>
+          <input
+            type="radio"
+            class='radio-rating'
+            id="<%= input_label_key %>"
+            name="interview_answer[answer]"
+            value="<%= stars_count %>"
+            onchange='<%= "autoSave(this);" if question.required %>'
+            <% if current_answer.to_i == stars_count %> checked <% end %>
+            <%= 'disabled' if read_only %>
+          />
+          <label
+            class="full"
+            for="<%= input_label_key %>"
+            title="<%= stars_count %> stars"
+          ><%= stars_count %></label>
         <% end %>
+      </fieldset>
 
-      <% elsif question.rating? %>
-
-        <fieldset class="rating<%= ' rating-pizza' if current_user.company_id == 2 %><%= ' read_only' if read_only %>">
-          <% for i in 1..question.options.keys.first.to_i %>
-            <% stars_count = question.options.keys.first.to_i - i + 1 %>
-            <% input_label_key = "star-position(#{question.position})-#{i}" %>
-            <input
-              type="radio"
-              class='radio-rating'
-              id="<%= input_label_key %>"
-              name="interview_answer[answer]"
-              value="<%= stars_count %>"
-              onchange='selectRating(this);<%= "enableNext(this);" if question.required %>'
-              <% if current_answer.to_i == stars_count %> checked <% end %>
-              <%= 'disabled' if read_only %>
-            />
-            <label
-              class="full"
-              for="<%= input_label_key %>"
-              title="<%= stars_count %> stars"
-            ><%= stars_count %></label>
-          <% end %>
-        </fieldset>
-
-        <%# f.input(
-          :comments,
-          as: :text,
-          input_html: {
-            value: current_comments
-          },
-          required: false,
-          disabled: read_only
-        ) if question.allow_comments %>
-
-        <% if read_only %>
-
-          <label>Comments</label>
-          <div class='interview-question__read-only'>
-            <p><%= current_comments %></p>
-          </div>
-
-        <% else %>
-
-          <%# f.input(
-              :comments,
-              as: :trix_editor,
-              input_html: {
-                value: (sanitize current_comments)
-              },
-              required: false) if question.allow_comments %>
-
-          <%= f.input(
-              :comments,
-              as: :text,
-              input_html: {
-                value: current_comments
-              },
-              required: false) if question.allow_comments %>
-
-        <% end %>
-
-      <% elsif question.mcq? || question.objective? %>
-
-        <%# f.input(
-          :objective,
-          as: :trix_editor,
-          input_html: {
-            value: current_objective
-          },
-          required: true,
-          disabled: read_only
-        ) if question.objective? %>
-
-        <%= f.input(
-          :objective,
-          as: :text,
-          input_html: {
-            value: current_objective,
-            onkeyup: 'enableNext(this);'
-          },
-          required: true,
-          disabled: read_only
-        ) if question.objective? %>
-
-        <fieldset class="mcq">
-          <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
-            <label class="rad-label">
-              <%= b.radio_button({
-                  class: 'rad-input',
-                  checked: ('checked' if b.text == current_answer),
-                  onchange: 'enableNext(this);',
-                  disabled: read_only
-                }.compact) %>
-              <div class="rad-design"></div>
-              <div class="rad-text"><%= b.text %></div>
-            </label>
-          <% end %>
-        </fieldset>
-
-        <%# f.input(
-            :comments,
-            as: :trix_editor,
-            input_html: {
-              value: current_comments
-            },
-            required: false,
-            disabled: read_only) if question.allow_comments %>
+      <% if (!read_only || current_comments.present?) && question.allow_comments %>
 
         <%= f.input(
             :comments,
             as: :text,
             input_html: {
-              value: current_comments
+              value: current_comments,
+              onkeyup: 'autoSave(this, true);'
+            },
+            required: false) %>
+
+      <% end %>
+
+    <% elsif question.mcq? || question.objective? %>
+
+      <%= f.input(
+        :objective,
+        as: :text,
+        input_html: {
+          value: current_objective,
+          onkeyup: 'autoSave(this, true);enableSubmit();'
+        },
+        required: question.required?,
+        disabled: read_only
+      ) if question.objective? %>
+
+      <div class="booklet-select__container">
+        <div class="booklet-select__selected">
+          <p><%= current_answer.present? ? current_answer : '' %></p>
+          <div class="booklet-select__controls">
+            <% unless question.required? || current_answer == '' %>
+              <div class="booklet-select__controls-icon" onclick='BookletSelectRemoveAnswer(this);'>
+                <i class="fas fa-times"></i>
+              </div>
+            <% end %>
+            <div class="booklet-select__controls-icon" onclick='BookletSelectExpand(this);'>
+              <i class="fas fa-angle-down"></i>
+            </div>
+          </div>
+        </div>
+        <div class="booklet-select__dropdown hidden">
+          <% question.options.keys.each do |option| %>
+            <div class="booklet-select__option" onclick='BookletSelectSubmit(this);'>
+              <p><%= option %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <%= f.hidden_field :answer,
+                         disabled: read_only,
+                         input_html: { value: current_answer } %>
+
+      <%# f.input :answer, collection: question.options.keys, label: 'Answer', required: question.required?, disabled: read_only, selected: current_answer, input_html: {onchange: 'autoSave(this);enableSubmit();'} %>
+
+      <% if !read_only || current_comments.present? %>
+
+        <%= f.input(
+            :comments,
+            as: :text,
+            input_html: {
+              value: current_comments,
+              onkeyup: 'autoSave(this, true);'
             },
             required: false,
             disabled: read_only) if question.allow_comments %>
 
       <% end %>
 
-        <%= f.hidden_field :interview_id, value: @interview.id %>
-        <%= f.hidden_field :interview_question_id, value: question.id %>
-      <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
 
-  </div>
+      <%= f.hidden_field :interview_id, value: @interview.id %>
+      <%= f.hidden_field :interview_question_id, value: question.id %>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+  <% end %>
 
-  <div class="interview-question__controls">
-
-    <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
-
-    <% if @interview.crossed? %>
-      <button class="btn-blue" onclick='goToQuestion(this, "summary");'><p>Summary</p></button>
-    <% else %>
-      <a href="#anchor"><button class="btn-blue" onclick='previousQuestion(this);'><p>Previous</p></button></a>
-    <% end %>
-    <% if j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && read_only %>
-      <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
-        <button class="btn-blue" onclick='submitAnswers(this)'><p>Exit</p></button>
-      <% end %>
-    <% elsif j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && @interview.completed == true %>
-      <button class="btn-blue btn-blue" onclick='submitAnswers(this)'><p>See Summary</p></button>
-    <% elsif j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count && question.required && current_answer == '' %>
-      <button class="btn-blue btn-blue-disabled" onclick='submitAnswers(this)' disabled><p>See Summary</p></button>
-    <% elsif j == questions.where.not(question_type: 'separator').where(visible_for: visibility).count %>
-      <button class="btn-blue" onclick='submitAnswers(this)'><p>See Summary</p></button>
-    <% elsif question.required && current_answer == '' && !read_only %>
-      <button class="btn-blue btn-blue-disabled" onclick='nextQuestion(this);' disabled><p>Next</p></button>
-    <% else %>
-      <a href="#anchor"><button class="btn-blue" onclick='nextQuestion(this);'><p>Next</p></button></a>
-    <% end %>
-  </div>
+</div>

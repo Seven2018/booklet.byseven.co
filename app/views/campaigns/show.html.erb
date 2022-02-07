@@ -4,7 +4,7 @@
       <div class="title-return">
 
         <!-- Load previous page with search results, if applicable -->
-        <% if request.referrer.present? && request.referrer.split('?')[0] = request.base_url + '/campaigns' %>
+        <% if request.referrer.present? && request.referrer.split('?')[0] == request.base_url + '/campaigns' %>
           <button class='btn-back' onclick='history.back()'>
             <i class="fas fa-angle-left"></i>
           </button>
