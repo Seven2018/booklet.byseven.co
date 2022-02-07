@@ -207,7 +207,40 @@
     this.style.height = (this.scrollHeight) + "px";
   }
 
-  //////////////////////////////////
+  // BOOKLET SELECT //
 
+  function BookletSelectExpand(element) {
+    dropdown = element.closest('.booklet-select__container').querySelector('.booklet-select__dropdown')
+    if (dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
+    } else {
+      dropdown.classList.add('hidden')
+    }
+  }
+
+  function BookletSelectSubmit(element) {
+    form = element.closest('form')
+    selected_display = element.closest('.booklet-select__container').querySelector('.booklet-select__selected')
+    selected_value = element.querySelector('p').innerText
+    storage = form.querySelector('#interview_answer_answer')
+    submit_button = form.querySelector('.hidden-submit')
+
+    storage.value = selected_value
+    selected_display.querySelector('p').innerText = selected_value
+    submit_button.click()
+    BookletSelectExpand(element)
+  }
+
+  function BookletSelectRemoveAnswer(element) {
+    form = element.closest('form')
+    selected_display = element.closest('.booklet-select__selected')
+    storage = form.querySelector('#interview_answer_answer')
+    submit_button = form.querySelector('.hidden-submit')
+
+    selected_display.querySelector('p').innerText = ''
+    element.classList.add('hidden')
+    storage.value = ''
+    submit_button.click()
+  }
 
 </script>
