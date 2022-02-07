@@ -54,7 +54,7 @@
           <% if question.open_question? %>
             <p class='interview-crossed-answer__text'><%= manager_answer.answer %></p>
           <% elsif question.rating? %>
-            <div class="flex-row-start-centered">
+            <div class="flex-row-start-centered rating-crossed">
               <% for i in 1..manager_answer.answer.to_i %>
                 <i class="fas fa-star"></i>
               <% end %>
@@ -88,12 +88,12 @@
           <div class="interview-crossed-answer__header">
             <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
             <p><%= employee.fullname %></p>
-            <p>- Manager</p>
+            <p>- Employee</p>
           </div>
           <% if question.open_question? %>
             <p class='interview-crossed-answer__text'><%= employee_answer.answer %></p>
           <% elsif question.rating? %>
-            <div class="flex-row-start-centered">
+            <div class="flex-row-start-centered rating-crossed">
               <% for i in 1..employee_answer.answer.to_i %>
                 <i class="fas fa-star"></i>
               <% end %>
@@ -190,7 +190,7 @@
         disabled: read_only
       ) if question.objective? %>
 
-      <div class="booklet-select__container">
+      <div class="booklet-select__container" onclick='BookletSelectExpand(this);'>
         <div class="booklet-select__selected">
           <p><%= current_answer.present? ? current_answer : '' %></p>
           <div class="booklet-select__controls">
@@ -199,7 +199,7 @@
                 <i class="fas fa-times"></i>
               </div>
             <% end %>
-            <div class="booklet-select__controls-icon" onclick='BookletSelectExpand(this);'>
+            <div class="booklet-select__controls-icon">
               <i class="fas fa-angle-down"></i>
             </div>
           </div>
