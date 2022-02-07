@@ -27,6 +27,102 @@
   <% current_comments = existing_answer&.comments || '' %>
   <% current_objective = existing_answer&.objective || '' %>
 
+  <% if @interview.crossed? %>
+
+    <% employee = @interview.employee %>
+    <% manager = @interview.owner %>
+
+    <% employee_answer = InterviewAnswer.joins(:interview).find_by(
+        interview: @interview.campaign.employee_interview(employee.id),
+        interview_question: question,
+        user: employee
+      ) %>
+    <% manager_answer = InterviewAnswer.joins(:interview).find_by(
+        interview: @interview.campaign.hr_interview(employee.id),
+        interview_question: question,
+        user: manager
+      ) %>
+
+      <% if manager_answer.present? %>
+
+        <div class="interview-crossed-answer">
+          <div class="interview-crossed-answer__header">
+            <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <p><%= manager.fullname %></p>
+            <p>- Manager</p>
+          </div>
+          <% if question.open_question? %>
+            <p class='interview-crossed-answer__text'><%= manager_answer.answer %></p>
+          <% elsif question.rating? %>
+            <div class="flex-row-start-centered">
+              <% for i in 1..manager_answer.answer.to_i %>
+                <i class="fas fa-star"></i>
+              <% end %>
+              <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
+                <i class="far fa-star"></i>
+              <% end %>
+            </div>
+          <% elsif question.mcq? || question.objective? %>
+            <% if question.objective? %>
+              <div class="interview-crossed-answer__objective">
+                <p><%= manager_answer.objective %></p>
+              </div>
+            <% end %>
+            <div class="interview-crossed-answer__mcq">
+              <p><%= manager_answer.answer %></p>
+            </div>
+          <% end %>
+
+          <% if manager_answer.comments.present? %>
+            <div class="interview-crossed-answer__objective">
+              <p><%= manager_answer.comments %></p>
+            </div>
+          <% end %>
+        </div>
+
+      <% end %>
+
+      <% if employee_answer.present? %>
+
+        <div class="interview-crossed-answer">
+          <div class="interview-crossed-answer__header">
+            <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <p><%= employee.fullname %></p>
+            <p>- Manager</p>
+          </div>
+          <% if question.open_question? %>
+            <p class='interview-crossed-answer__text'><%= employee_answer.answer %></p>
+          <% elsif question.rating? %>
+            <div class="flex-row-start-centered">
+              <% for i in 1..employee_answer.answer.to_i %>
+                <i class="fas fa-star"></i>
+              <% end %>
+              <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
+                <i class="far fa-star"></i>
+              <% end %>
+            </div>
+          <% elsif question.mcq? || question.objective? %>
+            <% if question.objective? %>
+              <div class="interview-crossed-answer__objective">
+                <p><%= employee_answer.objective %></p>
+              </div>
+            <% end %>
+            <div class="interview-crossed-answer__mcq">
+              <p><%= employee_answer.answer %></p>
+            </div>
+          <% end %>
+
+          <% if employee_answer.comments.present? %>
+            <div class="interview-crossed-answer__objective">
+              <p><%= employee_answer.comments %></p>
+            </div>
+          <% end %>
+        </div>
+
+      <% end %>
+
+  <% end %>
+
   <%= simple_form_for(:interview_answer,
     url: answer_interview_question_path,
     remote: true,
@@ -35,23 +131,14 @@
     }) do |f| %>
     <% if question.open_question? %>
 
-      <% if read_only %>
-
-        <div class='interview-question__read-only'>
-          <p><%= current_answer %></p>
-        </div>
-
-      <% else %>
-
         <%= f.input :answer,
             as: :text,
             input_html: {
               value: current_answer,
               onkeyup: 'autoSave(this, true);enableSubmit();'
             },
-            required: question.required? %>
-
-      <% end %>
+            required: question.required?,
+            disabled: read_only %>
 
     <% elsif question.rating? %>
 
@@ -77,14 +164,7 @@
         <% end %>
       </fieldset>
 
-      <% if read_only %>
-
-        <label>Comments</label>
-        <div class='interview-question__read-only'>
-          <p><%= current_comments %></p>
-        </div>
-
-      <% else %>
+      <% if (!read_only || current_comments.present?) && question.allow_comments %>
 
         <%= f.input(
             :comments,
@@ -93,7 +173,7 @@
               value: current_comments,
               onkeyup: 'autoSave(this, true);'
             },
-            required: false) if question.allow_comments %>
+            required: false) %>
 
       <% end %>
 
@@ -106,34 +186,40 @@
           value: current_objective,
           onkeyup: 'autoSave(this, true);enableSubmit();'
         },
-        required: true,
+        required: question.required?,
         disabled: read_only
       ) if question.objective? %>
 
-      <fieldset class="mcq">
-        <%= f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
+<!--       <fieldset class="mcq">
+        <%# f.collection_radio_buttons(:answer, question.options.keys.map{|c| [c, c]}, :first, :last) do |b| %>
           <label class="rad-label">
-            <%= b.radio_button({
+            <%# b.radio_button({
                 class: 'rad-input',
                 checked: ('checked' if b.text == current_answer),
                 onchange: 'autoSave(this);',
                 disabled: read_only
               }.compact) %>
             <div class="rad-design"></div>
-            <div class="rad-text"><%= b.text %></div>
+            <div class="rad-text"><%# b.text %></div>
           </label>
-        <% end %>
-      </fieldset>
+        <%# end %>
+      </fieldset> -->
 
-      <%= f.input(
-          :comments,
-          as: :text,
-          input_html: {
-            value: current_comments,
-            onkeyup: 'autoSave(this, true);'
-          },
-          required: false,
-          disabled: read_only) if question.allow_comments %>
+      <%= f.input :answer, collection: question.options.keys, label: 'Answer', required: question.required?, disabled: read_only, selected: current_answer, input_html: {onchange: 'autoSave(this);enableSubmit();'} %>
+
+      <% if !read_only || current_comments.present? %>
+
+        <%= f.input(
+            :comments,
+            as: :text,
+            input_html: {
+              value: current_comments,
+              onkeyup: 'autoSave(this, true);'
+            },
+            required: false,
+            disabled: read_only) if question.allow_comments %>
+
+      <% end %>
 
     <% end %>
 

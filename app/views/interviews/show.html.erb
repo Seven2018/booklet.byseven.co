@@ -94,7 +94,11 @@
 
             <div class="interview-main__right-question">
               <a id="anchor-<%= question.position %>" style='position:absolute; top: -2.5rem;'></a>
-              <p title='<%= "Required" if question.required? %>'><%= question_number %>. <%= question.question %> <%= "*" if question.required? %></p>
+              <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
+                <p><%= question_number %>. </p>
+                <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
+                <p><%= question.question %> <%= "*" if question.required? %></p>
+              </div>
               <div class="interview-main__right-question-description">
                 <%= sanitize question.description %>
               </div>
@@ -151,6 +155,7 @@
 
   function enableSubmit() {
     required_answers = document.querySelectorAll('#interview_answer_answer:required, #interview_answer_objective:required')
+    console.log(required_answers)
     submit_button = document.querySelector('#submit-interview')
     required_answers.forEach((input) => {
       if (input.value == '') {
