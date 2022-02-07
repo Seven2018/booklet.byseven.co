@@ -39,7 +39,11 @@
         user: manager
       ) %>
 
-    <% current_answer = crossed_answer || manager_answer %>
+    <% if question.visible_for == 'employee' %>
+      <% current_answer = crossed_answer || employee_answer %>
+    <% else %>
+      <% current_answer = crossed_answer || manager_answer %>
+    <% end %>
 
     <%# actual questions %>
 
