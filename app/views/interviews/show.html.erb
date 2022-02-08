@@ -1,4 +1,15 @@
-<% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
+<% employee = @interview.employee %>
+<% manager = @interview.campaign.owner %>
+
+<% visibility =
+    if @interview.crossed?
+      ['all', 'manager', 'employee']
+    elsif current_user.manager_or_above?
+      ['all', 'manager']
+    else
+      ['all', 'employee']
+    end %>
+
 <% interview_form = @interview.interview_form %>
 <% fully_answered = @interview.fully_answered? %>
 
@@ -102,7 +113,7 @@
               <div class="interview-main__right-question-description">
                 <%= sanitize question.description %>
               </div>
-              <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: question_number, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user) || (@interview.label == 'Simple' && @interview.owner != current_user)) %>
+              <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, manager: manager, employee: employee, j: question_number, read_only: ((@interview.label == 'Employee' && employee != current_user) || (@interview.label == 'Manager' && manager != current_user) || (@interview.label == 'Simple' && manager != current_user)) %>
             </div>
           <% end %>
         </div>
@@ -122,7 +133,7 @@
   </div>
   <div class="interview-thanks__controls">
     <button class="btn-blue-text" onclick='thankYou("back");'><p><i class="fas fa-long-arrow-alt-left"></i> Back</p></button>
-    <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
+    <%= link_to campaign_path(@interview.campaign, employee_id: employee.id) do %>
       <button class="btn-blue"><p>Exit</p></button>
     <% end %>
   </div>
@@ -146,7 +157,6 @@
       setTimeout(function(){
         auto_save = true
         element.closest('form').querySelector('.hidden-submit').click()
-        console.log('saved')
       }, 1000)
     } else {
       element.closest('form').querySelector('.hidden-submit').click()
@@ -155,7 +165,6 @@
 
   function enableSubmit() {
     required_answers = document.querySelectorAll('#interview_answer_answer:required, #interview_answer_objective:required')
-    console.log(required_answers)
     submit_button = document.querySelector('#submit-interview')
     required_answers.forEach((input) => {
       if (input.value == '') {

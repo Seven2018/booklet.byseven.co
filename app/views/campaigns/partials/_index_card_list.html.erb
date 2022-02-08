@@ -43,9 +43,9 @@
                 <div class="content-dropdown hidden">
                     <%= link_to 'Edit', edit_campaign_path(campaign) %>
                     <% if campaign.interviews.where(completed: true).empty? || current_user.hr_or_above? %>
-                      <a data-toggle='modal' data-target='#deleteCampaign'>Delete</a>
+                      <a data-toggle='modal' data-target='#deleteCampaign-<%= campaign.id %>'>Delete</a>
                     <% end %>
-                    <a data-toggle='modal' data-target='#sendEmail'>Send Email</a>
+                    <a data-toggle='modal' data-target='#sendEmail-<%= campaign.id %>'>Send Email</a>
                 </div>
               <% end %>
             </div>
@@ -106,13 +106,13 @@
     <!-- MODALS -->
     <!------------>
 
-    <div class='modal fade' id='sendEmail' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+    <div class='modal fade' id='sendEmail-<%= campaign.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
       <div class='modal-dialog' role='document' style='border-radius: 20px'>
         <%= render 'campaigns/modals/send_notification_email', campaign: campaign %>
       </div>
     </div>
 
-    <div class='modal fade' id='deleteCampaign' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+    <div class='modal fade' id='deleteCampaign-<%= campaign.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
       <div class='modal-dialog' role='document' style='border-radius: 20px'>
         <%= render 'campaigns/modals/destroy', campaign: campaign %>
       </div>
