@@ -9,7 +9,7 @@
   height: 10rem;
   padding: 1.5rem 0;
   position: sticky;
-  top: 6rem;
+  top: 0;
   left: 0px;
   z-index: 151;
   background-color: white;
@@ -219,6 +219,30 @@
   margin-top: 3rem;
 }
 
+.load-more-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding-bottom: 3rem;
+}
+
+.load-more {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  padding: 0.5rem 4rem 0.5rem 4rem;
+  width: auto;
+  border-radius: 0.5rem;
+  background-color: rgba(89, 119, 183, 0.2);
+  cursor: pointer;
+}
+
+#load-more-button {
+  color: #3177B7;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
 .campaign-col {
   display: flex;
   justify-content: center;
@@ -282,6 +306,13 @@
   }
 }
 
+.campaign-card__main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 21rem;
+}
+
 
 .campaign-card__controls {
   padding: 1rem;
@@ -321,13 +352,14 @@
   .content-dropdown {
     position: absolute;
     right: 1rem;
-    top: 4rem;
+    top: 8rem;
     border-radius: 4px;
     box-shadow: 0px 4px 4px rgba(0,0,0,.25);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     background: white;
+    color: black;
     padding: 0 1rem;
     z-index: 100;
   }

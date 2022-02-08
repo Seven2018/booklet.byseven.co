@@ -2,9 +2,19 @@
   <div id="main-page-title">
     <div class="show-campaign-title">
       <div class="title-return">
-        <%= link_to campaigns_path, class: 'btn-back' do %>
-        <i class="fas fa-angle-left"></i>
+
+        <!-- Load previous page with search results, if applicable -->
+        <% if request.referrer.present? && request.referrer.split('?')[0] = request.base_url + '/campaigns' %>
+          <button class='btn-back' onclick='history.back()'>
+            <i class="fas fa-angle-left"></i>
+          </button>
+        <% else %>
+          <%= link_to campaigns_path, class: 'btn-back' do %>
+            <i class="fas fa-angle-left"></i>
+          <% end %>
         <% end %>
+        <!------>
+
         <h1><%= @completion %>% - <%= @campaign.title %></h1>
       </div>
       <div class="main-page-title__tags show">

@@ -13,7 +13,11 @@
     </div>
   </div>
   <% if @campaigns.count >= 24 %>
-    <button id="load-more-button" onclick='loadMore();'>Load more...</button>
+    <div class="load-more-container">
+      <div class="load-more" onclick='loadMore();'>
+        <button id="load-more-button">Load more</button>
+      </div>
+    </div>
   <% end %>
 </div>
 
@@ -69,6 +73,10 @@
 
   function openContentMenu(element) {
     dropdown = element.parentNode.querySelector('.content-dropdown')
+    if (!dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
+      return
+    }
     dropdown.classList.remove('hidden')
     formGuardian = true
     card_link = element.closest('.campaign-card').querySelector('.stretched-link')

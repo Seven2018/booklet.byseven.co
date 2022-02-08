@@ -38,7 +38,20 @@
         <%= f.hidden_field :campaign_type, value: selected_campaign_type %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       <% end %>
-      <button class="back-arrow-btn-mobile" onclick="document.querySelectorAll('.simple_form.campaign')[1].querySelector('button').click()"><i class="fas fa-arrow-left"></i></button><button id='campaign-confirm-button' data-toggle='modal' data-target='#sendEmail'><p>LAUNCH INTERVIEW</p> <i class="fas fa-paper-plane no-margin"></i></button>
+      <button class="back-arrow-btn-mobile" onclick="document.querySelectorAll('.simple_form.campaign')[1].querySelector('button').click()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <% if params.dig(:campaign, :selected_campaign_type) == '1' %>
+        <button id='campaign-confirm-button' data-toggle='modal' data-target='#sendEmail'>
+          <p>LAUNCH INTERVIEW</p>
+          <i class="fas fa-paper-plane no-margin"></i>
+        </button>
+      <% else %>
+        <button id='campaign-confirm-button' onclick='createCampaign(this, false)'>
+          <p>LAUNCH INTERVIEW</p>
+          <i class="fas fa-paper-plane no-margin"></i>
+        </button>
+      <% end %>
     </div>
   </div>
   <div class="campaign-dates-container">

@@ -94,7 +94,9 @@ class CampaignsController < ApplicationController
 
     # TEMP #
     elsif params[:select_period_temp].present?
-      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', params.dig(:select_period_temp, :start), params.dig(:select_period_temp, :end))
+      start_temp = params.dig(:select_period_temp, :start).split('/').reverse.join
+      end_temp = params.dig(:select_period_temp, :end).split('/').reverse.join
+      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', start_temp, end_temp)
     ########
 
     elsif params[:format] == 'csv'
@@ -180,10 +182,6 @@ class CampaignsController < ApplicationController
 
   def show
     authorize @campaign
-    # if current_user.employee_to_hr_light?
-    #   target = Interview.find_by(campaign_id: @campaign.id, employee_id: current_user.id, label: 'Employee')
-    #   target.present? ? (redirect_to interview_path(target)) : (redirect_to root_path)
-    # end
 
     @current_user_employee = current_user.employee_to_hr_light?
     @interviews_for_date =
@@ -227,8 +225,11 @@ class CampaignsController < ApplicationController
 
   def destroy
     authorize @campaign
+
     @target = "campaign-card-#{@campaign.id}"
+    @campaign.interviews.destroy_all if current_user.hr_or_above?
     @campaign.destroy
+
     respond_to do |format|
       format.js
     end

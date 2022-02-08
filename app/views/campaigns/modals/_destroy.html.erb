@@ -1,0 +1,16 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__folder">
+    <div id="modal-title" style=" display: flex; justify-content: space-between;">
+      <h3 class="modal-title" id="myModalLabel"><%= campaign.title %> : Delete</h3>
+    </div>
+  </div>
+  <div class="modal-body">
+    <p>Do you wish to permanently delete this campaign ?</p>
+    <div class="modal-email-btns">
+      <button type="button" class="btn-blue-text cancel-close" data-dismiss="modal" aria-label="Close">Cancel</button>
+      <%= link_to campaign_path(campaign), method: :delete, remote: true do %>
+        <button type="button" class="btn-blue">Delete</button>
+      <% end %>
+    </div>
+  </div>
+</div>
