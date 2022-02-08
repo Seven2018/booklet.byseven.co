@@ -122,6 +122,41 @@ button {
   }
 }
 
+.btn-grey {
+  padding: 1rem;
+  background: white;
+  border: 2px solid #C4C4C4;
+  border-radius: 5px;
+
+  p {
+    font-size: 1.6rem;
+    line-height: 2rem;
+    font-weight: 600 !important;
+    color: #C4C4C4;
+  }
+
+  &:hover {
+    border: 2px solid black;
+
+    p {
+      color: black;
+    }
+  }
+}
+
+.btn-red {
+  padding: 1rem;
+  background: rgba(255, 0, 0, 0.7);
+  border-radius: 5px;
+
+  p {
+    font-size: 1.6rem;
+    line-height: 2rem;
+    font-weight: 600 !important;
+    color: white;
+  }
+}
+
 .btn-orange {
   background-color: #F26419;
   display: flex;

@@ -1,29 +1,42 @@
-<div class="campaigns-container">
-  <div id="main-page-title">
-    <div class="show-campaign-title">
-      <div class="title-return">
+<div class="campaign-show__header">
+  <div class="campaign-show__header-controls">
 
-        <!-- Load previous page with search results, if applicable -->
-        <% if request.referrer.present? && request.referrer.split('?')[0] == request.base_url + '/campaigns' %>
-          <button class='btn-back' onclick='history.back()'>
-            <i class="fas fa-angle-left"></i>
-          </button>
-        <% else %>
-          <%= link_to campaigns_path, class: 'btn-back' do %>
-            <i class="fas fa-angle-left"></i>
-          <% end %>
+    <div class="campaign-show__header-title">
+      <!-- Load previous page with search results, if applicable -->
+      <% if request.referrer.present? && request.referrer.split('?')[0] == request.base_url + '/campaigns' %>
+        <button class='btn-back' onclick='history.back()'>
+          <i class="fas fa-angle-left"></i>
+        </button>
+      <% else %>
+        <%= link_to campaigns_path, class: 'btn-back' do %>
+          <i class="fas fa-angle-left"></i>
         <% end %>
-        <!------>
+      <% end %>
+      <!------>
 
-        <h1><%= @completion %>% - <%= @campaign.title %></h1>
-      </div>
-      <div class="main-page-title__tags show">
+      <h1><%= @completion %>% - <%= @campaign.title %></h1>
+
+      <div class="campaign-show__header-tags">
         <% @campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
-          <p class="main-page-title__tag-pill"><%= tag.tag_name %></p>
+          <p class="interview-form-card__tag-pill"><%= tag.tag_name %></p>
         <% end %>
       </div>
     </div>
 
+    <div class="campaign-show__header-buttons">
+      <a class='btn-blue-text' data-toggle='modal' data-target='#addParticipant'>
+        <span class="iconify" data-icon="akar-icons:circle-plus"></span>
+        <p>Add participant</p>
+      </a>
+      <%= link_to edit_campaign_path(@campaign), class: 'btn-blue-text' do %>
+        <span class="iconify" data-icon="ci:edit"></span>
+        <p>Edit</p>
+      <% end %>
+    </div>
+
+  </div>
+
+  <div class="campaign-show__header-dates">
     <h3>
       <% if @current_user_employee %>
         Review on <strong>
@@ -37,13 +50,33 @@
           </strong>
       <% end %>
     </h3>
+  </div>
+</div>
 
+<div class="campaign-container">
+  <%= render 'campaigns/partials/show_interviews', campaign: @campaign %>
+</div>
+
+
+<!------------>
+<!-- HIDDEN -->
+<!------------>
+
+<a id='campaignInfoMessageTrigger' class='hidden' data-toggle='modal' data-target='#campaignInfoMessage'></a>
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade' id='addParticipant' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+  <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
+    <%= render 'campaigns/modals/add_participant' %>
   </div>
-  <div id="main-controls">
-    <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
-  </div>
-  <div class="campaign-interview-list">
-    <%= render 'campaigns/partials/show_interview_list', campaign: @campaign, interviews: @interviews %>
+</div>
+
+<div class='modal fade' id='campaignInfoMessage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+  <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
+    <%= render 'campaigns/modals/campaign_info_message', message: '' %>
   </div>
 </div>
 
@@ -52,8 +85,86 @@
 <!-- JAVASCRIPT -->
 <!---------------->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
 <script>
-  window.onload = function(e){
-    document.querySelector('.btn-search').click()
+  formGuardian = false;
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
   }
+
+  function openContentMenu(element) {
+    dropdown = element.parentNode.querySelector('.content-dropdown')
+    overlay = element.closest('.campaign-show__card').querySelector('.campaign-show__card-overlay')
+
+    if (!dropdown.classList.contains('hidden')) {
+      dropdown.classList.add('hidden')
+      overlay.classList.add('hidden')
+      return
+    }
+    dropdown.classList.remove('hidden')
+    overlay.classList.remove('hidden')
+    formGuardian = true
+    setTimeout(function(){
+      formGuardian = false
+    }, 1);
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, dropdown) && formGuardian == false) {
+        formGuardian = true
+        setTimeout(function(){
+          formGuardian = false
+        }, 1);
+        dropdown.classList.add('hidden')
+        overlay.classList.add('hidden')
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
+  }
+
+
+  ///////////////////
+  // AUTO COMPLETE //
+  ///////////////////
+
+  form = document.querySelector('.search')
+  input = form.querySelector('input')
+  input.addEventListener('keypress', function(e) {
+    if (event.which == '13') {
+      event.preventDefault();
+    }
+  })
+
+  $input = $("[data-behavior='autocomplete']");
+
+  var options = {
+    listLocation: "users",
+    getValue: 'name',
+    url: function(phrase) {
+      return "/users_search.json?search=" + phrase
+    },
+    list: {
+      onChooseEvent: function() {
+        user_id = $input.getSelectedItemData().id
+        button = document.getElementById('add-participant-button')
+        new_url = new URL(button.href)
+        new_url.searchParams.set('user_id', user_id)
+        button.href = new_url.href
+      },
+      match: {
+        enabled: true
+      }
+    }
+  }
+
+  $input.easyAutocomplete(options);
 </script>
