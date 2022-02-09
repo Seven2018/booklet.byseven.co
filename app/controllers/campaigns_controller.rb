@@ -111,7 +111,13 @@ class CampaignsController < ApplicationController
       # format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params[:start_date]} to #{params[:end_date]}.csv" }
 
       # TEMP #
-      format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv" }
+      format.csv {
+        if params.dig(:select_period_temp, :mode) == 'Analytics'
+          send_data @campaigns.to_csv_analytics(current_user.company_id, params.dig(:select_period_temp, :category)), :filename => "Campaign Export (Analytics) - #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
+        else
+          send_data @campaigns.to_csv_data(current_user.company_id), :filename => "Campaign Export (Data)- #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
+        end
+      }
       ########
     end
   end
