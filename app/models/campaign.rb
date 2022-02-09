@@ -129,13 +129,12 @@ class Campaign < ApplicationRecord
         'Cross Interviews - Not started',
         'Cross Interviews - Employees not set',
         'Cross Interviews - Total',
-        'Cross Interviews - Total-verif',
+        'Cross Interviews - Locked/Total',
         'Simple Interviews - Completed',
         'Simple Interviews - Locked',
         'Simple Interviews - Not started',
         'Simple Interviews - Employees not set',
         'Simple Interview - Total',
-        'Simple Interview - Total-verif',
         ]
 
     CSV.generate(headers: true) do |csv|
@@ -148,11 +147,13 @@ class Campaign < ApplicationRecord
         crossed_not_started = Interview.where(campaign_id: all.ids, label: 'Employee', employee_id: employees.ids, completed: false).map{|x| !Interview.find_by(campaign_id: x.campaign_id, label: 'Manager', employee_id: x.employee_id).completed?}.count
         crossed_in_progress = crossed_total - crossed_locked - crossed_completed - crossed_not_started
         crossed_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
+        crossed_locked_by_total = (crossed_total.fdiv(crossed_locked)*10).round.to_s + '%'
         simple_completed = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids, completed: true, locked_at: nil).count
         simple_locked = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).where.not(locked_at: nil).count
         simple_not_started = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids, completed: false).count
         simple_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
         simple_total = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
+        simple_completed_by_total = (simple_total.fdiv(simple_completed)*10).round.to_s + '%'
 
         line = []
 
@@ -164,14 +165,14 @@ class Campaign < ApplicationRecord
         line << crossed_not_started
         line << crossed_not_set
         line << crossed_total
-        line << crossed_total_verif
+        line << crossed_locked_by_total
 
         line << simple_completed
         line << simple_locked
         line << simple_not_started
         line << simple_not_set
         line << simple_total
-        line << simple_total_verif
+        line << simple_completed_by_total
 
         csv << line
       end
