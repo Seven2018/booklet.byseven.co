@@ -17,9 +17,9 @@
   <% elsif existing_answer.nil? && @interview.crossed? %>
     <% existing_answer =
       InterviewAnswer.find_by(
-      interview: @interview.campaign.hr_interview,
+      interview: @interview.campaign.hr_interview(employee.id),
       interview_question: question,
-      user: @interview.campaign.owner
+      user: manager
     ) %>
   <% elsif read_only %>
     <% existing_answer =
