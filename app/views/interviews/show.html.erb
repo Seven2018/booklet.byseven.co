@@ -150,6 +150,20 @@
 
 <script>
   auto_save = true
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
 
   function autoSave(element, delayed = false) {
     if (delayed && auto_save) {
@@ -218,10 +232,21 @@
 
   // BOOKLET SELECT //
 
+
   function BookletSelectExpand(element) {
+    doubleClickGuardian = true
     dropdown = element.closest('.booklet-select__container').querySelector('.booklet-select__dropdown')
+    setTimeout(() => {
+      doubleClickGuardian = false
+    }, 100);
     if (dropdown.classList.contains('hidden')) {
       dropdown.classList.remove('hidden')
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, dropdown) && !doubleClickGuardian) {
+          dropdown.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
     } else {
       dropdown.classList.add('hidden')
     }
