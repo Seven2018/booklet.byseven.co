@@ -194,8 +194,8 @@
         disabled: read_only
       ) if question.objective? %>
 
-      <div class="booklet-select__container" onclick='BookletSelectExpand(this);'>
-        <div class="booklet-select__selected">
+      <div class="booklet-select__container" >
+        <div class="booklet-select__selected" onclick='BookletSelectExpand(this);'>
           <p><%= current_answer.present? ? current_answer : '' %></p>
           <div class="booklet-select__controls">
             <% unless question.required? || current_answer == '' %>
