@@ -1,0 +1,134 @@
+<div class="row">
+
+  <% campaign.employees.distinct.order(lastname: :asc).each do |employee| %>
+    <% employee_view = current_user == employee %>
+    <% manager_view = current_user == campaign.owner || current_user.hr_or_above? %>
+
+    <div class="campaign-show__card-container col-sm-12 col-md-6 col-lg-4 col-xl-3">
+      <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
+        <div class="campaign-show__card-overlay hidden"></div>
+        <div class="campaign-card__options" onclick="openContentMenu(this);">
+          <% if current_user.manager_or_above? %>
+            <i class="fas fa-ellipsis-v"></i>
+            <div class="content-dropdown hidden">
+                <%= link_to 'See profile', user_path(employee) %>
+                <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id) %>
+                <% if current_user.hr_or_above? || campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
+                  <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
+                <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="campaign-show__card-profile">
+          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-large' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          <p><%= employee.lastname.upcase %> <%= employee.firstname.capitalize %></p>
+        </div>
+
+        <div class="campaign-show__card-interviews">
+          <% if campaign.simple? %>
+            <% interview = Interview.find_by(campaign_id: campaign.id, employee_id: employee.id) %>
+            <% active_link = interview.completed? && employee_view || manager_view %>
+
+            <div class="campaign-show__card-interview">
+              <% if active_link %>
+                <%= link_to '', interview_path(interview), class: 'stretched-link' %>
+              <% end %>
+              <div>
+                <p><%= interview.title %> review <br><em><%= "Until #{interview.date}" %></em></p>
+                <% if interview.completed? %>
+                  <% last_updated = interview.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d/%m/%Y') %>
+                  <p class="campaign-show__card-interview-status--complete">
+                    Last updated on <%= last_updated %>
+                  </p>
+                <% else %>
+                  <p class="campaign-show__card-interview-status--incomplete">
+                    Not completed
+                  </p>
+                <% end %>
+              </div>
+              <% if active_link %>
+                <span class="iconify" data-icon="fontisto:angle-right"></span>
+              <% end %>
+            </div>
+
+            <div class="campaign-show__card-interviews-info-incomplete">
+              <p>Manager may update his/her answer at any time.</p>
+            </div>
+
+          <% elsif campaign.crossed? %>
+            <% interviews = Interview.where(campaign_id: campaign.id, employee_id: employee.id) %>
+            <% employee_interview = interviews.find_by(label: 'Employee') %>
+            <% manager_interview = interviews.find_by(label: 'Manager') %>
+            <% crossed_interview = interviews.find_by(label: 'Crossed') %>
+            <% crossed_availability = employee_interview.completed? && manager_interview.completed? %>
+            <% interviews = [employee_interview, manager_interview, crossed_interview] %>
+
+            <% interview_title = {'Employee' => "Employee's",
+                                  'Manager' => "Manager's",
+                                  'Crossed' => "Cross"} %>
+
+            <% interviews.each do |interview| %>
+
+              <% active_link = interview.crossed? && crossed_availability|| !interview.locked? && ((employee_view && interview.employee?) || (manager_view && interview.manager?) || interview.completed?) %>
+
+              <div class="campaign-show__card-interview">
+                <% if active_link %>
+                  <%= link_to '', interview_path(interview), class: 'stretched-link' %>
+                <% end %>
+                <div>
+                  <p><%= interview_title[interview.label] %> review <em><%= "- Until #{interview.date}" if interview.crossed? %></em></p>
+                  <% if interview.completed? %>
+                    <p class="campaign-show__card-interview-status--complete">
+                      Completed !
+                    </p>
+                  <% elsif interview.crossed? && !crossed_availability %>
+                    <p class="campaign-show__card-interview-status--unavailable">
+                      Not available yet
+                    </p>
+                  <% else %>
+                    <p class="campaign-show__card-interview-status--incomplete">
+                      Not completed
+                    </p>
+                  <% end %>
+                </div>
+                <% if active_link %>
+                  <span class="iconify" data-icon="fontisto:angle-right"></span>
+                <% end %>
+              </div>
+
+            <% end %>
+
+            <% if crossed_interview.completed? %>
+              <div class="campaign-show__card-interviews-info-locked">
+                <p>Interview locked</p>
+                <span class="iconify" data-icon="akar-icons:circle-check-fill"></span>
+              </div>
+            <% elsif crossed_interview.completed? %>
+              <div class="campaign-show__card-interviews-info-complete">
+                <p>Interview completed !</p>
+              </div>
+            <% else %>
+              <div class="campaign-show__card-interviews-info-incomplete">
+                <p>Start a cross review when employee and manager’s reviews are done</p>
+              </div>
+            <% end %>
+
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!----------->
+    <!-- MODAL -->
+    <!----------->
+
+    <div class='modal fade' id='removeParticipant-<%= employee.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+      <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
+        <%= render 'campaigns/modals/remove_participant', employee: employee %>
+      </div>
+    </div>
+
+  <% end %>
+
+</div>

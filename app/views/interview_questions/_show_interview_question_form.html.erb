@@ -1,13 +1,20 @@
 <div class="interview-question__form">
 
-  <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
+  <% user = @interview.label == 'Employee' ? employee : manager %>
   <% existing_answer =
     InterviewAnswer.find_by(
     interview: @interview,
     interview_question: question,
     user: current_user
   ) %>
-  <% if existing_answer.nil? && @interview.crossed? %>
+  <% if existing_answer.nil? && @interview.crossed? && question.visible_for == 'employee' %>
+    <% existing_answer =
+      InterviewAnswer.find_by(
+      interview: @interview.campaign.employee_interview(employee.id),
+      interview_question: question,
+      user: employee
+    ) %>
+  <% elsif existing_answer.nil? && @interview.crossed? %>
     <% existing_answer =
       InterviewAnswer.find_by(
       interview: @interview.campaign.hr_interview,
@@ -28,9 +35,6 @@
   <% current_objective = existing_answer&.objective || '' %>
 
   <% if @interview.crossed? %>
-
-    <% employee = @interview.employee %>
-    <% manager = @interview.owner %>
 
     <% employee_answer = InterviewAnswer.joins(:interview).find_by(
         interview: @interview.campaign.employee_interview(employee.id),
@@ -152,7 +156,7 @@
             id="<%= input_label_key %>"
             name="interview_answer[answer]"
             value="<%= stars_count %>"
-            onchange='<%= "autoSave(this);" if question.required %>'
+            onchange="autoSave(this);enableSubmit();"
             <% if current_answer.to_i == stars_count %> checked <% end %>
             <%= 'disabled' if read_only %>
           />
