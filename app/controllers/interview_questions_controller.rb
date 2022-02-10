@@ -4,8 +4,19 @@ class InterviewQuestionsController < ApplicationController
   def create
     @question = InterviewQuestion.new(question_params)
     @form = InterviewForm.find(@question.interview_form_id)
+    questions = @form.interview_questions.order(position: :asc)
     authorize @question
-    @question.position = @form.interview_questions.order(position: :asc).count + 1
+
+    # Properly order the questions, if necessary
+    if questions.map(&:position) != (1..questions.count).to_a
+      i = 1
+      questions.each do |question|
+        question.update position: i
+        i += 1
+      end
+    end
+
+    @question.position = i
     params[:interview_question][:required].present? ? @question.required = true : @question.required = false
     if @question.rating?
       @question.options = {params[:interview_question][:options] => 1}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= stylesheet_link_tag wicked_pdf_asset_base64("pdf") %>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,400" rel="stylesheet">
+  </head>
+  <body id="body-pdf">
+    <div id="header">
+    </div>
+    <div id="content">
+      <%= yield %>
+    </div>
+  </body>
+</html>

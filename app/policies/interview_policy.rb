@@ -31,6 +31,15 @@ class InterviewPolicy < ApplicationPolicy
 
     case
     when record.crossed? || record.manager? || record.simple?
+      user == record.owner || user.hr_or_above?
+    when record.employee?
+      user == record.employee
+    end
+  end
+
+  def complete_interview?
+    case
+    when record.crossed? || record.manager? || record.simple?
       user == record.owner
     when record.employee?
       user == record.employee
