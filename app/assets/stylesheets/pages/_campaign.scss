@@ -1081,16 +1081,13 @@
   margin-top: 40vh;
 
   form {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
   }
 
   p {
     margin-right: 1rem;
   }
 
-  input {
+  input[type=text] {
     text-align: center;
     margin-right: 1rem;
     height: 4rem;
@@ -1109,25 +1106,49 @@
     color: #3177B7;
   }
 
-  .report-date-control {
+  .report-mode-control, .report-date-control {
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
+    margin-bottom: 2rem;
 
-    div {
+    div, fieldset {
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      flex-grow: 1;
+    }
+
+    .form-check {
+      justify-content: space-between;
+
+      label {
+        margin-left: 1rem;
+      }
+    }
+
+    .radio_buttons {
+      margin: 0;
     }
   }
 }
 
+.report-tag-categories-control {
+  margin-bottom: 2rem;
 
-.report-date-control {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  max-width: 100%;
+  label {
+    margin-bottom: 1rem;
+  }
 
-  div {
+  .form-check {
+    justify-content: space-between;
+
+    label {
+      margin-left: 1rem;
+    }
+  }
+
+  .radio_buttons {
     margin: 0;
   }
 }
