@@ -58,7 +58,7 @@
           <% if question.open_question? %>
             <p class='interview-crossed-answer__text'><%= manager_answer.answer %></p>
           <% elsif question.rating? %>
-            <div class="flex-row-start-centered">
+            <div class="flex-row-start-centered rating-crossed">
               <% for i in 1..manager_answer.answer.to_i %>
                 <i class="fas fa-star"></i>
               <% end %>
@@ -97,7 +97,7 @@
           <% if question.open_question? %>
             <p class='interview-crossed-answer__text'><%= employee_answer.answer %></p>
           <% elsif question.rating? %>
-            <div class="flex-row-start-centered">
+            <div class="flex-row-start-centered rating-crossed">
               <% for i in 1..employee_answer.answer.to_i %>
                 <i class="fas fa-star"></i>
               <% end %>
