@@ -3,33 +3,72 @@
 .navbar {
   position: sticky;
   top: 0;
-  // border-bottom: 1px solid #c4c4c4;
   height: 5rem;
   display: none;
   justify-content: space-between;
-  border-bottom: 0.1rem solid #d3d3d3;
   z-index: 1000;
-  background-color: white;
 
   @include from-medium {
     height: 7.5rem;
-    padding: 3rem 3rem 3rem 3rem;
     display: flex;
   }
 
-  a {
-    text-decoration: none;
-    text-transform: none;
-    color: black;
-    // font-size: 1.8rem;
+  .navbar-buttons {
+    text-align: left;
+    margin: 0 2rem;
+    color: white;
+
+    h4 {
+      font-size: 1.6rem !important;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    &.navbar-buttons--active {
+
+      h4 {
+        font-weight: bolder;
+      }
+    }
+  }
+}
+
+.navbar-admin {
+  position: sticky;
+  top: 7.5rem;
+  height: 5rem;
+  display: none;
+  justify-content: space-between;
+  background-color: white;
+  border-bottom: 0.1rem solid #d3d3d3;
+  z-index: 1000;
+
+  @include from-medium {
+    height: 7.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  ul {
-    list-style: none;
-  }
+  .navbar-admin__button {
+    margin: 0 1rem;
 
-  .orange {
-    color: #F26419;
+    h4 {
+      font-weight: 500;
+      font-size: 1.6rem !important;
+      line-height: 2rem;
+      padding: 2rem;
+      color: #3177B7;
+      border-radius: 1rem;
+    }
+
+    &.navbar-admin__button--active {
+
+      h4 {
+        background: rgba(49, 119, 183, 0.1);
+        font-weight: bolder;
+      }
+    }
   }
 }
 
@@ -54,57 +93,7 @@
   }
 }
 
-.navbar-top {
-  min-height: 8rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-left: .5rem;
-
-  i {
-    color: #FFC552;
-    cursor: pointer;
-  }
-}
-
-.navbar-middle {
-  overflow-x: hidden;
-  overflow-y: auto;
-  flex: 1;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.navbar-middle::-webkit-scrollbar {
-  width: 0 !important;
-  display: none;  /* Safari and Chrome */
-}
-
-.navbar-middle--mobile {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.navbar-logo img {
-  width: 10rem;
-}
-
-.navbar-logo-small img {
-  width: 4rem;
-  margin-bottom: 5rem;
-}
-
-.navbar-controls {
-  height: 100%;
-  margin-right: 30px;
-  display: inherit;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.top-left-nav {
-  font-family: 'Montserrat';
+.navbar-controls__left {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -114,44 +103,40 @@
     justify-content: space-evenly;
     align-items: flex-start;
     list-style-type: none;
-    margin-top: 20px;
+    margin-top: 2rem;
     padding-left: 0;
   }
 
   li {
-    padding-right: 80px;
+    padding-right: 8rem;
   }
 
-  ul li a {
+  ul li a, ul li button {
     position: relative;
     display: block;
     text-decoration: none;
     font-size: 1.6rem;;
-    color: black;
-    padding: 4px 0;
+    color: white;
+    padding: .4rem 0;
     transition: 0.5s;
   }
 
-  ul li a::after {
-    height: 4px;
-    position: absolute;
-    content: "";
-    width: 100%;
-    top: 100%;
-    left: 0;
-    transition: transform 0.5s;
-    transform: scaleX(0);
-    transform-origin: right;
-  }
+  // ul li a::after, ul li button::after {
+  //   height: 4px;
+  //   position: absolute;
+  //   content: "";
+  //   width: 100%;
+  //   top: 100%;
+  //   left: 0;
+  //   transition: transform 0.5s;
+  //   transform: scaleX(0);
+  //   transform-origin: right;
+  // }
 
-  ul li a:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-}
-
-.left-buttons {
-  color: black;
+  // ul li a:hover::after, ul li button:hover::after {
+  //   transform: scaleX(1);
+  //   transform-origin: left;
+  // }
 }
 
 .left-buttons--mobile {
@@ -178,21 +163,6 @@
 
   i:active {
     color: white !important;
-  }
-}
-
-.left-buttons {
-  font-size: 0.8rem;
-  font-weight: lighter;
-}
-
-.left-menu-title {
-  text-align: left;
-
-  h4 {
-    font-size: 1.6rem !important;
-    margin-bottom: 8px;
-    font-weight: 400;
   }
 }
 
@@ -532,17 +502,7 @@
 /////////////////
 
 .navbar__blue {
-
-  .top-left-nav {
-
-    ul li a::after {
-      background: #3177B7;
-    }
-
-    ul li a:hover {
-      color:  #3177B7;
-    }
-  }
+  background-color: #3177B7;
 
   .isactive {
     border-bottom: 4px solid #3177B7;

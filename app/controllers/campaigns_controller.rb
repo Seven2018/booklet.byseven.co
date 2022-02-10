@@ -2,58 +2,12 @@ class CampaignsController < ApplicationController
   before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy]
 
   def index
-    search_title = params.dig(:search, :title)
-    search_title.present? ? offset_counter = nil : offset_counter = params.dig(:search, :offset)
-    search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
-
     campaigns = policy_scope(Campaign).where(company: current_user.company)
                                       .where_exists(:interviews)
                                       .order(created_at: :desc)
     @tag_categories = TagCategory.where(company_id: current_user.company_id)
 
-    if current_user.manager?
-      campaigns = campaigns.where(owner_id: current_user.id)
-    elsif current_user.employee_to_hr_light?
-      campaigns = campaigns.joins(:interviews).where(interviews: { employee: current_user }).distinct
-    end
-
-    @campaigns =
-      if search_period == 'All'
-        campaigns
-      elsif search_period == 'Completed'
-        campaigns.where_not_exists(:interviews, locked_at: nil)
-      else
-        campaigns.where_exists(:interviews, locked_at: nil)
-      end
-
-    if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
-      selected_tags = params.dig(:search, :tags).present? ? params.dig(:search, :tags).split(',') : params.dig(:filter_tags, :tag).map{|x| x.split(':').last.to_i}
-      selected_templates = InterviewForm.where(company_id: current_user.company_id).where_exists(:interview_form_tags, tag_id: selected_tags)
-      @campaigns = @campaigns.where(interview_form_id: selected_templates.ids)
-      @filtered_by_tags = 'true'
-    end
-
-    if search_title.present?
-      interview_forms =  InterviewForm.where(company_id: current_user.company_id).search_templates(search_title)
-      campaigns_by_form = @campaigns.where(interview_form: interview_forms)
-      campaigns = @campaigns.search_campaigns(search_title)
-      @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
-      @filtered = true
-    else
-      @filtered_by_tags = 'false'
-      @filtered = false
-      @campaigns = @campaigns.limit(24)
-    end
-
-
-    if offset_counter.present? && offset_counter.to_i > 1 && !search_title.present?
-      @campaigns_offset = @campaigns.limit(24).offset((offset_counter.to_i - 1) * 24)
-      @offset_indicator = true
-      @offset = offset_counter
-    else
-      @campaigns_offset = []
-      @offset_indicator = false
-    end
+    filter_campaigns(campaigns)
 
     # @campaigns = @campaigns.limit(24)
 
@@ -61,6 +15,24 @@ class CampaignsController < ApplicationController
       format.html
       format.js
     end
+  end
+
+  def my_campaigns
+    if params[:view] == 'Manager'
+      campaigns = policy_scope(Campaign)
+                    .where(company_id: current_user.company_id, owner_id: current_user.id)
+                    .order(created_at: :desc)
+    else
+      campaigns = policy_scope(Campaign).joins(:interviews)
+                    .where(company_id: current_user.company_id, interviews: {employee_id: current_user.id}).distinct
+                    .order(created_at: :desc)
+    end
+
+    authorize campaigns
+
+    @tag_categories = TagCategory.where(company_id: current_user.company_id)
+
+    filter_campaigns(campaigns)
   end
 
   def campaigns_report
@@ -236,6 +208,50 @@ class CampaignsController < ApplicationController
   end
 
   private
+
+  def filter_campaigns(campaigns)
+    search_title = params.dig(:search, :title)
+    search_title.present? ? offset_counter = nil : offset_counter = params.dig(:search, :offset)
+    search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
+
+    @campaigns =
+      if search_period == 'All'
+        campaigns
+      elsif search_period == 'Completed'
+        campaigns.where_not_exists(:interviews, locked_at: nil)
+      else
+        campaigns.where_exists(:interviews, locked_at: nil)
+      end
+
+    if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
+      selected_tags = params.dig(:search, :tags).present? ? params.dig(:search, :tags).split(',') : params.dig(:filter_tags, :tag).map{|x| x.split(':').last.to_i}
+      selected_templates = InterviewForm.where(company_id: current_user.company_id).where_exists(:interview_form_tags, tag_id: selected_tags)
+      @campaigns = @campaigns.where(interview_form_id: selected_templates.ids)
+      @filtered_by_tags = 'true'
+    end
+
+    if search_title.present?
+      interview_forms =  InterviewForm.where(company_id: current_user.company_id).search_templates(search_title)
+      campaigns_by_form = @campaigns.where(interview_form: interview_forms)
+      campaigns = @campaigns.search_campaigns(search_title)
+      @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
+      @filtered = true
+    else
+      @filtered_by_tags = 'false'
+      @filtered = false
+      @campaigns = @campaigns.limit(24)
+    end
+
+
+    if offset_counter.present? && offset_counter.to_i > 1 && !search_title.present?
+      @campaigns_offset = @campaigns.limit(24).offset((offset_counter.to_i - 1) * 24)
+      @offset_indicator = true
+      @offset = offset_counter
+    else
+      @campaigns_offset = []
+      @offset_indicator = false
+    end
+  end
 
   def selected_user
     @selected_user ||= begin

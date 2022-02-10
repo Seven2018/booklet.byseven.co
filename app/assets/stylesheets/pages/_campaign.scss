@@ -189,6 +189,77 @@
 // INDEX //
 ///////////
 
+.campaigns-index-container {
+  min-height: calc(100vh - 15rem);
+  background-color: #F5F8FB;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.campaigns-index {
+  width: 60%;
+  max-width: 70rem;
+  margin-top: 5rem;
+}
+
+.campaigns-index__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .campaigns-index__title-tags {
+    display: inherit;
+
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333333;
+      margin-right: 1rem;
+    }
+  }
+
+  .campaigns-index__tags {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .campaigns-index__tag {
+      padding: 1rem 2rem;
+      margin-right: 1rem;
+      border-radius: .5rem;
+      font-weight: bold;
+      color: white;
+      background-color: #3177B7;
+    }
+  }
+
+  .campaigns-index__filter_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+
+    p, svg {
+      color: #3177B7;
+    }
+
+    p {
+      font-weight: bold;
+    }
+
+    svg {
+      font-size: 2rem;
+      margin-right: 1rem;
+    }
+  }
+}
+
+////////////////
+// INDEX_TEMP //
+////////////////
+
 
 .campaigns-period-filter__mobile {
   display: flex;
@@ -213,10 +284,6 @@
   font-size : 1.5rem;
   font-weight: bold;
   color:rgba(151, 156, 159, 1)
-}
-
-.campaigns-index {
-  margin-top: 3rem;
 }
 
 .load-more-container {
