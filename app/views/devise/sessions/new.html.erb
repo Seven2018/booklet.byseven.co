@@ -17,8 +17,10 @@
                       input_html: { autocomplete: "current-password" } %>
           <div class="form-sign-in-options flex-row-between-centered">
             <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+          </div>
+          <div class="form-sign-in-options flex-row-between-centered">
             <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-              <%# link_to "Forgot your password?", new_password_path(resource_name) %>
+              <%= link_to "Forgot your password?", new_password_path(resource_name) %>
               <%# link_to 'Create an account', new_user_registration_path %>
             <% end %>
           </div>
