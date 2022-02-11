@@ -3,11 +3,11 @@
     <%= simple_form_for :select_period_temp, url: campaigns_report_path(format: :csv), method: :get do |f| %>
       <div class="report-mode-control">
         <label>Mode</label>
-        <%= f.input :mode, collection: ['Data', 'Analytics'], as: :radio_buttons, legend_tag: false, input_html: {onclick: 'selectAnalytics(this);'} %>
+        <%= f.input :mode, collection: ['Data', 'Analytics'], as: :radio_buttons, legend_tag: false, input_html: {onclick: 'selectAnalytics(this);'}, checked: 'Data' %>
       </div>
       <div class="report-tag-categories-control hidden">
         <label>Choose a Category</label>
-        <%= f.input :category, collection: TagCategory.where(company_id: current_user.company_id).order(position: :asc), as: :radio_buttons, legend_tag: false %>
+        <%= f.input :category, collection: TagCategory.where(company_id: current_user.company_id).order(position: :asc), as: :radio_buttons, legend_tag: false, required: false %>
       </div>
       <div class='report-date-control'>
         <!-- <input type="date" class='datepicker' id="start_date" name="start_date" value='<%= Date.today %>' onchange='changeDateTemp(this);'> -->

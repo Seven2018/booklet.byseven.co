@@ -232,7 +232,7 @@ class Campaign < ApplicationRecord
           line << employee.job_title
           line << campaign.completion_for(employee)
           line << interview.locked_at
-          line << interview.time.split(' - ').first
+          line << interview.date
           tag_categories.each do |tag_category|
             tag = UserTag.find_by(tag_category_id: tag_category.id, user_id: employee.id)
             tag = tag.present? ? tag.tag.tag_name : ''
