@@ -9,8 +9,6 @@ class CampaignsController < ApplicationController
 
     filter_campaigns(campaigns)
 
-    # @campaigns = @campaigns.limit(24)
-
     respond_to do |format|
       format.html
       format.js
@@ -239,18 +237,14 @@ class CampaignsController < ApplicationController
     else
       @filtered_by_tags = 'false'
       @filtered = false
-      @campaigns = @campaigns.limit(24)
     end
 
+    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
 
-    if offset_counter.present? && offset_counter.to_i > 1 && !search_title.present?
-      @campaigns_offset = @campaigns.limit(24).offset((offset_counter.to_i - 1) * 24)
-      @offset_indicator = true
-      @offset = offset_counter
-    else
-      @campaigns_offset = []
-      @offset_indicator = false
-    end
+    # raise
+
+    @campaigns = @campaigns.page(page_index)
+
   end
 
   def selected_user

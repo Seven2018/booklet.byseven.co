@@ -12,5 +12,264 @@
         <p>Filter</p>
       </button>
     </div>
+    <div class="campaigns-index__main">
+      <div class="campaigns-index__searchbar">
+        <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
+        <%= simple_form_for :search, url: campaigns_path, method: :get, remote: true do |f| %>
+          <%= f.input :title, placeholder: 'Search by title, job ...', input_html: {autocomplete: 'off', onkeyup: 'resetPage(this);'}, label: false, required: false %>
+          <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current', input_html: {onchange: 'resetPage(this);'} %>
+          <%= f.hidden_field :tags %>
+          <%= f.hidden_field :page, value: '1' %>
+          <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
+          <button type='submit' class="btn-search btn-search--mobile">
+            <i class="fas fa-search"></i>
+          </button>
+        <% end %>
+        <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
+      </div>
+      <div class="campaigns-index__list">
+        <div class="campaigns-index__list-headers">
+          <p>Campaign Type</p>
+          <p>Manager</p>
+          <p>Template</p>
+          <p class='campaigns-index__list-headers-employee'>Employees</p>
+          <p class='campaigns-index__list-headers-completion'>Completion</p>
+        </div>
+        <div class="campaigns-index__list-lines">
+          <%= render 'campaigns/index/index_campaigns_list', campaigns: @campaigns %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+  formGuardian = false;
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('.campaigns-index__searchbar')
+
+    // Reset Search and Period input
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+
+    // Reset Tags
+    searchbar.querySelector('#search_tags').value = ''
+    filter_counter = searchbar.querySelectorAll('.searchbar-campaign-filter__selected')
+    // pill_container = searchbar.querySelector('.searchbar-campaign__pill-container')
+    filter_counter.forEach((counter) => {counter.innerText = '0'; counter.style.backgroundColor = '#C4C4C4'})
+    // pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => pill.remove())
+
+    // Reset offset
+    searchbar.querySelector('#search_page').value = '1'
+
+    searchbar.querySelector('.btn-search').click()
+    document.querySelector('body').classList.add('wait')
+  }
+
+  function openContentMenu(element) {
+    dropdown = element.closest('.campaigns-index__list-line').querySelector('.campaigns-index__list-line-content-dropdown')
+    if (!dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
+      return
+    }
+    dropdown.classList.remove('hidden')
+    formGuardian = true
+    card_link = element.closest('.campaigns-index__list-line').querySelector('.stretched-link')
+    card_link.classList.add('disabled')
+    card_link_href = "/campaigns/" + element.closest('.campaigns-index__list-line').id.split('-')[2]
+    card_link.href = "javascript:void(0)";
+    setTimeout(function(){
+      formGuardian = false
+    }, 1);
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, dropdown) && formGuardian == false) {
+        formGuardian = true
+        setTimeout(function(){
+          formGuardian = false
+        }, 1);
+        dropdown.classList.add('hidden')
+        setTimeout(function(){
+          card_link.classList.remove('disabled')
+          card_link.href = card_link_href
+        }, 1);
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
+  }
+
+  function showResetMobile(boolean) {
+    search_button = document.querySelector('.btn-search--mobile')
+    reset_button = document.querySelector('.btn-reset--mobile')
+    if (boolean) {
+      search_button.classList.add('hidden')
+      reset_button.classList.remove('hidden')
+    } else {
+      search_button.classList.remove('hidden')
+      reset_button.classList.add('hidden')
+    }
+  }
+
+  function selectPeriodMobile(element) {
+    element.parentNode.querySelectorAll('p').forEach((p) => {
+      p.style.color = 'black'
+      p.style.fontWeight = 'normal'
+    })
+    element.style.color = '#3177B7'
+    element.style.fontWeight = 'bolder'
+    selected = element.innerText
+    select_input = document.querySelector('#search_period')
+    search_button = document.querySelector('.btn-search--mobile')
+    select_input.value = selected
+    search_button.click()
+  }
+
+  function updateFilterPeriod(element) {
+    select = element.parentNode.querySelector('select')
+    document.querySelector('#filter_tags_period').value = select.options[select.selectedIndex].text
+  }
+
+  function toggleTagCategoryDropdown(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    if (block.style.maxHeight == '50px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '10000px';
+      block.classList.add('active');
+    } else {
+      block.style.maxHeight = '50px';
+      block.classList.remove('active');
+    }
+  }
+
+  function tagAutoSubmit(element) {
+    document.querySelector('.filter_tags').querySelector('.hidden-submit').click();
+    document.querySelector('body').classList.add('wait');
+
+    search_input = document.querySelector('#search_tags')
+    tags_array = []
+
+    pill_container = document.querySelector('.searchbar-campaign__pill-container')
+    new_pill = pill_container.querySelector('.searchbar-campaign__pill-template').cloneNode(true)
+    new_pill.classList.remove('searchbar-campaign__pill-template')
+    category_count = element.closest('.searchbar-campaign-filter__filter-block').querySelector('.searchbar-campaign-filter__selected')
+    dropdown_count = element.closest('#searchbar-campaign-filter__dropdown').querySelector('.searchbar-campaign-filter__selected')
+    global_count = document.querySelector('#searchbar-campaign-filter').querySelector('.searchbar-campaign-filter__selected')
+
+    if (element.checked) {
+
+      new_pill = pill_container.querySelector('.searchbar-campaign__pill-template').cloneNode(true)
+      new_pill.classList.remove('searchbar-campaign__pill-template')
+      new_pill.classList.remove('hidden')
+      new_pill.id = 'pill-' + element.value.split(':')[1]
+      new_pill_text = new_pill.querySelector('p')
+      new_pill_text.innerText = element.parentNode.querySelector('label').innerText
+      pill_container.appendChild(new_pill)
+      category_count.innerText = (parseInt(category_count.innerText, 10) + 1).toString()
+      dropdown_count.innerText = (parseInt(dropdown_count.innerText, 10) + 1).toString()
+      global_count.innerText = (parseInt(global_count.innerText, 10) + 1).toString()
+
+    } else {
+
+      target_pill = document.querySelector('#pill-' + element.value.split(':')[1])
+      target_pill.remove()
+      category_count.innerText = (parseInt(category_count.innerText, 10) - 1).toString()
+      dropdown_count.innerText = (parseInt(dropdown_count.innerText, 10) - 1).toString()
+      global_count.innerText = (parseInt(global_count.innerText, 10) - 1).toString()
+
+    }
+
+    category_count.innerText != '0' ? category_count.style.backgroundColor = '#3177B7' : category_count.style.backgroundColor = '#C4C4C4'
+    dropdown_count.innerText != '0' ? dropdown_count.style.backgroundColor = '#3177B7' : dropdown_count.style.backgroundColor = '#C4C4C4'
+    global_count.innerText != '0' ? global_count.style.backgroundColor = '#3177B7' : global_count.style.backgroundColor = '#C4C4C4'
+
+    element.closest('form').querySelectorAll('input[type=checkbox]:checked').forEach((checkbox) => {
+      tags_array.push(checkbox.value.split(':')[1])
+    })
+    search_input.value = tags_array
+  }
+
+  function removePill(element) {
+    target_id = element.parentNode.id.split('-')[1]
+    checkbox = document.querySelector('.tag-' + target_id)
+    checkbox.checked = false
+    tagAutoSubmit(checkbox)
+  }
+
+  function tagResetFilter() {
+    form = document.querySelector('.filter_tags')
+    pill_container = document.querySelector('.searchbar-campaign__pill-container')
+
+    form.querySelectorAll('input[type=checkbox]').forEach((checkbox) => {
+      checkbox.checked = false
+    })
+    document.querySelectorAll('.searchbar-campaign-filter__selected').forEach((counter) => {
+      counter.innerText = '0'
+      counter.style.backgroundColor = '#C4C4C4'
+    })
+    pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => {
+      pill.remove()
+    })
+    form.querySelector('.hidden-submit').click()
+  }
+
+  function changePage(direction) {
+    page_value = document.querySelector('#search_page')
+    previous_button = document.querySelector('.paginate__previous-button')
+    submit_button = document.querySelector('.btn-search')
+
+
+    if(direction == 'next') {
+      page_value.value = (parseInt(page_value.value,10) + 1).toString()
+    } else {
+      page_value.value = (parseInt(page_value.value,10) - 1).toString()
+    }
+    submit_button.click()
+  }
+
+  function resetPage(element) {
+    element.closest('form').querySelector('#search_page').value = '1'
+  }
+
+  // Add corresponding id to each Tag checkbox
+  function addIdToTag() {
+    document.querySelectorAll('.tag-checkbox').forEach((checkbox) => {
+      checkbox.classList.add('tag-' + checkbox.value.split(':')[1])
+    })
+  }
+
+  addIdToTag()
+
+</script>
