@@ -2,6 +2,7 @@
 <div id="paginate-container">
   <%= paginate @users, remote: true, param_name: :page %>
 </div>
+<div class="organisation-first-container">
 <div class="organisation-main-container organisation-main-container-unfiltered">
   <%= render 'pages/partials/organisation_users_list', users: @users, unfiltered: @unfiltered %>
 </div>
@@ -59,6 +60,7 @@
   <div class='modal-dialog modal-lg modal-import-infos' role='document' style='border-radius: 20px'>
     <%= render 'users/partials/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
   </div>
+</div>
 </div>
 
 <!---------------->

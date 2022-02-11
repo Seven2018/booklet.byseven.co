@@ -96,9 +96,9 @@ class PagesController < ApplicationController
     @trainings = Training.where(company_id: current_user.company_id)
     # @trainings = Training.where(id: @trainings.pluck(:id))
 
-    # SEARCHING CONTENTS 
+    # SEARCHING CONTENTS
     unless params[:reset]
-      if params[:search].present? 
+      if params[:search].present?
         unless params[:search][:title].blank?
           @trainings = @trainings.search_trainings("#{params[:search][:title]}")
         end
@@ -126,7 +126,7 @@ class PagesController < ApplicationController
     # @index_title_content = Content.count + 1
     complete_profile
     if current_user.company_id.present?
-      # SEARCHING CONTENTS 
+      # SEARCHING CONTENTS
       @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
       @folders = Folder.where(company_id: current_user.company.id).order(updated_at: :desc)
       if params[:filter_catalogue].present? && params[:filter_catalogue][:category].reject { |c| c.empty? }.present?
@@ -244,7 +244,7 @@ class PagesController < ApplicationController
       if params[:tag_postion] == 'left'
         tag_cat_next_left = TagCategory.find_by(position: (tag_cat_selected.position - 1))
         tag_cat_selected.update(position: tag_cat_selected.position - 1)
-        tag_cat_next_left.update(position: tag_cat_selected.position + 1)        
+        tag_cat_next_left.update(position: tag_cat_selected.position + 1)
       elsif params[:tag_postion] == 'right'
         tag_cat_next_right = TagCategory.find_by(position: (tag_cat_selected.position + 1))
         tag_cat_selected.update(position: tag_cat_selected.position + 1)
@@ -410,13 +410,13 @@ class PagesController < ApplicationController
           end
           if params[:filter_user][:tag].uniq == [""]
             # @users = []
-            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id).page params[:page]
+            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id, :picture).page params[:page]
             @unfiltered = 'true'
           else
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           end
         else
-          @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id).page params[:page]
+          @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id, :picture).page params[:page]
           @unfiltered = 'true'
         end
 

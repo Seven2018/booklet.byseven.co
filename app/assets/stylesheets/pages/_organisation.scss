@@ -1,12 +1,23 @@
 // CLEANED - 2021-07-08
 
-.organisation-main-container {
-  padding: 0 2.5rem;
+.organisation-first-container {
+  background-color: #F5F8FB;
 }
 
+
+.organisation-main-container {
+  padding: 0 2.5rem;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+
+
 .organisation-page {
-  overflow: scroll;
-  display: flex;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  // overflow: scroll;
+  // display: flex;
   width: 100%;
 }
 
@@ -24,7 +35,7 @@
 }
 
 .user-index-headers, .user-index-card, .user-index-card-selected {
-  height: 8.9rem;
+  height: 6.9rem;
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(0,0,0,0.1);
@@ -33,12 +44,13 @@
     min-width: 0;
 
     @include from-medium {
-      min-width: 18rem;
+      min-width: 5rem;
     }
   }
 
   p {
     font-size: 1.6rem;
+    color: black;
   }
 
   img {
@@ -56,8 +68,7 @@
 .user-index-headers {
   position: relative;
   padding: 0 3rem;
-  color: #808080;
-  background-color: #F3F2F2;
+  background-color: white;
 
   i {
     cursor: pointer;
@@ -81,6 +92,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  font-weight: bold;
 
   p {
     // padding: 10px;
@@ -138,6 +150,15 @@
 }
 
 .user-name {
+  text-decoration: none;
+}
+
+.user-name {
+
+  b,p {
+    text-decoration: none;
+  }
+
   &:hover {
     opacity: 80%;
   }
@@ -177,10 +198,14 @@
     overflow: hidden;
   }
 
+  // img{
+  //   vertical-align: ;
+  // }
+
   p {
     font-size: 12px;
     text-overflow: ellipsis;
-    overflow: hidden;
+    text-decoration: none;
   }
 
   i {
@@ -517,6 +542,16 @@
 
 .select-user {
   z-index: 90;
+  // width: 1.3em;
+  //   height: 1.3em;
+  //   background-color: white;
+  //   border-radius: 50%;
+  //   vertical-align: middle;
+  //   border: 1px solid #ddd;
+  //       appearance: none;
+  //   -webkit-appearance: none;
+  //   outline: none;
+  //   cursor: pointer;
 }
 
 .organisation-users {
@@ -524,6 +559,9 @@
   flex-grow: 1;
   width: auto;
   border: 0.8px solid rgb(219, 219, 219);
+  margin-top: 5px;
+  overflow-y: hidden;
+  background-color: white;
 }
 
 .employee-tag {
@@ -567,7 +605,7 @@
   position: relative;
 
   input {
-    // padding: 0 5rem 0 3.5rem;
+    padding: 0 6rem 0 1.5rem;
     position: relative;
     margin-bottom: 0px !important;
     height: 40px;
@@ -590,6 +628,7 @@
   }
 
 }
+
 
 .main-controls-buttons {
   display: none;
@@ -627,8 +666,9 @@
 .organisation-controls__search-icon {
   position: absolute;
   z-index: 150;
-  top: 17px;
-  left: 12px;
+  font-size: 25px;
+  top: 12px;
+  left: 28rem;
   color: #d6d6d6;
 }
 
@@ -783,3 +823,46 @@
   }
 }
 
+// DAMIEN CSS //
+
+// AVATAR //
+
+.avatar {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.avatar-large {
+  width: 56px;
+  border-radius: 50%;
+}
+
+.avatar-bordered {
+  width: 40px;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  border: white 1px solid;
+}
+
+.avatar-square {
+  width: 40px;
+  border-radius: 0px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  border: white 1px solid;
+}
+
+
+
+#main-controls {
+  background-color: white;
+
+  #search_name {
+    height: 5rem;
+    margin-left: 2rem;
+  }
+
+  .btn-reset {
+    width: 8rem;
+    height: 4rem;
+  }
+}

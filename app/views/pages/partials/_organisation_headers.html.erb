@@ -8,7 +8,13 @@
   <p>Email</p>
 </div>
 <div class="headers-div">
+  <p>Access Level</p>
+</div>
+<div class="headers-div">
   <p>Manager</p>
+</div>
+<div class="headers-div">
+  <p>Other Tag</p>
 </div>
 
 <% unless @tag_categories.empty? %>
@@ -43,8 +49,7 @@
     <% end %>
   <% elsif params[:edit] == "none" || !params[:edit].present? %>
     <%= link_to organisation_path(edit: "edit") do %>
-      <i class="fas fa-pencil-alt editing-tag-category"></i>
+      <%# <i class="fas fa-pencil-alt editing-tag-category"></i> %>
     <% end %>
   <% end %>
 <% end %>
-

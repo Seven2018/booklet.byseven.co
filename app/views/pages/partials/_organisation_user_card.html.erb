@@ -5,6 +5,7 @@
   </div>
   <div class="user-index-info streched-link">
   <%= link_to user_path(user) do %>
+    <img src="<%= user.picture %>" alt="<%= user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
     <p class='user-name' data-toggle="tooltip" title="<%= user.fullname %>" style='color: #F26419'><b><%= user.lastname %> <%= user.firstname %></b></p>
   <% end %>
   </div>
