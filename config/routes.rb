@@ -116,6 +116,11 @@ Rails.application.routes.draw do
   resources :sessions, only: %i[update destroy]
   get :book_sessions, controller: :sessions
 
+  resources :impersonations, only: [:index] do
+    post :impersonate, on: :member
+    post :stop_impersonating, on: :collection
+  end
+
   # SKILLS (NOT USED)
   # resources :skills
   # resources :training_contents, only: %i[show create update destroy]

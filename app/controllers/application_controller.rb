@@ -1,6 +1,8 @@
 require 'action_text'
 
 class ApplicationController < ActionController::Base
+  impersonates :user
+
   protect_from_forgery with: :exception
   before_action :booklet_authenticate_user
   # before_action :authenticate_user!
