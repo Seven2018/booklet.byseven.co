@@ -24,11 +24,7 @@
         </div>
         <%= simple_form_for :update_interviews, url: update_interviews_path, method: :get, remote: true do |f| %>
           <div class="flex-row-start-centered">
-            <%= f.input :date, label: false, input_html: {class: 'datepicker', style: 'max-width: 110px;text-align: center;', onchange: 'enableEdit(this);checkInterviewOverlap();', value: interviews.first.date.to_date}, placeholder: 'Select date', required: true %>
-             <p class="hidden">from</p>
-            <%= f.input :starts_at, label: false, input_html: { class: "timepicker new_starts_at hidden", onchange: 'enableEdit(this);checkInterval(this);checkInterviewOverlap();', value: interviews.first.starts_at.strftime('%H:%M'), style: 'max-width: 70px;text-align: center;'}, required: true %>
-            <p class="hidden">to</p>
-            <%= f.input :ends_at, label: false, input_html: { class: 'timepicker new_ends_at hidden', onchange: 'enableEdit(this);checkInterval(this);checkInterviewOverlap();', value: interviews.first.ends_at.strftime('%H:%M'), style: 'max-width: 70px;text-align: center;'}, required: true %>
+            <%= f.input :date, label: false, input_html: {class: 'datepicker', style: 'max-width: 110px;text-align: center;', onchange: 'enableEdit(this);', value: interviews.first.date.to_date}, placeholder: 'Select date', required: true %>
             <%= f.hidden_field :employee_id, value: user.id %>
             <%= f.hidden_field :campaign_id, value: @campaign.id %>
             <button type='submit' class='btn-blue btn-blue-disabled' disabled><p>Edit</p></button>
@@ -53,58 +49,58 @@
     button.innerHTML = '<p>EDIT</p>'
   }
 
-    function checkInterval(element) {
-    start = element.closest('form').querySelector('#update_interviews_starts_at').value
-    end = element.closest('form').querySelector('#update_interviews_ends_at').value
-    starts_at = new Date('01 Jan 1970 ' + start + ':00 GMT')
-    ends_at = new Date('01 Jan 1970 ' + end + ':00 GMT')
-    error_message = element.closest('form').querySelector('.date-error')
-    if (ends_at < starts_at) {
-      element.closest('form').querySelector('#update_interviews_ends_at').value = element.closest('form').querySelector('#update_interviews_starts_at').value
-    }
-  }
+  //   function checkInterval(element) {
+  //   start = element.closest('form').querySelector('#update_interviews_starts_at').value
+  //   end = element.closest('form').querySelector('#update_interviews_ends_at').value
+  //   starts_at = new Date('01 Jan 1970 ' + start + ':00 GMT')
+  //   ends_at = new Date('01 Jan 1970 ' + end + ':00 GMT')
+  //   error_message = element.closest('form').querySelector('.date-error')
+  //   if (ends_at < starts_at) {
+  //     element.closest('form').querySelector('#update_interviews_ends_at').value = element.closest('form').querySelector('#update_interviews_starts_at').value
+  //   }
+  // }
 
-  function dateRangeOverlaps(a_start, a_end, b_start, b_end) {
-    if (a_start <= b_start && b_start < a_end) return true; // b starts in a
-    if (a_start < b_end   && b_end   <= a_end) return true; // b ends in a
-    if (b_start <  a_start && a_end   <  b_end) return true; // a in b
-    return false;
-  }
+  // function dateRangeOverlaps(a_start, a_end, b_start, b_end) {
+  //   if (a_start <= b_start && b_start < a_end) return true; // b starts in a
+  //   if (a_start < b_end   && b_end   <= a_end) return true; // b ends in a
+  //   if (b_start <  a_start && a_end   <  b_end) return true; // a in b
+  //   return false;
+  // }
 
-  function multipleDateRangeOverlaps(array) {
-    result_array = []
-    var i, j;
-    if (array.length % 2 !== 0)
-      throw new TypeError('Arguments length must be a multiple of 2');
-    for (i = 0; i < array.length - 2; i += 2) {
-      for (j = i + 2; j < array.length; j += 2) {
-        if (dateRangeOverlaps(array[i], array[i+1], array[j], array[j+1])) {
-          result_array.push(i)
-          result_array.push(j)
-        }
-      }
-    }
-    return result_array;
-  }
+  // function multipleDateRangeOverlaps(array) {
+  //   result_array = []
+  //   var i, j;
+  //   if (array.length % 2 !== 0)
+  //     throw new TypeError('Arguments length must be a multiple of 2');
+  //   for (i = 0; i < array.length - 2; i += 2) {
+  //     for (j = i + 2; j < array.length; j += 2) {
+  //       if (dateRangeOverlaps(array[i], array[i+1], array[j], array[j+1])) {
+  //         result_array.push(i)
+  //         result_array.push(j)
+  //       }
+  //     }
+  //   }
+  //   return result_array;
+  // }
 
-  function checkInterviewOverlap() {
-    date_array = []
-    document.querySelectorAll('.simple_form.update_interviews').forEach((form) => {
-      date = form.querySelector('#update_interviews_date').value.split('/').reverse().join('-')
-      start = new Date(date + 'T' +form.querySelector('#update_interviews_starts_at').value)
-      end = new Date(date + 'T' +form.querySelector('#update_interviews_ends_at').value)
-      date_array.push(start)
-      date_array.push(end)
-    })
-    result = multipleDateRangeOverlaps(date_array)
-    if (result.length != 0) {
-      result.forEach((element) => {
-        document.querySelectorAll('.simple_form.update_interviews')[Math.floor(element / 2)].querySelector('.flex-row-start-centered').style.backgroundColor = 'red'
-      })
-    } else {
-      document.querySelectorAll('.simple_form.update_interviews').forEach((element) => {
-        element.querySelector('.flex-row-start-centered').style.backgroundColor = 'white'
-      })
-    }
-  }
+  // function checkInterviewOverlap() {
+  //   date_array = []
+  //   document.querySelectorAll('.simple_form.update_interviews').forEach((form) => {
+  //     date = form.querySelector('#update_interviews_date').value.split('/').reverse().join('-')
+  //     start = new Date(date + 'T' +form.querySelector('#update_interviews_starts_at').value)
+  //     end = new Date(date + 'T' +form.querySelector('#update_interviews_ends_at').value)
+  //     date_array.push(start)
+  //     date_array.push(end)
+  //   })
+  //   result = multipleDateRangeOverlaps(date_array)
+  //   if (result.length != 0) {
+  //     result.forEach((element) => {
+  //       document.querySelectorAll('.simple_form.update_interviews')[Math.floor(element / 2)].querySelector('.flex-row-start-centered').style.backgroundColor = 'red'
+  //     })
+  //   } else {
+  //     document.querySelectorAll('.simple_form.update_interviews').forEach((element) => {
+  //       element.querySelector('.flex-row-start-centered').style.backgroundColor = 'white'
+  //     })
+  //   }
+  // }
 </script>

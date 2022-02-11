@@ -31,6 +31,11 @@ gem 'omniauth-google-oauth2'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'devise_invitable', '~> 2.0.0'
 
+# PDF
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-heroku', '2.12.5.0'
+
 gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 gem 'ransack'
 gem 'trix-rails', require: 'trix'
@@ -42,7 +47,7 @@ gem 'render_async'
 gem 'kaminari'
 gem 'where_exists'
 
-gem 'pg_search', '~> 2.3.0'
+gem 'pg_search'
 
 gem 'pgsync'
 gem 'sentry-ruby'

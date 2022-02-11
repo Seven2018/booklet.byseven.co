@@ -1,3 +1,2 @@
-document.querySelector('.template-show-lines').innerHTML = '<%= j render("interview_forms/edit/questions_index", template: @form) %>';
-target = document.querySelector('#item-<%= @question.position %>').querySelector('.line-title');
-toggleMod(target);
+target = document.querySelector('#mcq-<%= @question.id %>');
+target.innerHTML = '<%= j render("interview_forms/partials/show_mcq", question: @question, page: "edit") %>';

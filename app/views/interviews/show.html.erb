@@ -1,67 +1,156 @@
-<% if @interview.crossed? %>
+<% employee = @interview.employee %>
+<% manager = @interview.campaign.owner %>
 
-  <%= render 'crossed', interview: @interview, employee: @employee, manager: @manager, questions: @questions, read_only: ![@interview.employee, @interview.owner].include?(current_user)  %>
+<% visibility =
+    if @interview.crossed?
+      ['all', 'manager', 'employee']
+    elsif current_user.manager_or_above?
+      ['all', 'manager']
+    else
+      ['all', 'employee']
+    end %>
 
-<% else %>
+<% interview_form = @interview.interview_form %>
+<% fully_answered = @interview.fully_answered? %>
 
-  <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
+<% icon = { 'open_question' => 'bi:question-circle-fill',
+            'mcq' => 'ant-design:check-square-filled',
+            'objective' => 'fluent:target-arrow-24-filled',
+            'rating' => 'codicon:star-full' } %>
 
-  <div class="interview-container">
-    <a id="anchor" style='position: absolute; top: -6rem;'></a>
-    <div class="interview-start">
-      <div class='empty-div'></div>
-      <div class="interview-title">
-        <h1><%= @interview.interview_form.title %></h1>
-        <p><%= sanitize @interview.interview_form.description %></p>
-      </div>
-      <button class="btn-blue btn-blue-start btn-blue-start--mobile" onclick='nextQuestion(this);'><p'>Start !</p></button>
-    </div>
-    <% j = 1 %>
-    <% @questions.where.not(question_type: 'separator').where(visible_for: visibility).each do |question| %>
-      <div class="interview-question hidden" id='question-<%= j %>'>
-        <div class="interview-separator">
-          <% previous_separators = @questions.where(question_type: 'separator').where('position <= ?', question.position) %>
-          <h2><%= previous_separators.last.question if previous_separators.present? %></h2>
-          <p><%= sanitize previous_separators.last.description if previous_separators.present? %></p>
-        </div>
-        <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, j: j, read_only: ((@interview.label == 'Employee' && @interview.employee != current_user) || (@interview.label == 'Manager' && @interview.owner != current_user) || (@interview.label == 'Simple' && @interview.owner != current_user)) %>
-      </div>
-      <% j += 1 %>
+<div class="interview-container">
+
+  <div class="interview-controls">
+    <% if request.referrer.present? && (request.referrer.split('/') - [request.referrer.split('/')[-1]]).join('/') == request.base_url + '/campaigns' %>
+      <button class='btn-back' onclick='history.back()'>
+        <i class="fas fa-angle-left"></i>
+      </button>
+    <% else %>
+      <%= link_to campaigns_path(@interview.campaign), class: 'btn-back' do %>
+        <i class="fas fa-angle-left"></i>
+      <% end %>
     <% end %>
-    <%= link_to '', interview_path(@interview, show_review: 'true'), remote: true, class: 'hidden-link hidden' %>
-    <div class="interview-review hidden">
-      <% if @interview.completed %>
-        <%= render 'interviews/show_interview_review', interview: @interview %>
+    <div class="interview-controls__buttons">
+      <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
+        <span class="iconify" data-icon="bx:bx-download"></span>
+        <p>Download PDF</p>
+      <% end %>
+      <button class="btn-blue-text" onclick="saveButton();">
+        <span class="iconify" data-icon="fluent:save-16-regular"></span>
+        <p>Save</p>
+      </button>
+      <% if !@interview.completed? %>
+        <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+          <p>Submit</p>
+          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+        </button>
+        <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
       <% end %>
     </div>
-    <div class="interview-thanks hidden">
-      <div class="flex-column-start-centered">
-        <p>Review submitted ! <i class="fas fa-check-square"></i></p>
-        <p>Thank you for completing this review ! <i class="far fa-thumbs-up"></i></p>
-        <p>You can go back to the summary, or exit to the dashboard.</p>
-      </div>
-      <div class="interview-thanks__controls">
-        <button class="btn-blue-text" onclick='thankYou("back");'><p><i class="fas fa-long-arrow-alt-left"></i> Summary</p></button>
-        <%= link_to campaign_path(@interview.campaign, employee_id: @interview.employee_id) do %>
-          <button class="btn-blue"><p>Exit</p></button>
+  </div>
+
+  <div class="interview-main">
+
+    <div class="interview-main__left">
+      <h2>Chapters</h2>
+      <div class="interview-main__left-anchors">
+        <% chapter = 1 %>
+        <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
+
+          <% question_text = question.question %>
+
+          <div class="interview-main__left-question">
+            <a href="#anchor-<%= question.position %>">
+              <% if question.separator? %>
+                <p class="interview-main__left-separator" title="<%= question_text %>"><%= chapter %>. <%= question_text %></p>
+                <% chapter += 1 %>
+              <% else %>
+                <div class="interview-main__left-icon">
+                  <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
+                </div>
+                <p title="<%= question_text %>"><%= question.question %></p>
+              <% end %>
+            </a>
+          </div>
+
         <% end %>
       </div>
     </div>
-  </div>
-      <div class="interview-progress-bar-container">
-      <div class="interview-progress-bar"></div>
-      <div class='interview-progress-bar__white'><p>0%</p></div>
-      <div class='interview-progress-bar__blue'><p>0%</p></div>
-    </div>
-<% end %>
 
+    <div class="interview-main__right">
+      <h1><%= @interview.title %></h1>
+
+      <% question_hash = {} %>
+      <% j = 0 %>
+
+      <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
+        <% if question.separator? %>
+          <% j += 1 %>
+        <% end -%>
+        <% question_hash[j] = question_hash[j].present? ? question_hash[j] + [question] : [question] %>
+      <% end %>
+
+      <% question_number = 0 %>
+
+      <% question_hash.each do |key, value| %>
+        <% if key.to_i > 0 %>
+          <div class="interview-main__right-separator">
+            <p><%= key %>. <%= value.first.question %></p>
+          </div>
+        <% end %>
+        <div class="interview-main__right-questions">
+          <% value[1..-1].each do |question| %>
+
+            <% question_number += 1 %>
+
+            <div class="interview-main__right-question">
+              <a id="anchor-<%= question.position %>" style='position:absolute; top: -2.5rem;'></a>
+              <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
+                <p><%= question_number %>. </p>
+                <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
+                <p><%= question.question %> <%= "*" if question.required? %></p>
+              </div>
+              <div class="interview-main__right-question-description">
+                <%= sanitize question.description %>
+              </div>
+              <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, manager: manager, employee: employee, j: question_number, read_only: ((@interview.label == 'Employee' && employee != current_user) || (@interview.label == 'Manager' && manager != current_user) || (@interview.label == 'Simple' && manager != current_user)) %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="interview-thanks hidden">
+  <div class="flex-column-start-centered">
+    <p>Review submitted ! <i class="fas fa-check-square"></i></p>
+    <p>Thank you for completing this review ! <i class="far fa-thumbs-up"></i></p>
+    <p>You can go back to the interview, or exit to the dashboard.</p>
+  </div>
+  <div class="interview-thanks__controls">
+    <button class="btn-blue-text" onclick='thankYou("back");'><p><i class="fas fa-long-arrow-alt-left"></i> Back</p></button>
+    <%= link_to campaign_path(@interview.campaign, employee_id: employee.id) do %>
+      <button class="btn-blue"><p>Exit</p></button>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="saved-message hidden">
+  <p>SAVED!</p>
+</div>
 
 <!---------------->
 <!-- JAVASCRIPT -->
 <!---------------->
 
 <script>
-  document.querySelector('body').classList.add('interview-form-body')
+  auto_save = true
+  doubleClickGuardian = false
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
@@ -76,267 +165,116 @@
     else return false;
   }
 
-  function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-      if ((new Date().getTime() - start) > milliseconds){
-        break;
-      }
+  function autoSave(element, delayed = false) {
+    if (delayed && auto_save) {
+      auto_save = false
+      setTimeout(function(){
+        auto_save = true
+        element.closest('form').querySelector('.hidden-submit').click()
+      }, 1000)
+    } else {
+      element.closest('form').querySelector('.hidden-submit').click()
     }
   }
 
-  const canAnswer = async (element) => {
-    const response = await fetch('/interview/answer/authorization_checks', {
-      method: "POST",
-      headers: {
-        "X-CSRF-Token": csrfToken(),
-        "Content-Type": "application/json"
-      },
-      body: answerFormPayload(element.form)
-    })
-    return await response.json()
-  }
-
-  const alertCanAnswer = async (element) => {
-    // TODO call form all questions type (currently only rating)
-    const canAnswerResult = await canAnswer(element)
-    if (canAnswerResult.can_answer_question) return
-
-    alert("View mode only! New answers won't be saved!")
-  }
-
-  const selectRating = (element) => {
-    alertCanAnswer(element)
-
-    fieldset = element.closest('fieldset')
-    fieldset.querySelectorAll('.radio-rating').forEach((radio_button) => {
-      if (parseInt(radio_button.id.split('-')[2],10) <= element.id.split('-')[2]) {
-        radio_button.classList.add('on')
-      } else {
-        radio_button.classList.remove('on')
+  function enableSubmit() {
+    required_answers = document.querySelectorAll('#interview_answer_answer:required, #interview_answer_objective:required')
+    submit_button = document.querySelector('#submit-interview')
+    required_answers.forEach((input) => {
+      if (input.value == '') {
+        submit_button.classList.add('btn-blue-disabled')
+        submit_button.disabled = true
+        return
       }
     })
   }
 
-  function enableNext(element) {
-    // TODO Avoid DOM selection by position. Breakbla. Select DOM elements by id
-    button = element.closest('.interview-question').querySelectorAll('.btn-blue')[1]
-    if (element.closest('form').getAttribute('data-question-type') == 'objective') {
-      form = element.closest('form')
-      radio_selected = false
-      condition = form.querySelector('#interview_answer_objective').value.length > 0 && form.querySelector('input[type=radio]:checked') != null
-    } else {
-      condition = element.value.length > 0
-    }
-    if (condition && button != undefined) {
-      button.classList.remove('btn-blue-disabled')
-      button.disabled = false
-    } else if (!condition && button != undefined) {
-      button.classList.add('btn-blue-disabled')
-      button.disabled = true
-    }
-  }
-
-  function nextQuestion(element) {
-    if (element.classList.contains('btn-blue-start')) {
-      question = document.querySelectorAll('.interview-question')[0]
-      start = document.querySelector('.interview-start')
-      question.classList.remove('hidden')
-      start.classList.add('hidden')
-    } else {
-      position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
-      question = document.querySelectorAll('.interview-question')[position]
-      previous_question = document.querySelectorAll('.interview-question')[position - 1]
-      previous_question.querySelector('.hidden-submit').click()
-      previous_question.classList.add('hidden')
-      question.classList.remove('hidden')
-    }
-    updateProgressionBar()
-  }
-
-  function previousQuestion(element) {
-    position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
-    question = document.querySelectorAll('.interview-question')[position - 1]
-    if (position - 1 == 0) {
-      start = document.querySelector('.interview-start')
-      start.classList.remove('hidden')
-      question.classList.add('hidden')
-    } else {
-      previous_question = document.querySelectorAll('.interview-question')[position - 2]
-      previous_question.classList.remove('hidden')
-      question.classList.add('hidden')
-    }
-    updateProgressionBar()
-  }
-
-  function goToQuestion(element, option = '') {
-    summary = document.querySelector('.interview-review')
-    progression_bar = document.querySelector('.interview-progress-bar-container')
-    if (option == 'summary') {
-      current_question = element.closest('.interview-question')
-      current_question.querySelector('.hidden-submit').click()
-      document.querySelector('body').classList.add('wait')
-      setTimeout(function(){document.querySelector('.hidden-link').click();progression_bar.classList.add('hidden')}, 500)
-    } else {
-      target_position = parseInt(element.id.split('-')[1],10)
-      question = document.querySelector('#question-' + target_position)
-      progression_bar.classList.remove('hidden')
-      summary.classList.add('hidden')
-      question.classList.remove('hidden')
-    }
-    updateProgressionBar()
+  function saveButton() {
+    document.querySelector('body').classList.add('wait')
+    setTimeout(function(){
+      document.querySelector('body').classList.remove('wait')
+      document.querySelector('.saved-message').classList.remove('hidden')
+      setTimeout(function(){
+        document.querySelector('.saved-message').classList.add('hidden')
+      }, 1500)
+     }, 1500)
   }
 
   function thankYou(option = 'forward') {
-    summary = document.querySelector('.interview-review')
+    main_container = document.querySelector('.interview-container')
     thank = document.querySelector('.interview-thanks')
+    submit_button = document.querySelector('#submit-interview')
+    if (submit_button != null) {submit_button.remove()}
     if (option == 'forward') {
-      summary.classList.add('hidden')
+      document.querySelector('.submit-interview').click()
+      main_container.classList.add('hidden')
       thank.classList.remove('hidden')
     } else if (option == 'back') {
       thank.classList.add('hidden')
-      summary.classList.remove('hidden')
+      main_container.classList.remove('hidden')
     }
   }
 
-  const csrfToken = () => document.querySelector("[name='csrf-token']").content
-
-  const getInterviewFormInputValueForAnswer = (form) => {
-    if (form.dataset.questionType == 'rating' || form.dataset.questionType == 'mcq') {
-      let checkedValue = ''
-      form.querySelectorAll('[name="interview_answer[answer]"]')
-          .forEach((input) => { if (input.checked) { checkedValue = input.value } })
-      return checkedValue
-    } else {
-      return getInterviewFormInputValue(form, 'answer')
-    }
-  }
-
-  const getInterviewFormInputValue = (form, name) =>
-    form.querySelector(`[name="interview_answer[${name}]"]`)?.value
-
-  const answerFormPayload = (form) => JSON.stringify({
-    interview_answer: {
-      answer: getInterviewFormInputValueForAnswer(form),
-      comments: getInterviewFormInputValue(form, 'comments'),
-      interview_id: getInterviewFormInputValue(form, 'interview_id'),
-      interview_question_id: getInterviewFormInputValue(form, 'interview_question_id'),
-    }
-  })
-
-  const submitAnswers = async (element, option = '') => {
-    if (option == 'Crossed') {
-      document.querySelector('body').classList.add('wait')
-      const forms =
-        [...element.closest('.interview-summary').querySelectorAll('.hidden-submit')]
-        .map((b) => b.form)
-      document.querySelectorAll('.trix-content').forEach((trix) => {
-        input = trix.parentNode.querySelector('.trix_editor')
-        trix.value = input.value
-      })
-
-      all_forms = element.closest('.interview-summary').querySelectorAll('form')
-      all_forms.forEach((form) => {
-        form.querySelector('.hidden-submit').click()
-        sleep(200)
-      })
-
-      // await Promise.all(
-      //   forms.map(async form => {
-      //     const resp = await fetch(form.action, {
-      //       method: "POST",
-      //       headers: {
-      //         "X-CSRF-Token": csrfToken(),
-      //         "Content-Type": "application/json"
-      //       },
-      //       body: answerFormPayload(form)
-      //     })
-      //     return resp.text();
-      //   })
-      // )
-    } else {
-      position = parseInt(element.closest('.interview-question').id.split('-')[1],10)
-      last_question = document.querySelectorAll('.interview-question')[position - 1]
-      last_question.querySelector('.hidden-submit').click()
-      const form = last_question.querySelector('.hidden-submit').form
-      // await fetch(form.action, {
-      //   method: "POST",
-      //   headers: {
-      //     "X-CSRF-Token": csrfToken(),
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: answerFormPayload(form)
-      // })
-    }
-    document.querySelector('.hidden-link').click()
-  }
-
-  function updateProgressionBar() {
-    container = document.querySelector('.interview-progress-bar-container')
-    center_blue = document.querySelector('.interview-progress-bar__blue')
-    center_white = document.querySelector('.interview-progress-bar__white')
-    if (document.querySelector('.interview-question:not(.hidden)') != null) {
-      result = Math.floor((parseInt(document.querySelector('.interview-question:not(.hidden)').id.split('-')[1],10) / document.querySelectorAll('.interview-question').length * 100)).toString() + '%'
-      center_white.querySelector('p').innerText = result
-      center_blue.querySelector('p').innerText = result
-    } else {
-      center_white.querySelector('p').innerText = '0%'
-      center_blue.querySelector('p').innerText = '0%'
-    }
-    progression = document.querySelector('.interview-progress-bar__white').querySelector('p').innerText
-    filling_bar = document.querySelector('.interview-progress-bar')
-    filling_bar.style.width = progression
-    if (filling_bar.offsetWidth == 0) {
-      center_white.style.width = '0px'
-      center_blue.style.width = '100px'
-    } else if (filling_bar.offsetWidth > (container.offsetWidth / 2) - 25) {
-      center_white.style.width = parseInt(progression.split('%'),10).toString() + 'px'
-      center_blue.style.width = (100 - parseInt(progression.split('%')[0],10)).toString() + 'px'
-    }
-  }
-
-  review = document.querySelector('.interview-review')
-  if (review != undefined && review.innerHTML != "\n    ") {
-    document.querySelector('body').classList.add('wait')
-    document.querySelectorAll('.interview-question__controls:not(.review-controls)').forEach((div) => {
-      newBtn = document.createElement("button");
-      newBtn.classList.add('btn-blue')
-      newBtn.innerHTML = '<p>Review</p>'
-      newBtn.onclick = function(event) {
-        goToQuestion(this, 'summary')
-      }
-      div.innerHTML = ''
-      div.appendChild(newBtn)
-    })
-    document.querySelector('.interview-start').classList.add('hidden')
-    document.querySelector('.interview-progress-bar-container').classList.add('hidden')
-    document.querySelector('.interview-review').classList.remove('hidden')
-    document.querySelector('body').classList.remove('wait')
-  }
-
-  function saveSummaryQuestion(element) {
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, element)) {
-        form = element.closest('form')
-        form.querySelectorAll('.trix-content').forEach((content) => {
-          input = content.parentNode.querySelector('.trix_editor')
-          input.value = content.value
-        })
-        form.querySelector('.hidden-submit').click()
-        this.removeEventListener('click', arguments.callee, false)
-      }
-    });
-  }
+  // AUTO UPDATE TEXTAREA HEIGHT //
 
   const tx = document.getElementsByTagName("textarea");
   for (let i = 0; i < tx.length; i++) {
     tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
     tx[i].addEventListener("click", OnInput, false);
     tx[i].addEventListener("input", OnInput, false);
+    tx[i].click()
   }
 
   function OnInput() {
     this.style.height = "auto";
     this.style.height = (this.scrollHeight) + "px";
   }
+
+  // BOOKLET SELECT //
+
+
+  function BookletSelectExpand(element) {
+    doubleClickGuardian = true
+    dropdown = element.closest('.booklet-select__container').querySelector('.booklet-select__dropdown')
+    setTimeout(() => {
+      doubleClickGuardian = false
+    }, 100);
+    if (dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, dropdown) && !doubleClickGuardian) {
+          dropdown.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    } else {
+      dropdown.classList.add('hidden')
+    }
+  }
+
+  function BookletSelectSubmit(element) {
+    form = element.closest('form')
+    selected_display = element.closest('.booklet-select__container').querySelector('.booklet-select__selected')
+    selected_value = element.querySelector('p').innerText
+    storage = form.querySelector('#interview_answer_answer')
+    submit_button = form.querySelector('.hidden-submit')
+
+    storage.value = selected_value
+    selected_display.querySelector('p').innerText = selected_value
+    submit_button.click()
+    BookletSelectExpand(element)
+  }
+
+  function BookletSelectRemoveAnswer(element) {
+    form = element.closest('form')
+    selected_display = element.closest('.booklet-select__selected')
+    storage = form.querySelector('#interview_answer_answer')
+    submit_button = form.querySelector('.hidden-submit')
+
+    selected_display.querySelector('p').innerText = ''
+    element.classList.add('hidden')
+    storage.value = ''
+    submit_button.click()
+  }
+
 </script>
