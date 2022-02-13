@@ -3,7 +3,6 @@ class Companies::CsvExportsController < ApplicationController
   skip_after_action :verify_policy_scoped # temp
 
   def show
-    csv_export = CsvExport.find params[:id]
     respond_to do |format|
       format.csv {
         send_data csv_export.data.to_s, filename: csv_export.filename
@@ -22,7 +21,17 @@ class Companies::CsvExportsController < ApplicationController
     redirect_to campaigns_report_path
   end
 
+  def destroy
+    csv_export.destroy
+    flash[:notice] = "Export Csv détruit !"
+    redirect_to campaigns_report_path
+  end
+
   private
+
+  def csv_export
+    @csv_export ||= CsvExport.find params[:id]
+  end
 
   def csv_export_params
     params.require(:csv_export)

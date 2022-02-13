@@ -45,7 +45,7 @@ Rails.application.routes.draw do
   resources :companies, only: %i[new create update destroy]
   resource :companies, only: [] do
     scope module: :companies do
-      resources :csv_exports, only: %i[show create]
+      resources :csv_exports, only: %i[show create destroy]
     end
   end
 

@@ -56,7 +56,22 @@
         <%= link_to companies_csv_export_path(csv_export, format: :csv) do %>
           <i class="fas fa-file-export"></i>
         <% end %>
+        <%=
+          link_to(
+            companies_csv_export_path(csv_export, format: :csv),
+            method: :delete,
+            data: {
+              confirm: 'Etes vous sûr(e) ?'
+            }
+          ) do
+        %>
+          <i class="fas fa-times text-danger"></i>
+        <% end %>
       </div>
+    <% end %>
+
+    <% unless current_user.company.csv_exports.any? %>
+      Aucun export pour le moment!
     <% end %>
   </div>
 </div>
