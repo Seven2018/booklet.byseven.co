@@ -1,28 +1,94 @@
-<div class="campaigns-report-container">
-  <div class='campaigns-report__temp'>
-    <%= simple_form_for :select_period_temp, url: campaigns_report_path(format: :csv), method: :get do |f| %>
-      <div class="report-mode-control">
-        <label>Mode</label>
-        <%= f.input :mode, collection: ['Data', 'Analytics'], as: :radio_buttons, legend_tag: false, input_html: {onclick: 'selectAnalytics(this);'} %>
-      </div>
-      <div class="report-tag-categories-control hidden">
-        <label>Choose a Category</label>
-        <%= f.input :category, collection: TagCategory.where(company_id: current_user.company_id).order(position: :asc), as: :radio_buttons, legend_tag: false %>
-      </div>
-      <div class='report-date-control'>
-        <!-- <input type="date" class='datepicker' id="start_date" name="start_date" value='<%= Date.today %>' onchange='changeDateTemp(this);'> -->
-        <%= f.input :start, label: 'From', input_html: {class: 'datepicker', value: Date.today}, placeholder: 'Select date' %>
-        <!-- <input type="date" class='datepicker' id="end_date" name="end_date" value='<%= Date.today.end_of_year %>' onchange='changeDateTemp(this);'> -->
-        <%= f.input :end, label: 'To', input_html: {class: 'datepicker', value: Date.today.end_of_year}, placeholder: 'Select date' %>
-        <div class='campaigns-report-list__controls-export'>
-          <%= button_tag type: 'submit' do %>
-            <i class="fas fa-file-export"></i>
-          <% end %>
-        </div>
-      </div>
+<div style='display: flex; justify-content: center; align-items: center; flex-direction: column;'>
+  <%# form %>
+  <div>
+    <%= simple_form_for CsvExport.new, url: companies_csv_exports_path do |f| %>
+      <%= f.hidden_field :company_id, value: current_user.company.id %>
 
+      <%= f.input :mode,
+        collection: CsvExport::modes.keys,
+        as: :radio_buttons,
+        input_html: {
+          onclick: 'selectAnalytics(this);',
+          style: 'margin-top: 0;'
+        }
+      %>
+
+      <%= f.input :category,
+        collection: current_user.company.tag_categories.order(position: :asc),
+        as: :radio_buttons,
+        input_html: {
+          onclick: 'selectAnalytics(this);',
+          style: 'margin-top: 0;'
+        }
+      %>
+
+      <%= f.input :start_time,
+        input_html: {
+          class: 'datepicker-defaulting-to-now',
+        },
+        as: :date,
+        html5: true,
+        placeholder: 'Select date'
+      %>
+
+      <%= f.input :end_time,
+        input_html: {
+          class: 'datepicker-defaulting-to-end-of-year',
+        },
+        as: :date,
+        html5: true,
+        placeholder: 'Select date'
+      %>
+
+      <%= f.submit 'generate', class: 'btn-blue__white-border' %>
     <% end %>
   </div>
+
+  <%# csv_exports %>
+  <div style="margin-top: 20px;">
+    <h3>Csv Exports</h3>
+    <% current_user.company.csv_exports.each do |csv_export| %>
+      <div>
+        <%= csv_export.filename %>
+        <strong>
+          <%= csv_export.state %>
+        </strong>
+        <%= link_to companies_csv_export_path(csv_export, format: :csv) do %>
+          <i class="fas fa-file-export"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+
+
+<!-- <div class="campaigns-report-container"> -->
+  <!-- <div class='campaigns-report__temp'> -->
+    <%#= simple_form_for :select_period_temp, url: campaigns_report_path(format: :csv), method: :get do |f| %>
+      <!-- <div class="report-mode-control"> -->
+        <!-- <label>Mode</label> -->
+        <%#= f.input :mode, collection: ['Data', 'Analytics'], as: :radio_buttons, legend_tag: false, input_html: {onclick: 'selectAnalytics(this);'} %>
+      <!-- </div> -->
+      <!-- <div class="report-tag-categories-control hidden"> -->
+        <!-- <label>Choose a Category</label> -->
+        <%#= f.input :category, collection: TagCategory.where(company_id: current_user.company_id).order(position: :asc), as: :radio_buttons, legend_tag: false %>
+      <!-- </div> -->
+      <!-- <div class='report-date-control'> -->
+        <!-- <input type="date" class='datepicker' id="start_date" name="start_date" value='<%#= Date.today %>' onchange='changeDateTemp(this);'> -->
+        <%#= f.input :start, label: 'From', input_html: {class: 'datepicker', value: Date.today}, placeholder: 'Select date' %>
+        <!-- <input type="date" class='datepicker' id="end_date" name="end_date" value='<%#= Date.today.end_of_year %>' onchange='changeDateTemp(this);'> -->
+        <%#= f.input :end, label: 'To', input_html: {class: 'datepicker', value: Date.today.end_of_year}, placeholder: 'Select date' %>
+        <!-- <div class='campaigns-report-list__controls-export'> -->
+          <%#= button_tag type: 'submit' do %>
+            <!-- <i class="fas fa-file-export"></i> -->
+          <%# end %>
+        <!-- </div> -->
+      <!-- </div> -->
+
+    <%# end %>
+  <!-- </div> -->
 <!--   <div class="campaigns-report-managers">
     <%# render 'campaigns/partials/campaigns_report_managers', all_campaigns: @all_campaigns, campaigns: @campaigns, managers: @managers, selected_manager_id: '' %>
   </div>
@@ -37,7 +103,7 @@
       </div>
     </div>
   </div> -->
-</div>
+<!-- </div> -->
 
 
 <!---------------->

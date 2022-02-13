@@ -1,4 +1,5 @@
 class CsvExport < ApplicationRecord
+  class UnknownMode < StandardError; end
   belongs_to :company
 
   enum state: {
@@ -19,6 +20,18 @@ class CsvExport < ApplicationRecord
 
   scope :processing, -> { where('state IN (?)', [ states[:enqueued], states[:started] ]) }
 
+  def filename
+    tail = "#{company.name} - #{start_time.strftime('%F')} to #{end_time.strftime('%F')}.csv"
+    case mode.to_sym
+    when :classic then "Campaign Export (Analytics) - #{tail}"
+    when :data    then "Campaign Export (Data) - #{tail}"
+    else
+      raise UnknownMode
+    end
+  end
+
+  private
+
   def no_duplicate_processing?
     errors.add(:base, message: 'An identical csv export is currently processing !') if
       CsvExport.where.not(id: id)
@@ -26,14 +39,6 @@ class CsvExport < ApplicationRecord
                .processing
                .exists?
   end
-
-  def filename
-    if classic_mode?
-      "Campaign Export (Analytics) - #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
-    end
-  end
-
-  private
 
   def signature
     [
