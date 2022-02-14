@@ -1,5 +1,5 @@
 <div class="searchbar">
-  <% if params[:controller] == 'campaigns' && params[:action] == 'index' %>
+  <% if (params[:controller] == 'campaigns' && params[:action] == 'index') || params[:action] == 'my_campaigns' %>
 
     <i class="fas fa-search catalogue-controls__search-trainings-icon"></i>
     <%= simple_form_for :search, url: campaigns_path, method: :get, remote: true do |f| %>

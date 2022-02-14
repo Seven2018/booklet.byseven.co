@@ -9,26 +9,26 @@
         <% if user_signed_in? %>
           <li>
             <% if params[:action] == 'dashboard' || params[:action] == 'recommendation'|| params[:controller] == 'trainings'|| params[:controller] == 'workshops' %>
-              <%= link_to dashboard_path, class: 'left-buttons' do %>
-                <div class="left-menu-title" style='color: #F26419;'><h4>Dashboard</h4></div>
+              <%= link_to dashboard_path do %>
+                <div class="navbar-button navbar-buttons--active"><h4>Dashboard</h4></div>
               <% end %>
               <div class="isactive"></div>
             <% else %>
-              <%= link_to dashboard_path, class: 'left-buttons' do %>
-                <div class="left-menu-title"><h4>Dashboard</h4></div>
+              <%= link_to dashboard_path do %>
+                <div class="navbar-buttons"><h4>Dashboard</h4></div>
               <% end %>
             <% end %>
           </li>
           <% if current_user.company_id.present? %>
             <li>
               <% if params[:action] == 'catalogue' || params[:controller] == 'contents'|| params[:controller] == 'folders' %>
-                <%= link_to catalogue_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title " style='color: #F26419;'><h4>Catalogue</h4></div>
+                <%= link_to catalogue_path do %>
+                  <div class="navbar-buttons navbar-buttons--active"><h4>Catalogue</h4></div>
                 <% end %>
                 <div class="isactive"></div>
               <% else %>
-                <%= link_to catalogue_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title"><h4>Catalogue</h4></div>
+                <%= link_to catalogue_path do %>
+                  <div class="navbar-buttons"><h4>Catalogue</h4></div>
                 <% end %>
               <% end %>
             </li>
@@ -36,25 +36,25 @@
           <% if current_user.manager_or_above? %>
             <li>
               <% if params[:controller] == 'users' || params[:action] == 'organisation' %>
-                <%= link_to organisation_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title " style='color: #F26419;'><h4>Employees</h4></div>
+                <%= link_to organisation_path do %>
+                  <div class="navbar-buttons navbar-buttons--active"><h4>Employees</h4></div>
                 <% end %>
                   <div class="isactive"></div>
               <% else %>
-                <%= link_to organisation_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title"><h4>Employees</h4></div>
+                <%= link_to organisation_path do %>
+                  <div class="navbar-buttons"><h4>Employees</h4></div>
                 <% end %>
               <% end %>
             </li>
             <li>
               <% if params[:action] == 'overview' %>
-                <%= link_to overview_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title " style='color: #F26419;'><h4>Report</h4></div>
+                <%= link_to overview_path do %>
+                  <div class="navbar-buttons navbar-buttons--active"><h4>Report</h4></div>
                 <% end %>
                 <div class="isactive"></div>
               <% else %>
-                <%= link_to overview_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title"><h4>Report</h4></div>
+                <%= link_to overview_path do %>
+                  <div class="navbar-buttons"><h4>Report</h4></div>
                 <% end %>
               <% end %>
             </li>

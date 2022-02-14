@@ -1,46 +1,24 @@
-<div class="campaigns-index-container">
+<div class="campaigns-container">
+  <div id="main-controls">
+    <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
+  </div>
+  <div class="campaigns-period-filter__mobile">
+    <p onclick='selectPeriodMobile(this);'>Current</p>
+    <p onclick='selectPeriodMobile(this);'>Completed</p>
+    <p onclick='selectPeriodMobile(this);'>All</p>
+  </div>
   <div class="campaigns-index">
-    <div class="campaigns-index__controls">
-      <div class="campaigns-index__title-tags">
-        <h1>Campaigns</h1>
-        <div class="campaigns-index__tags">
-          <p class='campaigns-index__tag'>All</p>
-        </div>
-      </div>
-      <button class='campaigns-index__filter_button'>
-        <span class="iconify" data-icon="bi:filter"></span>
-        <p>Filter</p>
-      </button>
-    </div>
-    <div class="campaigns-index__main">
-      <div class="campaigns-index__searchbar">
-        <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
-        <%= simple_form_for :search, url: campaigns_path, method: :get, remote: true do |f| %>
-          <%= f.input :title, placeholder: 'Search by title, job ...', input_html: {autocomplete: 'off', onkeyup: 'resetPage(this);'}, label: false, required: false %>
-          <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current', input_html: {onchange: 'resetPage(this);'} %>
-          <%= f.hidden_field :tags %>
-          <%= f.hidden_field :page, value: '1' %>
-          <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
-          <button type='submit' class="btn-search btn-search--mobile">
-            <i class="fas fa-search"></i>
-          </button>
-        <% end %>
-        <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
-      </div>
-      <div class="campaigns-index__list">
-        <div class="campaigns-index__list-headers">
-          <p>Campaign Type</p>
-          <p>Manager</p>
-          <p>Template</p>
-          <p class='campaigns-index__list-headers-employee'>Employees</p>
-          <p class='campaigns-index__list-headers-completion'>Completion</p>
-        </div>
-        <div class="campaigns-index__list-lines">
-          <%= render 'campaigns/index/index_campaigns_list', campaigns: @campaigns %>
-        </div>
-      </div>
+    <div class="campaigns-index__page" id='campaigns-index__page-1'>
+      <%= render 'campaigns/partials/index_card_list', campaigns: @campaigns %>
     </div>
   </div>
+  <% if @campaigns.count >= 24 %>
+    <div class="load-more-container">
+      <div class="load-more" onclick='loadMore();'>
+        <button id="load-more-button">Load more</button>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 
@@ -65,7 +43,7 @@
   }
 
   function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.campaigns-index__searchbar')
+    searchbar = element.closest('.searchbar')
 
     // Reset Search and Period input
     searchbar.querySelectorAll('input').forEach((input) => {
@@ -82,28 +60,28 @@
     // Reset Tags
     searchbar.querySelector('#search_tags').value = ''
     filter_counter = searchbar.querySelectorAll('.searchbar-campaign-filter__selected')
-    // pill_container = searchbar.querySelector('.searchbar-campaign__pill-container')
+    pill_container = searchbar.querySelector('.searchbar-campaign__pill-container')
     filter_counter.forEach((counter) => {counter.innerText = '0'; counter.style.backgroundColor = '#C4C4C4'})
-    // pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => pill.remove())
+    pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => pill.remove())
 
     // Reset offset
-    searchbar.querySelector('#search_page').value = '1'
+    searchbar.querySelector('#search_offset').value = 1
 
     searchbar.querySelector('.btn-search').click()
     document.querySelector('body').classList.add('wait')
   }
 
   function openContentMenu(element) {
-    dropdown = element.closest('.campaigns-index__list-line').querySelector('.campaigns-index__list-line-content-dropdown')
+    dropdown = element.parentNode.querySelector('.content-dropdown')
     if (!dropdown.classList.contains('hidden')) {
       dropdown.classList.remove('hidden')
       return
     }
     dropdown.classList.remove('hidden')
     formGuardian = true
-    card_link = element.closest('.campaigns-index__list-line').querySelector('.stretched-link')
+    card_link = element.closest('.campaign-card').querySelector('.stretched-link')
     card_link.classList.add('disabled')
-    card_link_href = "/campaigns/" + element.closest('.campaigns-index__list-line').id.split('-')[2]
+    card_link_href = "/campaigns/" + element.closest('.campaign-col').id.split('-')[2]
     card_link.href = "javascript:void(0)";
     setTimeout(function(){
       formGuardian = false
@@ -245,22 +223,36 @@
     form.querySelector('.hidden-submit').click()
   }
 
-  function changePage(direction) {
-    page_value = document.querySelector('#search_page')
-    previous_button = document.querySelector('.paginate__previous-button')
-    submit_button = document.querySelector('.btn-search')
-
-
-    if(direction == 'next') {
-      page_value.value = (parseInt(page_value.value,10) + 1).toString()
-    } else {
-      page_value.value = (parseInt(page_value.value,10) - 1).toString()
-    }
+  function loadMore() {
+    offset_counter = document.querySelector('#search_offset')
+    submit_button = document.querySelector('.search').querySelector('.btn-search')
+    offset_counter.value = parseInt(offset_counter.value, 10) + 1
     submit_button.click()
+    document.querySelector('body').classList.add('wait')
   }
 
-  function resetPage(element) {
-    element.closest('form').querySelector('#search_page').value = '1'
+  // Hide overflowing tag pills within each card
+  function hideOverflowingTags() {
+    document.querySelectorAll('.campaign-card__tags').forEach((tag_container) => {
+      card_width = tag_container.parentNode.querySelector('.campaign-card__controls').offsetWidth
+      result = 0
+      tooltip_content = ''
+      tag_container.querySelectorAll('.campaign-card__tag-pill').forEach((tag) => {
+        result += tag.offsetWidth
+        tooltip_content += tag.innerText + '\n'
+        if (result > card_width - 37) {
+          tag.remove()
+        }
+      })
+      if (result > card_width - 37) {
+        newDiv = document.createElement('div')
+        newDiv.classList.add('campaign-card__tag-plus')
+        newDiv.innerHTML = '<i class="fas fa-ellipsis-h"></i>'
+        newDiv.setAttribute('data-toggle', 'tooltip');
+        newDiv.setAttribute('title', tooltip_content)
+        tag_container.appendChild(newDiv)
+      }
+    })
   }
 
   // Add corresponding id to each Tag checkbox
@@ -270,6 +262,9 @@
     })
   }
 
+  hideOverflowingTags()
   addIdToTag()
+
+
 
 </script>
