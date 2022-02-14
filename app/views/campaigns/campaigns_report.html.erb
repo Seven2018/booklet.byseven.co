@@ -47,25 +47,27 @@
   <%# csv_exports %>
   <div style="margin-top: 20px;">
     <h3>Csv Exports</h3>
-    <% @company.csv_exports.each do |csv_export| %>
+    <% @company.csv_exports.order(created_at: :desc).each do |csv_export| %>
       <div>
         <%= csv_export.filename %>
         <strong>
           <%= csv_export.state %>
         </strong>
-        <%= link_to companies_csv_export_path(csv_export, format: :csv) do %>
-          <i class="fas fa-file-export"></i>
-        <% end %>
-        <%=
-          link_to(
-            companies_csv_export_path(csv_export, format: :csv),
-            method: :delete,
-            data: {
-              confirm: 'Etes vous sûr(e) ?'
-            }
-          ) do
-        %>
-          <i class="fas fa-times text-danger"></i>
+        <% unless csv_export.processing? %>
+          <%= link_to companies_csv_export_path(csv_export, format: :csv) do %>
+            <i class="fas fa-file-export"></i>
+          <% end %>
+          <%=
+            link_to(
+              companies_csv_export_path(csv_export, format: :csv),
+              method: :delete,
+              data: {
+                confirm: 'Etes vous sûr(e) ?'
+              }
+            ) do
+          %>
+            <i class="fas fa-times text-danger"></i>
+          <% end %>
         <% end %>
       </div>
     <% end %>

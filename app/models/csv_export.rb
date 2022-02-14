@@ -20,6 +20,10 @@ class CsvExport < ApplicationRecord
 
   scope :processing, -> { where('state IN (?)', [ states[:enqueued], states[:started] ]) }
 
+  def processing?
+    enqueued? || started?
+  end
+
   def filename
     tail = "#{company.name} - #{start_time.strftime('%F')} to #{end_time.strftime('%F')}.csv"
     case mode.to_sym
