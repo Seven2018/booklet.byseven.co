@@ -11,6 +11,8 @@ class Campaign < ApplicationRecord
 
   validates :title, presence: true
 
+  paginates_per 10
+
   enum campaign_type: {
     simple: 0,
     crossed: 10,

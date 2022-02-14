@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   # CAMPAIGNS
   resources :campaigns
+  get :my_campaigns, controller: :campaigns
   get :campaigns_report, controller: :campaigns
   get :campaigns_report_filter_campaigns, controller: :campaigns
   get :campaign_report_info, controller: :campaigns

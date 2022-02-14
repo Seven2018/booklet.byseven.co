@@ -1,129 +1,129 @@
-.searchbar {
-  display: flex;
-  align-items: flex-end;
-  position: relative;
-  margin-right: 1rem;
+// .searchbar {
+//   display: flex;
+//   align-items: flex-end;
+//   position: relative;
+//   margin-right: 1rem;
 
-  form {
-    display: flex;
-    align-items: flex-end;
-  }
+//   form {
+//     display: flex;
+//     align-items: flex-end;
+//   }
 
-  div {
-    margin: 0 1rem 0 0;
-  }
+//   div {
+//     margin: 0 1rem 0 0;
+//   }
 
-  input, select {
-    height: 40px;
-    border-radius: 4px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
-    // margin: 0 1rem 0 0;
+//   input, select {
+//     height: 40px;
+//     border-radius: 4px;
+//     box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
+//     // margin: 0 1rem 0 0;
 
-    &:focus {
-      border-color: #ced4da;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
-    }
-  }
+//     &:focus {
+//       border-color: #ced4da;
+//       box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
+//     }
+//   }
 
-  input {
-    position: relative;
-    // width: 30rem;
-    padding: 0 6rem 0 3.5rem;
-    font-style: normal;
-  }
+//   input {
+//     position: relative;
+//     // width: 30rem;
+//     padding: 0 6rem 0 3.5rem;
+//     font-style: normal;
+//   }
 
-  [type="checkbox"] {
-    margin-right: 1rem;
-  }
+//   [type="checkbox"] {
+//     margin-right: 1rem;
+//   }
 
-  #search_trainings_employee {
-    padding: 0 1rem;
-  }
+//   #search_trainings_employee {
+//     padding: 0 1rem;
+//   }
 
-  .flatpickr-input {
-    padding: 1rem;
-    width: 10.5rem !important;
-  }
+//   .flatpickr-input {
+//     padding: 1rem;
+//     width: 10.5rem !important;
+//   }
 
-  .btn-search, .btn-reset {
-    width: 75px;
-    padding: 0;
-  }
+//   .btn-search, .btn-reset {
+//     width: 75px;
+//     padding: 0;
+//   }
 
-  .btn-reset-orange {
-    height: 4rem;
-    color: #F26419;
-  }
+//   .btn-reset-orange {
+//     height: 4rem;
+//     color: #F26419;
+//   }
 
-  .btn-reset-blue {
-    height: 4rem;
-    color: #3177B7;
-  }
+//   .btn-reset-blue {
+//     height: 4rem;
+//     color: #3177B7;
+//   }
 
-  .searchbar__checkboxes-container {
-    position: relative;
+//   .searchbar__checkboxes-container {
+//     position: relative;
 
-    .searchbar__checkboxes-container-pseudo-input {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      margin: 0;
-      background-color: white;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-      color: #7a7a7a;
-      cursor: pointer;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+//     .searchbar__checkboxes-container-pseudo-input {
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       height: 40px;
+//       margin: 0;
+//       background-color: white;
+//       border: 1px solid #ced4da;
+//       border-radius: 4px;
+//       color: #7a7a7a;
+//       cursor: pointer;
+//       box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 
-      p {
-        font-style: italic;
-      }
-    }
+//       p {
+//         font-style: italic;
+//       }
+//     }
 
-    .searchbar__checkboxes {
-      width: 20rem;
-      max-height: 20rem;
-      overflow-y: scroll;
-      padding: 1rem;
-      position: absolute;
-      top: 7rem;
-      left: 0;
-      margin: 10px 0 auto;
-      background-color: white;
-      border: 1px solid #ced4da;
-      border-radius: 2px;
-      color: #7a7a7a;
-      z-index: 100;
+//     .searchbar__checkboxes {
+//       width: 20rem;
+//       max-height: 20rem;
+//       overflow-y: scroll;
+//       padding: 1rem;
+//       position: absolute;
+//       top: 7rem;
+//       left: 0;
+//       margin: 10px 0 auto;
+//       background-color: white;
+//       border: 1px solid #ced4da;
+//       border-radius: 2px;
+//       color: #7a7a7a;
+//       z-index: 100;
 
-      .searchbar__checkboxes-reset {
-        margin: 0 0 .5rem 2.4rem;
-        cursor: pointer;
-      }
+//       .searchbar__checkboxes-reset {
+//         margin: 0 0 .5rem 2.4rem;
+//         cursor: pointer;
+//       }
 
-      .centered-item:first-of-type {
-        height: 2.4rem;
-        margin: 0;
-      }
+//       .centered-item:first-of-type {
+//         height: 2.4rem;
+//         margin: 0;
+//       }
 
-      span {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-bottom: .5rem;
-      }
+//       span {
+//         display: flex;
+//         justify-content: flex-start;
+//         align-items: center;
+//         margin-bottom: .5rem;
+//       }
 
-      span:last-of-type {
-        margin: 0;
-      }
+//       span:last-of-type {
+//         margin: 0;
+//       }
 
-      label {
-        margin: 0;
-        white-space: nowrap;
-      }
-    }
-  }
-}
+//       label {
+//         margin: 0;
+//         white-space: nowrap;
+//       }
+//     }
+//   }
+// }
 
 .searchbar {
   width: calc(100vw - 6rem);
