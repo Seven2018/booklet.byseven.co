@@ -1,9 +1,9 @@
-<div class="organisation-filter-controls">
-  <div class='organisation-filter-controls-title'>
+<div class="organisation__filter-controls">
+  <div class='organisation__filter-controls-title'>
     <i class="fas fa-filter fa-2x"></i>
     <h2>Filter options</h2>
   </div>
-  <div class="organisation-filter-controls-buttons">
+  <div class="organisation__filter-controls-buttons">
     <div class="btn-icon" onclick='closeFilter();'>
       <i class="fas fa-times"></i>
     </div>
@@ -11,11 +11,11 @@
 </div>
 <%= simple_form_for :filter_user, url: organisation_path, method: :get, input_html: {multipart: true}, remote: true do |f| %>
   <% @tag_categories.order(position: :asc).each do |tag_category| %>
-    <div class="organisation-filter-block">
-      <div class="organisation-filter-block-title">
+    <div class="organisation__filter-block">
+      <div class="organisation__filter-block-title">
         <div>
           <p><%= tag_category.name %></p>
-          <div class="organisation-filter-block-title-buttons">
+          <div class="organisation__filter-block-title-buttons">
             <p onclick='clearFilter(this);'>Clear</p>
             <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
               <i class="fas fa-angle-down" data-rotated='0'></i>
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div class="organisation-filter-block-checkboxes">
+      <div class="organisation__filter-block-checkboxes">
         <% if tag_category.tags.empty? %>
           <p>No tags associated, create some in 'Manage Tags'</p>
         <% end %>

@@ -1,35 +1,7 @@
-// $('#paginate-container').html('#{escape_javascript(paginate(@users, :remote => true, :param_name => "page").to_s)}');
-if ("<%= @unfiltered %>" == 'true') {
-  document.querySelector('.organisation-main-container-unfiltered').classList.remove('hidden')
-  document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
-  showResetMobile(document.querySelector('.organisation-main-container-filtered'), false)
-} else if ("<%= @unfiltered %>" == 'false') {
-  document.querySelector('.organisation-main-container-unfiltered').classList.add('hidden')
-  document.querySelector('.organisation-main-container-filtered').classList.remove('hidden')
-  document.querySelector('.organisation-main-container-filtered').innerHTML = '<%= j render("pages/partials/organisation_users_list", users: @users.uniq, unfiltered: @unfiltered) %>';
-  showResetMobile(document.querySelector('.organisation-main-container-filtered'), true)
-}
-if ("<%= @selected_users.count %>" !== '0') {
-  document.querySelector('.organisation-main-container:not(.hidden)').querySelector('#manage-users-button').classList.add('flashing_button')
-  document.querySelector('.organisation-apply-to-user').classList.remove('hidden')
-}
-document.querySelector('.organisation-main-container:not(.hidden)').querySelectorAll('.select-user').forEach((user) => {
-  if ("<%= @selected_users.map{|x| x.id.to_s}.join(',') %>".split(',').includes(user.value)) {
-    user.click()
-  }
-})
-
+document.querySelector('.organisation__title-tags').querySelector('h1').innerText = 'Employees (<%= @total_users_count %>)'
+document.querySelector('.organisation__users-index').innerHTML = '<%= j render("pages/organisation/organisation_user_cards", users: @users) %>';
+document.querySelector('.organisation__paginate-container').innerHTML = '<%= j render("pages/organisation/organisation_paginate", users: @users) %>';
 $(document).ready(function () {
-  $(".organisation-page").floatingScroll();
+  $(".organisation__users-index").floatingScroll();
 });
 document.querySelector('body').classList.remove('wait');
-
-if ("<%= @search_name.present? %>" == 'true') {
-  search_bar = document.querySelector('.organisation-main-container-filtered')
-  search_bar.querySelector('#search_name').value = "<%= @search_name %>"
-  if ("<%= @search_staff %>" == '1') {
-    search_bar.querySelector('#search_staff').checked = true
-  }
-  // document.querySelector('.organisation-main-container-filtered').querySelector('#organisation-controls__user-search-clear').classList.remove('hidden')
-}
-

@@ -28,7 +28,7 @@ class User < ApplicationRecord
   paginates_per 50
 
   include PgSearch::Model
-  pg_search_scope :search_by_name,
+  pg_search_scope :search_users,
     against: [ :firstname, :lastname, :email ],
     associated_against: {
       tags: :tag_name

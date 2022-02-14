@@ -1,22 +1,31 @@
-<div class="headers-div">
-  <input type="checkbox" onclick="toggle(this);">
+<div class="organisation__users-headers-div">
+  <div class="organisation__user-checkbox-container">
+    <input type="checkbox" class='hidden'>
+    <div class="organisation__user-checkbox" onclick=""></div>
+  </div>
 </div>
-<div class="headers-div">
+<div class="organisation__users-headers-div">
   <p>Name</p>
 </div>
-<div class="headers-div">
+<div class="organisation__users-headers-div">
+  <p>Job Title</p>
+</div>
+<div class="organisation__users-headers-div">
   <p>Email</p>
 </div>
-<div class="headers-div">
+<div class="organisation__users-headers-div">
+  <p>Access Level</p>
+</div>
+<div class="organisation__users-headers-div">
   <p>Manager</p>
 </div>
 
 <% unless @tag_categories.empty? %>
-  <% @tag_categories.order(position: :asc).each do |tag_category| %>
-    <div class="headers-div">
+  <% @tag_categories.where.not(name: 'Job Title').order(position: :asc).each do |tag_category| %>
+    <div class="organisation__users-headers-div">
       <% if params[:edit] == "edit" %>
         <% if tag_category.position > 1 %>
-          <%= link_to organisation_path(edit: "edit", tag_postion: 'left', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
+          <%= link_to organisation_path(edit: "edit", tag_position: 'left', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
             <i class="fas fa-chevron-left pr-3 move-tag-category"></i>
           <% end %>
         <% end %>
@@ -24,7 +33,7 @@
       <p><%= tag_category.name %></p>
       <% if params[:edit] == "edit"  %>
         <% if tag_category.position < @tag_categories.count %>
-          <%= link_to organisation_path(edit: "edit", tag_postion: 'right', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
+          <%= link_to organisation_path(edit: "edit", tag_position: 'right', tag_category_id: tag_category.id, users: users.map(&:id).join(',')) do %>
             <i class="fas fa-chevron-right pl-3 move-tag-category"></i>
           <% end %>
         <% end %>
@@ -43,8 +52,7 @@
     <% end %>
   <% elsif params[:edit] == "none" || !params[:edit].present? %>
     <%= link_to organisation_path(edit: "edit") do %>
-      <i class="fas fa-pencil-alt editing-tag-category"></i>
+      <%# <i class="fas fa-pencil-alt editing-tag-category"></i> %>
     <% end %>
   <% end %>
 <% end %>
-
