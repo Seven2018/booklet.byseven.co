@@ -21,7 +21,7 @@
         </div>
 
         <div class="campaign-show__card-profile">
-          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-large' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          <img src="<%= employee.picture %>" class='avatar-large' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           <p><%= employee.lastname.upcase %> <%= employee.firstname.titleize %></p>
         </div>
 
