@@ -1,0 +1,13 @@
+<% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
+  <div class="paginate__previous-button" onclick='changePage("previous");'>
+    <span class="iconify" data-icon="fontisto:angle-left"></span>
+    <p>Previous</p>
+  </div>
+<% end %>
+<%= paginate users, left: 3, right: 1, remote: true %>
+<% if @users.count == 50 %>
+  <div class="paginate__next-button" onclick='changePage("next");'>
+    <p>Next</p>
+    <span class="iconify" data-icon="fontisto:angle-right"></span>
+  </div>
+<% end %>

@@ -1,0 +1,51 @@
+<% users.each do |user| %>
+  <% manager = user.manager %>
+
+  <div class='organisation__users-card user-card-<%= user.id %>'>
+
+    <div class='organisation__users-card__inner d-flex flex-row'>
+      <% user = @user if @user.present? %>
+      <div class="organisation__users-info">
+        <div class="organisation__user-checkbox-container">
+          <input class='select-user hidden' id='checkbox-<%= user.id %>' type="checkbox" value="<%= user.id %>">
+          <div class="organisation__user-checkbox" onclick="selectUser(this);"></div>
+        </div>
+      </div>
+      <div class="organisation__users-info streched-link">
+        <%= link_to user_path(user) do %>
+          <img src="<%= user.picture %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          <p class='organisation__user-name' data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %> <%= user.firstname %></p>
+        <% end %>
+      </div>
+      <div class="organisation__users-info">
+        <% job_title = UserTag.joins(:tag_category).find_by(tag_categories: {name: 'Job Title'}, user_id: user.id)&.tag&.tag_name %>
+        <p data-toggle="tooltip" title="<%= job_title %>"><%= job_title %></p>
+      </div>
+      <div class="organisation__users-info">
+        <%= link_to user_path(user) do %>
+          <p data-toggle="tooltip" title="<%= user.email %>"><%= user.email %></p>
+        <% end %>
+      </div>
+      <div class="organisation__users-info">
+        <p data-toggle="tooltip" title="<%= user.access_level %>"><%= user.access_level %></p>
+      </div>
+      <div class="organisation__users-info test">
+        <% if manager.present? %>
+          <img src="<%= manager.picture %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          <p data-toggle="tooltip" title="<%= user.manager&.fullname %>"><%= manager.fullname %></p>
+        <% end %>
+      </div>
+
+      <% unless @tag_categories.nil? %>
+        <% @tag_categories.where.not(name: 'Job Title').order(position: :asc).each do |tag_cat| %>
+          <div class="organisation__users-info">
+            <% user.user_tags.where(tag_category_id: tag_cat.id).each do |user_tag| %>
+              <p><%= user_tag.tag.tag_name %></p>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

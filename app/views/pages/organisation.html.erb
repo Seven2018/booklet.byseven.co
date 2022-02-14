@@ -1,26 +1,21 @@
-<script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
-<div id="paginate-container">
-  <%= paginate @users, remote: true, param_name: :page %>
-</div>
-<div class="organisation-first-container">
-<div class="organisation-main-container organisation-main-container-unfiltered">
-  <%= render 'pages/partials/organisation_users_list', users: @users, unfiltered: @unfiltered %>
-</div>
-<div class="organisation-main-container organisation-main-container-filtered hidden">
-  <%= render 'pages/partials/organisation_users_list', users: [], unfiltered: @unfiltered %>
-</div>
-<div class="organisation-filter-container">
-  <div class="organisation-filter-background" onclick='closeFilter();'></div>
-  <div class="organisation-filter-dropright">
-    <%= render 'pages/partials/organisation_filter_dropright' %>
+<div class="organisation__container">
+  <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+  <div class="organisation__main">
+    <%= render 'pages/organisation/organisation_users_list', users: @users %>
   </div>
-</div>
-<!-- <div class="organisation-manage-users-container">
-  <div class="organisation-manage-users-background" onclick='closeManager();'></div>
-  <div class="organisation-manage-users-dropright">
-    <%# render 'pages/partials/organisation_manage_users_dropright', users: @users %>
+  <div class="organisation__filter-container">
+    <div class="organisation__filter-background" onclick='closeFilter();'></div>
+    <div class="organisation__filter-dropright">
+      <%= render 'pages/organisation/organisation_filter_dropright' %>
+    </div>
   </div>
-</div> -->
+  <!-- <div class="organisation-manage-users-container">
+    <div class="organisation-manage-users-background" onclick='closeManager();'></div>
+    <div class="organisation-manage-users-dropright">
+      <%# render 'pages/organisation/organisation_manage_users_dropright', users: @users %>
+    </div>
+  </div> -->
+</div>
 
 <!------------>
 <!-- MODALS -->
@@ -50,17 +45,16 @@
   </div>
 </div>
 
-<div class='modal fade' id='exportUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'users/modals/export' %>
-  </div>
-</div>
-
 <div class='modal fade' id='importUsersInfos' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg modal-import-infos' role='document' style='border-radius: 20px'>
     <%= render 'users/partials/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
   </div>
 </div>
+
+<div class='modal fade' id='exportUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'users/modals/export' %>
+  </div>
 </div>
 
 <!---------------->
@@ -69,21 +63,15 @@
 
 <script>
   $(document).ready(function () {
-    $(".organisation-page").floatingScroll();
+    $(".organisation__users").floatingScroll();
   });
 </script>
 
 <script>
-  function clearSearch(element) {
-    document.querySelectorAll('#search_name').forEach((el) => {
-      el.value = ''
-    })
-    document.querySelectorAll('#organisation-controls__user-search-clear').forEach((el) => {
-      el.classList.add('hidden')
-    })
-    document.querySelector('.organisation-main-container-unfiltered').classList.remove('hidden')
-    document.querySelector('.organisation-main-container-filtered').classList.add('hidden')
-  }
+
+  ///////////
+  // TOOLS //
+  ///////////
 
   formGuardian = false;
   doubleClickGuardian = false;
@@ -101,6 +89,37 @@
     else return false;
   }
 
+
+  ///////////////
+  // SEARCHBAR //
+  ///////////////
+
+  function resetAllFilter(element) {
+    searchbar = element.closest('.organisation__searchbar')
+
+    // Reset Search and Period input
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+
+    // Reset Tags
+    searchbar.querySelector('#search_tags').value = ''
+    // filter_counter = searchbar.querySelectorAll('.searchbar-campaign-filter__selected')
+    // pill_container = searchbar.querySelector('.searchbar-campaign__pill-container')
+    // filter_counter.forEach((counter) => {counter.innerText = '0'; counter.style.backgroundColor = '#C4C4C4'})
+    // pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => pill.remove())
+
+    // Reset offset
+    searchbar.querySelector('#search_page').value = '1'
+
+    searchbar.querySelector('.btn-search').click()
+    document.querySelector('body').classList.add('wait')
+  }
+
   function showResetMobile(element, boolean) {
     search_button = element.querySelector('.btn-search--mobile')
     reset_button = element.querySelector('.btn-reset--mobile')
@@ -113,189 +132,201 @@
     }
   }
 
-  function openForm(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      element.classList.toggle('hidden')
-      form = element.parentNode.querySelector('.hidden-form-category-ajax')
-      form.classList.toggle('hidden')
-      setTimeout(function(){doubleClickGuardian = false}, 10)
 
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, form) && doubleClickGuardian == false) {
-          form.classList.toggle('hidden')
-          element.classList.toggle('hidden')
-          this.removeEventListener('click', arguments.callee, false)
-        }
-      });
-    }
-  }
+  /////////////
+  // FILTERS //
+  /////////////
 
-  function openFilter() {
-    filter_container = document.querySelector('.organisation-filter-container');
-    filter_dropright = document.querySelector('.organisation-filter-dropright');
-    filter_container.style.display = 'flex';
-    setTimeout(function(){
-      filter_dropright.style.width = '400px';
-    }, 1);
-    document.querySelector('body').classList.add('filter-open')
-  }
+  // function openForm(element) {
+  //   if (doubleClickGuardian == false) {
+  //     doubleClickGuardian = true
+  //     element.classList.toggle('hidden')
+  //     form = element.parentNode.querySelector('.hidden-form-category-ajax')
+  //     form.classList.toggle('hidden')
+  //     setTimeout(function(){doubleClickGuardian = false}, 10)
 
-  function closeFilter() {
-    filter_container = document.querySelector('.organisation-filter-container');
-    filter_dropright = document.querySelector('.organisation-filter-dropright');
-    filter_dropright.style.width = '0px';
-    setTimeout(function(){
-      filter_container.style.display = 'none';
-    }, 250);
-    document.querySelector('body').classList.remove('filter-open')
-  }
+  //     window.addEventListener('click', function(e) {
+  //       if (outsideClick(e, form) && doubleClickGuardian == false) {
+  //         form.classList.toggle('hidden')
+  //         element.classList.toggle('hidden')
+  //         this.removeEventListener('click', arguments.callee, false)
+  //       }
+  //     });
+  //   }
+  // }
 
-  function openManager() {
-    manage_users_container = document.querySelector('.organisation-manage-users-container');
-    manage_users_dropright = document.querySelector('.organisation-manage-users-dropright');
-    manage_users_container.style.display = 'flex';
-    setTimeout(function(){
-      manage_users_dropright.style.width = '400px';
-    }, 1);
-  }
+  // function openFilter() {
+  //   filter_container = document.querySelector('.organisation-filter-container');
+  //   filter_dropright = document.querySelector('.organisation-filter-dropright');
+  //   filter_container.style.display = 'flex';
+  //   setTimeout(function(){
+  //     filter_dropright.style.width = '400px';
+  //   }, 1);
+  //   document.querySelector('body').classList.add('filter-open')
+  // }
 
-  function closeManager() {
-    filter_container = document.querySelector('.organisation-manage-users-container');
-    filter_dropright = document.querySelector('.organisation-manage-users-dropright');
-    filter_dropright.style.width = '0px';
-    setTimeout(function(){
-      filter_container.style.display = 'none';
-    }, 250);
-  }
+  // function closeFilter() {
+  //   filter_container = document.querySelector('.organisation-filter-container');
+  //   filter_dropright = document.querySelector('.organisation-filter-dropright');
+  //   filter_dropright.style.width = '0px';
+  //   setTimeout(function(){
+  //     filter_container.style.display = 'none';
+  //   }, 250);
+  //   document.querySelector('body').classList.remove('filter-open')
+  // }
+
+  // function openManager() {
+  //   manage_users_container = document.querySelector('.organisation-manage-users-container');
+  //   manage_users_dropright = document.querySelector('.organisation-manage-users-dropright');
+  //   manage_users_container.style.display = 'flex';
+  //   setTimeout(function(){
+  //     manage_users_dropright.style.width = '400px';
+  //   }, 1);
+  // }
+
+  // function closeManager() {
+  //   filter_container = document.querySelector('.organisation-manage-users-container');
+  //   filter_dropright = document.querySelector('.organisation-manage-users-dropright');
+  //   filter_dropright.style.width = '0px';
+  //   setTimeout(function(){
+  //     filter_container.style.display = 'none';
+  //   }, 250);
+  // }
 
 
-  function toggleTagCategoryDropdown(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode.parentNode.parentNode;
-    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '10000px';
-      block.classList.add('active');
-    } else {
-      block.style.maxHeight = '61px';
-      block.classList.remove('active');
-    }
-  }
+  // function toggleTagCategoryDropdown(element) {
+  //   caret = element.querySelector('i')
+  //   angle = parseInt(caret.getAttribute('data-rotated'), 10)
+  //   caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+  //   caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+  //   caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+  //   caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+  //   caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+  //   caret.setAttribute('data-rotated', (angle + 180).toString())
+  //   block = element.parentNode.parentNode.parentNode.parentNode;
+  //   if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+  //     block.style.maxHeight = '10000px';
+  //     block.classList.add('active');
+  //   } else {
+  //     block.style.maxHeight = '61px';
+  //     block.classList.remove('active');
+  //   }
+  // }
 
-  function hideClearFilterButton() {
-    form = document.querySelector('.filter_user');
-    form.querySelectorAll('.organisation-filter-block').forEach((element) => {
-      checked = false;
-      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-        if (checkbox.checked == true) {
-          checked = true;
-        }
-      })
-      if (checked == false) {
-        element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
-      }
-    })
-  }
+  // function hideClearFilterButton() {
+  //   form = document.querySelector('.filter_user');
+  //   form.querySelectorAll('.organisation-filter-block').forEach((element) => {
+  //     checked = false;
+  //     element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+  //       if (checkbox.checked == true) {
+  //         checked = true;
+  //       }
+  //     })
+  //     if (checked == false) {
+  //       element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
+  //     }
+  //   })
+  // }
 
-  function hideClearManagerButton() {
-    form = document.querySelector('.add_tags');
-    form.querySelectorAll('.organisation-manage-users-block').forEach((element) => {
-      checked = false;
-      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-        if (checkbox.checked == true) {
-          checked = true;
-        }
-      })
-      if (checked == false) {
-        element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '0';
-      } else {
-        element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '1';
-      }
-    })
-  }
+  // function hideClearManagerButton() {
+  //   form = document.querySelector('.add_tags');
+  //   form.querySelectorAll('.organisation-manage-users-block').forEach((element) => {
+  //     checked = false;
+  //     element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+  //       if (checkbox.checked == true) {
+  //         checked = true;
+  //       }
+  //     })
+  //     if (checked == false) {
+  //       element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '0';
+  //     } else {
+  //       element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '1';
+  //     }
+  //   })
+  // }
 
-  function autoSubmit(element) {
-    element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
-    hideClearFilterButton();
-    document.querySelector('.filter_user').querySelector('.hidden-submit').click();
-    document.querySelector('body').classList.add('wait');
-  }
+  // function autoSubmit(element) {
+  //   element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
+  //   hideClearFilterButton();
+  //   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  //   document.querySelector('body').classList.add('wait');
+  // }
 
-  function clearFilter(element) {
-    block = element.parentNode.parentNode.parentNode.parentNode;
-    block.querySelectorAll('input.check_boxes').forEach((element) => {
-      if (element.checked == true) {
-        element.checked = false;
-      }
-    })
-    hideClearFilterButton();
-    document.querySelector('.filter_user').querySelector('.hidden-submit').click();
-    document.querySelector('body').classList.add('wait');
-  }
+  // function clearFilter(element) {
+  //   block = element.parentNode.parentNode.parentNode.parentNode;
+  //   block.querySelectorAll('input.check_boxes').forEach((element) => {
+  //     if (element.checked == true) {
+  //       element.checked = false;
+  //     }
+  //   })
+  //   hideClearFilterButton();
+  //   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
+  //   document.querySelector('body').classList.add('wait');
+  // }
 
-  function clearFilterManager(element) {
-    block = element.parentNode.parentNode.parentNode.parentNode;
-    block.querySelectorAll('input.check_boxes').forEach((element) => {
-      if (element.checked == true) {
-        element.checked = false;
-      }
-    })
-    hideClearManagerButton();
-  }
+  // function clearFilterManager(element) {
+  //   block = element.parentNode.parentNode.parentNode.parentNode;
+  //   block.querySelectorAll('input.check_boxes').forEach((element) => {
+  //     if (element.checked == true) {
+  //       element.checked = false;
+  //     }
+  //   })
+  //   hideClearManagerButton();
+  // }
 
-  function resetFilter() {
-    form = document.querySelector('.filter_user');
-    form.querySelectorAll('.check_boxes').forEach((element) => {
-      if (element.checked == true) {
-        element.checked = false;
-      }
-    })
-    hideClearFilterButton();
-    form.querySelector('.hidden-submit').click();
-    document.querySelector('body').classList.add('wait');
-  }
+  // function resetFilter() {
+  //   form = document.querySelector('.filter_user');
+  //   form.querySelectorAll('.check_boxes').forEach((element) => {
+  //     if (element.checked == true) {
+  //       element.checked = false;
+  //     }
+  //   })
+  //   hideClearFilterButton();
+  //   form.querySelector('.hidden-submit').click();
+  //   document.querySelector('body').classList.add('wait');
+  // }
 
-  function removeJob(element) {
-    form = document.querySelector('.filter_user');
-    job = element.parentNode.getAttribute("name");
-    form.querySelector('.filter_user_job').querySelectorAll('input.check_boxes').forEach((checkbox) => {
-      if (checkbox.value == job) {
-        checkbox.checked = false;
-        form.querySelector('.hidden-submit').click();
-        document.querySelector('body').classList.add('wait');
-      }
-    })
-  }
+  // function removeJob(element) {
+  //   form = document.querySelector('.filter_user');
+  //   job = element.parentNode.getAttribute("name");
+  //   form.querySelector('.filter_user_job').querySelectorAll('input.check_boxes').forEach((checkbox) => {
+  //     if (checkbox.value == job) {
+  //       checkbox.checked = false;
+  //       form.querySelector('.hidden-submit').click();
+  //       document.querySelector('body').classList.add('wait');
+  //     }
+  //   })
+  // }
 
-  function removeFilterTag(element) {
-    form = document.querySelector('.filter_user');
-    job = element.parentNode.getAttribute("name");
-    form.querySelectorAll('.filter_user_tag').forEach((category) => {
-      category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-        if (checkbox.parentNode.querySelector('label').innerText == job) {
-          checkbox.checked = false;
-          form.querySelector('.hidden-submit').click();
-          document.querySelector('body').classList.add('wait');
-        }
-      })
-    })
-  }
+  // function removeFilterTag(element) {
+  //   form = document.querySelector('.filter_user');
+  //   job = element.parentNode.getAttribute("name");
+  //   form.querySelectorAll('.filter_user_tag').forEach((category) => {
+  //     category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
+  //       if (checkbox.parentNode.querySelector('label').innerText == job) {
+  //         checkbox.checked = false;
+  //         form.querySelector('.hidden-submit').click();
+  //         document.querySelector('body').classList.add('wait');
+  //       }
+  //     })
+  //   })
+  // }
 
   function selectUser(element) {
     ids = []
-    if (document.querySelector('.organisation-main-container-unfiltered').classList.contains('hidden')) {
-      main_container = document.querySelector('.organisation-main-container-filtered')
-    } else {
-      main_container = document.querySelector('.organisation-main-container-unfiltered')
-    }
+    main_container = document.querySelector('.organisation__main')
     check_boxes = main_container.querySelectorAll('.select-user')
+
+    element_checkbox = element.parentNode.querySelector('.select-user')
+    element_checkbox.checked = !element_checkbox.checked
+
+    if (element_checkbox.checked) {
+      element.classList.add('active')
+      console.log('yes')
+    } else {
+      element.classList.remove('active')
+    }
+
     check_boxes.forEach((input) => {
       if (input.checked) {
         ids.push(input.id.split('-')[1])
@@ -303,7 +334,7 @@
     })
 
     // Remove Selected Users Setup //
-    unlink_button_interface = main_container.querySelector('.organisation-dropdown-menu').querySelector('#organisation-dropdown__remove-user-redirect')
+    unlink_button_interface = main_container.querySelector('.organisation__dropdown-menu').querySelector('#organisation-dropdown__remove-user-redirect')
     unlink_button = document.querySelector('#unlink_users')
     unlink_href = new URL(unlink_button.href)
     unlink_href.searchParams.set('selected_users', ids.join(','))
@@ -332,82 +363,64 @@
     }
   }
 
-  function userCreated() {
-    document.querySelector("#newUser").querySelector(".cancel-close").click()
-    user_email = document.querySelector('#user_email').value
-    search_input = document.querySelector('#search_name')
-    search_input.value = user_email
-    search_input.closest('form').querySelector('.btn-search').click()
-    new_user_form = document.querySelector('#new_user')
-    new_user_form.querySelectorAll('input').forEach((input) => {
-      input.value = ''
-    })
-  }
+  // function fetchCategoryForm(element) {
+  //   if (doubleClickGuardian == false) {
+  //     doubleClickGuardian = true;
+  //     form = document.querySelector(element.getAttribute('data-target'));
+  //     initial_top = form.offsetTop
+  //     initial_left = form.offsetLeft
+  //     opened_blocks = []
+  //     document.querySelectorAll('.organisation-manage-users-block.active').forEach((block) => {
+  //       opened_blocks.push(block.getAttribute('data-category'));
+  //     })
+  //     form.querySelector('.hidden-submit').value = opened_blocks.join(',');
+  //     if (element.getAttribute('data-target').split('-')[0] == '#edit') {
+  //       controls = element.parentNode.parentNode
+  //       controls.style.opacity = 0
+  //       form.style.top = (controls.offsetTop - 1).toString() + 'px';
+  //       form.style.left = (controls.offsetLeft + 25).toString() + 'px'
+  //     } else if (element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
+  //       controls = element.parentNode.parentNode.querySelector('label')
+  //       controls.style.opacity = 0
+  //       form.style.top = (controls.offsetTop - 8).toString() + 'px';
+  //       form.style.left = (controls.offsetLeft + 8).toString() + 'px'
+  //     } else {
+  //       form.style.top = (element.offsetTop - 2).toString() + 'px';
+  //       form.style.left = (element.offsetLeft + 24).toString() + 'px'
+  //       element.parentNode.querySelector('p').style.opacity = '0';
+  //     }
+  //     form.classList.toggle('hidden');
+  //     target_input = form.querySelector('input')
+  //     target_input.focus()
+  //     val = target_input.value;
+  //     target_input.value = '';
+  //     target_input.value = val;
+  //     form.querySelector('input').addEventListener('keypress', function(e) {
+  //       if (event.which == '13') {
+  //         spinningLoader();
+  //       }
+  //     })
+  //     setTimeout(function(){
+  //       doubleClickGuardian = false;
+  //     }, 1);
 
-  function clearInput(element) {
-    form = element.parentNode.parentNode;
-    form.querySelector('.hidden-submit').click();
-    document.querySelector('body').classList.add('wait');
-  }
-
-  function fetchCategoryForm(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true;
-      form = document.querySelector(element.getAttribute('data-target'));
-      initial_top = form.offsetTop
-      initial_left = form.offsetLeft
-      opened_blocks = []
-      document.querySelectorAll('.organisation-manage-users-block.active').forEach((block) => {
-        opened_blocks.push(block.getAttribute('data-category'));
-      })
-      form.querySelector('.hidden-submit').value = opened_blocks.join(',');
-      if (element.getAttribute('data-target').split('-')[0] == '#edit') {
-        controls = element.parentNode.parentNode
-        controls.style.opacity = 0
-        form.style.top = (controls.offsetTop - 1).toString() + 'px';
-        form.style.left = (controls.offsetLeft + 25).toString() + 'px'
-      } else if (element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
-        controls = element.parentNode.parentNode.querySelector('label')
-        controls.style.opacity = 0
-        form.style.top = (controls.offsetTop - 8).toString() + 'px';
-        form.style.left = (controls.offsetLeft + 8).toString() + 'px'
-      } else {
-        form.style.top = (element.offsetTop - 2).toString() + 'px';
-        form.style.left = (element.offsetLeft + 24).toString() + 'px'
-        element.parentNode.querySelector('p').style.opacity = '0';
-      }
-      form.classList.toggle('hidden');
-      target_input = form.querySelector('input')
-      target_input.focus()
-      val = target_input.value;
-      target_input.value = '';
-      target_input.value = val;
-      form.querySelector('input').addEventListener('keypress', function(e) {
-        if (event.which == '13') {
-          spinningLoader();
-        }
-      })
-      setTimeout(function(){
-        doubleClickGuardian = false;
-      }, 1);
-
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, form) && doubleClickGuardian == false) {
-          if (element.getAttribute('data-target').split('-')[0] == '#edit' || element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
-            controls = element.parentNode.parentNode.querySelector('label')
-            controls.style.opacity = 1
-          } else {
-            form.querySelector('input').value = ''
-            element.parentNode.querySelector('p').style.opacity = '1';
-          }
-          form.style.top = initial_top.toString() + 'px';
-          form.style.left = initial_left.toString() + 'px';
-          form.classList.toggle('hidden');
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    }
-  }
+  //     window.addEventListener('click', function(e) {
+  //       if (outsideClick(e, form) && doubleClickGuardian == false) {
+  //         if (element.getAttribute('data-target').split('-')[0] == '#edit' || element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
+  //           controls = element.parentNode.parentNode.querySelector('label')
+  //           controls.style.opacity = 1
+  //         } else {
+  //           form.querySelector('input').value = ''
+  //           element.parentNode.querySelector('p').style.opacity = '1';
+  //         }
+  //         form.style.top = initial_top.toString() + 'px';
+  //         form.style.left = initial_left.toString() + 'px';
+  //         form.classList.toggle('hidden');
+  //         this.removeEventListener('click', arguments.callee, false);
+  //       }
+  //     });
+  //   }
+  // }
 
   function removeTag(element) {
     opened_blocks = []
@@ -427,25 +440,39 @@
     })
   }
 
-  function showDelete(element) {
-    // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
-    controls = element.querySelectorAll('.tag_delete');
-    controls.forEach((control) => {
-      if (control.style.opacity == 0) {
-        control.style.opacity = 1;
-      } else {
-        control.style.opacity = 0;
-      }
+  // function showDelete(element) {
+  //   // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
+  //   controls = element.querySelectorAll('.tag_delete');
+  //   controls.forEach((control) => {
+  //     if (control.style.opacity == 0) {
+  //       control.style.opacity = 1;
+  //     } else {
+  //       control.style.opacity = 0;
+  //     }
+  //   })
+  // }
+
+
+  /////////////////
+  // CREATE USER //
+  /////////////////
+
+  function userCreated() {
+    document.querySelector("#newUser").querySelector(".cancel-close").click()
+    user_email = document.querySelector('#user_email').value
+    search_input = document.querySelector('#search_name')
+    search_input.value = user_email
+    search_input.closest('form').querySelector('.btn-search').click()
+    new_user_form = document.querySelector('#new_user')
+    new_user_form.querySelectorAll('input').forEach((input) => {
+      input.value = ''
     })
   }
 
-  function toggle(source) {
-    checkboxes = document.querySelector('.organisation-main-container:not(.hidden)').querySelectorAll('.select-user');
-    for(var i=0, n=checkboxes.length;i<n;i++) {
-      checkboxes[i].checked = source.checked;
-      selectUser(checkboxes[i]);
-    }
-  }
+
+  //////////////////
+  // EXPORT USERS //
+  //////////////////
 
   function exportUsers(element) {
     users_array = []
@@ -455,10 +482,6 @@
     element.closest('form').querySelector('#csv_selected_users').value = users_array.join(',')
     element.closest('.modal-content').querySelector('.btn-icon').click()
     element.parentNode.querySelector('.hidden-submit').click()
-  }
-
-  function clearSearchBis() {
-    document.location.reload()
   }
 
   function selectCsvAttributes(element, color) {
@@ -511,6 +534,11 @@
     checkCsvAttributes(color)
   }
 
+
+  //////////////////
+  // IMPORT USERS //
+  //////////////////
+
   function importSummary(element) {
     document.querySelector('body').classList.add('wait')
     element.classList.add('btn-orange__white-border-disabled')
@@ -527,59 +555,72 @@
     submit_button.click()
   }
 
-  function spinningLoader() {
-    document.querySelector('body').classList.add('wait');
+
+  //////////////
+  // PAGINATE //
+  //////////////
+
+  function setPage(url) {
+    page_value = document.querySelector('#search_page')
+    submit_button = document.querySelector('.btn-search')
+    url_storage = new URL(url)
+    target_page = url_storage.searchParams.get('page')
+
+    page_value.value = target_page
+    submit_button.click()
   }
 
-  function infiniteScroll() {
-    if ($("nav ul.pagination a[rel=next]").length) {
-      $('.users-index').infiniteScroll({
-        path: "nav ul.pagination a[rel=next]",
-        append: ".user-index-card",
-        hideNav: "nav ul.pagination",
-        history: false,
-        scrollThreshold: 5000,
-        elementScroll: '#booklet-wrapper',
-        debug: false,
-        loadOnScroll: true
-      });
-    };
+  function changePage(direction) {
+    page_value = document.querySelector('#search_page')
+    submit_button = document.querySelector('.btn-search')
+
+    if(direction == 'next') {
+      page_value.value = (parseInt(page_value.value,10) + 1).toString()
+    } else {
+      page_value.value = (parseInt(page_value.value,10) - 1).toString()
+    }
+    submit_button.click()
   }
 
-  infiniteScroll()
+  function resetPage(element) {
+    element.closest('form').querySelector('#search_page').value = '1'
+  }
+
+
+  //////////
+  // MISC //
+  //////////
+
+  // function infiniteScroll() {
+  //   if ($("nav ul.pagination a[rel=next]").length) {
+  //     $('.organisation__users-index').infiniteScroll({
+  //       path: "nav ul.pagination a[rel=next]",
+  //       append: ".organisation__users-card",
+  //       hideNav: "nav ul.pagination",
+  //       history: false,
+  //       scrollThreshold: 5000,
+  //       elementScroll: '#booklet-wrapper',
+  //       debug: false,
+  //       loadOnScroll: true
+  //     });
+  //   };
+  // }
+
+  // infiniteScroll()
 
   tag_category_names = document.querySelectorAll('#tag_category_name')
   tag_category_names.forEach((element) => {
     element.addEventListener('keypress', function(e) {
       if (event.which == '13') {
-        spinningLoader();
+        document.querySelector('body').classList.add('wait')
       }
     })
   })
 
-  function colorNameInBlue() {
-    document.querySelectorAll('.user-name').forEach((name) => {
-      name.style.color = '#3177B7'
+  document.querySelectorAll('.page-link').forEach((link) => {
+    link.addEventListener('click', function(e) {
+      setPage(window.location.host + link.id)
     })
-  }
+  })
 
-  redirection = window.location.href.split('redirected_from=')[1]
-  if (redirection != undefined && redirection.includes('campaigns')) {
-    document.querySelector('.btn-reset').style.color = '#3177B7'
-    document.querySelectorAll('.btn-white, .btn-icon').forEach((button) => {
-      button.querySelectorAll('i, p').forEach((element) => {
-        element.style.color = '#3177B7'
-      })
-    })
-    document.querySelectorAll('#csv_start_date, #csv_end_date').forEach((input) => {
-      input.style.color = '#3177B7'
-    })
-    colorNameInBlue()
-    window.addEventListener('scroll', function(e) {
-      colorNameInBlue()
-    })
-    checkCsvAttributes('#3177B7')
-  } else {
-    checkCsvAttributes('#F26419')
-  }
 </script>

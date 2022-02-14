@@ -1,6 +1,6 @@
 manage_users = document.querySelector('.organisation-manage-users-dropright')
 manage_users.innerHTML = '<%= j render("pages/organisation_manage_users_dropright", users: @users, tag_categories: @tag_categories) %>';
-document.querySelector('.organisation-main-container-unfiltered').innerHTML = '<%= j render("pages/organisation_users_list", users: User.where(company_id: current_user.company_id).order(lastname: :asc), unfiltered: 'true') %>';
+document.querySelector('.organisation-main-unfiltered').innerHTML = '<%= j render("pages/organisation_users_list", users: User.where(company_id: current_user.company_id).order(lastname: :asc), unfiltered: 'true') %>';
 document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>';
 manage_users.querySelectorAll('input[type="checkbox"]').forEach((element) => {
   element.checked = false
