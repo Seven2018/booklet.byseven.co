@@ -65,7 +65,16 @@ class CampaignsController < ApplicationController
 
   def campaigns_report
     @campaigns = policy_scope(Campaign)
-    @campaigns = @campaigns.where(company_id: current_user.company_id)
+    @company = current_user.company
+
+    # TODO replace current_user.company by @company
+    unless @company
+      authorize @campaigns
+      flash[:alert] = "L'utilisateur doit être associé à une société !"
+      redirect_to root_path and return
+    end
+
+    @campaigns = @campaigns.where(company_id: current_user.company)
     @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).order(lastname: :asc)
     @selected_manager_id = ''
     authorize @campaigns

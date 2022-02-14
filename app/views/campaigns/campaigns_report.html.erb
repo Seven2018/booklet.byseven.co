@@ -2,7 +2,7 @@
   <%# form %>
   <div>
     <%= simple_form_for CsvExport.new, url: companies_csv_exports_path do |f| %>
-      <%= f.hidden_field :company_id, value: current_user.company.id %>
+      <%= f.hidden_field :company_id, value: @company.id %>
 
       <%= f.input :mode,
         collection: CsvExport::modes.keys,
@@ -14,7 +14,7 @@
       %>
 
       <%= f.input :category,
-        collection: current_user.company.tag_categories.order(position: :asc),
+        collection: @company.tag_categories.order(position: :asc),
         as: :radio_buttons,
         input_html: {
           onclick: 'selectAnalytics(this);',
@@ -47,7 +47,7 @@
   <%# csv_exports %>
   <div style="margin-top: 20px;">
     <h3>Csv Exports</h3>
-    <% current_user.company.csv_exports.each do |csv_export| %>
+    <% @company.csv_exports.each do |csv_export| %>
       <div>
         <%= csv_export.filename %>
         <strong>
@@ -70,7 +70,7 @@
       </div>
     <% end %>
 
-    <% unless current_user.company.csv_exports.any? %>
+    <% unless @company.csv_exports.any? %>
       Aucun export pour le moment!
     <% end %>
   </div>
