@@ -1,8 +1,22 @@
 // CLEANED - 2021-07-06
 
+.avatar-sm {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .avatar {
   width: 4rem;
   height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-large {
+  width: 7.5rem;
+  height: 7.5rem;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -15,11 +29,4 @@
   img {
     object-fit: cover;
   }
-}
-
-.avatar-sm {
-  width: 3rem;
-  height: 3rem;
-  object-fit: cover;
-  border-radius: 50%;
 }

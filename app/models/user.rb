@@ -39,7 +39,7 @@ class User < ApplicationRecord
     ignoring: :accents
 
   def fullname
-    "#{lastname.upcase} #{firstname.capitalize} "
+    "#{lastname.upcase} #{firstname.titleize} "
   end
 
   def manager_name

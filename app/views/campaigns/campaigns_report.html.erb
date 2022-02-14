@@ -1,18 +1,26 @@
 <div class="campaigns-report-container">
   <div class='campaigns-report__temp'>
     <%= simple_form_for :select_period_temp, url: campaigns_report_path(format: :csv), method: :get do |f| %>
+      <div class="report-mode-control">
+        <label>Mode</label>
+        <%= f.input :mode, collection: ['Data', 'Analytics'], as: :radio_buttons, legend_tag: false, input_html: {onclick: 'selectAnalytics(this);'}, checked: 'Data' %>
+      </div>
+      <div class="report-tag-categories-control hidden">
+        <label>Choose a Category</label>
+        <%= f.input :category, collection: TagCategory.where(company_id: current_user.company_id).order(position: :asc), as: :radio_buttons, legend_tag: false, required: false %>
+      </div>
       <div class='report-date-control'>
         <!-- <input type="date" class='datepicker' id="start_date" name="start_date" value='<%= Date.today %>' onchange='changeDateTemp(this);'> -->
         <%= f.input :start, label: 'From', input_html: {class: 'datepicker', value: Date.today}, placeholder: 'Select date' %>
         <!-- <input type="date" class='datepicker' id="end_date" name="end_date" value='<%= Date.today.end_of_year %>' onchange='changeDateTemp(this);'> -->
         <%= f.input :end, label: 'To', input_html: {class: 'datepicker', value: Date.today.end_of_year}, placeholder: 'Select date' %>
+        <div class='campaigns-report-list__controls-export'>
+          <%= button_tag type: 'submit' do %>
+            <i class="fas fa-file-export"></i>
+          <% end %>
+        </div>
       </div>
 
-      <div class='campaigns-report-list__controls-export'>
-        <%= button_tag type: 'submit' do %>
-          <i class="fas fa-file-export"></i>
-        <% end %>
-      </div>
     <% end %>
   </div>
 <!--   <div class="campaigns-report-managers">
@@ -38,22 +46,17 @@
 
 <script>
 
-  //////////
   // TEMP //
-  //////////
 
-  function changeDateTemp(element) {
-    if (element.id == 'start_date') {
-
+  function selectAnalytics(element) {
+    if (element.value == 'Analytics') {
+      document.querySelector('.report-tag-categories-control').classList.remove('hidden')
     } else {
-
+      document.querySelector('.report-tag-categories-control').classList.add('hidden')
     }
   }
 
-
-  //////////
-
-
+  /////////
 
   function checkDateInterval() {
     start = document.querySelector('#select_period_start')

@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy]
+  before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy, :campaign_add_user, :campaign_remove_user]
 
   def index
     campaigns = policy_scope(Campaign).where(company: current_user.company)
@@ -81,7 +81,13 @@ class CampaignsController < ApplicationController
       # format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params[:start_date]} to #{params[:end_date]}.csv" }
 
       # TEMP #
-      format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv" }
+      format.csv {
+        if params.dig(:select_period_temp, :mode) == 'Analytics'
+          send_data @campaigns.to_csv_analytics(current_user.company_id, params.dig(:select_period_temp, :category)), :filename => "Campaign Export (Analytics) - #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
+        else
+          send_data @campaigns.to_csv_data(current_user.company_id), :filename => "Campaign Export (Data)- #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
+        end
+      }
       ########
     end
   end
@@ -183,10 +189,19 @@ class CampaignsController < ApplicationController
 
   def send_notification_email
     authorize @campaign
-    @campaign.interviews.where(label: ['Employee', 'Simple']).each do |interview|
-      CampaignMailer.with(user: interview.employee).invite_employee(@campaign.owner, interview.employee, interview).deliver
+
+    if params[:user_id].present?
+      user = User.find(params[:user_id])
+      CampaignMailer.with(user: user).invite_employee(@campaign.owner, user, Interview.find_by(campaign_id: @campaign.id, employee_id: params[:user_id], label: ['Employee', 'Simple'])).deliver
+    else
+      @campaign.interviews.where(label: ['Employee', 'Simple']).each do |interview|
+        CampaignMailer.with(user: interview.employee).invite_employee(@campaign.owner, interview.employee, interview).deliver
+      end
     end
-    redirect_to campaigns_path, notice: 'Email(s) sent'
+
+    flash[:notice] = 'Email sent.'
+
+    head :no_content
   end
 
   def edit
@@ -201,6 +216,42 @@ class CampaignsController < ApplicationController
     @campaign.destroy
 
     respond_to do |format|
+      format.js
+    end
+  end
+
+  def campaign_add_user
+    authorize @campaign
+
+    @user = User.find(params[:user_id])
+    form = @campaign.interview_form
+    last_date = @campaign.interviews.order(date: :desc).first.date
+
+    if @campaign.simple?
+      find_or_create('Simple', form, last_date, current_user)
+
+    elsif @campaign.crossed?
+      ['Employee', 'Manager', 'Crossed'].each do |label|
+        find_or_create(@user.id, label, form, last_date, current_user)
+      end
+    end
+
+    respond_to do |format|
+      format.html {redirect_to campaign_path(@campaign)}
+      format.js
+    end
+  end
+
+  def campaign_remove_user
+    authorize @campaign
+
+    @user_name = User.find(params[:user_id]).fullname
+
+    @campaign.interviews.where(employee_id: params[:user_id]).destroy_all
+    @campaign.destroy if @campaign.interviews.empty?
+
+    respond_to do |format|
+      format.html {redirect_to campaign_path(@campaign)}
       format.js
     end
   end
@@ -241,10 +292,21 @@ class CampaignsController < ApplicationController
 
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
 
-    # raise
-
     @campaigns = @campaigns.page(page_index)
+  end
+  
+  def find_or_create(user_id, label, form, date, creator)
+    new_interview = Interview.find_or_initialize_by(title: form.title,
+                                  interview_form_id: form.id,
+                                  completed: false,
+                                  campaign_id: @campaign.id,
+                                  employee_id: user_id,
+                                  creator_id: @campaign.owner_id,
+                                  label: label)
 
+    @status = new_interview.id.present? ? 'present' : 'created'
+
+    new_interview.update(creator_id: creator.id, date: date) unless new_interview.id.present?
   end
 
   def selected_user

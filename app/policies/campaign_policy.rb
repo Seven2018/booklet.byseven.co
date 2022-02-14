@@ -53,6 +53,14 @@ class CampaignPolicy < ApplicationPolicy
     user.manager_or_above?
   end
 
+  def campaign_add_user?
+    user.manager_or_above?
+  end
+
+  def campaign_remove_user?
+    user.manager_or_above?
+  end
+
   def destroy?
     user.manager_or_above?
   end

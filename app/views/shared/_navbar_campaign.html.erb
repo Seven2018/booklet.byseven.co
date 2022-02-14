@@ -185,7 +185,6 @@
     teaser = document.querySelector('#teaser-' + card.id.split('-')[1])
     link = element.closest('.modal').querySelector('.interview-type-cards__confirm')
     link_href = new URL(link.href)
-    console.log(element.getAttribute('data-type'))
     link_href.searchParams.set('campaign[selected_campaign_type]', element.getAttribute('data-type'))
     link.href = link_href.href
     card.classList.add('selected')

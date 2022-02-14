@@ -1,0 +1,14 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__simple">
+    <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body modal-body__simple">
+    <h3>Are you sure you want to remove this user ?</h3>
+    <div class="flex-row-between-centered">
+      <button type="button" class="btn-blue__white-border" data-dismiss="modal" aria-label="Close"><p>No</p></button>
+      <%= link_to campaign_remove_user_path(id: @campaign.id, user_id: employee.id), class: 'btn-red', remote: true do %>
+        <p>Yes, remove</p>
+      <% end %>
+    </div>
+  </div>
+</div>

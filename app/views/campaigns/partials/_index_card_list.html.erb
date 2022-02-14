@@ -108,13 +108,13 @@
     <!-- MODALS -->
     <!------------>
 
-    <div class='modal fade modal_folder' id='sendEmail-<%= campaign.id %>' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
+    <div class='modal fade' id='sendEmail-<%= campaign.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
       <div class='modal-dialog' role='document' style='border-radius: 20px'>
         <%= render 'campaigns/modals/send_notification_email', campaign: campaign %>
       </div>
     </div>
 
-    <div class='modal fade modal_folder' id='deleteCampaign-<%= campaign.id %>' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
+    <div class='modal fade' id='deleteCampaign-<%= campaign.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
       <div class='modal-dialog' role='document' style='border-radius: 20px'>
         <%= render 'campaigns/modals/destroy', campaign: campaign %>
       </div>
