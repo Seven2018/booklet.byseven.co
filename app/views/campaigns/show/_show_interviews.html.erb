@@ -4,7 +4,7 @@
     <% employee_view = current_user == employee %>
     <% manager_view = current_user == campaign.owner || current_user.hr_or_above? %>
 
-    <div class="campaign-show__card-container col-sm-12 col-md-6 col-lg-4 col-xl-3">
+    <div class="campaign-show__card-container col-sm-12 col-md-6 col-xl-4">
       <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
         <div class="campaign-show__card-overlay hidden"></div>
         <div class="campaign-card__options" onclick="openContentMenu(this);">
@@ -21,7 +21,7 @@
         </div>
 
         <div class="campaign-show__card-profile">
-          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-large' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          <img src="<%= employee.picture %>" class='avatar-large' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           <p><%= employee.lastname.upcase %> <%= employee.firstname.titleize %></p>
         </div>
 

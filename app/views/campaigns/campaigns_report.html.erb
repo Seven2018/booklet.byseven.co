@@ -11,7 +11,7 @@
       </div>
       <div class='report-date-control'>
         <!-- <input type="date" class='datepicker' id="start_date" name="start_date" value='<%= Date.today %>' onchange='changeDateTemp(this);'> -->
-        <%= f.input :start, label: 'From', input_html: {class: 'datepicker', value: Date.today}, placeholder: 'Select date' %>
+        <%= f.input :start, label: 'From', input_html: {class: 'datepicker', value: Date.today.beginning_of_year}, placeholder: 'Select date' %>
         <!-- <input type="date" class='datepicker' id="end_date" name="end_date" value='<%= Date.today.end_of_year %>' onchange='changeDateTemp(this);'> -->
         <%= f.input :end, label: 'To', input_html: {class: 'datepicker', value: Date.today.end_of_year}, placeholder: 'Select date' %>
         <div class='campaigns-report-list__controls-export'>

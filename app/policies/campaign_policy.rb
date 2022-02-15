@@ -53,6 +53,10 @@ class CampaignPolicy < ApplicationPolicy
     user.manager_or_above?
   end
 
+  def campaign_select_owner?
+    user.hr_or_above?
+  end
+
   def campaign_add_user?
     user.manager_or_above?
   end

@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy, :campaign_add_user, :campaign_remove_user]
+  before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_add_user, :campaign_remove_user]
 
   def index
     campaigns = policy_scope(Campaign).where(company: current_user.company)
@@ -214,6 +214,18 @@ class CampaignsController < ApplicationController
     @target = "campaign-card-#{@campaign.id}"
     @campaign.interviews.destroy_all if current_user.hr_or_above?
     @campaign.destroy
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def campaign_select_owner
+    authorize @campaign
+
+    new_owner = User.find(params[:user_id])
+
+    @campaign.update(owner_id: new_owner.id)
 
     respond_to do |format|
       format.js
