@@ -27,6 +27,16 @@ class User < ApplicationRecord
 
   paginates_per 50
 
+  enum access_level_int: {
+    employee:       0,
+    manager_light: 10,
+    hr_light:      20,
+    manager:       30,
+    hr:            40,
+    account_owner: 50,
+    admin:         60
+  }
+
   include PgSearch::Model
   pg_search_scope :search_users,
     against: [ :firstname, :lastname, :email ],
