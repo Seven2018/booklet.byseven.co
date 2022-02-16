@@ -1,0 +1,7 @@
+<%
+  %w[
+    guidelines
+  ].each do |page|
+%>
+  <li><%= link_to page, send("#{page}_path"), target: '_blank' %></li>
+<% end %>

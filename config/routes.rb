@@ -152,4 +152,8 @@ Rails.application.routes.draw do
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]
+
+  # design pages
+  get '/design', to: 'design#index'
+  get '/guidelines', to: 'design#guidelines'
 end
