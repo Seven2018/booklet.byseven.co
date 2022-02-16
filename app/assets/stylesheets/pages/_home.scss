@@ -1,90 +1,146 @@
-// Specific CSS for your home-page
-.home-container {
-  background-color: #F9F9F9;
-  padding-top: 30px;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
+.homepage-container {
+  // overflow-x: hidden;
+  padding-left: 300px;
+  padding-right: 300px;
 
-.home-margin-container {
-  margin-left: 300px;
-  margin-right: 300px;
   background-color: #F9F9F9;
-
+  display: table;
+  height: 1000px;
 
 }
 
-.home-title {
+.homepage-wrapper {
+  display: table-column;
 
-  p {
-    padding-top: 30px;
+  /* take as little as possible, while still fitting content */
+}
+
+.homepage-title {
+  padding-top: 40px;
+
+  h1 {
+    margin-bottom: 20px;
   }
 }
 
-.home-card {
-
-  margin-top: 40px;
-  // background-size: cover;
-  // background-position: center;
-  background-color: white;
-  width: 900px;
-  height: 320px;
-  display: flex;
-  justify-content: space-between;
-  // align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  font-size: 24px;
-  flex-direction: column;
-  padding: 9px 0px 0px 26px;
-  border-radius: 30px;
+.homepage-card-1 {
+  margin-top: 30px;
+  padding-top: 10px;
+  padding-bottom: 28px;
+  overflow: hidden;
+  width: 950px;
+  height: 310px;
+  background: white;
   box-shadow: 0px 2px 26px 0px #0000000D;
-}
-
-.home-card__body-title {
   display: flex;
-  margin-bottom: 50px;
-  margin-top: 20px;
+  flex-direction: column;
+  border-radius: 10px;
 }
 
-.home-card__body-text {
-
-  line-height: 3.5rem;
-}
-
-
-
-.home-card__left {
-
-
-  //
-
-  padding-left: 20px;
-  border-left: solid 2px #2308bee7;
-}
-
-.home-card__mid {
-  display: flex;
-}
-
-
-.home-card2 {
-
-  margin-top: 140px;
-  // background-size: cover;
-  // background-position: center;
-  background-color: white;
-  width: 900px;
+.homepage-card-2 {
+  margin-top: 30px;
+  padding-top: 10px;
+  padding-bottom: 28px;
+  overflow: hidden;
+  width: 950px;
   height: 400px;
-  display: flex;
-  justify-content: space-between;
-  // align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  font-size: 24px;
-  flex-direction: column;
-  padding: 9px 0px 0px 26px;
-  border-radius: 30px;
+  background: white;
   box-shadow: 0px 2px 26px 0px #0000000D;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+.homepage-card__line-1 {
+  display: flex;
+  // align-content: center;
+  border-left: 4px solid #3177B7;
+  height: 240px;
+  position: absolute;
+  left: 20%;
+  margin-left: 30px;
+  margin-top: 32px;
+  // top: 0;
+
+}
+
+.homepage-card__line-2 {
+  display: flex;
+  // align-content: center;
+  border-left: 4px solid #3177B7;
+  height: 300px;
+  position: absolute;
+  left: 20%;
+  margin-left: 30px;
+  margin-top: 32px;
+  // top: 0;
+
+}
+
+.homepage-card__header {
+  display: flex;
+  padding-top: 20px;
+
+  .header-icon {
+    display: flex;
+    align-content: flex-start;
+    // justify-content: flex-start;
+    margin-left: 60px;
+    // background-color: #C1D6E9;
+  }
+
+  .header-text {
+    display: flex;
+
+    h2 {
+    display: flex;
+    padding-left: 5px;
+    padding: 1.2rem 0rem 0rem 1rem ;
+    }
+
+    p {
+    display: flex;
+    padding-left: 8px;
+    color: #3177B7;
+    font-weight: bold;
+    padding: 1.8rem 0rem 0rem 0.6rem ;
+    }
+  }
+}
+
+.homepage-card__main-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 60px;
+
+  p {
+    line-height: 5rem;
+  }
+
+  p.part1 {
+    line-height: 2.2rem;
+    margin-bottom: 10px;
+  }
+
+  p.part2 {
+    line-height: 2.2rem;
+    margin-bottom: 10px;
+  }
+
+  p.part3 {
+    line-height: 2.2rem;
+  }
+
+}
+
+.homepage-card__arrow-1 {
+  display: flex;
+  position: relative;
+  top: -5em; left: 85em;
+}
+
+.homepage-card__arrow-2 {
+  display: flex;
+  position: relative;
+  top: -5em; left: 85em;
 }
