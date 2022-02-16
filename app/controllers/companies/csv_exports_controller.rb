@@ -4,7 +4,7 @@ class Companies::CsvExportsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.csv { send_data csv_export.data, filename: csv_export.filename('.csv') }
+      format.csv  { send_data csv_export.to_csv,  filename: csv_export.filename('.csv')  }
       format.xlsx { send_file csv_export.to_xlsx, filename: csv_export.filename('.xlsx') }
     end
   end

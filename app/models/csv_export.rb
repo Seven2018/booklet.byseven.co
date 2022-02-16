@@ -35,6 +35,10 @@ class CsvExport < ApplicationRecord
     ].join
   end
 
+  def to_csv
+    CSV.generate { |csv| data.each { |row| csv << row } }
+  end
+
   def to_xlsx
     p = Axlsx::Package.new
     p.workbook.add_worksheet(name: sheetname) do |sheet|
