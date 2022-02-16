@@ -63,6 +63,9 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def home
+  end
+
   def campaigns_report
     @campaigns = policy_scope(Campaign)
     @campaigns = @campaigns.where(company_id: current_user.company_id)

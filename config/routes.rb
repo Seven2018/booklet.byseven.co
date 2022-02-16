@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
 
+  root to: 'pages#home'
+
   # ASSESSMENTS
   resources :assessments, only: %i[] do
     resources :assessment_questions, only: %i[destroy]
@@ -91,7 +93,7 @@ Rails.application.routes.draw do
   # PAGES
   # root to: redirect('/dashboard')
   # Temporary root
-  root to: redirect('/campaigns')
+  # root to: redirect('/campaigns')
   get :dashboard, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
