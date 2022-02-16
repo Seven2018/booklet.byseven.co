@@ -1,4 +1,7 @@
-<div class="campaigns-index-container">
+<div class="campaigns-index-container"
+  data-controller='remember-search'
+  data-remember-search-key-value='bookletCampaignsSearches'
+>
   <div class="campaigns-index">
     <div class="campaigns-index__controls">
       <div class="campaigns-index__title-tags">
@@ -16,11 +19,35 @@
       <div class="campaigns-index__searchbar">
         <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
         <%= simple_form_for :search, url: campaigns_path, method: :get, remote: true do |f| %>
-          <%= f.input :title, placeholder: 'Search by title, job ...', input_html: {autocomplete: 'off', onkeyup: 'resetPage(this);'}, label: false, required: false %>
+          <%=
+            f.input(
+              :title,
+              placeholder: 'Search by title, job ...',
+              input_html: {
+                autocomplete: 'off',
+                onkeyup: 'resetPage(this);',
+                data: {
+                  remember_search_target: :search,
+                  action: 'keyup->remember-search#storeSearch'
+                }
+              },
+              label: false,
+              required: false
+            )
+          %>
           <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current', input_html: {onchange: 'resetPage(this);'} %>
           <%= f.hidden_field :tags %>
           <%= f.hidden_field :page, value: '1' %>
-          <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
+          <%=
+            f.submit(
+              'Search',
+              class: 'btn-search',
+              onclick: "document.querySelector('body').classList.add('wait');",
+              data: {
+                remember_search_target: :submit,
+              }
+            )
+          %>
           <button type='submit' class="btn-search btn-search--mobile">
             <i class="fas fa-search"></i>
           </button>
