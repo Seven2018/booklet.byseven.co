@@ -268,6 +268,15 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def campaign_edit_date
+    @campaign = Campaign.find(params.dig(:edit_date, :campaign_id))
+    authorize @campaign
+
+    @campaign.interviews.where(employee_id: params.dig(:edit_date, :employee_id)).update_all date: params.dig(:edit_date, :date)
+
+    head :no_content
+  end
+
   private
 
   def filter_campaigns(campaigns)

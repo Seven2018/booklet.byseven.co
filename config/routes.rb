@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   get :campaign_select_owner, controller: :campaigns
   get :campaign_add_user, controller: :campaigns
   get :campaign_remove_user, controller: :campaigns
+  get :campaign_edit_date, controller: :campaigns
 
   # CATEGORIES
   resources :categories, only: %i[create update destroy]

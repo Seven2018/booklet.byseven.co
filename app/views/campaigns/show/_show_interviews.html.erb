@@ -13,6 +13,7 @@
             <div class="content-dropdown hidden">
                 <%= link_to 'See profile', user_path(employee) %>
                 <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id) %>
+                <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
                 <% if current_user.hr_or_above? || campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
                   <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
                 <% end %>
@@ -35,7 +36,7 @@
                 <%= link_to '', interview_path(interview), class: 'stretched-link' %>
               <% end %>
               <div>
-                <p><%= interview.title %> review <br><em><%= "Until #{interview.date}" %></em></p>
+                <p><%= interview.title %> review <br><em class='campaign-show__card-deadline'><%= "Until #{interview.date}" %></em></p>
                 <% if interview.completed? %>
                   <% last_updated = interview.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d/%m/%Y') %>
                   <p class="campaign-show__card-interview-status--complete">
@@ -77,7 +78,11 @@
                   <%= link_to '', interview_path(interview), class: 'stretched-link' %>
                 <% end %>
                 <div>
-                  <p><%= interview_title[interview.label] %> review <em><%= "- Until #{interview.date}" if interview.crossed? %></em></p>
+                  <p><%= interview_title[interview.label] %> review
+                    <% if interview.crossed? %>
+                      <em class='campaign-show__card-deadline'><%= "- Until #{interview.date}" %></em>
+                    <% end %>
+                  </p>
                   <% if interview.completed? %>
                     <p class="campaign-show__card-interview-status--complete">
                       Completed !
@@ -116,18 +121,28 @@
 
           <% end %>
         </div>
+
+        <!----------->
+        <!-- MODAL -->
+        <!----------->
+
+        <div class='modal fade' id='editDeadline-<%= employee.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+          <div class='modal-dialog modal-date' role='document' style='border-radius: 20px'>
+            <%= render 'campaigns/modals/edit_deadline', campaign: campaign, employee: employee, interview: Interview.where(campaign_id: campaign.id, employee_id: employee.id).first %>
+          </div>
+        </div>
+
+        <div class='modal fade' id='removeParticipant-<%= employee.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+          <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
+            <%= render 'campaigns/modals/remove_participant', employee: employee %>
+          </div>
+        </div>
+
+        <!----------->
+
       </div>
     </div>
 
-    <!----------->
-    <!-- MODAL -->
-    <!----------->
-
-    <div class='modal fade' id='removeParticipant-<%= employee.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-      <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
-        <%= render 'campaigns/modals/remove_participant', employee: employee %>
-      </div>
-    </div>
 
   <% end %>
 

@@ -151,6 +151,20 @@
   }
 
 
+  /////////////////
+  // SELECT DATE //
+  /////////////////
+
+  function selectInterviewDate(element) {
+    form = element.closest('form')
+    date_display = element.closest('.campaign-show__card').querySelector('.campaign-show__card-deadline')
+
+    date_display.innerText = '- Until ' + element.value
+    form.querySelector('.hidden-submit').click()
+    document.querySelector('.modal.show').querySelector('.cancel-close').click()
+  }
+
+
   ///////////////////
   // AUTO COMPLETE //
   ///////////////////
