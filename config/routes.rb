@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
+  root to: 'pages#home'
 
   # ASSESSMENTS
   resources :assessments, only: %i[] do
@@ -22,6 +23,8 @@ Rails.application.routes.draw do
 
   # CAMPAIGNS
   resources :campaigns
+  get :my_interviews, controller: :campaigns
+  get :my_team_interviews, controller: :campaigns
   get :campaigns_report, controller: :campaigns
   get :campaigns_report_filter_campaigns, controller: :campaigns
   get :campaign_report_info, controller: :campaigns
@@ -91,7 +94,7 @@ Rails.application.routes.draw do
   # PAGES
   # root to: redirect('/dashboard')
   # Temporary root
-  root to: redirect('/campaigns')
+  # root to: redirect('/campaigns')
   get :dashboard, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages

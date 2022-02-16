@@ -1,0 +1,45 @@
+<div class="main-container">
+  <div class="container-margin">
+
+    <div class="hello-card">
+
+      <div class="hello-card-header">
+        <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
+      </div>
+      <div class="hello-card-text1">
+        <p>You have personnal <%= "#{@current_user.interviews.count}"  %> reviews and <%= "#{@campaigns.count}"  %> campaigns in progress in your team.</p>
+      </div>
+      <div class="hello-card-text2">
+        <p>You can manage your team by clicking on <strong>My team interviews.</strong></p>
+      </div>
+      <div class="hello-card-button">
+        <%= link_to "My Team interviews", '/my_team_interviews', class: "btn btn-blue__white-border" %>
+      </div>
+
+    </div>
+
+
+    <div class="navbar-cross-simple">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-link active" id="nav-cross-tab" data-bs-toggle="tab" href="#nav-cross" role="tab" aria-controls="nav-cross" aria-selected="true">Cross</a>
+          <a class="nav-link" id="nav-simple-tab" data-bs-toggle="tab" href="#nav-simple" role="tab" aria-controls="nav-simple" aria-selected="false">Simple</a>
+        </div>
+      </nav>
+    </div>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-cross" role="tabpanel" aria-labelledby="nav-cross-tab">
+         <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'crossed'), type: 'crossed' %>
+      </div>
+      <div class="tab-pane fade" id="nav-simple" role="tabpanel" aria-labelledby="nav-simple-tab">
+        <div class="my-interviews-container">
+          <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'simple'), type: 'simple' %>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+
+
+  </div>
+</div>

@@ -13,6 +13,14 @@ class CampaignPolicy < ApplicationPolicy
     user.employee_or_above?
   end
 
+  def my_interviews?
+    true
+  end
+
+  def my_team_interviews?
+    user.manager_or_above?
+  end
+
   def campaigns_report?
     user.hr_or_above?
   end

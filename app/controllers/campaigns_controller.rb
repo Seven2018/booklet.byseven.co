@@ -63,6 +63,21 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def home
+    @campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
+    authorize @campaigns
+  end
+
+  def my_interviews
+    @campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
+    authorize @campaigns
+  end
+
+  def my_team_interviews
+    @campaigns = Campaign.where(owner_id: current_user.id)
+    authorize @campaigns
+  end
+
   def campaigns_report
     @campaigns = policy_scope(Campaign)
     @campaigns = @campaigns.where(company_id: current_user.company_id)

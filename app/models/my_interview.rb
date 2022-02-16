@@ -1,0 +1,2 @@
+class MyInterview < ApplicationRecord
+end

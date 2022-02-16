@@ -1,0 +1,171 @@
+.my-team-interviews-main-container {
+  min-height: calc(100vh - 7.5rem);
+  background-color: #F5F8FB;
+  padding-top: 30px;
+}
+
+
+.my-team-interviews-container-margin {
+  margin-left: 286px;
+  margin-right: 286px;
+}
+
+.hello-card {
+
+  margin-bottom: 25px;
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  // width: 1348px;
+  height: 320px;
+  display: flex;
+  justify-content: space-evenly;
+  // align-items: center;
+
+  font-size: 24px;
+  flex-direction: column;
+  padding: 9px 0px 0px 26px;
+  border-radius: 30px;
+  box-shadow: 0px 2px 26px 0px #0000000D;
+
+
+  .hello-card-header {
+    padding: 1rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-weight: center;
+  }
+
+  .hello-card-text1 {
+    padding: 1rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .hello-card-text2 {
+    padding: 1rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .hello-card-button {
+    padding: 1rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+}
+
+.my-team-interviews-container {
+
+  margin-top: 15px;
+  text-align: center;
+}
+
+.my-team-interviews-card {
+  margin-bottom: 15px;
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  width: 930px;
+  height: 180px;
+  display: inline-flex;
+  justify-content: center;
+  text-align: initial;
+  color: black;
+
+  font-size: 24px;
+  flex-direction: row;
+  padding: 26px 26px 9px 26px;
+
+  border-radius: 30px;
+  box-shadow: 0px 2px 26px 0px #0000000D;
+
+}
+
+.my-team-interviews-card__header {
+  margin-bottom: 30px;
+  display: flex;
+
+  .my-interviews-card__title-deadline {
+  line-height: 20px;
+
+    h2 {
+      font-weight: 600;
+      justify-content: center;
+      align-items: center;
+      padding: 0.4rem;
+    }
+
+
+    em {
+      padding: 0.4rem;
+      color: darkgrey;
+      margin-top: 10px;
+    }
+  }
+
+  .my-interviews-card__status {
+    height: 3rem;
+    padding: 0.7rem 2rem;
+    border-radius: 2rem;
+    text-align: center;
+    margin-left: 23px;
+    color: white;
+    white-space: nowrap;
+
+
+    &.completed {
+      background-color: #7BC079;
+    }
+
+    &.in_progress {
+      background-color: #FFC85C;
+    }
+
+    &.not_started {
+      background-color: #EC6D6D;
+    }
+  }
+}
+
+
+.my-team-interviews-manager-card {
+
+  display: flex;
+  justify-content: space-between;
+
+  .my-team-interviews-manager-card__avatar {
+  display: flex;
+  margin-right: 10px;
+  }
+
+  .my-team-interviews-manager-card__name-status {
+
+  }
+
+}
+
+.my-team-interviews-employee-card {
+
+  display: flex;
+  justify-content: space-between;
+
+  .my-team-interviews-employee-card__avatar {
+  display: flex;
+  margin-right: 10px;
+  }
+
+  .my-team-interviews-employee-card__name-status {
+
+  }
+
+}
+
+.my-team-interviews-status-card {
+  display: flex;
+  justify-content: center;
+}
