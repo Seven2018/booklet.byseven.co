@@ -56,6 +56,8 @@ gem 'acts_as_list'
 gem 'activeadmin'
 gem 'postmark-rails'
 gem 'pretender'
+gem 'caxlsx'
+gem 'caxlsx_rails'
 
 group :development do
   # gem 'better_errors'
