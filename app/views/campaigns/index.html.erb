@@ -1,4 +1,7 @@
-<div class="campaigns-index-container" data-controller='campaigns-searches'>
+<div class="campaigns-index-container"
+  data-controller='remember-search'
+  data-remember-search-key-value='bookletCampaignsSearches'
+>
   <div class="campaigns-index">
     <div class="campaigns-index__controls">
       <div class="campaigns-index__title-tags">
@@ -24,8 +27,8 @@
                 autocomplete: 'off',
                 onkeyup: 'resetPage(this);',
                 data: {
-                  campaigns_searches_target: :search,
-                  action: 'keyup->campaigns-searches#storeSearch'
+                  remember_search_target: :search,
+                  action: 'keyup->remember-search#storeSearch'
                 }
               },
               label: false,
@@ -41,7 +44,7 @@
               class: 'btn-search',
               onclick: "document.querySelector('body').classList.add('wait');",
               data: {
-                campaigns_searches_target: :submit,
+                remember_search_target: :submit,
               }
             )
           %>
