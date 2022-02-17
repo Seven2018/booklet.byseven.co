@@ -1,0 +1,2 @@
+document.querySelector('.campaigns-my-interviews__list-crossed').innerHTML = '<%= j render("campaigns/my_interviews/my_interviews_interviews_list", campaigns: @campaigns.where(campaign_type: "crossed"), type: "crossed") %>';
+document.querySelector('.campaigns-my-interviews__list-crossed').innerHTML = '<%= j render("campaigns/my_interviews/my_interviews_interviews_list", campaigns: @campaigns.where(campaign_type: "simple"), type: "simple") %>';

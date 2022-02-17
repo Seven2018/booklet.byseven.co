@@ -1,0 +1,14 @@
+<div class="modal-content">
+  <div class="modal-header modal-header__date">
+    <p>Edit interview date</p>
+    <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body modal-body__date">
+    <%= simple_form_for :edit_date, url: campaign_edit_date_path, method: :get do |f| %>
+      <%= f.hidden_field :campaign_id, value: campaign.id %>
+      <%= f.hidden_field :employee_id, value: employee.id %>
+      <%= f.input :date, as: :string, label: false, input_html: { class: 'datepicker-inline hidden', value: interview.date, onchange: 'selectInterviewDate(this);' } %>
+      <%= f.submit '', class: 'hidden-submit hidden' %>
+    <% end %>
+  </div>
+</div>

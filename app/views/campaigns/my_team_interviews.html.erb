@@ -1,17 +1,26 @@
 <div class="campaigns-my-interviews__container">
   <div class="campaigns-my-interviews__main">
 
+
+    <%# status = if manager_interview.locked?
+            'locked'
+          elsif campaign.completion_for(current_user) == 0
+            'not_started'
+          elsif campaign.completion_for(current_user) == 100
+            'completed'
+          else
+            'in_progress'
+          end %>
     <div class="campaigns-my-interviews__banner">
       <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
-      <p>You have <%= "#{@campaigns.count}"  %> personal reviews<%= " and #{@manager_campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>
-      <p>You can manage your team by clicking on <strong>My team interviews.</strong></p>
+      <p>You have <%= "#{@personal_campaigns.count}"  %> personal reviews<%= " and #{@campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>
+      <p>You can manage your personal reviews by clicking on <strong>My interviews.</strong></p>
       <% if current_user.manager_or_above? %>
         <div class="campaigns-my-interviews__banner-button">
-          <%= link_to "My Team interviews", my_team_interviews_path, class: "btn btn-blue__white-border" %>
+          <%= link_to "My interviews", my_interviews_path, class: "btn btn-blue__white-border" %>
         </div>
       <% end %>
     </div>
-
 
     <div class="campaigns-my-interviews__tabs-controls">
       <nav>
@@ -30,10 +39,10 @@
             </div>
           </div>
           <div class="booklet-select__dropdown hidden">
-            <%= link_to my_interviews_path(period: 'current'), class: 'booklet-select__option' do %>
+            <%= link_to my_team_interviews_path(period: 'current'), class: 'booklet-select__option' do %>
               <p>Current</p>
             <% end %>
-            <%= link_to my_interviews_path(period: 'completed'), class: 'booklet-select__option' do %>
+            <%= link_to my_team_interviews_path(period: 'completed'), class: 'booklet-select__option' do %>
               <p>Completed</p>
             <% end %>
           </div>
@@ -44,20 +53,16 @@
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-cross" role="tabpanel" aria-labelledby="nav-cross-tab">
           <div class="campaigns-my-interviews__list campaigns-my-interviews__list-crossed">
-            <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'crossed'), type: 'crossed' %>
+            <%= render 'campaigns/my_interviews/my_team_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'crossed'), type: 'crossed' %>
           </div>
         </div>
         <div class="tab-pane fade" id="nav-simple" role="tabpanel" aria-labelledby="nav-simple-tab">
           <div class="campaigns-my-interviews__list campaigns-my-interviews__list-simple">
-            <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'simple'), type: 'simple' %>
+            <%= render 'campaigns/my_interviews/my_team_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'simple'), type: 'simple' %>
           </div>
         </div>
       </div>
     </div>
-<!--     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script> -->
-
-
-
   </div>
 </div>
 

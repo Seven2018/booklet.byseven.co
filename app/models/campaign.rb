@@ -189,8 +189,9 @@ class Campaign < ApplicationRecord
 
     columns = ['Campaign ID',
         'Campaign Title',
-        'Campaign Type',
         'Campaign URL',
+        'Campaign Type',
+        'Interview Type',
         'Employees Count (per Campaign)',
         'Owner Email',
         'Owner Fullname',
@@ -211,23 +212,22 @@ class Campaign < ApplicationRecord
         owner_email = campaign.owner.email
         owner_fullname = campaign.owner.fullname
 
-        campaign.employees.distinct.each do |employee|
-          campaign_url = 'https://seven-booklet.herokuapp.com/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
-          employee_interviews = campaign.interviews.where(employee_id: employee.id)
+        campaign.interviews.each do |interview|
+          employee = interview.employee
+          campaign_url = 'https://booklet.byseven.co/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
 
-          if campaign.simple?
-            interview = employee_interviews.first
+          if interview.label == 'Employee'
             user_for_answer = employee
-          elsif campaign.crossed?
-            interview = employee_interviews.find_by(label: 'Crossed')
+          else
             user_for_answer = campaign.owner
           end
 
           line = []
           line << campaign_id
           line << campaign_title
-          line << campaign_type
           line << campaign_url
+          line << campaign_type
+          line << interview.label
           line << campaign_employees_count
           line << owner_email
           line << owner_fullname

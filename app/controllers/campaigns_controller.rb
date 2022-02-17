@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy, :campaign_add_user, :campaign_remove_user]
+  before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_add_user, :campaign_remove_user]
 
   def index
     campaigns = policy_scope(Campaign).where(company: current_user.company)
@@ -51,6 +51,35 @@ class CampaignsController < ApplicationController
     @tag_categories = TagCategory.where(company_id: current_user.company_id)
 
     filter_campaigns(campaigns)
+  end
+
+  def my_interviews
+    @campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
+    @manager_campaigns = Campaign.where(owner_id: current_user.id)
+    authorize @campaigns
+
+    if params.dig(:period) == 'completed'
+      @campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
+    else
+      @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
+    end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def my_team_interviews
+    @personal_campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
+    @campaigns = Campaign.where(owner_id: current_user.id)
+    authorize @campaigns
+
+    if params.dig(:period) == 'completed'
+      @campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
+    else
+      @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
+    end
   end
 
   def campaigns_report
@@ -240,6 +269,18 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def campaign_select_owner
+    authorize @campaign
+
+    new_owner = User.find(params[:user_id])
+
+    @campaign.update(owner_id: new_owner.id)
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def campaign_add_user
     authorize @campaign
 
@@ -274,6 +315,15 @@ class CampaignsController < ApplicationController
       format.html {redirect_to campaign_path(@campaign)}
       format.js
     end
+  end
+
+  def campaign_edit_date
+    @campaign = Campaign.find(params.dig(:edit_date, :campaign_id))
+    authorize @campaign
+
+    @campaign.interviews.where(employee_id: params.dig(:edit_date, :employee_id)).update_all date: params.dig(:edit_date, :date)
+
+    head :no_content
   end
 
   private

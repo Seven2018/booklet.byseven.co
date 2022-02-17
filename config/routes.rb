@@ -31,8 +31,10 @@ Rails.application.routes.draw do
   get :campaign_select_users, controller: :campaigns
   get :campaign_select_dates, controller: :campaigns
   get :send_notification_email, controller: :campaigns
+  get :campaign_select_owner, controller: :campaigns
   get :campaign_add_user, controller: :campaigns
   get :campaign_remove_user, controller: :campaigns
+  get :campaign_edit_date, controller: :campaigns
 
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
@@ -60,6 +62,7 @@ Rails.application.routes.draw do
   end
   get :complete_interview, controller: :interviews
   get :lock_interview, controller: :interviews
+  get :show_crossed_and_lock, controller: :interviews
 
   namespace :interview do
     namespace :answer do
