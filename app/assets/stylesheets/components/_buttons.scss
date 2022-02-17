@@ -369,10 +369,13 @@ button {
 
 .btn-blue__white-border {
   border: 1px solid #3177B7;
+  color: #3177B7;
+  font-weight: bold;
 
   &:hover {
     background-color: #3177B7;
     border: 1px solid #3177B7;
+    color: white;
   }
 
   i, p, h4 {
@@ -575,24 +578,24 @@ button {
   }
 }
 
-.completed {
-  color: #56690A !important;
-  font-size: 1.6rem;
-  font-weight: 600;
-  line-height: 27px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  background-color: #E6EAD7;
-  padding: .5rem 1rem;
-  border-radius: 4px;
-  margin-right:5px;
-  cursor: default;
-  @include from-medium {
-    p {
-      font-size: 1.6rem !important;
-    }
-  }
-}
+// .completed {
+//   color: #56690A !important;
+//   font-size: 1.6rem;
+//   font-weight: 600;
+//   line-height: 27px;
+//   letter-spacing: 0.15em;
+//   text-transform: uppercase;
+//   background-color: #E6EAD7;
+//   padding: .5rem 1rem;
+//   border-radius: 4px;
+//   margin-right:5px;
+//   cursor: default;
+//   @include from-medium {
+//     p {
+//       font-size: 1.6rem !important;
+//     }
+//   }
+// }
 
 .btn-edit-white {
   background-color: #F8D9C8 !important;
