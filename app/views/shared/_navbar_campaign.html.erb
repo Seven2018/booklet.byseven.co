@@ -1,7 +1,7 @@
 <div class="navbar navbar-expand-sm navbar-light navbar__blue">
   <div class="navbar-controls__left">
     <% if user_signed_in? %>
-      <% if params[:action] == 'my_campaigns' && params[:view] == 'Employee' %>
+      <% if params[:action] == 'my_interviews' %>
         <%= link_to my_interviews_path do %>
           <div class="navbar-buttons navbar-buttons--active"><h4 title='My interviews'>My interviews</h4></div>
         <% end %>
@@ -12,7 +12,7 @@
         <% end %>
       <% end %>
       <% if current_user.manager_or_above? %>
-        <% if params[:action] == 'my_campaigns' && params[:view] == 'Manager' %>
+        <% if params[:action] == 'my_team_interviews' %>
           <%= link_to my_team_interviews_path do %>
             <div class="navbar-buttons navbar-buttons--active"><h4>My team interviews</h4></div>
           <% end %>
