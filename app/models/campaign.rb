@@ -16,10 +16,7 @@ class Campaign < ApplicationRecord
   enum campaign_type: {
     simple: 0,
     crossed: 10,
-  }, _prefix: true
-
-  scope :simple, -> { where(campaign_type: 'simple') }
-  scope :crossed, -> { where(campaign_type: 'crossed') }
+  }
 
   include PgSearch::Model
   pg_search_scope :search_campaigns,
@@ -34,14 +31,6 @@ class Campaign < ApplicationRecord
     ignoring: :accents
 
   alias :manager :owner
-
-  def crossed?
-    self.campaign_type_crossed?
-  end
-
-  def simple?
-    self.campaign_type_simple?
-  end
 
   def completion_for(employee)
     return 0 if interviews.count.zero?
