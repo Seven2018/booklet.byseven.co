@@ -10,10 +10,10 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def index?
-    user.employee_or_above?
+    user.hr_or_above?
   end
 
-  def my_campaigns?
+  def my_interviews?
     true
   end
 
