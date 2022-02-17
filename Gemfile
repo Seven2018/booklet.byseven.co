@@ -54,6 +54,7 @@ gem 'sentry-rails'
 gem 'acts_as_list'
 gem 'activeadmin'
 gem 'postmark-rails'
+gem 'draper'
 
 group :development do
   # gem 'better_errors'
