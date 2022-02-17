@@ -2,6 +2,7 @@
 
   <% manager = campaign.owner %>
   <% manager_interview = campaign.crossed? ? campaign.interviews.find_by(employee_id: current_user.id, label: 'Manager') : campaign.interviews.find_by(employee_id: current_user.id, label: 'Simple') %>
+  <% employee_interview = campaign.interviews.find_by(employee: current_user.id, label: ['Simple','Employee']) %>
   <% status = if manager_interview.locked?
           'locked'
         elsif campaign.completion_for(current_user) == 0
@@ -19,17 +20,18 @@
 
     <div class="campaigns-my-interviews__card-left">
       <div class="campaigns-my-interviews__card-header">
+        <div class="campaigns-my-interviews__card-header-left">
+          <div class="campaigns-my-interviews__card-icon">
+            <span class="iconify" data-icon="<%= campaign_type[campaign.campaign_type] %>"></span>
+          </div>
 
-        <div class="campaigns-my-interviews__card-icon">
-          <span class="iconify" data-icon="<%= campaign_type[campaign.campaign_type] %>"></span>
+          <div class="campaigns-my-interviews__card-title-deadline">
+            <h2><%= campaign.title %></h2>
+            <p><em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
+          </div>
+
+          <p class="campaigns-my-interviews__card-status <%= status %>"><%= status.capitalize.gsub(/_/, " ") %></p>
         </div>
-
-        <div class="campaigns-my-interviews__card-title-deadline">
-          <h2><%= campaign.title %></h2>
-          <p><em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
-        </div>
-
-        <p class="campaigns-my-interviews__card-status <%= status %>"><%= status.capitalize.gsub(/_/, " ") %></p>
       </div>
 
       <div class="campaigns-my-interviews__card-group">
@@ -55,7 +57,7 @@
             </div>
             <div class="campaigns-my-interviews__card-name-status">
                 <h6><%= "#{@current_user.fullname}" %><em style="color:darkgray">- Employee</em></h6>
-              <% if campaign.interviews.find_by(employee: current_user.id, label: ['Simple','Employee']).completed? %>
+              <% if employee_interview.completed? %>
                 <p style="color:#7BC079">Review completed</p>
               <% else %>
                 <p style="color:#EC6D6D">Review not completed</p>
@@ -70,7 +72,7 @@
 
     <div class="campaigns-my-interviews__card-part-right">
       <div class="campaigns-my-interviews__card-review-link">
-        <%= link_to campaign_path(campaign) do %>
+        <%= link_to interview_path(employee_interview) do %>
           <p>Go to my review  <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
         <% end %>
       </div>

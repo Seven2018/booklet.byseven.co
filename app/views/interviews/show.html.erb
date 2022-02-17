@@ -21,14 +21,8 @@
 <div class="interview-container">
 
   <div class="interview-controls">
-    <% if request.referrer.present? && (request.referrer.split('/') - [request.referrer.split('/')[-1]]).join('/') == request.base_url + '/campaigns' %>
-      <button class='btn-back' onclick='history.back()'>
-        <i class="fas fa-angle-left"></i>
-      </button>
-    <% else %>
-      <%= link_to campaigns_path(@interview.campaign), class: 'btn-back' do %>
-        <i class="fas fa-angle-left"></i>
-      <% end %>
+    <%= link_to campaign_path(@interview.campaign), class: 'btn-back' do %>
+      <i class="fas fa-angle-left"></i>
     <% end %>
     <div class="interview-controls__buttons">
       <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
@@ -41,13 +35,11 @@
           <p>Save</p>
         </button>
       <% end %>
-      <% if !@interview.completed? || (@interview.crossed? && !@interview.locked? && current_user == manager) %>
-        <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
-          <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
-          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-        </button>
-        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
-      <% end %>
+      <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+        <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
+        <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+      </button>
+      <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
     </div>
   </div>
 
@@ -211,8 +203,6 @@
   function thankYou(option = 'forward') {
     main_container = document.querySelector('.interview-container')
     thank = document.querySelector('.interview-thanks')
-    submit_button = document.querySelector('#submit-interview')
-    if (submit_button != null) {submit_button.remove()}
     if (option == 'forward') {
       document.querySelector('.submit-interview').click()
       main_container.classList.add('hidden')
