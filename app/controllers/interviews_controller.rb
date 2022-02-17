@@ -32,7 +32,7 @@ class InterviewsController < ApplicationController
     authorize @interview
 
     if @interview.crossed?
-      @interview.campaign.interviews.where(employee: @employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user = @manager
+      @interview.campaign.interviews.where(employee: @employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user == @manager
     end
 
     flash[:alert] = "View mode only! New answers won't be saved!" unless
