@@ -197,6 +197,7 @@ class CampaignsController < ApplicationController
       if params[:campaign][:campaign_type] == '1'
         'crossed'
       else
+      # elsif params[:campaign][:campaign_type] == '2'
         'simple'
       end
     @campaign.save
