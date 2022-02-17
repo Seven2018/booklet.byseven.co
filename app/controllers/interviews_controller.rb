@@ -117,6 +117,15 @@ class InterviewsController < ApplicationController
     head :no_content
   end
 
+  def show_crossed_and_lock
+    interview = Interview.find(params[:id])
+    authorize interview
+
+    interview.lock!
+
+    head :no_content
+  end
+
   private
 
   def interview_params
