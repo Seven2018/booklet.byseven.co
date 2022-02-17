@@ -78,6 +78,12 @@ class PagesController < ApplicationController
 
   end
 
+  def home
+  @my_interviews = Interview.where(employee_id: current_user.id, completed: false)
+  @my_team_interviews = Interview.joins(:campaign).where(campaigns: {owner_id: current_user.id}, label: ['Manager', 'Crossed', 'Simple'], completed: false)
+  end
+
+
   # Display monthly calendar (pages/dashboard)
   def calendar_month
     @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
@@ -96,9 +102,9 @@ class PagesController < ApplicationController
     @trainings = Training.where(company_id: current_user.company_id)
     # @trainings = Training.where(id: @trainings.pluck(:id))
 
-    # SEARCHING CONTENTS 
+    # SEARCHING CONTENTS
     unless params[:reset]
-      if params[:search].present? 
+      if params[:search].present?
         unless params[:search][:title].blank?
           @trainings = @trainings.search_trainings("#{params[:search][:title]}")
         end
@@ -126,7 +132,7 @@ class PagesController < ApplicationController
     # @index_title_content = Content.count + 1
     complete_profile
     if current_user.company_id.present?
-      # SEARCHING CONTENTS 
+      # SEARCHING CONTENTS
       @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
       @folders = Folder.where(company_id: current_user.company.id).order(updated_at: :desc)
       if params[:filter_catalogue].present? && params[:filter_catalogue][:category].reject { |c| c.empty? }.present?
@@ -244,7 +250,7 @@ class PagesController < ApplicationController
       if params[:tag_postion] == 'left'
         tag_cat_next_left = TagCategory.find_by(position: (tag_cat_selected.position - 1))
         tag_cat_selected.update(position: tag_cat_selected.position - 1)
-        tag_cat_next_left.update(position: tag_cat_selected.position + 1)        
+        tag_cat_next_left.update(position: tag_cat_selected.position + 1)
       elsif params[:tag_postion] == 'right'
         tag_cat_next_right = TagCategory.find_by(position: (tag_cat_selected.position + 1))
         tag_cat_selected.update(position: tag_cat_selected.position + 1)

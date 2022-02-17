@@ -63,9 +63,6 @@ class CampaignsController < ApplicationController
     end
   end
 
-  def home
-    authorize @campaign
-  end
 
   def campaigns_report
     @campaigns = policy_scope(Campaign)
