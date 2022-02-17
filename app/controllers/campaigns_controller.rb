@@ -9,13 +9,33 @@ class CampaignsController < ApplicationController
 
     filter_campaigns(campaigns)
 
+    redirect_to my_interviews_path unless current_user.hr_or_above?
+
     respond_to do |format|
       format.html
       format.js
     end
   end
 
-  def my_campaigns
+  def my_interviews
+    if params[:view] == 'Manager'
+      campaigns = policy_scope(Campaign)
+                    .where(company_id: current_user.company_id, owner_id: current_user.id)
+                    .order(created_at: :desc)
+    else
+      campaigns = policy_scope(Campaign).joins(:interviews)
+                    .where(company_id: current_user.company_id, interviews: {employee_id: current_user.id}).distinct
+                    .order(created_at: :desc)
+    end
+
+    authorize campaigns
+
+    @tag_categories = TagCategory.where(company_id: current_user.company_id)
+
+    filter_campaigns(campaigns)
+  end
+
+  def my_team_interviews
     if params[:view] == 'Manager'
       campaigns = policy_scope(Campaign)
                     .where(company_id: current_user.company_id, owner_id: current_user.id)

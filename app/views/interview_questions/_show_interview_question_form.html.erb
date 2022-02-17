@@ -219,7 +219,7 @@
 
       <%= f.hidden_field :answer,
                          disabled: read_only,
-                         input_html: { value: current_answer } %>
+                         value: current_answer %>
 
       <%# f.input :answer, collection: question.options.keys, label: 'Answer', required: question.required?, disabled: read_only, selected: current_answer, input_html: {onchange: 'autoSave(this);enableSubmit();'} %>
 

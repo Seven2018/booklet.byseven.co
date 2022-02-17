@@ -3,6 +3,7 @@
   <% campaign.employees.distinct.order(lastname: :asc).each do |employee| %>
     <% employee_view = current_user == employee %>
     <% manager_view = current_user == campaign.owner || current_user.hr_or_above? %>
+    <% next unless employee_view || manager_view %>
 
     <div class="campaign-show__card-container col-sm-12 col-md-6 col-xl-4">
       <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
@@ -22,11 +23,12 @@
         </div>
 
         <div class="campaign-show__card-profile">
-          <img src="<%= employee.picture %>" class='avatar-large' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-large' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           <p><%= employee.lastname.upcase %> <%= employee.firstname.titleize %></p>
         </div>
 
         <div class="campaign-show__card-interviews">
+
           <% if campaign.simple? %>
             <% interview = Interview.find_by(campaign_id: campaign.id, employee_id: employee.id) %>
             <% active_link = interview.completed? && employee_view || manager_view %>
@@ -71,7 +73,7 @@
 
             <% interviews.each do |interview| %>
 
-              <% active_link = interview.crossed? && crossed_availability|| !interview.locked? && ((employee_view && interview.employee?) || (manager_view && interview.manager?) || interview.completed?) %>
+              <% active_link = interview.crossed? && crossed_availability || !interview.locked? && ((employee_view && interview.employee?) || (manager_view && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
 
               <div class="campaign-show__card-interview">
                 <% if active_link %>

@@ -22,7 +22,8 @@ Rails.application.routes.draw do
 
   # CAMPAIGNS
   resources :campaigns
-  get :my_campaigns, controller: :campaigns
+  get :my_interviews, controller: :campaigns
+  get :my_team_interviews, controller: :campaigns
   get :campaigns_report, controller: :campaigns
   get :campaigns_report_filter_campaigns, controller: :campaigns
   get :campaign_report_info, controller: :campaigns
@@ -60,7 +61,7 @@ Rails.application.routes.draw do
     resource :locks, module: :interview, only: :create
   end
   get :complete_interview, controller: :interviews
-  get :show_crossed_and_lock, controller: :interviews
+  get :lock_interview, controller: :interviews
 
   namespace :interview do
     namespace :answer do
@@ -94,7 +95,7 @@ Rails.application.routes.draw do
   # PAGES
   # root to: redirect('/dashboard')
   # Temporary root
-  root to: redirect('/campaigns')
+  root to: redirect('/my_interviews')
   get :dashboard, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
@@ -154,4 +155,8 @@ Rails.application.routes.draw do
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]
+
+  # design pages
+  get '/design', to: 'design#index'
+  get '/guidelines', to: 'design#guidelines'
 end
