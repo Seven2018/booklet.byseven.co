@@ -35,16 +35,18 @@
         <span class="iconify" data-icon="bx:bx-download"></span>
         <p>Download PDF</p>
       <% end %>
-      <button class="btn-blue-text" onclick="saveButton();">
-        <span class="iconify" data-icon="fluent:save-16-regular"></span>
-        <p>Save</p>
-      </button>
-      <% if !@interview.completed? %>
+      <% unless @interview.locked? || (@interview.crossed? && current_user != manager) %>
+        <button class="btn-blue-text" onclick="saveButton();">
+          <span class="iconify" data-icon="fluent:save-16-regular"></span>
+          <p>Save</p>
+        </button>
+      <% end %>
+      <% if !@interview.completed? || (@interview.crossed? && !@interview.locked? && current_user == manager) %>
         <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
-          <p>Submit</p>
+          <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
           <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
         </button>
-        <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
+        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
       <% end %>
     </div>
   </div>
@@ -127,7 +129,7 @@
 
 <div class="interview-thanks hidden">
   <div class="flex-column-start-centered">
-    <p>Review submitted ! <i class="fas fa-check-square"></i></p>
+    <p>Review <%= @interview.crossed? ? 'Locked' : 'Submitted' %> ! <i class="fas fa-check-square"></i></p>
     <p>Thank you for completing this review ! <i class="far fa-thumbs-up"></i></p>
     <p>You can go back to the interview, or exit to the dashboard.</p>
   </div>
@@ -191,6 +193,12 @@
 
   function saveButton() {
     document.querySelector('body').classList.add('wait')
+    if (<%= @interview.crossed? %>) {
+      document.querySelectorAll('form.interview_answer').forEach((form) => {
+        setTimeout(function(){form.querySelector('.hidden-submit').click();}, 1000);
+
+      })
+    }
     setTimeout(function(){
       document.querySelector('body').classList.remove('wait')
       document.querySelector('.saved-message').classList.remove('hidden')
@@ -230,8 +238,10 @@
     this.style.height = (this.scrollHeight) + "px";
   }
 
-  // BOOKLET SELECT //
 
+  ////////////////////
+  // BOOKLET SELECT //
+  ////////////////////
 
   function BookletSelectExpand(element) {
     doubleClickGuardian = true
@@ -242,7 +252,7 @@
     if (dropdown.classList.contains('hidden')) {
       dropdown.classList.remove('hidden')
       window.addEventListener('click', function(e) {
-        if (outsideClick(e, dropdown) && !doubleClickGuardian) {
+        if (outsideClick(e, element) && !doubleClickGuardian) {
           dropdown.classList.add('hidden')
           this.removeEventListener('click', arguments.callee, false);
         }
@@ -262,7 +272,6 @@
     storage.value = selected_value
     selected_display.querySelector('p').innerText = selected_value
     submit_button.click()
-    BookletSelectExpand(element)
   }
 
   function BookletSelectRemoveAnswer(element) {
