@@ -1,60 +1,29 @@
-<div class="campaign-show__header">
-  <div class="campaign-show__header-controls">
+<% manager = @campaign.owner %>
 
-    <div class="campaign-show__header-title">
-      <!-- Load previous page with search results, if applicable -->
-      <% if request.referrer.present? && request.referrer.split('?')[0] == request.base_url + '/campaigns' %>
-        <button class='btn-back' onclick='history.back()'>
-          <i class="fas fa-angle-left"></i>
-        </button>
-      <% else %>
-        <%= link_to campaigns_path, class: 'btn-back' do %>
-          <i class="fas fa-angle-left"></i>
-        <% end %>
-      <% end %>
-      <!------>
-
-      <h1><%= @completion %>% - <%= @campaign.title %></h1>
-
-      <div class="campaign-show__header-tags">
-        <% @campaign.interview_form.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
-          <p class="interview-form-card__tag-pill"><%= tag.tag_name %></p>
-        <% end %>
+<div class="campaign-show__main">
+  <%= link_to campaigns_path, class: "booklet__back-button" do %>
+    <span class="iconify" data-icon="bi:arrow-left"></span>
+    <p>Back</p>
+  <% end %>
+  <div class="campaign-show__header">
+    <div class="campaign-show__header-banner">
+      <div class="campaign-show__header-banner-text">
+        <h1>Manage the campaign</h1>
+        <p>There are <%= @campaign.employees.distinct.count %> employees in this campaign.<br>
+          You can add or remove employees, change the reviews deadlines, <br>or change the campaign manager.
+        </p>
+      </div>
+      <div class="campaign-show__header-banner-img">
+        <%= image_tag('campaigns-show-banner.png') %>
       </div>
     </div>
-
-    <div class="campaign-show__header-buttons">
-      <a class='btn-blue__white-border' data-toggle='modal' data-target='#addParticipant'>
-        <span class="iconify" data-icon="akar-icons:circle-plus"></span>
-        <p>Add participant</p>
-      </a>
-      <%= link_to edit_campaign_path(@campaign), class: 'btn-blue__white-border' do %>
-        <span class="iconify" data-icon="ci:edit"></span>
-        <p>Edit</p>
-      <% end %>
+    <div class="campaign-show__header-infos">
+      <%= render 'campaigns/show/show_header_infos', campaign: @campaign %>
     </div>
-
   </div>
-
-  <div class="campaign-show__header-dates">
-    <h3>
-      <% if @current_user_employee %>
-        Review on <strong>
-          <%= @interviews_for_date.date %>
-        </strong>
-      <% else %>
-          Reviews from <strong>
-            <%= @interviews_for_date.first.date %>
-          </strong> to <strong>
-            <%= @interviews_for_date.last.date %>
-          </strong>
-      <% end %>
-    </h3>
+  <div class="campaign-show__interviews-list">
+    <%= render 'campaigns/show/show_interviews', campaign: @campaign %>
   </div>
-</div>
-
-<div class="campaign-container">
-  <%= render 'campaigns/partials/show_interviews', campaign: @campaign %>
 </div>
 
 
@@ -67,6 +36,12 @@
 <!------------>
 <!-- MODALS -->
 <!------------>
+
+<div class='modal fade' id='selectOwner' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+  <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
+    <%= render 'campaigns/show/modal_confirm_owner' %>
+  </div>
+</div>
 
 <div class='modal fade' id='addParticipant' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
   <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
@@ -88,6 +63,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
 
 <script>
+
+  ///////////
+  // TOOLS //
+  ///////////
+
   formGuardian = false;
 
   function outsideClick(event, notelem) {
@@ -102,6 +82,11 @@
     if (clickedOut) return true;
     else return false;
   }
+
+
+  ///////////////////////
+  // CAMPAIGN DROPDOWN //
+  ///////////////////////
 
   function openContentMenu(element) {
     dropdown = element.parentNode.querySelector('.content-dropdown')
@@ -132,21 +117,62 @@
   }
 
 
+  ////////////////////
+  // SELECT MANAGER //
+  ////////////////////
+
+  function showManagerSearch(element) {
+    current_manager = document.querySelector('.campaign-show__header-infos-controls-manager-display')
+    open_button = document.querySelector('.campaign-show__header-infos-controls-manager-edit')
+    cancel_button = document.getElementById('cancel_owner')
+    manager_search = document.querySelector('.campaign-show__header-infos-controls-manager-search')
+    manager_input = manager_search.querySelector('input')
+    target_width = current_manager.offsetWidth
+
+    manager_search.style.width = target_width.toString() + 'px'
+    manager_input.style.width = (target_width).toString() + 'px'
+    current_manager.classList.toggle('hidden')
+    manager_search.classList.toggle('hidden')
+    open_button.classList.toggle('hidden')
+    cancel_button.classList.toggle('hidden')
+  }
+
+  function swapManagerSearchButton(select = false) {
+    confirm_button = document.getElementById('select_owner')
+    cancel_button = document.getElementById('cancel_owner')
+
+    if (select) {
+      confirm_button.classList.remove('hidden')
+      cancel_button.classList.add('hidden')
+    } else {
+      confirm_button.classList.add('hidden')
+      cancel_button.classList.remove('hidden')
+    }
+  }
+
+
+  /////////////////
+  // SELECT DATE //
+  /////////////////
+
+  function selectInterviewDate(element) {
+    form = element.closest('form')
+    date_display = element.closest('.campaign-show__card').querySelector('.campaign-show__card-deadline')
+
+    date_display.innerText = '- Until ' + element.value
+    form.querySelector('.hidden-submit').click()
+    document.querySelector('.modal.show').querySelector('.cancel-close').click()
+  }
+
+
   ///////////////////
   // AUTO COMPLETE //
   ///////////////////
 
-  form = document.querySelector('.search')
-  input = form.querySelector('input')
-  input.addEventListener('keypress', function(e) {
-    if (event.which == '13') {
-      event.preventDefault();
-    }
-  })
+  $input_participant = $("#search_participant");
+  $input_manager = $("#search_manager");
 
-  $input = $("[data-behavior='autocomplete']");
-
-  var options = {
+  var options_participant = {
     listLocation: "users",
     getValue: 'name',
     url: function(phrase) {
@@ -154,7 +180,7 @@
     },
     list: {
       onChooseEvent: function() {
-        user_id = $input.getSelectedItemData().id
+        user_id = $input_participant.getSelectedItemData().id
         button = document.getElementById('add-participant-button')
         new_url = new URL(button.href)
         new_url.searchParams.set('user_id', user_id)
@@ -166,5 +192,27 @@
     }
   }
 
-  $input.easyAutocomplete(options);
+  var options_manager = {
+    listLocation: "users",
+    getValue: 'name',
+    url: function(phrase) {
+      return "/users_search.json?manager=true&search=" + phrase
+    },
+    list: {
+      onChooseEvent: function() {
+        user_id = $input_manager.getSelectedItemData().id
+        button = document.getElementById('select_owner_link')
+        new_url = new URL(button.href)
+        new_url.searchParams.set('user_id', user_id)
+        button.href = new_url.href
+        swapManagerSearchButton(true)
+      },
+      match: {
+        enabled: true
+      }
+    }
+  }
+
+  $input_participant.easyAutocomplete(options_participant);
+  $input_manager.easyAutocomplete(options_manager);
 </script>

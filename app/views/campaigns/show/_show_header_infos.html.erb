@@ -1,0 +1,52 @@
+<% manager = @campaign.owner %>
+<% campaign_status =
+      if @campaign.completion_for(:all) == 100
+        'completed'
+      elsif @campaign.completion_for(:all) == 0
+        'not_started'
+      else
+        'in_progress'
+      end %>
+
+<% campaign_type_svg = {
+      'crossed' => 'uil:exchange',
+      'simple' => 'mdi:star-shooting'
+    } %>
+
+<div class="campaign-show__header-infos-title-status">
+  <div class="campaign-show__header-infos-title">
+    <div class="campaign-show__header-infos-title-icon">
+      <span class="iconify" data-icon="<%= campaign_type_svg[@campaign.campaign_type] %>"></span>
+    </div>
+    <h2><%= campaign.title %></h2>
+    <p class='<%= campaign_status %>'><%= campaign_status.capitalize.gsub('_', ' ') %></p>
+  </div>
+  <p>Employees</p>
+</div>
+<div class="campaign-show__header-infos-controls">
+  <div class="campaign-show__header-infos-controls-manager">
+    <p>Manager :</p>
+    <div class="campaign-show__header-infos-controls-manager-display">
+      <img src="<%= manager.picture %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+      <p><%= manager.fullname %></p>
+    </div>
+    <div class='campaign-show__header-infos-controls-manager-search hidden'>
+      <%= simple_form_for :search, url: users_path, method: :get do |f| %>
+        <%= f.text_field :manager, placeholder: 'Search Manager', label: false, data: {behavior: 'autocomplete'}, onkeyup: 'swapManagerSearchButton(false);' %>
+      <% end %>
+    </div>
+    <button class="campaign-show__header-infos-controls-manager-edit btn-icon" onclick='showManagerSearch(this)'>
+      <span class="iconify" data-icon="fa-solid:user-edit"></span>
+    </button>
+    <a id='select_owner' class='btn-blue btn-icon hidden' data-toggle='modal' data-target='#selectOwner'>
+      <span class="iconify" data-icon="bi:check"></span>
+    </a>
+    <button id="cancel_owner" class="btn-red btn-icon hidden" onclick='showManagerSearch(this);'>
+      <span class="iconify" data-icon="pepicons:times"></span>
+    </button>
+  </div>
+  <a class='campaign-show__header-infos-controls-employee' data-toggle='modal' data-target='#addParticipant'>
+    <span class="iconify" data-icon="akar-icons:circle-plus"></span>
+    <p>Add an employee</p>
+  </a>
+</div>

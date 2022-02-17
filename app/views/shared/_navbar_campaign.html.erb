@@ -2,23 +2,23 @@
   <div class="navbar-controls__left">
     <% if user_signed_in? %>
       <% if params[:action] == 'my_campaigns' && params[:view] == 'Employee' %>
-        <%= link_to my_campaigns_path(view: 'Employee') do %>
+        <%= link_to my_interviews_path do %>
           <div class="navbar-buttons navbar-buttons--active"><h4 title='My interviews'>My interviews</h4></div>
         <% end %>
         <!-- <div class="isactive"></div> -->
       <% else %>
-        <%= link_to my_campaigns_path(view: 'Employee') do %>
+        <%= link_to my_interviews_path do %>
           <div class="navbar-buttons"><h4>My interviews</h4></div>
         <% end %>
       <% end %>
       <% if current_user.manager_or_above? %>
         <% if params[:action] == 'my_campaigns' && params[:view] == 'Manager' %>
-          <%= link_to my_campaigns_path(view: 'Manager') do %>
+          <%= link_to my_team_interviews_path do %>
             <div class="navbar-buttons navbar-buttons--active"><h4>My team interviews</h4></div>
           <% end %>
           <!-- <div class="isactive"></div> -->
         <% else %>
-          <%= link_to my_campaigns_path(view: 'Manager') do %>
+          <%= link_to my_team_interviews_path do %>
             <div class="navbar-buttons"><h4>My team interviews</h4></div>
           <% end %>
         <% end %>
@@ -35,7 +35,9 @@
           <% end %>
         <% end %>
         <button class="left-buttons">
-          <div class="navbar-buttons" onclick="openAdminNavbar();"><h4>Admin</h4></div>
+          <%= link_to campaigns_path do %>
+            <div class="navbar-buttons"><h4>Admin</h4></div>
+          <% end %>
         </button>
 <!--         <% if params[:action] == 'organisation' %>
             <%= link_to organisation_path(redirected_from: 'campaigns') do %>
@@ -81,34 +83,6 @@
         </div>
       </div>
     </div> -->
-
-    <%# TOGGLE EMPLOYEE ADMIN %>
-    <div class="toggle-admin">
-
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-
-        <% if current_user.hr? || current_user.manager? %>
-
-          <%= link_to user_path(current_user, params: { access_level: "#{current_user.access_level}-light", last_page: "#{params[:controller]}-#{params[:action]}" }), class: "btn btn-secondary btn-left", method: :patch do %>
-            <input type="radio" name="options" id="option1" autocomplete="off"> Employee
-          <% end %>
-          <label class="btn btn-secondary btn-right active">
-            <input type="radio" name="options" id="option2" autocomplete="off" checked> <%= current_user.access_level.split('-').first %>
-          </label>
-
-        <% elsif current_user.hr_light? || current_user.manager_light? %>
-
-          <label class="btn btn-secondary btn-left active">
-            <input type="radio" name="options" id="option1" autocomplete="off" checked> Employee
-          </label>
-          <%= link_to user_path(current_user, params: { access_level: "#{current_user.access_level.split('-').first}", last_page: "#{params[:controller]}-#{params[:action]}"}), class: "btn btn-secondary btn-right", method: :patch do %>
-            <input type="radio" name="options" id="option2" autocomplete="off"> <%= current_user.access_level.split('-').first %>
-          <% end %>
-
-        <% end %>
-      </div>
-    </div>
-
 
     <div class="user-top-nav">
       <div class="dropdown show">
@@ -190,10 +164,5 @@
     card.classList.add('selected')
     checkbox.classList.add('selected')
     teaser.classList.add('selected')
-  }
-
-  function openAdminNavbar() {
-    navbar_admin = document.querySelector('.navbar-admin')
-    navbar_admin.classList.remove('hidden')
   }
 </script>

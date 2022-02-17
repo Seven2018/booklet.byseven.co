@@ -369,10 +369,13 @@ button {
 
 .btn-blue__white-border {
   border: 1px solid #3177B7;
+  color: #3177B7;
+  font-weight: bold;
 
   &:hover {
     background-color: #3177B7;
     border: 1px solid #3177B7;
+    color: white;
   }
 
   i, p, h4 {
@@ -444,6 +447,21 @@ button {
 //////////
 // MISC //
 //////////
+
+.booklet__back-button {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  p, svg {
+    font-size: 1.8rem;
+    color: #939393;
+  }
+
+  svg {
+    margin-right: 1rem;
+  }
+}
 
 .return-arrow {
   min-width: 0 !important;
@@ -575,24 +593,24 @@ button {
   }
 }
 
-.completed {
-  color: #56690A !important;
-  font-size: 1.6rem;
-  font-weight: 600;
-  line-height: 27px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  background-color: #E6EAD7;
-  padding: .5rem 1rem;
-  border-radius: 4px;
-  margin-right:5px;
-  cursor: default;
-  @include from-medium {
-    p {
-      font-size: 1.6rem !important;
-    }
-  }
-}
+// .completed {
+//   color: #56690A !important;
+//   font-size: 1.6rem;
+//   font-weight: 600;
+//   line-height: 27px;
+//   letter-spacing: 0.15em;
+//   text-transform: uppercase;
+//   background-color: #E6EAD7;
+//   padding: .5rem 1rem;
+//   border-radius: 4px;
+//   margin-right:5px;
+//   cursor: default;
+//   @include from-medium {
+//     p {
+//       font-size: 1.6rem !important;
+//     }
+//   }
+// }
 
 .btn-edit-white {
   background-color: #F8D9C8 !important;
@@ -627,6 +645,7 @@ button {
   align-items: center;
   padding: 0 !important;
   min-width: 0 !important;
+  border-radius: .4rem;
 
   i {
     margin: 0;
