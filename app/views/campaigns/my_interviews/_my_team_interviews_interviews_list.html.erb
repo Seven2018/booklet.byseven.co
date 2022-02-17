@@ -1,0 +1,115 @@
+<% campaigns.each do |campaign| %>
+
+  <% manager = campaign.owner %>
+  <% campaign_type = {
+      'crossed' => 'uil:exchange',
+      'simple' => 'mdi:star-shooting' } %>
+  <% status =
+    if campaign.completion_for(:all) == 0
+      'not_started'
+    elsif campaign.completion_for(:all) == 100
+      'completed'
+    else
+      'in_progress'
+    end %>
+
+  <div class="campaigns-my-team-interviews__card">
+    <div class="campaigns-my-interviews__card-inner">
+      <div class="campaigns-my-interviews__card-header">
+        <div class="campaigns-my-interviews__card-header-left">
+          <div class="campaigns-my-interviews__card-icon">
+            <span class="iconify" data-icon="<%= campaign_type[campaign.campaign_type] %>"></span>
+          </div>
+          <div class="campaigns-my-interviews__card-title-deadline">
+            <h2><%= campaign.title %></h2>
+          </div>
+           <p class="campaigns-my-interviews__card-status <%= status %>"><%= status.capitalize.gsub(/_/, " ") %></p>
+        </div>
+        <div class="campaigns-my-interviews__card-review-link">
+          <%= link_to campaign_path(campaign) do %>
+            <p>Manage campaign  <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+          <% end %>
+        </div>
+      </div>
+
+      <% campaign.employees.distinct.each do |employee| %>
+
+        <% if campaign.crossed? %>
+          <% employee_interview = campaign.interviews.find_by(employee: employee, label: 'Employee') %>
+          <% manager_interview = campaign.interviews.find_by(employee: employee, label: 'Manager') %>
+          <% crossed_interview = campaign.interviews.find_by(employee: employee, label: 'Crossed') %>
+        <% elsif campaign.simple? %>
+          <% manager_interview = campaign.interviews.find_by(employee: employee, label: 'Simple') %>
+        <% end %>
+
+        <div class="campaigns-my-interviews__card-group">
+          <div class="campaigns-my-interviews__card-group-left">
+            <div class="campaigns-my-interviews__card-manager">
+              <div class="campaigns-my-interviews__card-avatar">
+                <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+              </div>
+              <div class="campaigns-my-interviews__card-name-status">
+                <h6><%= manager.fullname %><em style="color:darkgray">- Manager</em></h6>
+                <% if manager_interview.completed? %>
+                  <p style="color:#7BC079">Review completed</p>
+                <% else %>
+                  <p style="color:#EC6D6D">Review not completed</p>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="campaigns-my-interviews__card-employee">
+              <div class="campaigns-my-interviews__card-avatar">
+                <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+              </div>
+              <div class="campaigns-my-interviews__card-name-status">
+                <h6><%= employee.fullname %><em style="color:darkgray">- Employee</em></h6>
+                <% if campaign.crossed? %>
+                  <% if employee_interview.completed? %>
+                    <p style="color:#7BC079">Review completed</p>
+                  <% else %>
+                    <p style="color:#EC6D6D">Review not completed</p>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <% if campaign.simple? %>
+            <%= link_to interview_path(manager_interview), class: 'btn-blue-my-interviews' do %>
+              <p><%= manager_interview.completed? ? 'Update' : 'Start review' %></p>
+            <% end %>
+          <% elsif campaign.crossed? %>
+            <%# raise if campaign.id == 1406 %>
+            <% if crossed_interview.locked? %>
+              <button class="btn-blue-my-interviews btn-blue-my-interviews-disabled">
+                <p>Locked</p>
+                <span class="iconify" data-icon="bxs:lock-alt"></span>
+              </button>
+            <% elsif crossed_interview.completed? %>
+              <%= link_to lock_interview_path(interview_id: crossed_interview.id), class: 'btn-blue-my-interviews' do %>
+                <p>Lock interview</p>
+              <% end %>
+            <% elsif manager_interview.completed? && employee_interview.completed? %>
+              <%= link_to interview_path(crossed_interview), class: 'btn-blue-my-interviews' do %>
+                <p>Start cross review</p>
+              <% end %>
+            <% elsif manager_interview.completed? && !employee_interview.completed? %>
+              <button class="btn-grey-my-interviews">
+                <p>Waiting for employee's review</p>
+              </button>
+            <% else %>
+              <%= link_to interview_path(manager_interview), class: 'btn-blue-my-interviews' do %>
+                <p>Start review</p>
+              <% end %>
+            <% end %>
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+
+<% end %>

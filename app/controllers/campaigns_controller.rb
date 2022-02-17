@@ -63,19 +63,33 @@ class CampaignsController < ApplicationController
     end
   end
 
-  def home
-    @campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
-    authorize @campaigns
-  end
-
   def my_interviews
     @campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
+    @manager_campaigns = Campaign.where(owner_id: current_user.id)
     authorize @campaigns
+
+    if params.dig(:period) == 'completed'
+      @campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
+    else
+      @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
+    end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def my_team_interviews
+    @personal_campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
     @campaigns = Campaign.where(owner_id: current_user.id)
     authorize @campaigns
+
+    if params.dig(:period) == 'completed'
+      @campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
+    else
+      @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
+    end
   end
 
   def campaigns_report

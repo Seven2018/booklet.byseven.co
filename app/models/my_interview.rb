@@ -1,2 +1,0 @@
-class MyInterview < ApplicationRecord
-end

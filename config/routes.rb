@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
-  root to: 'pages#home'
 
   # ASSESSMENTS
   resources :assessments, only: %i[] do
@@ -60,6 +59,7 @@ Rails.application.routes.draw do
     resource :locks, module: :interview, only: :create
   end
   get :complete_interview, controller: :interviews
+  get :lock_interview, controller: :interviews
   get :show_crossed_and_lock, controller: :interviews
 
   namespace :interview do
@@ -92,9 +92,7 @@ Rails.application.routes.draw do
   get 'mods/:id/move_down', to: 'mods#move_down', as: 'move_down_mod'
 
   # PAGES
-  # root to: redirect('/dashboard')
-  # Temporary root
-  # root to: redirect('/campaigns')
+  root to: redirect('/my_interviews')
   get :dashboard, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
