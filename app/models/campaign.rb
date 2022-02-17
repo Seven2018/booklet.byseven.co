@@ -18,6 +18,9 @@ class Campaign < ApplicationRecord
     crossed: 10,
   }, _prefix: true
 
+  scope :simple, -> { where(campaign_type: 'simple') }
+  scope :crossed, -> { where(campaign_type: 'crossed') }
+
   include PgSearch::Model
   pg_search_scope :search_campaigns,
     against: [ :title ],
