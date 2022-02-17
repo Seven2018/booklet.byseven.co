@@ -33,6 +33,8 @@ class Campaign < ApplicationRecord
     },
     ignoring: :accents
 
+  alias :manager :owner
+
   def crossed?
     self.campaign_type_crossed?
   end
