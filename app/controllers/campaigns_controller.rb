@@ -64,6 +64,7 @@ class CampaignsController < ApplicationController
   end
 
   def home
+    authorize @campaign
   end
 
   def campaigns_report
