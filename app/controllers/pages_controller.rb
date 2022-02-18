@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  before_action :show_navbar_admin, only: :organisation
 
   # Access dashboard (root)
   def dashboard
