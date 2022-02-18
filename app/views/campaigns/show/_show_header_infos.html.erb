@@ -35,18 +35,22 @@
         <%= f.text_field :manager, placeholder: 'Search Manager', label: false, data: {behavior: 'autocomplete'}, onkeyup: 'swapManagerSearchButton(false);' %>
       <% end %>
     </div>
-    <button class="campaign-show__header-infos-controls-manager-edit btn-icon" onclick='showManagerSearch(this)'>
-      <span class="iconify" data-icon="fa-solid:user-edit"></span>
-    </button>
-    <a id='select_owner' class='btn-blue btn-icon hidden' data-toggle='modal' data-target='#selectOwner'>
-      <span class="iconify" data-icon="bi:check"></span>
-    </a>
-    <button id="cancel_owner" class="btn-red btn-icon hidden" onclick='showManagerSearch(this);'>
-      <span class="iconify" data-icon="pepicons:times"></span>
-    </button>
+    <% if CampaignPolicy.new(current_user, campaign).edit_rights? %>
+      <button class="campaign-show__header-infos-controls-manager-edit btn-icon" onclick='showManagerSearch(this)'>
+        <span class="iconify" data-icon="fa-solid:user-edit"></span>
+      </button>
+      <a id='select_owner' class='btn-blue btn-icon hidden' data-toggle='modal' data-target='#selectOwner'>
+        <span class="iconify" data-icon="bi:check"></span>
+      </a>
+      <button id="cancel_owner" class="btn-red btn-icon hidden" onclick='showManagerSearch(this);'>
+        <span class="iconify" data-icon="pepicons:times"></span>
+      </button>
+    <% end %>
   </div>
-  <a class='campaign-show__header-infos-controls-employee' data-toggle='modal' data-target='#addParticipant'>
-    <span class="iconify" data-icon="akar-icons:circle-plus"></span>
-    <p>Add an employee</p>
-  </a>
+  <% if current_user == manager %>
+    <a class='campaign-show__header-infos-controls-employee' data-toggle='modal' data-target='#addParticipant'>
+      <span class="iconify" data-icon="akar-icons:circle-plus"></span>
+      <p>Add an employee</p>
+    </a>
+  <% end %>
 </div>
