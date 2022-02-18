@@ -198,19 +198,6 @@ class PagesController < ApplicationController
       format.js
       format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
-
-    # if params[:tag_position].present?
-    #   tag_cat_selected = TagCategory.find(params[:tag_category_id])
-    #   if params[:tag_position] == 'left'
-    #     tag_cat_next_left = TagCategory.find_by(position: (tag_cat_selected.position - 1))
-    #     tag_cat_selected.update(position: tag_cat_selected.position - 1)
-    #     tag_cat_next_left.update(position: tag_cat_selected.position + 1)
-    #   elsif params[:tag_position] == 'right'
-    #     tag_cat_next_right = TagCategory.find_by(position: (tag_cat_selected.position + 1))
-    #     tag_cat_selected.update(position: tag_cat_selected.position + 1)
-    #     tag_cat_next_right.update(position: tag_cat_selected.position - 1)
-    #   end
-    # end
   end
 
   def organisation_temp
@@ -398,6 +385,7 @@ class PagesController < ApplicationController
     @users = users.page(page_index)
   end
 
+  # TEMP #
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
     if current_user.hr_or_above?
