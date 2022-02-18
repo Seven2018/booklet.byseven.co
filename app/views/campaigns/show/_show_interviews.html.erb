@@ -9,7 +9,7 @@
       <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
         <div class="campaign-show__card-overlay hidden"></div>
         <div class="campaign-card__options" onclick="openContentMenu(this);">
-          <% if CampaignPolicy.new(current_user, campaign).edit_rights? %>
+          <% if manager_view %>
             <i class="fas fa-ellipsis-v"></i>
             <div class="content-dropdown hidden">
                 <%= link_to 'See profile', user_path(employee) %>
@@ -73,7 +73,7 @@
 
             <% interviews.each do |interview| %>
 
-              <% active_link = interview.crossed? && crossed_availability || !interview.locked? && ((employee_view && interview.employee?) || (manager_view && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
+              <% active_link = interview.crossed? && crossed_availability || ((employee_view && interview.employee?) || (manager_view && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
 
               <div class="campaign-show__card-interview">
                 <% if active_link %>
@@ -85,7 +85,11 @@
                       <em class='campaign-show__card-deadline'><%= "- Until #{interview.date}" %></em>
                     <% end %>
                   </p>
-                  <% if interview.completed? %>
+                  <% if interview.locked? %>
+                    <p class="campaign-show__card-interview-status--complete">
+                      Locked !
+                    </p>
+                  <% elsif interview.completed? %>
                     <p class="campaign-show__card-interview-status--complete">
                       Completed !
                     </p>

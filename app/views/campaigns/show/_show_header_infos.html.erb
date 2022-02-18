@@ -35,7 +35,7 @@
         <%= f.text_field :manager, placeholder: 'Search Manager', label: false, data: {behavior: 'autocomplete'}, onkeyup: 'swapManagerSearchButton(false);' %>
       <% end %>
     </div>
-    <% if CampaignPolicy.new(current_user, campaign).edit_rights? %>
+    <% if current_user.hr_or_above? %>
       <button class="campaign-show__header-infos-controls-manager-edit btn-icon" onclick='showManagerSearch(this)'>
         <span class="iconify" data-icon="fa-solid:user-edit"></span>
       </button>
