@@ -9,7 +9,7 @@
       <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
         <div class="campaign-show__card-overlay hidden"></div>
         <div class="campaign-card__options" onclick="openContentMenu(this);">
-          <% if current_user.manager_or_above? %>
+          <% if CampaignPolicy.new(current_user, campaign).edit_rights? %>
             <i class="fas fa-ellipsis-v"></i>
             <div class="content-dropdown hidden">
                 <%= link_to 'See profile', user_path(employee) %>
@@ -64,7 +64,7 @@
             <% employee_interview = interviews.find_by(label: 'Employee') %>
             <% manager_interview = interviews.find_by(label: 'Manager') %>
             <% crossed_interview = interviews.find_by(label: 'Crossed') %>
-            <% crossed_availability = employee_interview.completed? && manager_interview.completed? %>
+            <% crossed_availability = employee_interview.completed? && manager_interview.completed? && (manager_view || crossed_interview.completed?)%>
             <% interviews = [employee_interview, manager_interview, crossed_interview] %>
 
             <% interview_title = {'Employee' => "Employee's",
@@ -89,7 +89,7 @@
                     <p class="campaign-show__card-interview-status--complete">
                       Completed !
                     </p>
-                  <% elsif interview.crossed? && !crossed_availability %>
+                  <% elsif interview.crossed? && !crossed_availability && manager_view %>
                     <p class="campaign-show__card-interview-status--unavailable">
                       Not available yet
                     </p>
