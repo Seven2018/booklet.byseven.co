@@ -44,12 +44,12 @@
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-cross" role="tabpanel" aria-labelledby="nav-cross-tab">
           <div class="campaigns-my-interviews__list campaigns-my-interviews__list-crossed">
-            <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'crossed'), type: 'crossed' %>
+            <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.crossed %>
           </div>
         </div>
         <div class="tab-pane fade" id="nav-simple" role="tabpanel" aria-labelledby="nav-simple-tab">
           <div class="campaigns-my-interviews__list campaigns-my-interviews__list-simple">
-            <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'simple'), type: 'simple' %>
+            <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.simple %>
           </div>
         </div>
       </div>

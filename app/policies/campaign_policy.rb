@@ -77,9 +77,14 @@ class CampaignPolicy < ApplicationPolicy
     user.manager_or_above?
   end
 
+  def edit_rights?
+    user.hr_or_above? || user == record.owner
+  end
+
   def campaign_edit_date?
     user.hr_or_above? || user == record.owner
   end
+
 
   def destroy?
     user.manager_or_above?

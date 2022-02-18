@@ -59,7 +59,7 @@
           <% end %>-->
       <% end %>
     <% end %>
-    <% if current_user.manager_or_above? && !['organisation', 'campaigns_report'].include?(params[:action]) %>
+    <% if current_user.manager_or_above? %>
       <div class="centered-item">
         <a class='btn-blue__white-border' data-toggle='modal' data-target='#newCampaign'><p>New Interview</p></a>
       </div>
@@ -115,18 +115,28 @@
     </div>
   </div>
 </div>
-<div class="navbar-admin <%= 'hidden' unless ['organisation', 'campaigns_report'].include?(params[:action]) || (params[:controller] == 'campaigns' && params[:action] == 'index') %>">
-  <% active = "navbar-admin__button--active" %>
-  <%= link_to campaigns_path, class: 'navbar-admin__button ' + (params[:controller] == 'campaigns' && params[:action] == 'index' ? active : '') do %>
-    <h4>Campaigns</h4>
-  <% end %>
-  <%= link_to organisation_path, class: 'navbar-admin__button ' + (params[:action] == 'organisation' ? active : '') do %>
-    <h4>Employees</h4>
-  <% end %>
-  <%= link_to campaigns_report_path, class: 'navbar-admin__button ' + (params[:action] == 'campaigns_report' ? active : '') do %>
-    <h4>Report</h4>
-  <% end %>
-</div>
+
+<% if @show_navbar_admin.present? %>
+  <div class="navbar-admin">
+    <% klass = 'navbar-admin__button' %>
+    <% active_klass = "navbar-admin__button--active" %>
+
+    <%= link_to campaigns_path,
+      class: "#{klass} #{active_klass if @controller_action == :campaigns_index}" do %>
+      <h4>Campaigns</h4>
+    <% end %>
+
+    <%= link_to organisation_path,
+      class: "#{klass} #{active_klass if @controller_action == :pages_organisation}" do %>
+      <h4>Employees</h4>
+    <% end %>
+
+    <%= link_to campaigns_report_path,
+      class: "#{klass} #{active_klass if @controller_action == :campaigns_campaigns_report}" do %>
+      <h4>Report</h4>
+    <% end %>
+  </div>
+<% end %>
 
 <!------------>
 <!-- MODALS -->
