@@ -1,5 +1,6 @@
 class InterviewFormsController < ApplicationController
   before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy]
+  before_action :show_navbar_admin, only: %i[index]
 
   def index
     @templates = policy_scope(InterviewForm)
