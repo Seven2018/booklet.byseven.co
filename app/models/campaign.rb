@@ -145,13 +145,13 @@ class Campaign < ApplicationRecord
         crossed_in_progress = crossed_total - crossed_locked - crossed_completed - crossed_not_started
         crossed_not_set = employees.where_not_exists(:interviews, campaign_id: all.ids, employee_id: employees.ids).distinct.count
         # crossed_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
-        crossed_locked_by_total = crossed_total > 0 ? (crossed_locked.fdiv(crossed_total)*10).round.to_s + '%' : '0%'
+        crossed_locked_by_total = crossed_total > 0 ? (crossed_locked.fdiv(crossed_total)*100).round.to_s + '%' : '0%'
         simple_completed = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids, completed: true, locked_at: nil).count
         simple_locked = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).where.not(locked_at: nil).count
         simple_not_started = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids, completed: false).count
         simple_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
         simple_total = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
-        simple_completed_by_total = simple_total > 0 ? (simple_completed.fdiv(simple_total)*10).round.to_s + '%' : '0%'
+        simple_completed_by_total = simple_total > 0 ? (simple_completed.fdiv(simple_total)*100).round.to_s + '%' : '0%'
 
         line = []
 
