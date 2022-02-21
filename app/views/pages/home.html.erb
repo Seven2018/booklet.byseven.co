@@ -1,92 +1,102 @@
 <div class="homepage__container">
 
-    <div class="homepage__title">
-      <h1>Welcome on Booklet, <%= "#{current_user.firstname}" %> !</h1>
-      <strong><p>Get instant access to your trainings, and all your interviews from here.</p></strong>
+  <div class="homepage__title">
+    <h1>Welcome on Booklet, <%= "#{current_user.firstname}" %> !</h1>
+    <strong><p>Get instant access to your trainings, and all your interviews from here.</p></strong>
+  </div>
+
+  <div class="homepage__interviews">
+
+    <div class="homepage__card-inner">
+      <div class="homepage__card-header">
+        <div class="homepage__card-header-icon">
+          <span class="iconify" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;"></span>
+        </div>
+
+        <div class="homepage__card-header-text">
+          <h2><Strong>My Interviews</Strong></h2>
+          <p>- <%= @my_interviews.count  %> reviews to do</p>
+        </div>
+      </div>
+
+
+      <div class="homepage-card__main-text">
+      <% if @my_interviews.count == 0 %>
+        <p>You have no interview to do at this time.</p><br>
+      <% else %>
+        <p>You have <%= @my_interviews.count %> reviews to do in this section. You can complete them right now in <strong> <%= link_to '‘My Interviews’', interviews_path %> </strong> section !</p>
+        <p>Your reviews to complete are :</p>
+        <% myi_firsts = @my_interviews.order(date: :asc).first(3) %>
+        <% myi_firsts.each do |myi_first| %>
+          <p class="part1">
+          <strong style="color:#3177B7"><%= myi_first.title %></strong> with the manager <strong><%= myi_first.campaign.owner.fullname %></strong><br>
+          The deadline for this campaign is the <strong><%= myi_first.date.strftime('%d/%m/%Y') %></strong><br>
+          </p>
+        <% end %>
+        <% if @my_interviews.count > 3 %>
+          <strong><p>And <%= @my_interviews.count - 3 %> more.</p></strong>
+        <% end %>
+      <% end %>
+
+
+      </div>
+
+      <div class="homepage__card-arrow-link">
+        <a href="/my_interviews"><span class="iconify" data-icon="dashicons:arrow-right-alt" style="color: #3177b7;" data-width="50" data-height="50"></span></a>
+      </div>
     </div>
 
-    <div class="homepage__my-interviews">
+  </div>
+
+  <% if current_user.manager_or_above? %>
+
+    <div class="homepage__interviews">
 
       <div class="homepage__card-inner">
         <div class="homepage__card-header">
           <div class="homepage__card-header-icon">
-            <span class="iconify" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;" data-width="50" data-height="50"></span>
+            <span class="iconify" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;"></span>
           </div>
-
           <div class="homepage__card-header-text">
-            <h2><Strong>My Interviews</Strong></h2>
-            <p>- <%= @my_interviews.count  %> reviews to do</p>
+            <h2><Strong>My Team Interviews</Strong></h2>
+            <p>- <%= "#{@my_team_interviews.count}" %> reviews to do</p>
           </div>
         </div>
-
 
         <div class="homepage-card__main-text">
-        <% if @my_interviews.count == 0 %>
-          <p>You have no interview to do at this time.</p><br>
-        <% else %>
-          <p>You have <%= @my_interviews.count %> reviews to do in this section. You can complete them right now in <strong> <%= link_to '‘My Interviews’', interviews_path %> </strong> section !</p>
-          <p>Your reviews to complete are :</p>
-          <% myi_firsts = @my_interviews.order(date: :asc).first(3) %>
-          <% myi_firsts.each do |myi_first| %>
-          <p class="part1">
-          <strong style="color:#3177B7"><%= myi_first.title %></strong> with the manager <strong><%= myi_first.campaign.owner.fullname %></strong><br>
-          The deadline for this campaign is the <strong><%= myi_first.ends_at.strftime('%d/%m/%Y') %></strong><br>
-          </p>
-          <% end %>
-          <% if @my_interviews.count > 3 %>
-            <strong><p>And <%= @my_interviews.count - 3 %> more.</p></strong>
-          <% end %>
-        <% end %>
 
-
-        </div>
-
-        <div class="homepage-card__arrow-1">
-          <a href="/my_interviews"><span class="iconify" data-icon="dashicons:arrow-right-alt" style="color: #3177b7;" data-width="50" data-height="50"></span></a>
-        </div>
-      </div>
-
-    </div>
-
-    <% if current_user.manager_or_above? %>
-      <div class="homepage__my-team-interviews">
-
-        <div class="homepage__card-inner">
-          <div class="homepage__card-header">
-            <div class="homepage__card-header-icon">
-              <span class="iconify" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;" data-width="50" data-height="50"></span>
-            </div>
-            <div class="homepage__card-header-text">
-              <h2><Strong>My Team Interviews</Strong></h2>
-              <p>- <%= "#{@my_team_interviews.count}" %> reviews to do</p>
-            </div>
-          </div>
-
-          <div class="homepage-card__main-text">
           <% if @my_team_interviews.count == 0 %>
-            <p>You have no interview to do at this time.</p><br>
+
+            <p>You have no interview to do at this time.</p>
+
           <% else %>
+
             <p>You have <%= "#{@my_team_interviews.count}" %> reviews to do in this section. You can complete them right now in <strong>‘My Team Interviews’</strong> section !</p><br>
             <p>Your reviews to complete are :</p><br>
+
             <% myt_firsts = @my_team_interviews.order(date: :asc).first(3) %>
+
             <% myt_firsts.each do |myt_first| %>
-            <p class="part1">
-            <strong style="color:#3177B7"><%= myt_first.title %></strong> with the employee <strong><%# myt_first.interviews.employee %></strong><br>
-            The deadline for this campaign is the <strong><%= myt_first.ends_at.strftime('%d/%m/%Y') %></strong><br>
-            </p>
+              <p class="part1">
+              <strong style="color:#3177B7"><%= myt_first.title %></strong> with the employee <strong><%= myt_first.employee.fullname %></strong><br>
+              The deadline for this campaign is the <strong><%= myt_first.date.strftime('%d/%m/%Y') %></strong><br>
+              </p>
             <% end %>
+
             <% if @my_team_interviews.count > 3 %>
-            <strong><p>And <%= @my_team_interviews.count - 3 %> more.</p></strong>
+              <strong><p>And <%= @my_team_interviews.count - 3 %> more.</p></strong>
             <% end %>
-          </div>
 
           <% end %>
 
+        </div>
 
-          <div class="homepage-card__arrow-2">
-            <a href="/my_team_interviews"><span class="iconify" data-icon="dashicons:arrow-right-alt" style="color: #3177b7;" data-width="50" data-height="50"></span></a>
-          </div>
+
+        <div class="homepage__card-arrow-link">
+          <a href="/my_team_interviews"><span class="iconify" data-icon="dashicons:arrow-right-alt" style="color: #3177b7;" data-width="50" data-height="50"></span></a>
         </div>
       </div>
-    <% end %>
+    </div>
+  <% end %>
+
 </div>

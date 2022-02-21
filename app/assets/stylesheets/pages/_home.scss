@@ -18,31 +18,18 @@
   }
 }
 
-.homepage__my-interviews {
+.homepage__interviews {
   margin-top: 3rem;
-  padding: 3rem;
+  padding: 3rem 3rem 9rem 3rem;
   overflow: hidden;
   width: 80%;
-  max-width: 950px;
+  max-width: 96rem;
   background: white;
   box-shadow: 0px 2px 26px 0px #0000000D;
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
-}
-
-.homepage__my-team-interviews {
-  margin-top: 3rem;
-  padding: 3rem;
-  padding-bottom: 28px;
-  overflow: hidden;
-  width: 80%;
-  max-width: 950px;
-  background: white;
-  box-shadow: 0px 2px 26px 0px #0000000D;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
+  border-radius: 1rem;
+  position: relative;
 }
 
 .homepage__card-inner {
@@ -51,30 +38,38 @@
 
 .homepage__card-header {
   display: flex;
+  margin-bottom: 2rem;
 
   .homepage__card-header-icon {
     display: flex;
-    align-content: flex-start;
-    // justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+    width: 5rem;
     margin-left: 3rem;
-    // background-color: #C1D6E9;
+    border-radius: 2.5rem;
+    background-color: rgba(49, 119, 183, 0.3);
+
+    svg {
+      font-size: 3rem;
+    }
   }
 
   .homepage__card-header-text {
     display: flex;
 
     h2 {
-    display: flex;
-    padding-left: 5px;
-    padding: 1.2rem 0rem 0rem 1rem ;
+      display: flex;
+      padding-left: .5rem;
+      padding: 1.2rem 0rem 0rem 1rem;
     }
 
     p {
-    display: flex;
-    padding-left: 8px;
-    color: #3177B7;
-    font-weight: bold;
-    padding: 1.8rem 0rem 0rem 0.6rem ;
+      display: flex;
+      padding-left: 8px;
+      color: #3177B7;
+      font-weight: bold;
+      padding: 1.8rem 0rem 0rem 0.6rem;
     }
   }
 }
@@ -85,23 +80,17 @@
   margin-left: 3rem;
 
   p {
-    line-height: 5rem;
+    margin-bottom: 1rem;
   }
 
   p.part1 {
     line-height: 2.2rem;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
   }
 }
 
-.homepage-card__arrow-1 {
-  display: flex;
-  position: relative;
-  top: -5em; left: 85em;
-}
-
-.homepage-card__arrow-2 {
-  display: flex;
-  position: relative;
-  top: -5em; left: 85em;
+.homepage__card-arrow-link {
+  position: absolute;
+  bottom: 3em;
+  right: 3em;
 }
