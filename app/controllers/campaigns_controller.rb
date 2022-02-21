@@ -1,6 +1,7 @@
 class CampaignsController < ApplicationController
   before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_add_user, :campaign_remove_user]
   before_action :show_navbar_admin, only: %i[index campaigns_report]
+  before_action :show_navbar_campaign
 
   def index
     campaigns = policy_scope(Campaign).where(company: current_user.company)
