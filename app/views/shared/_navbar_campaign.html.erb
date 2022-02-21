@@ -1,149 +1,106 @@
 <div class="navbar navbar-expand-sm navbar-light navbar__blue">
-  <% if params[:action] == 'edit_mode' %>
-    <div class= "col-12 text-center title_edit_mode" >
-      <h2><%= @content.title %> Editor mode</h2>
-    </div>
-  <% else %>
-    <div class="top-left-nav">
-      <ul>
-        <% if user_signed_in? %>
-          <li>
-            <% if params[:controller] == 'campaigns' && params[:action] == 'index' %>
-              <%= link_to campaigns_path, class: 'left-buttons' do %>
-                <div class="left-menu-title" style='color: #3177B7;'><h4>Dashboard</h4></div>
-              <% end %>
-              <div class="isactive"></div>
-            <% else %>
-              <%= link_to campaigns_path, class: 'left-buttons' do %>
-                <div class="left-menu-title"><h4>Dashboard</h4></div>
-              <% end %>
-            <% end %>
-          </li>
-          <% if current_user.hr_or_above? %>
-            <li>
-              <% if params[:controller] == 'interview_forms' %>
-                <%= link_to interview_forms_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title " style='color: #3177B7;'><h4>Templates</h4></div>
-                <% end %>
-                <div class="isactive"></div>
-              <% else %>
-                <%= link_to interview_forms_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title"><h4>Templates</h4></div>
-                <% end %>
-              <% end %>
-            </li>
-            <li>
-              <% if params[:action] == 'organisation' %>
-                <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
-                  <div class="left-menu-title " style='color: #3177B7;'><h4>Employees</h4></div>
-                <% end %>
-                  <div class="isactive"></div>
-              <% else %>
-                <%= link_to organisation_path(redirected_from: 'campaigns'), class: 'left-buttons' do %>
-                  <div class="left-menu-title"><h4>Employees</h4></div>
-                <% end %>
-              <% end %>
-            </li>
-            <li>
-              <% if params[:action] == 'campaigns_report' %>
-                <%= link_to campaigns_report_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title " style='color: #3177B7;'><h4>Report</h4></div>
-                <% end %>
-                  <div class="isactive"></div>
-              <% else %>
-                <%= link_to campaigns_report_path, class: 'left-buttons' do %>
-                  <div class="left-menu-title"><h4>Report</h4></div>
-                <% end %>
-              <% end %>
-            </li>
-          <% end %>
-        <% end %>
-      </ul>
-      <% if current_user.manager_or_above? %>
-        <div class="centered-item">
-          <a class='btn-blue__white-border' data-toggle='modal' data-target='#newCampaign'><p>New Interview</p></a>
+  <div class="navbar-controls__left">
+    <% if user_signed_in? %>
+      <%= link_to my_interviews_path do %>
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_interviews %>
+          ">
+          <h4 title='My interviews'>My interviews</h4>
         </div>
       <% end %>
-    </div>
-    <div class="navbar-controls-right flex-row-between-centered">
- <!--      <div class="navbar__icons-menu">
-        <div class="dropdown show">
-          <a class="dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuApp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-th"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" id='dropdown-icon-menu' aria-labelledby="dropdownMenuApp">
-            <div>
-              <%= link_to dashboard_path, class: 'menu-icon menu-icon__booklet' do %>
-                <i class="fas fa-graduation-cap"></i>
-              <% end %>
-              <%= link_to campaigns_path, class: 'menu-icon menu-icon__campaign' do %>
-                <i class="far fa-handshake"></i>
-              <% end %>
+
+      <% if current_user.manager_or_above? %>
+        <%= link_to my_team_interviews_path do %>
+          <div class="navbar-buttons
+            <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_team_interviews %>
+            ">
+            <h4 title='My team interviews'>My team interviews</h4>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if current_user.hr_or_above? %>
+        <button class="left-buttons">
+          <%= link_to campaigns_path do %>
+          <div class="navbar-buttons
+            <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>
+            ">
+            <h4>Admin</h4>
+          </div>
+          <% end %>
+        </button>
+      <% end %>
+    <% end %>
+
+    <%
+      if current_user.manager_or_above? &&
+        ![:pages_organisation, :campaigns_campaigns_report].include?(@controller_action)
+    %>
+      <div class="centered-item">
+        <a class='btn-blue__white-border' data-toggle='modal' data-target='#newCampaign'><p>New Interview</p></a>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="navbar-controls-right flex-row-between-centered">
+    <div class="user-top-nav">
+      <div class="dropdown show">
+        <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+          <div class="dropdown-card">
+            <div class="user-info">
+              <p><%= current_user.fullname%></p>
+              <h6><%= current_user.email%></h6>
             </div>
           </div>
-        </div>
-      </div> -->
-
-      <%# TOGGLE EMPLOYEE ADMIN %>
-      <div class="toggle-admin">
-
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-
-          <% if current_user.hr? || current_user.manager? %>
-
-            <%= link_to user_path(current_user, params: { access_level: "#{current_user.access_level}-light", last_page: "#{params[:controller]}-#{params[:action]}" }), class: "btn btn-secondary btn-left", method: :patch do %>
-              <input type="radio" name="options" id="option1" autocomplete="off"> Employee
-            <% end %>
-            <label class="btn btn-secondary btn-right active">
-              <input type="radio" name="options" id="option2" autocomplete="off" checked> <%= current_user.access_level.split('-').first %>
-            </label>
-
-          <% elsif current_user.hr_light? || current_user.manager_light? %>
-
-            <label class="btn btn-secondary btn-left active">
-              <input type="radio" name="options" id="option1" autocomplete="off" checked> Employee
-            </label>
-            <%= link_to user_path(current_user, params: { access_level: "#{current_user.access_level.split('-').first}", last_page: "#{params[:controller]}-#{params[:action]}"}), class: "btn btn-secondary btn-right", method: :patch do %>
-              <input type="radio" name="options" id="option2" autocomplete="off"> <%= current_user.access_level.split('-').first %>
-            <% end %>
-
+          <%= link_to user_path(current_user) do %>
+            <div class="dropdown-card dropdown-item ">
+              <div class='dropdown-card-text'>
+                <h6>Profile</h6>
+              </div>
+            </div>
+          <% end %>
+          <%= link_to destroy_user_session_path, method: :delete do %>
+            <div class="dropdown-card dropdown-item flex-row-between-centered">
+              <div class='dropdown-card-text'>
+                <h6>Log out</h6>
+              </div>
+            </div>
           <% end %>
         </div>
       </div>
-
-
-      <div class="user-top-nav">
-        <div class="dropdown show">
-          <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-            <div class="dropdown-card">
-              <div class="user-info">
-                <p><%= current_user.fullname%></p>
-                <h6><%= current_user.email%></h6>
-              </div>
-            </div>
-            <%= link_to user_path(current_user) do %>
-              <div class="dropdown-card dropdown-item ">
-                <div class='dropdown-card-text'>
-                  <h6>Profile</h6>
-                </div>
-              </div>
-            <% end %>
-            <%= link_to destroy_user_session_path, method: :delete do %>
-              <div class="dropdown-card dropdown-item flex-row-between-centered">
-                <div class='dropdown-card-text'>
-                  <h6>Log out</h6>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
     </div>
-  <% end %>
+  </div>
 </div>
+
+<% if @show_navbar_admin.present? %>
+  <div class="navbar-admin">
+    <% klass = 'navbar-admin__button' %>
+    <% active_klass = "navbar-admin__button--active" %>
+
+    <%= link_to campaigns_path,
+      class: "#{klass} #{active_klass if @controller_action == :campaigns_index}" do %>
+      <h4>Campaigns</h4>
+    <% end %>
+
+    <%= link_to interview_forms_path,
+      class: "#{klass} #{active_klass if @controller_action == :interview_forms_index}" do %>
+      <h4>Templates</h4>
+    <% end %>
+
+    <%= link_to organisation_path,
+      class: "#{klass} #{active_klass if @controller_action == :pages_organisation}" do %>
+      <h4>Employees</h4>
+    <% end %>
+
+    <%= link_to campaigns_report_path,
+      class: "#{klass} #{active_klass if @controller_action == :campaigns_campaigns_report}" do %>
+      <h4>Report</h4>
+    <% end %>
+  </div>
+<% end %>
 
 <!------------>
 <!-- MODALS -->

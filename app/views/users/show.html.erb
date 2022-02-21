@@ -4,7 +4,7 @@
     <div class="container-show-user-right">
       <div class="user-top-background">
         <div class="user-buttons-top">
-          <%= link_to organisation_path, class: 'btn return-arrow' do %>
+          <%= link_to :back, class: 'btn return-arrow' do %>
             <i class="fas fa-arrow-left"></i>
           <% end %>
           <div id='show-buttons'>
@@ -192,9 +192,4 @@
       save_button.disabled = true
     }
   }
-
-  // window.onload = function navBarPadding() {
-  // navbar = document.querySelector('.top-left-nav')
-  // navbar.style.paddingBottom = '4px';
-  // };
 </script>

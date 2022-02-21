@@ -10,7 +10,23 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def index?
-    user.employee_or_above?
+    user.hr_or_above?
+  end
+
+  def my_interviews?
+    true
+  end
+
+  def my_interviews?
+    true
+  end
+
+  def my_team_interviews?
+    user.manager_or_above?
+  end
+
+  def my_team_interviews?
+    user.manager_or_above?
   end
 
   def campaigns_report?
@@ -49,6 +65,10 @@ class CampaignPolicy < ApplicationPolicy
     user.manager_or_above?
   end
 
+  def campaign_select_owner?
+    user.hr_or_above?
+  end
+
   def campaign_add_user?
     user.manager_or_above?
   end
@@ -56,6 +76,15 @@ class CampaignPolicy < ApplicationPolicy
   def campaign_remove_user?
     user.manager_or_above?
   end
+
+  def edit_rights?
+    user.hr_or_above? || user == record.owner
+  end
+
+  def campaign_edit_date?
+    user.hr_or_above? || user == record.owner
+  end
+
 
   def destroy?
     user.manager_or_above?

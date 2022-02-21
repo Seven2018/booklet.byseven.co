@@ -1,6 +1,6 @@
-document.querySelector('.user-index-headers').innerHTML = '<%= j render("pages/partials/organisation_headers", users: @users) %>';
-document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation_filter_dropright") %>';
-document.querySelector('.organisation-manage-users-dropright').innerHTML = '<%= j render("pages/organisation_manage_users_dropright", users: @users, tag_categories: @tag_categories) %>';
+document.querySelector('.user-index-headers').innerHTML = '<%= j render("pages/organisation/organisation_headers", users: @users) %>';
+document.querySelector('.organisation-filter-dropright').innerHTML = '<%= j render("pages/organisation/organisation_filter_dropright") %>';
+document.querySelector('.organisation-manage-users-dropright').innerHTML = '<%= j render("pages/organisation/organisation_manage_users_dropright", users: @users, tag_categories: @tag_categories) %>';
 $(document).ready(function () {
   $(".organisation-page").floatingScroll();
 });

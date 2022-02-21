@@ -31,6 +31,9 @@ class InterviewsController < ApplicationController
     @questions = @interview.interview_questions.order(position: :asc)
     authorize @interview
 
+    if @interview.crossed?
+      @interview.campaign.interviews.where(employee: @employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user == @manager
+    end
     flash[:alert] = "View mode only! New answers won't be saved!" unless
       InterviewPolicy.new(current_user, @interview).answer_question?
 
@@ -102,15 +105,15 @@ class InterviewsController < ApplicationController
     head :no_content
   end
 
-  def show_crossed_and_lock
-    interview = Interview.find(params[:id])
-    authorize interview
-    campaign = interview.campaign
-    employee = interview.employee
-    manager = campaign.owner
+  def lock_interview
+    interview_id = params[:interview_id]
 
-    interview.campaign.interviews.where(employee: employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user = manager
-    redirect_to interview_path(interview)
+    interview = Interview.find interview_id
+    authorize interview
+
+    interview.lock!
+
+    head :no_content
   end
 
   private

@@ -1,1 +1,2 @@
-document.querySelector('#template-card-<%= @card_id %>').remove()
+document.querySelector('[data-interview-form-id="<%= @template.id %>"]').remove()
+document.querySelector('body').classList.remove('wait');

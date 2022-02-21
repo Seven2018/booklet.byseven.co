@@ -7,6 +7,7 @@ class Interview < ApplicationRecord
   before_create :ensure_date_presence
   validates :title, :label, presence: true
   validate :single_campaign_interview_set_per_employee
+  validate :label_and_campaign_type_match
   validate :not_locked
 
   alias answers interview_answers
@@ -26,6 +27,13 @@ class Interview < ApplicationRecord
   delegate :interview_questions, to: :interview_form
 
   scope :completed, -> { where(completed: true) }
+
+  VALID_LABELS = {
+    'Employee' => 'crossed',
+    'Manager' => 'crossed',
+    'Crossed' => 'crossed',
+    'Simple' => 'simple'
+  }.freeze
 
   def fully_answered?
     interview_answers.count >=
@@ -91,6 +99,11 @@ class Interview < ApplicationRecord
       campaign.interviews.where(label: label, employee: employee)
                          .where.not(id: id)
                          .exists?
+  end
+
+  def label_and_campaign_type_match
+    errors.add(:base, 'mismatch interview label and campaign type') unless
+      VALID_LABELS[label] == campaign.campaign_type
   end
 
   def unlocking

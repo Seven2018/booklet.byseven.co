@@ -46,11 +46,11 @@ class InterviewPolicy < ApplicationPolicy
     end
   end
 
-  def update_interviews?
-    user.manager_or_above?
+  def lock_interview?
+    user == record.owner
   end
 
-  def show_crossed_and_lock?
+  def update_interviews?
     user.manager_or_above?
   end
 end

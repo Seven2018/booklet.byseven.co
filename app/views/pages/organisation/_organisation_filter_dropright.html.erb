@@ -1,0 +1,42 @@
+<div class="organisation__filter-controls">
+  <div class='organisation__filter-controls-title'>
+    <i class="fas fa-filter fa-2x"></i>
+    <h2>Filter options</h2>
+  </div>
+  <div class="organisation__filter-controls-buttons">
+    <div class="btn-icon" onclick='closeFilter();'>
+      <i class="fas fa-times"></i>
+    </div>
+  </div>
+</div>
+<%= simple_form_for :filter_user, url: organisation_path, method: :get, input_html: {multipart: true}, remote: true do |f| %>
+  <% @tag_categories.order(position: :asc).each do |tag_category| %>
+    <div class="organisation__filter-block">
+      <div class="organisation__filter-block-title">
+        <div>
+          <p><%= tag_category.name %></p>
+          <div class="organisation__filter-block-title-buttons">
+            <p onclick='clearFilter(this);'>Clear</p>
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="organisation__filter-block-checkboxes">
+        <% if tag_category.tags.empty? %>
+          <p>No tags associated, create some in 'Manage Tags'</p>
+        <% end %>
+        <%= f.input :tag, collection: Tag.where(tag_category_id: tag_category.id).order(tag_name: 'asc'), as: :check_boxes, legend_tag: false, label: false, value_method: lambda { |tag| "#{tag.tag_category_id}:#{tag.id}" }, label_method: lambda { |tag| "#{tag.tag_name}"}, input_html: {onclick: 'autoSubmit(this);'} %>
+        <%= f.hidden_field :on, value: true %>
+      </div>
+    </div>
+  <% end %>
+  <%= f.submit 'Filter', class: 'hidden hidden-submit' %>
+<% end %>
+<div class="centered-item" style='margin-top: 2rem;'>
+  <div class="btn-orange__white-border" onclick='resetFilter()'>
+    <i class="fas fa-times-circle"></i>
+    <p>Reset Filter</p>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  before_action :show_navbar_admin, only: :organisation
 
   def home
     @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, completed: false)
@@ -187,6 +188,20 @@ class PagesController < ApplicationController
 
   # Display organisation page
   def organisation
+    users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
+
+    @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
+
+    filter_users(users)
+
+    respond_to do |format|
+      format.html {organisation_path}
+      format.js
+      format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
+    end
+  end
+
+  def organisation_temp
     @users =
       if params.dig(:csv, :selected_users)
         if params[:selected_users].present?
@@ -240,13 +255,13 @@ class PagesController < ApplicationController
       format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
 
-    if params[:tag_postion].present?
+    if params[:tag_position].present?
       tag_cat_selected = TagCategory.find(params[:tag_category_id])
-      if params[:tag_postion] == 'left'
+      if params[:tag_position] == 'left'
         tag_cat_next_left = TagCategory.find_by(position: (tag_cat_selected.position - 1))
         tag_cat_selected.update(position: tag_cat_selected.position - 1)
         tag_cat_next_left.update(position: tag_cat_selected.position + 1)
-      elsif params[:tag_postion] == 'right'
+      elsif params[:tag_position] == 'right'
         tag_cat_next_right = TagCategory.find_by(position: (tag_cat_selected.position + 1))
         tag_cat_selected.update(position: tag_cat_selected.position + 1)
         tag_cat_next_right.update(position: tag_cat_selected.position - 1)
@@ -347,6 +362,31 @@ class PagesController < ApplicationController
 
   private
 
+  def filter_users(users)
+    search_name = params.dig(:search, :name)
+
+    # if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
+    #   selected_tags = params.dig(:search, :tags).present? ? params.dig(:search, :tags).split(',') : params.dig(:filter_tags, :tag).map{|x| x.split(':').last.to_i}
+    #   users = User.where(company_id: current_user.company_id).where_exists(:user_tags, tag_id: selected_tags)
+    #   @filtered_by_tags = 'true'
+    # end
+
+    if search_name.present?
+      users = users.search_users(search_name)
+      @filtered = true
+    else
+      @filtered_by_tags = 'false'
+      @filtered = false
+    end
+
+    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+    page_index = params[:page] if params[:page].present?
+    # raise
+    @total_users_count = users.count
+    @users = users.page(page_index)
+  end
+
+  # TEMP #
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
     if current_user.hr_or_above?
@@ -411,13 +451,13 @@ class PagesController < ApplicationController
           end
           if params[:filter_user][:tag].uniq == [""]
             # @users = []
-            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id).page params[:page]
+            @users = parameter.order(lastname: :asc).page params[:page]
             @unfiltered = 'true'
           else
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           end
         else
-          @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id).page params[:page]
+          @users = parameter.order(lastname: :asc).page params[:page]
           @unfiltered = 'true'
         end
 

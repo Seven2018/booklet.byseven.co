@@ -195,7 +195,7 @@
       ) if question.objective? %>
 
       <div class="booklet-select__container" >
-        <div class="booklet-select__selected" onclick='BookletSelectExpand(this);'>
+        <div class="booklet-select__selected" onclick="<%= 'BookletSelectExpand(this);' unless read_only %>">
           <p><%= current_answer.present? ? current_answer : '' %></p>
           <div class="booklet-select__controls">
             <% unless question.required? || current_answer == '' %>
@@ -219,7 +219,7 @@
 
       <%= f.hidden_field :answer,
                          disabled: read_only,
-                         input_html: { value: current_answer } %>
+                         value: current_answer %>
 
       <%# f.input :answer, collection: question.options.keys, label: 'Answer', required: question.required?, disabled: read_only, selected: current_answer, input_html: {onchange: 'autoSave(this);enableSubmit();'} %>
 
