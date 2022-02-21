@@ -1,140 +1,142 @@
-<% if @template.company_id == current_user.company_id %>
-  <% access = 'granted' if current_user.hr_or_above? %>
-  <div class="template-edit-title">
-    <i class="fas fa-file-alt"></i>
-    <h2><%= @template.title %> - <em>Editor mode</em></h2>
+<div class="centered-item p-2rem border-bottom-bkt-light-grey pos-rel" style='height: 9rem;'>
+  <%= link_to interview_forms_path, class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
+    <span class="iconify" data-icon="bi:arrow-left"></span>
+    <p>Back</p>
+  <% end %>
+  <h2>1 to 1 template</h2>
+  <div class="height-5rem flex-row-between-centered pos-abs" style='top: 2rem; right: 2rem;'>
+    <p class='bkt-green mr-2rem'>Up to date</p>
+    <%= link_to interview_form_path(@template), class: 'flex-row-between-centered rounded-10px p-2rem', style: 'background: rgba(49, 119, 183, 0.1);' do %>
+      <span class="iconify bkt-blue mr-1rem" data-icon="akar-icons:eye"></span>
+      <p class='bkt-blue'>See template preview</p>
+    <% end %>
+  </div>
+</div>
+
+<div id="template-show-container" class='flex-row-between-start bkt-bg-light-grey2 pos-rel'>
+  <div id="template-show-container-left" class='bkt-bg-white p-2rem'>
+    <%= render 'interview_forms/partials/show_summary', template: @template, page: 'edit' %>
   </div>
 
-  <div id="template-show-container">
-    <div id="template-show-container-left">
-      <%= render 'interview_forms/partials/show_summary', template: @template, page: 'edit' %>
-    </div>
+  <div id="template-show-container-right">
+    <div class="template-add">
+      <div class="template-center-div template-center-div__show">
+        <div class="template-show-attributes-center">
+          <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'edit' %>
+        </div>
+        <div class="template-show-lines template-show-lines__show">
+          <%= render 'interview_forms/edit/questions_index', template: @template, page: 'edit' %>
+        </div>
 
-    <div id="template-show-container-right">
-      <div class="template-add">
-        <div class="template-center-div template-center-div__show">
-          <div class="template-show-attributes-center">
-            <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'edit' %>
-          </div>
-          <div class="template-show-lines template-show-lines__show">
-            <%= render 'interview_forms/edit/questions_index', template: @template, page: 'edit' %>
-          </div>
-
-          <div class="template-show-lines-control-btn" onclick="lineMenu();">
-            <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
-            <div class='close-template-btn'><i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#3177B7'></i></div>
-            <div class="template-show-lines-controls" style='display:none;'>
-              <a class="template-show-lines-controls-block" onclick="addLine('separator');">
-                <i class="fas fa-list-ol"></i>
-                <p>Chapter</p>
-              </a>
-              <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
-                <i class="fas fa-question-circle"></i>
-                <p>Open Question</p>
-              </a>
-              <a class="template-show-lines-controls-block" onclick="addLine('rating');">
-                <i class="fas fa-star-half-alt"></i>
-                <p>Rating</p>
-              </a>
-              <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
-                <i class="far fa-check-square"></i>
-                <p>Multi-Select</p>
-              </a>
-              <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('objective');">
-                <i class="fas fa-bullseye"></i>
-                <p>Objective</p>
-              </a>
-            </div>
-          </div>
-
-          <div class="template-show-lines-control-btn--mobile" onclick="columnMenu();">
-            <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
-            <div class="template-show-lines-controls--mobile hidden">
-              <a class="template-show-lines-controls-block" onclick="addLine('separator');">
-                <i class="fas fa-list-ol"></i>
-                <p>Chapter</p>
-              </a>
-              <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
-                <i class="fas fa-question-circle"></i>
-                <p>Open Question</p>
-              </a>
-              <a class="template-show-lines-controls-block" onclick="addLine('rating');">
-                <i class="fas fa-star-half-alt"></i>
-                <p>Rating</p>
-              </a>
-              <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
-                <i class="far fa-check-square"></i>
-                <p>Multi-Select</p>
-              </a>
-              <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('objective');">
-                <i class="fas fa-bullseye"></i>
-                <p>Objective</p>
-              </a>
-            </div>
-          </div>
-
-          <div class="button-add-catalogue">
-            <%= link_to :back do %>
-              <div class="btn-blue-text">
-                <p>Back</p>
-              </div>
-            <% end %>
-            <%= link_to '', interview_forms_path, class: 'hidden-link hidden' %>
-            <div class="btn-blue" onclick='saveAndConfirm();'>
-              <p>Save Template</p>
-            </div>
+        <div class="template-show-lines-control-btn" onclick="lineMenu();">
+          <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
+          <div class='close-template-btn'><i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#3177B7'></i></div>
+          <div class="template-show-lines-controls" style='display:none;'>
+            <a class="template-show-lines-controls-block" onclick="addLine('separator');">
+              <i class="fas fa-list-ol"></i>
+              <p>Chapter</p>
+            </a>
+            <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
+              <i class="fas fa-question-circle"></i>
+              <p>Open Question</p>
+            </a>
+            <a class="template-show-lines-controls-block" onclick="addLine('rating');">
+              <i class="fas fa-star-half-alt"></i>
+              <p>Rating</p>
+            </a>
+            <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
+              <i class="far fa-check-square"></i>
+              <p>Multi-Select</p>
+            </a>
+            <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('objective');">
+              <i class="fas fa-bullseye"></i>
+              <p>Objective</p>
+            </a>
           </div>
         </div>
 
-        <div class="template-add-right">
-          <div class="template-show-attributes-right">
-            <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'edit' %>
+        <div class="template-show-lines-control-btn--mobile" onclick="columnMenu();">
+          <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
+          <div class="template-show-lines-controls--mobile hidden">
+            <a class="template-show-lines-controls-block" onclick="addLine('separator');">
+              <i class="fas fa-list-ol"></i>
+              <p>Chapter</p>
+            </a>
+            <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
+              <i class="fas fa-question-circle"></i>
+              <p>Open Question</p>
+            </a>
+            <a class="template-show-lines-controls-block" onclick="addLine('rating');">
+              <i class="fas fa-star-half-alt"></i>
+              <p>Rating</p>
+            </a>
+            <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
+              <i class="far fa-check-square"></i>
+              <p>Multi-Select</p>
+            </a>
+            <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('objective');">
+              <i class="fas fa-bullseye"></i>
+              <p>Objective</p>
+            </a>
           </div>
+        </div>
+
+        <div class="button-add-catalogue">
+          <%= link_to :back do %>
+            <div class="btn-blue-text">
+              <p>Back</p>
+            </div>
+          <% end %>
+          <%= link_to '', interview_forms_path, class: 'hidden-link hidden' %>
+          <div class="btn-blue" onclick='saveAndConfirm();'>
+            <p>Save Template</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="template-add-right">
+        <div class="template-show-attributes-right">
+          <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'edit' %>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class='line-templates hidden'>
+<div class='line-templates hidden'>
 
-    <div class="add-separator add-separator-template hidden active">
-      <%= render 'question_form_template', question_type: 'separator', template_id: @template.id %>
-    </div>
-
-    <div class="add-open_question add-open_question-template hidden active">
-      <%= render 'question_form_template', question_type: 'open_question', template_id: @template.id %>
-    </div>
-
-    <div class="add-rating add-rating-template hidden active">
-      <%= render 'question_form_template', question_type: 'rating', template_id: @template.id %>
-    </div>
-
-    <div class="add-mcq add-mcq-template hidden">
-      <%= render 'question_form_template', question_type: 'mcq', template_id: @template.id %>
-    </div>
-
-    <div class="add-objective add-objective-template hidden">
-      <%= render 'question_form_template', question_type: 'objective', template_id: @template.id %>
-    </div>
-
+  <div class="add-separator add-separator-template hidden active">
+    <%= render 'question_form_template', question_type: 'separator', template_id: @template.id %>
   </div>
 
-
-  <!------------>
-  <!-- MODALS -->
-  <!------------>
-
-  <div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">
-    <div class='modal-dialog' role='document' style='border-radius: 20px'>
-      <%= render 'interview_forms/modals/manage_tags', form: @template %>
-    </div>
+  <div class="add-open_question add-open_question-template hidden active">
+    <%= render 'question_form_template', question_type: 'open_question', template_id: @template.id %>
   </div>
 
-<% else %>
-  <div class="access-restricted centered-item">
-    <h1>Access restricted</h1>
+  <div class="add-rating add-rating-template hidden active">
+    <%= render 'question_form_template', question_type: 'rating', template_id: @template.id %>
   </div>
-<% end %>
+
+  <div class="add-mcq add-mcq-template hidden">
+    <%= render 'question_form_template', question_type: 'mcq', template_id: @template.id %>
+  </div>
+
+  <div class="add-objective add-objective-template hidden">
+    <%= render 'question_form_template', question_type: 'objective', template_id: @template.id %>
+  </div>
+
+</div>
+
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'interview_forms/modals/manage_tags', form: @template %>
+  </div>
+</div>
 
 
 <!---------------->

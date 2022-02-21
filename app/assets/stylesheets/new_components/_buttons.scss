@@ -1,3 +1,7 @@
+////////////
+// COLORS //
+////////////
+
 .bkt-btn-blue {
   color: $bkt-white;
   background-color: $bkt-blue;
@@ -57,3 +61,22 @@
 }
 
 
+
+//////////
+// MISC //
+//////////
+
+.bkt-btn-back {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  p, svg {
+    font-size: 1.8rem;
+    color: #939393;
+  }
+
+  svg {
+    margin-right: 1rem;
+  }
+}
