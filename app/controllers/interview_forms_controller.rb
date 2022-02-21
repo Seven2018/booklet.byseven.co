@@ -11,6 +11,10 @@ class InterviewFormsController < ApplicationController
     else
       @filtered = 'false'
     end
+
+    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+    @templates = @templates.page(page_index)
+
     respond_to do |format|
       format.html
       format.js

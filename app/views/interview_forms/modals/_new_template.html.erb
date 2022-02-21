@@ -7,11 +7,14 @@
   <div class="modal-body">
     <%= simple_form_for InterviewForm.new do |f| %>
       <%= f.input :title, input_html: {autocomplete: 'off'}, required: true %>
-      <%= f.input :description, input_html: {style: 'min-height: 150px;'} %>
+      <%#= f.input :description, input_html: {style: 'min-height: 150px;'} %>
       <div style=" display: flex; justify-content: center;margin-top:3rem;">
-        <button type="button" class="btn-blue-text" data-dismiss="modal" aria-label="Close">Cancel</button>
-        <%= button_tag type: 'submit', class: 'btn-blue', id: 'save_button' do %>
-          <p>SAVE</p>
+        <button type="button" class="bkt-btn-white" data-dismiss="modal" aria-label="Close">
+          Cancel
+        </button>
+        <div class="mx-2"></div>
+        <%= button_tag type: 'submit', class: 'bkt-btn-blue', id: 'save_button' do %>
+          SAVE
         <% end %>
       </div>
     <% end %>

@@ -1,7 +1,4 @@
-<div class="campaigns-index-container"
-  data-controller='remember-search'
-  data-remember-search-key-value='bookletCampaignsSearches'
->
+<div class="campaigns-index-container">
   <div class="campaigns-index">
     <div class="campaigns-index__controls">
       <div class="campaigns-index__title-tags">
@@ -18,7 +15,12 @@
     <div class="campaigns-index__main">
       <div class="campaigns-index__searchbar">
         <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
-        <%= simple_form_for :search, url: campaigns_path, method: :get, remote: true do |f| %>
+        <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true,
+          data: {
+            controller:'remember-search',
+            remember_search_key_value: 'bookletCampaignsSearches',
+          }
+          )do |f| %>
           <%=
             f.input(
               :title,
