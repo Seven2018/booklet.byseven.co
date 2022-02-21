@@ -1,6 +1,11 @@
 class PagesController < ApplicationController
   before_action :show_navbar_admin, only: :organisation
 
+  def home
+    @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, completed: false)
+    @my_team_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id, owner_id: current_user.id}, label: ['Manager', 'Crossed', 'Simple'], completed: false)
+  end
+
   # Access dashboard (root)
   def dashboard
     complete_profile_path
@@ -73,10 +78,6 @@ class PagesController < ApplicationController
       format.html {dashboard_path}
       format.js
     end
-  end
-
-  def dashboard_campaign
-
   end
 
   # Display monthly calendar (pages/dashboard)

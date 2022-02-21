@@ -19,42 +19,6 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    if params[:view] == 'Manager'
-      campaigns = policy_scope(Campaign)
-                    .where(company_id: current_user.company_id, owner_id: current_user.id)
-                    .order(created_at: :desc)
-    else
-      campaigns = policy_scope(Campaign).joins(:interviews)
-                    .where(company_id: current_user.company_id, interviews: {employee_id: current_user.id}).distinct
-                    .order(created_at: :desc)
-    end
-
-    authorize campaigns
-
-    @tag_categories = TagCategory.where(company_id: current_user.company_id)
-
-    filter_campaigns(campaigns)
-  end
-
-  def my_team_interviews
-    if params[:view] == 'Manager'
-      campaigns = policy_scope(Campaign)
-                    .where(company_id: current_user.company_id, owner_id: current_user.id)
-                    .order(created_at: :desc)
-    else
-      campaigns = policy_scope(Campaign).joins(:interviews)
-                    .where(company_id: current_user.company_id, interviews: {employee_id: current_user.id}).distinct
-                    .order(created_at: :desc)
-    end
-
-    authorize campaigns
-
-    @tag_categories = TagCategory.where(company_id: current_user.company_id)
-
-    filter_campaigns(campaigns)
-  end
-
-  def my_interviews
     @campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
     @manager_campaigns = Campaign.where(owner_id: current_user.id)
     authorize @campaigns
@@ -366,7 +330,7 @@ class CampaignsController < ApplicationController
 
     @campaigns = @campaigns.page(page_index)
   end
-  
+
   def find_or_create(user_id, label, form, date, creator)
     new_interview = Interview.find_or_initialize_by(title: form.title,
                                   interview_form_id: form.id,
