@@ -1,5 +1,10 @@
 class PagesController < ApplicationController
 
+  def home
+    @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, completed: false)
+    @my_team_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id, owner_id: current_user.id}, label: ['Manager', 'Crossed', 'Simple'], completed: false)
+  end
+
   # Access dashboard (root)
   def dashboard
     complete_profile_path
@@ -73,16 +78,6 @@ class PagesController < ApplicationController
       format.js
     end
   end
-
-  def dashboard_campaign
-
-  end
-
-  def home
-  @my_interviews = Interview.where(employee_id: current_user.id, completed: false)
-  @my_team_interviews = Interview.joins(:campaign).where(campaigns: {owner_id: current_user.id}, label: ['Manager', 'Crossed', 'Simple'], completed: false)
-  end
-
 
   # Display monthly calendar (pages/dashboard)
   def calendar_month

@@ -91,9 +91,7 @@ Rails.application.routes.draw do
   get 'mods/:id/move_down', to: 'mods#move_down', as: 'move_down_mod'
 
   # PAGES
-  # root to: redirect('/dashboard')
-  # Temporary root
-  # root to: redirect('/campaigns')
+  get :home, controller: :pages
   get :dashboard, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
