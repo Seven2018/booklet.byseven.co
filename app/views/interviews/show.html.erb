@@ -35,11 +35,13 @@
           <p>Save</p>
         </button>
       <% end %>
-      <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
-        <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
-        <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-      </button>
-      <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
+      <% unless @interview.locked? %>
+        <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+          <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
+          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+        </button>
+        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
+      <% end %>
     </div>
   </div>
 
@@ -107,7 +109,7 @@
               <div class="interview-main__right-question-description">
                 <%= sanitize question.description %>
               </div>
-              <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, manager: manager, employee: employee, j: question_number, read_only: ((@interview.label == 'Employee' && employee != current_user) || (@interview.label == 'Manager' && manager != current_user) || (@interview.label == 'Simple' && manager != current_user)) %>
+              <%= render 'interview_questions/show_interview_question_form', questions: @questions, question: question, manager: manager, employee: employee, j: question_number, read_only: ((@interview.label == 'Employee' && employee != current_user) || (@interview.label == 'Manager' && manager != current_user) || (@interview.label == 'Simple' && manager != current_user) || @interview.locked?) %>
             </div>
           <% end %>
         </div>
@@ -183,21 +185,25 @@
     })
   }
 
-  function saveButton() {
+  function saveButton(message = true) {
     document.querySelector('body').classList.add('wait')
-    if (<%= @interview.crossed? %>) {
+    if (<%= @interview.crossed? && !@interview.completed? %>) {
       document.querySelectorAll('form.interview_answer').forEach((form) => {
         setTimeout(function(){form.querySelector('.hidden-submit').click();}, 1000);
 
       })
     }
-    setTimeout(function(){
-      document.querySelector('body').classList.remove('wait')
-      document.querySelector('.saved-message').classList.remove('hidden')
+    if (message) {
       setTimeout(function(){
-        document.querySelector('.saved-message').classList.add('hidden')
-      }, 1500)
-     }, 1500)
+        document.querySelector('body').classList.remove('wait')
+        document.querySelector('.saved-message').classList.remove('hidden')
+        setTimeout(function(){
+          document.querySelector('.saved-message').classList.add('hidden')
+        }, 1500)
+       }, 1500)
+    } else {
+      document.querySelector('body').classList.remove('wait')
+    }
   }
 
   function thankYou(option = 'forward') {
@@ -276,4 +282,10 @@
     submit_button.click()
   }
 
+
+  /////////////
+  // ON LOAD //
+  /////////////
+
+  saveButton(false)
 </script>
