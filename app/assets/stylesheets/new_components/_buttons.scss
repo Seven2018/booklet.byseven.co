@@ -26,7 +26,7 @@
   }
 
   &:active {
-    box-shadow: 0 3px #666;
+    box-shadow: 0 1px #666;
     transform: scale(0.98);
   }
 
@@ -35,7 +35,7 @@
 
 
 .bkt-btn-blue-focus {
-  background-color: $bkt-white;
+  background-color: $bkt-blue;
   padding: 12px;
   line-height: 2rem;
   border-radius: 5px;
@@ -43,29 +43,32 @@
   cursor: pointer;
   display: flex;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  color: $bkt-blue;
-  border: 1px solid $bkt-blue;
+  color: $bkt-white;
   font-size: 1.6rem;
   font-weight: 600;
 
   svg {
     font-size: 1.8rem;
     margin-right: 0.7rem;
+    margin-top: 3px;
+    color: $bkt-white;
   }
 
   &:hover {
-    color: $bkt-white;
-    background-color: $bkt-blue;
+    background-color: $bkt-blue-hover;
+  }
 
+  &:active{
+    box-shadow: 0 1px #666;
+    transform: scale(0.98);
+    border: 1px solid $bkt-blue;
+    background-color: $bkt-white;
+    color: $bkt-blue;
     svg {
-      color: $bkt-white
+      color: $bkt-blue;
     }
   }
 
-  &:active {
-    box-shadow: 0 3px #666;
-    transform: scale(0.98);
-  }
 }
 
 .bkt-btn-blue-disabled {
@@ -85,6 +88,7 @@
 
   svg {
     font-size: 1.8rem;
+    margin-bottom: 2px;
   }
 
   &:hover {
@@ -114,7 +118,7 @@
   }
 
   &:active {
-    box-shadow: 0 3px #666;
+    box-shadow: 0 1px #666;
     transform: scale(0.98);
   }
 
@@ -139,6 +143,7 @@
 
   svg {
     font-size: 1.8rem;
+    margin-bottom: 2px;
   }
 
   &:hover {
@@ -146,7 +151,7 @@
   }
 
   &:active {
-    box-shadow: 0 3px #666;
+    box-shadow: 0 1px #666;
     background-color: $bkt-light-grey;
     transform: scale(0.98);
   }
@@ -163,23 +168,25 @@
   display: inline-block;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   color: $bkt-blue;
-  border: 1px solid $bkt-blue;
   font-size: 1.6rem;
   font-weight: 600;
 
   svg {
     font-size: 1.8rem;
+    margin-bottom: 2px;
   }
 
   &:hover {
     color: $bkt-blue;
     background-color: $bkt-dark-white;
+
   }
 
   &:active {
-    box-shadow: 0 3px #666;
-    background-color: $bkt-light-grey;
+    box-shadow: 0 1px #666;
+    background-color: $bkt-white;
     transform: scale(0.98);
+    border: 1px solid $bkt-blue;
   }
 }
 
@@ -200,6 +207,7 @@
 
   svg {
     font-size: 1.8rem;
+    margin-bottom: 2px;
   }
 
   &:hover {
@@ -226,7 +234,7 @@
   }
 
   &:active {
-    box-shadow: 0 3px #666;
+    box-shadow: 0 1px #666;
     background-color: $bkt-light-grey;
     transform: scale(0.98);
   }
