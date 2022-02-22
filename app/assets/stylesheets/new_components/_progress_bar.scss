@@ -1,0 +1,48 @@
+.bkt-progress {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  @include from-medium {
+    flex-direction: column;
+  }
+}
+
+.bkt-progress-thread {
+  position: absolute;
+  border: 2px solid $bkt-light-grey6;
+  width: 100%;
+  top: calc(50% - 1px);
+  @include from-medium {
+    top: unset;
+    width: unset;
+    height: 100%;
+    left: calc(50% - 1px);
+  }
+}
+
+.bkt-progress-pearl-empty {
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  background-color: $bkt-light-grey6;
+  border-radius: 50%;
+  border: 2px solid $bkt-light-grey6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bkt-progress-pearl-full {
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  background-color: $bkt-white;
+  border-radius: 50%;
+  border: 2px solid $bkt-blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
