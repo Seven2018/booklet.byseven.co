@@ -55,6 +55,7 @@ gem 'acts_as_list'
 gem 'activeadmin'
 gem 'postmark-rails'
 gem 'draper'
+gem 'view_component'
 
 group :development do
   # gem 'better_errors'
