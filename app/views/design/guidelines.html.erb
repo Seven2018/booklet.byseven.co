@@ -1,7 +1,36 @@
 
 <h1 class="my-5">Guidelines</h1>
 
+
+<h2 class="my-5">Colors</h2>
+
+<div class="d-flex">
+  <% %w[
+    bkt-bg-blue
+    bkt-bg-blue-hover
+    bkt-bg-white
+    bkt-bg-light-grey
+    bkt-bg-light-grey2
+    bkt-bg-light-grey3
+    bkt-bg-light-grey4
+    bkt-bg-light-grey5
+    bkt-bg-dark-grey
+    bkt-bg-green
+    bkt-bg-orange
+    bkt-bg-red
+   ].each do |color_bg_class| %>
+   <div class="d-flex flex-column align-items-center m-2">
+    <%= color_bg_class.gsub('-bg', '') %>
+    <div style='height: 20px; width: 100px; border-radius: 10px;'
+      class='my-1 <%= color_bg_class %>'
+    ></div>
+    </div>
+  <% end %>
+</div>
+
+
 <h2 class="my-5">Borders</h2>
+
 
 <div class="d-flex m-5" style='gap: 5px;'>
   <% %w[
