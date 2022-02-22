@@ -76,20 +76,6 @@ class PagesController < ApplicationController
     end
   end
 
-  def dashboard_campaign
-
-  end
-
-  # Display monthly calendar (pages/dashboard)
-  def calendar_month
-    @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
-  end
-
-  # Display weekly calendar (pages/dashboard)
-  def calendar_week
-    @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
-  end
-
   # Display the company Overview (pages/overview)
   def overview
     @start_date = Date.today.beginning_of_year
