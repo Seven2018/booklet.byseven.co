@@ -255,7 +255,7 @@
 }
 
 .campaigns-my-interviews__card, .campaigns-my-team-interviews__card {
-  display: inline-flex;
+  display: none;
   flex-direction: row;
   justify-content: flex-start;
   text-align: initial;
@@ -267,6 +267,10 @@
   background-color: white;
   border-radius: 3rem;
   box-shadow: 0px 2px 26px 0px #0000000D;
+
+  @include from-medium {
+    display: inline-flex;
+  }
 
   .btn-blue-my-interviews {
     display: flex;
@@ -313,6 +317,191 @@
     }
   }
 }
+
+////////////////////
+///////MOBILE//////
+///////////////////
+
+.campaigns-my-interviews__card--mobile {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: initial;
+  width: 100%;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 2px 26px 0px #0000000D;
+
+  @include from-medium {
+    display: none;
+  }
+
+  .campaigns-my-interviews__card-status {
+
+    height: 3rem;
+    width: fit-content;
+    padding: 0.7rem 2rem;
+    border-radius: 2rem;
+    text-align: center;
+    color: white;
+    background-color: #FFC85C;
+    white-space: nowrap;
+    margin-bottom: 2rem;
+    margin-left: 0;
+
+  }
+
+  .campaigns-my-interviews__card-left {
+    width: 100%;
+
+    .campaigns-my-interviews__card-header {
+      margin-bottom: 2rem;
+      .campaigns-my-interviews__card-header-left {
+        display: flex;
+        // flex-direction: column;
+        align-items: flex-start;
+
+        .campaigns-my-interviews__card-icon {
+          height: 3rem;
+          width: 3rem;
+
+          svg {
+            font-size: 2rem;
+          }
+        }
+
+        .campaigns-my-interviews__card-title-deadline {
+
+          h2 {
+            font-size: 1.6rem;
+          }
+
+          p {
+            font-size: 1.4rem;
+          }
+        }
+      }
+    }
+
+    .campaigns-my-interviews__card-group {
+
+      display: flex;
+      flex-direction: column;
+      margin-top: 2rem;
+
+      .campaigns-my-interviews__card-manager {
+        margin: 0;
+
+        .campaigns-my-interviews__card-name-status {
+
+          h6 {
+            font-size: 1.5rem;
+          }
+
+          em {
+            font-size: 1.2rem;
+          }
+
+          p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+          }
+        }
+      }
+
+      .campaigns-my-interviews__card-employee {
+        margin: 0;
+
+        .campaigns-my-interviews__card-name-status {
+
+          h6 {
+            font-size: 1.5rem;
+          }
+
+          em {
+            font-size: 1.2rem;
+          }
+
+          p {
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+  }
+
+  .campaigns-my-interviews__card-part-right {
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    background-color: #3177B7;
+    padding: 1rem;
+    border-radius: 2rem;
+
+    .campaigns-my-interviews__card-review-link {
+
+      p {
+        color: white;
+      }
+    }
+  }
+
+  .btn-blue-my-interviews {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    padding: 1rem;
+    border-radius: 3px;
+    background-color: #3177B7;
+
+    p {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 17px;
+      color: white;
+    }
+  }
+
+  .btn-grey-my-interviews {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    padding: 1rem;
+    border-radius: 3px;
+    background-color: #C4C4C4;
+    cursor: default;
+
+    p {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 17px;
+      color: white;
+    }
+  }
+
+  .btn-blue-my-interviews-disabled {
+    opacity: .5;
+    cursor: default;
+
+    svg {
+      color: white;
+      margin-left: 1rem;
+    }
+  }
+}
+
+///////////////////
+/////END MOBILE////
+///////////////////
+
+
+
 
 .campaigns-my-interviews__card-left {
   width: 70%;

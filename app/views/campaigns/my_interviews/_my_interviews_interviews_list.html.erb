@@ -81,3 +81,89 @@
   </div>
 
 <% end %>
+
+
+<%#:::::: VERSION MOBILE ::::::%>
+
+
+<% campaigns.each do |campaign| %>
+
+  <% manager = campaign.owner %>
+  <% manager_interview = campaign.crossed? ? campaign.interviews.find_by(employee_id: current_user.id, label: 'Manager') : campaign.interviews.find_by(employee_id: current_user.id, label: 'Simple') %>
+  <% employee_interview = campaign.interviews.find_by(employee: current_user.id, label: ['Simple','Employee']) %>
+  <% status = if manager_interview.locked?
+          'locked'
+        elsif campaign.completion_for(current_user) == 0
+          'not_started'
+        elsif campaign.completion_for(current_user) == 100
+          'completed'
+        else
+          'in_progress'
+        end %>
+  <% campaign_type = {
+      'crossed' => 'uil:exchange',
+      'simple' => 'mdi:star-shooting' } %>
+
+  <div class="campaigns-my-interviews__card--mobile">
+    <p class="campaigns-my-interviews__card-status <%= status %>"><%= status.capitalize.gsub(/_/, " ") %></p>
+    <div class="campaigns-my-interviews__card-left">
+      <div class="campaigns-my-interviews__card-header">
+        <div class="campaigns-my-interviews__card-header-left">
+          <div class="campaigns-my-interviews__card-icon">
+            <span class="iconify" data-icon="<%= campaign_type[campaign.campaign_type] %>"></span>
+          </div>
+
+          <div class="campaigns-my-interviews__card-title-deadline">
+            <h2><%= campaign.title %></h2>
+            <p><em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="campaigns-my-interviews__card-group">
+
+        <div class="campaigns-my-interviews__card-manager">
+          <div class="campaigns-my-interviews__card-avatar">
+            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          </div>
+          <div class="campaigns-my-interviews__card-name-status">
+            <h6><%= manager.fullname %><em style="color:darkgray">- Manager</em></h6>
+              <% if manager_interview.completed? %>
+                <p style="color:#7BC079">Review completed</p>
+              <% else %>
+                <p style="color:#EC6D6D">Review not completed</p>
+              <% end %>
+          </div>
+        </div>
+
+       <% if campaign.crossed? %>
+          <div class="campaigns-my-interviews__card-employee">
+            <div class="campaigns-my-interviews__card-avatar">
+              <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            </div>
+            <div class="campaigns-my-interviews__card-name-status">
+                <h6><%= "#{@current_user.fullname}" %><em style="color:darkgray">- Employee</em></h6>
+              <% if employee_interview.completed? %>
+                <p style="color:#7BC079">Review completed</p>
+              <% else %>
+                <p style="color:#EC6D6D">Review not completed</p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+
+    </div>
+
+    <div class="campaigns-my-interviews__card-part-right">
+      <div class="campaigns-my-interviews__card-review-link">
+        <%= link_to interview_path(employee_interview) do %>
+          <p>Go to my review <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+
+<% end %>
