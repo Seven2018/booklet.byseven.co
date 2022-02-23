@@ -36,6 +36,14 @@ Rails.application.routes.draw do
   get :campaign_remove_user, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
 
+  namespace :campaign_draft do
+    resource :settings, only: %i[edit update]
+    resource :participants, only: %i[edit update]
+    resource :templates, only: %i[edit update]
+    resource :dates, only: %i[edit update]
+    resource :launches, only: %i[edit update]
+  end
+
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
   get :categories_search, controller: :categories

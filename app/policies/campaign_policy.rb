@@ -85,7 +85,6 @@ class CampaignPolicy < ApplicationPolicy
     user.hr_or_above? || user == record.owner
   end
 
-
   def destroy?
     user.manager_or_above?
   end

@@ -12,6 +12,10 @@ flatpickr(".datepicker", {
   dateFormat: "d/m/Y",
 })
 
+flatpickr(".datepicker_", {
+  disableMobile: true
+})
+
 flatpickr(".datepicker-inline", {
   disableMobile: true,
   dateFormat: "d/m/Y",
