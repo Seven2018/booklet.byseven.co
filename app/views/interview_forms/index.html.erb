@@ -1,4 +1,3 @@
-<%# container %>
 <div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'>
   <div class='bkt-page-container-content'>
     <div id='controls'
@@ -72,7 +71,7 @@
 
       <% headers = ["Template title", "Type", "Questions", "Last Update"] %>
       <% width = (1/headers.count.to_f)*100 %>
-      <div class="d-flex justify-content-between align-items-centerpx-0 pt-2rem pb-2rem">
+      <div class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem">
         <% headers.each do |header| %>
           <div class='fs-1_6rem font-weight-bold' style='flex-basis: <%= width %>%;'><%= header %></div>
         <% end %>

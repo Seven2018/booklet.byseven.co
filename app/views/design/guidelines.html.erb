@@ -1,7 +1,37 @@
 
 <h1 class="my-5">Guidelines</h1>
 
+
+<h2 class="my-5">Colors</h2>
+
+<div class="d-flex">
+  <% %w[
+    bkt-bg-blue
+    bkt-bg-blue-hover
+    bkt-bg-white
+    bkt-bg-light-grey
+    bkt-bg-light-grey2
+    bkt-bg-light-grey3
+    bkt-bg-light-grey4
+    bkt-bg-light-grey5
+    bkt-bg-light-grey6
+    bkt-bg-dark-grey
+    bkt-bg-green
+    bkt-bg-orange
+    bkt-bg-red
+   ].each do |color_bg_class| %>
+   <div class="d-flex flex-column align-items-center m-2">
+    <%= color_bg_class.gsub('-bg', '') %>
+    <div style='height: 20px; width: 100px; border-radius: 10px;'
+      class='my-1 <%= color_bg_class %>'
+    ></div>
+    </div>
+  <% end %>
+</div>
+
+
 <h2 class="my-5">Borders</h2>
+
 
 <div class="d-flex m-5" style='gap: 5px;'>
   <% %w[
@@ -24,9 +54,6 @@
     <div style="width: 50px; height: 50px;" class='<%= klass %>'><%= klass %></div>
   <% end %>
 </div>
-
-
-
 
 
 <h2 class="my-5">Fonts</h2>
@@ -167,9 +194,10 @@
 
 <h2 class="my-5">Form</h2>
 
+<h3 class="my-2">form with bootstrap</h3>
+
 <div
-  class='d-flex justify-content-start align-items-center position-relative'
-  style='margin-bottom: 4rem'
+  class='d-flex justify-content-start align-items-center position-relative p-2'
 >
   <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
     style='left: 25rem; bottom: 16.6px;'
@@ -222,9 +250,96 @@
 </div>
 
 
+<h3 class="my-2">form without bootstrap</h3>
+
+<h4 class="my-2">text inputs</h4>
+
+<div class="p-2">
+  <%= text_field_tag :title, nil, placeholder: 'Enter title', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3' %>
+</div>
+
+<div class="p-2">
+  <%= text_field_tag :title, 'some value', placeholder: 'Enter title', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3' %>
+</div>
+
+<h4 class="my-2">radio buttons tiles</h4>
+
+<div class="p-2 d-flex gap-1rem" style="width: 500px;">
+
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_type,
+    name: :feedback_365,
+    checked: true,
+    icon_klasses: "fas fa-check",
+    title: "Manual",
+    subtitle: "Chose Manual to select participants from your employee list"
+  ) %>
+
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_type,
+    name: :feedback_90,
+    checked: false,
+    icon_klasses: "fas fa-rocket",
+    title: "Compact",
+    subtitle: "Less stuff"
+  ) %>
+</div>
+
+<div class="p-2 d-flex gap-1rem" style="width: 500px;">
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_kind,
+    name: :feedback_90,
+    checked: true,
+    icon_klasses: "fas fa-rocket",
+    title: "Compact",
+    subtitle: "Less stuff",
+    compact: true
+  ) %>
+
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_kind,
+    name: :one_to_one,
+    checked: false,
+    icon_klasses: "fas fa-plus",
+    title: "Auto",
+    subtitle: "Chose Auto to add participants by their arrival date in the company",
+    compact: true
+  ) %>
+
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_kind,
+    name: :feedback_180,
+    checked: false,
+    icon_klasses: "fas fa-arrow-right",
+    title: "Disabled",
+    subtitle: "You can not click this one",
+    compact: true,
+    disabled: true
+  ) %>
+
+</div>
+
+
+
+<h2 class="my-5">Progress bar</h2>
+
+<div style="width: 500px; height: 500px;">
+  <div class="bkt-progress">
+    <div class="bkt-progress-thread"></div>
+    <div class="bkt-progress-pearl full" data-title='Settings'>
+      <i class="fas fa-check"></i>
+    </div>
+    <div class="bkt-progress-pearl current" data-title='Participants'></div>
+    <div class="bkt-progress-pearl empty" data-title='Templates'></div>
+    <div class="bkt-progress-pearl empty" data-title='Dates'></div>
+    <div class="bkt-progress-pearl empty" data-title='Review & Launch'>
+      <i class="fas fa-rocket"></i>
+    </div>
+  </div>
+</div>
+
 
 <h2 class="my-5">Backgrounds</h2>
-
 
 
 <div
