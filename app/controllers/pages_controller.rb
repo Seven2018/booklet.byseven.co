@@ -2,6 +2,11 @@ class PagesController < ApplicationController
   before_action :show_navbar_admin, only: :organisation
   before_action :show_navbar_campaign
 
+  def home
+    @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, completed: false)
+    @my_team_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id, owner_id: current_user.id}, label: ['Manager', 'Crossed', 'Simple'], completed: false)
+  end
+
   # Access dashboard (root)
   def dashboard
     complete_profile_path
