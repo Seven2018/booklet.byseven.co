@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :campaigns, through: :interviews
   has_many :interviews, foreign_key: 'employee_id'
   has_many :interview_answers
+  has_many :campaign_drafts
   belongs_to :manager, class_name: "User", optional: true
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
 
@@ -37,6 +38,10 @@ class User < ApplicationRecord
       tsearch: { prefix: true }
     },
     ignoring: :accents
+
+  def campaign_draft
+    campaign_drafts.processing.last || CampaignDraft.create(user: self)
+  end
 
   def fullname
     "#{lastname.upcase} #{firstname.titleize}"
