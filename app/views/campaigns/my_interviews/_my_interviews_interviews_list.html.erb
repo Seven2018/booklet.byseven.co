@@ -85,7 +85,6 @@
 
 <%#:::::: VERSION MOBILE ::::::%>
 
-
 <% campaigns.each do |campaign| %>
 
   <% manager = campaign.owner %>
@@ -163,7 +162,11 @@
         <% end %>
       </div>
     </div>
-
+    <a href="<% link_to interview_path(employee_interview) %>"></a>
+    <script>$(".campaigns-my-interviews__card--mobile").click(function() {
+    window.location = $(this).find("a").attr("href");
+      return false;
+    });</script>
   </div>
 
 <% end %>
