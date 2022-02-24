@@ -1,5 +1,7 @@
 class CsvExport < ApplicationRecord
   belongs_to :company
+  belongs_to :tag_category
+  belongs_to :creator, class_name: "User", optional: true
 
   enum state: {
     enqueued: 0,
@@ -15,7 +17,7 @@ class CsvExport < ApplicationRecord
 
   before_save :set_signature
   validate :no_duplicate_processing?
-  validates :category, :start_time, :end_time, presence: true
+  validates :start_time, :end_time, presence: true
 
   scope :processing, -> { where('state IN (?)', [ states[:enqueued], states[:started] ]) }
 
@@ -70,7 +72,7 @@ class CsvExport < ApplicationRecord
   def signature
     [
       company_id,
-      category,
+      tag_category_id,
       start_time,
       end_time,
       self.class.modes[mode]

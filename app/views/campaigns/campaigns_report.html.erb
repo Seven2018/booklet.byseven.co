@@ -3,6 +3,7 @@
   <div>
     <%= simple_form_for CsvExport.new, url: companies_csv_exports_path do |f| %>
       <%= f.hidden_field :company_id, value: @company.id %>
+      <%= f.hidden_field :creator_id, value: current_user.id %>
 
       <%= f.input :mode,
         collection: CsvExport::modes.keys,
@@ -13,7 +14,7 @@
         }
       %>
 
-      <%= f.input :category,
+      <%= f.input :tag_category_id,
         collection: @company.tag_categories.order(position: :asc),
         as: :radio_buttons,
         input_html: {

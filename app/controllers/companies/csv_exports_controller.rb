@@ -34,6 +34,6 @@ class Companies::CsvExportsController < ApplicationController
 
   def csv_export_params
     params.require(:csv_export)
-          .permit(:category, :mode, :start_time, :end_time, :company_id)
+          .permit(:tag_category_id, :mode, :start_time, :end_time, :company_id, :creator_id)
   end
 end
