@@ -11,22 +11,31 @@ module Companies
 
       def call
         @csv_export.started!
-        5.times do
-          puts "sleeping"
-          sleep 1
-        end
         @csv_export.update data: data
         # return @csv_export.failed! if condition (if applicable)
         @csv_export.done!
       end
 
       def data
-        # TODO generate csv
-        [
-          ['Header1', 'Header2', 'Header3'],
-          ['Row1-1', 'Row1-2', 'Row1-3'],
-          ['Row2-1', 'Row2-2', 'Row2-3']
-        ]
+        return campaigns.to_csv_analytics(company.id, @csv_export.tag_category.id) if @csv_export.classic_mode?
+
+        return campaigns.to_csv_data(company.id) if @csv_export.data_mode?
+
+        raise StandardError, 'Unknown CsvExport mode'
+      end
+
+      def company
+        @company ||= @csv_export.creator.company
+      end
+
+      def campaigns
+        @campaigns ||=
+          company.campaigns.where_exists(
+            :interviews,
+            'date >= ? AND date <= ?',
+            @csv_export.start_time,
+            @csv_export.end_time
+          )
       end
     end
   end

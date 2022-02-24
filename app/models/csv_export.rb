@@ -38,13 +38,13 @@ class CsvExport < ApplicationRecord
   end
 
   def to_csv
-    CSV.generate { |csv| data.each { |row| csv << row } }
+    CSV.generate { |csv| data.split("\n").each { |row| csv << row.split(',') } }
   end
 
   def to_xlsx
     p = Axlsx::Package.new
     p.workbook.add_worksheet(name: sheetname) do |sheet|
-      data.each { |csv_row| sheet.add_row csv_row }
+      data.split("\n").each { |csv_row| sheet.add_row csv_row.split(',') }
     end
     temp_file = Tempfile.new([filename, '.xlsx'], Rails.root.join('tmp'), encoding: 'utf-8')
     p.serialize temp_file.path
