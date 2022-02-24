@@ -26,7 +26,7 @@
 <div class="fs-1_4rem my-2 bkt-dark-grey">
   Manager of the campaign :
   <span class="font-weight-600">
-    <%= campaign.default_interviewer.fullname %>
+    <%= campaign.default_interviewer&.fullname.presence || campaign.default_interviewer&.email %>
   </span>
 </div>
 

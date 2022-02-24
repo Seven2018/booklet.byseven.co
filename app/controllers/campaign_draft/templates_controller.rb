@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CampaignDraft::TemplatesController < CampaignDraft::BaseController
   def update
     campaign_draft.update campaign_draft_params

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CampaignDraft < ApplicationRecord
   belongs_to :user
 
@@ -28,12 +30,16 @@ class CampaignDraft < ApplicationRecord
                  interviewer_selection_method: :string,
                  templates_selection_method: :string,
                  date: :datetime,
+                 starts_at: [:string, default: '09:00'],
+                 ends_at: [:string, default: '10:00'],
                  default_interviewer_id: :integer,
                  default_template_id: :integer,
                  interviewee_ids: [:string, array: true, default: []],
                  interview_sets: [:string, array: true, default: []]
 
   def default_interviewer
+    return unless default_interviewer_id
+
     User.find  default_interviewer_id
   end
 end

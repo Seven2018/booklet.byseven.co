@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "creator_id"
-    t.bigint "tag_category_id", null: false
+    t.bigint "tag_category_id"
     t.index ["company_id"], name: "index_csv_exports_on_company_id"
     t.index ["creator_id"], name: "index_csv_exports_on_creator_id"
     t.index ["tag_category_id"], name: "index_csv_exports_on_tag_category_id"
