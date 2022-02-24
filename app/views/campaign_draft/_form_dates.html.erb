@@ -7,6 +7,6 @@
 </div>
 
 <%# TODO %>
-<%= date_field_tag(:date, @campaign.date.strftime("%F"), class: 'datepicker_') %>
+<%= date_field_tag(:date, @campaign.date&.strftime("%F"), class: 'datepicker_') %>
 
 
