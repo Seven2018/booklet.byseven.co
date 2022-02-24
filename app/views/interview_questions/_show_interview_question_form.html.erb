@@ -221,8 +221,6 @@
                          disabled: read_only,
                          value: current_answer %>
 
-      <%# f.input :answer, collection: question.options.keys, label: 'Answer', required: question.required?, disabled: read_only, selected: current_answer, input_html: {onchange: 'autoSave(this);enableSubmit();'} %>
-
       <% if !read_only || current_comments.present? %>
 
         <%= f.input(

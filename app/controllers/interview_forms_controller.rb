@@ -43,8 +43,14 @@ class InterviewFormsController < ApplicationController
   def update
     authorize @template
     @template.update(template_params)
+
+    cross_status =
+      params.dig(:interview_form, :cross).present? && @template.answerable_by_both? ? true : false
+    @template.update(cross: cross_status)
+
+    # head :no_content
     respond_to do |format|
-      format.html {interview_form_path(template)}
+      format.html {interview_form_path(@template)}
       format.js
     end
   end
@@ -103,6 +109,6 @@ class InterviewFormsController < ApplicationController
   end
 
   def template_params
-    params.require(:interview_form).permit(:title, :description)
+    params.require(:interview_form).permit(:title, :description, :answerable_by, :cross)
   end
 end

@@ -27,9 +27,13 @@ class InterviewQuestionsController < ApplicationController
     end
 
     params[:interview_question][:required].present? ? @question.required = true : @question.required = false
-    if @question.rating?
-      @question.options = {params[:interview_question][:options] => 1}
-    end
+
+    @question.options =
+      if @question.rating?
+        {params[:interview_question][:options] => 1}
+      elsif @question.mcq? || question.objective?
+        {'Please enter an option': 1}
+      end
 
     @question.save
 
@@ -69,9 +73,7 @@ class InterviewQuestionsController < ApplicationController
       end
     end
 
-    # raise
-    @question.update required_for: required_for
-    @question.update visible_for: visible_for
+    @question.update(required_for: required_for, visible_for: visible_for)
 
     if @question.rating?
       @question.update(options: {params[:interview_question][:options] => 1})

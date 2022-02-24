@@ -38,9 +38,9 @@
 
       </div>
 
-      <div id="template-edit__content-right" class='pl-5rem'>
+      <div id="template-edit__content-right" style=''>
         <div class="template-show-attributes-right">
-          <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'edit' %>
+          <%= render 'interview_forms/edit/edit_template_settings', template: @template, page: 'edit' %>
         </div>
       </div>
 
@@ -191,9 +191,8 @@
   //   multiplyNode(target.querySelector('i'), parseInt(element.value,10), true);
   // }
 
-  function switchSide(element) {
-    container = element.closest('.required-question-switch-container')
-    switch_button = element.closest('.required-question-switch')
+  function switchSide(element, save = true) {
+    switch_button = element.parentNode
     form = element.closest('form')
     hidden_submit = form.querySelector('.hidden-submit')
 
@@ -202,7 +201,7 @@
     } else {
       setTimeout(function(){switch_button.classList.remove('switch_checked')}, 100)
     }
-    if (hidden_submit != undefined) {
+    if (hidden_submit != undefined && save) {
       hidden_submit.click();
     }
   }
@@ -250,8 +249,61 @@
     })
   })
 
-  ///////////////////
+  ///////////////////////
+  // TEMPLATE SETTINGS //
+  ///////////////////////
 
+  function BookletSelectExpand(element) {
+    doubleClickGuardian = true
+    dropdown = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-dropdown')
+    setTimeout(() => {
+      doubleClickGuardian = false
+    }, 100);
+    if (dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
+      window.addEventListener('click', function(e) {
+        if (!doubleClickGuardian) {
+          dropdown.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    } else {
+      dropdown.classList.add('hidden')
+    }
+  }
+
+  function BookletSelectSubmit(element, attribute) {
+    form = element.closest('form')
+    container = element.closest('.booklet-select__template-edit-container')
+    selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
+    selected_value = element.querySelector('p').innerText
+    storage = form.querySelector('#interview_form_' + attribute)
+    submit_button = form.querySelector('.hidden-submit')
+
+    storage.value = selected_value.toLowerCase()
+    selected_display.innerText = selected_value
+
+    checkCrossAvailability(storage)
+    // submit_button.click()
+  }
+
+  function checkCrossAvailability(element) {
+    form = element.closest('form')
+    cross_toggle = form.querySelector('#template-edit__settings-cross-toggle')
+    cross_toggle_input = cross_toggle.querySelector('input')
+    input_value = element.value
+    submit_button = form.querySelector('.hidden-submit')
+
+    if (input_value == 'both') {
+      cross_toggle_input.disabled = false
+    } else {
+      if (cross_toggle_input.checked) { cross_toggle_input.checked = false; switchSide(cross_toggle_input, false) }
+      cross_toggle_input.disabled = true
+    }
+    submit_button.click()
+  }
+
+  ///////////////////////
 
   function updateContent(element) {
     form = element.closest('form')

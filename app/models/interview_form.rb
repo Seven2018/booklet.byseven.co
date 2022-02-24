@@ -8,6 +8,12 @@ class InterviewForm < ApplicationRecord
 
   validates :title, presence: true
 
+  enum answerable_by: {
+    both: 0,
+    manager: 10,
+    employee: 20,
+  }, _prefix: true
+
   include PgSearch::Model
   pg_search_scope :search_templates,
     against: [ :title ],

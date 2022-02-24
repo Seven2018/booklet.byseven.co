@@ -220,6 +220,8 @@ ActiveRecord::Schema.define(version: 2022_02_23_175148) do
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "answerable_by", default: 0, null: false
+    t.boolean "cross", default: false
     t.index ["company_id"], name: "index_interview_forms_on_company_id"
   end
 
