@@ -58,6 +58,9 @@ gem 'postmark-rails'
 gem 'pretender'
 gem 'caxlsx'
 gem 'caxlsx_rails'
+gem 'draper'
+gem 'view_component'
+gem 'jsonb_accessor'
 
 group :development do
   # gem 'better_errors'

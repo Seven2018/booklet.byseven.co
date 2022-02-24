@@ -3,7 +3,7 @@
     <div class="recommendation-users-headers">
       <%= render 'pages/partials/recommendation_headers', users: users, tag_categories: tag_categories %>
     </div>
-    <div class='users-index'>
+    <div class='organisation__users-index'>
       <% users.each do |user| %>
         <% if content.nil? %>
           <% user_interest = UserInterest.find_by(user_id: user.id, folder_id: folder.id) %>

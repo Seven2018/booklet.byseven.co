@@ -1,0 +1,62 @@
+<div class='organisation__controls'>
+  <div class="organisation__title-tags">
+    <h1>Employees (<%= User.where(company_id: current_user.company_id).count %>)</h1>
+    <div class="organisation__tags">
+      <p class="organisation__tag">All</p>
+    </div>
+  </div>
+  <!-- <button class='organisation__filter_button'>
+    <span class="iconify" data-icon="bi:filter"></span>
+    <p>Filter</p>
+  </button> -->
+</div>
+
+<div class='organisation__users-list' data-fl-scrolls='{"orientation": "horizontal"}'>
+
+  <div class="organisation__searchbar">
+    <i class="fas fa-search organisation__search-trainings-icon"></i>
+    <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
+      <%= f.input :name, placeholder: 'Search', input_html: {autocomplete: 'off', onkeyup: 'resetPage(this);'}, label: false, required: false %>
+      <%= f.hidden_field :tags %>
+      <%= f.hidden_field :page, value: '1' %>
+      <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
+      <button type='submit' class="btn-search btn-search--mobile">
+        <i class="fas fa-search"></i>
+      </button>
+    <% end %>
+    <button class='btn-reset btn-reset-blue' onclick='resetAllFilter(this);'>Reset</button>
+    <div class="organisation__control-dropdown">
+      <div class="dropdown">
+        <div class="btn-icon" id="dropdownMenu" data-toggle="dropdown">
+          <i class="fas fa-ellipsis-h"></i>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-right organisation__dropdown-menu" aria-labelledby="dropdownMenu">
+          <li><a data-toggle='modal' data-target='#newUser'>Create new user</a></li>
+          <li class="hidden"><a id='organisation-dropdown__create-user-redirect' data-toggle='modal' data-target='#userCreated'>
+          <li class='hidden'><a id='organisation-dropdown__remove-user-redirect' data-toggle='modal' data-target='#removeUser'>Remove Selected User</li>
+          </a></li>
+          <% if current_user.admin? || Rails.env == 'development' %>
+            <li><a data-toggle='modal' data-target='#importUsers'>Import Users</a></li>
+            <li><a data-toggle='modal' data-target='#exportUsers' id="export-users-modal-link">Export All Users</a></li>
+            <li class='hidden'><a id='organisation-dropdown__import-infos-link' data-toggle='modal' data-target='#importUsersInfos'></a></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class='organisation__users'>
+    <div class='organisation__users-headers'>
+      <%= render 'pages/organisation/organisation_headers', users: users %>
+    </div>
+    <div class='organisation__users-index'>
+      <%= render 'pages/organisation/organisation_user_cards', users: users %>
+    </div>
+  </div>
+  <div class="organisation__paginate-container">
+
+    <%= render 'pages/organisation/organisation_paginate', users: users %>
+
+  </div>
+</div>
+

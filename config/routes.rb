@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   authenticate :user, ->(u) { u.super_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
+  root to: 'pages#home'
 
   # ASSESSMENTS
   resources :assessments, only: %i[] do
@@ -27,6 +28,8 @@ Rails.application.routes.draw do
 
   # CAMPAIGNS
   resources :campaigns
+  get :my_interviews, controller: :campaigns
+  get :my_team_interviews, controller: :campaigns
   get :campaigns_report, controller: :campaigns
   get :campaigns_report_filter_campaigns, controller: :campaigns
   get :campaign_report_info, controller: :campaigns
@@ -34,8 +37,18 @@ Rails.application.routes.draw do
   get :campaign_select_users, controller: :campaigns
   get :campaign_select_dates, controller: :campaigns
   get :send_notification_email, controller: :campaigns
+  get :campaign_select_owner, controller: :campaigns
   get :campaign_add_user, controller: :campaigns
   get :campaign_remove_user, controller: :campaigns
+  get :campaign_edit_date, controller: :campaigns
+
+  namespace :campaign_draft do
+    resource :settings, only: %i[edit update]
+    resource :participants, only: %i[edit update]
+    resource :templates, only: %i[edit update]
+    resource :dates, only: %i[edit update]
+    resource :launches, only: %i[edit update]
+  end
 
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
@@ -67,6 +80,7 @@ Rails.application.routes.draw do
     resource :locks, module: :interview, only: :create
   end
   get :complete_interview, controller: :interviews
+  get :lock_interview, controller: :interviews
   get :show_crossed_and_lock, controller: :interviews
 
   namespace :interview do
@@ -99,9 +113,7 @@ Rails.application.routes.draw do
   get 'mods/:id/move_down', to: 'mods#move_down', as: 'move_down_mod'
 
   # PAGES
-  # root to: redirect('/dashboard')
-  # Temporary root
-  root to: redirect('/campaigns')
+  get :home, controller: :pages
   get :dashboard, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
@@ -166,4 +178,8 @@ Rails.application.routes.draw do
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]
+
+  # design pages
+  get '/design', to: 'design#index'
+  get '/guidelines', to: 'design#guidelines'
 end

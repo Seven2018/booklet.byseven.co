@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :campaigns, through: :interviews
   has_many :interviews, foreign_key: 'employee_id'
   has_many :interview_answers
+  has_many :campaign_drafts
   belongs_to :manager, class_name: "User", optional: true
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
 
@@ -28,7 +29,7 @@ class User < ApplicationRecord
   paginates_per 50
 
   include PgSearch::Model
-  pg_search_scope :search_by_name,
+  pg_search_scope :search_users,
     against: [ :firstname, :lastname, :email ],
     associated_against: {
       tags: :tag_name
@@ -38,8 +39,12 @@ class User < ApplicationRecord
     },
     ignoring: :accents
 
+  def campaign_draft
+    campaign_drafts.processing.last || CampaignDraft.create(user: self)
+  end
+
   def fullname
-    "#{lastname.upcase} #{firstname.titleize} "
+    "#{lastname.upcase} #{firstname.titleize}"
   end
 
   def manager_name

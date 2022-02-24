@@ -15,3 +15,5 @@ catch(err) {
 import { toggleShowBranchTree } from '../components/tree';
 
 toggleShowBranchTree();
+
+import 'controllers'

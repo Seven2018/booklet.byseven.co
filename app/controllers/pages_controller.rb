@@ -1,4 +1,11 @@
 class PagesController < ApplicationController
+  before_action :show_navbar_admin, only: :organisation
+  before_action :show_navbar_campaign
+
+  def home
+    @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, completed: false)
+    @my_team_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id, owner_id: current_user.id}, label: ['Manager', 'Crossed', 'Simple'], completed: false)
+  end
 
   # Access dashboard (root)
   def dashboard
@@ -74,20 +81,6 @@ class PagesController < ApplicationController
     end
   end
 
-  def dashboard_campaign
-
-  end
-
-  # Display monthly calendar (pages/dashboard)
-  def calendar_month
-    @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
-  end
-
-  # Display weekly calendar (pages/dashboard)
-  def calendar_week
-    @contents = Session.joins(:content).where(contents: {company_id: current_user.company_id})
-  end
-
   # Display the company Overview (pages/overview)
   def overview
     @start_date = Date.today.beginning_of_year
@@ -96,9 +89,9 @@ class PagesController < ApplicationController
     @trainings = Training.where(company_id: current_user.company_id)
     # @trainings = Training.where(id: @trainings.pluck(:id))
 
-    # SEARCHING CONTENTS 
+    # SEARCHING CONTENTS
     unless params[:reset]
-      if params[:search].present? 
+      if params[:search].present?
         unless params[:search][:title].blank?
           @trainings = @trainings.search_trainings("#{params[:search][:title]}")
         end
@@ -126,7 +119,7 @@ class PagesController < ApplicationController
     # @index_title_content = Content.count + 1
     complete_profile
     if current_user.company_id.present?
-      # SEARCHING CONTENTS 
+      # SEARCHING CONTENTS
       @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
       @folders = Folder.where(company_id: current_user.company.id).order(updated_at: :desc)
       if params[:filter_catalogue].present? && params[:filter_catalogue][:category].reject { |c| c.empty? }.present?
@@ -186,70 +179,16 @@ class PagesController < ApplicationController
 
   # Display organisation page
   def organisation
-    @users =
-      if params.dig(:csv, :selected_users)
-        if params[:selected_users].present?
-          User.where(id: params[:csv][:selected_users].split(',')).order(lastname: :asc).distinct
-        else
-          User.where(company_id: current_user.company_id)
-        end
-      else
-        current_user.company ? current_user.company.users : [current_user]
-      end
-    if params[:csv].present?
-      attributes = []
-      params[:csv].each do |key, value|
-        if !['selected_users', 'cost', 'trainings', 'interviews'].include?(key) && value == '1'
-          attributes << key
-        end
-      end
-      cost = params[:csv][:cost]
-      trainings = params[:csv][:trainings]
-      interviews = params[:csv][:interviews]
-    else
-      cost, trainings = false, false
-      # Index with 'search' option and global visibility for SEVEN Users
-      index_function(User.where(company_id: current_user.company_id))
-      authorize @users
-      @tags = Tag.joins(:company).where(companies: {id: current_user.company_id})
-      @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
-      if params[:add_tags].present?
-        @selected_users = User.where(id: params[:add_tags][:users].split(','))
-        tags = Tag.where(id: params[:tag][:id].reject(&:blank?))
-        @selected_users.each do |user|
-          tags.each do |tag|
-            current = UserTag.where(user_id: user.id, tag_category_id: tag.tag_category_id).first
-            if current.present?
-              current.destroy
-            end
-            UserTag.create(user_id: user.id, tag_id: tag.id, tag_category_id: tag.tag_category_id)
-            if tag.tag_category.name == 'Job Title'
-              user.update(job_title: tag.tag_name)
-            end
-          end
-        end
-        @unfiltered = 'false'
-      else
-        @selected_users = []
-      end
-    end
+    users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
+
+    @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
+
+    filter_users(users)
+
     respond_to do |format|
       format.html {organisation_path}
       format.js
       format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
-    end
-
-    if params[:tag_postion].present?
-      tag_cat_selected = TagCategory.find(params[:tag_category_id])
-      if params[:tag_postion] == 'left'
-        tag_cat_next_left = TagCategory.find_by(position: (tag_cat_selected.position - 1))
-        tag_cat_selected.update(position: tag_cat_selected.position - 1)
-        tag_cat_next_left.update(position: tag_cat_selected.position + 1)        
-      elsif params[:tag_postion] == 'right'
-        tag_cat_next_right = TagCategory.find_by(position: (tag_cat_selected.position + 1))
-        tag_cat_selected.update(position: tag_cat_selected.position + 1)
-        tag_cat_next_right.update(position: tag_cat_selected.position - 1)
-      end
     end
   end
 
@@ -346,6 +285,31 @@ class PagesController < ApplicationController
 
   private
 
+  def filter_users(users)
+    search_name = params.dig(:search, :name)
+
+    # if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
+    #   selected_tags = params.dig(:search, :tags).present? ? params.dig(:search, :tags).split(',') : params.dig(:filter_tags, :tag).map{|x| x.split(':').last.to_i}
+    #   users = User.where(company_id: current_user.company_id).where_exists(:user_tags, tag_id: selected_tags)
+    #   @filtered_by_tags = 'true'
+    # end
+
+    if search_name.present?
+      users = users.search_users(search_name)
+      @filtered = true
+    else
+      @filtered_by_tags = 'false'
+      @filtered = false
+    end
+
+    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+    page_index = params[:page] if params[:page].present?
+    # raise
+    @total_users_count = users.count
+    @users = users.page(page_index)
+  end
+
+  # TEMP #
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
     if current_user.hr_or_above?
@@ -410,13 +374,13 @@ class PagesController < ApplicationController
           end
           if params[:filter_user][:tag].uniq == [""]
             # @users = []
-            @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id).page params[:page]
+            @users = parameter.order(lastname: :asc).page params[:page]
             @unfiltered = 'true'
           else
             @users = parameter.where.not(id: params[:filter_user][:selected].split(',')).order(lastname: :asc)
           end
         else
-          @users = parameter.order(lastname: :asc).select(:id, :lastname, :firstname, :email, :manager_id).page params[:page]
+          @users = parameter.order(lastname: :asc).page params[:page]
           @unfiltered = 'true'
         end
 

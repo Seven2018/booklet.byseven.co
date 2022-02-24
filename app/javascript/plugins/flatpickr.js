@@ -23,6 +23,16 @@ flatpickr(".datepicker-defaulting-to-now", {
   defaultDate: Date.now()
 })
 
+flatpickr(".datepicker_", {
+  disableMobile: true
+})
+
+flatpickr(".datepicker-inline", {
+  disableMobile: true,
+  dateFormat: "d/m/Y",
+  inline: true
+})
+
 flatpickr(".datepicker-defaulting-to-end-of-month", {
   disableMobile: true,
   dateFormat: "d/m/Y",

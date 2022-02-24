@@ -1,0 +1,67 @@
+<% @templates.each do |template| %>
+  <% lines = [
+    template.title,
+    template.class,
+    template.interview_questions.count,
+    template.updated_at.strftime("%d/%m/%Y")
+    ] %>
+  <% width = (1/lines.count.to_f)*100 %>
+  <div
+    data-interview-form-id="<%= template.id %>"
+    class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem border-top-bkt-light-grey position-relative">
+    <% lines.each do |line| %>
+      <div class='fs-1_6rem' style='flex-basis: <%= width %>%;'>
+        <%= line %>
+      </div>
+    <% end %>
+    <%= link_to '', interview_form_path(template), class: 'stretched-link' %>
+
+    <div class="cursor-pointer z-index-5" onclick="openContentMenu(this);">
+      <% if current_user.manager_or_above? %>
+        <i class="fas fa-ellipsis-v"></i>
+      <% end %>
+    </div>
+
+    <div
+      data-actions="interview-form"
+      class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
+      style='right: 0; top: 6rem;'
+    >
+      <%= link_to 'Duplicate', duplicate_interview_form_path(template),
+        class: 'px-3 py-2 hover-bkt-light-grey w-100'
+      %>
+      <% unless Campaign.where(interview_form: template).exists? %>
+        <%= link_to 'Delete', interview_form_path(template),
+          method: :delete,
+          remote: true,
+          data: {
+            confirm: 'Are you sure ?'
+          },
+          class: 'px-3 py-2 hover-bkt-light-grey w-100'
+        %>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>
+
+<% if @templates.count == 10 %>
+  <div class="campaigns-index__paginate-container">
+    <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
+      <div class="paginate__previous-button" onclick='changePage("previous");'>
+        <span class="iconify" data-icon="fontisto:angle-left"></span>
+        <p>Previous</p>
+      </div>
+    <% end %>
+
+    <%= paginate @templates, left: 3, right: 1 %>
+
+    <% if @templates.count == 10 %>
+      <div class="paginate__next-button" onclick='changePage("next");'>
+        <p>Next</p>
+        <span class="iconify" data-icon="fontisto:angle-right"></span>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+

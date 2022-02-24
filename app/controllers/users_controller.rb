@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
   before_action :set_current_user, only: [:import, :create]
   skip_before_action :verify_authenticity_token, only: [:update]
+  before_action :show_navbar_campaign
 
   # Show user profile (users/show)
   def show
@@ -176,7 +177,17 @@ class UsersController < ApplicationController
   # Search from users with autocomplete
   def users_search
     skip_authorization
-    @users = User.where(company_id: current_user.company_id).order(lastname: :asc).ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
+
+    @users =
+      if params[:manager].present?
+        User.where(company_id: current_user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin'])
+      else
+        User.where(company_id: current_user.company_id)
+      end
+
+    @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
+
+
     respond_to do |format|
       format.html{}
       format.json {

@@ -23,7 +23,7 @@
     <%= render 'shared/impersonations' %>
     <% if user_signed_in? %>
 
-      <% if ['campaigns', 'interview_forms', 'interviews', 'users', 'pages'].include?(params[:controller]) || params[:redirected_from] == 'campaigns' %>
+      <% if @show_navbar_campaign || params[:redirected_from] == 'campaigns' %>
         <%= render 'shared/navbar_campaign' %>
         <%= render 'shared/navbar_campaign_mobile' %>
       <% else %>
@@ -32,7 +32,7 @@
       <% end %>
 
     <% end %>
-    <div id="booklet-wrapper">
+    <div class="#{'overflow-y-scroll' unless @multi_step_form_navbar_content.present?}">
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
         <% if params[:controller] == 'users' && params[:action] == 'show' %>
@@ -48,11 +48,6 @@
     </div>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>
-    <%# if params[:action] == 'organisation' %>
-      <div class="render_async-content">
-        <%# render 'pages/organisation_render_async_content' %>
-      </div>
-    <%# end %>
   </body>
 
   <script>

@@ -1,0 +1,113 @@
+<div class="campaigns-my-interviews__container">
+  <div class="campaigns-my-interviews__main">
+
+    <div class="campaigns-my-interviews__banner">
+      <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
+      <p>You have <%= "#{@campaigns.count}"  %> personal review<%= 's' if @campaigns.count > 1 %><%= " and #{@manager_campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>
+      <% if current_user.manager_or_above? %>
+        <p>You can manage your team by clicking on <strong>My team interviews.</strong></p>
+        <div class="campaigns-my-interviews__banner-button">
+          <%= link_to "My Team interviews", my_team_interviews_path, class: "btn btn-blue__white-border" %>
+        </div>
+      <% end %>
+    </div>
+
+
+    <div class="campaigns-my-interviews__tabs-controls">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-link active" id="nav-cross-tab" data-bs-toggle="tab" href="#nav-cross" role="tab" aria-controls="nav-cross" aria-selected="true">Cross</a>
+          <a class="nav-link" id="nav-simple-tab" data-bs-toggle="tab" href="#nav-simple" role="tab" aria-controls="nav-simple" aria-selected="false">Simple</a>
+        </div>
+
+        <div class="booklet-select__container" >
+          <div class="booklet-select__selected" onclick='BookletSelectExpand(this);'>
+            <p><%= params[:period].present? ? params[:period].capitalize : 'Current' %></p>
+            <div class="booklet-select__controls">
+              <div class="booklet-select__controls-icon">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </div>
+          </div>
+          <div class="booklet-select__dropdown hidden">
+            <%= link_to my_interviews_path(period: 'current'), class: 'booklet-select__option' do %>
+              <p>Current</p>
+            <% end %>
+            <%= link_to my_interviews_path(period: 'completed'), class: 'booklet-select__option' do %>
+              <p>Completed</p>
+            <% end %>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="campaigns-my-interviews__tabs-display">
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-cross" role="tabpanel" aria-labelledby="nav-cross-tab">
+          <div class="campaigns-my-interviews__list campaigns-my-interviews__list-crossed">
+            <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.crossed %>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-simple" role="tabpanel" aria-labelledby="nav-simple-tab">
+          <div class="campaigns-my-interviews__list campaigns-my-interviews__list-simple">
+            <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns.simple %>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script> -->
+
+
+
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+
+  ///////////
+  // TOOLS //
+  ///////////
+
+  doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+
+  ////////////////////
+  // BOOKLET SELECT //
+  ////////////////////
+
+  function BookletSelectExpand(element) {
+    doubleClickGuardian = true
+    dropdown = element.closest('.booklet-select__container').querySelector('.booklet-select__dropdown')
+    setTimeout(() => {
+      doubleClickGuardian = false
+    }, 100);
+    if (dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, dropdown) && !doubleClickGuardian) {
+          dropdown.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    } else {
+      dropdown.classList.add('hidden')
+    }
+  }
+</script>

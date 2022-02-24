@@ -1,29 +1,89 @@
-<div class="interview-forms-container">
-  <div id="main-controls">
-    <%= render 'shared/searchbar_campaigns', path: interview_forms_path, reset_path: interview_forms_path(reset: "") %>
-    <div class='main-controls-create-content'>
-      <a data-toggle='modal' data-target='#newTemplate'>
-        <div class="btn-blue" data-toggle='tooltip' title='Create a template'>
-          <i class="fas fa-plus"></i>
-          <p>Create Template</p>
-        </div>
-      </a>
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'>
+  <div class='bkt-page-container-content'>
+    <div id='controls'
+         class='d-flex justify-content-between align-items-center mb-4'>
+      <h1>Templates</h1>
+      <div>
+        <a data-toggle='modal' data-target='#newTemplate'>
+          <div class="bkt-btn-blue" data-toggle='tooltip' title='Add a template'>
+            <i class="fas fa-plus"></i>
+            <span>Add a Template</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">
+      <div
+        class='d-flex justify-content-start align-items-center position-relative'
+        style='margin-bottom: 4rem'
+      >
+        <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
+          style='left: 25rem; bottom: 16.6px;'
+        ></i>
+        <%= simple_form_for(:search, url: interview_forms_path, method: :get, remote: true,
+          html: {
+            class: 'd-flex align-items-center'
+          },
+          data: {
+            controller:'remember-search',
+            remember_search_key_value: 'bookletInterviewFormsSearches',
+          }
+        ) do |f| %>
+          <%=
+            f.input(
+              :title,
+              placeholder: 'Search',
+              wrapper_html: {
+                class: 'my-0 height-5rem'
+              },
+              input_html: {
+                class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                style: 'width: 28rem; padding: 0 4rem 0 1rem;',
+                autocomplete: 'off',
+                onkeyup: 'resetPage(this);',
+                data: {
+                  remember_search_target: :search,
+                  action: 'keyup->remember-search#storeSearch'
+                }
+              },
+              label: false,
+              required: false
+            )
+          %>
+          <%= f.hidden_field :page, value: '1' %>
+          <div class="mr-3"></div>
+          <%=
+            f.submit(
+              'Search',
+              class: 'py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+              onclick: "document.querySelector('body').classList.add('wait');",
+              data: {
+                remember_search_target: :submit,
+              }
+            )
+          %>
+          <button type='submit' class="btn-search d-block d-sm-none">
+            <i class="fas fa-search"></i>
+          </button>
+        <% end %>
+      </div>
+
+      <% headers = ["Template title", "Type", "Questions", "Last Update"] %>
+      <% width = (1/headers.count.to_f)*100 %>
+      <div class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem">
+        <% headers.each do |header| %>
+          <div class='fs-1_6rem font-weight-bold' style='flex-basis: <%= width %>%;'><%= header %></div>
+        <% end %>
+      </div>
+
+      <div id='lines'>
+        <%= render 'interview_forms/index/index_interview_forms_list', templates: @templates %>
+      </div>
+
     </div>
   </div>
-  <h1>Templates</h1>
-  <div class="interview-forms-index">
-    <%= render 'interview_forms/partials/index_card_list', templates: @templates %>
-  </div>
-  <div class="main-controls-create-content--mobile">
-    <a data-toggle='modal' data-target='#newTemplate'>
-      <div class="btn-blue" data-toggle='tooltip' title='Create a template'>
-        <i class="fas fa-plus"></i>
-        <p>Create Template</p>
-      </div>
-    </a>
-  </div>
 </div>
-
 
 <!------------>
 <!-- MODALS -->
@@ -43,6 +103,7 @@
 <script>
   formGuardian = false;
 
+  <%# TODO refacto into stimulus controller %>
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
     // check outside click for multiple elements
@@ -57,10 +118,10 @@
   }
 
   function openContentMenu(element) {
-    dropdown = element.parentNode.querySelector('.content-dropdown')
+    dropdown = element.parentNode.querySelector('[data-actions="interview-form"]')
     dropdown.classList.remove('hidden')
     formGuardian = true
-    card_link = element.closest('.interview-form-card').querySelector('.stretched-link')
+    card_link = element.closest('[data-interview-form-id]').querySelector('.stretched-link')
     card_link.classList.add('disabled')
     card_link_href = card_link.href
     card_link.href = "javascript:void(0)";
@@ -99,6 +160,8 @@
   }
 
   function showResetMobile(boolean) {
+    return
+    <%# TODO %>
     search_button = document.querySelector('.btn-search--mobile')
     reset_button = document.querySelector('.btn-reset--mobile')
     if (boolean) {
@@ -134,4 +197,26 @@
   }
 
   hideOverflowingTags()
+
+  function changePage(direction) {
+    page_value = document.querySelector('#search_page')
+    previous_button = document.querySelector('.paginate__previous-button')
+    submit_button = document.querySelector('.btn-search')
+
+    console.log('page_value',page_value)
+    console.log('previous_button',previous_button)
+    console.log('submit_button',submit_button)
+
+    if(direction == 'next') {
+      page_value.value = (parseInt(page_value.value,10) + 1).toString()
+    } else {
+      page_value.value = (parseInt(page_value.value,10) - 1).toString()
+    }
+    submit_button.click()
+  }
+
+  function resetPage(element) {
+    element.closest('form').querySelector('#search_page').value = '1'
+  }
+
 </script>

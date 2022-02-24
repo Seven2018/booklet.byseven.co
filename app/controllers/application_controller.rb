@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :booklet_authenticate_user
   # before_action :authenticate_user!
-  before_action :store_location
+  before_action :store_location, :controller_action
   add_flash_types :error
   # before_action :set_time_zone, if: :user_signed_in?
   include Pundit
@@ -104,5 +104,23 @@ class ApplicationController < ActionController::Base
 
   def authenticate_admin!
     redirect_to new_user_session_path unless current_user&.admin?
+  end
+
+  def redirect_unless_admin
+    # once setup_sidekiq branch merged
+    # redirect_to root_path, notice: 'Espace réservé aux admins' unless true_user&.admin || current_user&.admin
+    redirect_to root_path, notice: 'Espace réservé aux admins' unless current_user&.admin
+  end
+
+  def controller_action
+    @controller_action = [controller_name, action_name].join('_').to_sym
+  end
+
+  def show_navbar_admin
+    @show_navbar_admin = true if current_user&.hr_or_above?
+  end
+
+  def show_navbar_campaign
+    @show_navbar_campaign = true
   end
 end

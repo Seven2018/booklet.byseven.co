@@ -1,1 +1,96 @@
-// Specific CSS for your home-page
+.homepage__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: #F9F9F9;
+  width: 100%;
+
+}
+
+.homepage__title {
+  padding-top: 40px;
+  width: 80%;
+  max-width: 950px;
+
+  h1 {
+    margin-bottom: 20px;
+  }
+}
+
+.homepage__interviews {
+  margin-top: 3rem;
+  padding: 3rem 3rem 9rem 3rem;
+  overflow: hidden;
+  width: 80%;
+  max-width: 96rem;
+  background: white;
+  box-shadow: 0px 2px 26px 0px #0000000D;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  position: relative;
+}
+
+.homepage__card-inner {
+  border-left: 4px solid #3177B7;
+}
+
+.homepage__card-header {
+  display: flex;
+  margin-bottom: 2rem;
+
+  .homepage__card-header-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+    width: 5rem;
+    margin-left: 3rem;
+    border-radius: 2.5rem;
+    background-color: rgba(49, 119, 183, 0.3);
+
+    svg {
+      font-size: 3rem;
+    }
+  }
+
+  .homepage__card-header-text {
+    display: flex;
+
+    h2 {
+      display: flex;
+      padding-left: .5rem;
+      padding: 1.2rem 0rem 0rem 1rem;
+    }
+
+    p {
+      display: flex;
+      padding-left: 8px;
+      color: #3177B7;
+      font-weight: bold;
+      padding: 1.8rem 0rem 0rem 0.6rem;
+    }
+  }
+}
+
+.homepage-card__main-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 3rem;
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  p.part1 {
+    line-height: 2.2rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.homepage__card-arrow-link {
+  position: absolute;
+  bottom: 3em;
+  right: 3em;
+}
