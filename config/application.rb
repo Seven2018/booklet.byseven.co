@@ -4,6 +4,7 @@ require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
+require 'bundler'
 Bundler.require(*Rails.groups)
 
 module BookletBysevenCo
@@ -21,7 +22,7 @@ module BookletBysevenCo
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-    config.active_job.queue_adapter = :sucker_punch
+    config.active_job.queue_adapter = :sidekiq
     RenderAsync.configure do |config|
       jquery = true # This will render jQuery code, and skip Vanilla JS code
     end
