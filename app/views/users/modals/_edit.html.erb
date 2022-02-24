@@ -52,7 +52,7 @@
                   </div>
                 </div>
                  <div class="organisation-filter-block-checkboxes-user">
-                <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes, checked: checked_tags %>
+                <%= f.input_field :tags, collection: Tag.where(tag_category_id: category.id).order(tag_name: :asc), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes, checked: checked_tags %>
                 </div>
               </div>
             <% end %>

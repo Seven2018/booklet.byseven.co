@@ -4,17 +4,17 @@
     <i class="fas fa-file-alt"></i>
     <h2><%= @template.title %> - <em>View mode</em></h2>
   </div>
-  <div id="template-show-container">
-    <div id="template-show-container-left">
+  <div id="template-show__container">
+    <div id="template-show__container-left">
       <%= render 'interview_forms/partials/show_summary', template: @template, page: 'show' %>
     </div>
-    <div id="template-show-container-right">
-      <div class="template-add">
-        <div class="template-center-div template-center-div__show">
-          <div class="template-show-attributes-center">
+    <div id="template-show__container-right">
+      <div class="template-edit__content">
+        <div class="template-edit__content-center template-edit__content-center__show">
+          <div class="template-show__attributes-center">
             <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'show' %>
           </div>
-          <div class="template-show-lines template-show-lines__show">
+          <div class="template-show__lines">
             <%= render 'interview_forms/show/questions_index', template: @template, page: 'show' %>
           </div>
           <div class="button-add-catalogue">
@@ -25,7 +25,7 @@
             <% end %>
           </div>
         </div>
-        <div class="template-add-right">
+        <div class="template-edit__content-right">
           <div class="template-show-attributes-right">
             <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'show' %>
           </div>
@@ -42,7 +42,7 @@
           <p>Chapter</p>
         </div>
         <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-separator').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
+          <a class="line-delete" onclick="this.closest('.add-separator').remove(); document.querySelector('.template-show__lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
         </div>
       </div>
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
@@ -62,7 +62,7 @@
           <p>Open Question</p>
         </div>
         <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-open_question').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
+          <a class="line-delete" onclick="this.closest('.add-open_question').remove(); document.querySelector('.template-show__lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
         </div>
       </div>
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
@@ -89,7 +89,7 @@
           <p>Rating</p>
         </div>
         <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-rating').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
+          <a class="line-delete" onclick="this.closest('.add-rating').remove(); document.querySelector('.template-show__lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
         </div>
       </div>
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
@@ -123,7 +123,7 @@
           <p>MCQ</p>
         </div>
         <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-mcq').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
+          <a class="line-delete" onclick="this.closest('.add-mcq').remove(); document.querySelector('.template-show__lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
         </div>
       </div>
       <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
@@ -200,10 +200,10 @@
   }
 
   function lineMenu() {
-    var contentbar = document.querySelector('.template-show-lines-controls')
+    var contentbar = document.querySelector('.template-show__lines-controls')
     var iconedit = document.querySelector('#icon-edit')
     var iconclose = document.querySelector('#icon-close')
-    var contentblock = document.querySelectorAll('.template-show-lines-controls-block')
+    var contentblock = document.querySelectorAll('.template-show__lines-controls-block')
 
     if (contentbar.style.display === "none") {
       contentbar.style.display = "flex";
@@ -238,7 +238,7 @@
       template = document.querySelector('.add-separator-template')
       templateinfo = template.innerHTML
       newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
+      content = document.querySelector('.template-edit__content-lines')
       content.append(newDiv)
     } else if (type == 'open_question') {
       const newDiv = document.createElement("div");
@@ -246,7 +246,7 @@
       template = document.querySelector('.add-open_question-template')
       templateinfo = template.innerHTML
       newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
+      content = document.querySelector('.template-edit__content-lines')
       content.append(newDiv)
     } else if (type == 'rating') {
       const newDiv = document.createElement("div");
@@ -254,7 +254,7 @@
       template = document.querySelector('.add-rating-template')
       templateinfo = template.innerHTML
       newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
+      content = document.querySelector('.template-edit__content-lines')
       content.append(newDiv)
     } else if (type == 'mcq') {
       const newDiv = document.createElement("div");
@@ -262,10 +262,10 @@
       template = document.querySelector('.add-mcq-template')
       templateinfo = template.innerHTML
       newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
+      content = document.querySelector('.template-edit__content-lines')
       content.append(newDiv)
     }
-    document.querySelector('.template-show-lines-control-btn').classList.add('hidden')
+    document.querySelector('.template-show__lines-control-btn').classList.add('hidden')
   }
 
   function multiplyNode(node, count, deep) {

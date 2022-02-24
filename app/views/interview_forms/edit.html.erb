@@ -13,116 +13,62 @@
   </div>
 </div>
 
-<div id="template-show-container" class='flex-row-between-start bkt-bg-light-grey2 pos-rel'>
-  <div id="template-show-container-left" class='bkt-bg-white p-2rem'>
-    <%= render 'interview_forms/partials/show_summary', template: @template, page: 'edit' %>
+<div id="template-show__container" class='flex-row-between-start bkt-bg-light-grey2 pos-rel bkt-box-shadow-compact-top'>
+  <div id="template-show__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey-1px'>
+    <%= render 'interview_forms/edit/edit_show_summary', template: @template, page: 'edit' %>
   </div>
 
-  <div id="template-show-container-right">
-    <div class="template-add">
-      <div class="template-center-div template-center-div__show">
-        <div class="template-show-attributes-center">
-          <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'edit' %>
-        </div>
-        <div class="template-show-lines template-show-lines__show">
-          <%= render 'interview_forms/edit/questions_index', template: @template, page: 'edit' %>
+  <div id="template-show__container-right">
+
+    <div id="template-edit__content" class='flex-row-between-start'>
+
+      <div id="template-edit__content-center" class='flex-column-start-centered'>
+
+        <div id="template-show__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
+          <%= render 'interview_forms/edit/edit_template_attributes', template: @template, page: 'edit' %>
         </div>
 
-        <div class="template-show-lines-control-btn" onclick="lineMenu();">
-          <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
-          <div class='close-template-btn'><i class="fas fa-plus fa-2x hidden" id='icon-close' style='color:#3177B7'></i></div>
-          <div class="template-show-lines-controls" style='display:none;'>
-            <a class="template-show-lines-controls-block" onclick="addLine('separator');">
-              <i class="fas fa-list-ol"></i>
-              <p>Chapter</p>
-            </a>
-            <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
-              <i class="fas fa-question-circle"></i>
-              <p>Open Question</p>
-            </a>
-            <a class="template-show-lines-controls-block" onclick="addLine('rating');">
-              <i class="fas fa-star-half-alt"></i>
-              <p>Rating</p>
-            </a>
-            <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
-              <i class="far fa-check-square"></i>
-              <p>Multi-Select</p>
-            </a>
-            <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('objective');">
-              <i class="fas fa-bullseye"></i>
-              <p>Objective</p>
-            </a>
-          </div>
+        <div style='width: 100%; max-width: 64rem;'>
+          <%= render 'interview_forms/edit/edit_add_question', position: 0 %>
         </div>
 
-        <div class="template-show-lines-control-btn--mobile" onclick="columnMenu();">
-          <div class='add-template-btn' id='icon-edit'><div class="plus-icon-circle"><i class="fas fa-plus"></i></div><p>Add Element</p></div>
-          <div class="template-show-lines-controls--mobile hidden">
-            <a class="template-show-lines-controls-block" onclick="addLine('separator');">
-              <i class="fas fa-list-ol"></i>
-              <p>Chapter</p>
-            </a>
-            <a class="template-show-lines-controls-block" onclick="addLine('open_question');">
-              <i class="fas fa-question-circle"></i>
-              <p>Open Question</p>
-            </a>
-            <a class="template-show-lines-controls-block" onclick="addLine('rating');">
-              <i class="fas fa-star-half-alt"></i>
-              <p>Rating</p>
-            </a>
-            <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('mcq');">
-              <i class="far fa-check-square"></i>
-              <p>Multi-Select</p>
-            </a>
-            <a class="template-show-lines-controls-block template-show-lines-controls-block-quiz" onclick="addLine('objective');">
-              <i class="fas fa-bullseye"></i>
-              <p>Objective</p>
-            </a>
-          </div>
+        <div id="template-show__lines" style='width: 100%; max-width: 64rem;'>
+          <%= render 'interview_forms/edit/edit_questions_index', template: @template, page: 'edit' %>
         </div>
 
-        <div class="button-add-catalogue">
-          <%= link_to :back do %>
-            <div class="btn-blue-text">
-              <p>Back</p>
-            </div>
-          <% end %>
-          <%= link_to '', interview_forms_path, class: 'hidden-link hidden' %>
-          <div class="btn-blue" onclick='saveAndConfirm();'>
-            <p>Save Template</p>
-          </div>
-        </div>
       </div>
 
-      <div class="template-add-right">
+      <div id="template-edit__content-right" class='pl-5rem'>
         <div class="template-show-attributes-right">
           <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'edit' %>
         </div>
       </div>
+
     </div>
+
   </div>
 </div>
 
 <div class='line-templates hidden'>
 
   <div class="add-separator add-separator-template hidden active">
-    <%= render 'question_form_template', question_type: 'separator', template_id: @template.id %>
+    <%= render 'interview_forms/edit/edit_question_form_template', question_type: 'separator', template_id: @template.id %>
   </div>
 
   <div class="add-open_question add-open_question-template hidden active">
-    <%= render 'question_form_template', question_type: 'open_question', template_id: @template.id %>
+    <%= render 'interview_forms/edit/edit_question_form_template', question_type: 'open_question', template_id: @template.id %>
   </div>
 
   <div class="add-rating add-rating-template hidden active">
-    <%= render 'question_form_template', question_type: 'rating', template_id: @template.id %>
+    <%= render 'interview_forms/edit/edit_question_form_template', question_type: 'rating', template_id: @template.id %>
   </div>
 
   <div class="add-mcq add-mcq-template hidden">
-    <%= render 'question_form_template', question_type: 'mcq', template_id: @template.id %>
+    <%= render 'interview_forms/edit/edit_question_form_template', question_type: 'mcq', template_id: @template.id %>
   </div>
 
   <div class="add-objective add-objective-template hidden">
-    <%= render 'question_form_template', question_type: 'objective', template_id: @template.id %>
+    <%= render 'interview_forms/edit/edit_question_form_template', question_type: 'objective', template_id: @template.id %>
   </div>
 
 </div>
@@ -144,7 +90,13 @@
 <!---------------->
 
 <script>
+
+  ///////////
+  // TOOLS //
+  ///////////
+
   doubleClickGuardian = false
+  saving = false
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
@@ -159,10 +111,147 @@
     else return false;
   }
 
-  function saveAndConfirm() {
-    document.querySelector('.edit_interview_form').querySelector('.hidden-submit').click()
-    setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
+  function submitForm(element) {
+    element.closest('form').querySelector('.hidden-submit').click()
   }
+
+
+  ///////////////////////
+  // ADD QUESTION MENU //
+  ///////////////////////
+
+  function addQuestionMenu(element) {
+
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      container = element.parentNode
+      button_add = element
+      button_remove = container.querySelector('.add_button_hide')
+      menu = container.querySelector('.template-edit__add-question-menu')
+
+      container.classList.add('active')
+      button_add.classList.add('hidden')
+      button_remove.classList.remove('hidden')
+      menu.classList.remove('hidden')
+
+      window.addEventListener('click', function(e) {
+        if (doubleClickGuardian == false) {
+          container.classList.remove('active')
+          button_add.classList.remove('hidden')
+          button_remove.classList.add('hidden')
+          menu.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+
+      setTimeout(function(){doubleClickGuardian = false}, 100)
+    }
+  }
+
+  function addQuestion(type, referenceNode) {
+    newDiv = document.createElement("div")
+
+    newDiv.classList.add('add-' + type)
+    template = document.querySelector('.add-' + type + '-template')
+    templateinfo = template.innerHTML
+    newDiv.innerHTML = templateinfo
+    position = referenceNode.id.split('-')[1]
+    position_storage = newDiv.querySelector('#interview_question_position')
+
+    position_storage.value = position
+    content = document.querySelector('#template-show__lines')
+    if (position == 0) {
+      content.insertBefore(newDiv, content.firstChild)
+    } else {
+      content.insertBefore(newDiv, referenceNode.nextSibling)
+    }
+  }
+
+  //////////////////////
+  // QUESTION OPTIONS //
+  //////////////////////
+
+  function checkBookletCheckbox(element) {
+    checkbox = element.querySelector('input')
+    icon = element.querySelector('svg')
+
+    if (checkbox.value == 'true') {
+      checkbox.value = 'false'
+      icon.classList.add('hidden')
+    } else {
+      checkbox.value = 'true'
+      icon.classList.remove('hidden')
+    }
+    saveQuestion(element)
+  }
+
+  // function setRating(element) {
+  //   target = element.closest('form').querySelector('.show-rating')
+  //   target.innerHTML = '<i class="far fa-star"></i>'
+  //   multiplyNode(target.querySelector('i'), parseInt(element.value,10), true);
+  // }
+
+  function switchSide(element) {
+    container = element.closest('.required-question-switch-container')
+    switch_button = element.closest('.required-question-switch')
+    form = element.closest('form')
+    hidden_submit = form.querySelector('.hidden-submit')
+
+    if (element.checked == true) {
+      setTimeout(function(){switch_button.classList.add('switch_checked')}, 100)
+    } else {
+      setTimeout(function(){switch_button.classList.remove('switch_checked')}, 100)
+    }
+    if (hidden_submit != undefined) {
+      hidden_submit.click();
+    }
+  }
+
+  ///////////////////
+  // SAVE QUESTION //
+  ///////////////////
+
+  function saveQuestion(element, keyup = false) {
+    form = element.closest('form')
+
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      initial_value = element.value;
+
+      if (keyup && !saving) {
+        saving = true
+        setTimeout(function(){
+          form.querySelector('.hidden-submit').click()
+          saving = false
+        }, 3000)
+      } else {
+        form.querySelector('.hidden-submit').click()
+      }
+
+      setTimeout(function(){doubleClickGuardian = false}, 500)
+    }
+  }
+
+  document.querySelectorAll('.trix-content').forEach((trix) => {
+    if (trix.parentNode.querySelector('.trix_editor') == null) {
+      trix.innerHTML = ''
+    } else {
+      trix.innerHTML = trix.parentNode.querySelector('.trix_editor').value
+    }
+    trix.addEventListener('keyup', (event) => {
+      if (!saving) {
+        saving = true
+        setTimeout(function(){
+          trix.parentNode.querySelector('.trix_editor').value = trix.innerHTML
+          trix.closest('form').querySelector('.hidden-submit').click()
+          saving = false
+        }, 3000)
+      }
+    })
+  })
+
+  ///////////////////
+
 
   function updateContent(element) {
     form = element.closest('form')
@@ -175,142 +264,10 @@
     })
   }
 
-  function lineMenu() {
-    container = document.querySelector('.template-show-lines-control-btn')
-    contentbar = container.querySelector('.template-show-lines-controls')
-    iconedit = container.querySelector('#icon-edit')
-    iconclose = container.querySelector('#icon-close')
-    contentblock = container.querySelectorAll('.template-show-lines-controls-block')
-
-    if (contentbar.style.display === "none") {
-      contentbar.style.display = "flex";
-      iconedit.classList.add('hidden')
-      iconclose.classList.remove('hidden')
-      iconclose.classList.add('icon-transform')
-      setTimeout(function(){
-        iconclose.style.transform = ('rotate(45deg)')
-        contentbar.style.width = '30%'
-        contentblock.forEach((content) => {
-          content.style.width = '100%'
-        })
-      },1);
-    } else {
-      iconclose.style.transform = ('rotate(-45deg)')
-      contentbar.style.width = '0'
-      contentblock.forEach((content) => {
-        content.style.width = '0'
-      })
-      setTimeout(function(){
-        contentbar.style.display = "none"
-        iconclose.classList.add('hidden')
-        iconedit.classList.remove('hidden')
-      },250);
-    }
-  }
-
-  function columnMenu() {
-    container = document.querySelector('.template-show-lines-control-btn--mobile')
-    controls = container.querySelector('.template-show-lines-controls--mobile')
-    button = container.querySelector('.add-template-btn')
-    button.classList.add('hidden')
-    controls.classList.remove('hidden')
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, button)) {
-        button.classList.remove('hidden')
-        controls.classList.add('hidden')
-        this.removeEventListener('click', arguments.callee, false);
-      }
-    });
-  }
-
-  function addLine(type) {
-    if (type == 'separator') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-separator')
-      template = document.querySelector('.add-separator-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    } else if (type == 'open_question') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-open_question')
-      template = document.querySelector('.add-open_question-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    } else if (type == 'rating') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-rating')
-      template = document.querySelector('.add-rating-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    } else if (type == 'mcq') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-mcq')
-      template = document.querySelector('.add-mcq-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    } else if (type == 'objective') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-objective')
-      template = document.querySelector('.add-objective-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    }
-    document.querySelector('.template-show-lines-control-btn').classList.add('hidden')
-    document.querySelector('.template-show-lines-control-btn--mobile').classList.add('hidden')
-  }
-
   function multiplyNode(node, count, deep) {
     for (var i = 0, copy; i < count - 1; i++) {
         copy = node.cloneNode(deep);
         node.parentNode.insertBefore(copy, node);
-    }
-  }
-
-  function setRating(element) {
-    target = element.closest('form').querySelector('.show-rating')
-    target.innerHTML = '<i class="far fa-star"></i>'
-    multiplyNode(target.querySelector('i'), parseInt(element.value,10), true);
-  }
-
-  function saveQuestion(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      initial_value = element.value;
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, element)) {
-          if (element.value != initial_value || element.tagName == 'SELECT') {
-            form = element.closest('form')
-            form.querySelector('.hidden-submit').click();
-          }
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-      setTimeout(function(){doubleClickGuardian = false}, 500)
-    }
-  }
-
-  function switchSide(element) {
-    container = element.closest('.required-question-switch-container')
-    switch_button = element.closest('.required-question-switch')
-    form = element.closest('form')
-    hidden_submit = form.querySelector('.hidden-submit')
-    if (element.checked == true) {
-      setTimeout(function(){switch_button.classList.add('switch_checked');container.querySelector('label').innerText = 'Required'}, 100)
-    } else {
-      setTimeout(function(){switch_button.classList.remove('switch_checked');container.querySelector('label').innerText = 'Required'}, 100)
-    }
-    if (hidden_submit != undefined) {
-      hidden_submit.click();
     }
   }
 
@@ -387,15 +344,5 @@
     element.closest('form').querySelector('.hidden-submit').click()
   }
 
-  document.querySelectorAll('.trix-content').forEach((trix) => {
-    if (trix.parentNode.querySelector('.trix_editor') == null) {
-      trix.innerHTML = ''
-    } else {
-      trix.innerHTML = trix.parentNode.querySelector('.trix_editor').value
-    }
-    trix.addEventListener('keyup', (event) => {
-      trix.parentNode.querySelector('.trix_editor').value = trix.innerHTML
-      trix.closest('form').querySelector('.hidden-submit').click()
-    })
-  })
+
 </script>

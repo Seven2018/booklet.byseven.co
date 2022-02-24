@@ -1,2 +1,2 @@
 target = document.querySelector('#mcq-<%= @question.id %>');
-target.innerHTML = '<%= j render("interview_forms/partials/show_mcq", question: @question, page: "edit") %>';
+target.innerHTML = '<%= j render("interview_forms/edit/edit_show_mcq", question: @question, page: "edit") %>';

@@ -29,6 +29,31 @@
   &.pressed {}
 }
 
+.bkt-btn-light-blue {
+  color: $bkt-blue;
+  background-color: $bkt-light-blue2;
+  padding: 16px;
+  line-height: 2rem;
+  border-radius: 5px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 600;
+  &:hover {
+    background-color: $bkt-dark-blue;
+    color: $bkt-white;
+  }
+  &:focus {
+    background-color: $bkt-white;
+    color: $bkt-white;
+  }
+  &.disabled {
+    opacity: 0.5;
+  }
+  &.pressed {}
+}
+
 .bkt-btn-white {
   color: $bkt-blue;
   background-color: $bkt-white;

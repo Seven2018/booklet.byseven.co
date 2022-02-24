@@ -1,22 +1,21 @@
-<div class="template-info">
+<div id="template-info">
   <% if page == 'edit' %>
     <%= simple_form_for template, remote: true do |f| %>
-      <%= f.input :title, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled' %>
-      <%# f.input :description, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}',  style: "height: 150px;"} %>
+      <p class='font-weight-600 mb-2rem'>Template</p>
+      <%= f.input :title, label: false, input_html: {class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px', autocomplete: "off", onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled' %>
       <%= f.input :description, as: :trix_editor, placeholder: 'Description (optional)', input_html: { value: template.description } %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
   <% else %>
     <%= simple_form_for template, remote: true do |f| %>
       <%= f.input :title, input_html: {autocomplete: "off", style:'margin-bottom: 0px;', onclick: 'try{updateContent(this)}catch{}'}, placeholder: 'Untitled', disabled: true %>
-      <%# f.input :description, input_html: {autocomplete: "off", onclick: 'try{updateContent(this)}catch{}',  style: "height: 150px;"}, disabled: true %>
       <div class='interview-question__read-only'>
         <label>Description</label>
         <p><%= sanitize template.description %></p>
       </div>
     <% end %>
   <% end %>
-  <div class="template-add-right--mobile">
+  <div class="template-edit__content-right--mobile">
     <div class="template-show-infos-themes">
       <p style='color:#808080;'><b>Tags</b></p>
       <div class="theme-btns">

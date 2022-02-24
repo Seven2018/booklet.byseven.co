@@ -1,0 +1,195 @@
+<% form_title = {
+  'separator' => question.question,
+  'open_question' => 'Open Question',
+  'rating' => 'Rating',
+  'mcq' => 'MCQ',
+  'objective' => 'Objective'
+} %>
+
+<% question_icon = {
+  'open_question' => 'fas fa-question-circle',
+  'rating' => 'fas fa-star-half-alt',
+  'mcq' => 'far fa-check-square',
+  'objective' => 'fas fa-bullseye'
+} %>
+
+<% first_question = question.position == 1 %>
+<% last_question = question.position >= template.interview_questions.count %>
+
+<div class="line-top flex-row-between-start mb-3rem">
+
+  <div class="line-title <%= 'line-title-separator' if question.separator? %>"
+       onclick='toggleMod(this);'>
+    <i class="fas fa-angle-down" data-rotated='0'></i>
+    <% unless question.separator? %>
+      <i class="<%= question_icon[question.question_type] %>"></i>
+    <% end %>
+    <p title='<%= question.question %>'><%= question.question %></p>
+  </div>
+
+  <div class="flex-row-between-centered">
+    <% if current_user.hr_or_above? && !params[:content_access].present? %>
+
+      <% if first_question %>
+        <a class='px-1' disabled style='cursor: default;'>
+          <span class="iconify bkt-light-blue" data-icon="akar-icons:arrow-up"></span>
+        </a>
+      <% else %>
+        <%= link_to move_up_interview_question_path(question), class: 'px-1', remote: true do %>
+          <span class="iconify bkt-blue" data-icon="akar-icons:arrow-up"></span>
+        <% end %>
+      <% end %>
+
+      <% if last_question %>
+        <a class='px-1' disabled style='cursor: default;'>
+          <span class="iconify bkt-light-blue" data-icon="akar-icons:arrow-down"></span>
+        </a>
+      <% else %>
+        <%= link_to move_down_interview_question_path(question), class: 'px-1', remote: true do %>
+          <span class="iconify bkt-blue" data-icon="akar-icons:arrow-down"></span>
+        <% end %>
+      <% end %>
+
+      <%= link_to interview_question_path(question), method: :delete, class: 'px-1', data: {confirm: 'Are you sure ?'}, remote: true do %>
+        <span class="iconify bkt-red" data-icon="akar-icons:trash-can"></span>
+      <% end %>
+
+    <% end %>
+  </div>
+
+</div>
+
+<%= simple_form_for question, remote: true do |f| %>
+
+  <%= f.input(:question, {
+      placeholder: 'Title (required)',
+      input_html: {
+        class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem',
+        autocomplete: 'off',
+        onkeyup: 'saveQuestion(this, true)'
+      },
+      required: true,
+      label: (question.separator? ? 'Title' : false )
+    }.compact) %>
+
+  <%= f.input :description,
+      as: :trix_editor,
+      placeholder: 'Description (optional)',
+      input_html: {
+        class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px',
+        value: question.description
+      }
+      %>
+
+  <% if question.rating? %>
+    <div class="flex-row-between-centered mb-2rem">
+      <div class="flex-row-between-centered">
+        <label class='mr-1rem'>Max rating</label>
+        <%= f.input(:options,
+          as: :select,
+          collection: (1..10),
+          label: false,
+          input_html: {
+            onchange: 'saveQuestion(this);'
+          },
+          selected: question.options.keys.first
+        ) %>
+      </div>
+      <div class="flex-row-between-centered">
+        <% comments_status = question.allow_comments %>
+        <label class='mb-0 mr-1rem'>Allow comments</label>
+        <div class="centered-item border-bkt-blue-1px" style='height: 19.5333px; width: 19.533px;' onclick='checkBookletCheckbox(this);'>
+          <span class="iconify height-2_5rem-forced width-2_5rem-forced bkt-blue <%= 'hidden' unless comments_status %>" data-icon="ant-design:check-square-filled"></span>
+          <%= f.hidden_field(
+            :allow_comments,
+            label: false,
+            value: comments_status
+          ) %>
+        </div>
+      </div>
+    </div>
+<!--     <div class="show-rating">
+      <%# question.options.keys.first.to_i.times do %>
+        <i class="far fa-star"></i>
+      <%# end %>
+    </div> -->
+  <% end %>
+
+  <%= f.submit '', class: 'hidden-submit hidden' %>
+<% end %>
+
+<% if question.mcq? || question.objective? %>
+  <label class='fs-1_4rem font-weight-500'>Answer options</label>
+  <div id='mcq-<%= question.id %>' class='mb-2rem'>
+    <%= render 'interview_forms/edit/edit_show_mcq', question: question, page: 'edit' %>
+  </div>
+<% end %>
+
+<% unless question.separator? %>
+
+  <%= simple_form_for question, remote: true do |f| %>
+
+    <div class="flex-row-between-centered">
+      <div class='flex-column-between-left'>
+        <label class='mb-2rem font-weight-500'>This question is visible for:</label>
+
+        <div class="flex-row-start-centered mb-1rem">
+          <label class="required-question-switch <%= 'switch_checked' if question.visible_for_employee? || question.visible_for_all? %>">
+            <input type="checkbox"
+                   name='interview_question[visible_for_employee]'
+                   onclick='switchSide(this);'
+                   <%= 'checked' if question.visible_for_employee? || question.visible_for_all? %>
+            />
+            <div><%# do not remove %></div>
+          </label>
+          <label class='ml-1rem font-weight-500'>Employee</label>
+        </div>
+
+        <div class="flex-row-start-centered">
+          <label class="required-question-switch <%= 'switch_checked' if question.visible_for_manager? || question.visible_for_all? %>">
+            <input type="checkbox"
+                   name='interview_question[visible_for_manager]'
+                   onclick='switchSide(this);'
+                   <%= 'checked' if question.visible_for_manager? || question.visible_for_all? %>
+            />
+            <div><%# do not remove %></div>
+          </label>
+          <label class='ml-1rem font-weight-500'>Manager</label>
+        </div>
+
+      </div>
+      <div  class='flex-column-between-right'>
+        <label class='font-weight-500 mb-2rem'>This question is required for:</label>
+
+        <div class="flex-row-end-centered mb-1rem">
+          <label class='mr-1rem font-weight-500'>Employee</label>
+          <label class="required-question-switch <%= 'switch_checked' if question.required_for_employee? || question.required_for_all? %>">
+            <input type="checkbox"
+                   name='interview_question[required_for_employee]'
+                   onclick='switchSide(this);'
+                   <%= 'checked' if question.required_for_manager? || question.required_for_all? %>
+            />
+            <div><%# do not remove %></div>
+          </label>
+        </div>
+
+        <div class="flex-row-end-centered">
+          <label class='mr-1rem font-weight-500'>Manager</label>
+          <label class="required-question-switch <%= 'switch_checked' if question.required_for_manager? || question.required_for_all? %>">
+            <input type="checkbox"
+                   name='interview_question[required_for_manager]'
+                   onclick='switchSide(this);'
+                   <%= 'checked' if question.required_for_manager? || question.required_for_all? %>
+            />
+            <div><%# do not remove %></div>
+          </label>
+        </div>
+
+      </div>
+    </div>
+
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+
+  <% end %>
+
+<% end %>
