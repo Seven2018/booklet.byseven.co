@@ -50,61 +50,70 @@ class CampaignsController < ApplicationController
 
   def campaigns_report
     @campaigns = policy_scope(Campaign)
-    @campaigns = @campaigns.where(company_id: current_user.company_id)
-    @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).order(lastname: :asc)
-    @selected_manager_id = ''
+    @company = current_user.company
+
+    # TODO replace current_user.company by @company
+    unless @company
+      authorize @campaigns
+      flash[:alert] = "L'utilisateur doit être associé à une société !"
+      redirect_to root_path and return
+    end
+
+    # @campaigns = @campaigns.where(company_id: current_user.company)
+    # @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).order(lastname: :asc)
+    # @selected_manager_id = ''
     authorize @campaigns
-    if params[:select_period].present?
-      @start_date = params[:select_period][:start].to_date
-      @end_date = params[:select_period][:end].to_date
-      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', @start_date, @end_date)
-      @all_campaigns = @campaigns
-      @reload_control = 'true'
-      if params[:select_period][:campaigns] == 'ongoing'
-        @campaigns = @campaigns.where_exists(:interviews, completed: false)
-        @reload_control = 'false'
-      elsif params[:select_period][:campaigns] == 'completed'
-        @campaigns = @campaigns.where_not_exists(:interviews, completed: false)
-        @reload_control = 'false'
-      end
-      if params[:select_period][:name] != ''
-        @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).search_by_name("#{params[:select_period][:name]}").order(lastname: :asc)
-        params[:select_period].present? ? @selected_manager_id = params[:select_period][:manager_id] : @selected_manager_id = ''
-      end
-      @all_campaigns = @campaigns
-      if params[:select_period][:manager_id].present?
-        @selected_manager_id = params[:select_period][:manager_id]
-        @campaigns = @campaigns.where(owner_id: params[:select_period][:manager_id])
-      end
+    # if params[:select_period].present?
+    #   @start_date = params[:select_period][:start].to_date
+    #   @end_date = params[:select_period][:end].to_date
+    #   @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', @start_date, @end_date)
+    #   @all_campaigns = @campaigns
+    #   @reload_control = 'true'
+    #   if params[:select_period][:campaigns] == 'ongoing'
+    #     @campaigns = @campaigns.where_exists(:interviews, completed: false)
+    #     @reload_control = 'false'
+    #   elsif params[:select_period][:campaigns] == 'completed'
+    #     @campaigns = @campaigns.where_not_exists(:interviews, completed: false)
+    #     @reload_control = 'false'
+    #   end
+    #   if params[:select_period][:name] != ''
+    #     @managers = User.where(company_id: current_user.company_id, access_level: ['HR', 'HR-light', 'Manager', 'Manager-light']).search_by_name("#{params[:select_period][:name]}").order(lastname: :asc)
+    #     params[:select_period].present? ? @selected_manager_id = params[:select_period][:manager_id] : @selected_manager_id = ''
+    #   end
+    #   @all_campaigns = @campaigns
+    #   if params[:select_period][:manager_id].present?
+    #     @selected_manager_id = params[:select_period][:manager_id]
+    #     @campaigns = @campaigns.where(owner_id: params[:select_period][:manager_id])
+    #   end
 
-    # TEMP #
-    elsif params[:select_period_temp].present?
-      start_temp = params.dig(:select_period_temp, :start).split('/').reverse.join
-      end_temp = params.dig(:select_period_temp, :end).split('/').reverse.join
-      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', start_temp, end_temp)
-    ########
+    # # TEMP #
+    # elsif params[:select_period_temp].present?
+    #   start_temp = params.dig(:select_period_temp, :start).split('/').reverse.join
+    #   end_temp = params.dig(:select_period_temp, :end).split('/').reverse.join
+    #   @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', start_temp, end_temp)
+    # ########
 
-    elsif params[:format] == 'csv'
-      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', params[:start_date], params[:end_date])
-    else
-      @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', Date.today, Date.today.end_of_year)
-      @all_campaigns = @campaigns
-    end
-    respond_to do |format|
-      format.html
-      format.js
-      # format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params[:start_date]} to #{params[:end_date]}.csv" }
+    # elsif params[:format] == 'csv'
+    #   @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', params[:start_date], params[:end_date])
+    # else
+    #   @campaigns = @campaigns.where_exists(:interviews, 'date >= ? AND date <= ?', Date.today, Date.today.end_of_year)
+    #   @all_campaigns = @campaigns
+    # end
+    # respond_to do |format|
+    #   format.html
+    #   format.js
+    #   # format.csv { send_data @campaigns.to_csv(current_user.company_id), :filename => "Campaign Export - #{current_user.company.name} - #{params[:start_date]} to #{params[:end_date]}.csv" }
 
-      # TEMP #
-      format.csv {
-        if params.dig(:select_period_temp, :mode) == 'Analytics'
-          send_data @campaigns.to_csv_analytics(current_user.company_id, params.dig(:select_period_temp, :category)), :filename => "Campaign Export (Analytics) - #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
-        else
-          send_data @campaigns.to_csv_data(current_user.company_id), :filename => "Campaign Export (Data)- #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
-        end
-      }
-      ########
-    end
+    #   # TEMP #
+    #   format.csv {
+    #     if params.dig(:select_period_temp, :mode) == 'Analytics'
+    #       send_data @campaigns.to_csv_analytics(current_user.company_id, params.dig(:select_period_temp, :category)), :filename => "Campaign Export (Analytics) - #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
+    #     else
+    #       send_data @campaigns.to_csv_data(current_user.company_id), :filename => "Campaign Export (Data)- #{current_user.company.name} - #{params.dig(:select_period_temp, :start)} to #{params.dig(:select_period_temp, :end)}.csv"
+    #     end
+    #   }
+    #   ########
+    # end
   end
 
   def campaign_report_info

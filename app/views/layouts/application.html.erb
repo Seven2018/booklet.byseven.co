@@ -20,6 +20,7 @@
 
   </head>
   <body>
+    <%= render 'shared/impersonations' %>
     <% if user_signed_in? %>
 
       <% if @show_navbar_campaign || params[:redirected_from] == 'campaigns' %>

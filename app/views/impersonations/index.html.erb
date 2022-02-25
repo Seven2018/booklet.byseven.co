@@ -1,0 +1,47 @@
+<div class="container">
+
+  <div class="m-5 text-secondary">
+    <div class="custom-h6 font-weight-bold">Role filter</div>
+    <% User::ACCESS_LEVELS.each_with_index do |access_level, index| %>
+      <% unless index.zero? %>
+        <span class="mx-1">|</span>
+       <% end %>
+      <%= link_to access_level, impersonations_path(access_level: access_level), class: 'text-secondary ml-2' %>
+    <% end %>
+  </div>
+
+
+  <div class="m-5 text-secondary ">
+    <div class="custom-h6 font-weight-bold">Pages</div>
+    <% (0..@total_pages).each do |page_number| %>
+      <%= link_to page_number, impersonations_path(page: page_number), class: "mx-1 #{'text-secondary' if params[:page].to_i == page_number}" %>
+    <% end %>
+
+  </div>
+  <div class="m-5 text-secondary ">
+    <div class="custom-h6 font-weight-bold">Hits: <%= @users.count %></div>
+  </div>
+
+
+  <ul class='mt-4'>
+    <% @users.each do |user| %>
+      <% next if user == true_user %>
+      <li>
+        Se logguer en tant que
+        <%= link_to "#{user.fullname} #{user.email}",
+          impersonate_impersonation_path(user),
+          method: :post,
+          class: 'text-orange'
+        %>
+        - créé le
+        <%= user.created_at.strftime('%F') %>
+        <span class="text-secondary">
+          <%= user.access_level %>
+          <span class="mx-1">@</span>
+          <%= "#{user.company&.name} (id: #{user.company&.id})" %>
+          </span>
+      </li>
+    <% end %>
+  </ul>
+
+</div>

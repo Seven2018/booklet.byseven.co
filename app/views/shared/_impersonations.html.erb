@@ -1,0 +1,17 @@
+<% if current_user != true_user %>
+  <div class='position-fixed top-1 left-1 z-1001'>
+    <span class="text-orange">
+      Vous (<%= true_user.firstname %>) êtes loggué en tant que
+      <%= "#{current_user.fullname} (access_level #{current_user.access_level} - company #{current_user.company.name})" %>
+    </span>
+    <%= link_to "stop impersonating",
+      stop_impersonating_impersonations_path,
+      method: :post,
+      class: 'text-danger'
+    %>
+  </div>
+<% end %>
+
+<% if current_user&.admin && current_user == true_user %>
+  <%= link_to 'impersonate', impersonations_path, class: 'position-fixed top-1 left-1 z-1001' %>
+<% end %>

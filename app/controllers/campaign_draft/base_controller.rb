@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CampaignDraft::BaseController < ApplicationController
   before_action :show_navbar_campaign
   before_action :set_multi_step_form_navbar_content, :authorize_campaign_draft
@@ -21,7 +23,9 @@ class CampaignDraft::BaseController < ApplicationController
   end
 
   def authorize_campaign_draft
-    raise Pundit::NotAuthorizedError unless CampaignPolicy.new(current_user, Campaign.new).create?
+    raise Pundit::NotAuthorizedError unless
+      CampaignPolicy.new(current_user, Campaign.new).create? &&
+      InterviewPolicy.new(current_user, Interview.new).create?
   end
 
   def campaign_draft
