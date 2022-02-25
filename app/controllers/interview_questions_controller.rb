@@ -31,7 +31,7 @@ class InterviewQuestionsController < ApplicationController
     @question.options =
       if @question.rating?
         {params[:interview_question][:options] => 1}
-      elsif @question.mcq? || question.objective?
+      elsif @question.mcq? || @question.objective?
         {'Please enter an option': 1}
       end
 

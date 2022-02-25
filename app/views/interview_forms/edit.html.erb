@@ -1,11 +1,11 @@
-<div class="centered-item p-2rem border-bottom-bkt-light-grey pos-rel" style='height: 9rem;'>
+<div class="centered-item p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
   <%= link_to interview_forms_path, class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
     <span class="iconify" data-icon="bi:arrow-left"></span>
     <p>Back</p>
   <% end %>
   <h2>1 to 1 template</h2>
   <div class="height-5rem flex-row-between-centered pos-abs" style='top: 2rem; right: 2rem;'>
-    <p class='bkt-green mr-2rem'>Up to date</p>
+    <p id='template-edit__update-status' class='bkt-green mr-2rem'>Up to date</p>
     <%= link_to interview_form_path(@template), class: 'flex-row-between-centered rounded-10px p-2rem', style: 'background: rgba(49, 119, 183, 0.1);' do %>
       <span class="iconify bkt-blue mr-1rem" data-icon="akar-icons:eye"></span>
       <p class='bkt-blue'>See template preview</p>
@@ -13,12 +13,12 @@
   </div>
 </div>
 
-<div id="template-show__container" class='flex-row-between-start bkt-bg-light-grey2 pos-rel bkt-box-shadow-compact-top'>
-  <div id="template-show__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey-1px'>
+<div id="template-show__container" class='flex-row-between-start bkt-bg-light-grey2 pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
+  <div id="template-show__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey-1px pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
     <%= render 'interview_forms/edit/edit_show_summary', template: @template, page: 'edit' %>
   </div>
 
-  <div id="template-show__container-right">
+  <div id="template-show__container-right" style='margin-left: 30rem;'>
 
     <div id="template-edit__content" class='flex-row-between-start'>
 
@@ -89,6 +89,8 @@
 <!-- JAVASCRIPT -->
 <!---------------->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
 <script>
 
   ///////////
@@ -113,6 +115,21 @@
 
   function submitForm(element) {
     element.closest('form').querySelector('.hidden-submit').click()
+  }
+
+  function updateStatusMessage(message) {
+    message_storage = document.getElementById('template-edit__update-status')
+
+    if (message == 'Up to date') {
+      message_storage.classList.add('bkt-green')
+      message_storage.classList.remove('bkt-orange')
+    } else {
+      message_storage.classList.remove('bkt-green')
+      message_storage.classList.add('bkt-orange')
+    }
+
+
+    message_storage.innerText = message
   }
 
 
@@ -172,6 +189,7 @@
   //////////////////////
 
   function checkBookletCheckbox(element) {
+    updateStatusMessage("Updating...")
     checkbox = element.querySelector('input')
     icon = element.querySelector('svg')
 
@@ -192,6 +210,7 @@
   // }
 
   function switchSide(element, save = true) {
+    updateStatusMessage("Updating...")
     switch_button = element.parentNode
     form = element.closest('form')
     hidden_submit = form.querySelector('.hidden-submit')
@@ -211,6 +230,7 @@
   ///////////////////
 
   function saveQuestion(element, keyup = false) {
+    updateStatusMessage("Updating...")
     form = element.closest('form')
 
     if (doubleClickGuardian == false) {
@@ -273,6 +293,7 @@
   }
 
   function BookletSelectSubmit(element, attribute) {
+    updateStatusMessage("Updating...")
     form = element.closest('form')
     container = element.closest('.booklet-select__template-edit-container')
     selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
@@ -301,6 +322,73 @@
       cross_toggle_input.disabled = true
     }
     submit_button.click()
+  }
+
+  ///////////////////
+  // AUTO COMPLETE //
+  ///////////////////
+
+  $input_tag = $("#search_tags");
+
+  var options_tag = {
+    listLocation: "tags",
+    getValue: 'tag_name',
+    url: function(phrase) {
+      return "/tags_search.json?search=" + phrase
+    },
+    list: {
+      onChooseEvent: function() {
+        tag_id = $input_tag.getSelectedItemData().id
+        button = document.querySelector('#template-edit__tags-search').querySelector('.bkt-btn-blue')
+        button.id = 'add_tag-' + tag_id
+      },
+      match: {
+        enabled: true
+      }
+    }
+  }
+
+  $input_tag.easyAutocomplete(options_tag);
+
+
+  /////////////////
+  // MANAGE TAGS //
+  /////////////////
+
+  function manageTag(element, option) {
+    tag_id = element.id.split('-')[1]
+    tag_checkbox = document.querySelector('#interview_form_tags_' + tag_id)
+
+    if (option == 'add') {
+      tag_checkbox.checked = true
+    } else if (option == 'remove') {
+      tag_checkbox.checked = false
+    }
+
+    tag_checkbox.closest('form').querySelector('.hidden-submit').click()
+  }
+
+  function toggleTagCategoryDropdown(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode
+    if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '10000px'
+      block.classList.add('active')
+    } else {
+      block.style.maxHeight = '60px'
+      block.classList.remove('active')
+    }
+  }
+
+  function autoSubmitTag(element) {
+    element.closest('form').querySelector('.hidden-submit').click()
   }
 
   ///////////////////////
@@ -372,29 +460,5 @@
       block.classList.remove('active')
     }
   }
-
-  function toggleTagCategoryDropdown(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode
-    if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '10000px'
-      block.classList.add('active')
-    } else {
-      block.style.maxHeight = '60px'
-      block.classList.remove('active')
-    }
-  }
-
-  function autoSubmitTag(element) {
-    element.closest('form').querySelector('.hidden-submit').click()
-  }
-
 
 </script>

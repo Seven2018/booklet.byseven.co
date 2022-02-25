@@ -134,11 +134,16 @@
         <label class='mb-2rem font-weight-500'>This question is visible for:</label>
 
         <div class="flex-row-start-centered mb-1rem">
-          <label class="required-question-switch <%= 'switch_checked' if question.visible_for_employee? || question.visible_for_all? %>">
-            <input type="checkbox"
+
+          <% visible_for_employee_check = (question.visible_for_employee? || question.visible_for_all?) && (template.answerable_by_both? || template.answerable_by_employee?) %>
+
+          <label class="required-question-switch <%= 'switch_checked' if visible_for_employee_check %>">
+            <input id='interview_question_visible_options-<%= question.id %>'
+                   type="checkbox"
                    name='interview_question[visible_for_employee]'
                    onclick='switchSide(this);'
-                   <%= 'checked' if question.visible_for_employee? || question.visible_for_all? %>
+                   <%= 'checked' if visible_for_employee_check %>
+                   <%= 'disabled' unless template.answerable_by_both? %>
             />
             <div><%# do not remove %></div>
           </label>
@@ -146,11 +151,16 @@
         </div>
 
         <div class="flex-row-start-centered">
-          <label class="required-question-switch <%= 'switch_checked' if question.visible_for_manager? || question.visible_for_all? %>">
-            <input type="checkbox"
+
+          <% visible_for_manager_check = (question.visible_for_manager? || question.visible_for_all?) && (template.answerable_by_both? || template.answerable_by_manager?) %>
+
+          <label class="required-question-switch <%= 'switch_checked' if visible_for_manager_check %>">
+            <input id='interview_question_visible_options-<%= question.id %>'
+                   type="checkbox"
                    name='interview_question[visible_for_manager]'
                    onclick='switchSide(this);'
-                   <%= 'checked' if question.visible_for_manager? || question.visible_for_all? %>
+                   <%= 'checked' if visible_for_manager_check %>
+                   <%= 'disabled' unless template.answerable_by_both? %>
             />
             <div><%# do not remove %></div>
           </label>
@@ -162,24 +172,32 @@
         <label class='font-weight-500 mb-2rem'>This question is required for:</label>
 
         <div class="flex-row-end-centered mb-1rem">
+
+          <% required_for_employee_check = question.required_for_employee? || question.required_for_all? || template.answerable_by_employee? %>
+
           <label class='mr-1rem font-weight-500'>Employee</label>
-          <label class="required-question-switch <%= 'switch_checked' if question.required_for_employee? || question.required_for_all? %>">
+          <label class="required-question-switch <%= 'switch_checked' if required_for_employee_check %>">
             <input type="checkbox"
                    name='interview_question[required_for_employee]'
                    onclick='switchSide(this);'
-                   <%= 'checked' if question.required_for_manager? || question.required_for_all? %>
+                   <%= 'checked' if required_for_employee_check %>
+                   <%= 'disabled' unless template.answerable_by_both? %>
             />
             <div><%# do not remove %></div>
           </label>
         </div>
 
         <div class="flex-row-end-centered">
+
+          <% required_for_manager_check = question.required_for_manager? || question.required_for_all? || template.answerable_by_manager? %>
+
           <label class='mr-1rem font-weight-500'>Manager</label>
-          <label class="required-question-switch <%= 'switch_checked' if question.required_for_manager? || question.required_for_all? %>">
+          <label class="required-question-switch <%= 'switch_checked' if required_for_manager_check %>">
             <input type="checkbox"
                    name='interview_question[required_for_manager]'
                    onclick='switchSide(this);'
-                   <%= 'checked' if question.required_for_manager? || question.required_for_all? %>
+                   <%= 'checked' if required_for_manager_check %>
+                   <%= 'disabled' unless template.answerable_by_both? %>
             />
             <div><%# do not remove %></div>
           </label>

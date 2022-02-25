@@ -48,7 +48,11 @@ class InterviewFormsController < ApplicationController
       params.dig(:interview_form, :cross).present? && @template.answerable_by_both? ? true : false
     @template.update(cross: cross_status)
 
-    # head :no_content
+    answerable_by_status = @template.answerable_by
+    unless @template.answerable_by_both?
+      @template.interview_questions.update_all(visible_for: answerable_by_status, required_for: answerable_by_status)
+    end
+
     respond_to do |format|
       format.html {interview_form_path(@template)}
       format.js
