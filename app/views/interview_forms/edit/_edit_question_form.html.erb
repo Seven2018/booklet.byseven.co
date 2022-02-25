@@ -66,7 +66,7 @@
       input_html: {
         class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem',
         autocomplete: 'off',
-        onkeyup: 'saveQuestion(this, true)'
+        onkeyup: 'saveForm(this, true)'
       },
       required: true,
       label: (question.separator? ? 'Title' : false )
@@ -90,7 +90,7 @@
           collection: (1..10),
           label: false,
           input_html: {
-            onchange: 'saveQuestion(this);'
+            onchange: 'saveForm(this);'
           },
           selected: question.options.keys.first
         ) %>
@@ -121,7 +121,7 @@
 <% if question.mcq? || question.objective? %>
   <label class='fs-1_4rem font-weight-500'>Answer options</label>
   <div id='mcq-<%= question.id %>' class='mb-2rem'>
-    <%= render 'interview_forms/edit/edit_show_mcq', question: question, page: 'edit' %>
+    <%= render 'interview_forms/edit/edit_show_mcq', question: question %>
   </div>
 <% end %>
 

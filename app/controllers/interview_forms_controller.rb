@@ -97,12 +97,8 @@ class InterviewFormsController < ApplicationController
     authorize @template
     @card_id = @template.id
     @template.destroy
-    if ['show', 'edit'].include?(params[:page])
-      redirect_to interview_forms_path
-    else
-      respond_to do |format|
-        format.js
-      end
+    respond_to do |format|
+      format.js
     end
   end
 

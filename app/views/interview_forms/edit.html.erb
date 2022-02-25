@@ -15,7 +15,7 @@
 
 <div id="template-show__container" class='flex-row-between-start bkt-bg-light-grey2 pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
   <div id="template-show__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey-1px pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
-    <%= render 'interview_forms/edit/edit_show_summary', template: @template, page: 'edit' %>
+    <%= render 'interview_forms/edit/edit_show_summary', template: @template %>
   </div>
 
   <div id="template-show__container-right" style='margin-left: 30rem;'>
@@ -25,7 +25,7 @@
       <div id="template-edit__content-center" class='flex-column-start-centered'>
 
         <div id="template-show__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
-          <%= render 'interview_forms/edit/edit_template_attributes', template: @template, page: 'edit' %>
+          <%= render 'interview_forms/edit/edit_template_attributes', template: @template %>
         </div>
 
         <div style='width: 100%; max-width: 64rem;'>
@@ -33,14 +33,14 @@
         </div>
 
         <div id="template-show__lines" style='width: 100%; max-width: 64rem;'>
-          <%= render 'interview_forms/edit/edit_questions_index', template: @template, page: 'edit' %>
+          <%= render 'interview_forms/edit/edit_questions_index', template: @template %>
         </div>
 
       </div>
 
       <div id="template-edit__content-right" style=''>
         <div class="template-show-attributes-right">
-          <%= render 'interview_forms/edit/edit_template_settings', template: @template, page: 'edit' %>
+          <%= render 'interview_forms/edit/edit_template_settings', template: @template %>
         </div>
       </div>
 
@@ -200,7 +200,7 @@
       checkbox.value = 'true'
       icon.classList.remove('hidden')
     }
-    saveQuestion(element)
+    saveForm(element)
   }
 
   // function setRating(element) {
@@ -229,7 +229,7 @@
   // SAVE QUESTION //
   ///////////////////
 
-  function saveQuestion(element, keyup = false) {
+  function saveForm(element, keyup = false) {
     updateStatusMessage("Updating...")
     form = element.closest('form')
 
@@ -258,13 +258,14 @@
       trix.innerHTML = trix.parentNode.querySelector('.trix_editor').value
     }
     trix.addEventListener('keyup', (event) => {
+      updateStatusMessage("Updating...")
       if (!saving) {
         saving = true
         setTimeout(function(){
           trix.parentNode.querySelector('.trix_editor').value = trix.innerHTML
           trix.closest('form').querySelector('.hidden-submit').click()
           saving = false
-        }, 3000)
+        }, 1000)
       }
     })
   })
@@ -393,46 +394,12 @@
 
   ///////////////////////
 
-  function updateContent(element) {
-    form = element.closest('form')
-    submit = form.querySelector('.hidden-submit')
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, element) && doubleClickGuardian == false) {
-        submit.click();
-        this.removeEventListener('click', arguments.callee, false);
-      }
-    })
-  }
-
-  function multiplyNode(node, count, deep) {
-    for (var i = 0, copy; i < count - 1; i++) {
-        copy = node.cloneNode(deep);
-        node.parentNode.insertBefore(copy, node);
-    }
-  }
-
-  function openEditOptionForm(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      li = element.querySelector('li')
-      form = element.querySelector('.hidden-form-ajax')
-      input = form.querySelector('#edit_option_option')
-      li.classList.add('hidden')
-      form.classList.remove('hidden')
-      input.focus()
-      // input.selectionStart = input.selectionEnd = input.value.length
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, element)) {
-          e.stopPropagation()
-          e.preventDefault()
-          li.classList.remove('hidden')
-          form.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-          setTimeout(function(){doubleClickGuardian = false}, 250)
-        }
-      })
-    }
-  }
+  // function multiplyNode(node, count, deep) {
+  //   for (var i = 0, copy; i < count - 1; i++) {
+  //       copy = node.cloneNode(deep);
+  //       node.parentNode.insertBefore(copy, node);
+  //   }
+  // }
 
   function toggleMod(element) {
     caret = element.querySelector('i')

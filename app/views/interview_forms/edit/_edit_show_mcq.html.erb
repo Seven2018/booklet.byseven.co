@@ -1,35 +1,22 @@
-<% edit_mode = page == 'edit' %>
-
 <div id="assessment-show-content">
   <div id='mcq-options-list'>
 
       <% question.options.sort_by {|k, v| v}.each do |option| %>
 
-        <% if edit_mode %>
-
-            <%= simple_form_for :edit_option, url: edit_mcq_option_path, method: :patch, remote: true do |f| %>
-              <div class="flex-row-between-centered mb-1rem">
-                <div class="flex-row-start-centered mcq-input-div">
-                  <%= f.text_field :option, value: option[0], autocomplete: 'off', class: 'bkt-bg-light-blue', onkeyup: 'submitForm(this);' %>
-
-                  <%= f.submit '', class: 'hidden-submit hidden' %>
-                </div>
-                <div class="flex-row-end-centered">
-                  <%= link_to delete_mcq_option_path(id: question.id, option: option[0]), method: :patch, remote: true do %>
-                    <span class="iconify fs-2_4rem bkt-light-grey5 ml-1rem" data-icon="uil:times"></span>
-                  <% end %>
-                </div>
-              </div>
-              <%= f.hidden_field :position, value: option[1] %>
-              <%= f.hidden_field :question_id, value: question.id %>
-            <% end %>
-
-        <% else %>
-
-          <div>
-            <li style='color: #888888; cursor: default;'><%= option[0] %></li>
+        <%= simple_form_for :edit_option, url: edit_mcq_option_path, method: :patch, remote: true do |f| %>
+          <div class="flex-row-between-centered mb-1rem">
+            <div class="flex-row-start-centered mcq-input-div">
+              <%= f.text_field :option, value: option[0], autocomplete: 'off', class: 'bkt-bg-light-blue', onkeyup: 'submitForm(this);' %>
+              <%= f.submit '', class: 'hidden-submit hidden' %>
+            </div>
+            <div class="flex-row-end-centered">
+              <%= link_to delete_mcq_option_path(id: question.id, option: option[0]), method: :patch, remote: true do %>
+                <span class="iconify fs-2_4rem bkt-light-grey5 ml-1rem" data-icon="uil:times"></span>
+              <% end %>
+            </div>
           </div>
-
+          <%= f.hidden_field :position, value: option[1] %>
+          <%= f.hidden_field :question_id, value: question.id %>
         <% end %>
 
       <% end %>
@@ -38,7 +25,6 @@
           <div class='flex-row-start-centered mb-1rem'>
 
             <%= f.text_field :option, autocomplete: 'off', class: 'bkt-bg-light-blue', onchange: 'submitForm(this);' %>
-
             <%= f.submit '', class: 'hidden-submit hidden' %>
 
             <div class="flex-row-end-centered">
@@ -50,8 +36,6 @@
           <%= f.hidden_field :question_id, value: question.id %>
         <% end %>
       </div>
-
-    <% if edit_mode %>
 
       <div class="flex-row-between-centered">
         <div id="mcq-add-answer" onclick="this.closest('#mcq-options-list').querySelector('.add-option-form').classList.remove('hidden');"><p class="bkt-btn-light-blue">Add an option</p></div>
@@ -76,8 +60,6 @@
           <% end %>
         </div>
       </div>
-
-    <% end %>
 
   </div>
 </div>
