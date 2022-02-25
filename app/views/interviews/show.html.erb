@@ -1,10 +1,11 @@
 <% employee = @interview.employee %>
 <% manager = @interview.campaign.owner %>
+<% admin_access = current_user == manager || current_user.hr_or_above? %>
 
 <% visibility =
     if @interview.crossed?
       ['all', 'manager', 'employee']
-    elsif current_user.manager_or_above?
+    elsif admin_access
       ['all', 'manager']
     else
       ['all', 'employee']
@@ -37,11 +38,24 @@
         </button>
       <% end %>
       <% unless @interview.locked? %>
-        <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
-          <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
-          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-        </button>
-        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
+
+        <% if current_user == manager || current_user.hr_or_above? %>
+
+          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+            <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
+            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+          </button>
+          <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
+
+        <% elsif !@interview.crossed? %>
+
+          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+            <p>Submit</p>
+            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+          </button>
+          <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
+
+        <% end %>
       <% end %>
     </div>
   </div>

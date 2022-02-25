@@ -14,7 +14,10 @@ class InterviewFormsController < ApplicationController
     end
 
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+
+    total_templates_count = @templates.count
     @templates = @templates.page(page_index)
+    @any_more = @templates.count * page_index < total_templates_count
 
     respond_to do |format|
       format.html

@@ -1,6 +1,6 @@
 document.querySelector('.organisation__title-tags').querySelector('h1').innerText = 'Employees (<%= @total_users_count %>)'
 document.querySelector('.organisation__users-index').innerHTML = '<%= j render("pages/organisation/organisation_user_cards", users: @users) %>';
-document.querySelector('.organisation__paginate-container').innerHTML = '<%= j render("pages/organisation/organisation_paginate", users: @users) %>';
+document.querySelector('.paginate-container').innerHTML = '<%= j render("pages/organisation/organisation_paginate", users: @users) %>';
 $(document).ready(function () {
   $(".organisation__users-index").floatingScroll();
 });
