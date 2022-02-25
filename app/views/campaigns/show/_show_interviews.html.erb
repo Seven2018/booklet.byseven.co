@@ -73,7 +73,7 @@
 
             <% interviews.each do |interview| %>
 
-              <% active_link = interview.crossed? && crossed_availability || ((employee_view && interview.employee?) || (manager_view && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
+              <% active_link = (interview.crossed? && crossed_availability) || ((employee_view && interview.employee?) || (manager_view && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
 
               <div class="campaign-show__card-interview">
                 <% if active_link %>
@@ -110,7 +110,7 @@
 
             <% end %>
 
-            <% if crossed_interview.completed? %>
+            <% if crossed_interview.locked? %>
               <div class="campaign-show__card-interviews-info-locked">
                 <p>Interview locked</p>
                 <span class="iconify" data-icon="akar-icons:circle-check-fill"></span>

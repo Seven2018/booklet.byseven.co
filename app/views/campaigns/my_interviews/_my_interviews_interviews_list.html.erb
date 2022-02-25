@@ -3,6 +3,7 @@
   <% manager = campaign.owner %>
   <% manager_interview = campaign.crossed? ? campaign.interviews.find_by(employee_id: current_user.id, label: 'Manager') : campaign.interviews.find_by(employee_id: current_user.id, label: 'Simple') %>
   <% employee_interview = campaign.interviews.find_by(employee: current_user.id, label: ['Simple','Employee']) %>
+  <% crossed_interview = campaign.interviews.find_by(employee: current_user.id, label: 'Crossed') %>
   <% status = if manager_interview.locked?
           'locked'
         elsif campaign.completion_for(current_user) == 0
@@ -72,9 +73,13 @@
 
     <div class="campaigns-my-interviews__card-part-right">
       <div class="campaigns-my-interviews__card-review-link">
-        <%= link_to interview_path(employee_interview) do %>
+
+        <% target_interview = campaign.crossed? && crossed_interview.completed? ? crossed_interview : employee_interview %>
+
+        <%= link_to interview_path(target_interview) do %>
           <p>Go to my review  <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
         <% end %>
+
       </div>
     </div>
 

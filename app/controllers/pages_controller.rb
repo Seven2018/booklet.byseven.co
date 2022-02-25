@@ -304,9 +304,10 @@ class PagesController < ApplicationController
 
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
     page_index = params[:page] if params[:page].present?
-    # raise
+
     @total_users_count = users.count
     @users = users.page(page_index)
+    @any_more = @users.count * page_index < @total_users_count
   end
 
   # TEMP #

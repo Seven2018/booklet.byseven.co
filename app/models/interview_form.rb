@@ -8,6 +8,8 @@ class InterviewForm < ApplicationRecord
 
   validates :title, presence: true
 
+  paginates_per 10
+
   enum answerable_by: {
     both: 0,
     manager: 10,

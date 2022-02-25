@@ -338,7 +338,9 @@ class CampaignsController < ApplicationController
 
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
 
+    total_campaigns_count = @campaigns.count
     @campaigns = @campaigns.page(page_index)
+    @any_more = @campaigns.count * page_index < total_campaigns_count
   end
 
   def find_or_create(user_id, label, form, date, creator)
