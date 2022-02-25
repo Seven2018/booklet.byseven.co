@@ -1,0 +1,41 @@
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pt-2rem'>
+  <div class="from_medium__h-60vh"
+                             <%# top navbar1 + navbar2 + pt-2rem %>
+    style="position: sticky; top: calc(7.5rem + 7.5rem + 2rem);"
+  >
+    <div class="bkt-progress">
+      <div class="bkt-progress-thread"></div>
+      <% CampaignDraft::PROGRESS_STATES.each do |state, state_label| %>
+        <%= link_to send "edit_campaign_draft_#{state}_path".to_sym do %>
+          <div class="bkt-progress-pearl <%= @campaign.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
+            <% if @campaign.state_set_or_above?(state) %>
+              <i class="fas fa-check"></i>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div style='margin: 0 5%;'></div>
+  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw">
+    <%= form_with url: send("campaign_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
+      <%= render "campaign_draft/form_#{controller_name}", campaign: @campaign %>
+      <% if @controller_action.to_sym == :launches_edit %>
+        <div class="d-flex justify-content-center pt-5">
+          <button class='bkt-btn-blue'>Launch Campaign</button>
+        </div>
+      <% else %>
+        <div class="d-flex justify-content-end pt-5">
+          <button class='bkt-btn-blue'>Next <i class="fa fa-arrow-right"></i></button>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<% if params[:debug] %>
+  <div class="fs-2_4rem">
+    <%= @campaign.data %>
+  </div>
+<% end %>

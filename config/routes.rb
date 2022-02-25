@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
 
+  require 'sidekiq/web'
+  authenticate :user, ->(u) { u.super_admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   root to: 'pages#home'
 
   # ASSESSMENTS
@@ -38,12 +42,25 @@ Rails.application.routes.draw do
   get :campaign_remove_user, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
 
+  namespace :campaign_draft do
+    resource :settings, only: %i[edit update]
+    resource :participants, only: %i[edit update]
+    resource :templates, only: %i[edit update]
+    resource :dates, only: %i[edit update]
+    resource :launches, only: %i[edit update]
+  end
+
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
   get :categories_search, controller: :categories
 
   # COMPANIES
   resources :companies, only: %i[new create update destroy]
+  resource :companies, only: [] do
+    scope module: :companies do
+      resources :csv_exports, only: %i[show create destroy]
+    end
+  end
 
   # CONTENTS
   resources :contents, only: %i[create show edit update destroy] do
@@ -115,6 +132,11 @@ Rails.application.routes.draw do
   # SESSIONS
   resources :sessions, only: %i[update destroy]
   get :book_sessions, controller: :sessions
+
+  resources :impersonations, only: [:index] do
+    post :impersonate, on: :member
+    post :stop_impersonating, on: :collection
+  end
 
   # SKILLS (NOT USED)
   # resources :skills

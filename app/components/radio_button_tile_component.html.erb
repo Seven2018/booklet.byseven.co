@@ -1,0 +1,30 @@
+<%= label_tag(
+    model_name,
+    class: "d-flex flex-column align-items-center
+            #{@compact ? 'p-2' : 'py-4 px-5'}
+            rounded-2px #{'cursor-pointer' unless @disabled}",
+    style: "background-color: rgba(49, 119, 183, 0.1); flex: 1 1 0;",
+    data: {
+      controller: 'toggle-checked',
+      toggle_checked_checked_classes_value: 'border-bkt-dark-blue bkt-dark-blue',
+      toggle_checked_unchecked_classes_value: 'border-bkt-light-grey5-1px bkt-light-grey5 bkt-bg-white opacity_30pc',
+      toggle_checked_toggle_all_event_value: toggle_all_event,
+      action: "click->toggle-checked#dispatchToggleAll #{toggle_all_event}@window->toggle-checked#toggle"
+    }
+  ) do %>
+  <div class="d-flex flex-column align-items-center justify-content-center p-3">
+    <i class="<%= @icon_klasses %>"></i>
+    <div class="m-1"></div>
+    <div class="font-weight-600 fs-1_4rem text-center"><%= @title %></div>
+  </div>
+  <div class="text-center fs-1_2rem"><%= @subtitle %></div>
+  <%= radio_button_tag(
+    @model,
+    @name,
+    @checked,
+    disabled: @disabled,
+    class: 'd-none',
+    data: {
+      toggle_checked_target: :radioButton
+    }) %>
+<% end %>

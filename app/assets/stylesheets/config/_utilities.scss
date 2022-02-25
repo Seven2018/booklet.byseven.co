@@ -10,13 +10,25 @@
 .pos-abs { position: absolute; }
 .pos-fix { position: fixed; }
 
-.ovrfl-hidden { overflow: hidden; }
+.overflow-hidden { overflow: hidden; }
+.overflow-y-scroll { overflow-y: scroll; }
 
 .cursor-pointer { cursor: pointer; }
 
 .content-box { box-sizing: content-box !important; }
 
+.opacity_10pc { opacity: 10%; }
+.opacity_20pc { opacity: 20%; }
+.opacity_30pc { opacity: 30%; }
+.opacity_40pc { opacity: 40%; }
+.opacity_50pc { opacity: 50%; }
+.opacity_60pc { opacity: 60%; }
+.opacity_70pc { opacity: 70%; }
+.opacity_80pc { opacity: 80%; }
+.opacity_90pc { opacity: 90%; }
+
 .rounded-1px { border-radius: 1px !important; }
+.rounded-2px { border-radius: 2px !important; }
 .rounded-3px { border-radius: 3px !important; }
 .rounded-5px { border-radius: 5px !important; }
 .rounded-10px { border-radius: 10px !important; }
@@ -112,4 +124,96 @@
 .mb-5rem { margin-bottom: 5rem !important; }
 .ml-5rem { margin-left:   5rem !important; }
 
+.flex-grow-0 { flex-grow: 0 !important; }
 .flex-grow-1 { flex-grow: 1 !important; }
+
+.gap-1rem { gap: 1rem; }
+
+.medium__flex-row { flex-direction: row; }
+.medium__flex-column { flex-direction: column; }
+
+.min-w-10vw  { min-width: 10vw; }
+.min-w-20vw  { min-width: 20vw; }
+.min-w-40vw  { min-width: 40vw; }
+.min-w-50vw  { min-width: 50vw; }
+.min-w-60vw  { min-width: 60vw; }
+.min-w-70vw  { min-width: 70vw; }
+.min-w-80vw  { min-width: 80vw; }
+.min-w-90vw  { min-width: 90vw; }
+.min-w-100vw { min-width: 100vw; }
+
+.min-h-10vh  { min-height: 10vh; }
+.min-h-20vh  { min-height: 20vh; }
+.min-h-40vh  { min-height: 40vh; }
+.min-h-50vh  { min-height: 50vh; }
+.min-h-60vh  { min-height: 60vh; }
+.min-h-70vh  { min-height: 70vh; }
+.min-h-80vh  { min-height: 80vh; }
+.min-h-90vh  { min-height: 90vh; }
+.min-h-100vh { min-height: 100vw; }
+
+.w-10vw  { width: 10vw; }
+.w-20vw  { width: 20vw; }
+.w-40vw  { width: 40vw; }
+.w-50vw  { width: 50vw; }
+.w-60vw  { width: 60vw; }
+.w-70vw  { width: 70vw; }
+.w-80vw  { width: 80vw; }
+.w-90vw  { width: 90vw; }
+.w-100vw { width: 100vw; }
+
+.h-10vh  { height: 10vh; }
+.h-20vh  { height: 20vh; }
+.h-40vh  { height: 40vh; }
+.h-50vh  { height: 50vh; }
+.h-60vh  { height: 60vh; }
+.h-70vh  { height: 70vh; }
+.h-80vh  { height: 80vh; }
+.h-90vh  { height: 90vh; }
+.h-100vh { height: 100vw; }
+
+@include from-medium {
+  .from-medium__flex-row { flex-direction: row; }
+  .from-medium__flex-column { flex-direction: column; }
+
+  .from_medium__min-w-10vw  { min-width: 10vw; }
+  .from_medium__min-w-20vw  { min-width: 20vw; }
+  .from_medium__min-w-40vw  { min-width: 40vw; }
+  .from_medium__min-w-50vw  { min-width: 50vw; }
+  .from_medium__min-w-60vw  { min-width: 60vw; }
+  .from_medium__min-w-70vw  { min-width: 70vw; }
+  .from_medium__min-w-80vw  { min-width: 80vw; }
+  .from_medium__min-w-90vw  { min-width: 90vw; }
+  .from_medium__min-w-100vw { min-width: 100vw; }
+
+  .from_medium__min-h-10vh  { min-height: 10vh; }
+  .from_medium__min-h-20vh  { min-height: 20vh; }
+  .from_medium__min-h-40vh  { min-height: 40vh; }
+  .from_medium__min-h-50vh  { min-height: 50vh; }
+  .from_medium__min-h-60vh  { min-height: 60vh; }
+  .from_medium__min-h-70vh  { min-height: 70vh; }
+  .from_medium__min-h-80vh  { min-height: 80vh; }
+  .from_medium__min-h-90vh  { min-height: 90vh; }
+  .from_medium__min-h-100vh { min-height: 100vw; }
+
+  .from_medium__w-10vw  { width: 10vw; }
+  .from_medium__w-20vw  { width: 20vw; }
+  .from_medium__w-40vw  { width: 40vw; }
+  .from_medium__w-50vw  { width: 50vw; }
+  .from_medium__w-60vw  { width: 60vw; }
+  .from_medium__w-70vw  { width: 70vw; }
+  .from_medium__w-80vw  { width: 80vw; }
+  .from_medium__w-90vw  { width: 90vw; }
+  .from_medium__w-100vw { width: 100vw; }
+
+  .from_medium__h-10vh  { height: 10vh; }
+  .from_medium__h-20vh  { height: 20vh; }
+  .from_medium__h-40vh  { height: 40vh; }
+  .from_medium__h-50vh  { height: 50vh; }
+  .from_medium__h-60vh  { height: 60vh; }
+  .from_medium__h-70vh  { height: 70vh; }
+  .from_medium__h-80vh  { height: 80vh; }
+  .from_medium__h-90vh  { height: 90vh; }
+  .from_medium__h-100vh { height: 100vw; }
+}
+

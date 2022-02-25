@@ -1,4 +1,5 @@
 class InterviewsController < ApplicationController
+  before_action :show_navbar_campaign
 
   def create
     authorize Interview.new

@@ -1,9 +1,38 @@
 <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
 
-
 <h1 class="my-5">Guidelines</h1>
 
+
+<h2 class="my-5">Colors</h2>
+
+<div class="d-flex">
+  <% %w[
+    bkt-bg-blue
+    bkt-bg-blue-hover
+    bkt-bg-white
+    bkt-bg-light-grey
+    bkt-bg-light-grey2
+    bkt-bg-light-grey3
+    bkt-bg-light-grey4
+    bkt-bg-light-grey5
+    bkt-bg-light-grey6
+    bkt-bg-dark-grey
+    bkt-bg-green
+    bkt-bg-orange
+    bkt-bg-red
+   ].each do |color_bg_class| %>
+   <div class="d-flex flex-column align-items-center m-2">
+    <%= color_bg_class.gsub('-bg', '') %>
+    <div style='height: 20px; width: 100px; border-radius: 10px;'
+      class='my-1 <%= color_bg_class %>'
+    ></div>
+    </div>
+  <% end %>
+</div>
+
+
 <h2 class="my-5">Borders</h2>
+
 
 <div class="d-flex m-5" style='gap: 5px;'>
   <% %w[
@@ -28,11 +57,44 @@
 </div>
 
 
-
-
-
 <h2 class="my-5">Fonts</h2>
-<div class="m-5 fs-1_6rem">Basically one single font: Montserrat</div>
+
+ <h3 class="my-5">H1</h3>
+    <div class="m-1">
+      <div class="bkt-h1 bold-700">Title Example</div>
+      <div class="bkt-h1 bold-600">Title Example</div>
+      <div class="bkt-h1 bold-500">Title Example</div>
+    </div>
+
+  <h3 class="my-5">H2</h3>
+    <div class="m-1">
+      <div class="bkt-h2 bold-700">Title Example</div>
+      <div class="bkt-h2 bold-600">Title Example</div>
+      <div class="bkt-h2 bold-500">Title Example</div>
+    </div>
+
+  <h3 class="my-5">H3</h3>
+    <div class="m-1">
+      <div class="bkt-h3 bold-700">Title Example</div>
+      <div class="bkt-h3 bold-600">Title Example</div>
+      <div class="bkt-h3 bold-500">Title Example</div>
+    </div>
+
+    <h3 class="my-5">Classic Text</h3>
+      <div class="my-3">
+        <div class="bkt-text-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+      </div>
+      <div class="my-3">
+        <div class="bkt-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+      </div>
+
+    <h3 class="my-5">Description</h3>
+      <div class="my-3">
+        <div class="bkt-description-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+      </div>
+      <div class="my-3">
+        <div class="bkt-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+      </div>
 
 
 <h2 class="my-5">Tags</h2>
@@ -43,8 +105,27 @@
   <% end %>
 </div>
 
+ <div class="m-1">
+      <div class='bkt-tag-green-status'>
+        Completed
+      </div>
+    </div>
+
+    <div class="m-1">
+      <div class='bkt-tag-orange-status'>
+        In progress
+      </div>
+    </div>
+
+    <div class="m-1">
+      <div class='bkt-tag-red-status'>
+        Not started
+      </div>
+    </div>
+
 
 <h2 class="my-5">Buttons</h2>
+
 <h3 class="my-2">bkt-btn-blue</h3>
 <div class="d-flex m-5" style='gap: 5px;'>
   <div>
@@ -80,6 +161,34 @@
     </div>
   </div>
 </div>
+
+<h3 class="my-2">bkt-btn-bleu DAMIEN</h3>
+  <div class="d-flex m-5" style='gap: 5px;'>
+  <div>
+    <div class='bkt-btn-bleu-add'>
+      button
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-bleu-focus'>
+      focus
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-bleu-disabled'>
+      disabled
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-bleu-no-icon'>
+      no icon
+    </div>
+  </div>
+</div>
+
 
 <h3 class="my-2">bkt-btn-white</h3>
 <div class="d-flex m-5" style='gap: 5px;'>
@@ -117,6 +226,7 @@
   </div>
 </div>
 
+
 <h3 class="my-2">bkt-btn-back</h3>
 <div class="d-flex m-5" style='gap: 5px;'>
   <div>
@@ -124,6 +234,33 @@
       <span class="iconify" data-icon="bi:arrow-left"></span>
       <p>Back</p>
     </a>
+  </div>
+</div>
+
+<h3 class="my-2">bkt-btn-blanc DAMIEN</h3>
+  <div class="d-flex m-5" style='gap: 5px;'>
+  <div>
+    <div class='bkt-btn-blanc-add'>
+      button
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-blanc-focus'>
+      focus
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-blanc-disabled'>
+      disabled
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-blanc-no-icon'>
+      no icon
+    </div>
   </div>
 </div>
 
@@ -179,9 +316,10 @@
 
 <h2 class="my-5">Form</h2>
 
+<h3 class="my-2">form with bootstrap</h3>
+
 <div
-  class='d-flex justify-content-start align-items-center position-relative'
-  style='margin-bottom: 4rem'
+  class='d-flex justify-content-start align-items-center position-relative p-2'
 >
   <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
     style='left: 25rem; bottom: 16.6px;'
@@ -257,8 +395,7 @@
     </div>
   </div>
 
-<h3 class="my-3">Info Modal</h3>
-
+  <h3 class="my-3">Info Modal</h3>
 
   <div class="modal-dialog" role="document">
     <div class="modal-content info-modal-content" >
@@ -272,6 +409,135 @@
     </div>
   </div>
 </div>
+
+
+<h3 class="my-2">form without bootstrap</h3>
+
+<h4 class="my-2">text inputs</h4>
+
+<div class="p-2">
+  <%= text_field_tag :title, nil, placeholder: 'Enter title', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3' %>
+</div>
+
+<div class="p-2">
+  <%= text_field_tag :title, 'some value', placeholder: 'Enter title', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3' %>
+</div>
+
+<h4 class="my-2">radio buttons tiles</h4>
+
+<div class="p-2 d-flex gap-1rem" style="width: 500px;">
+
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_type,
+    name: :feedback_365,
+    checked: true,
+    icon_klasses: "fas fa-check",
+    title: "Manual",
+    subtitle: "Chose Manual to select participants from your employee list"
+  ) %>
+
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_type,
+    name: :feedback_90,
+    checked: false,
+    icon_klasses: "fas fa-rocket",
+    title: "Compact",
+    subtitle: "Less stuff"
+  ) %>
+</div>
+
+<div class="p-2 d-flex gap-1rem" style="width: 500px;">
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_kind,
+    name: :feedback_90,
+    checked: true,
+    icon_klasses: "fas fa-rocket",
+    title: "Compact",
+    subtitle: "Less stuff",
+    compact: true
+  ) %>
+
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_kind,
+    name: :one_to_one,
+    checked: false,
+    icon_klasses: "fas fa-plus",
+    title: "Auto",
+    subtitle: "Chose Auto to add participants by their arrival date in the company",
+    compact: true
+  ) %>
+
+  <%= render_component RadioButtonTileComponent.new(
+    model: :campaign_kind,
+    name: :feedback_180,
+    checked: false,
+    icon_klasses: "fas fa-arrow-right",
+    title: "Disabled",
+    subtitle: "You can not click this one",
+    compact: true,
+    disabled: true
+  ) %>
+
+</div>
+
+
+<h2 class="my-5">Modals</h2>
+
+  <h3 class="my-3">Action Modal</h3>
+
+      <div class="modal-dialog" role="document">
+        <div class="modal-content action-modal-content" >
+          <div class="modal-header action-modal-header">
+            <h5 class="modal-title action-modal-title">Modal Title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="close-action-modal">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body action-modal-body">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+          </div>
+          <div class="modal-footer action-modal-footer">
+            <button type="button" class="bkt-btn-bleu-add">Continuer</button>
+          </div>
+        </div>
+      </div>
+
+    <h3 class="my-3">Info Modal</h3>
+
+
+      <div class="modal-dialog" role="document">
+        <div class="modal-content info-modal-content" >
+          <div class="modal-body info-modal-body">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="close-info-modal">&times;</span>
+            </button>
+            <span class="iconify" data-icon="el:ok-sign" style="color: #3177b7;" data-width="80" data-height="80"></span>
+            <p>Action have been done successfuly !</p>
+          </div>
+        </div>
+      </div>
+
+
+
+<h2 class="my-5">Progress bar</h2>
+
+<div style="width: 500px; height: 500px;">
+  <div class="bkt-progress">
+    <div class="bkt-progress-thread"></div>
+    <div class="bkt-progress-pearl full" data-title='Settings'>
+      <i class="fas fa-check"></i>
+    </div>
+    <div class="bkt-progress-pearl current" data-title='Participants'></div>
+    <div class="bkt-progress-pearl empty" data-title='Templates'></div>
+    <div class="bkt-progress-pearl empty" data-title='Dates'></div>
+    <div class="bkt-progress-pearl empty" data-title='Review & Launch'>
+      <i class="fas fa-rocket"></i>
+    </div>
+  </div>
+</div>
+
 
 <h2 class="my-5">Backgrounds</h2>
 

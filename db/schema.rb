@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_23_175148) do
+ActiveRecord::Schema.define(version: 2022_02_24_132955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "unaccent"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -82,6 +81,15 @@ ActiveRecord::Schema.define(version: 2022_02_23_175148) do
     t.index ["creator_id"], name: "index_attendees_on_creator_id"
     t.index ["session_id"], name: "index_attendees_on_session_id"
     t.index ["user_id"], name: "index_attendees_on_user_id"
+  end
+
+  create_table "campaign_drafts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "state", default: 0, null: false
+    t.jsonb "data", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_campaign_drafts_on_user_id"
   end
 
   create_table "campaigns", force: :cascade do |t|
@@ -156,6 +164,23 @@ ActiveRecord::Schema.define(version: 2022_02_23_175148) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_contents_on_company_id"
+  end
+
+  create_table "csv_exports", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.jsonb "data"
+    t.integer "state", default: 0, null: false
+    t.integer "mode", default: 0, null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string "signature"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "creator_id"
+    t.bigint "tag_category_id"
+    t.index ["company_id"], name: "index_csv_exports_on_company_id"
+    t.index ["creator_id"], name: "index_csv_exports_on_creator_id"
+    t.index ["tag_category_id"], name: "index_csv_exports_on_tag_category_id"
   end
 
   create_table "currents", force: :cascade do |t|
@@ -278,6 +303,11 @@ ActiveRecord::Schema.define(version: 2022_02_23_175148) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_mods_on_company_id"
+  end
+
+  create_table "my_interviews", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -445,6 +475,7 @@ ActiveRecord::Schema.define(version: 2022_02_23_175148) do
   add_foreign_key "assessment_questions", "mods"
   add_foreign_key "attendees", "sessions"
   add_foreign_key "attendees", "users"
+  add_foreign_key "campaign_drafts", "users"
   add_foreign_key "campaigns", "companies"
   add_foreign_key "campaigns", "interview_forms"
   add_foreign_key "campaigns", "users", column: "owner_id"
@@ -456,6 +487,9 @@ ActiveRecord::Schema.define(version: 2022_02_23_175148) do
   add_foreign_key "content_skills", "contents"
   add_foreign_key "content_skills", "skills"
   add_foreign_key "contents", "companies"
+  add_foreign_key "csv_exports", "companies"
+  add_foreign_key "csv_exports", "tag_categories"
+  add_foreign_key "csv_exports", "users", column: "creator_id"
   add_foreign_key "folder_categories", "categories"
   add_foreign_key "folder_categories", "folders"
   add_foreign_key "folder_links", "folders", column: "child_id"

@@ -1,0 +1,32 @@
+<div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
+  Summary of your campaign
+</div>
+
+<div class="fs-1_4rem my-2 bkt-dark-grey">
+  Title :
+  <span class="font-weight-600">
+    <%= campaign.title %>
+  </span>
+</div>
+
+<div class="fs-1_4rem my-2 bkt-dark-grey">
+  Template used :
+  <span class="font-weight-600">
+    <%= campaign.default_template_id %>
+  </span>
+</div>
+
+<div class="fs-1_4rem my-2 bkt-dark-grey">
+  Selected participants :
+  <span class="font-weight-600">
+    <%= campaign.interviewee_ids.count %>
+  </span>
+</div>
+
+<div class="fs-1_4rem my-2 bkt-dark-grey">
+  Manager of the campaign :
+  <span class="font-weight-600">
+    <%= campaign.default_interviewer&.fullname.presence || campaign.default_interviewer&.email %>
+  </span>
+</div>
+

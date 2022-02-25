@@ -1,6 +1,8 @@
 require 'action_text'
 
 class ApplicationController < ActionController::Base
+  impersonates :user
+
   protect_from_forgery with: :exception
   before_action :booklet_authenticate_user
   # before_action :authenticate_user!
@@ -116,5 +118,9 @@ class ApplicationController < ActionController::Base
 
   def show_navbar_admin
     @show_navbar_admin = true if current_user&.hr_or_above?
+  end
+
+  def show_navbar_campaign
+    @show_navbar_campaign = true
   end
 end

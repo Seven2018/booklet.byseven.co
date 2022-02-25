@@ -75,6 +75,14 @@
   </div>
 </div>
 
+<% if @multi_step_form_navbar_content.present? %>
+  <div class="navbar-admin">
+    <div class="navbar-admin__button">
+      <h4><%= @multi_step_form_navbar_content %></h4>
+    </div>
+  </div>
+<% end %>
+
 <% if @show_navbar_admin.present? %>
   <div class="navbar-admin">
     <% klass = 'navbar-admin__button' %>
