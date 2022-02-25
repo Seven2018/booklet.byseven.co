@@ -30,10 +30,6 @@ class InterviewFormsController < ApplicationController
 
   def show
     authorize @template
-
-    if current_user.hr_or_above?
-      redirect_to edit_interview_form_path(@template)
-    end
   end
 
   def edit

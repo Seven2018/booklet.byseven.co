@@ -132,6 +132,21 @@
     message_storage.innerText = message
   }
 
+  // AUTO UPDATE TEXTAREA HEIGHT //
+
+  const tx = document.getElementsByTagName("textarea");
+  for (let i = 0; i < tx.length; i++) {
+    tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
+    tx[i].addEventListener("click", OnInput, false);
+    tx[i].addEventListener("input", OnInput, false);
+    tx[i].click()
+  }
+
+  function OnInput() {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight) + "px";
+  }
+
 
   ///////////////////////
   // ADD QUESTION MENU //
