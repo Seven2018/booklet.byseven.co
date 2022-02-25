@@ -14,7 +14,7 @@
         <%= line %>
       </div>
     <% end %>
-    <%= link_to '', interview_form_path(template), class: 'stretched-link' %>
+    <%= link_to '', edit_interview_form_path(template), class: 'stretched-link' %>
 
     <div class="cursor-pointer z-index-5" onclick="openContentMenu(this);">
       <% if current_user.manager_or_above? %>
