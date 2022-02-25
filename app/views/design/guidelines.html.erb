@@ -226,6 +226,17 @@
   </div>
 </div>
 
+
+<h3 class="my-2">bkt-btn-back</h3>
+<div class="d-flex m-5" style='gap: 5px;'>
+  <div>
+    <a href="#" class="bkt-btn-back">
+      <span class="iconify" data-icon="bi:arrow-left"></span>
+      <p>Back</p>
+    </a>
+  </div>
+</div>
+
 <h3 class="my-2">bkt-btn-blanc DAMIEN</h3>
   <div class="d-flex m-5" style='gap: 5px;'>
   <div>
@@ -360,6 +371,45 @@
   <% end %>
 </div>
 
+<div id="modals">
+  <h2 class="my-5">Modals</h2>
+
+  <h3 class="my-3">Action Modal</h3>
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content action-modal__content" >
+      <div class="modal-header action-modal__header">
+        <h5 class="modal-title action-modal__title">Modal Title</h5>
+        <button type="button" class="action-modal__close-icon" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body action-modal__body">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+      </div>
+      <div class="modal-footer action-modal__footer">
+        <button type="button" class="bkt-btn-blue-no-icon">No Icon</button>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="my-3">Info Modal</h3>
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content info-modal-content" >
+      <div class="modal-body info-modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="close-info-modal">&times;</span>
+        </button>
+        <span class="iconify" data-icon="el:ok-sign" style="color: #3177b7;" data-width="80" data-height="80"></span>
+        <p>Action have been done successfuly !</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <h3 class="my-2">form without bootstrap</h3>
 
@@ -490,7 +540,6 @@
 
 
 <h2 class="my-5">Backgrounds</h2>
-
 
 <div
   class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'

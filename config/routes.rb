@@ -151,6 +151,7 @@ Rails.application.routes.draw do
   # TAGS
   resources :tags, only: %i[create destroy]
   get :update_tag, controller: :tags
+  get :tags_search, controller: :tags
 
   # USER_INTERESTS
   resources :user_interests, only: %i[create destroy]

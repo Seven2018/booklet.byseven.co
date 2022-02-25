@@ -1,0 +1,14 @@
+<% template.interview_questions.order(position: :asc).each do |question| %>
+  <% question.required ? required = 'Required' : required = 'Not required' %>
+
+  <div class='bkt-bg-white p-2rem rounded-10px pos-rel overflow-hidden <%= "border-bkt-blue-1px" if question.question_type == "separator" %>'
+       id="item-<%= question.position %>" style='max-height: 10000px;'>
+    <div id="anchor-<%= question.id %>" class="pos-abs" style="top: -9rem;"></div>
+    <%= render 'interview_forms/edit/edit_question_form', question: question, template: template  %>
+  </div>
+
+  <%= render 'interview_forms/edit/edit_add_question', position: question.position %>
+
+<% end %>
+
+<div class="template-edit__content-lines"></div>

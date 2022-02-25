@@ -1,0 +1,86 @@
+<div class="interview-question__form">
+
+  <%= simple_form_for(:interview_answer,
+    url: answer_interview_question_path,
+    remote: true,
+    data: {
+      question_type: question.question_type
+    }) do |f| %>
+    <% if question.open_question? %>
+
+      <%= f.input :answer,
+          as: :text,
+          required: question.required?,
+          disabled: read_only %>
+
+    <% elsif question.rating? %>
+
+      <fieldset class="rating<%= ' rating-pizza' if current_user.company_id == 2 %><%= ' read_only' if read_only %>">
+        <% for i in 1..question.options.keys.first.to_i %>
+          <% stars_count = question.options.keys.first.to_i - i + 1 %>
+          <% input_label_key = "star-position(#{question.position})-#{i}" %>
+          <input
+            type="radio"
+            class='radio-rating'
+            id="<%= input_label_key %>"
+            name="interview_answer[answer]"
+            value="<%= stars_count %>"
+            onchange="autoSave(this);enableSubmit();"
+            <%= 'disabled' if read_only %>
+          />
+          <label
+            class="full"
+            for="<%= input_label_key %>"
+            title="<%= stars_count %> stars"
+          ><%= stars_count %></label>
+        <% end %>
+      </fieldset>
+
+      <% if question.allow_comments %>
+
+        <%= f.input(
+            :comments,
+            as: :text,
+            required: false,
+            disabled: read_only) %>
+
+      <% end %>
+
+    <% elsif question.mcq? || question.objective? %>
+
+      <%= f.input(
+        :objective,
+        as: :text,
+        required: question.required?,
+        disabled: read_only
+      ) if question.objective? %>
+
+      <div class="booklet-select__container" >
+        <div class="booklet-select__selected" onclick='BookletSelectExpand(this);'>
+          <p></p>
+          <div class="booklet-select__controls">
+            <div class="booklet-select__controls-icon">
+              <i class="fas fa-angle-down"></i>
+            </div>
+          </div>
+        </div>
+        <div class="booklet-select__dropdown hidden">
+          <% question.options.keys.each do |option| %>
+            <div class="booklet-select__option" onclick='BookletSelectSubmit(this);'>
+              <p><%= option %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+        <%= f.input(
+            :comments,
+            as: :text,
+            required: false,
+            disabled: read_only) if question.allow_comments %>
+
+    <% end %>
+
+  <% end %>
+
+</div>

@@ -13,6 +13,13 @@ class InterviewQuestion < ApplicationRecord
     employee: 20,
   }, _prefix: true
 
+  enum required_for: {
+    none: 0,
+    all: 10,
+    manager: 20,
+    employee: 30
+  }, _prefix: true
+
   # TODO refacto question_type => enum
   # for perf + having below getters out of the box
   def open_question?

@@ -17,6 +17,10 @@ class InterviewFormPolicy < ApplicationPolicy
     user.hr_or_above?
   end
 
+  def edit?
+    user.hr_or_above? && record.company_id == user.company_id
+  end
+
   def update?
     user.hr_or_above?
   end
