@@ -14,7 +14,7 @@
         <%= line %>
       </div>
     <% end %>
-    <%= link_to '', interview_form_path(template), class: 'stretched-link' %>
+    <%= link_to '', edit_interview_form_path(template), class: 'stretched-link' %>
 
     <div class="cursor-pointer z-index-5" onclick="openContentMenu(this);">
       <% if current_user.manager_or_above? %>
@@ -46,7 +46,7 @@
 <% end %>
 
 <% if @templates.count == 10 %>
-  <div class="campaigns-index__paginate-container">
+  <div class="paginate-container">
     <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
       <div class="paginate__previous-button" onclick='changePage("previous");'>
         <span class="iconify" data-icon="fontisto:angle-left"></span>
@@ -56,7 +56,7 @@
 
     <%= paginate @templates, left: 3, right: 1 %>
 
-    <% if @templates.count == 10 %>
+    <% if @templates.count == 10 && @any_more %>
       <div class="paginate__next-button" onclick='changePage("next");'>
         <p>Next</p>
         <span class="iconify" data-icon="fontisto:angle-right"></span>

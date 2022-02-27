@@ -4,8 +4,10 @@
     <p>Previous</p>
   </div>
 <% end %>
+
 <%= paginate users, left: 3, right: 1, remote: true %>
-<% if @users.count == 50 %>
+
+<% if @users.count == 50 && @any_more %>
   <div class="paginate__next-button" onclick='changePage("next");'>
     <p>Next</p>
     <span class="iconify" data-icon="fontisto:angle-right"></span>

@@ -3,25 +3,40 @@ class InterviewQuestionsController < ApplicationController
 
   def create
     @question = InterviewQuestion.new(question_params)
+    authorize @question
+
+    target_position = params.dig(:interview_question, :position).to_i + 1
+
     @form = InterviewForm.find(@question.interview_form_id)
     questions = @form.interview_questions.order(position: :asc)
-    authorize @question
+
+    i = target_position
+    questions.where('position >= ?', target_position).each do |question|
+      question.update position: i
+      i += 1
+    end
+    @question.position = target_position
 
     # Properly order the questions, if necessary
     if questions.map(&:position) != (1..questions.count).to_a
-      i = 1
+      j = 1
       questions.each do |question|
         question.update position: i
-        i += 1
+        j += 1
       end
     end
 
-    @question.position = i
     params[:interview_question][:required].present? ? @question.required = true : @question.required = false
-    if @question.rating?
-      @question.options = {params[:interview_question][:options] => 1}
-    end
+
+    @question.options =
+      if @question.rating?
+        {params[:interview_question][:options] => 1}
+      elsif @question.mcq? || @question.objective?
+        {'Please enter an option': 1}
+      end
+
     @question.save
+
     respond_to do |format|
       format.html {redirect_to interview_form_path(@form)}
       format.js
@@ -31,10 +46,39 @@ class InterviewQuestionsController < ApplicationController
   def update
     authorize @question
     @question.update(question_params)
+
     params[:interview_question][:required].present? ? @question.update(required: true) : @question.update(required: false)
+
+    required_for_employee = params.dig(:interview_question, :required_for_employee).present? ?  'employee' : nil
+    required_for_manager = params.dig(:interview_question, :required_for_manager).present? ? 'manager' : nil
+    required_for_all = required_for_employee && required_for_manager ? 'all' : nil
+
+    required_for = 'none'
+    [required_for_all, required_for_employee, required_for_manager].each do |element|
+      if element.present?
+        required_for = element
+        break
+      end
+    end
+
+    visible_for_employee = params.dig(:interview_question, :visible_for_employee).present? ?  'employee' : nil
+    visible_for_manager = params.dig(:interview_question, :visible_for_manager).present? ? 'manager' : nil
+    visible_for_all = visible_for_employee && visible_for_manager ? 'all' : nil
+
+    visible_for = 'all'
+    [visible_for_all, visible_for_employee, visible_for_manager].each do |element|
+      if element.present?
+        visible_for = element
+        break
+      end
+    end
+
+    @question.update(required_for: required_for, visible_for: visible_for)
+
     if @question.rating?
       @question.update(options: {params[:interview_question][:options] => 1})
     end
+
     respond_to do |format|
       format.html {redirect_to interview_form_path(@question.interview_form)}
       format.js
@@ -64,10 +108,8 @@ class InterviewQuestionsController < ApplicationController
     options_hash.delete(options_hash.key(params[:edit_option][:position].to_i))
     options_hash[params[:edit_option][:option]] = params[:edit_option][:position].to_i
     @question.update(options: options_hash)
-    respond_to do |format|
-      format.html {redirect_to interview_form_path(@question.interview_form)}
-      format.js
-    end
+
+    head :no_content
   end
 
   def delete_mcq_option
@@ -124,6 +166,6 @@ class InterviewQuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:interview_question).permit(:question, :description, :question_type, :allow_comments, :interview_form_id, :visible_for)
+    params.require(:interview_question).permit(:question, :description, :question_type, :allow_comments, :interview_form_id)
   end
 end

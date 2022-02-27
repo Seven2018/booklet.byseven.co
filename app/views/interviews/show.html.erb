@@ -1,10 +1,11 @@
 <% employee = @interview.employee %>
 <% manager = @interview.campaign.owner %>
+<% admin_access = current_user == manager || current_user.hr_or_above? %>
 
 <% visibility =
     if @interview.crossed?
       ['all', 'manager', 'employee']
-    elsif current_user.manager_or_above?
+    elsif admin_access
       ['all', 'manager']
     else
       ['all', 'employee']
@@ -20,9 +21,10 @@
 
 <div class="interview-container">
 
-  <div class="interview-controls">
-    <%= link_to campaign_path(@interview.campaign), class: 'btn-back' do %>
-      <i class="fas fa-angle-left"></i>
+  <div class="interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+    <%= link_to campaign_path(@interview.campaign), class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
+      <span class="iconify" data-icon="bi:arrow-left"></span>
+      <p>Back</p>
     <% end %>
     <div class="interview-controls__buttons">
       <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
@@ -36,18 +38,31 @@
         </button>
       <% end %>
       <% unless @interview.locked? %>
-        <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
-          <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
-          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-        </button>
-        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
+
+        <% if current_user == manager || current_user.hr_or_above? %>
+
+          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+            <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
+            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+          </button>
+          <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
+
+        <% elsif !@interview.crossed? %>
+
+          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+            <p>Submit</p>
+            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+          </button>
+          <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
+
+        <% end %>
       <% end %>
     </div>
   </div>
 
   <div class="interview-main">
 
-    <div class="interview-main__left">
+    <div class='interview-main__left bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey-1px pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
       <h2>Chapters</h2>
       <div class="interview-main__left-anchors">
         <% chapter = 1 %>
@@ -74,6 +89,14 @@
     </div>
 
     <div class="interview-main__right">
+
+      <div class="btn-back-mobile">
+        <%= link_to campaign_path(@interview.campaign) do %>
+          <i class="fas fa-angle-left"></i>
+        <% end %>
+      </div>
+
+
       <h1><%= @interview.title %></h1>
 
       <% question_hash = {} %>
@@ -117,6 +140,27 @@
 
     </div>
 
+  </div>
+
+  <div class="interview-controls--mobile">
+    <div class="interview-controls__buttons--mobile">
+      <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
+        <span class="iconify" data-icon="bx:bx-download"></span>
+      <% end %>
+      <% unless @interview.locked? || (@interview.crossed? && current_user != manager) %>
+        <button class="btn-blue-text" id="save-interview" onclick="saveButton();">
+          <span class="iconify" data-icon="fluent:save-16-regular"></span>
+          <p>Save</p>
+        </button>
+      <% end %>
+      <% unless @interview.locked? %>
+        <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+          <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
+          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+        </button>
+        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
+      <% end %>
+    </div>
   </div>
 
 </div>

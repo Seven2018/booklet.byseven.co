@@ -14,7 +14,10 @@ class InterviewFormsController < ApplicationController
     end
 
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+
+    total_templates_count = @templates.count
     @templates = @templates.page(page_index)
+    @any_more = @templates.count * page_index < total_templates_count
 
     respond_to do |format|
       format.html
@@ -31,10 +34,6 @@ class InterviewFormsController < ApplicationController
 
   def show
     authorize @template
-
-    if current_user.hr_or_above?
-      redirect_to edit_interview_form_path(@template)
-    end
   end
 
   def edit
@@ -44,8 +43,18 @@ class InterviewFormsController < ApplicationController
   def update
     authorize @template
     @template.update(template_params)
+
+    cross_status =
+      params.dig(:interview_form, :cross).present? && @template.answerable_by_both? ? true : false
+    @template.update(cross: cross_status)
+
+    answerable_by_status = @template.answerable_by
+    unless @template.answerable_by_both?
+      @template.interview_questions.update_all(visible_for: answerable_by_status, required_for: answerable_by_status)
+    end
+
     respond_to do |format|
-      format.html {interview_form_path(template)}
+      format.html {interview_form_path(@template)}
       format.js
     end
   end
@@ -88,12 +97,8 @@ class InterviewFormsController < ApplicationController
     authorize @template
     @card_id = @template.id
     @template.destroy
-    if ['show', 'edit'].include?(params[:page])
-      redirect_to interview_forms_path
-    else
-      respond_to do |format|
-        format.js
-      end
+    respond_to do |format|
+      format.js
     end
   end
 
@@ -104,6 +109,6 @@ class InterviewFormsController < ApplicationController
   end
 
   def template_params
-    params.require(:interview_form).permit(:title, :description)
+    params.require(:interview_form).permit(:title, :description, :answerable_by, :cross)
   end
 end

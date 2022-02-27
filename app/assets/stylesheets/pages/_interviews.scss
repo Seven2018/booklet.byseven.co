@@ -7,20 +7,8 @@
   position: relative;
 }
 
+
 .interview-controls {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 7.5rem;
-  padding: 0 2rem;
-  border-bottom: 1px solid #C4C4C4;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  z-index: 100;
 
   .interview-controls__buttons {
     display: flex;
@@ -47,21 +35,71 @@
   }
 }
 
+
+
+
+.interview-controls--mobile {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 7.5rem;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  background: #F5F8FB;
+
+  .interview-controls__buttons--mobile {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    a, button {
+      margin: 0 0 0 2rem;
+    }
+
+    p {
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    svg {
+      font-size: 2rem;
+    }
+
+    #save-interview > svg {
+      margin: 0 1rem 0 0;
+    }
+
+    #submit-interview > svg {
+      margin: 0 0 0 1rem;
+    }
+  }
+
+  @include from-large {
+    display: none;
+  }
+
+  @include from-medium {
+    display: none;
+  }
+
+}
+
 .interview-main {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   position: relative;
+  margin-top: 9rem;
 }
 
 .interview-main__left {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 7.5rem;
-  left: 0;
   padding: 5rem 2.5rem;
   display: none;
-  height: calc(100vh - 15rem);
+  height: calc(100vh - 16.5rem);
   border-right: 1px solid #C4C4C4;
   flex-direction: column;
   justify-content: flex-start;
@@ -79,7 +117,7 @@
   @include from-medium-high {
     margin-bottom: 0px;
     display: flex;
-    min-width: 40rem;
+    width: 30rem;
     padding: 5rem;
   }
 
@@ -89,6 +127,7 @@
     font-size: 2.8rem;
     font-weight: bold;
     color: #C4C4C4;
+    margin-bottom: 3rem;
   }
 }
 
@@ -124,11 +163,11 @@
 .interview-main__left-separator {
   font-weight: bolder;
   line-height: 2rem;
-  margin-top: 3rem;
 }
 
 .interview-main__right {
   padding: 5rem 2.5rem;
+  margin-left: 30rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -142,6 +181,13 @@
 
   h1 {
     margin-bottom: 5rem;
+    font-size: 1.8rem;
+  }
+
+  .btn-back-mobile {
+    @include from-medium {
+      display: none;
+    }
   }
 }
 
@@ -158,11 +204,11 @@
 
 .interview-main__right-questions {
   width: 100%;
-  margin-bottom: 3rem;
-  padding: 5rem;
+  padding: 2rem;
   background-color: white;
   box-shadow: 0px 2px 2.6rem rgba(0, 0, 0, 0.05);
   border-radius: 2rem;
+  margin-bottom: 3rem;
 }
 
 .interview-main__right-question {
@@ -176,17 +222,19 @@
     margin-bottom: 2rem;
 
     p {
-      font-size: 2.4rem;
+      font-size: 16px;
       font-weight: 600;
       cursor: default;
+      align-self: flex-start;
     }
   }
 
   svg {
     height: 2.4rem;
     width: 2.4rem;
-    margin: 0 1rem;
+    margin: -4px 10px 0px 10px;
     color: #3177B7;
+    align-self: flex-start;
   }
 
   .interview-main__right-question-description {
@@ -281,8 +329,12 @@
 .rating {
   display: flex;
   flex-direction: row-reverse;
-  justify-content: flex-end;
+  justify-content: space-around;
   margin: 3rem 0 2rem 0;
+
+  @include from-medium {
+    justify-content: flex-end;
+  }
 }
 
 .rating > input { display: none; }

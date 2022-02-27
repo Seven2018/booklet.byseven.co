@@ -1,167 +1,92 @@
-<% if @template.company_id == current_user.company_id %>
-  <% access = 'granted' if current_user.hr_or_above? %>
-  <div class="template-edit-title">
-    <i class="fas fa-file-alt"></i>
-    <h2><%= @template.title %> - <em>View mode</em></h2>
+<% icon = { 'open_question' => 'bi:question-circle-fill',
+            'mcq' => 'ant-design:check-square-filled',
+            'objective' => 'fluent:target-arrow-24-filled',
+            'rating' => 'codicon:star-full' } %>
+
+<div class="interview-container">
+
+  <div class="flex-row-start-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+    <%= link_to interview_forms_path, class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
+      <span class="iconify" data-icon="bi:arrow-left"></span>
+      <p>Back</p>
+    <% end %>
   </div>
-  <div id="template-show-container">
-    <div id="template-show-container-left">
-      <%= render 'interview_forms/partials/show_summary', template: @template, page: 'show' %>
+
+  <div class="interview-main flex-row-between-start bkt-bg-white pos-rel bkt-box-shadow-compact-top">
+
+    <div class='interview-main__left bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey-1px pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
+      <h2>Chapters</h2>
+      <div class="interview-main__left-anchors">
+        <% chapter = 1 %>
+        <% @template.interview_questions.order(position: :asc).each do |question| %>
+
+          <% question_text = question.question %>
+
+          <div class="interview-main__left-question">
+            <a href="#anchor-<%= question.position %>">
+              <% if question.separator? %>
+                <p class="interview-main__left-separator" title="<%= question_text %>"><%= chapter %>. <%= question_text %></p>
+                <% chapter += 1 %>
+              <% else %>
+                <div class="interview-main__left-icon">
+                  <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
+                </div>
+                <p title="<%= question_text %>"><%= question.question %></p>
+              <% end %>
+            </a>
+          </div>
+
+        <% end %>
+      </div>
     </div>
-    <div id="template-show-container-right">
-      <div class="template-add">
-        <div class="template-center-div template-center-div__show">
-          <div class="template-show-attributes-center">
-            <%= render 'interview_forms/partials/show_attributes_center', template: @template, page: 'show' %>
+
+    <div class="interview-main__right">
+      <h1><%= @template.title %></h1>
+
+      <% question_hash = {} %>
+      <% j = 0 %>
+
+      <% @template.interview_questions.order(position: :asc).each do |question| %>
+        <% if question.separator? %>
+          <% j += 1 %>
+        <% end -%>
+        <% question_hash[j] = question_hash[j].present? ? question_hash[j] + [question] : [question] %>
+      <% end %>
+
+      <% question_number = 0 %>
+
+      <% question_hash.each do |key, value| %>
+        <% if key.to_i > 0 %>
+          <div class="interview-main__right-separator">
+            <p><%= key %>. <%= value.first.question %></p>
           </div>
-          <div class="template-show-lines template-show-lines__show">
-            <%= render 'interview_forms/show/questions_index', template: @template, page: 'show' %>
-          </div>
-          <div class="button-add-catalogue">
-            <%= link_to :back do %>
-              <div class="btn-blue-text">
-                <p>Back</p>
+        <% end %>
+        <div class="interview-main__right-questions">
+          <% value[0..-1].each do |question| %>
+
+            <% question_number += 1 %>
+
+            <div class="interview-main__right-question">
+              <a id="anchor-<%= question.position %>" style='position:absolute; top: -2.5rem;'></a>
+              <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
+                <p><%= question_number %>. </p>
+                <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
+                <p><%= question.question %> <%= "*" if question.required? %> <em>- visible by <%= question.visible_for %></em></p>
               </div>
-            <% end %>
-          </div>
+              <div class="interview-main__right-question-description">
+                <%= sanitize question.description %>
+              </div>
+              <%= render 'interview_forms/show/show_interview_form_question_form', questions: @template.interview_questions, question: question, j: question_number, read_only: true %>
+            </div>
+          <% end %>
         </div>
-        <div class="template-add-right">
-          <div class="template-show-attributes-right">
-            <%= render 'interview_forms/partials/show_attributes_right', template: @template, page: 'show' %>
-          </div>
-        </div>
-      </div>
+      <% end %>
+
     </div>
+
   </div>
 
-  <div class='line-templates hidden'>
-    <div class="add-separator add-separator-template hidden active">
-      <div class="line-top">
-        <div class="line-title" onclick='toggleMod(this);'>
-          <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>Chapter</p>
-        </div>
-        <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-separator').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
-        </div>
-      </div>
-      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
-        <%= f.hidden_field :interview_form_id, value: @template.id %>
-        <%= f.hidden_field :question_type, value: 'separator' %>
-        <%= f.input :question, placeholder: '*Required', label: 'Title', input_html: {autocomplete: 'off'}, required: true %>
-        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
-        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-          <p>Save</p>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="add-open_question add-open_question-template hidden active">
-      <div class="line-top">
-        <div class="line-title" onclick='toggleMod(this);'>
-          <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>Open Question</p>
-        </div>
-        <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-open_question').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
-        </div>
-      </div>
-      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
-        <%= f.hidden_field :interview_form_id, value: @template.id %>
-        <%= f.hidden_field :question_type, value: 'open_question' %>
-        <div class="flex-row-between-centered">
-          <label>Question</label>
-          <div class="required-question-switch-container">
-            <label>Required</label>
-            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
-          </div>
-        </div>
-        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
-        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
-        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-          <p>Save</p>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="add-rating add-rating-template hidden active">
-      <div class="line-top" onclick='toggleMod(this);'>
-        <div class="line-title" onclick='toggleMod(this);'>
-          <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>Rating</p>
-        </div>
-        <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-rating').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
-        </div>
-      </div>
-      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
-        <%= f.hidden_field :interview_form_id, value: @template.id %>
-        <%= f.hidden_field :question_type, value: 'rating' %>
-        <div class="flex-row-between-centered">
-          <label>Question</label>
-          <div class="required-question-switch-container">
-            <label>Required</label>
-            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
-          </div>
-        </div>
-        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
-        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
-        <div class="add-rating__select">
-          <%= f.input :options, as: :select, collection: (1..10), label: 'Max rating', input_html: {onchange: 'setRating(this);'} %>
-        </div>
-        <div class="show-rating"></div>
-        <div class="add-rating__toggle">
-          <%= f.input :allow_comments, label: 'Allow comments' %>
-        </div>
-        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-          <p>Save</p>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="add-mcq add-mcq-template hidden">
-      <div class="line-top">
-        <div class="line-title" onclick='toggleMod(this);'>
-          <i class="fas fa-angle-down" data-rotated='0'></i>
-          <p>MCQ</p>
-        </div>
-        <div class="line-controls-new">
-          <a class="line-delete" onclick="this.closest('.add-mcq').remove(); document.querySelector('.template-show-lines-control-btn').classList.remove('hidden');"><i class="far fa-trash-alt" title="Delete"></i></a>
-        </div>
-      </div>
-      <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
-        <%= f.hidden_field :interview_form_id, value: @template.id %>
-        <%= f.hidden_field :question_type, value: 'mcq' %>
-        <div class="flex-row-between-centered">
-          <label>Question</label>
-          <div class="required-question-switch-container">
-            <label>Required</label>
-            <label class="required-question-switch switch_checked"><input type="checkbox" name='interview_question[required]' onclick='switchSide(this);' checked/>    <div></div></label>
-          </div>
-        </div>
-        <%= f.input :question, placeholder: '*Required', label: false, input_html: {autocomplete: 'off'}, required: true %>
-        <%= f.input :description, placeholder: 'Description (optional)', label: false %>
-        <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-          <p>Create</p>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-
-
-  <!------------>
-  <!-- MODALS -->
-  <!------------>
-
-  <div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">
-    <div class='modal-dialog' role='document' style='border-radius: 20px'>
-      <%= render 'interview_forms/modals/manage_tags', form: @template %>
-    </div>
-  </div>
-
-<% else %>
-  <div class="access-restricted centered-item">
-    <h1>Access restricted</h1>
-  </div>
-<% end %>
-
+</div>
 
 <!---------------->
 <!-- JAVASCRIPT -->
@@ -183,206 +108,37 @@
     else return false;
   }
 
-  function saveAndConfirm() {
-    document.querySelector('.edit_interview_form').querySelector('.hidden-submit').click()
-    setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
-  }
 
-  function updateContent(element) {
-    form = element.closest('form')
-    submit = form.querySelector('.hidden-submit')
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, element) && doubleClickGuardian == false) {
-        submit.click();
-        this.removeEventListener('click', arguments.callee, false);
-      }
-    })
-  }
+  ////////////////////
+  // BOOKLET SELECT //
+  ////////////////////
 
-  function lineMenu() {
-    var contentbar = document.querySelector('.template-show-lines-controls')
-    var iconedit = document.querySelector('#icon-edit')
-    var iconclose = document.querySelector('#icon-close')
-    var contentblock = document.querySelectorAll('.template-show-lines-controls-block')
-
-    if (contentbar.style.display === "none") {
-      contentbar.style.display = "flex";
-      iconedit.classList.add('hidden')
-      iconclose.classList.remove('hidden')
-      iconclose.classList.add('icon-transform')
-      setTimeout(function(){
-        iconclose.style.transform = ('rotate(45deg)')
-        contentbar.style.width = '100%'
-        contentblock.forEach((content) => {
-          content.style.width = '25%'
-        })
-      },1);
-    } else {
-      iconclose.style.transform = ('rotate(-45deg)')
-      contentbar.style.width = '0'
-      contentblock.forEach((content) => {
-        content.style.width = '0'
-      })
-      setTimeout(function(){
-        contentbar.style.display = "none"
-        iconclose.classList.add('hidden')
-        iconedit.classList.remove('hidden')
-      },250);
-    }
-  }
-
-  function addLine(type) {
-    if (type == 'separator') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-separator')
-      template = document.querySelector('.add-separator-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    } else if (type == 'open_question') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-open_question')
-      template = document.querySelector('.add-open_question-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    } else if (type == 'rating') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-rating')
-      template = document.querySelector('.add-rating-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    } else if (type == 'mcq') {
-      const newDiv = document.createElement("div");
-      newDiv.classList.add('add-mcq')
-      template = document.querySelector('.add-mcq-template')
-      templateinfo = template.innerHTML
-      newDiv.innerHTML = templateinfo
-      content = document.querySelector('.template-add-lines')
-      content.append(newDiv)
-    }
-    document.querySelector('.template-show-lines-control-btn').classList.add('hidden')
-  }
-
-  function multiplyNode(node, count, deep) {
-    for (var i = 0, copy; i < count - 1; i++) {
-        copy = node.cloneNode(deep);
-        node.parentNode.insertBefore(copy, node);
-    }
-  }
-
-  function setRating(element) {
-    target = element.closest('form').querySelector('.show-rating')
-    target.innerHTML = '<i class="far fa-star"></i>'
-    multiplyNode(target.querySelector('i'), parseInt(element.value,10), true);
-  }
-
-  function saveQuestion(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      initial_value = element.value;
+  function BookletSelectExpand(element) {
+    doubleClickGuardian = true
+    dropdown = element.closest('.booklet-select__container').querySelector('.booklet-select__dropdown')
+    setTimeout(() => {
+      doubleClickGuardian = false
+    }, 100);
+    if (dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
       window.addEventListener('click', function(e) {
-        if (outsideClick(e, element)) {
-          if (element.value != initial_value || element.tagName == 'SELECT') {
-            form = element.closest('form')
-            form.querySelector('.hidden-submit').click();
-          }
+        if (outsideClick(e, element) && !doubleClickGuardian) {
+          dropdown.classList.add('hidden')
           this.removeEventListener('click', arguments.callee, false);
         }
       });
-      setTimeout(function(){doubleClickGuardian = false}, 500)
+    } else {
+      dropdown.classList.add('hidden')
     }
   }
 
-  function switchSide(element) {
-    container = element.closest('.required-question-switch-container')
-    switch_button = element.closest('.required-question-switch')
+  function BookletSelectSubmit(element) {
     form = element.closest('form')
-    hidden_submit = form.querySelector('.hidden-submit')
-    if (element.checked == true) {
-      setTimeout(function(){switch_button.classList.add('switch_checked');container.querySelector('label').innerText = 'Required'}, 100)
-    } else {
-      setTimeout(function(){switch_button.classList.remove('switch_checked');container.querySelector('label').innerText = 'Required'}, 100)
-    }
-    if (hidden_submit != undefined) {
-      hidden_submit.click();
-    }
+    selected_display = element.closest('.booklet-select__container').querySelector('.booklet-select__selected')
+    selected_value = element.querySelector('p').innerText
+    submit_button = form.querySelector('.hidden-submit')
+
+    selected_display.querySelector('p').innerText = selected_value
   }
 
-  function openEditOptionForm(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      li = element.querySelector('li')
-      form = element.querySelector('.hidden-form-ajax')
-      input = form.querySelector('#edit_option_option')
-      li.classList.add('hidden')
-      form.classList.remove('hidden')
-      input.focus()
-      // input.selectionStart = input.selectionEnd = input.value.length
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, element)) {
-          e.stopPropagation()
-          e.preventDefault()
-          li.classList.remove('hidden')
-          form.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-          setTimeout(function(){doubleClickGuardian = false}, 250)
-        }
-      })
-    }
-  }
-
-  function toggleMod(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode
-    p = element.querySelector('p')
-    block_width = block.offsetWidth
-    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '100000px'
-      p.style.maxHeight = '100000px'
-      p.style.whiteSpace = 'normal'
-      block.style.width = block_width.toString() + 'px'
-      block.classList.add('active')
-    } else if (block.style.maxHeight == '100000px') {
-      block.style.maxHeight = '61px'
-      p.style.maxHeight = '18px'
-      p.style.whiteSpace = 'nowrap'
-      block.style.width = 'auto'
-      block.classList.remove('active')
-    }
-  }
-
-  function toggleTagCategoryDropdown(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode
-    if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '10000px'
-      block.classList.add('active')
-    } else {
-      block.style.maxHeight = '60px'
-      block.classList.remove('active')
-    }
-  }
-
-  function autoSubmitTag(element) {
-    element.closest('form').querySelector('.hidden-submit').click()
-  }
 </script>

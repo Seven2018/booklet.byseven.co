@@ -1,3 +1,4 @@
+<script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
 
 <h1 class="my-5">Guidelines</h1>
 
@@ -57,7 +58,43 @@
 
 
 <h2 class="my-5">Fonts</h2>
-<div class="m-5 fs-1_6rem">Basically one single font: Montserrat</div>
+
+ <h3 class="my-5">H1</h3>
+    <div class="m-1">
+      <div class="bkt-h1 bold-700">Title Example</div>
+      <div class="bkt-h1 bold-600">Title Example</div>
+      <div class="bkt-h1 bold-500">Title Example</div>
+    </div>
+
+  <h3 class="my-5">H2</h3>
+    <div class="m-1">
+      <div class="bkt-h2 bold-700">Title Example</div>
+      <div class="bkt-h2 bold-600">Title Example</div>
+      <div class="bkt-h2 bold-500">Title Example</div>
+    </div>
+
+  <h3 class="my-5">H3</h3>
+    <div class="m-1">
+      <div class="bkt-h3 bold-700">Title Example</div>
+      <div class="bkt-h3 bold-600">Title Example</div>
+      <div class="bkt-h3 bold-500">Title Example</div>
+    </div>
+
+    <h3 class="my-5">Classic Text</h3>
+      <div class="my-3">
+        <div class="bkt-text-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+      </div>
+      <div class="my-3">
+        <div class="bkt-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+      </div>
+
+    <h3 class="my-5">Description</h3>
+      <div class="my-3">
+        <div class="bkt-description-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+      </div>
+      <div class="my-3">
+        <div class="bkt-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+      </div>
 
 
 <h2 class="my-5">Tags</h2>
@@ -68,8 +105,27 @@
   <% end %>
 </div>
 
+ <div class="m-1">
+      <div class='bkt-tag-green-status'>
+        Completed
+      </div>
+    </div>
+
+    <div class="m-1">
+      <div class='bkt-tag-orange-status'>
+        In progress
+      </div>
+    </div>
+
+    <div class="m-1">
+      <div class='bkt-tag-red-status'>
+        Not started
+      </div>
+    </div>
+
 
 <h2 class="my-5">Buttons</h2>
+
 <h3 class="my-2">bkt-btn-blue</h3>
 <div class="d-flex m-5" style='gap: 5px;'>
   <div>
@@ -106,6 +162,34 @@
   </div>
 </div>
 
+<h3 class="my-2">bkt-btn-bleu DAMIEN</h3>
+  <div class="d-flex m-5" style='gap: 5px;'>
+  <div>
+    <div class='bkt-btn-bleu-add'>
+      button
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-bleu-focus'>
+      focus
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-bleu-disabled'>
+      disabled
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-bleu-no-icon'>
+      no icon
+    </div>
+  </div>
+</div>
+
+
 <h3 class="my-2">bkt-btn-white</h3>
 <div class="d-flex m-5" style='gap: 5px;'>
   <div>
@@ -138,6 +222,44 @@
     <div class='bkt-btn-white
       ' style='width: 225px;'>
       bkt-btn-white with a long text that does not fit a width constraint
+    </div>
+  </div>
+</div>
+
+
+<h3 class="my-2">bkt-btn-back</h3>
+<div class="d-flex m-5" style='gap: 5px;'>
+  <div>
+    <a href="#" class="bkt-btn-back">
+      <span class="iconify" data-icon="bi:arrow-left"></span>
+      <p>Back</p>
+    </a>
+  </div>
+</div>
+
+<h3 class="my-2">bkt-btn-blanc DAMIEN</h3>
+  <div class="d-flex m-5" style='gap: 5px;'>
+  <div>
+    <div class='bkt-btn-blanc-add'>
+      button
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-blanc-focus'>
+      focus
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-blanc-disabled'>
+      disabled
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-blanc-no-icon'>
+      no icon
     </div>
   </div>
 </div>
@@ -249,6 +371,45 @@
   <% end %>
 </div>
 
+<div id="modals">
+  <h2 class="my-5">Modals</h2>
+
+  <h3 class="my-3">Action Modal</h3>
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content action-modal__content" >
+      <div class="modal-header action-modal__header">
+        <h5 class="modal-title action-modal__title">Modal Title</h5>
+        <button type="button" class="action-modal__close-icon" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body action-modal__body">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+      </div>
+      <div class="modal-footer action-modal__footer">
+        <button type="button" class="bkt-btn-blue-no-icon">No Icon</button>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="my-3">Info Modal</h3>
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content info-modal-content" >
+      <div class="modal-body info-modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="close-info-modal">&times;</span>
+        </button>
+        <span class="iconify" data-icon="el:ok-sign" style="color: #3177b7;" data-width="80" data-height="80"></span>
+        <p>Action have been done successfuly !</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <h3 class="my-2">form without bootstrap</h3>
 
@@ -320,6 +481,45 @@
 </div>
 
 
+<h2 class="my-5">Modals</h2>
+
+  <h3 class="my-3">Action Modal</h3>
+
+      <div class="modal-dialog" role="document">
+        <div class="modal-content action-modal-content" >
+          <div class="modal-header action-modal-header">
+            <h5 class="modal-title action-modal-title">Modal Title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="close-action-modal">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body action-modal-body">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+          </div>
+          <div class="modal-footer action-modal-footer">
+            <button type="button" class="bkt-btn-bleu-add">Continuer</button>
+          </div>
+        </div>
+      </div>
+
+    <h3 class="my-3">Info Modal</h3>
+
+
+      <div class="modal-dialog" role="document">
+        <div class="modal-content info-modal-content" >
+          <div class="modal-body info-modal-body">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="close-info-modal">&times;</span>
+            </button>
+            <span class="iconify" data-icon="el:ok-sign" style="color: #3177b7;" data-width="80" data-height="80"></span>
+            <p>Action have been done successfuly !</p>
+          </div>
+        </div>
+      </div>
+
+
 
 <h2 class="my-5">Progress bar</h2>
 
@@ -340,7 +540,6 @@
 
 
 <h2 class="my-5">Backgrounds</h2>
-
 
 <div
   class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'

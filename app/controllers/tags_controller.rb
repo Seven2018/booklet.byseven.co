@@ -56,6 +56,23 @@ class TagsController < ApplicationController
     end
   end
 
+  # Search from tags with autocomplete
+  def tags_search
+    skip_authorization
+
+    @tags = Tag.where(company_id: current_user.company_id)
+
+    @tags = @tags.ransack(tag_name_cont: params[:search]).result(distinct: true)
+
+
+    respond_to do |format|
+      format.html{}
+      format.json {
+        @tags = @tags.limit(5)
+      }
+    end
+  end
+
   private
 
   def set_tag

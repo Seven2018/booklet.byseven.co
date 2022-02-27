@@ -246,6 +246,8 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "answerable_by", default: 0, null: false
+    t.boolean "cross", default: false
     t.index ["company_id"], name: "index_interview_forms_on_company_id"
   end
 
@@ -261,6 +263,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "visible_for", default: 0, null: false
+    t.integer "required_for", default: 0, null: false
     t.index ["interview_form_id"], name: "index_interview_questions_on_interview_form_id"
   end
 

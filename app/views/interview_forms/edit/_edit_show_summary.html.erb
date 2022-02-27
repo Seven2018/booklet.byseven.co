@@ -1,0 +1,29 @@
+<% icon = { 'open_question' => 'bi:question-circle-fill',
+            'mcq' => 'ant-design:check-square-filled',
+            'objective' => 'fluent:target-arrow-24-filled',
+            'rating' => 'codicon:star-full' } %>
+
+<div id='template-summary-container' class='width-100'>
+  <div  class='mb-2rem'>
+    <h3 class='fs-2_4rem font-weight-500 bkt-light-grey text-center'>Summary</h3>
+  </div>
+  <% separator_number = 1 %>
+  <% template.interview_questions.order(position: :asc).each do |question| %>
+    <a href="#anchor-<%= question.id %>" class='bkt-light-grey6-hover'>
+      <% if question.separator? %>
+        <div id='anchor anchor__separator' class='flex-row-start-centered mt-3rem mb-2rem'>
+          <p class='fs-1_8rem font-weight-700'><%= separator_number %>. <%= question.question %></p>
+        </div>
+        <% separator_number += 1 %>
+      <% else %>
+        <div id='anchor anchor__no-separator' class='flex-row-start-top mb-2rem'>
+          <div class='centered-item bkt-bg-light-blue height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
+            <span class="iconify bkt-blue" data-icon="<%= icon[question.question_type] %>"></span>
+          </div>
+          <p class='line-height-2_5rem'><%= question.question %></p>
+        </div>
+      <% end %>
+    </a>
+  <% end %>
+</div>
+
