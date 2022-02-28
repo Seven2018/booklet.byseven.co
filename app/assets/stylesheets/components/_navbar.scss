@@ -458,6 +458,7 @@
 
 .user-top-nav {
   margin-left: 2rem;
+  display: flex;
 }
 
 .user-info {
@@ -517,4 +518,28 @@
     border-color: #3177B7 !important;
     background-color: #DEE9F3 !important;
   }
+}
+
+////////////////////////
+////NavBar Gray////////
+///////////////////////
+
+.navbar__gray{
+
+  background-color: lightgray;
+
+  .isactive {
+    border-bottom: 4px solid lightgray;
+  }
+
+  .fa-th {
+    color: lightgray;
+  }
+
+  .btn-secondary.active {
+    color: lightgray !important;
+    border-color: lightgray !important;
+    background-color: #DEE9F3 !important;
+  }
+
 }
