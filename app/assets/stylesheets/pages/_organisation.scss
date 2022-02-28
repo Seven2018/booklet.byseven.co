@@ -359,9 +359,11 @@
 .organisation__users-card, .organisation__users-selected {
   background-color: white;
   position: relative;
+  padding-top: 2rem;
 
   .organisation__user-name {
     font-weight: bolder;
+    width: 130px;
   }
 
   &:hover {
@@ -400,6 +402,7 @@
     align-items: center;
     text-overflow: ellipsis;
     overflow: hidden;
+    height: 100%;
   }
 
   img{
@@ -412,6 +415,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     text-decoration: none;
+    height: 100%;
 
     @include from-medium {
       font-size: 14px;

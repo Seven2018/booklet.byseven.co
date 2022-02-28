@@ -4,8 +4,9 @@
     <div class="container-show-user-right">
       <div class="user-top-background">
         <div class="user-buttons-top">
-          <%= link_to :back, class: 'btn return-arrow' do %>
-            <i class="fas fa-arrow-left"></i>
+          <%= link_to :back, class: 'bkt-btn-back' do %>
+            <span class="iconify" data-icon="bi:arrow-left"></span>
+            <p> Back </p>
           <% end %>
           <div id='show-buttons'>
             <% if current_user.admin? || @user == current_user || current_user.hr? || (current_user.account_owner? && current_user.company == @user.company) %>
