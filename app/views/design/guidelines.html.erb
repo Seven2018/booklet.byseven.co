@@ -91,18 +91,18 @@
     </div>
 
     <h3 class="my-5">Classic Text</h3>
-      <div class="my-3">
+      <div class="my-3rem">
         <div class="bkt-text-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
       </div>
-      <div class="my-3">
+      <div class="my-3rem">
         <div class="bkt-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
       </div>
 
     <h3 class="my-5">Description</h3>
-      <div class="my-3">
+      <div class="my-3rem">
         <div class="bkt-description-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
       </div>
-      <div class="my-3">
+      <div class="my-3rem">
         <div class="bkt-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
       </div>
 
@@ -301,38 +301,19 @@
 
 <h2 class="my-5">Dropdown</h2>
 
-
-
 <div class="d-flex m-5">
-  <div
-    data-controller="dropdown"
-    class="pos-rel cursor-pointer"
-    style='width:  110px;'
-  >
-    <div
-      data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide"
-      class="flex-row-between-centered p-0_75rem bkt-bg-light-blue rounded-5px"
-    >
-      <div class="fs-1_4rem font-weight-500 bkt-blue">Employee</div>
-      <div class="centered-item ml-1rem">
-        <i class="fas fa-angle-down bkt-blue"></i>
-      </div>
-    </div>
-
-    <div
-      data-dropdown-target="menu"
-      class="bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150 pos-abs hidden"
-      style="top: 3rem; right: 0; width: 110px;"
-    >
-      <div class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer">Both</div>
-      <div class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer">Manager</div>
-      <div class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer">Employee</div>
-    </div>
-  </div>
+  <%= render_component(SelectComponent.new(width: '110px', title: 'Employee')) do  %>
+    <% %w[Both Manager Employee].each do |option| %>
+      <div
+        class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer"
+        data-action="click->dropdown#toggle click->replace-text#replace"
+      ><%= option %></div>
+    <% end %>
+  <% end %>
 </div>
 
 
-<h2 class="my-5">Actions Ellipsis (using new drobdown)</h2>
+<h2 class="my-5">Actions Ellipsis</h2>
 
 <div class="d-flex m-5">
   <div
@@ -489,7 +470,7 @@
 
 <h2 class="my-5">Modals</h2>
 
-  <h3 class="my-3">Action Modal</h3>
+  <h3 class="my-3rem">Action Modal</h3>
 
       <div class="modal-dialog" role="document">
         <div class="modal-content action-modal-content" >
@@ -510,7 +491,7 @@
         </div>
       </div>
 
-    <h3 class="my-3">Info Modal</h3>
+    <h3 class="my-3rem">Info Modal</h3>
 
 
       <div class="modal-dialog" role="document">

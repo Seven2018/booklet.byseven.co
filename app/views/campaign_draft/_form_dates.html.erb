@@ -1,10 +1,9 @@
-<div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
-  Apply dates for your campaign
-</div>
+<%= render_component FormSectionTitleComponent.new(title: 'Apply dates for your campaign') %>
 
-<div class="fs-1_6rem pb-2 my-3 bkt-light-grey">
-  Deadline is only informative, reviews can be done even if the <br><%# TODO improve  %> deadline is outdated.
-</div>
+<%= render_component FormSectionSubtitleComponent.new do %>
+  Deadline is only informative, reviews can be done even if the <br><%# TODO improve  %>
+  deadline is outdated.
+<% end %>
 
 <%# TODO %>
 <%= date_field_tag(:date, @campaign.date&.strftime("%F"), class: 'datepicker_') %>

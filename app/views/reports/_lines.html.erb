@@ -1,0 +1,36 @@
+<% @reports.each do |report| %>
+  <% lines = [
+    report.creator.fullname,
+    report.created_at.strftime("%d/%m/%Y %Hh%M"),
+    report.mode,
+    report.start_time.strftime("%d/%m/%Y"),
+    report.end_time.strftime("%d/%m/%Y"),
+    ] %>
+  <% width = (1/lines.count.to_f)*100 %>
+  <div
+    data-interview-form-id="<%= report.id %>"
+    class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem border-top-bkt-light-grey pos-rel">
+    <% lines.each do |line| %>
+      <div class='fs-1_6rem' style='flex-basis: <%= width %>%;'>
+        <%= line %>
+      </div>
+    <% end %>
+
+    <div class='fs-1_6rem d-flex' style='flex-basis: <%= width %>%;'>
+      <% if report.processing? %>
+        <%= link_to reports_path do %>
+          <div class="btk-spinner bkt-dark-blue"><span></span></div>
+        <% end %>
+      <% else %>
+        <%= link_to companies_csv_export_path(report, format: :csv) do %>
+          <i class="fas fs-2_4rem fa-file-csv"></i>
+        <% end %>
+        <div class="mx-3"></div>
+        <%= link_to companies_csv_export_path(report, format: :xlsx) do %>
+          <i class="fas fs-2_4rem fa-file-excel"></i>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

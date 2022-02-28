@@ -1,17 +1,12 @@
+<%= render_component FormSectionTitleComponent.new(title: 'Choose a campaign name') %>
 
-<div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
-  Choose a campaign name
-</div>
-
-<div class="py-4">
+<div class="py-4rem">
   <%= text_field_tag :title, campaign.title, placeholder: 'Enter name', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 w-100' %>
 </div>
 
-<div class="my-5"></div>
+<div class="my-5rem"></div>
 
-<div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
-  Choose a campaign type
-</div>
+<%= render_component FormSectionTitleComponent.new(title: 'Choose a campaign type') %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
 
