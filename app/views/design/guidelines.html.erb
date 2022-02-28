@@ -400,6 +400,21 @@
 
 <h3 class="my-2">form without bootstrap</h3>
 
+<h4 class="my-2">title</h4>
+
+<div class="p-2" style='width: 600px'>
+  <%= render_component FormSectionTitleComponent.new(title: 'Default interviewer') %>
+</div>
+
+<h4 class="my-2">subtitle</h4>
+
+<div class="p-2" style='width: 600px'>
+  <%= render_component FormSectionSubtitleComponent.new do %>
+    For interviewees not linked to a manager in the database, please <br><%# TODO improve  %>
+    chose a default interviewer
+  <% end %>
+</div>
+
 <h4 class="my-2">text inputs</h4>
 
 <div class="p-2">
