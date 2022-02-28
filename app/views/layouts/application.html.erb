@@ -32,7 +32,7 @@
       <% end %>
 
     <% end %>
-    <div class="#{'overflow-y-scroll' unless @multi_step_form_navbar_content.present?}">
+    <div class="<%= 'overflow-y-scroll' unless @multi_step_form_navbar_content.present? %>">
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
         <% if params[:controller] == 'users' && params[:action] == 'show' %>
