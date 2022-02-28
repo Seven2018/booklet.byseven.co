@@ -299,63 +299,74 @@
 </div>
 
 
-<h2 class="my-5">Actions Ellipsis</h2>
+<h2 class="my-5">Dropdown</h2>
 
-<div class="position-relative bkt-bg-light-grey3 d-flex justify-content-end p-2" style="width: 500px;">
-  <div class="cursor-pointer z-index-5" onclick="openContentMenu(this);">
-    <i class="fas fa-ellipsis-v"></i>
-  </div>
 
+
+<div class="d-flex m-5">
   <div
-    data-actions="interview-form"
-    class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
-    style='right: 0; top: 3rem;'
+    data-controller="dropdown"
+    class="pos-rel cursor-pointer"
+    style='width:  110px;'
   >
-    <% %w[Create Duplicate Delete].each do |action| %>
-      <%= link_to action, '#', class: 'px-3 py-2 hover-bkt-light-grey w-100' %>
-    <% end %>
+    <div
+      data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide"
+      class="flex-row-between-centered p-0_75rem bkt-bg-light-blue rounded-5px"
+    >
+      <div class="fs-1_4rem font-weight-500 bkt-blue">Employee</div>
+      <div class="centered-item ml-1rem">
+        <i class="fas fa-angle-down bkt-blue"></i>
+      </div>
+    </div>
+
+    <div
+      data-dropdown-target="menu"
+      class="bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150 pos-abs hidden"
+      style="top: 3rem; right: 0; width: 110px;"
+    >
+      <div class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer">Both</div>
+      <div class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer">Manager</div>
+      <div class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer">Employee</div>
+    </div>
   </div>
 </div>
 
-<script>
-  <%# TODO refacto into stimulus controller %>
-  function openContentMenu(element) {
-    dropdown = element.parentNode.querySelector('[data-actions="interview-form"]')
-    dropdown.classList.remove('hidden')
-    formGuardian = true
-    card_link = element.closest('[data-interview-form-id]').querySelector('.stretched-link')
-    card_link.classList.add('disabled')
-    card_link_href = card_link.href
-    card_link.href = "javascript:void(0)";
-    setTimeout(function(){
-      formGuardian = false
-    }, 1);
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, dropdown) && formGuardian == false) {
-        formGuardian = true
-        setTimeout(function(){
-          formGuardian = false
-        }, 1);
-        dropdown.classList.add('hidden')
-        setTimeout(function(){
-          card_link.classList.remove('disabled')
-          card_link.href = card_link_href
-        }, 1);
-        this.removeEventListener('click', arguments.callee, false)
-      }
-    });
-  }
-</script>
 
+<h2 class="my-5">Actions Ellipsis (using new drobdown)</h2>
+
+<div class="d-flex m-5">
+  <div
+    data-controller="dropdown"
+    class="pos-rel bkt-bg-light-grey3 d-flex justify-content-end p-2"
+    style="width: 500px;"
+  >
+    <div
+      data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide"
+      class="cursor-pointer z-index-5"
+    >
+      <i class="fas fa-ellipsis-v"></i>
+    </div>
+
+    <div
+      data-dropdown-target="menu"
+      class="pos-abs rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
+      style='right: 0; top: 3rem;'
+    >
+      <% %w[Create Duplicate Delete].each do |action| %>
+        <%= link_to action, '#', class: 'px-3 py-2 hover-bkt-light-grey w-100' %>
+      <% end %>
+    </div>
+  </div>
+</div>
 
 <h2 class="my-5">Form</h2>
 
 <h3 class="my-2">form with bootstrap</h3>
 
 <div
-  class='d-flex justify-content-start align-items-center position-relative p-2'
+  class='d-flex justify-content-start align-items-center pos-rel p-2'
 >
-  <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
+  <i class="fas fa-search pos-abs z-index-150 bkt-light-grey"
     style='left: 25rem; bottom: 16.6px;'
   ></i>
   <%= simple_form_for(:search, url: guidelines_path, method: :get, remote: true,
@@ -403,45 +414,6 @@
       <i class="fas fa-search"></i>
     </button>
   <% end %>
-</div>
-
-<div id="modals">
-  <h2 class="my-5">Modals</h2>
-
-  <h3 class="my-3">Action Modal</h3>
-
-  <div class="modal-dialog" role="document">
-    <div class="modal-content action-modal__content" >
-      <div class="modal-header action-modal__header">
-        <h5 class="modal-title action-modal__title">Modal Title</h5>
-        <button type="button" class="action-modal__close-icon" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body action-modal__body">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
-      </div>
-      <div class="modal-footer action-modal__footer">
-        <button type="button" class="bkt-btn-blue-no-icon">No Icon</button>
-      </div>
-    </div>
-  </div>
-
-  <h3 class="my-3">Info Modal</h3>
-
-  <div class="modal-dialog" role="document">
-    <div class="modal-content info-modal-content" >
-      <div class="modal-body info-modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" class="close-info-modal">&times;</span>
-        </button>
-        <span class="iconify" data-icon="el:ok-sign" style="color: #3177b7;" data-width="80" data-height="80"></span>
-        <p>Action have been done successfuly !</p>
-      </div>
-    </div>
-  </div>
 </div>
 
 
