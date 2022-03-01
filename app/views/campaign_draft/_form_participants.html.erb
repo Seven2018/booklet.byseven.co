@@ -1,4 +1,3 @@
-<% all_users = User.where(company_id: current_user.company_id).order(lastname: :asc) %>
 <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add participants') %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
@@ -32,37 +31,40 @@
 
 
 <div class="flex-row-between-start">
-  <div>
+  <div data-controller='store-interviewee-ids campaign-draft-users-search'>
+      <%= hidden_field_tag 'interviewee_ids[]', '', data: { store_interviewee_ids_target: 'array' } %>
     <div class="flex-row-between-centered pr-1rem">
       <div class="pos-rel">
         <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
-        <%= simple_form_for(:search, url: campaign_draft_users_path, method: :get, remote: true
-          )do |f| %>
           <%=
-            f.input(
-              :title,
+            text_field_tag(
+              :search,
+              nil,
               placeholder: 'Search',
-              input_html: {
-                class: 'height-4rem pl-3rem rounded-3px',
-                style: 'width: 15rem; border: 0.5px solid #CDCDCD;',
-                autocomplete: 'off',
-                onkeyup: 'resetPage(this);',
+              data: {
+                campaign_draft_users_search_target: 'search',
+                action: 'keyup->campaign-draft-users-search#search',
+                path: campaign_draft_search_users_path
               },
+              class: 'height-4rem pl-3rem rounded-3px',
+              style: 'width: 15rem; border: 0.5px solid #CDCDCD;',
+              autocomplete: 'off',
               label: false,
               required: false
             )
           %>
-          <%= f.hidden_field :page, value: '1' %>
-        <% end %>
       </div>
       <div class="flex-row-between-centered mb-1rem">
-        <p class='fs-1_2rem bkt-blue mr-1rem' >Select all (<%= all_users.count %>)</p>
+        <p class='fs-1_2rem bkt-blue mr-1rem' >Select all (<%= @users.count %>)</p>
         <div class='rounded-3px' style='height: 2.4rem; width: 2.4rem; border: 0.5px solid #CDCDCD;'></div>
       </div>
     </div>
 
-    <div>
-      <%= render 'campaign_draft/partials/campaign_draft_users_list', users: all_users.page(1), total_users_count: all_users.count %>
+    <div data-campaign-draft-users-search-target="results">
+      <%= render 'campaign_draft/partials/campaign_draft_users_list',
+        users: @users.page(1),
+        total_users_count: @users.count,
+        page: (params.dig(:search, :page).present? ? params.dig(:search, :page) : 1) %>
     </div>
   </div>
 

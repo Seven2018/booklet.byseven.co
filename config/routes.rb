@@ -49,6 +49,9 @@ Rails.application.routes.draw do
     resource :templates, only: %i[edit update]
     resource :dates, only: %i[edit update]
     resource :launches, only: %i[edit update]
+    namespace :search do
+      resources :users, only: :index
+    end
   end
 
   # CATEGORIES
