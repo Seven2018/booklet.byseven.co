@@ -1,0 +1,80 @@
+.navbar-orange {
+  display: flex;
+  background-color: #EF8C64;
+  flex-direction: row;
+
+  .left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    svg {
+      font-size: 4rem;
+      margin-left: 1.5rem;
+    }
+  }
+
+  .nav-item {
+    margin-top: 1rem;
+    margin-right: 1.5rem;
+
+    svg {
+      margin-right: 1.5rem;
+      font-size: 3.4rem;
+      margin-top: 3px;
+    }
+  }
+
+  .right {
+
+    .dropdown-card-pages {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      text-align: center;
+      align-items: center;
+      padding: 1rem;
+
+      .interviews {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        svg {
+          margin-left: 1.3rem;
+        }
+
+      }
+
+      .trainings {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        svg {
+          margin-left: 1.3rem;
+        }
+      }
+    }
+  }
+}
+
+.navbar-all {
+  .avatar-sm {
+
+  width: 4rem;
+  height: 4rem;
+
+}
+
+.navbar-all .navbar-collapse {
+  flex-grow: 0;
+
+}
+
+.navbar-all .navbar-brand img {
+  width: 40px;
+}
+
+}
