@@ -4,6 +4,7 @@
     <% employee_view = current_user == employee %>
     <% manager_view = current_user == campaign.owner || current_user.hr_or_above? %>
     <% next unless employee_view || manager_view %>
+    <% interview_form = campaign.interviews.where(employee_id: employee).first.interview_form %>
 
     <div class="campaign-show__card-container col-sm-12 col-md-6 col-xl-4">
       <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
@@ -29,9 +30,15 @@
 
         <div class="campaign-show__card-interviews">
 
-          <% if campaign.simple? %>
+          <% if interview_form.answerable_by_manager? || interview_form.answerable_by_employee? %>
             <% interview = Interview.find_by(campaign_id: campaign.id, employee_id: employee.id) %>
-            <% active_link = interview.completed? && employee_view || manager_view %>
+            <% active_link =
+              if interview.manager?
+                interview.completed? && employee_view || manager_view
+              else
+                interview.completed? && manager_view || employee_view
+              end
+            %>
 
             <div class="campaign-show__card-interview">
               <% if active_link %>
@@ -59,13 +66,13 @@
               <p>Manager may update his/her answer at any time.</p>
             </div>
 
-          <% elsif campaign.crossed? %>
+          <% else %>
             <% interviews = Interview.where(campaign_id: campaign.id, employee_id: employee.id) %>
             <% employee_interview = interviews.find_by(label: 'Employee') %>
             <% manager_interview = interviews.find_by(label: 'Manager') %>
             <% crossed_interview = interviews.find_by(label: 'Crossed') %>
-            <% crossed_availability = employee_interview.completed? && manager_interview.completed? && (manager_view || crossed_interview.completed?)%>
-            <% interviews = [employee_interview, manager_interview, crossed_interview] %>
+            <% crossed_availability = employee_interview.completed? && manager_interview.completed? && (manager_view || crossed_interview.completed?) if interview_form.cross %>
+            <% interviews = interview_form.cross ? [employee_interview, manager_interview, crossed_interview] : [employee_interview, manager_interview] %>
 
             <% interview_title = {'Employee' => "Employee's",
                                   'Manager' => "Manager's",
@@ -110,19 +117,21 @@
 
             <% end %>
 
-            <% if crossed_interview.completed? %>
-              <div class="campaign-show__card-interviews-info-locked">
-                <p>Interview locked</p>
-                <span class="iconify" data-icon="akar-icons:circle-check-fill"></span>
-              </div>
-            <% elsif crossed_interview.completed? %>
-              <div class="campaign-show__card-interviews-info-complete">
-                <p>Interview completed !</p>
-              </div>
-            <% else %>
-              <div class="campaign-show__card-interviews-info-incomplete">
-                <p>Start a cross review when employee and manager’s reviews are done</p>
-              </div>
+            <% if interview_form.cross %>
+              <% if crossed_interview.locked? %>
+                <div class="campaign-show__card-interviews-info-locked">
+                  <p>Interview locked</p>
+                  <span class="iconify" data-icon="akar-icons:circle-check-fill"></span>
+                </div>
+              <% elsif crossed_interview.completed? %>
+                <div class="campaign-show__card-interviews-info-complete">
+                  <p>Interview completed !</p>
+                </div>
+              <% else %>
+                <div class="campaign-show__card-interviews-info-incomplete">
+                  <p>Start a cross review when employee and manager’s reviews are done</p>
+                </div>
+              <% end %>
             <% end %>
 
           <% end %>

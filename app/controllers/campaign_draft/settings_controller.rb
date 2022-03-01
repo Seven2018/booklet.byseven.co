@@ -15,7 +15,7 @@ class CampaignDraft::SettingsController < CampaignDraft::BaseController
   private
 
   def campaign_draft_params
-    params.permit(:title, :kind)
+    params.permit(:title, :kind, :owner_id)
   end
 
   def set_multi_step_form_navbar_content

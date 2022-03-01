@@ -38,7 +38,7 @@ class CampaignsController < ApplicationController
 
   def my_team_interviews
     @personal_campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
-    @campaigns = Campaign.where(owner_id: current_user.id)
+    @campaigns = Campaign.where_exists(:interviews, interviewer_id: current_user.id)
     authorize @campaigns
 
     if params.dig(:period) == 'completed'
@@ -227,10 +227,6 @@ class CampaignsController < ApplicationController
     flash[:notice] = 'Email sent.'
 
     head :no_content
-  end
-
-  def edit
-    authorize @campaign
   end
 
   def destroy

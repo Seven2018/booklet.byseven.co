@@ -32,6 +32,7 @@ class CampaignDraft < ApplicationRecord
                  date: :datetime,
                  starts_at: [:string, default: '09:00'],
                  ends_at: [:string, default: '10:00'],
+                 owner_id: :integer,
                  default_interviewer_id: :integer,
                  default_template_id: :integer,
                  interviewee_ids: [:string, array: true, default: []],

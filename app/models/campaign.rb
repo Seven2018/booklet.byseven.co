@@ -5,7 +5,7 @@ class Campaign < ApplicationRecord
 
   belongs_to :company
   belongs_to :owner, class_name: "User"
-  belongs_to :interview_form
+  belongs_to :interview_form, optional: true
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
 
@@ -14,8 +14,8 @@ class Campaign < ApplicationRecord
   paginates_per 10
 
   enum campaign_type: {
-    simple: 0,
-    crossed: 10,
+    one_to_one: 0,
+    feedback_360: 10,
   }
 
   include PgSearch::Model

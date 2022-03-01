@@ -1,0 +1,47 @@
+<div class='border-bkt-light-grey overflow-y-scroll mb-2rem' style='height: 40rem; width: 30rem;'>
+  <% page = params.dig(:search, :page).present? ? params.dig(:search, :page) : 1 %>
+
+  <% users.each do |user| %>
+    <% selected = @campaign.interviewee_ids.include?(user.id.to_s) %>
+
+    <div id='user-<%= user.id %>' class='flex-row-between-centered height-5rem'>
+      <img src="<%= user.picture %>" alt="<%= user.fullname %>" class='avatar-sm mr-1rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+      <div class='flex-grow-1'>
+        <p class='fs-1_2rem font-weight-600'><%= user.fullname %></p>
+        <p class='fs-1_2rem'><%= user.job_title %></p>
+      </div>
+      <div class='centered-item rounded-3px' style='height: 2.4rem; width: 2.4rem; border: 0.5px solid #CDCDCD;' onclick='selectUser(this);'>
+        <%= check_box_tag 'interviewee_ids[]', user.id, @campaign.interviewee_ids.include?(user.id.to_s), class: "checkbox-#{user.id} select-user hidden" %>
+        <!-- <input class='select-user hidden' id='checkbox-<%= user.id %>' type="checkbox" value="<%= user.id %>"> -->
+        <span class="iconify fs-1_8rem bkt-blue <%= 'hidden' unless selected %>" data-icon="bi:check"></span>
+      </div>
+    </div>
+
+
+  <% end %>
+</div>
+
+<div class="flex-row-between-centered mb-2rem">
+
+  <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
+    <div class="paginate__previous-button" onclick='changePage("previous");'>
+      <span class="iconify bkt-blue" data-icon="fontisto:angle-left"></span>
+      <p class='fs-1_4rem bkt-blue'>Previous</p>
+    </div>
+  <% else %>
+    <div class='opacity_0'>
+      <span class="iconify" data-icon="fontisto:angle-left"></span>
+      <p>Previous</p>
+    </div>
+  <% end %>
+
+  <p class='fs-1_2rem bkt-blue'>Page <%= page %> of <%= total_users_count / 50 %></p>
+
+  <% if users.count == 50 %>
+    <div class="flex-row-between-centered" onclick='changePage("next");'>
+      <p class='fs-1_4rem bkt-blue'>Next</p>
+      <span class="iconify bkt-blue" data-icon="fontisto:angle-right"></span>
+    </div>
+  <% end %>
+
+</div>

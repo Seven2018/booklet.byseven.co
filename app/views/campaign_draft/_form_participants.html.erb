@@ -1,3 +1,5 @@
+<% all_users = User.where(company_id: current_user.company_id).order(lastname: :asc) %>
+
 <div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
   Chose how you want to add participants
 </div>
@@ -31,12 +33,58 @@
   Chose interviewee(s) you want to participate this campaign
 </div>
 
-<%# TODO %>
-<% User.last(5).each do |user| %>
-  <%= check_box_tag 'interviewee_ids[]', user.id, @campaign.interviewee_ids.include?(user.id.to_s) %>
-  <%= user.email %>
-  <br>
-<% end %>
+<div class="flex-row-between-centered mb-2rem">
+  <p class="font-weight-600">Select interviewees</p>
+  <p class="font-weight-600">Interviewees selected</p>
+</div>
+
+
+<div class="flex-row-between-start">
+  <div>
+    <div class="flex-row-between-centered pr-1rem">
+      <div class="pos-rel">
+        <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
+        <%= simple_form_for(:search, url: campaign_draft_users_path, method: :get, remote: true
+          )do |f| %>
+          <%=
+            f.input(
+              :title,
+              placeholder: 'Search',
+              input_html: {
+                class: 'height-4rem pl-3rem rounded-3px',
+                style: 'width: 15rem; border: 0.5px solid #CDCDCD;',
+                autocomplete: 'off',
+                onkeyup: 'resetPage(this);',
+              },
+              label: false,
+              required: false
+            )
+          %>
+          <%= f.hidden_field :page, value: '1' %>
+        <% end %>
+      </div>
+      <div class="flex-row-between-centered mb-1rem">
+        <p class='fs-1_2rem bkt-blue mr-1rem' >Select all (<%= all_users.count %>)</p>
+        <div class='rounded-3px' style='height: 2.4rem; width: 2.4rem; border: 0.5px solid #CDCDCD;'></div>
+      </div>
+    </div>
+
+    <div>
+      <%= render 'campaign_draft/partials/campaign_draft_users_list', users: all_users.page(1), total_users_count: all_users.count %>
+    </div>
+  </div>
+
+  <div class="">
+    <div class="flex-row-end-centered height-5rem">
+      <p class='fs-1_2rem bkt-blue mb-1rem' >Remove all (<%= campaign.interviewee_ids.count %>)</p>
+    </div>
+
+    <div id='campaign-draft__selected-users-list'>
+      <%= render 'campaign_draft/partials/campaign_draft_selected_users_list', users: campaign.interviewee_ids %>
+    </div>
+  </div>
+
+</div>
 
 <div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
   Chose how you want to add participants
@@ -90,4 +138,4 @@
 </div>
 
 <%# TODO %>
-<%= select_tag :default_interviewer_id, options_for_select(User.last(5).pluck(:email, :id), selected: @campaign.default_interviewer_id) %>
+<%= select_tag :default_interviewer_id, options_for_select(User.where(company_id: current_user.company_id).pluck(:email, :id), selected: @campaign.default_interviewer_id) %>

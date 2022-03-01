@@ -1,13 +1,13 @@
 <% campaign_type_svg = {
-      'crossed' => 'uil:exchange',
-      'simple' => 'mdi:star-shooting'
+      'one_to_one' => 'uil:exchange',
+      'feedback_360' => 'mdi:star-shooting'
     } %>
 
 <% @campaigns.each do |campaign| %>
 
-  <% campaign_type = campaign.crossed? ? 'Cross' : 'Simple' %>
+  <% campaign_type = campaign.one_to_one? ? '1 to 1' : 'Feedback 360' %>
   <% manager = campaign.owner %>
-  <% template_title = campaign.interview_form.title %>
+  <% campaign_title = campaign.title %>
   <% completion = campaign.completion_for(:all) %>
   <% completion_status =
       if completion == 100
@@ -31,7 +31,7 @@
       <p><%= manager.fullname %></p>
     </div>
     <div class="campaigns-index__list-line-element">
-      <p class='template-title' title='<%= template_title %>'><%= template_title %></p>
+      <p class='template-title' title='<%= campaign_title %>'><%= campaign_title %></p>
     </div>
     <div class="campaigns-index__list-line-element campaigns-index__list-element-employee">
       <p><%= campaign.employees.distinct.count %></p>
@@ -45,7 +45,6 @@
       <% end %>
     </div>
     <div class="campaigns-index__list-line-content-dropdown hidden">
-      <%= link_to 'Edit', edit_campaign_path(campaign) unless completion == 100 %>
       <% if campaign.interviews.where(completed: true).empty? || current_user.hr_or_above? %>
         <a data-toggle='modal' data-target='#deleteCampaign-<%= campaign.id %>'>Delete</a>
       <% end %>

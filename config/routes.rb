@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   get :complete_session, controller: :attendees
 
   # CAMPAIGNS
-  resources :campaigns
+  resources :campaigns, only: %i[index show destroy]
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
   get :campaigns_report, controller: :campaigns
@@ -176,6 +176,7 @@ Rails.application.routes.draw do
   get :unlink_from_company, controller: :users
   post :import_users, controller: :users
   get :users_search, controller: :users
+  get :campaign_draft_users, controller: :users
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]

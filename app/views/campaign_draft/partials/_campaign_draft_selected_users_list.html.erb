@@ -1,0 +1,20 @@
+<div class='border-bkt-light-grey overflow-y-scroll mb-2rem' style='height: 40rem; width: 30rem;'>
+  <% page = params.dig(:search, :page).present? ? params.dig(:search, :page) : 1 %>
+
+  <% users.each do |user| %>
+    <% user = User.find(user) %>
+
+    <div id='selected_user-<%= user.id %>' class='flex-row-between-centered height-5rem'>
+      <img src="<%= user.picture %>" alt="<%= user.fullname %>" class='avatar-sm mr-1rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+      <div class='flex-grow-1'>
+        <p class='fs-1_2rem font-weight-600'><%= user.fullname %></p>
+        <p class='fs-1_2rem'><%= user.job_title %></p>
+      </div>
+      <div class='centered-item rounded-3px' style='height: 2.4rem; width: 2.4rem; border: 0.5px solid #CDCDCD;'>
+        <span class="iconify fs-1_8rem bkt-blue" data-icon="bi:check"></span>
+      </div>
+    </div>
+
+
+  <% end %>
+</div>

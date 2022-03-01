@@ -22,11 +22,11 @@
       <% if current_user.hr_or_above? %>
         <button class="left-buttons">
           <%= link_to campaigns_path do %>
-          <div class="navbar-buttons
-            <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>
-            ">
-            <h4>Admin</h4>
-          </div>
+            <div class="navbar-buttons
+              <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>
+              ">
+              <h4>Admin</h4>
+            </div>
           <% end %>
         </button>
       <% end %>
@@ -37,7 +37,9 @@
         ![:pages_organisation, :campaigns_campaigns_report].include?(@controller_action)
     %>
       <div class="centered-item">
-        <a class='btn-blue__white-border' data-toggle='modal' data-target='#newCampaign'><p>New Interview</p></a>
+        <%= link_to edit_campaign_draft_settings_path, class: 'btn-blue__white-border' do %>
+          <p>New Campaign</p>
+        <% end %>
       </div>
     <% end %>
   </div>
@@ -109,42 +111,3 @@
     <% end %>
   </div>
 <% end %>
-
-<!------------>
-<!-- MODALS -->
-<!------------>
-
-<div class='modal fade' id='newCampaign' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'campaigns/modals/new' %>
-  </div>
-</div>
-
-
-<!---------------->
-<!-- JAVASCRIPT -->
-<!---------------->
-
-<script>
-  function selectCampaignType(element) {
-    document.querySelectorAll('.interview-type-card').forEach((card) => {
-      card.classList.remove('selected')
-    })
-    document.querySelectorAll('.interview-type-card__checkbox').forEach((checkbox) => {
-      checkbox.classList.remove('selected')
-    })
-    document.querySelectorAll('.interview_type-card__teaser').forEach((teaser) => {
-      teaser.classList.remove('selected')
-    })
-    card = element.closest('.interview-type-card')
-    checkbox = card.querySelector('.interview-type-card__checkbox')
-    teaser = document.querySelector('#teaser-' + card.id.split('-')[1])
-    link = element.closest('.modal').querySelector('.interview-type-cards__confirm')
-    link_href = new URL(link.href)
-    link_href.searchParams.set('campaign[selected_campaign_type]', element.getAttribute('data-type'))
-    link.href = link_href.href
-    card.classList.add('selected')
-    checkbox.classList.add('selected')
-    teaser.classList.add('selected')
-  }
-</script>

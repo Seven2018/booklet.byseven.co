@@ -222,14 +222,12 @@
 }
 
 .campaigns-my-interviews__tabs-controls {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
   padding: 0 1.5rem;
   font-weight: bold;
-
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
 
   .booklet-select__selected {
     background-color: white;
