@@ -123,4 +123,8 @@ class ApplicationController < ActionController::Base
   def show_navbar_campaign
     @show_navbar_campaign = ['campaigns', 'interview_forms'].include?(params[:controller]) || params[:controller].split('/').first == 'campaign_draft'
   end
+
+  def show_navbar_home
+    @show_navbar_home = true
+  end
 end

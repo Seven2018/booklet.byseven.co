@@ -26,9 +26,11 @@
       <% if @show_navbar_campaign || params[:redirected_from] == 'campaigns' %>
         <%= render 'shared/navbar_campaign' %>
         <%= render 'shared/navbar_campaign_mobile' %>
-      <% else %>
-        <%= render 'shared/navbar_interviews_trainings' %>
+      <% elsif @show_navbar_home %>
+        <%= render 'shared/navbar_home' %>
         <%= render 'shared/navbar_mobile' %>
+      <% else %>
+        <%= render 'shared/navbar_trainings' %>
       <% end %>
 
     <% end %>
