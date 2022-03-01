@@ -6,6 +6,39 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+
+      <% if user_signed_in? %>
+      <%= link_to my_interviews_path do %>
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_interviews %>
+          ">
+          <h4 title='My trainings'>My trainings</h4>
+        </div>
+      <% end %>
+
+      <% if current_user.manager_or_above? %>
+        <%= link_to my_team_interviews_path do %>
+          <div class="navbar-buttons
+            <%= 'navbar-buttons--active' if @controller_action == :trainings_my_team_trainings %>
+            ">
+            <h4 title='My team trainings'>My team trainings</h4>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if current_user.hr_or_above? %>
+        <button class="left-buttons">
+          <%= link_to campaigns_path do %>
+          <div class="navbar-buttons
+            <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>
+            ">
+            <h4>Admin</h4>
+          </div>
+          <% end %>
+        </button>
+      <% end %>
+    <% end %>
     </div>
 
     <div class="right">
