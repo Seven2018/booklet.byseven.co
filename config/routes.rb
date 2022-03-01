@@ -30,7 +30,6 @@ Rails.application.routes.draw do
   resources :campaigns, only: %i[index show destroy]
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
-  get :campaigns_report, controller: :campaigns
   get :campaigns_report_filter_campaigns, controller: :campaigns
   get :campaign_report_info, controller: :campaigns
   get :campaign_select_template, controller: :campaigns
@@ -41,6 +40,8 @@ Rails.application.routes.draw do
   get :campaign_add_user, controller: :campaigns
   get :campaign_remove_user, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
+
+  resources :reports, only: %i[index new]
 
   namespace :campaign_draft do
     resource :settings, only: %i[edit update]

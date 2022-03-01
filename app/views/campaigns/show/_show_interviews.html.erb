@@ -80,7 +80,7 @@
 
             <% interviews.each do |interview| %>
 
-              <% active_link = interview.crossed? && crossed_availability || ((employee_view && interview.employee?) || (manager_view && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
+              <% active_link = (interview.crossed? && crossed_availability) || ((employee_view && interview.employee?) || (manager_view && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
 
               <div class="campaign-show__card-interview">
                 <% if active_link %>

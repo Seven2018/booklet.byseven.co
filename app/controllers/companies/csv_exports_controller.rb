@@ -15,15 +15,15 @@ class Companies::CsvExportsController < ApplicationController
       Companies::CsvExports::CreateJob.perform_later csv_export.id
       flash[:notice] = "Export Csv en cours de création: rafraichir dans 1 min !"
     else
-      flash[:alert] = csv_export.errors.full_messages
+      flash[:alert] = csv_export.errors.full_messages.join(',')
     end
-    redirect_to campaigns_report_path
+    redirect_to reports_path
   end
 
   def destroy
     csv_export.destroy
     flash[:notice] = "Export Csv détruit !"
-    redirect_to campaigns_report_path
+    redirect_to reports_path
   end
 
   private

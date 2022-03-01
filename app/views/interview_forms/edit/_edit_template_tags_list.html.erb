@@ -1,5 +1,5 @@
 <% template.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
-  <div class='flex-row-between-centered border-bkt-blue-1px rounded-3px mr-1rem mb-1rem' style='padding: .5rem;'>
+  <div class='flex-row-between-centered border-bkt-blue rounded-3px mr-1rem mb-1rem' style='padding: .5rem;'>
     <p class="fs-1_4rem font-weight-600 bkt-blue"><%= tag.tag_name %></p>
     <span id='pill_tag-<%= tag.id %>' class="iconify fs-1_4rem ml-1rem bkt-blue cursor-pointer" data-icon="uil:times" onclick='manageTag(this, "remove");'></span>
   </div>
