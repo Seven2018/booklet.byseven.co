@@ -163,6 +163,10 @@ class CampaignsController < ApplicationController
 
   def edit
     authorize @campaign
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def destroy

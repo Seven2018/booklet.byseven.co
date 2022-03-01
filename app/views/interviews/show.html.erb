@@ -123,7 +123,7 @@
             <% question_number += 1 %>
 
             <div class="interview-main__right-question">
-              <a id="anchor-<%= question.position %>" style='position:absolute; top: -2.5rem;'></a>
+              <a id="anchor-<%= question.position %>" style='position:absolute;'></a>
               <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
                 <p><%= question_number %>. </p>
                 <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
