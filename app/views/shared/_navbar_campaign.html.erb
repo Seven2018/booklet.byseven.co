@@ -1,5 +1,12 @@
 <div class="navbar navbar-expand-sm navbar-light navbar__blue">
   <div class="navbar-controls__left">
+    <div class="left">
+      <a href="/home"><span class="iconify" data-icon="mdi:home-circle" style="color: white;"></span></a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
     <% if user_signed_in? %>
       <%= link_to my_interviews_path do %>
         <div class="navbar-buttons
@@ -32,45 +39,64 @@
       <% end %>
     <% end %>
 
-    <%
-      if current_user.manager_or_above? &&
-        ![:pages_organisation, :campaigns_campaigns_report].include?(@controller_action)
-    %>
-      <div class="centered-item">
-        <a class='btn-blue__white-border' data-toggle='modal' data-target='#newCampaign'><p>New Interview</p></a>
-      </div>
-    <% end %>
   </div>
 
-  <div class="navbar-controls-right flex-row-between-centered">
-    <div class="user-top-nav">
-      <div class="dropdown show">
-        <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-          <div class="dropdown-card">
-            <div class="user-info">
-              <p><%= current_user.fullname%></p>
-              <h6><%= current_user.email%></h6>
+  <div class="right">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
+
+        <li class="nav-item dropdown">
+          <div class="dropdown show">
+            <a class="navbar-user-card dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="iconify" data-icon="icon-park-outline:application-menu" style="color: white;"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+              <div class="dropdown-card-pages">
+                <div class="interviews">
+                  <a href="/interviews">
+                    <span class="iconify" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;"></span>
+                  <p>Interviews</p></a>
+                </div>
+                <div class="trainings">
+                  <a href="/trainings">
+                  <span class="iconify" data-icon="ion:school" style="color: #f26419;"></span>
+                  <p>Trainings</p></a>
+                </div>
+              </div>
+           </div>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <div class="dropdown show">
+            <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+              <div class="dropdown-card">
+                <div class="user-info">
+                  <p><%= current_user.fullname%></p>
+                  <h6><%= current_user.email%></h6>
+                </div>
+                <%= link_to user_path(current_user) do %>
+                <div class="dropdown-card dropdown-item ">
+                  <div class='dropdown-card-text'>
+                    <h6>Profile</h6>
+                  </div>
+                </div>
+                <% end %>
+                <%= link_to destroy_user_session_path, method: :delete do %>
+                <div class="dropdown-card dropdown-item flex-row-between-centered">
+                  <div class='dropdown-card-text'>
+                    <h6>Log out</h6>
+                  </div>
+                </div>
+                <% end %>
+              </div>
             </div>
           </div>
-          <%= link_to user_path(current_user) do %>
-            <div class="dropdown-card dropdown-item ">
-              <div class='dropdown-card-text'>
-                <h6>Profile</h6>
-              </div>
-            </div>
-          <% end %>
-          <%= link_to destroy_user_session_path, method: :delete do %>
-            <div class="dropdown-card dropdown-item flex-row-between-centered">
-              <div class='dropdown-card-text'>
-                <h6>Log out</h6>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
