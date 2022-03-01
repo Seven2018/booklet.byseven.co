@@ -7,6 +7,10 @@ class Mod < ApplicationRecord
   has_rich_text :text
   validate :valid_video
 
+  def youtube_video_id
+    video.split("=")[1]&.split("&")&.send(:[], 0) if video&.include? 'www.youtube.com/watch?v='
+  end
+
   private
 
   def valid_video
