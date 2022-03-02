@@ -1,0 +1,44 @@
+<% form_title = {
+  'text' => 'Text',
+  'video' => 'Video',
+  'assessment' => 'Quiz'
+} %>
+
+<% mod_icon = { 'text' => 'akar-icons:text-align-center',
+            'video' => 'fa-solid:video',
+            'assessment' => 'ant-design:check-square-filled' } %>
+
+<div class="mod-top flex-row-between-start mb-3rem">
+  <div class="mod-title" onclick='toggleMod(this);'>
+    <i class="fas fa-angle-down" data-rotated='0'></i>
+    <i class="<%= mod_icon[mod_type] %>"></i>
+    <p><%= form_title[mod_type] %></p>
+  </div>
+  <div class="mod-controls-new">
+    <a class="mod-delete"
+       onclick="
+        this.closest('<%= ".add-#{mod_type}" %>').remove();"
+     >
+     <span class="iconify fs-2_4rem bkt-light-grey5 ml-1rem" data-icon="uil:times"></span>
+   </a>
+  </div>
+</div>
+
+<%= simple_form_for Mod.new, remote: true do |f| %>
+  <%= f.hidden_field :content_id, value: content_id %>
+  <%= f.hidden_field :mod_type, value: mod_type %>
+  <%= f.hidden_field :position %>
+
+  <%= f.input(:title, {
+    placeholder: 'Title (required)',
+    input_html: {
+      autocomplete: 'off'
+    },
+    required: true,
+    label: false
+  }.compact) %>
+
+  <%= button_tag type: 'submit', class: 'btn-orange__white-border' do %>
+    <p>Create</p>
+  <% end %>
+<% end %>

@@ -11,8 +11,9 @@
           </div>
           <div class="campaigns-my-interviews__card-title-deadline">
             <h2><%= campaign.title %></h2>
+            <p class="campaigns-my-interviews__card-status <%= campaign.completion_status %>"><%= campaign.completion_status_string %></p>
           </div>
-           <p class="campaigns-my-interviews__card-status <%= campaign.completion_status %>"><%= campaign.completion_status_string %></p>
+
         </div>
         <div class="campaigns-my-interviews__card-review-link">
           <%= link_to campaign_path(campaign) do %>

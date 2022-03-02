@@ -2,7 +2,7 @@
   <% question.required ? required = 'Required' : required = 'Not required' %>
 
   <div class='bkt-bg-white p-2rem rounded-10px pos-rel overflow-hidden <%= "border-bkt-blue" if question.question_type == "separator" %>'
-       id="item-<%= question.position %>" style='max-height: 10000px;'>
+       id="item-<%= question.position %>" style='max-height: 100000px;'>
     <div id="anchor-<%= question.id %>" class="pos-abs" style="top: -9rem;"></div>
     <%= render 'interview_forms/edit/edit_question_form', question: question, template: template  %>
   </div>

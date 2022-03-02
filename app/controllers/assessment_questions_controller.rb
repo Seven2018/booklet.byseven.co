@@ -1,67 +1,72 @@
 class AssessmentQuestionsController < ApplicationController
-  before_action :set_question, only: [:view_mode, :destroy, :move_up, :move_down]
+  before_action :set_question, only: [:update]
 
-  # User takes the assessment, one assessment_question at a time
-  def view_mode
+  def create
+    raise
+    @question = AssessmentQuestion.new(title: params[:title])
     authorize @question
-    @form = @question.mod
-    @previous_question = AssessmentQuestion.find_by(mod_id: @question.mod_id, position: @question.position - 1)
-    if AssessmentAnswer.find_by(user_id: current_user.id, assessment_question_id: @question.id).present?
-      @answer = AssessmentAnswer.find_by(user_id: current_user.id, assessment_question_id: @question.id)
-    else
-      @answer = AssessmentAnswer.new
-    end
   end
 
-  # Remove the assessment_question
-  def destroy
+  def update
     authorize @question
-    @form = @question.mod
-    @question.destroy
-    i = 1
-    @form.assessment_questions.order(position: :asc).each do |question|
-      question.update(position: i)
-      i += 1
-    end
+    @question.update(question_params)
+    raise
+
     respond_to do |format|
+      format.html
       format.js
     end
   end
 
-  # Change the assessment_questions order
-  def move_up
-    authorize @question
-    @form = @question.mod
-    unless @question.position == 1
-      previous_question = @form.assessment_questions.where(position: @question.position - 1).first
-      previous_question.update(position: @question.position)
-      @question.update(position: (@question.position - 1))
-    end
-    @question.save
-    respond_to do |format|
-      format.js
-    end
-  end
+  # def add_assessment_question
+  #   authorize @module
+  #   @question = AssessmentQuestion.new(title: params[:title])
 
-  # Change the assessment_questions order
-  def move_down
-    authorize @question
-    @form = @question.mod
-    unless @question.position == @form.assessment_questions.count
-      next_question = @form.assessment_questions.where(position: @question.position + 1).first
-      next_question.update(position: @question.position)
-      @question.update(position: (@question.position + 1))
-    end
-    @question.save
-    respond_to do |format|
-      format.html {redirect_to assessment_path(@question.mod)}
-      format.js
-    end
-  end
+  #   target_position = params.dig(:interview_question, :position).to_i + 1
+
+  #   @form = InterviewForm.find(@question.interview_form_id)
+  #   questions = @form.interview_questions.order(position: :asc)
+
+  #   i = target_position
+  #   questions.where('position >= ?', target_position).each do |question|
+  #     question.update position: i
+  #     i += 1
+  #   end
+  #   @question.position = target_position
+
+  #   # Properly order the questions, if necessary
+  #   if questions.map(&:position) != (1..questions.count).to_a
+  #     j = 1
+  #     questions.each do |question|
+  #       question.update position: i
+  #       j += 1
+  #     end
+  #   end
+
+  #   params[:interview_question][:required].present? ? @question.required = true : @question.required = false
+
+  #   @question.options =
+  #     if @question.rating?
+  #       {params[:interview_question][:options] => 1}
+  #     elsif @question.mcq? || @question.objective?
+  #       {'Please enter an option': 1}
+  #     end
+
+  #   @question.save
+
+  #   respond_to do |format|
+  #     format.html {redirect_to interview_form_path(@form)}
+  #     format.js
+  #   end
+  # end
 
   private
 
   def set_question
     @question = AssessmentQuestion.find(params[:id])
+  end
+
+  def question_params
+    params.require(:assessment_question).permit(:question)
   end
 end

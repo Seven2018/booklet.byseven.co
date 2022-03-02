@@ -203,10 +203,6 @@
     previous_button = document.querySelector('.paginate__previous-button')
     submit_button = document.querySelector('.btn-search')
 
-    console.log('page_value',page_value)
-    console.log('previous_button',previous_button)
-    console.log('submit_button',submit_button)
-
     if(direction == 'next') {
       page_value.value = (parseInt(page_value.value,10) + 1).toString()
     } else {

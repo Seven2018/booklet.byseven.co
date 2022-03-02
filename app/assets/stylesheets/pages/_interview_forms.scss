@@ -819,7 +819,7 @@
   }
 }
 
-.add-video.active, .add-text.active, .add-quiz.active {
+.add-separator, .add-open_question, .add-rating, .add-mcq, .add-objective {
   max-height: 100000px;
 }
 
@@ -863,7 +863,7 @@
 
     i {
       width: 1.6rem;
-      margin-right: 1.5rem;
+      margin-right: 1rem;
 
       &:hover {
         cursor: pointer;
@@ -884,6 +884,10 @@
 
   .form-group {
     margin-bottom: 2rem;
+  }
+
+  .trix-content {
+    background-color: $bkt-light-blue;
   }
 }
 

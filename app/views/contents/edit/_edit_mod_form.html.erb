@@ -1,0 +1,94 @@
+<% mod_icon = { 'text' => 'akar-icons:text-align-center',
+            'video' => 'fa-solid:video',
+            'assessment' => 'ant-design:check-square-filled' } %>
+
+<% first_mod = mod.position == 1 %>
+<% last_mod = mod.position >= content.mods.count %>
+
+<div class="line-top flex-row-between-start mb-3rem">
+
+  <div class="line-title"
+       onclick='toggleMod(this);'>
+    <i class="fas fa-angle-down bkt-orange" data-rotated='0'></i>
+    <div class='centered-item bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
+      <span class="iconify bkt-orange" data-icon="<%= mod_icon[mod.mod_type] %>"></span>
+    </div>
+    <p class='bkt-orange' title='<%= mod.title %>'><%= mod.title %></p>
+  </div>
+
+  <div class="flex-row-between-centered">
+    <% if current_user.hr_or_above? && !params[:content_access].present? %>
+
+      <% if first_mod %>
+        <a class='px-1' disabled style='cursor: default;'>
+          <span class="iconify bkt-light-blue" data-icon="akar-icons:arrow-up"></span>
+        </a>
+      <% else %>
+        <%= link_to move_up_mod_path(mod), class: 'px-1', remote: true do %>
+          <span class="iconify bkt-orange" data-icon="akar-icons:arrow-up"></span>
+        <% end %>
+      <% end %>
+
+      <% if last_mod %>
+        <a class='px-1' disabled style='cursor: default;'>
+          <span class="iconify bkt-light-blue" data-icon="akar-icons:arrow-down"></span>
+        </a>
+      <% else %>
+        <%= link_to move_down_mod_path(mod), class: 'px-1', remote: true do %>
+          <span class="iconify bkt-orange" data-icon="akar-icons:arrow-down"></span>
+        <% end %>
+      <% end %>
+
+      <%= link_to mod_path(mod), method: :delete, class: 'px-1', data: {confirm: 'Are you sure ?'}, remote: true do %>
+        <span class="iconify bkt-red" data-icon="akar-icons:trash-can"></span>
+      <% end %>
+
+    <% end %>
+  </div>
+
+</div>
+
+<%= simple_form_for mod, remote: true do |f| %>
+
+  <%= f.input(:title, {
+      placeholder: 'Title (required)',
+      input_html: {
+        class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px mb-2rem',
+        autocomplete: 'off',
+        onkeyup: 'saveForm(this, true)'
+      },
+      required: true,
+      label: 'Title'
+    }.compact) %>
+
+  <% if mod.text? %>
+
+    <%= f.input :text,
+        as: :trix_editor,
+        placeholder: 'Description (optional)',
+        input_html: {
+          class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px',
+          value: mod.text
+        }
+        %>
+
+  <% elsif mod.video? %>
+
+    <%= f.input :video,
+        label: 'Video link',
+        input_html: {
+          class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px',
+          value: mod.video
+        } %>
+
+  <% end %>
+
+  <%= f.submit '', class: 'hidden-submit hidden' %>
+<% end %>
+
+<% if mod.assessment? %>
+  <label class='fs-1_4rem font-weight-500'>Answer options</label>
+  <div id='mcq-<%= mod.id %>' class='mb-2rem'>
+    <%= render 'contents/edit/edit_show_assessment', mod: mod %>
+  </div>
+<% end %>

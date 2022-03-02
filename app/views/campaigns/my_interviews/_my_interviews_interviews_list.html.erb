@@ -28,10 +28,11 @@
 
           <div class="campaigns-my-interviews__card-title-deadline">
             <h2><%= campaign.title %></h2>
-            <p><em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
+            <p class="campaigns-my-interviews__card-status <%= status %>"><%= status.capitalize.gsub(/_/, " ") %></p>
           </div>
 
-          <p class="campaigns-my-interviews__card-status <%= status %>"><%= status.capitalize.gsub(/_/, " ") %></p>
+          <div class="deadline"><p>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p></div>
+
         </div>
       </div>
 
@@ -42,7 +43,7 @@
             <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           </div>
           <div class="campaigns-my-interviews__card-name-status">
-            <h6><%= manager.fullname %><em style="color:darkgray">- Manager</em></h6>
+            <h6><%= manager.fullname %><em style="color:darkgray"> - Manager</em></h6>
               <% if manager_interview.completed? %>
                 <p style="color:#7BC079">Review completed</p>
               <% else %>
@@ -57,7 +58,7 @@
               <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
             </div>
             <div class="campaigns-my-interviews__card-name-status">
-                <h6><%= "#{@current_user.fullname}" %><em style="color:darkgray">- Employee</em></h6>
+                <h6><%= "#{@current_user.fullname}" %><em style="color:darkgray"> - Employee</em></h6>
               <% if employee_interview.completed? %>
                 <p style="color:#7BC079">Review completed</p>
               <% else %>
