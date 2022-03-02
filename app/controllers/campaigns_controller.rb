@@ -24,11 +24,15 @@ class CampaignsController < ApplicationController
     @manager_campaigns = Campaign.where(owner_id: current_user.id)
     authorize @campaigns
 
-    if params.dig(:period) == 'completed'
-      @campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
-    else
-      @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
-    end
+    @campaigns =
+      if params.dig(:period) == 'completed'
+        @campaigns.where_not_exists(:interviews, locked_at: nil)
+      else
+        @campaigns.where_exists(:interviews, locked_at: nil)
+      end
+
+    @campaigns = CampaignDecorator.decorate_collection @campaigns
+    @manager_campaigns = CampaignDecorator.decorate_collection @manager_campaigns
 
     respond_to do |format|
       format.html

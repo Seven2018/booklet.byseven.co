@@ -17,6 +17,8 @@ class CampaignDecorator < Draper::Decorator
 
   def icon
     {
+      'crossed' => 'uil:exchange',
+      'simple' => 'mdi:star-shooting',
       'one_to_one' => 'uil:exchange',
       'feedback_360' => 'mdi:star-shooting'
     }[campaign_type]

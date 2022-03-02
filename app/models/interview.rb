@@ -28,6 +28,12 @@ class Interview < ApplicationRecord
 
   scope :completed, -> { where(completed: true) }
 
+  def interviewer
+    return campaign.owner if campaign.crossed? || campaign.simple?
+
+    super
+  end
+
   def fully_answered?
     interview_answers.count >=
       if self.crossed?

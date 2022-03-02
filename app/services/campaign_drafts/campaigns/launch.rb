@@ -25,22 +25,21 @@ module CampaignDrafts
       def interview_form
         case @campaign_draft.templates_selection_method
         when 'single' then InterviewForm.find @campaign_draft.default_template_id
-        when 'multiple' then # TODO
+        # when 'multiple' then # TODO
         end
       end
 
-      # def owner
-      #   case @campaign_draft.interviewer_selection_method
-      #   when 'manager' then User.find @campaign_draft.default_interviewer_id
-      #   when 'multiple' then # TODO
-      #   end
-      # end
+      def owner
+        case @campaign_draft.interviewer_selection_method
+        when 'manager' then User.find @campaign_draft.owner_id
+        # when 'multiple' then # TODO
+        end
+      end
 
       def campaign_type
         case @campaign_draft.kind
         when 'one_to_one' then 'crossed'
-        when 'feedback_360' then 'TODO'
-        when 'TODO' then 'simple'
+        # when 'feedback_360' then 'TODO'
         end
       end
 
@@ -48,7 +47,7 @@ module CampaignDrafts
         @campaign ||=
           Campaign.create(
             title: @campaign_draft.title,
-            owner: User.find(@campaign_draft.owner_id),
+            owner: owner,
             company: @campaign_draft.user.company
           )
       end

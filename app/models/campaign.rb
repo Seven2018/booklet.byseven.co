@@ -14,8 +14,10 @@ class Campaign < ApplicationRecord
   paginates_per 10
 
   enum campaign_type: {
-    one_to_one: 0,
-    feedback_360: 10,
+    simple: 0,
+    crossed: 10,
+    one_to_one: 20,
+    feedback_360: 30
   }
 
   include PgSearch::Model
