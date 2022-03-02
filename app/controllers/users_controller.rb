@@ -174,16 +174,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def campaign_draft_users
-    users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
-
-    filter_users(users)
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   # Search from users with autocomplete
   def users_search
     skip_authorization
