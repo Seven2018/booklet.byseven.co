@@ -12,7 +12,7 @@
             'in_progress'
           end %>
     <div class="campaigns-my-interviews__banner">
-      <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
+      <h1>Hello, <%= "#{current_user.firstname}" %> !</h1>
       <p>You have <%= "#{@personal_campaigns.count}"  %> personal reviews<%= " and #{@campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>
       <p>You can manage your personal reviews by clicking on <strong>My interviews.</strong></p>
       <% if current_user.manager_or_above? %>
@@ -23,44 +23,28 @@
     </div>
 
     <div class="campaigns-my-interviews__tabs-controls">
-      <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <a class="nav-link active" id="nav-cross-tab" data-bs-toggle="tab" href="#nav-cross" role="tab" aria-controls="nav-cross" aria-selected="true">Cross</a>
-          <a class="nav-link" id="nav-simple-tab" data-bs-toggle="tab" href="#nav-simple" role="tab" aria-controls="nav-simple" aria-selected="false">Simple</a>
-        </div>
-
-        <div class="booklet-select__container" >
-          <div class="booklet-select__selected" onclick='BookletSelectExpand(this);'>
-            <p><%= params[:period].present? ? params[:period].capitalize : 'Current' %></p>
-            <div class="booklet-select__controls">
-              <div class="booklet-select__controls-icon">
-                <i class="fas fa-angle-down"></i>
-              </div>
+      <div class="booklet-select__container" >
+        <div class="booklet-select__selected" onclick='BookletSelectExpand(this);'>
+          <p><%= params[:period].present? ? params[:period].capitalize : 'Current' %></p>
+          <div class="booklet-select__controls">
+            <div class="booklet-select__controls-icon">
+              <i class="fas fa-angle-down"></i>
             </div>
           </div>
-          <div class="booklet-select__dropdown hidden">
-            <%= link_to my_team_interviews_path(period: 'current'), class: 'booklet-select__option' do %>
-              <p>Current</p>
-            <% end %>
-            <%= link_to my_team_interviews_path(period: 'completed'), class: 'booklet-select__option' do %>
-              <p>Completed</p>
-            <% end %>
-          </div>
         </div>
-      </nav>
+        <div class="booklet-select__dropdown hidden">
+          <%= link_to my_team_interviews_path(period: 'current'), class: 'booklet-select__option' do %>
+            <p>Current</p>
+          <% end %>
+          <%= link_to my_team_interviews_path(period: 'completed'), class: 'booklet-select__option' do %>
+            <p>Completed</p>
+          <% end %>
+        </div>
+      </div>
     </div>
     <div class="campaigns-my-interviews__tabs-display">
-      <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-cross" role="tabpanel" aria-labelledby="nav-cross-tab">
-          <div class="campaigns-my-interviews__list campaigns-my-interviews__list-crossed">
-            <%= render 'campaigns/my_interviews/my_team_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'crossed'), type: 'crossed' %>
-          </div>
-        </div>
-        <div class="tab-pane fade" id="nav-simple" role="tabpanel" aria-labelledby="nav-simple-tab">
-          <div class="campaigns-my-interviews__list campaigns-my-interviews__list-simple">
-            <%= render 'campaigns/my_interviews/my_team_interviews_interviews_list', campaigns: @campaigns.where(campaign_type: 'simple'), type: 'simple' %>
-          </div>
-        </div>
+      <div class="campaigns-my-interviews__list campaigns-my-interviews__list-crossed">
+        <%= render 'campaigns/my_interviews/my_team_interviews_interviews_list', campaigns: @campaigns %>
       </div>
     </div>
   </div>

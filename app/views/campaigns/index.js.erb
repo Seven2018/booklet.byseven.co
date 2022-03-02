@@ -1,6 +1,6 @@
 page_value = document.querySelector('#search_page')
 previous_button = document.querySelector('.paginate__previous-button')
 
-document.querySelector('.campaigns-index__list-lines').innerHTML = '<%= j render("campaigns/index/index_campaigns_list", campaign: @campaign, interviews: @interviews) %>';
+document.querySelector('.campaigns-index__list-lines').innerHTML = '<%= j render("campaigns/index/index_campaigns_list", campaigns: @campaigns, interviews: @interviews) %>';
 
 document.querySelector('body').classList.remove('wait');

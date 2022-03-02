@@ -15,7 +15,11 @@ class CampaignDraft::ParticipantsController < CampaignDraft::BaseController
   private
 
   def campaign_draft_params
-    params.permit(:interviewee_selection_method, :interviewer_selection_method,
-      :default_interviewer_id, interviewee_ids: [])
+    params.permit(
+      :interviewee_selection_method,
+      :interviewer_selection_method,
+      :default_interviewer_id,
+      # interviewee_ids: [] # interviewee_ids already persisted
+    )
   end
 end
