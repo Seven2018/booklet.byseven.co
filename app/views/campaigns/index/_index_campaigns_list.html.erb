@@ -1,4 +1,4 @@
-<% campaigns.map(&:decorate).each do |campaign| %>
+<% CampaignDecorator.decorate_collection(campaigns).each do |campaign| %>
 
   <% manager = campaign.owner %>
 
