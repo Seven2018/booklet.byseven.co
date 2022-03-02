@@ -37,6 +37,13 @@
           <% end %>
         </button>
       <% end %>
+
+      <% if current_user.hr_or_above? %>
+        <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-white' do  %>
+          <i class="fas fa-plus"></i>
+          Create Campaign
+        <% end %>
+      <% end %>
     <% end %>
 
   </div>
