@@ -37,15 +37,19 @@ class Training < ApplicationRecord
   end
 
   def synchronous?
-    self.sessions.any? { |session| session.workshop.content_type == "Synchronous"}
+    sessions.any? { |session| session.workshop.content_type == "Synchronous"}
   end
 
   def asynchronous?
-    self.sessions.any? { |session| session.workshop.content_type == "Asynchronous"}
+    sessions.any? { |session| session.workshop.content_type == "Asynchronous"}
   end
 
   def next_session
-    self.sessions.where('date >= ?', Date.today).order(date: :asc).first
+    sessions.where('date >= ?', Time.zone.today).order(date: :asc).first
+  end
+
+  def next_date
+    next_session&.date
   end
 
   def children_contents
