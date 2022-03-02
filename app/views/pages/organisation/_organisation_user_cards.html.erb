@@ -1,7 +1,7 @@
 <% users.each do |user| %>
   <% manager = user.manager %>
 
-  <div class='organisation__users-card user-card-<%= user.id %>'>
+  <div class='organisation__users-card user-card-<%= user.id %>' name="chk">
 
     <div class='organisation__users-card__inner d-flex flex-row'>
       <% user = @user if @user.present? %>

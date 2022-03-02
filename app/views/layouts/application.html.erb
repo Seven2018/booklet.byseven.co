@@ -26,8 +26,11 @@
       <% if ['campaigns', 'interview_forms', 'contents'].include?(params[:controller]) || params[:controller].split('/').first == 'campaign_draft' %>
         <%= render 'shared/navbar_campaign' %>
         <%= render 'shared/navbar_campaign_mobile' %>
+      <% elsif params[:action] == 'home' %>
+        <%= render 'shared/navbar_home' %>
+        <%= render 'shared/navbar_mobile' %>
       <% else %>
-        <%= render 'shared/navbar' %>
+        <%= render 'shared/navbar_trainings' %>
         <%= render 'shared/navbar_mobile' %>
       <% end %>
 
@@ -64,4 +67,3 @@
   </script>
 
 </html>
-

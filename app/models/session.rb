@@ -4,6 +4,8 @@ class Session < ApplicationRecord
   has_many :attendees, dependent: :destroy
   has_many :users, through: :attendees
 
+  scope :with_date, -> { where.not(date: nil) }
+
   def start_date
     self.date
   end
