@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:update, :duplicate, :destroy, :move_up, :move_down]
+  before_action :set_mod, only: [:update, :duplicate, :destroy, :move_up, :move_down, :add_assessment_question]
   helper VideoHelper
 
   # Create mod (contents/edit_mode)
@@ -7,20 +7,34 @@ class ModsController < ApplicationController
     @new_mod = Mod.new(mod_params)
     authorize @new_mod
     @new_mod.company_id = current_user.company_id
-    if params[:mod][:content_id].present?
-      @content = Content.find(params[:mod][:content_id])
+    content_id = params.dig(:mod, :content_id)
+
+    if content_id.present?
+      @content = Content.find(content_id)
     else
-      @content = Workshop.find(params[:mod][:workshop_id])
+      @content = Workshop.find(params.dig(:mod, :workshop_id))
     end
+
+    target_position = params.dig(:mod, :position).to_i + 1
+    mods = @content.mods.order(position: :asc)
+
     @new_mod.workshop_id = @content.id
-    @new_mod.mod_type = params[:mod][:mod_type]
-    @new_mod.position = @content.mods.order(position: :asc).count + 1
-    if @new_mod.save
-      @content.update(duration: @content.mods.map(&:duration).sum)
-      respond_to do |format|
-        format.html {content_path(@content)}
-        format.js
-      end
+    @new_mod.mod_type = params.dig(:mod, :mod_type)
+
+    i = target_position
+    mods.where('position >= ?', target_position).each do |mod|
+      mod.update position: i + 1
+      i += 1
+    end
+
+    @new_mod.position = target_position
+
+    @new_mod.save
+    @content.update(duration: @content.mods.map(&:duration).sum)
+
+    respond_to do |format|
+      format.html {content_path(@content)}
+      format.js
     end
   end
 
@@ -46,26 +60,30 @@ class ModsController < ApplicationController
     authorize @module
     @content = @module.content
     @module.update(mod_params)
-    if @module.save
-      @content.update(duration: @content.mods.map(&:duration).sum)
-      respond_to do |format|
-        format.html {content_path(@content)}
-        format.js
-      end
+
+    @module.save
+    @content.update(duration: @content.mods.map(&:duration).sum)
+
+    respond_to do |format|
+      format.html {content_path(@content)}
+      format.js
     end
   end
 
   # Delete mod (contents/edit_mode)
   def destroy
     authorize @module
-    @module.destroy
     @module.content.present? ? @content = @module.content : @content = @module.workshop
+    @module.destroy
+
     i = 1
     @content.mods.order(position: :asc).each do |mod|
       mod.update(position: i)
       i += 1
     end
+
     @content.update(duration: @content.mods.map(&:duration).sum)
+
     respond_to do |format|
       format.js
     end
@@ -98,6 +116,8 @@ class ModsController < ApplicationController
       format.js
     end
   end
+
+  #######################
 
   private
 

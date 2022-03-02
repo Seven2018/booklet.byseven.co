@@ -1,0 +1,13 @@
+<% content.mods.order(position: :asc).each do |mod| %>
+
+  <div class='bkt-bg-white p-2rem rounded-10px pos-rel overflow-hidden'
+       id="item-<%= mod.position %>" style='max-height: 100000px;'>
+    <div id="anchor-<%= mod.id %>" class="pos-abs" style="top: -9rem;"></div>
+    <%= render 'contents/edit/edit_mod_form', mod: mod, content: content  %>
+  </div>
+
+  <%= render 'contents/edit/edit_add_mod', position: mod.position %>
+
+<% end %>
+
+<div class="template-edit__mod-lines"></div>

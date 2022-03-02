@@ -1,0 +1,56 @@
+<div id='template-edit__settings-container' class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
+  <div class='mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+    <p>Workshop infos</p>
+  </div>
+  <%= simple_form_for content, remote: true do |f| %>
+    <div class='mb-2rem'>
+
+        <div class="flex-row-between-centered mb-1rem">
+
+          <p class='fs-1_4rem font-weight-600 bkt-dark-grey'>This workshop is available ?</p>
+
+          <div class='booklet-select__template-edit-container pos-rel cursor-pointer' style='width: 130px;'>
+            <div class="flex-row-between-centered p-0_75rem bkt-bg-light-orange rounded-5px" onclick="<%= 'BookletSelectExpand(this);' %>">
+              <p class='booklet-select__template-edit-selected fs-1_4rem font-weight-500 bkt-orange'><%= content.content_type %></p>
+              <div class="centered-item ml-1rem">
+                <i class="fas fa-angle-down bkt-orange"></i>
+              </div>
+            </div>
+            <div class="booklet-select__template-edit-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150 pos-abs hidden" style='top: 3.5rem; left: 0;'>
+              <div onclick='BookletSelectSubmit(this, "content_type");'>
+                <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer' style='width: 130px;'>Synchronous</p>
+              </div>
+              <div onclick='BookletSelectSubmit(this, "content_type");'>
+                <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer' style='width: 130px;'>Asynchronous</p>
+              </div>
+            </div>
+          </div>
+
+          <%= f.hidden_field :content_type %>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+
+        </div>
+
+      <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Choose if this workshop will be done in Person or Online</p>
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<div id="template-edit__tags-container" class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
+  <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+    <p>Workshop tags</p>
+    <a data-toggle='modal' data-target='#addTags' data-toggle='tooltip' title='Add Theme' class='flex-row-between-centered'>
+      <p class='fs-1_4rem font-weight-500 bkt-orange'>Add a tag</p>
+      <div class='add_button_show centered-item height-2_5rem width-2_5rem bkt-bg-light-blue ml-1rem' style='border-radius: 1.25rem;'>
+        <span class="iconify fs-1_8rem bkt-orange" data-icon="akar-icons:plus"></span>
+      </div>
+    </a>
+  </div>
+  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your workshop in order to search through workshops efficiently</p>
+  <div id="template-edit__tags" class="flex-wrap mt-2rem">
+    <%= render 'contents/edit/edit_content_tags_list', content: content %>
+  </div>
+</div>

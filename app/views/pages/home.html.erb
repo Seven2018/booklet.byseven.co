@@ -79,18 +79,15 @@
             <p>Your reviews to complete are :</p><br>
 
             <% myt_firsts = @my_team_interviews.order(date: :asc).first(3) %>
-
             <% myt_firsts.each do |myt_first| %>
               <p class="part1">
               <strong style="color:#3177B7"><%= myt_first.title %></strong> with the employee <strong><%= myt_first.employee.fullname %></strong><br>
               The deadline for this campaign is the <strong><%= myt_first.date.strftime('%d/%m/%Y') %></strong><br>
               </p>
             <% end %>
-
             <% if @my_team_interviews.count > 3 %>
               <strong><p>And <%= @my_team_interviews.count - 3 %> more.</p></strong>
             <% end %>
-
           <% end %>
 
         </div>

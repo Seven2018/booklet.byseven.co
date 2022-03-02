@@ -1,5 +1,161 @@
 // CLEANED - 2021-07-08
 
+//////////
+// EDIT //
+//////////
+
+#content-edit__container-left {
+  display: none;
+  min-height: calc(100vh - 10rem);
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  a {
+    margin: 1rem 0px;
+  }
+
+  @include from-medium-high {
+    margin-bottom: 0px;
+    display: flex;
+    min-width: 30rem;
+    width: 30rem;
+  }
+}
+
+#content-edit__container-right {
+  width: calc(100vw - 6rem);
+  min-height: calc(100vh - 10rem);
+  flex-grow: 1;
+
+  @include from-medium-high {
+    width: auto;
+    padding: 3rem 5rem;
+    margin-bottom: 0px;
+  }
+}
+
+#content-info {
+
+  .form-group {
+    margin-bottom: 2rem;
+  }
+
+  .trix-content {
+    background-color: $bkt-light-orange;
+  }
+}
+
+#content-edit__content-center {
+  width: calc(100vw - 6rem);
+  min-height: 85vh;
+  flex: 1;
+
+  @include from-medium-high {
+    max-width: calc(100vw - 85rem);
+  }
+}
+
+#content-edit__content-right {
+  display: none;
+  flex-direction: column;
+
+  @include from-medium-high {
+    display: flex;
+    width: 45rem;
+  }
+}
+
+.add-text, .add-video, .add-assessment {
+  position: relative;
+  overflow:hidden;
+  padding: 2rem;
+  background-color: white;
+  border: 1px solid #E7E7E5D6;
+  border-radius: .5rem;
+  margin-bottom: 2rem;
+
+  label {
+    font-size: 1.6rem;
+    color: #808080;
+    font-weight: 800;
+  }
+}
+
+.add-video.active, .add-text.active, .add-quiz.active {
+  max-height: 100000px;
+}
+
+.mod-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  .mod-controls, .mod-controls-new {
+    // background-color: #F8F8F8;
+    display: flex;
+    // box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+    justify-content: space-between;
+    // border: 1px solid white;
+    border-radius: .5rem;
+
+    i {
+      color: #F26419 !important;
+      font-size: 1.5rem;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 80%;
+      }
+    }
+  }
+
+  .mod-controls-new {
+    width: auto;
+  }
+
+  a {
+    padding: 0 .8rem;
+  }
+
+  .mod-title {
+    display: flex;
+    align-items: baseline;
+    p, i {
+      color: #F26419;
+    }
+    i {
+      margin-right: 15px;
+      &:hover {
+        cursor: pointer;
+        opacity: 80%;
+      }
+    }
+  }
+}
+
+///////////////////////
+// ADD QUESTION MENU //
+///////////////////////
+
+.content-edit__add-mod-btn {
+
+  &:hover, &.active {
+
+    & {
+      border: 2px solid $bkt-orange !important;
+      opacity: 1 !important;
+    }
+
+    .add_button_show {
+      background-color: $bkt-orange !important;
+    }
+  }
+}
+
+//////////
+
 #content-show-title {
   height: 12rem;
   border-bottom: 1px solid rgba(232, 232, 232, 1);
@@ -503,81 +659,9 @@
   border-radius: 5px;
 }
 
-.add-video, .add-text, .add-quiz, .content-text, .content-video, .content-quiz, .content-objective {
-  // position: relative;
-  // overflow: hidden;
-  // padding: 2rem;
-  // background-color: white;
-  // border: 1px solid #E7E7E5D6;
-  // border-radius: .5rem;
-  // margin-bottom: 2rem;
-  max-height: 61px;
-
-  // label {
-  //   font-size: 1.6rem;
-  //   color: #808080;
-  //   font-weight: 800;
-  // }
-
-  .btn-orange__white-border {
-    margin-top: 1rem;
-  }
-}
-
 .add-video.active, .add-text.active, .add-quiz.active, .content-text.active, .content-video.active, .content-quiz.active, .content-objective.active {
   max-height: 100000px;
 }
-
-.mod-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-
-  .mod-controls, .mod-controls-new {
-    // background-color: #F8F8F8;
-    display: flex;
-    // box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-    justify-content: space-between;
-    // border: 1px solid white;
-    border-radius: .5rem;
-
-    i {
-      color: #F26419 !important;
-      font-size: 1.5rem;
-
-      &:hover {
-        cursor: pointer;
-        opacity: 80%;
-      }
-    }
-  }
-
-  .mod-controls-new {
-    width: auto;
-  }
-
-  a {
-    padding: 0 .8rem;
-  }
-
-  .mod-title {
-    display: flex;
-    align-items: baseline;
-    p, i {
-      color: #F26419;
-    }
-    i {
-      margin-right: 15px;
-      &:hover {
-        cursor: pointer;
-        opacity: 80%;
-      }
-    }
-  }
-}
-
-
 
 #mod_title {
   font-weight: 800;

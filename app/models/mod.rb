@@ -20,4 +20,16 @@ class Mod < ApplicationRecord
 
     errors.add(:video, 'invalid video link')
   end
+
+  def text?
+    mod_type == 'text'
+  end
+
+  def video?
+    mod_type == 'video'
+  end
+
+  def assessment?
+    mod_type == 'assessment'
+  end
 end
