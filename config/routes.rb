@@ -129,6 +129,7 @@ Rails.application.routes.draw do
 
   # TRAININGS
   resources :trainings
+  get :my_team_trainings, controller: :trainings
 
   # SESSIONS
   resources :sessions, only: %i[update destroy]

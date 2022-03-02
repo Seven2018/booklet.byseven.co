@@ -1,0 +1,41 @@
+<div class="my-team-trainings__container">
+  <div class="my-team-trainings__main">
+
+    <div class="my-team-trainings__banner">
+      <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
+      <p>Welcome to My Team Trainings section, your team have <%# "team trainings count" %> trainings to do and/or validate, please see them below. </p>
+    </div>
+
+
+
+    <div class="my-team-trainings-card-list">
+
+      <div class="my-team-trainings-card-content">
+        <div class="my-team-trainings-card__left">
+          <div class="my-team-trainings-card__left-avatar">
+            <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          </div>
+          <div class="my-team-trainings-card__left-fullname-job">
+            <div class="my-team-trainings-card-fullname"> <%= current_user.fullname %></div>
+            <div class="my-team-trainings-card-job"> <em>Boss Chief</em> <%# job_title %> </div>
+          </div>
+        </div>
+        <div class="my-team-trainings-card__middle">
+          <div class="my-team-trainings-card__middle-status-trainings">
+            <p>3 trainings in progress</p> <%# actual trainings in progress %>
+          </div>
+          <div class="my-team-trainings-card__middle-date-next-trainings">
+            <p>Next training date : 28/03/2022 <%# future trainings date %> </p>
+          </div>
+        </div>
+        <div class="my-team-trainings-card__right">
+          <div class="my-team-trainings-card__right-link">
+            <p>See details <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

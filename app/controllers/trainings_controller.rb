@@ -10,7 +10,7 @@ class TrainingsController < ApplicationController
 
   def my_team_trainings
     attendees = Attendee.includes(session: :training).where(user_id: current_user.employees.ids).group_by(&:user_id)
-    authorize attendees
+    skip_authorization
 
     @future_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.present?}.uniq}
     # @past_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.nil?}.uniq}
