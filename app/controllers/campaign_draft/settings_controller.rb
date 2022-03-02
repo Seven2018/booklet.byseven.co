@@ -17,8 +17,4 @@ class CampaignDraft::SettingsController < CampaignDraft::BaseController
   def campaign_draft_params
     params.permit(:title, :kind, :owner_id)
   end
-
-  def set_multi_step_form_navbar_content
-    @multi_step_form_navbar_content = campaign_draft.title.presence || 'New Campaign'
-  end
 end

@@ -49,8 +49,9 @@ Rails.application.routes.draw do
     resource :templates, only: %i[edit update]
     resource :dates, only: %i[edit update]
     resource :launches, only: %i[edit update]
-    namespace :search do
+    namespace :interviewees do
       resources :users, only: :index
+      resource :ids, only: :update
     end
   end
 
