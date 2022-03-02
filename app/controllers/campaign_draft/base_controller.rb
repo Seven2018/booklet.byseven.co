@@ -15,7 +15,7 @@ class CampaignDraft::BaseController < ApplicationController
   end
 
   def set_multi_step_form_navbar_content
-    @multi_step_form_navbar_content = campaign_draft.title
+    @multi_step_form_navbar_content = campaign_draft.title.presence || 'New Campaign'
   end
 
   def skip_pundit?
@@ -30,5 +30,11 @@ class CampaignDraft::BaseController < ApplicationController
 
   def campaign_draft
     @campaign ||= current_user.campaign_draft.decorate
+  end
+
+  def interviewee_ids
+    return current_user.company.users.ids if params[:interviewee_ids] == 'all'
+
+    params[:interviewee_ids].split(',').uniq.select(&:present?)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_24_132955) do
+ActiveRecord::Schema.define(version: 2022_02_28_124436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -281,10 +281,12 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "locked_at"
+    t.bigint "interviewer_id"
     t.index ["campaign_id"], name: "index_interviews_on_campaign_id"
     t.index ["creator_id"], name: "index_interviews_on_creator_id"
     t.index ["employee_id"], name: "index_interviews_on_employee_id"
     t.index ["interview_form_id"], name: "index_interviews_on_interview_form_id"
+    t.index ["interviewer_id"], name: "index_interviews_on_interviewer_id"
   end
 
   create_table "mods", force: :cascade do |t|
@@ -506,6 +508,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
   add_foreign_key "interviews", "interview_forms"
   add_foreign_key "interviews", "users", column: "creator_id"
   add_foreign_key "interviews", "users", column: "employee_id"
+  add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "sessions", "trainings"
   add_foreign_key "sessions", "workshops"

@@ -20,15 +20,19 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    @campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
-    @manager_campaigns = Campaign.where(owner_id: current_user.id)
+    @campaigns = Campaign.where_exists(:interviews, employee: current_user)
+    @manager_campaigns = Campaign.where(owner: current_user)
     authorize @campaigns
 
-    if params.dig(:period) == 'completed'
-      @campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
-    else
-      @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
-    end
+    @campaigns =
+      if params.dig(:period) == 'completed'
+        @campaigns.where_not_exists(:interviews, locked_at: nil)
+      else
+        @campaigns.where_exists(:interviews, locked_at: nil)
+      end
+
+    @campaigns = CampaignDecorator.decorate_collection @campaigns
+    @manager_campaigns = CampaignDecorator.decorate_collection @manager_campaigns
 
     respond_to do |format|
       format.html
@@ -37,8 +41,8 @@ class CampaignsController < ApplicationController
   end
 
   def my_team_interviews
-    @personal_campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
-    @campaigns = Campaign.where(owner_id: current_user.id)
+    @personal_campaigns = Campaign.where_exists(:interviews, employee: current_user)
+    @campaigns = Campaign.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
 
     if params.dig(:period) == 'completed'
@@ -133,10 +137,11 @@ class CampaignsController < ApplicationController
 
     @interviews =
       if selected_user.present?
-        Interview.where(campaign_id: @campaign.id, employee_id: selected_user.id)
+        Interview.where(campaign: @campaign, employee: selected_user)
       else
         []
       end
+    @campaign = @campaign.decorate
 
     respond_to do |format|
       format.html
@@ -186,8 +191,8 @@ class CampaignsController < ApplicationController
 
     new_owner = User.find(params[:user_id])
 
-    @campaign.update(owner_id: new_owner.id)
-
+    @campaign.update(owner: new_owner)
+    @campaign = @campaign.decorate
     respond_to do |format|
       format.js
     end
