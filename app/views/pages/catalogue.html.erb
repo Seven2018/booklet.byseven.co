@@ -3,7 +3,7 @@
     <div class="main-controls-filter-bar">
       <%= render 'shared/searchbar', path: catalogue_path, reset_path: catalogue_path(reset: ""), reset: true %>
       <div class="catalogue-filter-selected-tags">
-        <%= render 'pages/partials/catalogue_filtered_pills' %>
+        <%= render 'pages/catalogue/catalogue_filtered_pills' %>
       </div>
     </div>
     <div class='main-controls-create-content'>
@@ -33,11 +33,11 @@
     <% else %>
       <h2>Programs</h2>
       <div class="catalogue-row folders-row">
-        <%= render 'pages/partials/catalogue_index', cards: @folders %>
+        <%= render 'pages/catalogue/catalogue_index', cards: @folders %>
       </div>
       <h2>Workshops</h2>
       <div class="catalogue-row contents-row">
-        <%= render 'pages/partials/catalogue_index', cards: @contents %>
+        <%= render 'pages/catalogue/catalogue_index', cards: @contents %>
       </div>
     <% end %>
   </div>
@@ -76,7 +76,7 @@
 <div class="organisation-filter-container">
   <div class="organisation-filter-background" onclick='closeFilter();'></div>
   <div class="organisation-filter-dropright">
-    <%= render 'pages/partials/catalogue_filter_dropright' %>
+    <%# render 'pages/catalogue/catalogue_filter_dropright' %>
   </div>
 </div>
 
