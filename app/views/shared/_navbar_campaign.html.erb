@@ -39,22 +39,19 @@
       <% end %>
 
       <% if current_user.hr_or_above? %>
-        <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-white' do  %>
-          <i class="fas fa-plus"></i>
-          Create Campaign
-        <% end %>
+
       <% end %>
     <% end %>
 
     <%
       if current_user.manager_or_above? &&
-        ![:pages_organisation, :campaigns_campaigns_report].include?(@controller_action)
+        ![:pages_organisation, :campaigns_campaigns_report].include?(@controller_action) &&
+        @multi_step_form_navbar_content.blank?
     %>
-      <div class="centered-item">
-        <%= link_to edit_campaign_draft_settings_path, class: 'btn-blue__white-border' do %>
-          <p>New Campaign</p>
-        <% end %>
-      </div>
+      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-white' do  %>
+        <i class="fas fa-plus"></i>
+        Create Campaign
+      <% end %>
     <% end %>
   </div>
 
