@@ -21,7 +21,7 @@ class InterviewQuestionsController < ApplicationController
     if questions.map(&:position) != (1..questions.count).to_a
       j = 1
       questions.each do |question|
-        question.update position: i
+        question.update position: j
         j += 1
       end
     end

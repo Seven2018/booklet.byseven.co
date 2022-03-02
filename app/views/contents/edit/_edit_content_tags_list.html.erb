@@ -1,0 +1,6 @@
+<% content.categories.order(title: :asc).each do |category| %>
+  <div class='flex-row-between-centered border-bkt-orange rounded-3px mr-1rem mb-1rem' style='padding: .5rem;'>
+    <p class="fs-1_4rem font-weight-600 bkt-orange"><%= category.title %></p>
+    <span id='pill_tag-<%= category.id %>' class="iconify fs-1_4rem ml-1rem bkt-orange cursor-pointer" data-icon="uil:times" onclick='manageTag(this, "remove");'></span>
+  </div>
+<% end %>

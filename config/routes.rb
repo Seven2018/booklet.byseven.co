@@ -9,10 +9,7 @@ Rails.application.routes.draw do
 
   # ASSESSMENTS
   resources :assessments, only: %i[] do
-    resources :assessment_questions, only: %i[destroy]
-    get 'question/:id/view_mode', to: 'assessment_questions#view_mode', as: 'view_mode_assessment_question'
-    get 'question/:id/move_up', to: 'assessment_questions#move_up', as: 'move_up_assessment_question'
-    get 'question/:id/move_down', to: 'assessment_questions#move_down', as: 'move_down_assessment_question'
+
   end
   post 'assessments/create_ajax', to: 'assessments#create_ajax', as: 'create_ajax_assessment'
   post 'assessments/:id/add_questions', to: 'assessments#add_questions', as: 'add_questions_assessment'
@@ -21,6 +18,9 @@ Rails.application.routes.draw do
 
   get 'contents-filter', to: 'contents#filter', as: 'filter_contents'
   get 'contents/:id/viewmode', to: 'contents#view_mode', as: 'view_content'
+
+  # ASSESSMENT QUESTIONS
+  resources :assessment_questions
 
   # ATTENDEES
   resources :attendees

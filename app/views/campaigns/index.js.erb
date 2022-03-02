@@ -2,14 +2,5 @@ page_value = document.querySelector('#search_page')
 previous_button = document.querySelector('.paginate__previous-button')
 
 document.querySelector('.campaigns-index__list-lines').innerHTML = '<%= j render("campaigns/index/index_campaigns_list", campaign: @campaign, interviews: @interviews) %>';
-// showResetMobile(<%= @filtered %>)
-
-// console.log(page_value.value)
-// if (page_value.value == '1') {
-//   previous_button.classList.add('hidden')
-// } else {
-//   console.log('test')
-//   previous_button.classList.remove('hidden')
-// }
 
 document.querySelector('body').classList.remove('wait');

@@ -2,19 +2,19 @@ class AssessmentsController < ApplicationController
   before_action :set_assessment, only: [:add_questions, :add_answers]
 
   # Create a new Assessment (contents/edit_mode)
-  def create_ajax
-    @content = Content.find(params[:new_assessment][:content_id])
-    @form = Assessment.new(title: params[:new_assessment][:title], mod_type: 'assessment', company_id: current_user.company_id, content_id: @content.id, duration: params[:new_assessment][:duration])
-    authorize @form
-    @form.position = @content.mods.order(position: :asc).count + 1
-    if @form.save
-      @content.update(duration: @content.mods.map(&:duration).sum)
-      respond_to do |format|
-        format.html {redirect_to content_path(@content)}
-        format.js
-      end
-    end
-  end
+  # def create_ajax
+  #   @content = Content.find(params[:new_assessment][:content_id])
+  #   @form = Assessment.new(title: params[:new_assessment][:title], mod_type: 'assessment', company_id: current_user.company_id, content_id: @content.id, duration: params[:new_assessment][:duration])
+  #   authorize @form
+  #   @form.position = @content.mods.order(position: :asc).count + 1
+  #   if @form.save
+  #     @content.update(duration: @content.mods.map(&:duration).sum)
+  #     respond_to do |format|
+  #       format.html {redirect_to content_path(@content)}
+  #       format.js
+  #     end
+  #   end
+  # end
 
   # Add questions to an Assessment (contents/edit_mode)
   def add_questions

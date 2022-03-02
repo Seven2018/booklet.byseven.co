@@ -42,6 +42,7 @@ class InterviewFormsController < ApplicationController
 
   def update
     authorize @template
+    description = @template.description
     @template.update(template_params)
 
     cross_status =
@@ -52,6 +53,8 @@ class InterviewFormsController < ApplicationController
     unless @template.answerable_by_both?
       @template.interview_questions.update_all(visible_for: answerable_by_status, required_for: answerable_by_status)
     end
+
+    @update_description = description != @template.description ? true : false
 
     respond_to do |format|
       format.html {interview_form_path(@template)}

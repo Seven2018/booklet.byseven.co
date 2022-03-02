@@ -1,0 +1,14 @@
+<div id='mcq-options-list'>
+
+    <% mod.assessment_questions.order(position: :asc).each do |question| %>
+
+      <%= simple_form_for question, method: :patch do |f| %>
+
+        <%= f.input :question, label: "Question n°#{question.position}" %>
+        <%= f.submit '', class: 'hidden-submit hidden' %>
+
+      <% end %>
+
+    <% end %>
+
+</div>
