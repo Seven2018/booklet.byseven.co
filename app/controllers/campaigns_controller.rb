@@ -141,6 +141,7 @@ class CampaignsController < ApplicationController
       else
         []
       end
+    @campaign = @campaign.decorate
 
     respond_to do |format|
       format.html
@@ -191,7 +192,7 @@ class CampaignsController < ApplicationController
     new_owner = User.find(params[:user_id])
 
     @campaign.update(owner: new_owner)
-
+    @campaign = @campaign.decorate
     respond_to do |format|
       format.js
     end
