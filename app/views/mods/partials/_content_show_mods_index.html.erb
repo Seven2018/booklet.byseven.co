@@ -138,11 +138,10 @@
             <p class='form-group col'><%= duration %></p>
           </div>
         </div>
-        <% if access == 'granted' %>
+        <% if access == 'granted' && mod.youtube_video_id.present? %>
           <div class="form-row mod-content">
             <div class="form-group col-12">
-              <% video_id = mod.video.split("=")[1].split("&")[0] %>
-              <%= content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen") %>
+              <%= content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{mod.youtube_video_id}", allowfullscreen: "allowfullscreen") %>
             </div>
           </div>
         <% end %>
