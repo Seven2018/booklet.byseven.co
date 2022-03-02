@@ -69,7 +69,7 @@
       <div class="campaigns-my-interviews__card-part-right">
         <div class="campaigns-my-interviews__card-review-link">
 
-          <%= link_to interview_path(crossed_interview&.completed? ? crossed_interview : employee_interview) do %>
+          <%= link_to interview_path(crossed_interview&.completed? ? crossed_interview : manager_interview) do %>
             <p>Go to my review  <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
           <% end %>
 
@@ -134,12 +134,12 @@
 
       <div class="campaigns-my-interviews__card-part-right">
         <div class="campaigns-my-interviews__card-review-link">
-          <%= link_to interview_path(employee_interview) do %>
+          <%= link_to interview_path(employee_interview || manager_interview) do %>
             <p>Go to my review <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
           <% end %>
         </div>
       </div>
-      <a href="<% link_to interview_path(employee_interview) %>"></a>
+      <a href="<% link_to interview_path(employee_interview || manager_interview) %>"></a>
       <script>$(".campaigns-my-interviews__card--mobile").click(function() {
       window.location = $(this).find("a").attr("href");
         return false;

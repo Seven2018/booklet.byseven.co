@@ -10,6 +10,9 @@ module Poro
     end
 
     def manager_interview
+      if @campaign.simple?
+        return @campaign.interviews.where(employee_id: @employee_id).find(&:simple?)&.decorate
+      end
       @campaign.interviews.where(employee_id: @employee_id).find(&:manager?)&.decorate
     end
 
