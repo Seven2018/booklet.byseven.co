@@ -15,6 +15,17 @@ class CampaignDecorator < Draper::Decorator
     completion_status.capitalize.gsub(/_/, " ")
   end
 
+  def campaign_type_str
+    {
+      # 'crossed' => 'Crossed', # TODO TEMPORARY
+      'crossed' => 'Feedback 360',
+      # 'simple' => 'Simple', # TODO TEMPORARY
+      'simple' => 'Feedback 360',
+      'one_to_one' => '1 to 1',
+      'feedback_360' => 'Feedback 360'
+    }[campaign_type]
+  end
+
   def icon
     {
       'crossed' => 'uil:exchange',
