@@ -1,10 +1,6 @@
-<div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
-  Chose how you want to add participants
-</div>
-
+<%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add participants') %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
-
   <%= render_component RadioButtonTileComponent.new(
     model: :interviewee_selection_method,
     name: :manual,
@@ -23,13 +19,10 @@
     subtitle: "Add participants by their arrival date in the company",
     disabled: true
   ) %>
-
 </div>
 
 
-<div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
-  Chose interviewee(s) you want to participate this campaign
-</div>
+<%= render_component FormSectionTitleComponent.new(title: 'Chose interviewee(s) you want to participate this campaign') %>
 
 <%# TODO %>
 <% User.last(5).each do |user| %>
@@ -38,10 +31,7 @@
   <br>
 <% end %>
 
-<div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
-  Chose how you want to add participants
-</div>
-
+<%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add participants') %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
 
@@ -80,14 +70,11 @@
 </div>
 
 
-<div class="border-bottom-bkt-light-grey fs-1_6rem pb-2 my-3 bkt-dark-grey">
-  Default interviewer
-</div>
-
-<div class="fs-1_6rem pb-2 my-3 bkt-light-grey">
+<%= render_component FormSectionTitleComponent.new(title: 'Default interviewer') %>
+<%= render_component FormSectionSubtitleComponent.new do %>
   For interviewees not linked to a manager in the database, please <br><%# TODO improve  %>
   chose a default interviewer
-</div>
+<% end %>
 
 <%# TODO %>
 <%= select_tag :default_interviewer_id, options_for_select(User.last(5).pluck(:email, :id), selected: @campaign.default_interviewer_id) %>

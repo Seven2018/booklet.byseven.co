@@ -16,7 +16,7 @@
     <!-- <script src="https://cdn.ckeditor.com/4.13.0/full/ckeditor.js"></script> -->
     <%# javascript_include_tag Ckeditor.cdn_url %>
     <%= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
-    <%= javascript_pack_tag 'application' %>
+    <%= javascript_pack_tag 'application', defer: true %>
 
   </head>
   <body>
@@ -26,13 +26,16 @@
       <% if @show_navbar_campaign || params[:redirected_from] == 'campaigns' %>
         <%= render 'shared/navbar_campaign' %>
         <%= render 'shared/navbar_campaign_mobile' %>
+      <% elsif params[:action] == 'home' %>
+        <%= render 'shared/navbar_home' %>
+        <%= render 'shared/navbar_mobile' %>
       <% else %>
-        <%= render 'shared/navbar' %>
+        <%= render 'shared/navbar_trainings' %>
         <%= render 'shared/navbar_mobile' %>
       <% end %>
 
     <% end %>
-    <div class="#{'overflow-y-scroll' unless @multi_step_form_navbar_content.present?}">
+    <div class="<%= 'overflow-y-scroll' unless @multi_step_form_navbar_content.present? %>">
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
         <% if params[:controller] == 'users' && params[:action] == 'show' %>
@@ -47,7 +50,6 @@
       <% end %>
     </div>
     <%= javascript_include_tag 'application' %>
-    <%= javascript_pack_tag 'application' %>
   </body>
 
   <script>
@@ -65,4 +67,3 @@
   </script>
 
 </html>
-

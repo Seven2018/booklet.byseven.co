@@ -98,7 +98,7 @@
       <div class="flex-row-between-centered">
         <% comments_status = question.allow_comments %>
         <label class='mb-0 mr-1rem'>Allow comments</label>
-        <div class="centered-item border-bkt-blue-1px" style='height: 19.5333px; width: 19.533px;' onclick='checkBookletCheckbox(this);'>
+        <div class="centered-item border-bkt-blue" style='height: 19.5333px; width: 19.533px;' onclick='checkBookletCheckbox(this);'>
           <span class="iconify height-2_5rem-forced width-2_5rem-forced bkt-blue <%= 'hidden' unless comments_status %>" data-icon="ant-design:check-square-filled"></span>
           <%= f.hidden_field(
             :allow_comments,

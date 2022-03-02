@@ -1,0 +1,33 @@
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'>
+  <div class='bkt-page-container-content'>
+    <div id='controls'
+         class='d-flex justify-content-between align-items-center mb-4'>
+      <h1>Reports</h1>
+      <div>
+        <%= link_to new_report_path do %>
+          <div class="bkt-btn-blue" data-toggle='tooltip' title='Add a template'>
+            <i class="fas fa-plus"></i>
+            <span>Create a Report</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">
+      <div class='d-flex justify-content-start align-items-center pos-rel'></div>
+
+      <% headers = ["Creator", "Created at", "Type", "From", "To", "Downloads"] %>
+      <% width = (1/headers.count.to_f)*100 %>
+      <div class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem">
+        <% headers.each do |header| %>
+          <div class='fs-1_6rem font-weight-bold' style='flex-basis: <%= width %>%;'><%= header %></div>
+        <% end %>
+      </div>
+
+      <div id='lines'>
+        <%= render 'reports/lines', reports: @reports %>
+      </div>
+
+    </div>
+  </div>
+</div>

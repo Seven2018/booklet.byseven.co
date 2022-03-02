@@ -342,16 +342,15 @@
 
   .campaigns-my-interviews__card-status {
 
-    height: 3rem;
-    width: fit-content;
-    padding: 0.7rem 2rem;
+    height: 2rem;
+    width: 13rem;
     border-radius: 2rem;
     text-align: center;
     color: white;
     background-color: #FFC85C;
     white-space: nowrap;
     margin-bottom: 2rem;
-    margin-left: 0;
+
 
   }
 
@@ -563,14 +562,21 @@
   }
 }
 
+.deadline {
+  color: #888888;
+  padding-top: 6px;
+  padding-left: 10px;
+}
+
 .campaigns-my-interviews__card-status {
-  height: 3rem;
-  padding: 0.7rem 2rem;
+  height: 2rem;
   border-radius: 2rem;
   text-align: center;
-  margin-left: 23px;
+  padding: 0px 0px 2.2rem 0px;
   color: white;
   white-space: nowrap;
+  width: 13rem;
+  margin-top: 3px;
 
   &.locked {
     background-color: #3177B7;
@@ -869,6 +875,8 @@
       width: 255%;
       min-width: 12rem;
       padding-right: 1rem;
+      overflow: hidden;
+      height: 36px;
 
       .campaigns-index__list-line-icon {
         background: rgba(49, 119, 183, 0.1);
@@ -895,7 +903,6 @@
 
     .template-title {
       white-space: nowrap;
-      overflow: hidden;
       text-overflow: ellipsis;
     }
 
