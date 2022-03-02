@@ -20,8 +20,8 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    @campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
-    @manager_campaigns = Campaign.where(owner_id: current_user.id)
+    @campaigns = Campaign.where_exists(:interviews, employee: current_user)
+    @manager_campaigns = Campaign.where(owner: current_user)
     authorize @campaigns
 
     @campaigns =
@@ -41,8 +41,8 @@ class CampaignsController < ApplicationController
   end
 
   def my_team_interviews
-    @personal_campaigns = Campaign.where_exists(:interviews, employee_id: current_user.id)
-    @campaigns = Campaign.where_exists(:interviews, interviewer_id: current_user.id)
+    @personal_campaigns = Campaign.where_exists(:interviews, employee: current_user)
+    @campaigns = Campaign.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
 
     if params.dig(:period) == 'completed'
@@ -137,7 +137,7 @@ class CampaignsController < ApplicationController
 
     @interviews =
       if selected_user.present?
-        Interview.where(campaign_id: @campaign.id, employee_id: selected_user.id)
+        Interview.where(campaign: @campaign, employee: selected_user)
       else
         []
       end
@@ -190,7 +190,7 @@ class CampaignsController < ApplicationController
 
     new_owner = User.find(params[:user_id])
 
-    @campaign.update(owner_id: new_owner.id)
+    @campaign.update(owner: new_owner)
 
     respond_to do |format|
       format.js
