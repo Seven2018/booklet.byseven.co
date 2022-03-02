@@ -176,7 +176,6 @@ class UsersController < ApplicationController
 
   def campaign_draft_users
     users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
-    raise
 
     filter_users(users)
 
