@@ -23,6 +23,11 @@ class TrainingsController < ApplicationController
     redirect_to dashboard_path
   end
 
+  def my_trainings
+    @trainings = Training.all
+    authorize @trainings
+  end
+
   private
 
   def training_params

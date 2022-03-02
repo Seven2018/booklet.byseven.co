@@ -28,4 +28,8 @@ class TrainingPolicy < ApplicationPolicy
   def destroy?
     user.hr_or_above?
   end
+
+  def my_trainings?
+    true
+  end
 end
