@@ -9,19 +9,19 @@ class TrainingPolicy < ApplicationPolicy
     end
   end
 
-  def create?
-    user.hr_or_above?
+  def my_trainings?
+    true
+  end
+
+  def my_team_trainings?
+    user.manager_or_above?
   end
 
   def show?
     true
   end
 
-  def edit?
-    user.hr_or_above?
-  end
-
-  def update?
+  def create?
     user.hr_or_above?
   end
 

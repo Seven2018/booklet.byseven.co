@@ -51,6 +51,10 @@ class User < ApplicationRecord
     self.manager.lastname
   end
 
+  def employees
+    User.where(manager: self)
+  end
+
   def tag_from_category(category_id)
     self.tags.where(category_id: category_id)
   end
