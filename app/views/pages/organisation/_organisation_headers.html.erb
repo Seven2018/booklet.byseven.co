@@ -1,7 +1,7 @@
 <div class="organisation__users-headers-div">
   <div class="organisation__user-checkbox-container">
-    <input type="checkbox" class='hidden'>
-    <div class="organisation__user-checkbox" onclick="selects()"></div>
+    <!-- <input type="checkbox" class='hidden'>
+    <div class="organisation__user-checkbox" onclick=""></div> -->
   </div>
 </div>
 <div class="organisation__users-headers-div">
@@ -56,99 +56,3 @@
     <% end %>
   <% end %>
 <% end %>
-
-
-<script type="text/javascript">
-function selects(){
-    var ele=document.getElementsByName('chk');
-    for(var i=0; i<ele.length; i++){
-        if(ele[i].type=='checkbox')
-            ele[i].checked=true;
-    }
-}
-function deSelect(){
-    var ele=document.getElementsByName('chk');
-    for(var i=0; i<ele.length; i++){
-        if(ele[i].type=='checkbox')
-            ele[i].checked=false;
-
-    }
-}
-
-function selectUser(element) {
-    user_card = element
-    user_card_infos = user_card.querySelector('.book-users-card-infos')
-    selected_container = document.querySelector('.book-users-selected')
-    selected_array = []
-    checkbox = user_card.querySelector('input[type="checkbox"]')
-    next_button = document.querySelector('.campaign__next-button')
-    next_button_arrow = document.querySelector('.campaign__next-button-arrow')
-    next_arrow_btn_mobile = document.querySelector('.next-arrow-btn-mobile')
-    checkbox.checked = !checkbox.checked
-    document.querySelectorAll('#' + user_card.id).forEach((card) => {
-      if(checkbox.checked == true) {
-        card.classList.add('selected')
-      } else {
-        card.classList.remove('selected')
-      }
-      card.querySelector('input[type="checkbox"]').checked = checkbox.checked
-    })
-    if (checkbox.checked == true) {
-      new_card = document.createElement('div')
-      new_card.classList.add('book-users-card', 'selected')
-      new_card.id = user_card.id
-      template = document.querySelector('.book-users-card-template')
-      new_card.innerHTML = template.innerHTML
-      new_card.onclick = function(e) {selectUser(this)}
-      new_card_infos = new_card.querySelector('.book-users-card-infos')
-      new_info_name = document.createElement('div')
-      new_info_name.innerHTML = user_card_infos.querySelectorAll('div')[0].innerHTML
-      new_info_email = document.createElement('div')
-      new_info_email.innerHTML = user_card_infos.querySelectorAll('div')[1].innerHTML
-      new_card_checkbox = new_card.querySelector('input[type="checkbox"]')
-      new_card_checkbox.checked = true
-      new_card_checkbox.id = 'user' + new_card.id.split('-')[2]
-      new_card_infos.appendChild(new_info_name)
-      new_card_infos.appendChild(new_info_email)
-      next_arrow_btn_mobile.classList.remove('disabled')
-      document.querySelector('.book-users-selected').appendChild(new_card)
-    } else {
-      selected_container.querySelector('#' + user_card.id).remove();
-      next_button.classList.remove('hilight-next-step')
-      next_arrow_btn_mobile.classList.add('disabled')
-    }
-    selected_container.querySelectorAll('.selected:not(.book-users-card-template)').forEach((card) => {
-      selected_array.push(card.id.split('-')[1])
-    })
-    document.querySelectorAll('#campaign_selected_users').forEach((storage) => {
-      storage.value = selected_array
-    })
-    document.getElementById('search_campaign_selected_users').value = selected_array
-    if (selected_array.length == 0) {
-      next_button.disabled = true
-      next_button.classList.add('disabled')
-      next_button_arrow.classList.add('disabled')
-      next_button.classList.remove('hilight-next-step')
-    } else {
-      next_button.disabled = false
-      next_button.classList.remove('disabled')
-      next_button_arrow.classList.remove('disabled')
-      next_button.classList.add('hilight-next-step')
-    }
-    document.querySelector('.book-users-headers-selected').innerHTML = '<p>' + selected_array.length + ' SELECTED EMPLOYEES</p>'
-  }
-
-  function selectAllUsers(element) {
-    list = document.querySelector('.book-users-list:not(.hidden)')
-    list.querySelectorAll('.book-users-card').forEach((button) => {
-      selectUser(button)
-    })
-    checkbox = element.closest('.book-users-card').querySelector('input')
-    checkbox.checked = !checkbox.checked
-    if (checkbox.checked) {
-      element.style.backgroundColor = '#3177B7'
-    } else {
-      element.style.backgroundColor = 'transparent'
-    }
-  }
-</script>
