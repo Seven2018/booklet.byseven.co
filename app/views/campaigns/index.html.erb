@@ -7,18 +7,12 @@
           <p class='campaigns-index__tag'>All</p>
         </div>
       </div>
-      <div>
-        <a data-toggle='modal' data-target='#newTemplate'>
-          <div class="bkt-btn-blue" data-toggle='tooltip' title='Create a new campaign' >
-            <i class="fas fa-plus"></i>
-            <span>Create a new campaign</span>
-          </div>
-        </a>
-      </div>
-      <!-- <button class='campaigns-index__filter_button'>
-        <span class="iconify" data-icon="bi:filter"></span>
-        <p>Filter</p>
-      </button> -->
+
+      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-blue' do  %>
+        <i class="fas fa-plus"></i>
+        Create Campaign
+      <% end %>
+
     </div>
     <div class="campaigns-index__main">
       <div class="campaigns-index__searchbar">

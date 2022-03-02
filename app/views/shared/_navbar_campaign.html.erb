@@ -42,17 +42,6 @@
 
       <% end %>
     <% end %>
-
-    <%
-      if current_user.manager_or_above? &&
-        ![:pages_organisation, :campaigns_campaigns_report].include?(@controller_action) &&
-        @multi_step_form_navbar_content.blank?
-    %>
-      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-white' do  %>
-        <i class="fas fa-plus"></i>
-        Create Campaign
-      <% end %>
-    <% end %>
   </div>
 
   <div class="right">
