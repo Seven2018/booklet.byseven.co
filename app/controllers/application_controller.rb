@@ -120,11 +120,15 @@ class ApplicationController < ActionController::Base
     @show_navbar_admin = true if current_user&.hr_or_above?
   end
 
-  def show_navbar_campaign
-    @show_navbar_campaign = true
-  end
-
   def show_navbar_home
     @show_navbar_home = true
+  end
+
+  def show_navbar_training
+    @show_navbar_training = true
+  end
+
+  def show_navbar_campaign
+    @show_navbar_campaign = true
   end
 end

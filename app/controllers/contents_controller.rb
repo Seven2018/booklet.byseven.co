@@ -1,19 +1,21 @@
 class ContentsController < ApplicationController
-  before_action :set_content, only: [:show, :edit, :update, :duplicate]
+  before_action :set_content, only: [:show, :edit, :update, :duplicate, :destroy]
   before_action :force_json, only: [:change_author]
+  before_action :show_navbar_training
   helper VideoHelper
 
   # Create new content (pages/catalogue)
   def create
     params.permit!
-    @content = Content.new(params[:content].except(:categories))
+    @content = Content.new(content_params)
+    # @content = Content.new(params[:content].except(:categories))
     authorize @content
     @content.company_id = current_user.company.id
     @content.cost = 0 unless @content.cost.present?
     if @content.save
-      params[:content][:categories].split(',').each do |category_id|
-        ContentCategory.create(content_id: @content.id, category_id: category_id)
-      end
+      # params[:content][:categories].split(',').each do |category_id|
+      #   ContentCategory.create(content_id: @content.id, category_id: category_id)
+      # end
       redirect_to edit_content_path(@content)
     end
   end
@@ -42,10 +44,14 @@ class ContentsController < ApplicationController
 
   # Delete content (pages/catalogue)
   def destroy
-    @content = Content.find(params[:id])
     authorize @content
+    @content_id = @content.id
     @content.destroy
-    redirect_to catalogue_path
+
+    respond_to do |format|
+      format.html {redirect_to catalogue_path}
+      format.js
+    end
   end
 
   # Duplicate content (pages/catalogue)
