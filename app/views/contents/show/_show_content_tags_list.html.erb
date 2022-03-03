@@ -1,0 +1,5 @@
+<% content.categories.order(title: :asc).each do |category| %>
+  <div class='flex-row-between-centered mr-1rem mb-1rem' style='padding: .5rem;'>
+    <p class="fs-1_4rem font-weight-600 bkt-orange"><%= category.title %></p>
+  </div>
+<% end %>

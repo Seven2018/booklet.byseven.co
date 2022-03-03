@@ -18,20 +18,16 @@
 
         <div id="content-edit__content-center" class='flex-column-start-centered'>
 
-          <div id="content-edit__attributes-center" class='rounded-10px mb-2rem overflow-hidden' style='width: 100%; max-width: 64rem; height: 20rem;'>
-            <%= render 'contents/edit/edit_content_picture', content: @content %>
-          </div>
-
           <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
-            <%= render 'contents/edit/edit_content_attributes', content: @content %>
-          </div>
-
-          <div style='width: 100%; max-width: 64rem;'>
-            <%= render 'contents/edit/edit_add_mod', position: 0 %>
-          </div>
-
-          <div id="content-edit__lines" style='width: 100%; max-width: 64rem;'>
-            <%= render 'contents/edit/edit_mods_index', content: @content %>
+            <div class="flex-row-start-centered mb-2rem">
+              <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
+              <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @content.title %></p>
+            </div>
+            <% if current_user.hr_or_above? %>
+              <%= render 'contents/show/show_content_mods', content: @content %>
+            <% else %>
+              <%= render 'contents/show/show_content_mods_teaser', content: @content %>
+            <% end %>
           </div>
 
       </div>
