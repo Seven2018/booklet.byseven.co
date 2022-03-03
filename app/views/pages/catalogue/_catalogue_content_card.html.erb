@@ -10,9 +10,9 @@
         <% if current_user.hr_or_above? %>
           <i class="fas fa-ellipsis-v"></i>
           <div class="content-dropdown hidden">
-            <%= link_to 'Recommendation', recommendation_path(content_id: content.id) %>
+            <%# link_to 'Recommendation', recommendation_path(content_id: content.id) %>
             <%= link_to 'Edit', edit_content_path(content) %>
-            <%= link_to 'Duplicate', duplicate_content_path(content) %>
+            <%# link_to 'Duplicate', duplicate_content_path(content) %>
             <% if Workshop.where(content_id: content.id).present? %>
               <a class='open-tooltip' data-toggle='tooltip' title="Workshop booked, cannot be deleted" disabled>Delete</a>
             <% else %>

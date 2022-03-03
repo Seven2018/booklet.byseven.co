@@ -1,0 +1,28 @@
+<% def display_tree(folder) %>
+  <% folder.each do |element| %>
+    <% if element[:type] == 'Content' %>
+      <ul>
+        <div class="rest">
+          <div class="flex-row-start-top mb-2rem">
+            <i class="far fa-file pr-1rem"></i>
+            <p class='fs-1_6rem line-height-2rem'><%= element[:name] %></p>
+          </div>
+        </div>
+      </ul>
+    <% elsif element[:type] == 'Folder' %>
+      <ul>
+        <div class="flex-row-start-top mb-2rem">
+          <i class="far fa-folder pr-1rem"></i>
+          <p class='fs-1_6rem line-height-2rem'><%= element[:name] %></p>
+          <div class="centered-item" style='height: 2rem;'>
+            <i class="fas fa-chevron-down fs-1_2rem ml-1rem"></i>
+          </div>
+        </div>
+        <div class="rest">
+          <% display_tree(element[:children]) %>
+        </div>
+      </ul>
+    <% end %>
+  <% end %>
+<% end %>
+<% display_tree([folder.folder_to_hash]) %>
