@@ -6,9 +6,9 @@
         <% if current_user.hr_or_above? %>
           <i class="fas fa-ellipsis-v"></i>
           <div class="content-dropdown hidden">
-            <%= link_to 'Recommendation', recommendation_path(folder_id: folder.id) %>
+            <%# link_to 'Recommendation', recommendation_path(folder_id: folder.id) %>
             <%= link_to 'Edit', edit_folder_path(folder) %>
-            <%= link_to 'Duplicate', duplicate_folder_path(folder) %>
+            <%# link_to 'Duplicate', duplicate_folder_path(folder) %>
             <% if Training.where(folder_id: folder.id).present? %>
               <a class='open-tooltip' data-toggle='tooltip' title="Program booked, cannot be deleted" disabled>Delete</a>
             <% else %>
@@ -62,7 +62,7 @@
     </div>
   </div>
   <div class="booklet-folder-card-bottom booklet-folder-card-tree">
-    <%= render 'pages/partials/catalogue_folder_card_tree', folder: folder %>
+    <%= render 'pages/catalogue/catalogue_folder_card_tree', folder: folder %>
   </div>
 </div>
 
