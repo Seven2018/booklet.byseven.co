@@ -114,37 +114,22 @@ class PagesController < ApplicationController
 
   end
 
-  # Display contents catalogue
+  # Display folders/contents catalogue
   def catalogue
-    # @index_title_content = Content.count + 1
     complete_profile
-    if current_user.company_id.present?
-      # SEARCHING CONTENTS
-      @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
-      @folders = Folder.where(company_id: current_user.company.id).order(updated_at: :desc)
-      if params[:filter_catalogue].present? && params[:filter_catalogue][:category].reject { |c| c.empty? }.present?
-        if params[:filter_catalogue][:searched].present?
-          @contents = @contents.search_contents("#{params[:search][:title]}")
-          @folders = @folders.search_folders("#{params[:search][:title]}")
-        end
-        selected_filters = params[:filter_catalogue][:category].reject { |c| c.empty? }
-        @contents = @contents.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: selected_filters}).order(title: :asc).uniq
-        @folders = @folders.joins(:folder_categories).where(company_id: current_user.company_id, folder_categories: {category_id: selected_filters}).order(title: :asc).uniq
-        @filtered_categories = Category.where(id: selected_filters)
-      elsif params[:search].present? && !params[:search][:title].blank?
-        if params[:search][:filtered].present?
-          selected_filters = params[:filtered].reject { |c| c.empty? }
-          @contents = @contents.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: selected_filters}).uniq
-          @folders = @folders.joins(:folder_categories).where(company_id: current_user.company_id, folder_categories: {category_id: selected_filters}).uniq
-          @filtered_categories = Category.where(id: selected_filters)
-        end
-        # @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
-        # @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
-      end
-      respond_to do |format|
-        format.html {catalogue_path}
-        format.js
-      end
+
+    @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    @categories = Category.where(company_id: current_user.company_id).order(title: :asc)
+
+    @contents = @contents.search_contents(params.dig(:search, :title)) if params.dig(:search, :title).present?
+    @contents = @contents.where(content_type: params.dig(:search, :content_type)) if params.dig(:search, :content_type).present?
+    @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params.dig(:search, :selected_categories).split(',')}).distinct if params.dig(:search, :selected_categories).present?
+
+    # TO DO : add pagination
+
+    respond_to do |format|
+      format.html {catalogue_path}
+      format.js
     end
   end
 
