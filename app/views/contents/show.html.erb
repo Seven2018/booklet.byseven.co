@@ -1,29 +1,48 @@
-<% if current_user.admin? || (@content.company_id == current_user.company_id) %>
-  <% access = 'granted' if current_user.hr_or_above? %>
-  <div id="content-show-container">
-    <div id="content-show-container-left">
-      <%= render 'contents/partials/show_summary', content: @content, page: 'show', access: access %>
-    </div>
-    <div id="content-show-container-right">
-      <div class="content-add">
-        <div class="content-center-div content-center-div__show">
-          <div class="content-show-attributes-center">
-            <%= render 'contents/partials/show_attributes_center', content: @content, page: 'show', access: access %>
+<div class="centered-item p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+  <%= link_to catalogue_path, class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
+    <span class="iconify" data-icon="bi:arrow-left"></span>
+    <p>Back</p>
+  <% end %>
+  <h2>Workshop</h2>
+  </div>
+</div>
+
+<div id="content-edit__container" class='flex-row-between-start bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
+  <div id="content-edit__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
+    <%= render 'contents/edit/edit_show_summary', content: @content %>
+  </div>
+
+  <div id="content-edit__container-right" style='margin-left: 30rem;'>
+
+      <div id="content-edit__content" class='flex-row-between-start'>
+
+        <div id="content-edit__content-center" class='flex-column-start-centered'>
+
+          <div id="content-edit__attributes-center" class='rounded-10px mb-2rem overflow-hidden' style='width: 100%; max-width: 64rem; height: 20rem;'>
+            <%= render 'contents/edit/edit_content_picture', content: @content %>
           </div>
-          <div class="content-show-mods-edit-mode content-show-mods-edit-mode__show">
-            <%= render 'mods/partials/content_show_mods_index', content: @content, page: 'show', access: access %>
+
+          <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
+            <%= render 'contents/edit/edit_content_attributes', content: @content %>
           </div>
-        </div>
-        <div class="content-add-right">
-          <div class="content-show-attributes-right">
-            <%= render 'contents/partials/show_attributes_right', content: @content, page: 'show', access: access %>
+
+          <div style='width: 100%; max-width: 64rem;'>
+            <%= render 'contents/edit/edit_add_mod', position: 0 %>
           </div>
+
+          <div id="content-edit__lines" style='width: 100%; max-width: 64rem;'>
+            <%= render 'contents/edit/edit_mods_index', content: @content %>
+          </div>
+
+      </div>
+
+      <div id="template-edit__content-right" style=''>
+        <div class="template-show-attributes-right">
+          <%= render 'contents/show/show_content_settings', content: @content %>
         </div>
       </div>
+
     </div>
+
   </div>
-<% else %>
-  <div class="access-restricted centered-item">
-    <h1>Access restricted</h1>
-  </div>
-<% end %>
+</div>
