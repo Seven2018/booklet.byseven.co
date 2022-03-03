@@ -1,0 +1,36 @@
+<% contents.each do |content| %>
+
+  <div class="col-xs-12 col-sm-6 col-md-4 col-xl-3 centered-item">
+    <div class="rounded-15px bkt-bg-white overflow-hidden bkt-box-shadow mb-5rem" style='width: 30rem;'>
+      <%= link_to '', content_path(content), class: 'stretched-link' %>
+      <div class="" style='height: 10rem;'>
+        <%= image_tag 'booklet_training_picture_test.png', style: 'width: 100%; object-fit: fill;' %>
+      </div>
+      <div class="flex-column-start-left p-2rem" style='height: 20rem;'>
+        <div class="flex-row-start-centered mb-2rem" style='height: 1rem;'>
+          <% content.categories.each do |category| %>
+            <p class="fs-1rem font-weight-600 bkt-orange mr-1rem"><%= category.title %></p>
+          <% end %>
+        </div>
+        <div class="flex-column-between-left flex-grow-1">
+          <p class='fs-1_6rem font-weight-600 line-height-2rem bkt-dark-grey'><%= content.title %></p>
+          <div>
+            <div class="flex-row-start-centered mb-1rem">
+              <div class="centered-item height-2_5rem width-2_5rem mr-1rem">
+                <span class="iconify fs-1_6rem bkt-orange" data-icon="fa6-solid:user-group"></span>
+              </div>
+              <p class='fs-1_4rem bkt-dark-grey'><%= content.content_type == 'Synchronous' ? 'Face-to-face' : 'Online' %></p>
+            </div>
+            <div class="flex-row-start-centered">
+              <div class="centered-item height-2_5rem width-2_5rem mr-1rem">
+                <span class="iconify fs-2_4rem bkt-orange" data-icon="ic:baseline-watch-later"></span>
+              </div>
+              <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(content.duration) %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>

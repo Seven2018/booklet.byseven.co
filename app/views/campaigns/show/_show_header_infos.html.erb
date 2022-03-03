@@ -1,25 +1,12 @@
-<% manager = @campaign.owner %>
-<% campaign_status =
-      if @campaign.completion_for(:all) == 100
-        'completed'
-      elsif @campaign.completion_for(:all) == 0
-        'not_started'
-      else
-        'in_progress'
-      end %>
-
-<% campaign_type_svg = {
-      'crossed' => 'uil:exchange',
-      'simple' => 'mdi:star-shooting'
-    } %>
+<% manager = campaign.owner %>
 
 <div class="campaign-show__header-infos-title-status">
   <div class="campaign-show__header-infos-title">
     <div class="campaign-show__header-infos-title-icon">
-      <span class="iconify" data-icon="<%= campaign_type_svg[@campaign.campaign_type] %>"></span>
+      <span class="iconify" data-icon="<%= campaign.icon %>"></span>
     </div>
     <h2><%= campaign.title %></h2>
-    <p class='<%= campaign_status %>'><%= campaign_status.capitalize.gsub('_', ' ') %></p>
+    <p class='<%= campaign.completion_status %>'><%= campaign.completion_status_string %></p>
   </div>
   <p>Employees</p>
 </div>

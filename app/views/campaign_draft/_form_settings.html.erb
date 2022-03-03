@@ -2,6 +2,7 @@
 
 <div class="py-4rem">
   <%= text_field_tag :title, campaign.title, placeholder: 'Enter name', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 w-100' %>
+  <%= hidden_field_tag :owner_id, current_user.id %>
 </div>
 
 <div class="my-5rem"></div>

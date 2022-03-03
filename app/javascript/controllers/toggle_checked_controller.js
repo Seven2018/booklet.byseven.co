@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return [ "radioButton" ]
+    return [ "togglable" ]
   }
   static get values () {
     return {
@@ -17,7 +17,7 @@ export default class extends Controller {
   }
 
   toggle() {
-    if (this.radioButtonTarget.checked) {
+    if (this.togglableTarget.checked) {
       this.checkedClassesValue.split(' ').forEach((klass) => this.element.classList.add(klass))
       this.uncheckedClassesValue.split(' ').forEach((klass) => this.element.classList.remove(klass))
     }

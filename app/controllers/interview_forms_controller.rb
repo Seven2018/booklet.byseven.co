@@ -29,7 +29,7 @@ class InterviewFormsController < ApplicationController
     @template = InterviewForm.new(template_params)
     authorize @template
     @template.company_id = current_user.company_id
-    redirect_to interview_form_path(@template) if @template.save
+    redirect_to edit_interview_form_path(@template) if @template.save
   end
 
   def show
