@@ -2,7 +2,7 @@
   <div id="catalogue__contents" style='width: 80%; max-width: 150rem'>
     <div id="catalogue__contents-header" class="flex-row-between-centered mb-2rem">
       <h2 class="fs-2_4rem font-weight-600 bkt-dark-grey">Workshops (<%= @contents.count %>)</h2>
-      <button class="bkt-btn-orange">
+      <button class="bkt-btn-orange" data-toggle='modal' data-target='#newContent'>
         <i class="fas fa-plus"></i>
         Create a new workshop
       </button>
@@ -103,6 +103,17 @@
 </div>
 
 
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade' id='newContent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'contents/modals/new_content' %>
+  </div>
+</div>
+
+
 <!---------------->
 <!-- JAVASCRIPT -->
 <!---------------->
@@ -114,6 +125,19 @@
   ///////////
 
   doubleClickGuardian = false
+
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
 
   ///////////////
   // SEARCHBAR //
@@ -181,5 +205,42 @@
     search_select_storage.value = ''
 
     submit_button.click()
+  }
+
+  //////////////////////
+  // CONTROL DROPDOWN //
+  //////////////////////
+
+  function openContentMenu(element) {
+    formGuardian = true
+    dropdown = element.parentNode.querySelector('[data-actions="content"]')
+    card = element.closest('[data-content-id]')
+    card_overlay = card.querySelector('.catalogue__card-overlay')
+    card_link = card.querySelector('.stretched-link')
+
+    dropdown.classList.remove('hidden')
+    card_overlay.classList.remove('hidden')
+    card_link.classList.add('disabled')
+    card_link_href = card_link.href
+    card_link.href = "javascript:void(0)";
+
+    setTimeout(function(){
+      formGuardian = false
+    }, 1);
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, dropdown) && formGuardian == false) {
+        formGuardian = true
+        setTimeout(function(){
+          formGuardian = false
+        }, 1);
+        dropdown.classList.add('hidden')
+        card_overlay.classList.add('hidden')
+        setTimeout(function(){
+          card_link.classList.remove('disabled')
+          card_link.href = card_link_href
+        }, 1);
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
   }
 </script>
