@@ -1,4 +1,2 @@
-document.querySelector('.catalogue-filter-selected-tags').innerHTML = '<%= j render("pages/partials/catalogue_filtered_pills") %>';
-document.querySelector('.folders-row').innerHTML = '<%= j render("pages/partials/catalogue_index", cards: @folders) %>';
-document.querySelector('.contents-row').innerHTML = '<%= j render("pages/partials/catalogue_index", cards: @contents) %>';
+document.querySelector('#catalogue__contents-list').innerHTML = '<%= j render("pages/catalogue/catalogue_contents_list", contents: @contents) %>';
 document.querySelector('body').classList.remove('wait');

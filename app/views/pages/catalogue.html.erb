@@ -1,422 +1,186 @@
-<div class="catalogue-container">
-  <div id="main-controls" class='flex-row-between-start'>
-    <div class="main-controls-filter-bar">
-      <%= render 'shared/searchbar', path: catalogue_path, reset_path: catalogue_path(reset: ""), reset: true %>
-      <div class="catalogue-filter-selected-tags">
-        <%= render 'pages/partials/catalogue_filtered_pills' %>
+<div id="catalogue__container" class='flex-column-start-centered bkt-bg-light-orange py-5rem' style='min-height: calc(100vh - 7.5rem);'>
+  <div id="catalogue__contents" style='width: 80%; max-width: 150rem'>
+    <div id="catalogue__contents-header" class="flex-row-between-centered mb-2rem">
+      <h2 class="fs-2_4rem font-weight-600 bkt-dark-grey">Workshops (<%= @contents.count %>)</h2>
+      <button class="bkt-btn-orange">
+        <i class="fas fa-plus"></i>
+        Create a new workshop
+      </button>
+    </div>
+    <div class="bkt-bg-white rounded-20px p-2rem">
+      <div id="catalogue__controls">
+        <div class="flex-row-start-centered pos-rel mb-2rem">
+          <i class="fas fa-search position-absolute z-index-150 bkt-light-grey" style='left: 25rem; bottom: 16.6px;'></i>
+          <%= simple_form_for(:search, url: catalogue_path, method: :get, remote: true,
+            html: {
+              class: 'd-flex align-items-center'
+            },
+            data: {
+              controller:'remember-search',
+              remember_search_key_value: 'bookletInterviewFormsSearches',
+            }
+          ) do |f| %>
+            <%=
+              f.input(
+                :title,
+                placeholder: 'Search',
+                wrapper_html: {
+                  class: 'my-0 height-5rem'
+                },
+                input_html: {
+                  class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                  style: 'width: 28rem; padding: 0 4rem 0 1rem;',
+                  autocomplete: 'off',
+                  # onkeyup: 'resetPage(this);',
+                  data: {
+                    remember_search_target: :search,
+                    action: 'keyup->remember-search#storeSearch'
+                  }
+                },
+                label: false,
+                required: false
+              )
+            %>
+
+            <div class='booklet-select__catalogue-container border-bkt-light-grey bkt-bg-light-grey3 rounded-5px pos-rel cursor-pointer ml-1rem' style='width: 14rem;'>
+              <div class="flex-row-between-centered height-5rem px-1rem" onclick="<%= 'BookletSelectExpand(this);' %>">
+                <p id='search_select' class='booklet-select__catalogue-selected fs-1_4rem font-weight-500 bkt-dark-grey'>All</p>
+                <div class="centered-item ml-1rem">
+                  <i class="fas fa-angle-down bkt-light-grey"></i>
+                </div>
+              </div>
+              <div class="booklet-select__catalogue-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150 pos-abs hidden" style='top: 5.1rem; left: 0;'>
+                <div onclick='BookletSelectSubmit(this, "answerable_by");'>
+                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer' style='width: 110px;' data-value=''>All</p>
+                </div>
+                <div onclick='BookletSelectSubmit(this, "answerable_by");'>
+                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer' style='width: 110px;' data-value='Synchronous'>Face-to-face</p>
+                </div>
+                <div onclick='BookletSelectSubmit(this, "answerable_by");'>
+                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer' style='width: 110px;' data-value='Asynchronous'>Online</p>
+                </div>
+              </div>
+            </div>
+
+            <%= f.hidden_field :content_type %>
+            <%= f.hidden_field :selected_categories %>
+            <%= f.hidden_field :page, value: '1' %>
+            <div class="mr-3"></div>
+            <%=
+              f.submit(
+                'Search',
+                class: 'hidden-submit py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                onclick: "document.querySelector('body').classList.add('wait');",
+                data: {
+                  remember_search_target: :submit,
+                }
+              )
+            %>
+            <button type='submit' class="btn-search d-block d-sm-none">
+              <i class="fas fa-search"></i>
+            </button>
+            <button class='height-5rem bkt-orange px-1rem' onclick='resetSearch();'>Reset</button>
+          <% end %>
+        </div>
+        <div>
+          <p class='mb-2rem'>What category are you interested in ?</p>
+          <div class="flex-wrap mb-5rem">
+            <% @categories.each do |category| %>
+              <p id='category-<%= category.id %>' class='content-category-pill fs-1rem font-weight-600 rounded-15px border-bkt-orange-2px mr-1rem mb-1rem cursor-pointer'
+                 style='padding: 1rem 2.5rem;'
+                 onclick='selectCategory(this);'>
+                 <%= category.title %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div id="catalogue__contents-list" class='row'>
+        <%= render 'pages/catalogue/catalogue_contents_list', contents: @contents %>
       </div>
     </div>
-    <div class='main-controls-create-content'>
-      <% if current_user.hr_or_above? %>
-        <a data-toggle='modal' data-target='#newFolder'>
-          <div class="btn-blue" data-toggle='tooltip' title='Create a folder'>
-            <i class="fas fa-plus"></i>
-            <p>Create Program</p>
-          </div>
-        </a>
-        <a data-toggle='modal' data-target='#newWorkshop'>
-          <div class="btn-orange">
-            <i class="fas fa-plus"></i>
-            <p>Create Workshop</p>
-          </div>
-        </a>
-      <% end %>
-    </div>
-  </div>
-  <div id="catalogue-index">
-    <% if @contents.empty? && @folders.empty?%>
-      <% if params[:search].present? %>
-        <p>No results.</p>
-      <% else %>
-        <p style="padding:15px;">No workshop have been created. You see that big <span style='color:#F26419'>orange</span> button in the corner? Click it to create your first workshop.</p>
-      <% end %>
-    <% else %>
-      <h2>Programs</h2>
-      <div class="catalogue-row folders-row">
-        <%= render 'pages/partials/catalogue_index', cards: @folders %>
-      </div>
-      <h2>Workshops</h2>
-      <div class="catalogue-row contents-row">
-        <%= render 'pages/partials/catalogue_index', cards: @contents %>
-      </div>
-    <% end %>
   </div>
 </div>
 
-<!------------>
-<!-- MODALS -->
-<!------------>
 
-<div class='modal fade' id='newWorkshop' data-target='content' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'contents/modals/new_content' %>
-  </div>
-</div>
 
-<div class='modal fade modal_folder' id='newFolder' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'folders/modals/new_folder' %>
-  </div>
-</div>
-
-<div class='modal fade' id='newWorkshopCategories' data-target='content' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-dialog__add-category--content' role='document' style='border-radius: 20px'>
-    <%= render 'contents/modals/manage_categories_new' %>
-  </div>
-</div>
-
-<div class='modal fade' id='newFolderCategories' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-dialog__add-category--folder' role='document' style='border-radius: 20px'>
-    <%= render 'folders/modals/manage_categories_new' %>
-  </div>
-</div>
-
-<!-- DROPRIGHT -->
-
-<div class="organisation-filter-container">
-  <div class="organisation-filter-background" onclick='closeFilter();'></div>
-  <div class="organisation-filter-dropright">
-    <%= render 'pages/partials/catalogue_filter_dropright' %>
-  </div>
-</div>
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
 
 <script>
 
-  formGuardian = false;
+  ///////////
+  // TOOLS //
+  ///////////
 
-  function outsideClick(event, notelem) {
-    notelem = $(notelem); // jquerize (optional)
-    // check outside click for multiple elements
-    var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
+  doubleClickGuardian = false
+
+  ///////////////
+  // SEARCHBAR //
+  ///////////////
+
+  function BookletSelectExpand(element) {
+    doubleClickGuardian = true
+    dropdown = element.closest('.booklet-select__catalogue-container').querySelector('.booklet-select__catalogue-dropdown')
+    setTimeout(() => {
+      doubleClickGuardian = false
+    }, 100);
+    if (dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
+      window.addEventListener('click', function(e) {
+        if (!doubleClickGuardian) {
+          dropdown.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
         }
-    }
-    if (clickedOut) return true;
-    else return false;
-  }
-
-  function searchInput(element) {
-    if (element.value != '') {
-      element.closest('.searchbar').querySelector('.btn-reset-form').classList.remove('hidden')
+      });
     } else {
-      element.closest('.searchbar').querySelector('.btn-reset-form').classList.add('hidden')
+      dropdown.classList.add('hidden')
     }
-    document.querySelector('#filter_catalogue_searched').value = element.value
   }
 
-  function openFilter() {
-    filter_container = document.querySelector('.organisation-filter-container');
-    filter_dropright = document.querySelector('.organisation-filter-dropright');
-    filter_container.style.display = 'flex';
-    setTimeout(function(){
-      filter_dropright.style.width = '400px';
-    }, 1);
+  function BookletSelectSubmit(element, attribute) {
+    form = element.closest('form')
+    container = element.closest('.booklet-select__catalogue-container')
+    selected_display = element.closest('.booklet-select__catalogue-container').querySelector('.booklet-select__catalogue-selected')
+    selected_option = element.querySelector('p')
+    storage = form.querySelector('#search_content_type')
+    submit_button = form.querySelector('.hidden-submit')
+
+    storage.value = selected_option.getAttribute('data-value')
+    selected_display.innerText = selected_option.innerText
+
+    // submit_button.click()
   }
 
-  function closeFilter() {
-    filter_container = document.querySelector('.organisation-filter-container');
-    filter_dropright = document.querySelector('.organisation-filter-dropright');
-    filter_dropright.style.width = '0px';
-    setTimeout(function(){
-      filter_container.style.display = 'none';
-    }, 250);
-  }
+  function selectCategory(element) {
+    const category_storage = document.getElementById('search_selected_categories')
+    var category_storage_value = category_storage.value.split(',')
+    const selected_id = element.id.split('-')[1]
+    const submit_button = document.getElementById('catalogue__controls').querySelector('.hidden-submit')
 
-  function toggleTagCategoryDropdown(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode.parentNode.parentNode;
-    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '10000px';
-      block.classList.add('active');
+    element.classList.toggle('active')
+
+    if (element.classList.contains('active')) {
+      category_storage_value.push(selected_id)
     } else {
-      block.style.maxHeight = '61px';
-      block.classList.remove('active');
+      const index = category_storage_value.indexOf(selected_id)
+      category_storage_value.splice(index, 1)
     }
+    category_storage.value = category_storage_value.filter(n => n).join(',')
+    submit_button.click()
   }
 
-  function hideClearFilterButton() {
-    form = document.querySelector('.filter_catalogue');
-    form.querySelectorAll('.organisation-filter-block').forEach((element) => {
-      checked = false;
-      element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-        if (checkbox.checked == true) {
-          checked = true;
-        }
-      })
-      if (checked == false) {
-        element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
-      }
-    })
+  function resetSearch() {
+    const search_input = document.querySelector('#search_title')
+    const search_select = document.querySelector('#search_select')
+    var search_select_storage = document.querySelector('#search_content_type')
+    submit_button = search_input.closest('form').querySelector('.hidden-submit')
+
+    search_input.value = ''
+    search_select.innerText = 'All'
+    search_select_storage.value = ''
+
+    submit_button.click()
   }
-
-  function autoSubmit(element) {
-    element.closest('.organisation-filter-block').querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
-    hideClearFilterButton();
-    search_input = document.querySelector('#search_filtered')
-    filtered_array = []
-    element.closest('form').querySelectorAll('.check_boxes').forEach((checkbox) => {
-      if (checkbox.checked == true) {
-        filtered_array.push(checkbox.id.split('_')[3])
-      }
-    })
-    search_input.value = filtered_array
-    document.querySelector('.filter_catalogue').querySelector('.hidden-submit').click();
-    document.querySelector('body').classList.add('wait');
-  }
-
-  function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.searchbar')
-    searchbar.querySelectorAll('input').forEach((input) => {
-      if (input.type == 'text') {
-        input.value = ''
-      } else if (input.type == 'checkbox') {
-        input.checked = false
-      }
-    })
-    searchbar.querySelectorAll('select').forEach((select) => {
-      select.selectedIndex = 0
-    })
-    searchbar.querySelector('.btn-search').click()
-  }
-
-  function resetFilter() {
-    form = document.querySelector('.filter_catalogue');
-    form.querySelectorAll('.check_boxes').forEach((element) => {
-      if (element.checked == true) {
-        element.checked = false;
-      }
-    })
-    hideClearFilterButton();
-    document.querySelector('#search_filtered').value = ''
-    document.querySelector('#filter_catalogue_searched').value = ''
-    form.querySelector('.hidden-submit').click();
-    document.querySelector('body').classList.add('wait');
-  }
-
-  function clearFilter(element) {
-    block = element.parentNode.parentNode.parentNode.parentNode;
-    block.querySelectorAll('input.check_boxes').forEach((element) => {
-      if (element.checked == true) {
-        element.checked = false;
-      }
-    })
-    hideClearFilterButton();
-    document.querySelector('.filter_catalogue').querySelector('.hidden-submit').click();
-    document.querySelector('body').classList.add('wait');
-  }
-
-  function removeFilterTag(element) {
-    form = document.querySelector('.filter_catalogue');
-    category = element.parentNode.getAttribute("name");
-    form.querySelectorAll('.check_boxes').forEach((checkbox) => {
-      if (checkbox.parentNode.querySelector('label').innerText == category) {
-        checkbox.checked = false;
-      }
-    })
-    form.querySelector('.hidden-submit').click();
-    document.querySelector('body').classList.add('wait');
-  }
-
-  function openContentMenu(element) {
-    dropdown = element.parentNode.querySelector('.content-dropdown')
-    dropdown.classList.remove('hidden')
-    formGuardian = true
-    setTimeout(function(){
-      formGuardian = false
-    }, 1);
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, dropdown) && formGuardian == false) {
-        formGuardian = true
-        setTimeout(function(){
-          formGuardian = false
-        }, 1);
-        dropdown.classList.add('hidden')
-        this.removeEventListener('click', arguments.callee, false)
-      }
-    });
-  }
-
-  function openHiddenForm(element) {
-    form = element.parentNode.querySelector('.hidden-form-ajax');
-    element.classList.toggle('hidden');
-    form.classList.toggle('hidden');
-  }
-
-  // function openFilter(element) {
-  //   filter = element.parentNode.querySelector('.main-controls-filter-bar-block-filter')
-  //   element.classList.toggle('hidden');
-  //   filter.classList.toggle('hidden');
-  // }
-
-  // function removeFilter(element) {
-  //   filter_tag = element.parentNode;
-  //   storage = document.querySelector('#filter_themes')
-  //   array = storage.value.split(',');
-  //   array = array.filter(function(value, index, arr){
-  //     return value != element.getAttribute('data-id');
-  //   });
-  //   storage.value = array.join(',');
-  //   filter_tag.remove();
-  //   storage.parentNode.querySelector('.hidden-submit').click();
-  // }
-
-  function fetchCategoryForm(element) {
-    form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
-    initial_top = form.offsetTop
-    initial_left = form.offsetLeft
-    form.style.top = (element.offsetTop).toString() + 'px'
-    form.style.left = (element.offsetLeft + 25).toString() + 'px'
-    element.querySelector('p').style.opacity = '0'
-    form.classList.toggle('hidden')
-    form.querySelector('input').focus()
-    formGuardian = true;
-    setTimeout(function(){
-      formGuardian = false;
-    }, 1);
-
-    form.querySelector('#category_title').addEventListener('keypress', function(e) {
-      if (event.which == '13') {
-        event.preventDefault();
-        form.querySelector('.hidden-submit').click()
-      }
-    })
-
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, form) && formGuardian == false) {
-        form.style.top = initial_top.toString() + 'px';
-        form.style.left = initial_left.toString() + 'px'
-        element.querySelector('p').style.opacity = '1'
-        form.classList.toggle('hidden')
-        form.querySelector('input').value = ''
-        this.removeEventListener('click', arguments.callee, false)
-      }
-    });
-  }
-
-  function showCategoryDelete(element) {
-    trash = element.parentNode.querySelector('.category-delete')
-    if (trash.style.opacity == 0) {
-      trash.style.opacity = 1;
-    } else {
-      trash.style.opacity = 0;
-    }
-  }
-
-  function selectCategoryNewContent(element) {
-    if (element.checked == true) {
-      container = document.querySelector('.modal-body__content-categories-div')
-      new_pill = document.createElement("div");
-      new_pill.classList.add('booklet-content-card__category-pill--new')
-      new_pill.id = "category-" + element.id
-      new_pill.innerHTML = '<p>' + element.parentNode.querySelector('.category-title').innerHTML + '</p>'
-      container.append(new_pill)
-    } else {
-      target_pill = document.getElementById('category-' + element.id)
-      target_pill.remove()
-    }
-    category_storage = container.closest('form').querySelector('#content_categories')
-    categories_array = []
-    container.querySelectorAll('.booklet-content-card__category-pill--new').forEach((el) => {
-      categories_array.push(el.id.split('-')[1])
-    })
-    category_storage.value = categories_array
-  }
-
-  function selectCategoryNewFolder(element) {
-    if (element.checked == true) {
-      container = document.querySelector('.modal-body__folder-categories-div')
-      new_pill = document.createElement("div");
-      new_pill.classList.add('booklet-folder-card__category-pill--new')
-      new_pill.id = "category-" + element.id
-      new_pill.innerHTML = '<p>' + element.parentNode.querySelector('.category-title').innerHTML + '</p>'
-      container.append(new_pill)
-    } else {
-      target_pill = document.getElementById('category-' + element.id)
-      target_pill.remove()
-    }
-    category_storage = container.closest('form').querySelector('#folder_categories')
-    categories_array = []
-    container.querySelectorAll('.booklet-folder-card__category-pill--new').forEach((el) => {
-      categories_array.push(el.id.split('-')[1])
-    })
-    category_storage.value = categories_array
-  }
-
-  function hidePreviousModal(element) {
-    data_target = element.closest('.modal').getAttribute('data-target')
-    document.querySelector('[data-target="'+ data_target +'"]').classList.remove('show')
-  }
-
-  function showPreviousModal(element) {
-    data_target = element.closest('.modal').getAttribute('data-target')
-    document.querySelector('[data-target="'+ data_target +'"]').classList.add('show')
-  }
-
-  function checkContentValidity(element) {
-    button = element.closest('form').querySelector('#save_button')
-    if (element.value.replace(/\s+/g, '') != '') {
-      button.classList.remove('btn-orange-disabled')
-      button.classList.add('btn-orange')
-      button.disabled = false
-    } else {
-      button.classList.remove('btn-orange')
-      button.classList.add('btn-orange-disabled')
-      button.disabled = true
-    }
-  }
-
-  function checkFolderValidity(element) {
-    button = element.closest('form').querySelector('#save_button')
-    if (element.value.replace(/\s+/g, '') != '') {
-      button.classList.remove('btn-blue-disabled')
-      button.classList.add('btn-blue')
-      button.disabled = false
-    } else {
-      button.classList.remove('btn-blue')
-      button.classList.add('btn-blue-disabled')
-      button.disabled = true
-    }
-  }
-
-  sliders = document.querySelectorAll('.catalogue-row');
-  sliders.forEach((slider) => {
-    isDown = false;
-    let startX;
-    let scrollLeft;
-
-    slider.addEventListener('mousedown', (e) => {
-      isDown = true;
-      slider.classList.add('active');
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-    });
-    slider.addEventListener('mouseleave', () => {
-      isDown = false;
-      slider.classList.remove('active');
-    });
-    slider.addEventListener('mouseup', () => {
-      isDown = false;
-      slider.classList.remove('active');
-    });
-    slider.addEventListener('mousemove', (e) => {
-      if(!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 3; //scroll-fast
-      slider.scrollLeft = scrollLeft - walk;
-    });
-  })
-
-  $('.open-tooltip').click(function() {
-    $(this).tooltip();
-  })
 </script>
