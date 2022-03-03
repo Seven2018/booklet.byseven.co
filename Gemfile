@@ -61,6 +61,7 @@ gem 'caxlsx_rails'
 gem 'draper'
 gem 'view_component'
 gem 'jsonb_accessor'
+gem 'faker'
 
 group :development do
   # gem 'better_errors'
