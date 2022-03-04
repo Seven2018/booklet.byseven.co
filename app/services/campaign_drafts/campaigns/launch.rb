@@ -55,24 +55,29 @@ module CampaignDrafts
 
       def create_interview_set(interviewee)
         interviewer = interviewee.manager.present? ? interviewee.manager : User.find(@campaign_draft.default_interviewer_id)
-        binding.pry
 
-        (
-          interview_form.cross &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: interview_form, label: 'Employee')) &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: interview_form, label: 'Manager')) &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: interview_form, label: 'Crossed'))
-        ) || (
-          interview_form.answerable_by_both? &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: interview_form, label: 'Employee')) &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: interview_form, label: 'Manager'))
-        ) || (
-          interview_form.answerable_by_manager? &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: interview_form, label: 'Manager'))
-        ) || (
-          interview_form.answerable_by_employee? &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: interview_form, label: 'Manager'))
-        )
+        params =
+          interview_params.merge(
+            employee: interviewee,
+            interviewer: interviewer,
+            interview_form: interview_form
+          )
+
+        case interview_form.kind
+        when :answerable_by_manager_not_crossed
+          Interview.create(params.merge(label: 'Manager'))
+        when :answerable_by_employee_not_crossed
+          Interview.create(params.merge(label: 'Employee'))
+        when :answerable_by_both_not_crossed
+          Interview.create(params.merge(label: 'Employee')) &&
+          Interview.create(params.merge(label: 'Manager'))
+        when :answerable_by_both_crossed
+          Interview.create(params.merge(label: 'Employee')) &&
+          Interview.create(params.merge(label: 'Manager')) &&
+          Interview.create(params.merge(label: 'Crossed'))
+        else
+          # will raise InterviewForm::UnknownKind
+        end
       end
 
       def interviewees
