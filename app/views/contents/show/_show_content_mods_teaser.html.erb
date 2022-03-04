@@ -1,0 +1,8 @@
+<% content.mods.order(position: :asc).each do |mod| %>
+
+  <div class="flex-row-between-centered py-2rem border-bottom-bkt-light-grey">
+    <p class="fs-1_6rem font-weight-600 bkt-orange"><%= mod.title %></p>
+    <p class="fs-1_4rem font-weight-500 bkt-light-grey"><%= mod.duration >= 60 ? TimeConversion.convert(mod.duration) : "#{mod.duration} minutes" %></p>
+  </div>
+
+<% end %>

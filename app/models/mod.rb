@@ -4,7 +4,6 @@ class Mod < ApplicationRecord
   has_many :assessment_questions, dependent: :destroy
   has_many :user_forms, dependent: :destroy
   validates :title, presence: true
-  has_rich_text :text
   validate :valid_video
 
   def youtube_video_id
