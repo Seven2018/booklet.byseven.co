@@ -177,8 +177,7 @@ class CampaignsController < ApplicationController
   def destroy
     authorize @campaign
 
-    @target = "campaign-card-#{@campaign.id}"
-    @campaign.interviews.destroy_all if current_user.hr_or_above?
+    @id = @campaign.id
     @campaign.destroy
 
     respond_to do |format|

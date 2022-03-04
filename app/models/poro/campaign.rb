@@ -5,15 +5,17 @@ module Poro
       @employee_id = employee_id
     end
 
+    def crossed?
+      [employee_interview, manager_interview, crossed_interview].all?(&:present?)
+    end
+
     def employee_interview
       @campaign.interviews.where(employee_id: @employee_id).find(&:employee?)&.decorate
     end
 
     def manager_interview
-      if @campaign.simple?
-        return @campaign.interviews.where(employee_id: @employee_id).find(&:simple?)&.decorate
-      end
-      @campaign.interviews.where(employee_id: @employee_id).find(&:manager?)&.decorate
+      @campaign.interviews.where(employee_id: @employee_id).find(&:simple?)&.decorate  ||
+        @campaign.interviews.where(employee_id: @employee_id).find(&:manager?)&.decorate
     end
 
     def crossed_interview

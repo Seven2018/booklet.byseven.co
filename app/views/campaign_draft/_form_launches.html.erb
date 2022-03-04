@@ -10,7 +10,7 @@
 <div class="fs-1_4rem my-2 bkt-dark-grey">
   Template used :
   <span class="font-weight-600">
-    <%= campaign.default_template_id %>
+    <%= InterviewForm.find(campaign.default_template_id).title %>
   </span>
 </div>
 

@@ -31,14 +31,14 @@ module CampaignDrafts
 
       def owner
         case @campaign_draft.interviewer_selection_method
-        when 'manager' then User.find @campaign_draft.owner_id
+        when 'manager' then @campaign_draft.user
         # when 'multiple' then # TODO
         end
       end
 
       def campaign_type
         case @campaign_draft.kind
-        when 'one_to_one' then 'crossed'
+        when 'one_to_one' then 'one_to_one'
         # when 'feedback_360' then 'TODO'
         end
       end
@@ -48,29 +48,36 @@ module CampaignDrafts
           Campaign.create(
             title: @campaign_draft.title,
             owner: owner,
-            company: @campaign_draft.user.company
+            company: @campaign_draft.user.company,
+            campaign_type: campaign_type
           )
       end
 
       def create_interview_set(interviewee)
         interviewer = interviewee.manager.present? ? interviewee.manager : User.find(@campaign_draft.default_interviewer_id)
 
-        (
-          self.interview_form.cross &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: self.interview_form, label: 'Employee')) &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: self.interview_form, label: 'Manager')) &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: self.interview_form, label: 'Crossed'))
-        ) || (
-          self.interview_form.answerable_by_both? &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: self.interview_form, label: 'Employee')) &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: self.interview_form, label: 'Manager'))
-        ) || (
-          self.interview_form.answerable_by_manager? &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: self.interview_form, label: 'Manager'))
-        ) || (
-          self.interview_form.answerable_by_employee? &&
-          Interview.create(interview_params.merge(employee: interviewee, interviewer: interviewer, interview_form: self.interview_form, label: 'Manager'))
-        )
+        params =
+          interview_params.merge(
+            employee: interviewee,
+            interviewer: interviewer,
+            interview_form: interview_form
+          )
+
+        case interview_form.kind
+        when :answerable_by_manager_not_crossed
+          Interview.create(params.merge(label: 'Manager'))
+        when :answerable_by_employee_not_crossed
+          Interview.create(params.merge(label: 'Employee'))
+        when :answerable_by_both_not_crossed
+          Interview.create(params.merge(label: 'Employee')) &&
+          Interview.create(params.merge(label: 'Manager'))
+        when :answerable_by_both_crossed
+          Interview.create(params.merge(label: 'Employee')) &&
+          Interview.create(params.merge(label: 'Manager')) &&
+          Interview.create(params.merge(label: 'Crossed'))
+        else
+          # will raise InterviewForm::UnknownKind
+        end
       end
 
       def interviewees

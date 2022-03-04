@@ -8,6 +8,7 @@ class Interview < ApplicationRecord
   before_create :ensure_date_presence
   validates :title, :label, presence: true
   validate :single_campaign_interview_set_per_employee
+  validate :label_and_interview_form_match
   validate :not_locked
 
   alias answers interview_answers
@@ -28,10 +29,15 @@ class Interview < ApplicationRecord
 
   scope :completed, -> { where(completed: true) }
 
-  def interviewer
-    return campaign.owner if campaign.crossed? || campaign.simple?
+  def set
+    @set ||= Poro::Campaign.new(campaign: campaign, employee_id: employee_id)
+  end
 
-    super
+  def responder
+    return employee if employee?
+    return interviewer if manager? || crossed?
+
+    raise StandardError
   end
 
   def fully_answered?
@@ -98,6 +104,25 @@ class Interview < ApplicationRecord
       campaign.interviews.where(label: label, employee: employee)
                          .where.not(id: id)
                          .exists?
+  end
+
+  VALID_LABELS = {
+    answerable_by_employee_not_crossed: %w[Employee],
+    # answerable_by_manager_not_crossed: %w[Manager],
+    # answerable_by_both_not_crossed: %w[Manager Employee],
+    # answerable_by_both_crossed: %w[Manager Employee Crossed]
+    # temp TODO harmonize legacy Simple start
+    answerable_by_manager_not_crossed: %w[Manager Simple],
+    answerable_by_both_not_crossed: %w[Manager Simple Employee],
+    answerable_by_both_crossed: %w[Manager Simple Employee Crossed]
+    # temp TODO harmonize legacy Simple end
+  }.freeze
+
+  def label_and_interview_form_match
+    return if campaign.simple? || campaign.crossed?
+
+    errors.add(:base, 'mismatch interview label and interview_form kind') unless
+      VALID_LABELS[interview_form.kind].include?(label)
   end
 
   def unlocking

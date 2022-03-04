@@ -6,6 +6,7 @@ RSpec.describe CsvExport, type: :model do
   subject { CsvExport.create csv_export_params }
 
   let(:company) { create(:company) }
+  let(:tag_category) { create(:tag_category, company: company) }
 
   let(:campaign) do
     create(
@@ -16,12 +17,13 @@ RSpec.describe CsvExport, type: :model do
     )
   end
 
+
   let(:csv_export_params) do
     {
       company: company,
       start_time: 30.days.ago,
       end_time: 30.days.ago,
-      category: 8,
+      tag_category: tag_category,
       mode: :classic
     }
   end
@@ -104,8 +106,9 @@ RSpec.describe CsvExport, type: :model do
         end
 
         context 'diff == category' do
+          let(:other_tag_category) { create(:tag_category, name: 'other name', company: company) }
           let!(:other_csv_export) do
-            create(:csv_export, csv_export_params.merge(category: 99, state: state))
+            create(:csv_export, csv_export_params.merge(tag_category: other_tag_category, state: state))
           end
           context 'and is enqueued' do
             let(:state) { :enqueued }

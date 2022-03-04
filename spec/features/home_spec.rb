@@ -11,12 +11,13 @@ RSpec.feature 'Home', type: :feature, js: true do
   end
 
   context 'a signed in user' do
+    let(:user) { create(:user) }
     before do
-      login_as create(:user)
+      login_as user
     end
     scenario 'should be able to browse the dashboard page' do
       visit root_path
-      expect(page).to have_selector('h4', text: 'Dashboard')
+      expect(page).to have_selector('h1', text: "Welcome on Booklet, #{user.firstname}!")
     end
   end
 end
