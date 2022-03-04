@@ -1,7 +1,7 @@
 message_modal = document.querySelector('#campaignInfoMessage')
 
 document.querySelector('.campaign-show__header-infos').innerHTML = '<%= j render("campaigns/show/show_header_infos", campaign: @campaign) %>';
-modal.querySelector('.modal-dialog').innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "The campaign manager has been changed !") %>';
+document.querySelector('.modal-dialog').innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "The campaign manager has been changed !") %>';
 
 
 document.querySelector('.modal.show').querySelector('.cancel-close').click()
