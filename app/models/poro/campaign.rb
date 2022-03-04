@@ -6,7 +6,7 @@ module Poro
     end
 
     def crossed?
-      @campaign.interviews.where(employee_id: @employee_id).pluck(:label).sort == %w[Crossed Employee Manager]
+      [employee_interview, manager_interview, crossed_interview].all?(&:present?)
     end
 
     def employee_interview
