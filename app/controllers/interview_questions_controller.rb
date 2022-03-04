@@ -49,10 +49,9 @@ class InterviewQuestionsController < ApplicationController
 
     params[:interview_question][:required].present? ? @question.update(required: true) : @question.update(required: false)
 
-    required_for_employee = params.dig(:interview_question, :required_for_employee).present? ?  'employee' : nil
-    required_for_manager = params.dig(:interview_question, :required_for_manager).present? ? 'manager' : nil
+    required_for_employee = params.dig(:interview_question, :required_for_employee) == 'on' ?  'employee' : nil
+    required_for_manager = params.dig(:interview_question, :required_for_manager) == 'on' ? 'manager' : nil
     required_for_all = required_for_employee && required_for_manager ? 'all' : nil
-
     required_for = 'none'
     [required_for_all, required_for_employee, required_for_manager].each do |element|
       if element.present?
@@ -80,7 +79,7 @@ class InterviewQuestionsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html {redirect_to interview_form_path(@question.interview_form)}
+      format.html {redirect_to edit_interview_form_path(@question.interview_form)}
       format.js
     end
   end

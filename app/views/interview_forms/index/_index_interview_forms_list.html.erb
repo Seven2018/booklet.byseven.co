@@ -45,7 +45,7 @@
 
 <% end %>
 
-<% if @templates.count == 10 %>
+<% if @any_more %>
   <div class="paginate-container">
     <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
       <div class="paginate__previous-button" onclick='changePage("previous");'>
