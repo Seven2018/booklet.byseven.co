@@ -28,7 +28,7 @@
       style='right: 0; top: 6rem;'
     >
       <%= link_to 'Duplicate', duplicate_interview_form_path(template),
-        class: 'px-3 py-2 hover-bkt-light-grey w-100'
+        class: 'px-3 py-2 bkt-light-grey-hover w-100'
       %>
       <% unless Campaign.where(interview_form: template).exists? %>
         <%= link_to 'Delete', interview_form_path(template),
@@ -37,7 +37,7 @@
           data: {
             confirm: 'Are you sure ?'
           },
-          class: 'px-3 py-2 hover-bkt-light-grey w-100'
+          class: 'px-3 py-2 bkt-light-grey-hover w-100'
         %>
       <% end %>
     </div>

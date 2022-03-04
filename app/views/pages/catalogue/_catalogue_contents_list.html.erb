@@ -14,7 +14,7 @@
                class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
                style='right: 1rem; top: 4rem;'>
             <%= link_to 'Edit', edit_content_path(content),
-              class: 'px-3 py-2 hover-bkt-light-grey w-100'
+              class: 'px-3 py-2 bkt-light-grey-hover w-100'
             %>
             <%= link_to 'Delete', content_path(content),
              method: :delete,
@@ -22,7 +22,7 @@
               data: {
                 confirm: 'Are you sure ?'
               },
-              class: 'px-3 py-2 hover-bkt-light-grey w-100'
+              class: 'px-3 py-2 bkt-light-grey-hover w-100'
             %>
           </div>
         <% end %>
