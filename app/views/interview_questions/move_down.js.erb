@@ -1,7 +1,7 @@
-document.querySelector('#template-show__lines').innerHTML = '<%= j (render("interview_forms/edit/questions_index", template: @template)) %>';
-document.querySelector('#template-show__container-left').innerHTML = '<%= j (render("interview_forms/partials/show_summary", template: @template)) %>';
+document.querySelector('#template-show__lines').innerHTML = '<%= j render("interview_forms/edit/edit_questions_index", template: @template) %>';
+document.querySelector('#template-show__container-left').innerHTML = '<%= j render("interview_forms/edit/edit_show_summary", template: @template) %>';
 target = document.querySelector('#item-<%= @question.position %>').querySelector('.line-title');
-toggleMod(target);
+// toggleMod(target);
 
 setTimeout(function(){updateStatusMessage('Up to date')}, 1000)
 

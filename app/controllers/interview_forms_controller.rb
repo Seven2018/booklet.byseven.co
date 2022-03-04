@@ -7,7 +7,7 @@ class InterviewFormsController < ApplicationController
     @templates = policy_scope(InterviewForm)
     @templates = @templates.where(company_id: current_user.company_id)
     if params[:search].present? && !params[:search][:title].blank?
-      @templates = @templates.search_templates(params[:search][:title]).order(title: :asc)
+      @templates = @templates.search_templates(params[:search][:title])
       @filtered = 'true'
     else
       @filtered = 'false'
@@ -16,7 +16,7 @@ class InterviewFormsController < ApplicationController
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
 
     total_templates_count = @templates.count
-    @templates = @templates.page(page_index)
+    @templates = @templates.order(created_at: :desc).page(page_index)
     @any_more = @templates.count * page_index < total_templates_count
 
     respond_to do |format|
@@ -51,7 +51,7 @@ class InterviewFormsController < ApplicationController
 
     answerable_by_status = @template.answerable_by
     unless @template.answerable_by_both?
-      @template.interview_questions.update_all(visible_for: answerable_by_status, required_for: answerable_by_status)
+      @template.interview_questions.update_all(visible_for: answerable_by_status)
     end
 
     @update_description = description != @template.description ? true : false
