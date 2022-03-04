@@ -23,12 +23,13 @@ RSpec.describe Interview, type: :model do
     campaign: campaign,
     interview_form: interview_form,
     employee: employee,
-    creator: owner
+    creator: owner,
+    interviewer: create(:user, email: Faker::Internet.email)
     }
   end
 
   let(:employee_interview) { create(:interview, interview_params.merge(label: 'Employee')) }
-  let(:hr_interview) { create(:interview, interview_params.merge(label: 'HR')) }
+  let(:manager_interview) { create(:interview, interview_params.merge(label: 'Manager')) }
   let(:crossed_interview) { create(:interview, interview_params.merge(label: 'Crossed')) }
 
   let!(:employee_answer) do
@@ -38,7 +39,7 @@ RSpec.describe Interview, type: :model do
   end
   let!(:hr_answer) do
     create(:interview_answer,
-      answer: "5", interview_question: question, interview: hr_interview, user: owner
+      answer: "5", interview_question: question, interview: manager_interview, user: owner
     )
   end
   let!(:crossed_answer) do
@@ -52,13 +53,13 @@ RSpec.describe Interview, type: :model do
     context 'before an interview is locked' do
       it 'interview title can be updated' do
         expect(employee_interview.update(title: 'abc')).to be true
-        expect(hr_interview.update(title: 'abc')).to be true
+        expect(manager_interview.update(title: 'abc')).to be true
         expect(crossed_interview.update(title: 'abc')).to be true
 
-        [employee_interview, hr_interview, crossed_interview].each &:reload
+        [employee_interview, manager_interview, crossed_interview].each &:reload
 
         expect(employee_interview.title).to eq('abc')
-        expect(hr_interview.title).to eq('abc')
+        expect(manager_interview.title).to eq('abc')
         expect(crossed_interview.title).to eq('abc')
       end
 
@@ -71,13 +72,13 @@ RSpec.describe Interview, type: :model do
       it 'interview can be locked' do
         now = Time.zone.now
         expect(employee_interview.update(locked_at: now)).to be true
-        expect(hr_interview.update(locked_at: now)).to be true
+        expect(manager_interview.update(locked_at: now)).to be true
         expect(crossed_interview.update(locked_at: now)).to be true
 
-        [employee_interview, hr_interview, crossed_interview].each &:reload
+        [employee_interview, manager_interview, crossed_interview].each &:reload
 
         expect(employee_interview.locked?).to be true
-        expect(hr_interview.locked?).to be true
+        expect(manager_interview.locked?).to be true
         expect(crossed_interview.locked?).to be true
       end
     end
@@ -86,16 +87,16 @@ RSpec.describe Interview, type: :model do
       before do
         [
           employee_interview,
-          hr_interview,
+          manager_interview,
           crossed_interview
         ].sample.lock!
-        [employee_interview, hr_interview, crossed_interview].each &:reload
+        [employee_interview, manager_interview, crossed_interview].each &:reload
         [employee_answer, hr_answer, crossed_answer].each &:reload
       end
 
       it 'interview title can be updated' do
         expect(employee_interview.update(title: 'abc')).to be false
-        expect(hr_interview.update(title: 'abc')).to be false
+        expect(manager_interview.update(title: 'abc')).to be false
         expect(crossed_interview.update(title: 'abc')).to be false
       end
 
@@ -107,7 +108,7 @@ RSpec.describe Interview, type: :model do
 
       it 'interview can not be unlocked' do
         expect(employee_interview.update(locked_at: nil)).to be false
-        expect(hr_interview.update(locked_at: nil)).to be false
+        expect(manager_interview.update(locked_at: nil)).to be false
         expect(crossed_interview.update(locked_at: nil)).to be false
       end
     end

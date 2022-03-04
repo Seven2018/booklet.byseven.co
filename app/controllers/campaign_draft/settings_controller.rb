@@ -15,6 +15,6 @@ class CampaignDraft::SettingsController < CampaignDraft::BaseController
   private
 
   def campaign_draft_params
-    params.permit(:title, :kind, :owner_id)
+    params.permit(:title, :kind)
   end
 end
