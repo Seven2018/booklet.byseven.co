@@ -16,11 +16,7 @@
 <div class="interview-container">
 
   <div class="interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
-
-    <%= link_to campaign_path(@interview.campaign), class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
-      <span class="iconify" data-icon="bi:arrow-left"></span>
-      <p>Back</p>
-    <% end %>
+    <%= render_component BackComponent.new(fallback: campaign_path(@interview.campaign)) %>
     <div class="interview-controls__buttons">
       <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
         <span class="iconify" data-icon="bx:bx-download"></span>

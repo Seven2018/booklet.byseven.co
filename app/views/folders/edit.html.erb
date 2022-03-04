@@ -1,8 +1,5 @@
 <div class="centered-item p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
-  <%= link_to catalogue_path, class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
-    <span class="iconify" data-icon="bi:arrow-left"></span>
-    <p>Back</p>
-  <% end %>
+  <%= render_component BackComponent.new(fallback: catalogue_path) %>
   <h2>Edit Program</h2>
   </div>
 </div>

@@ -264,10 +264,7 @@
 <h3 class="my-2">bkt-btn-back</h3>
 <div class="d-flex m-5" style='gap: 5px;'>
   <div>
-    <a href="#" class="bkt-btn-back">
-      <span class="iconify" data-icon="bi:arrow-left"></span>
-      <p>Back</p>
-    </a>
+    <%= render_component BackComponent.new(fallback: root_path) %>
   </div>
 </div>
 
