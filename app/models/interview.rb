@@ -33,6 +33,12 @@ class Interview < ApplicationRecord
     @set ||= Poro::Campaign.new(campaign: campaign, employee_id: employee_id)
   end
 
+  def responder
+    return employee if employee?
+    return interviewer if manager? || crossed?
+
+    raise StandardError
+  end
 
   def fully_answered?
     interview_answers.count >=
