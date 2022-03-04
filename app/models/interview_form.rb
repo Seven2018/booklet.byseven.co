@@ -30,10 +30,10 @@ class InterviewForm < ApplicationRecord
 
   def kind
     case
-    when answerable_by_manager? && !cross then :answerable_by_manager_not_crossed
+    when answerable_by_manager? && !cross  then :answerable_by_manager_not_crossed
     when answerable_by_employee? && !cross then :answerable_by_employee_not_crossed
-    when answerable_by_both? && !cross then :answerable_by_both_not_crossed
-    when answerable_by_both? && cross then :answerable_by_both_crossed
+    when answerable_by_both? && !cross     then :answerable_by_both_not_crossed
+    when answerable_by_both? && cross      then :answerable_by_both_crossed
     else
       raise UnknownKind
     end
