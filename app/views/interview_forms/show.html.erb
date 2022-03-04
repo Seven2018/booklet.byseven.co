@@ -46,7 +46,7 @@
       <% @template.interview_questions.order(position: :asc).each do |question| %>
         <% if question.separator? %>
           <% j += 1 %>
-        <% end -%>
+        <% end %>
         <% question_hash[j] = question_hash[j].present? ? question_hash[j] + [question] : [question] %>
       <% end %>
 
@@ -59,7 +59,7 @@
           </div>
         <% end %>
         <div class="interview-main__right-questions">
-          <% value[0..-1].each do |question| %>
+          <% value[1..-1].each do |question| %>
 
             <% question_number += 1 %>
 
