@@ -20,8 +20,10 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    @campaigns = Campaign.where_exists(:interviews, employee: current_user)
-    @manager_campaigns = Campaign.where(owner: current_user)
+    @campaigns = policy_scope(Campaign).order(created_at: :desc).where \
+      id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
+    @manager_campaigns = Campaign.order(created_at: :desc).where \
+      id: Interview.where(interviewer: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 
     @campaigns =
@@ -31,7 +33,7 @@ class CampaignsController < ApplicationController
         @campaigns.where_exists(:interviews, locked_at: nil)
       end
 
-    @campaigns = CampaignDecorator.decorate_collection @campaigns
+    @campaigns         = CampaignDecorator.decorate_collection @campaigns
     @manager_campaigns = CampaignDecorator.decorate_collection @manager_campaigns
 
     respond_to do |format|
@@ -41,8 +43,9 @@ class CampaignsController < ApplicationController
   end
 
   def my_team_interviews
-    @personal_campaigns = Campaign.where_exists(:interviews, employee: current_user)
-    @campaigns = Campaign.where_exists(:interviews, interviewer: current_user)
+    campaigns = policy_scope(Campaign).order(created_at: :desc)
+    @personal_campaigns = campaigns.where_exists(:interviews, employee: current_user)
+    @campaigns =          campaigns.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
 
     if params.dig(:period) == 'completed'
