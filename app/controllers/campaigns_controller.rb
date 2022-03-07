@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:campaign_report_info, :show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_add_user, :campaign_remove_user]
+  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_add_user, :campaign_remove_user]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -15,6 +15,49 @@ class CampaignsController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.js
+    end
+  end
+
+  def show
+    authorize @campaign
+
+    @current_user_employee = current_user.employee_to_hr_light?
+    @interviews_for_date =
+      if @current_user_employee
+        @campaign.interviews.find_by(employee: current_user)
+      else
+        @campaign.interviews.order(date: :asc)
+      end
+
+    @completion =
+      if @current_user_employee
+        @campaign.completion_for(current_user)
+      else
+        @campaign.completion_for(:all)
+      end
+
+    @interviews =
+      if selected_user.present?
+        Interview.where(campaign: @campaign, employee: selected_user)
+      else
+        []
+      end
+    @campaign = @campaign.decorate
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def destroy
+    authorize @campaign
+
+    @id = @campaign.id
+    @campaign.destroy
+
+    respond_to do |format|
       format.js
     end
   end
@@ -57,103 +100,6 @@ class CampaignsController < ApplicationController
     @campaigns = @campaigns.sort{|x| x.deadline}
   end
 
-  def campaign_report_info
-    authorize @campaign
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def campaign_select_template
-    @campaign = Campaign.new
-    authorize @campaign
-    @templates = InterviewForm.where(company_id: current_user.company_id)
-    if params[:search].present? && !params[:search][:title].blank?
-      @templates = @templates.search_templates(params[:search][:title]).order(title: :asc)
-      @filtered = 'true'
-    else
-      @filtered = 'false'
-    end
-    params[:search].present? ? @selected_template = params[:search][:campaign_selected_template] : campaign_data
-  end
-
-  def campaign_select_users
-    @campaign = Campaign.new
-    authorize @campaign
-    @users = User.where(company_id: current_user.company_id).order(lastname: :asc)
-    if params[:search].present? && !params[:search][:name].blank?
-      @searched_users = @users.search_by_name("#{params[:search][:name]}")
-      @searched_users = User.where(id: @searched_users.ids).or(User.where(manager_id: @searched_users.ids)).order(lastname: :asc) if params[:search][:name].strip =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
-      # @searched_users = User.where(id: @searched_users.ids).or(User.where(manager_id: @searched_users.ids)) if params[:search][:staff].to_i == 1
-      @filtered = 'true'
-    else
-      @searched_users = []
-      @filtered = 'false'
-    end
-    @users = @users.order(lastname: :asc).page params[:page]
-    params[:search].present? ? @selected_users = params[:search][:campaign_selected_users] : campaign_data
-    respond_to do |format|
-      format.html {book_users_path}
-      format.js
-    end
-  end
-
-  def campaign_select_dates
-    @campaign = Campaign.new
-    authorize @campaign
-    campaign_data
-    @selected_users = User.where(id: @selected_users.split(','))
-  end
-
-  def create
-    @campaign = Campaign.new(title: params[:campaign][:title], interview_form_id: params[:campaign][:interview_form_id], owner_id: params[:campaign][:selected_owner])
-    authorize @campaign
-    @campaign.company_id = current_user.company_id
-    @campaign.campaign_type =
-      if params[:campaign][:campaign_type] == '1'
-        'crossed'
-      else
-      # elsif params[:campaign][:campaign_type] == '2'
-        'simple'
-      end
-    @campaign.save
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def show
-    authorize @campaign
-
-    @current_user_employee = current_user.employee_to_hr_light?
-    @interviews_for_date =
-      if @current_user_employee
-        @campaign.interviews.find_by(employee: current_user)
-      else
-        @campaign.interviews.order(date: :asc)
-      end
-
-    @completion =
-      if @current_user_employee
-        @campaign.completion_for(current_user)
-      else
-        @campaign.completion_for(:all)
-      end
-
-    @interviews =
-      if selected_user.present?
-        Interview.where(campaign: @campaign, employee: selected_user)
-      else
-        []
-      end
-    @campaign = @campaign.decorate
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
   def send_notification_email
     authorize @campaign
 
@@ -169,25 +115,6 @@ class CampaignsController < ApplicationController
     flash[:notice] = 'Email sent.'
 
     head :no_content
-  end
-
-  def edit
-    authorize @campaign
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
-  def destroy
-    authorize @campaign
-
-    @id = @campaign.id
-    @campaign.destroy
-
-    respond_to do |format|
-      format.js
-    end
   end
 
   def campaign_select_owner

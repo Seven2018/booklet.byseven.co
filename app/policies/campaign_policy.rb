@@ -13,16 +13,16 @@ class CampaignPolicy < ApplicationPolicy
     user.hr_or_above?
   end
 
-  def my_interviews?
-    true
+  def show?
+    user.employee_or_above?
   end
 
-  def my_interviews?
-    true
-  end
-
-  def my_team_interviews?
+  def destroy?
     user.manager_or_above?
+  end
+
+  def my_interviews?
+    true
   end
 
   def my_team_interviews?
@@ -31,34 +31,6 @@ class CampaignPolicy < ApplicationPolicy
 
   def campaigns_report?
     user.hr_or_above?
-  end
-
-  def campaigns_report_filter_campaigns?
-    user.hr_or_above?
-  end
-
-  def campaign_report_info?
-    user.hr_or_above?
-  end
-
-  def campaign_select_template?
-    user.manager_or_above?
-  end
-
-  def campaign_select_users?
-    user.manager_or_above?
-  end
-
-  def campaign_select_dates?
-    user.manager_or_above?
-  end
-
-  def create?
-    user.manager_or_above?
-  end
-
-  def show?
-    user.employee_or_above?
   end
 
   def send_notification_email?
@@ -83,9 +55,5 @@ class CampaignPolicy < ApplicationPolicy
 
   def campaign_edit_date?
     user.hr_or_above? || user == record.owner
-  end
-
-  def destroy?
-    user.manager_or_above?
   end
 end

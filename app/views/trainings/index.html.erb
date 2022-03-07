@@ -1,11 +1,11 @@
-<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'>
+<div class='bkt-bg-light-orange bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'>
   <div class='bkt-page-container-content'>
     <div id='controls'
          class='d-flex justify-content-between align-items-center mb-4'>
       <h1>Trainings</h1>
     </div>
 
-    <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">
+    <div id='searchbar' class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">
       <div
         class='d-flex justify-content-start align-items-center position-relative'
         style='margin-bottom: 4rem'
@@ -13,9 +13,9 @@
         <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
           style='left: 25rem; bottom: 16.6px;'
         ></i>
-        <%= simple_form_for(:search, url: trainings_path, method: :get,
+        <%= simple_form_for(:search, url: trainings_path, method: :get, remote: true,
           html: {
-            class: 'd-flex align-items-center'
+            class: 'search d-flex align-items-center'
           },
           data: {
             controller:'remember-search',
@@ -36,28 +36,36 @@
                 onkeyup: 'resetPage(this);',
                 data: {
                   remember_search_target: :search,
-                  # action: 'keyup->remember-search#storeSearch'
+                  action: 'keyup->remember-search#storeSearch'
                 }
               },
               label: false,
               required: false
             )
           %>
+          <%= f.input :period,
+                      collection: ['Current', 'Completed', 'All'],
+                      label: false,
+                      required: false,
+                      selected: 'Current',
+                      input_html: {class: 'height-5rem border-bkt-light-grey bkt-light-grey rounded-5px ml-1rem', onchange: 'resetPage(this); autoSubmit(this);'} %>
+          <%= f.hidden_field :tags %>
           <%= f.hidden_field :page, value: '1' %>
           <div class="mr-3"></div>
           <%=
             f.submit(
-              'Search',
-              class: 'py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-              # onclick: "document.querySelector('body').classList.add('wait');",
+              '',
+              class: 'hidden-submit hidden',
+              onclick: "document.querySelector('body').classList.add('wait');",
               data: {
-                # remember_search_target: :submit,
+                remember_search_target: :submit,
               }
             )
           %>
           <button type='submit' class="btn-search d-block d-sm-none">
             <i class="fas fa-search"></i>
           </button>
+          <button class='height-5rem fs-1_6rem bkt-orange ml-1rem' onclick='resetAllFilter(this);'>Reset</button>
         <% end %>
       </div>
 
@@ -92,7 +100,12 @@
 <!-- JAVASCRIPT -->
 <!---------------->
 
-<!-- <script>
+<script>
+
+  ///////////
+  // TOOLS //
+  ///////////
+
   formGuardian = false;
 
   <%# TODO refacto into stimulus controller %>
@@ -108,6 +121,11 @@
     if (clickedOut) return true;
     else return false;
   }
+
+
+  //////////////
+  // DROPDOWN //
+  //////////////
 
   function openContentMenu(element) {
     dropdown = element.parentNode.querySelector('[data-actions="interview-form"]')
@@ -136,8 +154,16 @@
     });
   }
 
+
+  ///////////////
+  // SEARCHBAR //
+  ///////////////
+
   function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.searchbar')
+    searchbar = element.closest('#searchbar')
+
+    searchbar.querySelector('#search_page').value = '1'
+
     searchbar.querySelectorAll('input').forEach((input) => {
       if (input.type == 'text') {
         input.value = ''
@@ -145,54 +171,30 @@
         input.checked = false
       }
     })
+
     searchbar.querySelectorAll('select').forEach((select) => {
       select.selectedIndex = 0
     })
+
     searchbar.querySelector('.btn-search').click()
   }
 
-  function showResetMobile(boolean) {
-    return
-    <%# TODO %>
-    search_button = document.querySelector('.btn-search--mobile')
-    reset_button = document.querySelector('.btn-reset--mobile')
-    if (boolean) {
-      search_button.classList.add('hidden')
-      reset_button.classList.remove('hidden')
-    } else {
-      search_button.classList.remove('hidden')
-      reset_button.classList.add('hidden')
-    }
-  }
-
-  function hideOverflowingTags() {
-    document.querySelectorAll('.interview-form-card__tags').forEach((tag_container) => {
-      card_width = tag_container.parentNode.querySelector('.interview-form-card__controls').offsetWidth
-      result = 0
-      tooltip_content = ''
-      tag_container.querySelectorAll('.interview-form-card__tag-pill').forEach((tag) => {
-        result += tag.offsetWidth
-        tooltip_content += tag.innerText + '\n'
-        if (result > card_width - 37) {
-          tag.remove()
-        }
-      })
-      if (result > card_width - 37) {
-        newDiv = document.createElement('div')
-        newDiv.classList.add('interview-form-card__tag-plus')
-        newDiv.innerHTML = '<i class="fas fa-ellipsis-h"></i>'
-        newDiv.setAttribute('data-toggle', 'tooltip');
-        newDiv.setAttribute('title', tooltip_content)
-        tag_container.appendChild(newDiv)
-      }
-    })
-  }
-
-  hideOverflowingTags()
+  // function showResetMobile(boolean) {
+  //   return
+  //   <%# TODO %>
+  //   search_button = document.querySelector('.btn-search--mobile')
+  //   reset_button = document.querySelector('.btn-reset--mobile')
+  //   if (boolean) {
+  //     search_button.classList.add('hidden')
+  //     reset_button.classList.remove('hidden')
+  //   } else {
+  //     search_button.classList.remove('hidden')
+  //     reset_button.classList.add('hidden')
+  //   }
+  // }
 
   function changePage(direction) {
     page_value = document.querySelector('#search_page')
-    previous_button = document.querySelector('.paginate__previous-button')
     submit_button = document.querySelector('.btn-search')
 
     if(direction == 'next') {
@@ -207,4 +209,39 @@
     element.closest('form').querySelector('#search_page').value = '1'
   }
 
-</script> -->
+  function autoSubmit(element) {
+    form = element.closest('form')
+    document.querySelector('body').classList.add('wait')
+    form.querySelector('button[type="submit"]').click()
+  }
+
+
+  //////////
+  // MISC //
+  //////////
+
+  // function hideOverflowingTags() {
+  //   document.querySelectorAll('.interview-form-card__tags').forEach((tag_container) => {
+  //     card_width = tag_container.parentNode.querySelector('.interview-form-card__controls').offsetWidth
+  //     result = 0
+  //     tooltip_content = ''
+  //     tag_container.querySelectorAll('.interview-form-card__tag-pill').forEach((tag) => {
+  //       result += tag.offsetWidth
+  //       tooltip_content += tag.innerText + '\n'
+  //       if (result > card_width - 37) {
+  //         tag.remove()
+  //       }
+  //     })
+  //     if (result > card_width - 37) {
+  //       newDiv = document.createElement('div')
+  //       newDiv.classList.add('interview-form-card__tag-plus')
+  //       newDiv.innerHTML = '<i class="fas fa-ellipsis-h"></i>'
+  //       newDiv.setAttribute('data-toggle', 'tooltip');
+  //       newDiv.setAttribute('title', tooltip_content)
+  //       tag_container.appendChild(newDiv)
+  //     }
+  //   })
+  // }
+
+  // hideOverflowingTags()
+</script>

@@ -155,7 +155,6 @@ class TrainingsController < ApplicationController
       workshops =  Workshop.joins(:content).where(contents: {company_id: current_user.company_id}).search_workshops(search_title)
       folders = Folder.where(company_id: current_user.company_id).search_folders(search_title)
       trainings_by_workshops = Training.joins(:sessions).where(sessions: {workshop_id: workshops.ids}).ids
-      # trainings_by_workshops = workshops.map{|x| x.session.training_id}
       trainings_by_folder = @trainings.where(folder_id: folders.ids).ids
       trainings = @trainings.search_trainings(search_title).ids
       @trainings = @trainings.where(id: (trainings_by_workshops + trainings_by_folder + trainings).uniq)
@@ -165,11 +164,11 @@ class TrainingsController < ApplicationController
       @filtered = false
     end
 
-    # page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
 
-    # total_trainings_count = @trainings.count
-    # @trainings = @trainings.page(page_index)
-    # @any_more = @trainings.count * page_index < total_trainings_count
+    total_trainings_count = @trainings.count
+    @trainings = @trainings.page(page_index)
+    @any_more = @trainings.count * page_index < total_trainings_count
   end
 
   def training_params

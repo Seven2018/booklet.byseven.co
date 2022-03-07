@@ -6,6 +6,8 @@ class Training < ApplicationRecord
   belongs_to :creator, class_name: "User"
   belongs_to :folder, optional: true
 
+  paginates_per 10
+
   include PgSearch::Model
   pg_search_scope :search_trainings,
     against: [ :title ],
