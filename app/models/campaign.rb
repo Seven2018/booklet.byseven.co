@@ -161,7 +161,7 @@ class Campaign < ApplicationRecord
         crossed_total = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
         crossed_completed = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids, completed: true, locked_at: nil).count
         crossed_locked = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids, completed: true).where.not(locked_at: nil).count
-        crossed_not_started = Interview.where(campaign_id: all.ids, label: 'Employee', employee_id: employees.ids, completed: false).map{|x| !Interview.find_by(campaign_id: x.campaign_id, label: 'Manager', employee_id: x.employee_id).completed?}.count
+        crossed_not_started = Interview.where(campaign_id: all.ids, label: 'Employee', employee_id: employees.ids, completed: false).map{|x| !Interview.find_by(campaign_id: x.campaign_id, label: 'Manager', employee_id: x.employee_id)&.completed?}.count
         crossed_in_progress = crossed_total - crossed_locked - crossed_completed - crossed_not_started
         crossed_not_set = employees.where_not_exists(:interviews, campaign_id: all.ids, employee_id: employees.ids).distinct.count
         # crossed_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
