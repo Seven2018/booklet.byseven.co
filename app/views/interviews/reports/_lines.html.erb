@@ -18,15 +18,15 @@
 
     <div class='fs-1_6rem d-flex' style='flex-basis: <%= width %>%;'>
       <% if report.processing? %>
-        <%= link_to reports_path do %>
+        <%= link_to interviews_reports_path do %>
           <div class="btk-spinner bkt-dark-blue"><span></span></div>
         <% end %>
       <% else %>
-        <%= link_to companies_csv_export_path(report, format: :csv) do %>
+        <%= link_to companies_interviews_csv_export_path(report, format: :csv) do %>
           <i class="fas fs-2_4rem fa-file-csv"></i>
         <% end %>
         <div class="mx-3"></div>
-        <%= link_to companies_csv_export_path(report, format: :xlsx) do %>
+        <%= link_to companies_interviews_csv_export_path(report, format: :xlsx) do %>
           <i class="fas fs-2_4rem fa-file-excel"></i>
         <% end %>
       <% end %>

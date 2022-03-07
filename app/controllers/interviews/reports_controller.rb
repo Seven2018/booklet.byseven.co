@@ -1,4 +1,4 @@
-class ReportsController < ApplicationController
+class Interviews::ReportsController < ApplicationController
   before_action :show_navbar_campaign, :show_navbar_admin, :set_company
 
   def index

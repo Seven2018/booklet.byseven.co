@@ -1,4 +1,4 @@
-class Companies::CsvExportsController < ApplicationController
+class Companies::Interviews::CsvExportsController < ApplicationController
   skip_after_action :verify_authorized # temp
   skip_after_action :verify_policy_scoped # temp
 
@@ -17,13 +17,13 @@ class Companies::CsvExportsController < ApplicationController
     else
       flash[:alert] = csv_export.errors.full_messages.join(',')
     end
-    redirect_to reports_path
+    redirect_to interviews_reports_path
   end
 
   def destroy
     csv_export.destroy
     flash[:notice] = "Export Csv détruit !"
-    redirect_to reports_path
+    redirect_to interviews_reports_path
   end
 
   private

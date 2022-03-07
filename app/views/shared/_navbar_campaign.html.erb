@@ -32,9 +32,7 @@
     <% if current_user.hr_or_above? %>
       <button class="left-buttons">
         <%= link_to campaigns_path do %>
-          <div class="navbar-buttons
-            <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>
-            ">
+          <div class="navbar-buttons <%= 'navbar-buttons--active' if @show_navbar_admin.present? %> ">
             <h4>Admin</h4>
           </div>
         <% end %>
@@ -144,7 +142,7 @@
       <h4>Employees</h4>
     <% end %>
 
-    <%= link_to reports_path,
+    <%= link_to interviews_reports_path,
       class: "#{klass} #{
         active_klass if
           @controller_action == :reports_index ||

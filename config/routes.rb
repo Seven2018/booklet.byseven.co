@@ -41,7 +41,13 @@ Rails.application.routes.draw do
   get :campaign_remove_user, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
 
-  resources :reports, only: %i[index new]
+  namespace :interviews do
+    resources :reports, only: %i[index new]
+  end
+
+  namespace :trainings do
+    resources :reports, only: %i[index]
+  end
 
   namespace :campaign_draft do
     resource :settings, only: %i[edit update]
@@ -63,7 +69,9 @@ Rails.application.routes.draw do
   resources :companies, only: %i[new create update destroy]
   resource :companies, only: [] do
     scope module: :companies do
-      resources :csv_exports, only: %i[show create destroy]
+      namespace :interviews do
+        resources :csv_exports, only: %i[show create destroy]
+      end
     end
   end
 
@@ -126,7 +134,6 @@ Rails.application.routes.draw do
   get :book_dates, controller: :pages
   get :recommendation, controller: :pages
   get :catalogue_content_link_category, controller: :pages
-  get :overview, controller: :pages
   # NOT (USED)
   # get :organisation_user_card, controller: :pages
 
