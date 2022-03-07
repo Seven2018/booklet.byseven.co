@@ -53,7 +53,7 @@
             placeholder: 'Filter',
             data: {
               campaign_draft_users_search_target: 'search',
-              action: 'keyup->campaign-draft-users-search#debouncedSearch',
+              action: 'keyup->campaign-draft-users-search#debouncedSearch keypress->campaign-draft-users-search#killEnter',
               path: campaign_draft_interviewees_users_path
             },
             class: 'height-4rem pl-3rem rounded-3px',

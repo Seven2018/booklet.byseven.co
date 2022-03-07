@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   before_action :show_navbar_admin, only: :organisation
+  before_action :show_navbar_home, only: [:home]
   before_action :show_navbar_training
 
   def home
