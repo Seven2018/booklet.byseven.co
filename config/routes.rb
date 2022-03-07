@@ -45,6 +45,10 @@ Rails.application.routes.draw do
     resources :reports, only: %i[index new]
   end
 
+  namespace :trainings do
+    resources :reports, only: %i[index]
+  end
+
   namespace :campaign_draft do
     resource :settings, only: %i[edit update]
     resource :participants, only: %i[edit update]
@@ -130,7 +134,6 @@ Rails.application.routes.draw do
   get :book_dates, controller: :pages
   get :recommendation, controller: :pages
   get :catalogue_content_link_category, controller: :pages
-  get :overview, controller: :pages
   # NOT (USED)
   # get :organisation_user_card, controller: :pages
 
