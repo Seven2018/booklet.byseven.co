@@ -1,7 +1,7 @@
 <div style='display: flex; justify-content: center; align-items: center; flex-direction: column;'>
   <%# form %>
   <div>
-    <%= simple_form_for CsvExport.new, url: companies_csv_exports_path do |f| %>
+    <%= simple_form_for CsvExport.new, url: companies_interviews_csv_exports_path do |f| %>
       <%= f.hidden_field :company_id, value: @company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
 
@@ -56,17 +56,17 @@
         </strong>
         <% unless csv_export.processing? %>
 
-          <%= link_to companies_csv_export_path(csv_export, format: :csv), class: 'mx-2' do %>
+          <%= link_to companies_interviews_csv_export_path(csv_export, format: :csv), class: 'mx-2' do %>
             <i class="fas fa-file-csv"></i>
           <% end %>
 
-          <%= link_to companies_csv_export_path(csv_export, format: :xlsx), class: 'mx-2' do %>
+          <%= link_to companies_interviews_csv_export_path(csv_export, format: :xlsx), class: 'mx-2' do %>
             <i class="fas fa-file-excel"></i>
           <% end %>
 
           <%=
             link_to(
-              companies_csv_export_path(csv_export, format: :csv),
+              companies_interviews_csv_export_path(csv_export, format: :csv),
               method: :delete,
               data: {
                 confirm: 'Etes vous sûr(e) ?'
