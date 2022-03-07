@@ -9,6 +9,13 @@ export default class extends Controller {
     this.search()
   }
 
+  killEnter() {
+    if (event.key == 'Enter') {
+      event.stopPropagation()
+      event.preventDefault()
+    }
+  }
+
   debouncedSearch() {
     if (this.searchDebounced) this.searchDebounced.clear()
     this.searchDebounced = debounce(this.search.bind(this), 500)
