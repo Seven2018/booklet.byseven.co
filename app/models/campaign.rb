@@ -34,6 +34,10 @@ class Campaign < ApplicationRecord
 
   alias :manager :owner
 
+  def deadline
+    interviews.order(date: :asc).first.date
+  end
+
   def interview_sets
     @interview_sets ||=
       employees.distinct.ids.map { |employee_id| interviews.find_by(employee_id: employee_id).set }

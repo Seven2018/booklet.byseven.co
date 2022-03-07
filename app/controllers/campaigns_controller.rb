@@ -53,6 +53,8 @@ class CampaignsController < ApplicationController
     else
       @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
     end
+
+    @campaigns = @campaigns.sort{|x| x.deadline}
   end
 
   def campaign_report_info

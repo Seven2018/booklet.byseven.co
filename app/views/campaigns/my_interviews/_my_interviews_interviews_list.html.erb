@@ -21,10 +21,11 @@
 
             <div class="campaigns-my-interviews__card-title-deadline">
               <h2><%= campaign.title %></h2>
-              <p class="campaigns-my-interviews__card-status <%= manager_interview.completion_status %>"><%= campaign.completion_status_string %></p>
+              <div class="flex-row-start-centered">
+                <p class="campaigns-my-interviews__card-status <%= manager_interview.completion_status %>"><%= campaign.completion_status_string %></p>
+                <div class="deadline"><p>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p></div>
+              </div>
             </div>
-
-            <div class="deadline"><p>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p></div>
 
           </div>
         </div>
