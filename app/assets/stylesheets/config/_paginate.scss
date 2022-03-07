@@ -13,19 +13,17 @@
     }
 
     .page-link {
-      color: rgba(49, 119, 183, 0.75);
+      font-weight: 500;
       border: none;
 
       &:hover {
-        font-weight: bold;
-        color: #3177B7;
+        font-weight: 700;
         background-color: transparent;
       }
     }
 
     .page-item.active > .page-link {
-      font-weight: bold;
-      color: #3177B7;
+      font-weight: 700;
       background-color: transparent;
     }
   }
@@ -36,15 +34,10 @@
     align-items: center;
     height: 4.5rem;
     padding: 2rem;
-    border: 2px solid #3177B7;
     border-radius: .5rem;
     position: absolute;
     top: 0;
     cursor: pointer;
-
-    p, svg {
-      color: #3177B7;
-    }
   }
 
   .paginate__previous-button {
@@ -60,6 +53,51 @@
 
     p {
       margin-right: 1rem;
+    }
+  }
+
+  .paginate__button-blue {
+    border: 2px solid $bkt-blue;
+
+    p, svg {
+      color: $bkt-blue;
+    }
+  }
+
+  .paginate__button-orange {
+    border: 2px solid $bkt-orange;
+
+     p, svg {
+      color: $bkt-orange;
+    }
+  }
+}
+
+.paginate-container-blue {
+
+  .pagination {
+
+    .page-link {
+      color: $bkt-blue;
+    }
+
+    .page-item.active > .page-link {
+      color: $bkt-blue;
+    }
+  }
+}
+
+
+.paginate-container-orange {
+
+  .pagination {
+
+    .page-link {
+      color: $bkt-orange;
+    }
+
+    .page-item.active > .page-link {
+      color: $bkt-orange;
     }
   }
 }

@@ -30,11 +30,6 @@ Rails.application.routes.draw do
   resources :campaigns, only: %i[index show destroy]
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
-  get :campaigns_report_filter_campaigns, controller: :campaigns
-  get :campaign_report_info, controller: :campaigns
-  get :campaign_select_template, controller: :campaigns
-  get :campaign_select_users, controller: :campaigns
-  get :campaign_select_dates, controller: :campaigns
   get :send_notification_email, controller: :campaigns
   get :campaign_select_owner, controller: :campaigns
   get :campaign_add_user, controller: :campaigns

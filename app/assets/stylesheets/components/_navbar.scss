@@ -58,15 +58,47 @@
       font-size: 1.6rem !important;
       line-height: 2rem;
       padding: 2rem;
-      color: #3177B7;
       border-radius: 1rem;
     }
 
     &.navbar-admin__button--active {
 
       h4 {
-        background: rgba(49, 119, 183, 0.1);
         font-weight: bolder;
+      }
+    }
+  }
+}
+
+.navbar-admin-campaigns {
+
+  .navbar-admin__button {
+
+    h4 {
+      color: $bkt-blue;
+    }
+
+    &.navbar-admin__button--active {
+
+      h4 {
+        background: $bkt-light-grey2;
+      }
+    }
+  }
+}
+
+.navbar-admin-trainings {
+
+  .navbar-admin__button {
+
+    h4 {
+      color: $bkt-orange;
+    }
+
+    &.navbar-admin__button--active {
+
+      h4 {
+        background: $bkt-light-orange;
       }
     }
   }
