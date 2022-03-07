@@ -54,7 +54,7 @@ module CampaignDrafts
       end
 
       def create_interview_set(interviewee)
-        interviewer = interviewee.manager.present? ? interviewee.manager : User.find(@campaign_draft.default_interviewer_id)
+        interviewer = interviewee.manager.presence || User.find(@campaign_draft.default_interviewer_id)
 
         params =
           interview_params.merge(

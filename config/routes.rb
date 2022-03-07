@@ -119,7 +119,6 @@ Rails.application.routes.draw do
 
   # PAGES
   get :home, controller: :pages
-  get :dashboard, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
   get :book_contents, controller: :pages
@@ -133,6 +132,8 @@ Rails.application.routes.draw do
 
   # TRAININGS
   resources :trainings
+  get :my_trainings, controller: :trainings
+  get :my_team_trainings, controller: :trainings
 
   # SESSIONS
   resources :sessions, only: %i[update destroy]

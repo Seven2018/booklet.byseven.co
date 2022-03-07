@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
     @session = Session.find(params[:id])
     authorize @session
     @session.update(session_params)
-    redirect_to dashboard_path
+    redirect_to trainings_path
   end
 
   # Delete the selected session (pages/dashboard)
@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
     @remove = @session.id
     @session.destroy
     respond_to do |format|
-      format.html {dashboard_path}
+      format.html {trainings_path}
       format.js
     end
   end

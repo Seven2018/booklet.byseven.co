@@ -55,7 +55,7 @@ class UserInterestsController < ApplicationController
     @accepted_recommendations = @recommendations.where(recommendation: "Yes")
     @declined_recommendations = @recommendations.where(recommendation: "No")
     respond_to do |format|
-      format.html {redirect_to dashboard_path}
+      format.html {redirect_to trainings_path}
       format.js
     end
   end
