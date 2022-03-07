@@ -48,9 +48,9 @@ class UsersController < ApplicationController
     company = Company.find_by(auth_token: params[:auth_token])
     if company.present?
       current_user.update(company_id: company.id)
-      redirect_to dashboard_path, notice: "Your account is now linked to #{company.name}"
+      redirect_to trainings_path, notice: "Your account is now linked to #{company.name}"
     else
-      redirect_to dashboard_path, notice: "An error has occured, please check the provided url link."
+      redirect_to trainings_path, notice: "An error has occured, please check the provided url link."
     end
   end
 
