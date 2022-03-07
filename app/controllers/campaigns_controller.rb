@@ -251,7 +251,6 @@ class CampaignsController < ApplicationController
 
   def filter_campaigns(campaigns)
     search_title = params.dig(:search, :title)
-    search_title.present? ? offset_counter = nil : offset_counter = params.dig(:search, :offset)
     search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
 
     @campaigns =

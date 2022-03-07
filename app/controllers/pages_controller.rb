@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
-  before_action :show_navbar_admin, only: :organisation
-  before_action :show_navbar_home, only: [:home]
   before_action :show_navbar_training
+  before_action :show_navbar_admin, only: :organisation
+  before_action :show_navbar_home, only: [:home, :organisation]
 
   def home
     @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, completed: false)

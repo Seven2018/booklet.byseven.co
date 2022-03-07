@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_28_124436) do
+ActiveRecord::Schema.define(version: 2022_03_07_100045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -307,11 +308,6 @@ ActiveRecord::Schema.define(version: 2022_02_28_124436) do
     t.index ["company_id"], name: "index_mods_on_company_id"
   end
 
-  create_table "my_interviews", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "sessions", force: :cascade do |t|
     t.date "date"
     t.date "available_date"
@@ -368,7 +364,9 @@ ActiveRecord::Schema.define(version: 2022_02_28_124436) do
     t.bigint "folder_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "creator_id"
     t.index ["company_id"], name: "index_trainings_on_company_id"
+    t.index ["creator_id"], name: "index_trainings_on_creator_id"
     t.index ["folder_id"], name: "index_trainings_on_folder_id"
   end
 
@@ -518,6 +516,7 @@ ActiveRecord::Schema.define(version: 2022_02_28_124436) do
   add_foreign_key "tags", "tag_categories"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "folders"
+  add_foreign_key "trainings", "users", column: "creator_id"
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
   add_foreign_key "user_interests", "contents"

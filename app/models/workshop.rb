@@ -1,9 +1,16 @@
 class Workshop < ApplicationRecord
   belongs_to :content
-  has_one :session
   has_many :mods, dependent: :destroy
   has_many :assessments, dependent: :destroy
   validates :title, :duration, presence: true
+
+  include PgSearch::Model
+  pg_search_scope :search_workshops,
+    against: [ :title ],
+    using: {
+      tsearch: { prefix: true }
+    },
+    ignoring: :accents
 
   def access_granted?
     session = self.session
