@@ -1,0 +1,135 @@
+<div class="my-trainings__container">
+  <div class="my-trainings__main">
+
+    <div class="my-trainings__banner">
+      <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
+      <% if current_user.manager_or_above? %>
+        <p> Welcome to My Trainings section, you have 3 <%# @trainings.count %> trainings to do and/or validate, please see them below.</p>
+      <% end %>
+    </div>
+
+      <div id='searchbar' class="mb-5rem">
+        <div
+          class='d-flex justify-content-start align-items-center position-relative'
+          style='margin-bottom: 4rem'
+        >
+          <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
+            style='left: 25rem; bottom: 16.6px;'
+          ></i>
+          <%= simple_form_for(:search, url: my_trainings_path, method: :get, remote: true,
+            html: {
+              class: 'search d-flex align-items-center'
+            },
+            data: {
+              controller:'remember-search',
+              remember_search_key_value: 'bookletInterviewFormsSearches',
+            }
+          ) do |f| %>
+            <%=
+              f.input(
+                :title,
+                placeholder: 'Search',
+                wrapper_html: {
+                  class: 'my-0 height-5rem'
+                },
+                input_html: {
+                  class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                  style: 'width: 28rem; padding: 0 4rem 0 1rem;',
+                  autocomplete: 'off',
+                  data: {
+                    remember_search_target: :search,
+                    action: 'keyup->remember-search#storeSearch'
+                  }
+                },
+                label: false,
+                required: false
+              )
+            %>
+            <%= f.input :period,
+                        collection: ['Current', 'Completed'],
+                        label: false,
+                        required: false,
+                        selected: 'Current',
+                        input_html: {class: 'height-5rem border-bkt-light-grey bkt-light-grey rounded-5px ml-1rem', onchange: 'autoSubmit(this);'} %>
+            <div class="mr-3"></div>
+            <%=
+              f.submit(
+                '',
+                class: 'hidden-submit hidden',
+                data: {
+                  remember_search_target: :submit,
+                }
+              )
+            %>
+            <button type='submit' class="btn-search d-block d-sm-none">
+              <i class="fas fa-search"></i>
+            </button>
+            <button class='height-5rem fs-1_6rem bkt-orange ml-1rem' onclick='resetAllFilter(this);'>Reset</button>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="my-trainings__list">
+
+        <%= render 'trainings/my_trainings/my_trainings_list', trainings: @trainings %>
+
+      </div>
+
+  </div>
+</div>
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+
+  ///////////
+  // TOOLS //
+  ///////////
+
+  formGuardian = false;
+
+  <%# TODO refacto into stimulus controller %>
+  function outsideClick(event, notelem) {
+    notelem = $(notelem); // jquerize (optional)
+    // check outside click for multiple elements
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+  }
+
+
+  ///////////////
+  // SEARCHBAR //
+  ///////////////
+
+  function resetAllFilter(element, recommendation = false) {
+    searchbar = element.closest('#searchbar')
+
+    searchbar.querySelectorAll('input').forEach((input) => {
+      if (input.type == 'text') {
+        input.value = ''
+      } else if (input.type == 'checkbox') {
+        input.checked = false
+      }
+    })
+
+    searchbar.querySelectorAll('select').forEach((select) => {
+      select.selectedIndex = 0
+    })
+
+    searchbar.querySelector('.btn-search').click()
+  }
+
+  function autoSubmit(element) {
+    form = element.closest('form')
+    document.querySelector('body').classList.add('wait')
+    form.querySelector('button[type="submit"]').click()
+  }
+</script>

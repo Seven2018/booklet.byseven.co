@@ -91,19 +91,42 @@ class TrainingsController < ApplicationController
   # end
 
   def my_trainings
-    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user}).distinct
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
     authorize trainings
 
-    @future_trainings = trainings.select{|x| next_date == x.next_date.present?}
-    # @past_trainings = trainings.select{|x| next_date == x.next_date.nil?}
+    # raise if params.dig(:search, :title).present?
+    trainings = trainings.search_trainings(params.dig(:search, :title)) if params.dig(:search, :title).present?
+
+    if params.dig(:search, :period) == 'Completed'
+      @trainings = trainings.select{|x| x.next_date.nil?}
+    else
+      @trainings = trainings.select{|x| x.next_date.present?}
+    end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def my_team_trainings
-    attendees = Attendee.includes(session: :training).where(user_id: current_user.employees.ids).group_by(&:user_id)
-    authorize attendees
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.employees.ids}).distinct
+    authorize trainings
 
-    @future_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.present?}.uniq}
-    # @past_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.nil?}.uniq}
+    attendees = Attendee.includes(session: :training).where(user_id: current_user.employees.ids).group_by(&:user_id)
+
+    @future_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.present?}.uniq.sort{|x| x.next_date}}
+    # @past_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.nil?}.uniq.sort{|x| x.next_date}}
+  end
+
+  def my_team_trainings_user_details
+    @user = User.find(params[:id])
+    @user = current_user unless @user.manager != current_user || current_user.hr_or_above?
+    @trainings = Training.joins(sessions: :attendees)
+                 .where(attendees: {user: @user}).distinct
+                 .select{|x| x.next_date.present?}
+                 .sort{|y| y.next_date}
+    authorize @trainings
   end
 
   def show

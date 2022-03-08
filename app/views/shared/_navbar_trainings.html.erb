@@ -12,7 +12,7 @@
      <% if user_signed_in? %>
       <%= link_to my_trainings_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :trainings_my_interviews %>
+          <%= 'navbar-buttons--active' if @controller_action == :trainings_my_trainings %>
           ">
           <h4 title='My trainings'>My trainings</h4>
         </div>
@@ -22,7 +22,7 @@
     <% if current_user.manager_or_above? %>
       <%= link_to my_team_trainings_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :trainings_my_team_trainings %>
+          <%= 'navbar-buttons--active' if @controller_action == :trainings_my_team_trainings || :trainings_my_team_trainings_user_details %>
           ">
           <h4 title='My team trainings'>My team trainings</h4>
         </div>
