@@ -8,12 +8,6 @@ class AttendeesController < ApplicationController
     redirect_to workshop_path(@attendee.session.workshop.id)
   end
 
-  def complete_session
-    skip_authorization
-    @attendee.update(status: 'Completed')
-    redirect_to training_path(@attendee.session.training)
-  end
-
   private
 
   def set_attendee

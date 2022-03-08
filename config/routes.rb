@@ -24,7 +24,6 @@ Rails.application.routes.draw do
 
   # ATTENDEES
   resources :attendees
-  get :complete_session, controller: :attendees
 
   # CAMPAIGNS
   resources :campaigns, only: %i[index show destroy]
@@ -188,6 +187,7 @@ Rails.application.routes.draw do
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]
+  get :complete_workshop, controller: :workshops
 
   # design pages
   get '/design', to: 'design#index'

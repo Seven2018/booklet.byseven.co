@@ -1,0 +1,19 @@
+<p>Is this training acquired ?</p>
+<div class="flex-row-between-centered">
+  <div class="flex-row-start-centered mr-2rem">
+    <div class="rounded-10px mr-1rem cursor-pointer border-bkt-orange <%= 'bkt-bg-orange' if workshop_completed %>"
+         style='height: 2rem; width: 2rem;'
+         onclick='selectCompletion(this);'
+         data-value='Completed'></div>
+    <p class='<%= "bkt-orange" if workshop_completed %>'>Yes</p>
+  </div>
+  <div class="flex-row-start-centered">
+    <div class="rounded-10px mr-1rem cursor-pointer border-bkt-orange <%= 'bkt-bg-orange' if !workshop_completed %>"
+         style='height: 2rem; width: 2rem;'
+         onclick='selectCompletion(this);'
+         data-value='Not completed'></div>
+    <p class='<%= "bkt-orange" if !workshop_completed %>'>No</p>
+  </div>
+
+  <%= link_to '', complete_workshop_path(id: workshop.id, user_id: current_user.id, status: ''), id: 'complete_workshop_link', class: 'hidden', remote: true %>
+</div>
