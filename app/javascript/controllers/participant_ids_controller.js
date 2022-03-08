@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   static get targets () {
-    return [ "array", 'selectedCount', 'results', 'filteredCount' ]
+    return [ 'array', 'selectedCount', 'results', 'filteredCount' ]
   }
 
   static get values () {
@@ -56,6 +56,7 @@ export default class extends Controller {
     ids.forEach((id) => {
       array.push(id)
     })
+
     this._persist(array.join(','))
   }
 
@@ -88,18 +89,18 @@ export default class extends Controller {
         "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ interviewee_ids: ids_string })
+      body: JSON.stringify({ participant_ids: ids_string })
     })
     .then(response => response.json())
     .then(data => {
       if(refresh) { this._refreshForm() }
-      this.arrayTarget.value = data.interviewee_ids_str
-      this._refreshSelectedCount(data.interviewee_ids_count)
+      this.arrayTarget.value = data.participant_ids_str
+      this._refreshSelectedCount(data.participant_ids_count)
     })
   }
 
   _refreshForm() {
-    const event = new Event('refreshIntervieweeIdsSearch')
+    const event = new CustomEvent('refreshParticipantIdsSearch')
     window.dispatchEvent(event)
   }
 

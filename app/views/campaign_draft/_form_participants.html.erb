@@ -25,24 +25,25 @@
 <%= render_component FormSectionTitleComponent.new(title: 'Chose interviewee(s) you want to participate this campaign') %>
 
 
-<div data-controller='interviewee-ids campaign-draft-users-search'
-  data-interviewee-ids-path-value='<%= campaign_draft_interviewees_ids_path %>'
+<div data-controller='participant-ids search-inject'
+  data-participant-ids-path-value='<%= campaign_draft_interviewees_ids_path %>'
   data-action='
-  refreshIntervieweeIdsSearch@window->campaign-draft-users-search#debouncedSearch
-  refreshIntervieweeIdsFilteredCount@window->interviewee-ids#refreshFilteredCount
+    refreshParticipantIdsSearch@window->search-inject#debouncedSearch
+    refreshParticipantIdsFilteredCount@window->participant-ids#refreshFilteredCount
   '
 >
   <div class='fs-1_2rem mb-1rem'>
     Selected
     <span class='fs-1_2rem'
-      data-interviewee-ids-target="selectedCount">
+      data-participant-ids-target="selectedCount">
       <%= @campaign.interviewee_ids.count %>
     </span>
   </div>
 
-  <%= hidden_field_tag 'interviewee_ids[]', @campaign.interviewee_ids.join(','), data: {
-    interviewee_ids_target: 'array'
+  <%= hidden_field_tag 'participant_ids[]', @campaign.interviewee_ids.join(','), data: {
+    participant_ids_target: 'array'
   } %>
+
   <div class="flex-row-between-centered mb-1rem">
     <div class="pos-rel">
       <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
@@ -52,8 +53,8 @@
             nil,
             placeholder: 'Filter',
             data: {
-              campaign_draft_users_search_target: 'search',
-              action: 'keyup->campaign-draft-users-search#debouncedSearch keypress->campaign-draft-users-search#killEnter',
+              search_inject_target: 'search',
+              action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
               path: campaign_draft_interviewees_users_path
             },
             class: 'height-4rem pl-3rem rounded-3px',
@@ -67,13 +68,13 @@
 
     <div class="flex-row-between-centered">
       <div class='fs-1_2rem bkt-blue cursor-pointer'
-        data-action="click->interviewee-ids#unselectAll"
+        data-action="click->participant-ids#unselectAll"
       >Unselect all</div>
 
       <div class="mx-2">|</div>
 
       <div class='fs-1_2rem bkt-blue cursor-pointer'
-        data-action="click->interviewee-ids#selectAll"
+        data-action="click->participant-ids#selectAll"
       >Select all</div>
 
       <div class="mx-2">|</div>
@@ -81,7 +82,7 @@
       <div class="cursor-pointer d-flex align-items-center">
         <div class='fs-1_2rem bkt-blue'>
           Select Filtered
-          <span class='fs-1_2rem' data-interviewee-ids-target='filteredCount'></span>
+          <span class='fs-1_2rem' data-participant-ids-target='filteredCount'></span>
         </div>
         <div class="mx-2"></div>
         <label
@@ -95,7 +96,7 @@
             false,
             class: "hidden",
             data: {
-              action: "change->toggle-checked-participants#toggle change->interviewee-ids#selectFiltered",
+              action: "change->toggle-checked-participants#toggle change->participant-ids#selectFiltered",
               toggle_checked_participants_target: "togglable"
             }
           ) %>
@@ -110,8 +111,8 @@
   </div>
 
   <div class='border-bkt-light-grey mb-2rem overflow-y-scroll' style='height: 400px;'
-    data-campaign-draft-users-search-target="results"
-    data-interviewee-ids-target="results"
+    data-search-inject-target="results"
+    data-participant-ids-target="results"
   ></div>
 </div>
 

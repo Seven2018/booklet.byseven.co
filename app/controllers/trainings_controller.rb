@@ -69,7 +69,7 @@ class TrainingsController < ApplicationController
     @pasts_trainings = (@trainings - @current_trainings)
 
     respond_to do |format|
-      format.html {trainings_path}
+      format.html { trainings_path }
       format.js
     end
   end

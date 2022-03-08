@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class CampaignDraft::LaunchesController < CampaignDraft::BaseController
+class TrainingDraft::LaunchesController < TrainingDraft::BaseController
   def update
     new_campaign = CampaignDrafts::Campaigns::Launch.call(campaign_draft: campaign_draft)
     if new_campaign.present?
-      @campaign.launches_set!
+      @training.launches_set!
       redirect_to campaign_path(new_campaign) and return
     else
       flash[:alert] = validation_error_flash_message
@@ -14,19 +14,11 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
 
   private
 
-  def campaign_draft_params_keys
+  def training_draft_params_keys
     previous_steps_params_keys
   end
 
   def previous_steps_params_keys
-    %i[
-      title kind
-      interviewee_selection_method
-      interviewer_selection_method
-      default_interviewer_id
-      interviewee_ids
-      templates_selection_method default_template_id
-      date
-    ]
+    %i[participant_ids workshop_id cost_cents_per_employee time_slots]
   end
 end

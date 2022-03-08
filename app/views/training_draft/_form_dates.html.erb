@@ -1,0 +1,42 @@
+<%= render_component FormSectionTitleComponent.new(title: 'Apply dates and cost per employee for your trainings') %>
+
+<div class="d-flex flex-row align-items-start" style='width: 500px;'>
+  <div class="pr-1rem">
+    <i class="fa fa-arrow-right"></i>
+  </div>
+  <div class="pl-1rem border-left-bkt-dark-grey flex-grow-1">
+    <div class='fs-1_6rem pb-2rem bkt-dark-grey font-weight-600'>
+      <%= @training.workshop.title %>
+    </div>
+
+      <div class="d-flex justify-content-start align-items-center pb-2rem">
+        <div style="flex: 0 0 50px;">
+          <div class="btk-dark-grey fs-1_4rem">Cost :</div>
+        </div>
+        <div>
+        <!-- <div style="flex: 0 0 100px;"> -->
+        <%= text_field_tag(
+          :cost_cents_per_employee,
+          @training.cost_cents_per_employee,
+          type: :number,
+          step: ".01",
+          placeholder: '€',
+          style: 'width: 120px;',
+          class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3'
+        ) %>
+        </div>
+      </div>
+
+      <div data-controller='time-slot-forms'
+        data-path='<%= training_draft_dates_time_slot_forms_path %>'
+      >
+        <% @time_slots.each do |time_slot| %>
+          <%= render 'training_draft/dates/time_slot', time_slot: time_slot %>
+        <% end %>
+        <div class="fs-1_4rem bkt-orange cursor-pointer"
+          data-action="click->time-slot-forms#create"
+        >Add an other time slot</div>
+      </div>
+
+  </div>
+</div>

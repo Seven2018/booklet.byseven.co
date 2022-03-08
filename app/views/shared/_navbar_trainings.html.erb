@@ -39,6 +39,15 @@
       </button>
     <% end %>
 
+    <% if current_user.hr_or_above? %>
+      <% if current_user.hr_or_above? %>
+        <%= link_to edit_training_draft_participants_path, class: 'bkt-btn-white' do  %>
+          <i class="fas fa-plus"></i>
+          Create Training
+        <% end %>
+      <% end %>
+    <% end %>
+
   </div>
 
   <div class="right">
@@ -113,6 +122,15 @@
     </div>
   </div>
 </div>
+
+
+<% if @multi_step_form_navbar_content.present? %>
+  <div class="navbar-admin">
+    <div class="navbar-admin__button">
+      <h4><%= @multi_step_form_navbar_content %></h4>
+    </div>
+  </div>
+<% end %>
 
 
 <% if @show_navbar_admin.present? %>

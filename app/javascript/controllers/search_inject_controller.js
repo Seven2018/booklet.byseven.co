@@ -36,7 +36,7 @@ export default class extends Controller {
   }
 
   _refreshFilteredCount() {
-    const event = new Event('refreshIntervieweeIdsFilteredCount')
+    const event = new CustomEvent('refreshParticipantIdsFilteredCount')
     window.dispatchEvent(event)
   }
 }

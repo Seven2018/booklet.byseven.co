@@ -57,3 +57,13 @@ flatpickr(".timepicker", {
   dateFormat: "H:i",
 })
 
+const timepicker24s = document.querySelectorAll('.timepicker_24')
+timepicker24s.forEach((element) => {
+  flatpickr(element, {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true,
+    defaultDate: element.dataset.defaultTime
+  })
+})
