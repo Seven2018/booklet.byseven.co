@@ -1,6 +1,5 @@
 <% if current_user.admin? || (current_user.access_level != 'Employee' && @user.company_id == current_user.company_id) || @user == current_user %>
-  <div id='container-show-user'>
-    <div class="container-show-user-left"></div>
+  <div class="d-flex justify-content-center">
     <div class="container-show-user-right">
       <div class="user-top-background">
         <div class="user-buttons-top">
@@ -41,26 +40,26 @@
           </div>
         </div>
       </div>
-      <p class='trainings-title'>Trainings</p>
 
+      <!-- <p class='trainings-title'>Trainings</p>
       <div class="user-trainings">
         <div class="user-info-header">
           <p style='font-size: 12px'>Upcoming</p>
         </div>
         <div class="trainings-row">
-          <% Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| !x.past?}.each do |training| %>
-            <%= render '/pages/partials/dashboard_trainings_card', training: training %>
-          <% end %>
+          <%# Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| !x.past?}.each do |training| %>
+            <%#= render '/pages/partials/dashboard_trainings_card', training: training %>
+          <%# end %>
         </div>
         <div class="user-info-header">
           <p style='font-size: 12px'>Completed</p>
         </div>
         <div class="trainings-row">
-          <% Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| x.past?}.each do |training| %>
-            <%= render '/pages/partials/dashboard_trainings_card', training: training %>
-          <% end %>
+          <%# Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| x.past?}.each do |training| %>
+            <%#= render '/pages/partials/dashboard_trainings_card', training: training %>
+          <%# end %>
         </div>
-      </div>
+      </div> -->
 
     </div>
 
