@@ -6,7 +6,6 @@ export default class extends Controller {
   }
 
   create(e) {
-    console.log('e.currentTarget',e.currentTarget)
     const container = e.currentTarget
     fetch(this.element.dataset.path, {
       method: "POST",
