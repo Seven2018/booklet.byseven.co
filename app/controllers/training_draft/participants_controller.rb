@@ -2,14 +2,8 @@
 
 class TrainingDraft::ParticipantsController < TrainingDraft::BaseController
   def update
-    # training_draft.update training_draft_params
-    # if all_params_persisted?
-      training_draft.participants_set!
-      redirect_to edit_training_draft_contents_path
-    # else
-    #   flash[:alert] = validation_error_flash_message
-      # redirect_to edit_training_draft_participants_path
-    # end
+    training_draft.participants_set!
+    redirect_to edit_training_draft_contents_path
   end
 
   private
