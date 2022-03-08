@@ -33,12 +33,16 @@ module TrainingDrafts
         sessions.each do |session|
           participants.each do |participant|
             @attendees <<
-             Attendee.create(creator: @training_draft.user, user: participant, session: session)
+             Attendee.create(creator: creator, user: participant, session: session)
           end
         end
       end
       def participants
         @training_draft.participants
+      end
+
+      def creator
+        @training_draft.user
       end
 
       def workshop
@@ -49,7 +53,10 @@ module TrainingDrafts
       end
 
       def training
-        @training ||= Training.create @training_draft.content.slice(:title, :company_id)
+        @training ||=
+          Training.create(
+            @training_draft.content.slice(:title, :company_id).merge(creator: creator)
+          )
       end
 
       def time_slots
