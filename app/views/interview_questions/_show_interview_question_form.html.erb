@@ -16,7 +16,7 @@
   <% elsif existing_answer.nil? && interview.crossed? %>
     <% existing_answer =
       InterviewAnswer.find_by(
-      interview: interview.campaign.hr_interview(employee.id),
+      interview: interview.campaign.manager_interview(employee.id),
       interview_question: question,
       user: manager
     ) %>
@@ -41,7 +41,7 @@
         user: employee
       ) %>
     <% manager_answer = InterviewAnswer.joins(:interview).find_by(
-        interview: interview.campaign.hr_interview(employee.id),
+        interview: interview.campaign.manager_interview(employee.id),
         interview_question: question,
         user: manager
       ) %>

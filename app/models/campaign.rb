@@ -56,7 +56,7 @@ class Campaign < ApplicationRecord
     ).round
   end
 
-  def hr_interview(employee_id = nil)
+  def manager_interview(employee_id = nil)
     if interviews.select(&:manager?).count == 1
       return interviews.find(&:manager?)
     end
