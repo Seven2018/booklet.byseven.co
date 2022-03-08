@@ -55,11 +55,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get :book_contents, controller: :pages
-  get :book_users, controller: :pages
-  get :book_dates, controller: :pages
   namespace :training_draft do
-
     resource :participants, only: %i[edit update]
     resource :contents, only: %i[edit update]
     resource :dates, only: %i[edit update]
