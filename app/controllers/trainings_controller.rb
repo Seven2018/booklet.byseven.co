@@ -91,11 +91,22 @@ class TrainingsController < ApplicationController
   # end
 
   def my_trainings
-    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user}).distinct
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
     authorize trainings
 
-    @future_trainings = trainings.select{|x| next_date == x.next_date.present?}
-    # @past_trainings = trainings.select{|x| next_date == x.next_date.nil?}
+    # raise if params.dig(:search, :title).present?
+    trainings = trainings.search_trainings(params.dig(:search, :title)) if params.dig(:search, :title).present?
+
+    if params.dig(:search, :period) == 'Completed'
+      @trainings = trainings.select{|x| x.next_date.nil?}
+    else
+      @trainings = trainings.select{|x| x.next_date.present?}
+    end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def my_team_trainings
