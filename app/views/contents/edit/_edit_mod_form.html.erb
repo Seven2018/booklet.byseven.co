@@ -80,26 +80,9 @@
   </div>
 
   <% if mod.text? %>
-
-    <%= f.input :text,
-        as: :trix_editor,
-        placeholder: 'Description (optional)',
-        input_html: {
-          class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px',
-          value: mod.text
-        }
-        %>
-
+    <%= f.trix_editor :text, placeholder: 'Description (optional)', value: mod.text %>
   <% elsif mod.video? %>
-
-    <%= f.input :video,
-        label: 'Video link',
-        input_html: {
-          class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px',
-          value: mod.video,
-          onkeyup: 'saveForm(this, true)'
-        } %>
-
+    <%= f.input :video, label: 'Video link', input_html: { onkeyup: 'saveForm(this, true)' } %>
   <% end %>
 
   <%= f.submit '', class: 'hidden-submit hidden' %>
