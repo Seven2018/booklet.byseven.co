@@ -15,7 +15,7 @@
     <% elsif mod.video? %>
 
       <div>
-         <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" style='width: 100%; height: 30rem;'></iframe>
+         <iframe src="<%= VideoHelper.embed_video(mod.video) %>" style='width: 100%; height: 30rem;'></iframe>
       </div>
 
     <% end %>

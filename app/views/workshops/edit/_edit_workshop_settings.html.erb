@@ -1,0 +1,29 @@
+<div id='template-edit__settings-container' class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
+  <div class='mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+    <p>Workshop infos</p>
+  </div>
+  <div class='mb-2rem'>
+
+      <div class="flex-row-between-centered mb-1rem">
+
+        <p class='fs-1_4rem font-weight-600 bkt-dark-grey'>This workshop is</p>
+
+        <div class='booklet-select__template-edit-container pos-rel cursor-pointer' style='width: 130px;'>
+          <div class="flex-row-between-centered p-0_75rem bkt-bg-light-orange rounded-5px">
+            <p class='booklet-select__template-edit-selected fs-1_4rem font-weight-500 bkt-orange'><%= workshop.content.content_type %></p>
+          </div>
+        </div>
+
+      </div>
+  </div>
+</div>
+
+
+<div id="template-edit__tags-container" class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
+  <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+    <p>Workshop tags</p>
+  </div>
+  <div id="template-edit__tags" class="flex-wrap mt-2rem">
+    <%= render 'workshops/edit/edit_workshop_tags_list', workshop: workshop %>
+  </div>
+</div>

@@ -78,7 +78,8 @@
         label: 'Video link',
         input_html: {
           class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px',
-          value: mod.video
+          value: mod.video,
+          onkeyup: 'saveForm(this, true)'
         } %>
 
   <% end %>

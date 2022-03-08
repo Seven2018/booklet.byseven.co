@@ -1,51 +1,114 @@
-<div class="dashboard-grid">
-  <div class="dashboard-navigation">
-    <div class="dashboard-tabs">
-      <ul class="nav nav-tabs">
-        <li role="presentation"><a href="#Trainings" data-toggle="tab" class='active'>Trainings</a></li>
-
-        <li role="presentation" id='pending_recommendation_main'><a href="#Recommended" data-toggle="tab" >Recommended</a></li>
-      </ul>
+<div class='bkt-bg-light-orange bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'>
+  <div class='bkt-page-container-content'>
+    <div id='controls'
+         class='d-flex justify-content-between align-items-center mb-4'>
+      <h1>Trainings</h1>
     </div>
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Trainings">
-        <div class="dashboard-grid">
-          <div class="dashboard-navigation">
-            <div class="trainings-nav">
-              <div class="nav nav-tabs-trainings">
-                <%# <li role="presentation"><a href="#CurrentPersonal" data-toggle="tab" class='active'>Current</a></li> %>
-                <%# <li role="presentation"><a href="#UpcomingPersonal" data-toggle="tab">Upcoming</a></li> %>
-                <%# <li role="presentation"><a href="#CompletedPersonal" data-toggle="tab">Past</a></li> %>
-              </div>
 
-              <%= render 'shared/searchbar_trainings' %>
-            </div>
-
-            <% if @current_trainings.empty? && params[:search_trainings].present? %>
-              <h1>No results</h1>
-            <% else %>
-              <h1>Trainings</h1>
-              <div class="dashboard-trainings">
-                <%= render 'pages/partials/dashboard_trainings', trainings: @current_trainings %>
-              </div>
-            <% end %>
-
-          </div>
-        </div>
+    <div id='searchbar' class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">
+      <div
+        class='d-flex justify-content-start align-items-center position-relative'
+        style='margin-bottom: 4rem'
+      >
+        <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
+          style='left: 25rem; bottom: 16.6px;'
+        ></i>
+        <%= simple_form_for(:search, url: trainings_path, method: :get, remote: true,
+          html: {
+            class: 'search d-flex align-items-center'
+          },
+          data: {
+            controller:'remember-search',
+            remember_search_key_value: 'bookletInterviewFormsSearches',
+          }
+        ) do |f| %>
+          <%=
+            f.input(
+              :title,
+              placeholder: 'Search',
+              wrapper_html: {
+                class: 'my-0 height-5rem'
+              },
+              input_html: {
+                class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                style: 'width: 28rem; padding: 0 4rem 0 1rem;',
+                autocomplete: 'off',
+                onkeyup: 'resetPage(this);',
+                data: {
+                  remember_search_target: :search,
+                  action: 'keyup->remember-search#storeSearch'
+                }
+              },
+              label: false,
+              required: false
+            )
+          %>
+          <%= f.input :period,
+                      collection: ['Current', 'Completed', 'All'],
+                      label: false,
+                      required: false,
+                      selected: 'Current',
+                      input_html: {class: 'height-5rem border-bkt-light-grey bkt-light-grey rounded-5px ml-1rem', onchange: 'resetPage(this); autoSubmit(this);'} %>
+          <%= f.hidden_field :tags %>
+          <%= f.hidden_field :page, value: '1' %>
+          <div class="mr-3"></div>
+          <%=
+            f.submit(
+              '',
+              class: 'hidden-submit hidden',
+              onclick: "document.querySelector('body').classList.add('wait');",
+              data: {
+                remember_search_target: :submit,
+              }
+            )
+          %>
+          <button type='submit' class="btn-search d-block d-sm-none">
+            <i class="fas fa-search"></i>
+          </button>
+          <button class='height-5rem fs-1_6rem bkt-orange ml-1rem' onclick='resetAllFilter(this);'>Reset</button>
+        <% end %>
       </div>
 
-      <div role="tabpanel" class="tab-pane" id="Recommended">
-        <%= render 'pages/partials/dashboard_recommendations' %>
+      <% headers = ["Training title", "Employees", "Training Creator"] %>
+      <% width = (1/headers.count.to_f)*100 %>
+      <div class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem">
+        <% headers.each do |header| %>
+          <div class='fs-1_6rem font-weight-bold' style='flex-basis: <%= width %>%;'><%= header %></div>
+        <% end %>
       </div>
+
+      <div id='lines'>
+        <%= render 'trainings/index/index_trainings_list', trainings: @trainings %>
+      </div>
+
     </div>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade modal_folder' id='newTraining' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'interview_forms/modals/new_template' %>
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
 
 <script>
-  doubleClickGuardian = false
 
+  ///////////
+  // TOOLS //
+  ///////////
+
+  formGuardian = false;
+
+  <%# TODO refacto into stimulus controller %>
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
     // check outside click for multiple elements
@@ -59,27 +122,48 @@
     else return false;
   }
 
-  function openFilterInput() {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      setTimeout(function(){doubleClickGuardian = false}, 10)
-      container = document.querySelector('.searchbar__checkboxes')
-      if (container.classList.contains('hidden')) {
-        container.classList.remove('hidden')
-      } else {
-        container.classList.add('hidden')
+
+  //////////////
+  // DROPDOWN //
+  //////////////
+
+  function openContentMenu(element) {
+    dropdown = element.parentNode.querySelector('[data-actions="interview-form"]')
+    dropdown.classList.remove('hidden')
+    formGuardian = true
+    card_link = element.closest('[data-interview-form-id]').querySelector('.stretched-link')
+    card_link.classList.add('disabled')
+    card_link_href = card_link.href
+    card_link.href = "javascript:void(0)";
+    setTimeout(function(){
+      formGuardian = false
+    }, 1);
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, dropdown) && formGuardian == false) {
+        formGuardian = true
+        setTimeout(function(){
+          formGuardian = false
+        }, 1);
+        dropdown.classList.add('hidden')
+        setTimeout(function(){
+          card_link.classList.remove('disabled')
+          card_link.href = card_link_href
+        }, 1);
+        this.removeEventListener('click', arguments.callee, false)
       }
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, container) && doubleClickGuardian == false) {
-          container.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    }
+    });
   }
 
+
+  ///////////////
+  // SEARCHBAR //
+  ///////////////
+
   function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.searchbar')
+    searchbar = element.closest('#searchbar')
+
+    searchbar.querySelector('#search_page').value = '1'
+
     searchbar.querySelectorAll('input').forEach((input) => {
       if (input.type == 'text') {
         input.value = ''
@@ -87,44 +171,77 @@
         input.checked = false
       }
     })
+
     searchbar.querySelectorAll('select').forEach((select) => {
       select.selectedIndex = 0
     })
+
     searchbar.querySelector('.btn-search').click()
   }
 
-  function resetFilter(element) {
-    element.parentNode.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-      checkbox.checked = false
-    })
-  }
+  // function showResetMobile(boolean) {
+  //   return
+  //   <%# TODO %>
+  //   search_button = document.querySelector('.btn-search--mobile')
+  //   reset_button = document.querySelector('.btn-reset--mobile')
+  //   if (boolean) {
+  //     search_button.classList.add('hidden')
+  //     reset_button.classList.remove('hidden')
+  //   } else {
+  //     search_button.classList.remove('hidden')
+  //     reset_button.classList.add('hidden')
+  //   }
+  // }
 
-  function dismissModal(element) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      form = element.closest('form')
-      form.querySelector('.hidden-submit').click()
-      form.querySelector('.cancel-close').click()
-      setTimeout(function(){doubleClickGuardian = false}, 10)
+  function changePage(direction) {
+    page_value = document.querySelector('#search_page')
+    submit_button = document.querySelector('.btn-search')
+
+    if(direction == 'next') {
+      page_value.value = (parseInt(page_value.value,10) + 1).toString()
+    } else {
+      page_value.value = (parseInt(page_value.value,10) - 1).toString()
     }
+    submit_button.click()
   }
 
-  $input = $("[data-behavior='autocomplete']");
-
-  var options = {
-    listLocation: "users",
-    getValue: 'name',
-    url: function(phrase) {
-      return "/users_search.json?search=" + phrase
-    },
-    list: {
-      onChooseEvent: function() {
-      },
-      match: {
-        enabled: true
-      }
-    }
+  function resetPage(element) {
+    element.closest('form').querySelector('#search_page').value = '1'
   }
 
-  $input.easyAutocomplete(options);
+  function autoSubmit(element) {
+    form = element.closest('form')
+    document.querySelector('body').classList.add('wait')
+    form.querySelector('button[type="submit"]').click()
+  }
+
+
+  //////////
+  // MISC //
+  //////////
+
+  // function hideOverflowingTags() {
+  //   document.querySelectorAll('.interview-form-card__tags').forEach((tag_container) => {
+  //     card_width = tag_container.parentNode.querySelector('.interview-form-card__controls').offsetWidth
+  //     result = 0
+  //     tooltip_content = ''
+  //     tag_container.querySelectorAll('.interview-form-card__tag-pill').forEach((tag) => {
+  //       result += tag.offsetWidth
+  //       tooltip_content += tag.innerText + '\n'
+  //       if (result > card_width - 37) {
+  //         tag.remove()
+  //       }
+  //     })
+  //     if (result > card_width - 37) {
+  //       newDiv = document.createElement('div')
+  //       newDiv.classList.add('interview-form-card__tag-plus')
+  //       newDiv.innerHTML = '<i class="fas fa-ellipsis-h"></i>'
+  //       newDiv.setAttribute('data-toggle', 'tooltip');
+  //       newDiv.setAttribute('title', tooltip_content)
+  //       tag_container.appendChild(newDiv)
+  //     }
+  //   })
+  // }
+
+  // hideOverflowingTags()
 </script>

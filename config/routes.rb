@@ -24,17 +24,11 @@ Rails.application.routes.draw do
 
   # ATTENDEES
   resources :attendees
-  get :complete_session, controller: :attendees
 
   # CAMPAIGNS
   resources :campaigns, only: %i[index show destroy]
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
-  get :campaigns_report_filter_campaigns, controller: :campaigns
-  get :campaign_report_info, controller: :campaigns
-  get :campaign_select_template, controller: :campaigns
-  get :campaign_select_users, controller: :campaigns
-  get :campaign_select_dates, controller: :campaigns
   get :send_notification_email, controller: :campaigns
   get :campaign_select_owner, controller: :campaigns
   get :campaign_add_user, controller: :campaigns
@@ -216,6 +210,7 @@ Rails.application.routes.draw do
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]
+  get :complete_workshop, controller: :workshops
 
   # design pages
   get '/design', to: 'design#index'

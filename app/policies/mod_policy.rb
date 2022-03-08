@@ -17,10 +17,6 @@ class ModPolicy < ApplicationPolicy
     user.hr_or_above?
   end
 
-  def edit_question?
-    user.hr_or_above?
-  end
-
   def update?
     user.hr_or_above?
   end

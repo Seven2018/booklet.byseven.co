@@ -373,7 +373,9 @@ ActiveRecord::Schema.define(version: 2022_03_07_104628) do
     t.bigint "folder_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "creator_id"
     t.index ["company_id"], name: "index_trainings_on_company_id"
+    t.index ["creator_id"], name: "index_trainings_on_creator_id"
     t.index ["folder_id"], name: "index_trainings_on_folder_id"
   end
 
@@ -524,6 +526,7 @@ ActiveRecord::Schema.define(version: 2022_03_07_104628) do
   add_foreign_key "training_drafts", "users"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "folders"
+  add_foreign_key "trainings", "users", column: "creator_id"
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
   add_foreign_key "user_interests", "contents"
