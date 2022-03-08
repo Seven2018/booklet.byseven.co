@@ -50,16 +50,34 @@
 
 <%= simple_form_for mod, remote: true do |f| %>
 
-  <%= f.input(:title, {
-      placeholder: 'Title (required)',
-      input_html: {
-        class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px mb-2rem',
-        autocomplete: 'off',
-        onkeyup: 'saveForm(this, true)'
-      },
-      required: true,
-      label: 'Title'
-    }.compact) %>
+  <div class="flex-row-between-centered">
+    <div class="flex-grow-1">
+      <%= f.input(:title, {
+          placeholder: 'Title (required)',
+          input_html: {
+            class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px mb-2rem',
+            autocomplete: 'off',
+            onkeyup: 'saveForm(this, true)'
+          },
+          required: true,
+          label: 'Title'
+        }.compact) %>
+    </div>
+
+    <div class='ml-1rem'>
+      <%= f.input(:duration, {
+          input_html: {
+            class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px mb-2rem',
+            style: 'width: 10rem;',
+            autocomplete: 'off',
+            onkeyup: 'saveForm(this, true)'
+          },
+          required: true,
+          label: 'Duration (min)'
+        }.compact) %>
+    </div>
+
+  </div>
 
   <% if mod.text? %>
 

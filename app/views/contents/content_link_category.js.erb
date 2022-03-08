@@ -1,7 +1,5 @@
 if ('<%= @modal %>' == 'true') {
-  document.querySelector('#addTheme').querySelector('.modal-dialog').innerHTML = '<%= j render("contents/modals/manage_categories", content: @content) %>';
+  document.querySelector('#addTags').querySelector('.modal-dialog').innerHTML = '<%= j render("contents/modals/manage_categories", content: @content) %>';
 } else {
-  document.querySelector('.content-show-attributes-right').innerHTML = '<%= j render("contents/partials/show_attributes_right", content: @content, page: "edit") %>';
+  document.querySelector('#content-edit__tags').innerHTML = '<%= j render("contents/edit/edit_content_tags_list", content: @content) %>';
 }
-document.querySelector('.saved-message').classList.remove('hidden');
-setTimeout(function(){document.querySelector('.saved-message').classList.add('hidden') }, 3000);
