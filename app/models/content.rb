@@ -26,4 +26,11 @@ class Content < ApplicationRecord
     ignoring: :accents,
     order_within_rank: "contents.updated_at DESC"
 
+  def synchronous?
+    content_type == 'Synchronous'
+  end
+
+  def asynchronous?
+    content_type == 'Asynchronous'
+  end
 end

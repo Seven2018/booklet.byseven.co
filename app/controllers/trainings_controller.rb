@@ -109,6 +109,8 @@ class TrainingsController < ApplicationController
   def show
     @training = Training.find(params[:id])
     authorize @training
+
+    redirect_to workshop_path(@training.workshops.first)
   end
 
   def create

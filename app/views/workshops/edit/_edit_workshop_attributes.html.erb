@@ -1,0 +1,18 @@
+<div id="content-info">
+  <%= simple_form_for workshop, remote: true do |f| %>
+    <p class='font-weight-600 mb-2rem'>Workshop</p>
+    <%= f.input :title, label: false, input_html: {class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px', autocomplete: "off", onkeyup: 'saveForm(this, true);'}, placeholder: 'Untitled' %>
+    <%= f.input :description, as: :trix_editor, placeholder: 'Description (optional)', input_html: { value: workshop.description } %>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+  <% end %>
+  <div class="template-edit__content-right--mobile">
+    <div class="template-show-infos-themes">
+      <p style='color:#808080;'><b>Tags</b></p>
+      <div class="theme-btns">
+        <% workshop.content.categories.order(title: :asc).each do |category| %>
+          <p class="category-tag"><%= category.title %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

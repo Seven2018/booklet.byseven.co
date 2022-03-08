@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:update, :duplicate, :destroy, :move_up, :move_down, :add_assessment_question]
+  before_action :set_mod, only: [:update, :duplicate, :destroy, :move_up, :move_down]
   helper VideoHelper
 
   # Create mod (contents/edit_mode)
@@ -44,10 +44,8 @@ class ModsController < ApplicationController
     new_mod = Mod.new(@module.attributes.except("id", "created_at", "updated_at"))
     if new_mod.content_id.present?
       new_mod.position = new_mod.content.mods.count + 1
-      @content = new_mod.content
     else
       new_mod.position = new_mod.workshop.mods.count + 1
-      @content = new_mod.workshop
     end
     new_mod.save
     respond_to do |format|
@@ -58,14 +56,13 @@ class ModsController < ApplicationController
   # Update mod attributes (contents/edit_mode)
   def update
     authorize @module
-    @content = @module.content
     @module.update(mod_params)
 
     @module.save
     @content.update(duration: @content.mods.map(&:duration).sum)
 
     respond_to do |format|
-      format.html {content_path(@content)}
+      format.html {redirect_to edit_content_path(@content)}
       format.js
     end
   end
@@ -73,7 +70,6 @@ class ModsController < ApplicationController
   # Delete mod (contents/edit_mode)
   def destroy
     authorize @module
-    @module.content.present? ? @content = @module.content : @content = @module.workshop
     @module.destroy
 
     i = 1
@@ -92,7 +88,6 @@ class ModsController < ApplicationController
   # Change mod position (contents/edit_mode)
   def move_up
     skip_authorization
-    @content = @module.content
     position = @module.position
     @previous_module = @content.mods.find_by(position: position - 1)
     @previous_module.update(position: position)
@@ -106,7 +101,6 @@ class ModsController < ApplicationController
   # Change mod position (contents/edit_mode)
   def move_down
     skip_authorization
-    @content = @module.content
     position = @module.position
     @next_module = @content.mods.find_by(position: position + 1)
     @next_module.update(position: position)
@@ -123,6 +117,7 @@ class ModsController < ApplicationController
 
   def set_mod
     @module = Mod.find(params[:id])
+    @content = @module.content.presence || @module.workshop
   end
 
   def mod_params
