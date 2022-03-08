@@ -37,8 +37,8 @@
             <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
           </button>
           <%= link_to '', (@interview.crossed? ?
-            lock_interview_path(interview: @interview) :
-            complete_interview_path(interview: @interview)), class: 'submit-interview hidden', remote: true %>
+            lock_interview_path(interview_id: @interview.id) :
+            complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
 
         <% elsif !@interview.crossed? %>
 
@@ -46,7 +46,7 @@
             <p>Submit</p>
             <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
           </button>
-          <%= link_to '', complete_interview_path(interview: @interview), class: 'submit-interview hidden', remote: true %>
+          <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
 
         <% end %>
       <% end %>
@@ -156,7 +156,7 @@
           <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
           <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
         </button>
-        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview: @interview) : complete_interview_path(interview: @interview)), class: 'submit-interview hidden', remote: true %>
+        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
       <% end %>
     </div>
   </div>
