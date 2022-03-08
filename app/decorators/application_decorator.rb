@@ -1,8 +1,11 @@
 class ApplicationDecorator < Draper::Decorator
-  # Define methods for all decorated objects.
-  # Helpers are accessed through `helpers` (aka `h`). For example:
-  #
-  #   def percent_amount
-  #     h.number_to_percentage object.amount, precision: 2
-  #   end
+  def progress_state_klass(state, controller_name)
+    return 'current' if state.to_s == controller_name
+
+    state_set_or_above?(state) ? 'full' : 'empty'
+  end
+
+  def state_set_or_above?(state)
+    state_before_type_cast >= object.class.states[state]
+  end
 end

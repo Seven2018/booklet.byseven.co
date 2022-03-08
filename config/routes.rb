@@ -55,6 +55,24 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :training_draft do
+    resource :participants, only: %i[edit update]
+    resource :contents, only: %i[edit update]
+    resource :dates, only: %i[edit update]
+    resource :launches, only: %i[edit update]
+
+    namespace :participants do
+      resources :users, only: :index
+      resource :ids, only: :update
+    end
+    namespace :contents do
+      resources :contents, only: :index
+    end
+    namespace :dates do
+      resources :time_slot_forms, only: :create
+    end
+  end
+
   # CATEGORIES
   resources :categories, only: %i[create update destroy]
   get :categories_search, controller: :categories
@@ -123,9 +141,10 @@ Rails.application.routes.draw do
   get :home, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
-  get :book_contents, controller: :pages
-  get :book_users, controller: :pages
-  get :book_dates, controller: :pages
+
+  get :book_contents, controller: :pages # TODO deprecate => replaced by training_draft
+  get :book_users, controller: :pages # TODO deprecate => replaced by training_draft
+  get :book_dates, controller: :pages # TODO deprecate => replaced by training_draft
   get :recommendation, controller: :pages
   get :catalogue_content_link_category, controller: :pages
   # NOT (USED)

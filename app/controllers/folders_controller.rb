@@ -29,7 +29,7 @@ class FoldersController < ApplicationController
     @folders = @folders.reject{|x| x.children_folders_all.include?(@folder)} - @folder.children_folders_all(true)
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
     if params[:search].present? && !params[:search][:title].blank?
-      @contents = @contents.search_contents("#{params[:search][:title]}")
+      @contents = @contents.search("#{params[:search][:title]}")
     end
     authorize @folder
     respond_to do |format|

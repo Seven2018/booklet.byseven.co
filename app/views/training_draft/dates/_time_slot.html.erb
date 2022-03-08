@@ -1,0 +1,65 @@
+<% uuid = "#{('a'..'z').to_a.sample}#{rand(10_000)}" %>
+
+<div class="d-flex justify-content-start  align-items-center pb-2rem" id='<%= uuid %>'>
+  <div style="flex: 0 0 50px;">
+    <div class="btk-dark-grey fs-1_4rem">Date :</div>
+  </div>
+
+  <div>
+  <%= text_field_tag(
+    "time_slots[][date]",
+    time_slot.date,
+    as: :string,
+    label: false,
+    style: 'width: 120px;',
+    class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 datepicker_',
+    ) %>
+  </div>
+
+  <div style="flex: 0 0 50px;">
+    <div class="btk-dark-grey fs-1_4rem  px-1rem">From: </div>
+  </div>
+
+  <div>
+    <%= text_field_tag(
+      "time_slots[][starts_at]",
+      time_slot.starts_at,
+      as: :string,
+      type: :time,
+      label: false,
+      class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 timepicker_24',
+      data: {
+        default_time: (time_slot.starts_at.presence || '09:00')
+      },
+      style: 'width: 70px;',
+      ) %>
+
+  </div>
+
+  <div style="flex: 0 0 50px;">
+    <div class="btk-dark-grey fs-1_4rem  px-1rem">To: </div>
+  </div>
+
+  <div>
+    <%= text_field_tag(
+      "time_slots[][ends_at]",
+      time_slot.ends_at,
+      as: :string,
+      type: :time,
+      label: false,
+      class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 timepicker_24',
+      data: {
+        default_time: (time_slot.ends_at.presence || '10:00')
+      },
+      style: 'width: 70px;',
+      ) %>
+
+  </div>
+
+  <div style="flex: 0 0 50px;">
+    <div class="ml-2rem bkt-orange"
+      data-uuid='<%= uuid %>'
+      data-action="click->time-slot-forms#destroy"
+    ><i class="far fa-trash-alt"></i></div>
+  </div>
+</div>

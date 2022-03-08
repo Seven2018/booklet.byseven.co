@@ -6,10 +6,11 @@
     style: "background-color: rgba(49, 119, 183, 0.1); flex: 1 1 0;",
     data: {
       controller: 'toggle-checked',
+      toggle_checked_target: 'target',
       toggle_checked_checked_classes_value: 'border-bkt-dark-blue bkt-dark-blue',
       toggle_checked_unchecked_classes_value: 'border-bkt-light-grey5 bkt-light-grey5 bkt-bg-white opacity_30pc',
       toggle_checked_toggle_all_event_value: toggle_all_event,
-      action: "click->toggle-checked#dispatchToggleAll #{toggle_all_event}@window->toggle-checked#toggle"
+      action: "click->toggle-checked#dispatchToggleAll #{toggle_all_event}@window->toggle-checked#debouncedToggle"
     }
   ) do %>
   <div class="d-flex flex-column align-items-center justify-content-center p-3">

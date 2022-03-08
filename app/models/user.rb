@@ -21,6 +21,7 @@ class User < ApplicationRecord
   has_many :interviews, foreign_key: 'employee_id'
   has_many :interview_answers
   has_many :campaign_drafts
+  has_many :training_drafts
   belongs_to :manager, class_name: "User", optional: true
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
 
@@ -41,6 +42,10 @@ class User < ApplicationRecord
 
   def campaign_draft
     campaign_drafts.processing.last || CampaignDraft.create(user: self)
+  end
+
+  def training_draft
+    training_drafts.processing.last || TrainingDraft.create(user: self)
   end
 
   def fullname

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_07_100045) do
+ActiveRecord::Schema.define(version: 2022_03_07_104628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -358,6 +358,15 @@ ActiveRecord::Schema.define(version: 2022_03_07_100045) do
     t.index ["tag_category_id"], name: "index_tags_on_tag_category_id"
   end
 
+  create_table "training_drafts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "state", default: 0, null: false
+    t.jsonb "data", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_training_drafts_on_user_id"
+  end
+
   create_table "trainings", force: :cascade do |t|
     t.string "title"
     t.bigint "company_id"
@@ -514,6 +523,7 @@ ActiveRecord::Schema.define(version: 2022_03_07_100045) do
   add_foreign_key "tag_categories", "companies"
   add_foreign_key "tags", "companies"
   add_foreign_key "tags", "tag_categories"
+  add_foreign_key "training_drafts", "users"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "folders"
   add_foreign_key "trainings", "users", column: "creator_id"

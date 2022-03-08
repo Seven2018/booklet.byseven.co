@@ -1,8 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
+import { debounce } from "debounce"
 
 export default class extends Controller {
   static get targets () {
-    return [ "togglable" ]
+    return [ "target", "togglable" ]
   }
   static get values () {
     return {
@@ -16,14 +17,20 @@ export default class extends Controller {
     this.toggle()
   }
 
+  debouncedToggle() {
+    if (this.toggleDebounced) this.toggleDebounced.clear()
+    this.toggleDebounced = debounce(this.toggle.bind(this), 10)
+    this.toggleDebounced()
+  }
+
   toggle() {
     if (this.togglableTarget.checked) {
-      this.checkedClassesValue.split(' ').forEach((klass) => this.element.classList.add(klass))
-      this.uncheckedClassesValue.split(' ').forEach((klass) => this.element.classList.remove(klass))
+      this.checkedClassesValue.split(' ').forEach((klass) => this.targetTarget.classList.add(klass))
+      this.uncheckedClassesValue.split(' ').forEach((klass) => this.targetTarget.classList.remove(klass))
     }
     else {
-      this.checkedClassesValue.split(' ').forEach((klass) => this.element.classList.remove(klass))
-      this.uncheckedClassesValue.split(' ').forEach((klass) => this.element.classList.add(klass))
+      this.checkedClassesValue.split(' ').forEach((klass) => this.targetTarget.classList.remove(klass))
+      this.uncheckedClassesValue.split(' ').forEach((klass) => this.targetTarget.classList.add(klass))
     }
   }
 
