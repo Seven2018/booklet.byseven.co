@@ -26,6 +26,7 @@ class TrainingPolicy < ApplicationPolicy
   end
 
   def create?
+    # used in campaign_drafts TODO non regression test
     user.hr_or_above?
   end
 

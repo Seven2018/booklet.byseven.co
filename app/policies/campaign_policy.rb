@@ -17,6 +17,11 @@ class CampaignPolicy < ApplicationPolicy
     user.employee_or_above?
   end
 
+  def create?
+    # used in campaign_drafts TODO non regression test
+    user.manager_or_above?
+  end
+
   def destroy?
     user.manager_or_above?
   end
