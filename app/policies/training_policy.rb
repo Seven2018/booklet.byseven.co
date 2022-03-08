@@ -17,6 +17,10 @@ class TrainingPolicy < ApplicationPolicy
     user.manager_or_above?
   end
 
+  def my_team_trainings_user_details?
+    user.manager_or_above?
+  end
+
   def show?
     true
   end

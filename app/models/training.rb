@@ -29,11 +29,7 @@ class Training < ApplicationRecord
   end
 
   def duration
-    duration = 0
-    self.sessions.each do |session|
-      duration += session.workshop.duration
-    end
-    return duration
+    workshops.map(&:duration).sum
   end
 
   def synchronous?

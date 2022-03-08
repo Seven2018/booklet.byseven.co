@@ -1,0 +1,54 @@
+<div id="user-trainings__container" class='flex-column-start-centered bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='min-height: calc(100vh - 7.5rem);'>
+
+  <div class="bkt-bg-white rounded-20px p-2rem bkt-box-shadow pos-rel" style='width: 75%; max-width: 85rem; margin-top: 9rem;'>
+
+    <div class='flex-column-start-centered'>
+      <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='avatar-large mb-2rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+      <p class='fs-2rem font-weight-600 bkt-dark-grey mb-1rem'><%= @user.fullname %></p>
+      <p class='fs-1_6rem bkt-light-grey5 mb-1rem'><%= @user.job_title %></p>
+    </div>
+
+    <% @trainings.each do |training| %>
+
+    <div class="border-bkt-light-grey5-0_5px rounded-20px p-3rem mt-2rem">
+
+      <div class="flex-row-start-centered mb-2rem">
+        <div class="centered-item height-5rem width-5rem bkt-bg-light-orange rounded-5px mr-1rem">
+          <svg width="33" height="28" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.5 0L0 7.53846L4.4 9.47692V13.1385C3.08 13.5692 2.2 14.8615 2.2 16.1538C2.2 17.4462 3.08 18.7385 4.4 19.1692V19.3846L2.42 23.9077C1.76 25.8462 2.2 28 5.5 28C8.8 28 9.24 25.8462 8.58 23.9077L6.6 19.3846C7.92 18.7385 8.8 17.6615 8.8 16.1538C8.8 14.6462 7.92 13.5692 6.6 13.1385V10.5538L16.5 15.0769L33 7.53846L16.5 0ZM26.18 14L16.28 18.3077L11 15.9385V16.1538C11 17.6615 10.34 18.9538 9.24 20.0308L10.56 23.0462V23.2615C10.78 24.1231 11 24.9846 10.78 25.8462C12.32 26.4923 14.08 26.9231 16.28 26.9231C23.54 26.9231 26.18 22.6154 26.18 20.4615V14V14Z" fill="#EF8C64"/>
+          </svg>
+        </div>
+        <div>
+          <p class='fs-2_4rem font-weight-600 bkt-dark-grey'><%= training.title %></p>
+          <div class="flex-row-start-centered border-bkt-dark-grey rounded-20px">
+            <div class="centered-item height-2_5rem width-2_5rem">
+              <span class="iconify fs-1_4rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
+            </div>
+            <p class='fs-1_2rem bkt-dark-grey'><%= TimeConversion.convert(training.duration) %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-row-start-centered">
+        <div class="flex-row-between-centered mr-2rem">
+          <div class="centered-item height-2_5rem width-2_5rem mr-1rem">
+            <span class="iconify fs-1_6rem bkt-orange" data-icon="fa6-solid:user-group"></span>
+          </div>
+          <p><%= training.next_session.workshop.synchronous? ? 'Face-to-face' : 'Online' %></p>
+        </div>
+        <div class="flex-row-between-centered">
+          <div class="centered-item height-2_5rem width-2_5rem mr-1rem">
+            <span class="iconify fs-1_6rem bkt-orange" data-icon="akar-icons:calendar"></span>
+          </div>
+          <p>Next date: <%= training.next_date %> at <%= training.next_session.starts_at.strftime('%H:%M') %></p>
+        </div>
+      </div>
+
+    </div>
+
+    <% end %>
+
+
+  </div>
+
+</div>

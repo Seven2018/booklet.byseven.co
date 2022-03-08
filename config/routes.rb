@@ -130,6 +130,7 @@ Rails.application.routes.draw do
   # TRAININGS
   resources :trainings
   get :my_team_trainings, controller: :trainings
+  get 'my_team_trainings/users/:id', to: 'trainings#my_team_trainings_user_details', as: 'my_team_trainings_user_details'
 
   # SESSIONS
   resources :sessions, only: %i[update destroy]

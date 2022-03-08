@@ -9,11 +9,23 @@ class TrainingsController < ApplicationController
   end
 
   def my_team_trainings
-    attendees = Attendee.includes(session: :training).where(user_id: current_user.employees.ids).group_by(&:user_id)
-    skip_authorization
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.employees.ids}).distinct
+    authorize trainings
 
-    @future_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.present?}.uniq}
-    # @past_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.nil?}.uniq}
+    attendees = Attendee.includes(session: :training).where(user_id: current_user.employees.ids).group_by(&:user_id)
+
+    @future_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.present?}.uniq.sort{|x| x.next_date}}
+    # @past_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.nil?}.uniq.sort{|x| x.next_date}}
+  end
+
+  def my_team_trainings_user_details
+    @user = User.find(params[:id])
+    @user = current_user unless @user.manager != current_user || current_user.hr_or_above?
+    @trainings = Training.joins(sessions: :attendees)
+                 .where(attendees: {user: @user}).distinct
+                 .select{|x| x.next_date.present?}
+                 .sort{|y| y.next_date}
+    authorize @trainings
   end
 
   def show
