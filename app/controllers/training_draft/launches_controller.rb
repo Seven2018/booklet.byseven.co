@@ -2,10 +2,10 @@
 
 class TrainingDraft::LaunchesController < TrainingDraft::BaseController
   def update
-    new_campaign = CampaignDrafts::Campaigns::Launch.call(campaign_draft: campaign_draft)
-    if new_campaign.present?
+    new_training = TrainingDrafts::Trainings::Launch.call(training_draft: training_draft)
+    if new_training.present?
       @training.launches_set!
-      redirect_to campaign_path(new_campaign) and return
+      redirect_to training_path(new_training)
     else
       flash[:alert] = validation_error_flash_message
       redirect_to edit_campaign_draft_launches_path
@@ -19,6 +19,6 @@ class TrainingDraft::LaunchesController < TrainingDraft::BaseController
   end
 
   def previous_steps_params_keys
-    %i[participant_ids workshop_id cost_cents_per_employee time_slots]
+    %i[participant_ids content_id cost_per_employee time_slots]
   end
 end

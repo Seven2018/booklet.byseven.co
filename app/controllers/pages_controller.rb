@@ -15,7 +15,7 @@ class PagesController < ApplicationController
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
     @categories = Category.where(company_id: current_user.company_id).order(title: :asc)
 
-    @contents = @contents.search_contents(params.dig(:search, :title)) if params.dig(:search, :title).present?
+    @contents = @contents.search(params.dig(:search, :title)) if params.dig(:search, :title).present?
     @contents = @contents.where(content_type: params.dig(:search, :content_type)) if params.dig(:search, :content_type).present?
     @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params.dig(:search, :selected_categories).split(',')}).distinct if params.dig(:search, :selected_categories).present?
 
@@ -124,7 +124,7 @@ class PagesController < ApplicationController
     @folders = Folder.where(company_id: current_user.company_id).order(title: :asc)
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
     if params[:search].present? && !params[:search][:title].blank?
-      @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
+      @contents = @contents.search("#{params[:search][:title]}").order(title: :asc)
       @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
     end
     if params[:search].present?

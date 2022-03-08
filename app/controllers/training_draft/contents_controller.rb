@@ -15,7 +15,7 @@ class TrainingDraft::ContentsController < TrainingDraft::BaseController
   private
 
   def training_draft_params_keys
-    %i[workshop_id]
+    %i[content_id]
   end
 
   def previous_steps_params_keys

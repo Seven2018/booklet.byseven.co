@@ -1,14 +1,14 @@
-<% workshops.each do |workshop| %>
-  <% checked = workshop.id == @training.workshop_id %>
+<% contents.each do |content| %>
+  <% checked = content.id == @training.content_id %>
 
   <% lines = [
-    workshop.title,
-    workshop.content_type
+    content.title,
+    content.content_type
     ] %>
   <% width = (1/lines.count.to_f)*100 %>
-  <% toggle_all_event = 'trainingDraftWorkshopRadioBtn' %>
+  <% toggle_all_event = 'trainingDraftcontentRadioBtn' %>
   <div
-    data-interview-form-id="<%= workshop.id %>"
+    data-interview-form-id="<%= content.id %>"
     class="d-flex justify-content-between align-items-center border-top-bkt-light-grey position-relative">
     <label
       data-controller='toggle-checked'
@@ -26,8 +26,8 @@
         class="rounded-circle cursor-pointer height-1_6rem width-1_6rem p-1rem"
       ></div>
       <%= radio_button_tag(
-        :workshop_id,
-        workshop.id,
+        :content_id,
+        content.id,
         checked,
         class: 'd-none',
         data: {

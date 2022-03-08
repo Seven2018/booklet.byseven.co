@@ -4,10 +4,6 @@ export default class extends Controller {
   static get targets () {
     return [ "container" ]
   }
-  connect() {
-    console.log('heya')
-    // this.search()
-  }
 
   create(e) {
     console.log('e.currentTarget',e.currentTarget)

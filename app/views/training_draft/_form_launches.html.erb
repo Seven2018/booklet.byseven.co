@@ -3,7 +3,7 @@
 <div class="fs-1_4rem my-2 bkt-dark-grey">
   Workshop selection :
   <span class="font-weight-600">
-    <%= @training.workshop&.title %>
+    <%= @training.content.title %>
   </span>
 </div>
 
@@ -17,7 +17,7 @@
 <div class="fs-1_4rem my-2 bkt-dark-grey">
   Total cost :
   <span class="font-weight-600">
-    TODO
+    <%= decimal_eur(@training.participant_ids.count.to_f * @training.cost_per_employee) %>
   </span>
 </div>
 

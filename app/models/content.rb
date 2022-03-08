@@ -15,7 +15,7 @@ class Content < ApplicationRecord
   validates :title, :duration, presence: true
 
   include PgSearch::Model
-  pg_search_scope :search_contents,
+  pg_search_scope :search,
     against: [ :title ],
     associated_against: {
       categories: :title

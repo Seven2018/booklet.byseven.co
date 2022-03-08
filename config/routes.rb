@@ -76,7 +76,7 @@ Rails.application.routes.draw do
       resource :ids, only: :update
     end
     namespace :contents do
-      resources :workshops, only: :index
+      resources :contents, only: :index
     end
     namespace :dates do
       resources :time_slot_forms, only: :create

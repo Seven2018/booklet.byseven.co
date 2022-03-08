@@ -5,7 +5,7 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
     new_campaign = CampaignDrafts::Campaigns::Launch.call(campaign_draft: campaign_draft)
     if new_campaign.present?
       @campaign.launches_set!
-      redirect_to campaign_path(new_campaign) and return
+      redirect_to campaign_path(new_campaign)
     else
       flash[:alert] = validation_error_flash_message
       redirect_to edit_campaign_draft_launches_path

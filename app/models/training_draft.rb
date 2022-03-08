@@ -24,8 +24,8 @@ class TrainingDraft < ApplicationRecord
 
   jsonb_accessor :data,
                  participant_ids: [:string, array: true, default: []],
-                 workshop_id: :integer,
-                 cost_cents_per_employee: :integer,
+                 content_id: :integer,
+                 cost_per_employee: :integer,
                  time_slots: [
                   :string,
                   array: true,
@@ -37,9 +37,19 @@ class TrainingDraft < ApplicationRecord
                    ]
                  ]
 
-  def workshop
-    return unless workshop_id
+  def self.new_time_slot
+   OpenStruct.new(date: nil, starts_at: nil, ends_at: nil)
+  end
 
-    Workshop.find workshop_id
+  def content
+    return unless content_id
+
+    Content.find content_id
+  end
+
+  def participants
+    return User.none if participant_ids.blank?
+
+    User.find participant_ids
   end
 end
