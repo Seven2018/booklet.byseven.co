@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
   before_action :set_current_user, only: [:import, :create]
   skip_before_action :verify_authenticity_token, only: [:update]
-  before_action :show_navbar_campaign
+  before_action :show_navbar_home
 
   # Show user profile (users/show)
   def show

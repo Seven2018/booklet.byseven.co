@@ -345,7 +345,7 @@
 
   function manageTag(element, option) {
     tag_id = element.id.split('-')[1]
-    tag_checkbox = document.querySelector('#interview_form_tags_' + tag_id)
+    tag_checkbox = document.querySelector('#content_categories_' + tag_id)
 
     if (option == 'add') {
       tag_checkbox.checked = true
@@ -356,27 +356,47 @@
     tag_checkbox.closest('form').querySelector('.hidden-submit').click()
   }
 
-  function toggleTagCategoryDropdown(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode
-    if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '10000px'
-      block.classList.add('active')
+  function showTagDeleteOption(element) {
+    // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
+    trash = element.parentNode.querySelector('.category-delete');
+    if (trash.style.opacity == 0) {
+      trash.style.opacity = 1;
     } else {
-      block.style.maxHeight = '60px'
-      block.classList.remove('active')
+      trash.style.opacity = 0;
     }
   }
 
-  function autoSubmitTag(element) {
-    element.closest('form').querySelector('.hidden-submit').click()
+  function fetchTagForm(element) {
+    form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
+    initial_top = form.offsetTop
+    initial_left = form.offsetLeft
+    form.style.top = (element.offsetTop).toString() + 'px'
+    form.style.left = (element.offsetLeft + 25).toString() + 'px'
+    element.querySelector('p').style.opacity = '0'
+    form.classList.toggle('hidden')
+    form.querySelector('input').focus()
+    formGuardian = true;
+    setTimeout(function(){
+      formGuardian = false;
+    }, 1);
+
+    form.querySelector('#new_category_title').addEventListener('keypress', function(e) {
+      if (event.which == '13') {
+        event.preventDefault();
+        form.querySelector('.hidden-submit').click()
+      }
+    })
+
+    window.addEventListener('click', function(e) {
+      if (outsideClick(e, form) && formGuardian == false) {
+        form.style.top = initial_top.toString() + 'px';
+        form.style.left = initial_left.toString() + 'px'
+        element.querySelector('p').style.opacity = '1'
+        form.classList.toggle('hidden')
+        form.querySelector('input').value = ''
+        this.removeEventListener('click', arguments.callee, false)
+      }
+    });
   }
 
 </script>

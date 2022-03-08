@@ -13,7 +13,7 @@
     <% lines.each do |line| %>
       <div class='flex-row-start-centered fs-1_6rem' style='flex-basis: <%= width %>%;'>
         <% if line == training_creator&.fullname %>
-          <img src="<%= training_creator.picture %>" class='avatar-sm mr-1rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          <img src="<%= training_creator&.picture %>" class='avatar-sm mr-1rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
         <% end %>
         <%= line %>
       </div>

@@ -10,26 +10,33 @@
       <% if !Category.where(company_id: current_user.company_id).present? %>
         <p style='margin-bottom: 50px !important;'>No themes have been created. Categorize your trainings by adding specific themes. It will allow to filter and find trainings more easily.</p>
       <% end %>
+
       <%= simple_form_for :add_categories, url: content_link_category_path, method: :get, remote: true do |f| %>
+
         <div class="categories-form-checkboxes">
           <%= collection_check_boxes(:content, :categories, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title, checked: checked) do |b| %>
-            <div class="flex-row-between-centered">
-              <%= b.check_box(onclick: 'autoSubmitTheme(this);') %>
-              <div class="flex-row-between-centered" onmouseover="showDelete(this);" onmouseout="showDelete(this);">
+
+            <div class="flex-row-between-centered mb-1rem">
+              <%= b.check_box(onclick: 'submitForm(this);') %>
+              <div class="flex-row-between-centered" onmouseover="showTagDeleteOption(this);" onmouseout="showTagDeleteOption(this);">
                 <p class='category-title'><%= b.text %></p>
                 <%= link_to content_link_category_path(delete: true, category_id: b.value, content_id: content.id, page: params[:action]), data: {confirm: 'Are you sure ?'}, class: 'category-delete', remote: true do %>
                   <i class="fas fa-trash"></i>
                 <% end %>
               </div>
             </div>
+
           <% end %>
         </div>
-        <div class="flex-row-start-centered" onclick='fetchCategoryForm(this);'>
+
+        <div class="flex-row-start-centered height-2_5rem" onclick='fetchTagForm(this);'>
           <i class="fas fa-plus" data-toggle='tooltip' title='Add Theme'></i>
           <p>New Category</p>
         </div>
+
         <%= f.hidden_field :content_id, value: content.id %>
         <%= f.hidden_field :page, value: params[:action] %>
+
         <div class="theme-save-btn">
           <button type="button" class="btn-orange-text cancel-close" data-dismiss="modal" aria-label="Close">Close</button>
           <%# button_tag type: 'submit', data: { toggle: 'tooltip' }, title: 'Save', class: 'btn-orange', onclick: 'dismissModal(this);' do %>
@@ -37,8 +44,9 @@
           <%# end %>
           <%= f.submit '', class: 'hidden-submit hidden' %>
         </div>
+
       <% end %>
-      <div class='hidden-form-category-ajax hidden'>
+      <div class='hidden-form-category-ajax hidden centered-item height-2_5rem'>
         <%= simple_form_for :new_category, url: content_link_category_path, method: :get, remote: true do |f| %>
           <%= f.text_field :title, placeholder: 'New Theme', style: 'height: 100%;', autocomplete: 'off' %>
           <%= f.hidden_field :content_id, value: content.id %>

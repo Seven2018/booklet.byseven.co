@@ -53,13 +53,15 @@
       <% question_number = 0 %>
 
       <% question_hash.each do |key, value| %>
+        <% values = question_hash.count == 1 ? value[0..-1] : value[1..-1] %>
+
         <% if key.to_i > 0 %>
           <div class="interview-main__right-separator">
             <p><%= key %>. <%= value.first.question %></p>
           </div>
         <% end %>
         <div class="interview-main__right-questions">
-          <% value[1..-1].each do |question| %>
+          <% values.each do |question| %>
 
             <% question_number += 1 %>
 

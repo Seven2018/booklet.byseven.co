@@ -289,79 +289,38 @@
   // TEMPLATE SETTINGS //
   ///////////////////////
 
-  function BookletSelectExpand(element) {
-    doubleClickGuardian = true
-    dropdown = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-dropdown')
-    setTimeout(() => {
-      doubleClickGuardian = false
-    }, 100);
-    if (dropdown.classList.contains('hidden')) {
-      dropdown.classList.remove('hidden')
-      window.addEventListener('click', function(e) {
-        if (!doubleClickGuardian) {
-          dropdown.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    } else {
-      dropdown.classList.add('hidden')
-    }
-  }
+  // function BookletSelectExpand(element) {
+  //   doubleClickGuardian = true
+  //   dropdown = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-dropdown')
+  //   setTimeout(() => {
+  //     doubleClickGuardian = false
+  //   }, 100);
+  //   if (dropdown.classList.contains('hidden')) {
+  //     dropdown.classList.remove('hidden')
+  //     window.addEventListener('click', function(e) {
+  //       if (!doubleClickGuardian) {
+  //         dropdown.classList.add('hidden')
+  //         this.removeEventListener('click', arguments.callee, false);
+  //       }
+  //     });
+  //   } else {
+  //     dropdown.classList.add('hidden')
+  //   }
+  // }
 
-  function BookletSelectSubmit(element, attribute) {
-    updateStatusMessage("Updating...")
-    form = element.closest('form')
-    container = element.closest('.booklet-select__template-edit-container')
-    selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
-    selected_value = element.querySelector('p').innerText
-    storage = form.querySelector('#content_' + attribute)
-    submit_button = form.querySelector('.hidden-submit')
+  // function BookletSelectSubmit(element, attribute) {
+  //   updateStatusMessage("Updating...")
+  //   form = element.closest('form')
+  //   container = element.closest('.booklet-select__template-edit-container')
+  //   selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
+  //   selected_value = element.querySelector('p').innerText
+  //   storage = form.querySelector('#content_' + attribute)
+  //   submit_button = form.querySelector('.hidden-submit')
 
-    storage.value = selected_value
-    selected_display.innerText = selected_value
+  //   storage.value = selected_value
+  //   selected_display.innerText = selected_value
 
-    submit_button.click()
-  }
-
-
-  /////////////////
-  // MANAGE TAGS //
-  /////////////////
-
-  function manageTag(element, option) {
-    tag_id = element.id.split('-')[1]
-    tag_checkbox = document.querySelector('#interview_form_tags_' + tag_id)
-
-    if (option == 'add') {
-      tag_checkbox.checked = true
-    } else if (option == 'remove') {
-      tag_checkbox.checked = false
-    }
-
-    tag_checkbox.closest('form').querySelector('.hidden-submit').click()
-  }
-
-  function toggleTagCategoryDropdown(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode
-    if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '10000px'
-      block.classList.add('active')
-    } else {
-      block.style.maxHeight = '60px'
-      block.classList.remove('active')
-    }
-  }
-
-  function autoSubmitTag(element) {
-    element.closest('form').querySelector('.hidden-submit').click()
-  }
+  //   submit_button.click()
+  // }
 
 </script>
