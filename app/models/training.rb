@@ -3,7 +3,10 @@ class Training < ApplicationRecord
   has_many :attendees, through: :sessions
   has_many :workshops, through: :sessions
   belongs_to :company
+  belongs_to :creator, class_name: "User"
   belongs_to :folder, optional: true
+
+  paginates_per 10
 
   include PgSearch::Model
   pg_search_scope :search_trainings,
@@ -30,6 +33,10 @@ class Training < ApplicationRecord
 
   def duration
     workshops.map(&:duration).sum
+  end
+
+  def employees
+    User.joins(:attendees).where(attendees: {session_id: sessions.ids}).distinct
   end
 
   def synchronous?

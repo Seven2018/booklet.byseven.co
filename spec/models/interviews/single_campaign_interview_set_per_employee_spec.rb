@@ -20,20 +20,21 @@ RSpec.describe Interview, type: :model do
     campaign: campaign,
     interview_form: interview_form,
     employee: employee,
-    creator: owner
+    creator: owner,
+    interviewer: create(:user, email: Faker::Internet.email)
     }
   end
 
   describe '#single_campaign_interview_set_per_employee' do
     let(:new_employee_interview) { Interview.new(interview_params.merge(label: 'Employee')) }
-    let(:new_hr_interview) { Interview.new(interview_params.merge(label: 'Manager')) }
+    let(:new_manager_interview) { Interview.new(interview_params.merge(label: 'Manager')) }
     let(:new_crossed_interview) { Interview.new(interview_params.merge(label: 'Crossed')) }
 
     context 'when no campaign interview set exists for employee' do
       it 'interview can be created' do
         expect(campaign.interviews.count).to eq(0)
         expect(new_employee_interview.save).to be true
-        expect(new_hr_interview.save).to be true
+        expect(new_manager_interview.save).to be true
         expect(new_crossed_interview.save).to be true
         expect(campaign.interviews.count).to eq(3)
       end
@@ -48,7 +49,7 @@ RSpec.describe Interview, type: :model do
       it 'interview can not be created but it can be updated' do
         expect(campaign.interviews.count).to eq(3)
         expect(new_employee_interview.save).to be false
-        expect(new_hr_interview.save).to be false
+        expect(new_manager_interview.save).to be false
         expect(new_crossed_interview.save).to be false
         expect(campaign.interviews.count).to eq(3)
         expect(campaign.interviews.first.valid?).to be true

@@ -23,15 +23,15 @@
     <%= render 'shared/impersonations' %>
     <% if user_signed_in? %>
 
-      <% if ['campaigns', 'interview_forms', 'contents'].include?(params[:controller]) || params[:controller].split('/').first == 'campaign_draft' %>
-        <%= render 'shared/navbar_campaign' %>
-        <%= render 'shared/navbar_campaign_mobile' %>
-      <% elsif params[:action] == 'home' %>
+      <% if @show_navbar_home %>
         <%= render 'shared/navbar_home' %>
         <%= render 'shared/navbar_mobile' %>
-      <% else %>
+      <% elsif @show_navbar_training %>
         <%= render 'shared/navbar_trainings' %>
         <%= render 'shared/navbar_mobile' %>
+      <% elsif @show_navbar_campaign %>
+        <%= render 'shared/navbar_campaign' %>
+        <%= render 'shared/navbar_campaign_mobile' %>
       <% end %>
 
     <% end %>

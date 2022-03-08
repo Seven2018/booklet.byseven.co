@@ -1,45 +1,68 @@
-<% if current_user.admin? || (@workshop.content.company_id == current_user.company_id) %>
-  <% @workshop.access_granted? ? access = 'granted' : access = '' %>
-  <% if params[:session_id].present? && Session.find(params[:session_id]).date <= Date.today && Attendee.find_by(session_id: params[:session_id], user_id: current_user.id).present? %>
-    <% session = Session.find(params[:session_id]) %>
-    <% access = 'granted' unless session.available_date.present? && session.available_date < Date.today %>
-  <% end %>
-  <div id="content-show-container">
-    <div id="content-show-container-left">
-      <%= render 'contents/partials/show_summary', content: @workshop, page: 'show', access: access %>
-    </div>
-    <div id="content-show-container-right">
-      <div class="content-add">
-        <div class="content-center-div">
-          <div class="content-show-attributes-center">
-            <%= render 'contents/partials/show_attributes_center', content: @workshop, page: 'show', access: access %>
-          </div>
-          <div class="content-show-mods-edit-mode">
-            <%= render 'mods/partials/content_show_mods_index', content: @workshop, page: 'show', access: access %>
-          </div>
-        </div>
-        <div class="content-add-right">
-          <div class="content-show-attributes-right">
-            <%= render 'contents/partials/show_attributes_right', content: @workshop, page: 'show', access: access %>
+<div class="centered-item p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+  <%= render_component BackComponent.new(fallback: catalogue_path) %>
+  <h2>Workshop</h2>
+  </div>
+</div>
+
+<div id="content-edit__container" class='flex-row-between-start bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
+  <div id="content-edit__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
+    <%= render 'workshops/edit/edit_show_summary', workshop: @workshop %>
+  </div>
+
+  <div id="content-edit__container-right" style='margin-left: 30rem;'>
+
+      <div id="content-edit__content" class='flex-row-between-start'>
+
+        <div id="content-edit__content-center" class='flex-column-start-centered'>
+
+          <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
+            <div class="flex-row-start-centered mb-2rem">
+              <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
+              <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @workshop.title %></p>
+            </div>
+            <% if @workshop.access_granted? %>
+              <%= render 'workshops/show/show_workshop_mods', workshop: @workshop %>
+            <% else %>
+              <%= render 'workshops/show/show_workshop_mods_teaser', workshop: @workshop %>
+            <% end %>
+
           </div>
 
-          <% if current_user.hr_or_above? %>
-            <div class="content-show-attributes-right-acquired">
-              <%= render 'workshops/partials/show_attendees', attendees: @attendees, page: 'show', access: access %>
-            </div>
-          <% end %>
+          <% if (@workshop.users).include?(current_user) %>
 
-          <% if @workshop.content_type == "Asynchronous" || current_user.admin? %>
-            <div class="content-show-attributes-right-acquired">
-              <%= render 'workshops/partials/show_attributes_acquired', page: 'show', access: access %>
+            <div id='workshop-show__completed-options' class='flex-row-between-centered width-100 bkt-bg-white rounded-10px p-2rem mb-2rem' style='max-width: 64rem;'>
+              <%= render 'workshops/show/show_workshop_completed_options', workshop: @workshop, workshop_completed: @workshop_completed %>
             </div>
+
           <% end %>
+      </div>
+
+      <div id="template-edit__content-right" style=''>
+        <div class="template-show-attributes-right">
+          <%= render 'workshops/show/show_workshop_settings', workshop: @workshop %>
         </div>
       </div>
+
     </div>
+
   </div>
-<% else %>
-  <div class="access-restricted centered-item">
-    <h1>Access restricted</h1>
-  </div>
-<% end %>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+
+  function selectCompletion(element) {
+    const chosen_value = element.getAttribute('data-value')
+    const link = document.getElementById('complete_workshop_link')
+    var link_url = new URL(link.href)
+
+    link_url.searchParams.set('status', chosen_value)
+    link.href = link_url.href
+    link.click()
+  }
+
+</script>

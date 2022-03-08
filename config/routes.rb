@@ -24,24 +24,24 @@ Rails.application.routes.draw do
 
   # ATTENDEES
   resources :attendees
-  get :complete_session, controller: :attendees
 
   # CAMPAIGNS
-  resources :campaigns
+  resources :campaigns, only: %i[index show destroy]
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
-  get :campaigns_report_filter_campaigns, controller: :campaigns
-  get :campaign_report_info, controller: :campaigns
-  get :campaign_select_template, controller: :campaigns
-  get :campaign_select_users, controller: :campaigns
-  get :campaign_select_dates, controller: :campaigns
   get :send_notification_email, controller: :campaigns
   get :campaign_select_owner, controller: :campaigns
   get :campaign_add_user, controller: :campaigns
   get :campaign_remove_user, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
 
-  resources :reports, only: %i[index new]
+  namespace :interviews do
+    resources :reports, only: %i[index new]
+  end
+
+  namespace :trainings do
+    resources :reports, only: %i[index]
+  end
 
   namespace :campaign_draft do
     resource :settings, only: %i[edit update]
@@ -49,6 +49,28 @@ Rails.application.routes.draw do
     resource :templates, only: %i[edit update]
     resource :dates, only: %i[edit update]
     resource :launches, only: %i[edit update]
+    namespace :interviewees do
+      resources :users, only: :index
+      resource :ids, only: :update
+    end
+  end
+
+  namespace :training_draft do
+    resource :participants, only: %i[edit update]
+    resource :contents, only: %i[edit update]
+    resource :dates, only: %i[edit update]
+    resource :launches, only: %i[edit update]
+
+    namespace :participants do
+      resources :users, only: :index
+      resource :ids, only: :update
+    end
+    namespace :contents do
+      resources :contents, only: :index
+    end
+    namespace :dates do
+      resources :time_slot_forms, only: :create
+    end
   end
 
   # CATEGORIES
@@ -59,7 +81,9 @@ Rails.application.routes.draw do
   resources :companies, only: %i[new create update destroy]
   resource :companies, only: [] do
     scope module: :companies do
-      resources :csv_exports, only: %i[show create destroy]
+      namespace :interviews do
+        resources :csv_exports, only: %i[show create destroy]
+      end
     end
   end
 
@@ -115,20 +139,20 @@ Rails.application.routes.draw do
 
   # PAGES
   get :home, controller: :pages
-  get :dashboard, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
-  get :book_contents, controller: :pages
-  get :book_users, controller: :pages
-  get :book_dates, controller: :pages
+
+  get :book_contents, controller: :pages # TODO deprecate => replaced by training_draft
+  get :book_users, controller: :pages # TODO deprecate => replaced by training_draft
+  get :book_dates, controller: :pages # TODO deprecate => replaced by training_draft
   get :recommendation, controller: :pages
   get :catalogue_content_link_category, controller: :pages
-  get :overview, controller: :pages
   # NOT (USED)
   # get :organisation_user_card, controller: :pages
 
   # TRAININGS
   resources :trainings
+  get :my_trainings, controller: :trainings
   get :my_team_trainings, controller: :trainings
   get 'my_team_trainings/users/:id', to: 'trainings#my_team_trainings_user_details', as: 'my_team_trainings_user_details'
 
@@ -179,9 +203,11 @@ Rails.application.routes.draw do
   get :unlink_from_company, controller: :users
   post :import_users, controller: :users
   get :users_search, controller: :users
+  get :campaign_draft_users, controller: :users
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]
+  get :complete_workshop, controller: :workshops
 
   # design pages
   get '/design', to: 'design#index'

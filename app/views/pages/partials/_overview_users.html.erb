@@ -30,7 +30,7 @@
                 <p class="ml-3"><%= user.sessions.select(:training_id).distinct.count %></p>
               </div>
 
-              <% workshops = Workshop.joins(session: :attendees).where(attendees: {user_id: user.id}) %>
+              <% workshops = Workshop.joins(sessions: :attendees).where(attendees: {user_id: user.id}) %>
               <div class="user-index-info streched-link">
                 <p class="ml-3"><%= workshops.count %></p>
               </div>

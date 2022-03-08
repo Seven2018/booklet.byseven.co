@@ -1,8 +1,5 @@
 <div class="centered-item p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
-  <%= link_to interview_forms_path, class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
-    <span class="iconify" data-icon="bi:arrow-left"></span>
-    <p>Back</p>
-  <% end %>
+  <%= render_component BackComponent.new(fallback: catalogue_path) %>
   <h2>Edit Workshop</h2>
   <div class="height-5rem flex-row-between-centered pos-abs" style='top: 2rem; right: 2rem;'>
     <p id='content-edit__update-status' class='bkt-green mr-2rem'>Up to date</p>
@@ -75,7 +72,7 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'contents/modals/manage_categories', content: @content %>
   </div>
@@ -85,8 +82,6 @@
 <!---------------->
 <!-- JAVASCRIPT -->
 <!---------------->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
 
 <script>
 
@@ -127,6 +122,35 @@
 
 
     message_storage.innerText = message
+  }
+
+  // EXPAND / COLLAPSE MOD //
+
+  function toggleMod(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode
+    p = element.querySelector('p')
+    block_width = block.offsetWidth
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '100000px'
+      p.style.maxHeight = '100000px'
+      p.style.whiteSpace = 'normal'
+      block.style.width = block_width.toString() + 'px'
+      block.classList.add('active')
+    } else if (block.style.maxHeight == '100000px') {
+      block.style.maxHeight = '61px'
+      p.style.maxHeight = '18px'
+      p.style.whiteSpace = 'nowrap'
+      block.style.width = 'auto'
+      block.classList.remove('active')
+    }
   }
 
   // AUTO UPDATE TEXTAREA HEIGHT //
@@ -214,12 +238,6 @@
     }
     saveForm(element)
   }
-
-  // function setRating(element) {
-  //   target = element.closest('form').querySelector('.show-rating')
-  //   target.innerHTML = '<i class="far fa-star"></i>'
-  //   multiplyNode(target.querySelector('i'), parseInt(element.value,10), true);
-  // }
 
   function switchSide(element, save = true) {
     updateStatusMessage("Updating...")
@@ -320,32 +338,6 @@
     submit_button.click()
   }
 
-  ///////////////////
-  // AUTO COMPLETE //
-  ///////////////////
-
-  $input_tag = $("#search_tags");
-
-  var options_tag = {
-    listLocation: "tags",
-    getValue: 'tag_name',
-    url: function(phrase) {
-      return "/tags_search.json?search=" + phrase
-    },
-    list: {
-      onChooseEvent: function() {
-        tag_id = $input_tag.getSelectedItemData().id
-        button = document.querySelector('#template-edit__tags-search').querySelector('.bkt-btn-blue')
-        button.id = 'add_tag-' + tag_id
-      },
-      match: {
-        enabled: true
-      }
-    }
-  }
-
-  $input_tag.easyAutocomplete(options_tag);
-
 
   /////////////////
   // MANAGE TAGS //
@@ -385,42 +377,6 @@
 
   function autoSubmitTag(element) {
     element.closest('form').querySelector('.hidden-submit').click()
-  }
-
-  ///////////////////////
-
-  // function multiplyNode(node, count, deep) {
-  //   for (var i = 0, copy; i < count - 1; i++) {
-  //       copy = node.cloneNode(deep);
-  //       node.parentNode.insertBefore(copy, node);
-  //   }
-  // }
-
-  function toggleMod(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode
-    p = element.querySelector('p')
-    block_width = block.offsetWidth
-    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '100000px'
-      p.style.maxHeight = '100000px'
-      p.style.whiteSpace = 'normal'
-      block.style.width = block_width.toString() + 'px'
-      block.classList.add('active')
-    } else if (block.style.maxHeight == '100000px') {
-      block.style.maxHeight = '61px'
-      p.style.maxHeight = '18px'
-      p.style.whiteSpace = 'nowrap'
-      block.style.width = 'auto'
-      block.classList.remove('active')
-    }
   }
 
 </script>

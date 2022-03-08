@@ -189,15 +189,6 @@
     }
   }
 
-  .btn-reset {
-    margin-left: 1rem;
-  }
-
-  .btn-reset-blue {
-    height: 4rem;
-    color: #3177B7;
-  }
-
   .organisation__search-trainings-icon {
     position: absolute;
     z-index: 150;
@@ -359,7 +350,6 @@
 .organisation__users-card, .organisation__users-selected {
   background-color: white;
   position: relative;
-  padding-top: 2rem;
 
   .organisation__user-name {
     font-weight: bolder;
@@ -415,10 +405,10 @@
     text-overflow: ellipsis;
     overflow: hidden;
     text-decoration: none;
-    height: 100%;
 
     @include from-medium {
-      font-size: 14px;
+      font-size: 1.4rem;
+      line-height: 1.6rem;
     }
   }
 

@@ -1,150 +1,29 @@
 class PagesController < ApplicationController
-  before_action :show_navbar_admin, only: :organisation
-  before_action :show_navbar_campaign
+  before_action :show_navbar_training
+  before_action :show_navbar_admin, only: %i[organisation]
+  before_action :show_navbar_home, only: [:home, :organisation]
 
   def home
     @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, completed: false)
     @my_team_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id, owner_id: current_user.id}, label: ['Manager', 'Crossed', 'Simple'], completed: false)
   end
 
-  # Access dashboard (root)
-  def dashboard
-    complete_profile_path
-
-    @trainings = Training.where(company: current_user.company)
-    @employees_form = User.where(company: current_user.company)
-    @types_form = ["Synchronous", "Asynchronous"]
-
-    @recommendations = UserInterest.where(user_id: current_user.id)
-
-    unless current_user.hr_or_above?
-      @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id }).distinct
-      @recommendations = @recommendations.where(user_id: current_user.id)
-    end
-
-    # SEARCH TRAININGS
-    if params[:search_trainings].present?
-      unless params[:search_trainings][:title].blank?
-        @trainings = @trainings.search_trainings("#{params[:search_trainings][:title]}")
-      end
-      unless params[:training][:categories].reject{|c| c.empty?}.blank?
-        @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:training][:categories].reject{|c| c.empty?}.map{|x| x.to_i}}) + @trainings.joins(sessions: {workshop: {content: :content_categories}}).where(content_categories: {category_id: params[:training][:categories].reject{|c| c.empty?}.map{|x| x.to_i}})
-        @trainings = Training.where(id: @trainings.map{|x| x.id})
-      end
-      if params[:search_trainings][:period] == 'All'
-        @trainings = @trainings
-      elsif params[:search_trainings][:period] == 'Current'
-        @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Date.today))
-      elsif params[:search_trainings][:period] == 'Completed'
-        @trainings = @trainings.where_not_exists(:sessions, 'date >= ?', Date.today).where_not_exists(:sessions, 'available_date >= ?', Date.today)
-      end
-      if current_user.hr_or_above?
-        unless params[:search_trainings][:employee].blank?
-          selected_employee = User.search_by_name("#{params[:search_trainings][:employee]}").first
-          @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id }).distinct
-        end
-      end
-      unless params[:search_trainings][:type].blank?
-        @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search_trainings][:type]})
-      end
-    end
-
-    # SEARCHING RECOMMENDATIONS
-    if params[:search_recommendations].present?
-      unless params[:search_recommendations][:title].blank?
-        @recommendations = @recommendations.search_recommendations("#{params[:search_recommendations][:title]}")
-      end
-      if current_user.hr_or_above?
-        unless params[:search_recommendations][:employee].blank?
-          selected_employee = User.find(params[:search_recommendations][:employee])
-          @recommendations = UserInterest.where(user_id: selected_employee.id)
-        end
-      end
-      unless params[:search_recommendations][:type].blank?
-        @recommendations = @recommendations.joins(:content).where(contents: {content_type: params[:search_recommendations][:type]})
-      end
-    end
-
-    @pending_recommendations = @recommendations.where(recommendation: "Pending")
-    @accepted_recommendations = @recommendations.where(recommendation: "Yes")
-    @declined_recommendations = @recommendations.where(recommendation: "No")
-    @answered_recommendations = @accepted_recommendations + @declined_recommendations
-
-    # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
-    # @current_trainings = @trainings.sort_by { |training| training.next_session }
-    @current_trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Date.today))
-    @pasts_trainings = (@trainings - @current_trainings)
-
-    respond_to do |format|
-      format.html {dashboard_path}
-      format.js
-    end
-  end
-
-  # Display the company Overview (pages/overview)
-  def overview
-    @start_date = Date.today.beginning_of_year
-    @end_date = Date.today
-
-    @trainings = Training.where(company_id: current_user.company_id)
-    # @trainings = Training.where(id: @trainings.pluck(:id))
-
-    # SEARCHING CONTENTS
-    unless params[:reset]
-      if params[:search].present?
-        unless params[:search][:title].blank?
-          @trainings = @trainings.search_trainings("#{params[:search][:title]}")
-        end
-        if params[:search][:start_date].present?
-          @start_date = Date.strptime(params[:search][:start_date], '%d/%m/%Y')
-          @end_date = Date.strptime(params[:search][:end_date], '%d/%m/%Y')
-          @trainings = @trainings.joins(:sessions).where('sessions.date >= ? AND date <= ?', @start_date, @end_date).uniq
-        end
-      end
-    end
-
-    @sessions = @trainings.map{|x| x.sessions}.flatten
-    attendees = Attendee.joins(:session).where(sessions: { training: @trainings})
-    @users = User.where(attendees: attendees)
-
-    respond_to do |format|
-      format.html {overview_path}
-      format.js
-    end
-
-  end
-
-  # Display contents catalogue
+  # Display folders/contents catalogue
   def catalogue
-    # @index_title_content = Content.count + 1
     complete_profile
-    if current_user.company_id.present?
-      # SEARCHING CONTENTS
-      @contents = Content.where(company_id: current_user.company.id).order(updated_at: :desc)
-      @folders = Folder.where(company_id: current_user.company.id).order(updated_at: :desc)
-      if params[:filter_catalogue].present? && params[:filter_catalogue][:category].reject { |c| c.empty? }.present?
-        if params[:filter_catalogue][:searched].present?
-          @contents = @contents.search_contents("#{params[:search][:title]}")
-          @folders = @folders.search_folders("#{params[:search][:title]}")
-        end
-        selected_filters = params[:filter_catalogue][:category].reject { |c| c.empty? }
-        @contents = @contents.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: selected_filters}).order(title: :asc).uniq
-        @folders = @folders.joins(:folder_categories).where(company_id: current_user.company_id, folder_categories: {category_id: selected_filters}).order(title: :asc).uniq
-        @filtered_categories = Category.where(id: selected_filters)
-      elsif params[:search].present? && !params[:search][:title].blank?
-        if params[:search][:filtered].present?
-          selected_filters = params[:filtered].reject { |c| c.empty? }
-          @contents = @contents.joins(:content_categories).where(company_id: current_user.company_id, content_categories: {category_id: selected_filters}).uniq
-          @folders = @folders.joins(:folder_categories).where(company_id: current_user.company_id, folder_categories: {category_id: selected_filters}).uniq
-          @filtered_categories = Category.where(id: selected_filters)
-        end
-        # @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
-        # @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
-      end
-      respond_to do |format|
-        format.html {catalogue_path}
-        format.js
-      end
+
+    @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    @categories = Category.where(company_id: current_user.company_id).order(title: :asc)
+
+    @contents = @contents.search(params.dig(:search, :title)) if params.dig(:search, :title).present?
+    @contents = @contents.where(content_type: params.dig(:search, :content_type)) if params.dig(:search, :content_type).present?
+    @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params.dig(:search, :selected_categories).split(',')}).distinct if params.dig(:search, :selected_categories).present?
+
+    # TO DO : add pagination
+
+    respond_to do |format|
+      format.html {catalogue_path}
+      format.js
     end
   end
 
@@ -245,7 +124,7 @@ class PagesController < ApplicationController
     @folders = Folder.where(company_id: current_user.company_id).order(title: :asc)
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
     if params[:search].present? && !params[:search][:title].blank?
-      @contents = @contents.search_contents("#{params[:search][:title]}").order(title: :asc)
+      @contents = @contents.search("#{params[:search][:title]}").order(title: :asc)
       @folders = @folders.search_folders("#{params[:search][:title]}").order(title: :asc)
     end
     if params[:search].present?

@@ -58,15 +58,47 @@
       font-size: 1.6rem !important;
       line-height: 2rem;
       padding: 2rem;
-      color: #3177B7;
       border-radius: 1rem;
     }
 
     &.navbar-admin__button--active {
 
       h4 {
-        background: rgba(49, 119, 183, 0.1);
         font-weight: bolder;
+      }
+    }
+  }
+}
+
+.navbar-admin-campaigns {
+
+  .navbar-admin__button {
+
+    h4 {
+      color: $bkt-blue;
+    }
+
+    &.navbar-admin__button--active {
+
+      h4 {
+        background: $bkt-light-grey2;
+      }
+    }
+  }
+}
+
+.navbar-admin-trainings {
+
+  .navbar-admin__button {
+
+    h4 {
+      color: $bkt-orange;
+    }
+
+    &.navbar-admin__button--active {
+
+      h4 {
+        background: $bkt-light-orange;
       }
     }
   }
@@ -527,23 +559,9 @@
   justify-content: space-between;
   background-color: #CDCDCD;
 
-  .left {
-
-    svg {
-      font-size: 4rem;
-      margin-left: 1.5rem;
-    }
-  }
-
   .nav-item {
     margin-top: 1rem;
     margin-right: 1.5rem;
-
-    svg {
-      margin-right: 1.5rem;
-      font-size: 3.4rem;
-      margin-top: 3px;
-    }
   }
 
   .right {
@@ -603,23 +621,9 @@
   justify-content: space-between;
   background-color: #3177B7;
 
-  .left {
-
-    svg {
-      font-size: 4rem;
-      margin-left: 1.5rem;
-    }
-  }
-
   .nav-item {
     margin-top: 1rem;
     margin-right: 1.5rem;
-
-    svg {
-      margin-right: 1.5rem;
-      font-size: 3.4rem;
-      margin-top: 3px;
-    }
   }
 
   .right {
@@ -679,23 +683,9 @@
   justify-content: space-between;
   background-color: #EF8C64;
 
-  .left {
-
-    svg {
-      font-size: 4rem;
-      margin-left: 1.5rem;
-    }
-  }
-
   .nav-item {
     margin-top: 1rem;
     margin-right: 1.5rem;
-
-    svg {
-      margin-right: 1.5rem;
-      font-size: 3.4rem;
-      margin-top: 3px;
-    }
   }
 
   .right {

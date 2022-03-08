@@ -15,7 +15,7 @@ class Content < ApplicationRecord
   validates :title, :duration, presence: true
 
   include PgSearch::Model
-  pg_search_scope :search_contents,
+  pg_search_scope :search,
     against: [ :title ],
     associated_against: {
       categories: :title
@@ -26,4 +26,11 @@ class Content < ApplicationRecord
     ignoring: :accents,
     order_within_rank: "contents.updated_at DESC"
 
+  def synchronous?
+    content_type == 'Synchronous'
+  end
+
+  def asynchronous?
+    content_type == 'Asynchronous'
+  end
 end

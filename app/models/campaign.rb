@@ -5,7 +5,7 @@ class Campaign < ApplicationRecord
 
   belongs_to :company
   belongs_to :owner, class_name: "User"
-  belongs_to :interview_form
+  belongs_to :interview_form, optional: true
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
 
@@ -16,6 +16,8 @@ class Campaign < ApplicationRecord
   enum campaign_type: {
     simple: 0,
     crossed: 10,
+    one_to_one: 20,
+    feedback_360: 30
   }
 
   include PgSearch::Model
@@ -31,6 +33,15 @@ class Campaign < ApplicationRecord
     ignoring: :accents
 
   alias :manager :owner
+
+  def deadline
+    interviews.order(date: :asc).first.date
+  end
+
+  def interview_sets
+    @interview_sets ||=
+      employees.distinct.ids.map { |employee_id| interviews.find_by(employee_id: employee_id).set }
+  end
 
   def completion_for(employee)
     return 0 if interviews.count.zero?
@@ -78,38 +89,51 @@ class Campaign < ApplicationRecord
   def stats
     data = interviews.group_by(&:employee_id).map do |employee_id, interviews|
       employee = User.find(employee_id)
-      hr_interview = interviews.find(&:manager?)
+      manager_interview = interviews.find(&:manager?)
       employee_interview = interviews.find(&:employee?)
       crossed_interview = interviews.find(&:crossed?)
+      simple_interview = interviews.find(&:simple?)
+      interviews = {}
+      interviews[:manager_interview] = {
+        id: manager_interview.id,
+        answers_count: manager_interview.answers.count,
+        completed: manager_interview.completed,
+        locked_at: manager_interview.locked_at
+      } if manager_interview
+
+      interviews[:employee_interview] = {
+        id: employee_interview.id,
+        answers_count: employee_interview.answers.count,
+        completed: employee_interview.completed,
+        locked_at: employee_interview.locked_at
+      } if employee_interview
+
+      interviews[:crossed_interview] = {
+        id: crossed_interview.id,
+        answers_count: crossed_interview.answers.count,
+        completed: crossed_interview.completed,
+        locked_at: crossed_interview.locked_at
+      } if crossed_interview
+
+      interviews[:simple_interview] = {
+        id: simple_interview.id,
+        answers_count: simple_interview.answers.count,
+        completed: simple_interview.completed,
+        locked_at: simple_interview.locked_at
+      } if simple_interview
+
       {
         employee_id: employee.id,
         employee_email: employee.email,
-        interviews: {
-          hr_interview: {
-            interview_id: hr_interview.id,
-            answers_count: hr_interview.answers.count,
-            completed: hr_interview.completed,
-            locked_at: hr_interview.locked_at
-          },
-          employee_interview: {
-            interview_id: employee_interview.id,
-            answers_count: employee_interview.answers.count,
-            completed: employee_interview.completed,
-            locked_at: employee_interview.locked_at
-          },
-          crossed_interview: {
-            interview_id: crossed_interview.id,
-            answers_count: crossed_interview.answers.count,
-            completed: crossed_interview.completed,
-            locked_at: crossed_interview.locked_at
-          }
-        }
+        interviews: interviews
       }
     end
 
     {
+      id: id,
       owner_id: owner.id,
       owner_email: owner.email,
+      campaign_type: campaign_type,
       data: data
     }
   end
@@ -141,7 +165,7 @@ class Campaign < ApplicationRecord
         crossed_total = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
         crossed_completed = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids, completed: true, locked_at: nil).count
         crossed_locked = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids, completed: true).where.not(locked_at: nil).count
-        crossed_not_started = Interview.where(campaign_id: all.ids, label: 'Employee', employee_id: employees.ids, completed: false).map{|x| !Interview.find_by(campaign_id: x.campaign_id, label: 'Manager', employee_id: x.employee_id).completed?}.count
+        crossed_not_started = Interview.where(campaign_id: all.ids, label: 'Employee', employee_id: employees.ids, completed: false).map{|x| !Interview.find_by(campaign_id: x.campaign_id, label: 'Manager', employee_id: x.employee_id)&.completed?}.count
         crossed_in_progress = crossed_total - crossed_locked - crossed_completed - crossed_not_started
         crossed_not_set = employees.where_not_exists(:interviews, campaign_id: all.ids, employee_id: employees.ids).distinct.count
         # crossed_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count

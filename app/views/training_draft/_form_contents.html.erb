@@ -1,0 +1,44 @@
+<%= render_component FormSectionTitleComponent.new(title: 'Select a workshop') %>
+
+<div data-controller='search-inject'
+  data-action='refreshParticipantIdsSearch@window->search-inject#debouncedSearch'
+>
+  <span class='hidden' data-participant-ids-target="selectedCount">
+    <%= @training.participant_ids.count %>
+  </span>
+
+  <div class="flex-row-between-centered mb-1rem">
+    <div class="pos-rel">
+      <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
+        <%=
+          text_field_tag(
+            :search,
+            nil,
+            placeholder: 'Filter',
+            data: {
+              search_inject_target: 'search',
+              action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
+              path: training_draft_contents_contents_path
+            },
+            class: 'height-4rem pl-3rem rounded-3px',
+            style: 'border: 0.5px solid #CDCDCD;',
+            autocomplete: 'off',
+            label: false,
+            required: false
+          )
+        %>
+    </div>
+  </div>
+
+  <% headers = ["Workshop title", "Workshop mode"] %>
+  <% width = (1/headers.count.to_f)*100 %>
+  <div class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem">
+    <% headers.each do |header| %>
+      <div class='fs-1_6rem font-weight-bold' style='flex-basis: <%= width %>%;'><%= header %></div>
+    <% end %>
+  </div>
+
+  <div class='overflow-y-scroll box-shadow-inset-b' style='height: 180px;'
+    data-search-inject-target="results"
+  ></div>
+</div>

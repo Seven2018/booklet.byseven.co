@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Interview, type: :model do
   let(:owner) { create(:user) }
-  let(:employee) { create(:user, email: 'employee@gmail.com') }
-  let(:interview_form) { create(:interview_form) }
+  let(:manager) { create(:user, email: Faker::Internet.email) }
+  let!(:employee) { create(:user, email: Faker::Internet.email, manager: manager) }
   let(:campaign) do
     create(:campaign,
       title: interview_form.title,
@@ -21,75 +21,132 @@ RSpec.describe Interview, type: :model do
     campaign: campaign,
     interview_form: interview_form,
     employee: employee,
+    interviewer: employee.manager,
     creator: owner
     }
   end
 
   let(:interview) { Interview.new(interview_params.merge(label: label)) }
 
-  describe '#label_and_campaign_type_match' do
-    context 'with a crossed campaign' do
-      let(:campaign_type) { :crossed }
+  describe '#label_and_interview_form_match' do
+    context 'with an interview created when source of truth was campaign_type' do
+      context 'with a Whatever label' do
+        let(:label) { 'Whatever' }
+        let(:interview_form) { create(:interview_form) }
 
-      context 'with a Employee label' do
-        let(:label) { 'Employee' }
-        it 'an interview can be created' do
-          expect(interview.save).to be true
+        context 'with campaign_type crossed' do
+          let(:campaign_type) { :crossed }
+          it('an interview can be created SKIPPING VALIDATION') { expect(interview.save).to be true }
         end
-      end
 
-      context 'with a Manager label' do
-        let(:label) { 'Manager' }
-        it 'an interview can be created' do
-          expect(interview.save).to be true
-        end
-      end
-
-      context 'with a Crossed label' do
-        let(:label) { 'Crossed' }
-        it 'an interview can be created' do
-          expect(interview.save).to be true
-        end
-      end
-
-      context 'with a simple label' do
-        let(:label) { 'Simple' }
-        it 'an interview can NOT be created' do
-          expect(interview.save).to be false
+        context 'with campaign_type simple' do
+          let(:campaign_type) { :simple }
+          it('an interview can be created SKIPPING VALIDATION') { expect(interview.save).to be true }
         end
       end
     end
 
-    context 'with a simple campaign' do
-      let(:campaign_type) { :simple }
+    context 'with an interview created once source of truth is template kind' do
+      context 'with campaign_type one_to_one' do
+        let(:campaign_type) { :one_to_one }
+        context 'with a template answerable_by_employee_not_crossed' do
+          let(:interview_form) { create(:interview_form, answerable_by: :employee, cross: false) }
 
-      context 'with a Employee label' do
-        let(:label) { 'Employee' }
-        it 'an interview can NOT be created' do
-          expect(interview.save).to be false
+          context 'with a Employee label' do
+            let(:label) { 'Employee' }
+            it('an interview can be created') { expect(interview.save).to be true }
+          end
+
+          context 'with a Manager label' do
+            let(:label) { 'Manager' }
+            it('an interview can NOT be created') { expect(interview.save).to be false }
+          end
+
+          context 'with a Crossed label' do
+            let(:label) { 'Crossed' }
+            it('an interview can NOT be created') { expect(interview.save).to be false }
+          end
+
+          context 'with a simple label' do
+            let(:label) { 'Simple' }
+            it('an interview can NOT be created') { expect(interview.save).to be false }
+          end
         end
-      end
 
-      context 'with a Manager label' do
-        let(:label) { 'Manager' }
-        it 'an interview can NOT be created' do
-          expect(interview.save).to be false
+        context 'with a template answerable_by_manager_not_crossed' do
+          let(:interview_form) { create(:interview_form, answerable_by: :manager, cross: false) }
+
+          context 'with a Employee label' do
+            let(:label) { 'Employee' }
+            it('an interview can NOT be created') { expect(interview.save).to be false }
+          end
+
+          context 'with a Manager label' do
+            let(:label) { 'Manager' }
+            it('an interview can be created') { expect(interview.save).to be true }
+          end
+
+          context 'with a Crossed label' do
+            let(:label) { 'Crossed' }
+            it('an interview can NOT be created') { expect(interview.save).to be false }
+          end
+
+          context 'with a simple label' do
+            let(:label) { 'Simple' }
+            it('an interview can be created LEGACY') { expect(interview.save).to be true }
+          end
         end
-      end
 
-      context 'with a Crossed label' do
-        let(:label) { 'Crossed' }
-        it 'an interview can NOT be created' do
-          expect(interview.save).to be false
+
+        context 'with a template answerable_by_both_not_crossed' do
+          let(:interview_form) { create(:interview_form, answerable_by: :both, cross: false) }
+
+          context 'with a Employee label' do
+            let(:label) { 'Employee' }
+            it('an interview can be created') { expect(interview.save).to be true }
+          end
+
+          context 'with a Manager label' do
+            let(:label) { 'Manager' }
+            it('an interview can be created') { expect(interview.save).to be true }
+          end
+
+          context 'with a Crossed label' do
+            let(:label) { 'Crossed' }
+            it('an interview can NOT be created') { expect(interview.save).to be false }
+          end
+
+          context 'with a simple label' do
+            let(:label) { 'Simple' }
+            it('an interview can be created LEGACY') { expect(interview.save).to be true }
+          end
         end
-      end
 
-      context 'with a simple label' do
-        let(:label) { 'Simple' }
-        it 'an interview can be created' do
-          expect(interview.save).to be true
+        context 'with a template answerable_by_both_crossed' do
+          let(:interview_form) { create(:interview_form, answerable_by: :both, cross: true) }
+
+          context 'with a Employee label' do
+            let(:label) { 'Employee' }
+            it('an interview can be created') { expect(interview.save).to be true }
+          end
+
+          context 'with a Manager label' do
+            let(:label) { 'Manager' }
+            it('an interview can be created') { expect(interview.save).to be true }
+          end
+
+          context 'with a Crossed label' do
+            let(:label) { 'Crossed' }
+            it('an interview can be created') { expect(interview.save).to be true }
+          end
+
+          context 'with a simple label' do
+            let(:label) { 'Simple' }
+            it('an interview can be created LEGACY') { expect(interview.save).to be true }
+          end
         end
       end
     end
+
   end
 end

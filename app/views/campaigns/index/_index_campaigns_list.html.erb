@@ -1,65 +1,70 @@
-<% campaign_type_svg = {
-      'crossed' => 'uil:exchange',
-      'simple' => 'mdi:star-shooting'
-    } %>
+<% CampaignDecorator.decorate_collection(campaigns).each do |campaign| %>
 
-<% @campaigns.each do |campaign| %>
-
-  <% campaign_type = campaign.crossed? ? 'Cross' : 'Simple' %>
   <% manager = campaign.owner %>
-  <% template_title = campaign.interview_form.title %>
-  <% completion = campaign.completion_for(:all) %>
-  <% completion_status =
-      if completion == 100
-        'completed'
-      elsif completion > 0
-        'ongoing'
-      else
-        'not-started'
-      end %>
 
   <div class="campaigns-index__list-line" id='campaign-line-<%= campaign.id %>'>
     <%= link_to '', campaign_path(campaign), class: 'stretched-link' %>
     <div class="campaigns-index__list-line-element">
       <div class="campaigns-index__list-line-icon">
-        <span class="iconify" data-icon="<%= campaign_type_svg[campaign.campaign_type] %>"></span>
+        <span class="iconify" data-icon="<%= campaign.icon %>"></span>
       </div>
-      <p><%= campaign_type %></p>
+      <p><%= campaign.campaign_type_str %></p>
     </div>
     <div class="campaigns-index__list-line-element">
       <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
       <p><%= manager.fullname %></p>
     </div>
     <div class="campaigns-index__list-line-element">
-      <p class='template-title' title='<%= template_title %>'><%= template_title %></p>
+      <p class='template-title' title='<%= campaign.title %>'><%= campaign.title %></p>
     </div>
     <div class="campaigns-index__list-line-element campaigns-index__list-element-employee">
       <p><%= campaign.employees.distinct.count %></p>
     </div>
     <div class="campaigns-index__list-line-element campaigns-index__list-element-completion">
-      <p class='status-<%= completion_status %>'><%= completion %>%</p>
+      <p class='status-<%= campaign.completion_status %>'><%= campaign.completion_for(:all) %>%</p>
     </div>
-    <div class="campaigns-index__list-line-options" onclick="openContentMenu(this);">
-      <% if current_user.manager_or_above? %>
-        <i class="fas fa-ellipsis-v"></i>
-      <% end %>
-    </div>
-    <div class="campaigns-index__list-line-content-dropdown hidden">
-      <%= link_to 'Edit', edit_campaign_path(campaign) unless completion == 100 %>
-      <% if campaign.interviews.where(completed: true).empty? || current_user.hr_or_above? %>
-        <a data-toggle='modal' data-target='#deleteCampaign-<%= campaign.id %>'>Delete</a>
-      <% end %>
-      <% unless completion == 100 %>
-        <a data-toggle='modal' data-target='#sendEmail-<%= campaign.id %>'>Send Email</a>
-      <% end %>
-    </div>
+
+    <% if current_user.manager_or_above? %>
+      <div
+        data-controller="dropdown"
+        class="pos-rel d-flex justify-content-end"
+      >
+        <div
+          data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide"
+          class="cursor-pointer z-index-5"
+        >
+          <i class="fas fa-ellipsis-v pl-3"></i>
+        </div>
+
+        <div
+          data-dropdown-target="menu"
+          class="pos-abs rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
+          style='right: 0; top: 3rem; width: 120px;'
+        >
+          <% if campaign.interviews.where(completed: true).empty? || current_user.hr_or_above? %>
+            <%= link_to 'Delete', campaign_path(campaign), method: :delete, remote: true,
+              data: {
+                confirm: 'Are you sure ?',
+                action: 'click->dropdown#hide'
+              },
+              class: 'px-3 py-2 bkt-light-grey-hover w-100' %>
+          <% end %>
+          <% unless campaign.completion_for(:all) == 100 %>
+            <%= link_to 'Send Email', send_notification_email_path(id: campaign.id),
+              data: { action: 'click->dropdown#hide' },
+              class: 'px-3 py-2 bkt-light-grey-hover w-100' %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
   </div>
 <% end %>
 
-<div class="paginate-container">
+<div class="paginate-container paginate-container-blue">
 
   <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
-    <div class="paginate__previous-button" onclick='changePage("previous");'>
+    <div class="paginate__previous-button paginate__button-blue" onclick='changePage("previous");'>
       <span class="iconify" data-icon="fontisto:angle-left"></span>
       <p>Previous</p>
     </div>
@@ -68,7 +73,7 @@
   <%= paginate @campaigns, left: 3, right: 1 %>
 
   <% if @campaigns.count == 10 && @any_more %>
-    <div class="paginate__next-button" onclick='changePage("next");'>
+    <div class="paginate__next-button paginate__button-blue" onclick='changePage("next");'>
       <p>Next</p>
       <span class="iconify" data-icon="fontisto:angle-right"></span>
     </div>

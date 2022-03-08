@@ -1,104 +1,154 @@
-<div class="navbar navbar-expand-sm navbar-light navbar-orange">
-  <div class="container-fluid">
-    <div class="left">
-      <a href="/home"><span class="iconify" data-icon="mdi:home-circle" style="color: white;"></span></a>
+<div class="navbar navbar-expand-sm navbar-light navbar-orange px-2rem">
+  <div class="flex-row-between-centered">
+    <a class='centered-item height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' href="/home">
+      <span class="iconify fs-2_4rem bkt-orange" data-icon="bxs:home"></span>
+    </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
 
-      <% if user_signed_in? %>
-      <%= link_to my_interviews_path do %>
+     <% if user_signed_in? %>
+      <%= link_to my_trainings_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_interviews %>
+          <%= 'navbar-buttons--active' if @controller_action == :trainings_my_interviews %>
           ">
           <h4 title='My trainings'>My trainings</h4>
         </div>
       <% end %>
-
-      <% if current_user.manager_or_above? %>
-        <%= link_to my_team_interviews_path do %>
-          <div class="navbar-buttons
-            <%= 'navbar-buttons--active' if @controller_action == :trainings_my_team_trainings %>
-            ">
-            <h4 title='My team trainings'>My team trainings</h4>
-          </div>
-        <% end %>
-      <% end %>
-
-      <% if current_user.hr_or_above? %>
-        <button class="left-buttons">
-          <%= link_to campaigns_path do %>
-          <div class="navbar-buttons
-            <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>
-            ">
-            <h4>Admin</h4>
-          </div>
-          <% end %>
-        </button>
+    <% end %>
+    
+    <% if current_user.manager_or_above? %>
+      <%= link_to my_team_trainings_path do %>
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if @controller_action == :trainings_my_team_trainings %>
+          ">
+          <h4 title='My team trainings'>My team trainings</h4>
+        </div>
       <% end %>
     <% end %>
-    </div>
 
-    <div class="right">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item dropdown">
-              <div class="dropdown show">
-                <a class="navbar-user-card dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="iconify" data-icon="icon-park-outline:application-menu" style="color: white;"></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-                  <div class="dropdown-card-pages">
-                    <div class="interviews">
-                      <a href="/my_interviews">
-                      <span class="iconify" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;"></span>
-                      <p>Interviews</p></a>
-                    </div>
-                    <div class="trainings">
-                      <a href="/dashboard">
-                      <span class="iconify" data-icon="ion:school" style="color: #f26419;"></span>
-                      <p>Trainings</p></a>
-                    </div>
+    <% if current_user.hr_or_above? %>
+      <button class="left-buttons">
+        <%= link_to trainings_path do %>
+          <div class="navbar-buttons <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>">
+            <h4>Admin</h4>
+          </div>
+        <% end %>
+      </button>
+    <% end %>
+
+    <% if current_user.hr_or_above? %>
+      <% if current_user.hr_or_above? %>
+        <%= link_to edit_training_draft_participants_path, class: 'bkt-btn-white' do  %>
+          <i class="fas fa-plus"></i>
+          Create Training
+        <% end %>
+      <% end %>
+    <% end %>
+
+  </div>
+
+  <div class="right">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="flex-row-between-centered">
+          <li class="nav-item dropdown">
+            <div class="dropdown show">
+              <a class="navbar-user-card dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="iconify bkt-white" data-icon="icon-park-outline:application-menu" style="font-size: 3.4rem;"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+                <div class="flex-row-between-centered flex-wrap p-2rem" style='width: 24rem;'>
+                  <%= link_to my_interviews_path, class: 'flex-column-between-centered mb-2rem' do %>
+                    <span class="iconify bkt-blue mb-1rem" data-icon="fluent:chat-multiple-24-filled" style="font-size: 3.4rem"></span>
+                    <p>Interviews</p>
+                  <% end %>
+                  <%= link_to my_trainings_path, class: 'flex-column-between-centered mb-2rem' do %>
+                    <span class="iconify bkt-orange mb-1rem" data-icon="ion:school" style="font-size: 3.4rem"></span>
+                    <p>Trainings</p>
+                  <% end %>
+                  <%= link_to organisation_path, class: 'flex-column-between-centered' do %>
+                    <svg class='mb-1rem' width="27" height="26" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 6.5H12C11.1717 6.5 10.5 5.7723 10.5 4.875V1.625C10.5 0.727695 11.1717 0 12 0H15C15.8297 0 16.5 0.727695 16.5 1.625V4.875C16.5 5.77383 15.8297 6.5 15 6.5ZM2.25 3.25H9V5.6875C9 7.0332 10.0078 8.125 11.25 8.125H15.75C16.9922 8.125 18 7.0332 18 5.6875V3.25H24.75C25.9927 3.25 27 4.34129 27 5.6875V23.5625C27 24.9082 25.9927 26 24.75 26H2.25C1.00734 26 0 24.9087 0 23.5625V5.6875C0 4.34129 1.00781 3.25 2.25 3.25ZM13.5 11.375C11.843 11.375 10.5 12.8304 10.5 14.625C10.5 16.4196 11.843 17.875 13.5 17.875C15.157 17.875 16.5 16.4196 16.5 14.625C16.5 12.8304 15.1547 11.375 13.5 11.375ZM9 22.75H18C18.4142 22.75 18.75 22.3862 18.75 21.9375C18.75 20.5918 17.7422 19.5 16.5 19.5H10.5C9.25734 19.5 8.25 20.5913 8.25 21.9375C8.25 22.3844 8.5875 22.75 9 22.75Z" fill="url(#paint0_linear_598_70)"/>
+                      <path d="M25 11V6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M25 15V13" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                      <defs>
+                        <linearGradient id="paint0_linear_598_70" x1="20.5" y1="6" x2="7.07229e-07" y2="26" gradientUnits="userSpaceOnUse">
+                          <stop stop-color="#333333"/>
+                          <stop offset="1" stop-color="#747474"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    <p>Employees</p>
+                  <% end %>
+                </div>
+              </div>
+
+            </div>
+          </li>
+
+
+          <li class="nav-item dropdown">
+            <div class="dropdown show">
+              <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+                <div class="dropdown-card">
+                  <div class="user-info">
+                    <p><%= current_user.fullname%></p>
+                    <h6><%= current_user.email%></h6>
                   </div>
                 </div>
-
-              </div>
-            </li>
-
-
-            <li class="nav-item dropdown">
-              <div class="dropdown show">
-                <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-                  <div class="dropdown-card">
-                    <div class="user-info">
-                      <p><%= current_user.fullname%></p>
-                      <h6><%= current_user.email%></h6>
+                <%= link_to user_path(current_user) do %>
+                  <div class="dropdown-card dropdown-item ">
+                    <div class='dropdown-card-text'>
+                      <h6>Profile</h6>
                     </div>
                   </div>
-                  <%= link_to user_path(current_user) do %>
-                    <div class="dropdown-card dropdown-item ">
-                      <div class='dropdown-card-text'>
-                        <h6>Profile</h6>
-                      </div>
+                <% end %>
+                <%= link_to destroy_user_session_path, method: :delete do %>
+                  <div class="dropdown-card dropdown-item flex-row-between-centered">
+                    <div class='dropdown-card-text'>
+                      <h6>Log out</h6>
                     </div>
-                  <% end %>
-                  <%= link_to destroy_user_session_path, method: :delete do %>
-                    <div class="dropdown-card dropdown-item flex-row-between-centered">
-                      <div class='dropdown-card-text'>
-                        <h6>Log out</h6>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
+                  </div>
+                <% end %>
               </div>
-            </li>
-        </ul>
-      </div>
+            </div>
+          </li>
+      </ul>
     </div>
   </div>
 </div>
+
+
+<% if @multi_step_form_navbar_content.present? %>
+  <div class="navbar-admin">
+    <div class="navbar-admin__button">
+      <h4><%= @multi_step_form_navbar_content %></h4>
+    </div>
+  </div>
+<% end %>
+
+
+<% if @show_navbar_admin.present? %>
+  <div class="navbar-admin navbar-admin-trainings">
+    <% klass = 'navbar-admin__button' %>
+    <% active_klass = "navbar-admin__button--active" %>
+
+    <%= link_to trainings_path,
+      class: "#{klass} #{active_klass if @controller_action == :trainings_index}" do %>
+      <h4>Trainings</h4>
+    <% end %>
+
+    <%= link_to trainings_reports_path,
+      class: "#{klass} #{
+        active_klass if
+          @controller_action == :reports_index
+      }" do %>
+      <h4>Report</h4>
+    <% end %>
+  </div>
+<% end %>

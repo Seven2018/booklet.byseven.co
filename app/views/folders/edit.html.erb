@@ -1,55 +1,77 @@
-<% if current_user.admin? || (@folder.company_id == current_user.company_id) %>
-  <div id="content-show-container">
-    <div id="content-show-container-left">
-      <%= render 'folders/partials/show_summary', folder: @folder %>
-    </div>
-    <div id="content-show-container-right">
-      <div class="content-add">
-        <div class="content-center-div">
-          <div class="content-show-attributes-center">
-            <%= render 'folders/partials/show_attributes_left', folder: @folder %>
+<div class="centered-item p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+  <%= render_component BackComponent.new(fallback: catalogue_path) %>
+  <h2>Edit Program</h2>
+  </div>
+</div>
+
+<div id="folder-edit__container" class='flex-row-between-start bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem; min-height: calc(100vh - 16.5rem);'>
+  <div id="folder-edit__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
+    <%= render 'folders/edit/edit_show_summary', folder: @folder %>
+  </div>
+
+  <div id="folder-edit__container-right" style='margin-left: 40rem;'>
+
+      <div id="folder-edit__content" class='flex-row-between-start'>
+
+        <div id="folder-edit__content-center" class='flex-column-start-centered'>
+
+          <div id="folder-edit__attributes-center" class='rounded-10px mb-2rem overflow-hidden' style='width: 100%; max-width: 64rem; height: 20rem;'>
+            <%= render 'folders/edit/edit_folder_picture', folder: @folder %>
           </div>
-          <div class="button-add-catalogue">
-            <%= simple_form_for :select_children, url: folder_manage_children_path, method: :get, remote: true do |f| %>
-              <%= f.hidden_field :folder_id, value: @folder.id %>
-              <%= f.hidden_field :folder_ids %>
-              <%= f.hidden_field :content_ids %>
-              <%= f.submit '', class: 'hidden-submit hidden' %>
-            <% end %>
-            <%= link_to '', folder_path(@folder), class: 'hidden-link hidden' %>
-            <div class="btn-blue" onclick='saveAndConfirm();'>
-              <p>Confirm</p>
+
+          <div id="folder-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
+            <%= render 'folders/edit/edit_folder_attributes', folder: @folder %>
+          </div>
+
+          <div id="folder-edit__lines" style='width: 100%; max-width: 64rem;'>
+            <div class='bkt-bg-white p-2rem rounded-10px pos-rel'>
+              <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-1rem">Add content</p>
+              <div class="flex-row-start-centered pos-rel">
+                  <i class="fas fa-search position-absolute z-index-150 bkt-light-grey" style='left: 25rem; bottom: 16.6px;'></i>
+              </div>
+              <div id="folder-edit__contents">
+                <%= render 'folders/edit/edit_folder_content', folder: @folder, folders: @folders, contents: nil %>
+                <%= render 'folders/edit/edit_folder_content', folder: @folder, folders: nil, contents: @contents %>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="content-add-right">
-          <div class="content-show-attributes-right">
-            <%= render 'folders/partials/show_attributes_right', folder: @folder %>
-          </div>
+
+      </div>
+
+      <div id="template-edit__content-right" style=''>
+        <div class="template-show-attributes-right">
+          <%= render 'folders/edit/edit_folder_settings', folder: @folder %>
         </div>
       </div>
-    </div>
-    <div class="saved-message hidden">
-      <p>SAVED!</p>
-    </div>
-  </div>
 
-<% else %>
-  <div class="access-restricted centered-item">
-    <h1>Access restricted</h1>
-  </div>
-<% end %>
+    </div>
 
+  </div>
+</div>
+
+<!------------>
 <!-- MODALS -->
+<!------------>
 
-<div class='modal fade' id='addTheme' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'folders/modals/manage_categories', folder: @folder %>
   </div>
 </div>
 
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
 <script>
+
+  ///////////
+  // TOOLS //
+  ///////////
+
   doubleClickGuardian = false
+  saving = false
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
@@ -64,132 +86,249 @@
     else return false;
   }
 
-  function saveAndConfirm() {
-    container = document.querySelector('.content-info__folder-content-list')
-    selected_folders = []
-    folder_storage = document.querySelector('#select_children_folder_ids')
-    selected_contents = []
-    content_storage = document.querySelector('#select_children_content_ids')
-    container.querySelectorAll('input[type="checkbox"]:checked').forEach((checkbox) => {
-      card =  checkbox.closest('.edit-folder-card')
-      if (card.id.split('-')[0] == 'folder') {
-        selected_folders.push(card.id.split('-')[1])
-      } else {
-        selected_contents.push(card.id.split('-')[1])
-      }
-    })
-    folder_storage.value = selected_folders
-    content_storage.value = selected_contents
-    document.querySelector('.select_children').querySelector('.hidden-submit').click()
-    document.querySelector('.edit_folder').querySelector('.hidden-submit').click()
-    setTimeout(function(){document.querySelector('.hidden-link').click()}, 500)
+  function submitForm(element) {
+    element.closest('form').querySelector('.hidden-submit').click()
   }
 
-  function updateContent(element) {
-    form = element.closest('form')
-    submit = form.querySelector('.hidden-submit')
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, element) && doubleClickGuardian == false) {
-        submit.click();
-        this.removeEventListener('click', arguments.callee, false);
-      }
-    })
+  function updateStatusMessage(message) {
+    message_storage = document.getElementById('content-edit__update-status')
+
+    if (message == 'Up to date') {
+      message_storage.classList.add('bkt-green')
+      message_storage.classList.remove('bkt-yellow')
+    } else {
+      message_storage.classList.remove('bkt-green')
+      message_storage.classList.add('bkt-yellow')
+    }
+
+
+    message_storage.innerText = message
+  }
+
+  // AUTO UPDATE TEXTAREA HEIGHT //
+
+  const tx = document.getElementsByTagName("textarea");
+  for (let i = 0; i < tx.length; i++) {
+    tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
+    tx[i].addEventListener("click", OnInput, false);
+    tx[i].addEventListener("input", OnInput, false);
+    tx[i].click()
+  }
+
+  function OnInput() {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight) + "px";
   }
 
 
-  function saveMod(element) {
+  ///////////////////////
+  // ADD QUESTION MENU //
+  ///////////////////////
+
+  function addModMenu(element) {
+
     if (doubleClickGuardian == false) {
       doubleClickGuardian = true
-      initial_value = element.value;
+      container = element.parentNode
+      button_add = element
+      button_remove = container.querySelector('.add_button_hide')
+      menu = container.querySelector('.content-edit__add-mod-menu')
+
+      container.classList.add('active')
+      button_add.classList.add('hidden')
+      button_remove.classList.remove('hidden')
+      menu.classList.remove('hidden')
+
       window.addEventListener('click', function(e) {
-        if (outsideClick(e, element)) {
-          if (element.value != initial_value || element.tagName == 'SELECT') {
-            form = element.closest('form')
-            form.querySelector('.hidden-submit').click();
-          }
+        if (doubleClickGuardian == false) {
+          container.classList.remove('active')
+          button_add.classList.remove('hidden')
+          button_remove.classList.add('hidden')
+          menu.classList.add('hidden')
           this.removeEventListener('click', arguments.callee, false);
         }
       });
+
+      setTimeout(function(){doubleClickGuardian = false}, 100)
+    }
+  }
+
+  function addMod(type, referenceNode) {
+    newDiv = document.createElement("div")
+    console.log(type)
+    newDiv.classList.add('add-' + type)
+    template = document.querySelector('.add-' + type + '-template')
+    templateinfo = template.innerHTML
+    newDiv.innerHTML = templateinfo
+    position = referenceNode.id.split('-')[1]
+    position_storage = newDiv.querySelector('#mod_position')
+
+    position_storage.value = position
+    content = document.querySelector('#content-edit__lines')
+    if (position == 0) {
+      content.insertBefore(newDiv, content.firstChild)
+    } else {
+      content.insertBefore(newDiv, referenceNode.nextSibling)
+    }
+  }
+
+  //////////////////////
+  // QUESTION OPTIONS //
+  //////////////////////
+
+  function checkBookletCheckbox(element) {
+    updateStatusMessage("Updating...")
+    checkbox = element.querySelector('input')
+    icon = element.querySelector('svg')
+
+    if (checkbox.value == 'true') {
+      checkbox.value = 'false'
+      icon.classList.add('hidden')
+    } else {
+      checkbox.value = 'true'
+      icon.classList.remove('hidden')
+    }
+    saveForm(element)
+  }
+
+  function switchSide(element, save = true) {
+    updateStatusMessage("Updating...")
+    switch_button = element.parentNode
+    form = element.closest('form')
+    hidden_submit = form.querySelector('.hidden-submit')
+
+    if (element.checked == true) {
+      setTimeout(function(){switch_button.classList.add('switch_checked')}, 100)
+    } else {
+      setTimeout(function(){switch_button.classList.remove('switch_checked')}, 100)
+    }
+    if (hidden_submit != undefined && save) {
+      hidden_submit.click();
+    }
+  }
+
+  ///////////////////
+  // SAVE QUESTION //
+  ///////////////////
+
+  function saveForm(element, keyup = false) {
+    updateStatusMessage("Updating...")
+    form = element.closest('form')
+
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      initial_value = element.value;
+
+      if (keyup && !saving) {
+        saving = true
+        setTimeout(function(){
+          form.querySelector('.hidden-submit').click()
+          saving = false
+        }, 3000)
+      } else {
+        form.querySelector('.hidden-submit').click()
+      }
+
       setTimeout(function(){doubleClickGuardian = false}, 500)
     }
   }
 
-  function autoSubmitTheme(element) {
+  document.querySelectorAll('.trix-content').forEach((trix) => {
+    if (trix.parentNode.querySelector('.trix_editor') == null) {
+      trix.innerHTML = ''
+    } else {
+      trix.innerHTML = trix.parentNode.querySelector('.trix_editor').value
+    }
+    trix.addEventListener('keyup', (event) => {
+      updateStatusMessage("Updating...")
+      if (!saving) {
+        saving = true
+        setTimeout(function(){
+          trix.parentNode.querySelector('.trix_editor').value = trix.innerHTML
+          trix.closest('form').querySelector('.hidden-submit').click()
+          saving = false
+        }, 1000)
+      }
+    })
+  })
+
+  ///////////////////////
+  // TEMPLATE SETTINGS //
+  ///////////////////////
+
+  function BookletSelectExpand(element) {
+    doubleClickGuardian = true
+    dropdown = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-dropdown')
+    setTimeout(() => {
+      doubleClickGuardian = false
+    }, 100);
+    if (dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden')
+      window.addEventListener('click', function(e) {
+        if (!doubleClickGuardian) {
+          dropdown.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+    } else {
+      dropdown.classList.add('hidden')
+    }
+  }
+
+  function BookletSelectSubmit(element, attribute) {
+    updateStatusMessage("Updating...")
+    form = element.closest('form')
+    container = element.closest('.booklet-select__template-edit-container')
+    selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
+    selected_value = element.querySelector('p').innerText
+    storage = form.querySelector('#content_' + attribute)
+    submit_button = form.querySelector('.hidden-submit')
+
+    storage.value = selected_value
+    selected_display.innerText = selected_value
+
+    submit_button.click()
+  }
+
+
+  /////////////////
+  // MANAGE TAGS //
+  /////////////////
+
+  function manageTag(element, option) {
+    tag_id = element.id.split('-')[1]
+    tag_checkbox = document.querySelector('#interview_form_tags_' + tag_id)
+
+    if (option == 'add') {
+      tag_checkbox.checked = true
+    } else if (option == 'remove') {
+      tag_checkbox.checked = false
+    }
+
+    tag_checkbox.closest('form').querySelector('.hidden-submit').click()
+  }
+
+  function toggleTagCategoryDropdown(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode
+    if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '10000px'
+      block.classList.add('active')
+    } else {
+      block.style.maxHeight = '60px'
+      block.classList.remove('active')
+    }
+  }
+
+  function autoSubmitTag(element) {
     element.closest('form').querySelector('.hidden-submit').click()
   }
 
-  function dismissModal(element) {
-    content_id = element.parentNode.parentNode.querySelector('#add_categories_content_id').value;
-    modal = document.querySelector('#addTheme');
-    modal.querySelector('.cancel-close').click();
-  }
-
-  function showDelete(element) {
-    // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
-    trash = element.parentNode.querySelector('.category-delete');
-    if (trash.style.opacity == 0) {
-      trash.style.opacity = 1;
-    } else {
-      trash.style.opacity = 0;
-    }
-  }
-
-  function fetchCategoryForm(element) {
-    form = element.parentNode.parentNode.querySelector('.hidden-form-category-ajax');
-    initial_top = form.offsetTop
-    initial_left = form.offsetLeft
-    form.style.top = (element.offsetTop).toString() + 'px'
-    form.style.left = (element.offsetLeft + 27).toString() + 'px'
-    element.querySelector('p').style.opacity = '0'
-    form.classList.remove('hidden')
-    form.querySelector('input').focus()
-    formGuardian = true;
-    setTimeout(function(){
-      formGuardian = false;
-    }, 1);
-
-    form.querySelector('#new_category_title').addEventListener('keypress', function(e) {
-      if (event.which == '13') {
-        event.preventDefault();
-        form.querySelector('.hidden-submit').click()
-      }
-    })
-
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, form) && formGuardian == false) {
-        form.style.top = initial_top.toString() + 'px';
-        form.style.left = initial_left.toString() + 'px'
-        element.querySelector('p').style.opacity = '1'
-        form.classList.add('hidden')
-        form.querySelector('input').value = ''
-        this.removeEventListener('click', arguments.callee, false)
-      }
-    });
-  }
-
-  function selectElement(element) {
-    card = element.closest('.edit-folder-card')
-    checkbox = card.querySelector('input[type="checkbox"]')
-    checkbox.checked = !checkbox.checked
-    if (checkbox.checked) {
-      card.classList.add('selected')
-    } else {
-      card.classList.remove('selected')
-    }
-  }
-
-  function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.searchbar')
-    searchbar.querySelectorAll('input').forEach((input) => {
-      if (input.type == 'text') {
-        input.value = ''
-      } else if (input.type == 'checkbox') {
-        input.checked = false
-      }
-    })
-    searchbar.querySelectorAll('select').forEach((select) => {
-      select.selectedIndex = 0
-    })
-    searchbar.querySelector('.btn-search').click()
-  }
 </script>

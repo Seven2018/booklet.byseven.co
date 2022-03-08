@@ -1,6 +1,6 @@
 <% CampaignDecorator.decorate_collection(campaigns).each do |campaign| %>
 
-  <% manager = campaign.manager %>
+  <% manager = current_user %>
 
   <div class="campaigns-my-team-interviews__card">
     <div class="campaigns-my-interviews__card-inner">
@@ -11,7 +11,10 @@
           </div>
           <div class="campaigns-my-interviews__card-title-deadline">
             <h2><%= campaign.title %></h2>
-            <p class="campaigns-my-interviews__card-status <%= campaign.completion_status %>"><%= campaign.completion_status_string %></p>
+            <div class="flex-row-start-centered">
+              <p class="campaigns-my-interviews__card-status <%= campaign.completion_status %>"><%= campaign.completion_status_string %></p>
+              <div class="deadline"><p>Deadline : <%= campaign.deadline %></p></div>
+            </div>
           </div>
 
         </div>
@@ -30,6 +33,8 @@
           crossed_interview =
             campaign.interviews_for(employee.id)
         %>
+        <% interviews = campaign.interviews.where(employee: employee) %>
+        <% interview_form = interviews.first.interview_form %>
 
         <div class="campaigns-my-interviews__card-group">
           <div class="campaigns-my-interviews__card-group-left">
@@ -39,10 +44,12 @@
               </div>
               <div class="campaigns-my-interviews__card-name-status">
                 <h6><%= manager.fullname %><em style="color:darkgray">- Manager</em></h6>
-                <% if manager_interview.completed? %>
-                  <p style="color:#7BC079">Review completed</p>
+                <% if interview_form.answerable_by_employee? %>
+                  <p class='bkt-light-grey6'>N/A</p>
+                <% elsif manager_interview&.completed? %>
+                  <p class='bkt-green'>Review completed</p>
                 <% else %>
-                  <p style="color:#EC6D6D">Review not completed</p>
+                  <p class='bkt-red'>Review not completed</p>
                 <% end %>
               </div>
             </div>
@@ -53,36 +60,40 @@
               </div>
               <div class="campaigns-my-interviews__card-name-status">
                 <h6><%= employee.fullname %><em style="color:darkgray">- Employee</em></h6>
-                <% if campaign.crossed? %>
-                  <% if employee_interview.completed? %>
-                    <p style="color:#7BC079">Review completed</p>
-                  <% else %>
-                    <p style="color:#EC6D6D">Review not completed</p>
-                  <% end %>
+                <% if interview_form.answerable_by_manager? %>
+                  <p class='bkt-light-grey6'>N/A</p>
+                <% elsif employee_interview&.completed? %>
+                 <p class='bkt-green'>Review completed</p>
+                <% else %>
+                  <p class='bkt-red'>Review not completed</p>
                 <% end %>
               </div>
             </div>
           </div>
 
-          <% if campaign.simple? %>
+          <% if interview_form.answerable_by_manager? %>
             <%= link_to interview_path(manager_interview), class: 'btn-blue-my-interviews' do %>
               <p><%= manager_interview&.completed? ? 'Update' : 'Start review' %></p>
             <% end %>
-          <% elsif campaign.crossed? %>
-            <% if crossed_interview.locked? %>
+          <% elsif interview_form.answerable_by_employee? && employee_interview.completed %>
+            <%= link_to interview_path(employee_interview), class: 'btn-blue-my-interviews' do %>
+              <p>Review</p>
+            <% end %>
+          <% elsif interview_form.answerable_by_both? %>
+            <% if interviews.where(locked_at: nil).empty? %>
               <button class="btn-blue-my-interviews btn-blue-my-interviews-disabled">
                 <p>Locked</p>
                 <span class="iconify" data-icon="bxs:lock-alt"></span>
               </button>
-            <% elsif crossed_interview.completed? %>
+            <% elsif interview_form.cross && crossed_interview.completed? %>
               <%= link_to lock_interview_path(interview_id: crossed_interview.id), class: 'btn-blue-my-interviews' do %>
                 <p>Lock interview</p>
               <% end %>
-            <% elsif manager_interview.completed? && employee_interview.completed? %>
+            <% elsif interview_form.cross && manager_interview.completed? && employee_interview.completed? %>
               <%= link_to interview_path(crossed_interview), class: 'btn-blue-my-interviews' do %>
                 <p>Start cross review</p>
               <% end %>
-            <% elsif manager_interview.completed? && !employee_interview.completed? %>
+            <% elsif interview_form.cross && manager_interview.completed? && !employee_interview.completed? %>
               <button class="btn-grey-my-interviews">
                 <p>Waiting for employee's review</p>
               </button>

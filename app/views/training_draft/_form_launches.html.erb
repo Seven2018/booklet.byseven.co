@@ -1,0 +1,23 @@
+<%= render_component FormSectionTitleComponent.new(title: 'Summary of your trainings') %>
+
+<div class="fs-1_4rem my-2 bkt-dark-grey">
+  Workshop selection :
+  <span class="font-weight-600">
+    <%= @training.content.title %>
+  </span>
+</div>
+
+<div class="fs-1_4rem my-2 bkt-dark-grey">
+  Selected participants :
+  <span class="font-weight-600">
+    <%= @training.participant_ids.count %>
+  </span>
+</div>
+
+<div class="fs-1_4rem my-2 bkt-dark-grey">
+  Total cost :
+  <span class="font-weight-600">
+    <%= decimal_eur(@training.participant_ids.count.to_f * @training.cost_per_employee) %>
+  </span>
+</div>
+

@@ -26,7 +26,7 @@
       <button class='active'><p>Select Dates</p></button>
     </div>
     <div>
-      <%= link_to '', dashboard_path, class: 'confirm-button hidden' %>
+      <%= link_to '', trainings_path, class: 'confirm-button hidden' %>
       <%= simple_form_for Training.new, remote: true do |f| %>
         <% params[:book].present? ? selected_folder = params[:book][:selected_folder] : selected_folder = '' %>
         <% if @selected_folder.present? %>

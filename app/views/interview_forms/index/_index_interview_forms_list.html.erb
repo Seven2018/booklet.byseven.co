@@ -28,7 +28,7 @@
       style='right: 0; top: 6rem;'
     >
       <%= link_to 'Duplicate', duplicate_interview_form_path(template),
-        class: 'px-3 py-2 hover-bkt-light-grey w-100'
+        class: 'px-3 py-2 bkt-light-grey-hover w-100'
       %>
       <% unless Campaign.where(interview_form: template).exists? %>
         <%= link_to 'Delete', interview_form_path(template),
@@ -37,7 +37,7 @@
           data: {
             confirm: 'Are you sure ?'
           },
-          class: 'px-3 py-2 hover-bkt-light-grey w-100'
+          class: 'px-3 py-2 bkt-light-grey-hover w-100'
         %>
       <% end %>
     </div>
@@ -45,10 +45,10 @@
 
 <% end %>
 
-<% if @templates.count == 10 %>
-  <div class="paginate-container">
+<% if @any_more %>
+  <div class="paginate-container paginate-container-blue">
     <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
-      <div class="paginate__previous-button" onclick='changePage("previous");'>
+      <div class="paginate__previous-button paginate__button-blue" onclick='changePage("previous");'>
         <span class="iconify" data-icon="fontisto:angle-left"></span>
         <p>Previous</p>
       </div>
@@ -57,7 +57,7 @@
     <%= paginate @templates, left: 3, right: 1 %>
 
     <% if @templates.count == 10 && @any_more %>
-      <div class="paginate__next-button" onclick='changePage("next");'>
+      <div class="paginate__next-button paginate__button-blue" onclick='changePage("next");'>
         <p>Next</p>
         <span class="iconify" data-icon="fontisto:angle-right"></span>
       </div>

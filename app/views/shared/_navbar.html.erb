@@ -9,12 +9,12 @@
         <% if user_signed_in? %>
           <li>
             <% if params[:action] == 'dashboard' || params[:action] == 'recommendation'|| params[:controller] == 'trainings'|| params[:controller] == 'workshops' %>
-              <%= link_to dashboard_path do %>
+              <%= link_to trainings_path do %>
                 <div class="navbar-button navbar-buttons--active"><h4>Dashboard</h4></div>
               <% end %>
               <div class="isactive"></div>
             <% else %>
-              <%= link_to dashboard_path do %>
+              <%= link_to trainings_path do %>
                 <div class="navbar-buttons"><h4>Dashboard</h4></div>
               <% end %>
             <% end %>
@@ -48,12 +48,12 @@
             </li>
             <li>
               <% if params[:action] == 'overview' %>
-                <%= link_to overview_path do %>
+                <%= link_to trainings_reports_path do %>
                   <div class="navbar-buttons navbar-buttons--active"><h4>Report</h4></div>
                 <% end %>
                 <div class="isactive"></div>
               <% else %>
-                <%= link_to overview_path do %>
+                <%= link_to trainings_reports_path do %>
                   <div class="navbar-buttons"><h4>Report</h4></div>
                 <% end %>
               <% end %>
@@ -90,7 +90,7 @@
           </a>
           <div class="dropdown-menu" id='dropdown-icon-menu' aria-labelledby="dropdownMenuApp">
             <div>
-              <%= link_to dashboard_path, class: 'menu-icon menu-icon__booklet' do %>
+              <%= link_to trainings_path, class: 'menu-icon menu-icon__booklet' do %>
                 <div class="booklet-icon-container"><i class="fas fa-graduation-cap"></i><p>Training</p></div>
               <% end %>
               <%= link_to campaigns_path, class: 'menu-icon menu-icon__campaign' do %>

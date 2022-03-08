@@ -15,7 +15,7 @@ class CompaniesController < ApplicationController
       if current_user.employee?
         current_user.update(access_level: 'Account Owner', company_id: @company.id)
       end
-      redirect_to dashboard_path
+      redirect_to trainings_path
     else
       render :new
     end

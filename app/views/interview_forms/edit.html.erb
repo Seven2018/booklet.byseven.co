@@ -1,8 +1,5 @@
 <div class="centered-item p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
-  <%= link_to interview_forms_path, class: "bkt-btn-back pos-abs", style: 'top: 3.6rem; left: 2rem;' do %>
-    <span class="iconify" data-icon="bi:arrow-left"></span>
-    <p>Back</p>
-  <% end %>
+  <%= render_component BackComponent.new(fallback: interview_forms_path) %>
   <h2>1 to 1 template</h2>
   <div class="height-5rem flex-row-between-centered pos-abs" style='top: 2rem; right: 2rem;'>
     <p id='template-edit__update-status' class='bkt-green mr-2rem'>Up to date</p>
@@ -18,7 +15,7 @@
     <%= render 'interview_forms/edit/edit_show_summary', template: @template %>
   </div>
 
-  <div id="template-show__container-right" style='margin-left: 30rem;'>
+  <div id="template-show__container-right" style='max-width: calc(100vw - 32rem); margin-left: 30rem;'>
 
     <div id="template-edit__content" class='flex-row-between-start'>
 
@@ -98,6 +95,7 @@
   ///////////
 
   doubleClickGuardian = false
+  opened_message = false
   saving = false
 
   function outsideClick(event, notelem) {
@@ -111,6 +109,27 @@
     }
     if (clickedOut) return true;
     else return false;
+  }
+
+  function displayMessage(element) {
+    if (!doubleClickGuardian && !opened_message) {
+      doubleClickGuardian = true
+      opened_message = true
+      message_storage = element.parentNode.querySelector('.message-container')
+
+      message_storage.classList.remove('hidden')
+      console.log(message_storage)
+
+      window.addEventListener('click', function(e) {
+        if (outsideClick(e, element) && !doubleClickGuardian) {
+          opened_message = false
+          message_storage.classList.add('hidden')
+          this.removeEventListener('click', arguments.callee, false);
+        }
+      });
+
+      setTimeout(function(){doubleClickGuardian = false}, 100)
+    }
   }
 
   function submitForm(element) {
@@ -127,7 +146,6 @@
       message_storage.classList.remove('bkt-green')
       message_storage.classList.add('bkt-yellow')
     }
-
 
     message_storage.innerText = message
   }
@@ -266,24 +284,7 @@
     }
   }
 
-  document.querySelectorAll('.trix-content').forEach((trix) => {
-    if (trix.parentNode.querySelector('.trix_editor') == null) {
-      trix.innerHTML = ''
-    } else {
-      trix.innerHTML = trix.parentNode.querySelector('.trix_editor').value
-    }
-    trix.addEventListener('keyup', (event) => {
-      updateStatusMessage("Updating...")
-      if (!saving) {
-        saving = true
-        setTimeout(function(){
-          trix.parentNode.querySelector('.trix_editor').value = trix.innerHTML
-          trix.closest('form').querySelector('.hidden-submit').click()
-          saving = false
-        }, 1000)
-      }
-    })
-  })
+
 
   ///////////////////////
   // TEMPLATE SETTINGS //
@@ -443,4 +444,29 @@
     }
   }
 
+
+  /////////////
+  // ON LOAD //
+  /////////////
+
+  window.onload = function() {
+    document.querySelectorAll('.trix-content').forEach((trix) => {
+      if (trix.parentNode.querySelector('.trix_editor') == null) {
+        trix.innerHTML = ''
+      } else {
+        trix.innerHTML = trix.parentNode.querySelector('.trix_editor').value
+      }
+      trix.addEventListener('keyup', (event) => {
+        updateStatusMessage("Updating...")
+        if (!saving) {
+          saving = true
+          setTimeout(function(){
+            trix.parentNode.querySelector('.trix_editor').value = trix.innerHTML
+            trix.closest('form').querySelector('.hidden-submit').click()
+            saving = false
+          }, 1000)
+        }
+      })
+    })
+  }
 </script>

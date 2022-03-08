@@ -33,19 +33,6 @@ class ApplicationController < ActionController::Base
     redirect_to(root_path)
   end
 
-  module VideoHelper
-    def embed_video(video_url)
-      if video_url =~ /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/
-        video_id = video_url.split("=")[1]
-        content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen")
-      elsif video_url =~ /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]loom+)\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
-        video_id = video_url.split("/").last
-        content_tag(:iframe, nil, src: "//www.loom.com/embed/#{video_id}", allowfullscreen: "allowfullscreen")
-      end
-    end
-  end
-
-
   protected
 
   def after_sign_in_path_for(resource)
@@ -120,11 +107,15 @@ class ApplicationController < ActionController::Base
     @show_navbar_admin = true if current_user&.hr_or_above?
   end
 
-  def show_navbar_campaign
-    @show_navbar_campaign = ['campaigns', 'interview_forms'].include?(params[:controller]) || params[:controller].split('/').first == 'campaign_draft'
-  end
-
   def show_navbar_home
     @show_navbar_home = true
+  end
+
+  def show_navbar_training
+    @show_navbar_training = true
+  end
+
+  def show_navbar_campaign
+    @show_navbar_campaign = true
   end
 end

@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_24_132955) do
+ActiveRecord::Schema.define(version: 2022_03_07_104628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -281,10 +282,12 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "locked_at"
+    t.bigint "interviewer_id"
     t.index ["campaign_id"], name: "index_interviews_on_campaign_id"
     t.index ["creator_id"], name: "index_interviews_on_creator_id"
     t.index ["employee_id"], name: "index_interviews_on_employee_id"
     t.index ["interview_form_id"], name: "index_interviews_on_interview_form_id"
+    t.index ["interviewer_id"], name: "index_interviews_on_interviewer_id"
   end
 
   create_table "mods", force: :cascade do |t|
@@ -303,11 +306,6 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_mods_on_company_id"
-  end
-
-  create_table "my_interviews", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -360,13 +358,24 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
     t.index ["tag_category_id"], name: "index_tags_on_tag_category_id"
   end
 
+  create_table "training_drafts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "state", default: 0, null: false
+    t.jsonb "data", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_training_drafts_on_user_id"
+  end
+
   create_table "trainings", force: :cascade do |t|
     t.string "title"
     t.bigint "company_id"
     t.bigint "folder_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "creator_id"
     t.index ["company_id"], name: "index_trainings_on_company_id"
+    t.index ["creator_id"], name: "index_trainings_on_creator_id"
     t.index ["folder_id"], name: "index_trainings_on_folder_id"
   end
 
@@ -506,6 +515,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
   add_foreign_key "interviews", "interview_forms"
   add_foreign_key "interviews", "users", column: "creator_id"
   add_foreign_key "interviews", "users", column: "employee_id"
+  add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "sessions", "trainings"
   add_foreign_key "sessions", "workshops"
@@ -513,8 +523,10 @@ ActiveRecord::Schema.define(version: 2022_02_24_132955) do
   add_foreign_key "tag_categories", "companies"
   add_foreign_key "tags", "companies"
   add_foreign_key "tags", "tag_categories"
+  add_foreign_key "training_drafts", "users"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "folders"
+  add_foreign_key "trainings", "users", column: "creator_id"
   add_foreign_key "user_forms", "mods"
   add_foreign_key "user_forms", "users"
   add_foreign_key "user_interests", "contents"

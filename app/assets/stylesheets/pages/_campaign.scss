@@ -222,14 +222,12 @@
 }
 
 .campaigns-my-interviews__tabs-controls {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
   padding: 0 1.5rem;
   font-weight: bold;
-
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
 
   .booklet-select__selected {
     background-color: white;
@@ -653,7 +651,7 @@
 
 .campaigns-index-container {
   min-height: calc(100vh - 15rem);
-  background-color: #F5F8FB;
+  background-color: $bkt-light-grey2;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -906,7 +904,7 @@
       text-overflow: ellipsis;
     }
 
-    .status-completed, .status-ongoing, .status-not-started {
+    .status-completed, .status-in_progress, .status-not-started {
       padding: 1rem 1.5rem;
       border-radius: .5rem;
       font-weight: 600;
@@ -917,7 +915,7 @@
       background-color: #57E054;
     }
 
-    .status-ongoing {
+    .status-in_progress {
       background-color: #FFC85C;
     }
 

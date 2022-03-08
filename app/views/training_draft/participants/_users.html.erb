@@ -1,0 +1,44 @@
+<% users.each do |user| %>
+  <% selected = @training.participant_ids.include?(user.id.to_s) %>
+
+  <div class='flex-row-between-centered height-5rem'>
+    <img
+      src="<%= user.picture %>"
+      alt="<%= user.fullname %>"
+      class='avatar-sm my-1rem mx-2rem'
+      onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'
+    >
+
+    <div class='flex-grow-1 fs-1_2rem'>
+      <div class='font-weight-600'><%= user.fullname %></div>
+      <div><%= user.job_title %></div>
+    </div>
+
+    <% key = "check-box-user-id-#{user.id}" %>
+    <label
+      data-controller='toggle-checked-participants'
+      class='centered-item rounded-3px my-1rem mx-2rem'
+      style='height: 2.4rem; width: 2.4rem; border: 0.5px solid #CDCDCD;'
+      for='<%= key %>'
+    >
+      <%= check_box_tag(
+        "_",
+        nil,
+        selected,
+        class: "hidden",
+        id: key,
+        data: {
+          user_id: user.id,
+          action: "change->participant-ids#store change->toggle-checked-participants#toggle",
+          toggle_checked_participants_target: "togglable"
+        }
+      ) %>
+      <span
+        class="iconify fs-1_8rem bkt-blue"
+        data-toggle-checked-participants-target="icon"
+        data-selected='<%= selected %>'
+        data-icon="bi:check">
+      </span>
+    </label>
+  </div>
+<% end %>

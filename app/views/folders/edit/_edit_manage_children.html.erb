@@ -1,0 +1,39 @@
+<% if folders.present? %>
+  <% children = folder.children_folders %>
+  <% folders.each do |folder| %>
+    <% included = children.include?(folder) %>
+    <div class="edit-folder-card <%= 'selected' if included %>" id="folder-<%= folder.id %>">
+      <div class="edit-folder-pseudo-checkbox-container" onclick="selectElement(this);"><button class="edit-folder-pseudo-checkbox"></button></div>
+      <% if included %>
+        <input type="checkbox" class="edit-folder-checkbox hidden" checked>
+      <% else %>
+        <input type="checkbox" class="edit-folder-checkbox hidden">
+      <% end %>
+      <div class="edit-folder-card-infos">
+        <div class="flex-row-between-centered">
+          <i class="fas fa-folder"></i>
+          <p><%= folder.title %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% elsif contents.present? %>
+  <% children = folder.contents %>
+  <% contents.each do |content| %>
+    <% included = children.include?(content) %>
+    <div class="edit-folder-card <%= 'selected' if included %>" id="content-<%= content.id %>">
+      <div class="edit-folder-pseudo-checkbox-container" onclick="selectElement(this);"><button class="edit-folder-pseudo-checkbox"></button></div>
+      <% if included %>
+        <input type="checkbox" class="edit-folder-checkbox hidden" checked>
+      <% else %>
+        <input type="checkbox" class="edit-folder-checkbox hidden">
+      <% end %>
+      <div class="edit-folder-card-infos">
+        <div class="flex-row-between-centered">
+          <i class="fas fa-file"></i>
+          <p><%= content.title %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,19 @@
+<div id="folder-info">
+  <%= simple_form_for folder, remote: true do |f| %>
+    <p class='font-weight-600 mb-2rem'>Program</p>
+    <%= f.input :title, label: false, input_html: {class: 'bkt-bg-light-orange border-bkt-light-grey5-0_5px', autocomplete: "off", onkeyup: 'saveForm(this, true);'}, placeholder: 'Untitled' %>
+    <%= f.input :description, as: :trix_editor, placeholder: 'Description (optional)', input_html: { value: folder.description } %>
+    <%= f.submit '', class: 'hidden-submit hidden' %>
+  <% end %>
+  <div class="template-edit__content-right--mobile">
+    <div class="template-show-infos-themes">
+      <p style='color:#808080;'><b>Tags</b></p>
+      <div class="theme-btns">
+        <% folder.categories.order(title: :asc).each do |category| %>
+          <p class="category-tag"><%= category.title %></p>
+        <% end %>
+        <a data-toggle='modal' data-target='#addTags' data-toggle='tooltip' title='Add Theme' class='add-theme'><i class="fas fa-plus" style='color:#F26419;'></i></a><br>
+      </div>
+    </div>
+  </div>
+</div>
