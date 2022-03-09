@@ -22,8 +22,8 @@ class UsersController < ApplicationController
     @user.company_id = current_user.company_id
     @user.authentication_token = Base64.encode64(@user.email).gsub("\n","") + SecureRandom.hex(32)
 
-    new_user = User.find_by(email: params.dig(:user, :email)).nil? ? true : false
-    send_invite = params.dig(:user, :send_invite) == 'true' ? true : false
+    new_user = User.find_by(email: params.dig(:user, :email)).nil?
+    send_invite = params.dig(:user, :send_invite) == 'true'
 
     # Send invitation
     if new_user
@@ -165,9 +165,8 @@ class UsersController < ApplicationController
     elsif params[:button] == 'import'
       @redirect = request.base_url + request.path
 
-      send_invite = params[:send_invite] == 'true' ? true : false
-
-      ImportEmployeesJob.perform_later(params[:file], current_user.company_id, current_user.id, send_invite)
+      csv_import_user = CsvImportUser.create creator: current_user, data: CSV.foreach(params[:file], headers: true).map(&:to_h)
+      ImportEmployeesJob.perform_later(csv_import_user.id, params[:send_invite] == 'true')
       flash[:notice] = 'Import in progress. Please wait for a while and refresh this page.'
       flash.keep(:notice)
       render js: "window.location = '#{organisation_path}'"
