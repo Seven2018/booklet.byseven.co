@@ -71,7 +71,10 @@
             <% employee_interview = interviews.find_by(label: 'Employee') %>
             <% manager_interview = interviews.find_by(label: 'Manager') %>
             <% crossed_interview = interviews.find_by(label: 'Crossed') %>
-            <% crossed_availability = employee_interview.completed? && manager_interview.completed? && (manager_view || crossed_interview.completed?) if interview_form.cross %>
+            <% crossed_availability =
+              employee_interview.completed? &&
+              manager_interview.completed? &&
+              (manager_view || crossed_interview.completed?) if interview_form.cross %>
             <% interviews = interview_form.cross ? [employee_interview, manager_interview, crossed_interview] : [employee_interview, manager_interview] %>
 
             <% interview_title = {'Employee' => "Employee's",

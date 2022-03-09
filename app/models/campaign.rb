@@ -56,7 +56,7 @@ class Campaign < ApplicationRecord
     ).round
   end
 
-  def hr_interview(employee_id = nil)
+  def manager_interview(employee_id = nil)
     if interviews.select(&:manager?).count == 1
       return interviews.find(&:manager?)
     end
@@ -96,6 +96,7 @@ class Campaign < ApplicationRecord
       interviews = {}
       interviews[:manager_interview] = {
         id: manager_interview.id,
+        interviewer_id: manager_interview.interviewer.id,
         answers_count: manager_interview.answers.count,
         completed: manager_interview.completed,
         locked_at: manager_interview.locked_at
@@ -103,6 +104,7 @@ class Campaign < ApplicationRecord
 
       interviews[:employee_interview] = {
         id: employee_interview.id,
+        interviewer_id: employee_interview.interviewer.id,
         answers_count: employee_interview.answers.count,
         completed: employee_interview.completed,
         locked_at: employee_interview.locked_at
@@ -110,6 +112,7 @@ class Campaign < ApplicationRecord
 
       interviews[:crossed_interview] = {
         id: crossed_interview.id,
+        interviewer_id: crossed_interview.interviewer.id,
         answers_count: crossed_interview.answers.count,
         completed: crossed_interview.completed,
         locked_at: crossed_interview.locked_at
@@ -117,6 +120,7 @@ class Campaign < ApplicationRecord
 
       interviews[:simple_interview] = {
         id: simple_interview.id,
+        interviewer_id: simple_interview.interviewer.id,
         answers_count: simple_interview.answers.count,
         completed: simple_interview.completed,
         locked_at: simple_interview.locked_at

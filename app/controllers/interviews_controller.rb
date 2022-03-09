@@ -112,6 +112,7 @@ class InterviewsController < ApplicationController
     interview = Interview.find interview_id
     authorize interview
 
+    interview.complete!
     interview.lock!
 
     head :no_content
