@@ -74,8 +74,7 @@ class User < ApplicationRecord
     present = []
     CSV.foreach(file.path, headers: true) do |row|
       row_h = row.to_hash
-      manager_email = row_h['manager'].present? ? row_h['manager'].downcase : nil
-      row_h.delete('manager')
+      manager_email = row_h['manager']&.downcase
       user_attr = "firstname,lastname,email,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
       tag_categories_to_create_user = row_h.keys - user_attr - ['manager']
       tag_categories_to_create_user.each { |tag| row_h.delete(tag) }

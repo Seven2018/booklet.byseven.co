@@ -1,6 +1,6 @@
 modal = document.querySelector('#campaignInfoMessage')
 if ('<%= @status %>' == 'created') {
-  document.querySelector('.campaign-show__interviews-list').innerHTML = '<%= j render("campaigns/show/show_interviews", campaign: @campaign) %>';
+  document.querySelector('.campaign-show__interviews-list').innerHTML = '<%= j render("campaigns/show/show_interviews", campaign: @campaign, employees: @employees, selected_interviewer: @selected_interviewer) %>';
   modal.querySelector('.modal-dialog').innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "#{@user.fullname} added successfully.") %>';
 } else {
   modal.querySelector('.modal-dialog').innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "#{@user.fullname} already present in this campaign.") %>';

@@ -22,28 +22,7 @@ class CampaignsController < ApplicationController
   def show
     authorize @campaign
 
-    @current_user_employee = current_user.employee_to_hr_light?
-    @interviews_for_date =
-      if @current_user_employee
-        @campaign.interviews.find_by(employee: current_user)
-      else
-        @campaign.interviews.order(date: :asc)
-      end
-
-    @completion =
-      if @current_user_employee
-        @campaign.completion_for(current_user)
-      else
-        @campaign.completion_for(:all)
-      end
-
-    @interviews =
-      if selected_user.present?
-        Interview.where(campaign: @campaign, employee: selected_user)
-      else
-        []
-      end
-    @campaign = @campaign.decorate
+    filter_employees
 
     respond_to do |format|
       format.html
@@ -117,33 +96,20 @@ class CampaignsController < ApplicationController
     head :no_content
   end
 
-  def campaign_select_owner
-    authorize @campaign
-
-    new_owner = User.find(params[:user_id])
-
-    @campaign.update(owner: new_owner)
-    @campaign = @campaign.decorate
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def campaign_add_user
     authorize @campaign
 
     @user = User.find(params[:user_id])
-    form = @campaign.interview_form
+    @interviewer = User.find(params[:interviewer_id])
+    # TO DO : allow the choosing of a specific template
+    form = @campaign.interviews.find_by(interviewer: @interviewer).interview_form
     last_date = @campaign.interviews.order(date: :desc).first.date
 
-    if @campaign.simple?
-      find_or_create('Simple', form, last_date, current_user)
-
-    elsif @campaign.crossed?
-      ['Employee', 'Manager', 'Crossed'].each do |label|
-        find_or_create(@user.id, label, form, last_date, current_user)
-      end
+    @campaign.interviews.map(&:label).uniq.each do |label|
+      find_or_create(@user.id, @interviewer.id, label, form, last_date, current_user)
     end
+
+    filter_employees
 
     respond_to do |format|
       format.html {redirect_to campaign_path(@campaign)}
@@ -155,6 +121,8 @@ class CampaignsController < ApplicationController
     authorize @campaign
 
     @user_name = User.find(params[:user_id]).fullname
+
+    filter_employees
 
     @campaign.interviews.where(employee_id: params[:user_id]).destroy_all
     @campaign.destroy if @campaign.interviews.empty?
@@ -214,12 +182,38 @@ class CampaignsController < ApplicationController
     @any_more = @campaigns.count * page_index < total_campaigns_count
   end
 
-  def find_or_create(user_id, label, form, date, creator)
+  def filter_employees
+    @employees = @campaign.employees
+
+    params_interviewer_id = params.dig(:select, :interviewer_id) || params[:interviewer_id]
+
+    if params_interviewer_id.present?
+      @selected_interviewer = User.find(params_interviewer_id)
+    elsif !current_user.hr_or_above? && @campaign.interviewers.uniq.include?(current_user)
+      @selected_interviewer = current_user
+    end
+
+    page_index = params.dig(:select, :page)&.to_i || 1
+
+    @selected_interviewer.present? ?
+      @employees = User.joins(:interviews).where(interviews: {campaign: @campaign, interviewer: @selected_interviewer}) :
+      @employees = @campaign.employees
+
+
+    total_employees_count = @employees.count
+    @employees = @employees.distinct.order(lastname: :asc).page(page_index).per(10)
+    @any_more = @employees.count * page_index < total_employees_count
+
+    @campaign = @campaign.decorate
+  end
+
+  def find_or_create(user_id, interviewer_id, label, form, date, creator)
     new_interview = Interview.find_or_initialize_by(title: form.title,
                                   interview_form_id: form.id,
                                   completed: false,
                                   campaign_id: @campaign.id,
                                   employee_id: user_id,
+                                  interviewer_id: interviewer_id,
                                   creator_id: @campaign.owner_id,
                                   label: label)
 

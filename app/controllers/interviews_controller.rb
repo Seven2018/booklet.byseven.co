@@ -88,7 +88,7 @@ class InterviewsController < ApplicationController
       objective: objective
     ) if answer.present? || !question.required?
 
-    @fully_answered = interview.fully_answered? ? true : false
+    @fully_answered = interview.fully_answered?
 
     respond_to do |format|
       format.js
