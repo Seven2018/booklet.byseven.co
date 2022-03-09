@@ -86,7 +86,7 @@ Rails.application.routes.draw do
   resource :companies, only: [] do
     scope module: :companies do
       namespace :interviews do
-        resources :csv_exports, only: %i[show create destroy]
+        resources :interview_reports, only: %i[show create destroy]
       end
     end
   end

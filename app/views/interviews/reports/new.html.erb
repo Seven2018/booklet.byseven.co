@@ -1,7 +1,7 @@
 <div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pt-2rem'>
 
   <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw">
-    <%= simple_form_for CsvExport.new, url: companies_interviews_csv_exports_path do |f| %>
+    <%= simple_form_for InterviewReport.new, url: companies_interviews_interview_reports_path do |f| %>
       <%= f.hidden_field :company_id, value: @company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
 
@@ -12,7 +12,7 @@
 
       <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
         <%= render_component RadioButtonTileComponent.new(
-          model: 'csv_export[mode]',
+          model: 'interview_report[mode]',
           name: :data,
           checked: false,
           icon_klasses: "fas fa-rocket", # TODO icons
@@ -21,7 +21,7 @@
         ) %>
 
         <%= render_component RadioButtonTileComponent.new(
-          model: 'csv_export[mode]',
+          model: 'interview_report[mode]',
           name: :classic,
           checked: true,
           icon_klasses: "fas fa-rocket", # TODO icons
@@ -80,12 +80,12 @@
 
       <%= render_component(SelectComponent.new(width: '200px', title: 'Select Tag Category')) do  %>
         <% @company.tag_categories.order(position: :asc).each do |tag_category| %>
-          <% key = "csv_export_tag_category_id_#{tag_category.id}" %>
+          <% key = "interview_report_tag_category_id_#{tag_category.id}" %>
           <input
             class="hidden"
             type="radio"
             value="<%= tag_category.id %>"
-            name="csv_export[tag_category_id]"
+            name="interview_report[tag_category_id]"
             id='<%= key %>'>
           <label
             data-action="click->dropdown#toggle click->replace-text#replace"

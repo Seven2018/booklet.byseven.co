@@ -2,7 +2,7 @@ class Interviews::ReportsController < ApplicationController
   before_action :show_navbar_campaign, :show_navbar_admin, :set_company
 
   def index
-    @reports = @company.csv_exports.order(created_at: :desc)
+    @reports = @company.interview_reports.order(created_at: :desc)
   end
 
   def new; end
