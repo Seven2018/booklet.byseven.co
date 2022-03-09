@@ -196,6 +196,42 @@
   </div>
 </div>
 
+<h3 class="my-2">bkt-btn-orange</h3>
+<div class="d-flex m-5" style='gap: 5px;'>
+  <div>
+    <button class='bkt-btn-orange'>
+      <i class="fas fa-plus"></i>
+      button
+    </button>
+  </div>
+
+  <div>
+    <div class='bkt-btn-orange'>
+      <i class="fas fa-plus"></i>
+      div
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-orange disabled'>
+      disabled
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-orange pressed'>
+      pressed
+    </div>
+  </div>
+
+  <div>
+    <div class='bkt-btn-orange
+      ' style='width: 225px;'>
+      bkt-btn-blue with a long text that does not fit a width constraint
+    </div>
+  </div>
+</div>
+
 
 <h3 class="my-2">bkt-btn-white</h3>
 <div class="d-flex m-5" style='gap: 5px;'>
@@ -235,7 +271,7 @@
 
 
 <h3 class="my-2">bkt-btn-back</h3>
-<div class="d-flex m-5 pos-rel" style='gap: 5px; width: 100px; height: 100px;'>
+<div class="d-flex m-5 pos-rel" style='gap: 5px; height: 100px;'>
   <%= render_component BackComponent.new(fallback: guidelines_path) %>
 </div>
 
