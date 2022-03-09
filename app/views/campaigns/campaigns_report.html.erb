@@ -1,7 +1,7 @@
 <div style='display: flex; justify-content: center; align-items: center; flex-direction: column;'>
   <%# form %>
   <div>
-    <%= simple_form_for InterviewReport.new, url: companies_interviews_interview_reports_path do |f| %>
+    <%= simple_form_for InterviewReport.new, url: interviews_reports_path do |f| %>
       <%= f.hidden_field :company_id, value: @company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
 
@@ -56,17 +56,17 @@
         </strong>
         <% unless interview_report.processing? %>
 
-          <%= link_to companies_interviews_interview_report_path(interview_report, format: :csv), class: 'mx-2' do %>
+          <%= link_to interviews_report_path(interview_report, format: :csv), class: 'mx-2' do %>
             <i class="fas fa-file-csv"></i>
           <% end %>
 
-          <%= link_to companies_interviews_interview_report_path(interview_report, format: :xlsx), class: 'mx-2' do %>
+          <%= link_to interviews_report_path(interview_report, format: :xlsx), class: 'mx-2' do %>
             <i class="fas fa-file-excel"></i>
           <% end %>
 
           <%=
             link_to(
-              companies_interviews_interview_report_path(interview_report, format: :csv),
+              interviews_report_path(interview_report, format: :csv),
               method: :delete,
               data: {
                 confirm: 'Etes vous sûr(e) ?'

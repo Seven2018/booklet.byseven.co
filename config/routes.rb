@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   get :campaign_edit_date, controller: :campaigns
 
   namespace :interviews do
-    resources :reports, only: %i[index new]
+    resources :reports, only: %i[index new show create destroy]
   end
 
   namespace :trainings do
@@ -83,13 +83,6 @@ Rails.application.routes.draw do
 
   # COMPANIES
   resources :companies, only: %i[new create update destroy]
-  resource :companies, only: [] do
-    scope module: :companies do
-      namespace :interviews do
-        resources :interview_reports, only: %i[show create destroy]
-      end
-    end
-  end
 
   # CONTENTS
   resources :contents, only: %i[create show edit update destroy] do

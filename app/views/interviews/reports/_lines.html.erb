@@ -22,11 +22,11 @@
           <div class="btk-spinner bkt-dark-blue"><span></span></div>
         <% end %>
       <% else %>
-        <%= link_to companies_interviews_interview_report_path(report, format: :csv) do %>
+        <%= link_to interviews_report_path(report, format: :csv) do %>
           <i class="fas fs-2_4rem fa-file-csv"></i>
         <% end %>
         <div class="mx-3"></div>
-        <%= link_to companies_interviews_interview_report_path(report, format: :xlsx) do %>
+        <%= link_to interviews_report_path(report, format: :xlsx) do %>
           <i class="fas fs-2_4rem fa-file-excel"></i>
         <% end %>
       <% end %>
