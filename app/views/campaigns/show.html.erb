@@ -40,11 +40,13 @@
   </div>
 </div>
 
-<div class='modal fade' id='addParticipant' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-  <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
-    <%= render 'campaigns/modals/add_participant' %>
+<% if CampaignPolicy.new(current_user, @campaign).campaign_add_user? %>
+  <div class='modal fade' id='addParticipant' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+    <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
+      <%= render 'campaigns/modals/add_participant', campaign: @campaign %>
+    </div>
   </div>
-</div>
+<% end %>
 
 <div class='modal fade' id='campaignInfoMessage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
   <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
@@ -173,7 +175,7 @@
     listLocation: "users",
     getValue: 'name',
     url: function(phrase) {
-      return "/users_search.json?search=" + phrase
+      return `/campaigns/users.json?id=<%= @campaign.id %>&search=${phrase}`
     },
     list: {
       onChooseEvent: function() {
