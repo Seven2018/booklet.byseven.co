@@ -53,40 +53,14 @@ module CampaignDrafts
           )
       end
 
-      def create_interview_set(interviewee)
-        interviewer = interviewee.manager.presence || User.find(@campaign_draft.default_interviewer_id)
-
-        params =
-          interview_params.merge(
-            employee: interviewee,
-            interviewer: interviewer,
-            interview_form: interview_form
-          )
-
-        case interview_form.kind
-        when :answerable_by_manager_not_crossed
-          Interview.create(params.merge(label: 'Manager'))
-        when :answerable_by_employee_not_crossed
-          Interview.create(params.merge(label: 'Employee'))
-        when :answerable_by_both_not_crossed
-          Interview.create(params.merge(label: 'Employee')) &&
-          Interview.create(params.merge(label: 'Manager'))
-        when :answerable_by_both_crossed
-          Interview.create(params.merge(label: 'Employee')) &&
-          Interview.create(params.merge(label: 'Manager')) &&
-          Interview.create(params.merge(label: 'Crossed'))
-        else
-          # will raise InterviewForm::UnknownKind
-        end
-      end
-
       def interviewees
         User.find @campaign_draft.interviewee_ids
       end
 
       def create_interviews
         interviewees.map do |interviewee|
-          create_interview_set(interviewee)
+          interviewer = interviewee.manager.presence || User.find(@campaign_draft.default_interviewer_id)
+          InterviewSets::Create.call interview_params.merge(employee: interviewee, interviewer: interviewer)
         end
       end
 
@@ -97,7 +71,7 @@ module CampaignDrafts
           starts_at: @campaign_draft.starts_at,
           ends_at: @campaign_draft.ends_at,
           creator: campaign.owner,
-          interview_form: campaign.interview_form,
+          interview_form: interview_form,
           campaign: campaign
         }
       end

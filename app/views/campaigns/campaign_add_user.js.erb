@@ -1,9 +1,0 @@
-modal = document.querySelector('#campaignInfoMessage')
-if ('<%= @status %>' == 'created') {
-  document.querySelector('.campaign-show__interviews-list').innerHTML = '<%= j render("campaigns/show/show_interviews", campaign: @campaign) %>';
-  modal.querySelector('.modal-dialog').innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "#{@user.fullname} added successfully.") %>';
-} else {
-  modal.querySelector('.modal-dialog').innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "#{@user.fullname} already present in this campaign.") %>';
-}
-document.querySelector('.modal.show').querySelector('.cancel-close').click()
-document.querySelector('#campaignInfoMessageTrigger').click()

@@ -34,7 +34,7 @@
       </button>
     <% end %>
   </div>
-  <% if current_user == manager %>
+  <% if CampaignPolicy.new(current_user, @campaign).campaign_add_user? %>
     <a class='campaign-show__header-infos-controls-employee' data-toggle='modal' data-target='#addParticipant'>
       <span class="iconify" data-icon="akar-icons:circle-plus"></span>
       <p>Add an employee</p>

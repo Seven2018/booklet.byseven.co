@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_add_user, :campaign_remove_user]
+  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_remove_user]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -129,28 +129,6 @@ class CampaignsController < ApplicationController
     end
   end
 
-  def campaign_add_user
-    authorize @campaign
-
-    @user = User.find(params[:user_id])
-    form = @campaign.interview_form
-    last_date = @campaign.interviews.order(date: :desc).first.date
-
-    if @campaign.simple?
-      find_or_create('Simple', form, last_date, current_user)
-
-    elsif @campaign.crossed?
-      ['Employee', 'Manager', 'Crossed'].each do |label|
-        find_or_create(@user.id, label, form, last_date, current_user)
-      end
-    end
-
-    respond_to do |format|
-      format.html {redirect_to campaign_path(@campaign)}
-      format.js
-    end
-  end
-
   def campaign_remove_user
     authorize @campaign
 
@@ -212,20 +190,6 @@ class CampaignsController < ApplicationController
     total_campaigns_count = @campaigns.count
     @campaigns = @campaigns.page(page_index)
     @any_more = @campaigns.count * page_index < total_campaigns_count
-  end
-
-  def find_or_create(user_id, label, form, date, creator)
-    new_interview = Interview.find_or_initialize_by(title: form.title,
-                                  interview_form_id: form.id,
-                                  completed: false,
-                                  campaign_id: @campaign.id,
-                                  employee_id: user_id,
-                                  creator_id: @campaign.owner_id,
-                                  label: label)
-
-    @status = new_interview.id.present? ? 'present' : 'created'
-
-    new_interview.update(creator_id: creator.id, date: date) unless new_interview.id.present?
   end
 
   def selected_user
