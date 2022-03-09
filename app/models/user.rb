@@ -70,19 +70,18 @@ class User < ApplicationRecord
     user
   end
 
-  def self.import(file, company_id, invited_by_id, send_invite = false)
+
+  def self.import(rows, company_id, invited_by_id, send_invite = false)
     present = []
-    CSV.foreach(file.path, headers: true) do |row|
-      row_h = row.to_hash
-      manager_email = row_h['manager'].present? ? row_h['manager'].downcase : nil
+    rows.each do |row_h|
+      manager_email = row_h['manager']&.downcase
       row_h.delete('manager')
       user_attr = "firstname,lastname,email,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
       tag_categories_to_create_user = row_h.keys - user_attr - ['manager']
       tag_categories_to_create_user.each { |tag| row_h.delete(tag) }
 
       # Create new user for the company provided as argument.
-      next unless
-        row_h['email'].present?
+      next if row_h['email'].blank?
 
       user = User.find_by(email: row_h['email'].downcase)
 
@@ -124,9 +123,9 @@ class User < ApplicationRecord
         category = TagCategory.create(company_id: company_id, name: 'Job Title', position: tag_category_last_position + 1)
         tag_category_last_position += 1
       end
-      tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: row['job_title'])
+      tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: row_h['job_title'])
       unless tag.present?
-        tag = Tag.create(company_id: company_id, tag_category: category, tag_name: row['job_title'], tag_category_position: category.position)
+        tag = Tag.create(company_id: company_id, tag_category: category, tag_name: row_h['job_title'], tag_category_position: category.position)
       end
       previous_job = UserTag.find_by(user: user, tag_category: category)
       update_job = update.present? && previous_job.present?
@@ -141,9 +140,9 @@ class User < ApplicationRecord
           category = TagCategory.create(company_id: company_id, name: x, position: tag_category_last_position + 1)
           tag_category_last_position += 1
         end
-        tag = Tag.where(company_id: company_id, tag_category: category, tag_name: row[x]).first
+        tag = Tag.where(company_id: company_id, tag_category: category, tag_name: row_h[x]).first
         unless tag.present?
-          tag = Tag.create(company_id: company_id, tag_category: category, tag_name: row[x], tag_category_position: category.position)
+          tag = Tag.create(company_id: company_id, tag_category: category, tag_name: row_h[x], tag_category_position: category.position)
         end
         previous_tag = UserTag.find_by(user: user, tag_category: category)
         update = update.present? && previous_tag.present?
