@@ -23,7 +23,7 @@ class CampaignsController < ApplicationController
   def show
     authorize @campaign
 
-    filter_employees
+    filter_interviewees
 
     respond_to do |format|
       format.html
@@ -102,7 +102,7 @@ class CampaignsController < ApplicationController
 
     @user_name = User.find(params[:user_id]).fullname
 
-    filter_employees
+    filter_interviewees
 
     @campaign.interviews.where(employee_id: params[:user_id]).destroy_all
     @campaign.destroy if @campaign.interviews.empty?

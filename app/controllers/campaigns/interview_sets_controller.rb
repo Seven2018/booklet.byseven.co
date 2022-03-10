@@ -3,7 +3,7 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
 
   def create
     @status = InterviewSets::Create.call(interview_params).present?
-    filter_employees
+    filter_interviewees
     respond_to do |format|
       format.html {redirect_to campaign_path(@campaign)}
       format.js

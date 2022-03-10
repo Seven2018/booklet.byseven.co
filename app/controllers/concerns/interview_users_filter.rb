@@ -3,7 +3,7 @@
 module InterviewUsersFilter
   private
 
-  def filter_employees
+  def filter_interviewees
     @employees = @campaign.employees
 
     params_interviewer_id = params.dig(:select, :interviewer_id) || params[:interviewer_id]
