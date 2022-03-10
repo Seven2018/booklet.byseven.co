@@ -4,7 +4,7 @@
     <div class="my-trainings__banner">
       <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
       <% if current_user.manager_or_above? %>
-        <p> Welcome to My Trainings section, you have 3 <%# @trainings.count %> trainings to do and/or validate, please see them below.</p>
+        <p> Welcome to My Trainings section, you have <%= @trainings.count %> trainings to do and/or validate, please see them below.</p>
       <% end %>
     </div>
 

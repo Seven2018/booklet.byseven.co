@@ -1,7 +1,7 @@
 class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.employee_or_above?
+      if user.employee_or_above? && user.company_id.present?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'

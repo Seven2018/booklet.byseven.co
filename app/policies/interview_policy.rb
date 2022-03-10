@@ -1,7 +1,7 @@
 class InterviewPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.manager_or_above?
+      if user.manager_or_above? && user.company_id.present?
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
