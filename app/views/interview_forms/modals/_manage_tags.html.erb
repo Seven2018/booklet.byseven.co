@@ -5,14 +5,14 @@
       <span aria-hidden="true" class='action-modal__close-icon'>&times;</span>
     </button>
   </div>
-  <div class="modal-body action-modal__body" style='max-height: 30rem;'>
+  <div class="modal-body action-modal__body" style='max-height: 43rem;'>
     <div id='template-edit__tags-search' class='flex-row-start-centered pos-rel mb-2rem'>
       <%= simple_form_for :search, url: tags_path, method: :get do |f| %>
         <%= f.text_field :tags, placeholder: 'Search Tag', label: false, data: {behavior: 'autocomplete'} %>
       <% end %>
       <button class="height-5rem bkt-btn-blue pos-abs" style='left: 28rem;' onclick='manageTag(this, "add");'>Add tag</button>
     </div>
-    <div class="interview-forms-categories" style='max-height: 30rem;'>
+    <div class="interview-forms-categories overflow-y-scroll" style='max-height: 41rem;'>
       <% checked = form.tags.ids %>
       <%= simple_form_for :add_tags, url: interview_form_link_tags_path, method: :get, remote: true do |f| %>
         <% TagCategory.where(company_id: current_user.company_id).order(position: :asc).each do |category| %>

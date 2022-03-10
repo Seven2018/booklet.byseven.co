@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  before_action :check_company_presence
   before_action :show_navbar_training
   before_action :show_navbar_admin, only: %i[organisation]
   before_action :show_navbar_home, only: [:home, :organisation]
@@ -163,6 +164,10 @@ class PagesController < ApplicationController
   end
 
   private
+
+  def check_company_presence
+    redirect_to user_path(current_user) unless current_user.company_id.present?
+  end
 
   def filter_users(users)
     search_name = params.dig(:search, :name)

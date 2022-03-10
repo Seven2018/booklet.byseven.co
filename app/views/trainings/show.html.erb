@@ -33,7 +33,7 @@
 
           </div>
 
-          <% if (@workshop.users).include?(current_user) %>
+          <% if (@workshop.users).include?(current_user) && @workshop.sessions.order(date: :asc).last.date <= Date.today %>
 
             <div id='workshop-show__completed-options' class='flex-row-between-centered width-100 bkt-bg-white rounded-10px p-2rem mb-2rem' style='max-width: 64rem;'>
               <%= render 'workshops/show/show_workshop_completed_options', workshop: @workshop, workshop_completed: @workshop_completed %>

@@ -43,9 +43,9 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    @campaigns = policy_scope(Campaign).order(created_at: :desc).where \
+    @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc).where \
       id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
-    @manager_campaigns = Campaign.order(created_at: :desc).where \
+    @manager_campaigns = Campaign.where(company: current_user.company).order(created_at: :desc).where \
       id: Interview.where(interviewer: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 
@@ -66,7 +66,7 @@ class CampaignsController < ApplicationController
   end
 
   def my_team_interviews
-    campaigns = policy_scope(Campaign).order(created_at: :desc)
+    campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
     @personal_campaigns = campaigns.where_exists(:interviews, employee: current_user)
     @campaigns =          campaigns.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
