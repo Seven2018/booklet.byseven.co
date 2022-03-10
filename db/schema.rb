@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_09_134046) do
+ActiveRecord::Schema.define(version: 2022_03_10_172315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,6 +240,7 @@ ActiveRecord::Schema.define(version: 2022_03_09_134046) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "answerable_by", default: 0, null: false
     t.boolean "cross", default: false
+    t.string "video"
     t.index ["company_id"], name: "index_interview_forms_on_company_id"
   end
 

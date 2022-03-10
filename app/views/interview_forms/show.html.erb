@@ -40,6 +40,8 @@
     <div class="interview-main__right">
       <h1><%= @template.title %></h1>
 
+      <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@template.video) %>" style='width: 75%; height: 30rem;'></iframe>
+
       <% question_hash = {} %>
       <% j = 0 %>
 
