@@ -29,14 +29,13 @@ Rails.application.routes.draw do
   namespace :campaigns do
     # must stay before resources :campaigns
     resources :users, only: :index
-    resources :interview_sets, only: :create
+    resources :interview_sets, only: %i[create destroy]
   end
   resources :campaigns, only: %i[index show destroy]
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
   get :send_notification_email, controller: :campaigns
   get :campaign_select_owner, controller: :campaigns
-  get :campaign_remove_user, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
 
   namespace :interviews do

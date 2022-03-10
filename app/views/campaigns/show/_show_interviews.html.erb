@@ -17,7 +17,8 @@
                 <%= link_to 'See profile', user_path(employee) %>
                 <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id) %>
                 <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
-                <% if current_user.hr_or_above? || campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
+                <% if CampaignPolicy.new(current_user, @campaign).remove_interview_set? ||
+                  campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
                   <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
                 <% end %>
             </div>

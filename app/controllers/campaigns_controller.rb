@@ -97,22 +97,6 @@ class CampaignsController < ApplicationController
     head :no_content
   end
 
-  def campaign_remove_user
-    authorize @campaign
-
-    @user_name = User.find(params[:user_id]).fullname
-
-    filter_interviewees
-
-    @campaign.interviews.where(employee_id: params[:user_id]).destroy_all
-    @campaign.destroy if @campaign.interviews.empty?
-
-    respond_to do |format|
-      format.html {redirect_to campaign_path(@campaign)}
-      format.js
-    end
-  end
-
   def campaign_edit_date
     @campaign = Campaign.find(params.dig(:edit_date, :campaign_id))
     authorize @campaign

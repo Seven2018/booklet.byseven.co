@@ -34,7 +34,7 @@
 <!-- MODALS -->
 <!------------>
 
-<% if CampaignPolicy.new(current_user, @campaign).campaign_add_user? %>
+<% if CampaignPolicy.new(current_user, @campaign).add_interview_set? %>
   <div class='modal fade' id='addParticipant' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
     <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
       <%= render 'campaigns/modals/add_participant', campaign: @campaign, selected_interviewer: nil %>

@@ -1,9 +1,24 @@
 class Campaigns::InterviewSetsController < Campaigns::BaseController
-  skip_after_action :verify_authorized
-
   def create
+    raise Pundit::NotAuthorizedError unless
+      CampaignPolicy.new(current_user, campaign).add_interview_set?
+
     @status = InterviewSets::Create.call(interview_params).present?
     filter_interviewees
+    respond_to do |format|
+      format.html {redirect_to campaign_path(@campaign)}
+      format.js
+    end
+  end
+
+  def destroy
+    raise Pundit::NotAuthorizedError unless
+      CampaignPolicy.new(current_user, campaign).remove_interview_set?
+
+    @user_name = employee.fullname
+    filter_interviewees
+    @campaign.interviews.where(employee_id: params[:user_id]).destroy_all
+    @campaign.destroy if @campaign.interviews.empty?
     respond_to do |format|
       format.html {redirect_to campaign_path(@campaign)}
       format.js
