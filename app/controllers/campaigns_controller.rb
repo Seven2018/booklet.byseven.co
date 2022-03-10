@@ -1,5 +1,6 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_add_user, :campaign_remove_user]
+  include InterviewUsersFilter
+  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy, :campaign_remove_user]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -76,7 +77,7 @@ class CampaignsController < ApplicationController
       @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
     end
 
-    @campaigns = @campaigns.sort{|x| x.deadline}
+    @campaigns = @campaigns.sort{|x| x.deadline}.reverse
   end
 
   def send_notification_email
@@ -94,27 +95,6 @@ class CampaignsController < ApplicationController
     flash[:notice] = 'Email sent.'
 
     head :no_content
-  end
-
-  def campaign_add_user
-    authorize @campaign
-
-    @user = User.find(params[:user_id])
-    @interviewer = User.find(params[:interviewer_id])
-    # TO DO : allow the choosing of a specific template
-    form = @campaign.interviews.find_by(interviewer: @interviewer).interview_form
-    last_date = @campaign.interviews.order(date: :desc).first.date
-
-    @campaign.interviews.map(&:label).uniq.each do |label|
-      find_or_create(@user.id, @interviewer.id, label, form, last_date, current_user)
-    end
-
-    filter_employees
-
-    respond_to do |format|
-      format.html {redirect_to campaign_path(@campaign)}
-      format.js
-    end
   end
 
   def campaign_remove_user
@@ -180,46 +160,6 @@ class CampaignsController < ApplicationController
     total_campaigns_count = @campaigns.count
     @campaigns = @campaigns.page(page_index)
     @any_more = @campaigns.count * page_index < total_campaigns_count
-  end
-
-  def filter_employees
-    @employees = @campaign.employees
-
-    params_interviewer_id = params.dig(:select, :interviewer_id) || params[:interviewer_id]
-
-    if params_interviewer_id.present?
-      @selected_interviewer = User.find(params_interviewer_id)
-    elsif !current_user.hr_or_above? && @campaign.interviewers.uniq.include?(current_user)
-      @selected_interviewer = current_user
-    end
-
-    page_index = params.dig(:select, :page)&.to_i || 1
-
-    @selected_interviewer.present? ?
-      @employees = User.joins(:interviews).where(interviews: {campaign: @campaign, interviewer: @selected_interviewer}) :
-      @employees = @campaign.employees
-
-
-    total_employees_count = @employees.count
-    @employees = @employees.distinct.order(lastname: :asc).page(page_index).per(10)
-    @any_more = @employees.count * page_index < total_employees_count
-
-    @campaign = @campaign.decorate
-  end
-
-  def find_or_create(user_id, interviewer_id, label, form, date, creator)
-    new_interview = Interview.find_or_initialize_by(title: form.title,
-                                  interview_form_id: form.id,
-                                  completed: false,
-                                  campaign_id: @campaign.id,
-                                  employee_id: user_id,
-                                  interviewer_id: interviewer_id,
-                                  creator_id: @campaign.owner_id,
-                                  label: label)
-
-    @status = new_interview.id.present? ? 'present' : 'created'
-
-    new_interview.update(creator_id: creator.id, date: date) unless new_interview.id.present?
   end
 
   def selected_user

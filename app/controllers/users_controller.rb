@@ -55,13 +55,16 @@ class UsersController < ApplicationController
   end
 
   def unlink_from_company
-    selected_users = User.where(id: params[:selected_users])
+    selected_users_ids = params[:selected_users].split(',')
+    selected_users = User.where(id: selected_users_ids)
     authorize selected_users
+
     selected_users.each do |user|
       user.update company_id: nil
       user.user_tags.destroy_all
     end
     @selected_users = params[:selected_users]
+
     respond_to do |format|
       format.html {redirect_to organisation_path}
       format.js {}
@@ -165,9 +168,8 @@ class UsersController < ApplicationController
     elsif params[:button] == 'import'
       @redirect = request.base_url + request.path
 
-      send_invite = params[:send_invite] == 'true'
-
-      ImportEmployeesJob.perform_later(params[:file], current_user.company_id, current_user.id, send_invite)
+      csv_import_user = CsvImportUser.create creator: current_user, data: CSV.foreach(params[:file], headers: true).map(&:to_h)
+      ImportEmployeesJob.perform_later(csv_import_user.id, params[:send_invite] == 'true')
       flash[:notice] = 'Import in progress. Please wait for a while and refresh this page.'
       flash.keep(:notice)
       render js: "window.location = '#{organisation_path}'"

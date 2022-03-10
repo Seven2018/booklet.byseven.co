@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_07_104628) do
+ActiveRecord::Schema.define(version: 2022_03_09_134046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,21 +167,13 @@ ActiveRecord::Schema.define(version: 2022_03_07_104628) do
     t.index ["company_id"], name: "index_contents_on_company_id"
   end
 
-  create_table "csv_exports", force: :cascade do |t|
-    t.bigint "company_id", null: false
-    t.jsonb "data"
+  create_table "csv_import_users", force: :cascade do |t|
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
-    t.integer "mode", default: 0, null: false
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.string "signature"
+    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "creator_id"
-    t.bigint "tag_category_id"
-    t.index ["company_id"], name: "index_csv_exports_on_company_id"
-    t.index ["creator_id"], name: "index_csv_exports_on_creator_id"
-    t.index ["tag_category_id"], name: "index_csv_exports_on_tag_category_id"
+    t.index ["creator_id"], name: "index_csv_import_users_on_creator_id"
   end
 
   create_table "currents", force: :cascade do |t|
@@ -265,6 +257,23 @@ ActiveRecord::Schema.define(version: 2022_03_07_104628) do
     t.integer "visible_for", default: 0, null: false
     t.integer "required_for", default: 0, null: false
     t.index ["interview_form_id"], name: "index_interview_questions_on_interview_form_id"
+  end
+
+  create_table "interview_reports", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.jsonb "data"
+    t.integer "state", default: 0, null: false
+    t.integer "mode", default: 0, null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string "signature"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "creator_id"
+    t.bigint "tag_category_id"
+    t.index ["company_id"], name: "index_interview_reports_on_company_id"
+    t.index ["creator_id"], name: "index_interview_reports_on_creator_id"
+    t.index ["tag_category_id"], name: "index_interview_reports_on_tag_category_id"
   end
 
   create_table "interviews", force: :cascade do |t|
@@ -496,9 +505,7 @@ ActiveRecord::Schema.define(version: 2022_03_07_104628) do
   add_foreign_key "content_skills", "contents"
   add_foreign_key "content_skills", "skills"
   add_foreign_key "contents", "companies"
-  add_foreign_key "csv_exports", "companies"
-  add_foreign_key "csv_exports", "tag_categories"
-  add_foreign_key "csv_exports", "users", column: "creator_id"
+  add_foreign_key "csv_import_users", "users", column: "creator_id"
   add_foreign_key "folder_categories", "categories"
   add_foreign_key "folder_categories", "folders"
   add_foreign_key "folder_links", "folders", column: "child_id"
@@ -511,6 +518,9 @@ ActiveRecord::Schema.define(version: 2022_03_07_104628) do
   add_foreign_key "interview_form_tags", "tags"
   add_foreign_key "interview_forms", "companies"
   add_foreign_key "interview_questions", "interview_forms"
+  add_foreign_key "interview_reports", "companies"
+  add_foreign_key "interview_reports", "tag_categories"
+  add_foreign_key "interview_reports", "users", column: "creator_id"
   add_foreign_key "interviews", "campaigns"
   add_foreign_key "interviews", "interview_forms"
   add_foreign_key "interviews", "users", column: "creator_id"

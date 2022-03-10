@@ -7,10 +7,10 @@
   </div>
   <%= simple_form_for Content.new do |f| %>
     <div class="modal-body action-modal__body" style='min-height: 0;'>
-        <%= f.input :title, input_html: {onkeyup: "checkContentValidity(this);", autocomplete: 'off'} %>
+        <%= f.input :title, input_html: {autocomplete: 'off'} %>
     </div>
     <div class="modal-footer action-modal__footer">
-      <button type="button" class="bkt-btn-orange">Create</button>
+      <button type="submit" class="bkt-btn-orange">Create</button>
     </div>
   <% end %>
 </div>

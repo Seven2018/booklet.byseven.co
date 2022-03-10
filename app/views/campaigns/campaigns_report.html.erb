@@ -1,12 +1,12 @@
 <div style='display: flex; justify-content: center; align-items: center; flex-direction: column;'>
   <%# form %>
   <div>
-    <%= simple_form_for CsvExport.new, url: companies_interviews_csv_exports_path do |f| %>
+    <%= simple_form_for InterviewReport.new, url: companies_interviews_interview_reports_path do |f| %>
       <%= f.hidden_field :company_id, value: @company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
 
       <%= f.input :mode,
-        collection: CsvExport::modes.keys,
+        collection: InterviewReport::modes.keys,
         as: :radio_buttons,
         input_html: {
           onclick: 'selectAnalytics(this);',
@@ -45,28 +45,28 @@
     <% end %>
   </div>
 
-  <%# csv_exports %>
+  <%# interview_reports %>
   <div style="margin-top: 20px;">
-    <h3>Csv Exports</h3>
-    <% @company.csv_exports.order(created_at: :desc).each do |csv_export| %>
+    <h3>Interview Reports</h3>
+    <% @company.interview_reports.order(created_at: :desc).each do |interview_report| %>
       <div>
-        <%= csv_export.filename %>
+        <%= interview_report.filename %>
         <strong>
-          (<%= csv_export.state %>)
+          (<%= interview_report.state %>)
         </strong>
-        <% unless csv_export.processing? %>
+        <% unless interview_report.processing? %>
 
-          <%= link_to companies_interviews_csv_export_path(csv_export, format: :csv), class: 'mx-2' do %>
+          <%= link_to companies_interviews_interview_report_path(interview_report, format: :csv), class: 'mx-2' do %>
             <i class="fas fa-file-csv"></i>
           <% end %>
 
-          <%= link_to companies_interviews_csv_export_path(csv_export, format: :xlsx), class: 'mx-2' do %>
+          <%= link_to companies_interviews_interview_report_path(interview_report, format: :xlsx), class: 'mx-2' do %>
             <i class="fas fa-file-excel"></i>
           <% end %>
 
           <%=
             link_to(
-              companies_interviews_csv_export_path(csv_export, format: :csv),
+              companies_interviews_interview_report_path(interview_report, format: :csv),
               method: :delete,
               data: {
                 confirm: 'Etes vous sûr(e) ?'
@@ -79,7 +79,7 @@
       </div>
     <% end %>
 
-    <% unless @company.csv_exports.any? %>
+    <% unless @company.interview_reports.any? %>
       Aucun export pour le moment!
     <% end %>
   </div>

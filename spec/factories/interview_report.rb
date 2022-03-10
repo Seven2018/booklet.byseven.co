@@ -1,4 +1,4 @@
 FactoryBot.define do
-  factory :csv_export do
+  factory :interview_report do
   end
 end

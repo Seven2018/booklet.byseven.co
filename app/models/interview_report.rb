@@ -1,4 +1,4 @@
-class CsvExport < ApplicationRecord
+class InterviewReport < ApplicationRecord
   belongs_to :company
   belongs_to :tag_category
   belongs_to :creator, class_name: "User", optional: true
@@ -27,7 +27,7 @@ class CsvExport < ApplicationRecord
 
   def filename(extension = nil)
     [
-      "Campaign Export (#{mode.capitalize}) - ",
+      "Campaign Report (#{mode.capitalize}) - ",
       company.name,
       " - ",
       start_time.strftime('%F'),
@@ -63,7 +63,7 @@ class CsvExport < ApplicationRecord
 
   def no_duplicate_processing?
     errors.add(:base, message: 'An identical csv export is currently processing !') if
-      CsvExport.where.not(id: id)
+      InterviewReport.where.not(id: id)
                .where(signature: signature)
                .processing
                .exists?

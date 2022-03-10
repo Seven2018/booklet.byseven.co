@@ -4,8 +4,8 @@ class PagesController < ApplicationController
   before_action :show_navbar_home, only: [:home, :organisation]
 
   def home
-    @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, completed: false)
-    @my_team_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id, owner_id: current_user.id}, label: ['Manager', 'Crossed', 'Simple'], completed: false)
+    @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, label: 'Employee', completed: false)
+    @my_team_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, interviewer: current_user, label: ['Manager', 'Crossed'], completed: false)
   end
 
   # Display folders/contents catalogue

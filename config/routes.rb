@@ -26,12 +26,16 @@ Rails.application.routes.draw do
   resources :attendees
 
   # CAMPAIGNS
+  namespace :campaigns do
+    # must stay before resources :campaigns
+    resources :users, only: :index
+    resources :interview_sets, only: :create
+  end
   resources :campaigns, only: %i[index show destroy]
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
   get :send_notification_email, controller: :campaigns
   get :campaign_select_owner, controller: :campaigns
-  get :campaign_add_user, controller: :campaigns
   get :campaign_remove_user, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
 
@@ -82,7 +86,7 @@ Rails.application.routes.draw do
   resource :companies, only: [] do
     scope module: :companies do
       namespace :interviews do
-        resources :csv_exports, only: %i[show create destroy]
+        resources :interview_reports, only: %i[show create destroy]
       end
     end
   end
