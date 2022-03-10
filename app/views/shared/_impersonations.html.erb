@@ -1,4 +1,4 @@
-<% if current_user != true_user %>
+<% if true_user && current_user != true_user %>
   <div class='position-fixed top-1 left-1 z-1001'>
     <span class="text-orange">
       Vous (<%= true_user.firstname %>) êtes loggué en tant que
