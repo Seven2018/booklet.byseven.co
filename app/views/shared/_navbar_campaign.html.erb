@@ -137,11 +137,6 @@
       <h4>Templates</h4>
     <% end %>
 
-    <%= link_to organisation_path,
-      class: "#{klass} #{active_klass if @controller_action == :pages_organisation}" do %>
-      <h4>Employees</h4>
-    <% end %>
-
     <%= link_to interviews_reports_path,
       class: "#{klass} #{
         active_klass if

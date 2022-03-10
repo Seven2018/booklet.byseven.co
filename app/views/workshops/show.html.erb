@@ -16,6 +16,9 @@
         <div id="content-edit__content-center" class='flex-column-start-centered'>
 
           <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
+            <div class="flex-row-end-centered mb-1rem">
+              <span class='bkt-light-grey5 italic'>Available on: <%= "#{@workshop.first_session.date} at #{@workshop.first_session.starts_at.strftime('%H:%M')}" %></span>
+            </div>
             <div class="flex-row-start-centered mb-2rem">
               <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
               <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @workshop.title %></p>

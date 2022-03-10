@@ -18,12 +18,12 @@ class InterviewPolicy < ApplicationPolicy
     return true if user.hr_or_above?
 
     case
-    when record.employee? || record.simple?
-      user == record.employee || user == record.owner
+    when record.employee?
+      user == record.employee || user == record.interviewer
     when record.manager?
-      user == record.owner
+      user == record.interviewer
     when record.crossed?
-      user == record.owner || user == record.employee
+      user == record.interviewer || user == record.employee
     end
   end
 
@@ -31,8 +31,8 @@ class InterviewPolicy < ApplicationPolicy
     return false if record.locked?
 
     case
-    when record.crossed? || record.manager? || record.simple?
-      user == record.owner || user.hr_or_above?
+    when record.crossed? || record.manager?
+      user == record.interviewer
     when record.employee?
       user == record.employee
     end
@@ -40,18 +40,18 @@ class InterviewPolicy < ApplicationPolicy
 
   def complete_interview?
     case
-    when record.crossed? || record.manager? || record.simple?
-      user == record.owner
+    when record.crossed? || record.manager?
+      user == record.interviewer
     when record.employee?
       user == record.employee
     end
   end
 
   def lock_interview?
-    user == record.owner
+    user == record.interviewer
   end
 
   def update_interviews?
-    user.manager_or_above?
+    user == record.interviewer || user.hr_or_above?
   end
 end
