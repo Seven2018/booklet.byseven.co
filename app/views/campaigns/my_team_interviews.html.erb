@@ -1,16 +1,6 @@
 <div class="campaigns-my-interviews__container">
   <div class="campaigns-my-interviews__main">
 
-
-    <%# status = if manager_interview.locked?
-            'locked'
-          elsif campaign.completion_for(current_user) == 0
-            'not_started'
-          elsif campaign.completion_for(current_user) == 100
-            'completed'
-          else
-            'in_progress'
-          end %>
     <div class="campaigns-my-interviews__banner">
       <h1>Hello, <%= "#{current_user.firstname}" %> !</h1>
       <p>You have <%= "#{@personal_campaigns.count}"  %> personal reviews<%= " and #{@campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>

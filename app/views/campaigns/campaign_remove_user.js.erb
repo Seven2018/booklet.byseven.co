@@ -1,7 +1,0 @@
-modal = document.querySelector('#campaignInfoMessage')
-
-document.querySelector('.campaign-show__interviews-list').innerHTML = '<%= j render("campaigns/show/show_interviews", campaign: @campaign) %>';
-modal.querySelector('.modal-dialog').innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "#{@user_name} removed successfully.") %>';
-
-document.querySelector('.modal-backdrop').classList.remove('show')
-document.querySelector('#campaignInfoMessageTrigger').click()

@@ -31,4 +31,8 @@ class Workshop < ApplicationRecord
   def asynchronous?
     content.content_type == 'Asynchronous'
   end
+
+  def first_session
+    sessions.order(date: :asc).first
+  end
 end

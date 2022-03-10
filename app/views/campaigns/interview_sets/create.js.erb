@@ -1,6 +1,6 @@
 modal_dialog = document.querySelector('#campaignInfoMessage').querySelector('.modal-dialog')
 if ('<%= @status %>' == 'true') {
-  document.querySelector('.campaign-show__interviews-list').innerHTML = '<%= j render("campaigns/show/show_interviews", campaign: @campaign) %>';
+  document.querySelector('.campaign-show__interviews-list').innerHTML = '<%= j render("campaigns/show/show_interviews", campaign: @campaign, employees: @employees, selected_interviewer: @selected_interviewer) %>';
   modal_dialog.innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "#{@user.fullname} added successfully.") %>';
 } else {
   modal_dialog.innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "An issue occurred! #{@user.fullname} not added !") %>';

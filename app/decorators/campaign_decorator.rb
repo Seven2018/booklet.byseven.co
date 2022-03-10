@@ -41,4 +41,8 @@ class CampaignDecorator < Draper::Decorator
     %i[employee_interview manager_interview crossed_interview]
       .map{ |interview| poro_campaign.send interview }
   end
+
+  def employees_for(interviewer_id)
+    User.joins(:interviews).where(interviews: {campaign: self, interviewer_id: interviewer_id}).distinct.order(lastname: :asc)
+  end
 end

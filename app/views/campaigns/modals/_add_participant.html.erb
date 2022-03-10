@@ -6,6 +6,7 @@
     <h3>Choose employee</h3>
     <%= simple_form_for :search, method: :get do |f| %>
       <%= f.text_field :participant, placeholder: 'Search for Users', label: false, data: {behavior: 'autocomplete'} %>
+      <%= f.hidden_field :interviewer_id, value: selected_interviewer&.id %>
     <% end %>
     <div class="flex-row-between-centered">
       <%= link_to campaigns_interview_sets_path(id: campaign), id: 'add-participant-button', class: 'btn-grey', method: :post, remote: true do %>

@@ -42,15 +42,11 @@ class CampaignPolicy < ApplicationPolicy
     user.manager_or_above?
   end
 
-  def campaign_select_owner?
-    user.hr_or_above?
-  end
-
-  def campaign_add_user?
+  def add_interview_set?
     user.manager_or_above?
   end
 
-  def campaign_remove_user?
+  def remove_interview_set?
     user.manager_or_above?
   end
 
