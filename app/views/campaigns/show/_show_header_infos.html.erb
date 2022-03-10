@@ -1,5 +1,3 @@
-<% manager = campaign.owner %>
-
 <div class="campaign-show__header-infos-title-status">
   <div class="campaign-show__header-infos-title">
     <div class="campaign-show__header-infos-title-icon">
@@ -11,30 +9,27 @@
   <p>Employees</p>
 </div>
 <div class="campaign-show__header-infos-controls">
-  <div class="campaign-show__header-infos-controls-manager">
-    <p>Manager :</p>
-    <div class="campaign-show__header-infos-controls-manager-display">
-      <img src="<%= manager.picture %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-      <p><%= manager.fullname %></p>
-    </div>
-    <div class='campaign-show__header-infos-controls-manager-search hidden'>
-      <%= simple_form_for :search, url: users_path, method: :get do |f| %>
-        <%= f.text_field :manager, placeholder: 'Search Manager', label: false, data: {behavior: 'autocomplete'}, onkeyup: 'swapManagerSearchButton(false);' %>
-      <% end %>
-    </div>
-    <% if current_user.hr_or_above? %>
-      <button class="campaign-show__header-infos-controls-manager-edit btn-icon" onclick='showManagerSearch(this)'>
-        <span class="iconify" data-icon="fa-solid:user-edit"></span>
-      </button>
-      <a id='select_owner' class='btn-blue btn-icon hidden' data-toggle='modal' data-target='#selectOwner'>
-        <span class="iconify" data-icon="bi:check"></span>
-      </a>
-      <button id="cancel_owner" class="btn-red btn-icon hidden" onclick='showManagerSearch(this);'>
-        <span class="iconify" data-icon="pepicons:times"></span>
-      </button>
+  <div class="flex-row-between-centered">
+    <p class='mb-1rem mr-1rem'>Select Interviewer:</p>
+    <%= simple_form_for :select, url: campaign_path(campaign), method: :get, remote: true do |f| %>
+      <%= f.input :interviewer_id,
+                  collection: [['All', '']] + campaign.interviewers.distinct.order(lastname: :asc).map{|x| [x.fullname, x.id]},
+                  label_method: :first,
+                  value_method: :second,
+                  selected: selected_interviewer.presence ?
+                              [selected_interviewer.fullname, selected_interviewer.id] : ['All', ''],
+                  label: false,
+                  include_blank: false,
+                  disabled: !current_user.hr_or_above?,
+                  input_html: {
+                    onchange: 'submitForm(this);'
+                  } %>
+        <%= f.hidden_field :page, value: 1 %>
+      <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
   </div>
-  <% if CampaignPolicy.new(current_user, @campaign).campaign_add_user? %>
+
+  <% if selected_interviewer.present? && CampaignPolicy.new(current_user, @campaign).add_interview_set? %>
     <a class='campaign-show__header-infos-controls-employee' data-toggle='modal' data-target='#addParticipant'>
       <span class="iconify" data-icon="akar-icons:circle-plus"></span>
       <p>Add an employee</p>

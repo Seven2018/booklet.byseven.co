@@ -1,5 +1,6 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy, :campaign_select_owner, :campaign_remove_user]
+  include InterviewUsersFilter
+  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -22,28 +23,7 @@ class CampaignsController < ApplicationController
   def show
     authorize @campaign
 
-    @current_user_employee = current_user.employee_to_hr_light?
-    @interviews_for_date =
-      if @current_user_employee
-        @campaign.interviews.find_by(employee: current_user)
-      else
-        @campaign.interviews.order(date: :asc)
-      end
-
-    @completion =
-      if @current_user_employee
-        @campaign.completion_for(current_user)
-      else
-        @campaign.completion_for(:all)
-      end
-
-    @interviews =
-      if selected_user.present?
-        Interview.where(campaign: @campaign, employee: selected_user)
-      else
-        []
-      end
-    @campaign = @campaign.decorate
+    filter_interviewees
 
     respond_to do |format|
       format.html
@@ -115,32 +95,6 @@ class CampaignsController < ApplicationController
     flash[:notice] = 'Email sent.'
 
     head :no_content
-  end
-
-  def campaign_select_owner
-    authorize @campaign
-
-    new_owner = User.find(params[:user_id])
-
-    @campaign.update(owner: new_owner)
-    @campaign = @campaign.decorate
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def campaign_remove_user
-    authorize @campaign
-
-    @user_name = User.find(params[:user_id]).fullname
-
-    @campaign.interviews.where(employee_id: params[:user_id]).destroy_all
-    @campaign.destroy if @campaign.interviews.empty?
-
-    respond_to do |format|
-      format.html {redirect_to campaign_path(@campaign)}
-      format.js
-    end
   end
 
   def campaign_edit_date

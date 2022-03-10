@@ -1,8 +1,9 @@
 <div class="row">
 
-  <% campaign.employees.distinct.order(lastname: :asc).each do |employee| %>
+  <% employees.each do |employee| %>
+    <% interviews = campaign.interviews_for(employee.id) %>
     <% employee_view = current_user == employee %>
-    <% manager_view = current_user == campaign.owner || current_user.hr_or_above? %>
+    <% manager_view = current_user == selected_interviewer || current_user.hr_or_above? %>
     <% next unless employee_view || manager_view %>
     <% interview_form = campaign.interviews.where(employee_id: employee).first.interview_form %>
 
@@ -16,7 +17,8 @@
                 <%= link_to 'See profile', user_path(employee) %>
                 <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id) %>
                 <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
-                <% if current_user.hr_or_above? || campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
+                <% if CampaignPolicy.new(current_user, @campaign).remove_interview_set? ||
+                  campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
                   <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
                 <% end %>
             </div>
@@ -34,7 +36,7 @@
             <% interview = Interview.find_by(campaign_id: campaign.id, employee_id: employee.id) %>
             <% active_link =
               if interview.manager?
-                interview.completed? && employee_view || manager_view
+                interview.completed? && employee_view || manager_view && (current_user == interview.interviewer)
               else
                 interview.completed? && manager_view || employee_view
               end
@@ -82,8 +84,9 @@
                                   'Crossed' => "Cross"} %>
 
             <% interviews.each do |interview| %>
+              <% user_is_manager = current_user == interview.interviewer %>
 
-              <% active_link = (interview.crossed? && crossed_availability) || ((employee_view && interview.employee?) || (manager_view && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
+              <% active_link = (interview.crossed? && crossed_availability) || ((employee_view && interview.employee?) || (user_is_manager && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
 
               <div class="campaign-show__card-interview">
                 <% if active_link %>
@@ -152,7 +155,7 @@
 
         <div class='modal fade' id='removeParticipant-<%= employee.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
           <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
-            <%= render 'campaigns/modals/remove_participant', employee: employee %>
+            <%= render 'campaigns/modals/remove_participant', employee: employee, selected_interviewer: selected_interviewer %>
           </div>
         </div>
 
@@ -162,6 +165,26 @@
     </div>
 
 
+  <% end %>
+
+</div>
+
+<div class="paginate-container paginate-container-blue">
+
+  <% if params.dig(:select, :page).present? && params.dig(:select, :page).to_i > 1 %>
+    <div class="paginate__previous-button paginate__button-blue" onclick='changePage("previous");'>
+      <span class="iconify" data-icon="fontisto:angle-left"></span>
+      <p>Previous</p>
+    </div>
+  <% end %>
+
+  <%= paginate employees, left: 3, right: 1 %>
+
+  <% if @employees.count == 10 && @any_more %>
+    <div class="paginate__next-button paginate__button-blue" onclick='changePage("next");'>
+      <p>Next</p>
+      <span class="iconify" data-icon="fontisto:angle-right"></span>
+    </div>
   <% end %>
 
 </div>

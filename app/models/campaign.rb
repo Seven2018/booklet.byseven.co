@@ -8,6 +8,7 @@ class Campaign < ApplicationRecord
   belongs_to :interview_form, optional: true
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
+  has_many :interviewers, through: :interviews
 
   validates :title, presence: true
 

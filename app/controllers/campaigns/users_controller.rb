@@ -1,5 +1,4 @@
 class Campaigns::UsersController < Campaigns::BaseController
-  skip_after_action :verify_policy_scoped
 
   def index
     @users = current_user.company.users
