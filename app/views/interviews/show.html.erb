@@ -93,6 +93,9 @@
 
 
       <h1><%= @interview.title %></h1>
+
+      <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; height: 30rem;'></iframe>
+
       <%
         QuestionDecorator.decorate_collection(
           @interview.interview_form.interview_questions

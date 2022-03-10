@@ -136,14 +136,32 @@
     element.closest('form').querySelector('.hidden-submit').click()
   }
 
+  function checkVideoCompatibility(element) {
+    video_link = element.value
+    console.log(video_link)
+    if (video_link.split('=')[0].replace("https://", "") == 'www.youtube.com/watch?v') {
+      element.style.color = '#333333'
+      saveForm(element)
+    } else {
+      updateStatusMessage("Error")
+      element.style.color = 'red'
+    }
+  }
+
   function updateStatusMessage(message) {
     message_storage = document.getElementById('template-edit__update-status')
 
     if (message == 'Up to date') {
-      message_storage.classList.add('bkt-green')
+      message_storage.classList.remove('bkt-red')
       message_storage.classList.remove('bkt-yellow')
+      message_storage.classList.add('bkt-green')
+    } else if (message == 'Error') {
+      message_storage.classList.remove('bkt-green')
+      message_storage.classList.remove('bkt-yellow')
+      message_storage.classList.add('bkt-red')
     } else {
       message_storage.classList.remove('bkt-green')
+      message_storage.classList.remove('bkt-red')
       message_storage.classList.add('bkt-yellow')
     }
 
