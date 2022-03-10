@@ -1,0 +1,104 @@
+<!-- TEMP -->
+
+<div class="centered-item p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+  <%= render_component BackComponent.new(fallback: catalogue_path) %>
+  <h2>Training</h2>
+  </div>
+</div>
+
+<div id="content-edit__container" class='flex-row-between-start bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
+  <div id="content-edit__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
+    <%= render 'workshops/edit/edit_show_summary', workshop: @workshop %>
+  </div>
+
+  <div id="content-edit__container-right" style='margin-left: 30rem;'>
+
+      <div id="content-edit__content" class='flex-row-between-start'>
+
+        <div id="content-edit__content-center" class='flex-column-start-centered'>
+
+          <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
+            <div class="flex-row-end-centered mb-1rem">
+              <span class='bkt-light-grey5 italic'>Available on: <%= "#{@workshop.first_session.date} at #{@workshop.first_session.starts_at.strftime('%H:%M')}" %></span>
+            </div>
+            <div class="flex-row-start-centered mb-2rem">
+              <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
+              <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @workshop.title %></p>
+            </div>
+            <% if @workshop.access_granted? %>
+              <%= render 'workshops/show/show_workshop_mods', workshop: @workshop %>
+            <% else %>
+              <%= render 'workshops/show/show_workshop_mods_teaser', workshop: @workshop %>
+            <% end %>
+
+          </div>
+
+          <% if (@workshop.users).include?(current_user) %>
+
+            <div id='workshop-show__completed-options' class='flex-row-between-centered width-100 bkt-bg-white rounded-10px p-2rem mb-2rem' style='max-width: 64rem;'>
+              <%= render 'workshops/show/show_workshop_completed_options', workshop: @workshop, workshop_completed: @workshop_completed %>
+            </div>
+
+          <% end %>
+      </div>
+
+      <div id="template-edit__content-right" style=''>
+        <div class="template-show-attributes-right">
+          <div id="workshop-show__settings" class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
+            <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+              <p>Training</p>
+              <% if current_user == @workshop.training.creator || current_user.hr_or_above? %>
+                <%= link_to edit_workshop_path(@workshop) do %>
+                  <div class="centered-item height-2_5rem width-2_5rem">
+                    <span class="iconify fs-2_4rem bkt-orange" data-icon="ci:edit"></span>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="flex-row-between-centered mb-2rem">
+              <div class="flex-row-between-centered">
+                <div class="centered-item height-2_5rem width-2_5rem mr-1rem">
+                  <span class="iconify fs-1_6rem bkt-orange" data-icon="fa6-solid:user-group"></span>
+                </div>
+                <p class='fs-1_4rem bkt-dark-grey'><%= @workshop.content_type == 'Synchronous' ? 'Face-to-face' : 'Online' %></p>
+              </div>
+              <div class="flex-row-between-centered p-0_75rem border-bkt-dark-grey rounded-20px">
+                <div class="centered-item height-2_5rem width-2_5rem">
+                  <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
+                </div>
+                <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(@workshop.duration) %></p>
+              </div>
+            </div>
+            <div class='flex-row-start-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+              <p>Training tags</p>
+            </div>
+            <div id="template-edit__tags" class="flex-wrap mt-2rem">
+              <%= render 'workshops/show/show_workshop_tags_list', workshop: @workshop %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
+<script>
+
+  function selectCompletion(element) {
+    const chosen_value = element.getAttribute('data-value')
+    const link = document.getElementById('complete_workshop_link')
+    var link_url = new URL(link.href)
+
+    link_url.searchParams.set('status', chosen_value)
+    link.href = link_url.href
+    link.click()
+  }
+
+</script>

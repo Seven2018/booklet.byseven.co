@@ -97,7 +97,7 @@ class CampaignsController < ApplicationController
       @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
     end
 
-    @campaigns = @campaigns.sort{|x| x.deadline}
+    @campaigns = @campaigns.sort{|x| x.deadline}.reverse
   end
 
   def send_notification_email

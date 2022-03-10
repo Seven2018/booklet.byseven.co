@@ -133,7 +133,11 @@ class TrainingsController < ApplicationController
     @training = Training.find(params[:id])
     authorize @training
 
-    redirect_to workshop_path(@training.workshops.first)
+    # TEMP (Since Training contains only one Workshop)
+    @workshop = @training.workshops.first
+    @workshop_completed =
+      Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed' ?
+      true : false
   end
 
   def create
@@ -150,8 +154,13 @@ class TrainingsController < ApplicationController
   def destroy
     @training = Training.find(params[:id])
     authorize @training
+
     @training.destroy
-    redirect_to trainings_path
+
+    respond_to do |format|
+      format.html {redirect_to trainings_path}
+      format.js
+    end
   end
 
   private
