@@ -1,86 +1,221 @@
-<% if current_user.admin? || (current_user.access_level != 'Employee' && @user.company_id == current_user.company_id) || @user == current_user %>
-  <div class="d-flex justify-content-center">
-    <div class="container-show-user-right">
-      <div class="user-top-background">
-        <div class="user-buttons-top">
-          <%= link_to :back, class: 'bkt-btn-back' do %>
-            <span class="iconify" data-icon="bi:arrow-left"></span>
-            <p> Back </p>
-          <% end %>
-          <div id='show-buttons'>
-            <% if current_user.admin? || @user == current_user || current_user.hr? || (current_user.account_owner? && current_user.company == @user.company) %>
-              <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-toggle='tooltip' title='Edit User' style='margin-right: 5px; border-radius: 5px'><i class='fas fa-pen'></i></button></a>
-              <a data-toggle='modal' data-target='#editPassword'><button class='btn-edit-white btn-icon btn-last' data-toggle='tooltip' title='Change Password' style='margin-right: 5px; border-radius: 5px'><i class="fas fa-key"></i></button></a>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <div class="user-grid">
-        <div class="user-top">
-          <div class="user-photo">
-            <% if @user.picture.present? %>
-              <img src='<%= @user.picture %>' alt="" class='avatar-xlarge' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-            <% else %>
-                <%=  image_tag 'empty-avatar.png', class:'avatar-xlarge' %>
-            <% end %>
-            <div class="user-main-info">
-              <div class='user-name'>
-                <p><strong><%=  @user.firstname %> <%=  @user.lastname %></strong></p>
-              </div>
-              <div class="user-information">
-                <%= render 'users/partials/user_informations', user: @user %>
-              </div>
-            </div>
-          </div>
-          <div class="user-top-info">
-            <%= render 'users/partials/user_contact_info', user: @user %>
-          </div>
-          <div class="user-basic-info">
-            <%= render 'users/partials/user_basic', user: @user %>
-          </div>
-        </div>
-      </div>
+<div class='width-100 bkt-bg-white flex-column-start-centered' style='min-height: calc(100vh - 7.5rem);'>
 
-      <!-- <p class='trainings-title'>Trainings</p>
-      <div class="user-trainings">
-        <div class="user-info-header">
-          <p style='font-size: 12px'>Upcoming</p>
+  <div class="flex-column-start-centered mt-5rem" style='width: 75%; max-width: 100rem;'>
+
+    <div class="flex-row-between-start width-100 mb-2rem">
+
+      <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-xlarge mr-2rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+
+      <div class='flex-column-between-left flex-grow-1' style='height: 20rem;'>
+
+        <div class="flex-row-between-start width-100">
+
+          <div>
+
+            <h2 class='fs-3rem font-weight-500 bkt-dark-grey mb-2rem'><%= @user.fullname %></h2>
+
+            <p class='fs-2rem font-weight-500 bkt-light-grey5'><%= @user.job_title.capitalize %></p>
+
+          </div>
+
+          <div class="flex-row-between-centered">
+
+            <a data-toggle='modal' data-target='#editUser'>
+              <div class="centered-item height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
+                <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
+              </div>
+            </a>
+
+            <a data-toggle='modal' data-target='#editPassword'>
+              <div class="centered-item height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
+                <span class="iconify fs-1_6rem bkt-white" data-icon="bi:key-fill"></span>
+              </div>
+            </a>
+
+          </div>
+
         </div>
-        <div class="trainings-row">
-          <%# Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| !x.past?}.each do |training| %>
-            <%#= render '/pages/partials/dashboard_trainings_card', training: training %>
-          <%# end %>
+
+        <div class='width-100'>
+
+          <div class="flex-row-between-centered width-100 mb-1rem">
+
+            <div class="flex-row-between-centered">
+              <span class="iconify fs-1_4rem mr-1rem" data-icon="clarity:envelope-line"></span>
+              <p class='fs-1_4rem font-weight-500 bkt-dark-grey'><%= @user.email %></p>
+            </div>
+
+            <p class='fs-1_4rem font-weight-500 bkt-dark-grey'>Born: <%= @user.birth_date.presence || 'n/s' %></p>
+
+          </div>
+
+          <div class="flex-row-end-centered mb-1rem">
+
+            <p class='fs-1_4rem font-weight-500 bkt-dark-grey'>Gender: <%= @user.gender.presence || 'n/s' %></p>
+
+          </div>
+
+          <div class="flex-row-between-centered width-100">
+
+            <div class="flex-row-between-centered width-60">
+
+              <div class="flex-row-between-centered">
+                <span class="iconify fs-1_4rem mr-1rem" data-icon="bx:phone"></span>
+                <p class='fs-1_4rem font-weight-500 bkt-dark-grey'><%= @user.phone_number.presence || 'n/s' %></p>
+              </div>
+
+              <div class="flex-row-between-centered">
+                <span class="iconify fs-1_4rem mr-1rem" data-icon="ant-design:linkedin-outlined"></span>
+                <p class='fs-1_4rem font-weight-500 bkt-dark-grey overflow-ellipsis' title='<%= @user.linkedin.presence || 'n/s' %>' style='max-width: 25rem;'><%= @user.linkedin.presence || 'n/s' %></p>
+              </div>
+
+            </div>
+
+            <p class='fs-1_4rem font-weight-500 bkt-dark-grey'>Social Security: <%= @user.social_security.presence || 'n/s' %></p>
+
+          </div>
+
         </div>
-        <div class="user-info-header">
-          <p style='font-size: 12px'>Completed</p>
-        </div>
-        <div class="trainings-row">
-          <%# Training.joins(sessions: :attendees).where(company_id: @user.company_id, attendees: {user_id: @user.id}).uniq.select{|x| x.past?}.each do |training| %>
-            <%#= render '/pages/partials/dashboard_trainings_card', training: training %>
-          <%# end %>
-        </div>
-      </div> -->
+
+      </div>
 
     </div>
 
-  </div>
-<% else %>
-  <div class="access-restricted centered-item">
-    <h1>Access restricted</h1>
-  </div>
-<% end %>
+    <div class="width-100 mb-2rem">
+
+      <div class="flex-row-start-centered mb-1rem">
+        <p class='fs-1_6rem font-weight-500 bkt-dark-grey mr-1rem'>Tags</p>
+        <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="fluent:tag-multiple-16-filled"></span>
+      </div>
+
+      <div class="flex-row-start-centered flex-wrap">
+
+        <% @user.tags.order(tag_category_position: :asc).each do |tag| %>
+
+          <p class="fs-1_4rem font-weight-400 bkt-white bkt-bg-dark-grey p-0_75rem rounded-3px mr-1rem"><%= tag.tag_name %></p>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+    <div class="flex-row-between-centered width-100 mb-2rem">
+
+      <div class="p-2rem bkt-box-shadow rounded-10px" style='width: 45%;'>
+
+        <div class="flex-row-start-centered mb-1rem">
+
+          <div class="flex-row-between-centered">
+            <div class="centered-item height-4rem width-4rem rounded-20px bkt-bg-light-orange mr-1rem">
+              <svg width="25" height="25" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.5 0L0 7.53846L4.4 9.47692V13.1385C3.08 13.5692 2.2 14.8615 2.2 16.1538C2.2 17.4462 3.08 18.7385 4.4 19.1692V19.3846L2.42 23.9077C1.76 25.8462 2.2 28 5.5 28C8.8 28 9.24 25.8462 8.58 23.9077L6.6 19.3846C7.92 18.7385 8.8 17.6615 8.8 16.1538C8.8 14.6462 7.92 13.5692 6.6 13.1385V10.5538L16.5 15.0769L33 7.53846L16.5 0ZM26.18 14L16.28 18.3077L11 15.9385V16.1538C11 17.6615 10.34 18.9538 9.24 20.0308L10.56 23.0462V23.2615C10.78 24.1231 11 24.9846 10.78 25.8462C12.32 26.4923 14.08 26.9231 16.28 26.9231C23.54 26.9231 26.18 22.6154 26.18 20.4615V14V14Z" fill="#EF8C64"/>
+              </svg>
+            </div>
+            <p class='fs-1_6rem font-weight-600 bkt-dark-grey'>Trainings</p>
+          </div>
+
+        </div>
+
+        <div class="flex-row-between-centered px-5rem">
+
+          <div id='command__trainings-completed'
+               class="command-tab flex-column-between-centered bkt-bg-light-orange active rounded-5px p-1rem mr-1rem cursor-pointer"
+               style='height: 14rem; width: 14rem; border: 2px solid transparent;'
+               onclick="displaySelectedTab(this);">
+            <p class='fs-3rem'>🙌</p>
+            <p class='fs-3rem font-weight-600 bkt-orange'><%= @trainings_completed.count %></p>
+            <p class='width-70 fs-1_4rem font-weight-500 text-center'>Trainings done</p>
+          </div>
+
+          <div id='command__trainings-current'
+               class="command-tab flex-column-between-centered bkt-bg-light-orange rounded-5px p-1rem ml-1rem cursor-pointer"
+               style='height: 14rem; width: 14rem; border: 2px solid transparent;'
+               onclick="displaySelectedTab(this);">
+            <p class='fs-3rem'>👉</p>
+            <p class='fs-3rem font-weight-600 bkt-orange'><%= @trainings_current.count %></p>
+            <p class='width-70 fs-1_4rem font-weight-500 text-center'>Trainings to do</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="p-2rem bkt-box-shadow rounded-10px" style='width: 45%;'>
+
+        <div class="flex-row-start-centered mb-1rem">
+
+          <div class="flex-row-between-centered">
+            <div class="centered-item height-4rem width-4rem rounded-20px bkt-bg-light-blue mr-1rem">
+              <span class="iconify fs-2_4rem bkt-blue" data-icon="fluent:chat-multiple-24-filled"></span>
+            </div>
+            <p class='fs-1_6rem font-weight-600 bkt-dark-grey'>Interviews</p>
+          </div>
+
+        </div>
+
+        <div class="flex-row-between-centered px-5rem">
+
+          <div id='command__campaigns-completed'
+               class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px p-1rem mr-1rem cursor-pointer"
+               style='height: 14rem; width: 14rem; border: 2px solid transparent;'
+               onclick="displaySelectedTab(this);">
+            <p class='fs-3rem'>🙌</p>
+            <p class='fs-3rem font-weight-600 bkt-blue'><%= @campaigns_completed.count %></p>
+            <p class='width-70 fs-1_4rem font-weight-500 text-center'>Interviews done</p>
+          </div>
+
+          <div id='command__campaigns-current'
+               class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px p-1rem ml-1rem cursor-pointer"
+               style='height: 14rem; width: 14rem; border: 2px solid transparent;'
+               onclick="displaySelectedTab(this);"
+               >
+            <p class='fs-3rem'>👉</p>
+            <p class='fs-3rem font-weight-600 bkt-blue'><%= @campaigns_current.count %></p>
+            <p class='width-70 fs-1_4rem font-weight-500 text-center'>Interviews to do</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id='display__trainings-completed' class="display-tab width-100">
+
+      <%= render 'users/show/show_trainings_list', trainings: @trainings_completed %>
+
+    </div>
+
+    <div id='display__trainings-current' class="display-tab width-100 hidden">
+
+      <%= render 'users/show/show_trainings_list', trainings: @trainings_current %>
+
+    </div>
+
+    <div id='display__campaigns-completed' class="display-tab width-100 hidden">
+
+      <%= render 'users/show/show_campaigns_list', campaigns: @campaigns_completed %>
+
+    </div>
+
+    <div id='display__campaigns-current' class="display-tab width-100 hidden">
+
+      <%= render 'users/show/show_campaigns_list', campaigns: @campaigns_current %>
 
 
-<!-- Modal -->
+  </div>
+
+</div>
+
+
+<!----------->
+<!-- MODAL -->
+<!----------->
+
 <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="border-radius: 20px">
     <%= render 'users/modals/edit', user: @user %>
-  </div>
-</div>
-
-<div class="modal fade" id="editPicture" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'users/modals/edit_picture', user: @user %>
   </div>
 </div>
 
@@ -91,7 +226,21 @@
 </div>
 
 
+<!----------->
+<!-- STYLE -->
+<!----------->
+
+<style>
+  .bkt-bg-light-blue.active { border: 2px solid #3177B7 !important; }
+  .bkt-bg-light-orange.active   { border: 2px solid #EF8C64 !important; }
+</style>
+
+<!---------------->
+<!-- JAVASCRIPT -->
+<!---------------->
+
 <% if current_user.hr_or_above? %>
+
   <script>
     doubleClickGuardian = false
 
@@ -147,48 +296,40 @@
       })
     };
   </script>
+
 <% end %>
 
 <script>
-  sliders = document.querySelectorAll('.trainings-row');
-  sliders.forEach((slider) => {
-    isDown = false;
-    let startX;
-    let scrollLeft;
 
-    slider.addEventListener('mousedown', (e) => {
-      isDown = true;
-      slider.classList.add('active');
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-    });
-    slider.addEventListener('mouseleave', () => {
-      isDown = false;
-      slider.classList.remove('active');
-    });
-    slider.addEventListener('mouseup', () => {
-      isDown = false;
-      slider.classList.remove('active');
-    });
-    slider.addEventListener('mousemove', (e) => {
-      if(!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 3; //scroll-fast
-      slider.scrollLeft = scrollLeft - walk;
-    });
-  })
+  //////////
+  // TABS //
+  //////////
+
+  function displaySelectedTab(element) {
+    target = element.id.split('__')[1]
+    selected_tab = document.querySelector('#display__' + target)
+    current_button = document.querySelector('.command-tab.active')
+    current_tab = document.querySelector('.display-tab:not(.hidden)')
+
+    current_button.classList.remove('active')
+    current_tab.classList.add('hidden')
+    element.classList.add('active')
+    selected_tab.classList.remove('hidden')
+  }
+
+
+  ///////////////
+  // EDIT USER //
+  ///////////////
 
   function checkPasswordConfirmation(element) {
     new_password = document.querySelector('#user_password').value
     save_button = element.closest('form').querySelector('#save_button')
     if (element.value == new_password) {
-      save_button.classList.remove('btn-orange-disabled')
-      save_button.classList.add('btn-orange')
+      save_button.classList.remove('disabled')
       save_button.disabled = false
     } else {
-      save_button.classList.add('btn-orange-disabled')
-      save_button.classList.remove('btn-orange')
+      save_button.classList.add('disabled')
       save_button.disabled = true
     }
   }
