@@ -1,9 +1,9 @@
 <%= campaigns.each do |campaign| %>
 
-  <% color = {'Cot started' => 'bkt-bg-red',
+  <% color = {'Not started' => 'bkt-bg-red',
               'In progress' => 'bkt-bg-yellow',
               'Completed' => 'bkt-bg-green'} %>
-  <% completion = campaign.completion_for(user) %>
+  <% completion = campaign.completion_for(@user) %>
   <% status =
       if completion == 100
         'Completed'
