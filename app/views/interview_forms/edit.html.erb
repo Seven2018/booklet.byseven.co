@@ -143,8 +143,8 @@
       element.style.color = '#333333'
       saveForm(element)
     } else {
-      updateStatusMessage("Error")
-      element.style.color = 'red'
+      updateStatusMessage("Update failed")
+      element.style.color = '#FF5656'
     }
   }
 
@@ -155,7 +155,7 @@
       message_storage.classList.remove('bkt-red')
       message_storage.classList.remove('bkt-yellow')
       message_storage.classList.add('bkt-green')
-    } else if (message == 'Error') {
+    } else if (message == 'Update failed') {
       message_storage.classList.remove('bkt-green')
       message_storage.classList.remove('bkt-yellow')
       message_storage.classList.add('bkt-red')
