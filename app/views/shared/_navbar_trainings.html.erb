@@ -1,4 +1,4 @@
-<div class="navbar navbar-expand-sm navbar-light navbar-orange px-2rem">
+<div class="navbar navbar-expand-sm navbar-light navbar-orange bkt-bg-orange px-2rem">
   <div class="flex-row-between-centered">
     <a class='centered-item height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' href="/home">
       <span class="iconify fs-2_4rem bkt-orange" data-icon="bxs:home"></span>
@@ -102,7 +102,7 @@
           <li class="nav-item dropdown">
             <div class="dropdown show">
               <a class="navbar-user-card  dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+                <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
               </a>
               <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
                 <div class="dropdown-card">

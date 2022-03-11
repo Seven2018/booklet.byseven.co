@@ -1,16 +1,11 @@
-<div class="modal-content">
-  <div class="modal-header">
-    <div id="modal-title" style=" display: flex; justify-content: flex-start; align-items: center;">
-      <h3 class="modal-title" id="myModalLabel"><%= "#{@user.firstname} #{@user.lastname}" %></h3>
-      <button class="dropdown-toggle btn-icon-grey" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
-      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-        <%= link_to user_path(@user), method: :delete, data: { confirm: 'Are you sure ?'} do %>
-          <p data-toggle='modal' data-target='#newUser' class='dropdown-item'>Delete User</p>
-        <% end %>
-      </div>
-    </div>
+<div class="modal-content action-modal__content">
+  <div class="modal-header action-modal__header">
+    <h5 class="modal-title action-modal__title"><%= user.fullname %></h5>
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
   </div>
-  <div class="modal-body form-group">
+  <div class="modal-body action-modal__body">
     <%= simple_form_for @user, class:'form-group' do |f| %>
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control' %>
@@ -60,9 +55,8 @@
         </div>
       <% end %>
       <div style=" display: flex; justify-content: center;margin-top:3rem;">
-        <button type="button" class="btn-orange-text" data-dismiss="modal" aria-label="Close">Cancel</button>
-        <%= button_tag type: 'submit', class: 'btn-orange' do %>
-          <p>SAVE</p>
+        <%= button_tag type: 'submit', class: 'bkt-btn-white' do %>
+          Save
         <% end %>
       </div>
     <% end %>
