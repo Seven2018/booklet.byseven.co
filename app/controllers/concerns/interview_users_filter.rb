@@ -22,9 +22,10 @@ module InterviewUsersFilter
         User.joins(:interviews).where(interviews: {campaign: @campaign, interviewer: @selected_interviewer}) :
         @campaign.employees
 
+    # raise
 
     total_employees_count = @employees.count
-    @employees = @employees.distinct.order(lastname: :asc).page(page_index).per(10)
+    @employees = @employees.distinct.order(lastname: :asc).page(page_index).per(12)
     @any_more = @employees.count * page_index < total_employees_count
 
     @campaign = @campaign.decorate

@@ -24,4 +24,4 @@
 </div>
 
 <%# TODO %>
-<%= select_tag :default_template_id, options_for_select(InterviewForm.last(5).pluck(:title, :id), selected: @campaign.default_template_id) %>
+<%= select_tag :default_template_id, options_for_select(InterviewForm.where(company_id: current_user.company_id).pluck(:title, :id), selected: @campaign.default_template_id) %>

@@ -27,7 +27,7 @@
 
       <% else %>
 
-        <p>You have <%= @my_interviews.count %> reviews to do in this section. You can complete them in <%= link_to '`My Interviews`', my_interviews_path, class: 'font-weight-700' %> section !</p>
+        <p>You have <%= @my_interviews.count %> reviews to do in this section. You can complete them in <%= link_to '`My Interviews`', my_interviews_path, class: 'font-weight-700' %> section !</p><br>
         <p>Your reviews to complete are :</p>
 
         <% myi_firsts = @my_interviews.order(date: :asc).first(3) %>

@@ -14,7 +14,7 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def show?
-    user.employee_or_above?
+    record.interviewers.uniq.include?(user) || user.hr_or_above?
   end
 
   def create?

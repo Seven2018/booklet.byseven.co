@@ -14,9 +14,7 @@ document.querySelectorAll('.trix-content').forEach((trix) => {
     if (!saving) {
       saving = true
       setTimeout(function(){
-        const inputId = trix.getAttribute("input")
-        const hiddenInput = document.querySelector(`#${inputId}`)
-        hiddenInput.value = trix.innerHTML
+        trix.parentNode.querySelector('.trix_editor').value = trix.innerHTML
         trix.closest('form').querySelector('.hidden-submit').click()
         saving = false
       }, 1000)
