@@ -8,8 +8,8 @@ class TrainingDraft::Contents::ContentsController < TrainingDraft::BaseControlle
   private
 
   def contents
-    return Content.order(title: :asc) if params[:search].blank?
+    return Content.where(company_id: current_user.company_id).order(title: :asc) if params[:search].blank?
 
-    Content.search(params[:search])
+    Content.where(company_id: current_user.company_id).search(params[:search])
   end
 end
