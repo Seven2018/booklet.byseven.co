@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_09_134046) do
+ActiveRecord::Schema.define(version: 2022_03_09_143818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -376,6 +376,21 @@ ActiveRecord::Schema.define(version: 2022_03_09_134046) do
     t.index ["user_id"], name: "index_training_drafts_on_user_id"
   end
 
+  create_table "training_reports", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.jsonb "data", default: {}
+    t.integer "state", default: 0, null: false
+    t.integer "mode", default: 0, null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string "signature"
+    t.bigint "creator_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_training_reports_on_company_id"
+    t.index ["creator_id"], name: "index_training_reports_on_creator_id"
+  end
+
   create_table "trainings", force: :cascade do |t|
     t.string "title"
     t.bigint "company_id"
@@ -534,6 +549,8 @@ ActiveRecord::Schema.define(version: 2022_03_09_134046) do
   add_foreign_key "tags", "companies"
   add_foreign_key "tags", "tag_categories"
   add_foreign_key "training_drafts", "users"
+  add_foreign_key "training_reports", "companies"
+  add_foreign_key "training_reports", "users", column: "creator_id"
   add_foreign_key "trainings", "companies"
   add_foreign_key "trainings", "folders"
   add_foreign_key "trainings", "users", column: "creator_id"

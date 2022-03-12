@@ -38,7 +38,7 @@ class InterviewReport < ApplicationRecord
   end
 
   def to_csv
-    CSV.generate { |csv| data.split("\n").each { |row| csv << row.split(',') } }
+    CSV.generate("\uFEFF") { |csv| data.split("\n").each { |row| csv << row.split(',') } }
   end
 
   def to_xlsx

@@ -1,56 +1,33 @@
-<div class="overview-controls">
-  <div class="flex-row-between-centered">
-    <div class="searchbar" id="overview-controls__user-search">
-      <i class="fas fa-search catalogue-controls__search-icon"></i>
-      <%= simple_form_for :search, url: trainings_reports_path, method: :get, remote: true do |f| %>
-        <%= f.text_field :title, placeholder: 'Search', label: false %>
-        <%= f.input :start_date, label: 'From', input_html: {class: 'datepicker', value: @start_date} %>
-        <%= f.input :end_date, label: 'Until', input_html: {class: 'datepicker', value: @end_date} %>
-        <%= f.submit 'Search', class: 'btn-search' %>
-      <% end %>
-      <button class='btn-reset btn-reset-orange' onclick='resetAllFilter(this);'>Reset</button>
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'>
+  <div class='bkt-page-container-content'>
+    <div id='controls'
+         class='d-flex justify-content-between align-items-center mb-4'>
+      <h1>Reports</h1>
+      <div>
+        <%= link_to edit_trainings_reports_path do %>
+          <div class="bkt-btn-orange" data-toggle='tooltip' title='Add a template'>
+            <i class="fas fa-plus"></i>
+            <span>Create a Report</span>
+          </div>
+        <% end %>
+      </div>
     </div>
-    <div class="overview-results">
-      <%= render 'pages/partials/overview_results', trainings: @trainings %>
+
+    <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">
+      <div class='d-flex justify-content-start align-items-center pos-rel'></div>
+
+      <% headers = ["Creator", "Created at", "Type", "From", "To", "Data"] %>
+      <% width = (1/headers.count.to_f)*100 %>
+      <div class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem">
+        <% headers.each do |header| %>
+          <div class='fs-1_6rem font-weight-bold' style='flex-basis: <%= width %>%;'><%= header %></div>
+        <% end %>
+      </div>
+
+      <div id='lines'>
+        <%= render 'trainings/reports/lines', reports: @reports %>
+      </div>
+
     </div>
   </div>
 </div>
-<div class="dashboard-grid">
-  <div class="dashboard-tabs">
-    <ul class="nav nav-tabs">
-      <li role="presentation"><a href="#Trainings" data-toggle="tab" class='active'>Trainings</a></li>
-
-      <li role="presentation"><a href="#Users" data-toggle="tab" >Users</a></li>
-    </ul>
-  </div>
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="Trainings">
-      <div class="overview-trainings">
-        <%= render 'pages/partials/overview_cards_list', trainings: @trainings %>
-      </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="Users">
-      <div class="overview-users">
-        <%= render 'pages/partials/overview_users', users: @users %>
-      </div>
-    </div>
-  </div>
-  <%# render 'pages/partials/overview_cards_list', trainings: @trainings, start_date: Date.today.beginning_of_year, end_date: Date.today %>
-</div>
-
-<script>
-  function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.searchbar')
-    searchbar.querySelectorAll('input').forEach((input) => {
-      if (input.type == 'text') {
-        input.value = ''
-      } else if (input.type == 'checkbox') {
-        input.checked = false
-      }
-    })
-    searchbar.querySelectorAll('select').forEach((select) => {
-      select.selectedIndex = 0
-    })
-    searchbar.querySelector('.btn-search').click()
-  }
-</script>

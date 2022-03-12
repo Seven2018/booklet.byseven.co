@@ -3,10 +3,7 @@
     <div class="container-show-user-right">
       <div class="user-top-background">
         <div class="user-buttons-top">
-          <%= link_to :back, class: 'bkt-btn-back' do %>
-            <span class="iconify" data-icon="bi:arrow-left"></span>
-            <p> Back </p>
-          <% end %>
+          <%= render_component BackComponent.new(fallback: root_path) %>
           <div id='show-buttons'>
             <% if current_user.admin? || @user == current_user || current_user.hr? || (current_user.account_owner? && current_user.company == @user.company) %>
               <a data-toggle='modal' data-target='#editUser'><button class='btn-edit-white btn-icon' data-toggle='tooltip' title='Edit User' style='margin-right: 5px; border-radius: 5px'><i class='fas fa-pen'></i></button></a>

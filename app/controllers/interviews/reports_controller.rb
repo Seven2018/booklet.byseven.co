@@ -10,8 +10,8 @@ class Interviews::ReportsController < ApplicationController
   def create
     interview_report = InterviewReport.new interview_report_params
     if interview_report.save
-      Companies::InterviewReports::CreateJob.perform_later interview_report.id
-      flash[:notice] = "Export Csv en cours de création: rafraichir dans 1 min !"
+      InterviewReports::GenerateDataJob.perform_later interview_report.id
+      flash[:notice] = "Generating report: refresh in 1 min !"
     else
       flash[:alert] = interview_report.errors.full_messages.join(',')
     end
@@ -27,7 +27,7 @@ class Interviews::ReportsController < ApplicationController
 
   def destroy
     interview_report.destroy
-    flash[:notice] = "Export Csv détruit !"
+    flash[:notice] = "Report destroyed !"
     redirect_to interviews_reports_path
   end
 
@@ -39,7 +39,7 @@ class Interviews::ReportsController < ApplicationController
     authorize @campaigns
 
     unless @company
-      flash[:alert] = "L'utilisateur doit être associé à une société !"
+      flash[:alert] = "User must be associated to a company !"
       redirect_to root_path and return
     end
   end

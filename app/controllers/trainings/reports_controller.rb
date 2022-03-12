@@ -1,36 +1,81 @@
 class Trainings::ReportsController < ApplicationController
-  # before_action :show_navbar_campaign, :show_navbar_admin, :set_company
-  before_action :show_navbar_training, :show_navbar_admin
-  skip_after_action :verify_policy_scoped # temp
+  before_action :show_navbar_training, :show_navbar_admin, :set_company
 
   def index
-    @start_date = Date.today.beginning_of_year
-    @end_date = Date.today
+    @reports = @company.training_reports.order(created_at: :desc)
+  end
 
-    @trainings = Training.where(company_id: current_user.company_id)
-    # @trainings = Training.where(id: @trainings.pluck(:id))
+  def edit
+    training_report
+  end
 
-    # SEARCHING CONTENTS
-    unless params[:reset]
-      if params[:search].present?
-        unless params[:search][:title].blank?
-          @trainings = @trainings.search_trainings("#{params[:search][:title]}")
-        end
-        if params[:search][:start_date].present?
-          @start_date = Date.strptime(params[:search][:start_date], '%d/%m/%Y')
-          @end_date = Date.strptime(params[:search][:end_date], '%d/%m/%Y')
-          @trainings = @trainings.joins(:sessions).where('sessions.date >= ? AND date <= ?', @start_date, @end_date).uniq
-        end
-      end
+  def update
+    if mode == :by_employee && participant_ids.blank?
+      flash[:alert] = 'Please select users'
+      redirect_to edit_trainings_reports_path and return
     end
 
-    @sessions = @trainings.map{|x| x.sessions}.flatten
-    attendees = Attendee.joins(:session).where(sessions: { training: @trainings})
-    @users = User.where(attendees: attendees)
+    if mode == :by_training && training_ids.blank?
+      flash[:alert] = 'Please select trainings'
+      redirect_to edit_trainings_reports_path and return
+    end
 
+    if training_report.update training_report_params
+      TrainingReports::GenerateDataJob.perform_later training_report.id
+      flash[:notice] = "Generating report: refresh in 1 min !"
+    else
+      flash[:alert] = training_report.errors.full_messages.join(',')
+    end
+    redirect_to trainings_reports_path
+  end
+
+  def show
+    @training_report = TrainingReport.find params[:id]
     respond_to do |format|
-      format.html {trainings_reports_path}
-      format.js
+      format.html
+      format.csv  { send_data training_report.to_csv,  filename: training_report.filename('.csv')  }
+      format.xlsx { send_file training_report.to_xlsx, filename: training_report.filename('.xlsx') }
     end
   end
+
+  def destroy
+    training_report.destroy
+    flash[:notice] = "Report destroyed !"
+    redirect_to trainings_reports_path
+  end
+
+  private
+
+  def set_company
+    @campaigns = policy_scope(Campaign)
+    @company = current_user.company
+    authorize @campaigns
+
+    unless @company
+      flash[:alert] = "User must be associated to a company !"
+      redirect_to root_path and return
+    end
+  end
+
+  def training_report
+    @training_report ||= current_user.training_report
+  end
+
+  def participant_ids
+    params[:participant_ids].first.split(',').uniq.select(&:present?)
+  end
+
+  def training_ids
+    params[:training_ids].first.split(',').uniq.select(&:present?)
+  end
+
+  def mode
+    training_report_params[:mode].to_sym
+  end
+
+  def training_report_params
+    params.require(:training_report)
+          .permit(:mode, :start_time, :end_time, :company_id, :creator_id)
+  end
+
 end

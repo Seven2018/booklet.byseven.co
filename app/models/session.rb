@@ -6,6 +6,10 @@ class Session < ApplicationRecord
 
   scope :with_date, -> { where.not(date: nil) }
 
+  def duration
+    ends_at - starts_at
+  end
+
   def start_date
     self.date
   end

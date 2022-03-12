@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   static get targets () {
-    return [ 'array', 'selectedCount', 'results', 'filteredCount' ]
+    return [ 'array', 'selectedCount', 'results', 'result', 'filteredCount' ]
   }
 
   static get values () {
@@ -23,7 +23,7 @@ export default class extends Controller {
   store(e) {
     if (this.arrayTarget.dataset.bulkOperationLock == 'true') return
 
-    const id = e.currentTarget.dataset.userId
+    const id = e.currentTarget.dataset.id
     e.currentTarget.checked ? this._add(id) : this._remove(id)
   }
 
@@ -36,11 +36,10 @@ export default class extends Controller {
   }
 
   selectFiltered(e) {
-    const results = this.resultsTarget.querySelectorAll('[data-user-id]')
     this.arrayTarget.dataset.bulkOperationLock = true
 
     const checking = e.currentTarget.checked
-      const checkboxes = [...results].filter(checkBox => checkBox.checked == !checking)
+      const checkboxes = [...this.resultTargets].filter(checkBox => checkBox.checked == !checking)
       const checkboxes_ids = checkboxes.map(checkBox => checkBox.dataset.userId)
       checking ? this._bulk_add(checkboxes_ids) : this._bulk_remove(checkboxes_ids)
       checkboxes.forEach((checkBox) => {

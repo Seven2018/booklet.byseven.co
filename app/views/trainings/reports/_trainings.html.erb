@@ -1,20 +1,12 @@
-<% users.each do |user| %>
-  <% selected = @campaign.interviewee_ids.include?(user.id.to_s) %>
+<% trainings.each do |training| %>
+  <% selected = current_user.training_report.training_ids.include?(training.id.to_s) %>
 
   <div class='flex-row-between-centered height-5rem'>
-    <img
-      src="<%= user.picture %>"
-      alt="<%= user.fullname %>"
-      class='avatar-sm my-1rem mx-2rem'
-      onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'
-    >
-
-    <div class='flex-grow-1 fs-1_2rem'>
-      <div class='font-weight-600'><%= user.fullname %></div>
-      <div><%= user.job_title %></div>
+    <div class='flex-grow-1 fs-1_2rem mx-2rem'>
+      <div class='font-weight-600'><%= training.title %></div>
     </div>
 
-    <% key = "check-box-user-id-#{user.id}" %>
+    <% key = "check-box-training-id-#{training.id}" %>
     <label
       data-controller='toggle-checked-participants'
       class='centered-item rounded-3px my-1rem mx-2rem'
@@ -28,7 +20,7 @@
         class: "hidden",
         id: key,
         data: {
-          id: user.id,
+          id: training.id,
           participant_ids_target: 'result',
           action: "change->participant-ids#store change->toggle-checked-participants#toggle",
           toggle_checked_participants_target: "togglable"

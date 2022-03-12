@@ -1,0 +1,83 @@
+<!--  -->
+<div class="bkt-bg-light-orange bkt-page-container-min-height d-flex justify-content-center align-items-start pt-2rem">
+  <div class="bkt-box-shadow p-5 bkt-bg-white rounded-20px w-80vw">
+
+    <div class="d-flex justify-content-between pb-2rem">
+      <div class="fs-2_4rem font-weight-600 bkt-dark-grey">
+        Report overview (by training):
+      </div>
+      <div class="bkt-light-grey">
+        <%= "Created at : #{@training_report.updated_at.strftime('%d/%m/%Y')} at #{@training_report.updated_at.strftime("%H:%M")}" %>
+      </div>
+    </div>
+
+    <div class="pb-2rem fs-1_6rem">
+      During the period
+      <span class="bkt-orange"><%= @training_report.start_time.strftime('%d/%m/%Y') %></span>
+      to
+      <span class="bkt-orange"><%= @training_report.end_time.strftime('%d/%m/%Y') %></span>
+    </div>
+
+    <div class="d-flex justify-content-between flex-wrap">
+      <%= render_component TrainingReportCardComponent.new(
+        icon_klasses: 'fas fa-save',
+        number: report.trainings_done,
+        metric: 'Trained employess'
+      ) %>
+      <%= render_component TrainingReportCardComponent.new(
+        icon_klasses: 'fas fa-save',
+        number: report.computed_training_ids.count,
+        metric: 'Trainings'
+      ) %>
+      <%= render_component TrainingReportCardComponent.new(
+        icon_klasses: 'fas fa-save',
+        number: seconds_to_hms(report.computed_total_duration_in_secs),
+        metric: 'Total duration'
+      ) %>
+      <%= render_component TrainingReportCardComponent.new(
+        icon_klasses: 'fas fa-save',
+        number: decimal_eur(report.cost_per_employee_cents.to_f / 100),
+        metric: 'Cost per employee'
+      ) %>
+      <%= render_component TrainingReportCardComponent.new(
+        icon_klasses: 'fas fa-save',
+        number: decimal_eur(report.computed_total_cost_cents.to_f / 100),
+        metric: 'Total cost'
+      ) %>
+    </div>
+
+    <div class="pt-3rem pb-4rem"></div>
+    <div class="fs-2_4rem font-weight-600 bkt-dark-grey">Report details :</div>
+    <div class="pb-2rem"></div>
+
+    <div class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem">
+      <div class="fs-1_6rem font-weight-bold" style="flex-basis: 35.0%;">Training name</div>
+      <div class="fs-1_6rem font-weight-bold" style="flex-basis: 35.0%;">Employees</div>
+      <div class="fs-1_6rem font-weight-bold" style="flex-basis: 35.0%;">Trained employees</div>
+      <div class="fs-1_6rem font-weight-bold" style="flex-basis: 35.0%;">Duration</div>
+      <div class="fs-1_6rem font-weight-bold" style="flex-basis: 35.0%;">Cost per employee</div>
+    </div>
+
+    <% report.computed_training_lines_by_training_objects.each do |line| %>
+      <div class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem border-top-bkt-light-grey">
+        <div class="fs-1_6rem" style="flex-basis: 35.0%;"><%= line.training_name %></div>
+        <div class="fs-1_6rem" style="flex-basis: 35.0%;"><%= line.employees %></div>
+        <div class="fs-1_6rem" style="flex-basis: 35.0%;"><%= line.trained_employees %></div>
+        <div class="fs-1_6rem" style="flex-basis: 35.0%;"><%= seconds_to_hms(line.duration_in_secs) %></div>
+        <div class="fs-1_6rem" style="flex-basis: 35.0%;"><%= decimal_eur(line.cost_per_employee_in_cents.to_f / 100) %></div>
+      </div>
+    <% end %>
+
+    <div class="pt-3rem pb-4rem"></div>
+
+    <div class="d-flex justify-content-center">
+      <%= link_to trainings_report_path(report, format: :csv) do %>
+        <div class="bkt-btn-orange">Download .csv</div>
+      <% end %>
+      <div class="p-2"></div>
+      <%= link_to trainings_report_path(report, format: :xlsx) do %>
+        <div class="bkt-btn-orange">Download .xlsx</div>
+      <% end %>
+    </div>
+  </div>
+</div>

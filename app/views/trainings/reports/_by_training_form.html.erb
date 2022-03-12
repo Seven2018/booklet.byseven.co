@@ -1,0 +1,89 @@
+<div
+  data-controller='participant-ids search-inject'
+  data-training-report-form-target='by_training_form'
+  data-participant-ids-path-value='<%= trainings_report_trainings_path %>'
+  data-action='
+    refreshParticipantIdsSearch@window->search-inject#debouncedSearch
+    refreshParticipantIdsFilteredCount@window->participant-ids#refreshFilteredCount
+  '
+>
+  <div class='fs-1_2rem mb-1rem'>
+    Selected
+    <span class='fs-1_2rem'data-participant-ids-target="selectedCount"></span>
+  </div>
+
+  <%= text_field_tag 'training_ids[]', current_user.training_report.training_ids.join(','), data: {
+    participant_ids_target: 'array'
+  } %>
+
+  <div class="flex-row-between-centered mb-1rem">
+    <div class="pos-rel">
+      <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
+        <%=
+          text_field_tag(
+            :search,
+            nil,
+            placeholder: 'Filter',
+            data: {
+              search_inject_target: 'search',
+              action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
+              path: trainings_report_trainings_path
+            },
+            class: 'height-4rem pl-3rem rounded-3px',
+            style: 'border: 0.5px solid #CDCDCD;',
+            autocomplete: 'off',
+            label: false,
+            required: false
+          )
+        %>
+    </div>
+
+    <div class="flex-row-between-centered">
+      <div class='fs-1_2rem bkt-blue cursor-pointer'
+        data-action="click->participant-ids#unselectAll"
+      >Unselect all</div>
+
+      <div class="mx-2">|</div>
+
+      <div class='fs-1_2rem bkt-blue cursor-pointer'
+        data-action="click->participant-ids#selectAll"
+      >Select all</div>
+
+      <div class="mx-2">|</div>
+
+      <div class="cursor-pointer d-flex align-items-center">
+        <div class='fs-1_2rem bkt-blue'>
+          Select Filtered
+          <span class='fs-1_2rem' data-participant-ids-target='filteredCount'></span>
+        </div>
+        <div class="mx-2"></div>
+        <label
+          class='centered-item rounded-3px mb-0'
+          style='height: 2.4rem; width: 2.4rem; border: 0.5px solid #CDCDCD;'
+          data-controller='toggle-checked-participants'
+        >
+          <%= check_box_tag(
+            "_",
+            nil,
+            false,
+            class: "hidden",
+            data: {
+              action: "change->toggle-checked-participants#toggle change->participant-ids#selectFiltered",
+              toggle_checked_participants_target: "togglable"
+            }
+          ) %>
+          <span
+            class="iconify fs-1_8rem bkt-blue hidden"
+            data-toggle-checked-participants-target="icon"
+            data-icon="bi:check">
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class='border-bkt-light-grey mb-2rem overflow-y-scroll' style='height: 400px;'
+    data-search-inject-target="results"
+    data-participant-ids-target="results"
+  ></div>
+</div>

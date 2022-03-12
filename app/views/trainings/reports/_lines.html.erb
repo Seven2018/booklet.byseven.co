@@ -1,0 +1,32 @@
+<% reports.each do |report| %>
+  <% lines = [
+    report.creator.fullname,
+    report.created_at.strftime("%d/%m/%Y %H:%M"),
+    report.mode.capitalize.gsub('_', ' '),
+    report.start_time.strftime("%d/%m/%Y"),
+    report.end_time.strftime("%d/%m/%Y"),
+    ] %>
+  <% width = (1/lines.count.to_f)*100 %>
+  <div
+    data-interview-form-id="<%= report.id %>"
+    class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem border-top-bkt-light-grey pos-rel">
+    <% lines.each do |line| %>
+      <div class='fs-1_6rem' style='flex-basis: <%= width %>%;'>
+        <%= line %>
+      </div>
+    <% end %>
+
+    <div class='fs-1_6rem d-flex' style='flex-basis: <%= width %>%;'>
+      <% if report.processing? %>
+        <%= link_to trainings_reports_path do %>
+          <div class="btk-spinner bkt-orange"><span></span></div>
+        <% end %>
+      <% else %>
+        <%= link_to trainings_report_path(report), class: 'bkt-orange' do %>
+          <div>Explore data <span class="iconify" data-icon="akar-icons:chevron-right"></span></div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>
