@@ -12,7 +12,7 @@
     <span class='fs-1_2rem'data-participant-ids-target="selectedCount"></span>
   </div>
 
-  <%= text_field_tag 'participant_ids[]', current_user.training_report.participant_ids.join(','), data: {
+  <%= hidden_field_tag 'participant_ids[]', current_user.training_report.participant_ids.join(','), data: {
     participant_ids_target: 'array'
   } %>
 

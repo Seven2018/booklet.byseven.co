@@ -7,7 +7,6 @@ export default class extends Controller {
     return [ "by_employee_form", "by_training_form", "input" ]
   }
   connect() {
-    console.log('yeesf')
     this.toggle()
   }
 
