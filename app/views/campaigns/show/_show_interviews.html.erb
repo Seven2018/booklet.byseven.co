@@ -64,8 +64,8 @@
               <% end %>
             </div>
 
-            <div class="campaign-show__card-interviews-info-incomplete">
-              <p>Manager may update his/her answer at any time.</p>
+            <div class="campaign-show__card-interviews-info-incomplete mb-2rem">
+              <p>The <%= interview.label %> may update his/her answer at any time.</p>
             </div>
 
           <% else %>
@@ -86,7 +86,10 @@
             <% interviews.each do |interview| %>
               <% user_is_manager = current_user == interview.interviewer %>
 
-              <% active_link = (interview.crossed? && crossed_availability) || ((employee_view && interview.employee?) || (user_is_manager && interview.manager?) || (interview.completed? && !manager_view && !interview.manager?)) %>
+              <% active_link = (interview.crossed? && crossed_availability) ||
+                               ((employee_view && interview.employee?) ||
+                               (user_is_manager && (interview.manager? || interview.completed?)) ||
+                               (interview.completed? && !manager_view && !interview.manager?)) %>
 
               <div class="campaign-show__card-interview">
                 <% if active_link %>

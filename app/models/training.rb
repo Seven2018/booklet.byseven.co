@@ -2,9 +2,12 @@ class Training < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :attendees, through: :sessions
   has_many :workshops, through: :sessions
+
   belongs_to :company
   belongs_to :creator, class_name: "User"
   belongs_to :folder, optional: true
+
+  validates :title, presence: true
 
   paginates_per 10
 

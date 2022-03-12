@@ -40,6 +40,8 @@
     <div class="interview-main__right">
       <h1><%= @template.title %></h1>
 
+      <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@template.video) %>" style='width: 75%; height: 30rem;'></iframe>
+
       <% question_hash = {} %>
       <% j = 0 %>
 
@@ -53,7 +55,7 @@
       <% question_number = 0 %>
 
       <% question_hash.each do |key, value| %>
-        <% values = question_hash.count == 1 ? value[0..-1] : value[1..-1] %>
+        <% values = question_hash.count == 1 && key == 0 ? value[0..-1] : value[1..-1] %>
 
         <% if key.to_i > 0 %>
           <div class="interview-main__right-separator">

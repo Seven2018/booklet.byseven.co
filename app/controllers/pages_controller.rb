@@ -1,11 +1,25 @@
 class PagesController < ApplicationController
+  before_action :check_company_presence
   before_action :show_navbar_training
   before_action :show_navbar_admin, only: %i[organisation]
   before_action :show_navbar_home, only: [:home, :organisation]
 
   def home
-    @my_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, label: 'Employee', completed: false)
-    @my_team_interviews = Interview.joins(:campaign).where(campaigns: {company_id: current_user.company_id}, interviewer: current_user, label: ['Manager', 'Crossed'], completed: false)
+    @my_interviews = Interview.joins(:campaign)
+                              .where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, label: 'Employee', completed: false)
+    @my_team_interviews = Interview.joins(:campaign)
+                                   .where(campaigns: {company_id: current_user.company_id}, interviewer: current_user, label: ['Manager', 'Crossed'], completed: false)
+    @my_trainings = Training.joins(sessions: :attendees)
+                            .where(attendees: {user: current_user})
+                            .where('sessions.date >= ?', Date.today)
+                            .distinct
+                            .sort_by{|x| x.next_date}
+    @my_team_trainings = Training.joins(sessions: :attendees)
+                                 .where(attendees: {user_id: current_user.employees.ids})
+                                 .distinct
+                                 .where('sessions.date >= ?', Date.today)
+                                 .distinct
+                                 .sort_by{|x| x.next_date}
   end
 
   # Display folders/contents catalogue
@@ -163,6 +177,10 @@ class PagesController < ApplicationController
   end
 
   private
+
+  def check_company_presence
+    redirect_to user_path(current_user) unless current_user.company_id.present?
+  end
 
   def filter_users(users)
     search_name = params.dig(:search, :name)

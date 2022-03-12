@@ -1,0 +1,35 @@
+<%= campaigns.each do |campaign| %>
+
+  <% color = {'Not started' => 'bkt-bg-red',
+              'In progress' => 'bkt-bg-yellow',
+              'Completed' => 'bkt-bg-green'} %>
+  <% completion = campaign.completion_for(@user) %>
+  <% status =
+      if completion == 100
+        'Completed'
+      elsif completion == 0
+        'Not started'
+      else
+        'In progress'
+      end %>
+
+  <div class="bkt-box-shadow rounded-15px p-2rem">
+
+    <div class="flex-row-between-centered mb-2rem">
+
+      <div class="centered-item height-5rem width-5rem bkt-bg-light-blue rounded-5px mr-1rem">
+        <span class="iconify fs-2_4rem bkt-blue" data-icon="uil:exchange-alt"></span>
+      </div>
+
+      <div class='flex-grow-1'>
+        <p class="fs-2_4rem font-weight-600 bkt-dark-grey"><%= campaign.title %></p>
+        <p class="width-fit-content fs-1_2rem rounded-10px bkt-white <%= color[status] %>" style='padding: 0.25rem 1.5rem'>
+          <%= status %>
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+<% end %>

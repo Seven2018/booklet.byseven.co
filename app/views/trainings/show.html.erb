@@ -33,7 +33,7 @@
 
           </div>
 
-          <% if (@workshop.users).include?(current_user) %>
+          <% if (@workshop.users).include?(current_user) && @workshop.sessions.order(date: :asc).last.date <= Date.today %>
 
             <div id='workshop-show__completed-options' class='flex-row-between-centered width-100 bkt-bg-white rounded-10px p-2rem mb-2rem' style='max-width: 64rem;'>
               <%= render 'workshops/show/show_workshop_completed_options', workshop: @workshop, workshop_completed: @workshop_completed %>
@@ -60,7 +60,7 @@
                 <div class="centered-item height-2_5rem width-2_5rem mr-1rem">
                   <span class="iconify fs-1_6rem bkt-orange" data-icon="fa6-solid:user-group"></span>
                 </div>
-                <p class='fs-1_4rem bkt-dark-grey'><%= @workshop.content_type == 'Synchronous' ? 'Face-to-face' : 'Online' %></p>
+                <p class='fs-1_4rem bkt-dark-grey'><%= @workshop.synchronous? ? 'Face-to-face' : 'Online' %></p>
               </div>
               <div class="flex-row-between-centered p-0_75rem border-bkt-dark-grey rounded-20px">
                 <div class="centered-item height-2_5rem width-2_5rem">

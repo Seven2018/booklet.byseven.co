@@ -9,6 +9,15 @@ class UsersController < ApplicationController
   # Show user profile (users/show)
   def show
     authorize @user
+
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
+    @trainings_current = trainings.select{|x| x.next_date.present?}
+    @trainings_completed = trainings.select{|x| x.next_date.nil?}
+
+    campaigns = Campaign.where(company: current_user.company).order(created_at: :desc).where \
+      id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
+    @campaigns_current = campaigns.where_exists(:interviews, locked_at: nil)
+    @campaigns_completed = campaigns.where_not_exists(:interviews, locked_at: nil)
   end
 
   # Create new User (user_registration, pages/organisation)
@@ -146,7 +155,7 @@ class UsersController < ApplicationController
           user_row.each do |key, value|
             # begin
               user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
-              if (user.attributes.key?(key) == true && user.attributes[key].downcase != value.downcase)
+              if (user.attributes.key?(key) == true && user.attributes[key]&.downcase != value&.downcase)
                 @updating << {lastname: user.lastname, firstname: user.firstname, former: user.attributes[key], new: value}
               elsif  (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
                 @updating << {lastname: user.lastname, firstname: user.firstname, former: user_tag.tag.tag_name, new: value}

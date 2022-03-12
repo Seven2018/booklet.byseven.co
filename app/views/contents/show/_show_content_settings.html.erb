@@ -10,9 +10,11 @@
   <div class="flex-row-between-centered mb-2rem">
     <div class="flex-row-between-centered">
       <div class="centered-item height-2_5rem width-2_5rem mr-1rem">
-        <span class="iconify fs-1_6rem bkt-orange" data-icon="fa6-solid:user-group"></span>
+        <span class="iconify fs-1_6rem bkt-orange"
+          data-icon="<%= content.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
+        </span>
       </div>
-      <p class='fs-1_4rem bkt-dark-grey'><%= content.content_type == 'Synchronous' ? 'Face-to-face' : 'Online' %></p>
+      <p class='fs-1_4rem bkt-dark-grey'><%= content.synchronous? ? 'Face-to-face' : 'Online' %></p>
     </div>
     <div class="flex-row-between-centered p-0_75rem border-bkt-dark-grey rounded-20px">
       <div class="centered-item height-2_5rem width-2_5rem">

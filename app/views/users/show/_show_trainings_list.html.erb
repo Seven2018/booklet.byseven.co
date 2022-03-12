@@ -1,0 +1,48 @@
+<% trainings.each do |training| %>
+
+  <% next_session = training.next_session %>
+
+  <div class="bkt-box-shadow rounded-15px p-2rem">
+
+    <div class="flex-row-between-centered mb-2rem">
+
+      <div class="centered-item height-5rem width-5rem bkt-bg-light-orange rounded-5px mr-1rem">
+        <svg width="25" height="25" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.5 0L0 7.53846L4.4 9.47692V13.1385C3.08 13.5692 2.2 14.8615 2.2 16.1538C2.2 17.4462 3.08 18.7385 4.4 19.1692V19.3846L2.42 23.9077C1.76 25.8462 2.2 28 5.5 28C8.8 28 9.24 25.8462 8.58 23.9077L6.6 19.3846C7.92 18.7385 8.8 17.6615 8.8 16.1538C8.8 14.6462 7.92 13.5692 6.6 13.1385V10.5538L16.5 15.0769L33 7.53846L16.5 0ZM26.18 14L16.28 18.3077L11 15.9385V16.1538C11 17.6615 10.34 18.9538 9.24 20.0308L10.56 23.0462V23.2615C10.78 24.1231 11 24.9846 10.78 25.8462C12.32 26.4923 14.08 26.9231 16.28 26.9231C23.54 26.9231 26.18 22.6154 26.18 20.4615V14V14Z" fill="#EF8C64"/>
+        </svg>
+      </div>
+
+      <div class='flex-grow-1'>
+        <p class="fs-2_4rem font-weight-600 bkt-dark-grey"><%= training.title %></p>
+        <div class="flex-row-between-centered width-fit-content border-bkt-dark-grey rounded-20px" style='padding: .25rem .75rem;'>
+          <div class="centered-item" style='margin-right: .5rem;'>
+            <span class="iconify fs-1_2rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
+          </div>
+          <p class='fs-1rem bkt-dark-grey'><%= TimeConversion.convert(training.duration) %></p>
+        </div>
+      </div>
+
+    </div>
+
+    <% if next_session.present? %>
+
+      <div class="flex-row-start-centered">
+
+        <div class="flex-row-between-centered mr-2rem">
+          <span class="iconify fs-1_6rem bkt-orange mr-1rem" data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
+          </span>
+          <p class='fs-1_4rem bkt-dark-grey'><%= next_session.workshop.synchronous? ? 'Face-to-face' : 'Online' %></p>
+        </div>
+
+        <div class="flex-row-between-centered">
+          <span class="iconify fs-1_6rem bkt-orange mr-1rem" data-icon="akar-icons:calendar"></span>
+          <p>Next date: <%= next_session.date %> at <%= next_session.starts_at.strftime('%H:%M') %></p>
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+<% end %>

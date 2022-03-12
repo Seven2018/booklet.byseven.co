@@ -112,6 +112,6 @@ class InterviewFormsController < ApplicationController
   end
 
   def template_params
-    params.require(:interview_form).permit(:title, :description, :answerable_by, :cross)
+    params.require(:interview_form).permit(:title, :description, :video, :answerable_by, :cross)
   end
 end
