@@ -24,6 +24,7 @@ class TrainingReport < ApplicationRecord
   validate :no_duplicate_processing?
   validates :start_time, :end_time, presence: true
 
+  scope :at_least_started, -> { where(state: [:started, :done, :failed]) }
   scope :processing, -> { where.not(state: [:done, :failed]) }
 
   jsonb_accessor :data,

@@ -2,7 +2,7 @@ class Trainings::ReportsController < ApplicationController
   before_action :show_navbar_training, :show_navbar_admin, :set_company
 
   def index
-    @reports = @company.training_reports.order(created_at: :desc)
+    @reports = @company.training_reports.at_least_started.order(created_at: :desc)
   end
 
   def edit
