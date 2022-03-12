@@ -5,10 +5,6 @@ class CampaignDraft::Interviewees::UsersController < CampaignDraft::BaseControll
     render partial: 'campaign_draft/participants/users', locals: { users: users }
   end
 
-  def create
-    @campaign.update interviewee_ids: interviewee_ids
-  end
-
   private
 
   def users

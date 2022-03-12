@@ -1,5 +1,5 @@
-<% users.each do |user| %>
-  <% selected = @campaign.interviewee_ids.include?(user.id.to_s) %>
+<% participants.each do |user| %>
+  <% selected = current_user.training_report.participant_ids.include?(user.id.to_s) %>
 
   <div class='flex-row-between-centered height-5rem'>
     <img

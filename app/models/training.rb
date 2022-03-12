@@ -34,6 +34,14 @@ class Training < ApplicationRecord
     return past_sessions.count == self.sessions.count
   end
 
+  def done?
+    attendees.distinct.pluck(:status).none?("Not completed")
+  end
+
+  def done_for?(user_id)
+    attendees.where(user_id: user_id).distinct.pluck(:status).none?("Not completed")
+  end
+
   def duration
     workshops.map(&:duration).sum
   end

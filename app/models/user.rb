@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :campaign_drafts
   has_many :training_drafts
   belongs_to :manager, class_name: "User", optional: true
+  has_many :training_reports, foreign_key: 'creator_id'
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
 
   validates :email, presence: true
@@ -46,6 +47,15 @@ class User < ApplicationRecord
 
   def training_draft
     training_drafts.processing.last || TrainingDraft.create(user: self)
+  end
+
+  def training_report
+    training_reports.processing.last || TrainingReport.create(
+      creator: self,
+      company: company,
+      start_time: Time.zone.today.beginning_of_month,
+      end_time: Time.zone.today.end_of_year
+    )
   end
 
   def fullname

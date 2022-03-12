@@ -1,8 +1,8 @@
-<% @reports.each do |report| %>
+<% reports.each do |report| %>
   <% lines = [
     report.creator.fullname,
-    report.created_at.strftime("%d/%m/%Y %Hh%M"),
-    report.mode,
+    report.created_at.strftime("%d/%m/%Y %H:%M"),
+    report.mode.capitalize.gsub('_', ' '),
     report.start_time.strftime("%d/%m/%Y"),
     report.end_time.strftime("%d/%m/%Y"),
     ] %>
@@ -18,16 +18,12 @@
 
     <div class='fs-1_6rem d-flex' style='flex-basis: <%= width %>%;'>
       <% if report.processing? %>
-        <%= link_to interviews_reports_path do %>
-          <div class="btk-spinner bkt-dark-blue"><span></span></div>
+        <%= link_to trainings_reports_path do %>
+          <div class="btk-spinner bkt-orange"><span></span></div>
         <% end %>
       <% else %>
-        <%= link_to interviews_report_path(report, format: :csv) do %>
-          <i class="fas fs-2_4rem fa-file-csv"></i>
-        <% end %>
-        <div class="mx-3"></div>
-        <%= link_to interviews_report_path(report, format: :xlsx) do %>
-          <i class="fas fs-2_4rem fa-file-excel"></i>
+        <%= link_to trainings_report_path(report), class: 'bkt-orange' do %>
+          <div>Explore data <span class="iconify" data-icon="akar-icons:chevron-right"></span></div>
         <% end %>
       <% end %>
     </div>

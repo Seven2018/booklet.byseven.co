@@ -1,0 +1,79 @@
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pt-2rem'>
+
+  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw">
+    <%= simple_form_for current_user.training_report, url: trainings_reports_path do |f| %>
+      <%= f.hidden_field :company_id, value: @company.id %>
+      <%= f.hidden_field :creator_id, value: current_user.id %>
+
+      <%= render_component FormSectionTitleComponent.new(title: 'Filter per period') %>
+
+      <div class="d-flex align-items-center">
+        <div class="fs-1_6rem mx-3">
+          From
+        </div>
+
+        <%= f.input :start_time,
+          wrapper_html: { class: 'mb-0' },
+          input_html: {
+            class: 'datepicker-defaulting-to-now border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+          },
+          as: :date,
+          html5: true,
+          placeholder: 'Select date',
+          label: false
+        %>
+
+        <div class="fs-1_6rem mx-3">
+          to
+        </div>
+
+        <%= f.input :end_time,
+          wrapper_html: { class: 'mb-0' },
+          input_html: {
+            class: 'datepicker-defaulting-to-end-of-year border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+          },
+          as: :date,
+          html5: true,
+          placeholder: 'Select date',
+          label: false
+        %>
+      </div>
+
+
+      <div class="mb-2rem"></div>
+
+      <div data-controller='training-report-form my-2rem'>
+        <% title = current_user.training_report.mode.capitalize.gsub('_', ' ') %>
+        <%= render_component(SelectComponent.new(width: '200px', title: title)) do  %>
+          <% TrainingReport::modes.keys.each do |mode| %>
+            <input
+              class="hidden"
+              value="<%= mode %>"
+              type="radio"
+              <% if current_user.training_report.mode == mode %> checked='true' <% end %>
+              data-training-report-form-target='input'
+              name="training_report[mode]"
+              id="<%= mode %>">
+            <label
+              data-action="click->dropdown#toggle click->replace-text#replace click->training-report-form#debouncedToggle"
+              class="fs-1_4rem font-weight-500 p-1rem m-0 bkt-blue-hover cursor-pointer w-100"
+              for="<%= mode %>">
+              <%= mode.capitalize.gsub('_', ' ') %>
+            </label>
+          <% end %>
+        <% end %>
+
+        <div class="mb-2rem"></div>
+
+        <%= render 'by_training_form' %>
+        <%= render 'by_employee_form' %>
+      </div>
+
+
+      <div class="d-flex justify-content-center pt-5">
+        <%= f.submit 'Create Report', class: 'bkt-btn-orange' %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
