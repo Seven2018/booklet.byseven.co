@@ -18,31 +18,33 @@
     </div>
 
     <div class="d-flex justify-content-between flex-wrap">
-      <%= render_component TrainingReportCardComponent.new(
-        icon_klasses: 'fas fa-save',
-        number: report.trainings_done,
-        metric: 'Trained employess'
-      ) %>
-      <%= render_component TrainingReportCardComponent.new(
-        icon_klasses: 'fas fa-save',
-        number: report.computed_training_ids.count,
-        metric: 'Trainings'
-      ) %>
-      <%= render_component TrainingReportCardComponent.new(
-        icon_klasses: 'fas fa-save',
-        number: seconds_to_hms(report.computed_total_duration_in_secs),
-        metric: 'Total duration'
-      ) %>
-      <%= render_component TrainingReportCardComponent.new(
-        icon_klasses: 'fas fa-save',
-        number: decimal_eur(report.cost_per_employee_cents.to_f / 100),
-        metric: 'Cost per employee'
-      ) %>
-      <%= render_component TrainingReportCardComponent.new(
-        icon_klasses: 'fas fa-save',
-        number: decimal_eur(report.computed_total_cost_cents.to_f / 100),
-        metric: 'Total cost'
-      ) %>
+
+      <%= render_component TrainingReportCardComponent.new(metric: 'Trained employees',
+        number: report.trainings_done
+      ) do %>
+        <%= render_component Icons::StrongArmComponent.new %>
+      <% end %>
+      <%= render_component TrainingReportCardComponent.new(metric: 'Trainings',
+        number: report.computed_training_ids.count
+      ) do %>
+        <%= render_component Icons::GraduateHatComponent.new %>
+      <% end%>
+      <%= render_component TrainingReportCardComponent.new(metric: 'Total duration',
+        number: seconds_to_hms(report.computed_total_duration_in_secs)
+      ) do %>
+        <%= render_component Icons::ClockThreeOclockComponent.new %>
+      <% end%>
+      <%= render_component TrainingReportCardComponent.new(metric: 'Cost per employee',
+        number: decimal_eur(report.cost_per_employee_cents.to_f / 100)
+      ) do %>
+        <%= render_component Icons::ThreeCoinsComponent.new %>
+      <% end%>
+      <%= render_component TrainingReportCardComponent.new(metric: 'Total cost',
+        number: decimal_eur(report.computed_total_cost_cents.to_f / 100)
+      ) do %>
+        <%= render_component Icons::ThreeCoinsComponent.new %>
+      <% end%>
+
     </div>
 
     <div class="pt-3rem pb-4rem"></div>
