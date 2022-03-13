@@ -34,10 +34,6 @@ class CampaignPolicy < ApplicationPolicy
     user.manager_or_above?
   end
 
-  def campaigns_report?
-    user.hr_or_above?
-  end
-
   def send_notification_email?
     user.manager_or_above?
   end

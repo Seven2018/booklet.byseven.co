@@ -2,7 +2,7 @@
   <%# form %>
   <div>
     <%= simple_form_for InterviewReport.new, url: interviews_reports_path do |f| %>
-      <%= f.hidden_field :company_id, value: @company.id %>
+      <%= f.hidden_field :company_id, value: current_user.company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
 
       <%= f.input :mode,
@@ -15,7 +15,7 @@
       %>
 
       <%= f.input :tag_category_id,
-        collection: @company.tag_categories.order(position: :asc),
+        collection: current_user.company.tag_categories.order(position: :asc),
         as: :radio_buttons,
         input_html: {
           onclick: 'selectAnalytics(this);',

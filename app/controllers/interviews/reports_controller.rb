@@ -1,14 +1,17 @@
 class Interviews::ReportsController < ApplicationController
-  before_action :show_navbar_campaign, :show_navbar_admin, :set_company
+  before_action :show_navbar_campaign, :show_navbar_admin, :ensure_company
 
   def index
-    @reports = @company.interview_reports.order(created_at: :desc)
+    @reports = policy_scope(InterviewReport).order(created_at: :desc)
   end
 
-  def new; end
+  def new
+    authorize InterviewReport.new
+  end
 
   def create
     interview_report = InterviewReport.new interview_report_params
+    authorize interview_report
     if interview_report.save
       InterviewReports::GenerateDataJob.perform_later interview_report.id
       flash[:notice] = "Generating report: refresh in 1 min !"
@@ -19,6 +22,7 @@ class Interviews::ReportsController < ApplicationController
   end
 
   def show
+    authorize interview_report
     respond_to do |format|
       format.csv  { send_data interview_report.to_csv,  filename: interview_report.filename('.csv')  }
       format.xlsx { send_file interview_report.to_xlsx, filename: interview_report.filename('.xlsx') }
@@ -26,23 +30,13 @@ class Interviews::ReportsController < ApplicationController
   end
 
   def destroy
+    authorize interview_report
     interview_report.destroy
     flash[:notice] = "Report destroyed !"
     redirect_to interviews_reports_path
   end
 
   private
-
-  def set_company
-    @campaigns = policy_scope(Campaign)
-    @company = current_user.company
-    authorize @campaigns
-
-    unless @company
-      flash[:alert] = "User must be associated to a company !"
-      redirect_to root_path and return
-    end
-  end
 
   def interview_report
     @interview_report ||= InterviewReport.find params[:id]

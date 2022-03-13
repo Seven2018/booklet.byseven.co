@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class TrainingReportCardComponent < ViewComponent::Base
-  def initialize(icon_klasses:, number:, metric:)
-    @icon_klasses = icon_klasses
+  def initialize(number:, metric:)
     @number = number
     @metric = metric
   end

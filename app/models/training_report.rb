@@ -156,7 +156,7 @@ class TrainingReport < ApplicationRecord
     end
 
     if by_training_mode?
-      a << ['Trained employess', trainings_done]
+      a << ['Trained employees', trainings_done]
       a << ['Trainings', computed_training_ids.count]
       a << ['Total duration', h.seconds_to_hms(computed_total_duration_in_secs)]
       a << ['Cost per employee', h.decimal_eur(cost_per_employee_cents.to_f / 100)]
