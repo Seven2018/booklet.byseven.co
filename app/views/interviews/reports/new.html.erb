@@ -2,7 +2,7 @@
 
   <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw">
     <%= simple_form_for InterviewReport.new, url: interviews_reports_path do |f| %>
-      <%= f.hidden_field :company_id, value: @company.id %>
+      <%= f.hidden_field :company_id, value: current_user.company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
 
 
@@ -76,7 +76,7 @@
       <%# width = '200px' %>
 
       <%= render_component(SelectComponent.new(width: '200px', title: 'Select Tag Category')) do  %>
-        <% @company.tag_categories.order(position: :asc).each do |tag_category| %>
+        <% current_user.company.tag_categories.order(position: :asc).each do |tag_category| %>
           <% key = "interview_report_tag_category_id_#{tag_category.id}" %>
           <input
             class="hidden"

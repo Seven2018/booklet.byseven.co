@@ -99,6 +99,13 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, notice: 'Espace réservé aux admins' unless current_user&.admin
   end
 
+  def ensure_company
+    unless current_user.company
+      flash[:alert] = "User must be associated to a company !"
+      redirect_to root_path and return
+    end
+  end
+
   def controller_action
     @controller_action = [controller_name, action_name].join('_').to_sym
   end

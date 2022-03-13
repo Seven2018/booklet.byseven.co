@@ -1,15 +1,16 @@
 class Trainings::ReportsController < ApplicationController
-  before_action :show_navbar_training, :show_navbar_admin, :set_company
+  before_action :show_navbar_training, :show_navbar_admin, :ensure_company
 
   def index
-    @reports = @company.training_reports.at_least_started.order(created_at: :desc)
+    @reports = policy_scope(TrainingReport).at_least_started.order(created_at: :desc)
   end
 
   def edit
-    training_report
+    authorize training_report
   end
 
   def update
+    authorize training_report
     if mode == :by_employee && participant_ids.blank?
       flash[:alert] = 'Please select users'
       redirect_to edit_trainings_reports_path and return
@@ -31,6 +32,7 @@ class Trainings::ReportsController < ApplicationController
 
   def show
     @training_report = TrainingReport.find params[:id]
+    authorize @training_report
     respond_to do |format|
       format.html
       format.csv  { send_data training_report.to_csv,  filename: training_report.filename('.csv')  }
@@ -39,23 +41,13 @@ class Trainings::ReportsController < ApplicationController
   end
 
   def destroy
+    authorize training_report
     training_report.destroy
     flash[:notice] = "Report destroyed !"
     redirect_to trainings_reports_path
   end
 
   private
-
-  def set_company
-    @campaigns = policy_scope(Campaign)
-    @company = current_user.company
-    authorize @campaigns
-
-    unless @company
-      flash[:alert] = "User must be associated to a company !"
-      redirect_to root_path and return
-    end
-  end
 
   def training_report
     @training_report ||= current_user.training_report
