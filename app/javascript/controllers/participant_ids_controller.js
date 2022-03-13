@@ -40,7 +40,7 @@ export default class extends Controller {
 
     const checking = e.currentTarget.checked
       const checkboxes = [...this.resultTargets].filter(checkBox => checkBox.checked == !checking)
-      const checkboxes_ids = checkboxes.map(checkBox => checkBox.dataset.userId)
+      const checkboxes_ids = checkboxes.map(checkBox => checkBox.dataset.id)
       checking ? this._bulk_add(checkboxes_ids) : this._bulk_remove(checkboxes_ids)
       checkboxes.forEach((checkBox) => {
         checkBox.click()
