@@ -4,7 +4,8 @@ module ApplicationHelper
   end
 
   def decimal_eur(number)
-    "#{'%.2f' % number} €"
+    has_decimal = number % 1 != 0
+    has_decimal ? "#{'%.2f' % number} €" : "#{number.to_i} €"
   end
 
   def seconds_to_hms(sec)
