@@ -1,0 +1,39 @@
+<div class="modal-content">
+
+  <div class="modal-header modal-header__simple">
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body modal-body__simple">
+
+    <h3 class='mb-2rem'>Do you wish to lock this review ?</h3>
+
+    <div>
+      <p class='fs-1_6rem font-weight-500 bkt-dark-grey mb-1rem text-center'>You will not be able to update your answers if the review is locked.</p>
+      <p class='fs-1_6rem font-weight-500 bkt-dark-grey'>This review will remain accessible in a read-only mode.</p>
+    </div>
+
+    <div class="flex-row-between-centered mt-2rem">
+
+      <div>
+        <button class="btn-white" onclick="thankYou(this);">
+          <p class='bkt-blue'>Submit</p>
+        </button>
+        <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
+      </div>
+
+      <div>
+        <button class="btn-red flex-row-between-centered" onclick="thankYou(this);">
+          <p class='mr-1rem'>Submit & lock</p>
+          <span class="iconify fs-1_6rem bkt-white" data-icon="bxs:lock"></span>
+        </button>
+        <%= link_to '', lock_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
