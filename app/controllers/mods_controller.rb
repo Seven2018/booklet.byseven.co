@@ -18,7 +18,7 @@ class ModsController < ApplicationController
     target_position = params.dig(:mod, :position).to_i + 1
     mods = @content.mods.order(position: :asc)
 
-    @new_mod.workshop_id = @content.id
+    @new_mod.workshop_id = @content.id unless content_id.present?
     @new_mod.mod_type = params.dig(:mod, :mod_type)
 
     i = target_position
