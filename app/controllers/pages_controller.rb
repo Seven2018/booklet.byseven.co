@@ -16,7 +16,6 @@ class PagesController < ApplicationController
                             .sort_by{|x| x.next_date}
     @my_team_trainings = Training.joins(sessions: :attendees)
                                  .where(attendees: {user_id: current_user.employees.ids})
-                                 .distinct
                                  .where('sessions.date >= ?', Date.today)
                                  .distinct
                                  .sort_by{|x| x.next_date}
