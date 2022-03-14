@@ -64,14 +64,12 @@
       label: (question.separator? ? 'Title' : false )
     }.compact) %>
 
-  <%= f.input :description,
-      as: :trix_editor,
-      placeholder: 'Description (optional)',
-      input_html: {
-        class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px',
-        value: question.description
-      }
-      %>
+  <%= render_component TrixInputComponent.new(
+    name: 'interview_question[description]',
+    value: question.description,
+    placeholder: 'Description (optional)',
+    klasses: "bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem fs-1_4rem"
+  ) %>
 
   <% if question.rating? %>
     <div class="flex-row-between-centered mb-2rem">

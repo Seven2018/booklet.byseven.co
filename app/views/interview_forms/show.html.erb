@@ -59,7 +59,11 @@
 
         <% if key.to_i > 0 %>
           <div class="interview-main__right-separator">
-            <p><%= key %>. <%= value.first.question %></p>
+            <% separator = value.first %>
+            <p><%= key %>. <%= separator.question %></p>
+          </div>
+          <div class="bkt-dark-grey fs-1_4rem pb-1rem pt-1rem w-100">
+            <%= sanitize separator.description %>
           </div>
         <% end %>
         <div class="interview-main__right-questions">
