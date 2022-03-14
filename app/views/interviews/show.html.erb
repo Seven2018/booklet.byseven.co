@@ -29,26 +29,13 @@
         </button>
       <% end %>
       <% unless @interview.locked? %>
-
-        <% if current_user == manager || current_user.hr_or_above? %>
-
-          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
-            <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
-            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-          </button>
-          <%= link_to '', (@interview.crossed? ?
-            lock_interview_path(interview_id: @interview.id) :
-            complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
-
-        <% elsif !@interview.crossed? %>
-
-          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
+        <a data-toggle='modal' data-target='#lockInterview'>
+          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
             <p>Submit</p>
             <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
           </button>
-          <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
+        </a>
 
-        <% end %>
       <% end %>
     </div>
   </div>
@@ -96,27 +83,32 @@
 
       <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; height: 30rem;'></iframe>
 
+      <% question_num = 0 %>
+
       <%
         QuestionDecorator.decorate_collection(
           @interview.interview_form.interview_questions
                                    .order(position: :asc)
                                    # .not_separator
                                    .where(visible_for: visibility)
-          ).each_with_index do |question, index|
+          ).each do |question|
       %>
         <% if question.separator? %>
           <div class="interview-main__right-separator">
-            <p><%= question.question %></p>
+            <p class='pb-1rem'><%= question.question %></p>
           </div>
+          <p class="width-100 fs-1_6rem font-weight-600 bkt-dark-grey text-preline p-1rem mb-1rem"><%= sanitize question.description %></p>
         <% end %>
 
         <% next if question.separator? %>
+
+        <% question_num += 1 %>
 
         <div class="interview-main__right-questions">
           <div class="interview-main__right-question">
             <a id="anchor-<%= question.position %>" style='position:absolute; top: -21.5rem;'></a>
             <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
-              <p><%= index + 1 %>. </p>
+              <p><%= question_num %>. </p>
               <span class="iconify" data-icon="<%= question.icon %>"></span>
               <p><%= question.question %> <%= "*" if question.required? %></p>
             </div>
@@ -168,7 +160,7 @@
 
 <div class="interview-thanks hidden">
   <div class="flex-column-start-centered">
-    <p>Review <%= @interview.crossed? ? 'Locked' : 'Submitted' %> ! <i class="fas fa-check-square"></i></p>
+    <p>Review Submitted ! <i class="fas fa-check-square"></i></p>
     <p>Thank you for completing this review ! <i class="far fa-thumbs-up"></i></p>
     <p>You can go back to the interview, or exit to the dashboard.</p>
   </div>
@@ -183,6 +175,17 @@
 
 <div class="saved-message hidden">
   <p>SAVED!</p>
+</div>
+
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade modal_folder' id='lockInterview' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'interviews/modals/lock_interview' %>
+  </div>
 </div>
 
 <!---------------->
@@ -251,16 +254,22 @@
     }
   }
 
-  function thankYou(option = 'forward') {
-    main_container = document.querySelector('.interview-container')
-    thank = document.querySelector('.interview-thanks')
+  function thankYou(element, option = 'forward') {
+    const main_container = document.querySelector('.interview-container')
+    const thank = document.querySelector('.interview-thanks')
+
     if (option == 'forward') {
-      document.querySelector('.submit-interview').click()
+
+      element.closest('div').querySelector('.submit-interview').click()
+      element.closest('.modal-content').querySelector('.action-modal__close').click()
       main_container.classList.add('hidden')
       thank.classList.remove('hidden')
+
     } else if (option == 'back') {
+
       thank.classList.add('hidden')
       main_container.classList.remove('hidden')
+
     }
   }
 

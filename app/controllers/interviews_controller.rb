@@ -118,6 +118,20 @@ class InterviewsController < ApplicationController
     head :no_content
   end
 
+  def unlock_interview
+    interview_id = params[:interview_id]
+
+    @interview = Interview.find interview_id
+    authorize @interview
+
+    @interview.update_columns locked_at: nil
+
+    respond_to do |format|
+      format.html {redirect_to campaign_path(@interview.campaign)}
+      format.js
+    end
+  end
+
   private
 
   def interview_params

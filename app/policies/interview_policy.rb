@@ -51,6 +51,10 @@ class InterviewPolicy < ApplicationPolicy
     user == record.interviewer
   end
 
+  def unlock_interview?
+    user.hr_or_above?
+  end
+
   def update_interviews?
     user == record.interviewer || user.hr_or_above?
   end
