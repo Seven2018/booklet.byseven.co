@@ -31,10 +31,10 @@
           </div>
           <div class="my-team-trainings-card__middle">
             <div class="my-team-trainings-card__middle-status-trainings">
-              <p><%= trainings.count %> trainings in progress</p>
+              <p><%= trainings&.count %> trainings in progress</p>
             </div>
             <div class="my-team-trainings-card__middle-date-next-trainings">
-              <p>Next training date : <%= trainings.first.next_date %></p>
+              <p>Next training date : <%= trainings&.first&.next_date %></p>
             </div>
           </div>
           <div class="my-team-trainings-card__right">
