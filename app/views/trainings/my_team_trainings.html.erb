@@ -1,9 +1,15 @@
 <div class="my-team-trainings__container">
   <div class="my-team-trainings__main">
 
-    <div class="my-team-trainings__banner">
-      <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
-      <p>Welcome to My Team Trainings section, your team have <%# "team trainings count" %> trainings to do and/or validate, please see them below. </p>
+    <div class="flex-row-between-centered rounded-30px bkt-bg-white bkt-box-shadow mb-5rem overflow-hidden">
+
+      <div class='width-50 p-2rem'>
+        <h1 class='mb-2rem'>Hello, <%= "#{@current_user.firstname}" %> !</h1>
+        <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>Welcome to My Team Trainings section, your team have <%# "team trainings count" %> trainings to do and/or validate, please see them below. </p>
+      </div>
+
+      <%= image_tag 'BM-My team trainings.png', class: 'width-50', style: 'height: 30rem; object-fit: cover;' %>
+
     </div>
 
 
