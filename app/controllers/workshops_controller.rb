@@ -49,8 +49,7 @@ class WorkshopsController < ApplicationController
 
   def workshop_completed?
     @workshop_completed =
-      Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed' ?
-      true : false
+      Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed'
   end
 
   def workshop_params

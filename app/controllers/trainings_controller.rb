@@ -136,8 +136,7 @@ class TrainingsController < ApplicationController
     # TEMP (Since Training contains only one Workshop)
     @workshop = @training.workshops.first
     @workshop_completed =
-      Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed' ?
-      true : false
+      Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed'
   end
 
   def create
