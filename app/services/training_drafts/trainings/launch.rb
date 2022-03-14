@@ -49,7 +49,17 @@ module TrainingDrafts
         params = @training_draft.content.slice \
           :title, :duration, :description, :content_type, :image, :cost
 
-        Workshop.create params.merge(content_id: @training_draft.content_id)
+        content = Content.find(@training_draft.content_id)
+
+        new_workshop = Workshop.create params.merge(content_id: @training_draft.content_id)
+
+        content.mods.order(position: :asc).each do |mod|
+          new_mod = Mod.create(mod.attributes.except('id', 'content_id', 'created_at', 'updated_at'))
+          new_mod.workshop_id = new_workshop.id
+          new_mod.save
+        end
+
+        return new_workshop
       end
 
       def training
