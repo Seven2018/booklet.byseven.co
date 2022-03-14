@@ -67,7 +67,8 @@
   <%= render_component TrixInputComponent.new(
     name: 'interview_question[description]',
     value: question.description,
-    placeholder: 'Description (optional)'
+    placeholder: 'Description (optional)',
+    klasses: "bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem fs-1_4rem"
   ) %>
 
   <% if question.rating? %>
