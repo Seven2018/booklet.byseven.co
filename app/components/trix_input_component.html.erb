@@ -1,0 +1,17 @@
+<div data-controller="trix">
+  <input
+    type="hidden"
+    id="<%= @rand_uuid %>"
+    value="<%= @value %>"
+    data-trix-target="input"
+    data-untouched-value="<%= @value %>"
+    name="<%= @name %>"
+  >
+  <trix-editor
+    data-action="window@trix-initialize->trix#setup trix-change->trix#update"
+    data-trix-target="editor"
+    class='bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem fs-1_4rem'
+    input="<%= @rand_uuid %>"
+    placeholder="<%= @placeholder %>"
+  ></trix-editor>
+</div>
