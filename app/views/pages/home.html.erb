@@ -203,7 +203,7 @@
             <p>You have <%= "#{@my_team_trainings.count}" %> trainings to do in this section. You can review them in <%= link_to '`My Team Trainings`', my_team_trainings_path, class: 'font-weight-700' %> section !</p><br>
             <p>Your upcoming trainings :</p><br>
 
-            <% myt_firsts = @my_team_trainings.order(date: :asc).first(3) %>
+            <% myt_firsts = @my_team_trainings.first(3) %>
             <% myt_firsts.each do |myt_first| %>
 
               <div class='mt-1rem'>
