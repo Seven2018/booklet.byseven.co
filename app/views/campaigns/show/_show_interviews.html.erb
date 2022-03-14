@@ -21,6 +21,11 @@
                   campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
                   <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
                 <% end %>
+                <% if current_user.hr_or_above? %>
+                  <% interviews.select{|x| x&.locked_at&.present?}.each do |interview| %>
+                    <%= link_to "Unlock #{interview.label} interview", unlock_interview_path(interview_id: interview.id, interviewer_id: @selected_interviewer&.id), remote: true %>
+                  <% end %>
+                <% end %>
             </div>
           <% end %>
         </div>
@@ -42,7 +47,7 @@
               end
             %>
 
-            <div class="campaign-show__card-interview">
+            <div id='interview-<%= interview.id %>' class="campaign-show__card-interview">
               <% if active_link %>
                 <%= link_to '', interview_path(interview), class: 'stretched-link' %>
               <% end %>
@@ -91,7 +96,7 @@
                                (user_is_manager && (interview.manager? || interview.completed?)) ||
                                (interview.completed? && !manager_view && !interview.manager?)) %>
 
-              <div class="campaign-show__card-interview">
+              <div id='interview-<%= interview.id %>' class="campaign-show__card-interview">
                 <% if active_link %>
                   <%= link_to '', interview_path(interview), class: 'stretched-link' %>
                 <% end %>

@@ -44,11 +44,17 @@ class InterviewQuestion < ApplicationRecord
 
   def self.visible?(option)
     if option == 'employee'
-      # ['all', 'employee'].include?(visible_for)
       self.where(visible_for: ['all', 'employee'])
     else
-      # ['all', 'manager'].include?(visible_for)
       self.where(visible_for: ['all', 'manager'])
+    end
+  end
+
+  def self.required?(option)
+    if option == 'employee'
+      self.where(required_for: ['all', 'employee'])
+    else
+      self.where(required_for: ['all', 'manager'])
     end
   end
 end
