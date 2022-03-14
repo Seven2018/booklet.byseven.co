@@ -29,10 +29,12 @@ module CampaignDrafts
         end
       end
 
-      def owner
+      def interviewer(interviewee)
         case @campaign_draft.interviewer_selection_method
-        when 'manager' then @campaign_draft.user
-        # when 'multiple' then # TODO
+        when 'manager' then
+          interviewee.manager.presence || @campaign_draft.default_interviewer
+        when 'specific_manager' then
+          @campaign_draft.default_interviewer
         end
       end
 
@@ -47,7 +49,7 @@ module CampaignDrafts
         @campaign ||=
           Campaign.create(
             title: @campaign_draft.title,
-            owner: owner,
+            owner: @campaign_draft.user,
             company: @campaign_draft.user.company,
             campaign_type: campaign_type
           )
@@ -59,8 +61,12 @@ module CampaignDrafts
 
       def create_interviews
         interviewees.map do |interviewee|
-          interviewer = interviewee.manager.presence || User.find(@campaign_draft.default_interviewer_id)
-          InterviewSets::Create.call interview_params.merge(employee: interviewee, interviewer: interviewer)
+          InterviewSets::Create.call(
+            interview_params.merge(
+              employee: interviewee,
+              interviewer: interviewer(interviewee)
+            )
+          )
         end
       end
 

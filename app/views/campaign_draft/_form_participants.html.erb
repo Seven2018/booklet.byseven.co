@@ -127,10 +127,20 @@
     icon_klasses: "fas fa-check",
     title: "Direct manager",
     subtitle: "Each participant is assigned to their manager",
-    compact: true
+    # compact: true
   ) %>
 
   <%= render_component RadioButtonTileComponent.new(
+    model: :interviewer_selection_method,
+    name: :specific_manager,
+    checked: campaign.interviewer_selection_method == :specific_manager.to_s,
+    icon_klasses: "fas fa-rocket",
+    title: "Chose an interviewer",
+    subtitle: "Chose a specific user as the campaign sole interviewer",
+    # compact: true
+  ) %>
+
+  <%#= render_component RadioButtonTileComponent.new(
     model: :interviewer_selection_method,
     name: :admin,
     checked: campaign.interviewer_selection_method == :admin.to_s,
@@ -141,25 +151,31 @@
     disabled: true
   ) %>
 
-  <%= render_component RadioButtonTileComponent.new(
-    model: :interviewer_selection_method,
-    name: :any,
-    checked: campaign.interviewer_selection_method == :any.to_s,
-    icon_klasses: "fas fa-rocket",
-    title: "Chose an interviewer",
-    subtitle: "Chose a specific user as the campaign sole interviewer",
-    compact: true,
-    disabled: true
-  ) %>
-
 </div>
 
-
-<%= render_component FormSectionTitleComponent.new(title: 'Default interviewer') %>
+<%= render_component FormSectionTitleComponent.new(title: 'Interviewer') %>
 <%= render_component FormSectionSubtitleComponent.new do %>
-  For interviewees not linked to a manager in the database, please <br><%# TODO improve  %>
-  chose a default interviewer
+  The interviewer will handle all interviews for selected participants
 <% end %>
 
-<%# TODO %>
-<%= select_tag :default_interviewer_id, options_for_select(User.where(company_id: current_user.company_id).pluck(:email, :id), selected: @campaign.default_interviewer_id) %>
+<%= render_component(SelectComponent.new(
+  width: '100%',
+  title: @campaign.default_interviewer&.email || 'Select Interviewer'
+)) do  %>
+  <% User.where(company_id: current_user.company_id).pluck(:email, :id).each do |email, id| %>
+    <% key = "user_#{id}" %>
+    <input
+      class="hidden"
+      <% if @campaign.default_interviewer_id.to_i == id %>checked='true'<% end %>
+      type="radio"
+      value="<%= id %>"
+      name="default_interviewer_id"
+      id='<%= key %>'>
+    <label
+      data-action="click->dropdown#toggle click->replace-text#replace"
+      class="fs-1_4rem font-weight-500 p-1rem m-0 bkt-blue-hover cursor-pointer w-100"
+      for="<%= key %>">
+      <%= email %>
+    </label>
+  <% end %>
+<% end %>
