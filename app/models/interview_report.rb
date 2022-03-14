@@ -38,13 +38,18 @@ class InterviewReport < ApplicationRecord
   end
 
   def to_csv
-    CSV.generate("\uFEFF") { |csv| data.split("\n").each { |row| csv << row.split(',') } }
+    CSV.generate("\uFEFF") do |csv|
+      data.gsub("\r", ' ').split("\n").each { |row| csv << row.split(',') }
+    end
   end
 
   def to_xlsx
     p = Axlsx::Package.new
+    wrap = p.workbook.styles.add_style alignment: {wrap_text: true}
     p.workbook.add_worksheet(name: sheetname) do |sheet|
-      data.split("\n").each { |csv_row| sheet.add_row csv_row.split(',') }
+      data.split("\n").each do |csv_row|
+        sheet.add_row csv_row.split(','), style: wrap
+      end
     end
     temp_file = Tempfile.new([filename, '.xlsx'], Rails.root.join('tmp'), encoding: 'utf-8')
     p.serialize temp_file.path

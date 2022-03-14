@@ -268,14 +268,14 @@ class Campaign < ApplicationRecord
           interview.interview_questions.order(position: :asc).each do |question|
             answer = question.interview_answers.find_by(interview_id: interview.id, user_id: user_for_answer.id)
             next if answer.nil?
-            question_text = "Question: " + question.question + "\n"
+            question_text = 'Question: ' + question.question + "\r"
             answer_text =
               if question.rating?
-                "Answer: " + answer.answer + '/' + question.options.keys.first
+                'Answer: ' + answer.answer + '/' + question.options.keys.first
               elsif question.open_question? || question.mcq?
-                "Answer: " + answer.answer
+                'Answer: ' + answer.answer
               elsif question.objective?
-                "Objective: " + answer.objective + "\n" + "Answer: " + answer.answer
+                'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer
               end
             line << question_text + answer_text
           end
