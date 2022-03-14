@@ -3,6 +3,7 @@ module VideoHelper
   # Legacy method to create embedded links (or iframes) from Youtube and Loom sources
 
   def self.embed_video(video_url)
+    video_url = video_url.split("&")&.first # strip params
     if video_url =~ /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/
       video_id = "https://www.youtube.com/embed/" + video_url.split("=")[1]
       # content_tag(:iframe, nil, src: "//www.youtube.com/embed/#{video_id}", allowfullscreen: "allowfullscreen")
