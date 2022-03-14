@@ -1,15 +1,19 @@
 <div class="campaigns-my-interviews__container">
   <div class="campaigns-my-interviews__main">
 
-    <div class="campaigns-my-interviews__banner">
-      <h1>Hello, <%= "#{current_user.firstname}" %> !</h1>
-      <p>You have <%= "#{@campaigns.count}"  %> personal review<%= 's' if @campaigns.count > 1 %><%= " and #{@manager_campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>
-      <% if current_user.manager_or_above? %>
-        <p>You can manage your team by clicking on <strong>My team interviews.</strong></p>
-        <div class="campaigns-my-interviews__banner-button">
-          <%= link_to "My Team interviews", my_team_interviews_path, class: "btn btn-blue__white-border" %>
-        </div>
-      <% end %>
+    <div class="flex-row-between-centered rounded-30px bkt-bg-white bkt-box-shadow mb-5rem overflow-hidden">
+
+      <div class='width-50 p-2rem'>
+        <h1 class='mb-2rem'>Hello, <%= "#{current_user.firstname}" %> !</h1>
+        <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>You have <%= "#{@campaigns.count}"  %> personal review<%= 's' if @campaigns.count > 1 %><%= " and #{@manager_campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>
+        <% if current_user.manager_or_above? %>
+          <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem mb-2rem'>You can manage your team by clicking on <strong>My team interviews.</strong></p>
+          <%= link_to "My Team interviews", my_team_interviews_path, class: "btn btn-blue__white-border width-fit-content" %>
+        <% end %>
+      </div>
+
+      <%= image_tag 'BM-My trainings.png', class: 'width-50', style: 'height: 30rem; object-fit: cover;' %>
+
     </div>
 
 

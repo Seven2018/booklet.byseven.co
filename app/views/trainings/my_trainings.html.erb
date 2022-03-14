@@ -1,11 +1,17 @@
 <div class="my-trainings__container">
   <div class="my-trainings__main">
 
-    <div class="my-trainings__banner">
-      <h1>Hello, <%= "#{@current_user.firstname}" %> !</h1>
-      <% if current_user.manager_or_above? %>
-        <p> Welcome to My Trainings section, you have <%= @trainings.count %> trainings to do and/or validate, please see them below.</p>
-      <% end %>
+    <div class="flex-row-between-centered rounded-30px bkt-bg-white bkt-box-shadow mb-5rem overflow-hidden">
+
+      <div class='width-50 p-2rem'>
+        <h1 class='mb-2rem'>Hello, <%= "#{@current_user.firstname}" %> !</h1>
+        <% if current_user.manager_or_above? %>
+          <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'> Welcome to My Trainings section, you have <%= @trainings.count %> trainings to do and/or validate, please see them below.</p>
+        <% end %>
+      </div>
+
+      <%= image_tag 'BM-My trainings.png', class: 'width-50', style: 'height: 30rem; object-fit: cover;' %>
+
     </div>
 
       <div id='searchbar' class="mb-5rem">
