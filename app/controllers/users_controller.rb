@@ -10,12 +10,12 @@ class UsersController < ApplicationController
   def show
     authorize @user
 
-    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user: @user})
     @trainings_current = trainings.select{|x| x.next_date.present?}
     @trainings_completed = trainings.select{|x| x.next_date.nil?}
 
-    campaigns = Campaign.where(company: current_user.company).order(created_at: :desc).where \
-      id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
+    campaigns = Campaign.where(company: @user.company).order(created_at: :desc).where \
+      id: Interview.where(employee: @user).distinct.pluck(:campaign_id)
     @campaigns_current = campaigns.where_exists(:interviews, locked_at: nil)
     @campaigns_completed = campaigns.where_not_exists(:interviews, locked_at: nil)
   end
