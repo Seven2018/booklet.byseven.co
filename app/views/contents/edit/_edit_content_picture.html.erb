@@ -1,1 +1,23 @@
-<%= image_tag 'booklet_training_picture_test.png', style: 'width: 100%; object-fit: fill;' %>
+<%
+  url =
+    content.picture.attached? ?
+      cl_image_path(content.picture.key, height: 200, width: 600, crop: :fill, gravity: :center) :
+      image_path('booklet_training_picture_test.png')
+%>
+
+<div class="w-100 rounded-20px bkt-bg-white rounded-20px"
+  style="
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    background-image: url('<%= url  %>');
+    "></div>
+
+<%= simple_form_for content, html: {
+  multipart: true,
+  class: 'd-flex align-items-center justify-content-between mt-2rem bkt-box-shadow p-4 bkt-bg-white rounded-20px'
+  } do |f| %>
+  <%= f.hidden_field :title %> <%# to NOT trigger strong_params error upon empty submit %>
+  <%= f.input :picture %>
+<%= f.submit 'Upload', class: 'bkt-btn-orange' %>
+<% end %>

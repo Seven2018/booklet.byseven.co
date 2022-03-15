@@ -116,6 +116,7 @@ GEM
       ruby2_keywords (>= 0.0.2, < 1.0)
     autoprefixer-rails (10.4.2.0)
       execjs (~> 2)
+    aws_cf_signer (0.1.3)
     bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.10.1)
@@ -147,6 +148,9 @@ GEM
       actionpack (>= 3.1)
       caxlsx (>= 3.0)
     childprocess (4.1.0)
+    cloudinary (1.22.0)
+      aws_cf_signer
+      rest-client (>= 2.0.0)
     coderay (1.1.3)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
@@ -575,6 +579,7 @@ DEPENDENCIES
   caxlsx
   caxlsx_rails
   ckeditor!
+  cloudinary
   create_api_gem!
   devise!
   devise_invitable (~> 2.0.0)

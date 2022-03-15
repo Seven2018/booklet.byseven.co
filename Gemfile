@@ -62,6 +62,7 @@ gem 'draper'
 gem 'view_component'
 gem 'jsonb_accessor'
 gem 'faker'
+gem 'cloudinary'
 
 group :development do
   # gem 'better_errors'
