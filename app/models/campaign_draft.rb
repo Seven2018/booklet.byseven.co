@@ -37,6 +37,14 @@ class CampaignDraft < ApplicationRecord
                  interviewee_ids: [:string, array: true, default: []],
                  interview_sets: [:string, array: true, default: []]
 
+  def direct_manager?
+    interviewer_selection_method == 'manager'
+  end
+
+  def specific_manager?
+    interviewer_selection_method == 'specific_manager'
+  end
+
   def default_interviewer
     return unless default_interviewer_id
 

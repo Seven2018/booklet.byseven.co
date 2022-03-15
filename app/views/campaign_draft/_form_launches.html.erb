@@ -21,8 +21,15 @@
   </span>
 </div>
 
+
 <div class="fs-1_4rem my-2 bkt-dark-grey">
-  Manager of the campaign :
+  <% if campaign.direct_manager? %>
+    Interviewer(s) : Direct managers or
+  <% end %>
+  <% if campaign.specific_manager? %>
+    Interviewer :
+  <% end %>
+
   <span class="font-weight-600">
     <%= campaign.default_interviewer&.fullname.presence || campaign.default_interviewer&.email %>
   </span>
