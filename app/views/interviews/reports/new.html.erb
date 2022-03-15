@@ -1,4 +1,6 @@
-<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pt-2rem'>
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pt-2rem'
+  data-controller='interview-report-form'
+>
 
   <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw">
     <%= simple_form_for InterviewReport.new, url: interviews_reports_path do |f| %>
@@ -15,7 +17,8 @@
           name: :data,
           checked: false,
           title: 'Global data',
-          subtitle: "Global data contains all information about interviews (name, job title, completion, deadlines ...). You can handle results as you wish."
+          subtitle: "Global data contains all information about interviews (name, job title, completion, deadlines ...). You can handle results as you wish.",
+          data_actions: 'click->interview-report-form#hideTogglable'
         ) do %>
           <%# TODOCHANGEICON %>
           <i class="fas fa-check"></i>
@@ -26,7 +29,8 @@
           name: :classic,
           checked: true,
           title: "Analytics",
-          subtitle: "Analytics are selected datas already analysed with ratios. Very useful to se quickly how your campaigns are progressing."
+          subtitle: "Analytics are selected datas already analysed with ratios. Very useful to se quickly how your campaigns are progressing.",
+          data_actions: 'click->interview-report-form#showTogglable'
         ) do %>
           <%# TODOCHANGEICON %>
           <i class="fas fa-check"></i>
@@ -75,27 +79,28 @@
       </div>
 
 
-      <%= render_component FormSectionTitleComponent.new(title: 'Select TagCategory') %>
+      <div data-interview-report-form-target='togglable'>
+        <%= render_component FormSectionTitleComponent.new(title: 'Select TagCategory') %>
 
-      <%# width = '200px' %>
 
-      <%= render_component(SelectComponent.new(width: '200px', title: 'Select Tag Category')) do  %>
-        <% current_user.company.tag_categories.order(position: :asc).each do |tag_category| %>
-          <% key = "interview_report_tag_category_id_#{tag_category.id}" %>
-          <input
-            class="hidden"
-            type="radio"
-            value="<%= tag_category.id %>"
-            name="interview_report[tag_category_id]"
-            id='<%= key %>'>
-          <label
-            data-action="click->dropdown#toggle click->replace-text#replace"
-            class="fs-1_4rem font-weight-500 p-1rem m-0 bkt-blue-hover cursor-pointer w-100"
-            for="<%= key %>">
-            <%= tag_category.name %>
-          </label>
+        <%= render_component(SelectComponent.new(width: '200px', title: 'Select Tag Category')) do  %>
+          <% current_user.company.tag_categories.order(position: :asc).each do |tag_category| %>
+            <% key = "interview_report_tag_category_id_#{tag_category.id}" %>
+            <input
+              class="hidden"
+              type="radio"
+              value="<%= tag_category.id %>"
+              name="interview_report[tag_category_id]"
+              id='<%= key %>'>
+            <label
+              data-action="click->dropdown#toggle click->replace-text#replace"
+              class="fs-1_4rem font-weight-500 p-1rem m-0 bkt-blue-hover cursor-pointer w-100"
+              for="<%= key %>">
+              <%= tag_category.name %>
+            </label>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
 
       <div class="d-flex justify-content-center pt-5">
         <%= f.submit 'Create Report', class: 'bkt-btn-blue' %>

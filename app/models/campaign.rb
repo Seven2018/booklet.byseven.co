@@ -237,6 +237,8 @@ class Campaign < ApplicationRecord
 
         campaign.interviews.each do |interview|
           employee = interview.employee
+          next unless employee # should NOT happen
+
           campaign_url = 'https://booklet.byseven.co/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
 
           if interview.label == 'Employee'

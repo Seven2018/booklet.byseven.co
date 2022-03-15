@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class RadioButtonTileComponent < ViewComponent::Base
-  def initialize(model:, name:, checked:, title:, subtitle:, disabled: false, compact: false)
+  def initialize(model:, name:, checked:, title:, subtitle:,
+      disabled: false, compact: false, data_actions: false)
     @model = model
     @name = name
     @checked = checked
@@ -9,6 +10,7 @@ class RadioButtonTileComponent < ViewComponent::Base
     @subtitle = subtitle
     @disabled = disabled
     @compact = compact
+    @data_actions = data_actions
   end
 
   def model_name

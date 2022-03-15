@@ -1,6 +1,6 @@
 class InterviewReport < ApplicationRecord
   belongs_to :company
-  belongs_to :tag_category
+  belongs_to :tag_category, optional: true
   belongs_to :creator, class_name: "User", optional: true
 
   enum state: {
@@ -17,6 +17,7 @@ class InterviewReport < ApplicationRecord
 
   before_save :set_signature
   validate :no_duplicate_processing?
+  validate :tag_category_presence
   validates :start_time, :end_time, presence: true
 
   scope :processing, -> { where('state IN (?)', [ states[:enqueued], states[:started] ]) }
@@ -67,11 +68,17 @@ class InterviewReport < ApplicationRecord
   end
 
   def no_duplicate_processing?
-    errors.add(:base, message: 'An identical csv export is currently processing !') if
+    errors.add(:base, 'An identical csv export is currently processing !') if
       InterviewReport.where.not(id: id)
                .where(signature: signature)
                .processing
                .exists?
+  end
+
+  def tag_category_presence
+    return if data_mode?
+
+    errors.add(:base, 'Tag Category must exist !') if tag_category_id.blank?
   end
 
   def signature

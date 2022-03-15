@@ -186,7 +186,7 @@ class TrainingReport < ApplicationRecord
   end
 
   def no_duplicate_processing?
-    errors.add(:base, message: 'An identical csv export is currently processing !') if
+    errors.add(:base, 'An identical csv export is currently processing !') if
       InterviewReport.where.not(id: id)
                .where(signature: signature)
                .processing
