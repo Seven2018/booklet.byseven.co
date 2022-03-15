@@ -7,7 +7,7 @@
       <div class="bkt-progress-thread"></div>
       <% TrainingDraft::PROGRESS_STATES.each do |state, state_label| %>
         <%= link_to send "edit_training_draft_#{state}_path".to_sym do %>
-          <div class="bkt-progress-pearl <%= @training.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
+          <div class="bkt-progress-pearl bkt-progress-pearl-orange <%= @training.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
             <% if @training.state_set_or_above?(state) %>
               <i class="fas fa-check"></i>
             <% end %>
@@ -23,7 +23,7 @@
       <%= render "training_draft/form_#{controller_name}", training: @training %>
       <% if @controller_action.to_sym == :launches_edit %>
         <div class="d-flex justify-content-center pt-5">
-          <button class='bkt-btn-blue'>Book Training</button>
+          <button class='bkt-btn-orange'>Book Training</button>
         </div>
       <% else %>
         <div class="d-flex justify-content-end pt-5">

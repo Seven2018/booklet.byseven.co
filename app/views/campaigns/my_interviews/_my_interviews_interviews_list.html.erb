@@ -6,6 +6,8 @@
 
   <% manager =
     [employee_interview, manager_interview, crossed_interview].find(&:present?).interviewer %>
+  <% employee =
+    [employee_interview, manager_interview, crossed_interview].find(&:present?).employee %>
 
   <%#:::::: VERSION DESKTOP START ::::::%>
   <div class="campaigns-my-interviews__card">

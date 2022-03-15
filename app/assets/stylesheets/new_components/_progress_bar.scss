@@ -35,16 +35,6 @@
   & i {
     font-size: 1.2rem;
   }
-  &.full{
-    color: $bkt-white;
-    border: 2px solid $bkt-blue;
-    background-color: $bkt-blue;
-  }
-  &.current{
-    color: $bkt-blue;
-    border: 2px solid $bkt-blue;
-    background-color: $bkt-white;
-  }
   &.empty{
     color: $bkt-white;
     border: 2px solid $bkt-light-grey6;
@@ -63,7 +53,47 @@
   &.full{
     color: $bkt-dark-grey;
   }
+}
+
+.bkt-progress-pearl-blue {
+  &.full{
+    color: $bkt-white;
+    border: 2px solid $bkt-blue;
+    background-color: $bkt-blue;
+  }
   &.current{
     color: $bkt-blue;
+    border: 2px solid $bkt-blue;
+    background-color: $bkt-white;
+  }
+  &.empty{
+    color: $bkt-white;
+    border: 2px solid $bkt-light-grey6;
+    background-color: $bkt-light-grey6;
+  }
+}
+
+.bkt-progress-pearl-blue::before {
+  &.current{
+    color: $bkt-blue;
+  }
+}
+
+.bkt-progress-pearl-orange {
+  &.full{
+    color: $bkt-white;
+    border: 2px solid $bkt-orange;
+    background-color: $bkt-orange;
+  }
+  &.current{
+    color: $bkt-orange;
+    border: 2px solid $bkt-orange;
+    background-color: $bkt-white;
+  }
+}
+
+.bkt-progress-pearl-orange::before {
+  &.current{
+    color: $bkt-orange;
   }
 }
