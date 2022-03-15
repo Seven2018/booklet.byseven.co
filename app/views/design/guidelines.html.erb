@@ -409,19 +409,21 @@
     model: :campaign_type,
     name: :feedback_365,
     checked: true,
-    icon_klasses: "fas fa-check",
     title: "Manual",
     subtitle: "Chose Manual to select participants from your employee list"
-  ) %>
+    ) do %>
+      <i class="fas fa-check"></i>
+    <% end %>
 
   <%= render_component RadioButtonTileComponent.new(
     model: :campaign_type,
     name: :feedback_90,
     checked: false,
-    icon_klasses: "fas fa-rocket",
     title: "Compact",
     subtitle: "Less stuff"
-  ) %>
+    ) do %>
+      <i class="fas fas fa-rocket"></i>
+    <% end %>
 </div>
 
 <div class="p-2 d-flex gap-1rem" style="width: 500px;">
@@ -429,32 +431,35 @@
     model: :campaign_kind,
     name: :feedback_90,
     checked: true,
-    icon_klasses: "fas fa-rocket",
     title: "Compact",
     subtitle: "Less stuff",
     compact: true
-  ) %>
+    ) do %>
+      <i class="fas fa-check"></i>
+    <% end %>
 
   <%= render_component RadioButtonTileComponent.new(
     model: :campaign_kind,
     name: :one_to_one,
     checked: false,
-    icon_klasses: "fas fa-plus",
     title: "Auto",
     subtitle: "Chose Auto to add participants by their arrival date in the company",
     compact: true
-  ) %>
+    ) do %>
+      <i class="fas fa-plus"></i>
+    <% end %>
 
   <%= render_component RadioButtonTileComponent.new(
     model: :campaign_kind,
     name: :feedback_180,
     checked: false,
-    icon_klasses: "fas fa-arrow-right",
     title: "Disabled",
     subtitle: "You can not click this one",
     compact: true,
     disabled: true
-  ) %>
+    ) do %>
+      <i class="fas fa-arrow-right"></i>
+    <% end %>
 
 </div>
 

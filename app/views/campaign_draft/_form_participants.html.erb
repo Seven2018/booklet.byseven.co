@@ -5,20 +5,23 @@
     model: :interviewee_selection_method,
     name: :manual,
     checked: campaign.interviewee_selection_method == :manual.to_s || campaign.interviewee_selection_method.nil?,
-    icon_klasses: "fas fa-check",
     title: "Manual",
     subtitle: "Select participants from your employee list"
-  ) %>
+  ) do %>
+    <span class="iconify fs-3rem" data-icon="fluent:cursor-click-24-filled"></span>
+  <% end %>
 
   <%= render_component RadioButtonTileComponent.new(
     model: :interviewee_selection_method,
     name: :auto,
     checked: campaign.interviewee_selection_method == :auto.to_s,
-    icon_klasses: "fas fa-rocket",
     title: "Auto",
     subtitle: "Add participants by their arrival date in the company",
     disabled: true
-  ) %>
+  ) do %>
+    <%# TODOCHANGEICON %>
+    <i class="fas fa-rocket"></i>
+  <% end %>
 </div>
 
 
@@ -124,32 +127,37 @@
     model: :interviewer_selection_method,
     name: :manager,
     checked: campaign.interviewer_selection_method == :manager.to_s || campaign.interviewer_selection_method.nil?,
-    icon_klasses: "fas fa-check",
     title: "Direct manager",
     subtitle: "Each participant is assigned to their manager",
     # compact: true
-  ) %>
+  ) do %>
+    <%# TODOCHANGEICON %>
+    <i class="fas fa-check"></i>
+  <% end %>
 
   <%= render_component RadioButtonTileComponent.new(
     model: :interviewer_selection_method,
     name: :specific_manager,
     checked: campaign.interviewer_selection_method == :specific_manager.to_s,
-    icon_klasses: "fas fa-rocket",
     title: "Chose an interviewer",
     subtitle: "Chose a specific user as the campaign sole interviewer",
     # compact: true
-  ) %>
+  ) do %>
+    <span class="iconify fs-3rem" data-icon="bx:search"></span>
+  <% end %>
 
   <%#= render_component RadioButtonTileComponent.new(
     model: :interviewer_selection_method,
     name: :admin,
     checked: campaign.interviewer_selection_method == :admin.to_s,
-    icon_klasses: "fas fa-rocket",
     title: "An admin",
     subtitle: "Chose an admin as the campaign sole interviewer",
     compact: true,
     disabled: true
-  ) %>
+  ) do %>
+    <%# TODOCHANGEICON %>
+    <!-- <i class="fas fa-rocket"></i> -->
+  <%# end %>
 
 </div>
 
