@@ -115,7 +115,7 @@ class TrainingsController < ApplicationController
 
     attendees = Attendee.includes(session: :training).where(user_id: current_user.employees.ids).group_by(&:user_id)
 
-    @future_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.present?}.uniq.sort{|x| x.next_date}}
+    @future_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.present?}.uniq.reject{|x| x.nil?}.sort_by{|x| x.next_date}}
     # @past_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.nil?}.uniq.sort{|x| x.next_date}}
   end
 

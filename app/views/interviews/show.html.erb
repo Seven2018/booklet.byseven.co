@@ -81,7 +81,11 @@
 
       <h1><%= @interview.title %></h1>
 
-      <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; height: 30rem;'></iframe>
+      <% video = @interview.interview_form.video %>
+
+      <% if video.present? %>
+        <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; height: 30rem;'></iframe>
+      <% end %>
 
       <% question_num = 0 %>
 
@@ -97,7 +101,9 @@
           <div class="interview-main__right-separator">
             <p class='pb-1rem'><%= question.question %></p>
           </div>
-          <p class="width-100 fs-1_6rem font-weight-600 bkt-dark-grey text-preline p-1rem mb-1rem"><%= sanitize question.description %></p>
+          <div class="trix-display">
+            <%= sanitize question.description %>
+          </div>
         <% end %>
 
         <% next if question.separator? %>
