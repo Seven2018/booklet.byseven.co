@@ -1,7 +1,7 @@
 <div id="user-trainings__container" class='flex-column-start-centered bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='min-height: calc(100vh - 7.5rem);'>
 
   <div class="bkt-bg-white rounded-20px p-2rem bkt-box-shadow pos-rel" style='width: 75%; max-width: 85rem; margin-top: 9rem;'>
-    <%= render_component BackComponent.new(fallback: catalogue_path) %>
+    <%= render_component BackComponent.new(fallback: my_team_trainings_path) %>
 
     <div class='flex-column-start-centered'>
       <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='avatar-large mb-2rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
