@@ -124,9 +124,11 @@ class TrainingsController < ApplicationController
     @user = current_user unless @user.manager != current_user || current_user.hr_or_above?
     @trainings = Training.joins(sessions: :attendees)
                  .where(attendees: {user: @user}).distinct
-                 .select{|x| x.next_date.present?}
-                 .sort{|y| y.next_date}
+
     authorize @trainings
+
+    @trainings = @trainings.select{|x| x.next_date.present?}
+                 .sort{|y| y.next_date}
   end
 
   def show
