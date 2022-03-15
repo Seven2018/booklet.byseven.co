@@ -57,7 +57,7 @@
 
             <div class="campaigns-my-interviews__card-employee">
               <div class="campaigns-my-interviews__card-avatar">
-                <img src="<%= current_user.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+                <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
               </div>
               <div class="campaigns-my-interviews__card-name-status">
                 <h6><%= employee.fullname %><em style="color:darkgray">- Employee</em></h6>
