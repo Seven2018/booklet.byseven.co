@@ -17,6 +17,8 @@
     <div class="my-team-trainings-card-list">
 
       <% @future_trainings.each do |user_id, trainings| %>
+
+        <% next unless trainings.present? %>
         <% user = User.find(user_id) %>
 
         <div class="my-team-trainings-card-content">
