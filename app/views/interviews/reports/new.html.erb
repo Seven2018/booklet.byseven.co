@@ -14,19 +14,23 @@
           model: 'interview_report[mode]',
           name: :data,
           checked: false,
-          icon_klasses: "fas fa-rocket", # TODO icons
           title: 'Global data',
           subtitle: "Global data contains all information about interviews (name, job title, completion, deadlines ...). You can handle results as you wish."
-        ) %>
+        ) do %>
+          <%# TODOCHANGEICON %>
+          <i class="fas fa-check"></i>
+        <% end %>
 
         <%= render_component RadioButtonTileComponent.new(
           model: 'interview_report[mode]',
           name: :classic,
           checked: true,
-          icon_klasses: "fas fa-rocket", # TODO icons
           title: "Analytics",
           subtitle: "Analytics are selected datas already analysed with ratios. Very useful to se quickly how your campaigns are progressing."
-        ) %>
+        ) do %>
+          <%# TODOCHANGEICON %>
+          <i class="fas fa-check"></i>
+        <% end %>
       </div>
 
 

@@ -6,20 +6,23 @@
     model: :templates_selection_method,
     name: :single,
     checked: campaign.templates_selection_method == :single.to_s || campaign.templates_selection_method.nil?,
-    icon_klasses: "fas fa-check",
     title: "Single template",
     subtitle: "Select participants from your employee list"
-  ) %>
+  ) do %>
+    <%# TODOCHANGEICON %>
+    <i class="fas fa-check"></i>
+  <% end %>
 
   <%= render_component RadioButtonTileComponent.new(
     model: :templates_selection_method,
     name: :multiple,
     checked: campaign.templates_selection_method == :multiple.to_s,
-    icon_klasses: "fas fa-rocket",
     title: "Multiple templates",
     subtitle: "Add participants by their arrival date in the company",
     disabled: true
-  ) %>
+  ) do %>
+    <span class="iconify fs-3rem" data-icon="akar-icons:network"></span>
+  <% end %>
 
 </div>
 

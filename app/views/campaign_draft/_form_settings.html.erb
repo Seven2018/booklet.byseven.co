@@ -14,19 +14,21 @@
     model: :kind,
     name: :one_to_one,
     checked: campaign.kind == :one_to_one.to_s || campaign.kind.nil?,
-    icon_klasses: "fas fa-check",
     title: "1 to 1",
     subtitle: "Interviewer and interviewee will be able to answer question during a campaign"
-  ) %>
+  ) do %>
+    <span class="iconify fs-3rem" data-icon="uil:exchange-alt"></span>
+  <% end %>
 
   <%= render_component RadioButtonTileComponent.new(
     model: :kind,
     name: :feedback_360,
     checked: campaign.kind == :feedback_360.to_s,
-    icon_klasses: "fas fa-rocket",
     title: "Feedback 360",
     subtitle: "Each participant can receive feedbacks from other users.",
     disabled: true
-  ) %>
+  ) do %>
+    <span class="iconify fs-3rem" data-icon="uil:rotate-360"></span>
+  <% end %>
 
 </div>
