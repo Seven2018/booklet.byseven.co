@@ -33,12 +33,11 @@ class ContentsController < ApplicationController
   # Update content attributes
   def update
     authorize @content
+    @content.picture.purge if content_params[:picture].present?
     @content.update(content_params)
-    if @content.save
-      respond_to do |format|
-        format.html {edit_mode_content_path(@content)}
-        format.js
-      end
+    respond_to do |format|
+      format.html { redirect_to edit_content_path(@content) }
+      format.js
     end
   end
 
@@ -111,7 +110,7 @@ class ContentsController < ApplicationController
   end
 
   def content_params
-    params.require(:content).permit(:title, :description, :duration, :image, :content, :content_type)
+    params.require(:content).permit(:title, :description, :duration, :image, :content, :content_type, :picture)
   end
 
   def force_json

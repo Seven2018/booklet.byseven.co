@@ -14,6 +14,8 @@ class Content < ApplicationRecord
   has_many :folders, through: :content_folder_links
   validates :title, :duration, presence: true
 
+  has_one_attached :picture
+
   include PgSearch::Model
   pg_search_scope :search,
     against: [ :title ],

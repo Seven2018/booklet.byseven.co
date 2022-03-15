@@ -5,7 +5,11 @@
       <%= link_to '', content_path(content), class: 'stretched-link' %>
       <div class="catalogue__card-overlay hidden"></div>
       <div class="pos-rel" style='height: 10rem;'>
-        <%= image_tag 'booklet_training_picture_test.png', style: 'height: 10rem; object-fit: cover;' %>
+        <% if content.picture.attached? %>
+          <%= cl_image_tag content.picture.key, height: 100, width: 300, crop: :fill, gravity: :center %>
+        <% else %>
+          <%= image_tag 'booklet_training_picture_test.png', style: 'height: 100px; object-fit: cover;' %>
+        <% end %>
         <% if current_user.hr_or_above? %>
           <div class="centered-item height-2_5rem width-2_5rem bkt-bg-white pos-abs cursor-pointer z-index-5 rounded-20px" onclick="openContentMenu(this);" style='top: 1rem; right: 1rem;'>
               <i class="fas fa-ellipsis-v bkt-light-grey"></i>
