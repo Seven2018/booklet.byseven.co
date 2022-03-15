@@ -7,7 +7,7 @@
       <div class="bkt-progress-thread"></div>
       <% CampaignDraft::PROGRESS_STATES.each do |state, state_label| %>
         <%= link_to send "edit_campaign_draft_#{state}_path".to_sym do %>
-          <div class="bkt-progress-pearl <%= @campaign.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
+          <div class="bkt-progress-pearl bkt-progress-pearl-blue <%= @campaign.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
             <% if @campaign.state_set_or_above?(state) %>
               <i class="fas fa-check"></i>
             <% end %>

@@ -20,7 +20,7 @@
     disabled: true
   ) do %>
     <%# TODOCHANGEICON %>
-    <i class="fas fa-rocket"></i>
+    <span class="iconify fs-3rem" data-icon="fluent:time-and-weather-20-filled"></span>
   <% end %>
 </div>
 
@@ -132,7 +132,7 @@
     # compact: true
   ) do %>
     <%# TODOCHANGEICON %>
-    <i class="fas fa-check"></i>
+    <span class="iconify fs-3rem" data-icon="fluent:person-arrow-right-24-filled"></span>
   <% end %>
 
   <%= render_component RadioButtonTileComponent.new(
@@ -168,9 +168,9 @@
 
 <%= render_component(SelectComponent.new(
   width: '100%',
-  title: @campaign.default_interviewer&.email || 'Select Interviewer'
+  title: "#{@campaign.default_interviewer&.fullname} - #{@campaign.default_interviewer&.email}" || 'Select Interviewer'
 )) do  %>
-  <% User.where(company_id: current_user.company_id).pluck(:email, :id).each do |email, id| %>
+  <% User.where(company_id: current_user.company_id).pluck(:firstname, :lastname, :email, :id).each do |firstname, lastname, email, id| %>
     <% key = "user_#{id}" %>
     <input
       class="hidden"
@@ -183,7 +183,7 @@
       data-action="click->dropdown#toggle click->replace-text#replace"
       class="fs-1_4rem font-weight-500 p-1rem m-0 bkt-blue-hover cursor-pointer w-100"
       for="<%= key %>">
-      <%= email %>
+      <%= "#{lastname} #{firstname} - #{email}" %>
     </label>
   <% end %>
 <% end %>
