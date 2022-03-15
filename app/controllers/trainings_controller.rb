@@ -121,7 +121,7 @@ class TrainingsController < ApplicationController
 
   def my_team_trainings_user_details
     @user = User.find(params[:id])
-    @user = current_user unless @user.manager != current_user || current_user.hr_or_above?
+    redirect_to my_team_trainings_path if @user.manager != current_user
     @trainings = Training.joins(sessions: :attendees)
                  .where(attendees: {user: @user}).distinct
 
