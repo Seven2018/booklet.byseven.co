@@ -40,6 +40,8 @@ gem 'create_api_gem', git: 'https://github.com/Typeform/create-api-gem.git'
 gem 'ransack'
 gem 'trix-rails', require: 'trix'
 gem 'acts_as_tree'
+
+gem 'uri', '~> 0.11.0'
 gem 'net-http'
 gem 'sidekiq'
 gem 'sidekiq-failures'
