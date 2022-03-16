@@ -41,7 +41,7 @@ gem 'ransack'
 gem 'trix-rails', require: 'trix'
 gem 'acts_as_tree'
 
-gem 'uri', '~> 0.10.0'
+gem 'uri', '0.10.0'
 gem 'net-http'
 gem 'sidekiq'
 gem 'sidekiq-failures'
