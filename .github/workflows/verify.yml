@@ -1,0 +1,86 @@
+name: Verify
+on:
+  push:
+    branches-ignore:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
+
+jobs:
+  verify:
+    name: Build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache Ruby build
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/local/rubies
+          key: ruby-2.7.3
+      - name: Build ruby version
+        uses: ruby/setup-ruby@v1
+        id: ruby
+        with:
+          ruby-version: 2.7.3
+          cache-available: ${{ steps.cache.outputs.cache-hit == 'true' }}
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - name: Cache gems
+        uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
+      - name: cache Node Modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.16.1
+      - name: Install Gems
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler -v 2.2.27
+          yarn install --ignore-engines
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bin/rails db:create
+          bin/rails db:migrate
+      - name: Run tests
+        env:
+          CLOUDINARY_CLOUD_NAME: whatever
+          CLOUDINARY_API_KEY: 1234567890
+          CLOUDINARY_API_SECRET: poiuytrezaqsdfghjklm
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        run: bundle exec rspec
