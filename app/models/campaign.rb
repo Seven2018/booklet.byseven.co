@@ -182,6 +182,26 @@ class Campaign < ApplicationRecord
         simple_total = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
         simple_completed_by_total = simple_total > 0 ? (simple_completed.fdiv(simple_total)*100).round.to_s + '%' : '0%'
 
+        # Ideas about how to get data from interviews sets
+
+        # test_hash = {}
+        # employees.each{|x| test_hash[x.id] = []}
+
+        # campaigns_detes = self.map{|x| x.interviews.group_by(&:employee_id)}
+        # campaigns_detes.each{|x| x.each{|y,z| test_hash[y] << z}}
+
+        # interviews_sets_total = 0
+        # interviews_sets_completed = 0
+        # interviews_sets_locked = 0
+        # interviews_sets_not_started = 0
+        # test_hash.each{|x, y| interviews_sets_total += y.count;
+        #                       interviews_sets_completed += y.map{|z| z.map{|z1| z1.completed}.uniq == [true]}.select(&:itself).count;
+        #                       interviews_sets_locked += y.map{|z| z.map{|z1| z1.locked_at.present?}.uniq == [true]}.select(&:itself).count;
+        #                       interviews_sets_not_started += y.map{|z| z.map{|z1| z1.completed}.uniq == [true]}.select(&:itself).count;
+        #                     }
+
+        # interviews_sets_in_progress = interviews_sets_total - interviews_sets_locked - interviews_sets_completed - interviews_sets_not_started
+
         line = []
 
         line << tag.tag_name

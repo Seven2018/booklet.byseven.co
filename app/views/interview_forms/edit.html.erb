@@ -118,7 +118,6 @@
       message_storage = element.parentNode.querySelector('.message-container')
 
       message_storage.classList.remove('hidden')
-      console.log(message_storage)
 
       window.addEventListener('click', function(e) {
         if (outsideClick(e, element) && !doubleClickGuardian) {
@@ -138,8 +137,7 @@
 
   function checkVideoCompatibility(element) {
     video_link = element.value
-    console.log(video_link)
-    if (video_link.split('=')[0].replace("https://", "") == 'www.youtube.com/watch?v') {
+    if (video_link.split('=')[0].replace("https://", "") == 'www.youtube.com/watch?v' || video_link == '') {
       element.style.color = '#333333'
       saveForm(element)
     } else {
@@ -261,18 +259,72 @@
   // }
 
   function switchSide(element, save = true) {
-    updateStatusMessage("Updating...")
-    switch_button = element.parentNode
-    form = element.closest('form')
-    hidden_submit = form.querySelector('.hidden-submit')
 
-    if (element.checked == true) {
-      setTimeout(function(){switch_button.classList.add('switch_checked')}, 100)
-    } else {
-      setTimeout(function(){switch_button.classList.remove('switch_checked')}, 100)
+      updateStatusMessage("Updating...")
+      switch_button = element.parentNode
+      form = element.closest('form')
+      hidden_submit = form.querySelector('.hidden-submit')
+
+      if (element.checked == true) {
+        setTimeout(function(){switch_button.classList.add('switch_checked')}, 100)
+      } else {
+        setTimeout(function(){switch_button.classList.remove('switch_checked')}, 100)
+      }
+      if (hidden_submit != undefined && save) {
+        hidden_submit.click();
+      }
+
+  }
+
+  function checkSwitchCompatibility(element, mode) {
+    if (doubleClickGuardian == false) {
+      doubleClickGuardian = true
+      setTimeout(function(){doubleClickGuardian = false}, 100)
+
+      question_card = element.closest('form')
+
+      if (mode == 'horizontal') {
+        element1 = question_card.querySelector('#interview_question_required_options-' + element.id.split('-')[1])
+        element2 = question_card.querySelector('#interview_question_visible_options-' + element.id.split('-')[1])
+
+        horizontalCompatibilityPair(element1, element2)
+      } else if (mode == 'vertical') {
+        set = question_card.querySelectorAll('.interview_question_visible_options')
+        set_array = Array.from(set)
+        element1 = element
+        index = set_array.indexOf(element1)
+        if (index > -1) {
+          set_array.splice(index, 1);
+        }
+        element2 = set_array[0]
+
+        verticalCompatibilityPair(element1, element2)
+      }
+
+      switchSide(element)
     }
-    if (hidden_submit != undefined && save) {
-      hidden_submit.click();
+  }
+
+  function horizontalCompatibilityPair(element1, element2) {
+    if (element1.checked) {
+      element2.checked = true;
+      setTimeout(function(){
+        element2.parentNode.classList.add('switch_checked')
+        element2.disabled = true
+        element2.parentNode.querySelector('input').value = 'on'
+      }, 100)
+    } else {
+      setTimeout(function(){
+        element2.disabled = false
+        element2.parentNode.querySelector('input').value = 'off'
+      }, 100)
+    }
+  }
+
+  function verticalCompatibilityPair(element1, element2) {
+    if (!element1.checked && !element2.checked) {
+      element2.checked = true
+      setTimeout(function(){element2.parentNode.classList.add('switch_checked')}, 100)
     }
   }
 

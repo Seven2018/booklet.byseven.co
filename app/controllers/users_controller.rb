@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def show
     authorize @user
 
-    trainings = Training.joins(sessions: :attendees).where(attendees: {user: @user})
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user: @user}).distinct
     @trainings_current = trainings.select{|x| x.next_date.present?}
     @trainings_completed = trainings.select{|x| x.next_date.nil?}
 

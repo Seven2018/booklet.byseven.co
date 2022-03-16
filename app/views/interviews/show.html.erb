@@ -84,7 +84,7 @@
       <% video = @interview.interview_form.video %>
 
       <% if video.present? %>
-        <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; height: 30rem;'></iframe>
+        <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; aspect-ratio: 16 / 9;'></iframe>
       <% end %>
 
       <% question_num = 0 %>

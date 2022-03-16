@@ -52,6 +52,18 @@ class InterviewFormsController < ApplicationController
     answerable_by_status = @template.answerable_by
     unless @template.answerable_by_both?
       @template.interview_questions.update_all(visible_for: answerable_by_status)
+
+      @template.interview_questions.each do |question|
+
+        if question.required_for_all?
+          question.update(visible_for: answerable_by_status)
+        elsif question.required_for_none?
+          next
+        else
+          question.update required_for: 'none'
+        end
+
+      end
     end
 
     @update_description = description != @template.description
