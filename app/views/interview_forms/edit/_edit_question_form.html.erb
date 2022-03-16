@@ -125,15 +125,20 @@
 
         <div class="flex-row-start-centered mb-1rem pos-rel" style='width: 20rem;'>
 
-          <% visible_for_employee_check = (question.visible_for_employee? || question.visible_for_all?) && (template.answerable_by_both? || template.answerable_by_employee?) %>
+          <% visible_for_employee_check = (question.visible_for_employee? || question.visible_for_all?) && (template.answerable_by_both? || template.answerable_by_employee?) || question.required_for_employee? || question.required_for_all? %>
+          <% visible_for_employee_disable = (!template.answerable_by_both? || question.required_for_employee? || question.required_for_all?) %>
+          <% visible_for_employee_default_value = (!visible_for_employee_disable || !visible_for_employee_check) ? 'off' : 'on' %>
 
           <label class="required-question-switch <%= 'switch_checked' if visible_for_employee_check %>">
-            <input id='interview_question_visible_options-<%= question.id %>'
+            <input type='hidden' value='<%= visible_for_employee_default_value %>' name='interview_question[visible_for_employee]'>
+            <input value='on'
+                   id='interview_question_visible_options-employee'
+                   class='interview_question_visible_options'
                    type="checkbox"
                    name='interview_question[visible_for_employee]'
-                   onclick='switchSide(this);'
+                   onclick='checkSwitchCompatibility(this, "vertical");'
                    <%= 'checked' if visible_for_employee_check %>
-                   <%= 'disabled' unless template.answerable_by_both? %>
+                   <%= 'disabled' if visible_for_employee_disable %>
             />
             <div><%# do not remove %></div>
           </label>
@@ -151,15 +156,20 @@
 
         <div class="flex-row-start-centered pos-rel" style='width: 20rem;'>
 
-          <% visible_for_manager_check = (question.visible_for_manager? || question.visible_for_all?) && (template.answerable_by_both? || template.answerable_by_manager?) %>
+          <% visible_for_manager_check = (question.visible_for_manager? || question.visible_for_all?) && (template.answerable_by_both? || template.answerable_by_manager?) || question.required_for_manager? || question.required_for_all? %>
+          <% visible_for_manager_disable = (!template.answerable_by_both? || question.required_for_manager? || question.required_for_all?) %>
+          <% visible_for_manager_default_value = (!visible_for_manager_disable || !visible_for_manager_check) ? 'off' : 'on' %>
 
           <label class="required-question-switch <%= 'switch_checked' if visible_for_manager_check %>">
-            <input id='interview_question_visible_options-<%= question.id %>'
+            <input type='hidden' value='<%= visible_for_manager_default_value %>' name='interview_question[visible_for_manager]'>
+            <input value='on'
+                   id='interview_question_visible_options-manager'
+                   class='interview_question_visible_options'
                    type="checkbox"
                    name='interview_question[visible_for_manager]'
-                   onclick='switchSide(this);'
+                   onclick='checkSwitchCompatibility(this, "vertical");'
                    <%= 'checked' if visible_for_manager_check %>
-                   <%= 'disabled' unless template.answerable_by_both? %>
+                   <%= 'disabled' if visible_for_manager_disable %>
             />
             <div><%# do not remove %></div>
           </label>
@@ -186,11 +196,12 @@
           <label class='mr-1rem font-weight-500'>Employee</label>
           <label class="required-question-switch <%= 'switch_checked' if required_for_employee_check %>">
             <input type='hidden' value='off' name='interview_question[required_for_employee]'>
-            <input id='interview_question_required_options-<%= question.id %>'
+            <input value='on'
+                   id='interview_question_required_options-employee'
                    type="checkbox"
                    <%= title='Only the employee can answer this template questions.' if template.answerable_by_manager? %>
                    name='interview_question[required_for_employee]'
-                   onclick='switchSide(this);'
+                   onclick='checkSwitchCompatibility(this, "horizontal");'
                    <%= 'checked' if required_for_employee_check %>
                    <%= 'disabled' if template.answerable_by_manager? %>
             />
@@ -214,10 +225,11 @@
           <label class='mr-1rem font-weight-500'>Manager</label>
           <label class="required-question-switch <%= 'switch_checked' if required_for_manager_check %>">
             <input type='hidden' value='off' name='interview_question[required_for_manager]'>
-            <input id='interview_question_required_options-<%= question.id %>'
+            <input value='on'
+                   id='interview_question_required_options-manager'
                    type="checkbox"
                    name='interview_question[required_for_manager]'
-                   onclick='switchSide(this);'
+                   onclick='checkSwitchCompatibility(this, "horizontal");'
                    <%= 'checked' if required_for_manager_check %>
                    <%= 'disabled' if template.answerable_by_employee? %>
             />

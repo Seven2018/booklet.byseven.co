@@ -47,8 +47,6 @@ class InterviewQuestionsController < ApplicationController
     authorize @question
     @question.update(question_params)
 
-    params[:interview_question][:required].present? ? @question.update(required: true) : @question.update(required: false)
-
     required_for_employee = params.dig(:interview_question, :required_for_employee) == 'on' ?  'employee' : nil
     required_for_manager = params.dig(:interview_question, :required_for_manager) == 'on' ? 'manager' : nil
     required_for_all = required_for_employee && required_for_manager ? 'all' : nil
@@ -59,9 +57,8 @@ class InterviewQuestionsController < ApplicationController
         break
       end
     end
-
-    visible_for_employee = params.dig(:interview_question, :visible_for_employee).present? ?  'employee' : nil
-    visible_for_manager = params.dig(:interview_question, :visible_for_manager).present? ? 'manager' : nil
+    visible_for_employee = params.dig(:interview_question, :visible_for_employee) == 'on' ?  'employee' : nil
+    visible_for_manager = params.dig(:interview_question, :visible_for_manager) == 'on' ? 'manager' : nil
     visible_for_all = visible_for_employee && visible_for_manager ? 'all' : nil
 
     visible_for = 'all'
