@@ -5,7 +5,7 @@ gem 'bootsnap', require: false
 gem 'devise', git: "https://github.com/heartcombo/devise.git", ref: '8bb358cf80a632d3232c3f548ce7b95fd94b6eb2'
 gem 'pundit'
 gem 'jbuilder', '~> 2.0'
-gem 'pg', '~> 0.21'
+gem 'pg'
 gem 'puma'
 gem 'rails', '6.0.0'
 gem 'redis'
@@ -72,15 +72,15 @@ group :development do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 4.0.beta2'
+  gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'capybara'
   gem 'webdrivers'
   gem 'selenium-webdriver'
   gem 'pry-byebug'
   gem 'pry-rails'
-  gem 'listen', '~> 3.0.5'
+  gem 'b'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen'
   gem 'dotenv-rails'
 end
