@@ -61,7 +61,7 @@ jobs:
       - name: Install Gems
         run: |
           sudo apt-get -yqq install libpq-dev
-          gem install bundler -v 2.2.27
+          gem install bundler -v 2.3.9
           yarn install --ignore-engines
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
