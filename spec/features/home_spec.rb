@@ -15,9 +15,9 @@ RSpec.feature 'Home', type: :feature, js: true do
     before do
       login_as user
     end
-    scenario 'should be able to browse the dashboard page' do
+    scenario 'should be redirected to the profile page' do
       visit root_path
-      expect(page).to have_selector('h1', text: "Welcome on Booklet, #{user.firstname}!")
+      expect(page).to have_selector('.bkt-dark-grey', text: user.email)
     end
   end
 end

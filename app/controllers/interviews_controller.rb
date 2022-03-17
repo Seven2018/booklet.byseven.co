@@ -124,7 +124,7 @@ class InterviewsController < ApplicationController
     @interview = Interview.find interview_id
     authorize @interview
 
-    @interview.update_columns locked_at: nil
+    @interview.unlock!
 
     respond_to do |format|
       format.html {redirect_to campaign_path(@interview.campaign)}
