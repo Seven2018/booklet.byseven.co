@@ -37,7 +37,7 @@ RSpec.describe Interview, type: :model do
       answer: "5", interview_question: question, interview: employee_interview, user: employee
     )
   end
-  let!(:hr_answer) do
+  let!(:manager_answer) do
     create(:interview_answer,
       answer: "5", interview_question: question, interview: manager_interview, user: owner
     )
@@ -65,7 +65,7 @@ RSpec.describe Interview, type: :model do
 
       it 'interview answer can be updated' do
         expect(employee_answer.update(answer: '1')).to be true
-        expect(hr_answer.update(answer: '1')).to be true
+        expect(manager_answer.update(answer: '1')).to be true
         expect(crossed_answer.update(answer: '1')).to be true
       end
 
@@ -84,33 +84,55 @@ RSpec.describe Interview, type: :model do
     end
 
     context 'after an interview is locked' do
-      before do
-        [
-          employee_interview,
-          manager_interview,
-          crossed_interview
-        ].sample.lock!
-        [employee_interview, manager_interview, crossed_interview].each &:reload
-        [employee_answer, hr_answer, crossed_answer].each &:reload
+
+      context 'when employee_interview' do
+        before { employee_interview.lock!; employee_interview.reload; employee_answer.reload; }
+        it 'its title or answer can NOT be updated' do
+          expect(employee_interview.update(title: 'abc')).to be false
+          expect(employee_answer.update(answer: '1')).to be false
+        end
+
+        context 'but when unlocked' do
+          before { employee_interview.unlock!; employee_interview.reload; employee_answer.reload; }
+          it 'its title or answer can be updated' do
+            expect(employee_interview.update(title: 'abc')).to be true
+            expect(employee_answer.update(answer: '1')).to be true
+          end
+        end
       end
 
-      it 'interview title can be updated' do
-        expect(employee_interview.update(title: 'abc')).to be false
-        expect(manager_interview.update(title: 'abc')).to be false
-        expect(crossed_interview.update(title: 'abc')).to be false
+      context 'when manager_interview' do
+        before { manager_interview.lock!; manager_interview.reload; manager_answer.reload; }
+        it 'its title or answer can NOT be updated' do
+          expect(manager_interview.update(title: 'abc')).to be false
+          expect(manager_answer.update(answer: '1')).to be false
+        end
+
+        context 'but when unlocked' do
+          before { manager_interview.unlock!; manager_interview.reload; manager_answer.reload; }
+          it 'its title or answer can be updated' do
+            expect(manager_interview.update(title: 'abc')).to be true
+            expect(manager_answer.update(answer: '1')).to be true
+          end
+        end
       end
 
-      it 'interview answer can be updated' do
-        expect(employee_answer.update(answer: '1')).to be false
-        expect(hr_answer.update(answer: '1')).to be false
-        expect(crossed_answer.update(answer: '1')).to be false
+      context 'when crossed_interview' do
+        before { crossed_interview.lock!; crossed_interview.reload; crossed_answer.reload; }
+        it 'its title or answer can NOT be updated' do
+          expect(crossed_interview.update(title: 'abc')).to be false
+          expect(crossed_answer.update(answer: '1')).to be false
+        end
+
+        context 'but when unlocked' do
+          before { crossed_interview.unlock!; crossed_interview.reload; crossed_answer.reload; }
+          it 'its title or answer can be updated' do
+            expect(crossed_interview.update(title: 'abc')).to be true
+            expect(crossed_answer.update(answer: '1')).to be true
+          end
+        end
       end
 
-      it 'interview can not be unlocked' do
-        expect(employee_interview.update(locked_at: nil)).to be false
-        expect(manager_interview.update(locked_at: nil)).to be false
-        expect(crossed_interview.update(locked_at: nil)).to be false
-      end
     end
   end
 end

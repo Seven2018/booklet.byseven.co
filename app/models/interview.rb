@@ -94,6 +94,10 @@ class Interview < ApplicationRecord
     self.update(locked_at: Time.zone.now)
   end
 
+  def unlock!
+    update_columns locked_at: nil
+  end
+
   def locked?
     locked_at.present? && !will_save_change_to_locked_at?
   end
