@@ -13,12 +13,52 @@ services:
     ports:
       - "5432:5432"
 
+  redis:
+    image: "redis:6.2.6"
+    command: redis-server
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+    networks:
+      - seven_booklet
+
+  sidekiq:
+    build: .
+    command: bash -c "cd /app && bundle install && bundle exec sidekiq"
+    environment:
+      - RAILS_ENV=development
+      - REDISCLOUD_URL=redis://redis:6379
+    volumes:
+      - ".:/app"
+      - "/app/tmp"
+    depends_on:
+      - redis
+      - db
+    networks:
+      - seven_booklet
+
+  webpack:
+    build: .
+    command: bash -c "cd /app && bundle install && ./bin/webpack-dev-server"
+    volumes:
+      - ".:/app"
+      - "/app/tmp"
+    ports:
+      - '3035:3035'
+    environment:
+      NODE_ENV: development
+      RAILS_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+
 networks:
   seven_booklet:
     driver: bridge
 
 volumes:
   postgres:
+    driver: local
+  redis:
     driver: local
 
 
