@@ -22,6 +22,9 @@ class InterviewReport < ApplicationRecord
 
   scope :processing, -> { where('state IN (?)', [ states[:enqueued], states[:started] ]) }
 
+  jsonb_accessor :data,
+                 campaign_ids: [:string, array: true, default: []]
+
   def processing?
     enqueued? || started?
   end

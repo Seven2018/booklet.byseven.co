@@ -5,21 +5,16 @@ export default class extends Controller {
     return [ "analytics", 'answers' ]
   }
 
-  // showTogglable() {
-  //   this.togglableTarget.classList.remove('d-none')
-  // }
-  //
-  // hideTogglable() {
-  //   this.togglableTarget.classList.add('d-none')
-  // }
-
-  toggle() {
-    if (this.analyticsTarget.classList.contains('d-none')) {
-      this.analyticsTarget.classList.remove('d-nome')
+  toggle(event) {
+    if (event.target.dataset.interviewReportParam == 'data') {
+      this.analyticsTarget.classList.add('d-none')
       this.answersTarget.classList.add('d-none')
-    } else if (this.answersTarget.classList.contains('d-none')) {
+    } else if (event.target.dataset.interviewReportParam == 'classic') {
+      this.analyticsTarget.classList.remove('d-none')
+      this.answersTarget.classList.add('d-none')
+    } else if (event.target.dataset.interviewReportParam == 'answers') {
       this.answersTarget.classList.remove('d-none')
-      this.analyticsTarget.classList.add('d-nome')
+      this.analyticsTarget.classList.add('d-none')
     }
   }
 }

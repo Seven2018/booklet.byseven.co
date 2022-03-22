@@ -5,20 +5,24 @@ class Interviews::ReportsController < ApplicationController
     @reports = policy_scope(InterviewReport).order(created_at: :desc)
   end
 
-  def new
-    authorize InterviewReport.new
-  end
+  # def new
+  #   authorize InterviewReport.new
+  # end
+  #
+  # def create
+  #   interview_report = InterviewReport.new interview_report_params
+  #   authorize interview_report
+  #   if interview_report.save
+  #     InterviewReports::GenerateDataJob.perform_later interview_report.id
+  #     flash[:notice] = "Generating report: refresh in 1 min !"
+  #   else
+  #     flash[:alert] = interview_report.errors.full_messages.join(',')
+  #   end
+  #   redirect_to interviews_reports_path
+  # end
 
-  def create
-    interview_report = InterviewReport.new interview_report_params
+  def edit
     authorize interview_report
-    if interview_report.save
-      InterviewReports::GenerateDataJob.perform_later interview_report.id
-      flash[:notice] = "Generating report: refresh in 1 min !"
-    else
-      flash[:alert] = interview_report.errors.full_messages.join(',')
-    end
-    redirect_to interviews_reports_path
   end
 
   def show
@@ -39,7 +43,7 @@ class Interviews::ReportsController < ApplicationController
   private
 
   def interview_report
-    @interview_report ||= InterviewReport.find params[:id]
+    @interview_report ||= current_user.interview_report
   end
 
   def interview_report_params

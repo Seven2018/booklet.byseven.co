@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :interests, through: :user_interests, source: :content
   has_many :campaigns, through: :interviews
   has_many :interviews, foreign_key: 'employee_id'
+  has_many :interview_reports, foreign_key: 'creator_id'
   has_many :interview_answers
   has_many :campaign_drafts
   has_many :training_drafts
@@ -55,6 +56,16 @@ class User < ApplicationRecord
       company: company,
       start_time: Time.zone.today.beginning_of_month,
       end_time: Time.zone.today.end_of_year
+    )
+  end
+
+  def interview_report
+    interview_reports.processing.last || InterviewReport.create(
+      creator: self,
+      company: company,
+      start_time: Time.zone.today.beginning_of_month,
+      end_time: Time.zone.today.end_of_year,
+      tag_category_id: 1
     )
   end
 

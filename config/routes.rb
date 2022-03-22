@@ -39,7 +39,12 @@ Rails.application.routes.draw do
   get :campaign_edit_date, controller: :campaigns
 
   namespace :interviews do
-    resources :reports, only: %i[index show new create destroy]
+    resource :reports, only: %i[edit update]
+    resources :reports, only: %i[index show destroy]
+    namespace :report do
+      resources :campaigns, only: :index
+      resource :campaigns, only: :update
+    end
   end
 
   namespace :trainings do
