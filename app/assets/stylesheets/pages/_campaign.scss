@@ -884,11 +884,13 @@
       text-overflow: ellipsis;
     }
 
-    .status-completed, .status-in_progress, .status-not-started {
+    .status-completed, .status-in_progress, .status-not_started {
+      width: 7rem;
       padding: 1rem 1.5rem;
       border-radius: .5rem;
       font-weight: 600;
       color: white;
+      text-align: center;
     }
 
     .status-completed {
@@ -899,7 +901,7 @@
       background-color: #FFC85C;
     }
 
-    .status-not-started {
+    .status-not_started {
       background-color: #C4C4C4;
     }
 
@@ -1302,8 +1304,6 @@
     }
   }
 
-  .campaign-show__card-interviews-info-complete {}
-
   .campaign-show__card-interviews-info-incomplete {
 
     p {
@@ -1312,14 +1312,6 @@
       text-align: center;
     }
   }
-}
-
-.campaign-show__card-simple {
-  height: 33rem;
-}
-
-.campaign-show__card-crossed {
-  height: 54rem;
 }
 
 
