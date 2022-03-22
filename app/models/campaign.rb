@@ -148,78 +148,63 @@ class Campaign < ApplicationRecord
 
     columns = [tag_category.name,
         'Employees count',
-        'Cross Interviews - Completed',
-        'Cross Interviews - Locked',
-        'Cross Interviews - In progress',
-        'Cross Interviews - Not started',
-        'Cross Interviews - Employees not set',
-        'Cross Interviews - Total',
-        'Cross Interviews - Locked/Total',
-        'Simple Interviews - Completed',
-        'Simple Interviews - Locked',
-        'Simple Interviews - Not started',
-        'Simple Interviews - Employees not set',
-        'Simple Interview - Total',
-        'Simple Interviews - Completed/Total'
+        'Interviews sets - Total',
+        'Interviews sets - Completed',
+        'Interviews sets - Locked',
+        'Interviews sets - In progress',
+        'Interviews sets - Not started',
+        'Interviews sets - Completed/Total',
+        'Interviews sets - Locked/Total',
+        'Interviews sets - In Progress/Total',
+        'Interviews sets - Not Started/Total',
+        'Interviews sets - Started Total'
         ]
 
     CSV.generate(headers: true) do |csv|
       csv << columns
       tag_category.tags.order(tag_name: :asc).each do |tag|
         employees = User.where(company_id: company_id).where_exists(:user_tags, tag_id: tag.id)
-        crossed_total = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
-        crossed_completed = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids, completed: true, locked_at: nil).count
-        crossed_locked = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids, completed: true).where.not(locked_at: nil).count
-        crossed_not_started = Interview.where(campaign_id: all.ids, label: 'Employee', employee_id: employees.ids, completed: false).map{|x| !Interview.find_by(campaign_id: x.campaign_id, label: 'Manager', employee_id: x.employee_id)&.completed?}.count
-        crossed_in_progress = crossed_total - crossed_locked - crossed_completed - crossed_not_started
-        crossed_not_set = employees.where_not_exists(:interviews, campaign_id: all.ids, employee_id: employees.ids).distinct.count
-        # crossed_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
-        crossed_locked_by_total = crossed_total > 0 ? (crossed_locked.fdiv(crossed_total)*100).round.to_s + '%' : '0%'
-        simple_completed = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids, completed: true, locked_at: nil).count
-        simple_locked = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).where.not(locked_at: nil).count
-        simple_not_started = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids, completed: false).count
-        simple_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
-        simple_total = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
-        simple_completed_by_total = simple_total > 0 ? (simple_completed.fdiv(simple_total)*100).round.to_s + '%' : '0%'
 
-        # Ideas about how to get data from interviews sets
+        analytics_hash = {}
+        employees.each{|x| analytics_hash[x.id] = []}
 
-        # test_hash = {}
-        # employees.each{|x| test_hash[x.id] = []}
+        campaigns_detes = all.where(company_id: company_id).map{|x| x.interviews.group_by(&:employee_id)}
+        # binding.pry
+        campaigns_detes.each{|x| x.each{|y,z| analytics_hash[y] << z if analytics_hash.key?(y)}}
 
-        # campaigns_detes = self.map{|x| x.interviews.group_by(&:employee_id)}
-        # campaigns_detes.each{|x| x.each{|y,z| test_hash[y] << z}}
+        interviews_sets_total = 0
+        interviews_sets_completed = 0
+        interviews_sets_locked = 0
+        interviews_sets_not_started = 0
+        analytics_hash.each{|x, y| interviews_sets_total += y.count;
+                              interviews_sets_completed += y.map{|z| z.map{|z1| z1.completed && z1.locked_at.nil?}.uniq == [true]}.select(&:itself).count;
+                              interviews_sets_locked += y.map{|z| z.map{|z1| z1.locked_at.present?}.uniq == [true]}.select(&:itself).count;
+                              interviews_sets_not_started += y.map{|z| z.map{|z1| z1.completed}.uniq == [false]}.select(&:itself).count;
+                            }
+        employees_count = 0
+        analytics_hash.each{|x,y| employees_count += 1 if y.count > 0}
 
-        # interviews_sets_total = 0
-        # interviews_sets_completed = 0
-        # interviews_sets_locked = 0
-        # interviews_sets_not_started = 0
-        # test_hash.each{|x, y| interviews_sets_total += y.count;
-        #                       interviews_sets_completed += y.map{|z| z.map{|z1| z1.completed}.uniq == [true]}.select(&:itself).count;
-        #                       interviews_sets_locked += y.map{|z| z.map{|z1| z1.locked_at.present?}.uniq == [true]}.select(&:itself).count;
-        #                       interviews_sets_not_started += y.map{|z| z.map{|z1| z1.completed}.uniq == [true]}.select(&:itself).count;
-        #                     }
-
-        # interviews_sets_in_progress = interviews_sets_total - interviews_sets_locked - interviews_sets_completed - interviews_sets_not_started
+        interviews_sets_in_progress = interviews_sets_total - interviews_sets_locked - interviews_sets_completed - interviews_sets_not_started
+        interviews_sets_completed_by_total = interviews_sets_total > 0 ? (interviews_sets_completed.fdiv(interviews_sets_total)*100).round : 0
+        interviews_sets_locked_by_total = interviews_sets_total > 0 ? (interviews_sets_locked.fdiv(interviews_sets_total)*100).round : 0
+        interviews_sets_not_started_by_total = interviews_sets_total > 0 ? (interviews_sets_not_started.fdiv(interviews_sets_total)*100).round : 0
+        interviews_sets_in_progress_by_total = interviews_sets_total > 0 ? (interviews_sets_in_progress.fdiv(interviews_sets_total)*100).round : 0
+        interviews_set_total_ongoing = interviews_sets_in_progress_by_total + interviews_sets_completed_by_total + interviews_sets_locked_by_total
 
         line = []
 
         line << tag.tag_name
-        line << employees.count
-        line << crossed_completed
-        line << crossed_locked
-        line << crossed_in_progress
-        line << crossed_not_started
-        line << crossed_not_set
-        line << crossed_total
-        line << crossed_locked_by_total
-
-        line << simple_completed
-        line << simple_locked
-        line << simple_not_started
-        line << simple_not_set
-        line << simple_total
-        line << simple_completed_by_total
+        line << employees_count
+        line << interviews_sets_total
+        line << interviews_sets_completed
+        line << interviews_sets_locked
+        line << interviews_sets_in_progress
+        line << interviews_sets_not_started
+        line << interviews_sets_completed_by_total.to_s + '%'
+        line << interviews_sets_locked_by_total.to_s + '%'
+        line << interviews_sets_in_progress_by_total.to_s + '%'
+        line << interviews_sets_not_started_by_total.to_s + '%'
+        line << interviews_set_total_ongoing.to_s + '%'
 
         csv << line
       end
