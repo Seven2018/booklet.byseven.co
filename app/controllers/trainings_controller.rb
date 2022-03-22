@@ -216,7 +216,7 @@ class TrainingsController < ApplicationController
   end
 
   def get_attendees_status(user_ids: nil)
-    nil if user_ids.nil?
+    return [] if user_ids.blank?
 
     completed = Attendee.where(user_id: user_ids, status: 'Completed').group(:user_id).count
     not_completed = Attendee.where(user_id: user_ids, status: 'Not completed').group(:user_id).count

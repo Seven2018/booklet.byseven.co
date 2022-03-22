@@ -17,7 +17,6 @@
     <div class="my-team-trainings-card-list">
 
       <% @attendees.each do |data| %>
-        <%# next unless trainings.present? %>
         <% user = User.find(data[:user_id]) %>
 
         <div class="my-team-trainings-card-content">
