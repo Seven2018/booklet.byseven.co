@@ -18,9 +18,9 @@ class CampaignDecorator < Draper::Decorator
   def campaign_type_str
     {
       # 'crossed' => 'Crossed', # TODO TEMPORARY
-      'crossed' => 'Feedback 360',
+      'crossed' => '1 to 1',
       # 'simple' => 'Simple', # TODO TEMPORARY
-      'simple' => 'Feedback 360',
+      'simple' => '1 to 1',
       'one_to_one' => '1 to 1',
       'feedback_360' => 'Feedback 360'
     }[campaign_type]
@@ -29,7 +29,7 @@ class CampaignDecorator < Draper::Decorator
   def icon
     {
       'crossed' => 'uil:exchange',
-      'simple' => 'mdi:star-shooting',
+      'simple' => 'uil:exchange',
       'one_to_one' => 'uil:exchange',
       'feedback_360' => 'mdi:star-shooting'
     }[campaign_type]
