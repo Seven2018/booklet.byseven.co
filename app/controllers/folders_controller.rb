@@ -1,5 +1,6 @@
 class FoldersController < ApplicationController
   before_action :set_folder, only: [:show, :edit, :update, :destroy, :duplicate]
+  before_action :show_navbar_training
 
   # Duplicate content (pages/catalogue)
   def duplicate

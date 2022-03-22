@@ -66,6 +66,7 @@
           <button type='submit' class="btn-search d-block d-sm-none">
             <i class="fas fa-search"></i>
           </button>
+          <button class='btn-reset bkt-blue ml-1rem' onclick='resetAllFilter(this);'>Reset</button>
         <% end %>
       </div>
 
@@ -144,19 +145,16 @@
     });
   }
 
-  function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('.searchbar')
-    searchbar.querySelectorAll('input').forEach((input) => {
+  function resetAllFilter(element) {
+    form = element.closest('div').querySelector('form')
+    form.querySelectorAll('input').forEach((input) => {
       if (input.type == 'text') {
         input.value = ''
       } else if (input.type == 'checkbox') {
         input.checked = false
       }
     })
-    searchbar.querySelectorAll('select').forEach((select) => {
-      select.selectedIndex = 0
-    })
-    searchbar.querySelector('.btn-search').click()
+    form.querySelector('.btn-search').click()
   }
 
   function showResetMobile(boolean) {
