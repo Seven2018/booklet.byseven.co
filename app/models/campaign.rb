@@ -297,7 +297,7 @@ class Campaign < ApplicationRecord
               elsif question.open_question? || question.mcq?
                 'Answer: ' + answer.answer
               elsif question.objective?
-                'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer if answer.objective and answer.answer
+                'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer if answer.objective || answer.answer
                 'Objective: nothing'
               end
             line << question_text + answer_text
