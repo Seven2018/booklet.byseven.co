@@ -216,20 +216,19 @@ class Campaign < ApplicationRecord
 
   def self.to_csv_data(company_id)
 
-    tag_categories = TagCategory.where(company_id: company_id).order(position: :asc)
+    tag_categories = TagCategory.where(company_id: company_id).where.not(name: 'Job Title').order(position: :asc)
 
     columns = ['Campaign ID',
         'Campaign Title',
         'Campaign URL',
         'Campaign Type',
         'Interview Type',
-        'Employees Count (per Campaign)',
-        'Owner Email',
-        'Owner Fullname',
-        'Employee Email',
-        'Employee Fullname',
-        'Employee Job Title',
-        'Employee Completion',
+        'Interviewer Email',
+        'Interviewer Fullname',
+        'Interviewee Email',
+        'Interviewee Fullname',
+        'Interviewee Job Title',
+        'Interviewee Completion',
         'Interview Locked At',
         'Deadline'] + tag_categories.map(&:name)
     CSV.generate(headers: true) do |csv|
@@ -239,21 +238,16 @@ class Campaign < ApplicationRecord
         campaign_id = campaign.id
         campaign_title = campaign.title
         campaign_type = campaign.campaign_type
-        campaign_employees_count = campaign.employees.distinct.count
-        owner_email = campaign.owner.email
-        owner_fullname = campaign.owner.fullname
 
         campaign.interviews.each do |interview|
           employee = interview.employee
           next unless employee # should NOT happen
 
-          campaign_url = 'https://booklet.byseven.co/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
+          interviewer = interview.interviewer
+          interviewer_email = interviewer.email
+          interviewer_fullname = interviewer.fullname
 
-          if interview.label == 'Employee'
-            user_for_answer = employee
-          else
-            user_for_answer = campaign.owner
-          end
+          campaign_url = 'https://booklet.byseven.co/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
 
           line = []
           line << campaign_id
@@ -261,9 +255,8 @@ class Campaign < ApplicationRecord
           line << campaign_url
           line << campaign_type
           line << interview.label
-          line << campaign_employees_count
-          line << owner_email
-          line << owner_fullname
+          line << interviewer_email
+          line << interviewer_fullname
           line << employee.email
           line << employee.fullname
           line << employee.job_title
@@ -272,22 +265,8 @@ class Campaign < ApplicationRecord
           line << interview.date
           tag_categories.each do |tag_category|
             tag = UserTag.find_by(tag_category_id: tag_category.id, user_id: employee.id)
-            tag = tag.present? ? tag.tag.tag_name : ''
+            tag = tag.present? ? tag.tag.tag_name : ' '
             line << tag
-          end
-          interview.interview_questions.order(position: :asc).each do |question|
-            answer = question.interview_answers.find_by(interview_id: interview.id, user_id: user_for_answer.id)
-            next if answer.nil?
-            question_text = 'Question: ' + question.question + "\r"
-            answer_text =
-              if question.rating?
-                'Answer: ' + answer.answer + '/' + question.options.keys.first
-              elsif question.open_question? || question.mcq?
-                'Answer: ' + answer.answer
-              elsif question.objective?
-                'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer
-              end
-            line << question_text + answer_text
           end
           csv << line
         end
