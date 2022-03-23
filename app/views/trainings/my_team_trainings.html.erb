@@ -17,28 +17,26 @@
     <div class="my-team-trainings-card-list">
 
       <% @attendees.each do |data| %>
-        <% user = User.find(data[:user_id]) %>
-
         <div class="my-team-trainings-card-content">
           <div class="my-team-trainings-card__left">
             <div class="my-team-trainings-card__left-avatar">
-              <img src="<%= user.picture %>" alt="<%= user.fullname %>" class='avatar-md' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+              <img src="<%= data.user.picture %>" alt="<%= data.user.fullname %>" class='avatar-md' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
             </div>
             <div class="my-team-trainings-card__left-fullname-job">
-              <div class="my-team-trainings-card-fullname"> <%= user.fullname %></div>
-              <div class="my-team-trainings-card-job"><em><%= user.job_title %></em></div>
+              <div class="my-team-trainings-card-fullname"> <%= data.user.fullname %></div>
+              <div class="my-team-trainings-card-job"><em><%= data.user.job_title %></em></div>
             </div>
           </div>
           <div class="my-team-trainings-card__middle">
             <div class="my-team-trainings-card__middle-status-trainings">
-              <p>👍<%= data[:to_do] %> trainings acquired</p>
+              <p>👍<%= data.to_do %> trainings acquired</p>
             </div>
             <div class="my-team-trainings-card__middle-date-next-trainings">
-              <p>🙌<%= data[:done] %> trainings done</p>
+              <p>🙌<%= data.done %> trainings done</p>
             </div>
           </div>
           <div class="my-team-trainings-card__right">
-            <%= link_to my_team_trainings_user_details_path(id: data[:user_id]) do %>
+            <%= link_to my_team_trainings_user_details_path(id: data.user.id) do %>
               <div class="my-team-trainings-card__right-link">
                 <p class='bkt-orange'>See details <span class="iconify bkt-orange" data-icon="akar-icons:chevron-right"></span></p>
               </div>
