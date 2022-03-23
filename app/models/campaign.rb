@@ -44,6 +44,10 @@ class Campaign < ApplicationRecord
       employees.distinct.ids.map { |employee_id| interviews.find_by(employee_id: employee_id).set }
   end
 
+  def interview_forms
+    interviews.map{|x| x.interview_form}.uniq
+  end
+
   def completion_for(employee)
     return 0 if interviews.count.zero?
 
@@ -169,7 +173,6 @@ class Campaign < ApplicationRecord
         employees.each{|x| analytics_hash[x.id] = []}
 
         campaigns_detes = all.where(company_id: company_id).map{|x| x.interviews.group_by(&:employee_id)}
-        # binding.pry
         campaigns_detes.each{|x| x.each{|y,z| analytics_hash[y] << z if analytics_hash.key?(y)}}
 
         interviews_sets_total = 0
@@ -289,6 +292,84 @@ class Campaign < ApplicationRecord
           csv << line
         end
       end
+    end
+  end
+
+  def to_csv_answers(interview_form_id)
+    employees = Interview.where(campaign: self, interview_form_id: interview_form_id).map(&:employee).uniq
+    interview_form = InterviewForm.find(interview_form_id)
+    tag_categories = TagCategory.where(company_id: company_id).order(position: :asc)
+
+    columns = ['Interview Type',
+        'Interview Label',
+        'Interviewer email',
+        'Interviewer fullname',
+        'Interviewee email',
+        'Interviewee fullname'] +
+        tag_categories.map(&:name) +
+        ['Deadline'] +
+        interview_form.interview_questions.where.not(question_type: 'separator').order(position: :asc).map(&:question)
+
+    CSV.generate(headers: true) do |csv|
+      csv << columns
+
+      employees.sort_by{|x| x.lastname}.each do |employee|
+
+        employee_id = employee.id
+        employee_email = employee.email
+        employee_fullname = employee.fullname
+        employee_tags = employee.tags.order(tag_category_position: :asc).map(&:tag_name)
+
+        interviews_set = [self.employee_interview(employee_id), self.manager_interview(employee_id), self.crossed_interview(employee_id)].compact
+
+        interview_type =
+          if interviews_set.count == 1
+            interview_set.first.label
+          elsif interviews_set.count == 2
+            'Both'
+          else
+            'Cross'
+          end
+
+        interviewer = interviews_set.first.interviewer
+        interviewer_email = interviewer.email
+        interviewer_fullname = interviewer.fullname
+        deadline = interviews_set.first.date
+
+        interviews_set.each do |interview|
+
+          line = []
+          interview_label = interview.label
+
+          line << interview_type
+          line << interview_label
+          line << interviewer_email
+          line << interviewer_fullname
+          line << employee_email
+          line << employee_fullname
+          employee_tags.each{|tag| line << tag}
+          line << deadline
+
+          interview.interview_questions.order(position: :asc).each do |question|
+            answer = question.interview_answers.find_by(interview: interview, user: employee)
+            next if answer.nil?
+            answer_text =
+              if question.rating?
+                'Answer: ' + answer.answer + '/' + question.options.keys.first
+              elsif question.open_question? || question.mcq?
+                'Answer: ' + answer.answer
+              elsif question.objective?
+                'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer
+              end
+            line << answer_text
+          end
+
+          csv << line
+
+
+        end
+      end
+
     end
   end
 end
