@@ -44,6 +44,10 @@ class Campaign < ApplicationRecord
       employees.distinct.ids.map { |employee_id| interviews.find_by(employee_id: employee_id).set }
   end
 
+  def interview_forms
+    interviews.map{|x| x.interview_form}.uniq
+  end
+
   def completion_for(employee)
     return 0 if interviews.count.zero?
 
@@ -169,7 +173,6 @@ class Campaign < ApplicationRecord
         employees.each{|x| analytics_hash[x.id] = []}
 
         campaigns_detes = all.where(company_id: company_id).map{|x| x.interviews.group_by(&:employee_id)}
-        # binding.pry
         campaigns_detes.each{|x| x.each{|y,z| analytics_hash[y] << z if analytics_hash.key?(y)}}
 
         interviews_sets_total = 0
@@ -213,20 +216,19 @@ class Campaign < ApplicationRecord
 
   def self.to_csv_data(company_id)
 
-    tag_categories = TagCategory.where(company_id: company_id).order(position: :asc)
+    tag_categories = TagCategory.where(company_id: company_id).where.not(name: 'Job Title').order(position: :asc)
 
     columns = ['Campaign ID',
         'Campaign Title',
         'Campaign URL',
         'Campaign Type',
         'Interview Type',
-        'Employees Count (per Campaign)',
-        'Owner Email',
-        'Owner Fullname',
-        'Employee Email',
-        'Employee Fullname',
-        'Employee Job Title',
-        'Employee Completion',
+        'Interviewer Email',
+        'Interviewer Fullname',
+        'Interviewee Email',
+        'Interviewee Fullname',
+        'Interviewee Job Title',
+        'Interviewee Completion',
         'Interview Locked At',
         'Deadline'] + tag_categories.map(&:name)
     CSV.generate(headers: true) do |csv|
@@ -236,21 +238,16 @@ class Campaign < ApplicationRecord
         campaign_id = campaign.id
         campaign_title = campaign.title
         campaign_type = campaign.campaign_type
-        campaign_employees_count = campaign.employees.distinct.count
-        owner_email = campaign.owner.email
-        owner_fullname = campaign.owner.fullname
 
         campaign.interviews.each do |interview|
           employee = interview.employee
           next unless employee # should NOT happen
 
-          campaign_url = 'https://booklet.byseven.co/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
+          interviewer = interview.interviewer
+          interviewer_email = interviewer.email
+          interviewer_fullname = interviewer.fullname
 
-          if interview.label == 'Employee'
-            user_for_answer = employee
-          else
-            user_for_answer = campaign.owner
-          end
+          campaign_url = 'https://booklet.byseven.co/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
 
           line = []
           line << campaign_id
@@ -258,9 +255,8 @@ class Campaign < ApplicationRecord
           line << campaign_url
           line << campaign_type
           line << interview.label
-          line << campaign_employees_count
-          line << owner_email
-          line << owner_fullname
+          line << interviewer_email
+          line << interviewer_fullname
           line << employee.email
           line << employee.fullname
           line << employee.job_title
@@ -269,13 +265,73 @@ class Campaign < ApplicationRecord
           line << interview.date
           tag_categories.each do |tag_category|
             tag = UserTag.find_by(tag_category_id: tag_category.id, user_id: employee.id)
-            tag = tag.present? ? tag.tag.tag_name : ''
+            tag = tag.present? ? tag.tag.tag_name : ' '
             line << tag
           end
+          csv << line
+        end
+      end
+    end
+  end
+
+  def to_csv_answers(interview_form_id)
+    employees = Interview.where(campaign: self, interview_form_id: interview_form_id).map(&:employee).uniq
+    interview_form = InterviewForm.find(interview_form_id)
+    tag_categories = TagCategory.where(company_id: company_id).order(position: :asc)
+
+    columns = ['Interview Type',
+        'Interview Label',
+        'Interviewer email',
+        'Interviewer fullname',
+        'Interviewee email',
+        'Interviewee fullname'] +
+        tag_categories.map(&:name) +
+        ['Deadline'] +
+        interview_form.interview_questions.where.not(question_type: 'separator').order(position: :asc).map(&:question)
+
+    CSV.generate(headers: true) do |csv|
+      csv << columns
+
+      employees.sort_by{|x| x.lastname}.each do |employee|
+
+        employee_id = employee.id
+        employee_email = employee.email
+        employee_fullname = employee.fullname
+        employee_tags = employee.tags.order(tag_category_position: :asc).map(&:tag_name)
+
+        interviews_set = [self.employee_interview(employee_id), self.manager_interview(employee_id), self.crossed_interview(employee_id)].compact
+
+        interview_type =
+          if interviews_set.count == 1
+            interview_set.first.label
+          elsif interviews_set.count == 2
+            'Both'
+          else
+            'Cross'
+          end
+
+        interviewer = interviews_set.first.interviewer
+        interviewer_email = interviewer.email
+        interviewer_fullname = interviewer.fullname
+        deadline = interviews_set.first.date
+
+        interviews_set.each do |interview|
+
+          line = []
+          interview_label = interview.label
+
+          line << interview_type
+          line << interview_label
+          line << interviewer_email
+          line << interviewer_fullname
+          line << employee_email
+          line << employee_fullname
+          employee_tags.each{|tag| line << tag}
+          line << deadline
+
           interview.interview_questions.order(position: :asc).each do |question|
-            answer = question.interview_answers.find_by(interview_id: interview.id, user_id: user_for_answer.id)
+            answer = question.interview_answers.find_by(interview: interview, user: employee)
             next if answer.nil?
-            question_text = 'Question: ' + question.question + "\r"
             answer_text =
               if question.rating?
                 'Answer: ' + answer.answer + '/' + question.options.keys.first
@@ -284,11 +340,15 @@ class Campaign < ApplicationRecord
               elsif question.objective?
                 'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer
               end
-            line << question_text + answer_text
+            line << answer_text
           end
+
           csv << line
+
+
         end
       end
+
     end
   end
 end
