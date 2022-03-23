@@ -48,7 +48,12 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def lock_interview?
-    user == record.interviewer
+    case
+    when record.crossed? || record.manager?
+      user == record.interviewer
+    when record.employee?
+      user == record.employee
+    end
   end
 
   def unlock_interview?
