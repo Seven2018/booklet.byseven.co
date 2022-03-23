@@ -86,7 +86,6 @@ export default class extends Controller {
   }
 
   _persist(ids_string, refresh = false) {
-    console.log(this.inputIdsName)
     fetch(this.pathValue, {
       method: "PATCH",
       headers: {

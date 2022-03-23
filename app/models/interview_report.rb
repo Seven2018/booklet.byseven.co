@@ -12,7 +12,8 @@ class InterviewReport < ApplicationRecord
 
   enum mode: {
     classic: 0,
-    data: 10
+    data: 10,
+    answers: 20
   }, _suffix: true
 
   before_save :set_signature

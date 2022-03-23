@@ -23,9 +23,8 @@
         data: {
           id: campaign.id,
           participant_ids_target: 'result',
-          # action: "change->participant-ids#store change->toggle-checked-participants#toggle",
-          # TODO: create a generic toggle check search
-          action: "change->participant-ids#store",
+          action: "change->participant-ids#store change->toggle-checked-participants#toggle",
+          # action: "change->participant-ids#store",
           toggle_checked_participants_target: "togglable"
         }
       ) %>
