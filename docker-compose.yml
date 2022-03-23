@@ -38,6 +38,20 @@ services:
     networks:
       - seven_booklet
 
+  rails:
+    build: .
+    command: bash -c "cd /app && bundle install && bundle exec rails db:migrate && bundle exec rails s"
+    environment:
+      - RAILS_ENV=development
+      - REDISCLOUD_URL=redis://redis:6379
+    volumes:
+      - ".:/app"
+      - "/app/tmp"
+    depends_on:
+      - db
+    networks:
+      - seven_booklet
+
   webpack:
     build: .
     command: bash -c "cd /app && bundle install && ./bin/webpack-dev-server"
