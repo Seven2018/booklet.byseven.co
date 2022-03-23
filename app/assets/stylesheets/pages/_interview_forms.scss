@@ -184,10 +184,17 @@
 
 #template-show__container-left {
   display: none;
-  min-height: calc(100vh - 10rem);
+  height: calc(100vh - 10rem);
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   a {
     margin: 1rem 0px;

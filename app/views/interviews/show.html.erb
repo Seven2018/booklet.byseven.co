@@ -22,13 +22,11 @@
         <span class="iconify" data-icon="bx:bx-download"></span>
         <p>Download PDF</p>
       <% end %>
-      <% unless @interview.locked? || (@interview.crossed? && current_user != manager) %>
+      <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
         <button class="btn-blue-text" onclick="saveButton();">
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
-      <% end %>
-      <% unless @interview.locked? %>
         <a data-toggle='modal' data-target='#lockInterview'>
           <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
             <p>Submit</p>
@@ -172,7 +170,7 @@
   </div>
   <div class="interview-thanks__controls">
     <button class="btn-blue-text" onclick='thankYou("back");'><p><i class="fas fa-long-arrow-alt-left"></i> Back</p></button>
-    <%= link_to campaign_path(@interview.campaign, employee: employee) do %>
+    <%= link_to :back do %>
       <button class="btn-blue"><p>Exit</p></button>
     <% end %>
   </div>
