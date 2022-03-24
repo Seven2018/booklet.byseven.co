@@ -26,14 +26,15 @@ module CampaignDrafts
         case @campaign_draft.templates_selection_method
         when 'single' then
           template = InterviewForm.find @campaign_draft.default_template_id
-          new_form = InterviewForm.new(template.attributes.except('id', 'created_at', 'updated_at'))
-          new_form.used = true
-          new_form.save
+          new_form = InterviewForm.create(
+            template.attributes.except('id', 'created_at', 'updated_at').merge(used: true)
+          )
 
           template.interview_questions.each do |question|
-            new_question = InterviewQuestion.new(question.attributes.except('id', 'interview_form_id', 'created_at', 'updated_at'))
-            new_question.interview_form = new_form
-            new_question.save
+            InterviewQuestion.create \
+              question.attributes
+                      .except('id', 'interview_form_id', 'created_at', 'updated_at')
+                      .merge(interview_form: new_form)
           end
           return new_form
         # when 'multiple' then # TODO
