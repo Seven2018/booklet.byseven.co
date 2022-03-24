@@ -31,6 +31,11 @@ export default class extends Controller {
     e.currentTarget.checked ? this._add(id) : this._remove(id)
   }
 
+  storeRadio(e) {
+    const id = e.currentTarget.dataset.id
+    this._persist(id.toString())
+  }
+
   unselectAll() {
     this._persist('', true)
   }
