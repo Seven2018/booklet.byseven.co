@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe Interview, type: :model do
   let(:owner) { create(:user) }
   let(:employee) { create(:user, email: 'employee@gmail.com') }
-  let(:interview_form) { create(:interview_form) }
+  let(:interview_form) { create(:interview_form, company: company) }
+  let(:company) { create(:company) }
   let(:question) do
     create(:interview_question, question_type: 'rating', interview_form: interview_form)
   end
@@ -14,7 +15,7 @@ RSpec.describe Interview, type: :model do
       title: interview_form.title,
       owner: owner,
       interview_form: interview_form,
-      company: create(:company)
+      company: company
     )
   end
 

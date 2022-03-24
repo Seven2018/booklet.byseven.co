@@ -5,13 +5,14 @@ require 'rails_helper'
 RSpec.describe Interview, type: :model do
   let(:owner) { create(:user) }
   let(:employee) { create(:user, email: 'employee@gmail.com') }
-  let(:interview_form) { create(:interview_form) }
+  let(:company) { create(:company) }
+  let(:interview_form) { create(:interview_form, company: company) }
   let(:campaign) do
     create(:campaign,
       title: interview_form.title,
       owner: owner,
       interview_form: interview_form,
-      company: create(:company)
+      company: company
     )
   end
 

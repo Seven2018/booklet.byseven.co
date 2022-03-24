@@ -18,15 +18,15 @@ class InterviewFormPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.hr_or_above? && record.company_id == user.company_id
+    user.hr_or_above? && record.company_id == user.company_id && !record.used?
   end
 
   def update?
-    user.hr_or_above?
+    user.hr_or_above? && !record.used?
   end
 
   def duplicate?
-    user.hr_or_above?
+    user.hr_or_above? && !record.used?
   end
 
   def interview_form_link_tags?
@@ -34,6 +34,6 @@ class InterviewFormPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.hr_or_above?
+    user.hr_or_above? && !record.used?
   end
 end

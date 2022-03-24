@@ -42,7 +42,7 @@ describe CampaignDrafts::Campaigns::Launch do
   context 'with one interviewee' do
     let(:interviewee_ids) { [interviewee.id] }
     context 'with interview_form answerable_by employee' do
-      let(:template) { create(:interview_form, answerable_by: 'employee') }
+      let(:template) { create(:interview_form, company: company, answerable_by: 'employee') }
       it 'should create a campaign and well formed interviews sets' do
         subject
         expect(Campaign.count).to eq 1
@@ -55,7 +55,7 @@ describe CampaignDrafts::Campaigns::Launch do
     end
 
     context 'with interview_form answerable_by manager' do
-      let(:template) { create(:interview_form, answerable_by: 'manager') }
+      let(:template) { create(:interview_form, company: company, answerable_by: 'manager') }
       it 'should create a campaign and well formed interviews sets' do
         subject
         expect(Campaign.count).to eq 1
@@ -69,7 +69,7 @@ describe CampaignDrafts::Campaigns::Launch do
 
     context 'with interview_form answerable_by both' do
       context 'and not crossed' do
-        let(:template) { create(:interview_form, answerable_by: 'both') }
+        let(:template) { create(:interview_form, company: company, answerable_by: 'both') }
         it 'should create a campaign and well formed interviews sets' do
           subject
           expect(Campaign.count).to eq 1
@@ -82,7 +82,7 @@ describe CampaignDrafts::Campaigns::Launch do
       end
 
       context 'and crossed' do
-        let(:template) { create(:interview_form, answerable_by: 'both', cross: true) }
+        let(:template) { create(:interview_form, company: company, answerable_by: 'both', cross: true) }
         it 'should create a campaign and well formed interviews sets' do
           subject
           expect(Campaign.count).to eq 1
@@ -106,7 +106,7 @@ describe CampaignDrafts::Campaigns::Launch do
     end
 
     context 'with interview_form answerable_by employee' do
-      let(:template) { create(:interview_form, answerable_by: 'employee') }
+      let(:template) { create(:interview_form, company: company, answerable_by: 'employee') }
       it 'should create a campaign and well formed interviews sets' do
         subject
         expect(Campaign.count).to eq 1
@@ -119,7 +119,7 @@ describe CampaignDrafts::Campaigns::Launch do
     end
 
     context 'with interview_form answerable_by manager' do
-      let(:template) { create(:interview_form, answerable_by: 'manager') }
+      let(:template) { create(:interview_form, company: company, answerable_by: 'manager') }
       it 'should create a campaign and well formed interviews sets' do
         subject
         expect(Campaign.count).to eq 1
@@ -133,7 +133,7 @@ describe CampaignDrafts::Campaigns::Launch do
 
     context 'with interview_form answerable_by both' do
       context 'and not crossed' do
-        let(:template) { create(:interview_form, answerable_by: 'both') }
+        let(:template) { create(:interview_form, company: company, answerable_by: 'both') }
         it 'should create a campaign and well formed interviews sets' do
           subject
           expect(Campaign.count).to eq 1
@@ -146,7 +146,7 @@ describe CampaignDrafts::Campaigns::Launch do
       end
 
       context 'and crossed' do
-        let(:template) { create(:interview_form, answerable_by: 'both', cross: true) }
+        let(:template) { create(:interview_form, company: company, answerable_by: 'both', cross: true) }
         it 'should create a campaign and well formed interviews sets' do
           subject
           expect(Campaign.count).to eq 1
