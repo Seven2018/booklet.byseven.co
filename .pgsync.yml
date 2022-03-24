@@ -8,6 +8,7 @@
 # we *highly recommend* you use sslmode=verify-full when possible
 # see https://ankane.org/postgres-sslmode-explained for more info
 from: $(heroku config:get DATABASE_URL -r production)
+#from: $(heroku config:get DATABASE_URL -r staging)
 
 # destination database URL
 to: postgres://localhost:5432/booklet_byseven_co_development
@@ -20,6 +21,8 @@ to: postgres://localhost:5432/booklet_byseven_co_development
 # define groups
 groups:
   all:
+    - active_storage_blobs
+    - active_storage_attachments
     - companies
     - interview_forms
     - users

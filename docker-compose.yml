@@ -1,0 +1,78 @@
+
+version: "3"
+services:
+  db:
+    image: postgres:13.4
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: booklet_byseven_co_development
+    networks:
+      - seven_booklet
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: "redis:6.2.6"
+    command: redis-server
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+    networks:
+      - seven_booklet
+
+  sidekiq:
+    build: .
+    command: bash -c "cd /app && bundle install && bundle exec sidekiq"
+    environment:
+      - RAILS_ENV=development
+      - REDISCLOUD_URL=redis://redis:6379
+    volumes:
+      - ".:/app"
+      - "/app/tmp"
+    depends_on:
+      - redis
+      - db
+    networks:
+      - seven_booklet
+
+  rails:
+    build: .
+    command: bash -c "cd /app && bundle install && bundle exec rails db:migrate && bundle exec rails s"
+    environment:
+      - RAILS_ENV=development
+      - REDISCLOUD_URL=redis://redis:6379
+    volumes:
+      - ".:/app"
+      - "/app/tmp"
+    depends_on:
+      - db
+    networks:
+      - seven_booklet
+
+  webpack:
+    build: .
+    command: bash -c "cd /app && bundle install && ./bin/webpack-dev-server"
+    volumes:
+      - ".:/app"
+      - "/app/tmp"
+    ports:
+      - '3035:3035'
+    environment:
+      NODE_ENV: development
+      RAILS_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+
+networks:
+  seven_booklet:
+    driver: bridge
+
+volumes:
+  postgres:
+    driver: local
+  redis:
+    driver: local
+
+
