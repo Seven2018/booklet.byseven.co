@@ -283,12 +283,15 @@
 
       question_card = element.closest('form')
 
-      if (mode == 'horizontal') {
-        element1 = question_card.querySelector('#interview_question_required_options-' + element.id.split('-')[1])
-        element2 = question_card.querySelector('#interview_question_visible_options-' + element.id.split('-')[1])
-
+      element1 = question_card.querySelector('#interview_question_required_options-' + element.id.split('-')[1])
+      element2 = question_card.querySelector('#interview_question_visible_options-' + element.id.split('-')[1])
+      if (element == element1 && element1.checked == true) {
         horizontalCompatibilityPair(element1, element2)
-      } else if (mode == 'vertical') {
+      } else if (element == element2 && element2.checked == false) {
+        horizontalCompatibilityPair(element2, element1)
+      }
+
+      if (mode == 'visible_for') {
         set = question_card.querySelectorAll('.interview_question_visible_options')
         set_array = Array.from(set)
         element1 = element
@@ -310,13 +313,11 @@
       element2.checked = true;
       setTimeout(function(){
         element2.parentNode.classList.add('switch_checked')
-        element2.disabled = true
-        element2.parentNode.querySelector('input').value = 'on'
       }, 100)
     } else {
+      element2.checked = false;
       setTimeout(function(){
-        element2.disabled = false
-        element2.parentNode.querySelector('input').value = 'off'
+        element2.parentNode.classList.remove('switch_checked')
       }, 100)
     }
   }

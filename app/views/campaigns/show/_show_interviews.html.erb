@@ -79,10 +79,10 @@
             <% manager_interview = interviews.find_by(label: 'Manager') %>
             <% crossed_interview = interviews.find_by(label: 'Crossed') %>
             <% crossed_availability =
-              employee_interview.completed? &&
-              manager_interview.completed? &&
-              (manager_view || crossed_interview.completed?) if interview_form.cross %>
-            <% interviews = interview_form.cross ? [employee_interview, manager_interview, crossed_interview] : [employee_interview, manager_interview] %>
+              employee_interview&.completed? &&
+              manager_interview&.completed? &&
+              (manager_view || crossed_interview&.completed?) if interview_form.cross %>
+            <% interviews = [employee_interview, manager_interview, crossed_interview].compact %>
 
             <% interview_title = {'Employee' => "Employee's",
                                   'Manager' => "Manager's",
@@ -131,18 +131,18 @@
 
             <% end %>
 
-            <% if interview_form.cross %>
+            <% if crossed_interview.present? %>
               <% if crossed_interview.locked? %>
-                <div class="campaign-show__card-interviews-info-locked">
+                <div class="campaign-show__card-interviews-info-locked mb-1rem">
                   <p>Interview locked</p>
                   <span class="iconify" data-icon="akar-icons:circle-check-fill"></span>
                 </div>
               <% elsif crossed_interview.completed? %>
-                <div class="campaign-show__card-interviews-info-complete">
+                <div class="campaign-show__card-interviews-info-complete mb-1rem">
                   <p>Interview completed !</p>
                 </div>
               <% else %>
-                <div class="campaign-show__card-interviews-info-incomplete">
+                <div class="campaign-show__card-interviews-info-incomplete mb-1rem">
                   <p>Start a cross review when employee and manager’s reviews are done</p>
                 </div>
               <% end %>

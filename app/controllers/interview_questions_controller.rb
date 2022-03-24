@@ -2,41 +2,13 @@ class InterviewQuestionsController < ApplicationController
   before_action :set_question, only: [:delete_mcq_option, :update, :move_up, :move_down, :destroy]
 
   def create
-    @question = InterviewQuestion.new(question_params)
+    @question, @form = InterviewQuestions::Create.call(
+      question: question_params[:question],
+      question_type: question_params[:question_type],
+      interview_form_id: question_params[:interview_form_id],
+      position: question_params[:position]
+    )
     authorize @question
-
-    target_position = params.dig(:interview_question, :position).to_i + 1
-
-    @form = InterviewForm.find(@question.interview_form_id)
-    questions = @form.interview_questions.order(position: :asc)
-
-    i = target_position
-    questions.where('position >= ?', target_position).each do |question|
-      question.update position: i
-      i += 1
-    end
-    @question.position = target_position
-
-    # Properly order the questions, if necessary
-    if questions.map(&:position) != (1..questions.count).to_a
-      j = 1
-      questions.each do |question|
-        question.update position: j
-        j += 1
-      end
-    end
-
-    params[:interview_question][:required].present? ? @question.required = true : @question.required = false
-
-    @question.options =
-      if @question.rating?
-        {'1' => 1}
-      elsif @question.mcq? || @question.objective?
-        {'Please enter an option': 1}
-      end
-
-    @question.save
-
     respond_to do |format|
       format.html {redirect_to interview_form_path(@form)}
       format.js
@@ -162,6 +134,6 @@ class InterviewQuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:interview_question).permit(:question, :description, :question_type, :allow_comments, :interview_form_id)
+    params.require(:interview_question).permit(:question, :description, :question_type, :allow_comments, :interview_form_id, :position)
   end
 end

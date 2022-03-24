@@ -113,11 +113,7 @@ class TrainingsController < ApplicationController
     trainings = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.employees.ids}).distinct
     authorize trainings
 
-    # attendees = Attendee.includes(session: :training).where(user_id: current_user.employees.ids).group_by(&:user_id)
     @attendees = get_attendees_status(user_ids: current_user.employees.ids)
-
-    # @future_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.present?}.uniq.reject{|x| x.nil?}.sort_by{|x| x.next_date}}
-    # @past_trainings = attendees.each{|x,y| attendees[x] = y.map{|z| z.session.training if z.session.training.next_date.nil?}.uniq.sort{|x| x.next_date}}
   end
 
   def my_team_trainings_user_details
@@ -216,7 +212,7 @@ class TrainingsController < ApplicationController
   end
 
   def get_attendees_status(user_ids: nil)
-    nil if user_ids.nil?
+    return [] if user_ids.blank?
 
     completed = Attendee.where(user_id: user_ids, status: 'Completed').group(:user_id).count
     not_completed = Attendee.where(user_id: user_ids, status: 'Not completed').group(:user_id).count
@@ -224,7 +220,7 @@ class TrainingsController < ApplicationController
     attendee_ids.map do |user_id|
       user_not_completed = not_completed[user_id].present? ? not_completed[user_id] : 0
       user_completed = completed[user_id].present? ? completed[user_id] : 0
-      {user_id: user_id, to_do: user_not_completed, done: user_completed}
+      OpenStruct.new({user: User.find(user_id), to_do: user_not_completed, done: user_completed})
     end
   end
 end

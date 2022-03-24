@@ -5,7 +5,7 @@ class InterviewForm < ApplicationRecord
   has_many :employees, through: :interviews
   has_many :interview_form_tags, dependent: :destroy
   has_many :tags, through: :interview_form_tags
-  has_many :campaigns
+  belongs_to :company
 
   validates :title, presence: true
 
@@ -27,6 +27,8 @@ class InterviewForm < ApplicationRecord
       tsearch: { prefix: true }
     },
     ignoring: :accents
+
+  scope :unused, -> { where(used: false) }
 
   def kind
     case

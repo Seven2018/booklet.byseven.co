@@ -44,6 +44,10 @@ class Campaign < ApplicationRecord
       employees.distinct.ids.map { |employee_id| interviews.find_by(employee_id: employee_id).set }
   end
 
+  def interview_forms
+    interviews.map{|x| x.interview_form}.uniq
+  end
+
   def completion_for(employee)
     return 0 if interviews.count.zero?
 
@@ -148,78 +152,62 @@ class Campaign < ApplicationRecord
 
     columns = [tag_category.name,
         'Employees count',
-        'Cross Interviews - Completed',
-        'Cross Interviews - Locked',
-        'Cross Interviews - In progress',
-        'Cross Interviews - Not started',
-        'Cross Interviews - Employees not set',
-        'Cross Interviews - Total',
-        'Cross Interviews - Locked/Total',
-        'Simple Interviews - Completed',
-        'Simple Interviews - Locked',
-        'Simple Interviews - Not started',
-        'Simple Interviews - Employees not set',
-        'Simple Interview - Total',
-        'Simple Interviews - Completed/Total'
+        'Interviews sets - Total',
+        'Interviews sets - Completed',
+        'Interviews sets - Locked',
+        'Interviews sets - In progress',
+        'Interviews sets - Not started',
+        'Interviews sets - Completed/Total',
+        'Interviews sets - Locked/Total',
+        'Interviews sets - In Progress/Total',
+        'Interviews sets - Not Started/Total',
+        'Interviews sets - Started Total'
         ]
 
     CSV.generate(headers: true) do |csv|
       csv << columns
       tag_category.tags.order(tag_name: :asc).each do |tag|
         employees = User.where(company_id: company_id).where_exists(:user_tags, tag_id: tag.id)
-        crossed_total = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
-        crossed_completed = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids, completed: true, locked_at: nil).count
-        crossed_locked = Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids, completed: true).where.not(locked_at: nil).count
-        crossed_not_started = Interview.where(campaign_id: all.ids, label: 'Employee', employee_id: employees.ids, completed: false).map{|x| !Interview.find_by(campaign_id: x.campaign_id, label: 'Manager', employee_id: x.employee_id)&.completed?}.count
-        crossed_in_progress = crossed_total - crossed_locked - crossed_completed - crossed_not_started
-        crossed_not_set = employees.where_not_exists(:interviews, campaign_id: all.ids, employee_id: employees.ids).distinct.count
-        # crossed_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Crossed', employee_id: employees.ids).count
-        crossed_locked_by_total = crossed_total > 0 ? (crossed_locked.fdiv(crossed_total)*100).round.to_s + '%' : '0%'
-        simple_completed = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids, completed: true, locked_at: nil).count
-        simple_locked = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).where.not(locked_at: nil).count
-        simple_not_started = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids, completed: false).count
-        simple_not_set = employees.count - Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
-        simple_total = Interview.where(campaign_id: all.ids, label: 'Simple', employee_id: employees.ids).count
-        simple_completed_by_total = simple_total > 0 ? (simple_completed.fdiv(simple_total)*100).round.to_s + '%' : '0%'
 
-        # Ideas about how to get data from interviews sets
+        analytics_hash = {}
+        employees.each{|x| analytics_hash[x.id] = []}
 
-        # test_hash = {}
-        # employees.each{|x| test_hash[x.id] = []}
+        campaigns_detes = all.where(company_id: company_id).map{|x| x.interviews.group_by(&:employee_id)}
+        campaigns_detes.each{|x| x.each{|y,z| analytics_hash[y] << z if analytics_hash.key?(y)}}
 
-        # campaigns_detes = self.map{|x| x.interviews.group_by(&:employee_id)}
-        # campaigns_detes.each{|x| x.each{|y,z| test_hash[y] << z}}
+        interviews_sets_total = 0
+        interviews_sets_completed = 0
+        interviews_sets_locked = 0
+        interviews_sets_not_started = 0
+        analytics_hash.each{|x, y| interviews_sets_total += y.count;
+                              interviews_sets_completed += y.map{|z| z.map{|z1| z1.completed && z1.locked_at.nil?}.uniq == [true]}.select(&:itself).count;
+                              interviews_sets_locked += y.map{|z| z.map{|z1| z1.locked_at.present?}.uniq == [true]}.select(&:itself).count;
+                              interviews_sets_not_started += y.map{|z| z.map{|z1| z1.completed}.uniq == [false]}.select(&:itself).count;
+                            }
+        employees_count = 0
+        analytics_hash.each{|x,y| employees_count += 1 if y.count > 0}
 
-        # interviews_sets_total = 0
-        # interviews_sets_completed = 0
-        # interviews_sets_locked = 0
-        # interviews_sets_not_started = 0
-        # test_hash.each{|x, y| interviews_sets_total += y.count;
-        #                       interviews_sets_completed += y.map{|z| z.map{|z1| z1.completed}.uniq == [true]}.select(&:itself).count;
-        #                       interviews_sets_locked += y.map{|z| z.map{|z1| z1.locked_at.present?}.uniq == [true]}.select(&:itself).count;
-        #                       interviews_sets_not_started += y.map{|z| z.map{|z1| z1.completed}.uniq == [true]}.select(&:itself).count;
-        #                     }
-
-        # interviews_sets_in_progress = interviews_sets_total - interviews_sets_locked - interviews_sets_completed - interviews_sets_not_started
+        interviews_sets_in_progress = interviews_sets_total - interviews_sets_locked - interviews_sets_completed - interviews_sets_not_started
+        interviews_sets_completed_by_total = interviews_sets_total > 0 ? (interviews_sets_completed.fdiv(interviews_sets_total)*100).round : 0
+        interviews_sets_locked_by_total = interviews_sets_total > 0 ? (interviews_sets_locked.fdiv(interviews_sets_total)*100).round : 0
+        interviews_sets_not_started_by_total = interviews_sets_total > 0 ? (interviews_sets_not_started.fdiv(interviews_sets_total)*100).round : 0
+        interviews_sets_in_progress_by_total = interviews_sets_total > 0 ? (interviews_sets_in_progress.fdiv(interviews_sets_total)*100).round : 0
+        interviews_set_total_ongoing = interviews_sets_in_progress_by_total + interviews_sets_completed_by_total + interviews_sets_locked_by_total
 
         line = []
 
         line << tag.tag_name
-        line << employees.count
-        line << crossed_completed
-        line << crossed_locked
-        line << crossed_in_progress
-        line << crossed_not_started
-        line << crossed_not_set
-        line << crossed_total
-        line << crossed_locked_by_total
-
-        line << simple_completed
-        line << simple_locked
-        line << simple_not_started
-        line << simple_not_set
-        line << simple_total
-        line << simple_completed_by_total
+        line << employees_count
+        line << interviews_sets_total
+        line << interviews_sets_completed
+        line << interviews_sets_locked
+        line << interviews_sets_in_progress
+        line << interviews_sets_not_started
+        line << interviews_sets_completed_by_total.to_s + '%'
+        line << interviews_sets_locked_by_total.to_s + '%'
+        line << interviews_sets_in_progress_by_total.to_s + '%'
+        line << interviews_sets_not_started_by_total.to_s + '%'
+        line << interviews_set_total_ongoing.to_s + '%'
 
         csv << line
       end
@@ -228,20 +216,19 @@ class Campaign < ApplicationRecord
 
   def self.to_csv_data(company_id)
 
-    tag_categories = TagCategory.where(company_id: company_id).order(position: :asc)
+    tag_categories = TagCategory.where(company_id: company_id).where.not(name: 'Job Title').order(position: :asc)
 
     columns = ['Campaign ID',
         'Campaign Title',
         'Campaign URL',
         'Campaign Type',
         'Interview Type',
-        'Employees Count (per Campaign)',
-        'Owner Email',
-        'Owner Fullname',
-        'Employee Email',
-        'Employee Fullname',
-        'Employee Job Title',
-        'Employee Completion',
+        'Interviewer Email',
+        'Interviewer Fullname',
+        'Interviewee Email',
+        'Interviewee Fullname',
+        'Interviewee Job Title',
+        'Interviewee Completion',
         'Interview Locked At',
         'Deadline'] + tag_categories.map(&:name)
     CSV.generate(headers: true) do |csv|
@@ -251,21 +238,16 @@ class Campaign < ApplicationRecord
         campaign_id = campaign.id
         campaign_title = campaign.title
         campaign_type = campaign.campaign_type
-        campaign_employees_count = campaign.employees.distinct.count
-        owner_email = campaign.owner.email
-        owner_fullname = campaign.owner.fullname
 
         campaign.interviews.each do |interview|
           employee = interview.employee
           next unless employee # should NOT happen
 
-          campaign_url = 'https://booklet.byseven.co/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
+          interviewer = interview.interviewer
+          interviewer_email = interviewer.email
+          interviewer_fullname = interviewer.fullname
 
-          if interview.label == 'Employee'
-            user_for_answer = employee
-          else
-            user_for_answer = campaign.owner
-          end
+          campaign_url = 'https://booklet.byseven.co/campaigns/' + campaign_id.to_s + '?employee_id=' + employee.id.to_s
 
           line = []
           line << campaign_id
@@ -273,9 +255,8 @@ class Campaign < ApplicationRecord
           line << campaign_url
           line << campaign_type
           line << interview.label
-          line << campaign_employees_count
-          line << owner_email
-          line << owner_fullname
+          line << interviewer_email
+          line << interviewer_fullname
           line << employee.email
           line << employee.fullname
           line << employee.job_title
@@ -284,13 +265,73 @@ class Campaign < ApplicationRecord
           line << interview.date
           tag_categories.each do |tag_category|
             tag = UserTag.find_by(tag_category_id: tag_category.id, user_id: employee.id)
-            tag = tag.present? ? tag.tag.tag_name : ''
+            tag = tag.present? ? tag.tag.tag_name : ' '
             line << tag
           end
+          csv << line
+        end
+      end
+    end
+  end
+
+  def to_csv_answers(interview_form_id)
+    employees = Interview.where(campaign: self, interview_form_id: interview_form_id).map(&:employee).uniq
+    interview_form = InterviewForm.find(interview_form_id)
+    tag_categories = TagCategory.where(company_id: company_id).order(position: :asc)
+
+    columns = ['Interview Type',
+        'Interview Label',
+        'Interviewer email',
+        'Interviewer fullname',
+        'Interviewee email',
+        'Interviewee fullname'] +
+        tag_categories.map(&:name) +
+        ['Deadline'] +
+        interview_form.interview_questions.where.not(question_type: 'separator').order(position: :asc).map(&:question)
+
+    CSV.generate(headers: true) do |csv|
+      csv << columns
+
+      employees.sort_by{|x| x.lastname}.each do |employee|
+
+        employee_id = employee.id
+        employee_email = employee.email
+        employee_fullname = employee.fullname
+        employee_tags = employee.tags.order(tag_category_position: :asc).map(&:tag_name)
+
+        interviews_set = [self.employee_interview(employee_id), self.manager_interview(employee_id), self.crossed_interview(employee_id)].compact
+
+        interview_type =
+          if interviews_set.count == 1
+            interview_set.first.label
+          elsif interviews_set.count == 2
+            'Both'
+          else
+            'Cross'
+          end
+
+        interviewer = interviews_set.first.interviewer
+        interviewer_email = interviewer.email
+        interviewer_fullname = interviewer.fullname
+        deadline = interviews_set.first.date
+
+        interviews_set.each do |interview|
+
+          line = []
+          interview_label = interview.label
+
+          line << interview_type
+          line << interview_label
+          line << interviewer_email
+          line << interviewer_fullname
+          line << employee_email
+          line << employee_fullname
+          employee_tags.each{|tag| line << tag}
+          line << deadline
+
           interview.interview_questions.order(position: :asc).each do |question|
-            answer = question.interview_answers.find_by(interview_id: interview.id, user_id: user_for_answer.id)
+            answer = question.interview_answers.find_by(interview: interview, user: employee)
             next if answer.nil?
-            question_text = 'Question: ' + question.question + "\r"
             answer_text =
               if question.rating?
                 'Answer: ' + answer.answer + '/' + question.options.keys.first
@@ -299,11 +340,15 @@ class Campaign < ApplicationRecord
               elsif question.objective?
                 'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer
               end
-            line << question_text + answer_text
+            line << answer_text
           end
+
           csv << line
+
+
         end
       end
+
     end
   end
 end
