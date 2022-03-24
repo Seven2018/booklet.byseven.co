@@ -6,12 +6,13 @@ RSpec.describe Interview, type: :model do
   let(:owner) { create(:user) }
   let(:manager) { create(:user, email: Faker::Internet.email) }
   let!(:employee) { create(:user, email: Faker::Internet.email, manager: manager) }
+  let(:company) { create(:company) }
   let(:campaign) do
     create(:campaign,
       title: interview_form.title,
       owner: owner,
       interview_form: interview_form,
-      company: create(:company),
+      company: company,
       campaign_type: campaign_type
     )
   end
@@ -32,7 +33,7 @@ RSpec.describe Interview, type: :model do
     context 'with an interview created when source of truth was campaign_type' do
       context 'with a Whatever label' do
         let(:label) { 'Whatever' }
-        let(:interview_form) { create(:interview_form) }
+        let(:interview_form) { create(:interview_form, company: company) }
 
         context 'with campaign_type crossed' do
           let(:campaign_type) { :crossed }
@@ -50,7 +51,7 @@ RSpec.describe Interview, type: :model do
       context 'with campaign_type one_to_one' do
         let(:campaign_type) { :one_to_one }
         context 'with a template answerable_by_employee_not_crossed' do
-          let(:interview_form) { create(:interview_form, answerable_by: :employee, cross: false) }
+          let(:interview_form) { create(:interview_form, answerable_by: :employee, cross: false, company: company) }
 
           context 'with a Employee label' do
             let(:label) { 'Employee' }
@@ -74,7 +75,7 @@ RSpec.describe Interview, type: :model do
         end
 
         context 'with a template answerable_by_manager_not_crossed' do
-          let(:interview_form) { create(:interview_form, answerable_by: :manager, cross: false) }
+          let(:interview_form) { create(:interview_form, answerable_by: :manager, cross: false, company: company) }
 
           context 'with a Employee label' do
             let(:label) { 'Employee' }
@@ -99,7 +100,7 @@ RSpec.describe Interview, type: :model do
 
 
         context 'with a template answerable_by_both_not_crossed' do
-          let(:interview_form) { create(:interview_form, answerable_by: :both, cross: false) }
+          let(:interview_form) { create(:interview_form, answerable_by: :both, cross: false, company: company) }
 
           context 'with a Employee label' do
             let(:label) { 'Employee' }
@@ -123,7 +124,7 @@ RSpec.describe Interview, type: :model do
         end
 
         context 'with a template answerable_by_both_crossed' do
-          let(:interview_form) { create(:interview_form, answerable_by: :both, cross: true) }
+          let(:interview_form) { create(:interview_form, answerable_by: :both, cross: true, company: company) }
 
           context 'with a Employee label' do
             let(:label) { 'Employee' }
