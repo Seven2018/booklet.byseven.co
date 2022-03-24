@@ -29,6 +29,8 @@ class InterviewForm < ApplicationRecord
     },
     ignoring: :accents
 
+  scope :unused, -> { where(used: false) }
+
   def kind
     case
     when answerable_by_manager? && !cross  then :answerable_by_manager_not_crossed
