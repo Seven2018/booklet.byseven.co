@@ -35,6 +35,8 @@ class InterviewQuestionsController < ApplicationController
         {'Please enter an option': 1}
       end
 
+    @question.visible_for = @form.answerable_by_both? ? 'all' : @form.answerable_by
+
     @question.save
 
     respond_to do |format|

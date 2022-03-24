@@ -5,6 +5,7 @@ class InterviewForm < ApplicationRecord
   has_many :employees, through: :interviews
   has_many :interview_form_tags, dependent: :destroy
   has_many :tags, through: :interview_form_tags
+  # Question : can we get rid of this relation ? Interview has a reference to the InterviewForm now, not the campaign
   has_many :campaigns
 
   validates :title, presence: true

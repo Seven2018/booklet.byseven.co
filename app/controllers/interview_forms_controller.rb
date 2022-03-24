@@ -5,7 +5,7 @@ class InterviewFormsController < ApplicationController
 
   def index
     @templates = policy_scope(InterviewForm)
-    @templates = @templates.where(company_id: current_user.company_id)
+    @templates = @templates.where(company_id: current_user.company_id, used: false)
     if params[:search].present? && !params[:search][:title].blank?
       @templates = @templates.search_templates(params[:search][:title])
       @filtered = 'true'
