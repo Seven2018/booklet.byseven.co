@@ -7,11 +7,12 @@
 #
 # we *highly recommend* you use sslmode=verify-full when possible
 # see https://ankane.org/postgres-sslmode-explained for more info
-#from: $(heroku config:get DATABASE_URL -r production)
-from: $(heroku config:get DATABASE_URL -r staging)
+from: $(heroku config:get DATABASE_URL -r production)
+# from: $(heroku config:get DATABASE_URL -r staging)
 
 # destination database URL
-to: postgres://postgres:password@localhost:5432/booklet_byseven_co_development
+to: postgres://localhost:5432/booklet_byseven_co_development
+# to: postgres://postgres:password@localhost:5432/booklet_byseven_co_development
 
 # exclude tables
 # exclude:
@@ -21,8 +22,6 @@ to: postgres://postgres:password@localhost:5432/booklet_byseven_co_development
 # define groups
 groups:
   all:
-    - active_storage_blobs
-    - active_storage_attachments
     - companies
     - interview_forms
     - users
@@ -56,10 +55,10 @@ groups:
     - workshops
     - sessions
     - attendees
-    - active_storage_attachments
-    - active_storage_blobs
     - interview_reports
     - training_reports
+    - active_storage_attachments
+    - active_storage_blobs
 
 
 # sync specific schemas
@@ -68,8 +67,8 @@ groups:
 
 # protect sensitive information
 data_rules:
-#  email: unique_email
-#  phone: unique_phone
-#  last_name: random_letter
-#  birthday: random_date
-#  encrypted_*: unique_secret
+ email: unique_email
+ phone: unique_phone
+ last_name: random_letter
+ birthday: random_date
+ encrypted_*: unique_secret
