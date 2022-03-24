@@ -10,4 +10,9 @@ class Company < ApplicationRecord
 
   validates :siret, presence: true, length: { is: 14 }
   validates :siret, uniqueness: true
+
+  def default_tag_category
+    tag_categories.order('RANDOM()').first.presence ||
+      TagCategory.create(company: self, name: 'Job Title', position: 1)
+  end
 end
