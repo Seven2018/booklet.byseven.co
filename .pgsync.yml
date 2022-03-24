@@ -67,8 +67,8 @@ groups:
 
 # protect sensitive information
 data_rules:
- email: unique_email
- phone: unique_phone
- last_name: random_letter
- birthday: random_date
- encrypted_*: unique_secret
+  email: unique_email
+  phone: unique_phone
+  last_name: random_letter
+  birthday: random_date
+  encrypted_*: unique_secret
