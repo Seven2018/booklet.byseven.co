@@ -13,7 +13,7 @@ class Interviews::ReportsController < ApplicationController
     authorize interview_report
 
     if mode == :answers && campaign_ids.blank?
-      flash[:alert] = 'Please select users'
+      flash[:alert] = 'Please select campaigns'
       redirect_to edit_interviews_reports_path and return
     end
 
@@ -21,7 +21,7 @@ class Interviews::ReportsController < ApplicationController
       InterviewReports::GenerateDataJob.perform_later interview_report.id
       flash[:notice] = "Generating report: refresh in 1 min !"
     else
-      flash[:alert] = training_report.errors.full_messages.join(',')
+      flash[:alert] = interview_report.errors.full_messages.join(',')
     end
     redirect_to interviews_reports_path
   end
