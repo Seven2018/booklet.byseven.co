@@ -132,6 +132,17 @@ class TrainingsController < ApplicationController
     @attendees_to_do = Attendee.where(user_id: params[:id], status: 'Not completed')
   end
 
+  def create
+    @training = Training.new(training_params)
+    authorize @training
+    @training.company_id = current_user.company_id
+    if @training.save
+      respond_to do |format|
+        format.js
+      end
+    end
+  end
+
   def show
     @training = Training.find(params[:id])
     authorize @training
@@ -142,15 +153,21 @@ class TrainingsController < ApplicationController
       Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed'
   end
 
-  def create
-    @training = Training.new(training_params)
-    authorize @training
-    @training.company_id = current_user.company_id
-    if @training.save
-      respond_to do |format|
-        format.js
-      end
+  def send_reminder_email
+    training = Training.find(params[:id])
+    authorize training
+
+    target_users = training.attendees.distinct.where(status: 'Not completed').map(&:user).uniq
+
+    target_users.each do |user|
+      TrainigMailer.with(user: user)
+          .training_reminder(user, training)
+          .deliver_now
     end
+
+    flash[:notice] = 'Email(s) sent.'
+
+    head :no_content
   end
 
   def destroy

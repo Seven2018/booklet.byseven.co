@@ -22,18 +22,10 @@
         margin: 0 10px;
       }
 
-      h2, p {
-        color: #333333;
-      }
-
-      h2 {
-        font-size:  20px;
-      }
-
       .mailer-banner {
           width: 100%;
           height: 100px;
-          background-color: white;
+          background-color: #F1F3F4;
           display:table;
       }
 
@@ -56,35 +48,22 @@
         width: 100%;
         min-width: 300px;
       }
-
-      .mailer-button {
-        padding: 20px;
-        background-color:  #333333;
-      }
-
-      .p-bold {
-        font-size: 16px;
-        font-weight: 600;
-      }
     </style>
   </head>
   <body>
     <div class="mailer-banner">
       <div class="mailer-banner-row">
         <div>
-          <%= image_tag 'Booklet-logo.png', style: 'height: 30px;' %>
+
         </div>
       </div>
     </div>
     <div class="mailer-container">
       <div class="mailer-text">
-        <%= image_tag 'noto_person-running.png', style: 'height: 50px; margin-bottom: 20px;' %>
-
-        <h2>3,2,1 Start !</h2>
-        <p>The campaign <%= @interview.campaign.title %> has just begun !</p>
-        <p><%= @interviewer.firstname %> <%= @interviewer.lastname %> invites you to complete your interview.</p>
+        <h2>Here is a reminder for you !</h2>
+        <p>It seems you have not validated all the workshops in the training <%= @training.title %>, don't forget to do it !</p>
         <br>
-        <%= link_to 'Go to My Interviews', my_interviews_url, class: 'mailer_button' %>
+        <%= link_to 'Go to the training', training_path(@training) %>
         <p>Please do not answer this email</p>
       </div>
     </div>

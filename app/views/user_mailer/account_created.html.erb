@@ -25,7 +25,6 @@
       .mailer-banner {
           width: 100%;
           height: 100px;
-          background-color: #F1F3F4;
           display:table;
       }
 
@@ -64,10 +63,11 @@
       <div class="mailer-text">
         <h2>Hello, <%= @user.fullname %></h2>
         <br>
-        <p>Your account has been created by <%= @host.firstname %>!</p>
-        <p>Please click <%= link_to 'here', edit_password_url(@user, reset_password_token: @token) %>  to set your password in the next 48 hours. Beyond that time, you will need to contact your HR service to get your default password.</p>
-        <p>You will then be able to connect to <a href='https://seven-booklet.herokuapp.com'>booklet.byseven.co</a>, using this email address.</p>
-        <p>Thank you and have a great day!</p>
+        <p>Your have been invited to join Booklet !</p>
+        <p>Click here to create your password</p>
+        <%= link_to 'Create my password', edit_password_url(@user, reset_password_token: @token) %>
+        <p>If you already created a password, you can access Booklet <a href="https://booklet.byseven.co">here</a></p>
+        <p>Please do not answer this email</p>
       </div>
     </div>
   </body>

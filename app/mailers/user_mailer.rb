@@ -5,7 +5,7 @@ class UserMailer < ApplicationMailer
     @host = Current.user
     @user = user
     @token = token
-    mail(to: @user.email, subject: 'Booklet: Your account has been created !')
+    mail(to: @user.email, subject: 'Welcome to Booklet !')
   end
 
   def invite_email(user, attendee)

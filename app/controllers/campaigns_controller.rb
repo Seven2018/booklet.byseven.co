@@ -85,10 +85,17 @@ class CampaignsController < ApplicationController
 
     if params[:user_id].present?
       user = User.find(params[:user_id])
-      CampaignMailer.with(user: user).invite_employee(@campaign.owner, user, Interview.find_by(campaign_id: @campaign.id, employee_id: params[:user_id], label: ['Employee', 'Simple'])).deliver
+      interview = Interview.find_by(campaign_id: @campaign.id, employee_id: params[:user_id], label: 'Employee')
+      interviewer = interview.interviewer
+
+      CampaignMailer.with(user: user)
+          .interview_reminder(interviewer, user, interview)
+          .deliver_now
     else
-      @campaign.interviews.where(label: ['Employee', 'Simple']).each do |interview|
-        CampaignMailer.with(user: interview.employee).invite_employee(@campaign.owner, interview.employee, interview).deliver
+      @campaign.interviews.where(label: 'Employee').each do |interview|
+        CampaignMailer.with(user: interview.employee)
+            .invite_employee(interview.interviewer, interview.employee, interview)
+            .deliver_now
       end
     end
 
