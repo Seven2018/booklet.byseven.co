@@ -148,7 +148,7 @@
           crossed_interview =
           campaign.interviews_for(employee.id)
       %>
-      <div class="flex-row-start-centered my-4">
+      <div class="flex-row-between-centered my-4">
         <div class="flex-column">
           <div class="flex-row-start-centered">
             <div class="flex-column">
@@ -191,7 +191,7 @@
           </div>
         </div>
 
-        <div class="flex-column m-auto">
+        <div class="flex-column">
           <% if interview_form.answerable_by_manager? %>
             <%= link_to interview_path(manager_interview), class: 'btn-blue-my-interviews' do %>
               <p><%= manager_interview&.completed? ? 'Update' : 'Start review' %></p>
