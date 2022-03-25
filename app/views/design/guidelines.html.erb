@@ -2,13 +2,19 @@
 
 <h1 class="my-5">Guidelines</h1>
 
+<h1 class="my-5">Responsivenes</h1>
+
+<div class="bkt-bg-orange height-5rem width-5rem m-sm-5 d-sm-none text-primary">text</div>
+<div class="bkt-bg-dark-grey height-5rem width-5rem m-sm-5 d-none d-sm-block text-white text-sm-primary">text</div>
 
 <h2 class="my-5">Colors</h2>
 
 <div class="d-flex">
   <% %w[
+    bkt-bg-light-blue
+    bkt-bg-light-blue2
     bkt-bg-blue
-    bkt-bg-blue-hover
+    bkt-bg-dark-blue
     bkt-bg-white
     bkt-bg-light-grey
     bkt-bg-light-grey2
@@ -18,7 +24,9 @@
     bkt-bg-light-grey6
     bkt-bg-dark-grey
     bkt-bg-green
+    bkt-bg-yellow
     bkt-bg-orange
+    bkt-bg-light-orange
     bkt-bg-red
    ].each do |color_bg_class| %>
    <div class="d-flex flex-column align-items-center m-2">
@@ -465,58 +473,73 @@
 
 <h2 class="my-5">Icons</h2>
 
-<div class="icons-columns">
-  <div class="icons-column-1">
-    <div class="bkt-span-exchange"><span class="iconify" data-icon="uil:exchange-alt" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-360"><span class="iconify" data-icon="uil:rotate-360" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-search-loupe"><span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-search-text"><span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-network"><span class="iconify" data-icon="akar-icons:network" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-calendar"><span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-rocket"><span class="iconify" data-icon="entypo:rocket" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-home"><span class="iconify" data-icon="bxs:home" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-next"><span class="iconify" data-icon="ic:round-navigate-next" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-plus"><span class="iconify" data-icon="fluent:add-12-regular" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-click-filled"><span class="iconify" data-icon="fluent:cursor-click-24-filled" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-eye"><span class="iconify" data-icon="akar-icons:eye" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-filter-filled"><span class="iconify" data-icon="fluent:filter-28-filled" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-lock-open"><span class="iconify" data-icon="bxs:lock-open" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-lock-close"><span class="iconify" data-icon="bxs:lock" data-with="50" data-height="50"></span></div>
-  </div>
-  <div class="icon-column-2">
-    <div class="bkt-span-question-circle"><span class="iconify" data-icon="bi:question-circle-fill" data-width=50 data-height=50></span></div>
-    <div class="bkt-span-validate-checkbox"><span class="iconify" data-icon="akar-icons:check-box-fill" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-t"><span class="iconify" data-icon="fa6-solid:t" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-star"><span class="iconify" data-icon="clarity:star-solid" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-target"><span class="iconify" data-icon="fluent:target-arrow-16-filled" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-back-arrow"><span class="iconify" data-icon="bi:arrow-left" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-data-clipboard"><span class="iconify" data-icon="bi:clipboard2-data-fill" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-data-graphic"><span class="iconify" data-icon="clarity:line-chart-solid" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-download"><span class="iconify" data-icon="lucide:download" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-export"><span class="iconify" data-icon="ph:export-bold" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-copy"><span class="iconify" data-icon="tabler:copy" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-trash"><span class="iconify" data-icon="akar-icons:trash-can" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-down-arrow"><span class="iconify" data-icon="akar-icons:arrow-down" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-up-arrow"><span class="iconify" data-icon="akar-icons:arrow-down" data-rotate="180deg" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-chat"><span class="iconify" data-icon="fluent:chat-multiple-16-filled" data-with="50" data-height="50"></span></div>
-   </div>
-  <div class="icons-column-3">
-    <div class="bkt-span-people"><span class="iconify" data-icon="bi:people-fill" data-flip="horizontal" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-calendar"><span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-text-align-center"><span class="iconify" data-icon="akar-icons:text-align-center" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-video"><span class="iconify" data-icon="fa-solid:video" data-with="50" data-height="50"></span></div>
-    <div class="bkt-span-status-online"><span class="iconify" data-icon="heroicons-outline:status-online" data-with="50" data-height="50"></span></div>
-  </div>
+<div class="d-flex flex-wrap">
+    <span class="iconify" data-icon="uil:exchange-alt" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="uil:rotate-360" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="akar-icons:network" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="entypo:rocket" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bxs:home" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="ic:round-navigate-next" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="fluent:add-12-regular" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="fluent:cursor-click-24-filled" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="akar-icons:eye" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="fluent:filter-28-filled" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bxs:lock-open" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bxs:lock" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bi:question-circle-fill" data-width=50 data-height=50></span>
+    <span class="iconify" data-icon="akar-icons:check-box-fill" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="fa6-solid:t" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="clarity:star-solid" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="fluent:target-arrow-16-filled" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bi:arrow-left" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bi:clipboard2-data-fill" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="clarity:line-chart-solid" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="lucide:download" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="ph:export-bold" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="tabler:copy" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="akar-icons:trash-can" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="akar-icons:arrow-down" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="akar-icons:arrow-down" data-rotate="180deg" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="fluent:chat-multiple-16-filled" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bi:people-fill" data-flip="horizontal" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="akar-icons:text-align-center" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="fa-solid:video" data-with="50" data-height="50"></span>
+    <span class="iconify" data-icon="heroicons-outline:status-online" data-with="50" data-height="50"></span>
+    <%= render_component Icons::ClockThreeOclockComponent.new %>
+    <%= render_component Icons::GraduateHatComponent.new %>
+    <%= render_component Icons::PeopleTrioComponent.new %>
+    <%= render_component Icons::StrongArmComponent.new %>
+    <%= render_component Icons::ThreeCoinsComponent.new %>
 </div>
 
-<div class="bkt-span-organigram"><svg width="50" height="54" viewBox="0 0 34 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M13.5 3.55263C13.5 5.51132 15.0703 7.10526 17 7.10526C18.9297 7.10526 20.5 5.51132 20.5 3.55263C20.5 1.59395 18.9297 0 17 0C15.0703 0 13.5 1.59395 13.5 3.55263ZM23.2222 15H24V14.2105C24 11.1639 21.557 8.68421 18.5556 8.68421H15.4444C12.4422 8.68421 10 11.1639 10 14.2105V15H23.2222Z" fill="#3177B7"/>
-<path d="M5 30.9605C3.76936 30.9605 2.75 29.9134 2.75 28.6053C2.75 27.2971 3.76936 26.25 5 26.25C6.23065 26.25 7.25 27.2971 7.25 28.6053C7.25 29.9134 6.23065 30.9605 5 30.9605ZM9.75 36.4211V36.75H9.44444H0.25V36.4211C0.25 34.3151 1.89216 32.6184 3.88889 32.6184H6.11111C8.10731 32.6184 9.75 34.3151 9.75 36.4211Z" stroke="#3177B7" stroke-width="0.5"/>
-<path d="M17 30.9605C15.7694 30.9605 14.75 29.9134 14.75 28.6053C14.75 27.2971 15.7694 26.25 17 26.25C18.2306 26.25 19.25 27.2971 19.25 28.6053C19.25 29.9134 18.2306 30.9605 17 30.9605ZM21.75 36.4211V36.75H21.4444H12.25V36.4211C12.25 34.3151 13.8922 32.6184 15.8889 32.6184H18.1111C20.1073 32.6184 21.75 34.3151 21.75 36.4211Z" stroke="#3177B7" stroke-width="0.5"/>
-<path d="M29 30.9605C27.7694 30.9605 26.75 29.9134 26.75 28.6053C26.75 27.2971 27.7694 26.25 29 26.25C30.2306 26.25 31.25 27.2971 31.25 28.6053C31.25 29.9134 30.2306 30.9605 29 30.9605ZM33.75 36.4211V36.75H33.4444H24.25V36.4211C24.25 34.3151 25.8922 32.6184 27.8889 32.6184H30.1111C32.1073 32.6184 33.75 34.3151 33.75 36.4211Z" stroke="#3177B7" stroke-width="0.5"/>
-<path d="M17 15V19.5M17 24V19.5M29 24V19.5H17M17 19.5H5V24" stroke="#3177B7" stroke-linecap="round" stroke-linejoin="round"/>
-</svg></div>
+<h3 class="my-3rem">Icon variations (using only Icons::GraduateHatComponent)</h3>
 
+<div class="d-flex flex-wrap">
+  <%= render_component Icons::GraduateHatComponent.new(width: 25, height: 25) %>
+  <%= render_component Icons::GraduateHatComponent.new() %>
+  <%= render_component Icons::GraduateHatComponent.new(width: 50, height: 50) %>
+  <%= render_component Icons::GraduateHatComponent.new(width: 100, height: 100) %>
+  <%= render_component Icons::GraduateHatComponent.new(fill: :orange) %>
+  <%= render_component Icons::GraduateHatComponent.new(fill: :blue, stroke: :blue) %>
+  <%= render_component Icons::GraduateHatComponent.new(fill: :blue, stroke: :orange) %>
+  <%= render_component Icons::GraduateHatComponent.new(fill: :orange, stroke: :blue) %>
+
+  <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 30px; width: 30px;'>
+    <%= render_component Icons::GraduateHatComponent.new(width: 20, height: 20) %>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 75px; width: 75px;'>
+    <%= render_component Icons::GraduateHatComponent.new() %>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 125px; width: 125px;'>
+    <%= render_component Icons::GraduateHatComponent.new(width: 100, height: 100) %>
+  </div>
+</div>
 
 <h2 class="my-5">Modals</h2>
 

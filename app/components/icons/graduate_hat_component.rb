@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-class Icons::GraduateHatComponent < ViewComponent::Base; end
+class Icons::GraduateHatComponent < Icons::BaseComponent; end
