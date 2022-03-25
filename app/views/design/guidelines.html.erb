@@ -433,41 +433,45 @@
   <h2 class="my-5">Icons</h2>
 
   <div class="d-flex flex-wrap">
-      <span class="iconify" data-icon="uil:exchange-alt" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="uil:rotate-360" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="akar-icons:network" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="entypo:rocket" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bxs:home" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="ic:round-navigate-next" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="fluent:add-12-regular" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="fluent:cursor-click-24-filled" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="akar-icons:eye" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="fluent:filter-28-filled" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bxs:lock-open" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bxs:lock" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bi:question-circle-fill" data-width=50 data-height=50></span>
-      <span class="iconify" data-icon="akar-icons:check-box-fill" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="fa6-solid:t" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="clarity:star-solid" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="fluent:target-arrow-16-filled" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bi:arrow-left" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bi:clipboard2-data-fill" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="clarity:line-chart-solid" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="lucide:download" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="ph:export-bold" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="tabler:copy" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="akar-icons:trash-can" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="akar-icons:arrow-down" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="akar-icons:arrow-down" data-rotate="180deg" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="fluent:chat-multiple-16-filled" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bi:people-fill" data-flip="horizontal" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="akar-icons:text-align-center" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="fa-solid:video" data-with="50" data-height="50"></span>
-      <span class="iconify" data-icon="heroicons-outline:status-online" data-with="50" data-height="50"></span>
+      <% %w[
+        uil:exchange-alt
+        uil:rotate-360
+        bx:search
+        bx:search
+        akar-icons:network
+        bi:calendar
+        entypo:rocket
+        bxs:home
+        ic:round-navigate-next
+        fluent:add-12-regular
+        fluent:cursor-click-24-filled
+        akar-icons:eye
+        fluent:filter-28-filled
+        bxs:lock-open
+        bxs:lock
+        bi:question-circle-fill" data-width=50 data-height=50></span>
+        akar-icons:check-box-fill
+        fa6-solid:t
+        clarity:star-solid
+        fluent:target-arrow-16-filled
+        bi:arrow-left
+        bi:clipboard2-data-fill
+        clarity:line-chart-solid
+        lucide:download
+        ph:export-bold
+        tabler:copy
+        akar-icons:trash-can
+        akar-icons:arrow-down
+        akar-icons:arrow-down" data-rotate="180deg
+        fluent:chat-multiple-16-filled
+        bi:people-fill" data-flip="horizontal
+        bi:calendar
+        akar-icons:text-align-center
+        fa-solid:video
+        heroicons-outline:status-online
+      ].each do |klass| %>
+        <span class="iconify" data-icon="<%= klass %>" data-with="50" data-height="50"></span>
+      <% end %>
       <%= render_component Icons::ClockThreeOclockComponent.new %>
       <%= render_component Icons::GraduateHatComponent.new %>
       <%= render_component Icons::PeopleTrioComponent.new %>
