@@ -19,7 +19,7 @@
     <%= javascript_pack_tag 'application', defer: true %>
 
   </head>
-  <body>
+  <body data-controller="mobile-displayer">
     <%= render 'shared/impersonations' %>
     <% if user_signed_in? %>
 
@@ -31,11 +31,12 @@
         <%= render 'shared/navbar_mobile' %>
       <% elsif @show_navbar_campaign %>
         <%= render 'shared/navbar_campaign' %>
-        <%= render 'shared/navbar_campaign_mobile' %>
-      <% end %>
+        <%#= render 'shared/navbar_campaign_mobile' %>
+        <%= render 'shared/navbar_mobile' %>
+    <% end %>
 
     <% end %>
-    <div class="<%= 'overflow-y-scroll' unless @multi_step_form_navbar_content.present? %>">
+    <div class="<%= 'overflow-y-scroll' unless @multi_step_form_navbar_content.present? %>" data-mobile-displayer-target="body">
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
         <% if params[:controller] == 'users' && params[:action] == 'show' %>
@@ -49,21 +50,12 @@
         <%= yield %>
       <% end %>
     </div>
+
+    <% if user_signed_in? %>
+      <%= render_component MobileMenuComponent.new(current_user) %>
+    <% end %>
+
     <%= javascript_include_tag 'application' %>
   </body>
-
-  <script>
-    $(document).ready(function(){
-      $('#dropdownMenuButton').click(function(){
-        $(this).toggleClass('open');
-      });
-
-      $(function() {
-        $(document).on("click", function() {
-          $("#dropdownMenuButton").removeClass('open');
-        });
-      });
-    });
-  </script>
 
 </html>
