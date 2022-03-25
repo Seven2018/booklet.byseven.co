@@ -1,5 +1,5 @@
 <div
-  data-controller='participant-ids search-inject'
+  data-controller='participant-ids'
   data-participant-ids-path-value='<%= interviews_report_campaigns_path %>'
   data-action='
     refreshParticipantIdsSearch@window->search-inject#debouncedSearch
@@ -24,11 +24,12 @@
           placeholder: 'Filter',
           data: {
             search_inject_target: 'search',
+            interview_report_form_target: 'search',
             action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
-            path: interviews_report_campaigns_path
+            path: interviews_report_campaigns_path,
+            mode: 'none'
           },
           class: 'height-4rem pl-3rem rounded-3px',
-          style: 'border: 0.5px solid #CDCDCD;',
           autocomplete: 'off',
           label: false,
           required: false

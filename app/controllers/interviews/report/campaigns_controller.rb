@@ -3,7 +3,8 @@ class Interviews::Report::CampaignsController < ApplicationController
   skip_after_action :verify_authorized, only: :update
 
   def index
-    render partial: 'interviews/reports/campaigns', locals: { campaigns: campaigns }
+    @selection = mode == :answers ? false : true
+    render partial: 'interviews/reports/campaigns', locals: { campaigns: campaigns, mode: mode }
   end
 
   def update
@@ -16,6 +17,10 @@ class Interviews::Report::CampaignsController < ApplicationController
   end
 
   private
+
+  def mode
+    params[:mode].to_sym
+  end
 
   def campaigns
     return current_user.company.campaigns.order(created_at: :desc) if params[:search].blank?

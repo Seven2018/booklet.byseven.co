@@ -65,7 +65,7 @@ class User < ApplicationRecord
       company: company,
       start_time: Time.zone.today.beginning_of_month,
       end_time: Time.zone.today.end_of_year,
-      tag_category_id: 1
+      tag_category_id: company.default_tag_category
     )
   end
 

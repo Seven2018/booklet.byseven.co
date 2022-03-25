@@ -2,19 +2,24 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return [ "analytics", 'answers' ]
+    return [ "analytics", 'search' ]
   }
 
-  toggle(event) {
-    if (event.target.dataset.interviewReportParam == 'data') {
-      this.analyticsTarget.classList.add('d-none')
-      this.answersTarget.classList.add('d-none')
-    } else if (event.target.dataset.interviewReportParam == 'classic') {
-      this.analyticsTarget.classList.remove('d-none')
-      this.answersTarget.classList.add('d-none')
-    } else if (event.target.dataset.interviewReportParam == 'answers') {
-      this.answersTarget.classList.remove('d-none')
-      this.analyticsTarget.classList.add('d-none')
+    showAnalytics() {
+    this.analyticsTarget.classList.remove('d-none')
+  }
+
+  hideAnalytics() {
+    this.analyticsTarget.classList.add('d-none')
+  }
+
+  changeSearchMode(e) {
+    if (e.target.dataset.interviewReportParam) {
+      this.searchTarget.dataset.mode = e.target.dataset.interviewReportParam
+      // console.log(this.application.getControllerForElementAndIdentifier(this.element, "search-inject"))
+      // console.log(this.identifier)
+      // console.log(this.element)
+      this.application.getControllerForElementAndIdentifier(this.element, "search-inject").search()
     }
   }
 }
