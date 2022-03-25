@@ -1,616 +1,576 @@
 <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
+<div class=m-2>
+  <h1 class="my-5">Guidelines</h1>
 
-<h1 class="my-5">Guidelines</h1>
+  <h1 class="my-5">Responsivenes</h1>
 
-<h1 class="my-5">Responsivenes</h1>
+  <div class="bkt-bg-orange height-5rem width-5rem m-sm-5 d-sm-none text-primary">text</div>
+  <div class="bkt-bg-dark-grey height-5rem width-5rem m-sm-5 d-none d-sm-block text-white text-sm-primary">text</div>
 
-<div class="bkt-bg-orange height-5rem width-5rem m-sm-5 d-sm-none text-primary">text</div>
-<div class="bkt-bg-dark-grey height-5rem width-5rem m-sm-5 d-none d-sm-block text-white text-sm-primary">text</div>
+  <h2 class="my-5">Colors</h2>
 
-<h2 class="my-5">Colors</h2>
-
-<div class="d-flex">
-  <% %w[
-    bkt-bg-light-blue
-    bkt-bg-light-blue2
-    bkt-bg-blue
-    bkt-bg-dark-blue
-    bkt-bg-white
-    bkt-bg-light-grey
-    bkt-bg-light-grey2
-    bkt-bg-light-grey3
-    bkt-bg-light-grey4
-    bkt-bg-light-grey5
-    bkt-bg-light-grey6
-    bkt-bg-dark-grey
-    bkt-bg-green
-    bkt-bg-yellow
-    bkt-bg-orange
-    bkt-bg-light-orange
-    bkt-bg-red
-   ].each do |color_bg_class| %>
-   <div class="d-flex flex-column align-items-center m-2">
-    <%= color_bg_class.gsub('-bg', '') %>
-    <div style='height: 20px; width: 100px; border-radius: 10px;'
-      class='my-1 <%= color_bg_class %>'
-    ></div>
-    </div>
-  <% end %>
-</div>
-
-
-<h2 class="my-5">Borders</h2>
-
-
-<div class="d-flex m-5" style='gap: 5px;'>
-  <% %w[
-    border-bkt-blue
-    border-top-bkt-blue
-    border-right-bkt-blue
-    border-left-bkt-blue
-    border-bottom-bkt-blue
-    border-bkt-dark-blue
-    border-top-bkt-dark-blue
-    border-right-bkt-dark-blue
-    border-left-bkt-dark-blue
-    border-bottom-bkt-dark-blue
-    border-bkt-light-grey
-    border-top-bkt-light-grey
-    border-right-bkt-light-grey
-    border-left-bkt-light-grey
-    border-bottom-bkt-light-grey
-    border-bkt-light-blue-0_5px
-    border-top-bkt-light-blue-0_5px
-    border-right-bkt-light-blue-0_5px
-    border-left-bkt-light-blue-0_5px
-    border-bottom-bkt-light-blue-0_5px
-    border-bkt-light-grey-2px
-    border-top-bkt-light-grey-2px
-    border-right-bkt-light-grey-2px
-    border-left-bkt-light-grey-2px
-    border-bottom-bkt-light-grey-2px
-  ].each do |klass| %>
-    <div style="width: 50px; height: 50px;" class='<%= klass %>'><%= klass %></div>
-  <% end %>
-</div>
-
-
-<h2 class="my-5">Fonts</h2>
-
- <h3 class="my-5">H1</h3>
-    <div class="m-1">
-      <div class="bkt-h1 bold-700">Title Example</div>
-      <div class="bkt-h1 bold-600">Title Example</div>
-      <div class="bkt-h1 bold-500">Title Example</div>
-    </div>
-
-  <h3 class="my-5">H2</h3>
-    <div class="m-1">
-      <div class="bkt-h2 bold-700">Title Example</div>
-      <div class="bkt-h2 bold-600">Title Example</div>
-      <div class="bkt-h2 bold-500">Title Example</div>
-    </div>
-
-  <h3 class="my-5">H3</h3>
-    <div class="m-1">
-      <div class="bkt-h3 bold-700">Title Example</div>
-      <div class="bkt-h3 bold-600">Title Example</div>
-      <div class="bkt-h3 bold-500">Title Example</div>
-    </div>
-
-    <h3 class="my-5">Classic Text</h3>
-      <div class="my-3rem">
-        <div class="bkt-text-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
+  <div class="d-flex">
+    <% %w[
+      bkt-bg-light-blue
+      bkt-bg-light-blue2
+      bkt-bg-blue
+      bkt-bg-dark-blue
+      bkt-bg-white
+      bkt-bg-light-grey
+      bkt-bg-light-grey2
+      bkt-bg-light-grey3
+      bkt-bg-light-grey4
+      bkt-bg-light-grey5
+      bkt-bg-light-grey6
+      bkt-bg-dark-grey
+      bkt-bg-green
+      bkt-bg-yellow
+      bkt-bg-orange
+      bkt-bg-light-orange
+      bkt-bg-red
+     ].each do |color_bg_class| %>
+     <div class="d-flex flex-column align-items-center m-2">
+      <%= color_bg_class.gsub('-bg', '') %>
+      <div style='height: 20px; width: 100px; border-radius: 10px;'
+        class='my-1 <%= color_bg_class %>'
+      ></div>
       </div>
-      <div class="my-3rem">
-        <div class="bkt-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
-      </div>
-
-    <h3 class="my-5">Description</h3>
-      <div class="my-3rem">
-        <div class="bkt-description-bold">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
-      </div>
-      <div class="my-3rem">
-        <div class="bkt-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum aspernatur sequi qui fuga soluta facere dolores nihil asperiores recusandae, dolor vero unde, quasi possimus. Porro eum sed laboriosam quidem odit!</div>
-      </div>
-
-
-<h2 class="my-5">Tags</h2>
-
-<div class="d-flex m-5" style='gap: 5px;'>
-  <% %w[cow cat crow dog].each do |tag| %>
-    <div class="bkt-tag-blue"><%= tag %></div>
-  <% end %>
-</div>
-
- <div class="m-1">
-      <div class='bkt-tag-green-status'>
-        Completed
-      </div>
-    </div>
-
-    <div class="m-1">
-      <div class='bkt-tag-orange-status'>
-        In progress
-      </div>
-    </div>
-
-    <div class="m-1">
-      <div class='bkt-tag-red-status'>
-        Not started
-      </div>
-    </div>
-
-<h2 class="my-5">Spinners</h2>
-
-<div class="d-flex m-5" style='gap: 5px;'>
-  <% %w[
-      bkt-light-blue
-      bkt-light-blue2
-      bkt-blue
-      bkt-dark-blue
-      bkt-white
-      bkt-light-grey
-      bkt-light-grey2
-      bkt-light-grey3
-      bkt-light-grey4
-      bkt-light-grey5
-      bkt-light-grey6
-      bkt-dark-grey
-      bkt-green
-      bkt-yellow
-      bkt-red
-     ].each do |color_class| %>
-    <div class="btk-spinner <%= color_class %>"><span></span></div>
-  <% end %>
-</div>
-
-
-<h2 class="my-5">Buttons</h2>
-
-<h3 class="my-2">bkt-btn-blue</h3>
-<div class="d-flex m-5" style='gap: 5px;'>
-  <div>
-    <button class='bkt-btn-blue'>
-      <i class="fas fa-plus"></i>
-      button
-    </button>
-  </div>
-
-  <div>
-    <div class='bkt-btn-blue'>
-      <i class="fas fa-plus"></i>
-      div
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-blue disabled'>
-      disabled
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-blue pressed'>
-      pressed
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-blue
-      ' style='width: 225px;'>
-      bkt-btn-blue with a long text that does not fit a width constraint
-    </div>
-  </div>
-</div>
-
-<h3 class="my-2">bkt-btn-orange</h3>
-<div class="d-flex m-5" style='gap: 5px;'>
-  <div>
-    <button class='bkt-btn-orange'>
-      <i class="fas fa-plus"></i>
-      button
-    </button>
-  </div>
-
-  <div>
-    <div class='bkt-btn-orange'>
-      <i class="fas fa-plus"></i>
-      div
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-orange disabled'>
-      disabled
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-orange pressed'>
-      pressed
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-orange
-      ' style='width: 225px;'>
-      bkt-btn-blue with a long text that does not fit a width constraint
-    </div>
-  </div>
-</div>
-
-
-<h3 class="my-2">bkt-btn-white</h3>
-<div class="d-flex m-5" style='gap: 5px;'>
-  <div>
-    <button class='bkt-btn-white'>
-      <i class="fas fa-plus"></i>
-      button
-    </button>
-  </div>
-
-  <div>
-    <div class='bkt-btn-white'>
-      <i class="fas fa-plus"></i>
-      div
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-white disabled'>
-      disabled
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-white pressed'>
-      pressed
-    </div>
-  </div>
-
-  <div>
-    <div class='bkt-btn-white
-      ' style='width: 225px;'>
-      bkt-btn-white with a long text that does not fit a width constraint
-    </div>
-  </div>
-</div>
-
-
-<h3 class="my-2">bkt-btn-back</h3>
-<div class="d-flex m-5 pos-rel" style='gap: 5px; height: 100px;'>
-  <%= render_component BackComponent.new(fallback: guidelines_path) %>
-</div>
-
-<h2 class="my-5">Dropdown</h2>
-
-<div class="d-flex m-5">
-  <%= render_component(SelectComponent.new(width: '110px', title: 'Employee')) do  %>
-    <% %w[Both Manager Employee].each do |option| %>
-      <div
-        class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer"
-        data-action="click->dropdown#toggle click->replace-text#replace"
-      ><%= option %></div>
     <% end %>
-  <% end %>
-</div>
+  </div>
 
 
-<h2 class="my-5">Actions Ellipsis</h2>
+  <h2 class="my-5">Borders</h2>
 
-<div class="d-flex m-5">
-  <div
-    data-controller="dropdown"
-    class="pos-rel bkt-bg-light-grey3 d-flex justify-content-end p-2"
-    style="width: 500px;"
-  >
-    <div
-      data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide"
-      class="cursor-pointer z-index-5"
-    >
-      <i class="fas fa-ellipsis-v"></i>
+
+  <div class="d-flex m-5" style='gap: 5px;'>
+    <% %w[
+      border-bkt-blue
+      border-top-bkt-blue
+      border-right-bkt-blue
+      border-left-bkt-blue
+      border-bottom-bkt-blue
+      border-bkt-dark-blue
+      border-top-bkt-dark-blue
+      border-right-bkt-dark-blue
+      border-left-bkt-dark-blue
+      border-bottom-bkt-dark-blue
+      border-bkt-light-grey
+      border-top-bkt-light-grey
+      border-right-bkt-light-grey
+      border-left-bkt-light-grey
+      border-bottom-bkt-light-grey
+      border-bkt-light-blue-0_5px
+      border-top-bkt-light-blue-0_5px
+      border-right-bkt-light-blue-0_5px
+      border-left-bkt-light-blue-0_5px
+      border-bottom-bkt-light-blue-0_5px
+      border-bkt-light-grey-2px
+      border-top-bkt-light-grey-2px
+      border-right-bkt-light-grey-2px
+      border-left-bkt-light-grey-2px
+      border-bottom-bkt-light-grey-2px
+    ].each do |klass| %>
+      <div style="width: 50px; height: 50px;" class='<%= klass %>'><%= klass %></div>
+    <% end %>
+  </div>
+
+  <h2 class="my-5">Tags</h2>
+
+  <div class="d-flex m-5" style='gap: 5px;'>
+    <% %w[cow cat crow dog].each do |tag| %>
+      <div class="bkt-tag-blue"><%= tag %></div>
+    <% end %>
+  </div>
+
+   <div class="m-1">
+        <div class='bkt-tag-green-status'>
+          Completed
+        </div>
+      </div>
+
+      <div class="m-1">
+        <div class='bkt-tag-orange-status'>
+          In progress
+        </div>
+      </div>
+
+      <div class="m-1">
+        <div class='bkt-tag-red-status'>
+          Not started
+        </div>
+      </div>
+
+  <h2 class="my-5">Spinners</h2>
+
+  <div class="d-flex m-5" style='gap: 5px;'>
+    <% %w[
+        bkt-light-blue
+        bkt-light-blue2
+        bkt-blue
+        bkt-dark-blue
+        bkt-white
+        bkt-light-grey
+        bkt-light-grey2
+        bkt-light-grey3
+        bkt-light-grey4
+        bkt-light-grey5
+        bkt-light-grey6
+        bkt-dark-grey
+        bkt-green
+        bkt-yellow
+        bkt-red
+       ].each do |color_class| %>
+      <div class="btk-spinner <%= color_class %>"><span></span></div>
+    <% end %>
+  </div>
+
+
+  <h2 class="my-5">Buttons</h2>
+
+  <h3 class="my-2">bkt-btn-blue</h3>
+  <div class="d-flex m-5" style='gap: 5px;'>
+    <div>
+      <button class='bkt-btn-blue'>
+        <i class="fas fa-plus"></i>
+        button
+      </button>
     </div>
 
-    <div
-      data-dropdown-target="menu"
-      class="pos-abs rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
-      style='right: 0; top: 3rem;'
-    >
-      <% %w[Create Duplicate Delete].each do |action| %>
-        <%= link_to action, '#', class: 'px-3 py-2 bkt-light-grey-hover w-100' %>
+    <div>
+      <div class='bkt-btn-blue'>
+        <i class="fas fa-plus"></i>
+        div
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-blue disabled'>
+        disabled
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-blue pressed'>
+        pressed
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-blue
+        ' style='width: 225px;'>
+        bkt-btn-blue with a long text that does not fit a width constraint
+      </div>
+    </div>
+  </div>
+
+  <h3 class="my-2">bkt-btn-orange</h3>
+  <div class="d-flex m-5" style='gap: 5px;'>
+    <div>
+      <button class='bkt-btn-orange'>
+        <i class="fas fa-plus"></i>
+        button
+      </button>
+    </div>
+
+    <div>
+      <div class='bkt-btn-orange'>
+        <i class="fas fa-plus"></i>
+        div
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-orange disabled'>
+        disabled
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-orange pressed'>
+        pressed
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-orange
+        ' style='width: 225px;'>
+        bkt-btn-blue with a long text that does not fit a width constraint
+      </div>
+    </div>
+  </div>
+
+
+  <h3 class="my-2">bkt-btn-white</h3>
+  <div class="d-flex m-5" style='gap: 5px;'>
+    <div>
+      <button class='bkt-btn-white'>
+        <i class="fas fa-plus"></i>
+        button
+      </button>
+    </div>
+
+    <div>
+      <div class='bkt-btn-white'>
+        <i class="fas fa-plus"></i>
+        div
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-white disabled'>
+        disabled
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-white pressed'>
+        pressed
+      </div>
+    </div>
+
+    <div>
+      <div class='bkt-btn-white
+        ' style='width: 225px;'>
+        bkt-btn-white with a long text that does not fit a width constraint
+      </div>
+    </div>
+  </div>
+
+
+  <h3 class="my-2">bkt-btn-back</h3>
+  <div class="d-flex m-5 pos-rel" style='gap: 5px; height: 100px;'>
+    <%= render_component BackComponent.new(fallback: guidelines_path) %>
+  </div>
+
+  <h2 class="my-5">Dropdown</h2>
+
+  <div class="d-flex m-5">
+    <%= render_component(SelectComponent.new(width: '110px', title: 'Employee')) do  %>
+      <% %w[Both Manager Employee].each do |option| %>
+        <div
+          class="fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer"
+          data-action="click->dropdown#toggle click->replace-text#replace"
+        ><%= option %></div>
       <% end %>
+    <% end %>
+  </div>
+
+
+  <h2 class="my-5">Actions Ellipsis</h2>
+
+  <div class="d-flex m-5">
+    <div
+      data-controller="dropdown"
+      class="pos-rel bkt-bg-light-grey3 d-flex justify-content-end p-2"
+      style="width: 500px;"
+    >
+      <div
+        data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide"
+        class="cursor-pointer z-index-5"
+      >
+        <i class="fas fa-ellipsis-v"></i>
+      </div>
+
+      <div
+        data-dropdown-target="menu"
+        class="pos-abs rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
+        style='right: 0; top: 3rem;'
+      >
+        <% %w[Create Duplicate Delete].each do |action| %>
+          <%= link_to action, '#', class: 'px-3 py-2 bkt-light-grey-hover w-100' %>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
 
-<h2 class="my-5">Form</h2>
+  <h2 class="my-5">Form</h2>
 
-<h3 class="my-2">form with bootstrap</h3>
+  <h3 class="my-2">form with bootstrap</h3>
 
-<div
-  class='d-flex justify-content-start align-items-center pos-rel p-2'
->
-  <i class="fas fa-search pos-abs z-index-150 bkt-light-grey"
-    style='left: 25rem; bottom: 16.6px;'
-  ></i>
-  <%= simple_form_for(:search, url: guidelines_path, method: :get, remote: true,
-    html: {
-      class: 'd-flex align-items-center'
-    },
-    data: {
-      # controller:'remember-search',
-      # remember_search_key_value: 'TODOUniqueKey',
-    }
-  ) do |f| %>
-    <%=
-      f.input(
-        :title,
-        placeholder: 'Search',
-        wrapper_html: {
-          class: 'my-0 height-5rem'
-        },
-        input_html: {
-          class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-          style: 'width: 28rem; padding: 0 4rem 0 1rem;',
-          autocomplete: 'off',
-          onkeyup: 'resetPage(this);',
+  <div
+    class='d-flex justify-content-start align-items-center pos-rel p-2'
+  >
+    <i class="fas fa-search pos-abs z-index-150 bkt-light-grey"
+      style='left: 25rem; bottom: 16.6px;'
+    ></i>
+    <%= simple_form_for(:search, url: guidelines_path, method: :get, remote: true,
+      html: {
+        class: 'd-flex align-items-center'
+      },
+      data: {
+        # controller:'remember-search',
+        # remember_search_key_value: 'TODOUniqueKey',
+      }
+    ) do |f| %>
+      <%=
+        f.input(
+          :title,
+          placeholder: 'Search',
+          wrapper_html: {
+            class: 'my-0 height-5rem'
+          },
+          input_html: {
+            class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+            style: 'width: 28rem; padding: 0 4rem 0 1rem;',
+            autocomplete: 'off',
+            onkeyup: 'resetPage(this);',
+            data: {
+              remember_search_target: :search,
+              action: 'keyup->remember-search#storeSearch'
+            }
+          },
+          label: false,
+          required: false
+        )
+      %>
+      <div class="mr-3"></div>
+      <%=
+        f.submit(
+          'Search',
+          class: 'py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+          onclick: "document.querySelector('body').classList.add('wait');",
           data: {
-            remember_search_target: :search,
-            action: 'keyup->remember-search#storeSearch'
+            remember_search_target: :submit,
           }
-        },
-        label: false,
-        required: false
-      )
-    %>
-    <div class="mr-3"></div>
-    <%=
-      f.submit(
-        'Search',
-        class: 'py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-        onclick: "document.querySelector('body').classList.add('wait');",
-        data: {
-          remember_search_target: :submit,
-        }
-      )
-    %>
-    <button type='submit' class="btn-search d-block d-sm-none">
-      <i class="fas fa-search"></i>
-    </button>
-  <% end %>
-</div>
-
-
-<h3 class="my-2">form without bootstrap</h3>
-
-<h4 class="my-2">title</h4>
-
-<div class="p-2" style='width: 600px'>
-  <%= render_component FormSectionTitleComponent.new(title: 'Default interviewer') %>
-</div>
-
-<h4 class="my-2">subtitle</h4>
-
-<div class="p-2" style='width: 600px'>
-  <%= render_component FormSectionSubtitleComponent.new do %>
-    For interviewees not linked to a manager in the database, please <br><%# TODO improve  %>
-    chose a default interviewer
-  <% end %>
-</div>
-
-<h4 class="my-2">text inputs</h4>
-
-<div class="p-2">
-  <%= text_field_tag :title, nil, placeholder: 'Enter title', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3' %>
-</div>
-
-<div class="p-2">
-  <%= text_field_tag :title, 'some value', placeholder: 'Enter title', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3' %>
-</div>
-
-<h4 class="my-2">radio buttons tiles</h4>
-
-<div class="p-2 d-flex gap-1rem" style="width: 500px;">
-
-  <%= render_component RadioButtonTileComponent.new(
-    model: :campaign_type,
-    name: :feedback_365,
-    checked: true,
-    title: "Manual",
-    subtitle: "Chose Manual to select participants from your employee list"
-    ) do %>
-      <i class="fas fa-check"></i>
+        )
+      %>
+      <button type='submit' class="btn-search d-block d-sm-none">
+        <i class="fas fa-search"></i>
+      </button>
     <% end %>
-
-  <%= render_component RadioButtonTileComponent.new(
-    model: :campaign_type,
-    name: :feedback_90,
-    checked: false,
-    title: "Compact",
-    subtitle: "Less stuff"
-    ) do %>
-      <i class="fas fas fa-rocket"></i>
-    <% end %>
-</div>
-
-<div class="p-2 d-flex gap-1rem" style="width: 500px;">
-  <%= render_component RadioButtonTileComponent.new(
-    model: :campaign_kind,
-    name: :feedback_90,
-    checked: true,
-    title: "Compact",
-    subtitle: "Less stuff",
-    compact: true
-    ) do %>
-      <i class="fas fa-check"></i>
-    <% end %>
-
-  <%= render_component RadioButtonTileComponent.new(
-    model: :campaign_kind,
-    name: :one_to_one,
-    checked: false,
-    title: "Auto",
-    subtitle: "Chose Auto to add participants by their arrival date in the company",
-    compact: true
-    ) do %>
-      <i class="fas fa-plus"></i>
-    <% end %>
-
-  <%= render_component RadioButtonTileComponent.new(
-    model: :campaign_kind,
-    name: :feedback_180,
-    checked: false,
-    title: "Disabled",
-    subtitle: "You can not click this one",
-    compact: true,
-    disabled: true
-    ) do %>
-      <i class="fas fa-arrow-right"></i>
-    <% end %>
-
-</div>
-
-<h2 class="my-5">Icons</h2>
-
-<div class="d-flex flex-wrap">
-    <span class="iconify" data-icon="uil:exchange-alt" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="uil:rotate-360" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="akar-icons:network" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="entypo:rocket" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bxs:home" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="ic:round-navigate-next" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="fluent:add-12-regular" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="fluent:cursor-click-24-filled" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="akar-icons:eye" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="fluent:filter-28-filled" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bxs:lock-open" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bxs:lock" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bi:question-circle-fill" data-width=50 data-height=50></span>
-    <span class="iconify" data-icon="akar-icons:check-box-fill" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="fa6-solid:t" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="clarity:star-solid" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="fluent:target-arrow-16-filled" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bi:arrow-left" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bi:clipboard2-data-fill" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="clarity:line-chart-solid" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="lucide:download" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="ph:export-bold" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="tabler:copy" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="akar-icons:trash-can" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="akar-icons:arrow-down" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="akar-icons:arrow-down" data-rotate="180deg" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="fluent:chat-multiple-16-filled" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bi:people-fill" data-flip="horizontal" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="akar-icons:text-align-center" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="fa-solid:video" data-with="50" data-height="50"></span>
-    <span class="iconify" data-icon="heroicons-outline:status-online" data-with="50" data-height="50"></span>
-    <%= render_component Icons::ClockThreeOclockComponent.new %>
-    <%= render_component Icons::GraduateHatComponent.new %>
-    <%= render_component Icons::PeopleTrioComponent.new %>
-    <%= render_component Icons::StrongArmComponent.new %>
-    <%= render_component Icons::ThreeCoinsComponent.new %>
-</div>
-
-<h3 class="my-3rem">Icon variations (using only Icons::GraduateHatComponent)</h3>
-
-<div class="d-flex flex-wrap">
-  <%= render_component Icons::GraduateHatComponent.new(width: 25, height: 25) %>
-  <%= render_component Icons::GraduateHatComponent.new() %>
-  <%= render_component Icons::GraduateHatComponent.new(width: 50, height: 50) %>
-  <%= render_component Icons::GraduateHatComponent.new(width: 100, height: 100) %>
-  <%= render_component Icons::GraduateHatComponent.new(fill: :orange) %>
-  <%= render_component Icons::GraduateHatComponent.new(fill: :blue, stroke: :blue) %>
-  <%= render_component Icons::GraduateHatComponent.new(fill: :blue, stroke: :orange) %>
-  <%= render_component Icons::GraduateHatComponent.new(fill: :orange, stroke: :blue) %>
-
-  <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 30px; width: 30px;'>
-    <%= render_component Icons::GraduateHatComponent.new(width: 20, height: 20) %>
   </div>
 
-  <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 75px; width: 75px;'>
+
+  <h3 class="my-2">form without bootstrap</h3>
+
+  <h4 class="my-2">title</h4>
+
+  <div class="p-2" style='width: 600px'>
+    <%= render_component FormSectionTitleComponent.new(title: 'Default interviewer') %>
+  </div>
+
+  <h4 class="my-2">subtitle</h4>
+
+  <div class="p-2" style='width: 600px'>
+    <%= render_component FormSectionSubtitleComponent.new do %>
+      For interviewees not linked to a manager in the database, please <br><%# TODO improve  %>
+      chose a default interviewer
+    <% end %>
+  </div>
+
+  <h4 class="my-2">text inputs</h4>
+
+  <div class="p-2">
+    <%= text_field_tag :title, nil, placeholder: 'Enter title', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3' %>
+  </div>
+
+  <div class="p-2">
+    <%= text_field_tag :title, 'some value', placeholder: 'Enter title', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3' %>
+  </div>
+
+  <h4 class="my-2">radio buttons tiles</h4>
+
+  <div class="p-2 d-flex gap-1rem" style="width: 500px;">
+
+    <%= render_component RadioButtonTileComponent.new(
+      model: :campaign_type,
+      name: :feedback_365,
+      checked: true,
+      title: "Manual",
+      subtitle: "Chose Manual to select participants from your employee list"
+      ) do %>
+        <i class="fas fa-check"></i>
+      <% end %>
+
+    <%= render_component RadioButtonTileComponent.new(
+      model: :campaign_type,
+      name: :feedback_90,
+      checked: false,
+      title: "Compact",
+      subtitle: "Less stuff"
+      ) do %>
+        <i class="fas fas fa-rocket"></i>
+      <% end %>
+  </div>
+
+  <div class="p-2 d-flex gap-1rem" style="width: 500px;">
+    <%= render_component RadioButtonTileComponent.new(
+      model: :campaign_kind,
+      name: :feedback_90,
+      checked: true,
+      title: "Compact",
+      subtitle: "Less stuff",
+      compact: true
+      ) do %>
+        <i class="fas fa-check"></i>
+      <% end %>
+
+    <%= render_component RadioButtonTileComponent.new(
+      model: :campaign_kind,
+      name: :one_to_one,
+      checked: false,
+      title: "Auto",
+      subtitle: "Chose Auto to add participants by their arrival date in the company",
+      compact: true
+      ) do %>
+        <i class="fas fa-plus"></i>
+      <% end %>
+
+    <%= render_component RadioButtonTileComponent.new(
+      model: :campaign_kind,
+      name: :feedback_180,
+      checked: false,
+      title: "Disabled",
+      subtitle: "You can not click this one",
+      compact: true,
+      disabled: true
+      ) do %>
+        <i class="fas fa-arrow-right"></i>
+      <% end %>
+
+  </div>
+
+  <h2 class="my-5">Icons</h2>
+
+  <div class="d-flex flex-wrap">
+      <span class="iconify" data-icon="uil:exchange-alt" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="uil:rotate-360" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bx:search" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="akar-icons:network" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="entypo:rocket" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bxs:home" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="ic:round-navigate-next" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="fluent:add-12-regular" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="fluent:cursor-click-24-filled" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="akar-icons:eye" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="fluent:filter-28-filled" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bxs:lock-open" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bxs:lock" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bi:question-circle-fill" data-width=50 data-height=50></span>
+      <span class="iconify" data-icon="akar-icons:check-box-fill" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="fa6-solid:t" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="clarity:star-solid" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="fluent:target-arrow-16-filled" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bi:arrow-left" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bi:clipboard2-data-fill" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="clarity:line-chart-solid" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="lucide:download" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="ph:export-bold" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="tabler:copy" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="akar-icons:trash-can" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="akar-icons:arrow-down" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="akar-icons:arrow-down" data-rotate="180deg" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="fluent:chat-multiple-16-filled" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bi:people-fill" data-flip="horizontal" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="bi:calendar" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="akar-icons:text-align-center" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="fa-solid:video" data-with="50" data-height="50"></span>
+      <span class="iconify" data-icon="heroicons-outline:status-online" data-with="50" data-height="50"></span>
+      <%= render_component Icons::ClockThreeOclockComponent.new %>
+      <%= render_component Icons::GraduateHatComponent.new %>
+      <%= render_component Icons::PeopleTrioComponent.new %>
+      <%= render_component Icons::StrongArmComponent.new %>
+      <%= render_component Icons::ThreeCoinsComponent.new %>
+  </div>
+
+  <h3 class="my-3rem">Icon variations (using only Icons::GraduateHatComponent)</h3>
+
+  <div class="d-flex flex-wrap">
+    <%= render_component Icons::GraduateHatComponent.new(width: 25, height: 25) %>
     <%= render_component Icons::GraduateHatComponent.new() %>
-  </div>
-
-  <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 125px; width: 125px;'>
+    <%= render_component Icons::GraduateHatComponent.new(width: 50, height: 50) %>
     <%= render_component Icons::GraduateHatComponent.new(width: 100, height: 100) %>
-  </div>
-</div>
+    <%= render_component Icons::GraduateHatComponent.new(fill: :orange) %>
+    <%= render_component Icons::GraduateHatComponent.new(fill: :blue, stroke: :blue) %>
+    <%= render_component Icons::GraduateHatComponent.new(fill: :blue, stroke: :orange) %>
+    <%= render_component Icons::GraduateHatComponent.new(fill: :orange, stroke: :blue) %>
 
-<h2 class="my-5">Modals</h2>
-
-  <h3 class="my-3rem">Action Modal</h3>
-
-      <div class="modal-dialog" role="document">
-        <div class="modal-content action-modal__content" >
-          <div class="modal-header action-modal__header">
-            <h5 class="modal-title action-modal__title">Modal Title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" class="action-modal__close">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body action-modal__body">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
-          </div>
-          <div class="modal-footer action-modal__footer">
-            <button type="button" class="bkt-btn-bleu-add">Continuer</button>
-          </div>
-        </div>
-      </div>
-
-    <h3 class="my-3rem">Info Modal</h3>
-
-
-      <div class="modal-dialog" role="document">
-        <div class="modal-content info-modal-content" >
-          <div class="modal-body info-modal-body">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" class="close-info-modal">&times;</span>
-            </button>
-            <span class="iconify" data-icon="el:ok-sign" style="color: #3177b7;" data-width="80" data-height="80"></span>
-            <p>Action have been done successfuly !</p>
-          </div>
-        </div>
-      </div>
-
-
-
-<h2 class="my-5">Progress bar</h2>
-
-<div style="width: 500px; height: 500px;">
-  <div class="bkt-progress">
-    <div class="bkt-progress-thread"></div>
-    <div class="bkt-progress-pearl full" data-title='Settings'>
-      <i class="fas fa-check"></i>
+    <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 30px; width: 30px;'>
+      <%= render_component Icons::GraduateHatComponent.new(width: 20, height: 20) %>
     </div>
-    <div class="bkt-progress-pearl current" data-title='Participants'></div>
-    <div class="bkt-progress-pearl empty" data-title='Templates'></div>
-    <div class="bkt-progress-pearl empty" data-title='Dates'></div>
-    <div class="bkt-progress-pearl empty" data-title='Review & Launch'>
-      <i class="fas fa-rocket"></i>
+
+    <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 75px; width: 75px;'>
+      <%= render_component Icons::GraduateHatComponent.new() %>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-center bkt-bg-light-orange" style='height: 125px; width: 125px;'>
+      <%= render_component Icons::GraduateHatComponent.new(width: 100, height: 100) %>
     </div>
   </div>
-</div>
+
+  <h2 class="my-5">Modals</h2>
+
+    <h3 class="my-3rem">Action Modal</h3>
+
+        <div class="modal-dialog" role="document">
+          <div class="modal-content action-modal__content" >
+            <div class="modal-header action-modal__header">
+              <h5 class="modal-title action-modal__title">Modal Title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="action-modal__close">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body action-modal__body">
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis magnam exercitationem ea dolorem ullam voluptas aliquid itaque inventore, tempora, nulla nostrum corrupti ab iusto. Minima rerum repellat fugit eaque?</p>
+            </div>
+            <div class="modal-footer action-modal__footer">
+              <button type="button" class="bkt-btn-bleu-add">Continuer</button>
+            </div>
+          </div>
+        </div>
+
+      <h3 class="my-3rem">Info Modal</h3>
 
 
-<h2 class="my-5">Backgrounds</h2>
+        <div class="modal-dialog" role="document">
+          <div class="modal-content info-modal-content" >
+            <div class="modal-body info-modal-body">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="close-info-modal">&times;</span>
+              </button>
+              <span class="iconify" data-icon="el:ok-sign" style="color: #3177b7;" data-width="80" data-height="80"></span>
+              <p>Action have been done successfuly !</p>
+            </div>
+          </div>
+        </div>
 
-<div
-  class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'
->
-  <div class='bkt-page-container-content'>
-    <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px">
-      Page Main Background
-      <br>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-      <br>
-      Neque molestias deserunt fugit veniam laboriosam voluptatibus dolor sint a delectus voluptate earum nam deleniti libero hic quia, animi rem odit atque.
+
+
+  <h2 class="my-5">Progress bar</h2>
+
+  <div style="width: 500px; height: 500px;">
+    <div class="bkt-progress">
+      <div class="bkt-progress-thread"></div>
+      <div class="bkt-progress-pearl full" data-title='Settings'>
+        <i class="fas fa-check"></i>
+      </div>
+      <div class="bkt-progress-pearl current" data-title='Participants'></div>
+      <div class="bkt-progress-pearl empty" data-title='Templates'></div>
+      <div class="bkt-progress-pearl empty" data-title='Dates'></div>
+      <div class="bkt-progress-pearl empty" data-title='Review & Launch'>
+        <i class="fas fa-rocket"></i>
+      </div>
+    </div>
+  </div>
+
+
+  <h2 class="my-5">Backgrounds</h2>
+
+  <div
+    class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'
+  >
+    <div class='bkt-page-container-content'>
+      <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px">
+        Page Main Background
+        <br>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+        <br>
+        Neque molestias deserunt fugit veniam laboriosam voluptatibus dolor sint a delectus voluptate earum nam deleniti libero hic quia, animi rem odit atque.
+      </div>
     </div>
   </div>
 </div>
