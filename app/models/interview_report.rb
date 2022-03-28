@@ -45,6 +45,8 @@ class InterviewReport < ApplicationRecord
 
   def to_csv
     CSV.generate("\uFEFF") do |csv|
+      return '' if data.blank?
+
       data.gsub("\r", ' ').split("\n").each { |row| csv << row.split(',') }
     end
   end
