@@ -18,7 +18,11 @@
           checked: false,
           title: 'Global data',
           subtitle: "Global data contains all information about interviews (name, job title, completion, deadlines ...). You can handle results as you wish.",
-          data_actions: 'click->interview-report-form#dispatchFormUpdate interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode',
+          data_actions: '
+            click->interview-report-form#hideTagCategoryInput
+            click->interview-report-form#dispatchFormUpdate
+            interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode
+          ',
           data_attributes: { interview_report_form_target: :mode }
         ) do %>
           <i class="fas fa-clipboard"></i>
@@ -30,7 +34,11 @@
           checked: true,
           title: "Analytics",
           subtitle: "Analytics are selected datas already analysed with ratios. Very useful to se quickly how your campaigns are progressing.",
-          data_actions: 'click->interview-report-form#dispatchFormUpdate interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode',
+          data_actions: '
+            click->interview-report-form#showTagCategoryInput
+            click->interview-report-form#dispatchFormUpdate
+            interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode
+          ',
           data_attributes: { interview_report_form_target: :mode }
         ) do %>
           <i class="fas fa-check"></i>
@@ -42,7 +50,11 @@
           checked: false,
           title: "Answers",
           subtitle: "Answers are all answers submited in campaigns",
-          data_actions: 'click->interview-report-form#dispatchFormUpdate interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode',
+          data_actions: '
+            click->interview-report-form#hideTagCategoryInput
+            click->interview-report-form#dispatchFormUpdate
+            interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode
+          ',
           data_attributes: { interview_report_form_target: :mode }
         ) do %>
           <i class="fas fa-comments"></i>
@@ -91,7 +103,7 @@
       </div>
 
 
-      <div data-interview-report-form-target='analytics'>
+      <div data-interview-report-form-target='tagCategoryInput'>
         <%= render_component FormSectionTitleComponent.new(title: 'Select TagCategory') %>
 
 

@@ -3,15 +3,15 @@ import { debounce } from "debounce"
 
 export default class extends Controller {
   static get targets () {
-    return [ 'analytics', 'search', 'mode' ]
+    return [ 'tagCategoryInput', 'search', 'mode' ]
   }
 
-  showAnalytics() {
-    this.analyticsTarget.classList.remove('d-none')
+  showTagCategoryInput() {
+    this.tagCategoryInputTarget.classList.remove('d-none')
   }
 
-  hideAnalytics() {
-    this.analyticsTarget.classList.add('d-none')
+  hideTagCategoryInput() {
+    this.tagCategoryInputTarget.classList.add('d-none')
   }
 
   debouncedChangeSearchMode() {
