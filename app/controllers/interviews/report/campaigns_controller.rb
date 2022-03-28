@@ -3,6 +3,10 @@ class Interviews::Report::CampaignsController < ApplicationController
   skip_after_action :verify_authorized, only: :update
 
   def index
+    if mode == :answers && current_user.interview_report.campaign_ids.count > 1
+      last_campaign_id = current_user.interview_report.campaign_ids.last
+      current_user.interview_report.update campaign_ids: [last_campaign_id]
+    end
     partial = mode == :answers ? 'campaigns_radio_buttons' : 'campaigns_check_boxes'
     render partial: "interviews/reports/#{partial}", locals: { campaigns: campaigns, mode: mode }
   end
