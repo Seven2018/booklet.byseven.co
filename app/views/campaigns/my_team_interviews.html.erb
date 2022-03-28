@@ -14,7 +14,11 @@
 
       </div>
 
-      <%= image_tag 'BM-My team trainings.png', class: 'width-50', style: 'height: 30rem; object-fit: cover;' %>
+      <%= render_component AsClAssetComponent.new(
+        model: current_user.company,
+        asset: :my_team_interviews_bg_picture,
+        style: 'object-fit: cover; width: 50%; height: 30rem;'
+      ) %>
 
     </div>
 

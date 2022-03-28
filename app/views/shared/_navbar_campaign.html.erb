@@ -37,7 +37,15 @@
 
   </div>
 
-  <%= image_tag 'logoBM-navbar.png', class: 'pos-abs', style: 'height: 2rem; top: 2.75rem; left: calc(50vw - 7.5rem);' %>
+  <%# TODO improve : brittle ! %>
+  <div style='
+    height: 2rem;
+    top: 2.75rem;
+    left: calc(50vw - 7.5rem);
+    position: absolute;
+  '>
+    <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
+  </div>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="flex-row-between-centered">
