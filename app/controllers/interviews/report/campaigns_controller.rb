@@ -3,8 +3,8 @@ class Interviews::Report::CampaignsController < ApplicationController
   skip_after_action :verify_authorized, only: :update
 
   def index
-    @selection = mode == :answers ? false : true
-    render partial: 'interviews/reports/campaigns', locals: { campaigns: campaigns, mode: mode }
+    partial = mode == :answers ? 'campaigns_radio_buttons' : 'campaigns_check_boxes'
+    render partial: "interviews/reports/#{partial}", locals: { campaigns: campaigns, mode: mode }
   end
 
   def update
