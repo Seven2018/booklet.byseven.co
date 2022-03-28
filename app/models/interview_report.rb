@@ -24,7 +24,7 @@ class InterviewReport < ApplicationRecord
   scope :at_least_started, -> { where(state: [:started, :done, :failed]) }
   scope :processing, -> { where('state IN (?)', [ states[:enqueued], states[:started] ]) }
 
-  jsonb_accessor :data,
+  jsonb_accessor :inputs,
                  campaign_ids: [:string, array: true, default: []]
 
   def processing?
