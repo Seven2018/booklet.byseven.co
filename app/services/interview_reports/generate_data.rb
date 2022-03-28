@@ -10,31 +10,14 @@ module InterviewReports
 
     def call
       @interview_report.started!
-      @interview_report.update data: data
+      @interview_report.update data: to_csv.call(interview_report: @interview_report)
       # return @interview_report.failed! if condition (if applicable)
       @interview_report.done!
     end
+    private
 
-    def data
-      return campaigns.to_csv_analytics(company.id, @interview_report.tag_category.id) if @interview_report.classic_mode?
-
-      return campaigns.to_csv_data(company.id) if @interview_report.data_mode?
-
-      raise StandardError, 'Unknown InterviewReport mode'
-    end
-
-    def company
-      @company ||= @interview_report.creator.company
-    end
-
-    def campaigns
-      @campaigns ||=
-        company.campaigns.where_exists(
-          :interviews,
-          'date >= ? AND date <= ?',
-          @interview_report.start_time,
-          @interview_report.end_time
-        )
+    def to_csv
+      "InterviewReports::#{@interview_report.mode.capitalize}::ToCsv".constantize
     end
   end
 end

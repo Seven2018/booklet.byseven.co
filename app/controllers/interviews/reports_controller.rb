@@ -27,10 +27,11 @@ class Interviews::ReportsController < ApplicationController
   end
 
   def show
-    authorize interview_report
+    @interview_report = InterviewReport.find params[:id]
+    authorize @interview_report
     respond_to do |format|
-      format.csv  { send_data interview_report.to_csv,  filename: interview_report.filename('.csv')  }
-      format.xlsx { send_file interview_report.to_xlsx, filename: interview_report.filename('.xlsx') }
+      format.csv  { send_data @interview_report.to_csv,  filename: @interview_report.filename('.csv')  }
+      format.xlsx { send_file @interview_report.to_xlsx, filename: @interview_report.filename('.xlsx') }
     end
   end
 

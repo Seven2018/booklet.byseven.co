@@ -1,0 +1,86 @@
+# reload!; InterviewReports::Answers::ToCsv.call(interview_report: InterviewReport.last)
+module InterviewReports
+  module Answers
+    class ToCsv < InterviewReports::ToCsv
+      def call
+        campaign = campaigns.first
+        interview_form_id = interview_form_ids.first
+        interview_form = InterviewForm.find interview_form_id
+        employees = Interview.where(campaign: campaign, interview_form: interview_form).map(&:employee).uniq
+        tag_categories = TagCategory.where(company: company).order(position: :asc)
+
+        columns = ['Interview Type',
+            'Interview Label',
+            'Interviewer email',
+            'Interviewer fullname',
+            'Interviewee email',
+            'Interviewee fullname'] +
+            tag_categories.map(&:name) +
+            ['Deadline'] +
+            interview_form.interview_questions.where.not(question_type: 'separator').order(position: :asc).map(&:question)
+
+        CSV.generate(headers: true) do |csv|
+          csv << columns
+
+          employees.sort_by{|x| x.lastname}.each do |employee|
+
+            employee_id = employee.id
+            employee_email = employee.email
+            employee_fullname = employee.fullname
+            employee_tags = employee.tags.order(tag_category_position: :asc).map(&:tag_name)
+
+            interviews_set = [campaign.employee_interview(employee_id), campaign.manager_interview(employee_id), campaign.crossed_interview(employee_id)].compact
+
+            interview_type =
+              if interviews_set.count == 1
+                interview_set.first.label
+              elsif interviews_set.count == 2
+                'Both'
+              else
+                'Cross'
+              end
+
+            interviewer = interviews_set.first.interviewer
+            interviewer_email = interviewer.email
+            interviewer_fullname = interviewer.fullname
+            deadline = interviews_set.first.date
+
+            interviews_set.each do |interview|
+
+              line = []
+
+              line << interview_type
+              line << interview.label
+              line << interviewer_email
+              line << interviewer_fullname
+              line << employee_email
+              line << employee_fullname
+              employee_tags.each{|tag| line << tag}
+              line << deadline
+
+              interview.interview_questions.order(position: :asc).each do |question|
+                answer = question.interview_answers.find_by(interview: interview, user: employee)
+                next if answer.nil?
+                answer_text =
+                  if question.rating?
+                    'Answer: ' + answer.answer + '/' + question.options.keys.first
+                  elsif question.open_question? || question.mcq?
+                    'Answer: ' + answer.answer
+                  elsif question.objective?
+                    'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer
+                  end
+                line << answer_text
+              end
+
+              csv << line
+
+
+            end
+          end
+
+        end
+
+      end
+    end
+  end
+end
