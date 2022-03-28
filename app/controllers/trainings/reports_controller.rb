@@ -35,8 +35,8 @@ class Trainings::ReportsController < ApplicationController
     authorize @training_report
     respond_to do |format|
       format.html
-      format.csv  { send_data training_report.to_csv,  filename: training_report.filename('.csv')  }
-      format.xlsx { send_file training_report.to_xlsx, filename: training_report.filename('.xlsx') }
+      format.csv  { send_data @training_report.to_csv,  filename: @training_report.filename('.csv')  }
+      format.xlsx { send_file @training_report.to_xlsx, filename: @training_report.filename('.xlsx') }
     end
   end
 

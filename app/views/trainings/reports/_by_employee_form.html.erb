@@ -29,8 +29,7 @@
               action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
               path: trainings_report_participants_path
             },
-            class: 'height-4rem pl-3rem rounded-3px',
-            style: 'border: 0.5px solid #CDCDCD;',
+            class: 'height-4rem pl-3rem rounded-3px border-bkt-light-grey5-0_5px',
             autocomplete: 'off',
             label: false,
             required: false
@@ -58,8 +57,8 @@
         </div>
         <div class="mx-2"></div>
         <label
-          class='centered-item rounded-3px mb-0'
-          style='height: 2.4rem; width: 2.4rem; border: 0.5px solid #CDCDCD;'
+          class='centered-item rounded-3px mb-0 border-bkt-light-grey5-0_5px'
+          style='height: 2.4rem; width: 2.4rem;'
           data-controller='toggle-checked-participants'
         >
           <%= check_box_tag(

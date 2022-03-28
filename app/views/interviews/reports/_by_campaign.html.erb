@@ -1,0 +1,45 @@
+<div
+  data-controller='participant-ids'
+  data-participant-ids-path-value='<%= interviews_report_campaigns_path %>'
+  data-action='
+    refreshParticipantIdsSearch@window->search-inject#debouncedSearch
+  '
+>
+  <div class='fs-1_2rem mb-1rem'>
+    Selected
+    <span class='fs-1_2rem' data-participant-ids-target="selectedCount"></span>
+  </div>
+
+  <%= hidden_field_tag 'campaign_ids[]', current_user.interview_report.campaign_ids.join(','), data: {
+    participant_ids_target: 'array'
+  } %>
+
+  <div class="flex-row-between-centered mb-1rem">
+    <div class="pos-rel">
+      <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
+      <%=
+        text_field_tag(
+          :search,
+          nil,
+          placeholder: 'Filter',
+          data: {
+            search_inject_target: 'search',
+            interview_report_form_target: 'search',
+            action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
+            path: interviews_report_campaigns_path,
+            mode: 'none'
+          },
+          class: 'height-4rem pl-3rem rounded-3px',
+          autocomplete: 'off',
+          label: false,
+          required: false
+        )
+      %>
+    </div>
+  </div>
+
+  <div class='border-bkt-light-grey mb-2rem overflow-y-scroll' style='height: 400px;'
+       data-search-inject-target="results"
+       data-participant-ids-target="results"
+  ></div>
+</div>

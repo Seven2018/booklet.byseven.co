@@ -1,9 +1,9 @@
 <div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pt-2rem'
-  data-controller='interview-report-form'
+     data-controller='interview-report-form search-inject'
 >
 
-  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw">
-    <%= simple_form_for InterviewReport.new, url: interviews_reports_path do |f| %>
+  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px w-50vw">
+    <%= simple_form_for current_user.interview_report, url: interviews_reports_path do |f| %>
       <%= f.hidden_field :company_id, value: current_user.company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
 
@@ -11,17 +11,21 @@
       <%= render_component FormSectionTitleComponent.new(title: 'Chose report type') %>
 
 
-      <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
+      <div class="d-flex gap-1rem w-100">
         <%= render_component RadioButtonTileComponent.new(
           model: 'interview_report[mode]',
           name: :data,
           checked: false,
           title: 'Global data',
           subtitle: "Global data contains all information about interviews (name, job title, completion, deadlines ...). You can handle results as you wish.",
-          data_actions: 'click->interview-report-form#hideTogglable'
+          data_actions: '
+            click->interview-report-form#hideTagCategoryInput
+            click->interview-report-form#dispatchFormUpdate
+            interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode
+          ',
+          data_attributes: { interview_report_form_target: :mode }
         ) do %>
-          <%# TODOCHANGEICON %>
-          <i class="fas fa-check"></i>
+          <i class="fas fa-clipboard"></i>
         <% end %>
 
         <%= render_component RadioButtonTileComponent.new(
@@ -30,10 +34,30 @@
           checked: true,
           title: "Analytics",
           subtitle: "Analytics are selected datas already analysed with ratios. Very useful to se quickly how your campaigns are progressing.",
-          data_actions: 'click->interview-report-form#showTogglable'
+          data_actions: '
+            click->interview-report-form#showTagCategoryInput
+            click->interview-report-form#dispatchFormUpdate
+            interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode
+          ',
+          data_attributes: { interview_report_form_target: :mode }
         ) do %>
-          <%# TODOCHANGEICON %>
           <i class="fas fa-check"></i>
+        <% end %>
+
+        <%= render_component RadioButtonTileComponent.new(
+          model: 'interview_report[mode]',
+          name: :answers,
+          checked: false,
+          title: "Answers",
+          subtitle: "Answers are all answers submited in campaigns",
+          data_actions: '
+            click->interview-report-form#hideTagCategoryInput
+            click->interview-report-form#dispatchFormUpdate
+            interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode
+          ',
+          data_attributes: { interview_report_form_target: :mode }
+        ) do %>
+          <i class="fas fa-comments"></i>
         <% end %>
       </div>
 
@@ -52,14 +76,14 @@
         </div>
 
         <%= f.input :start_time,
-          wrapper_html: { class: 'mb-0' },
-          input_html: {
-            class: 'datepicker-defaulting-to-now border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-          },
-          as: :date,
-          html5: true,
-          placeholder: 'Select date',
-          label: false
+                    wrapper_html: { class: 'mb-0' },
+                    input_html: {
+                      class: 'datepicker-defaulting-to-now border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                    },
+                    as: :date,
+                    html5: true,
+                    placeholder: 'Select date',
+                    label: false
         %>
 
         <div class="fs-1_6rem mx-3">
@@ -67,19 +91,19 @@
         </div>
 
         <%= f.input :end_time,
-          wrapper_html: { class: 'mb-0' },
-          input_html: {
-            class: 'datepicker-defaulting-to-end-of-year border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-          },
-          as: :date,
-          html5: true,
-          placeholder: 'Select date',
-          label: false
+                    wrapper_html: { class: 'mb-0' },
+                    input_html: {
+                      class: 'datepicker-defaulting-to-end-of-year border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                    },
+                    as: :date,
+                    html5: true,
+                    placeholder: 'Select date',
+                    label: false
         %>
       </div>
 
 
-      <div data-interview-report-form-target='togglable'>
+      <div data-interview-report-form-target='tagCategoryInput'>
         <%= render_component FormSectionTitleComponent.new(title: 'Select TagCategory') %>
 
 
@@ -100,6 +124,10 @@
             </label>
           <% end %>
         <% end %>
+      </div>
+
+      <div class="mt-5">
+        <%= render 'by_campaign' %>
       </div>
 
       <div class="d-flex justify-content-center pt-5">

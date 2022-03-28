@@ -6,7 +6,7 @@ RSpec.describe InterviewReport, type: :model do
   subject { InterviewReport.create interview_report_params }
 
   let(:company) { create(:company) }
-  let(:tag_category) { create(:tag_category, company: company) }
+  let(:tag_category) { create(:tag_category, company: company, position: 1) }
 
   let(:campaign) do
     create(
@@ -106,7 +106,7 @@ RSpec.describe InterviewReport, type: :model do
         end
 
         context 'diff == category' do
-          let(:other_tag_category) { create(:tag_category, name: 'other name', company: company) }
+          let(:other_tag_category) { create(:tag_category, name: 'other name', company: company, position: 1) }
           let!(:other_interview_report) do
             create(:interview_report, interview_report_params.merge(tag_category: other_tag_category, state: state))
           end

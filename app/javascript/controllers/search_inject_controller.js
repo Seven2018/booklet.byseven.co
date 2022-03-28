@@ -24,9 +24,10 @@ export default class extends Controller {
 
   search() {
     const page = this.searchTarget.dataset.page // not currently used
+    const mode = this.searchTarget.dataset.mode
     const path = this.searchTarget.dataset.path
     const query = this.searchTarget.value
-    const url = `${path}?search=${query}&page=${page}`
+    const url = `${path}?search=${query}&page=${page}&mode=${mode}`
     fetch(url)
       .then(response => response.text())
       .then(html => {
