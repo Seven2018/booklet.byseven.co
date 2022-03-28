@@ -18,7 +18,8 @@
           checked: false,
           title: 'Global data',
           subtitle: "Global data contains all information about interviews (name, job title, completion, deadlines ...). You can handle results as you wish.",
-          data_actions: 'click->interview-report-form#hideAnalytics click->interview-report-form#changeSearchMode'
+          data_actions: 'click->interview-report-form#dispatchFormUpdate interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode',
+          data_attributes: { interview_report_form_target: :mode }
         ) do %>
           <i class="fas fa-clipboard"></i>
         <% end %>
@@ -29,7 +30,8 @@
           checked: true,
           title: "Analytics",
           subtitle: "Analytics are selected datas already analysed with ratios. Very useful to se quickly how your campaigns are progressing.",
-          data_actions: 'click->interview-report-form#showAnalytics click->interview-report-form#changeSearchMode'
+          data_actions: 'click->interview-report-form#dispatchFormUpdate interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode',
+          data_attributes: { interview_report_form_target: :mode }
         ) do %>
           <i class="fas fa-check"></i>
         <% end %>
@@ -40,7 +42,8 @@
           checked: false,
           title: "Answers",
           subtitle: "Answers are all answers submited in campaigns",
-          data_actions: 'click->interview-report-form#hideAnalytics click->interview-report-form#changeSearchMode'
+          data_actions: 'click->interview-report-form#dispatchFormUpdate interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode',
+          data_attributes: { interview_report_form_target: :mode }
         ) do %>
           <i class="fas fa-comments"></i>
         <% end %>

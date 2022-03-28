@@ -1,11 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
+import { debounce } from "debounce"
 
 export default class extends Controller {
   static get targets () {
-    return [ "analytics", 'search' ]
+    return [ 'analytics', 'search', 'mode' ]
   }
 
-    showAnalytics() {
+  showAnalytics() {
     this.analyticsTarget.classList.remove('d-none')
   }
 
@@ -13,13 +14,22 @@ export default class extends Controller {
     this.analyticsTarget.classList.add('d-none')
   }
 
-  changeSearchMode(e) {
-    if (e.target.dataset.interviewReportParam) {
-      this.searchTarget.dataset.mode = e.target.dataset.interviewReportParam
-      // console.log(this.application.getControllerForElementAndIdentifier(this.element, "search-inject"))
-      // console.log(this.identifier)
-      // console.log(this.element)
-      this.application.getControllerForElementAndIdentifier(this.element, "search-inject").search()
-    }
+  debouncedChangeSearchMode() {
+    if (this.changeSearchModeDebounded) this.changeSearchModeDebounded.clear()
+    this.changeSearchModeDebounded = debounce(this.changeSearchMode.bind(this), 10)
+    this.changeSearchModeDebounded()
+  }
+
+  changeSearchMode() {
+    this.modeTargets.forEach((label) => {
+      const input = label.querySelector('input')
+      if (input.checked) { this.searchTarget.dataset.mode = input.value }
+    })
+    this.application.getControllerForElementAndIdentifier(this.element, "search-inject").search()
+  }
+
+  dispatchFormUpdate() {
+    const event = new Event('interview_report_form_toggle')
+    window.dispatchEvent(event)
   }
 }
