@@ -21,6 +21,7 @@ class InterviewReport < ApplicationRecord
   validate :tag_category_presence
   validates :start_time, :end_time, presence: true
 
+  scope :at_least_started, -> { where(state: [:started, :done, :failed]) }
   scope :processing, -> { where('state IN (?)', [ states[:enqueued], states[:started] ]) }
 
   jsonb_accessor :data,

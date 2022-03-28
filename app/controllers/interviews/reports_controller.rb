@@ -2,7 +2,7 @@ class Interviews::ReportsController < ApplicationController
   before_action :show_navbar_campaign, :show_navbar_admin, :ensure_company
 
   def index
-    @reports = policy_scope(InterviewReport).order(created_at: :desc)
+    @reports = policy_scope(InterviewReport).at_least_started.order(created_at: :desc)
   end
 
   def edit
