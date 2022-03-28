@@ -52,7 +52,8 @@ ActiveAdmin.register User do
       f.input :firstname
       f.input :lastname
       f.input :job_title
-      f.input :company, as: :select, collection: Company.pluck(:name, :id), include_blank: false
+      render partial: 'admin/users/company'
+      # f.input :company, as: :select, collection: Company.pluck(:name, :id), include_blank: false
       f.input :access_level, as: :select, collection: User::ACCESS_LEVELS, include_blank: false
       f.input :social_security
       f.input :gender
@@ -72,5 +73,7 @@ ActiveAdmin.register User do
   end
 
 
-  permit_params :email, :encrypted_password, :reset_password_token, :reset_password_sent_at, :remember_created_at, :firstname, :lastname, :birth_date, :hire_date, :authentication_token, :address, :phone_number, :social_security, :gender, :job_title, :linkedin, :picture, :access_level, :company_id
+  permit_params :email, :encrypted_password, :reset_password_token, :reset_password_sent_at,
+  :remember_created_at, :firstname, :lastname, :birth_date, :hire_date, :authentication_token,
+  :address, :phone_number, :social_security, :gender, :job_title, :linkedin, :picture, :access_level
 end
