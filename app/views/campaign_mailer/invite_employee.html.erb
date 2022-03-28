@@ -3,17 +3,10 @@
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
     <style type='text/css' media='screen'>
-      @media screen {
-        @font-face {
-          font-family: 'Lato';
-          font-style: normal;
-          font-weight: 400;
-          src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
-        }
-      }
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
       body {
-        font-family: "Lato", Sans-Serif;
+        font-family: "Montserrat", Sans-Serif;
         margin: 0;
         padding: 0;
       }
@@ -22,12 +15,36 @@
         margin: 0 10px;
       }
 
-      h2, p {
+      h2, p, span {
+        font-family: "Montserrat", Sans-Serif;
         color: #333333;
       }
 
       h2 {
         font-size:  20px;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+      }
+
+      p {
+        font-size:  16px;
+        font-weight: 700;
+        line-height: 20px;
+        margin: 0;
+      }
+
+      a {
+        font-size:  16px;
+        color: white !important;
+        text-decoration: none;
+        padding: 10px;
+        background-color:  #333333;
+        border-radius: 1px;
+        width: fit-content !important;
+      }
+
+      span {
+        font-size:  12px;
       }
 
       .mailer-banner {
@@ -45,9 +62,13 @@
         display:table-cell;
       }
 
+      .mailer-banner-row-image > img {
+        height: 30px;
+      }
+
       .mailer-container {
         width: 100%;
-        display:table;
+        display: table;
         padding: 50px 0;
       }
 
@@ -58,34 +79,37 @@
       }
 
       .mailer-button {
-        padding: 20px;
-        background-color:  #333333;
+        margin: 10px 0 20px 0;
       }
 
-      .p-bold {
-        font-size: 16px;
-        font-weight: 600;
+      .mailer-text-image > img {
+        height: 80px;
       }
+
     </style>
   </head>
   <body>
     <div class="mailer-banner">
       <div class="mailer-banner-row">
-        <div>
-          <%= image_tag 'Booklet-logo.png', style: 'height: 30px;' %>
+        <div class="mailer-banner-row-image">
+          <%= email_image_tag('Booklet-logo.png') %>
         </div>
       </div>
     </div>
     <div class="mailer-container">
       <div class="mailer-text">
-        <%= image_tag 'noto_person-running.png', style: 'height: 50px; margin-bottom: 20px;' %>
+        <div class="mailer-text-image">
+          <%= email_image_tag('noto_person-running.png') %>
+        </div>
 
         <h2>3,2,1 Start !</h2>
         <p>The campaign <%= @interview.campaign.title %> has just begun !</p>
         <p><%= @interviewer.firstname %> <%= @interviewer.lastname %> invites you to complete your interview.</p>
         <br>
-        <%= link_to 'Go to My Interviews', my_interviews_url, class: 'mailer_button' %>
-        <p>Please do not answer this email</p>
+        <div class="mailer-button">
+          <%= link_to 'Go to My Interviews', my_interviews_url %>
+        </div>
+        <span>Please do not answer this email</span>
       </div>
     </div>
   </body>

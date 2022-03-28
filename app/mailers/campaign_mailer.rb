@@ -24,8 +24,8 @@ class CampaignMailer < ApplicationMailer
   def interview_reminder_time(interviewer, interviewee, interview, time_remaining)
     interviewee_email_settings(interviewer, interviewee, interview)
     @time_remaining = time_remaining
-    @days_left = @time_remaining > 0 ? (@time_remaining + 'days left') : 'last day'
-    mail(to: User.first.email, subject: "#{days_left} to complete your interview !")
+    @days_left = @time_remaining > 0 ? (@time_remaining.to_s + "days left") : "last day"
+    mail(to: User.first.email, subject: "#{@days_left} to complete your interview !")
     # mail(to: @interviewee.email, subject: "#{@interviewee.company.name} - Interview")
   end
 

@@ -30,9 +30,10 @@ class TrainingPolicy < ApplicationPolicy
     true
   end
 
-  def send_reminder_email?
-    user.hr_or_above?
-  end
+  # TEMP (NOT USED ATM)
+  # def send_reminder_email?
+  #   user.hr_or_above?
+  # end
 
   def destroy?
     user.hr_or_above?

@@ -1,7 +1,6 @@
 class TrainingsController < ApplicationController
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_training
-  # skip_after_action :verify_policy_scoped
 
   def index
     @trainings = policy_scope(Training).where(company_id: current_user.company_id)
@@ -153,22 +152,23 @@ class TrainingsController < ApplicationController
       Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed'
   end
 
-  def send_reminder_email
-    training = Training.find(params[:id])
-    authorize training
+  # TEMP (NOT USED ATM)
+  # def send_reminder_email
+  #   training = Training.find(params[:id])
+  #   authorize training
 
-    target_users = training.attendees.distinct.where(status: 'Not completed').map(&:user).uniq
+  #   target_users = training.attendees.distinct.where(status: 'Not completed').map(&:user).uniq
 
-    target_users.each do |user|
-      TrainigMailer.with(user: user)
-          .training_reminder(user, training)
-          .deliver_now
-    end
+  #   target_users.each do |user|
+  #     TrainigMailer.with(user: user)
+  #         .training_reminder(user, training)
+  #         .deliver_now
+  #   end
 
-    flash[:notice] = 'Email(s) sent.'
+  #   flash[:notice] = 'Email(s) sent.'
 
-    head :no_content
-  end
+  #   head :no_content
+  # end
 
   def destroy
     @training = Training.find(params[:id])
