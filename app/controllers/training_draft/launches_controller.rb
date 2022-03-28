@@ -5,6 +5,15 @@ class TrainingDraft::LaunchesController < TrainingDraft::BaseController
     new_training = TrainingDrafts::Trainings::Launch.call(training_draft: training_draft)
     if new_training.present?
       @training.launches_set!
+      if params[:send_email] == 'true'
+        attendees = new_training.employees
+
+        attendees.each do |attendee|
+          TrainingMailer.with(user: attendee)
+            .invite_attendee(attendee, new_training)
+            .deliver_now
+        end
+      end
       redirect_to training_path(new_training)
     else
       flash[:alert] = validation_error_flash_message

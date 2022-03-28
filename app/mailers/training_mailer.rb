@@ -2,7 +2,7 @@ class TrainingMailer < ApplicationMailer
   default from: CompanyInfo.no_reply
 
   def invite_attendee(attendee, training)
-    @attendee = attendees
+    @attendee = attendee
     @training = training
     mail(to: User.first.email, subject: "New training booked for you !")
     # mail(to: @interviewee.email, subject: "#{@interviewee.company.name} - Interview")

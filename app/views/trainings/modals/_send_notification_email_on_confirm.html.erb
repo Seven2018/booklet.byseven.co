@@ -1,0 +1,26 @@
+<div class="modal-content action-modal__content">
+  <div class="modal-header action-modal__header">
+    <h5 class="modal-title action-modal__title">Send invitations emails</h5>
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body action-modal__body">
+    <p class ="text-center">Do you wish to send invitations by email<br> for this training ?</p>
+    <div class="modal-footer action-modal__footer">
+      <button type="button" class="bkt-btn-white" onclick='createTraining(this, false)'>NO, THANKS</button>
+      <button type="button" class="bkt-btn-orange" onclick='createTraining(this, true)'>YES, SEND BY EMAIL</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function createTraining(element, send_invite = true) {
+    form = element.closest('form')
+    send_invite_status = form.querySelector('#send_email')
+    submit_button = form.querySelector('.hidden-submit')
+
+    send_invite_status.value = send_invite
+    submit_button.click()
+  }
+</script>
