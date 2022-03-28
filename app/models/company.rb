@@ -11,6 +11,14 @@ class Company < ApplicationRecord
   validates :siret, presence: true, length: { is: 14 }
   validates :siret, uniqueness: true
 
+  has_one_attached :clear_bg_logo
+  has_one_attached :dark_bg_logo
+  has_one_attached :my_interviews_bg_picture
+  has_one_attached :my_team_interviews_bg_picture
+  has_one_attached :my_trainings_bg_picture
+  has_one_attached :my_team_trainings_bg_picture
+  include Companies::AssetsMeta
+
   def default_tag_category
     tag_categories.order('RANDOM()').first.presence ||
       TagCategory.create(company: self, name: 'Job Title', position: 1)

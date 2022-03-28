@@ -1,0 +1,9 @@
+<% if asset.attached? %>
+  <%= cl_image_tag asset.key, {
+    crop: :fit,
+    gravity: :center,
+    width: asset_meta(:desktop).width,
+    height: asset_meta(:desktop).height
+  }.merge(style: @style)
+  %>
+<% end %>

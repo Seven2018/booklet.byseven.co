@@ -72,6 +72,7 @@ class User < ApplicationRecord
   def fullname
     "#{lastname.upcase} #{firstname.titleize}"
   end
+  alias name fullname
 
   def manager_name
     self.manager.lastname
