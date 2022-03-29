@@ -26,15 +26,6 @@ module InterviewQuestions
       end
       @question.position = target_position
 
-      # Properly order the questions, if necessary
-      if questions.map(&:position) != (1..questions.count).to_a
-        j = 1
-        questions.each do |question|
-          question.update position: j
-          j += 1
-        end
-      end
-
       @question.options =
         if @question.rating?
           {'1' => 1}

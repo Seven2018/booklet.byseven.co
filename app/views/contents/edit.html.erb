@@ -56,15 +56,15 @@
 <div class='mod-templates hidden'>
 
   <div class="add-text add-text-template hidden active">
-    <%= render 'contents/edit/edit_mod_form_template', mod_type: 'text', content_id: @content.id %>
+    <%= render 'contents/edit/edit_mod_form_template', mod_type: 'text', content: @content %>
   </div>
 
   <div class="add-video add-video-template hidden active">
-    <%= render 'contents/edit/edit_mod_form_template', mod_type: 'video', content_id: @content.id %>
+    <%= render 'contents/edit/edit_mod_form_template', mod_type: 'video', content: @content %>
   </div>
 
   <div class="add-assessment add-assessment-template hidden">
-    <%= render 'contents/edit/edit_mod_form_template', mod_type: 'assessment', content_id: @content.id %>
+    <%= render 'contents/edit/edit_mod_form_template', mod_type: 'assessment', content: @content %>
   </div>
 
 </div>
