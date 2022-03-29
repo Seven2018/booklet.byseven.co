@@ -37,7 +37,7 @@ class Campaign < ApplicationRecord
   alias :manager :owner
 
   def deadline
-    interviews.order(date: :asc).first.date
+    interviews.order(date: :asc).first&.date
   end
 
   def interview_sets

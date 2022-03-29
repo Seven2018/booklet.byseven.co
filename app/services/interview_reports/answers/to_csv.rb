@@ -27,7 +27,7 @@ module InterviewReports
             employee_id = employee.id
             employee_email = employee.email
             employee_fullname = employee.fullname
-            employee_tags = employee.tags.order(tag_category_position: :asc).map(&:tag_name)
+            employee_tags = tag_categories.map{|category| UserTag.find_by(user: employee, tag_category: category)&.tag&.tag_name || '' }
 
             interviews_set = [campaign.employee_interview(employee_id), campaign.manager_interview(employee_id), campaign.crossed_interview(employee_id)].compact
 
