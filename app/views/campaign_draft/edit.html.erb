@@ -18,7 +18,7 @@
   </div>
 
   <div style='margin: 0 5%;'></div>
-  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw">
+  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw pos-rel">
     <%= form_with url: send("campaign_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
       <%= render "campaign_draft/form_#{controller_name}", campaign: @campaign %>
       <% if @controller_action.to_sym == :launches_edit %>
@@ -31,7 +31,42 @@
         </div>
       <% end %>
     <% end %>
+
+    <div id="users_search" class="pos-abs <%= 'd-none' unless @controller_action == :participants_edit %>" style='left: 1.5rem; bottom: 9rem;'>
+      <%= simple_form_for :search, method: :get do |f| %>
+        <%= f.text_field :manager, placeholder: 'Search in Managers',
+                                   value: User.find(@campaign.default_interviewer_id).fullname,
+                                   label: false,
+                                   data: {behavior: 'autocomplete'} %>
+      <% end %>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
+      <script>
+        $input_manager = $("#search_manager");
+
+        var options_manager = {
+          listLocation: "users",
+          getValue: 'name',
+          url: function(phrase) {
+            return "/users_search.json?manager=true&search=" + phrase
+          },
+          list: {
+            onChooseEvent: function() {
+              user_id = $input_manager.getSelectedItemData().id
+              document.getElementById('default_interviewer_id').value = user_id
+            },
+            match: {
+              enabled: true
+            }
+          }
+        }
+
+        $input_manager.easyAutocomplete(options_manager);
+      </script>
+    </div>
   </div>
+
 </div>
 
 <% if params[:debug] %>
