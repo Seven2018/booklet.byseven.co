@@ -1,4 +1,4 @@
-<% if asset.attached? %>
+<% if @model.present? && asset.attached? %>
   <%= cl_image_tag asset.key, {
     crop: :fit,
     gravity: :center,
