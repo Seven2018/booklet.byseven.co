@@ -2,7 +2,7 @@
 
 class RadioButtonTileComponent < ViewComponent::Base
   def initialize(model:, name:, checked:, title:, subtitle:,
-      disabled: false, compact: false, data_actions: false, data_attributes: false)
+      disabled: false, compact: false, data_actions: false, data_attributes: {})
     @model = model
     @name = name
     @checked = checked
