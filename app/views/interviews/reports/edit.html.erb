@@ -19,6 +19,7 @@
           title: 'Global data',
           subtitle: "Global data contains all information about interviews (name, job title, completion, deadlines ...). You can handle results as you wish.",
           data_actions: '
+            click->interview-report-form#showSelectAllInput
             click->interview-report-form#hideTagCategoryInput
             click->interview-report-form#dispatchFormUpdate
             interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode
@@ -35,6 +36,7 @@
           title: "Analytics",
           subtitle: "Analytics are selected datas already analysed with ratios. Very useful to se quickly how your campaigns are progressing.",
           data_actions: '
+            click->interview-report-form#showSelectAllInput
             click->interview-report-form#showTagCategoryInput
             click->interview-report-form#dispatchFormUpdate
             interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode
@@ -51,6 +53,7 @@
           title: "Answers",
           subtitle: "Answers are all answers submited in campaigns",
           data_actions: '
+            click->interview-report-form#hideSelectAllInput
             click->interview-report-form#hideTagCategoryInput
             click->interview-report-form#dispatchFormUpdate
             interview_report_form_toggle@window->interview-report-form#debouncedChangeSearchMode

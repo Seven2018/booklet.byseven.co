@@ -3,7 +3,7 @@ import { debounce } from "debounce"
 
 export default class extends Controller {
   static get targets () {
-    return [ 'tagCategoryInput', 'search', 'mode' ]
+    return [ 'selectAllInput', 'tagCategoryInput', 'search', 'mode' ]
   }
 
   showTagCategoryInput() {
@@ -12,6 +12,14 @@ export default class extends Controller {
 
   hideTagCategoryInput() {
     this.tagCategoryInputTarget.classList.add('d-none')
+  }
+
+  showSelectAllInput() {
+    this.selectAllInputTarget.classList.remove('d-none')
+  }
+
+  hideSelectAllInput() {
+    this.selectAllInputTarget.classList.add('d-none')
   }
 
   debouncedChangeSearchMode() {
