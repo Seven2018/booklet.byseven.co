@@ -93,7 +93,9 @@
   justify-content: space-between;
   align-items: flex-start;
   position: relative;
-  margin-top: 9rem;
+  @include from-medium {
+    margin-top: 9rem;
+  }
 }
 
 .interview-main__left {
@@ -167,7 +169,9 @@
 
 .interview-main__right {
   padding: 5rem 2.5rem;
-  margin-left: 30rem;
+  @include from-medium {
+    margin-left: 30rem;
+  }
   flex-grow: 1;
   display: flex;
   flex-direction: column;

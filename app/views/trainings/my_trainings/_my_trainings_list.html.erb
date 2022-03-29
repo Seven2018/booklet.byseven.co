@@ -1,6 +1,6 @@
 <% trainings.each do |training| %>
 
-  <div class="flex-row-between-centered width-100 bkt-bg-white rounded-20px p-3rem mt-2rem bkt-box-shadow">
+  <div class="d-none d-sm-flex flex-row-between-centered width-100 bkt-bg-white rounded-20px p-3rem mt-2rem bkt-box-shadow">
 
     <div>
       <div class="flex-row-start-centered mb-2rem">
@@ -39,7 +39,44 @@
         <p class='bkt-orange font-weight-600'>Go to the training  <span class="iconify" data-icon="akar-icons:chevron-right" style="color: #ef8c64;"></span></p>
       <% end %>
     </div>
+  </div>
 
+  <div class="d-sm-none bkt-bg-white bkt-box-shadow rounded-10px mt-3rem width-90  m-4">
+    <div class="flex-row-start-centered">
+      <div class="flex-row-start-centered border-bkt-dark-grey rounded-15px px-3 py-1 mt-3 ml-3">
+        <div class="flex-column">
+          <span class="iconify fs-1_4rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
+        </div>
+        <div class="flex-column ml-1">
+        <p class='fs-1_2rem bkt-dark-grey'><%= TimeConversion.convert(training.duration) %></p>
+        </div>
+      </div>
+    </div>
+    <div class="flex-row-start-centered mt-3 ml-3">
+      <div class="p-2 bkt-bg-light-orange rounded-5px mr-1rem">
+        <%= render_component Icons::GraduateHatComponent.new(fill: :orange, width: 15, height: 15) %>
+      </div>
+      <div>
+        <h2 class='fs-2rem font-weight-500 bkt-dark-grey'><%= training.title %></h2>
+      </div>
+    </div>
+    <div class="flex-row-start-centered mt-4">
+      <div class="mx-4 fs-1_2rem">
+        <span class="iconify  bkt-orange" data-icon="fa6-solid:user-group" data-width="15" data-height="15"></span>
+      </div>
+      <%= training.next_session.workshop.synchronous? ? 'Face-to-face' : 'Online' %>
+    </div>
+    <div class="flex-row-start-centered mt-3">
+      <div class=" mx-4 fs-2rem">
+        <span class="iconify fs-1_6rem bkt-orange" data-icon="akar-icons:calendar"></span>
+      </div>
+      Next date: <%= training.next_date %> at <%= training.next_session.starts_at.strftime('%H:%M') %>
+    </div>
+    <div class="flex-row-start-centered p-4 mt-3 bkt-bg-orange rounded-b-15px ">
+      <%= link_to training_path(training), class: 'flex-column m-auto bkt-white' do %>
+        Go to the training
+      <% end %>
+    </div>
   </div>
 
 <% end %>
