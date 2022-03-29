@@ -12,7 +12,8 @@ class InterviewReport < ApplicationRecord
 
   enum mode: {
     classic: 0,
-    data: 10
+    data: 10,
+    answers: 20
   }, _suffix: true
 
   before_save :set_signature
@@ -20,7 +21,11 @@ class InterviewReport < ApplicationRecord
   validate :tag_category_presence
   validates :start_time, :end_time, presence: true
 
+  scope :at_least_started, -> { where(state: [:started, :done, :failed]) }
   scope :processing, -> { where('state IN (?)', [ states[:enqueued], states[:started] ]) }
+
+  jsonb_accessor :inputs,
+                 campaign_ids: [:string, array: true, default: []]
 
   def processing?
     enqueued? || started?
@@ -40,6 +45,8 @@ class InterviewReport < ApplicationRecord
 
   def to_csv
     CSV.generate("\uFEFF") do |csv|
+      return '' if data.blank?
+
       data.gsub("\r", ' ').split("\n").each { |row| csv << row.split(',') }
     end
   end

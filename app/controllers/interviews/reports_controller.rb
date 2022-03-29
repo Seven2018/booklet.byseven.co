@@ -2,17 +2,22 @@ class Interviews::ReportsController < ApplicationController
   before_action :show_navbar_campaign, :show_navbar_admin, :ensure_company
 
   def index
-    @reports = policy_scope(InterviewReport).order(created_at: :desc)
+    @reports = policy_scope(InterviewReport).at_least_started.order(created_at: :desc)
   end
 
-  def new
-    authorize InterviewReport.new
-  end
-
-  def create
-    interview_report = InterviewReport.new interview_report_params
+  def edit
     authorize interview_report
-    if interview_report.save
+  end
+
+  def update
+    authorize interview_report
+
+    if mode == :answers && campaign_ids.blank?
+      flash[:alert] = 'Please select campaigns'
+      redirect_to edit_interviews_reports_path and return
+    end
+
+    if interview_report.update interview_report_params
       InterviewReports::GenerateDataJob.perform_later interview_report.id
       flash[:notice] = "Generating report: refresh in 1 min !"
     else
@@ -22,10 +27,11 @@ class Interviews::ReportsController < ApplicationController
   end
 
   def show
-    authorize interview_report
+    @interview_report = InterviewReport.find params[:id]
+    authorize @interview_report
     respond_to do |format|
-      format.csv  { send_data interview_report.to_csv,  filename: interview_report.filename('.csv')  }
-      format.xlsx { send_file interview_report.to_xlsx, filename: interview_report.filename('.xlsx') }
+      format.csv  { send_data @interview_report.to_csv,  filename: @interview_report.filename('.csv')  }
+      format.xlsx { send_file @interview_report.to_xlsx, filename: @interview_report.filename('.xlsx') }
     end
   end
 
@@ -39,7 +45,15 @@ class Interviews::ReportsController < ApplicationController
   private
 
   def interview_report
-    @interview_report ||= InterviewReport.find params[:id]
+    @interview_report ||= current_user.interview_report
+  end
+
+  def mode
+    interview_report_params[:mode].to_sym
+  end
+
+  def campaign_ids
+    params[:campaign_ids].first.split(',').uniq.select(&:present?)
   end
 
   def interview_report_params

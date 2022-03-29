@@ -1,20 +1,21 @@
 <%= label_tag(
-    model_name,
-    class: "d-flex flex-column align-items-center
+      model_name,
+      class: "d-flex flex-column align-items-center
             #{@compact ? 'p-2' : 'py-4 px-5'}
             rounded-2px #{'cursor-pointer' unless @disabled}",
-    style: "background-color: rgba(49, 119, 183, 0.1); flex: 1 1 0;",
-    data: {
-      controller: 'toggle-checked',
-      toggle_checked_target: 'target',
-      toggle_checked_checked_classes_value: 'border-bkt-dark-blue bkt-dark-blue',
-      toggle_checked_unchecked_classes_value: 'border-bkt-light-grey6 bkt-light-grey6 bkt-bg-white',
-      toggle_checked_toggle_all_event_value: toggle_all_event,
-      action: "click->toggle-checked#dispatchToggleAll #{toggle_all_event}@window->toggle-checked#debouncedToggle
+      style: "background-color: rgba(49, 119, 183, 0.1); flex: 1;",
+      data: {
+        controller: 'toggle-checked',
+        toggle_checked_target: 'target',
+        toggle_checked_checked_classes_value: 'border-bkt-dark-blue bkt-dark-blue',
+        toggle_checked_unchecked_classes_value: 'border-bkt-light-grey6 bkt-light-grey6 bkt-bg-white',
+        toggle_checked_toggle_all_event_value: toggle_all_event,
+        action: "click->toggle-checked#dispatchToggleAll #{toggle_all_event}@window->toggle-checked#debouncedToggle
         #{@data_actions}
-      "
-    }
-  ) do %>
+        ",
+        interview_report_param: @name
+      }.merge(@data_attributes)
+    ) do %>
   <div class="d-flex flex-column align-items-center justify-content-center p-3">
     <%= content %>
     <div class="m-1"></div>
@@ -22,12 +23,12 @@
   </div>
   <div class="text-center fs-1_2rem"><%= @subtitle %></div>
   <%= radio_button_tag(
-    @model,
-    @name,
-    @checked,
-    disabled: @disabled,
-    class: 'd-none',
-    data: {
-      toggle_checked_target: :togglable
-    }) %>
+        @model,
+        @name,
+        @checked,
+        disabled: @disabled,
+        class: 'd-none',
+        data: {
+          toggle_checked_target: :togglable
+        }) %>
 <% end %>

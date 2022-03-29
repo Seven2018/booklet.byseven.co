@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_24_102556) do
+ActiveRecord::Schema.define(version: 2022_03_28_102927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,6 +273,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_102556) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "creator_id"
     t.bigint "tag_category_id"
+    t.jsonb "inputs", default: {}, null: false
     t.index ["company_id"], name: "index_interview_reports_on_company_id"
     t.index ["creator_id"], name: "index_interview_reports_on_creator_id"
     t.index ["tag_category_id"], name: "index_interview_reports_on_tag_category_id"

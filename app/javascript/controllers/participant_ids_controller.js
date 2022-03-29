@@ -16,6 +16,10 @@ export default class extends Controller {
     return this.arrayTarget.value.split(',').filter(str => str.length > 0)
   }
 
+  get inputIdsName() {
+    return this.arrayTarget.name.substring(0, this.arrayTarget.name.length - 2)
+  }
+
   connect() {
     this._refreshSelectedCount(this.ids.length)
   }
@@ -25,6 +29,11 @@ export default class extends Controller {
 
     const id = e.currentTarget.dataset.id
     e.currentTarget.checked ? this._add(id) : this._remove(id)
+  }
+
+  storeRadio(e) {
+    const id = e.currentTarget.dataset.id
+    this._persist(id.toString())
   }
 
   unselectAll() {
@@ -88,13 +97,13 @@ export default class extends Controller {
         "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ participant_ids: ids_string })
+      body: JSON.stringify({ [this.inputIdsName]: ids_string })
     })
     .then(response => response.json())
     .then(data => {
       if(refresh) { this._refreshForm() }
-      this.arrayTarget.value = data.participant_ids_str
-      this._refreshSelectedCount(data.participant_ids_count)
+      this.arrayTarget.value = data[`${this.inputIdsName}_str`]
+      this._refreshSelectedCount(data[`${this.inputIdsName}_count`])
     })
   }
 

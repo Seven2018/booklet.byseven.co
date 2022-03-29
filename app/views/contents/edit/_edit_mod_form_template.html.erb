@@ -25,7 +25,13 @@
 </div>
 
 <%= simple_form_for Mod.new, remote: true do |f| %>
-  <%= f.hidden_field :content_id, value: content_id %>
+
+  <% if content.class == Content %>
+    <%= f.hidden_field :content_id, value: content.id %>
+  <% else %>
+    <%= f.hidden_field :workshop_id, value: content.id %>
+  <% end %>
+
   <%= f.hidden_field :mod_type, value: mod_type %>
   <%= f.hidden_field :position %>
 

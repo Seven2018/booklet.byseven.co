@@ -1,0 +1,28 @@
+<% campaigns.each do |campaign| %>
+  <% selected = current_user.interview_report.campaign_ids.include?(campaign.id.to_s) %>
+
+  <div class='flex-row-between-centered height-5rem'>
+    <% key = "check-box-campaign-id-#{campaign.id}" %>
+    <label
+      class='centered-item rounded-3px my-1rem mx-2rem'
+      for='<%= key %>'
+    >
+      <%= radio_button_tag(
+            'campaign_ids',
+            campaign.id,
+            selected,
+            id: key,
+            data: {
+              id: campaign.id,
+              participant_ids_target: 'result',
+              action: "change->participant-ids#storeRadio",
+              toggle_checked_participants_target: "togglable"
+            }) %>
+    </label>
+
+    <div class='flex-grow-1 fs-1_2rem'>
+      <div class='font-weight-600'><%= campaign.title %></div>
+      <div>Deadline: <%= campaign.deadline %></div>
+    </div>
+  </div>
+<% end %>

@@ -8,7 +8,11 @@
         <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>Welcome to My Team Trainings section, your team have <%# "team trainings count" %> trainings to do and/or validate, please see them below. </p>
       </div>
 
-      <%= image_tag 'BM-My team trainings.png', class: 'd-none d-sm-block', style: 'height: 30rem; object-fit: cover;' %>
+      <%= render_component AsClAssetComponent.new(
+        model: current_user.company,
+        asset: :my_team_trainings_bg_picture,
+        style: 'object-fit: cover; width: 50%; height: 30rem;'
+      ) %>
 
     </div>
 

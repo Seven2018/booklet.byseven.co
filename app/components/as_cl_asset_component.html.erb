@@ -1,0 +1,10 @@
+<% if @model.present? && asset.attached? %>
+  <%= cl_image_tag asset.key, {
+    crop: :fit,
+    gravity: :center,
+    width: asset_meta(:desktop).width,
+    height: asset_meta(:desktop).height,
+    class: 'd-none d-sm-block'
+  }.merge(style: @style)
+  %>
+<% end %>

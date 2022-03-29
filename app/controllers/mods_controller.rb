@@ -121,6 +121,6 @@ class ModsController < ApplicationController
   end
 
   def mod_params
-    params.require(:mod).permit(:title, :text, :link, :document, :video, :image, :mod_type, :duration, :content_id, :workshop_id)
+    params.require(:mod).permit(:title, :text, :link, :document, :video, :image, :mod_type, :duration, :content_id, :workshop_id, :position)
   end
 end
