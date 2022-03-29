@@ -1,0 +1,8 @@
+Hello, <%= @user.name %>
+=======================================================
+
+Your have been invited to join Booklet !
+Click here to create your password
+<%= link_to 'Create my password', edit_password_url(@user, reset_password_token: @token) %>
+
+Please do not answer this email

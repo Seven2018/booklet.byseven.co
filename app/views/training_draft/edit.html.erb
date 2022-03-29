@@ -22,7 +22,7 @@
     <%= form_with url: send("training_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
       <%= render "training_draft/form_#{controller_name}", training: @training %>
       <% if @controller_action.to_sym == :launches_edit %>
-        <%= f.hidden_field :send_email, value: true %>
+        <%= f.hidden_field :send_email %>
         <a class='bkt-btn-orange bkt-white' data-toggle='modal' data-target='#launchTraining'>
             Launch Training
           </a>
@@ -33,7 +33,7 @@
           <!----------->
 
           <div class='modal fade' id='launchTraining' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-            <div class='modal-dialog' role='document' style='border-radius: 20px'>
+            <div class='modal-dialog rounded-20px' role='document'>
               <%= render 'trainings/modals/send_notification_email_on_confirm' %>
             </div>
           </div>

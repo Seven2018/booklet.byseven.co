@@ -12,7 +12,7 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
         interviewers.each do |interviewer|
           CampaignMailer.with(user: interviewer)
             .invite_interviewer(interviewer, interviewees.count, new_campaign)
-            .deliver_now
+            .deliver_later
         end
 
         interviewees.each do |interviewee|
@@ -21,7 +21,7 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
 
           CampaignMailer.with(user: interviewee)
             .invite_employee(interviewer, interviewee, interview)
-            .deliver_now
+            .deliver_later
         end
       end
       redirect_to campaign_path(new_campaign)

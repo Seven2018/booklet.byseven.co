@@ -11,7 +11,7 @@ class TrainingDraft::LaunchesController < TrainingDraft::BaseController
         attendees.each do |attendee|
           TrainingMailer.with(user: attendee)
             .invite_attendee(attendee, new_training)
-            .deliver_now
+            .deliver_later
         end
       end
       redirect_to training_path(new_training)
