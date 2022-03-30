@@ -6,7 +6,7 @@ export default class extends Controller {
   }
 
   displayList(e) {
-    $(this.panelTarget).toggleClass('d-none')
+    this.panelTarget.classList.toggle('d-none')
     this.typeListTargets.forEach((item) => {
       if (e.target.dataset.id == item.id) item.classList.add('d-block')
       else item.classList.remove('d-block')
@@ -14,14 +14,14 @@ export default class extends Controller {
   }
 
   hideList() {
-    $(this.panelTarget).toggleClass('d-none')
+    this.panelTarget.classList.toggle('d-none')
     this.typeListTargets.forEach((item) => {
       item.classList.remove('d-block')
     })
   }
 
   displayOptions() {
-    $(this.panelTarget).toggleClass('d-none')
+    this.panelTarget.classList.toggle('d-none')
     this.typeListTargets.forEach((item) => {
       if (item.id == 'profile-options') item.classList.add('d-block')
     })

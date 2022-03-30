@@ -6,7 +6,7 @@ export default class extends Controller {
   }
 
   toggleHomeMenu(_) {
-    $(this.bodyTarget).toggleClass('d-none')
-    $(this.menuTarget).toggleClass('d-none')
+    this.bodyTarget.classList.toggle('d-none')
+    this.menuTarget.classList.toggle('d-none')
   }
 }

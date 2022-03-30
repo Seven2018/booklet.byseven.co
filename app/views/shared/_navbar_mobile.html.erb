@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <%= image_tag 'logoBM-navbarHome.png', class: 'pos-abs', style: 'height: 2rem; top: 2.75rem; left: calc(50vw - 7.5rem);' %>
+    <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :clear_bg_logo) %>
 
     <div class="left-buttons--mobile">
       <div class="dropdown">

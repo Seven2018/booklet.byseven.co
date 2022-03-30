@@ -2,10 +2,11 @@
 
 # ActiveStorage Cloudinary Asset Component
 class AsClAssetComponent < ViewComponent::Base
-  def initialize(model:, asset:, style: nil)
+  def initialize(model:, asset:, style: nil, class_name: '')
     @model = model
     @asset = asset
     @style = style
+    @class = class_name
   end
 
   def asset
