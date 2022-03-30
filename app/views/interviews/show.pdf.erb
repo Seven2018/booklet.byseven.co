@@ -4,6 +4,10 @@
   <% interview_form = @interview.interview_form %>
   <% fully_answered = @interview.fully_answered? %>
 
+  <% employee = @interview.employee %>
+  <% manager = @interview.interviewer %>
+  <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
+
   <% icon = { 'open_question' => 'open-question-pdf.png',
               'mcq' => 'mcq-pdf.png',
               'objective' => 'objective-pdf.png',
@@ -15,7 +19,7 @@
 
       <div class="interview-main__right--pdf">
         <h1><%= @interview.title %></h1>
-        <h2><%= @interview.employee.fullname %></h2>
+        <h2><%= employee.fullname %></h2>
 
         <% question_hash = {} %>
         <% j = 0 %>
@@ -52,7 +56,6 @@
                 </div>
                 <div class="interview-question__form--pdf">
 
-                  <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
                   <% existing_answer =
                     InterviewAnswer.find_by(
                     interview: @interview,
@@ -63,6 +66,97 @@
                   <% current_answer   = existing_answer&.answer || '' %>
                   <% current_comments = existing_answer&.comments || '' %>
                   <% current_objective = existing_answer&.objective || '' %>
+
+                  <% if @interview.crossed? %>
+
+                    <% employee_answer = InterviewAnswer.joins(:interview).find_by(
+                        interview: @interview.campaign.employee_interview(employee.id),
+                        interview_question: question,
+                        user: employee
+                      ) %>
+                    <% manager_answer = InterviewAnswer.joins(:interview).find_by(
+                        interview: @interview.campaign.manager_interview(employee.id),
+                        interview_question: question,
+                        user: manager
+                      ) %>
+
+                      <% if manager_answer.present? %>
+
+                        <div class="interview-crossed-answer--pdf">
+                          <div class="interview-crossed-answer__header--pdf">
+<!--                             <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm--pdf' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'> -->
+                            <p><%= manager.fullname %> <span>- Interviewer</span></p>
+                          </div>
+                          <% if question.open_question? %>
+                            <p class='interview-crossed-answer__text--pdf'><%= manager_answer.answer %></p>
+                          <% elsif question.rating? %>
+                            <div class="rating-crossed--pdf">
+                              <% for i in 1..manager_answer.answer.to_i %>
+                                <%= wicked_pdf_image_tag 'rating-star-black-filled-pdf.png' %>
+                              <% end %>
+                              <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
+                                <%= wicked_pdf_image_tag 'rating-star-black-pdf.png' %>
+                              <% end %>
+                            </div>
+                          <% elsif question.mcq? || question.objective? %>
+                            <% if question.objective? %>
+                              <div class="interview-crossed-answer__objective--pdf">
+                                <p><%= manager_answer.objective %></p>
+                              </div>
+                            <% end %>
+                            <div class="interview-crossed-answer__mcq--pdf">
+                              <p><%= manager_answer.answer %></p>
+                            </div>
+                          <% end %>
+
+                          <% if manager_answer.comments.present? %>
+                            <div class="interview-crossed-answer__objective--pdf">
+                              <p><%= manager_answer.comments %></p>
+                            </div>
+                          <% end %>
+                        </div>
+
+                      <% end %>
+
+                      <% if employee_answer.present? %>
+
+                        <div class="interview-crossed-answer--pdf">
+                          <div class="interview-crossed-answer__header--pdf">
+                            <!-- <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm--pdf' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'> -->
+                            <p><%= employee.fullname %> <span>- Employee</span></p>
+                          </div>
+                          <% if question.open_question? %>
+                            <p class='interview-crossed-answer__text--pdf'><%= employee_answer.answer %></p>
+                          <% elsif question.rating? %>
+                            <div class="rating-crossed--pdf">
+                              <% for i in 1..employee_answer.answer.to_i %>
+                                <%= wicked_pdf_image_tag 'rating-star-black-filled-pdf.png' %>
+                              <% end %>
+                              <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
+                                <%= wicked_pdf_image_tag 'rating-star-black-pdf.png' %>
+                              <% end %>
+                            </div>
+                          <% elsif question.mcq? || question.objective? %>
+                            <% if question.objective? %>
+                              <div class="interview-crossed-answer__objective--pdf">
+                                <p><%= employee_answer.objective %></p>
+                              </div>
+                            <% end %>
+                            <div class="interview-crossed-answer__mcq--pdf">
+                              <p><%= employee_answer.answer %></p>
+                            </div>
+                          <% end %>
+
+                          <% if employee_answer.comments.present? %>
+                            <div class="interview-crossed-answer__objective--pdf">
+                              <p><%= employee_answer.comments %></p>
+                            </div>
+                          <% end %>
+                        </div>
+
+                      <% end %>
+
+                  <% end %>
 
                   <%= simple_form_for(:interview_answer,
                     url: answer_interview_question_path,
@@ -79,6 +173,7 @@
 
                     <% elsif question.rating? %>
 
+                      <p>Answer</p>
                       <div class='rating--pdf'>
                         <% for i in 1..current_answer.to_i %>
                           <%= wicked_pdf_image_tag 'rating-star-filled-pdf.png' %>
