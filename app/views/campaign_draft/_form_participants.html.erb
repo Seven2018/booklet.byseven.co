@@ -165,24 +165,26 @@
   The interviewer will handle all interviews for selected participants
 <% end %>
 
-<%= render_component(SelectComponent.new(
+<%= hidden_field_tag :default_interviewer_id %>
+
+<%#= render_component(SelectComponent.new(
   width: '100%',
   title: "#{@campaign.default_interviewer&.fullname} - #{@campaign.default_interviewer&.email}" || 'Select Interviewer'
 )) do  %>
-  <% User.where(company_id: current_user.company_id).pluck(:firstname, :lastname, :email, :id).each do |firstname, lastname, email, id| %>
-    <% key = "user_#{id}" %>
-    <input
+  <%# User.where(company_id: current_user.company_id).pluck(:firstname, :lastname, :email, :id).each do |firstname, lastname, email, id| %>
+    <%# key = "user_#{id}" %>
+<!--     <input
       class="hidden"
-      <% if @campaign.default_interviewer_id.to_i == id %>checked='true'<% end %>
+      <%# if @campaign.default_interviewer_id.to_i == id %>checked='true'<%# end %>
       type="radio"
-      value="<%= id %>"
+      value="<%#= id %>"
       name="default_interviewer_id"
-      id='<%= key %>'>
+      id='<%#= key %>'>
     <label
       data-action="click->dropdown#toggle click->replace-text#replace"
       class="fs-1_4rem font-weight-500 p-1rem m-0 bkt-blue-hover cursor-pointer w-100"
-      for="<%= key %>">
-      <%= "#{lastname} #{firstname} - #{email}" %>
-    </label>
-  <% end %>
-<% end %>
+      for="<%#= key %>">
+      <%#= "#{lastname} #{firstname} - #{email}" %>
+    </label> -->
+  <%# end %>
+<%# end %>

@@ -52,7 +52,7 @@
           <div class="interview-crossed-answer__header">
             <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
             <p><%= manager.fullname %></p>
-            <p>- Manager</p>
+            <p>- Interviewer</p>
           </div>
           <% if question.open_question? %>
             <p class='interview-crossed-answer__text'><%= manager_answer.answer %></p>
