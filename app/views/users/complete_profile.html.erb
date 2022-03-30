@@ -6,8 +6,8 @@
     <%= f.input :lastname, required: true %>
     <%= f.input :phone_number, label: 'Phone number' %>
     <%= f.input :linkedin, label: 'Linkedin (url)' %>
-    <%= f.input :birth_date, as: :date, label: 'Birth date', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
-                            end_year: Date.today.year - 12 %>
+    <%= f.input :birth_date, as: :date, label: 'Birth date', default: Date.new(1970, 1, 1), start_year: Time.zone.today.year - 70,
+                            end_year: Time.zone.today.year - 12 %>
     <div style=" display: flex; justify-content: space-between;margin-top:3rem;">
       <%= button_tag type: 'submit', class: 'btn-orange' do %>
         <p>Save</p>

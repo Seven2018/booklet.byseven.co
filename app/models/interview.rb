@@ -53,7 +53,7 @@ class Interview < ApplicationRecord
   end
 
   def last_updated?
-    self.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d/%m/%Y')
+    self.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d %b, %Y')
   end
 
   def complete!

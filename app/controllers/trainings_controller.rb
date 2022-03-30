@@ -43,9 +43,9 @@ class TrainingsController < ApplicationController
   #     if params[:search_trainings][:period] == 'All'
   #       @trainings = @trainings
   #     elsif params[:search_trainings][:period] == 'Current'
-  #       @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Date.today))
+  #       @trainings = @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Time.zone.today))
   #     elsif params[:search_trainings][:period] == 'Completed'
-  #       @trainings = @trainings.where_not_exists(:sessions, 'date >= ?', Date.today).where_not_exists(:sessions, 'available_date >= ?', Date.today)
+  #       @trainings = @trainings.where_not_exists(:sessions, 'date >= ?', Time.zone.today).where_not_exists(:sessions, 'available_date >= ?', Time.zone.today)
   #     end
   #     if current_user.hr_or_above?
   #       unless params[:search_trainings][:employee].blank?
@@ -79,9 +79,9 @@ class TrainingsController < ApplicationController
   #   @declined_recommendations = @recommendations.where(recommendation: "No")
   #   @answered_recommendations = @accepted_recommendations + @declined_recommendations
 
-  #   # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
+  #   # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Time.zone.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
   #   # @current_trainings = @trainings.sort_by { |training| training.next_session }
-  #   @current_trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Date.today))
+  #   @current_trainings = @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Time.zone.today))
   #   @pasts_trainings = (@trainings - @current_trainings)
 
   #   respond_to do |format|
@@ -175,9 +175,9 @@ class TrainingsController < ApplicationController
       if search_period == 'All'
         @trainings
       elsif search_period == 'Completed'
-        @trainings.where_not_exists(:sessions, 'date < ?', Date.today)
+        @trainings.where_not_exists(:sessions, 'date < ?', Time.zone.today)
       else
-        @trainings.where_exists(:sessions, 'date >= ?', Date.today)
+        @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today)
       end
 
     # if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?

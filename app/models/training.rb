@@ -24,9 +24,9 @@ class Training < ApplicationRecord
     past_sessions = []
     self.sessions.each do |session|
       if session.workshop.content_type == "Synchronous"
-        past_sessions << self.id if session.date.present? && session.date < Date.today
+        past_sessions << self.id if session.date.present? && session.date < Time.zone.today
       elsif session.workshop.content_type == "Asynchronous"
-        unless session.available_date.nil? || session.available_date > Date.today
+        unless session.available_date.nil? || session.available_date > Time.zone.today
           past_sessions << self.id
         end
       end

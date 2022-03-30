@@ -206,7 +206,7 @@ class User < ApplicationRecord
         end
         if interviews
           interviews = ''
-          user.interviews.where(label: ['Crossed', 'Simple']).each{|x| interviews += x.campaign.title + ' (' + x.campaign.id + ') - ' + x.date.strftime('%d/%m/%Y') + "\n"}
+          user.interviews.where(label: ['Crossed', 'Simple']).each{|x| interviews += x.campaign.title + ' (' + x.campaign.id + ') - ' + x.date.strftime('%d %b, %Y') + "\n"}
           line << interviews.delete_suffix("\n")
         end
         csv << line

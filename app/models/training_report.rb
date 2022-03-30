@@ -129,10 +129,10 @@ class TrainingReport < ApplicationRecord
   def tabular_data
     a = []
     a << ['Training Report']
-    a << ['Created at', updated_at.strftime('%d/%m/%Y')]
+    a << ['Created at', updated_at.strftime('%d %b, %Y')]
     a << ['Created by', "#{creator.fullname}-#{creator.email}"]
-    a << ['From', start_time.strftime('%d/%m/%Y')]
-    a << ['To', end_time.strftime('%d/%m/%Y')]
+    a << ['From', start_time.strftime('%d %b, %Y')]
+    a << ['To', end_time.strftime('%d %b, %Y')]
     a << ['Type', mode]
     a << []
 

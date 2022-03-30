@@ -11,12 +11,12 @@ class PagesController < ApplicationController
                                    .where(campaigns: {company_id: current_user.company_id}, interviewer: current_user, label: ['Manager', 'Crossed'], completed: false)
     @my_trainings = Training.joins(sessions: :attendees)
                             .where(attendees: {user: current_user})
-                            .where('sessions.date >= ?', Date.today)
+                            .where('sessions.date >= ?', Time.zone.today)
                             .distinct
                             .sort_by{|x| x.next_date}
     @my_team_trainings = Training.joins(sessions: :attendees)
                                  .where(attendees: {user_id: current_user.employees.ids})
-                                 .where('sessions.date >= ?', Date.today)
+                                 .where('sessions.date >= ?', Time.zone.today)
                                  .distinct
                                  .sort_by{|x| x.next_date}
   end

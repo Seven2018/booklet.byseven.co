@@ -54,7 +54,7 @@
               <div>
                 <p><%= interview.title %> review <br><em class='campaign-show__card-deadline'><%= "Until #{interview.date}" %></em></p>
                 <% if interview.completed? %>
-                  <% last_updated = interview.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d/%m/%Y') %>
+                  <% last_updated = interview.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d %b, %Y') %>
                   <p class="campaign-show__card-interview-status--complete">
                     Last updated on <%= last_updated %>
                   </p>

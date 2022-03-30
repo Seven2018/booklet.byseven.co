@@ -37,7 +37,7 @@
             <div class="flex-row-start-centered">
               <p class="font-weight-700 bkt-blue mb-1rem"><%= myi_first.title %> with <strong><%= myi_first.campaign.interviews.find_by(employee: current_user).interviewer.fullname %></strong></p>
             </div>
-            <p>The deadline for this campaign is the <strong><%= myi_first.date.strftime('%d/%m/%Y') %></strong></p>
+            <p>The deadline for this campaign is the <strong><%= myi_first.date %></strong></p>
           </div>
 
         <% end %>
@@ -91,7 +91,7 @@
                 <div class="flex-row-start-centered">
                   <p class="font-weight-700 bkt-blue mb-1rem"><%= myt_first.title %> with <strong><%= myt_first.employee.fullname %></strong></p>
                 </div>
-                <p>The deadline for this campaign is the <strong><%= myt_first.date.strftime('%d/%m/%Y') %></strong></p>
+                <p>The deadline for this campaign is the <strong><%= myt_first.date %></strong></p>
               </div>
 
             <% end %>
@@ -156,7 +156,7 @@
                 </span>
               </div>
             </div>
-            <p>The next will session take place on <strong><%= "#{next_session.date.strftime('%d/%m/%Y')} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+            <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
           </div>
 
         <% end %>
@@ -223,7 +223,7 @@
                     </span>
                   </div>
                 </div>
-                <p>The next will session take place on <strong><%= "#{next_session.date.strftime('%d/%m/%Y')} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+                <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
               </div>
 
             <% end %>
