@@ -99,6 +99,63 @@ div.nobreak--pdf{ page-break-inside: avoid; }
   padding: 0 2.5rem;
 }
 
+.interview-crossed-answer--pdf {
+  width: 100;
+  border: 1px solid #C4C4C4;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.interview-crossed-answer__header--pdf {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.avatar-sm--pdf {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.interview-crossed-answer__header--pdf > img { margin-right: 1rem; }
+.interview-crossed-answer__header--pdf > p { margin-right: .5rem; font-weight: bolder; }
+.interview-crossed-answer__header--pdf > span { font-weight: 600; font-style: italic; color: #C4C4C4; }
+
+.rating-crossed--pdf {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.rating-crossed--pdf > img {
+  height: 20px;
+  width: 20px;
+}
+
+.interview-crossed-answer__text--pdf, .interview-crossed-answer__objective--pdf {
+  font-style: italic;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.interview-crossed-answer__objective--pdf {
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.interview-crossed-answer__mcq--pdf {
+  display: inline-block;
+  padding: 1rem;
+  background: rgba(196, 196, 196, 0.5);
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
 .interview__textarea--pdf {
   padding: 1rem;
   border: none;
