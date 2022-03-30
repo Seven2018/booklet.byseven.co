@@ -6,15 +6,15 @@
         Report overview (by employee):
       </div>
       <div class="bkt-light-grey">
-        <%= "Created at : #{report.updated_at.strftime('%d/%m/%Y')} at #{report.updated_at.strftime("%H:%M")}" %>
+        <%= "Created at : #{report.updated_at.strftime('%d %b, %Y')} at #{report.updated_at.strftime("%H:%M")}" %>
       </div>
     </div>
 
     <div class="pb-2rem fs-1_6rem">
       During the period
-      <span class="bkt-orange"><%= report.start_time.strftime('%d/%m/%Y') %></span>
+      <span class="bkt-orange"><%= report.start_time.strftime('%d %b, %Y') %></span>
       to
-      <span class="bkt-orange"><%= report.end_time.strftime('%d/%m/%Y') %></span>
+      <span class="bkt-orange"><%= report.end_time.strftime('%d %b, %Y') %></span>
     </div>
 
     <div class="d-flex justify-content-between flex-wrap">

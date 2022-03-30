@@ -145,19 +145,6 @@
     <span class="iconify fs-3rem" data-icon="bx:search"></span>
   <% end %>
 
-  <%#= render_component RadioButtonTileComponent.new(
-    model: :interviewer_selection_method,
-    name: :admin,
-    checked: campaign.interviewer_selection_method == :admin.to_s,
-    title: "An admin",
-    subtitle: "Chose an admin as the campaign sole interviewer",
-    compact: true,
-    disabled: true
-  ) do %>
-    <%# TODOCHANGEICON %>
-    <!-- <i class="fas fa-rocket"></i> -->
-  <%# end %>
-
 </div>
 
 <%= render_component FormSectionTitleComponent.new(title: 'Interviewer') %>
@@ -166,25 +153,3 @@
 <% end %>
 
 <%= hidden_field_tag :default_interviewer_id %>
-
-<%#= render_component(SelectComponent.new(
-  width: '100%',
-  title: "#{@campaign.default_interviewer&.fullname} - #{@campaign.default_interviewer&.email}" || 'Select Interviewer'
-)) do  %>
-  <%# User.where(company_id: current_user.company_id).pluck(:firstname, :lastname, :email, :id).each do |firstname, lastname, email, id| %>
-    <%# key = "user_#{id}" %>
-<!--     <input
-      class="hidden"
-      <%# if @campaign.default_interviewer_id.to_i == id %>checked='true'<%# end %>
-      type="radio"
-      value="<%#= id %>"
-      name="default_interviewer_id"
-      id='<%#= key %>'>
-    <label
-      data-action="click->dropdown#toggle click->replace-text#replace"
-      class="fs-1_4rem font-weight-500 p-1rem m-0 bkt-blue-hover cursor-pointer w-100"
-      for="<%#= key %>">
-      <%#= "#{lastname} #{firstname} - #{email}" %>
-    </label> -->
-  <%# end %>
-<%# end %>
