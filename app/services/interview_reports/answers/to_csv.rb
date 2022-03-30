@@ -33,7 +33,7 @@ module InterviewReports
 
             interview_type =
               if interviews_set.count == 1
-                interview_set.first.label
+                interviews_set.first.label
               elsif interviews_set.count == 2
                 'Both'
               else
