@@ -81,7 +81,10 @@
         <%= f.input :start_time,
                     wrapper_html: { class: 'mb-0' },
                     input_html: {
-                      class: 'datepicker-defaulting-to-now border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                      class: 'datepicker-defaulting-to-now border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem search-inject-date-start',
+                      data: {
+                        action: 'change->search-inject#debouncedSearch'
+                      }
                     },
                     as: :date,
                     html5: true,
@@ -96,7 +99,10 @@
         <%= f.input :end_time,
                     wrapper_html: { class: 'mb-0' },
                     input_html: {
-                      class: 'datepicker-defaulting-to-end-of-year border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                      class: 'datepicker-defaulting-to-end-of-year border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem search-inject-date-end',
+                      data: {
+                        action: 'change->search-inject#debouncedSearch'
+                      }
                     },
                     as: :date,
                     html5: true,

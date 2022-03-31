@@ -36,6 +36,18 @@ class Campaign < ApplicationRecord
 
   alias :manager :owner
 
+  def self.start_at(date)
+    joins(:interviews)
+      .where('date >= ?', date)
+      .distinct
+  end
+
+  def self.end_at(date)
+    joins(:interviews)
+      .where('date <= ?', date)
+      .distinct
+  end
+
   def deadline
     interviews.order(date: :asc).first&.date
   end
