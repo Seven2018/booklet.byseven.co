@@ -36,6 +36,15 @@ module CampaignDrafts
                       .except('id', 'interview_form_id', 'created_at', 'updated_at')
                       .merge(interview_form: new_form)
           end
+
+          # TODO : Tag system update incoming
+          template.interview_form_tags.each do |tag|
+            InterviewFormTag.create \
+              tag.attributes
+                 .except('id', 'interview_form_id', 'created_at', 'updated_at')
+                 .merge(interview_form: new_form)
+          end
+
           return new_form
         # when 'multiple' then # TODO
         end
