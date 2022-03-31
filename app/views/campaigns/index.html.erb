@@ -14,7 +14,7 @@
       <% end %>
 
     </div>
-    <div class="campaigns-index__main">
+    <div class="campaigns-index__main" data-controller='change-page'>
       <div class="campaigns-index__searchbar">
         <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
         <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true,
@@ -41,7 +41,7 @@
           %>
           <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current', input_html: {onchange: 'resetPage(this);'} %>
           <%= f.hidden_field :tags %>
-          <%= f.hidden_field :page, value: '1' %>
+          <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
           <%=
             f.submit(
               'Search',
@@ -49,6 +49,7 @@
               onclick: "document.querySelector('body').classList.add('wait');",
               data: {
                 remember_search_target: :submit,
+                change_page_target: :submit
               }
             )
           %>
@@ -274,19 +275,6 @@
       pill.remove()
     })
     form.querySelector('.hidden-submit').click()
-  }
-
-  function changePage(direction) {
-    page_value = document.querySelector('#search_page')
-    submit_button = document.querySelector('.btn-search')
-
-
-    if(direction == 'next') {
-      page_value.value = (parseInt(page_value.value,10) + 1).toString()
-    } else {
-      page_value.value = (parseInt(page_value.value,10) - 1).toString()
-    }
-    submit_button.click()
   }
 
   function resetPage(element) {
