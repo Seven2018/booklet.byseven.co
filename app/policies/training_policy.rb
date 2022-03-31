@@ -33,4 +33,8 @@ class TrainingPolicy < ApplicationPolicy
   def destroy?
     user.hr_or_above?
   end
+
+  def send_acquisition_reminder_email?
+    record.creator == user || user.hr_or_above?
+  end
 end

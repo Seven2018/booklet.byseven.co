@@ -90,48 +90,6 @@ class TrainingsController < ApplicationController
   #   end
   # end
 
-  def my_trainings
-    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
-    authorize trainings
-
-    # raise if params.dig(:search, :title).present?
-    trainings = trainings.search_trainings(params.dig(:search, :title)) if params.dig(:search, :title).present?
-
-    if params.dig(:search, :period) == 'Completed'
-      @trainings = trainings.select{|x| x.next_date.nil?}
-    else
-      @trainings = trainings.select{|x| x.next_date.present?}
-    end
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
-  def my_team_trainings
-    trainings = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.employees.ids}).distinct
-    authorize trainings
-
-    @attendees = get_attendees_status(user_ids: current_user.employees.ids)
-  end
-
-  def my_team_trainings_user_details
-    @user = User.find(params[:id])
-    redirect_to my_team_trainings_path if @user.manager != current_user
-    @trainings = Training.joins(sessions: :attendees)
-                 .where(attendees: {user: @user}).distinct
-
-    authorize @trainings
-
-    @trainings = @trainings.select{|x| x.next_date.present?}
-                 .sort{|y| y.next_date}
-
-    @attendee_status = get_attendees_status(user_ids: params[:id]).first
-    @attendees_done = Attendee.where(user_id: params[:id], status: 'Completed')
-    @attendees_to_do = Attendee.where(user_id: params[:id], status: 'Not completed')
-  end
-
   def show
     @training = Training.find(params[:id])
     authorize @training
@@ -161,6 +119,71 @@ class TrainingsController < ApplicationController
 
     respond_to do |format|
       format.html {redirect_to trainings_path}
+      format.js
+    end
+  end
+
+  def my_trainings
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
+    authorize trainings
+
+    # raise if params.dig(:search, :title).present?
+    trainings = trainings.search_trainings(params.dig(:search, :title)) if params.dig(:search, :title).present?
+
+    if params.dig(:search, :period) == 'Completed'
+      @trainings = trainings.select{|x| x.next_date.nil?}
+    else
+      @trainings = trainings.select{|x| x.next_date.present?}
+    end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def my_team_trainings
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user_id: current_user.employees.ids}).distinct
+    authorize trainings
+
+    @attendees = get_attendees_status(user_ids: current_user.employees.ids)
+  end
+
+
+  def my_team_trainings_user_details
+    @user = User.find(params[:id])
+    redirect_to my_team_trainings_path if @user.manager != current_user
+    @trainings = Training.joins(sessions: :attendees)
+                 .where(attendees: {user: @user}).distinct
+
+    authorize @trainings
+
+    @trainings = @trainings.select{|x| x.next_date.present?}
+                 .sort{|y| y.next_date}
+
+    @attendee_status = get_attendees_status(user_ids: params[:id]).first
+    @attendees_done = Attendee.where(user_id: params[:id], status: 'Completed')
+    @attendees_to_do = Attendee.where(user_id: params[:id], status: 'Not completed')
+  end
+
+  def send_acquisition_reminder_email
+    workshop = Workshop.find_by(id: params.dig(:workshop_id))
+    @training = Training.find_by(params.dig(:training_id))
+    @training = workshop.training if @training.nil?
+    authorize @training
+    users =
+      if params.dig(:training_id).present?
+        @training.not_done_for_list
+      else
+        workshop.attendees.not_completed.map(&:user)
+      end
+
+    users.each do |user|
+      # TO DO: UPDATE AS SOON AS A TRAINING CAN CONTAIN MULTIPLE WORKSHOPS
+      TrainingMailer.with(user: user).training_reminder(user, @training).deliver_later
+    end
+
+    respond_to do |format|
       format.js
     end
   end
