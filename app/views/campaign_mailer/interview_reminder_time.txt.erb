@@ -1,0 +1,12 @@
+<% if @time_remaining > 0 %>
+  Only <%= @time_remaining %> days left !
+<% else %>
+  Last day of the campaign !
+<% end %>
+=======================================================
+
+You have yet to submit your answers for the campaign <%= @interview.campaign.title %>, don't forget to do it !
+
+<%= link_to 'Go to my review', interview_url(@interview) %>
+
+Please do not answer this email

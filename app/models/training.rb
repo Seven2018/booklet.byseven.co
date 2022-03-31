@@ -42,6 +42,14 @@ class Training < ApplicationRecord
     attendees.where(user_id: user_id).distinct.pluck(:status).none?("Not completed")
   end
 
+  def done_for_list
+    attendees.where(status: 'Completed').map(&:user).uniq
+  end
+
+  def not_done_for_list
+    attendees.where(status: 'Not completed').map(&:user).uniq
+  end
+
   def duration
     workshops.map(&:duration).sum
   end

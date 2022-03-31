@@ -92,7 +92,6 @@ class User < ApplicationRecord
     user
   end
 
-
   def self.import(rows, company_id, invited_by_id, send_invite = false)
     present = []
     rows.each do |row_h|

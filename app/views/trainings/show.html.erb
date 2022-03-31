@@ -76,11 +76,96 @@
               <%= render 'workshops/show/show_workshop_tags_list', workshop: @workshop %>
             </div>
           </div>
+
+          <% if current_user == @training.creator || current_user.hr_or_above? %>
+            <% attendees_acquired = @workshop.attendees.completed %>
+            <% attendees_not_acquired = @workshop.attendees.not_completed %>
+
+            <div id="workshop-show__attendees" class="bkt-bg-white mb-2rem p-2rem rounded-10px">
+              <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+                <p>Acquired (<%= attendees_acquired.count %>)</p>
+              </div>
+              <div class="flex-row-start-centered flex-wrap mb-2rem">
+
+                <% attendees_acquired.first(11).each do |attendee| %>
+                  <% user = attendee.user %>
+
+                  <div class="flex-column-start-centered width-10rem mb-2rem">
+                    <img src="<%= user.picture %>" class='avatar mb-0_75rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+                    <p class="fs-1rem bkt-dark-grey"><%= user.firstname %></p>
+                    <p class="fs-1rem bkt-dark-grey"><%= user.lastname %></p>
+                  </div>
+
+                <% end %>
+
+                <% if attendees_acquired.count > 11 %>
+                  <a class='flex-column-start-centered width-10rem mb-2rem' data-toggle='modal' data-target='#manageAttendees'>
+                    <div class="centered-item bkt-bg-light-orange avatar mb-0_75rem">
+                      <span class="iconify height-2_5rem width-2_5rem bkt-orange" data-icon="fluent:add-12-regular"></span>
+                    </div>
+                    <p class="fs-1rem bkt-dark-grey"><%= attendees_acquired.count - 11 %></p>
+                    <p class="fs-1rem bkt-dark-grey">more</p>
+                  </a>
+                <% end %>
+
+              </div>
+
+              <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+                <p>Not acquired yet(<%= attendees_not_acquired.count %>)</p>
+              </div>
+              <div class="flex-row-start-centered flex-wrap">
+
+                <% attendees_not_acquired.first(11).each do |attendee| %>
+                  <% user = attendee.user %>
+
+                  <div class="flex-column-start-centered width-10rem mb-2rem">
+                    <img src="<%= user.picture %>" class='avatar mb-0_75rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+                    <p class="fs-1rem bkt-dark-grey"><%= user.firstname %></p>
+                    <p class="fs-1rem bkt-dark-grey"><%= user.lastname %></p>
+                  </div>
+
+                <% end %>
+
+                <% if attendees_not_acquired.count > 11 %>
+                  <a class='flex-column-start-centered width-10rem mb-2rem' data-toggle='modal' data-target='#manageAttendees'>
+                    <div class="centered-item bkt-bg-light-orange avatar mb-0_75rem">
+                      <span class="iconify height-2_5rem width-2_5rem bkt-orange" data-icon="fluent:add-12-regular"></span>
+                    </div>
+                    <p class="fs-1rem bkt-dark-grey"><%= attendees_not_acquired.count - 11 %></p>
+                    <p class="fs-1rem bkt-dark-grey">more</p>
+                  </a>
+                <% end %>
+
+              </div>
+            </div>
+          <% end %>
+
         </div>
       </div>
 
     </div>
 
+  </div>
+</div>
+
+
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade' id='manageAttendees' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'workshops/modals/manage_attendees',
+                workshop: @workshop,
+                attendees_acquired: attendees_acquired,
+                attendees_not_acquired: attendees_not_acquired %>
+  </div>
+</div>
+
+<div class='modal fade' id='manageAttendeesEmailSent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+    <%= render 'workshops/modals/manage_attendees_email_sent' %>
   </div>
 </div>
 

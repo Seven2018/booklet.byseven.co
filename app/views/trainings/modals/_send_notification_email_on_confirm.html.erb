@@ -6,16 +6,16 @@
     </button>
   </div>
   <div class="modal-body action-modal__body">
-    <p class ="text-center">Do you wish to send invitations by email<br> for this campaign ?</p>
+    <p class ="text-center">Do you wish to send invitations by email<br> for this training ?</p>
     <div class="modal-footer action-modal__footer">
-      <button type="button" class="bkt-btn-white" onclick='createCampaign(this, false)'>NO, THANKS</button>
-      <button type="button" class="bkt-btn-blue" onclick='createCampaign(this, true)'>YES, SEND BY EMAIL</button>
+      <button type="button" class="bkt-btn-white" onclick='createTraining(this, false)'>NO, THANKS</button>
+      <button type="button" class="bkt-btn-orange" onclick='createTraining(this, true)'>YES, SEND BY EMAIL</button>
     </div>
   </div>
 </div>
 
 <script>
-  function createCampaign(element, send_invite = true) {
+  function createTraining(element, send_invite = true) {
     form = element.closest('form')
     send_invite_status = form.querySelector('#send_email')
     submit_button = form.querySelector('.hidden-submit')
