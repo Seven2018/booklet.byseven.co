@@ -1,7 +1,6 @@
 class TrainingsController < ApplicationController
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_training
-  # skip_after_action :verify_policy_scoped
 
   def index
     @trainings = policy_scope(Training).where(company_id: current_user.company_id)

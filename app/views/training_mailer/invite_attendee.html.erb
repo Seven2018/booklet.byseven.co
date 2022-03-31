@@ -99,15 +99,15 @@
     <div class="mailer-container">
       <div class="mailer-text">
         <div class="mailer-text-image">
-          <%= email_image_tag('noto_person-running.png') %>
+          <%= email_image_tag('noto_person-lifting-weights.png') %>
         </div>
 
-        <h2>3,2,1 Start !</h2>
-        <p>The campaign <%= @interview.campaign.title %> has just begun !</p>
-        <p><%= @interviewer.firstname %> <%= @interviewer.lastname %> invites you to complete your interview.</p>
+        <h2>Training time !</h2>
+        <p>You have been invited to the training <%= @training.title %> !</p>
+        <p>Let's review the details.</p>
         <br>
         <div class="mailer-button">
-          <%= link_to 'Go to My Interviews', my_interviews_url %>
+          <%= link_to 'Go to My Trainings', my_trainings_url %>
         </div>
         <span>Please do not answer this email</span>
       </div>

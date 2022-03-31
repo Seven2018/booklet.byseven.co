@@ -44,9 +44,7 @@
       }
 
       .mailer-text {
-        vertical-align: middle;
-        text-align: center;
-        display:table-cell;
+        text-align:  center;
         width: 100%;
         min-width: 300px;
       }
@@ -56,23 +54,17 @@
     <div class="mailer-banner">
       <div class="mailer-banner-row">
         <div>
-          <h1>Booklet for <img src="<%= @user.company.logo %>" alt="" height='50px' style="vertical-align:middle"></h1>
+
         </div>
       </div>
     </div>
     <div class="mailer-container">
       <div class="mailer-text">
-        <h2>Hello, <%= @user.fullname %></h2>
+        <h2>Here is a reminder for you !</h2>
+        <p>It seems you have not validated all the workshops in the training <%= @training.title %>, don't forget to do it !</p>
         <br>
-        <% if @training.present? %>
-          <p><%= @host&.firstname %> has invited  you to the following training: <%= @training.title %></p>
-          <%= link_to 'See details', training_url(@training) %>
-        <% else %>
-          <p><%= @host&.firstname %> has invited you to the following content: <%= @attendee.training_content.title %></p>
-          <p><%= @attendee.training_content.date %> | <%= @attendee.training_content.starts_at.strftime('%H:%M') %> - <%= @attendee.training_content.ends_at.strftime('%H:%M') %></p>
-          <%= link_to 'See details', training_content_url(@attendee.training_content) %>
-        <% end %>
-        <p>Thank you and have a great day!</p>
+        <%= link_to 'Go to the training', training_path(@training) %>
+        <p>Please do not answer this email</p>
       </div>
     </div>
   </body>

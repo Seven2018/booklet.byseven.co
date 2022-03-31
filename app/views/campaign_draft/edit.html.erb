@@ -22,8 +22,24 @@
     <%= form_with url: send("campaign_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
       <%= render "campaign_draft/form_#{controller_name}", campaign: @campaign %>
       <% if @controller_action.to_sym == :launches_edit %>
+        <%= f.hidden_field :send_email %>
         <div class="d-flex justify-content-center pt-5">
-          <button class='bkt-btn-blue'>Launch Campaign</button>
+          <a class='bkt-btn-blue bkt-white' data-toggle='modal' data-target='#launchCampaign'>
+            Launch Campaign
+          </a>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+
+          <!----------->
+          <!-- MODAL -->
+          <!----------->
+
+          <div class='modal fade' id='launchCampaign' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+            <div class='modal-dialog rounded-20px' role='document'>
+              <%= render 'campaigns/modals/send_notification_email_on_confirm' %>
+            </div>
+          </div>
+
+          <!----------->
         </div>
       <% else %>
         <div class="d-flex justify-content-end pt-5">
