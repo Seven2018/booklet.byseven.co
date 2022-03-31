@@ -57,13 +57,13 @@
       <% end %>
 
       <% if attendees_acquired.count > 11 %>
-        <div class="flex-column-start-centered width-10rem mb-2rem">
+        <a class='flex-column-start-centered width-10rem mb-2rem' data-toggle='modal' data-target='#manageAttendees'>
           <div class="centered-item bkt-bg-light-orange avatar mb-0_75rem">
             <span class="iconify height-2_5rem width-2_5rem bkt-orange" data-icon="fluent:add-12-regular"></span>
           </div>
           <p class="fs-1rem bkt-dark-grey"><%= attendees_acquired.count - 11 %></p>
           <p class="fs-1rem bkt-dark-grey">more</p>
-        </div>
+        </a>
       <% end %>
 
     </div>

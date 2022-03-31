@@ -177,7 +177,7 @@ class TrainingsController < ApplicationController
         workshop.attendees.not_completed.map(&:user)
       end
 
-    users.each do |user|
+    users.uniq.each do |user|
       # TO DO: UPDATE AS SOON AS A TRAINING CAN CONTAIN MULTIPLE WORKSHOPS
       TrainingMailer.with(user: user).training_reminder(user, @training).deliver_later
     end

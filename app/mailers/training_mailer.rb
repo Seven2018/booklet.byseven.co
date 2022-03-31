@@ -4,12 +4,12 @@ class TrainingMailer < ApplicationMailer
   def invite_attendee(attendee, training)
     @attendee = attendee
     @training = training
-    mail(to: @interviewee.email, subject: "New training booked for you !")
+    mail(to: @attendee.email, subject: "New training booked for you !")
   end
 
   def training_reminder(attendee, training)
-    @attendee = attendees
+    @attendee = attendee
     @training = training
-    mail(to: @interviewee.email, subject: "Don't forget your training !")
+    mail(to: @attendee.email, subject: "Don't forget your training !")
   end
 end
