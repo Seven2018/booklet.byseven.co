@@ -80,3 +80,18 @@
   <% end %>
 
 </div>
+
+<script>
+  function changePage(direction) {
+    page_value = document.querySelector('#search_page')
+    submit_button = document.querySelector('.btn-search')
+
+
+    if(direction == 'next') {
+      page_value.value = (parseInt(page_value.value,10) + 1).toString()
+    } else {
+      page_value.value = (parseInt(page_value.value,10) - 1).toString()
+    }
+    submit_button.click()
+  }
+</script>
