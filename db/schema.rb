@@ -273,7 +273,7 @@ ActiveRecord::Schema.define(version: 2022_03_28_102927) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "creator_id"
     t.bigint "tag_category_id"
-    t.jsonb "inputs", default: {}
+    t.jsonb "inputs", default: {}, null: false
     t.index ["company_id"], name: "index_interview_reports_on_company_id"
     t.index ["creator_id"], name: "index_interview_reports_on_creator_id"
     t.index ["tag_category_id"], name: "index_interview_reports_on_tag_category_id"
@@ -381,7 +381,7 @@ ActiveRecord::Schema.define(version: 2022_03_28_102927) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"

@@ -123,7 +123,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get :update_interviews, controller: :interviews
   post :answer_question, controller: :interviews, as: :answer_interview_question
 
   # INTERVIEW FORMS
