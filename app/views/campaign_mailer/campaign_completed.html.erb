@@ -8,15 +8,15 @@
 <div class="mailer-container">
   <div class="mailer-text">
     <div class="mailer-text-image">
-      <%= email_image_tag('noto_person-running.png') %>
+      <%= email_image_tag('noto_chequered-flag.png') %>
     </div>
 
-    <h2>3,2,1 Start !</h2>
-    <p>The campaign <%= @interview.campaign.title %> has just begun !</p>
-    <p><%= @interviewer.firstname %> <%= @interviewer.lastname %> invites you to complete your interview.</p>
+    <h2>Campaign completed, nice work !</h2>
+    <p>Your have just completed all your interviews in the '<%= @campaign.title %>' campaign !</p>
+    <p>You may have other ongoing campaign</p>
     <br>
     <div class="mailer-button">
-      <%= link_to 'Go to My Interviews', my_interviews_url %>
+      <%= link_to 'See my campaigns', my_team_interview_url %>
     </div>
     <span>Please do not answer this email</span>
   </div>

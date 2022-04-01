@@ -104,8 +104,32 @@ class InterviewsController < ApplicationController
     interview = Interview.find interview_id
     authorize interview
 
+    interviewer = interview.interviewer
+    interviewee = interview.employee
+    campaign = interview.campaign
+
     interview.complete!
     interview.lock!
+
+    if interview.set.locked?
+
+      CampaignMailer.with(user: interviewee)
+                    .interview_set_completed_interviewee(interviewer, interviewee, interview)
+                    .deliver_later
+
+      CampaignMailer.with(user: interviewee)
+                    .interview_set_completed_interviewer(interviewer, interviewee, interview)
+                    .deliver_later
+
+    end
+
+    if interview.campaign.completion_for_interviewer(interviewer) == 100
+
+      CampaignMailer.with(user: interviewer)
+                    .campaign_completed(interviewer, campaign)
+                    .deliver_later
+
+    end
 
     respond_to do |format|
       format.js

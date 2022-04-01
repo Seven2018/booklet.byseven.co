@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style>
-      /* Email styles need to be inline */
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style type='text/css' media='screen'>
       @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
       body {
@@ -90,6 +89,28 @@
     </style>
   </head>
   <body>
-    <%= yield %>
+    <div class="mailer-banner">
+      <div class="mailer-banner-row">
+        <div class="mailer-banner-row-image">
+          <%= email_image_tag('Booklet-logo.png') %>
+        </div>
+      </div>
+    </div>
+    <div class="mailer-container">
+      <div class="mailer-text">
+        <div class="mailer-text-image">
+          <%= email_image_tag('noto_raising-hands.png') %>
+        </div>
+
+        <h2>Interviews Completed with <%= @interviewee.fullname %> !</h2>
+        <p>You have finished the interview process with <%= @interviewee.fullname %><br> for the '<%= @interview.campaign.title %>' campaign !</p>
+        <p>You may still access the interview(s)</p>
+        <br>
+        <div class="mailer-button">
+          <%= link_to 'See interviews', campaign_url(@interview.campaign) %>
+        </div>
+        <span>Please do not answer this email</span>
+      </div>
+    </div>
   </body>
 </html>

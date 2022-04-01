@@ -21,5 +21,13 @@ module Poro
     def crossed_interview
       @campaign.interviews.where(employee_id: @employee_id).find(&:crossed?)&.decorate
     end
+
+    def completed?
+      [employee_interview, manager_interview, crossed_interview].compact.all?(&:completed?)
+    end
+
+    def locked?
+      [employee_interview, manager_interview, crossed_interview].compact.all?(&:locked?)
+    end
   end
 end
