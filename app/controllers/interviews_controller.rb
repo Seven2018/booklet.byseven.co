@@ -55,16 +55,6 @@ class InterviewsController < ApplicationController
     end
   end
 
-  def update_interviews
-    @user_id = params[:update_interviews][:employee_id]
-    @interviews = Interview.where(employee_id: @user_id, campaign_id: params[:update_interviews][:campaign_id])
-    authorize @interviews.first
-    @interviews.update_all(date: params[:update_interviews][:date])
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def answer_question
     answer_params = params[:interview_answer]
 
@@ -103,7 +93,9 @@ class InterviewsController < ApplicationController
 
     interview.complete!
 
-    head :no_content
+    respond_to do |format|
+      format.js
+    end
   end
 
   def lock_interview
@@ -115,7 +107,9 @@ class InterviewsController < ApplicationController
     interview.complete!
     interview.lock!
 
-    head :no_content
+    respond_to do |format|
+      format.js
+    end
   end
 
   def unlock_interview

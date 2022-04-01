@@ -23,16 +23,28 @@
         <p>Download PDF</p>
       <% end %>
       <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
+
         <button class="btn-blue-text" onclick="saveButton();">
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
-        <a data-toggle='modal' data-target='#lockInterview'>
+
+        <a href='<%= complete_interview_path(interview_id: @interview.id) %>' data-remote='true'>
           <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
             <p>Submit</p>
             <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
           </button>
         </a>
+
+        <a id='lock-interview-link'
+           class='d-none'
+           data-toggle='modal'
+           data-target='#lockInterview'></a>
+
+        <a id='confirm-interview-locked-link'
+           class='d-none'
+           data-toggle='modal'
+           data-target='#confirmLocked'></a>
 
       <% end %>
     </div>
@@ -144,18 +156,17 @@
       <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
         <span class="iconify" data-icon="bx:bx-download"></span>
       <% end %>
-      <% unless @interview.locked? || (@interview.crossed? && current_user != manager) %>
+      <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
         <button class="btn-blue-text" id="save-interview" onclick="saveButton();">
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
-      <% end %>
-      <% unless @interview.locked? %>
-        <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' onclick='thankYou();' <%= 'disabled' unless fully_answered %>>
-          <p><%= @interview.crossed? ? 'Save & Lock' : 'Submit' %></p>
-          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-        </button>
-        <%= link_to '', (@interview.crossed? ? lock_interview_path(interview_id: @interview.id) : complete_interview_path(interview_id: @interview.id)), class: 'submit-interview hidden', remote: true %>
+        <a data-toggle='modal' data-target='#lockInterview'>
+          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
+            <p>Submit</p>
+            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+          </button>
+        </a>
       <% end %>
     </div>
   </div>
@@ -186,9 +197,15 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade modal_folder' id='lockInterview' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div class='modal fade' id='lockInterview' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog modal-lg rounded-20px' role='document'>
     <%= render 'interviews/modals/lock_interview' %>
+  </div>
+</div>
+
+<div class='modal fade' id='confirmLocked' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog rounded-20px' role='document'>
+    <%= render 'interviews/modals/confirm_locked' %>
   </div>
 </div>
 
@@ -255,25 +272,6 @@
        }, 1500)
     } else {
       document.querySelector('body').classList.remove('wait')
-    }
-  }
-
-  function thankYou(element, option = 'forward') {
-    const main_container = document.querySelector('.interview-container')
-    const thank = document.querySelector('.interview-thanks')
-
-    if (option == 'forward') {
-
-      element.closest('div').querySelector('.submit-interview').click()
-      element.closest('.modal-content').querySelector('.action-modal__close').click()
-      main_container.classList.add('hidden')
-      thank.classList.remove('hidden')
-
-    } else if (option == 'back') {
-
-      thank.classList.add('hidden')
-      main_container.classList.remove('hidden')
-
     }
   }
 
