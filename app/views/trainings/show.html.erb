@@ -164,8 +164,8 @@
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'workshops/modals/manage_attendees',
                 workshop: @workshop,
-                attendees_acquired: attendees_acquired,
-                attendees_not_acquired: attendees_not_acquired %>
+                attendees_acquired: attendees_acquired.presence || [],
+                attendees_not_acquired: attendees_not_acquired.presence || [] %>
   </div>
 </div>
 
