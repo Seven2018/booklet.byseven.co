@@ -23,11 +23,11 @@
       <%= f.input :manager_id, collection: User.where(company_id: current_user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin']).order(lastname: :asc), label_method: lambda {|k| k.fullname} %>
       <%= f.input :phone_number, label: 'Phone:', class:'form-control' %>
       <%= f.input :linkedin, label: 'Linkedin (url):', class:'form-control' %>
-      <%= f.input :birth_date, as: :date, label: 'Birth date:', class:'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
-                              end_year: Date.today.year - 12 %>
+      <%= f.input :birth_date, as: :date, label: 'Birth date:', class:'form-control', default: Date.new(1970, 1, 1), start_year: Time.zone.today.year - 70,
+                              end_year: Time.zone.today.year - 12 %>
       <% if current_user.hr_or_above? %>
-        <%= f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Date.today.year - 70,
-                              end_year: Date.today.year %>
+        <%= f.input :hire_date, as: :date, label: 'Hire date:', class:'form-control', start_year: Time.zone.today.year - 70,
+                              end_year: Time.zone.today.year %>
       <% end %>
       <%= f.input :picture, label: 'Photo URL', class:'form-control' %>
       <% if current_user.hr_or_above? %>

@@ -123,7 +123,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get :update_interviews, controller: :interviews
   post :answer_question, controller: :interviews, as: :answer_interview_question
 
   # INTERVIEW FORMS
@@ -164,6 +163,7 @@ Rails.application.routes.draw do
   get :my_trainings, controller: :trainings
   get :my_team_trainings, controller: :trainings
   get 'my_team_trainings/users/:id', to: 'trainings#my_team_trainings_user_details', as: 'my_team_trainings_user_details'
+  get :send_acquisition_reminder_email, controller: :trainings
 
   # SESSIONS
   resources :sessions, only: %i[update destroy]

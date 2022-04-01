@@ -22,8 +22,24 @@
     <%= form_with url: send("campaign_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
       <%= render "campaign_draft/form_#{controller_name}", campaign: @campaign %>
       <% if @controller_action.to_sym == :launches_edit %>
+        <%= f.hidden_field :send_email %>
         <div class="d-flex justify-content-center pt-5">
-          <button class='bkt-btn-blue'>Launch Campaign</button>
+          <a class='bkt-btn-blue bkt-white' data-toggle='modal' data-target='#launchCampaign'>
+            Launch Campaign
+          </a>
+          <%= f.submit '', class: 'hidden-submit hidden' %>
+
+          <!----------->
+          <!-- MODAL -->
+          <!----------->
+
+          <div class='modal fade' id='launchCampaign' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+            <div class='modal-dialog rounded-20px' role='document'>
+              <%= render 'campaigns/modals/send_notification_email_on_confirm' %>
+            </div>
+          </div>
+
+          <!----------->
         </div>
       <% else %>
         <div class="d-flex justify-content-end pt-5">
@@ -35,7 +51,7 @@
     <div id="users_search" class="pos-abs <%= 'd-none' unless @controller_action == :participants_edit %>" style='left: 1.5rem; bottom: 9rem;'>
       <%= simple_form_for :search, method: :get do |f| %>
         <%= f.text_field :manager, placeholder: 'Search in Managers',
-                                   value: User.find(@campaign.default_interviewer_id).fullname,
+                                   value: @campaign.default_interviewer&.fullname,
                                    label: false,
                                    data: {behavior: 'autocomplete'} %>
       <% end %>

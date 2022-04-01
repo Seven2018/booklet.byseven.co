@@ -36,8 +36,8 @@
 
 <% if CampaignPolicy.new(current_user, @campaign).add_interview_set? %>
   <div class='modal fade' id='addParticipant' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-    <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
-      <%= render 'campaigns/modals/add_participant', campaign: @campaign, selected_interviewer: nil %>
+    <div id='add_participant-modal' class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
+      <%= render 'campaigns/modals/add_participant', campaign: @campaign, selected_interviewer: @selected_interviewer %>
     </div>
   </div>
 <% end %>
@@ -150,7 +150,6 @@
   ///////////////////
 
   $input_participant = $("#search_participant");
-  $input_manager = $("#search_manager");
 
   var options_participant = {
     listLocation: "users",
@@ -161,33 +160,12 @@
     list: {
       onChooseEvent: function() {
         user_id = $input_participant.getSelectedItemData().id
-        interviewer_id = document.querySelector('#search_interviewer_id').value
+        interviewer_id = document.querySelector('#search_add_to_interviewer_id').value
         button = document.getElementById('add-participant-button')
         new_url = new URL(button.href)
         new_url.searchParams.set('user_id', user_id)
-        new_url.searchParams.set('interviewer_id', interviewer_id)
+        new_url.searchParams.set('add_to_interviewer_id', interviewer_id)
         button.href = new_url.href
-      },
-      match: {
-        enabled: true
-      }
-    }
-  }
-
-  var options_manager = {
-    listLocation: "users",
-    getValue: 'name',
-    url: function(phrase) {
-      return "/users_search.json?manager=true&search=" + phrase
-    },
-    list: {
-      onChooseEvent: function() {
-        user_id = $input_manager.getSelectedItemData().id
-        button = document.getElementById('select_owner_link')
-        new_url = new URL(button.href)
-        new_url.searchParams.set('user_id', user_id)
-        button.href = new_url.href
-        swapManagerSearchButton(true)
       },
       match: {
         enabled: true
@@ -196,5 +174,4 @@
   }
 
   $input_participant.easyAutocomplete(options_participant);
-  $input_manager.easyAutocomplete(options_manager);
 </script>

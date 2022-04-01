@@ -33,7 +33,7 @@ module InterviewReports
 
             interview_type =
               if interviews_set.count == 1
-                interview_set.first.label
+                interviews_set.first.label
               elsif interviews_set.count == 2
                 'Both'
               else
@@ -43,7 +43,7 @@ module InterviewReports
             interviewer = interviews_set.first.interviewer
             interviewer_email = interviewer.email
             interviewer_fullname = interviewer.fullname
-            deadline = interviews_set.first.date
+            deadline = interviews_set.first.date.strftime('%d/%m/%Y')
 
             interviews_set.each do |interview|
 

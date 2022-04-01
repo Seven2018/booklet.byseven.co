@@ -36,6 +36,18 @@ class Campaign < ApplicationRecord
 
   alias :manager :owner
 
+  def self.start_at(date)
+    joins(:interviews)
+      .where('date >= ?', date)
+      .distinct
+  end
+
+  def self.end_at(date)
+    joins(:interviews)
+      .where('date <= ?', date)
+      .distinct
+  end
+
   def deadline
     interviews.order(date: :asc).first&.date
   end
@@ -60,6 +72,14 @@ class Campaign < ApplicationRecord
       interviews.completed.where(employee: employee).count
       .fdiv(interviews.where(employee: employee).count) * 100
     ).round
+  end
+
+  def completion_for_interviewer(interviewer)
+    return 0 if interviews.count.zero?
+    return 0 if interviews.where(interviewer: interviewer).count.zero?
+
+    (interviews.locked.where(interviewer: interviewer).count
+      .fdiv(interviews.where(interviewer: interviewer).count) * 100).round
   end
 
   def manager_interview(employee_id = nil)

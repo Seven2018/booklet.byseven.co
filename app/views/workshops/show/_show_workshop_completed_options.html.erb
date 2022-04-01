@@ -1,19 +1,45 @@
 <p>Is this training acquired ?</p>
 <div class="flex-row-between-centered">
   <div class="flex-row-start-centered mr-2rem">
-    <div class="rounded-10px mr-1rem cursor-pointer border-bkt-orange <%= 'bkt-bg-orange' if workshop_completed %>"
-         style='height: 2rem; width: 2rem;'
-         onclick='selectCompletion(this);'
-         data-value='Completed'></div>
-    <p class='<%= "bkt-orange" if workshop_completed %>'>Yes</p>
+    <a id='workshop-completed-button'
+       class='rounded-10px mr-1rem cursor-pointer border-bkt-orange <%= 'bkt-bg-orange' if workshop_completed %>'
+       style='height: 2rem; width: 2rem;'
+       data-toggle='<%= "modal" if !workshop_completed %>'
+       data-target='#confirmCompleted'></a>
+    <p id='workshop-completed-text'
+       class='<%= "bkt-orange" if workshop_completed %>'>Yes</p>
   </div>
   <div class="flex-row-start-centered">
-    <div class="rounded-10px mr-1rem cursor-pointer border-bkt-orange <%= 'bkt-bg-orange' if !workshop_completed %>"
+    <div id='workshop-not-completed-button'
+         class="rounded-10px mr-1rem cursor-pointer border-bkt-orange <%= 'bkt-bg-orange' if !workshop_completed %>"
          style='height: 2rem; width: 2rem;'
          onclick='selectCompletion(this);'
          data-value='Not completed'></div>
-    <p class='<%= "bkt-orange" if !workshop_completed %>'>No</p>
+    <p id='workshop-not-completed-text'
+       class='<%= "bkt-orange" if !workshop_completed %>'>No</p>
   </div>
 
   <%= link_to '', complete_workshop_path(id: workshop.id, user_id: current_user.id, status: ''), id: 'complete_workshop_link', class: 'hidden', remote: true %>
+  <a id='congratulations-link'
+     class='d-none'
+     data-toggle='modal'
+     data-target='#congratulations'></a>
 </div>
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade' id='confirmCompleted' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'workshops/modals/confirm_completed', workshop: workshop %>
+  </div>
+</div>
+
+<div class='modal fade' id='congratulations' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'workshops/modals/congratulations' %>
+  </div>
+</div>
+
+<!------------>

@@ -18,6 +18,7 @@
   &:hover {
     border: 1px solid $bkt-dark-blue;
     background-color: $bkt-dark-blue;
+    color: $bkt-white;
   }
   &:focus {
     background-color: $bkt-white;
@@ -47,6 +48,34 @@
   &:focus {
     background-color: $bkt-white;
     color: $bkt-white;
+  }
+  &.disabled {
+    opacity: 0.5;
+  }
+  &.pressed {}
+}
+
+.bkt-btn-blue-white {
+  color: $bkt-blue;
+  background-color: $bkt-white;
+  padding: 16px;
+  line-height: 2rem;
+  border-radius: 5px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  display: inline-block;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  font-size: 1.6rem;
+  font-weight: 600;
+  border: 2px solid $bkt-blue;
+  &:hover, &:focus {
+    color: $bkt-white;
+    background-color: $bkt-blue;
+  }
+  &:focus {
+    color: $bkt-white;
+    background-color: $bkt-dark-blue;
+    border: 2px solid $bkt-dark-blue;
   }
   &.disabled {
     opacity: 0.5;
@@ -107,6 +136,34 @@
   &:focus {
     background-color: $bkt-white;
     color: $bkt-dark-orange;
+  }
+  &.disabled {
+    opacity: 0.5;
+  }
+  &.pressed {}
+}
+
+.bkt-btn-orange-white {
+  color: $bkt-orange;
+  background-color: $bkt-white;
+  padding: 16px;
+  line-height: 2rem;
+  border-radius: 5px;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+  display: inline-block;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  font-size: 1.6rem;
+  font-weight: 600;
+  border: 2px solid $bkt-orange;
+  &:hover, &:focus {
+    color: $bkt-white;
+    background-color: $bkt-orange;
+  }
+  &:focus {
+    color: $bkt-white;
+    background-color: $bkt-dark-orange;
+    border: 2px solid $bkt-dark-orange;
   }
   &.disabled {
     opacity: 0.5;

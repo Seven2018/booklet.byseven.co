@@ -92,6 +92,15 @@ class User < ApplicationRecord
     user
   end
 
+  def invite!
+    invitation_token = SecureRandom.hex(32)
+
+    self.update invitation_token: invitation_token
+
+    UserMailer.with(user: self)
+        .account_created(self)
+        .deliver_later
+  end
 
   def self.import(rows, company_id, invited_by_id, send_invite = false)
     present = []
@@ -206,7 +215,7 @@ class User < ApplicationRecord
         end
         if interviews
           interviews = ''
-          user.interviews.where(label: ['Crossed', 'Simple']).each{|x| interviews += x.campaign.title + ' (' + x.campaign.id + ') - ' + x.date.strftime('%d/%m/%Y') + "\n"}
+          user.interviews.where(label: ['Crossed', 'Simple']).each{|x| interviews += x.campaign.title + ' (' + x.campaign.id + ') - ' + x.date.strftime('%d %b, %Y') + "\n"}
           line << interviews.delete_suffix("\n")
         end
         csv << line

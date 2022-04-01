@@ -9,25 +9,31 @@
 
     <div class="campaign-show__card-container col-sm-12 col-md-6 col-xl-4">
       <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
+
         <div class="campaign-show__card-overlay hidden"></div>
         <div class="campaign-card__options" onclick="openContentMenu(this);">
+
           <% if manager_view %>
+
             <i class="fas fa-ellipsis-v"></i>
             <div class="content-dropdown hidden">
-                <%= link_to 'See profile', user_path(employee) %>
-                <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id) %>
-                <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
-                <% if CampaignPolicy.new(current_user, @campaign).remove_interview_set? ||
-                  campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
-                  <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
+              <%= link_to 'See profile', user_path(employee) %>
+              <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'invite') %>
+              <%= link_to 'Send reminder email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'reminder') %>
+              <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
+              <% if CampaignPolicy.new(current_user, @campaign).remove_interview_set? ||
+                campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
+                <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
+              <% end %>
+              <% if current_user.hr_or_above? %>
+                <% interviews.select{|x| x&.locked_at&.present?}.each do |interview| %>
+                  <%= link_to "Unlock #{interview.label} interview", unlock_interview_path(interview_id: interview.id, interviewer_id: @selected_interviewer&.id), remote: true %>
                 <% end %>
-                <% if current_user.hr_or_above? %>
-                  <% interviews.select{|x| x&.locked_at&.present?}.each do |interview| %>
-                    <%= link_to "Unlock #{interview.label} interview", unlock_interview_path(interview_id: interview.id, interviewer_id: @selected_interviewer&.id), remote: true %>
-                  <% end %>
-                <% end %>
+              <% end %>
             </div>
+
           <% end %>
+
         </div>
 
         <div class="campaign-show__card-profile">
@@ -53,10 +59,13 @@
               <% end %>
               <div>
                 <p><%= interview.title %> review <br><em class='campaign-show__card-deadline'><%= "Until #{interview.date}" %></em></p>
-                <% if interview.completed? %>
-                  <% last_updated = interview.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d/%m/%Y') %>
+                <% if interview.locked? %>
                   <p class="campaign-show__card-interview-status--complete">
-                    Last updated on <%= last_updated %>
+                    Locked !
+                  </p>
+                <% elsif interview.completed? %>
+                  <p class="campaign-show__card-interview-status--complete">
+                    Completed !
                   </p>
                 <% else %>
                   <p class="campaign-show__card-interview-status--incomplete">

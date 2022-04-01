@@ -1,0 +1,23 @@
+<div class="mailer-banner">
+  <div class="mailer-banner-row">
+    <div class="mailer-banner-row-image">
+      <%= email_image_tag('Booklet-logo.png') %>
+    </div>
+  </div>
+</div>
+<div class="mailer-container">
+  <div class="mailer-text">
+    <div class="mailer-text-image">
+      <%= email_image_tag('noto_person-running.png') %>
+    </div>
+
+    <h2>3,2,1 Start !</h2>
+    <p>The campaign <%= @campaign.title %> has just begun !</p>
+    <p>You have <%= @interviewees_count %> interviewees to manage for this campaign.</p>
+    <br>
+    <div class="mailer-button">
+      <%= link_to 'Go to My Team Interviews', my_team_interviews_url %>
+    </div>
+    <span>Please do not answer this email</span>
+  </div>
+</div>

@@ -1,15 +1,26 @@
-<div class="modal-content">
-  <div class="modal-header modal-header__folder">
-    <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Send invitation emails</h3>
-      <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
-    </div>
+<div class="modal-content action-modal__content">
+  <div class="modal-header action-modal__header">
+    <h5 class="modal-title action-modal__title">Send invitations emails</h5>
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
   </div>
-  <div class="modal-body">
-    <p class ="modal-question">Do you wish to send invitations by email for this campaign ?</p>
-    <div class="flex-row-between-centered">
-      <button type="button" class="btn-blue-text" onclick='createCampaign(this, false)'>NO, THANKS</button>
-      <button type="button" class="btn-blue" onclick='createCampaign(this, true)'>YES, SEND BY EMAIL</button>
+  <div class="modal-body action-modal__body">
+    <p class ="text-center">Do you wish to send invitations by email<br> for this campaign ?</p>
+    <div class="modal-footer action-modal__footer">
+      <button type="button" class="bkt-btn-white" onclick='createCampaign(this, false)'>NO, THANKS</button>
+      <button type="button" class="bkt-btn-blue" onclick='createCampaign(this, true)'>YES, SEND BY EMAIL</button>
     </div>
   </div>
 </div>
+
+<script>
+  function createCampaign(element, send_invite = true) {
+    form = element.closest('form')
+    send_invite_status = form.querySelector('#send_email')
+    submit_button = form.querySelector('.hidden-submit')
+
+    send_invite_status.value = send_invite
+    submit_button.click()
+  }
+</script>

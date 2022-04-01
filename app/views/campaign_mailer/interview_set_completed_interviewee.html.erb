@@ -1,0 +1,23 @@
+<div class="mailer-banner">
+  <div class="mailer-banner-row">
+    <div class="mailer-banner-row-image">
+      <%= email_image_tag('Booklet-logo.png') %>
+    </div>
+  </div>
+</div>
+<div class="mailer-container">
+  <div class="mailer-text">
+    <div class="mailer-text-image">
+      <%= email_image_tag('noto_chequered-flag.png') %>
+    </div>
+
+    <h2>Interview completed !</h2>
+    <p>Your interview in the '<%= @interview.campaign.title %>' campaign is completed !</p>
+    <p>You may still access your answers :</p>
+    <br>
+    <div class="mailer-button">
+      <%= link_to 'See my answers', interview_url(@interview) %>
+    </div>
+    <span>Please do not answer this email</span>
+  </div>
+</div>

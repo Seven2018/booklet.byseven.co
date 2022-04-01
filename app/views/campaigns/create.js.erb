@@ -1,5 +1,0 @@
-document.querySelectorAll('#interview_campaign_id').forEach((element) => {
-  element.value = "<%= @campaign.id %>"
-})
-send_email_button = document.querySelector('.send-email-button')
-send_email_button.href = send_email_button.href + "<%= @campaign.id %>"

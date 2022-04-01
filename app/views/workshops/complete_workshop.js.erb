@@ -1,1 +1,14 @@
-  document.querySelector('#workshop-show__completed-options').innerHTML = '<%= j render("workshops/show/show_workshop_completed_options", workshop: @workshop, workshop_completed: @workshop_completed) %>';
+if (<%= @workshop_completed %>) {
+  document.querySelector('#workshop-completed-button').classList.add('bkt-bg-orange')
+  document.querySelector('#workshop-not-completed-button').classList.remove('bkt-bg-orange')
+  document.querySelector('#workshop-completed-text').classList.add('bkt-orange')
+  document.querySelector('#workshop-not-completed-text').classList.remove('bkt-orange')
+  document.querySelector('.modal.show').querySelector('.action-modal__close').click()
+  document.querySelector('#congratulations-link').click()
+} else {
+  document.querySelector('#workshop-completed-button').classList.remove('bkt-bg-orange')
+  document.querySelector('#workshop-not-completed-button').classList.add('bkt-bg-orange')
+  document.querySelector('#workshop-completed-text').classList.remove('bkt-orange')
+  document.querySelector('#workshop-not-completed-text').classList.add('bkt-orange')
+}
+

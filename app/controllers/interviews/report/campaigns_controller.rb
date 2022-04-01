@@ -27,7 +27,10 @@ class Interviews::Report::CampaignsController < ApplicationController
   end
 
   def campaigns
-    return current_user.company.campaigns.order(created_at: :desc) if params[:search].blank?
+    campaign_model = current_user.company.campaigns
+    campaign_model = campaign_model.start_at(Date.parse(params[:date_start].to_s)) if params[:date_start]
+    campaign_model = campaign_model.end_at(Date.parse(params[:date_end].to_s)) if params[:date_end]
+    return campaign_model.order(created_at: :desc) if params[:search].blank?
 
     Campaign.where(company_id: current_user.company.id).search_campaigns(params[:search])
   end

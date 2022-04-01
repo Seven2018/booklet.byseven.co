@@ -14,40 +14,41 @@ const lastDayOfYear = () => {
 
 flatpickr(".datepicker", {
   disableMobile: true,
-  dateFormat: "d/m/Y",
+  dateFormat: "j M, Y",
 })
 
 flatpickr(".datepicker-defaulting-to-now", {
   disableMobile: true,
-  dateFormat: "d/m/Y",
+  dateFormat: "j M, Y",
   defaultDate: Date.now()
 })
 
 flatpickr(".datepicker_", {
-  disableMobile: true
+  disableMobile: true,
+  dateFormat: "j M, Y"
 })
 
 flatpickr(".datepicker-inline", {
   disableMobile: true,
-  dateFormat: "d/m/Y",
+  dateFormat: "j M, Y",
   inline: true
 })
 
 flatpickr(".datepicker-defaulting-to-end-of-month", {
   disableMobile: true,
-  dateFormat: "d/m/Y",
+  dateFormat: "j M, Y",
   defaultDate: lastDayOfMonth()
 })
 
 flatpickr(".datepicker-defaulting-to-end-of-year", {
   disableMobile: true,
-  dateFormat: "d/m/Y",
+  dateFormat: "j M, Y",
   defaultDate: lastDayOfYear()
 })
 
 flatpickr(".datepicker-range", {
   disableMobile: true,
-  dateFormat: "d/m/Y",
+  dateFormat: "j M, Y",
   mode: 'range',
 })
 

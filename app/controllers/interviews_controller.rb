@@ -55,16 +55,6 @@ class InterviewsController < ApplicationController
     end
   end
 
-  def update_interviews
-    @user_id = params[:update_interviews][:employee_id]
-    @interviews = Interview.where(employee_id: @user_id, campaign_id: params[:update_interviews][:campaign_id])
-    authorize @interviews.first
-    @interviews.update_all(date: params[:update_interviews][:date])
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def answer_question
     answer_params = params[:interview_answer]
 
@@ -103,7 +93,9 @@ class InterviewsController < ApplicationController
 
     interview.complete!
 
-    head :no_content
+    respond_to do |format|
+      format.js
+    end
   end
 
   def lock_interview
@@ -112,10 +104,36 @@ class InterviewsController < ApplicationController
     interview = Interview.find interview_id
     authorize interview
 
+    interviewer = interview.interviewer
+    interviewee = interview.employee
+    campaign = interview.campaign
+
     interview.complete!
     interview.lock!
 
-    head :no_content
+    if interview.set.locked?
+
+      CampaignMailer.with(user: interviewee)
+                    .interview_set_completed_interviewee(interviewer, interviewee, interview)
+                    .deliver_later
+
+      CampaignMailer.with(user: interviewee)
+                    .interview_set_completed_interviewer(interviewer, interviewee, interview)
+                    .deliver_later
+
+    end
+
+    if interview.campaign.completion_for_interviewer(interviewer) == 100
+
+      CampaignMailer.with(user: interviewer)
+                    .campaign_completed(interviewer, campaign)
+                    .deliver_later
+
+    end
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def unlock_interview

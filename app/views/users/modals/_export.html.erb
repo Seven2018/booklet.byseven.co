@@ -9,9 +9,9 @@
     <%= simple_form_for :csv, url: organisation_path(format: :csv), method: :get do |f| %>
       <div class="organisation-controls__export-dates">
         <%= f.label 'From' %>
-        <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Date.today.beginning_of_year, onchange: 'selectOverviewDate()'}, onchange: 'selectOverviewDate()' %>
+        <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Time.zone.today.beginning_of_year, onchange: 'selectOverviewDate()'}, onchange: 'selectOverviewDate()' %>
         <%= f.label 'Until' %>
-        <%= f.input :end_date, label: false, input_html: {class: 'datepicker', value: Date.today, onchange: 'selectOverviewDate()'} %>
+        <%= f.input :end_date, label: false, input_html: {class: 'datepicker', value: Time.zone.today, onchange: 'selectOverviewDate()'} %>
         <%= f.hidden_field :content_ids, value: '' %>
         <%= f.submit '', class: 'hidden-submit hidden' %>
       </div>

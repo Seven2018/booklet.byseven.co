@@ -1,7 +1,6 @@
 class TrainingsController < ApplicationController
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_training
-  # skip_after_action :verify_policy_scoped
 
   def index
     @trainings = policy_scope(Training).where(company_id: current_user.company_id)
@@ -43,9 +42,9 @@ class TrainingsController < ApplicationController
   #     if params[:search_trainings][:period] == 'All'
   #       @trainings = @trainings
   #     elsif params[:search_trainings][:period] == 'Current'
-  #       @trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Date.today))
+  #       @trainings = @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Time.zone.today))
   #     elsif params[:search_trainings][:period] == 'Completed'
-  #       @trainings = @trainings.where_not_exists(:sessions, 'date >= ?', Date.today).where_not_exists(:sessions, 'available_date >= ?', Date.today)
+  #       @trainings = @trainings.where_not_exists(:sessions, 'date >= ?', Time.zone.today).where_not_exists(:sessions, 'available_date >= ?', Time.zone.today)
   #     end
   #     if current_user.hr_or_above?
   #       unless params[:search_trainings][:employee].blank?
@@ -79,9 +78,9 @@ class TrainingsController < ApplicationController
   #   @declined_recommendations = @recommendations.where(recommendation: "No")
   #   @answered_recommendations = @accepted_recommendations + @declined_recommendations
 
-  #   # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Date.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
+  #   # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Time.zone.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
   #   # @current_trainings = @trainings.sort_by { |training| training.next_session }
-  #   @current_trainings = @trainings.where_exists(:sessions, 'date >= ?', Date.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Date.today))
+  #   @current_trainings = @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Time.zone.today))
   #   @pasts_trainings = (@trainings - @current_trainings)
 
   #   respond_to do |format|
@@ -89,6 +88,28 @@ class TrainingsController < ApplicationController
   #     format.js
   #   end
   # end
+
+  def show
+    @training = Training.find(params[:id])
+    authorize @training
+
+    # TEMP (Since Training contains only one Workshop)
+    @workshop = @training.workshops.first
+    @workshop_completed =
+      Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed'
+  end
+
+  def destroy
+    @training = Training.find(params[:id])
+    authorize @training
+
+    @training.destroy
+
+    respond_to do |format|
+      format.html {redirect_to trainings_path}
+      format.js
+    end
+  end
 
   def my_trainings
     trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
@@ -116,6 +137,7 @@ class TrainingsController < ApplicationController
     @attendees = get_attendees_status(user_ids: current_user.employees.ids)
   end
 
+
   def my_team_trainings_user_details
     @user = User.find(params[:id])
     redirect_to my_team_trainings_path if @user.manager != current_user
@@ -132,35 +154,24 @@ class TrainingsController < ApplicationController
     @attendees_to_do = Attendee.where(user_id: params[:id], status: 'Not completed')
   end
 
-  def show
-    @training = Training.find(params[:id])
+  def send_acquisition_reminder_email
+    workshop = Workshop.find_by(id: params.dig(:workshop_id))
+    @training = Training.find_by(params.dig(:training_id))
+    @training = workshop.training if @training.nil?
     authorize @training
-
-    # TEMP (Since Training contains only one Workshop)
-    @workshop = @training.workshops.first
-    @workshop_completed =
-      Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed'
-  end
-
-  def create
-    @training = Training.new(training_params)
-    authorize @training
-    @training.company_id = current_user.company_id
-    if @training.save
-      respond_to do |format|
-        format.js
+    users =
+      if params.dig(:training_id).present?
+        @training.not_done_for_list
+      else
+        workshop.attendees.not_completed.map(&:user)
       end
+
+    users.uniq.each do |user|
+      # TO DO: UPDATE AS SOON AS A TRAINING CAN CONTAIN MULTIPLE WORKSHOPS
+      TrainingMailer.with(user: user).training_reminder(user, @training).deliver_later
     end
-  end
-
-  def destroy
-    @training = Training.find(params[:id])
-    authorize @training
-
-    @training.destroy
 
     respond_to do |format|
-      format.html {redirect_to trainings_path}
       format.js
     end
   end
@@ -175,9 +186,9 @@ class TrainingsController < ApplicationController
       if search_period == 'All'
         @trainings
       elsif search_period == 'Completed'
-        @trainings.where_not_exists(:sessions, 'date < ?', Date.today)
+        @trainings.where_not_exists(:sessions, 'date < ?', Time.zone.today)
       else
-        @trainings.where_exists(:sessions, 'date >= ?', Date.today)
+        @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today)
       end
 
     # if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?

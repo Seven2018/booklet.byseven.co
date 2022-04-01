@@ -1,0 +1,22 @@
+<div class="mailer-banner">
+  <div class="mailer-banner-row">
+    <div class="mailer-banner-row-image">
+      <%= email_image_tag('Booklet-logo.png') %>
+    </div>
+  </div>
+</div>
+<div class="mailer-container">
+  <div class="mailer-text">
+    <div class="mailer-text-image">
+      <%= email_image_tag('noto-v1_bell.png') %>
+    </div>
+
+    <h2>Here is a reminder for you !</h2>
+    <p><%= @interviewer.firstname %> needs you to complete your interview <%= @interview.campaign.title %>.</p>
+    <br>
+    <div class="mailer-button">
+      <%= link_to 'Go to my review', interview_url(@interview) %>
+    </div>
+    <span>Please do not answer this email</span>
+  </div>
+</div>

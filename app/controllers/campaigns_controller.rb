@@ -82,13 +82,16 @@ class CampaignsController < ApplicationController
 
   def send_notification_email
     authorize @campaign
+    interviewee = User.find(params[:user_id])
 
-    if params[:user_id].present?
-      user = User.find(params[:user_id])
-      CampaignMailer.with(user: user).invite_employee(@campaign.owner, user, Interview.find_by(campaign_id: @campaign.id, employee_id: params[:user_id], label: ['Employee', 'Simple'])).deliver
+    if interviewee.present?
+      interview = Interview.find_by(campaign: @campaign, employee: interviewee, label: 'Employee')
+      interviewer = interview.interviewer
+
+      params[:email_type] == 'invite' ? invitation_email(interviewer, interviewee, interview) : reminder_email(interviewer, interviewee, interview)
     else
-      @campaign.interviews.where(label: ['Employee', 'Simple']).each do |interview|
-        CampaignMailer.with(user: interview.employee).invite_employee(@campaign.owner, interview.employee, interview).deliver
+      @campaign.interviews.where(label: 'Employee').each do |interview|
+        params[:email_type] == 'invite' ? invitation_email(interview.interviewer, interview.employee, interview) : reminder_email(interview.interviewer, interview.employee, interview)
       end
     end
 
@@ -153,6 +156,24 @@ class CampaignsController < ApplicationController
       User.find(params[:search][:user_id])
     end
   end
+
+  ##########################
+  ## EMAILS NOTIFICATIONS ##
+  ##########################
+
+  def invitation_email(interviewer, interviewee, interview)
+    CampaignMailer.with(user: interviewee)
+            .invite_employee(interviewer, interviewee, interview)
+            .deliver_later
+  end
+
+  def reminder_email(interviewer, interviewee, interview)
+    CampaignMailer.with(user: interviewee)
+            .interview_reminder(interviewer, interviewee, interview)
+            .deliver_later
+  end
+
+  ##########################
 
   def set_campaign
     @campaign = Campaign.find(params[:id])

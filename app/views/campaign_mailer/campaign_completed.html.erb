@@ -1,0 +1,23 @@
+<div class="mailer-banner">
+  <div class="mailer-banner-row">
+    <div class="mailer-banner-row-image">
+      <%= email_image_tag('Booklet-logo.png') %>
+    </div>
+  </div>
+</div>
+<div class="mailer-container">
+  <div class="mailer-text">
+    <div class="mailer-text-image">
+      <%= email_image_tag('noto_chequered-flag.png') %>
+    </div>
+
+    <h2>Campaign completed, nice work !</h2>
+    <p>Your have just completed all your interviews in the '<%= @campaign.title %>' campaign !</p>
+    <p>You may have other ongoing campaign</p>
+    <br>
+    <div class="mailer-button">
+      <%= link_to 'See my campaigns', my_team_interview_url %>
+    </div>
+    <span>Please do not answer this email</span>
+  </div>
+</div>

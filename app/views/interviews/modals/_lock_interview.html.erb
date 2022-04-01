@@ -1,39 +1,47 @@
-<div class="modal-content">
+<div class="modal-content action-modal__content">
 
-  <div class="modal-header modal-header__simple">
+  <div class="modal-header action-modal__header">
+    <h5 class="modal-title action-modal__title"></h5>
     <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
     </button>
   </div>
 
-  <div class="modal-body modal-body__simple">
+  <div class="modal-body action-modal__body" data-controller='tabs workshop-show' data-tabs-target='tabContainer'>
 
-    <h3 class='mb-2rem'>Do you wish to lock this review ?</h3>
-
-    <div>
-      <p class='fs-1_6rem font-weight-500 bkt-dark-grey mb-1rem text-center'>You will not be able to update your answers if the review is locked.</p>
-      <p class='fs-1_6rem font-weight-500 bkt-dark-grey'>This review will remain accessible in a read-only mode.</p>
+    <div class="centered-item">
+      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+      <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_tiqe7g7x.json" background="transparent" speed="0.5" style="width: 200px; height: 200px; margin-top: -8rem;" autoplay></lottie-player>
     </div>
 
-    <div class="flex-row-between-centered mt-2rem">
-
-      <div>
-        <button class="btn-white" onclick="thankYou(this);">
-          <p class='bkt-blue'>Submit</p>
-        </button>
-        <%= link_to '', complete_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
-      </div>
-
-      <div>
-        <button class="btn-red flex-row-between-centered" onclick="thankYou(this);">
-          <p class='mr-1rem'>Submit & lock</p>
-          <span class="iconify fs-1_6rem bkt-white" data-icon="bxs:lock"></span>
-        </button>
-        <%= link_to '', lock_interview_path(interview_id: @interview.id), class: 'submit-interview hidden', remote: true %>
-      </div>
-
+    <div class="text-center z-index-5 mb-5rem" style='margin-top: -3rem;'>
+      <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-2rem">Interview submitted. Well done !</p>
+      <p class="fs-2rem font-weight-700 bkt-blue mb-1rem">Do you wish to lock this interview ?</p>
+      <p class="fs-1_4rem font-weight-500 bkt-blue line-height-2rem">You will not be able to change your answers any longer if the interview is locked.</p>
+      <p class="fs-1_4rem font-weight-500 bkt-blue line-height-2rem">This interview will remain accessible in read-only mode.</p>
     </div>
 
+    <div class="centered-item">
+
+      <% if current_user == @interview.interviewer %>
+
+        <%= link_to campaign_path(@interview.campaign), class: "bkt-btn-blue-white" do %>
+          No, I will lock it later <span class="iconify fs-1_8rem" data-icon="emojione-v1:eleven-oclock"></span>
+        <% end %>
+
+      <% else %>
+
+        <%= link_to my_interviews_path, class: "bkt-btn-blue-white" do %>
+          No, I will lock it later <span class="iconify fs-1_8rem" data-icon="emojione-v1:eleven-oclock"></span>
+        <% end %>
+
+      <% end %>
+
+      <%= link_to lock_interview_path(interview_id: @interview.id), class: 'bkt-btn-blue', remote: true do %>
+        Yes, let's lock it <span class="iconify fs-1_8rem" data-icon="twemoji:locked" style='margin-bottom: 0.5rem;'></span>
+      <% end %>
+
+    </div>
   </div>
 
 </div>

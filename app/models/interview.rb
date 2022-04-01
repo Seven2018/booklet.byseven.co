@@ -28,6 +28,7 @@ class Interview < ApplicationRecord
   delegate :interview_questions, to: :interview_form
 
   scope :completed, -> { where(completed: true) }
+  scope :locked, -> { where.not(locked_at: nil) }
 
   def set
     @set ||= Poro::Campaign.new(campaign: campaign, employee_id: employee_id)
@@ -53,7 +54,7 @@ class Interview < ApplicationRecord
   end
 
   def last_updated?
-    self.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d/%m/%Y')
+    self.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d %b, %Y')
   end
 
   def complete!
