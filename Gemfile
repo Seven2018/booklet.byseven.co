@@ -65,6 +65,7 @@ gem 'view_component'
 gem 'jsonb_accessor'
 gem 'faker'
 gem 'cloudinary'
+gem 'local_time'
 
 group :development do
   # gem 'better_errors'
