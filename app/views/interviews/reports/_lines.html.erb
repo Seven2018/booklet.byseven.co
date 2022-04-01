@@ -1,7 +1,7 @@
 <% reports.each do |report| %>
   <% lines = [
     report.creator.fullname,
-    report.created_at.strftime("%d/%m/%Y %Hh%M"),
+    local_time(report.created_at.strftime("%d/%m/%Y %Hh%M")),
     report.mode,
     report.start_time.strftime("%d/%m/%Y"),
     report.end_time.strftime("%d/%m/%Y"),

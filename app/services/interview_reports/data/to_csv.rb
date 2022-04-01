@@ -41,7 +41,7 @@ module InterviewReports
               line << employee.job_title
               line << campaign.completion_for(employee)
               line << interview.locked_at
-              line << interview.date
+              line << interview.date.strftime('%d/%m/%Y')
               tag_categories.each do |tag_category|
                 tag = UserTag.find_by(tag_category: tag_category, user: employee)
                 tag = tag.present? ? tag.tag.tag_name : ' '

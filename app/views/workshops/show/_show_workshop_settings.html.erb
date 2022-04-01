@@ -42,6 +42,9 @@
   <div id="workshop-show__attendees" class="bkt-bg-white mb-2rem p-2rem rounded-10px">
     <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
       <p>Acquired (<%= attendees_acquired.count %>)</p>
+      <a data-toggle='modal' data-target='#manageAttendees'>
+        <span class="iconify fs-2_4rem bkt-orange" data-icon="ic:baseline-remove-red-eye"></span>
+      </a>
     </div>
     <div class="flex-row-start-centered flex-wrap mb-2rem">
 
@@ -70,6 +73,9 @@
 
     <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
       <p>Not acquired yet(<%= attendees_not_acquired.count %>)</p>
+      <a data-toggle='modal' data-target='#manageAttendees'>
+        <span class="iconify fs-2_4rem bkt-orange" data-icon="ic:baseline-remove-red-eye"></span>
+      </a>
     </div>
     <div class="flex-row-start-centered flex-wrap">
 
