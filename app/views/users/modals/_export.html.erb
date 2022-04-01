@@ -78,7 +78,7 @@
         </div>
         <%= f.hidden_field :selected_users %>
       </div>
-      <div class="centered-item" style='margin-top: 2rem;'>
+      <div class="flex-row-center-centered" style='margin-top: 2rem;'>
         <%= f.submit '', class: 'hidden-submit hidden' %>
         <% if params[:redirected_from] == 'campaigns' %>
           <div class="btn-blue__white-border" onclick='exportUsers(this);'>

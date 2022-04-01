@@ -3,10 +3,10 @@
             'assessment' => 'ant-design:check-square-filled' } %>
 
 <div id='add_mod-<%= position %>' class="content-edit__add-mod-btn my-2rem pos-rel" style='border: 2px solid #CDCDCD;'>
-  <div class='add_button_show centered-item pos-abs height-2_5rem width-2_5rem' style='top: -1.25rem; right: -1.25rem; border-radius: 1.25rem;background-color: #CDCDCD;' onclick='addModMenu(this);'>
+  <div class='add_button_show flex-row-center-centered pos-abs height-2_5rem width-2_5rem' style='top: -1.25rem; right: -1.25rem; border-radius: 1.25rem;background-color: #CDCDCD;' onclick='addModMenu(this);'>
     <span class="iconify fs-1_8rem bkt-white" data-icon="akar-icons:plus"></span>
   </div>
-  <div class='add_button_hide centered-item height-2_5rem width-2_5rem bkt-bg-light-grey2 pos-abs hidden' style='top: -1.25rem; right: -1.25rem; border-radius: 1.25rem;background-color: transparent;'>
+  <div class='add_button_hide flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-grey2 pos-abs hidden' style='top: -1.25rem; right: -1.25rem; border-radius: 1.25rem;background-color: transparent;'>
     <span class="iconify fs-1_8rem bkt-orange" data-icon="uil:times"></span>
   </div>
 
@@ -16,19 +16,19 @@
 
   <div class="content-edit__add-mod-menu rounded-5px bkt-bg-white bkt-box-shadow-compact z-index-100 pos-abs hidden" style='top: -4.5rem; right: -13rem;'>
     <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem" onclick="addMod('text', this.closest('.content-edit__add-mod-btn'));">
-      <div class='centered-item bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
+      <div class='flex-row-center-centered bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
         <span class="iconify bkt-orange" data-icon="<%= icon['text'] %>"></span>
       </div>
       <p>Text</p>
     </a>
     <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem" onclick="addMod('video', this.closest('.content-edit__add-mod-btn'));">
-      <div class='centered-item bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
+      <div class='flex-row-center-centered bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
         <span class="iconify bkt-orange" data-icon="<%= icon['video'] %>"></span>
       </div>
       <p>Video</p>
     </a>
     <!-- <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem" onclick="addMod('assessment', this.closest('.content-edit__add-mod-btn'));">
-      <div class='centered-item bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
+      <div class='flex-row-center-centered bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
         <span class="iconify bkt-orange" data-icon="<%= icon['assessment'] %>"></span>
       </div>
       <p>Assessment</p>

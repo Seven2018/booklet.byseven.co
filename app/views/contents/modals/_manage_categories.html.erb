@@ -46,7 +46,7 @@
         </div>
 
       <% end %>
-      <div class='hidden-form-category-ajax hidden centered-item height-2_5rem'>
+      <div class='hidden-form-category-ajax hidden flex-row-center-centered height-2_5rem'>
         <%= simple_form_for :new_category, url: content_link_category_path, method: :get, remote: true do |f| %>
           <%= f.text_field :title, placeholder: 'New Theme', style: 'height: 100%;', autocomplete: 'off' %>
           <%= f.hidden_field :content_id, value: content.id %>
