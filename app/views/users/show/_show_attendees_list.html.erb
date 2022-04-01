@@ -2,12 +2,13 @@
   <div class="p-2rem" style="border-top: 2px solid #d0d0d0;">
 
     <div class="flex-row-between-centered mb-2rem">
-      <div class="centered-item height-5rem width-5rem bkt-bg-light-orange rounded-5px mr-1rem">
+      <div class="flex-row-center-centered height-5rem width-5rem bkt-bg-light-orange rounded-5px mr-1rem">
         <%= render_component Icons::GraduateHatComponent.new(fill: :orange, width: 30, height: 30) %>
       </div>
 
       <div class='flex-grow-1'>
-        <p class="fs-2_4rem font-weight-600 bkt-dark-grey"><%= attendee.session.training.title %></p>
+        <p class="d-none d-sm-block fs-2_4rem font-weight-600 bkt-dark-grey"><%= attendee.session.training.title %></p>
+        <p class="d-sm-none fs-2rem font-weight-600 bkt-dark-grey"><%= attendee.session.training.title %></p>
         <div class="flex-row-between-centered width-fit-content pt-1rem" style='padding: .25rem .75rem;'>
           <p class='fs-1rem bkt-dark-grey'>Acquired on :<%= attendee.session.date %></p>
         </div>

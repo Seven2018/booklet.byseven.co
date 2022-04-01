@@ -197,6 +197,9 @@
 
 .campaigns-my-interviews__main {
   width: 80%;
+  @include small-down {
+    width: 95%;
+  }
   max-width: 120rem;
   margin: 5rem 0;
 }
@@ -306,7 +309,7 @@
   justify-content: center;
   text-align: initial;
   width: 100%;
-  padding: 2rem;
+  //padding: 2rem;
   margin-bottom: 1.5rem;
   background-size: cover;
   background-position: center;
@@ -417,7 +420,7 @@
     margin-top: 20px;
     background-color: #3177B7;
     padding: 1rem;
-    border-radius: 2rem;
+    border-radius: 0rem 0rem 2rem 2rem;
 
     .campaigns-my-interviews__card-review-link {
 
@@ -550,7 +553,7 @@
   height: 2rem;
   border-radius: 2rem;
   text-align: center;
-  padding: 0px 0px 2.2rem 0px;
+  padding: 1rem 0px 2.2rem 0px;
   color: white;
   white-space: nowrap;
   width: 13rem;

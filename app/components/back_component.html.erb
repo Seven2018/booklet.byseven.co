@@ -1,5 +1,5 @@
 <div
-  class="bkt-btn-back d-flex justify-content-start align-items-center pos-abs cursor-pointer"
+  class="d-none d-sm-flex bkt-btn-back justify-content-start align-items-center pos-abs cursor-pointer"
   style='top: 3.6rem; left: 2rem;'
   data-controller='back'
   data-action='click->back#back'
@@ -7,4 +7,13 @@
 >
   <span class="iconify" data-icon="bi:arrow-left"></span>
   <p>Back</p>
+</div>
+<div
+  class="d-sm-none justify-content-start align-items-center pos-abs cursor-pointer"
+  style='top: 3.6rem; left: 2rem;'
+  data-controller='back'
+  data-action='click->back#back'
+  data-fallback='<%= @fallback %>'
+>
+  <span class="iconify" data-icon="ep:arrow-left-bold" data-width="20" data-height="20"></span>
 </div>

@@ -10,7 +10,7 @@
   <% content.mods.order(position: :asc).each do |mod| %>
     <a href="#anchor-<%= mod.id %>" class='bkt-light-grey6-hover'>
       <div id='anchor' class='flex-row-start-top mb-2rem'>
-        <div class='centered-item bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
+        <div class='flex-row-center-centered bkt-bg-light-orange height-2_5rem-forced width-2_5rem-forced rounded-3px mr-1rem'>
           <span class="iconify bkt-orange" data-icon="<%= icon[mod.mod_type] %>"></span>
         </div>
         <p class='line-height-2_5rem'><%= mod.title %></p>

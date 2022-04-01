@@ -112,13 +112,13 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  position: fixed;
   top: 0;
   width: 100vw;
   height: 2rem;
   background-color: white;
   z-index: 300;
   text-align: left;
+  height: 20%;
 
   @include from-medium {
     display: none;
@@ -178,7 +178,7 @@
   justify-content: center;
   align-items: center;
 
-    i:active, i:focus {
+  i:active, i:focus {
     color: white;
   }
 
@@ -356,7 +356,6 @@
 }
 
 
-
 #dropdownMenuButton span {
   display: block;
   position: absolute;
@@ -380,7 +379,7 @@
 }
 
 #dropdownMenuButton span:nth-child(odd) {
-  left:0px;
+  left: 0px;
   border-radius: 3px 0 0 3px;
 }
 
@@ -396,14 +395,14 @@
   top: 12px;
 }
 
-#dropdownMenuButton.open span:nth-child(1),#dropdownMenuButton.open span:nth-child(6) {
+#dropdownMenuButton.open span:nth-child(1), #dropdownMenuButton.open span:nth-child(6) {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 
-#dropdownMenuButton.open span:nth-child(2),#dropdownMenuButton.open span:nth-child(5) {
+#dropdownMenuButton.open span:nth-child(2), #dropdownMenuButton.open span:nth-child(5) {
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
@@ -449,7 +448,7 @@
   margin-left: 30px;
   font-size: medium;
 
-  .btn-secondary{
+  .btn-secondary {
     background-color: #fff !important;
     color: #858585 !important;
     border-color: #d3d3d3 !important;
@@ -511,7 +510,7 @@
     }
 
     ul li a:hover {
-      color:  #F26419;
+      color: #F26419;
     }
   }
 
@@ -551,8 +550,6 @@
     background-color: #DEE9F3 !important;
   }
 }
-
-
 
 
 .navbar-all {
@@ -660,7 +657,7 @@
   }
 }
 
-.navbar__blue{
+.navbar__blue {
   .avatar-sm {
 
     width: 4rem;

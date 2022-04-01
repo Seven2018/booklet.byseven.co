@@ -3,7 +3,7 @@
 
     <div class="flex-row-between-centered rounded-30px bkt-bg-white bkt-box-shadow mb-5rem overflow-hidden">
 
-      <div class='width-50 p-2rem'>
+      <div class='p-2rem'>
         <h1 class='mb-2rem'>Hello, <%= "#{@current_user.firstname}" %> !</h1>
         <% if current_user.manager_or_above? %>
           <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'> Welcome to My Trainings section, you have <%= @trainings.count %> trainings to do and/or validate, please see them below.</p>
@@ -13,12 +13,13 @@
       <%= render_component AsClAssetComponent.new(
         model: current_user.company,
         asset: :my_trainings_bg_picture,
-        style: 'object-fit: cover; width: 50%; height: 30rem;'
+        style: 'object-fit: cover; width: 50%; height: 30rem;',
+        class_name: 'd-none d-sm-flex'
       ) %>
 
     </div>
 
-      <div id='searchbar' class="mb-5rem">
+      <div id='searchbar' class="d-none d-sm-block mb-5rem">
         <div
           class='d-flex justify-content-start align-items-center position-relative'
           style='margin-bottom: 4rem'
