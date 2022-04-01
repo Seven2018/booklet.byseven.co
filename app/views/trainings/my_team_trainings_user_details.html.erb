@@ -1,6 +1,6 @@
 <div id="user-trainings__container" class='flex-column-start-centered bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='min-height: calc(100vh - 7.5rem);'>
 
-  <div class="bkt-bg-white rounded-20px p-2rem bkt-box-shadow pos-rel" style='width: 75%; max-width: 85rem; margin-top: 9rem;'>
+  <div class="bkt-bg-white rounded-20px p-2rem bkt-box-shadow pos-rel min-w-70vw max-w-95vw mt-5" >
     <%= render_component BackComponent.new(fallback: my_team_trainings_path) %>
 
     <div class='flex-column-start-centered'>
@@ -13,8 +13,8 @@
 
       <div class="flex-row-start-centered mb-1rem">
 
-        <div class="flex-row-between-centered">
-          <div class="centered-item height-4rem width-4rem rounded-20px bkt-bg-light-orange mr-1rem">
+        <div class="d-none d-sm-flex flex-row-between-centered">
+          <div class="flex-row-center-centered height-4rem width-4rem rounded-20px bkt-bg-light-orange mr-1rem">
             <%= render_component Icons::GraduateHatComponent.new %>
           </div>
           <p class='fs-1_6rem font-weight-600 bkt-dark-grey'>Trainings</p>
@@ -25,7 +25,7 @@
       <div class="flex-row-between-centered px-5rem">
 
         <div id='command__team_trainings-completed'
-             class="command-tab flex-column-between-centered bkt-bg-light-orange rounded-5px p-1rem mr-1rem cursor-pointer bkt-bd-orange"
+             class="command-tab flex-column-between-centered bkt-bg-light-orange rounded-5px p-1rem mr-1rem cursor-pointer border-bkt-orange-2px"
              style='height: 14rem; width: 14rem; border: 2px solid transparent;'
              onclick="displaySelectedTab(this);">
           <p class='fs-3rem'>🙌</p>
@@ -65,12 +65,12 @@
     function displaySelectedTab(element) {
         target = element.id.split('__')[1]
         selected_tab = document.querySelector('#display__' + target)
-        current_button = document.querySelector('.command-tab.bkt-bd-orange')
+        current_button = document.querySelector('.command-tab.border-bkt-orange-2px')
         current_tab = document.querySelector('.display-tab:not(.hidden)')
 
-        current_button.classList.remove('bkt-bd-orange')
+        current_button.classList.remove('border-bkt-orange-2px')
         current_tab.classList.add('hidden')
-        element.classList.add('bkt-bd-orange')
+        element.classList.add('border-bkt-orange-2px')
         selected_tab.classList.remove('hidden')
     }
 </script>

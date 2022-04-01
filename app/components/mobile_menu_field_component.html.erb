@@ -1,0 +1,14 @@
+<div class="col-12 fs-2_4rem font-weight-600 my-4 <%= @class_name %>">
+  <div class="row ml-3">
+    <div class="col-1 <%= @class_name_logo %> %>">
+      <%= content %>
+    </div>
+    <div class="col">
+      <%= link_to @title, @path, method: @method %>
+    </div>
+  </div>
+
+  <% if @divider %>
+    <div class="mt-4 width-100 mt-2 border-top"></div>
+  <% end %>
+</div>

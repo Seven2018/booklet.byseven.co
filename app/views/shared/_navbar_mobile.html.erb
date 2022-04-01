@@ -30,24 +30,20 @@
       </div>
     </div>
 
+    <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :clear_bg_logo) %>
+
     <div class="left-buttons--mobile">
       <div class="dropdown">
-        <div class="dropdown-toggle burger-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="dropdown-toggle burger-icon"
+             type="button"
+             id="dropdownMenuButton"
+             data-action="click->mobile-displayer#toggleHomeMenu">
           <span></span>
           <span></span>
           <span></span>
           <span></span>
           <span></span>
           <span></span>
-        </div>
-        <div class="dropdown-menu dropdown-menu-right seven-burger-menu" aria-labelledby="dropdownMenuButton">
-          <div>
-            <%= link_to 'Dashboard', trainings_path, class: 'dropdown-item' %>
-            <%= link_to 'Catalogue', catalogue_path, class: 'dropdown-item' %>
-            <%= link_to 'Employees', organisation_path, class: 'dropdown-item' %>
-            <%= link_to 'Report', trainings_reports_path, class: 'dropdown-item' %>
-            <%= link_to 'Book', book_contents_path, class: 'dropdown-item dropdown-item-orange' %>
-          </div>
         </div>
       </div>
     </div>

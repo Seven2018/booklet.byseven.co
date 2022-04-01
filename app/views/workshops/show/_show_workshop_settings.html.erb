@@ -4,7 +4,7 @@
 
     <% if current_user == workshop.training.creator || current_user.hr_or_above? %>
       <%= link_to edit_workshop_path(workshop) do %>
-        <div class="centered-item height-2_5rem width-2_5rem">
+        <div class="flex-row-center-centered height-2_5rem width-2_5rem">
           <span class="iconify fs-2_4rem bkt-orange" data-icon="ci:edit"></span>
         </div>
       <% end %>
@@ -13,7 +13,7 @@
   </div>
   <div class="flex-row-between-centered mb-2rem">
     <div class="flex-row-between-centered">
-      <div class="centered-item height-2_5rem width-2_5rem mr-1rem">
+      <div class="flex-row-center-centered height-2_5rem width-2_5rem mr-1rem">
         <span class="iconify fs-1_6rem bkt-orange"
           data-icon="<%= workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
         </span>
@@ -21,7 +21,7 @@
       <p class='fs-1_4rem bkt-dark-grey'><%= workshop.synchronous? ? 'Face-to-face' : 'Online' %></p>
     </div>
     <div class="flex-row-between-centered p-0_75rem border-bkt-dark-grey rounded-20px">
-      <div class="centered-item height-2_5rem width-2_5rem">
+      <div class="flex-row-center-centered height-2_5rem width-2_5rem">
         <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
       </div>
       <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(workshop.duration) %></p>
@@ -42,6 +42,9 @@
   <div id="workshop-show__attendees" class="bkt-bg-white mb-2rem p-2rem rounded-10px">
     <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
       <p>Acquired (<%= attendees_acquired.count %>)</p>
+      <a data-toggle='modal' data-target='#manageAttendees'>
+        <span class="iconify fs-2_4rem bkt-orange" data-icon="ic:baseline-remove-red-eye"></span>
+      </a>
     </div>
     <div class="flex-row-start-centered flex-wrap mb-2rem">
 
@@ -70,6 +73,9 @@
 
     <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
       <p>Not acquired yet(<%= attendees_not_acquired.count %>)</p>
+      <a data-toggle='modal' data-target='#manageAttendees'>
+        <span class="iconify fs-2_4rem bkt-orange" data-icon="ic:baseline-remove-red-eye"></span>
+      </a>
     </div>
     <div class="flex-row-start-centered flex-wrap">
 
@@ -106,8 +112,8 @@
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'workshops/modals/manage_attendees',
                 workshop: workshop,
-                attendees_acquired: attendees_acquired,
-                attendees_not_acquired: attendees_not_acquired %>
+                attendees_acquired: attendees_acquired.presence || [],
+                attendees_not_acquired: attendees_not_acquired.presence || [] %>
   </div>
 </div>
 

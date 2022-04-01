@@ -3,7 +3,9 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
     raise Pundit::NotAuthorizedError unless
       CampaignPolicy.new(current_user, campaign).add_interview_set?
 
-    @status = InterviewSets::Create.call(interview_params).present?
+    params_set = interview_params
+    params_set[:interviewer] = User.find_by(id: params.dig(:add_to_interviewer_id)) || interview_params[:interviewer]
+    @status = InterviewSets::Create.call(params_set).present?
     filter_interviewees
     respond_to do |format|
       format.html {redirect_to campaign_path(@campaign)}

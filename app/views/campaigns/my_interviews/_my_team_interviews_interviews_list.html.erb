@@ -20,7 +20,7 @@
         </div>
         <div class="campaigns-my-interviews__card-review-link">
           <%= link_to campaign_path(campaign, interviewer_id: current_user.id) do %>
-            <p>Manage campaign  <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+            <p>Manage campaign <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
           <% end %>
         </div>
       </div>
@@ -32,8 +32,8 @@
 
         <%
           employee_interview,
-          manager_interview,
-          crossed_interview =
+            manager_interview,
+            crossed_interview =
             campaign.interviews_for(employee.id)
         %>
 
@@ -64,7 +64,7 @@
                 <% if interview_form.answerable_by_manager? %>
                   <p class='bkt-light-grey6'>N/A</p>
                 <% elsif employee_interview&.completed? %>
-                 <p class='bkt-green'>Review completed</p>
+                  <p class='bkt-green'>Review completed</p>
                 <% else %>
                   <p class='bkt-red'>Review not completed</p>
                 <% end %>
@@ -112,4 +112,6 @@
     </div>
   </div>
 
+  <!--  mobile-->
+  <%= render 'campaigns/my_interviews/mobile_my_team_interviews_list', campaign: campaign, manager: manager %>
 <% end %>

@@ -32,7 +32,10 @@
 }
 
 .my-team-trainings__main {
-  width: 80%;
+  width: 95%;
+  @include from-medium {
+    width: 80%;
+  }
   max-width: 120rem;
   margin: 5rem 0;
 }

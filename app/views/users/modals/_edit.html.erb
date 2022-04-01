@@ -6,7 +6,7 @@
     </button>
   </div>
   <div class="modal-body action-modal__body">
-    <%= simple_form_for @user, class:'form-group' do |f| %>
+    <%= simple_form_for @user, class:'form-group', namespace: 'desktop-user-form' do |f| %>
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control' %>
       <%= f.input :email, label: 'Email:', class:'form-control' %>

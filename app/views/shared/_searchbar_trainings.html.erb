@@ -19,10 +19,10 @@
         <%# f.collection_check_boxes :categories, Category.where(company_id: current_user.company_id).map{|x| [x.id, x.title]}, :first, :last %>
         <%= collection_check_boxes(:training, :categories, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title) do |b| %>
             <div class="flex-row-between-start">
-              <div class="centered-item">
+              <div class="flex-row-center-centered">
                 <%= b.check_box %>
               </div>
-              <div class="centered-item">
+              <div class="flex-row-center-centered">
                 <p class='category-title'><%= b.text %></p>
               </div>
             </div>

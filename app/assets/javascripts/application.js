@@ -6,3 +6,4 @@
 //= require bootstrap-sprockets
 //= require material
 //= require floating-scroll
+//= require local-time
