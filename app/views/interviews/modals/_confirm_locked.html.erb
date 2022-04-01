@@ -2,15 +2,16 @@
 
   <div class="modal-body action-modal__body" data-controller='tabs workshop-show' data-tabs-target='tabContainer'>
 
-    <div class="centered-item">
-      <span class="iconify mb-2rem" data-icon="twemoji:locked" style='font-size: 90px;'></span>
+    <div class="flex-row-center-centered">
+      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+      <lottie-player src="https://assets5.lottiefiles.com/private_files/lf30_ulp9xiqw.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px; margin-top: -3rem;" loop autoplay></lottie-player>
     </div>
 
     <div class="text-center z-index-5 mb-5rem">
       <p class="fs-2_4rem font-weight-700 bkt-dark-grey">Interview locked !</p>
     </div>
 
-    <div class="centered-item">
+    <div class="flex-row-center-centered">
 
       <% if current_user == @interview.interviewer %>
 
