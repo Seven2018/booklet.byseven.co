@@ -2,12 +2,6 @@
 // MISC //
 //////////
 
-.centered-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .flex-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -70,6 +64,12 @@
   align-items: center;
 }
 
+.flex-row-center-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 ////////////
 // COLUMN //
 ////////////
@@ -108,3 +108,5 @@
   justify-content: flex-start;
   align-items: flex-start;
 }
+
+.flex-auto { flex: 0 0 auto; }

@@ -1,0 +1,19 @@
+
+<div class="d-sm-none flex-row-between-centered bkt-bg-white bkt-box-shadow rounded-10px mt-3rem width-90 fs-2rem font-weight-600 m-4 p-4 <%= @color %>">
+  <div class="fex-column">
+    <div class="flex-row-start-centered">
+      <span class="iconify fs-3rem mr-1" data-icon="fluent:chat-multiple-24-filled" style="position: relative; top: -2px; left: -5px"></span>
+      <p class="bkt-dark-grey fs-2rem font-weight-600">
+        <%= @title %>
+      </p>
+    </div>
+    <div class="flex-row-start-centered mt-3">
+      <%= @nbr %> reviews to do
+    </div>
+  </div>
+  <div class="fex-column">
+    <%= link_to @path do %>
+      <span class="iconify <%= @color %>" data-icon="dashicons:arrow-right-alt" data-width="20" data-height="20"></span>
+    <% end %>
+  </div>
+</div>

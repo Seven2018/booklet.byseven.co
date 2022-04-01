@@ -29,11 +29,11 @@
       <%= simple_form_for @answer, url: add_answers_assessment_path(@form, question_id: @question.id), method: :post do |f| %>
         <%= f.collection_radio_buttons :answer, array, :first, :last %>
         <% if @question.position != @form.assessment_questions.count %>
-          <div class="centered-item" style='width: 100%;'>
+          <div class="flex-row-center-centered" style='width: 100%;'>
             <%= f.submit 'Next question', class: 'btn btn-edit' %>
           </div>
         <% else %>
-          <div class="centered-item" style='width: 100%;'>
+          <div class="flex-row-center-centered" style='width: 100%;'>
             <%= f.submit 'Submit Form', id: 'form_close', class: 'btn btn-edit' %>
             <p id='submit-message'>Form submitted, thank you</p>
           </div>
@@ -43,11 +43,11 @@
       <%= simple_form_for @answer, url: mod_add_answers_assessment_path(@form.mod, @form, question_id: @question.id), method: :post do |f| %>
         <%= f.input :answer, as: :text %>
         <% if @question.position != @form.assessment_questions.count %>
-          <div class="centered-item" style='width: 100%;'>
+          <div class="flex-row-center-centered" style='width: 100%;'>
             <%= f.submit 'Next question', class: 'btn btn-edit' %>
           </div>
         <% else %>
-          <div class="centered-item" style='width: 100%;'>
+          <div class="flex-row-center-centered" style='width: 100%;'>
             <%= f.submit 'Submit Form', id: 'form_close', class: 'btn btn-edit' %>
             <p id='submit-message'>Form submitted, thank you</p>
           </div>

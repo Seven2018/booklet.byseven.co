@@ -3,13 +3,12 @@
 
     <div class="flex-row-between-centered rounded-30px bkt-bg-white bkt-box-shadow mb-5rem overflow-hidden">
 
-      <div class='width-50 p-2rem'>
-
+      <div class='p-2rem'>
         <h1 class='mb-2rem'>Hello, <%= "#{current_user.firstname}" %> !</h1>
         <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>You have <%= "#{@personal_campaigns.count}"  %> personal reviews<%= " and #{@campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>
-        <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem mb-2rem'>You can manage your personal reviews by clicking on <strong>My interviews.</strong></p>
+        <p class='d-none d-sm-block fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem mb-2rem'>You can manage your personal reviews by clicking on <strong>My interviews.</strong></p>
         <% if current_user.manager_or_above? %>
-          <%= link_to "My interviews", my_interviews_path, class: "btn btn-blue__white-border width-fit-content" %>
+          <%= link_to "My interviews", my_interviews_path, class: "d-none d-sm-block btn btn-blue__white-border width-fit-content" %>
         <% end %>
 
       </div>
@@ -17,12 +16,13 @@
       <%= render_component AsClAssetComponent.new(
         model: current_user.company,
         asset: :my_team_interviews_bg_picture,
-        style: 'object-fit: cover; width: 50%; height: 30rem;'
+        style: 'object-fit: cover; width: 50%; height: 30rem;',
+        class_name: 'd-none d-sm-flex'
       ) %>
 
     </div>
 
-    <div class="campaigns-my-interviews__tabs-controls">
+    <div class="d-none d-sm-flex campaigns-my-interviews__tabs-controls">
       <div class="booklet-select__container" >
         <div class="booklet-select__selected" onclick='BookletSelectExpand(this);'>
           <p><%= params[:period].present? ? params[:period].capitalize : 'Current' %></p>

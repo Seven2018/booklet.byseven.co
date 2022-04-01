@@ -74,6 +74,14 @@ class Campaign < ApplicationRecord
     ).round
   end
 
+  def completion_for_interviewer(interviewer)
+    return 0 if interviews.count.zero?
+    return 0 if interviews.where(interviewer: interviewer).count.zero?
+
+    (interviews.locked.where(interviewer: interviewer).count
+      .fdiv(interviews.where(interviewer: interviewer).count) * 100).round
+  end
+
   def manager_interview(employee_id = nil)
     if interviews.select(&:manager?).count == 1
       return interviews.find(&:manager?)

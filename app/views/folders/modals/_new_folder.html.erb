@@ -8,7 +8,7 @@
     <%= simple_form_for Folder.new do |f| %>
       <%= f.input :title, input_html: {onkeyup: "checkFolderValidity(this);", autocomplete: 'off'} %>
       <%= f.input :description %>
-      <div class="centered-item">
+      <div class="flex-row-center-centered">
         <%= f.hidden_field :categories %>
         <div class="flex-column-between-left">
           <%= f.label 'Categories' %>

@@ -28,6 +28,7 @@ class Interview < ApplicationRecord
   delegate :interview_questions, to: :interview_form
 
   scope :completed, -> { where(completed: true) }
+  scope :locked, -> { where.not(locked_at: nil) }
 
   def set
     @set ||= Poro::Campaign.new(campaign: campaign, employee_id: employee_id)

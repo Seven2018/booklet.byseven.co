@@ -99,17 +99,6 @@ class TrainingsController < ApplicationController
       Attendee.where(user: current_user, session: @workshop.sessions.ids).map(&:status).uniq.join == 'Completed'
   end
 
-  def create
-    @training = Training.new(training_params)
-    authorize @training
-    @training.company_id = current_user.company_id
-    if @training.save
-      respond_to do |format|
-        format.js
-      end
-    end
-  end
-
   def destroy
     @training = Training.find(params[:id])
     authorize @training

@@ -3,7 +3,8 @@
     crop: :fit,
     gravity: :center,
     width: asset_meta(:desktop).width,
-    height: asset_meta(:desktop).height
+    height: asset_meta(:desktop).height,
+    class: @class_name
   }.merge(style: @style)
   %>
 <% end %>

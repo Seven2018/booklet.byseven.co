@@ -62,7 +62,7 @@
         <% end %>
       </ul>
       <% if current_user.manager_or_above? %>
-        <div class="centered-item">
+        <div class="flex-row-center-centered">
           <%= link_to book_contents_path, class: 'btn-orange__white-border' do %>
             <p>Book</p>
           <% end %>
@@ -71,7 +71,7 @@
     </div>
     <div class="navbar-controls-right flex-row-between-centered">
       <% if current_user.company_id.nil? && params[:action] == 'dashboard' %>
-        <div class="centered-item">
+        <div class="flex-row-center-centered">
           <%= link_to new_company_path, class: 'btn-orange' do %>
             <p>Register Company</p>
           <% end %>
