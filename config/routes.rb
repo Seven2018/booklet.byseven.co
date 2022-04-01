@@ -200,11 +200,14 @@ Rails.application.routes.draw do
 
   # USERS
   devise_for :users, path: 'u', controllers: {
+    sessions: 'users/sessions',
     invitations: 'users/invitations',
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
   devise_scope :user do
     match '/sessions/user', to: 'devise/sessions#create', via: :post
+    post '/u/check', to: 'users/sessions#check', via: :post
+    get '/u/resend_email', to: 'users/sessions#resend_email'
   end
   resources :users, only: %i[create show update destroy]
   get :complete_profile, controller: :users

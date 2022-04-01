@@ -1,0 +1,28 @@
+<% content_for :title do %>
+  Oops, it seems this email<br/>
+  is not registered 🧐
+<% end %>
+<% content_for :subtitle do %>
+  You may have miswrited your email, try <br/>
+  again or leave us a message so our hero<br/> team can help you !
+<% end %>
+
+<div class="flew-row" data-controller="back">
+  <div>
+    <label for="email" class="fs-1_6rem bkt-red">Email</label>
+  </div>
+  <div>
+      <input id="email" class="fs-2rem bkt-bg-light-red width-100 p-2 pl-2 border-bkt-red rounded-2px" type="email" value="<%= email %>" disabled>
+  </div>
+  <div class="">
+    <button class="width-100 border-bkt-dark-grey rounded-2px mt-4 p-3" data-action="click->back#back">
+      <span class="iconify" data-icon="bi:arrow-left"></span>
+      Try again
+    </button>
+  </div>
+  <div class="">
+    <button class="width-100 bkt-bg-dark-grey bkt-white rounded-2px mt-4 p-3">
+      Contact Booklet support
+    </button>
+  </div>
+</div>
