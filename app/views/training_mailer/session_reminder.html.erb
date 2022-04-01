@@ -11,16 +11,19 @@
       <%= email_image_tag('noto-v1_eleven-oclock.png') %>
     </div>
 
-    <% if @time_remaining > 0 %>
-      <h2>Only <%= @time_remaining %> days left !</h2>
+    <h2><%= @email_object %></h2>
+
+    <% if @eta > 0 %>
+      <p>A training session will take place on <%= @session.date.strftime('%d %B %Y') %> from <%= @session.starts_at.strftime('%H:%M') %> to <%= @session.ends_at.strftime('%H:%M') %></p>
     <% else %>
-      <h2>Last day of the campaign !</h2>
+      <p>Don't forget today's training session from <%= @session.starts_at.strftime('%H:%M') %> to <%= @session.ends_at.strftime('%H:%M') %></p>
     <% end %>
-    <p>You have yet to submit your answers for the campaign <%= @interview.campaign.title %>,<br> don't forget to do it !</p>
+
     <br>
     <div class="mailer-button">
-      <%= link_to 'Go to my review', interview_url(@interview) %>
+      <%= link_to 'Go to my trainings', my_trainings_url %>
     </div>
     <span>Please do not answer this email</span>
   </div>
 </div>
+
