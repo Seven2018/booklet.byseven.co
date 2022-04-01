@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Booklet by Seven</title>
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+  <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
+  <%= favicon_link_tag asset_path('favicon.png') %>
+  <%= csrf_meta_tags %>
+  <%= action_cable_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%# javascript_include_tag Ckeditor.cdn_url %>
+  <%= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
+  <%= javascript_pack_tag 'application', defer: true %>
+</head>
+<body>
+<div class="flex-row-between-centered">
+  <div class="d-flex justify-content-center align-items-center bkt-bg-dark-grey h-100vh width-50">
+    <div class="bkt-white">
+      <h1 class="flex-row-center-centered width-80 m-auto pb-5">
+        A few clicks away
+        from accessing
+        all your apps ✨
+      </h1>
+      <div class="flex-row-center-centered">
+        <div class="d-flex justify-content-center align-items-center bkt-bg-white width-10rem height-10rem rounded-circle mr-3rem">
+          <%= render_component Icons::MessageReflectedComponent.new %>
+        </div>
+        <div class="d-flex justify-content-center align-items-center bkt-bg-white width-10rem height-10rem rounded-circle ">
+          <%= render_component Icons::GraduateHatReflectedComponent.new %>
+        </div>
+        <div class="d-flex justify-content-center align-items-center  bkt-bg-white width-10rem height-10rem rounded-circle ml-3rem">
+          <%= render_component Icons::TargetReflectedComponent.new %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center align-items-center  h-100vh width-100">
+    <div class="flex-column min-w-20vw">
+      <h3 class="mb-5">
+        <%= render_component Icons::BookletLogoComponent.new %>
+      </h3>
+      <h1 class="mb-3">
+        <%= yield :title %>
+      </h1>
+      <p class="bkt-light-grey mb-5">
+        <%= yield :subtitle %>
+      </p>
+      <div class="">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag 'application' %>
+</body>
+</html>

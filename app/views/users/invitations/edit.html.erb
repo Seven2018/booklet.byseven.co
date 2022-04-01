@@ -1,24 +1,31 @@
-<div id="container-login">
-  <div id="login-div">
-    <div class="login-title flex-row-around-centered">
-      <h2>Booklet by</h2>
-      <img src="https://byseven.co/assets/img/LOGO_SEVEN.png" alt="" height='50px'>
+
+
+<% content_for :title do %>
+  Create your password
+<% end %>
+<% content_for :subtitle do %>
+  Your puppy name is ok but we advice
+  a stronger one.
+<% end %>
+
+<div class="flew-row">
+  <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put }) do |f| %>
+    <%= f.error_notification %>
+    <%= f.hidden_field :invitation_token %>
+
+    <%= f.input :email,
+                input_html: { autocomplete: "email", class: 'bkt-bg-light-grey' },
+                label_html: { class: 'font-weight-500' }
+    %>
+    <%= f.input :password,
+                required: true,
+                label_html: { class: 'font-weight-500' } %>
+    <%= f.input :password_confirmation,
+                required: true,
+                label_html: { class: 'font-weight-500' } %>
+
+    <div class="">
+      <button class="width-100 bkt-bg-dark-grey bkt-white rounded-2px mt-4 p-3">Let’s start</button>
     </div>
-
-    <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put }) do |f| %>
-      <%= f.error_notification %>
-      <%= f.hidden_field :invitation_token %>
-
-      <div class="form-inputs">
-        <%= f.input :password %>
-        <%= f.input :password_confirmation %>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; margin-top:3rem;">
-        <%= button_tag type: 'submit', class: 'btn-orange' do %>
-          <p><%= t("devise.invitations.edit.submit_button") %></p>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+  <% end %>
 </div>
