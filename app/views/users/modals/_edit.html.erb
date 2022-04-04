@@ -10,9 +10,7 @@
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control' %>
       <%= f.input :email, label: 'Email:', class:'form-control' %>
-      <% if current_user.admin? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first %>
-      <% elsif current_user.account_owner? %>
+      <% if current_user.account_owner? %>
         <%= f.input :access_level, label: 'Access Level:', collection: ['Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first %>
       <% elsif current_user.hr? %>
         <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first %>
