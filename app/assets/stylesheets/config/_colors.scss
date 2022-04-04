@@ -21,6 +21,7 @@ $bkt-light-grey4: #F4F4F4;
 $bkt-light-grey5: #CDCDCD;
 $bkt-light-grey6: #979797;
 $bkt-light-grey7: #E3E3E3;
+$bkt-light-grey8: #ECECEC;
 $bkt-dark-grey: #333333;
 $bkt-green: #7BC079;
 $bkt-yellow: #FFC85C;
@@ -78,6 +79,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-light-grey4 { background-color: $bkt-light-grey4 !important; }
 .bkt-bg-light-grey5 { background-color: $bkt-light-grey5 !important; }
 .bkt-bg-light-grey6 { background-color: $bkt-light-grey6 !important; }
+.bkt-bg-light-grey8 { background-color: $bkt-light-grey8 !important; }
 .bkt-bg-dark-grey   { background-color: $bkt-dark-grey !important; }
 .bkt-bg-green       { background-color: $bkt-green !important; }
 .bkt-bg-yellow      { background-color: $bkt-yellow !important; }
@@ -104,6 +106,12 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-red-hover         { &:hover { background-color: $bkt-red !important; } }
 .bkt-bg-light-grey2-hover { &:hover { background-color: $bkt-light-grey2 !important; } }
 
+.bkt-light-grey-placeholder {
+  &::placeholder { color: $bkt-light-grey !important; }
+  &::-webkit-input-placeholder { color: $bkt-light-grey !important; }
+  &::-moz-placeholder { color: $bkt-light-grey !important; }
+  &::-ms-placeholder { color: $bkt-light-grey !important; }
+}
 
 // .hover-bkt-blue:hover        { color: $bkt-blue !important; }
 // .hover-bkt-bg-blue:hover        { background-color: $bkt-blue !important; }
