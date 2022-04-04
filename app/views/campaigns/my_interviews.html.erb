@@ -8,7 +8,7 @@
         <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>You have <%= "#{@campaigns.count}"  %> personal review<%= 's' if @campaigns.count > 1 %><%= " and #{@manager_campaigns.count} campaigns in progress in your team" if current_user.manager_or_above? %>.</p>
         <% if current_user.manager_or_above? %>
           <p class='d-none d-sm-block fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem mb-2rem'>You can manage your team by clicking on <strong>My team interviews.</strong></p>
-          <%= link_to "My Team interviews", my_team_interviews_path, class: "d-none d-sm-block btn btn-blue__white-border width-fit-content" %>
+          <%= link_to "My Team interviews", my_team_interviews_path, class: "d-none d-sm-block bkt-btn-blue-white" %>
         <% end %>
       </div>
 
