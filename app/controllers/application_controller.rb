@@ -95,8 +95,8 @@ class ApplicationController < ActionController::Base
 
   def redirect_unless_admin
     # once setup_sidekiq branch merged
-    # redirect_to root_path, notice: 'Espace réservé aux admins' unless true_user&.admin || current_user&.admin
-    redirect_to root_path, notice: 'Espace réservé aux admins' unless current_user&.admin
+    # redirect_to root_path, notice: 'Espace réservé aux admins' unless true_user&.admin? || current_user&.admin?
+    redirect_to root_path, notice: 'Espace réservé aux admins' unless current_user&.admin?
   end
 
   def ensure_company

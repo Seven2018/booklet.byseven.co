@@ -27,7 +27,7 @@ class ImpersonationsController < ApplicationController
   private
 
   def verify_user_is_admin
-    redirect_to root_path, notice: 'Espace réservé aux admins' unless true_user.admin || current_user.admin
+    redirect_to root_path, notice: 'Espace réservé aux admins' unless true_user.admin? || current_user.admin?
   end
 
   def user_params

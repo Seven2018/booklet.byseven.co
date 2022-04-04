@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
 
   require 'sidekiq/web'
-  authenticate :user, ->(u) { u.super_admin? } do
+  authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
   root to: 'pages#home'

@@ -12,6 +12,6 @@
   </div>
 <% end %>
 
-<% if current_user&.admin && current_user == true_user %>
+<% if current_user&.admin? && current_user == true_user %>
   <%= link_to 'impersonate', impersonations_path, class: 'position-fixed top-1 left-1 z-1001' %>
 <% end %>
