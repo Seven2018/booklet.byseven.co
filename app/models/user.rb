@@ -34,7 +34,7 @@ class User < ApplicationRecord
   enum access_level_int: {
     employee:       0,
     manager_light: 10,
-    hr_light:      20,
+    # hr_light:      20, # deprecated
     manager:       30,
     hr:            40,
     account_owner: 50,
