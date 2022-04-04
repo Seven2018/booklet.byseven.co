@@ -17,9 +17,6 @@
       <% elsif current_user.hr? %>
         <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first %>
       <% end %>
-      <% if current_user.admin? %>
-        <%= f.input :company, collection: Company.all, include_blank: false, label: 'Company:' %>
-      <% end %>
       <%= f.input :manager_id, collection: User.where(company_id: current_user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin']).order(lastname: :asc), label_method: lambda {|k| k.fullname} %>
       <%= f.input :phone_number, label: 'Phone:', class:'form-control' %>
       <%= f.input :linkedin, label: 'Linkedin (url):', class:'form-control' %>
