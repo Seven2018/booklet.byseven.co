@@ -82,6 +82,7 @@ module TrainingDrafts
           time_slots.map do |time_slot|
             session = Session.create(
               date: time_slot['date'],
+              available_date: time_slot['available_date'],
               starts_at: time_slot['starts_at'],
               ends_at: time_slot['ends_at'],
               cost: cost_per_session,
