@@ -39,7 +39,11 @@ class User < ApplicationRecord
     hr:            40,
     account_owner: 50,
     admin:         60
-   }
+  }
+
+  scope :manager_or_above, -> { where(access_level_int: [:manager, :hr, :account_owner]) }
+  scope :hr_or_above, -> { where(access_level_int: [:hr, :account_owner]) }
+  scope :account_owner_or_above, -> { where(access_level_int: [:account_owner]) }
 
   include PgSearch::Model
   pg_search_scope :search_users,
