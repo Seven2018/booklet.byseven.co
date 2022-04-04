@@ -9,33 +9,60 @@
       <%= @training.content.title %>
     </div>
 
-      <div class="d-flex justify-content-start align-items-center pb-2rem">
-        <div style="flex: 0 0 50px;">
-          <div class="btk-dark-grey fs-1_4rem">Cost :</div>
-        </div>
-        <div>
-        <%= text_field_tag(
-          :cost_per_employee,
-          @training.cost_per_employee,
-          type: :number,
-          step: ".01",
-          placeholder: '€',
-          style: 'width: 120px;',
-          class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3'
-        ) %>
-        </div>
+    <div class="d-flex justify-content-start align-items-center pb-2rem">
+      <div style="flex: 0 0 50px;">
+        <div class="btk-dark-grey fs-1_4rem">Cost :</div>
       </div>
+      <div>
+        <%= text_field_tag(
+              :cost_per_employee,
+              @training.cost_per_employee,
+              type: :number,
+              step: ".01",
+              placeholder: '€',
+              style: 'width: 120px;',
+              class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3'
+            ) %>
+      </div>
+    </div>
 
-      <div data-controller='time-slot-forms'
-        data-path='<%= training_draft_dates_time_slot_forms_path %>'
-      >
+    <div data-controller='time-slot-forms'
+         data-path='<%= training_draft_dates_time_slot_forms_path %>'
+    >
+      <% if @training.asynchronous? %>
+        <div class="d-flex justify-content-start align-items-center">
+          <div style="flex: 0 0 50px;">
+            <div class="btk-dark-grey fs-1_4rem">From :</div>
+          </div>
+          <div>
+            <%= text_field_tag(
+                  "time_slots[][async_date]",
+                  "#{@time_slots[0].date} to #{@time_slots[0].available_date}",
+                  as: :string,
+                  label: false,
+                  class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 datepicker-range',
+                  ) %>
+          </div>
+          <!--<div>
+            <%= text_field_tag(
+                  "time_slots[][available_date]",
+                  @time_slots[0].available_date,
+                  as: :string,
+                  label: false,
+                  class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 datepicker-range',
+                  ) %>
+          </div> -->
+        </div>
+      <% else %>
         <% @time_slots.each do |time_slot| %>
           <%= render 'training_draft/dates/time_slot', time_slot: time_slot %>
         <% end %>
         <div class="fs-1_4rem bkt-orange cursor-pointer"
-          data-action="click->time-slot-forms#create"
-        >Add an other time slot</div>
-      </div>
+             data-action="click->time-slot-forms#create"
+        >Add an other time slot
+        </div>
+      <% end %>
+    </div>
 
   </div>
 </div>

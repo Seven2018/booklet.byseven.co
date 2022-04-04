@@ -38,13 +38,17 @@ class TrainingDraft < ApplicationRecord
                  ]
 
   def self.new_time_slot
-   OpenStruct.new(date: nil, starts_at: nil, ends_at: nil)
+   OpenStruct.new(date: nil, available_date: nil, starts_at: nil, ends_at: nil)
   end
 
   def content
     return unless content_id
 
     Content.find content_id
+  end
+
+  def asynchronous?
+    content.content_type == 'Asynchronous'
   end
 
   def participants
