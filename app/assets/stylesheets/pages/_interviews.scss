@@ -93,6 +93,7 @@
   justify-content: space-between;
   align-items: flex-start;
   position: relative;
+
   @include from-medium {
     margin-top: 9rem;
   }
@@ -156,9 +157,6 @@
 
   p {
     line-height: 2rem;
-    // white-space: nowrap;
-    // overflow-x: hidden;
-    // text-overflow: ellipsis;
   }
 }
 
@@ -168,16 +166,18 @@
 }
 
 .interview-main__right {
-  padding: 5rem 2.5rem;
-  @include from-medium {
-    margin-left: 30rem;
-  }
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background-color: rgba(49, 119, 183, 0.05);;
+  padding: 2rem;
+  background-color: rgba(49, 119, 183, 0.05);
+
+  @include from-medium {
+    padding: 5rem 2.5rem;
+    margin-left: 30rem;
+  }
 
   @include from-medium-high {
     padding: 5vw;

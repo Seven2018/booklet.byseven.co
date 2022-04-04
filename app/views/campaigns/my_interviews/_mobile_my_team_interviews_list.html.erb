@@ -1,10 +1,6 @@
 <div class="d-sm-none bkt-bg-white bkt-box-shadow rounded-10px mt-3rem width-90  m-4 p-4 ">
-  <div class="flex-row-between-centered">
+  <div class="flex-row-start-centered">
     <div class="flex-column bkt-bg-red p-2 rounded-30px bkt-white"><%= campaign.completion_status_string %></div>
-    <%= link_to campaign_path(campaign, interviewer_id: current_user.id), class: 'flex-column bkt-blue' do %>
-      Manage campaign
-      <span class="iconify" data-icon="ic:round-navigate-next" data-width="20" data-height="20"></span>
-    <% end %>
   </div>
   <div class="flex-row-start-centered my-4">
     <div class="flex-column">
