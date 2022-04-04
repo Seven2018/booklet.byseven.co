@@ -17,8 +17,8 @@ class User < ApplicationRecord
   has_many :mods, through: :user_forms
   has_many :user_interests, dependent: :destroy
   has_many :interests, through: :user_interests, source: :content
-  has_many :campaigns, through: :interviews
   has_many :interviews, foreign_key: 'employee_id'
+  has_many :campaigns, through: :interviews
   has_many :interview_reports, foreign_key: 'creator_id'
   has_many :interview_answers
   has_many :campaign_drafts

@@ -2,13 +2,14 @@
                 id: @id,
                 class: 'd-none',
                 data: @data do %>
+  <div class="flex-row-start-centered my-5 pl-4">
+    <h1><%= @title %></h1>
+  </div>
   <% @list.each do |item| %>
-    <div class="flex-row-start-centered my-5 pl-4">
-      <h1><%= @title %></h1>
-    </div>
     <div class="flex-row-start-centered pl-4 pb-1rem border-bottom-bkt-light-grey mt-4">
       <%= content %>
       <p class="fs-1rem ml-3"><%= item.title %></p>
     </div>
   <% end %>
 <% end %>
+

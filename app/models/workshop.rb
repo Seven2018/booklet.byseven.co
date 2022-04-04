@@ -1,5 +1,5 @@
 class Workshop < ApplicationRecord
-  belongs_to :content
+  belongs_to :content, optional: true
   has_many :sessions
   has_many :attendees, through: :sessions
   has_many :users, through: :attendees
