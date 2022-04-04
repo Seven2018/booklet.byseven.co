@@ -10,24 +10,15 @@ module Users::Access
   ]
 
   def hr_or_above?
-    [
-      'Super Admin',
-      'Account Owner',
-      'HR'
-    ].include? access_level
+    hr? || account_owner? || admin?
   end
 
   def manager_or_above?
-    [
-      'Super Admin',
-      'Account Owner',
-      'HR',
-      'Manager'
-    ].include? access_level
+    manager? || hr_or_above?
   end
 
   def employee_or_above?
-    ACCESS_LEVELS.include? access_level
+    employee? || manager_or_above?
   end
 
   def employee_to_hr_light?
