@@ -1,7 +1,7 @@
 class CompanyInfo
   class << self
     def dev_email
-      ENV['DEV_MAIL'].split(',')
+      ENV['DEV_MAIL'].presence || 'william.favreau@byseven'
     end
 
     def no_reply
