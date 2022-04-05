@@ -10,12 +10,8 @@
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control' %>
       <%= f.input :email, label: 'Email:', class:'form-control' %>
-      <% if current_user.account_owner? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first %>
-      <% elsif current_user.hr? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first %>
-      <% end %>
-      <%= f.input :manager_id, collection: User.where(company_id: current_user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin']).order(lastname: :asc), label_method: lambda {|k| k.fullname} %>
+      <%= render 'users/access_level_input', f: f, user: @user %>
+      <%= f.input :manager_id, collection: User.where(company: current_user.company).manager_or_above.order(lastname: :asc), label_method: lambda {|k| k.fullname} %>
       <%= f.input :phone_number, label: 'Phone:', class:'form-control' %>
       <%= f.input :linkedin, label: 'Linkedin (url):', class:'form-control' %>
       <%= f.input :birth_date, as: :date, label: 'Birth date:', class:'form-control', default: Date.new(1970, 1, 1), start_year: Time.zone.today.year - 70,

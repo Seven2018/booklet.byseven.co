@@ -86,8 +86,6 @@ class UsersController < ApplicationController
     if params[:type] == 'address'
       address = params[:user][:address].gsub(address.split(/\d+/)[-2], address.split(/\d+/)[-2][0..-2] + "\n")
       @user.update(address: address)
-    elsif params[:access_level].present?
-      @user.update(access_level: params[:access_level])
     else
       @user.update(user_params)
     end
@@ -106,7 +104,7 @@ class UsersController < ApplicationController
           end
         end
       end
-      if params[:access_level].present?
+      if params[:access_level_int].present?
         if params[:last_page] == "catalogue"
           redirect_to catalogue_path
         elsif ['campaigns', 'interview_forms'].include?(params[:last_page].split('-').first)
@@ -189,15 +187,9 @@ class UsersController < ApplicationController
   def users_search
     skip_authorization
 
-    @users =
-      if params[:manager].present?
-        User.where(company_id: current_user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin'])
-      else
-        User.where(company_id: current_user.company_id)
-      end
-
+    @users = User.where(company: current_user.company)
+    @users = @users.manager_or_above if params[:manager].present?
     @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
-
 
     respond_to do |format|
       format.html{}
@@ -218,6 +210,9 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:firstname, :lastname, :email, :access_level, :manager_id, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_title, :company_id, :reset_password_token, :password, :password_confirmation)
+    params.require(:user).permit(:firstname, :lastname, :email, :access_level_int,
+      :manager_id, :birth_date, :hire_date, :termination_date, :address,
+      :phone_number, :social_security, :gender, :picture, :linkedin, :job_title,
+      :company_id, :reset_password_token, :password, :password_confirmation)
   end
 end

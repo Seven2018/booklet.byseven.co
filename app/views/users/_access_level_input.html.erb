@@ -1,0 +1,10 @@
+<% if current_user.hr_or_above? %>
+  <% user_accesses = User::ACCESS_LEVEL_LABELS.slice(:employee, :manager, :hr).invert %>
+  <% user_accesses << User::ACCESS_LEVEL_LABELS.slice(:account_owner).invert if current_user.account_owner? %>
+  <%= f.input :access_level_int,
+    label: 'Access Level:',
+    collection: user_accesses,
+    include_blank: false,
+    selected: user.access_level_int
+  %>
+<% end %>

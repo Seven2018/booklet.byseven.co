@@ -1,13 +1,15 @@
 module Users::Access
-  ACCESS_LEVELS = [
-    'Super Admin',
-    'Account Owner',
-    'HR',
-    'Manager',
-    'HR-light',
-    'Manager-light',
-    'Employee'
-  ]
+  def access_level_int_label
+    ACCESS_LEVEL_LABELS[access_level_int.to_sym]
+  end
+
+  ACCESS_LEVEL_LABELS = {
+    employee: 'Employee',
+    manager: 'Manager',
+    hr: 'HR',
+    account_owner: 'Account Owner',
+    admin: 'Admin'
+  }
 
   def hr_or_above?
     hr? || account_owner? || admin?

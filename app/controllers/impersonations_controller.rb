@@ -36,7 +36,7 @@ class ImpersonationsController < ApplicationController
       firstname: params[:firstname],
       lastname: params[:lastname],
       email: params[:email],
-      access_level: params[:access_level]
+      access_level_int: params[:access_level_int]
     }.compact
   end
 

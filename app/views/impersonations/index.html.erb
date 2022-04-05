@@ -2,11 +2,11 @@
 
   <div class="m-5 text-secondary">
     <div class="custom-h6 font-weight-bold">Role filter</div>
-    <% User::ACCESS_LEVELS.each_with_index do |access_level, index| %>
+    <% User::ACCESS_LEVEL_LABELS.each_with_index do |(access_level_key, access_level_label), index| %>
       <% unless index.zero? %>
         <span class="mx-1">|</span>
        <% end %>
-      <%= link_to access_level, impersonations_path(access_level: access_level), class: 'text-secondary ml-2' %>
+      <%= link_to access_level_label, impersonations_path(access_level_int: access_level_key), class: 'text-secondary ml-2' %>
     <% end %>
   </div>
 
@@ -36,7 +36,7 @@
         - créé le
         <%= user.created_at.strftime('%F') %>
         <span class="text-secondary">
-          <%= user.access_level %>
+          <%= user.access_level_int %>
           <span class="mx-1">@</span>
           <%= "#{user.company&.name} (id: #{user.company&.id})" %>
           </span>

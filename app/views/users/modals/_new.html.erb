@@ -11,17 +11,7 @@
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control', required:true %>
       <%= f.input :email, label: 'Email:', class:'form-control', input_html: {value: ''} %>
-      <%# f.input :password, label: 'Password:', class:'form-control', input_html: {value: ''} %>
-      <% if current_user.admin? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false %>
-      <% elsif current_user.account_owner? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false %>
-      <% elsif current_user.hr? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
-      <% end %>
-      <% if current_user.admin? %>
-        <%= f.input :company, collection: Company.all, include_blank: false, label: 'Company:' %>
-      <% end %>
+      <%= render 'users/access_level_input', f: f, user: User.new %>
       <%= f.hidden_field :send_invite, value: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
