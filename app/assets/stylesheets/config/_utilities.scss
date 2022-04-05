@@ -1,5 +1,15 @@
 .d-none-changeable { display: none; }
 
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    width: 0 !important;
+    display: none;  /* Safari and Chrome */
+  }
+}
+
 .z-index--1   { z-index: -1; }
 // .z-index-2    { z-index: 2; } # would overwrite bootstrap
 .z-index-5   { z-index: 5; }
@@ -48,6 +58,8 @@
 .rounded-30px { border-radius: 30px !important; }
 
 .rounded-b-15px { border-radius: 0px 0px 15px 15px !important; }
+
+.container-admin-height { height: calc(100vh - 15rem);}
 
 .height-2_4rem-forced { height: 2.4rem !important; min-height: 2.4rem !important; }
 .width-2_4rem-forced { width: 2.4rem !important; min-width: 2.4rem !important;}
