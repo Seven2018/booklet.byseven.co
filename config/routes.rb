@@ -209,7 +209,9 @@ Rails.application.routes.draw do
     post '/u/check', to: 'users/sessions#check', via: :post
     get '/u/resend_email', to: 'users/sessions#resend_email'
   end
-  resources :users, only: %i[create show update destroy]
+  resources :users, only: %i[create show update destroy] do
+    resource :permissions, only: %i[edit update]
+  end
   get :complete_profile, controller: :users
   get :link_to_company, controller: :users
   get :unlink_from_company, controller: :users

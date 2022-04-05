@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_28_102927) do
+ActiveRecord::Schema.define(version: 2022_04_05_142627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,7 +273,7 @@ ActiveRecord::Schema.define(version: 2022_03_28_102927) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "creator_id"
     t.bigint "tag_category_id"
-    t.jsonb "inputs", default: {}, null: false
+    t.jsonb "inputs", default: {}
     t.index ["company_id"], name: "index_interview_reports_on_company_id"
     t.index ["creator_id"], name: "index_interview_reports_on_creator_id"
     t.index ["tag_category_id"], name: "index_interview_reports_on_tag_category_id"
@@ -381,7 +381,7 @@ ActiveRecord::Schema.define(version: 2022_03_28_102927) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}, null: false
+    t.jsonb "data", default: {}
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"
@@ -483,6 +483,17 @@ ActiveRecord::Schema.define(version: 2022_03_28_102927) do
     t.integer "invitations_count", default: 0
     t.bigint "manager_id"
     t.integer "access_level_int", default: 0, null: false
+    t.boolean "can_create_campaigns", default: false, null: false
+    t.boolean "can_create_templates", default: false, null: false
+    t.boolean "can_create_interview_reports", default: false, null: false
+    t.boolean "can_read_contents", default: false, null: false
+    t.boolean "can_create_contents", default: false, null: false
+    t.boolean "can_create_trainings", default: false, null: false
+    t.boolean "can_edit_training_workshops", default: false, null: false
+    t.boolean "can_create_training_reports", default: false, null: false
+    t.boolean "can_read_employees", default: false, null: false
+    t.boolean "can_create_employees", default: false, null: false
+    t.boolean "can_edit_employees", default: false, null: false
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

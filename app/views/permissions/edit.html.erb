@@ -1,0 +1,21 @@
+<div class='d-flex justify-content-center w-100 bkt-bg-white' style='min-height: calc(100vh - 7.5rem);'>
+  <%= simple_form_for @user, url: user_permissions_path(@user), method: :patch, local: true, html: {
+    class:'form-group mt-5rem'
+  } do |f| %>
+    <%= f.input :can_create_campaigns %>
+    <%= f.input :can_create_templates %>
+    <%= f.input :can_create_interview_reports %>
+    <%= f.input :can_read_contents %>
+    <%= f.input :can_create_contents %>
+    <%= f.input :can_create_trainings %>
+    <%= f.input :can_edit_training_workshops %>
+    <%= f.input :can_create_training_reports %>
+    <%= f.input :can_read_employees %>
+    <%= f.input :can_create_employees %>
+    <%= f.input :can_edit_employees %>
+
+    <%= button_tag type: 'submit', class: 'bkt-btn-white' do %>
+      Save
+    <% end %>
+  <% end %>
+</div>
