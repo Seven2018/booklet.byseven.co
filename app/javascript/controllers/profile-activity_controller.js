@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets() {
-    return ['panel', 'typeList', 'profileInput']
+    return ['panel', 'typeList', 'profileInput', 'saveButton']
   }
 
   displayList(e) {
@@ -25,6 +25,8 @@ export default class extends Controller {
     this.typeListTargets.forEach((item) => {
       if (item.id == 'profile-options') item.classList.add('d-block')
     })
+    this.saveButtonTarget.classList.remove('d-none')
+    this.saveButtonTarget.classList.add('d-flex')
   }
 
   editable() {

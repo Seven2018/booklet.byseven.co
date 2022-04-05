@@ -3,112 +3,135 @@
 ////////////
 
 .bkt-btn-blue {
+  display: flex;
+  align-items: center;
+  width: fit-content;
   color: $bkt-white;
   background-color: $bkt-blue;
-  padding: 16px;
-  line-height: 2rem;
-  border-radius: 5px;
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-  display: inline-block;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 1.6rem;
   font-size: 1.6rem;
   font-weight: 600;
+  line-height: 2rem;
   border: 1px solid $bkt-blue;
+  border-radius: .5rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
   &:hover {
     border: 1px solid $bkt-dark-blue;
     background-color: $bkt-dark-blue;
     color: $bkt-white;
   }
+
   &:focus {
     background-color: $bkt-white;
     color: $bkt-dark-blue;
   }
+
   &.disabled {
     opacity: 0.5;
   }
+
   &.pressed {}
 }
 
 .bkt-btn-light-blue {
+  display: flex;
+  align-items: center;
+  width: fit-content;
   color: $bkt-blue;
   background-color: $bkt-light-blue2;
-  padding: 16px;
-  line-height: 2rem;
-  border-radius: 5px;
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-  display: inline-block;
+  padding: 1.6rem;
   font-size: 1.6rem;
   font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
   &:hover {
     background-color: $bkt-dark-blue;
     color: $bkt-white;
   }
+
   &:focus {
     background-color: $bkt-white;
     color: $bkt-white;
   }
+
   &.disabled {
     opacity: 0.5;
   }
+
   &.pressed {}
 }
 
 .bkt-btn-blue-white {
+  display: flex;
+  align-items: center;
+  width: fit-content;
   color: $bkt-blue;
   background-color: $bkt-white;
-  padding: 16px;
-  line-height: 2rem;
-  border-radius: 5px;
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-  display: inline-block;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 1.6rem;
   font-size: 1.6rem;
   font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
   border: 2px solid $bkt-blue;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
   &:hover, &:focus {
     color: $bkt-white;
     background-color: $bkt-blue;
   }
+
   &:focus {
     color: $bkt-white;
     background-color: $bkt-dark-blue;
     border: 2px solid $bkt-dark-blue;
   }
+
   &.disabled {
     opacity: 0.5;
   }
+
   &.pressed {}
 }
 
 .bkt-btn-white {
+  display: flex;
+  align-items: center;
+  width: fit-content;
   color: $bkt-dark-grey;
   background-color: $bkt-white;
-  padding: 16px;
-  line-height: 2rem;
-  border-radius: 5px;
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-  display: inline-block;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 1.6rem;
   font-size: 1.6rem;
   font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
   border: 1px solid transparent;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
 
   &:hover {
     border: 1px solid $bkt-light-grey4;
     background-color: $bkt-light-grey4;
   }
+
   &:focus {
     background-color: $bkt-white;
     color: $bkt-dark-blue;
   }
+
   &.disabled {
     border: 1px solid $bkt-light-grey5;
     color: $bkt-light-grey5
   }
+
   &.pressed {
     border: 1px solid $bkt-light-grey;
     background-color: $bkt-light-grey;
@@ -116,58 +139,70 @@
 }
 
 .bkt-btn-orange {
+  display: flex;
+  align-items: center;
+  width: fit-content;
   color: $bkt-white;
   background-color: $bkt-orange;
-  padding: 16px;
-  line-height: 2rem;
-  border-radius: 5px;
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-  display: inline-block;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 1.6rem;
   font-size: 1.6rem;
   font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
   border: 1px solid $bkt-orange;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
   &:hover {
     color: $bkt-white;
     border: 1px solid $bkt-dark-orange;
     background-color: $bkt-dark-orange;
   }
+
   &:focus {
     background-color: $bkt-white;
     color: $bkt-dark-orange;
   }
+
   &.disabled {
     opacity: 0.5;
   }
+
   &.pressed {}
 }
 
 .bkt-btn-orange-white {
+  display: flex;
+  align-items: center;
+  width: fit-content;
   color: $bkt-orange;
   background-color: $bkt-white;
-  padding: 16px;
-  line-height: 2rem;
-  border-radius: 5px;
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-  display: inline-block;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 1.6rem;
   font-size: 1.6rem;
   font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
   border: 2px solid $bkt-orange;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
   &:hover, &:focus {
     color: $bkt-white;
     background-color: $bkt-orange;
   }
+
   &:focus {
     color: $bkt-white;
     background-color: $bkt-dark-orange;
     border: 2px solid $bkt-dark-orange;
   }
+
   &.disabled {
     opacity: 0.5;
   }
+
   &.pressed {}
 }
 

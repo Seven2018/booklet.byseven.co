@@ -82,9 +82,9 @@
 
     <div class="interview-main__right">
 
-      <div class="btn-back-mobile">
-        <%= link_to campaign_path(@interview.campaign) do %>
-          <i class="fas fa-angle-left"></i>
+      <div class="flex-row-start-centered width-100">
+        <%= link_to :back, class: 'flex-row-center-centered height-5rem width-5rem' do %>
+          <i class="fas fa-angle-left fs-2_4rem"></i>
         <% end %>
       </div>
 
@@ -161,7 +161,7 @@
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
-        <a data-toggle='modal' data-target='#lockInterview'>
+        <a data-toggle='modal width-fit-content' data-target='#lockInterview'>
           <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
             <p>Submit</p>
             <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
@@ -244,11 +244,13 @@
 
   function enableSubmit() {
     required_answers = document.querySelectorAll('#interview_answer_answer:required, #interview_answer_objective:required')
-    submit_button = document.querySelector('#submit-interview')
+    submit_buttons = document.querySelectorAll('#submit-interview')
     required_answers.forEach((input) => {
       if (input.value == '') {
-        submit_button.classList.add('btn-blue-disabled')
-        submit_button.disabled = true
+        submit_buttons.forEach((button) => {
+          button.classList.add('btn-blue-disabled')
+          button.disabled = true
+        })
         return
       }
     })

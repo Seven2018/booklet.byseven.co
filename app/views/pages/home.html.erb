@@ -1,11 +1,12 @@
 <div class="flex-column-start-centered width-100 bkt-bg-light-grey2" style='min-height: calc(100vh - 7.5rem);'>
 
-  <div class="pt-5rem" style='width: 80%; max-width: 950px;'>
+  <div class="width-90 from_medium__width-80 pt-5rem" style='max-width: 950px;'>
     <h1 class='mb-2rem'>Welcome on Booklet, <%= "#{current_user.firstname}" %> !</h1>
     <strong><p>Get instant access to your trainings, and all your interviews from here.</p></strong>
   </div>
 
   <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+    <%= link_to '', my_interviews_path, class: 'stretched-link' %>
     <div style='border-left: 4px solid #3177B7;'>
       <div class="flex-row-start-centered mb-2rem">
         <div class="flex-row-center-centered height-5rem width-5rem bkt-bg-light-blue rounded-25px ml-3rem">
@@ -51,7 +52,7 @@
       </div>
 
       <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
-        <a href="/my_interviews"><span class="iconify bkt-blue" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span></a>
+        <span class="iconify bkt-blue" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
       </div>
     </div>
   </div>
@@ -61,6 +62,7 @@
   <% if current_user.manager_or_above? %>
 
     <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+      <%= link_to '', my_team_interviews_path, class: 'stretched-link' %>
 
       <div style='border-left: 4px solid #3177B7;'>
         <div class="flex-row-start-centered mb-2rem">
@@ -106,7 +108,7 @@
 
 
         <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
-          <a href="/my_team_interviews"><span class="iconify bkt-blue" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span></a>
+          <span class="iconify bkt-blue" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
         </div>
       </div>
     </div>
@@ -115,6 +117,7 @@
   <% end %>
 
   <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+    <%= link_to '', my_trainings_path, class: 'stretched-link' %>
 
     <div style='border-left: 4px solid #EF8C64;'>
       <div class="flex-row-start-centered mb-2rem">
@@ -171,7 +174,7 @@
       </div>
 
       <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
-        <a href="/my_trainings"><span class="iconify bkt-orange" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span></a>
+        <span class="iconify bkt-orange" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
       </div>
     </div>
 
@@ -182,6 +185,7 @@
   <% if current_user.manager_or_above? %>
 
     <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+      <%= link_to '', my_team_trainings_path, class: 'stretched-link' %>
 
       <div style='border-left: 4px solid #EF8C64;'>
         <div class="flex-row-start-centered mb-2rem">
@@ -242,7 +246,7 @@
 
 
         <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
-          <a href="/my_team_trainings"><span class="iconify bkt-orange" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span></a>
+          <span class="iconify bkt-orange" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
         </div>
       </div>
     </div>

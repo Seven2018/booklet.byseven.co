@@ -36,7 +36,7 @@
     <% end %>
 
     <% end %>
-    <div class="<%= 'overflow-y-scroll' unless @multi_step_form_navbar_content.present? %>" data-mobile-displayer-target="body">
+    <div class="<%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>" data-mobile-displayer-target="body">
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
         <% if params[:controller] == 'users' && params[:action] == 'show' %>

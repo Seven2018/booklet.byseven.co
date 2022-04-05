@@ -1,6 +1,6 @@
 <%= content_tag :div,
-                class: "flex-column-between-centered rounded-5px p-1rem mr-1rem cursor-pointer width-150px flex-auto height-14rem #{@bg}",
-                data: @data.merge({action: 'click->profile-activity#displayList'}) do %>
+                class: "flex-column-between-centered rounded-5px p-1rem mr-1rem cursor-pointer width-15rem flex-auto height-14rem #{@bg}",
+                data: @data.merge({action: ('click->profile-activity#displayList' if @nbr > 0)}) do %>
   <p class='fs-3rem'><%= @emoji %></p>
   <p class='fs-3rem font-weight-600 <%= @color %>'><%= @nbr %></p>
   <p class='width-70 fs-1_4rem font-weight-500 text-center'><%= @subtitle %></p>

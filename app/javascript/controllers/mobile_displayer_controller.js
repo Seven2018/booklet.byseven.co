@@ -8,5 +8,6 @@ export default class extends Controller {
   toggleHomeMenu(_) {
     this.bodyTarget.classList.toggle('d-none')
     this.menuTarget.classList.toggle('d-none')
+    event.currentTarget.classList.toggle('open')
   }
 }

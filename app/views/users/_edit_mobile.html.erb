@@ -39,7 +39,7 @@
 
   <div class="d-none" data-profile-activity-target="panel">
     <div class="position-fixed top-0 height-100 width-100 bkt-bg-dark-grey opacity_50pc" data-action="click->profile-activity#hideList"></div>
-    <div class="position-fixed bottom-0 max-h-120vw width-100 bkt-bg-white py-5">
+    <div class="position-fixed bottom-0 max-h-100vh width-100 bkt-bg-white py-5">
 
       <%= render_component MobileListActivityComponent.new(
         title: "#{@trainings_completed.count} Trainings done", list: @trainings_completed, id: 'trainings-done', data: { profile_activity_target: 'typeList' }
@@ -54,7 +54,7 @@
       <%= render_component MobileListActivityComponent.new(
         title: "#{@campaigns_completed.count} Interviews done", list: @campaigns_completed, id: 'interview-done', data: { profile_activity_target: 'typeList' }
       ) do %>
-        <%= render_component Icons::ProfessorHatUnfilledComponent.new %>
+        <span class="iconify fs-2_4rem bkt-blue" data-icon="uil:exchange-alt"></span>
       <% end %>
       <%= render_component MobileListActivityComponent.new(
         title: "#{@campaigns_current.count} Interviews to do", list: @campaigns_current, id: 'interview-todo', data: { profile_activity_target: 'typeList' }
@@ -124,7 +124,7 @@
 <!--        </div>-->
       <%# end %>
       <div class="d-flex-row-center-centered mt-5">
-        <%= button_tag type: 'submit', class: 'bkt-bg-dark-grey p-4 bkt-white rounded-5px d-flex m-auto', disabled: true, data: {profile_activity_target: 'profileInput'} do %>
+        <%= button_tag type: 'submit', class: 'bkt-bg-dark-grey p-4 bkt-white rounded-5px  d-none m-auto', disabled: true, data: {profile_activity_target: 'profileInput saveButton'} do %>
           Save changes
         <% end %>
       </div>
