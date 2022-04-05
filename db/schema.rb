@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_28_102927) do
+ActiveRecord::Schema.define(version: 2022_04_05_105107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,13 @@ ActiveRecord::Schema.define(version: 2022_03_28_102927) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_categories_on_company_id"
+  end
+
+  create_table "categories_interview_forms", id: false, force: :cascade do |t|
+    t.bigint "category_id"
+    t.bigint "interview_form_id"
+    t.index ["category_id"], name: "index_categories_interview_forms_on_category_id"
+    t.index ["interview_form_id"], name: "index_categories_interview_forms_on_interview_form_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -381,7 +388,7 @@ ActiveRecord::Schema.define(version: 2022_03_28_102927) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}, null: false
+    t.jsonb "data", default: {}
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"

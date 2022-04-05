@@ -126,7 +126,9 @@ Rails.application.routes.draw do
   post :answer_question, controller: :interviews, as: :answer_interview_question
 
   # INTERVIEW FORMS
-  resources :interview_forms
+  resources :interview_forms do
+    member { post 'toggle_tag' }
+  end
   get :interview_form_link_tags, controller: :interview_forms
   get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'
 
