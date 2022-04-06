@@ -123,6 +123,8 @@
 
   <%= simple_form_for question, remote: true do |f| %>
 
+    <%= f.hidden_field :requirement_and_visibility, value: true %>
+
     <div class="flex-row-between-centered">
       <div class='flex-column-between-left'>
         <label class='mb-2rem font-weight-500'>This question is visible for:</label>

@@ -163,7 +163,12 @@
                 </span>
               </div>
             </div>
-            <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+
+            <% if next_session.workshop.synchronous? %>
+              <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+            <% else %>
+              <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
+            <% end %>
           </div>
 
         <% end %>
@@ -233,7 +238,13 @@
                     </span>
                   </div>
                 </div>
-                <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+
+                <% if next_session.workshop.synchronous? %>
+                  <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+                <% else %>
+                  <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
+                <% end %>
+
               </div>
 
             <% end %>

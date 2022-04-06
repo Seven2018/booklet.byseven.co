@@ -19,32 +19,36 @@ class InterviewQuestionsController < ApplicationController
     authorize @question
     @question.update(question_params)
 
-    required_for_employee = params.dig(:interview_question, :required_for_employee) == 'on' ?  'employee' : nil
-    required_for_manager = params.dig(:interview_question, :required_for_manager) == 'on' ? 'manager' : nil
-    required_for_all = required_for_employee && required_for_manager ? 'all' : nil
-    required_for = 'none'
-    [required_for_all, required_for_employee, required_for_manager].each do |element|
-      if element.present?
-        required_for = element
-        break
-      end
-    end
-    visible_for_employee = params.dig(:interview_question, :visible_for_employee) == 'on' ?  'employee' : nil
-    visible_for_manager = params.dig(:interview_question, :visible_for_manager) == 'on' ? 'manager' : nil
-    visible_for_all = visible_for_employee && visible_for_manager ? 'all' : nil
-
-    visible_for = 'all'
-    [visible_for_all, visible_for_employee, visible_for_manager].each do |element|
-      if element.present?
-        visible_for = element
-        break
-      end
-    end
-
-    @question.update(required_for: required_for, visible_for: visible_for)
-
-    if @question.rating?
+    if @question.rating? && params.dig(:interview_question, :options).present?
       @question.update(options: {params.dig(:interview_question, :options) => 1})
+    end
+
+    if params.dig(:interview_question, :requirement_and_visibility).present?
+
+      required_for_employee = params.dig(:interview_question, :required_for_employee) == 'on' ?  'employee' : nil
+      required_for_manager = params.dig(:interview_question, :required_for_manager) == 'on' ? 'manager' : nil
+      required_for_all = required_for_employee && required_for_manager ? 'all' : nil
+      required_for = 'none'
+      [required_for_all, required_for_employee, required_for_manager].each do |element|
+        if element.present?
+          required_for = element
+          break
+        end
+      end
+      visible_for_employee = params.dig(:interview_question, :visible_for_employee) == 'on' ?  'employee' : nil
+      visible_for_manager = params.dig(:interview_question, :visible_for_manager) == 'on' ? 'manager' : nil
+      visible_for_all = visible_for_employee && visible_for_manager ? 'all' : nil
+
+      visible_for = 'all'
+      [visible_for_all, visible_for_employee, visible_for_manager].each do |element|
+        if element.present?
+          visible_for = element
+          break
+        end
+      end
+
+      @question.update(required_for: required_for, visible_for: visible_for)
+
     end
 
     respond_to do |format|
