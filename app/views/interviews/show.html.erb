@@ -53,31 +53,7 @@
   <div class="interview-main">
 
     <div class='interview-main__left bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
-      <h2>Chapters</h2>
-      <div class="interview-main__left-anchors">
-        <% chapter = 1 %>
-        <% QuestionDecorator.decorate_collection(
-            @interview.interview_form.interview_questions.order(position: :asc).where(visible_for: visibility)
-          ).each do |question| %>
-
-          <% question_text = question.question %>
-
-          <div class="interview-main__left-question">
-            <a href="#anchor-<%= question.position %>">
-              <% if question.separator? %>
-                <p class="interview-main__left-separator" title="<%= question_text %>"><%= chapter %>. <%= question_text %></p>
-                <% chapter += 1 %>
-              <% else %>
-                <div class="interview-main__left-icon">
-                  <span class="iconify" data-icon="<%= question.icon %>"></span>
-                </div>
-                <p title="<%= question_text %>"><%= question.question %></p>
-              <% end %>
-            </a>
-          </div>
-
-        <% end %>
-      </div>
+      <%= render 'interview_forms/edit/edit_show_summary', template: @interview.interview_form %>
     </div>
 
     <div class="interview-main__right">
@@ -122,7 +98,7 @@
 
         <div class="interview-main__right-questions">
           <div class="interview-main__right-question">
-            <a id="anchor-<%= question.position %>" style='position:absolute; top: -21.5rem;'></a>
+            <a id="anchor-<%= question.id %>" style='position:absolute; top: -21.5rem;'></a>
             <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
               <p><%= question_num %>. </p>
               <span class="iconify" data-icon="<%= question.icon %>"></span>
