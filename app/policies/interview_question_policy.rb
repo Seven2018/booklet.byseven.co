@@ -10,26 +10,30 @@ class InterviewQuestionPolicy < ApplicationPolicy
   end
 
   def create?
-    user.manager_or_above?
-  end
-
-  def add_mcq_option?
-    user.manager_or_above?
-  end
-
-  def edit_mcq_option?
-    user.manager_or_above?
-  end
-
-  def delete_mcq_option?
-    user.manager_or_above?
+    user.hr_or_above?
   end
 
   def update?
-    user.manager_or_above?
+    user.hr_or_above?
+  end
+
+  def duplicate?
+    user.hr_or_above?
+  end
+
+  def add_mcq_option?
+    user.hr_or_above?
+  end
+
+  def edit_mcq_option?
+    user.hr_or_above?
+  end
+
+  def delete_mcq_option?
+    user.hr_or_above?
   end
 
   def destroy?
-    user.manager_or_above?
+    user.hr_or_above?
   end
 end
