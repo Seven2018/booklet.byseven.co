@@ -63,19 +63,4 @@
 
 </div>
 
-
-<div id="template-edit__tags-container" class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
-  <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
-    <p>Template tags</p>
-    <a data-toggle='modal' data-target='#addTags' data-toggle='tooltip' title='Add Theme' class='flex-row-between-centered'>
-      <p class='fs-1_4rem font-weight-500 bkt-blue'>Add a tag</p>
-      <div class='add_button_show flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-blue ml-1rem' style='border-radius: 1.25rem;'>
-        <span class="iconify fs-1_8rem bkt-blue" data-icon="akar-icons:plus"></span>
-      </div>
-    </a>
-  </div>
-  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your template in order to search through templates efficiently and create accurate reports</p>
-  <div id="template-edit__tags" class="flex-wrap mt-2rem">
-    <%= render 'interview_forms/edit/edit_template_tags_list', template: template %>
-  </div>
-</div>
+<%= render_component TagManagementComponent.new(company_tags: @company_tags, form_tags: @tags, toggle_path: toggle_tag_interview_form_path) %>

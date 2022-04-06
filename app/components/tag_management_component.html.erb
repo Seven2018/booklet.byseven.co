@@ -1,0 +1,25 @@
+
+<div
+  class='bkt-bg-white mb-2rem p-2rem rounded-10px'
+  data-controller="tag-management"
+  data-all-tags="<%= @company_tags.join(',') %>"
+  data-path="<%= @toggle_path %>"
+>
+  <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+    <p>Template tags</p>
+  </div>
+  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your template in order to search through templates efficiently and create accurate reports</p>
+  <div data-tag-management-target="displayZone" class="position-relative width-100 mt-4 bkt-bg-light-grey8 p-2 rounded-2px" >
+    <% @form_tags.each do |tag| %>
+      <div class="tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px"><div class="d-flex align-items-center"><div class="tag-value"><%= tag %></div> <div class="pl-2" data-action="click->tag-management#remove">x</div></div></div>
+    <% end %>
+    <input data-action="click->tag-management#displayList keydown->tag-management#escape keydown->tag-management#filter"
+           class="tag-input bkt-bg-light-grey8 bkt-light-grey-placeholder border-0 d-inline-block m-2" placeholder="Empty" type="text" >
+    <div data-tag-management-target="tagList" class="d-none width-100 max-h-14rem position-absolute bkt-bg-white overflow-y-scroll" style="left: 0px">
+      <div class="d-flex m-4 bkt-light-grey">Select a tag or create new one</div>
+      <% @company_tags.each do |tag| %>
+        <div data-action="click->tag-management#addTag" class="d-flex align-items-center bkt-bg-light-grey-hover"> <div class="bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px"><%= tag %></div> </div>
+      <% end %>
+    </div>
+  </div>
+</div>
