@@ -5,10 +5,13 @@ class CampaignsController < ApplicationController
   before_action :show_navbar_campaign
 
   def index
+    @company_tags = Category
+                      .where(company_id: current_user.company_id)
+                      .pluck(:title)
+                      .uniq
     campaigns = policy_scope(Campaign).where(company: current_user.company)
                                       .where_exists(:interviews)
                                       .order(created_at: :desc)
-    @tag_categories = TagCategory.where(company_id: current_user.company_id)
 
     filter_campaigns(campaigns)
 
@@ -124,8 +127,10 @@ class CampaignsController < ApplicationController
         campaigns.where_exists(:interviews, locked_at: nil)
       end
 
-    if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
-      selected_tags = params.dig(:search, :tags).present? ? params.dig(:search, :tags).split(',') : params.dig(:filter_tags, :tag).map{|x| x.split(':').last.to_i}
+    if params.dig(:search, :tags).present?
+      selected_tags = params.dig(:search, :tags).split(',')
+      byebug
+
       selected_templates = InterviewForm.where(company_id: current_user.company_id).where_exists(:interview_form_tags, tag_id: selected_tags)
       @campaigns = @campaigns.where(interview_form_id: selected_templates.ids)
       @filtered_by_tags = 'true'

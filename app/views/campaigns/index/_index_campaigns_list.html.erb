@@ -4,6 +4,10 @@
 
   <div class="campaigns-index__list-line" id='campaign-line-<%= campaign.id %>'>
     <%= link_to '', campaign_path(campaign), class: 'stretched-link' %>
+
+    <div class="campaigns-index__list-line-element">
+      <p class='template-title' title='<%= campaign.title %>'><%= campaign.title %></p>
+    </div>
     <div class="campaigns-index__list-line-element">
       <div class="campaigns-index__list-line-icon">
         <span class="iconify" data-icon="<%= campaign.icon %>"></span>
@@ -11,12 +15,20 @@
       <p><%= campaign.campaign_type_str %></p>
     </div>
     <div class="campaigns-index__list-line-element">
-      <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-      <p><%= manager.fullname %></p>
+      <% tag_overflow = false %>
+      <% campaign.tags.each_with_index do |tag, idx| %>
+        <% if idx > 2 && !tag_overflow %>
+          <% tag_overflow = true %>
+          <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px">+<%= campaign.tags.count - 3 %></div>
+        <% else %>
+          <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px"><%= tag %></div>
+        <% end %>
+      <% end %>
     </div>
-    <div class="campaigns-index__list-line-element">
-      <p class='template-title' title='<%= campaign.title %>'><%= campaign.title %></p>
-    </div>
+<!--    <div class="campaigns-index__list-line-element">-->
+<!--      <img src="<%#= manager.picture %>" alt="<%#= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>-->
+<!--      <p><%#= manager.fullname %></p>-->
+<!--    </div>-->
     <div class="campaigns-index__list-line-element campaigns-index__list-element-employee">
       <p><%= campaign.employees.distinct.count %></p>
     </div>

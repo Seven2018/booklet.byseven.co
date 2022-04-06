@@ -111,4 +111,8 @@ class Campaign < ApplicationRecord
 
     interviews.where(employee_id: employee_id).find(&:crossed?)
   end
+
+  def tags
+    interviews.first&.interview_form&.categories&.pluck(:title)
+  end
 end

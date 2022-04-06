@@ -27,7 +27,7 @@ module CampaignDrafts
         when 'single' then
           template = InterviewForm.find @campaign_draft.default_template_id
           new_form = InterviewForm.create(
-            template.attributes.except('id', 'created_at', 'updated_at').merge(used: true)
+            template.attributes.except('id', 'created_at', 'updated_at').merge(used: true, categories: template.categories)
           )
 
           template.interview_questions.each do |question|
