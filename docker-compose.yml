@@ -41,7 +41,9 @@ services:
 
   rails:
     build: .
-    command: bash -c "cd /app && bundle install && bundle exec rails db:migrate && bundle exec rails s"
+    command: bash -c "cd /app && bundle install && bundle exec rails db:migrate && bundle exec rails s -b 0.0.0.0"
+    ports:
+      - '3000:3000'
     environment:
       - RAILS_ENV=development
       - REDISCLOUD_URL=redis://redis:6379

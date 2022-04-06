@@ -73,34 +73,34 @@
           </div>
 
           <% if interview_form.answerable_by_manager? %>
-            <%= link_to interview_path(manager_interview), class: 'btn-blue-my-interviews' do %>
-              <p><%= manager_interview&.completed? ? 'Update' : 'Start review' %></p>
+            <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
+              <%= manager_interview&.completed? ? 'Update' : 'Start review' %>
             <% end %>
           <% elsif interview_form.answerable_by_employee? && employee_interview.completed %>
-            <%= link_to interview_path(employee_interview), class: 'btn-blue-my-interviews' do %>
-              <p>Review</p>
+            <%= link_to interview_path(employee_interview), class: 'bkt-btn-blue' do %>
+              Review
             <% end %>
           <% elsif interview_form.answerable_by_both? %>
             <% if interviews.where(locked_at: nil).empty? %>
-              <button class="btn-blue-my-interviews btn-blue-my-interviews-disabled">
-                <p>Locked</p>
+              <button class="bkt-btn-blue disabled">
+                Locked
                 <span class="iconify" data-icon="bxs:lock-alt"></span>
               </button>
             <% elsif interview_form.cross && crossed_interview.completed? %>
-              <%= link_to lock_interview_path(interview_id: crossed_interview.id), class: 'btn-blue-my-interviews' do %>
-                <p>Lock interview</p>
+              <%= link_to lock_interview_path(interview_id: crossed_interview.id), class: 'bkt-btn-blue' do %>
+                Lock interview
               <% end %>
             <% elsif interview_form.cross && manager_interview.completed? && employee_interview.completed? %>
-              <%= link_to interview_path(crossed_interview), class: 'btn-blue-my-interviews' do %>
-                <p>Start cross review</p>
+              <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue' do %>
+                Start cross review
               <% end %>
             <% elsif interview_form.cross && manager_interview.completed? && !employee_interview.completed? %>
-              <button class="btn-grey-my-interviews">
-                <p>Waiting for employee's review</p>
+              <button class="bkt-bg-light-grey p-1rem rounded-5px">
+                Waiting for employee's review
               </button>
             <% else %>
-              <%= link_to interview_path(manager_interview), class: 'btn-blue-my-interviews' do %>
-                <p>Start review</p>
+              <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
+                Start review
               <% end %>
             <% end %>
           <% end %>

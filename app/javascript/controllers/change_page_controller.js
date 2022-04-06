@@ -32,7 +32,6 @@ export default class extends Controller {
   _setPaginationLinks() {
     document.querySelectorAll('ul.pagination a').forEach((link) => {
       link.setAttribute('data-action', 'click->change-page#set')
-      console.log('link',link)
     })
   }
 }

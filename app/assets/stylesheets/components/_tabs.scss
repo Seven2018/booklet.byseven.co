@@ -70,11 +70,34 @@
 
 .booklet-tab-control {
   color: $bkt-dark-grey;
-  border-bottom: 1px solid $bkt-light-grey5;
+  border-bottom: .5px solid $bkt-light-grey5;
 
   &.active {
     color: $bkt-orange;
-    border-bottom: 1px solid $bkt-orange;
+    border-bottom: .5px solid $bkt-orange;
+  }
+}
+
+.interviews-tab-control {
+  color: $bkt-dark-grey;
+  border-bottom: .5px solid $bkt-light-grey5;
+
+  .interviews-tab-control__counter {
+    background-color: $bkt-light-grey5;
+
+    p { color: $bkt-white; }
+  }
+
+  &.active {
+    background-color: transparent;
+    color: $bkt-blue;
+    border-bottom: .5px solid $bkt-blue;
+
+    .interviews-tab-control__counter {
+    background-color: $bkt-light-blue;
+
+      p { color: $bkt-blue; }
+    }
   }
 }
 

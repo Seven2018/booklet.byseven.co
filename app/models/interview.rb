@@ -44,10 +44,9 @@ class Interview < ApplicationRecord
   def fully_answered?
     interview_answers.count >=
       if self.crossed?
-        interview_questions.not_separator.visible?('manager').required.count
+        interview_questions.not_separator.required_for_manager.count
       else
         interview_questions.not_separator
-        .visible?(self.label == 'Employee' ? 'employee' : 'manager')
         .required?(self.label == 'Employee' ? 'employee' : 'manager')
         .count
       end

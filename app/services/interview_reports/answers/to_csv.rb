@@ -17,7 +17,7 @@ module InterviewReports
             'Interviewee fullname'] +
             tag_categories.map(&:name) +
             ['Deadline'] +
-            interview_form.interview_questions.where.not(question_type: 'separator').order(position: :asc).map(&:question)
+            interview_form.interview_questions.where.not(question_type: 'separator').order(position: :asc).map{|x| x.rating? ? (x.question.tr(",\n", " ") + " /" + x.options.keys.first) : x.question.tr(",\n", " ")}
 
         CSV.generate(headers: true) do |csv|
           csv << columns
@@ -59,15 +59,15 @@ module InterviewReports
               line << deadline
 
               interview.interview_questions.order(position: :asc).each do |question|
-                answer = question.interview_answers.find_by(interview: interview, user: employee)
+                answer = question.interview_answers.find_by(interview: interview)
                 next if answer.nil?
                 answer_text =
                   if question.rating?
-                    'Answer: ' + answer.answer + '/' + question.options.keys.first
+                    "Answer: " + answer.answer
                   elsif question.open_question? || question.mcq?
-                    'Answer: ' + answer.answer
+                    "Answer: " + answer.answer.tr(",\n", " ")
                   elsif question.objective?
-                    'Objective: ' + answer.objective + "\r" + 'Answer: ' + answer.answer
+                    "Objective: " + answer.objective.tr(",\n", " ") + "\r" + "Answer: " + answer.answer.tr(",\n", " ")
                   end
                 line << answer_text
               end

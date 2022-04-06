@@ -132,6 +132,7 @@ class InterviewsController < ApplicationController
     end
 
     respond_to do |format|
+      format.html {redirect_to campaign_path(campaign)}
       format.js
     end
   end

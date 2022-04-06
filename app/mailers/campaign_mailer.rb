@@ -10,7 +10,7 @@ class CampaignMailer < ApplicationMailer
     @interviewer = interviewer
     @interviewees_count = interviewees_count
     @campaign = campaign
-    mail(to: @interviewee.email, subject: "You are now interviewer for the campaign '#{@campaign.title}' !")
+    mail(to: @interviewer.email, subject: "You are now interviewer for the campaign '#{@campaign.title}' !")
   end
 
   def interview_reminder(interviewer, interviewee, interview)

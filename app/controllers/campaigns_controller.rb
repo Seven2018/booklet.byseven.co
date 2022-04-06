@@ -49,11 +49,14 @@ class CampaignsController < ApplicationController
       id: Interview.where(interviewer: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
+    @completed_campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
+
     @campaigns =
       if params.dig(:period) == 'completed'
-        @campaigns.where_not_exists(:interviews, locked_at: nil)
+        @completed_campaigns
       else
-        @campaigns.where_exists(:interviews, locked_at: nil)
+        @ongoing_campaigns
       end
 
     @campaigns         = CampaignDecorator.decorate_collection @campaigns
@@ -71,11 +74,15 @@ class CampaignsController < ApplicationController
     @campaigns =          campaigns.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
 
-    if params.dig(:period) == 'completed'
-      @campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
-    else
-      @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
-    end
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
+    @completed_campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
+
+    @campaigns =
+      if params.dig(:period) == 'completed'
+        @completed_campaigns
+      else
+        @ongoing_campaigns
+      end
 
     @campaigns = @campaigns.sort{|x| x.deadline}.reverse
   end
