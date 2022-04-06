@@ -41,4 +41,11 @@ class InterviewForm < ApplicationRecord
       raise UnknownKind
     end
   end
+
+  def reorder_questions!
+    interview_questions.order(position: :asc)
+                       .each_with_index do |question, i|
+      question.update_columns(position: i + 1)
+    end
+  end
 end
