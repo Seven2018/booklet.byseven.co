@@ -36,7 +36,12 @@
 
         <div class="flex-row-between-centered">
           <span class="iconify fs-1_6rem bkt-orange mr-1rem" data-icon="akar-icons:calendar"></span>
-          <p>Next date: <%= next_session.date %> at <%= next_session.starts_at.strftime('%H:%M') %></p>
+
+          <% if next_session.workshop.synchronous? %>
+            <p>Next date: <%= next_session.date %> at <%= next_session.starts_at.strftime('%H:%M') %></p>
+          <% else %>
+            <p>Next date: <%= next_session.date %></p>
+          <% end %>
         </div>
 
       </div>
