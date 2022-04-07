@@ -119,7 +119,7 @@ class Campaign < ApplicationRecord
   end
 
   def tags
-    return unless interviews.first.present? && interviews.first.interview_form.present?
+    return unless interviews.present? && interviews.first.interview_form.present?
 
     interviews.first.interview_form.categories.pluck(:title)
   end
