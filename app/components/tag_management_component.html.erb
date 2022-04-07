@@ -1,4 +1,3 @@
-
 <div
   class='bkt-bg-white mb-2rem p-2rem rounded-10px'
   data-controller="tag-management"
@@ -8,17 +7,39 @@
   <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
     <p>Template tags</p>
   </div>
-  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your template in order to search through templates efficiently and create accurate reports</p>
-  <div data-tag-management-target="displayZone" class="position-relative width-100 mt-4 bkt-bg-light-grey8 p-2 rounded-2px" >
+  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your template in order to search through templates
+    efficiently and create accurate reports</p>
+  <div data-tag-management-target="displayZone" class="position-relative width-100 mt-4 bkt-bg-light-grey9 p-2 rounded-2px">
     <% @form_tags.each do |tag| %>
-      <div class="tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px"><div class="d-flex align-items-center"><div class="tag-value"><%= tag %></div> <div class="pl-2" data-action="click->tag-management#remove">x</div></div></div>
+      <button class="tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem mb-1">
+        <div class="d-flex align-items-center">
+          <div class="tag-value pl-2"><%= tag %></div>
+          <div class="pl-2 opacity-0 opacity-1-hover" data-action="click->tag-management#remove">X</div>
+        </div>
+      </button>
     <% end %>
-    <input data-action="click->tag-management#displayList keydown->tag-management#escape keydown->tag-management#filter"
-           class="tag-input bkt-bg-light-grey8 bkt-light-grey-placeholder border-0 d-inline-block m-2" placeholder="Empty" type="text" >
+    <input data-action="click->tag-management#displayList keyup->tag-management#escape keyup->tag-management#filter"
+           data-tag-management-target="inputFilter"
+           class="tag-input bkt-bg-light-grey9 bkt-bg-light-grey8-focus bkt-light-grey-placeholder border-0 d-inline-block m-2"
+           placeholder="<%= @form_tags.count.zero? ? 'Empty' : '' %>" type="text">
     <div data-tag-management-target="tagList" class="d-none width-100 max-h-14rem position-absolute bkt-bg-white overflow-y-scroll" style="left: 0px">
       <div class="d-flex m-4 bkt-light-grey">Select a tag or create new one</div>
       <% @company_tags.each do |tag| %>
-        <div data-action="click->tag-management#addTag" class="d-flex align-items-center bkt-bg-light-grey-hover"> <div class="bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px"><%= tag %></div> </div>
+        <div data-action="click->tag-management#addTag"
+             class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem"
+        >
+          <button class="d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem"><%= tag %></button>
+          <!--          <button class="p-2 rounded-2px bkt-bg-light-grey mr-2">&middot;&middot;&middot;</button>-->
+          <div class="position-relative">
+            <button class="p-2 rounded-2px bkt-bg-light-grey mr-2" data-action="click->tag-management#showTagOptions">···</button>
+            <div class="d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
+              <button class="flex-row-between-centered" data-action="click->tag-management#deleteTag" data-tag-name="<%= tag %>">
+                <span class="iconify mr-1" data-icon="akar-icons:trash-can" data-tag-name="<%= tag %>"></span>
+                <p class="fs-1_2rem bkt-dark-grey" data-tag-name="<%= tag %>">Delete</p>
+              </button>
+            </div>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
