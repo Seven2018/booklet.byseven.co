@@ -9,11 +9,6 @@ class InterviewPolicy < ApplicationPolicy
     end
   end
 
-  def create?
-    # used in campaign_drafts TODO non regression test
-    user.manager_or_above?
-  end
-
   def show?
     return true if user.hr_or_above?
 

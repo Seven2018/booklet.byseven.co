@@ -12,7 +12,7 @@ class CampaignsController < ApplicationController
 
     filter_campaigns(campaigns)
 
-    redirect_to my_interviews_path unless current_user.hr_or_above?
+    redirect_to my_interviews_path unless current_user.can_create_campaigns
 
     respond_to do |format|
       format.html

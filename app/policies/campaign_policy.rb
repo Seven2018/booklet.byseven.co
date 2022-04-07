@@ -1,7 +1,7 @@
 class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.employee_or_above? && user.company_id.present?
+      if user.can_create_campaigns
         scope.all
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -9,17 +9,8 @@ class CampaignPolicy < ApplicationPolicy
     end
   end
 
-  def index?
-    user.hr_or_above?
-  end
-
   def show?
     record.interviewers.uniq.include?(user) || user.hr_or_above?
-  end
-
-  def create?
-    # used in campaign_drafts TODO non regression test
-    user.manager_or_above?
   end
 
   def destroy?

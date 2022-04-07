@@ -50,9 +50,7 @@ class CampaignDraft::BaseController < ApplicationController
   end
 
   def authorize_campaign_draft
-    raise Pundit::NotAuthorizedError unless
-      CampaignPolicy.new(current_user, Campaign.new).create? &&
-      InterviewPolicy.new(current_user, Interview.new).create?
+    raise Pundit::NotAuthorizedError unless current_user.can_create_campaigns
   end
 
   def campaign_draft

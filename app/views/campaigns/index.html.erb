@@ -8,9 +8,12 @@
         </div>
       </div>
 
-      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-blue' do  %>
+      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-blue', data: {
+        handle: 'create-campaign-cta'
+      } do  %>
         <i class="fas fa-plus"></i>
-        Create Campaign
+         &nbsp;
+         Create Campaign
       <% end %>
 
     </div>
