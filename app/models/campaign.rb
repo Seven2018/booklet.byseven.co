@@ -48,6 +48,12 @@ class Campaign < ApplicationRecord
       .distinct
   end
 
+  # @param [Array<String>] tags
+  # @return [Campaign]
+  def self.tag_matches(tags)
+    distinct.joins(interviews: {interview_form: :categories}).where(categories: {title: tags})
+  end
+
   def deadline
     interviews.order(date: :asc).first&.date
   end

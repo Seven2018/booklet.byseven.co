@@ -2,12 +2,20 @@ import {Controller} from "@hotwired/stimulus";
 
 export default class extends Controller {
   static get targets() {
-    return ['selectedTagsDom', 'unselectedTagsDom']
+    return ['selectedTagsDom', 'unselectedTagsDom', 'tagList']
   }
 
   connect() {
     this.companyTags = this.element.dataset.companyTags.split(',').filter(item => !!item)
     this.selectedTags = []
+
+    $(window).click(() => this.tagListTarget.classList.add('d-none'));
+    $(this.tagListTarget).click(event => event.stopPropagation());
+  }
+
+  displayList(event) {
+    event.stopPropagation()
+    this.tagListTarget.classList.remove('d-none')
   }
 
   toggleTag(e) {

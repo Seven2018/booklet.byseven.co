@@ -129,10 +129,8 @@ class CampaignsController < ApplicationController
 
     if params.dig(:search, :tags).present?
       selected_tags = params.dig(:search, :tags).split(',')
-      byebug
 
-      selected_templates = InterviewForm.where(company_id: current_user.company_id).where_exists(:interview_form_tags, tag_id: selected_tags)
-      @campaigns = @campaigns.where(interview_form_id: selected_templates.ids)
+      @campaigns = Campaign.tag_matches(selected_tags)
       @filtered_by_tags = 'true'
     end
 
