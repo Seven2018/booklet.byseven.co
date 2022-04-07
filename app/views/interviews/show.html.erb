@@ -2,6 +2,8 @@
 <% manager = @interview.interviewer %>
 <% admin_access = current_user == manager || current_user.hr_or_above? %>
 
+<% template = @interview.interview_form %>
+
 <% visibility =
     if @interview.crossed?
       ['all', 'manager', 'employee']
@@ -53,7 +55,7 @@
   <div class="interview-main">
 
     <div class='interview-main__left bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
-      <%= render 'interview_forms/edit/edit_show_summary', template: @interview.interview_form %>
+      <%= render 'interview_forms/edit/edit_show_summary', template: template %>
     </div>
 
     <div class="interview-main__right">
@@ -65,9 +67,13 @@
       </div>
 
 
-      <h1><%= @interview.title %></h1>
+      <h1 class="fs-3rem mb-2rem"><%= template.title %></h1>
 
-      <% video = @interview.interview_form.video %>
+      <div class="trix-display">
+        <%= sanitize template.description %>
+      </div>
+
+      <% video = template.video %>
 
       <% if video.present? %>
         <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; aspect-ratio: 16 / 9;'></iframe>
@@ -79,7 +85,6 @@
         QuestionDecorator.decorate_collection(
           @interview.interview_form.interview_questions
                                    .order(position: :asc)
-                                   # .not_separator
                                    .where(visible_for: visibility)
           ).each do |question|
       %>

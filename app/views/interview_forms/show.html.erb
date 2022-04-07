@@ -16,9 +16,14 @@
     </div>
 
     <div class="interview-main__right">
-      <h1><%= @template.title %></h1>
 
-      <% if @template.video %>
+      <h1 class="fs-3rem mb-2rem"><%= @template.title %></h1>
+
+      <div class="trix-display">
+        <%= sanitize @template.description %>
+      </div>
+
+      <% if @template.video.present? %>
         <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@template.video) %>" style='width: 75%; aspect-ratio: 16 / 9;'></iframe>
       <% end %>
 
@@ -42,7 +47,7 @@
             <% separator = value.first %>
             <p><%= key %>. <%= separator.question %></p>
           </div>
-          <div class="bkt-dark-grey fs-1_4rem pb-1rem pt-1rem w-100">
+          <div class="trix-display">
             <%= sanitize separator.description %>
           </div>
         <% end %>
