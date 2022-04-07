@@ -1,10 +1,11 @@
 class PermissionsController < ApplicationController
+  before_action :show_navbar_home, only: :edit
   before_action :authorize_permissions, :user
 
   def edit; end
 
   def update
-    user.update permission_params
+    user.update User::EMPLOYEE_PERMISSIONS.merge(permission_params)
     redirect_to edit_user_permissions_path(user)
   end
 

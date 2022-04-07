@@ -10,7 +10,7 @@
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control' %>
       <%= f.input :email, label: 'Email:', class:'form-control' %>
-      <%= render 'users/access_level_input', f: f, user: @user %>
+      <%#= render 'users/access_level_input', f: f, user: @user %>
       <%= f.input :manager_id, collection: User.where(company: current_user.company).manager_or_above.order(lastname: :asc), label_method: lambda {|k| k.fullname} %>
       <%= f.input :phone_number, label: 'Phone:', class:'form-control' %>
       <%= f.input :linkedin, label: 'Linkedin (url):', class:'form-control' %>

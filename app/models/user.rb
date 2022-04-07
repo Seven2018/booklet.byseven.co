@@ -1,8 +1,7 @@
 require 'csv'
 
 class User < ApplicationRecord
-  class DeprecatedAttribute < StandardError; end
-
+  include Users::Permissions
   include Users::Access
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable,
@@ -57,10 +56,6 @@ class User < ApplicationRecord
       tsearch: { prefix: true }
     },
     ignoring: :accents
-
-  def access_level
-    raise DeprecatedAttribute, 'Deprecated: user :access_level_int instead'
-  end
 
   def campaign_draft
     campaign_drafts.processing.last || CampaignDraft.create(user: self)

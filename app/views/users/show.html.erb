@@ -26,9 +26,15 @@
               </div>
             </a>
 
-            <a data-toggle='modal' data-target='#editPassword'>
+            <a data-toggle='modal' data-target='#editPermissions'>
               <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
                 <span class="iconify fs-1_6rem bkt-white" data-icon="bi:key-fill"></span>
+              </div>
+            </a>
+
+            <a data-toggle='modal' data-target='#editPassword'>
+              <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
+                <span class="iconify fs-1_6rem bkt-white" data-icon="bi:lock-fill"></span>
               </div>
             </a>
 
@@ -218,6 +224,12 @@
 <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="border-radius: 20px">
     <%= render 'users/modals/edit', user: @user %>
+  </div>
+</div>
+
+<div class="modal fade" id="editPermissions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="border-radius: 20px">
+    <%= render 'users/modals/edit_permissions', user: @user %>
   </div>
 </div>
 
