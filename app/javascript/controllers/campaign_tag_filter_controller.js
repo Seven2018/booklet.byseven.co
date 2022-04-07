@@ -9,13 +9,16 @@ export default class extends Controller {
     this.companyTags = this.element.dataset.companyTags.split(',').filter(item => !!item)
     this.selectedTags = []
 
-    $(window).click(() => this.tagListTarget.classList.add('d-none'));
-    $(this.tagListTarget).click(event => event.stopPropagation());
+    window.addEventListener('click', () => this.tagListTarget.classList.add('d-none'))
   }
 
   displayList(event) {
     event.stopPropagation()
     this.tagListTarget.classList.remove('d-none')
+  }
+
+  stopPropagation(event) {
+    event.stopPropagation()
   }
 
   toggleTag(e) {

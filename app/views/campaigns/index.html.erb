@@ -70,7 +70,10 @@
               <p>Filter</p>
             </button>
           </div>
-          <div data-campaign-tag-filter-target="tagList" class="d-none position-absolute z-index-50 right-0 width-35rem bkt-box-shadow-medium bkt-bg-white max-h-40rem overflow-y-auto">
+          <div
+            data-campaign-tag-filter-target="tagList"
+            data-action="click->campaign-tag-filter#stopPropagation"
+            class="d-none position-absolute z-index-50 right-0 width-35rem bkt-box-shadow-medium bkt-bg-white max-h-40rem overflow-y-auto">
             <div class="pl-3 my-4"><p class="bkt-light-grey">Filter by template tags</p></div>
             <div data-campaign-tag-filter-target="selectedTagsDom" class="pl-3 my-4"><p class="">Empty</p></div>
             <div class="pl-3 my-4"><input data-action="keyup->campaign-tag-filter#search" type="text" placeholder="Search" class="rounded-5px pl-2rem"></div>
@@ -92,8 +95,6 @@
           <p>Campaign title</p>
           <p>Campaign Type</p>
           <p>Tags</p>
-<!--          <p>Manager</p>-->
-<!--          <p>Template</p>-->
           <p class='campaigns-index__list-headers-employee'>Employees</p>
           <p class='campaigns-index__list-headers-completion'>Completion</p>
         </div>

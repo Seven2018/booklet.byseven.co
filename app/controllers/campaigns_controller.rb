@@ -6,9 +6,9 @@ class CampaignsController < ApplicationController
 
   def index
     @company_tags = Category
+                      .distinct
                       .where(company_id: current_user.company_id)
                       .pluck(:title)
-                      .uniq
     campaigns = policy_scope(Campaign).where(company: current_user.company)
                                       .where_exists(:interviews)
                                       .order(created_at: :desc)
@@ -59,7 +59,7 @@ class CampaignsController < ApplicationController
         @campaigns.where_exists(:interviews, locked_at: nil)
       end
 
-    @campaigns         = CampaignDecorator.decorate_collection @campaigns
+    @campaigns = CampaignDecorator.decorate_collection @campaigns
     @manager_campaigns = CampaignDecorator.decorate_collection @manager_campaigns
 
     respond_to do |format|
@@ -71,7 +71,7 @@ class CampaignsController < ApplicationController
   def my_team_interviews
     campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
     @personal_campaigns = campaigns.where_exists(:interviews, employee: current_user)
-    @campaigns =          campaigns.where_exists(:interviews, interviewer: current_user)
+    @campaigns = campaigns.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
 
     if params.dig(:period) == 'completed'
@@ -80,7 +80,7 @@ class CampaignsController < ApplicationController
       @campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
     end
 
-    @campaigns = @campaigns.sort{|x| x.deadline}.reverse
+    @campaigns = @campaigns.sort { |x| x.deadline }.reverse
   end
 
   def send_notification_email
@@ -135,7 +135,7 @@ class CampaignsController < ApplicationController
     end
 
     if search_title.present?
-      interview_forms =  InterviewForm.where(company_id: current_user.company_id).search_templates(search_title)
+      interview_forms = InterviewForm.where(company_id: current_user.company_id).search_templates(search_title)
       campaigns_by_form = @campaigns.where(interview_form: interview_forms)
       campaigns = @campaigns.search_campaigns(search_title)
       @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
@@ -154,10 +154,10 @@ class CampaignsController < ApplicationController
 
   def selected_user
     @selected_user ||= begin
-      return unless params[:search].present? && params[:search][:user_id].present?
+                         return unless params[:search].present? && params[:search][:user_id].present?
 
-      User.find(params[:search][:user_id])
-    end
+                         User.find(params[:search][:user_id])
+                       end
   end
 
   ##########################
@@ -166,14 +166,14 @@ class CampaignsController < ApplicationController
 
   def invitation_email(interviewer, interviewee, interview)
     CampaignMailer.with(user: interviewee)
-            .invite_employee(interviewer, interviewee, interview)
-            .deliver_later
+                  .invite_employee(interviewer, interviewee, interview)
+                  .deliver_later
   end
 
   def reminder_email(interviewer, interviewee, interview)
     CampaignMailer.with(user: interviewee)
-            .interview_reminder(interviewer, interviewee, interview)
-            .deliver_later
+                  .interview_reminder(interviewer, interviewee, interview)
+                  .deliver_later
   end
 
   ##########################
