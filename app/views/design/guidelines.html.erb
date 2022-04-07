@@ -287,6 +287,11 @@
 
   <h3 class="my-2">form with bootstrap</h3>
 
+  <div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+    <label class="custom-control-label cursor-pointer" for="customSwitch1">Toggle this switch element</label>
+  </div>
+
   <div
     class='d-flex justify-content-start align-items-center pos-rel p-2'
   >
@@ -342,6 +347,9 @@
 
 
   <h3 class="my-2">form without bootstrap</h3>
+
+  <%= render_component ToggleSwitch.new(name: :toggle88, checked: false)  %>
+  <%= render_component ToggleSwitch.new(name: :toggle99, checked: true)  %>
 
   <h4 class="my-2">title</h4>
 

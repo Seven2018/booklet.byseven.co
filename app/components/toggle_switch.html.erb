@@ -1,0 +1,21 @@
+<div class="mx-4 w-10 py-1 relative my-1 cursor-pointer">
+  <div
+    class="<%= @checked ? 'bg-teal-600' : 'bg-gray-300' %> rounded-full" style="height: 16px;"
+    data-controller='toggle-switch'
+  >
+    <input
+      type="checkbox"
+      name="<%= @name %>"
+      id="<%= @name %>"
+      class="hidden"
+      <% if @checked %> checked <% end %>
+      data-action="change->toggle-switch#toggle"
+      data-toggle-switch-target="input"
+    />
+    <label
+      data-toggle-switch-target="togglable"
+      for='<%= @name %>'
+      class="-ml-4  w-8 h-8 absolute transition-all transform ease-linear duration-100 flex items-center justify-center rounded-full bg-white shadow-toggle border-gray-300 top-0 <%= @checked ? 'left-96pc' : 'left-4pc' %>"
+    ></label>
+  </div>
+</div>
