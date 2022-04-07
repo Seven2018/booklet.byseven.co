@@ -5,10 +5,6 @@ export default class extends Controller {
     return [ ]
   }
 
-  connect() {
-    console.log('yearsa')
-  }
-
   select(e){
     JSON.parse(e.currentTarget.dataset.cans).forEach((can) => {
       const label = document.querySelector(`[for='user[${can}]']`)

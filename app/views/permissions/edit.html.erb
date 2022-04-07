@@ -76,7 +76,10 @@
         <% User::ADMIN_PERMISSIONS.keys.each do |permission| %>
           <div class='flex items-center justify-content-between fs-1_4rem w-full py-2'>
             <div><%= permission.to_s.gsub('_', ' ').capitalize %></div>
-            <%= render_component ToggleSwitch.new(name: "user[#{permission}]", checked: @user.send(permission)) %>
+            <%= render_component ToggleSwitch.new(
+              name: "user[#{permission}]",
+              checked: @user.send(permission),
+              remember_initial_state: true) %>
           </div>
         <% end %>
         <input
@@ -85,7 +88,9 @@
           class="hidden"
           value='true'
         />
-        <div class="flex flex-column justify-center items-center mt-5 w-full">
+        <div class="flex justify-center items-center mt-5 w-full">
+          <%= link_to 'Reset', edit_user_permissions_path(@user), class: 'bkt-blue' %>
+          <div class="mx-4"></div>
           <%= button_tag 'Save', type: 'submit', class: 'bkt-btn-white' %>
         </div>
       <% end %>
