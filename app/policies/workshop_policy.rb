@@ -10,19 +10,18 @@ class WorkshopPolicy < ApplicationPolicy
   end
 
   def show?
-    user.hr_or_above? ||
-    user == record.training.creator ||
-    record.users.includes(user)
+    edit? || complete_workshop?
   end
 
   def edit?
-    user.hr_or_above? ||
-    user == record.training.creator
+    user.can_edit_training_workshops ||
+      user == record.training.creator
   end
 
   def update?
-    user.hr_or_above? ||
-    user == record.session.training.creator
+    # TODO: check why different from edit?
+    user.can_edit_training_workshops ||
+      user == record.session.training.creator
   end
 
   def complete_workshop?
