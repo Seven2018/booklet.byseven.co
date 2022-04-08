@@ -7,107 +7,53 @@
     <strong><p>Get instant access to your trainings, and all your interviews from here.</p></strong>
   </div>
 
-  <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
-    <%= link_to '', my_interviews_path, class: 'stretched-link' %>
-    <div style='border-left: 4px solid #3177B7;'>
-      <div class="flex-row-start-centered mb-2rem">
-        <div class="flex-row-center-centered height-5rem width-5rem bkt-bg-light-blue rounded-25px ml-3rem">
-          <span class="iconify fs-3rem" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;"></span>
-        </div>
-
-        <div class="flex-row-start-centered">
-          <h2 class='mx-1rem' ><Strong>My Interviews</Strong></h2>
-          <p class='bkt-blue font-weight-600'>- <%= @my_interviews.count  %> reviews to do</p>
-        </div>
-      </div>
-
-
-      <div class="ml-3rem">
-      <% if @my_interviews.count == 0 %>
-
-        <p>You have no interview to do at this time.</p><br>
-
-      <% else %>
-
-        <p>You have <%= @my_interviews.count %> reviews to do in this section. You can complete them in <%= link_to '`My Interviews`', my_interviews_path, class: 'font-weight-700' %> section !</p><br>
-        <p>Your reviews to complete are :</p>
-
-        <% myi_firsts = @my_interviews.order(date: :asc).first(3) %>
-        <% myi_firsts.each do |myi_first| %>
-
-          <div class='mt-1rem'>
-            <div class="flex-row-start-centered">
-              <p class="font-weight-700 bkt-blue mb-1rem"><%= myi_first.title %> with <strong><%= myi_first.campaign.interviews.find_by(employee: current_user).interviewer.fullname %></strong></p>
-            </div>
-            <p>The deadline for this campaign is the <strong><%= myi_first.date %></strong></p>
-          </div>
-
-        <% end %>
-
-        <% if @my_interviews.count > 3 %>
-          <strong><p>And <%= @my_interviews.count - 3 %> more.</p></strong>
-        <% end %>
-
-      <% end %>
-
-
-      </div>
-
-      <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
-        <span class="iconify bkt-blue" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
-      </div>
-    </div>
-  </div>
-
-  <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_interviews_path, title: 'My interviews', nbr: @my_interviews.count) %>
-
-  <% if current_user.manager_or_above? %>
+  <% if current_user.company.applications[:interviews] %>
 
     <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
-      <%= link_to '', my_team_interviews_path, class: 'stretched-link' %>
-
+      <%= link_to '', my_interviews_path, class: 'stretched-link' %>
       <div style='border-left: 4px solid #3177B7;'>
         <div class="flex-row-start-centered mb-2rem">
           <div class="flex-row-center-centered height-5rem width-5rem bkt-bg-light-blue rounded-25px ml-3rem">
             <span class="iconify fs-3rem" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;"></span>
           </div>
+
           <div class="flex-row-start-centered">
-            <h2 class='mx-1rem' ><Strong>My Team Interviews</Strong></h2>
-            <p class='bkt-blue font-weight-600'>- <%= "#{@my_team_interviews.count}" %> reviews to do</p>
+            <h2 class='mx-1rem' ><Strong>My Interviews</Strong></h2>
+            <p class='bkt-blue font-weight-600'>- <%= @my_interviews.count  %> reviews to do</p>
           </div>
         </div>
 
+
         <div class="ml-3rem">
+        <% if @my_interviews.count == 0 %>
 
-          <% if @my_team_interviews.count == 0 %>
+          <p>You have no interview to do at this time.</p><br>
 
-            <p>You have no interview to do at this time.</p>
+        <% else %>
 
-          <% else %>
+          <p>You have <%= @my_interviews.count %> reviews to do in this section. You can complete them in <%= link_to '`My Interviews`', my_interviews_path, class: 'font-weight-700' %> section !</p><br>
+          <p>Your reviews to complete are :</p>
 
-            <p>You have <%= "#{@my_team_interviews.count}" %> reviews to do in this section. You can complete them in <%= link_to '`My Team Interviews`', my_team_interviews_path, class: 'font-weight-700' %> section !</p><br>
-            <p>Your reviews to complete are :</p><br>
+          <% myi_firsts = @my_interviews.order(date: :asc).first(3) %>
+          <% myi_firsts.each do |myi_first| %>
 
-            <% myt_firsts = @my_team_interviews.order(date: :asc).first(3) %>
-            <% myt_firsts.each do |myt_first| %>
-
-              <div class='mt-1rem'>
-                <div class="flex-row-start-centered">
-                  <p class="font-weight-700 bkt-blue mb-1rem"><%= myt_first.title %> with <strong><%= myt_first.employee.fullname %></strong></p>
-                </div>
-                <p>The deadline for this campaign is the <strong><%= myt_first.date %></strong></p>
+            <div class='mt-1rem'>
+              <div class="flex-row-start-centered">
+                <p class="font-weight-700 bkt-blue mb-1rem"><%= myi_first.title %> with <strong><%= myi_first.campaign.interviews.find_by(employee: current_user).interviewer.fullname %></strong></p>
               </div>
-
-            <% end %>
-
-            <% if @my_team_interviews.count > 3 %>
-              <strong><p>And <%= @my_team_interviews.count - 3 %> more.</p></strong>
-            <% end %>
+              <p>The deadline for this campaign is the <strong><%= myi_first.date %></strong></p>
+            </div>
 
           <% end %>
 
-        </div>
+          <% if @my_interviews.count > 3 %>
+            <strong><p>And <%= @my_interviews.count - 3 %> more.</p></strong>
+          <% end %>
 
+        <% end %>
+
+
+        </div>
 
         <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
           <span class="iconify bkt-blue" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
@@ -115,84 +61,71 @@
       </div>
     </div>
 
-    <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_team_interviews_path, title: 'My team interviews', nbr: @my_team_interviews.count) %>
-  <% end %>
+    <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_interviews_path, title: 'My interviews', nbr: @my_interviews.count) %>
 
-  <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
-    <%= link_to '', my_trainings_path, class: 'stretched-link' %>
+    <% if current_user.manager_or_above? %>
 
-    <div style='border-left: 4px solid #EF8C64;'>
-      <div class="flex-row-start-centered mb-2rem">
-        <div class="flex-row-center-centered height-5rem width-5rem bkt-bg-light-orange rounded-25px ml-3rem">
-          <svg width="25" height="25" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16.5 0L0 7.53846L4.4 9.47692V13.1385C3.08 13.5692 2.2 14.8615 2.2 16.1538C2.2 17.4462 3.08 18.7385 4.4 19.1692V19.3846L2.42 23.9077C1.76 25.8462 2.2 28 5.5 28C8.8 28 9.24 25.8462 8.58 23.9077L6.6 19.3846C7.92 18.7385 8.8 17.6615 8.8 16.1538C8.8 14.6462 7.92 13.5692 6.6 13.1385V10.5538L16.5 15.0769L33 7.53846L16.5 0ZM26.18 14L16.28 18.3077L11 15.9385V16.1538C11 17.6615 10.34 18.9538 9.24 20.0308L10.56 23.0462V23.2615C10.78 24.1231 11 24.9846 10.78 25.8462C12.32 26.4923 14.08 26.9231 16.28 26.9231C23.54 26.9231 26.18 22.6154 26.18 20.4615V14V14Z" fill="#EF8C64"/>
-          </svg>
-        </div>
+      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+        <%= link_to '', my_team_interviews_path, class: 'stretched-link' %>
 
-        <div class="flex-row-start-centered">
-          <h2 class='mx-1rem' ><Strong>My Trainings</Strong></h2>
-          <p class='bkt-orange font-weight-600'>- <%= @my_trainings.count  %> trainings to do</p>
-        </div>
-      </div>
-
-
-      <div class="ml-3rem">
-      <% if @my_trainings.count == 0 %>
-        <p>You have no interview to do at this time.</p><br>
-      <% else %>
-        <p>You have <%= @my_trainings.count %> trainings to do in this section. You can review them in <%= link_to '`My Trainings`', my_trainings_path, class: 'font-weight-700' %> section !</p><br>
-        <p>Your upcoming trainings :</p>
-
-        <% myt_firsts = @my_trainings.first(3) %>
-        <% myt_firsts.each do |myt_first| %>
-
-          <% next_session = myt_first.next_session %>
-
-          <div class='mt-1rem'>
-            <div class="flex-row-start-centered">
-              <p class="font-weight-700 bkt-orange"><%= myt_first.title %></p>
-              <div class="flex-row-between-centered border-bkt-dark-grey rounded-20px mx-1rem" style='padding: .25rem .75rem;'>
-                <div class="flex-row-center-centered height-2_5rem width-2_5rem">
-                  <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
-                </div>
-                <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(next_session.workshop.duration) %></p>
-              </div>
-              <div class="flex-row-center-centered height-2_5rem width-2_5rem">
-                <span class="iconify fs-1_6rem bkt-orange"
-                  data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
-                </span>
-              </div>
+        <div style='border-left: 4px solid #3177B7;'>
+          <div class="flex-row-start-centered mb-2rem">
+            <div class="flex-row-center-centered height-5rem width-5rem bkt-bg-light-blue rounded-25px ml-3rem">
+              <span class="iconify fs-3rem" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;"></span>
             </div>
-
-            <% if next_session.workshop.synchronous? %>
-              <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
-            <% else %>
-              <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
-            <% end %>
+            <div class="flex-row-start-centered">
+              <h2 class='mx-1rem' ><Strong>My Team Interviews</Strong></h2>
+              <p class='bkt-blue font-weight-600'>- <%= "#{@my_team_interviews.count}" %> reviews to do</p>
+            </div>
           </div>
 
-        <% end %>
-        <% if @my_trainings.count > 3 %>
-          <p class='font-weight-600'>And <%= @my_trainings.count - 3 %> more.</p>
-        <% end %>
-      <% end %>
+          <div class="ml-3rem">
+
+            <% if @my_team_interviews.count == 0 %>
+
+              <p>You have no interview to do at this time.</p>
+
+            <% else %>
+
+              <p>You have <%= "#{@my_team_interviews.count}" %> reviews to do in this section. You can complete them in <%= link_to '`My Team Interviews`', my_team_interviews_path, class: 'font-weight-700' %> section !</p><br>
+              <p>Your reviews to complete are :</p><br>
+
+              <% myt_firsts = @my_team_interviews.order(date: :asc).first(3) %>
+              <% myt_firsts.each do |myt_first| %>
+
+                <div class='mt-1rem'>
+                  <div class="flex-row-start-centered">
+                    <p class="font-weight-700 bkt-blue mb-1rem"><%= myt_first.title %> with <strong><%= myt_first.employee.fullname %></strong></p>
+                  </div>
+                  <p>The deadline for this campaign is the <strong><%= myt_first.date %></strong></p>
+                </div>
+
+              <% end %>
+
+              <% if @my_team_interviews.count > 3 %>
+                <strong><p>And <%= @my_team_interviews.count - 3 %> more.</p></strong>
+              <% end %>
+
+            <% end %>
+
+          </div>
 
 
+          <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
+            <span class="iconify bkt-blue" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
+          </div>
+        </div>
       </div>
 
-      <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
-        <span class="iconify bkt-orange" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
-      </div>
-    </div>
+      <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_team_interviews_path, title: 'My team interviews', nbr: @my_team_interviews.count) %>
+    <% end %>
 
-  </div>
+  <% end %>
 
-  <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_trainings_path, title: 'My trainings', nbr: @my_trainings.count) %>
-
-  <% if current_user.manager_or_above? %>
+  <% if current_user.company.applications[:trainings] %>
 
     <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
-      <%= link_to '', my_team_trainings_path, class: 'stretched-link' %>
+      <%= link_to '', my_trainings_path, class: 'stretched-link' %>
 
       <div style='border-left: 4px solid #EF8C64;'>
         <div class="flex-row-start-centered mb-2rem">
@@ -201,70 +134,145 @@
               <path d="M16.5 0L0 7.53846L4.4 9.47692V13.1385C3.08 13.5692 2.2 14.8615 2.2 16.1538C2.2 17.4462 3.08 18.7385 4.4 19.1692V19.3846L2.42 23.9077C1.76 25.8462 2.2 28 5.5 28C8.8 28 9.24 25.8462 8.58 23.9077L6.6 19.3846C7.92 18.7385 8.8 17.6615 8.8 16.1538C8.8 14.6462 7.92 13.5692 6.6 13.1385V10.5538L16.5 15.0769L33 7.53846L16.5 0ZM26.18 14L16.28 18.3077L11 15.9385V16.1538C11 17.6615 10.34 18.9538 9.24 20.0308L10.56 23.0462V23.2615C10.78 24.1231 11 24.9846 10.78 25.8462C12.32 26.4923 14.08 26.9231 16.28 26.9231C23.54 26.9231 26.18 22.6154 26.18 20.4615V14V14Z" fill="#EF8C64"/>
             </svg>
           </div>
+
           <div class="flex-row-start-centered">
-            <h2 class='mx-1rem' ><Strong>My Team Trainings</Strong></h2>
-            <p class='bkt-orange font-weight-600'>- <%= "#{@my_team_trainings.count}" %> trainings to do</p>
+            <h2 class='mx-1rem' ><Strong>My Trainings</Strong></h2>
+            <p class='bkt-orange font-weight-600'>- <%= @my_trainings.count  %> trainings to do</p>
           </div>
         </div>
 
+
         <div class="ml-3rem">
+        <% if @my_trainings.count == 0 %>
+          <p>You have no interview to do at this time.</p><br>
+        <% else %>
+          <p>You have <%= @my_trainings.count %> trainings to do in this section. You can review them in <%= link_to '`My Trainings`', my_trainings_path, class: 'font-weight-700' %> section !</p><br>
+          <p>Your upcoming trainings :</p>
 
-          <% if @my_team_trainings.count == 0 %>
+          <% myt_firsts = @my_trainings.first(3) %>
+          <% myt_firsts.each do |myt_first| %>
 
-            <p>You have no training to do at this time.</p>
+            <% next_session = myt_first.next_session %>
 
-          <% else %>
-
-            <p>You have <%= "#{@my_team_trainings.count}" %> trainings to do in this section. You can review them in <%= link_to '`My Team Trainings`', my_team_trainings_path, class: 'font-weight-700' %> section !</p><br>
-            <p>Your upcoming trainings :</p><br>
-
-            <% myt_firsts = @my_team_trainings.first(3) %>
-            <% myt_firsts.each do |myt_first| %>
-
-              <% next_session = myt_first.next_session %>
-
-              <div class='mt-1rem'>
-                <div class="flex-row-start-centered">
-                  <p class="font-weight-700 bkt-orange"><%= myt_first.title %></p>
-                  <div class="flex-row-between-centered border-bkt-dark-grey rounded-20px mx-1rem" style='padding: .25rem .75rem;'>
-                    <div class="flex-row-center-centered height-2_5rem width-2_5rem">
-                      <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
-                    </div>
-                    <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(next_session.workshop.duration) %></p>
-                  </div>
+            <div class='mt-1rem'>
+              <div class="flex-row-start-centered">
+                <p class="font-weight-700 bkt-orange"><%= myt_first.title %></p>
+                <div class="flex-row-between-centered border-bkt-dark-grey rounded-20px mx-1rem" style='padding: .25rem .75rem;'>
                   <div class="flex-row-center-centered height-2_5rem width-2_5rem">
-                    <span class="iconify fs-1_6rem bkt-orange"
-                      data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
-                    </span>
+                    <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
                   </div>
+                  <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(next_session.workshop.duration) %></p>
                 </div>
-
-                <% if next_session.workshop.synchronous? %>
-                  <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
-                <% else %>
-                  <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
-                <% end %>
-
+                <div class="flex-row-center-centered height-2_5rem width-2_5rem">
+                  <span class="iconify fs-1_6rem bkt-orange"
+                    data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
+                  </span>
+                </div>
               </div>
 
-            <% end %>
-
-            <% if @my_team_trainings.count > 3 %>
-              <strong><p>And <%= @my_team_trainings.count - 3 %> more.</p></strong>
-            <% end %>
+              <% if next_session.workshop.synchronous? %>
+                <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+              <% else %>
+                <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
+              <% end %>
+            </div>
 
           <% end %>
+          <% if @my_trainings.count > 3 %>
+            <p class='font-weight-600'>And <%= @my_trainings.count - 3 %> more.</p>
+          <% end %>
+        <% end %>
+
 
         </div>
-
 
         <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
           <span class="iconify bkt-orange" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
         </div>
       </div>
+
     </div>
 
-    <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_team_trainings_path, title: 'My team trainings', nbr: @my_team_trainings.count) %>
+    <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_trainings_path, title: 'My trainings', nbr: @my_trainings.count) %>
+
+    <% if current_user.manager_or_above? %>
+
+      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+        <%= link_to '', my_team_trainings_path, class: 'stretched-link' %>
+
+        <div style='border-left: 4px solid #EF8C64;'>
+          <div class="flex-row-start-centered mb-2rem">
+            <div class="flex-row-center-centered height-5rem width-5rem bkt-bg-light-orange rounded-25px ml-3rem">
+              <svg width="25" height="25" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.5 0L0 7.53846L4.4 9.47692V13.1385C3.08 13.5692 2.2 14.8615 2.2 16.1538C2.2 17.4462 3.08 18.7385 4.4 19.1692V19.3846L2.42 23.9077C1.76 25.8462 2.2 28 5.5 28C8.8 28 9.24 25.8462 8.58 23.9077L6.6 19.3846C7.92 18.7385 8.8 17.6615 8.8 16.1538C8.8 14.6462 7.92 13.5692 6.6 13.1385V10.5538L16.5 15.0769L33 7.53846L16.5 0ZM26.18 14L16.28 18.3077L11 15.9385V16.1538C11 17.6615 10.34 18.9538 9.24 20.0308L10.56 23.0462V23.2615C10.78 24.1231 11 24.9846 10.78 25.8462C12.32 26.4923 14.08 26.9231 16.28 26.9231C23.54 26.9231 26.18 22.6154 26.18 20.4615V14V14Z" fill="#EF8C64"/>
+              </svg>
+            </div>
+            <div class="flex-row-start-centered">
+              <h2 class='mx-1rem' ><Strong>My Team Trainings</Strong></h2>
+              <p class='bkt-orange font-weight-600'>- <%= "#{@my_team_trainings.count}" %> trainings to do</p>
+            </div>
+          </div>
+
+          <div class="ml-3rem">
+
+            <% if @my_team_trainings.count == 0 %>
+
+              <p>You have no training to do at this time.</p>
+
+            <% else %>
+
+              <p>You have <%= "#{@my_team_trainings.count}" %> trainings to do in this section. You can review them in <%= link_to '`My Team Trainings`', my_team_trainings_path, class: 'font-weight-700' %> section !</p><br>
+              <p>Your upcoming trainings :</p><br>
+
+              <% myt_firsts = @my_team_trainings.first(3) %>
+              <% myt_firsts.each do |myt_first| %>
+
+                <% next_session = myt_first.next_session %>
+
+                <div class='mt-1rem'>
+                  <div class="flex-row-start-centered">
+                    <p class="font-weight-700 bkt-orange"><%= myt_first.title %></p>
+                    <div class="flex-row-between-centered border-bkt-dark-grey rounded-20px mx-1rem" style='padding: .25rem .75rem;'>
+                      <div class="flex-row-center-centered height-2_5rem width-2_5rem">
+                        <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
+                      </div>
+                      <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(next_session.workshop.duration) %></p>
+                    </div>
+                    <div class="flex-row-center-centered height-2_5rem width-2_5rem">
+                      <span class="iconify fs-1_6rem bkt-orange"
+                        data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
+                      </span>
+                    </div>
+                  </div>
+
+                  <% if next_session.workshop.synchronous? %>
+                    <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+                  <% else %>
+                    <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
+                  <% end %>
+
+                </div>
+
+              <% end %>
+
+              <% if @my_team_trainings.count > 3 %>
+                <strong><p>And <%= @my_team_trainings.count - 3 %> more.</p></strong>
+              <% end %>
+
+            <% end %>
+
+          </div>
+
+
+          <div class="pos-abs" style='bottom:3rem; right: 3rem;'>
+            <span class="iconify bkt-orange" data-icon="dashicons:arrow-right-alt" data-width="50" data-height="50"></span>
+          </div>
+        </div>
+      </div>
+
+      <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_team_trainings_path, title: 'My team trainings', nbr: @my_team_trainings.count) %>
+    <% end %>
+
   <% end %>
 
 </div>
