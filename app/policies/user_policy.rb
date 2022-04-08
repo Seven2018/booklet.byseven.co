@@ -1,11 +1,10 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.hr_or_above?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
+        user.can_read_employees && user.company_id.present?
+
+      scope.where(company: user.company)
     end
   end
 
@@ -38,10 +37,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.hr_or_above?
-  end
-
-  def organisation?
     user.hr_or_above?
   end
 
