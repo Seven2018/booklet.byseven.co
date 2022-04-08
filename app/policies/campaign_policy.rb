@@ -13,7 +13,7 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.manager_or_above?
+    user.can_create_campaigns
   end
 
   def my_interviews?
@@ -21,26 +21,19 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def my_team_interviews?
+    # TODO
     user.manager_or_above?
   end
 
   def send_notification_email?
-    user.manager_or_above?
+    user.can_create_campaigns
   end
 
   def add_interview_set?
-    user.manager_or_above?
+    user.can_create_campaigns
   end
 
   def remove_interview_set?
-    user.manager_or_above?
-  end
-
-  def edit_rights?
-    user.hr_or_above? || user == record.owner
-  end
-
-  def campaign_edit_date?
-    user.hr_or_above? || user == record.owner
+    user.can_create_campaigns
   end
 end
