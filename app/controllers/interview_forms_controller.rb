@@ -26,9 +26,8 @@ class InterviewFormsController < ApplicationController
   end
 
   def create
-    @template = InterviewForm.new(template_params)
+    @template = InterviewForm.new template_params.merge(company: current_user.company)
     authorize @template
-    @template.company_id = current_user.company_id
     redirect_to edit_interview_form_path(@template) if @template.save
   end
 

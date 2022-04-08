@@ -1,11 +1,10 @@
 class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.can_create_campaigns
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
+        user.can_create_campaigns
+
+      scope.all
     end
   end
 
