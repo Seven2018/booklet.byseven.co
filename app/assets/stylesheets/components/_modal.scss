@@ -492,3 +492,28 @@ body.filter-open {
     cursor: pointer;
   }
 }
+
+.bkt-modal {
+  background-color: rgba(0,0,0,0.4); /* Transparent dimmed overlay */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: table;
+  z-index: 1000;
+}
+
+//.bkt-modal.hidden {
+//  display: none;
+//}
+
+.bkt-modal .bkt-modal-container {
+ display: table-cell;
+ text-align: center;
+ vertical-align: middle;
+}
+
+.bkt-modal .bkt-modal-body {
+  display: inline-block;
+}

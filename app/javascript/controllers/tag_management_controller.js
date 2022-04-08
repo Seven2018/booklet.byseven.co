@@ -2,7 +2,7 @@ import {Controller} from "@hotwired/stimulus";
 
 export default class extends Controller {
   static get targets() {
-    return ['tagList', 'displayZone', 'inputFilter'];
+    return ['tagList', 'displayZone', 'inputFilter', 'modal', 'modalClose', 'modalConfirm'];
   }
 
   connect() {
@@ -18,7 +18,11 @@ export default class extends Controller {
   }
 
   addTag(e) {
-    const tag = e.target.innerText.trim()
+    let tag = ''
+    if (e.target.classList.contains('tag-company-item-value'))
+      tag = e.target.innerText.trim()
+    else
+      tag = e.target.querySelector('.tag-company-item-value').innerText.trim()
 
     this.toogleTag(tag, response => {
       if (response.status >= 200 && response.status < 400) {
@@ -55,7 +59,6 @@ export default class extends Controller {
   }
 
   filter(e) {
-    console.log('before event', e.target.value)
     const value = e.key == 'Backspace' ? '' : e.target.value
     const formTags = Array.from(document.querySelectorAll('.tag-value')).map(el => el.innerText)
     const createTag = !formTags.includes(value) ? value : null
@@ -70,13 +73,14 @@ export default class extends Controller {
   updateSuggestionList(arr, createTag) {
     this.tagListTarget.innerHTML = '<div class="d-flex m-4 bkt-light-grey">Select a tag or create new one</div>'
     arr.forEach(tag => {
-      this.tagListTarget.innerHTML += `<button data-action="click->tag-management#addTag" class="width-100 flex-row-start-centered align-items-center bkt-bg-light-grey-hover fs-1_2rem"> <div class="d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px">${tag}</div> </button>`
+      const suggestionItem = this.createSuggestionItem(tag)
+      this.tagListTarget.append(suggestionItem)
     })
 
     if (createTag) {
       const div = document.createElement('div')
       div.className = 'd-flex align-items-center bkt-bg-light-grey-hover'
-      div.innerHTML = `<p class="ml-4 fs-1_2rem">Create</p> <button data-action="click->tag-management#addTag" data-create="tag" class="bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${createTag}</button>`
+      div.innerHTML = `<p class="ml-4 fs-1_2rem">Create</p> <button data-action="click->tag-management#addTag" data-create="tag" class="tag-company-item-value bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${createTag}</button>`
 
       this.tagListTarget.append(div)
     }
@@ -88,19 +92,20 @@ export default class extends Controller {
     this.toogleTag(tag, response => {
       if (response.status >= 200 && response.status < 400) {
         const formTags = this.displayZoneTarget.querySelectorAll('.tag-value')
-        console.log(formTags)
+
         formTags.forEach(div => {
-          const formTag = div.textContent.trim()
+          const formTag = div.innerText.trim()
 
           if (tag === formTag) div.parentElement.parentElement.remove()
         })
-        this.tagListTarget.innerHTML += `<button data-action="click->tag-management#addTag" class="width-100 flex-row-start-centered align-items-center bkt-bg-light-grey-hover fs-1_2rem"> <div class="d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px">${tag}</div> </button>`
+        const suggestionItem = this.createSuggestionItem(tag)
+        this.tagListTarget.append(suggestionItem)
       }
     })
   }
 
   toogleTag(tag, callback) {
-    fetch(this.element.dataset.path, {
+    fetch(this.element.dataset.togglePath, {
       method: "POST",
       headers: {
         "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
@@ -118,10 +123,71 @@ export default class extends Controller {
     if (div != null) div.classList.remove('d-none')
   }
 
-  deleteTag(event) {
+  preparModal(event) {
     event.stopPropagation()
-    const tag = event.target.dataset.tagName.trim()
+    const parent = event.target.closest('.tag-company-item')
+    const tag = parent.dataset.tagName.trim()
+    const id = parent.dataset.tagName.trim()
 
-    // TODO: make request to remove then remove closest tag-company-item class
+    this.modalTarget.classList.remove('hidden')
+    this.modalConfirmTarget.dataset.tag = tag
+    this.modalConfirmTarget.dataset.id = id
+  }
+
+  removeCompanyTagRequest(tag, callback) {
+    const params = new URLSearchParams({tag})
+
+    fetch(this.element.dataset.removeCompanyTagPath + '?' + params, {
+      method: "DELETE",
+      headers: {
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+        "Content-Type": "application/json"
+      },
+    })
+      .then(callback)
+  }
+
+  closeModal() {
+    this.modalTarget.classList.add('hidden')
+  }
+
+  makeRemoveCompanyTagRequest(event) {
+    const tag = event.target.dataset.tag.trim()
+    const id = event.target.dataset.id.trim()
+
+    this.removeCompanyTagRequest(tag, response => {
+      if (response.status >= 200 && response.status < 400) {
+        document.querySelector(`#${id}`)
+        this.modalTarget.classList.add('hidden')
+
+        const suggestionItem = document.querySelectorAll('.tag-company-item')
+        suggestionItem.forEach(div => {
+          const suggestionTag = div.querySelector('.tag-company-item-value').innerText.trim()
+
+          if (suggestionTag === tag) div.remove()
+        })
+      }
+    })
+  }
+
+  createSuggestionItem(tag) {
+    const xmlString = `<div data-action="click->tag-management#addTag"
+             class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem"
+             id="tag-suggestion-${Date.now()}"
+             data-tag-name="${tag}"
+        >
+          <button class="tag-company-item-value d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${tag}</button>
+          <div class="position-relative">
+            <button class="p-2 rounded-2px bkt-bg-light-grey mr-2" data-action="click->tag-management#showTagOptions">···</button>
+            <div class="d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
+              <button class="flex-row-between-centered" data-action="click->tag-management#preparModal" >
+                <span class="iconify mr-1" data-icon="akar-icons:trash-can" ></span>
+                <p class="fs-1_2rem bkt-dark-grey" >Delete</p>
+              </button>
+            </div>
+          </div>
+        </div>`;
+
+    return new DOMParser().parseFromString(xmlString, "text/html").body;
   }
 }
