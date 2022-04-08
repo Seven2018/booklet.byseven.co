@@ -27,6 +27,7 @@
               :title,
               placeholder: 'Search by title, job ...',
               input_html: {
+                class: 'mr-3',
                 autocomplete: 'off',
                 onkeyup: 'resetPage(this);',
                 data: {
@@ -57,12 +58,44 @@
           </button>
         <% end %>
         <button class='btn-reset bkt-blue' data-action="click->remember-search#resetAllFilter">Reset</button>
+
+        <div
+          class="width-100 position-relative"
+          data-controller="campaign-tag-filter"
+          data-company-tags="<%= @company_tags.join(',') %>"
+          data-path="<%= campaigns_path %>"
+        >
+          <div class="flex-row-end-centered">
+            <button data-action="click->campaign-tag-filter#displayList" class="flex-row-between-centered bkt-blue px-3 py-2 bkt-box-shadow-medium">
+              <span class="iconify m-2" data-width="20" data-height="20" data-icon="fluent:filter-28-filled"></span>
+              <p>Filter</p>
+            </button>
+          </div>
+          <div
+            data-campaign-tag-filter-target="tagList"
+            data-action="click->campaign-tag-filter#stopPropagation"
+            class="d-none position-absolute z-index-50 right-0 width-35rem bkt-box-shadow-medium bkt-bg-white max-h-40rem overflow-y-auto">
+            <div class="pl-3 my-4"><p class="bkt-light-grey">Filter by template tags</p></div>
+            <div data-campaign-tag-filter-target="selectedTagsDom" class="pl-3 my-4"><p class="">Empty</p></div>
+            <div class="pl-3 my-4"><input data-action="keyup->campaign-tag-filter#search" type="text" placeholder="Search" class="rounded-5px pl-2rem"></div>
+            <div data-campaign-tag-filter-target="unselectedTagsDom" class="pl-3 py-4 border-top">
+              <% @company_tags.each do |tag| %>
+                <div class="flex-row-start-centered bkt-light-grey-placeholder" >
+                  <button class="d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 rounded-2px fs-1_2rem" data-action="click->campaign-tag-filter#toggleTag">
+                    <%= tag %>
+                  </button>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
       </div>
       <div class="campaigns-index__list">
         <div class="campaigns-index__list-headers">
+          <p>Campaign title</p>
           <p>Campaign Type</p>
-          <p>Manager</p>
-          <p>Template</p>
+          <p>Tags</p>
           <p class='campaigns-index__list-headers-employee'>Employees</p>
           <p class='campaigns-index__list-headers-completion'>Completion</p>
         </div>
