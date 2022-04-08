@@ -7,17 +7,10 @@ class ContentsController < ApplicationController
   # Create new content (pages/catalogue)
   def create
     params.permit!
-    @content = Content.new(content_params)
-    # @content = Content.new(params[:content].except(:categories))
+    @content = Content.new content_params.merge(company: current_user.company)
     authorize @content
-    @content.company_id = current_user.company.id
     @content.cost = 0 unless @content.cost.present?
-    if @content.save
-      # params[:content][:categories].split(',').each do |category_id|
-      #   ContentCategory.create(content_id: @content.id, category_id: category_id)
-      # end
-      redirect_to edit_content_path(@content)
-    end
+    redirect_to edit_content_path(@content) if @content.save
   end
 
   # Show content view_mode

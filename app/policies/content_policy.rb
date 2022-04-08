@@ -1,11 +1,10 @@
 class ContentPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.employee_or_above? && user.company_id.present?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
+        user.can_read_contents && user.company_id.present?
+
+      scope.where(company: user.company)
     end
   end
 
@@ -13,24 +12,24 @@ class ContentPolicy < ApplicationPolicy
     true
   end
 
-  def edit?
-    user.hr_or_above?
+  def create?
+    user.can_create_contents
   end
 
-  def create?
-    user.hr_or_above?
+  def edit?
+    create?
   end
 
   def update?
-    user.hr_or_above?
+    create?
   end
 
   def destroy?
-    user.hr_or_above?
+    create?
   end
 
   def duplicate?
-    user.hr_or_above?
+    create?
   end
 
   def book_contents?
