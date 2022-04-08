@@ -137,7 +137,11 @@ class CampaignsController < ApplicationController
     if params.dig(:search, :tags).present?
       selected_tags = params.dig(:search, :tags).split(',')
 
-      @campaigns = Campaign.tag_matches(selected_tags)
+      @campaigns = Campaign
+                     .where(company_id: current_user.company_id)
+                     .tag_matches(selected_tags)
+                     .select { |campaign| (selected_tags & campaign.tags) == selected_tags }
+      @campaigns = Campaign.get_activerecord_relation(@campaigns) # to cast Array to ActiveRecord Relation
       @filtered_by_tags = 'true'
     end
 

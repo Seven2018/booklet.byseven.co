@@ -49,7 +49,7 @@ class Campaign < ApplicationRecord
   end
 
   # @param [Array<String>] tags
-  # @return [Campaign]
+  # @return [Array<Campaign>] campaigns
   def self.tag_matches(tags)
     distinct.joins(interviews: {interview_form: :categories}).where(categories: {title: tags})
   end
@@ -119,7 +119,7 @@ class Campaign < ApplicationRecord
   end
 
   def tags
-    return unless interviews.present? && interviews.first.interview_form.present?
+    return [] unless interviews.present? && interviews.first.interview_form.present?
 
     interviews.first.interview_form.categories.pluck(:title)
   end
