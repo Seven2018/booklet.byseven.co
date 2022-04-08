@@ -1,5 +1,5 @@
 class InterviewFormsController < ApplicationController
-  before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag]
+  before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag, :remove_company_tag]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -126,6 +126,14 @@ class InterviewFormsController < ApplicationController
         @template.categories << category
       end
     end
+    head :ok
+  end
+
+  def remove_company_tag
+    authorize @template
+    tag = params.require(:tag)
+
+    Category.where(company_id: current_user.company_id, title: tag).destroy_all
     head :ok
   end
 
