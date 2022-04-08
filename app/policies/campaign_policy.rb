@@ -12,8 +12,12 @@ class CampaignPolicy < ApplicationPolicy
     record.interviewers.uniq.include?(user) || user.hr_or_above?
   end
 
-  def destroy?
+  def create?
     user.can_create_campaigns
+  end
+
+  def destroy?
+    create?
   end
 
   def my_interviews?
@@ -26,14 +30,14 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def send_notification_email?
-    user.can_create_campaigns
+    create?
   end
 
   def add_interview_set?
-    user.can_create_campaigns
+    create?
   end
 
   def remove_interview_set?
-    user.can_create_campaigns
+    create?
   end
 end

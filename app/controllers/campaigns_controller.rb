@@ -12,7 +12,7 @@ class CampaignsController < ApplicationController
 
     filter_campaigns(campaigns)
 
-    redirect_to my_interviews_path unless current_user.can_create_campaigns
+    redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
 
     respond_to do |format|
       format.html

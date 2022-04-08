@@ -3,13 +3,12 @@ class TrainingsController < ApplicationController
   before_action :show_navbar_training
 
   def index
-    @trainings = policy_scope(Training).where(company_id: current_user.company_id)
-                                       .order(created_at: :desc)
+    @trainings = policy_scope(Training).order(created_at: :desc)
     @categories = Category.where(company_id: current_user.company_id)
 
     filter_trainings
 
-    redirect_to my_trainings_path unless current_user.hr_or_above?
+    redirect_to my_trainings_path unless TrainingPolicy.new(current_user, nil).create?
 
     respond_to do |format|
       format.html
