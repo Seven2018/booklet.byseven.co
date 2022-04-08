@@ -21,6 +21,6 @@ module Companies::Applications
   end
 
   def active_applications
-    applications.map{ |key, active| APPLICATIONS[key] if active }.compact
+    applications.symbolize_keys.map{ |key, active| APPLICATIONS[key] if active }.compact
   end
 end

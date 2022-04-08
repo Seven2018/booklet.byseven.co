@@ -18,8 +18,6 @@ class Company < ApplicationRecord
   has_one_attached :my_trainings_bg_picture
   has_one_attached :my_team_trainings_bg_picture
 
-  serialize :applications, Hash
-
   include Companies::AssetsMeta
   include Companies::Applications
 
