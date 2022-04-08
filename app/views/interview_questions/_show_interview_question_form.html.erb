@@ -4,7 +4,7 @@
     InterviewAnswer.find_by(
     interview: interview,
     interview_question: question,
-    user: current_user
+    user: interview.responder
   ) %>
   <% if existing_answer.nil? && interview.crossed? && question.visible_for_employee? %>
     <% existing_answer =
@@ -19,13 +19,6 @@
       interview: interview.campaign.manager_interview(employee.id),
       interview_question: question,
       user: manager
-    ) %>
-  <% elsif read_only %>
-    <% existing_answer =
-      InterviewAnswer.find_by(
-      interview: interview,
-      interview_question: question,
-      user: interview.responder
     ) %>
   <% end %>
 

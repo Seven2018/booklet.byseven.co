@@ -1,5 +1,5 @@
 class InterviewFormsController < ApplicationController
-  before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy]
+  before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -37,6 +37,11 @@ class InterviewFormsController < ApplicationController
 
   def edit
     authorize @template
+    @tags = @template.categories.pluck(:title)
+    @company_tags = Category
+                      .where(company_id: current_user.company_id)
+                      .where.not(title: @tags)
+                      .pluck(:title)
   end
 
   def update
@@ -103,6 +108,24 @@ class InterviewFormsController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+
+  def toggle_tag
+    authorize @template
+    tag = params.require(:tag)
+    category = Category.find_by(company_id: current_user.company_id, title: tag)
+
+    if category.nil?
+      new_category = Category.create(company_id: current_user.company_id, title: tag)
+      @template.categories << new_category
+    else
+      if @template.categories.exists?(category.id)
+        @template.categories.delete(category)
+      else
+        @template.categories << category
+      end
+    end
+    head :ok
   end
 
   private

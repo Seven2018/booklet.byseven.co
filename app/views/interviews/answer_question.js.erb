@@ -1,8 +1,11 @@
-submit_button = document.querySelector('#submit-interview')
-if (<%= @fully_answered %> && submit_button != null) {
-  submit_button.classList.remove('btn-blue-disabled')
-  submit_button.disabled = false
-} else if (submit_button != null) {
-  submit_button.classList.add('btn-blue-disabled')
-  submit_button.disabled = true
-}
+submit_buttons = document.querySelectorAll('#submit-interview')
+
+submit_buttons.forEach((button) => {
+  if (<%= @fully_answered %> && button != null) {
+    button.classList.remove('btn-blue-disabled')
+    button.disabled = false
+  } else if (button != null) {
+    button.classList.add('btn-blue-disabled')
+    button.disabled = true
+  }
+})

@@ -126,7 +126,9 @@ Rails.application.routes.draw do
   post :answer_question, controller: :interviews, as: :answer_interview_question
 
   # INTERVIEW FORMS
-  resources :interview_forms
+  resources :interview_forms do
+    member { post 'toggle_tag' }
+  end
   get :interview_form_link_tags, controller: :interview_forms
   get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'
 
@@ -136,6 +138,7 @@ Rails.application.routes.draw do
   post :add_mcq_option, controller: :interview_questions
   patch :edit_mcq_option, controller: :interview_questions
   patch :delete_mcq_option, controller: :interview_questions
+  get 'interview_questions/:id/duplicate', to: 'interview_questions#duplicate', as: 'duplicate_interview_question'
   get 'interview_questions/:id/move_up', to: 'interview_questions#move_up', as: 'move_up_interview_question'
   get 'interview_questions/:id/move_down', to: 'interview_questions#move_down', as: 'move_down_interview_question'
 

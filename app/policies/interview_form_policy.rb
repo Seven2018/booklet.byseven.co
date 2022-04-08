@@ -35,4 +35,8 @@ class InterviewFormPolicy < ApplicationPolicy
   def destroy?
     edit?
   end
+
+  def toggle_tag?
+    user.hr_or_above? && !record.used?
+  end
 end

@@ -5,6 +5,7 @@ class InterviewForm < ApplicationRecord
   has_many :employees, through: :interviews
   has_many :interview_form_tags, dependent: :destroy
   has_many :tags, through: :interview_form_tags
+  has_and_belongs_to_many :categories
   belongs_to :company
 
   validates :title, presence: true
@@ -38,6 +39,13 @@ class InterviewForm < ApplicationRecord
     when answerable_by_both? && cross      then :answerable_by_both_crossed
     else
       raise UnknownKind
+    end
+  end
+
+  def reorder_questions!
+    interview_questions.order(position: :asc)
+                       .each_with_index do |question, i|
+      question.update_columns(position: i + 1)
     end
   end
 end

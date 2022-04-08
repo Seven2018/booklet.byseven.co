@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_05_142627) do
+ActiveRecord::Schema.define(version: 2022_04_08_115034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,13 @@ ActiveRecord::Schema.define(version: 2022_04_05_142627) do
     t.index ["company_id"], name: "index_categories_on_company_id"
   end
 
+  create_table "categories_interview_forms", id: false, force: :cascade do |t|
+    t.bigint "category_id"
+    t.bigint "interview_form_id"
+    t.index ["category_id"], name: "index_categories_interview_forms_on_category_id"
+    t.index ["interview_form_id"], name: "index_categories_interview_forms_on_interview_form_id"
+  end
+
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "address"
@@ -125,6 +132,7 @@ ActiveRecord::Schema.define(version: 2022_04_05_142627) do
     t.string "auth_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "applications", default: {}, null: false
   end
 
   create_table "content_categories", force: :cascade do |t|

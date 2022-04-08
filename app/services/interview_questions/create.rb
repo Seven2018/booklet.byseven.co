@@ -19,11 +19,6 @@ module InterviewQuestions
       target_position = @position.to_i + 1
       questions = @form.interview_questions.order(position: :asc)
 
-      i = target_position
-      questions.where('position >= ?', target_position).each do |question|
-        question.update position: i
-        i += 1
-      end
       @question.position = target_position
 
       @question.options =

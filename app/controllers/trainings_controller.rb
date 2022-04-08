@@ -114,13 +114,12 @@ class TrainingsController < ApplicationController
     trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
     authorize trainings
 
-    # raise if params.dig(:search, :title).present?
     trainings = trainings.search_trainings(params.dig(:search, :title)) if params.dig(:search, :title).present?
 
     if params.dig(:search, :period) == 'Completed'
-      @trainings = trainings.select{|x| x.next_date.nil?}
+      @trainings = trainings.where_not_exists(:attendees, status: 'Not completed')
     else
-      @trainings = trainings.select{|x| x.next_date.present?}
+      @trainings = trainings.where_exists(:attendees, status: 'Not completed')
     end
 
     respond_to do |format|
@@ -224,9 +223,27 @@ class TrainingsController < ApplicationController
   def get_attendees_status(user_ids: nil)
     return [] if user_ids.blank?
 
-    completed = Attendee.where(user_id: user_ids, status: 'Completed').group(:user_id).count
-    not_completed = Attendee.where(user_id: user_ids, status: 'Not completed').group(:user_id).count
+    trainings = Attendee.where(user_id: user_ids).map{|x| x.session.training}.uniq
+    completed, not_completed = {}, {}
+
+    trainings.each do |training|
+
+      user_ids.each do |user_id|
+
+        if training.is_attended_by?(user_id)
+          if training.done_for?(user_id)
+            completed[user_id] = (completed[user_id].presence || 0) + 1
+          else
+            not_completed[user_id] = (not_completed[user_id].presence || 0) + 1
+          end
+        end
+
+      end
+
+    end
+
     attendee_ids = (completed.keys + not_completed.keys).uniq
+
     attendee_ids.map do |user_id|
       user_not_completed = not_completed[user_id].present? ? not_completed[user_id] : 0
       user_completed = completed[user_id].present? ? completed[user_id] : 0

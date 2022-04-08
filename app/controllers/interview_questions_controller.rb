@@ -1,5 +1,5 @@
 class InterviewQuestionsController < ApplicationController
-  before_action :set_question, only: [:delete_mcq_option, :update, :move_up, :move_down, :destroy]
+  before_action :set_question, only: [:update, :duplicate, :delete_mcq_option, :move_up, :move_down, :destroy]
 
   def create
     @question, @form = InterviewQuestions::Create.call(
@@ -19,32 +19,36 @@ class InterviewQuestionsController < ApplicationController
     authorize @question
     @question.update(question_params)
 
-    required_for_employee = params.dig(:interview_question, :required_for_employee) == 'on' ?  'employee' : nil
-    required_for_manager = params.dig(:interview_question, :required_for_manager) == 'on' ? 'manager' : nil
-    required_for_all = required_for_employee && required_for_manager ? 'all' : nil
-    required_for = 'none'
-    [required_for_all, required_for_employee, required_for_manager].each do |element|
-      if element.present?
-        required_for = element
-        break
-      end
-    end
-    visible_for_employee = params.dig(:interview_question, :visible_for_employee) == 'on' ?  'employee' : nil
-    visible_for_manager = params.dig(:interview_question, :visible_for_manager) == 'on' ? 'manager' : nil
-    visible_for_all = visible_for_employee && visible_for_manager ? 'all' : nil
-
-    visible_for = 'all'
-    [visible_for_all, visible_for_employee, visible_for_manager].each do |element|
-      if element.present?
-        visible_for = element
-        break
-      end
+    if @question.rating? && params.dig(:interview_question, :options).present?
+      @question.update(options: {params.dig(:interview_question, :options) => 1})
     end
 
-    @question.update(required_for: required_for, visible_for: visible_for)
+    if params.dig(:interview_question, :requirement_and_visibility).present?
 
-    if @question.rating?
-      @question.update(options: {params[:interview_question][:options] => 1})
+      required_for_employee = params.dig(:interview_question, :required_for_employee) == 'on' ?  'employee' : nil
+      required_for_manager = params.dig(:interview_question, :required_for_manager) == 'on' ? 'manager' : nil
+      required_for_all = required_for_employee && required_for_manager ? 'all' : nil
+      required_for = 'none'
+      [required_for_all, required_for_employee, required_for_manager].each do |element|
+        if element.present?
+          required_for = element
+          break
+        end
+      end
+      visible_for_employee = params.dig(:interview_question, :visible_for_employee) == 'on' ?  'employee' : nil
+      visible_for_manager = params.dig(:interview_question, :visible_for_manager) == 'on' ? 'manager' : nil
+      visible_for_all = visible_for_employee && visible_for_manager ? 'all' : nil
+
+      visible_for = 'all'
+      [visible_for_all, visible_for_employee, visible_for_manager].each do |element|
+        if element.present?
+          visible_for = element
+          break
+        end
+      end
+
+      @question.update(required_for: required_for, visible_for: visible_for)
+
     end
 
     respond_to do |format|
@@ -53,13 +57,28 @@ class InterviewQuestionsController < ApplicationController
     end
   end
 
+  def duplicate
+    authorize @question
+    @template = @question.interview_form
+
+    new_question = InterviewQuestion.new(@question.attributes.except('id', 'position', 'created_at', 'updated_at'))
+
+    new_question.position = @question.position + 1
+    new_question.save
+
+    respond_to do |format|
+      format.html {redirect_to edit_interview_form_path(@template)}
+      format.js
+    end
+  end
+
   def add_mcq_option
-    @question = InterviewQuestion.find(params[:add_option][:question_id])
+    @question = InterviewQuestion.find(params.dig(:add_option, :question_id))
     authorize @question
     @form = @question.interview_form
-    unless @question.options[params[:add_option][:option]].present?
+    unless @question.options[params.dig(:add_option, :option)].present?
       options_hash = @question.options
-      options_hash[params[:add_option][:option]] = options_hash.count + 1
+      options_hash[params.dig(:add_option, :option)] = options_hash.count + 1
       @question.update(options: options_hash)
     end
     respond_to do |format|
@@ -69,12 +88,12 @@ class InterviewQuestionsController < ApplicationController
   end
 
   def edit_mcq_option
-    @question = InterviewQuestion.find(params[:edit_option][:question_id])
+    @question = InterviewQuestion.find(params.dig(:edit_option, :question_id))
     authorize @question
     @form = @question.interview_form
     options_hash = @question.options
-    options_hash.delete(options_hash.key(params[:edit_option][:position].to_i))
-    options_hash[params[:edit_option][:option]] = params[:edit_option][:position].to_i
+    options_hash.delete(options_hash.key(params.dig(:edit_option, :position).to_i))
+    options_hash[params.dig(:edit_option, :option)] = params.dig(:edit_option, :position).to_i
     @question.update(options: options_hash)
 
     head :no_content

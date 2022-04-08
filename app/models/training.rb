@@ -34,6 +34,10 @@ class Training < ApplicationRecord
     return past_sessions.count == self.sessions.count
   end
 
+  def is_attended_by?(user_id)
+    attendees.map(&:user_id).uniq.include?(user_id)
+  end
+
   def done?
     attendees.distinct.pluck(:status).none?("Not completed")
   end

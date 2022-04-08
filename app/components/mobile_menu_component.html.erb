@@ -1,3 +1,9 @@
+<% applications = [
+    {perso: 'My interviews', link_perso: my_interviews_path, team: 'My team interviews', link_team: my_team_interviews_path, icon: 'fluent:chat-multiple-24-filled', color: 'bkt-blue', authorized: @current_user.company.applications[:interviews]},
+    {perso: 'My trainings', link_perso: my_trainings_path, team: 'My team trainings', link_team: my_team_trainings_path, icon: 'ion:school', color: 'bkt-orange', authorized: @current_user.company.applications[:trainings]}
+  ] %>
+
+<% applications_filtered = applications.reject{|el| el[:authorized] == false} %>
 
 <div class="container d-none" data-mobile-displayer-target="menu">
 
@@ -5,18 +11,18 @@
     <%= render_component MobileMenuFieldComponent.new(title: 'Home', path: root_path) do %>
       <span style="position: relative; top: -1px" class="iconify" data-icon="bx:home-alt-2"></span>
     <% end %>
-    <%= render_component MobileMenuFieldComponent.new(title: 'My interviews', class_name_logo: 'bkt-blue', path: my_interviews_path) do %>
-      <span class="iconify" data-icon="fluent:chat-multiple-16-regular"></span>
+
+    <% applications_filtered.each do |application| %>
+
+      <%= render_component MobileMenuFieldComponent.new(title: application[:perso], class_name_logo: application[:color], path: application[:link_perso]) do %>
+        <span class="iconify" data-icon="<%= application[:icon] %>"></span>
+      <% end %>
+      <%= render_component MobileMenuFieldComponent.new(title: application[:team], class_name_logo: application[:color], path: application[:link_team]) do %>
+        <span class="iconify" data-icon="<%= application[:icon] %>"></span>
+      <% end %>
+
     <% end %>
-    <%= render_component MobileMenuFieldComponent.new(title: 'My team interviews', class_name_logo: 'bkt-blue', path: my_team_interviews_path) do %>
-      <span class="iconify" data-icon="fluent:chat-multiple-16-regular"></span>
-    <% end %>
-    <%= render_component MobileMenuFieldComponent.new(title: 'My trainings', path: my_trainings_path) do %>
-      <%= render_component Icons::ProfessorHatUnfilledComponent.new %>
-    <% end %>
-    <%= render_component MobileMenuFieldComponent.new(title: 'My teams trainings', path: my_team_trainings_path) do %>
-      <%= render_component Icons::ProfessorHatUnfilledComponent.new %>
-    <% end %>
+
     <%= render_component MobileMenuFieldComponent.new(title: 'Profile', divider: false, path: user_path(@current_user)) do %>
       <span class="iconify" data-icon="clarity:user-line"></span>
     <% end %>

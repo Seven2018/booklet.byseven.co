@@ -39,7 +39,7 @@
 
   <div class="d-none" data-profile-activity-target="panel">
     <div class="position-fixed top-0 height-100 width-100 bkt-bg-dark-grey opacity_50pc" data-action="click->profile-activity#hideList"></div>
-    <div class="position-fixed bottom-0 max-h-100vh width-100 bkt-bg-white py-5">
+    <div class="position-fixed bottom-0 max-h-50vh width-100 bkt-bg-white py-5 overflow-y-scroll">
 
       <%= render_component MobileListActivityComponent.new(
         title: "#{@trainings_completed.count} Trainings done", list: @trainings_completed, id: 'trainings-done', data: { profile_activity_target: 'typeList' }
