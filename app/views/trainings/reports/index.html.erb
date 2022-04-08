@@ -3,14 +3,16 @@
     <div id='controls'
          class='d-flex justify-content-between align-items-center mb-4'>
       <h1>Reports</h1>
-      <div>
+
+      <% if TrainingReportPolicy.new(current_user, nil).create? %>
         <%= link_to edit_trainings_reports_path do %>
-          <div class="bkt-btn-orange" data-toggle='tooltip' title='Add a template'>
+          <div class="bkt-btn-orange" data-toggle='tooltip' title='Add a template' data-handle='create-a-training-report-cta'>
             <i class="fas fa-plus"></i>
+            &nbsp;
             <span>Create a Report</span>
           </div>
         <% end %>
-      </div>
+      <% end %>
     </div>
 
     <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">

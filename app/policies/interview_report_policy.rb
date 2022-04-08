@@ -9,7 +9,7 @@ class InterviewReportPolicy < ApplicationPolicy
   end
 
   def show?
-    edit?
+    create?
   end
 
   def create?
@@ -21,10 +21,10 @@ class InterviewReportPolicy < ApplicationPolicy
   end
 
   def update?
-    edit?
+    create?
   end
 
   def destroy?
-    edit?
+    create?
   end
 end
