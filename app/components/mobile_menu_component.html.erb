@@ -1,9 +1,9 @@
 <% applications = [
-    {perso: 'My interviews', link_perso: my_interviews_path, team: 'My team interviews', link_team: my_team_interviews_path, icon: 'fluent:chat-multiple-24-filled', color: 'bkt-blue', authorized: @current_user.company.applications[:interviews]},
-    {perso: 'My trainings', link_perso: my_trainings_path, team: 'My team trainings', link_team: my_team_trainings_path, icon: 'ion:school', color: 'bkt-orange', authorized: @current_user.company.applications[:trainings]}
+    {perso: 'My interviews', link_perso: my_interviews_path, team: 'My team interviews', link_team: my_team_interviews_path, icon: 'fluent:chat-multiple-24-filled', color: 'bkt-blue', authorized: @current_user.company.applications['interviews']},
+    {perso: 'My trainings', link_perso: my_trainings_path, team: 'My team trainings', link_team: my_team_trainings_path, icon: 'ion:school', color: 'bkt-orange', authorized: @current_user.company.applications['trainings']}
   ] %>
 
-<% applications_filtered = applications.reject{|el| el[:authorized] == false} %>
+<% applications_filtered = applications.select{|el| el[:authorized] == true} %>
 
 <div class="container d-none" data-mobile-displayer-target="menu">
 
