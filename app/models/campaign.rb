@@ -48,6 +48,12 @@ class Campaign < ApplicationRecord
       .distinct
   end
 
+  # @param [Array<String>] tags
+  # @return [Array<Campaign>] campaigns
+  def self.tag_matches(tags)
+    distinct.joins(interviews: {interview_form: :categories}).where(categories: {title: tags})
+  end
+
   def deadline
     interviews.order(date: :asc).first&.date
   end
@@ -110,5 +116,11 @@ class Campaign < ApplicationRecord
     raise AmbiguousInterviewQuery unless employee_id
 
     interviews.where(employee_id: employee_id).find(&:crossed?)
+  end
+
+  def tags
+    return [] unless interviews.present? && interviews.first.interview_form.present?
+
+    interviews.first.interview_form.categories.pluck(:title)
   end
 end

@@ -1,25 +1,62 @@
-
 <div
   class='bkt-bg-white mb-2rem p-2rem rounded-10px'
   data-controller="tag-management"
   data-all-tags="<%= @company_tags.join(',') %>"
-  data-path="<%= @toggle_path %>"
+  data-toggle-path="<%= @toggle_path %>"
+  data-remove-company-tag-path="<%= @remove_company_tag_path %>"
 >
   <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
     <p>Template tags</p>
   </div>
-  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your template in order to search through templates efficiently and create accurate reports</p>
-  <div data-tag-management-target="displayZone" class="position-relative width-100 mt-4 bkt-bg-light-grey8 p-2 rounded-2px" >
+  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your template in order to search through templates
+    efficiently and create accurate reports</p>
+  <div data-tag-management-target="displayZone" class="position-relative width-100 mt-4 bkt-bg-light-grey9 p-2 rounded-2px">
     <% @form_tags.each do |tag| %>
-      <div class="tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px"><div class="d-flex align-items-center"><div class="tag-value"><%= tag %></div> <div class="pl-2" data-action="click->tag-management#remove">x</div></div></div>
+      <button class="tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem mb-1">
+        <div class="d-flex align-items-center">
+          <div class="tag-value pl-2"><%= tag %></div>
+          <div class="pl-2 opacity-0 opacity-1-hover" data-action="click->tag-management#remove">X</div>
+        </div>
+      </button>
     <% end %>
-    <input data-action="click->tag-management#displayList keydown->tag-management#escape keydown->tag-management#filter"
-           class="tag-input bkt-bg-light-grey8 bkt-light-grey-placeholder border-0 d-inline-block m-2" placeholder="Empty" type="text" >
+    <input data-action="click->tag-management#displayList keyup->tag-management#escape keyup->tag-management#filter"
+           data-tag-management-target="inputFilter"
+           class="tag-input bkt-bg-light-grey9 bkt-bg-light-grey8-focus bkt-light-grey-placeholder border-0 d-inline-block m-2"
+           placeholder="<%= @form_tags.count.zero? ? 'Empty' : '' %>" type="text">
     <div data-tag-management-target="tagList" class="d-none width-100 max-h-14rem position-absolute bkt-bg-white overflow-y-scroll" style="left: 0px">
       <div class="d-flex m-4 bkt-light-grey">Select a tag or create new one</div>
-      <% @company_tags.each do |tag| %>
-        <div data-action="click->tag-management#addTag" class="d-flex align-items-center bkt-bg-light-grey-hover"> <div class="bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px"><%= tag %></div> </div>
+      <% @company_tags.each_with_index do |tag, idx| %>
+        <div data-action="click->tag-management#addTag"
+             class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem"
+             id="tag-suggestion-<%= idx %>"
+             data-tag-name="<%= tag %>"
+        >
+          <button class="tag-company-item-value d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem"><%= tag %></button>
+          <div class="position-relative">
+            <button class="p-2 rounded-2px bkt-bg-light-grey mr-2" data-action="click->tag-management#showTagOptions">···</button>
+            <div class="d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
+              <button class="flex-row-between-centered" data-action="click->tag-management#preparModal" >
+                <span class="iconify mr-1" data-icon="akar-icons:trash-can" ></span>
+                <p class="fs-1_2rem bkt-dark-grey" >Delete</p>
+              </button>
+            </div>
+          </div>
+        </div>
       <% end %>
+    </div>
+  </div>
+
+  <div class="bkt-modal hidden" data-tag-management-target="modal">
+    <div class="bkt-modal-container">
+      <div class="bkt-modal-body width-20 bkt-bg-white bkt-box-shadow-medium rounded-5px p-4">
+        <div class="flex-row-center-centered">
+          <h4 class="font-weight-600 mb-4">Are you sure you want to delete this tag ? (This is a permanent action)</h4>
+        </div>
+        <div class="flex-row-center-centered">
+          <button class="border-bkt-dark-grey py-3 rounded-5px width-50 mx-4" data-action="click->tag-management#closeModal">no</button>
+          <button class="border-bkt-red bkt-bg-light-red bkt-red py-3 rounded-5px width-50 mx-4" data-action="click->tag-management#makeRemoveCompanyTagRequest" data-tag-management-target="modalConfirm">yes</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

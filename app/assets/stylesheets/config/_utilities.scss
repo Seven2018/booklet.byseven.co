@@ -1,4 +1,6 @@
 .d-none-changeable { display: none; }
+.opacity-0 { opacity: 0; }
+.opacity-1-hover { &:hover { opacity: 1 !important; } }
 
 .hide-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */
@@ -26,6 +28,7 @@
 .overflow-y-hidden { overflow-y: hidden; }
 .overflow-x-hidden { overflow-x: hidden; }
 .overflow-y-scroll { overflow-y: scroll; }
+.overflow-y-auto { overflow-y: auto; }
 .overflow-x-scroll { overflow-x: scroll; }
 .overflow-ellipsis {overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 
@@ -227,6 +230,7 @@
 .min-h-100vh { min-height: 100vw; }
 
 .max-h-14rem { max-height: 14rem }
+.max-h-40rem { max-height: 40rem }
 .max-h-100vh {max-height: 100vh}
 
 .w-10vw  { width: 10vw; }
