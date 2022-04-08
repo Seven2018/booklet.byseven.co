@@ -12,35 +12,18 @@
   <div class="interview-main flex-row-between-start bkt-bg-white pos-rel bkt-box-shadow-compact-top">
 
     <div class='interview-main__left bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
-      <h2>Chapters</h2>
-      <div class="interview-main__left-anchors">
-        <% chapter = 1 %>
-        <% @template.interview_questions.order(position: :asc).each do |question| %>
-
-          <% question_text = question.question %>
-
-          <div class="interview-main__left-question">
-            <a href="#anchor-<%= question.position %>">
-              <% if question.separator? %>
-                <p class="interview-main__left-separator" title="<%= question_text %>"><%= chapter %>. <%= question_text %></p>
-                <% chapter += 1 %>
-              <% else %>
-                <div class="interview-main__left-icon">
-                  <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
-                </div>
-                <p title="<%= question_text %>"><%= question.question %></p>
-              <% end %>
-            </a>
-          </div>
-
-        <% end %>
-      </div>
+      <%= render 'interview_forms/edit/edit_show_summary', template: @template %>
     </div>
 
     <div class="interview-main__right">
-      <h1><%= @template.title %></h1>
 
-      <% if @template.video %>
+      <h1 class="fs-3rem mb-2rem"><%= @template.title %></h1>
+
+      <div class="trix-display">
+        <%= sanitize @template.description %>
+      </div>
+
+      <% if @template.video.present? %>
         <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@template.video) %>" style='width: 75%; aspect-ratio: 16 / 9;'></iframe>
       <% end %>
 
@@ -64,7 +47,7 @@
             <% separator = value.first %>
             <p><%= key %>. <%= separator.question %></p>
           </div>
-          <div class="bkt-dark-grey fs-1_4rem pb-1rem pt-1rem w-100">
+          <div class="trix-display">
             <%= sanitize separator.description %>
           </div>
         <% end %>
@@ -74,7 +57,7 @@
             <% question_number += 1 %>
 
             <div class="interview-main__right-question">
-              <a id="anchor-<%= question.position %>" style='position:absolute; top: -2.5rem;'></a>
+              <a id="anchor-<%= question.id %>" style='position:absolute; top: -20rem;'></a>
               <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
                 <p><%= question_number %>. </p>
                 <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>

@@ -30,11 +30,11 @@ module CampaignDrafts
             template.attributes.except('id', 'created_at', 'updated_at').merge(used: true, categories: template.categories)
           )
 
-          template.interview_questions.each do |question|
+          template.interview_questions.order(position: :asc).each do |question|
             InterviewQuestion.create \
               question.attributes
-                      .except('id', 'interview_form_id', 'created_at', 'updated_at')
-                      .merge(interview_form: new_form)
+                      .except('id', 'interview_form_id', 'position', 'created_at', 'updated_at')
+                      .merge(interview_form: new_form, position: question.position)
           end
 
           # TODO : Tag system update incoming

@@ -42,6 +42,10 @@
         <% end %>
       <% end %>
 
+      <%= link_to duplicate_interview_question_path(question), class: 'px-1', remote: true do %>
+        <span class="iconify bkt-blue" data-icon="heroicons-outline:duplicate"></span>
+      <% end %>
+
       <%= link_to interview_question_path(question), method: :delete, class: 'px-1', data: {confirm: 'Are you sure ?'}, remote: true do %>
         <span class="iconify bkt-red" data-icon="akar-icons:trash-can"></span>
       <% end %>
@@ -118,6 +122,8 @@
 <% unless question.separator? %>
 
   <%= simple_form_for question, remote: true do |f| %>
+
+    <%= f.hidden_field :requirement_and_visibility, value: true %>
 
     <div class="flex-row-between-centered">
       <div class='flex-column-between-left'>

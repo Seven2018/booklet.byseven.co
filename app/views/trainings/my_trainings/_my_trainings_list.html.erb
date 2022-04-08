@@ -1,5 +1,7 @@
 <% trainings.each do |training| %>
 
+  <% next_session = training.next_session %>
+
   <div class="d-none d-sm-flex flex-row-between-centered width-100 bkt-bg-white rounded-20px p-3rem mt-2rem bkt-box-shadow">
 
     <div>
@@ -23,13 +25,19 @@
           <div class="flex-row-center-centered height-2_5rem width-2_5rem mr-1rem">
             <span class="iconify fs-1_6rem bkt-orange" data-icon="fa6-solid:user-group"></span>
           </div>
-          <p><%= training.next_session.workshop.synchronous? ? 'Face-to-face' : 'Online' %></p>
+          <p><%= next_session.present? && next_session.workshop.synchronous? ? 'Face-to-face' : 'Online' %></p>
         </div>
         <div class="flex-row-between-centered">
           <div class="flex-row-center-centered height-2_5rem width-2_5rem mr-1rem">
             <span class="iconify fs-1_6rem bkt-orange" data-icon="akar-icons:calendar"></span>
           </div>
-          <p>Next date: <%= training.next_date %> at <%= training.next_session.starts_at.strftime('%H:%M') %></p>
+
+          <% if next_session.present? && next_session.workshop.synchronous? %>
+            <p>Next date: <%= training.next_date %> at <%= training.next_session.starts_at.strftime('%H:%M') %></p>
+          <% elsif next_session.present? %>
+            <p>Next date: <%= training.next_date %></p>
+          <% end %>
+
         </div>
       </div>
     </div>
@@ -64,13 +72,19 @@
       <div class="mx-4 fs-1_2rem">
         <span class="iconify  bkt-orange" data-icon="fa6-solid:user-group" data-width="15" data-height="15"></span>
       </div>
-      <%= training.next_session.workshop.synchronous? ? 'Face-to-face' : 'Online' %>
+      <%= next_session.present? && training.next_session.workshop.synchronous? ? 'Face-to-face' : 'Online' %>
     </div>
     <div class="flex-row-start-centered mt-3">
       <div class=" mx-4 fs-2rem">
         <span class="iconify fs-1_6rem bkt-orange" data-icon="akar-icons:calendar"></span>
       </div>
-      Next date: <%= training.next_date %> at <%= training.next_session.starts_at.strftime('%H:%M') %>
+
+      <% if next_session.present? && next_session.workshop.synchronous? %>
+        <p>Next date: <%= training.next_date %> at <%= training.next_session.starts_at.strftime('%H:%M') %></p>
+      <% elsif next_session.present? %>
+        <p>Next date: <%= training.next_date %></p>
+      <% end %>
+
     </div>
     <div class="flex-row-start-centered p-4 mt-3 bkt-bg-orange rounded-b-15px ">
       <%= link_to training_path(training), class: 'flex-column m-auto bkt-white' do %>
