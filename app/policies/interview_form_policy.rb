@@ -40,4 +40,8 @@ class InterviewFormPolicy < ApplicationPolicy
   def toggle_tag?
     user.hr_or_above? && !record.used?
   end
+
+  def remove_company_tag?
+    user.hr_or_above? && !record.used?
+  end
 end

@@ -21,14 +21,10 @@ class Company < ApplicationRecord
   serialize :applications, Hash
 
   include Companies::AssetsMeta
+  include Companies::Applications
 
   def default_tag_category
     tag_categories.order('RANDOM()').first.presence ||
       TagCategory.create(company: self, name: 'Job Title', position: 1)
-  end
-
-  def update_application(name, boolean)
-    applications[name] = boolean
-    update_column(:applications, applications)
   end
 end
