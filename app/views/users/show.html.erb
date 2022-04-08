@@ -20,23 +20,25 @@
 
           <div class="flex-row-between-centered">
 
-            <a data-toggle='modal' data-target='#editUser'>
-              <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
-                <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
-              </div>
-            </a>
+            <% if UserPolicy.new(current_user, @user).edit? %>
+              <a data-toggle='modal' data-target='#editUser' data-handle='edit-user-cta'>
+                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
+                  <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
+                </div>
+              </a>
 
-            <a data-toggle='modal' data-target='#editPermissions'>
-              <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
-                <span class="iconify fs-1_6rem bkt-white" data-icon="bi:key-fill"></span>
-              </div>
-            </a>
+              <a data-toggle='modal' data-target='#editPermissions' data-handle='edit-user-permissions-cta'>
+                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
+                  <span class="iconify fs-1_6rem bkt-white" data-icon="bi:key-fill"></span>
+                </div>
+              </a>
 
-            <a data-toggle='modal' data-target='#editPassword'>
-              <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
-                <span class="iconify fs-1_6rem bkt-white" data-icon="bi:lock-fill"></span>
-              </div>
-            </a>
+              <a data-toggle='modal' data-target='#editPassword' data-handle='edit-user-password-cta'>
+                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
+                  <span class="iconify fs-1_6rem bkt-white" data-icon="bi:lock-fill"></span>
+                </div>
+              </a>
+            <% end %>
 
           </div>
 
@@ -217,27 +219,29 @@
 
 <%= render 'users/edit_mobile' %>
 
-<!----------->
-<!-- MODAL -->
-<!----------->
+<% if UserPolicy.new(current_user, @user).edit? %>
+  <!----------->
+  <!-- MODAL -->
+  <!----------->
 
-<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'users/modals/edit', user: @user %>
+  <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="border-radius: 20px">
+      <%= render 'users/modals/edit', user: @user %>
+    </div>
   </div>
-</div>
 
-<div class="modal fade" id="editPermissions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'users/modals/edit_permissions', user: @user %>
+  <div class="modal fade" id="editPermissions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="border-radius: 20px">
+      <%= render 'users/modals/edit_permissions', user: @user %>
+    </div>
   </div>
-</div>
 
-<div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'users/modals/changepassword', user: @user %>
+  <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="border-radius: 20px">
+      <%= render 'users/modals/changepassword', user: @user %>
+    </div>
   </div>
-</div>
+<% end %>
 
 
 <!----------->

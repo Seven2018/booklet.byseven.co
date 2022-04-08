@@ -20,6 +20,15 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def edit?
+    user.can_edit_employees ||
+      user.id == record.id
+  end
+
+  def update?
+    edit?
+  end
+
   def complete_profile?
     true
   end
@@ -29,22 +38,18 @@ class UserPolicy < ApplicationPolicy
   end
 
   def unlink_from_company?
-    user.hr_or_above?
-  end
-
-  def update?
-    true
+    create?
   end
 
   def destroy?
-    user.hr_or_above?
+    create?
   end
 
   def recommendation?
-    user.hr_or_above?
+    create?
   end
 
   def book_users?
-    user.hr_or_above?
+    create?
   end
 end
