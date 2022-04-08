@@ -23,6 +23,9 @@ class PagesController < ApplicationController
 
   # Display folders/contents catalogue
   def catalogue
+    raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
+      PagePolicy.new(current_user).catalogue?
+
     complete_profile
 
     @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
