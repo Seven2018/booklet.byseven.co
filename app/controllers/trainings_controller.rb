@@ -118,9 +118,9 @@ class TrainingsController < ApplicationController
     trainings = trainings.search_trainings(params.dig(:search, :title)) if params.dig(:search, :title).present?
 
     if params.dig(:search, :period) == 'Completed'
-      @trainings = trainings.where_not_exists(:attendees, status: 'Not completed')
+      @trainings = trainings.where_not_exists(:attendees, user: current_user, status: 'Not completed')
     else
-      @trainings = trainings.where_exists(:attendees, status: 'Not completed')
+      @trainings = trainings.where_exists(:attendees, user: current_user, status: 'Not completed')
     end
 
     respond_to do |format|

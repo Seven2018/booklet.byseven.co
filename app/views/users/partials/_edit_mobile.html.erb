@@ -89,7 +89,7 @@
       <% if @user.admin? %>
         <%= f.input :company, collection: Company.all, include_blank: false, label: 'Company:', label_html: {class: 'bkt-light-grey'}, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}}  %>
       <% end %>
-      <%= f.input :manager_id, collection: User.where(company_id: @user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin']).order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: {class: 'bkt-light-grey'}, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}}  %>
+      <%= f.input :manager_id, collection: User.where(company_id: @user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin']).where.not(id: @user.id).order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: {class: 'bkt-light-grey'}, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}}  %>
       <%= f.input :phone_number, label: 'Phone:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :linkedin, label: 'Linkedin (url):', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :birth_date, as: :date, label: 'Birth date:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
