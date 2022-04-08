@@ -27,17 +27,6 @@ RSpec.feature 'Permission :can_read_contents', type: :feature, js: true do
         visit catalogue_path
         expect(page).to have_current_path catalogue_path
       end
-
-      scenario 'should be able to create' do
-        visit catalogue_path
-        binding.pry
-        find("[data-handle='add-a-template-cta']").click
-        find("[name='interview_form[title]']").set('toto')
-        find("#save_button").click
-
-        expect(InterviewForm.count).to eq 1
-        expect(page).to have_current_path edit_interview_form_path(InterviewForm.last)
-      end
     end
   end
 end

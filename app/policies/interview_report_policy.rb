@@ -12,8 +12,12 @@ class InterviewReportPolicy < ApplicationPolicy
     edit?
   end
 
-  def edit?
+  def create?
     user.can_create_interview_reports
+  end
+
+  def edit?
+    create?
   end
 
   def update?

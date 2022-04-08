@@ -21,19 +21,13 @@ RSpec.feature 'Permission :can_create_contents', type: :feature, js: true do
     let(:can_create_contents) { false }
     scenario 'should not be able to create' do
       visit catalogue_path
-      # binding.pry
-      find("[data-handle='create-a-new-workshop-cta']").click
-      find("[name='content[title]']").set('toto')
-      find(".modal-footer button[type='submit']").click
-
-      expect(Content.count).to eq 0
-      expect(page).to have_current_path root_path
+      expect(page).not_to have_selector("[data-handle='create-a-new-workshop-cta']")
     end
   end
 
   context 'a signed in user with create permission' do
     let(:can_create_contents) { true }
-    scenario 'should be able to create a' do
+    scenario 'should be able to create' do
       visit catalogue_path
       find("[data-handle='create-a-new-workshop-cta']").click
       find("[name='content[title]']").set('toto')

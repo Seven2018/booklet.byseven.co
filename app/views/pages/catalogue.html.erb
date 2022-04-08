@@ -2,11 +2,14 @@
   <div id="catalogue__contents" style='width: 80%; max-width: 150rem'>
     <div id="catalogue__contents-header" class="flex-row-between-centered mb-2rem">
       <h2 class="fs-2_4rem font-weight-600 bkt-dark-grey">Workshops (<%= @contents.count %>)</h2>
-      <button class="bkt-btn-orange" data-toggle='modal' data-target='#newContent' data-handle='create-a-new-workshop-cta'>
-        <i class="fas fa-plus"></i>
-        &nbsp;
-        Create a new workshop
-      </button>
+
+      <% if ContentPolicy.new(current_user, nil).create? %>
+        <button class="bkt-btn-orange" data-toggle='modal' data-target='#newContent' data-handle='create-a-new-workshop-cta'>
+          <i class="fas fa-plus"></i>
+          &nbsp;
+          Create a new workshop
+        </button>
+      <% end %>
     </div>
     <div class="bkt-bg-white rounded-20px p-2rem">
       <div id="catalogue__controls">
