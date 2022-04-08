@@ -9,11 +9,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    user.hr_or_above?
+    user.can_create_employees
   end
 
   def import_users?
-    user.hr_or_above?
+    create?
   end
 
   def show?
