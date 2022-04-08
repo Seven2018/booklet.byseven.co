@@ -1,27 +1,26 @@
 class InterviewReportPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.hr_or_above? && user.company_id.present?
-        scope.where(company: user.company)
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
+        user.can_create_interview_reports && user.company_id.present?
+
+      scope.where(company: user.company)
     end
   end
 
   def show?
-    user.hr_or_above?
+    edit?
   end
 
-  def new?
-    user.hr_or_above?
+  def edit?
+    user.can_create_interview_reports
   end
 
-  def create?
-    user.hr_or_above?
+  def update?
+    edit?
   end
 
   def destroy?
-    user.hr_or_above?
+    edit?
   end
 end

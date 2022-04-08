@@ -2,9 +2,9 @@ class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
-        user.can_create_campaigns
+        user.can_create_campaigns && user.company_id.present?
 
-      scope.all
+      scope.where(company: user.company)
     end
   end
 
