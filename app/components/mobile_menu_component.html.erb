@@ -1,34 +1,29 @@
-<% applications = [
-    {perso: 'My interviews', link_perso: my_interviews_path, team: 'My team interviews', link_team: my_team_interviews_path, icon: 'fluent:chat-multiple-24-filled', color: 'bkt-blue', authorized: @current_user.company.applications[:interviews]},
-    {perso: 'My trainings', link_perso: my_trainings_path, team: 'My team trainings', link_team: my_team_trainings_path, icon: 'ion:school', color: 'bkt-orange', authorized: @current_user.company.applications[:trainings]}
-  ] %>
+<% if @user %>
+  <div class="container d-none" data-mobile-displayer-target="menu">
 
-<% applications_filtered = applications.reject{|el| el[:authorized] == false} %>
-
-<div class="container d-none" data-mobile-displayer-target="menu">
-
-  <div class="row mt-5rem">
-    <%= render_component MobileMenuFieldComponent.new(title: 'Home', path: root_path) do %>
-      <span style="position: relative; top: -1px" class="iconify" data-icon="bx:home-alt-2"></span>
-    <% end %>
-
-    <% applications_filtered.each do |application| %>
-
-      <%= render_component MobileMenuFieldComponent.new(title: application[:perso], class_name_logo: application[:color], path: application[:link_perso]) do %>
-        <span class="iconify" data-icon="<%= application[:icon] %>"></span>
-      <% end %>
-      <%= render_component MobileMenuFieldComponent.new(title: application[:team], class_name_logo: application[:color], path: application[:link_team]) do %>
-        <span class="iconify" data-icon="<%= application[:icon] %>"></span>
+    <div class="row mt-5rem">
+      <%= render_component MobileMenuFieldComponent.new(title: 'Home', path: root_path) do %>
+        <span style="position: relative; top: -1px" class="iconify" data-icon="bx:home-alt-2"></span>
       <% end %>
 
-    <% end %>
+      <% active_applications.each do |application| %>
 
-    <%= render_component MobileMenuFieldComponent.new(title: 'Profile', divider: false, path: user_path(@current_user)) do %>
-      <span class="iconify" data-icon="clarity:user-line"></span>
-    <% end %>
-    <%= render_component MobileMenuFieldComponent.new(title: 'Log out', divider: false, class_name: 'bkt-red mt-5 pt-5', path: destroy_user_session_path, method: :delete) do %>
-      <span class="iconify" data-icon="lucide:log-out"></span>
-    <% end %>
+        <%= render_component MobileMenuFieldComponent.new(title: application[:perso], class_name_logo: application[:color], path: send(application[:link])) do %>
+          <span class="iconify" data-icon="<%= application[:icon] %>"></span>
+        <% end %>
+        <%= render_component MobileMenuFieldComponent.new(title: application[:team], class_name_logo: application[:color], path: send(application[:link_team])) do %>
+          <span class="iconify" data-icon="<%= application[:icon] %>"></span>
+        <% end %>
+
+      <% end %>
+
+      <%= render_component MobileMenuFieldComponent.new(title: 'Profile', divider: false, path: user_path(@user)) do %>
+        <span class="iconify" data-icon="clarity:user-line"></span>
+      <% end %>
+      <%= render_component MobileMenuFieldComponent.new(title: 'Log out', divider: false, class_name: 'bkt-red mt-5 pt-5', path: destroy_user_session_path, method: :delete) do %>
+        <span class="iconify" data-icon="lucide:log-out"></span>
+      <% end %>
+    </div>
+
   </div>
-
-</div>
+<% end %>

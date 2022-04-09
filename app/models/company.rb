@@ -18,7 +18,7 @@ class Company < ApplicationRecord
   has_one_attached :my_trainings_bg_picture
   has_one_attached :my_team_trainings_bg_picture
 
-  serialize :applications, Hash
+  before_save :clear_applications_params
 
   include Companies::AssetsMeta
   include Companies::Applications

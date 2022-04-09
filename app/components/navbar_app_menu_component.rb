@@ -6,6 +6,8 @@ class NavbarAppMenuComponent < ViewComponent::Base
   end
 
   def active_applications
+    return [] unless @user&.company
+
     @user.company.active_applications
   end
 end

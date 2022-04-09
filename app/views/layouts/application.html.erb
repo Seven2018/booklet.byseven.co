@@ -52,9 +52,7 @@
       <% end %>
     </div>
 
-    <% if user_signed_in? %>
-      <%= render_component MobileMenuComponent.new(current_user) %>
-    <% end %>
+    <%= render_component MobileMenuComponent.new(current_user) %>
 
     <%= javascript_include_tag 'application' %>
   </body>
