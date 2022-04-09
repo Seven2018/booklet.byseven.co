@@ -7,7 +7,7 @@
     <strong><p>Get instant access to your trainings, and all your interviews from here.</p></strong>
   </div>
 
-  <% if current_user.company.applications[:interviews] %>
+  <% if current_user.company.applications.include? :interviews %>
 
     <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
       <%= link_to '', my_interviews_path, class: 'stretched-link' %>
@@ -122,7 +122,7 @@
 
   <% end %>
 
-  <% if current_user.company.applications[:trainings] %>
+  <% if current_user.company.applications.include? :trainings %>
 
     <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
       <%= link_to '', my_trainings_path, class: 'stretched-link' %>

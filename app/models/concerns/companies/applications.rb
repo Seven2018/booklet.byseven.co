@@ -21,12 +21,11 @@ module Companies::Applications
     }
   }
 
-  def update_application(name, boolean)
-    applications[name] = boolean
-    update_column(:applications, applications)
+  def clear_applications_params
+    applications.reject! &:blank?
   end
 
   def active_applications
-    applications.map{ |key, active| APPLICATIONS[key] if active }.compact
+    applications.map{ |x| APPLICATIONS[x.to_sym]}
   end
 end
