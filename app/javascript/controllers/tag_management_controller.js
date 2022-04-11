@@ -66,11 +66,6 @@ export default class extends Controller {
     this.searchTags(value, toPrint => {
       this.updateSuggestionList(toPrint, createTag)
     })
-    // const toPrint = this.allTags.filter(tag => {
-    //   const regex = new RegExp(value, 'g');
-    //   return !!tag.match(regex) && !formTags.includes(tag)
-    // })
-    // this.updateSuggestionList(toPrint, createTag)
   }
 
   updateSuggestionList(arr, createTag) {
