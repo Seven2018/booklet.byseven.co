@@ -18,11 +18,9 @@ export default class extends Controller {
   }
 
   addTag(e) {
-    let tag = ''
-    if (e.target.classList.contains('tag-company-item-value'))
-      tag = e.target.innerText.trim()
-    else
-      tag = e.target.querySelector('.tag-company-item-value').innerText.trim()
+    const targetItemValue = e.target.classList.contains('tag-company-item') ? e.target : e.target.closest('.tag-company-item')
+    const buttonTagName = targetItemValue.querySelector('.tag-company-item-value')
+    const tag = buttonTagName.innerText
 
     this.toogleTag(tag, response => {
       if (response.status >= 200 && response.status < 400) {
@@ -35,12 +33,8 @@ export default class extends Controller {
           </div>`
 
         this.displayZoneTarget.prepend(buttonElement)
-        if (e.target.dataset.create) {
-          e.target.parentElement.remove()
-          this.filter({target: {value: ''}})
-        } else {
-          e.target.remove()
-        }
+        targetItemValue.remove()
+        this.filter({target: {value: ''}})
 
         this.inputFilterTarget.value = ''
         this.inputFilterTarget.placeholder = ''
@@ -61,9 +55,10 @@ export default class extends Controller {
   filter(e) {
     const value = e.target.value
     const formTags = Array.from(document.querySelectorAll('.tag-value')).map(el => el.innerText)
-    const createTag = !formTags.includes(value) ? value : null
 
     this.searchTags(value, toPrint => {
+      const createTag = !toPrint.includes(value) ? value : null
+
       this.updateSuggestionList(toPrint, createTag)
     })
   }
@@ -77,8 +72,8 @@ export default class extends Controller {
 
     if (createTag) {
       const div = document.createElement('div')
-      div.className = 'd-flex align-items-center bkt-bg-light-grey-hover'
-      div.innerHTML = `<p class="ml-4 fs-1_2rem">Create</p> <button data-action="click->tag-management#addTag" data-create="tag" class="tag-company-item-value bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${createTag}</button>`
+      div.className = 'tag-company-item d-flex align-items-center bkt-bg-light-grey-hover'
+      div.innerHTML = `<p class="tag-company-item ml-4 fs-1_2rem">Create</p> <button data-action="click->tag-management#addTag" data-create="tag" class="tag-company-item-value bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${createTag}</button>`
 
       this.tagListTarget.append(div)
     }
