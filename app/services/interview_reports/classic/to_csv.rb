@@ -3,16 +3,17 @@ module InterviewReports
   module Classic
     class ToCsv < InterviewReports::ToCsv
       def call
-        columns = [@interview_report.tag_category.name,
+        columns = [
+            @interview_report.tag_category.name,
             'Employees count',
             'Interviews sets - Total',
             'Interviews sets - Completed',
-            'Interviews sets - Locked',
-            'Interviews sets - In progress',
-            'Interviews sets - Not started',
             'Interviews sets - Completed/Total',
+            'Interviews sets - Locked',
             'Interviews sets - Locked/Total',
+            'Interviews sets - In progress',
             'Interviews sets - In Progress/Total',
+            'Interviews sets - Not started',
             'Interviews sets - Not Started/Total',
             'Interviews sets - Started Total'
             ]
@@ -53,12 +54,12 @@ module InterviewReports
             line << employees_count
             line << interviews_sets_total
             line << interviews_sets_completed
-            line << interviews_sets_locked
-            line << interviews_sets_in_progress
-            line << interviews_sets_not_started
             line << interviews_sets_completed_by_total.to_s + '%'
+            line << interviews_sets_locked
             line << interviews_sets_locked_by_total.to_s + '%'
+            line << interviews_sets_in_progress
             line << interviews_sets_in_progress_by_total.to_s + '%'
+            line << interviews_sets_not_started
             line << interviews_sets_not_started_by_total.to_s + '%'
             line << interviews_set_total_ongoing.to_s + '%'
 
