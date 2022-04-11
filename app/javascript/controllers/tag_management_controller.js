@@ -25,7 +25,7 @@ export default class extends Controller {
     this.toogleTag(tag, response => {
       if (response.status >= 200 && response.status < 400) {
         const buttonElement = document.createElement('button');
-        buttonElement.className = 'tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem'
+        buttonElement.className = 'tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem mb-1'
         buttonElement.innerHTML = `
           <div class="d-flex align-items-center">
             <div class="tag-value pl-2">${tag}
@@ -113,7 +113,11 @@ export default class extends Controller {
     event.stopPropagation()
     const div = event.target.parentElement.querySelector('div')
 
-    if (div != null) div.classList.remove('d-none')
+    const options = document.querySelectorAll('.company-tag-options')
+    options.forEach(el => {
+      if (div === el) div.classList.toggle('d-none')
+      else el.classList.add('d-none')
+    })
   }
 
   preparModal(event) {
@@ -171,8 +175,8 @@ export default class extends Controller {
         >
           <button class="tag-company-item-value d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${tag}</button>
           <div class="position-relative">
-            <button class="p-2 rounded-2px bkt-bg-light-grey mr-2" data-action="click->tag-management#showTagOptions">···</button>
-            <div class="d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
+            <button class="p-2 rounded-2px bkt-bg-light-grey-hover mr-2" data-action="click->tag-management#showTagOptions">···</button>
+            <div class="company-tag-options d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
               <button class="flex-row-between-centered" data-action="click->tag-management#preparModal" >
                 <span class="iconify mr-1" data-icon="akar-icons:trash-can" ></span>
                 <p class="fs-1_2rem bkt-dark-grey" >Delete</p>
