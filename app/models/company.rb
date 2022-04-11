@@ -18,11 +18,17 @@ class Company < ApplicationRecord
   has_one_attached :my_trainings_bg_picture
   has_one_attached :my_team_trainings_bg_picture
 
+  before_save :clear_applications_params
+
   include Companies::AssetsMeta
   include Companies::Applications
 
   def default_tag_category
     tag_categories.order('RANDOM()').first.presence ||
       TagCategory.create(company: self, name: 'Job Title', position: 1)
+  end
+
+  def applications_to_sym
+    applications.map(&:to_sym)
   end
 end
