@@ -27,4 +27,8 @@ class Company < ApplicationRecord
     tag_categories.order('RANDOM()').first.presence ||
       TagCategory.create(company: self, name: 'Job Title', position: 1)
   end
+
+  def applications_to_sym
+    applications.map(&:to_sym)
+  end
 end

@@ -24,7 +24,7 @@ export default class extends Controller {
       if (!saving) {
         saving = true
         // TODO stop faking :/
-        setTimeout(function(){ saving = false }, 1000)
+        setTimeout(function(){ saving = false }, 3000)
       }
     }
     this.inputTarget.value = this.editorTarget.innerHTML

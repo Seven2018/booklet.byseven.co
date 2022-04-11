@@ -112,15 +112,15 @@ class TrainingsController < ApplicationController
   end
 
   def my_trainings
-    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user})
+    trainings = Training.joins(sessions: :attendees).where(attendees: {user: current_user}).distinct
     authorize trainings
 
     trainings = trainings.search_trainings(params.dig(:search, :title)) if params.dig(:search, :title).present?
 
     if params.dig(:search, :period) == 'Completed'
-      @trainings = trainings.where_not_exists(:attendees, status: 'Not completed')
+      @trainings = trainings.where_not_exists(:attendees, {user: current_user, status: 'Not completed'})
     else
-      @trainings = trainings.where_exists(:attendees, status: 'Not completed')
+      @trainings = trainings.where_exists(:attendees, {user: current_user, status: 'Not completed'})
     end
 
     respond_to do |format|
@@ -140,17 +140,13 @@ class TrainingsController < ApplicationController
   def my_team_trainings_user_details
     @user = User.find(params[:id])
     redirect_to my_team_trainings_path if @user.manager != current_user
-    @trainings = Training.joins(sessions: :attendees)
+    trainings = Training.joins(sessions: :attendees)
                  .where(attendees: {user: @user}).distinct
 
-    authorize @trainings
+    authorize trainings
 
-    @trainings = @trainings.select{|x| x.next_date.present?}
-                 .sort{|y| y.next_date}
-
-    @attendee_status = get_attendees_status(user_ids: params[:id]).first
-    @attendees_done = Attendee.where(user_id: params[:id], status: 'Completed')
-    @attendees_to_do = Attendee.where(user_id: params[:id], status: 'Not completed')
+    @trainings_done = trainings.where_not_exists(:attendees, user: @user, status: 'Not completed')
+    @trainings_to_do = trainings.where_exists(:attendees, user: @user, status: 'Not completed')
   end
 
   def send_acquisition_reminder_email
