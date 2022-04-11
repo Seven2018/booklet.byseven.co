@@ -59,15 +59,18 @@ export default class extends Controller {
   }
 
   filter(e) {
-    const value = e.key == 'Backspace' ? '' : e.target.value
+    const value = e.target.value
     const formTags = Array.from(document.querySelectorAll('.tag-value')).map(el => el.innerText)
     const createTag = !formTags.includes(value) ? value : null
 
-    const toPrint = this.allTags.filter(tag => {
-      const regex = new RegExp(value, 'g');
-      return !!tag.match(regex) && !formTags.includes(tag)
+    this.searchTags(value, toPrint => {
+      this.updateSuggestionList(toPrint, createTag)
     })
-    this.updateSuggestionList(toPrint, createTag)
+    // const toPrint = this.allTags.filter(tag => {
+    //   const regex = new RegExp(value, 'g');
+    //   return !!tag.match(regex) && !formTags.includes(tag)
+    // })
+    // this.updateSuggestionList(toPrint, createTag)
   }
 
   updateSuggestionList(arr, createTag) {
@@ -172,7 +175,7 @@ export default class extends Controller {
 
   createSuggestionItem(tag) {
     const xmlString = `<div data-action="click->tag-management#addTag"
-             class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem"
+             class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem cursor-pointer"
              id="tag-suggestion-${Date.now()}"
              data-tag-name="${tag}"
         >
@@ -189,5 +192,18 @@ export default class extends Controller {
         </div>`;
 
     return new DOMParser().parseFromString(xmlString, "text/html").body;
+  }
+
+  searchTags(input, callback) {
+    fetch(this.element.dataset.searchTagPath, {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({input: input})
+    })
+      .then(response => response.json())
+      .then(callback)
   }
 }

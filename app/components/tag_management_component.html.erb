@@ -3,6 +3,7 @@
   data-controller="tag-management"
   data-all-tags="<%= @company_tags.join(',') %>"
   data-toggle-path="<%= @toggle_path %>"
+  data-search-tag-path="<%= @search_tag_path %>"
   data-remove-company-tag-path="<%= @remove_company_tag_path %>"
 >
   <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
@@ -26,22 +27,22 @@
     <div data-tag-management-target="tagList" class="d-none width-100 max-h-14rem position-absolute bkt-bg-white overflow-y-scroll" style="left: 0px">
       <div class="d-flex m-4 bkt-light-grey">Select a tag or create new one</div>
       <% @company_tags.each_with_index do |tag, idx| %>
-        <div data-action="click->tag-management#addTag"
-             class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem"
-             id="tag-suggestion-<%= idx %>"
-             data-tag-name="<%= tag %>"
-        >
-          <button class="tag-company-item-value d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem"><%= tag %></button>
-          <div class="position-relative">
-            <button class="p-2 rounded-2px bkt-bg-light-grey mr-2" data-action="click->tag-management#showTagOptions">···</button>
-            <div class="d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
-              <button class="flex-row-between-centered" data-action="click->tag-management#preparModal" >
-                <span class="iconify mr-1" data-icon="akar-icons:trash-can" ></span>
-                <p class="fs-1_2rem bkt-dark-grey" >Delete</p>
-              </button>
-            </div>
-          </div>
-        </div>
+         <div data-action="click->tag-management#addTag"
+                 class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem cursor-pointer"
+                 id="tag-suggestion-<%= idx %>"
+                 data-tag-name="<%= tag %>"
+         >
+           <button class="tag-company-item-value d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem"><%= tag %></button>
+           <div class="position-relative">
+             <button class="p-2 rounded-2px bkt-bg-light-grey mr-2" data-action="click->tag-management#showTagOptions">···</button>
+             <div class="d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
+               <button class="flex-row-between-centered" data-action="click->tag-management#preparModal" >
+                 <span class="iconify mr-1" data-icon="akar-icons:trash-can" ></span>
+                 <p class="fs-1_2rem bkt-dark-grey" >Delete</p>
+               </button>
+             </div>
+           </div>
+         </div>
       <% end %>
     </div>
   </div>
