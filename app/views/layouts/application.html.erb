@@ -41,8 +41,7 @@
         <% if params[:controller] == 'users' && params[:action] == 'show' %>
           <%= yield %>
         <% else %>
-          <div id="booklet-container"
-               class="<%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %> <%= 'container-admin-height' if @show_navbar_admin %>">
+          <div id="booklet-container" class="<%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %> <%= 'container-admin-height' if @show_navbar_admin %>">
             <%= yield %>
           </div>
         <% end %>
