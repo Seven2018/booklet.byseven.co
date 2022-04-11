@@ -18,16 +18,14 @@ export default class extends Controller {
   }
 
   addTag(e) {
-    let tag = ''
-    if (e.target.classList.contains('tag-company-item-value'))
-      tag = e.target.innerText.trim()
-    else
-      tag = e.target.querySelector('.tag-company-item-value').innerText.trim()
+    const targetItemValue = e.target.classList.contains('tag-company-item') ? e.target : e.target.closest('.tag-company-item')
+    const buttonTagName = targetItemValue.querySelector('.tag-company-item-value')
+    const tag = buttonTagName.innerText
 
     this.toogleTag(tag, response => {
       if (response.status >= 200 && response.status < 400) {
         const buttonElement = document.createElement('button');
-        buttonElement.className = 'tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem'
+        buttonElement.className = 'tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem mb-1'
         buttonElement.innerHTML = `
           <div class="d-flex align-items-center">
             <div class="tag-value pl-2">${tag}
@@ -35,12 +33,8 @@ export default class extends Controller {
           </div>`
 
         this.displayZoneTarget.prepend(buttonElement)
-        if (e.target.dataset.create) {
-          e.target.parentElement.remove()
-          this.filter({target: {value: ''}})
-        } else {
-          e.target.remove()
-        }
+        targetItemValue.remove()
+        this.filter({target: {value: ''}})
 
         this.inputFilterTarget.value = ''
         this.inputFilterTarget.placeholder = ''
@@ -59,15 +53,14 @@ export default class extends Controller {
   }
 
   filter(e) {
-    const value = e.key == 'Backspace' ? '' : e.target.value
+    const value = e.target.value
     const formTags = Array.from(document.querySelectorAll('.tag-value')).map(el => el.innerText)
-    const createTag = !formTags.includes(value) ? value : null
 
-    const toPrint = this.allTags.filter(tag => {
-      const regex = new RegExp(value, 'g');
-      return !!tag.match(regex) && !formTags.includes(tag)
+    this.searchTags(value, toPrint => {
+      const createTag = !toPrint.includes(value) ? value : null
+
+      this.updateSuggestionList(toPrint, createTag)
     })
-    this.updateSuggestionList(toPrint, createTag)
   }
 
   updateSuggestionList(arr, createTag) {
@@ -79,8 +72,8 @@ export default class extends Controller {
 
     if (createTag) {
       const div = document.createElement('div')
-      div.className = 'd-flex align-items-center bkt-bg-light-grey-hover'
-      div.innerHTML = `<p class="ml-4 fs-1_2rem">Create</p> <button data-action="click->tag-management#addTag" data-create="tag" class="tag-company-item-value bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${createTag}</button>`
+      div.className = 'tag-company-item d-flex align-items-center bkt-bg-light-grey-hover'
+      div.innerHTML = `<p class="tag-company-item ml-4 fs-1_2rem">Create</p> <button data-action="click->tag-management#addTag" data-create="tag" class="tag-company-item-value bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${createTag}</button>`
 
       this.tagListTarget.append(div)
     }
@@ -120,7 +113,11 @@ export default class extends Controller {
     event.stopPropagation()
     const div = event.target.parentElement.querySelector('div')
 
-    if (div != null) div.classList.remove('d-none')
+    const options = document.querySelectorAll('.company-tag-options')
+    options.forEach(el => {
+      if (div === el) div.classList.toggle('d-none')
+      else el.classList.add('d-none')
+    })
   }
 
   preparModal(event) {
@@ -172,14 +169,14 @@ export default class extends Controller {
 
   createSuggestionItem(tag) {
     const xmlString = `<div data-action="click->tag-management#addTag"
-             class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem"
+             class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem cursor-pointer"
              id="tag-suggestion-${Date.now()}"
              data-tag-name="${tag}"
         >
           <button class="tag-company-item-value d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${tag}</button>
           <div class="position-relative">
-            <button class="p-2 rounded-2px bkt-bg-light-grey mr-2" data-action="click->tag-management#showTagOptions">···</button>
-            <div class="d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
+            <button class="p-2 rounded-2px bkt-bg-light-grey-hover mr-2" data-action="click->tag-management#showTagOptions">···</button>
+            <div class="company-tag-options d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
               <button class="flex-row-between-centered" data-action="click->tag-management#preparModal" >
                 <span class="iconify mr-1" data-icon="akar-icons:trash-can" ></span>
                 <p class="fs-1_2rem bkt-dark-grey" >Delete</p>
@@ -189,5 +186,18 @@ export default class extends Controller {
         </div>`;
 
     return new DOMParser().parseFromString(xmlString, "text/html").body;
+  }
+
+  searchTags(input, callback) {
+    fetch(this.element.dataset.searchTagPath, {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({input: input})
+    })
+      .then(response => response.json())
+      .then(callback)
   }
 }
