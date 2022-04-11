@@ -29,7 +29,7 @@
              style='height: 14rem; width: 14rem; border: 2px solid transparent;'
              onclick="displaySelectedTab(this);">
           <p class='fs-3rem'>🙌</p>
-          <p class='fs-3rem font-weight-600 bkt-orange'><%= @attendee_status.done %></p>
+          <p class='fs-3rem font-weight-600 bkt-orange'><%= @trainings_done.count %></p>
           <p class='width-70 fs-1_4rem font-weight-500 text-center'>Trainings done</p>
         </div>
 
@@ -38,7 +38,7 @@
              style='height: 14rem; width: 14rem; border: 2px solid transparent;'
              onclick="displaySelectedTab(this);">
           <p class='fs-3rem'>👉</p>
-          <p class='fs-3rem font-weight-600 bkt-orange'><%= @attendee_status.to_do %></p>
+          <p class='fs-3rem font-weight-600 bkt-orange'><%= @trainings_to_do.count %></p>
           <p class='width-70 fs-1_4rem font-weight-500 text-center'>Trainings to do</p>
         </div>
 
@@ -47,11 +47,11 @@
     </div>
 
     <div id='display__team_trainings-completed' class="display-tab width-100">
-      <%= render 'users/show/show_attendees_list', attendees: @attendees_done %>
+      <%= render 'trainings/my_trainings/my_team_trainings_show_trainings_list', trainings: @trainings_done %>
     </div>
 
     <div id='display__team_trainings-current' class="display-tab width-100 hidden">
-      <%= render 'users/show/show_attendees_list', attendees: @attendees_to_do %>
+      <%= render 'trainings/my_trainings/my_team_trainings_show_trainings_list', trainings: @trainings_to_do %>
     </div>
 
   </div>
