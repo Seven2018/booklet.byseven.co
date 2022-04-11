@@ -1,3 +1,5 @@
+@import "./_mediaqueries";
+
 .border-bkt-light-blue-0_5px        { border:        0.5px solid $bkt-light-blue !important; }
 .border-top-bkt-light-blue-0_5px    { border-top:    0.5px solid $bkt-light-blue !important; }
 .border-right-bkt-light-blue-0_5px  { border-right:  0.5px solid $bkt-light-blue !important; }
@@ -71,3 +73,5 @@
 .border-bottom-bkt-orange-2px { border-bottom: 2px solid $bkt-orange !important; }
 
 .border-bkt-red { border: 1px solid $bkt-red !important; }
+
+.border-bottom-sm-none { @include from-medium-high { border-bottom: none !important; } }

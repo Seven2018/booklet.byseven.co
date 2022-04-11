@@ -1,4 +1,5 @@
 // Define variables for your color scheme
+@import "./_mediaqueries";
 
 // For example:
 $red: #FD1015;
@@ -87,6 +88,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-yellow      { background-color: $bkt-yellow !important; }
 .bkt-bg-orange      { background-color: $bkt-orange !important; }
 .bkt-bg-light-orange{ background-color: $bkt-light-orange !important; }
+.bkt-sm-bg-light-orange { @include from-medium-high { background-color: $bkt-light-orange !important; } }
 .bkt-bg-red         { background-color: $bkt-red !important; }
 .bkt-bg-light-red   { background-color: $bkt-light-red !important;}
 
