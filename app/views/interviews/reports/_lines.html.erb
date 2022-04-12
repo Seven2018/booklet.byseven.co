@@ -1,3 +1,14 @@
+<% icon = {
+  'classic' => "clarity:line-chart-solid",
+  'data' => "bi:clipboard2-data-fill",
+  'answers' => "fluent:chat-multiple-16-filled"
+} %>
+<% report_type = {
+  'classic' => "Analytics",
+  'data' => "Global data",
+  'answers' => "Answers"
+} %>
+
 <% reports.each do |report| %>
   <% lines = [
     report.creator.fullname,
@@ -12,7 +23,16 @@
     class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem border-top-bkt-light-grey pos-rel">
     <% lines.each do |line| %>
       <div class='fs-1_6rem' style='flex-basis: <%= width %>%;'>
-        <%= line %>
+        <% if line == report.mode %>
+          <div class="flex-row-start-centered">
+            <div class="flex-row-center-centered height-2_5rem width-2_5rem rounded-5px bkt-bg-light-blue mr-0_75rem">
+              <span class="iconify bkt-blue" data-icon="<%= icon[report.mode] %>"></span>
+            </div>
+            <%= report_type[line] %>
+          </div>
+        <% else %>
+          <%= line %>
+        <% end %>
       </div>
     <% end %>
 

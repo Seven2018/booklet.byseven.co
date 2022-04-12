@@ -1,6 +1,5 @@
 <% @templates.each do |template| %>
   <% lines = [
-    template.title,
     template.class,
     template.interview_questions.count,
     template.updated_at.strftime("%d/%m/%Y")
@@ -8,17 +7,25 @@
   <% width = (1/lines.count.to_f)*100 %>
   <div
     data-interview-form-id="<%= template.id %>"
-    class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem border-top-bkt-light-grey position-relative">
+    class="d-flex justify-content-between align-items-center px-0 py-2rem border-top-bkt-light-grey position-relative">
+
+    <%= link_to '', edit_interview_form_path(template), class: 'stretched-link', title: template.title %>
+
+    <div class='fs-1_6rem font-weight-600 overflow-ellipsis'
+         style='flex-basis: <%= width %>%;'
+         title='<%= template.title %>'>
+      <%= template.title %>
+    </div>
+
     <% lines.each do |line| %>
       <div class='fs-1_6rem' style='flex-basis: <%= width %>%;'>
         <%= line %>
       </div>
     <% end %>
-    <%= link_to '', edit_interview_form_path(template), class: 'stretched-link' %>
 
-    <div class="cursor-pointer z-index-5" onclick="openContentMenu(this);">
+    <div class="cursor-pointer z-index-5 pr-1rem" onclick="openContentMenu(this);">
       <% if current_user.manager_or_above? %>
-        <i class="fas fa-ellipsis-v"></i>
+        <i class="fas fa-ellipsis-v bkt-light-grey"></i>
       <% end %>
     </div>
 

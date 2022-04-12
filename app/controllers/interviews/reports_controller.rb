@@ -1,5 +1,6 @@
 class Interviews::ReportsController < ApplicationController
-  before_action :show_navbar_campaign, :show_navbar_admin, :ensure_company
+  before_action :show_navbar_campaign, :ensure_company
+  before_action :show_navbar_admin, except: [:edit]
 
   def index
     @reports = policy_scope(InterviewReport).at_least_started.order(created_at: :desc)
