@@ -39,12 +39,17 @@
 
         <div class="campaigns-my-interviews__card-group">
           <div class="campaigns-my-interviews__card-group-left">
+
             <div class="campaigns-my-interviews__card-manager">
+
               <div class="campaigns-my-interviews__card-avatar">
                 <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
               </div>
+
               <div class="campaigns-my-interviews__card-name-status">
+
                 <h6><%= manager.fullname %><em style="color:darkgray">- Manager</em></h6>
+
                 <% if interview_form.answerable_by_employee? %>
                   <p class='bkt-light-grey6'>N/A</p>
                 <% elsif manager_interview&.completed? %>
@@ -52,15 +57,21 @@
                 <% else %>
                   <p class='bkt-red'>Review not completed</p>
                 <% end %>
+
               </div>
+
             </div>
 
             <div class="campaigns-my-interviews__card-employee">
+
               <div class="campaigns-my-interviews__card-avatar">
                 <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
               </div>
+
               <div class="campaigns-my-interviews__card-name-status">
+
                 <h6><%= employee.fullname %><em style="color:darkgray">- Employee</em></h6>
+
                 <% if interview_form.answerable_by_manager? %>
                   <p class='bkt-light-grey6'>N/A</p>
                 <% elsif employee_interview&.completed? %>
@@ -68,41 +79,60 @@
                 <% else %>
                   <p class='bkt-red'>Review not completed</p>
                 <% end %>
+
               </div>
+
             </div>
+
           </div>
 
           <% if interview_form.answerable_by_manager? %>
+
             <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
               <%= manager_interview&.completed? ? 'Update' : 'Start review' %>
             <% end %>
+
           <% elsif interview_form.answerable_by_employee? && employee_interview.completed %>
+
             <%= link_to interview_path(employee_interview), class: 'bkt-btn-blue' do %>
               Review
             <% end %>
+
           <% elsif interview_form.answerable_by_both? %>
+
             <% if interviews.where(locked_at: nil).empty? %>
+
               <button class="bkt-btn-blue disabled">
                 Locked
                 <span class="iconify" data-icon="bxs:lock-alt"></span>
               </button>
+
             <% elsif interview_form.cross && crossed_interview.completed? %>
+
               <%= link_to lock_interview_path(interview_id: crossed_interview.id), class: 'bkt-btn-blue' do %>
                 Lock interview
               <% end %>
+
             <% elsif interview_form.cross && manager_interview.completed? && employee_interview.completed? %>
+
               <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue' do %>
                 Start cross review
               <% end %>
+
             <% elsif interview_form.cross && manager_interview.completed? && !employee_interview.completed? %>
+
               <button class="bkt-bg-light-grey p-1rem rounded-5px">
                 Waiting for employee's review
               </button>
+
             <% else %>
+
               <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
                 Start review
               <% end %>
+
             <% end %>
+
           <% end %>
 
         </div>
@@ -112,6 +142,11 @@
     </div>
   </div>
 
-  <!--  mobile-->
+
+  <!------------>
+  <!-- MOBILE -->
+  <!------------>
+
   <%= render 'campaigns/my_interviews/mobile_my_team_interviews_list', campaign: campaign, manager: manager %>
+
 <% end %>

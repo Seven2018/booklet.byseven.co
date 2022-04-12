@@ -30,15 +30,21 @@
         campaign.interviews_for(employee.id)
     %>
     <div class="flex-row-between-centered my-4">
+
       <div class="flex-column">
+
         <div class="flex-row-start-centered">
-          <div class="flex-column">
+
+       <!--    <div class="flex-column">
             <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          </div>
+          </div> -->
+
           <div class="flex-column ml-3">
+
             <div class="flex-row">
               <h6 class="font-weight-500"><%= manager.fullname %><em style="color:darkgray">- Interviewer</em></h6>
             </div>
+
             <div class="flex-row flex-row-start-centered">
               <% if interview_form.answerable_by_employee? %>
                 <p class='bkt-light-grey6'>N/A</p>
@@ -48,17 +54,23 @@
                 <p class='bkt-red'>Review not completed</p>
               <% end %>
             </div>
+
           </div>
+
         </div>
 
         <div class="flex-row-start-centered mt-4">
-          <div class="flex-column">
+
+          <!-- <div class="flex-column">
             <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          </div>
+          </div> -->
+
           <div class="flex-column ml-3">
+
             <div class="flex-row">
               <h3 class="font-weight-500"><%= employee.fullname %><em style="color:darkgray">- Employee</em></h3>
             </div>
+
             <div class="flex-row flex-row-start-centered">
               <% if interview_form.answerable_by_manager? %>
                 <p class='bkt-light-grey6'>N/A</p>
@@ -68,44 +80,66 @@
                 <p class='bkt-red'>Review not completed</p>
               <% end %>
             </div>
+
           </div>
+
         </div>
+
       </div>
 
       <div class="flex-column">
+
         <% if interview_form.answerable_by_manager? %>
+
           <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
             <p><%= manager_interview&.completed? ? 'Update' : 'Start review' %></p>
           <% end %>
+
         <% elsif interview_form.answerable_by_employee? && employee_interview.completed %>
+
           <%= link_to interview_path(employee_interview), class: 'bkt-btn-blue' do %>
             <p>Review</p>
           <% end %>
+
         <% elsif interview_form.answerable_by_both? %>
+
           <% if interviews.where(locked_at: nil).empty? %>
+
             <button class="bkt-btn-blue disabled">
               <p>Locked</p>
               <span class="iconify" data-icon="bxs:lock-alt"></span>
             </button>
+
           <% elsif interview_form.cross && crossed_interview.completed? %>
+
             <%= link_to lock_interview_path(interview_id: crossed_interview.id), class: 'bkt-btn-blue' do %>
               <p>Lock interview</p>
             <% end %>
+
           <% elsif interview_form.cross && manager_interview.completed? && employee_interview.completed? %>
+
             <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue' do %>
               <p>Start cross review</p>
             <% end %>
+
           <% elsif interview_form.cross && manager_interview.completed? && !employee_interview.completed? %>
+
             <button class="bkt-bg-light-grey p-1rem rounded-5px">
               <p>Waiting for employee's review</p>
             </button>
+
           <% else %>
+
             <%= link_to interview_path(manager_interview) do %>
               <button class="bkt-btn-blue">Start review</button>
             <% end %>
+
           <% end %>
+
         <% end %>
+
       </div>
+
     </div>
 
     <% unless campaign.employees_for(current_user.id).count - 1 == idx%>
