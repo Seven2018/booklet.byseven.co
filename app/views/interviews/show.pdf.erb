@@ -3,11 +3,9 @@
   <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
   <% interview_form = @interview.interview_form %>
   <% fully_answered = @interview.fully_answered? %>
-
   <% employee = @interview.employee %>
   <% manager = @interview.interviewer %>
   <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
-
   <% icon = { 'open_question' => 'open-question-pdf.png',
               'mcq' => 'mcq-pdf.png',
               'objective' => 'objective-pdf.png',
@@ -23,16 +21,13 @@
 
         <% question_hash = {} %>
         <% j = 0 %>
-
         <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
           <% if question.separator? %>
             <% j += 1 %>
           <% end %>
           <% question_hash[j] = question_hash[j].present? ? question_hash[j] + [question] : [question] %>
         <% end %>
-
         <% question_number = 0 %>
-
         <% question_hash.each do |key, value| %>
           <% if key.to_i > 0 %>
             <div class="interview-main__right-separator--pdf">
@@ -42,10 +37,9 @@
           <div class="interview-main__right-questions--pdf">
             <% start_value = key > 0 ? 1 : 0 %>
             <% value[start_value..-1].each do |question| %>
-
               <% question_number += 1 %>
 
-              <div class="interview-main__right-question--pdf nobreak--pdf">
+              <div class="interview-main__right-question--pdf">
                 <div class="flex-box--pdf">
                   <p><%= question_number %>. </p>
                   <%= wicked_pdf_image_tag "#{icon[question.question_type]}" %>
@@ -62,13 +56,10 @@
                     interview_question: question,
                     user: user
                   ) %>
-
                   <% current_answer   = existing_answer&.answer || '' %>
                   <% current_comments = existing_answer&.comments || '' %>
                   <% current_objective = existing_answer&.objective || '' %>
-
                   <% if @interview.crossed? %>
-
                     <% employee_answer = InterviewAnswer.joins(:interview).find_by(
                         interview: @interview.campaign.employee_interview(employee.id),
                         interview_question: question,
@@ -79,12 +70,10 @@
                         interview_question: question,
                         user: manager
                       ) %>
-
                       <% if manager_answer.present? %>
 
-                        <div class="interview-crossed-answer--pdf">
+                        <div class="interview-crossed-answer--pdf nobreak--pdf">
                           <div class="interview-crossed-answer__header--pdf">
-<!--                             <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm--pdf' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'> -->
                             <p><%= manager.fullname %> <span>- Interviewer</span></p>
                           </div>
                           <% if question.open_question? %>
@@ -108,7 +97,6 @@
                               <p><%= manager_answer.answer %></p>
                             </div>
                           <% end %>
-
                           <% if manager_answer.comments.present? %>
                             <div class="interview-crossed-answer__objective--pdf">
                               <p><%= manager_answer.comments %></p>
@@ -117,12 +105,10 @@
                         </div>
 
                       <% end %>
-
                       <% if employee_answer.present? %>
 
-                        <div class="interview-crossed-answer--pdf">
+                        <div class="interview-crossed-answer--pdf nobreak--pdf">
                           <div class="interview-crossed-answer__header--pdf">
-                            <!-- <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm--pdf' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'> -->
                             <p><%= employee.fullname %> <span>- Employee</span></p>
                           </div>
                           <% if question.open_question? %>
@@ -146,7 +132,6 @@
                               <p><%= employee_answer.answer %></p>
                             </div>
                           <% end %>
-
                           <% if employee_answer.comments.present? %>
                             <div class="interview-crossed-answer__objective--pdf">
                               <p><%= employee_answer.comments %></p>
@@ -155,16 +140,13 @@
                         </div>
 
                       <% end %>
-
                   <% end %>
-
                   <%= simple_form_for(:interview_answer,
                     url: answer_interview_question_path,
                     remote: true,
                     data: {
                       question_type: question.question_type
                     }) do |f| %>
-
                     <% if question.open_question? %>
 
                       <p>Answer</p>
@@ -189,10 +171,7 @@
                         <p>Comments</p>
                         <p class='interview__textarea--pdf'><%= current_comments %></p>
                       <% end %>
-
-
                     <% elsif question.mcq? || question.objective? %>
-
                       <% if question.objective? %>
                         <p>Objective</p>
                         <p class='interview__textarea--pdf'><%= current_objective %></p>
@@ -211,9 +190,7 @@
                         <p>Comments</p>
                         <p class='interview__textarea--pdf'><%= current_comments %></p>
                       <% end %>
-
                     <% end %>
-
                   <% end %>
 
                 </div>

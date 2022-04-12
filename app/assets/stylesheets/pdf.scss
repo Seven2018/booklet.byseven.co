@@ -159,7 +159,8 @@ div.nobreak--pdf{ page-break-inside: avoid; }
 .interview__textarea--pdf {
   padding: 1rem;
   border: none;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   outline: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
