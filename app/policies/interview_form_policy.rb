@@ -44,4 +44,8 @@ class InterviewFormPolicy < ApplicationPolicy
   def remove_company_tag?
     user.hr_or_above? && !record.used?
   end
+
+  def search_tags?
+    user.hr_or_above? && !record.used?
+  end
 end

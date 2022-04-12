@@ -61,7 +61,11 @@ class InterviewQuestionsController < ApplicationController
     authorize @question
     @template = @question.interview_form
 
-    new_question = InterviewQuestion.new(@question.attributes.except('id', 'position', 'created_at', 'updated_at'))
+    new_question = InterviewQuestion.new(
+      @question.attributes
+               .merge(question: @question.question + ' (copy)')
+               .except('id', 'position', 'created_at', 'updated_at')
+    )
 
     new_question.position = @question.position + 1
     new_question.save

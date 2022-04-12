@@ -41,8 +41,7 @@
 
               <div class="interview-main__right-question--pdf">
                 <div class="flex-box--pdf">
-                  <p><%= question_number %>. </p>
-                  <%= wicked_pdf_image_tag "#{icon[question.question_type]}" %>
+                  <p class="mr-1rem"><%= question_number %>. </p>
                   <p><%= question.question %> <%= "*" if question.required? %></p>
                 </div>
                 <div class="interview-main__right-question-description--pdf">
@@ -81,10 +80,10 @@
                           <% elsif question.rating? %>
                             <div class="rating-crossed--pdf">
                               <% for i in 1..manager_answer.answer.to_i %>
-                                <%= wicked_pdf_image_tag 'rating-star-black-filled-pdf.png' %>
+                                <div class="rating-filled"></div>
                               <% end %>
                               <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
-                                <%= wicked_pdf_image_tag 'rating-star-black-pdf.png' %>
+                                <div class="rating-empty"></div>
                               <% end %>
                             </div>
                           <% elsif question.mcq? || question.objective? %>
@@ -116,10 +115,10 @@
                           <% elsif question.rating? %>
                             <div class="rating-crossed--pdf">
                               <% for i in 1..employee_answer.answer.to_i %>
-                                <%= wicked_pdf_image_tag 'rating-star-black-filled-pdf.png' %>
+                                <div class="rating-filled"></div>
                               <% end %>
                               <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
-                                <%= wicked_pdf_image_tag 'rating-star-black-pdf.png' %>
+                                <div class="rating-empty"></div>
                               <% end %>
                             </div>
                           <% elsif question.mcq? || question.objective? %>
@@ -152,25 +151,23 @@
                       <p>Answer</p>
                       <p class='interview__textarea--pdf'><%= current_answer %></p>
 
-
                     <% elsif question.rating? %>
 
                       <p>Answer</p>
                       <div class='rating--pdf'>
                         <% for i in 1..current_answer.to_i %>
-                          <%= wicked_pdf_image_tag 'rating-star-filled-pdf.png' %>
+                          <div class="rating-filled"></div>
                         <% end %>
                         <% for i in current_answer.to_i+1..question.options.keys.first.to_i %>
-                          <%= wicked_pdf_image_tag 'rating-star-pdf.png' %>
+                          <div class="rating-empty"></div>
                         <% end %>
                       </div>
-
-
 
                       <% if current_comments.present? %>
                         <p>Comments</p>
                         <p class='interview__textarea--pdf'><%= current_comments %></p>
                       <% end %>
+
                     <% elsif question.mcq? || question.objective? %>
                       <% if question.objective? %>
                         <p>Objective</p>
@@ -180,8 +177,13 @@
                       <div class="mcq--pdf">
                         <% question.options.keys.each do |option| %>
                           <div class="mcq-flex-box--pdf">
-                            <div class="rad-design--pdf <%= 'rad-design--pdf-checked' if option == current_answer %>"></div>
-                            <div class="rad-text--pdf"><%= option %></div>
+                            <% if option == current_answer %>
+                              <div class="rating-filled"></div>
+                              <p class="rating-filled-text"><%= option %></p>
+                            <% else %>
+                              <div class="rating-empty"></div>
+                              <p class="rating-empty-text"><%= option %></p>
+                            <% end %>
                           </div>
                         <% end %>
                       </div>

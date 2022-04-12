@@ -128,6 +128,7 @@ Rails.application.routes.draw do
   # INTERVIEW FORMS
   resources :interview_forms do
     member do
+      post 'search_tags'
       post 'toggle_tag'
       delete 'remove_company_tag'
     end
