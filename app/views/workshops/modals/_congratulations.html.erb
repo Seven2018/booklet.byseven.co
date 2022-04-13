@@ -1,4 +1,4 @@
-<div class="modal-content action-modal__content">
+<div class="d-none d-sm-flex modal-content action-modal__content">
 
   <div class="modal-body action-modal__body" data-controller='tabs workshop-show' data-tabs-target='tabContainer'>
 
@@ -17,5 +17,25 @@
       </button>
     </div>
   </div>
+</div>
 
+<div class="d-sm-none modal-content bkt-bg-white width-90-important m-auto" style="border-radius: 25px !important;">
+  <div class="flex-row-center-centered mt-5">
+    <span class="iconify mb-2rem" data-icon="fxemoji:trophy" style='font-size: 90px;'></span>
+  </div>
+
+  <div class="text-center z-index-5 mb-5rem">
+    <p class="fs-2_4rem font-weight-700 bkt-dark-grey mb-1rem">Congratulations !</p>
+    <p class="fs-1_4rem font-weight-500 bkt-dark-grey">One more workshop finished, keep it up !</p>
+  </div>
+
+  <button
+    class="bkt-bg-orange width-100 rounded-b-25px p-4 bkt-white"
+    data-dismiss="modal"
+    aria-label="Close"
+    onclick='selectCompletion(this);'
+    data-value='Completed'
+  >
+    Sure !
+  </button>
 </div>

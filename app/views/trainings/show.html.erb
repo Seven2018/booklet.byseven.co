@@ -1,6 +1,6 @@
 <!-- TEMP -->
 
-<div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+<div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='left: 0; right: 0; height: 9rem;'>
   <%= render_component BackComponent.new(fallback: catalogue_path) %>
   <h2>Training</h2>
 </div>
@@ -10,39 +10,42 @@
     <%= render 'workshops/edit/edit_show_summary', workshop: @workshop %>
   </div>
 
-  <div id="content-edit__container-right" style='margin-left: 30rem;'>
+  <div id="content-edit__container-right">
 
-      <div id="content-edit__content" class='flex-row-between-start'>
+    <div id="content-edit__content" class='flex-row-between-start justify-content-center bkt-bg-white bkt-sm-bg-light-orange'>
 
-        <div id="content-edit__content-center" class='flex-column-start-centered'>
+      <div id="content-edit__content-center" class='col-10 col-sm-12 '>
 
-          <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
-            <div class="flex-row-end-centered mb-1rem">
-              <% if @workshop.asynchronous? %>
-                <span class='bkt-light-grey5 italic'>Available within: <%= "#{@workshop.first_session.date} to #{@workshop.first_session.available_date}" %></span>
-              <% else %>
-                <span class='bkt-light-grey5 italic'>Available on: <%= "#{@workshop.first_session.date} at #{@workshop.first_session.starts_at.strftime('%H:%M')}" %></span>
-              <% end %>
-            </div>
-            <div class="flex-row-start-centered mb-2rem">
+        <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem mr-sm-5'>
+          <div class="d-none flex-sm-row-end-centered mb-1rem">
+            <% if @workshop.asynchronous? %>
+              <span class='bkt-light-grey5 italic'>Available within: <%= "#{@workshop.first_session.date} to #{@workshop.first_session.available_date}" %></span>
+            <% else %>
+              <span class='bkt-light-grey5 italic'>Available on: <%= "#{@workshop.first_session.date} at #{@workshop.first_session.starts_at.strftime('%H:%M')}" %></span>
+            <% end %>
+          </div>
+          <div class="row text-center">
+            <div class="col-12 col-sm-1 py-3">
               <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
+            </div>
+            <div class="col-12 col-sm-11 py-3">
               <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @workshop.title %></p>
             </div>
-            <% if @workshop.access_granted? %>
-              <%= render 'workshops/show/show_workshop_mods', workshop: @workshop %>
-            <% else %>
-              <%= render 'workshops/show/show_workshop_mods_teaser', workshop: @workshop %>
-            <% end %>
+          </div>
+          <% if @workshop.access_granted? %>
+            <%= render 'workshops/show/show_workshop_mods', workshop: @workshop %>
+          <% else %>
+            <%= render 'workshops/show/show_workshop_mods_teaser', workshop: @workshop %>
+          <% end %>
+        </div>
 
+        <% if (@workshop.users).include?(current_user) && @workshop.sessions.order(date: :asc).last.date <= Time.zone.today %>
+
+          <div id='workshop-show__completed-options' class='flex-row-between-centered bkt-bg-white rounded-10px p-2rem mb-2rem mr-5rem'>
+            <%= render 'workshops/show/show_workshop_completed_options', workshop: @workshop, workshop_completed: @workshop_completed %>
           </div>
 
-          <% if (@workshop.users).include?(current_user) && @workshop.sessions.order(date: :asc).last.date <= Time.zone.today %>
-
-            <div id='workshop-show__completed-options' class='flex-row-between-centered width-100 bkt-bg-white rounded-10px p-2rem mb-2rem' style='max-width: 64rem;'>
-              <%= render 'workshops/show/show_workshop_completed_options', workshop: @workshop, workshop_completed: @workshop_completed %>
-            </div>
-
-          <% end %>
+        <% end %>
       </div>
 
       <div id="template-edit__content-right" style=''>
@@ -163,16 +166,16 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='manageAttendees' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<div class='modal fade' id='manageAttendees' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'workshops/modals/manage_attendees',
-                workshop: @workshop,
-                attendees_acquired: attendees_acquired.presence || [],
-                attendees_not_acquired: attendees_not_acquired.presence || [] %>
+               workshop: @workshop,
+               attendees_acquired: attendees_acquired.presence || [],
+               attendees_not_acquired: attendees_not_acquired.presence || [] %>
   </div>
 </div>
 
-<div class='modal fade' id='manageAttendeesEmailSent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<div class='modal fade' id='manageAttendeesEmailSent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
     <%= render 'workshops/modals/manage_attendees_email_sent' %>
   </div>
@@ -193,6 +196,9 @@
     link_url.searchParams.set('status', chosen_value)
     link.href = link_url.href
     link.click()
+    setTimeout(() => {
+      location.reload();
+    }, 200)
   }
 
 </script>

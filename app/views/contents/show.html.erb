@@ -1,7 +1,6 @@
-<div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+<div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='left: 0; right: 0; height: 9rem;'>
   <%= render_component BackComponent.new(fallback: catalogue_path) %>
   <h2>Workshop</h2>
-  </div>
 </div>
 
 <div id="content-edit__container" class='flex-row-between-start bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
@@ -9,17 +8,22 @@
     <%= render 'contents/edit/edit_show_summary', content: @content %>
   </div>
 
-  <div id="content-edit__container-right" style='margin-left: 30rem;'>
+  <div id="content-edit__container-right">
 
-      <div id="content-edit__content" class='flex-row-between-start'>
+      <div id="content-edit__content" class='flex-row-between-start justify-content-center bkt-bg-white bkt-sm-bg-light-orange'>
 
-        <div id="content-edit__content-center" class='flex-column-start-centered'>
+        <div id="content-edit__content-center" class='col-10 col-sm-12'>
 
-          <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
-            <div class="flex-row-start-centered mb-2rem">
-              <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
-              <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @content.title %></p>
+          <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem mr-sm-5'>
+            <div class="row text-center">
+              <div class="col-12 col-sm-1 py-3">
+                <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
+              </div>
+              <div class="col-12 col-sm-11 py-3">
+                <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @content.title %></p>
+              </div>
             </div>
+
             <% if current_user.hr_or_above? %>
               <%= render 'contents/show/show_content_mods', content: @content %>
             <% else %>

@@ -5,6 +5,7 @@
       <p class="organisation__tag">All</p>
     </div>
   </div>
+  <button data-toggle='modal' data-target='#newUser' class="p-3 bkt-bg-blue bkt-white rounded-5px font-weight-700">+ Add a user</button>
   <!-- <button class='organisation__filter_button'>
     <span class="iconify" data-icon="bi:filter"></span>
     <p>Filter</p>
@@ -31,10 +32,9 @@
           <i class="fas fa-ellipsis-h"></i>
         </div>
         <ul class="dropdown-menu dropdown-menu-right organisation__dropdown-menu" aria-labelledby="dropdownMenu">
-          <li><a data-toggle='modal' data-target='#newUser'>Create new user</a></li>
-          <li class="hidden"><a id='organisation-dropdown__create-user-redirect' data-toggle='modal' data-target='#userCreated'>
-          <li class='hidden'><a id='organisation-dropdown__remove-user-redirect' data-toggle='modal' data-target='#removeUser'>Remove Selected User</li>
-          </a></li>
+<!--          <li><a data-toggle='modal' data-target='#newUser'>Create new user</a></li>-->
+          <li class="hidden"><a id='organisation-dropdown__create-user-redirect' data-toggle='modal' data-target='#userCreated'></a></li>
+          <li class='hidden'><a id='organisation-dropdown__remove-user-redirect' data-toggle='modal' data-target='#removeUser'>Remove Selected User</a></li>
           <% if current_user.admin? || Rails.env == 'development' %>
             <li><a data-toggle='modal' data-target='#importUsers'>Import Users</a></li>
             <li><a data-toggle='modal' data-target='#exportUsers' id="export-users-modal-link">Export All Users</a></li>

@@ -2,14 +2,14 @@
                data-scrollbar-target='container'
                data-action='scroll->scrollbar#showScrollbar'>
 
-  <div class="width-90 from_medium__width-80 pt-5rem" style='max-width: 950px;'>
+  <div class="width-90 from_medium__width-80 pt-5rem mb-3rem" style='max-width: 950px;'>
     <h1 class='mb-2rem'>Welcome on Booklet, <%= "#{current_user.firstname}" %> !</h1>
     <strong><p>Get instant access to your trainings, and all your interviews from here.</p></strong>
   </div>
 
-  <% if current_user.company.applications[:interviews] %>
+  <% if current_user.company.applications_to_sym.include? :interviews %>
 
-    <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+    <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
       <%= link_to '', my_interviews_path, class: 'stretched-link' %>
       <div style='border-left: 4px solid #3177B7;'>
         <div class="flex-row-start-centered mb-2rem">
@@ -65,7 +65,7 @@
 
     <% if current_user.manager_or_above? %>
 
-      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
         <%= link_to '', my_team_interviews_path, class: 'stretched-link' %>
 
         <div style='border-left: 4px solid #3177B7;'>
@@ -122,9 +122,9 @@
 
   <% end %>
 
-  <% if current_user.company.applications[:trainings] %>
+  <% if current_user.company.applications_to_sym.include? :trainings %>
 
-    <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+    <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
       <%= link_to '', my_trainings_path, class: 'stretched-link' %>
 
       <div style='border-left: 4px solid #EF8C64;'>
@@ -197,7 +197,7 @@
 
     <% if current_user.manager_or_above? %>
 
-      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mt-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
         <%= link_to '', my_team_trainings_path, class: 'stretched-link' %>
 
         <div style='border-left: 4px solid #EF8C64;'>

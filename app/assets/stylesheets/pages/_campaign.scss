@@ -277,8 +277,6 @@
   }
 
   .campaigns-my-interviews__card-status {
-
-    height: 2rem;
     width: 13rem;
     border-radius: 2rem;
     text-align: center;
@@ -286,8 +284,6 @@
     background-color: #FFC85C;
     white-space: nowrap;
     margin-bottom: 2rem;
-
-
   }
 
   .campaigns-my-interviews__card-left {
@@ -847,15 +843,15 @@
     }
 
     .status-completed {
-      background-color: #57E054;
+      background-color: $bkt-green;
     }
 
     .status-in_progress {
-      background-color: #FFC85C;
+      background-color: $bkt-yellow;
     }
 
     .status-not_started {
-      background-color: #C4C4C4;
+      background-color: $bkt-light-grey;
     }
 
     .campaigns-index__list-line-options {
@@ -900,10 +896,6 @@
           border-bottom-right-radius: .5rem;
         }
       }
-    }
-
-    p {
-      font-weight: 500;
     }
   }
 }

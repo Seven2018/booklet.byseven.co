@@ -1,5 +1,5 @@
-<p>Is this training acquired ?</p>
-<div class="flex-row-between-centered">
+<p class="d-none d-sm-flex width-50">Is this training acquired ?</p>
+<div class="d-none d-sm-flex flex-row-between-centered ml-3">
   <div class="flex-row-start-centered mr-2rem">
     <a id='workshop-completed-button'
        class='rounded-10px mr-1rem cursor-pointer border-bkt-orange <%= 'bkt-bg-orange' if workshop_completed %>'
@@ -26,17 +26,38 @@
      data-target='#congratulations'></a>
 </div>
 
+<!--mobile-->
+<div class="flex-column width-100">
+  <button
+    class=" d-sm-none rounded-5px p-4 <%= workshop_completed ? 'bkt-bg-light2-orange' : 'bkt-bg-orange' %> bkt-white width-100 text-center"
+    <%= workshop_completed ? 'disabled' : '' %>
+    data-target='#confirmCompleted'
+    data-toggle="modal"
+  >
+    I acquiered this training ! 🙌
+  </button>
+  <% if workshop_completed %>
+    <button
+      class="d-sm-none rounded-5px mt-5 p-4 bkt-bg-white bkt-orange width-100 text-center border-bkt-orange"
+      onclick='selectCompletion(this);'
+      data-value='Not completed'
+    >
+      Cancel
+    </button>
+  <% end %>
+</div>
+
 <!------------>
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='confirmCompleted' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<div class='modal fade' id='confirmCompleted' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'workshops/modals/confirm_completed', workshop: workshop %>
   </div>
 </div>
 
-<div class='modal fade' id='congratulations' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
+<div class='modal fade' id='congratulations' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
   <div class='modal-dialog' role='document' style='border-radius: 20px'>
     <%= render 'workshops/modals/congratulations' %>
   </div>

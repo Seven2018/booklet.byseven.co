@@ -5,22 +5,27 @@ module Companies::Applications
       name: 'Interviews',
       link: :my_interviews_path,
       icon: 'fluent:chat-multiple-24-filled',
-      color: 'bkt-blue'
+      color: 'bkt-blue',
+      perso: 'My interviews',
+      team: 'My team interviews',
+      link_team: :my_team_interviews_path
     },
     trainings: {
       name: 'Trainings',
       link: :my_trainings_path,
       icon: 'ion:school',
-      color: 'bkt-orange'
+      color: 'bkt-orange',
+      perso: 'My trainings',
+      team: 'My team trainings',
+      link_team: :my_team_trainings_path
     }
   }
 
-  def update_application(name, boolean)
-    applications[name] = boolean
-    update_column(:applications, applications)
+  def clear_applications_params
+    applications.reject! &:blank?
   end
 
   def active_applications
-    applications.symbolize_keys.map{ |key, active| APPLICATIONS[key] if active }.compact
+    applications.map{ |x| APPLICATIONS[x.to_sym]}
   end
 end

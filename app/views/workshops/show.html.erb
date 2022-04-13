@@ -1,42 +1,44 @@
-<div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left:  0; right: 0; height: 9rem;'>
+<div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
   <%= render_component BackComponent.new(fallback: catalogue_path) %>
   <h2>Workshop</h2>
 </div>
 
 <div id="content-edit__container" class='flex-row-between-start bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
+
   <div id="content-edit__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
     <%= render 'workshops/edit/edit_show_summary', workshop: @workshop %>
   </div>
 
   <div id="content-edit__container-right" style='margin-left: 30rem;'>
 
-      <div id="content-edit__content" class='flex-row-between-start'>
+    <div id="content-edit__content" class='flex-row-between-start'>
 
-        <div id="content-edit__content-center" class='flex-column-start-centered'>
+      <div id="content-edit__content-center" class='flex-column-start-centered'>
 
-          <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
-            <div class="flex-row-end-centered mb-1rem">
-              <span class='bkt-light-grey5 italic'>Available on: <%= "#{@workshop.first_session.date} at #{@workshop.first_session.starts_at.strftime('%H:%M')}" %></span>
-            </div>
-            <div class="flex-row-start-centered mb-2rem">
-              <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
-              <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @workshop.title %></p>
-            </div>
-            <% if @workshop.access_granted? %>
-              <%= render 'workshops/show/show_workshop_mods', workshop: @workshop %>
-            <% else %>
-              <%= render 'workshops/show/show_workshop_mods_teaser', workshop: @workshop %>
-            <% end %>
+        <div id="content-edit__attributes-center" class='bkt-bg-white rounded-10px p-2rem mb-2rem' style='width: 100%; max-width: 64rem;'>
+          <div class="flex-row-end-centered mb-1rem">
+            <span class='bkt-light-grey5 italic'>Available on: <%= "#{@workshop.first_session.date} at #{@workshop.first_session.starts_at.strftime('%H:%M')}" %></span>
+          </div>
+          <div class="flex-row-start-centered mb-2rem">
+            <span class="iconify fs-2_4rem bkt-orange mr-1rem" data-icon="akar-icons:file"></span>
+            <p class='fs-1_8rem font-weight-500 bkt-dark-grey'><%= @workshop.title %></p>
+          </div>
+          <% if @workshop.access_granted? %>
+            <%= render 'workshops/show/show_workshop_mods', workshop: @workshop %>
+          <% else %>
+            <%= render 'workshops/show/show_workshop_mods_teaser', workshop: @workshop %>
+          <% end %>
 
+        </div>
+
+        <% if (@workshop.users).include?(current_user) && @workshop.sessions.order(date: :asc).last.date <= Time.zone.today %>
+
+          <div id='workshop-show__completed-options' class='flex-row-between-centered width-100 bkt-bg-white rounded-10px p-2rem mb-2rem' style='max-width: 64rem;'>
+            <%= render 'workshops/show/show_workshop_completed_options', workshop: @workshop, workshop_completed: @workshop_completed %>
           </div>
 
-          <% if (@workshop.users).include?(current_user) && @workshop.sessions.order(date: :asc).last.date <= Time.zone.today %>
+        <% end %>
 
-            <div id='workshop-show__completed-options' class='flex-row-between-centered width-100 bkt-bg-white rounded-10px p-2rem mb-2rem' style='max-width: 64rem;'>
-              <%= render 'workshops/show/show_workshop_completed_options', workshop: @workshop, workshop_completed: @workshop_completed %>
-            </div>
-
-          <% end %>
       </div>
 
       <div id="template-edit__content-right" style=''>
@@ -48,6 +50,7 @@
     </div>
 
   </div>
+
 </div>
 
 

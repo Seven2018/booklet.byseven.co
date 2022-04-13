@@ -1,5 +1,5 @@
 class InterviewFormsController < ApplicationController
-  before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag, :remove_company_tag]
+  before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag, :remove_company_tag, :search_tags]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -63,7 +63,7 @@ class InterviewFormsController < ApplicationController
     @update_description = description != @template.description
 
     respond_to do |format|
-      format.html {interview_form_path(@template)}
+      format.html { interview_form_path(@template) }
       format.js
     end
   end
@@ -90,7 +90,7 @@ class InterviewFormsController < ApplicationController
   def interview_form_link_tags
     @template = InterviewForm.find(params[:add_tags][:form_id])
     authorize @template
-    selected_tags = params[:interview_form][:tags].reject{|x| x.empty?}.join(',').split(',')
+    selected_tags = params[:interview_form][:tags].reject { |x| x.empty? }.join(',').split(',')
     selected_tags.each do |tag|
       unless InterviewFormTag.where(interview_form_id: @template.id, tag_id: tag).present?
         InterviewFormTag.create(interview_form_id: @template.id, tag_id: tag, tag_name: Tag.find(tag).tag_name)
@@ -135,6 +135,19 @@ class InterviewFormsController < ApplicationController
 
     Category.where(company_id: current_user.company_id, title: tag).destroy_all
     head :ok
+  end
+
+  def search_tags
+    authorize @template
+    input = params[:input]
+    black_tags = InterviewForm.find(@template.id).categories.pluck(:title)
+    tags = Category
+             .where(company_id: current_user.company_id)
+             .where.not(title: black_tags)
+             .where('title LIKE ?', "%#{input}%")
+             .pluck(:title)
+
+    render json: tags, status: :ok
   end
 
   private

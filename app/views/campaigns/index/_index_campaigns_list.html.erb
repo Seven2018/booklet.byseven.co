@@ -3,31 +3,42 @@
   <% manager = campaign.owner %>
 
   <div class="campaigns-index__list-line" id='campaign-line-<%= campaign.id %>'>
-    <%= link_to '', campaign_path(campaign), class: 'stretched-link' %>
+    <%= link_to '', campaign_path(campaign), class: 'stretched-link', title: campaign.title %>
 
     <div class="campaigns-index__list-line-element">
-      <p class='template-title' title='<%= campaign.title %>'><%= campaign.title %></p>
+      <p class='template-title overflow-ellipsis font-weight-600'>
+        <%= campaign.title %>
+      </p>
     </div>
+
     <div class="campaigns-index__list-line-element">
       <div class="campaigns-index__list-line-icon">
         <span class="iconify" data-icon="<%= campaign.icon %>"></span>
       </div>
       <p><%= campaign.campaign_type_str %></p>
     </div>
+
     <div class="campaigns-index__list-line-element">
+
       <% tag_overflow = false %>
+
       <% campaign.tags.each_with_index do |tag, idx| %>
+
         <% if idx > 2 && !tag_overflow %>
           <% tag_overflow = true %>
           <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px">+<%= campaign.tags.count - 3 %></div>
         <% else %>
           <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px"><%= tag %></div>
         <% end %>
+
       <% end %>
+
     </div>
+
     <div class="campaigns-index__list-line-element campaigns-index__list-element-employee">
       <p><%= campaign.employees.distinct.count %></p>
     </div>
+
     <div class="campaigns-index__list-line-element campaigns-index__list-element-completion">
       <p class='status-<%= campaign.completion_status %>'><%= campaign.completion_for(:all) %>%</p>
     </div>
@@ -39,9 +50,9 @@
       >
         <div
           data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide"
-          class="cursor-pointer z-index-5"
+          class="cursor-pointer z-index-5 pr-1rem "
         >
-          <i class="fas fa-ellipsis-v pl-3"></i>
+          <i class="fas fa-ellipsis-v bkt-light-grey"></i>
         </div>
 
         <div
