@@ -1,11 +1,11 @@
 <div class='organisation__controls'>
   <div class="organisation__title-tags">
     <h1>Employees (<%= User.where(company_id: current_user.company_id).count %>)</h1>
-    <div class="organisation__tags">
+    <!-- <div class="organisation__tags">
       <p class="organisation__tag">All</p>
-    </div>
+    </div> -->
   </div>
-  <button data-toggle='modal' data-target='#newUser' class="p-3 bkt-bg-blue bkt-white rounded-5px font-weight-700">+ Add a user</button>
+  <button data-toggle='modal' data-target='#newUser' class="p-3 bkt-bg-dark-grey bkt-white rounded-5px font-weight-700">+ Add a user</button>
   <!-- <button class='organisation__filter_button'>
     <span class="iconify" data-icon="bi:filter"></span>
     <p>Filter</p>

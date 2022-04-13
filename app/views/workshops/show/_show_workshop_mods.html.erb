@@ -14,8 +14,8 @@
 
     <% elsif mod.video? %>
 
-      <div>
-         <iframe src="<%= VideoHelper.embed_video(mod.video) %>" style='width: 100%; height: 30rem;'></iframe>
+      <div class="flex-row-center-centered">
+         <iframe src="<%= VideoHelper.embed_video(mod.video) %>" style='width: 75%; aspect-ratio: 16 / 9;'></iframe>
       </div>
 
     <% end %>
