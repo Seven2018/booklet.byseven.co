@@ -1,0 +1,4 @@
+button = document.getElementById('sendEmailSuccessTrigger')
+modal = document.getElementById('sendEmailSuccess').querySelector('.modal-dialog').innerHTML = '<%= j render("campaigns/modals/send_notification_email_done", email_type: @email_type) %>';
+
+button.click()
