@@ -105,9 +105,11 @@ class CampaignsController < ApplicationController
       end
     end
 
-    flash[:notice] = 'Email sent.'
+    @email_type = params[:email_type] == 'invite' ? 'Invitation' : 'Reminder'
 
-    head :no_content
+    respond_to do |format|
+      format.js
+    end
   end
 
   def campaign_edit_date

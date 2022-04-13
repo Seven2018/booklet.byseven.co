@@ -18,8 +18,8 @@
             <i class="fas fa-ellipsis-v"></i>
             <div class="content-dropdown hidden">
               <%= link_to 'See profile', user_path(employee) %>
-              <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'invite') %>
-              <%= link_to 'Send reminder email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'reminder') %>
+              <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'invite'), remote: true %>
+              <%= link_to 'Send reminder email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'reminder'), remote: true %>
               <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
               <% if CampaignPolicy.new(current_user, @campaign).remove_interview_set? ||
                 campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
