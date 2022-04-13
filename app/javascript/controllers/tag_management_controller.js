@@ -29,7 +29,7 @@ export default class extends Controller {
         buttonElement.innerHTML = `
           <div class="d-flex align-items-center">
             <div class="tag-value pl-2">${tag}
-            </div> <div class="pl-2 opacity-0 opacity-1-hover" data-action="click->tag-management#remove">X</div>
+            </div> <div class="pl-2 opacity_0 opacity-hover_1" data-action="click->tag-management#remove">X</div>
           </div>`
 
         this.displayZoneTarget.prepend(buttonElement)

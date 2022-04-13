@@ -1,5 +1,3 @@
-@import "./_mediaqueries";
-
 .border-bkt-light-blue-0_5px        { border:        0.5px solid $bkt-light-blue !important; }
 .border-top-bkt-light-blue-0_5px    { border-top:    0.5px solid $bkt-light-blue !important; }
 .border-right-bkt-light-blue-0_5px  { border-right:  0.5px solid $bkt-light-blue !important; }
@@ -29,7 +27,6 @@
 .border-right-bkt-light-grey  { border-right:  1px solid $bkt-light-grey !important; }
 .border-left-bkt-light-grey   { border-left:   1px solid $bkt-light-grey !important; }
 .border-bottom-bkt-light-grey { border-bottom: 1px solid $bkt-light-grey !important; }
-.border-bottom-sm-bkt-light-grey { @include from-medium-high { border-bottom: 1px solid $bkt-light-grey !important; } }
 
 .border-bkt-light-grey-2px        { border:        2px solid $bkt-light-grey !important; }
 .border-top-bkt-light-grey-2px    { border-top:    2px solid $bkt-light-grey !important; }
@@ -76,3 +73,4 @@
 .border-bkt-red { border: 1px solid $bkt-red !important; }
 
 .border-bottom-sm-none { @include from-medium-high { border-bottom: none !important; } }
+.border-bottom-sm-bkt-light-grey { @include from-medium-high { border-bottom: 1px solid $bkt-light-grey !important; } }
