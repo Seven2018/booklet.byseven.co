@@ -1,13 +1,12 @@
 <% employee = @interview.employee %>
 <% manager = @interview.interviewer %>
-<% admin_access = current_user == manager || current_user.hr_or_above? %>
 
 <% template = @interview.interview_form %>
 
 <% visibility =
     if @interview.crossed?
       ['all', 'manager', 'employee']
-    elsif admin_access
+    elsif @interview.manager?
       ['all', 'manager']
     else
       ['all', 'employee']
