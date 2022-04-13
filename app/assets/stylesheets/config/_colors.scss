@@ -87,8 +87,11 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-yellow      { background-color: $bkt-yellow !important; }
 .bkt-bg-orange      { background-color: $bkt-orange !important; }
 .bkt-bg-light-orange{ background-color: $bkt-light-orange !important; }
+.bkt-bg-light2-orange { background-color: #ef8c6496 !important; }
 .bkt-bg-red         { background-color: $bkt-red !important; }
 .bkt-bg-light-red   { background-color: $bkt-light-red !important;}
+
+.bkt-sm-bg-light-orange { @include from-medium-high { background-color: $bkt-light-orange !important; } }
 
 .bkt-bg-light-grey8-focus { &:focus { background-color: $bkt-light-grey8 !important; } }
 
