@@ -964,7 +964,6 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  height: 10rem;
   margin-top: 1rem;
   padding: 1rem 0;
   border-bottom: 1px solid #C4C4C4;
@@ -979,7 +978,7 @@
   .campaign-show__header-infos-title {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 2rem;
 
     h2, p {
@@ -987,6 +986,7 @@
     }
 
     h2 {
+      max-width: 45rem;
       font-weight: 600;
       font-size: 2.4rem;
       line-height: 2.9rem;
