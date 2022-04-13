@@ -24,7 +24,7 @@
             <h2><%= campaign.title %></h2>
 
             <div class="flex-row-start-centered">
-              <p class="campaigns-my-interviews__card-status <%= manager_interview.completion_status %>"><%= campaign.completion_status_string(current_user) %></p>
+              <p class="campaigns-my-interviews__card-status <%= campaign.completion_status(current_user) %>"><%= campaign.completion_status_string(current_user) %></p>
               <div class="deadline"><p>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p></div>
             </div>
 
@@ -99,7 +99,7 @@
   <%#:::::: VERSION MOBILE START ::::::%>
   <div class="campaigns-my-interviews__card--mobile">
     <div class="flex-row-between-centered">
-      <p class="campaigns-my-interviews__card-status ml-4 mt-4 <%= manager_interview.completion_status %>">
+      <p class="campaigns-my-interviews__card-status ml-4 mt-4 <%= campaign.completion_status(current_user) %>">
         <%= campaign.completion_status_string(current_user) %>
       </p>
       <p class="bkt-dark-grey fs-1rem font-weight-100 mr-1rem"><em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
