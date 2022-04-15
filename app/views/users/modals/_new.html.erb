@@ -30,6 +30,7 @@
         <%= f.input :company, collection: Company.all, include_blank: false, label: 'Company:' %>
       <% end %>
 
+      <%# TODO: UpdatePermission %>
       <% if current_user.hr_or_above? %>
         <% @tag_categories.each do |category| %>
           <div class="mt-3">

@@ -47,9 +47,9 @@ class UsersController < ApplicationController
         tag_category = TagCategory.find_by(name: tag_category_name)
 
         UserTag.create(
-          user_id: @user.id,
+          user: @user,
           tag_category: tag_category,
-          tag: Tag.find_by(tag_name: tag_name, tag_category_id: tag_category.id)
+          tag: Tag.find_by(tag_name: tag_name, tag_category: tag_category)
         )
       end
     end
@@ -97,7 +97,7 @@ class UsersController < ApplicationController
 
   def edit
     authorize @user
-    @tag_categories = TagCategory.distinct.where(company_id: @user.company_id).joins(:tags)
+    @tag_categories = TagCategory.distinct.where(company: @user.company).joins(:tags)
   end
 
   # Update user profile (users/show)
@@ -136,15 +136,15 @@ class UsersController < ApplicationController
 
   def add_tag_category_tags
     authorize @user
-    tag_category_id = params.require(:tag_category_id)
-    tag_id = params[:tag_id]
-    tag_id = Tag.create(
+    tag_category = TagCategory.find(params.require(:tag_category_id))
+    tag = Tag.find_by(id: params[:tag_id])
+    tag = Tag.create(
       tag_name: params.require(:tag_name),
-      company_id: @user.company_id,
-      tag_category_id: tag_category_id).id if tag_id.nil?
+      company: @user.company,
+      tag_category: tag_category) if tag.nil?
 
-    UserTag.where(user_id: @user.id, tag_category_id: tag_category_id).delete_all
-    UserTag.create(user_id: @user.id, tag_category_id: tag_category_id, tag_id: tag_id)
+    UserTag.where(user: @user, tag_category: tag_category).delete_all
+    UserTag.create(user: @user, tag_category: tag_category, tag: tag)
   end
 
   # Remove user

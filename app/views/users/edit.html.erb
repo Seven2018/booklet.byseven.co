@@ -45,11 +45,7 @@
         <%= f.input :social_security, label: 'Social Security', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
         <%= f.input :picture, label: 'Photo URL', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
 
-        <%# if @user.hr_or_above? %>
-        <%# f.input :hire_date, as: :date, label: 'Hire date:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', start_year: Date.today.year - 70,
-                      end_year: Date.today.year %>
-        <%# end %>
-
+        <%# TODO: UpdatePermission %>
         <% if current_user.hr_or_above? %>
           <% @tag_categories.each do |category| %>
             <%= f.input :tags,
