@@ -1,15 +1,12 @@
 <div class='organisation__controls'>
   <div class="organisation__title-tags">
-    <h1>Employees (<%= User.where(company_id: current_user.company_id).count %>)</h1>
-    <!-- <div class="organisation__tags">
-      <p class="organisation__tag">All</p>
-    </div> -->
+    <h1>Employees (<%= current_user.company.users.count %>)</h1>
   </div>
-  <button data-toggle='modal' data-target='#newUser' class="p-3 bkt-bg-dark-grey bkt-white rounded-5px font-weight-700">+ Add a user</button>
-  <!-- <button class='organisation__filter_button'>
-    <span class="iconify" data-icon="bi:filter"></span>
-    <p>Filter</p>
-  </button> -->
+  <% if UserPolicy.new(current_user, nil).create? %>
+    <button data-toggle='modal' data-target='#newUser' class="p-3 bkt-bg-dark-grey bkt-white rounded-5px font-weight-700">
+      + Add a user
+    </button>
+  <% end %>
 </div>
 
 <div class='organisation__users-list' data-fl-scrolls='{"orientation": "horizontal"}'>
@@ -56,9 +53,7 @@
     </div>
   </div>
   <div class="paginate-container paginate-container-blue">
-
     <%= render 'pages/organisation/organisation_paginate', users: users %>
-
   </div>
 </div>
 
