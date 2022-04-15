@@ -38,7 +38,7 @@
     <% if current_user.hr_or_above? %>
       <button class="left-buttons">
         <%= link_to trainings_path do %>
-          <div class="navbar-buttons <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>">
+          <div class="navbar-buttons <%= 'navbar-buttons--active' if @show_navbar_admin_trainings %>">
             <h4>Create</h4>
           </div>
         <% end %>
@@ -79,7 +79,7 @@
 <% end %>
 
 
-<% if @show_navbar_admin.present? %>
+<% if @show_navbar_admin_trainings %>
   <div class="navbar-admin navbar-admin-trainings">
     <% klass = 'navbar-admin__button' %>
     <% active_klass = "navbar-admin__button--active" %>
