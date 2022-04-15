@@ -63,7 +63,8 @@ class CampaignsController < ApplicationController
       end
 
     @campaigns = CampaignDecorator.decorate_collection @campaigns
-    @manager_campaigns = CampaignDecorator.decorate_collection @manager_campaigns
+
+    @interviews_to_fill_count = Interview.where(employee: current_user, label: 'Employee', completed: false).count
 
     respond_to do |format|
       format.html
@@ -74,6 +75,8 @@ class CampaignsController < ApplicationController
   def my_team_interviews
     campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
     @personal_campaigns = campaigns.where_exists(:interviews, employee: current_user)
+    @interviews_completed_count = Interview.where(interviewer: current_user, label: 'Manager').count
+    @interviews_to_fill_count = Interview.where(interviewer: current_user, label: 'Manager', completed: false).count
     @campaigns = campaigns.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
 
