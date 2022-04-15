@@ -37,6 +37,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def add_tag_category_tags?
+    user.hr_or_above?
+  end
+
   def destroy?
     user.hr_or_above?
   end
