@@ -75,12 +75,16 @@ class PagesController < ApplicationController
   def organisation
     users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
 
-    @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
+    @tag_categories =
+      TagCategory.includes([:tags])
+                 .where(company: current_user.company)
+                 .where.not(name: 'Job Title')
+                 .order(position: :asc)
 
     filter_users(users)
 
     respond_to do |format|
-      format.html {organisation_path}
+      format.html { organisation_path }
       format.js
       format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
@@ -209,6 +213,7 @@ class PagesController < ApplicationController
   end
 
   # TEMP #
+  # TODO cleanup
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
     if current_user.hr_or_above?
