@@ -28,7 +28,7 @@
               </a>
             <% end %>
 
-            <% if UserPolicy.new(current_user, @user).edit_permissions? %>
+            <% if PermissionsPolicy.new(current_user, @user).edit? %>
               <a data-toggle='modal' data-target='#editPermissions' data-handle='edit-user-permissions-cta'>
                 <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
                   <span class="iconify fs-1_6rem bkt-white" data-icon="bi:key-fill"></span>
@@ -235,7 +235,7 @@
   </div>
 <% end %>
 
-<% if UserPolicy.new(current_user, @user).edit_permissions? %>
+<% if PermissionsPolicy.new(current_user, @user).edit? %>
   <div class="modal fade" id="editPermissions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document" style="border-radius: 20px">
       <%= render 'users/modals/edit_permissions', user: @user %>

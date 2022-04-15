@@ -1,6 +1,6 @@
 class PermissionsPolicy < ApplicationPolicy
   def edit?
-    user.hr_or_above?
+    user.can_edit_permissions
   end
 
   def update?
