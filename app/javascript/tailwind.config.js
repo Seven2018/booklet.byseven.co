@@ -4,10 +4,7 @@ module.exports = {
     './app/**/*.js',
   ],
   theme: {
-    maxWidth: {
-      '1/4': '25%'
-    }
+    extend: {},
   },
-  variants: {},
-  plugins: []
+  plugins: [],
 }
