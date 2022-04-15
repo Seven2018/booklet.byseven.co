@@ -134,7 +134,8 @@ class UsersController < ApplicationController
 
   def import_users
     skip_authorization
-    return unless current_user.hr_or_above?
+    return unless UserPolicy.new(current_user, nil).create?
+
     if params[:button] == 'summary'
       @errors = []
       @creating = []

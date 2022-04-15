@@ -265,7 +265,7 @@
 <!-- JAVASCRIPT -->
 <!---------------->
 
-<% if current_user.hr_or_above? %>
+<% if UserPolicy.new(current_user, @user).edit? || PermissionsPolicy.new(current_user, @user).edit? %>
 
   <script>
     doubleClickGuardian = false

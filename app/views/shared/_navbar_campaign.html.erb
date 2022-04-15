@@ -5,7 +5,7 @@
       <span class="iconify fs-2_4rem bkt-blue" data-icon="bxs:home"></span>
     </a>
 
-    <% if user_signed_in? %>
+    <% if CampaignPolicy.new(current_user, nil).my_interviews? %>
       <%= link_to my_interviews_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_interviews %>
@@ -15,7 +15,7 @@
       <% end %>
     <% end %>
 
-    <% if current_user.manager_or_above? %>
+    <% if CampaignPolicy.new(current_user, nil).my_team_interviews? %>
       <%= link_to my_team_interviews_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_team_interviews %>

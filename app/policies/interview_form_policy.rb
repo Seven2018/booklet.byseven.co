@@ -1,8 +1,9 @@
 class InterviewFormPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
-        user.can_create_templates && user.company_id.present?
+      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.can_create_templates
 
       scope.where(company: user.company)
     end
@@ -37,14 +38,14 @@ class InterviewFormPolicy < ApplicationPolicy
   end
 
   def toggle_tag?
-    user.hr_or_above? && !record.used?
+    create? && !record.used?
   end
 
   def remove_company_tag?
-    user.hr_or_above? && !record.used?
+    create? && !record.used?
   end
 
   def search_tags?
-    user.hr_or_above? && !record.used?
+    create? && !record.used?
   end
 end

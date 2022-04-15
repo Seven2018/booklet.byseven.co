@@ -1,15 +1,16 @@
 class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
-        user.can_create_campaigns && user.company_id.present?
+      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.can_create_campaigns
 
       scope.where(company: user.company)
     end
   end
 
   def show?
-    record.interviewers.uniq.include?(user) || user.hr_or_above?
+    record.interviewers.uniq.include?(user) || create?
   end
 
   def create?
@@ -17,7 +18,7 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def destroy?
-    create?
+    create? || record.interviews.where(completed: true).empty?
   end
 
   def my_interviews?
@@ -25,8 +26,8 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def my_team_interviews?
-    # TODO
-    user.manager_or_above?
+    # TODO UpdatePermission
+    true
   end
 
   def send_notification_email?

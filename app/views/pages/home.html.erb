@@ -71,7 +71,7 @@
 
     <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_interviews_path, title: 'My interviews', nbr: @my_interviews.count) %>
 
-    <% if current_user.manager_or_above? %>
+    <% if CampaignPolicy.new(current_user, nil).my_team_interviews? %>
 
       <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
         <%= link_to '', my_team_interviews_path, class: 'stretched-link' %>
@@ -203,7 +203,7 @@
 
     <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_trainings_path, title: 'My trainings', nbr: @my_trainings.count) %>
 
-    <% if current_user.manager_or_above? %>
+    <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
 
       <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
         <%= link_to '', my_team_trainings_path, class: 'stretched-link' %>

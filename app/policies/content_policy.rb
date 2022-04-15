@@ -3,8 +3,9 @@ class ContentPolicy < ApplicationPolicy
     attr_reader :user, :scope, :can_read
 
     def resolve
-      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
-        can_read && user.company_id.present?
+      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        can_read
 
       scope.where(company: user.company)
     end
@@ -39,6 +40,6 @@ class ContentPolicy < ApplicationPolicy
   end
 
   def book_contents?
-    user.hr_or_above?
+    create?
   end
 end

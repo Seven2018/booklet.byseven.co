@@ -84,7 +84,7 @@
       <%= f.input :linkedin, label: 'Linkedin (url):', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :birth_date, as: :date, label: 'Birth date:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
                   end_year: Date.today.year - 12, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
-      <% if @user.hr_or_above? %>
+      <% if PermissionsPolicy.new(current_user, user).edit? %>
         <%= f.input :hire_date, as: :date, label: 'Hire date:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', start_year: Date.today.year - 70,
                     end_year: Date.today.year, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <% end %>

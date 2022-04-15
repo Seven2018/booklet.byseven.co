@@ -1,9 +1,7 @@
 class TrainingPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
-        user.company_id.present?
-
+      super
       scope.where(company: user.company)
     end
   end
@@ -13,11 +11,12 @@ class TrainingPolicy < ApplicationPolicy
   end
 
   def my_team_trainings?
-    user.manager_or_above?
+    # TODO UpdatePermission
+    true
   end
 
   def my_team_trainings_user_details?
-    user.manager_or_above?
+    create?
   end
 
   def create?
@@ -33,6 +32,6 @@ class TrainingPolicy < ApplicationPolicy
   end
 
   def send_acquisition_reminder_email?
-    record.creator == user || user.hr_or_above?
+    record.creator == user || create?
   end
 end

@@ -1,8 +1,9 @@
 class InterviewReportPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
-        user.can_create_interview_reports && user.company_id.present?
+      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.can_create_interview_reports
 
       scope.where(company: user.company)
     end

@@ -1,5 +1,5 @@
 <h3>By <%= @content.author.firstname %></h3>
-<% if current_user.manager_or_above? %>
+<% if ContentPolicy.new(current_user, @content).edit? %>
   <div class='icon-btn'>
     <i class="fas fa-pencil-alt"></i>
   </div>

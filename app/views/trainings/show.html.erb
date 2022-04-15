@@ -81,7 +81,7 @@
             </div>
           </div>
 
-          <% if current_user == @training.creator || current_user.hr_or_above? %>
+          <% if current_user == @training.creator || TrainingPolicy.new(current_user, nil).create? %>
             <% attendees_acquired = @workshop.attendees.completed %>
             <% attendees_not_acquired = @workshop.attendees.not_completed %>
 

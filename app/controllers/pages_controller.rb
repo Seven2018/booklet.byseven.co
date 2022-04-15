@@ -174,8 +174,10 @@ class PagesController < ApplicationController
   end
 
   def book_dates
+    raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+      CampaignPolicy.new(current_user, nil).create?
+
     book_data
-    raise "Access denied" unless current_user.hr_or_above?
   end
 
   private
@@ -213,7 +215,8 @@ class PagesController < ApplicationController
   # TODO cleanup
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
-    if current_user.hr_or_above?
+
+    if UserPolicy.new(current_user, nil).edit?
 
       @tag_categories = TagCategory.where(company_id: current_user.company_id)
       # If a name is entered in the search bar
