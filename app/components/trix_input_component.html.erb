@@ -8,7 +8,7 @@
     name="<%= @name %>"
   >
   <trix-editor
-    data-action="window@trix-initialize->trix#setup trix-change->trix#update"
+    data-action="window@trix-initialize->trix#setup keyup->trix#update"
     data-trix-target="editor"
     class='<%= @klasses %>'
     input="<%= @rand_uuid %>"

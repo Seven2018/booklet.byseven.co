@@ -30,6 +30,18 @@ div.nobreak--pdf{ page-break-inside: avoid; }
   align-self: center;
 }
 
+/////////////////////
+// UTILITY CLASSES //
+/////////////////////
+
+.m-1rem { margin: 1rem !important; }
+.mx-1rem { margin-right:  1rem !important; margin-left:   1rem !important; }
+.my-1rem { margin-top:    1rem !important; margin-bottom: 1rem !important; }
+.mt-1rem { margin-top:    1rem !important; }
+.mr-1rem { margin-right:  1rem !important; }
+.mb-1rem { margin-bottom: 1rem !important; }
+.ml-1rem { margin-left:   1rem !important; }
+
 //////////////////////
 // INTERVIEW - SHOW //
 //////////////////////
@@ -132,10 +144,24 @@ div.nobreak--pdf{ page-break-inside: avoid; }
   margin-bottom: 1rem;
 }
 
-.rating-crossed--pdf > img {
-  height: 20px;
-  width: 20px;
+.rating-filled, .rating-empty {
+  height: 18px;
+  width: 18px;
+  border-radius: 10px;
+  border: 2px solid #3177B7;
 }
+
+.rating-filled {
+  background-color: #3177B7;
+}
+
+.rating-filled-text, .rating-empty-text {
+  font-size: 1rem;
+  margin: 0 0 0 1rem;
+}
+
+.rating-filled-text { color: #3177B7; }
+.rating-empty-text { color: #C4C4C4; }
 
 .interview-crossed-answer__text--pdf, .interview-crossed-answer__objective--pdf {
   font-style: italic;
@@ -159,7 +185,8 @@ div.nobreak--pdf{ page-break-inside: avoid; }
 .interview__textarea--pdf {
   padding: 1rem;
   border: none;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   outline: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;

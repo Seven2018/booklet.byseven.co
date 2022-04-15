@@ -48,7 +48,7 @@ class InterviewsController < ApplicationController
           show_as_html: params.key?('debug'),
           page_size: 'A4',
           encoding: 'utf8',
-          dpi: 300,
+          dpi: 75,
           zoom: 1,
         )
       end

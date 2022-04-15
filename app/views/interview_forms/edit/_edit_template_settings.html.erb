@@ -63,4 +63,10 @@
 
 </div>
 
-<%= render_component TagManagementComponent.new(company_tags: @company_tags, form_tags: @tags, toggle_path: toggle_tag_interview_form_path) %>
+<%= render_component TagManagementComponent.new(
+  company_tags: @company_tags,
+  form_tags: @tags,
+  toggle_path: toggle_tag_interview_form_path,
+  remove_company_tag_path: remove_company_tag_interview_form_path,
+  search_tag_path: search_tags_interview_form_path
+)%>

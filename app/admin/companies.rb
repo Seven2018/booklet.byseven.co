@@ -6,6 +6,7 @@ ActiveAdmin.register Company do
     column :zipcode
     column :city
     column :siret
+    column :applications
     actions
   end
 
@@ -21,6 +22,7 @@ ActiveAdmin.register Company do
           f.input :logo
           f.input :siret
           f.input :auth_token
+          f.input :applications, as: :check_boxes, collection: Company::APPLICATIONS.keys.map{ |k, _v| [k, k] }
         end
       end
 
@@ -91,7 +93,8 @@ ActiveAdmin.register Company do
   end
 
   permit_params :name, :address, :zipcode, :city, :logo, :siret, :auth_token,
-  :clear_bg_logo, :dark_bg_logo,
-  :my_interviews_bg_picture, :my_team_interviews_bg_picture,
-  :my_trainings_bg_picture, :my_team_trainings_bg_picture
+    :clear_bg_logo, :dark_bg_logo,
+    :my_interviews_bg_picture, :my_team_interviews_bg_picture,
+    :my_trainings_bg_picture, :my_team_trainings_bg_picture,
+    applications: []
 end

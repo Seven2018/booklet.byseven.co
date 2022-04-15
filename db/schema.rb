@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_08_115034) do
+ActiveRecord::Schema.define(version: 2022_04_09_160916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(version: 2022_04_08_115034) do
     t.string "auth_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "applications", default: {}, null: false
+    t.text "applications", default: [], array: true
   end
 
   create_table "content_categories", force: :cascade do |t|

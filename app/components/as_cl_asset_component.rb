@@ -6,7 +6,7 @@ class AsClAssetComponent < ViewComponent::Base
     @model = model
     @asset = asset
     @style = style
-    @class = class_name
+    @class_name = class_name
   end
 
   def asset

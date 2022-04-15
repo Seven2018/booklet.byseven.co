@@ -27,7 +27,6 @@
         <%= render 'shared/navbar_mobile' %>
       <% elsif @show_navbar_campaign %>
         <%= render 'shared/navbar_campaign' %>
-        <%#= render 'shared/navbar_campaign_mobile' %>
         <%= render 'shared/navbar_mobile' %>
     <% end %>
 
@@ -38,8 +37,7 @@
         <% if params[:controller] == 'users' && params[:action] == 'show' %>
           <%= yield %>
         <% else %>
-          <div id="booklet-container"
-               class="<%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %> <%= 'container-admin-height' if @show_navbar_admin %>">
+          <div id="booklet-container" class="<%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %> <%= 'container-admin-height' if @show_navbar_admin %>">
             <%= yield %>
           </div>
         <% end %>
@@ -48,9 +46,7 @@
       <% end %>
     </div>
 
-    <% if user_signed_in? %>
-      <%= render_component MobileMenuComponent.new(current_user) %>
-    <% end %>
+    <%= render_component MobileMenuComponent.new(current_user) %>
 
     <%= javascript_include_tag 'application' %>
   </body>

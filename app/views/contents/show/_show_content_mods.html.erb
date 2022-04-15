@@ -1,7 +1,7 @@
 <% content.mods.order(position: :asc).each do |mod| %>
 
-  <div class="py-2rem border-bottom-bkt-light-grey">
-    <div class="flex-row-between-centered mb-2rem">
+  <div class="py-2rem border-bottom-sm-bkt-light-grey">
+    <div class="flex-row-between-centered mb-2rem border-bottom-bkt-light-grey border-bottom-sm-none pb-3">
       <p class="fs-1_6rem font-weight-600 bkt-orange"><%= mod.title %></p>
       <p class="fs-1_4rem font-weight-500 bkt-light-grey"><%= mod.duration >= 60 ? TimeConversion.convert(mod.duration) : "#{mod.duration} minutes" %></p>
     </div>
@@ -14,8 +14,8 @@
 
     <% elsif mod.video? %>
 
-      <div>
-         <iframe src="<%= VideoHelper.embed_video(mod.video) %>" style='width: 100%; height: 30rem;'></iframe>
+      <div class="flex-row-center-centered">
+         <iframe src="<%= VideoHelper.embed_video(mod.video) %>" style='width: 75%; aspect-ratio: 16 / 9;'></iframe>
       </div>
 
     <% end %>

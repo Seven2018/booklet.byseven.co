@@ -30,7 +30,12 @@
       </div>
     </div>
 
-    <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :clear_bg_logo) %>
+    <div class="d-flex align-items-center">
+      <%= render_component AsClAssetComponent.new(
+        model: current_user.company,
+        asset: :clear_bg_logo,
+      ) %>
+    </div>
 
     <div class="left-buttons--mobile">
       <div class="dropdown">

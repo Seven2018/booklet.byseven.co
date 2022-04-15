@@ -11,8 +11,8 @@ class UsersController < ApplicationController
     authorize @user
 
     trainings = Training.joins(sessions: :attendees).where(attendees: {user: @user}).distinct
-    @trainings_current = trainings.select{|x| x.next_date.present?}
-    @trainings_completed = trainings.select{|x| x.next_date.nil?}
+    @trainings_current = trainings.where_exists(:attendees, user: current_user, status: 'Not completed')
+    @trainings_completed = trainings.where_not_exists(:attendees, user: current_user, status: 'Not completed')
 
     campaigns = Campaign.where(company: @user.company).order(created_at: :desc).where \
       id: Interview.where(employee: @user).distinct.pluck(:campaign_id)

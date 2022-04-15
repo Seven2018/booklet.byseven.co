@@ -1,18 +1,18 @@
 class CampaignDecorator < Draper::Decorator
   delegate_all
 
-  def completion_status
-    if completion_for(:all) == 0
+  def completion_status(employee = :all)
+    if completion_for(employee) == 0
       'not_started'
-    elsif completion_for(:all) == 100
+    elsif completion_for(employee) == 100
       'completed'
     else
       'in_progress'
     end
   end
 
-  def completion_status_string
-    completion_status.capitalize.gsub(/_/, " ")
+  def completion_status_string(employee = :all)
+    completion_status(employee).capitalize.gsub(/_/, " ")
   end
 
   def campaign_type_str

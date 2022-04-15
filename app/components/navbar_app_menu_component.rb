@@ -4,5 +4,11 @@ class NavbarAppMenuComponent < ViewComponent::Base
     @user = user
     @color = color
   end
+
+  def active_applications
+    return [] unless @user&.company
+
+    @user.company.active_applications
+  end
 end
 
