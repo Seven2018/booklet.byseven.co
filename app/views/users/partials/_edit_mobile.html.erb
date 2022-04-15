@@ -79,7 +79,6 @@
       <%= f.input :firstname, label: 'First Name:', label_html: {class: 'bkt-light-grey'}, class: 'form-control', required: true, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :lastname, label: 'Last Name:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :email, label: 'Email:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
-      <%= render 'users/access_level_input', f: f, user: @user %>
       <%= f.input :manager_id, collection: User.where(company: @user.company).manager_or_above.order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: {class: 'bkt-light-grey'}, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}}  %>
       <%= f.input :phone_number, label: 'Phone:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :linkedin, label: 'Linkedin (url):', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
