@@ -1,5 +1,4 @@
 class TrainingsController < ApplicationController
-  before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_training
 
   def index

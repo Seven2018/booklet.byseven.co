@@ -2,7 +2,7 @@ class ContentPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
-        user.can_read_contents && user.company_id.present?
+        read? && user.company_id.present?
 
       scope.where(company: user.company)
     end
@@ -10,6 +10,10 @@ class ContentPolicy < ApplicationPolicy
 
   def show?
     true
+  end
+
+  def read?
+    user.can_read_contents
   end
 
   def create?

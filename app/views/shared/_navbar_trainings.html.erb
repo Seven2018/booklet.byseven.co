@@ -25,23 +25,23 @@
       <% end %>
     <% end %>
 
-    <% if user_signed_in? %>
+    <% if ContentPolicy.new(current_user, nil).read? %>
       <%= link_to catalogue_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :pages_catalogue %>
-          ">
+        ">
           <h4 title='Catalogue'>Catalogue</h4>
         </div>
       <% end %>
     <% end %>
 
-    <% if current_user.hr_or_above? %>
+    <% if Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
       <button class="left-buttons">
-        <%= link_to trainings_path do %>
-          <div class="navbar-buttons <%= 'navbar-buttons--active' if @show_navbar_admin_trainings %>">
-            <h4>Create</h4>
-          </div>
-        <% end %>
+        <div class="navbar-buttons navbar-buttons--active">
+          <h4>
+            <%= render_component Navigation::TrainingsAdminLink.new(user: current_user) %>
+          </h4>
+        </div>
       </button>
     <% end %>
 
@@ -79,22 +79,26 @@
 <% end %>
 
 
-<% if @show_navbar_admin_trainings %>
+<% if Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
   <div class="navbar-admin navbar-admin-trainings">
     <% klass = 'navbar-admin__button' %>
     <% active_klass = "navbar-admin__button--active" %>
 
-    <%= link_to trainings_path,
-      class: "#{klass} #{active_klass if @controller_action == :trainings_index}" do %>
-      <h4>Trainings</h4>
+    <% if TrainingPolicy.new(current_user, nil).create? %>
+      <%= link_to trainings_path,
+        class: "#{klass} #{active_klass if @controller_action == :trainings_index}" do %>
+        <h4>Trainings</h4>
+      <% end %>
     <% end %>
 
-    <%= link_to trainings_reports_path,
-      class: "#{klass} #{
-        active_klass if
-          @controller_action == :reports_index
-      }" do %>
-      <h4>Report</h4>
+    <% if TrainingReportPolicy.new(current_user, nil).create? %>
+      <%= link_to trainings_reports_path,
+        class: "#{klass} #{
+          active_klass if
+            @controller_action == :reports_index
+        }" do %>
+        <h4>Report</h4>
+      <% end %>
     <% end %>
   </div>
 <% end %>

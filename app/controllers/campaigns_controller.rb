@@ -1,7 +1,6 @@
 class CampaignsController < ApplicationController
   include InterviewUsersFilter
-  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy]
-  before_action :show_navbar_admin, only: %i[index]
+  before_action :set_campaign, only: %i[show edit send_notification_email destroy]
   before_action :show_navbar_campaign
 
   def index
@@ -46,10 +45,16 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc).where \
-      id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
-    @manager_campaigns = Campaign.where(company: current_user.company).order(created_at: :desc).where \
-      id: Interview.where(interviewer: current_user).distinct.pluck(:campaign_id)
+    @campaigns =
+      Campaign.where(company: current_user.company)
+              .order(created_at: :desc)
+              .where(id: Interview.where(employee: current_user).distinct.pluck(:campaign_id))
+
+    @manager_campaigns =
+      Campaign.where(company: current_user.company)
+              .order(created_at: :desc)
+              .where(id: Interview.where(interviewer: current_user).distinct.pluck(:campaign_id))
+
     authorize @campaigns
 
     @ongoing_campaigns = @campaigns.where_exists(:interviews, locked_at: nil)

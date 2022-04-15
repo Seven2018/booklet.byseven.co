@@ -1,6 +1,14 @@
-<div class="flex-column-start-centered width-100 bkt-bg-light-grey2 <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %> <%= 'container-admin-height' if @show_navbar_admin_any %> hide-scrollbar" style='min-height: calc(100vh - 7.5rem);'
-               data-scrollbar-target='container'
-               data-action='scroll->scrollbar#showScrollbar'>
+<div class="flex-column-start-centered width-100 bkt-bg-light-grey2
+  <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
+  <%=
+    'container-admin-height' if
+      Navigation::InterviewsAdminLink.new(user: current_user).should_render? ||
+        Navigation::TrainingsAdminLink.new(user: current_user).should_render?
+  %>
+  hide-scrollbar"
+  style='min-height: calc(100vh - 7.5rem);'
+  data-scrollbar-target='container'
+  data-action='scroll->scrollbar#showScrollbar'>
 
   <div class="width-90 from_medium__width-80 pt-5rem mb-3rem" style='max-width: 950px;'>
     <h1 class='mb-2rem'>Welcome on Booklet, <%= "#{current_user.firstname}" %> !</h1>
