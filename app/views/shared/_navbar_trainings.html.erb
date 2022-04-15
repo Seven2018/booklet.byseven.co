@@ -25,7 +25,7 @@
       <% end %>
     <% end %>
 
-    <% if ContentPolicy.new(current_user, nil).read? %>
+    <% if ContentPolicy::Scope.new(current_user, nil).can_read %>
       <%= link_to catalogue_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :pages_catalogue %>

@@ -8,8 +8,7 @@ class CampaignsController < ApplicationController
                       .distinct
                       .where(company_id: current_user.company_id)
                       .pluck(:title)
-    campaigns = policy_scope(Campaign).where(company: current_user.company)
-                                      .where_exists(:interviews)
+    campaigns = policy_scope(Campaign).where_exists(:interviews)
                                       .order(created_at: :desc)
 
     filter_campaigns(campaigns)
