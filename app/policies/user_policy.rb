@@ -1,10 +1,16 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
+    attr_reader :user, :scope, :can_read
+
     def resolve
       raise Pundit::NotAuthorizedError, 'not allowed to view this action' unless
-        user.can_read_employees && user.company_id.present?
+        can_read && user.company_id.present?
 
       scope.where(company: user.company)
+    end
+
+    def can_read
+      user.can_read_employees
     end
   end
 
