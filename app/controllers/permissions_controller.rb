@@ -31,7 +31,8 @@ class PermissionsController < ApplicationController
       :can_create_training_reports,
       :can_read_employees,
       :can_create_employees,
-      :can_edit_employees
+      :can_edit_employees,
+      :can_edit_permissions
     )
   end
 end

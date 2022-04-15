@@ -27,8 +27,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.can_edit_employees ||
-      user.id == record.id
+    user.can_edit_employees || user.id == record.id
+  end
+
+  def edit_permissions?
+    user.can_edit_permissions
   end
 
   def update?

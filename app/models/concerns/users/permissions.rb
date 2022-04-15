@@ -10,7 +10,8 @@ module Users::Permissions
     can_create_training_reports:  false,
     can_read_employees:           false,
     can_create_employees:         false,
-    can_edit_employees:           false
+    can_edit_employees:           false,
+    can_edit_permissions:         false
   }
 
   MANAGER_PERMISSIONS = {
@@ -24,7 +25,8 @@ module Users::Permissions
     can_create_training_reports:  false,
     can_read_employees:           false,
     can_create_employees:         false,
-    can_edit_employees:           false
+    can_edit_employees:           false,
+    can_edit_permissions:         false
   }
 
   ADMIN_PERMISSIONS = {
@@ -38,6 +40,7 @@ module Users::Permissions
     can_create_training_reports:  true,
     can_read_employees:           true,
     can_create_employees:         true,
-    can_edit_employees:           true
+    can_edit_employees:           true,
+    can_edit_permissions:         true
   }
 end
