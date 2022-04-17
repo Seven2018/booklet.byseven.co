@@ -27,7 +27,8 @@
 
     <% if Navigation::InterviewsAdminLink.new(user: current_user).should_render? %>
       <button class="left-buttons">
-        <div class="navbar-buttons navbar-buttons--active">
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if %i[campaigns_index interview_forms_index reports_index].include?(@controller_action) %>">
           <h4>
             <%= render_component Navigation::InterviewsAdminLink.new(user: current_user) %>
           </h4>
@@ -67,7 +68,7 @@
   </div>
 <% end %>
 
-<% if Navigation::InterviewsAdminLink.new(user: current_user).should_render? %>
+<% if @show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render? %>
   <div class="navbar-admin  navbar-admin-campaigns">
     <% klass = 'navbar-admin__button' %>
     <% active_klass = "navbar-admin__button--active" %>

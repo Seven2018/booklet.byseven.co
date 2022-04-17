@@ -18,8 +18,7 @@
     <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
       <%= link_to my_team_trainings_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if [:trainings_my_team_trainings, :trainings_my_team_trainings_user_details].include?(@controller_action) %>
-          ">
+          <%= 'navbar-buttons--active' if [:trainings_my_team_trainings, :trainings_my_team_trainings_user_details].include?(@controller_action) %>">
           <h4 title='My team trainings'>My team trainings</h4>
         </div>
       <% end %>
@@ -37,7 +36,8 @@
 
     <% if Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
       <button class="left-buttons">
-        <div class="navbar-buttons navbar-buttons--active">
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if  %i[trainings_index reports_index].include?(@controller_action) %>">
           <h4>
             <%= render_component Navigation::TrainingsAdminLink.new(user: current_user) %>
           </h4>
@@ -79,7 +79,7 @@
 <% end %>
 
 
-<% if Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
+<% if @show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
   <div class="navbar-admin navbar-admin-trainings">
     <% klass = 'navbar-admin__button' %>
     <% active_klass = "navbar-admin__button--active" %>

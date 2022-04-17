@@ -1,4 +1,5 @@
 class Interviews::ReportsController < ApplicationController
+  before_action :show_navbar_admin, except: [:edit]
   before_action :show_navbar_campaign, :ensure_company
 
   def index

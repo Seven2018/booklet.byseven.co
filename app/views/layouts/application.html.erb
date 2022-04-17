@@ -43,8 +43,8 @@
             <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
             <%=
               'container-admin-height' if
-                Navigation::InterviewsAdminLink.new(user: current_user).should_render? ||
-                  Navigation::TrainingsAdminLink.new(user: current_user).should_render?
+                (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
+                (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
             %>">
             <%= yield %>
           </div>

@@ -105,6 +105,10 @@ class ApplicationController < ActionController::Base
     @controller_action = [controller_name, action_name].join('_').to_sym
   end
 
+  def show_navbar_admin
+    @show_navbar_admin = true
+  end
+
   def show_navbar_home
     @show_navbar_home = true
   end

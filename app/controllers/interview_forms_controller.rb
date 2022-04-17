@@ -1,5 +1,6 @@
 class InterviewFormsController < ApplicationController
   before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag, :remove_company_tag, :search_tags]
+  before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
   def index
