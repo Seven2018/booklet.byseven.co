@@ -105,7 +105,7 @@
             <a id="anchor-<%= question.id %>" style='position:absolute; top: -21.5rem;'></a>
             <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
               <p><%= question_num %>. </p>
-              <span class="iconify" data-icon="<%= question.icon %>"></span>
+              <span class="iconify interview-title-logo" data-icon="<%= question.icon %>"></span>
               <p><%= question.question %> <%= "*" if question.required? %></p>
             </div>
             <div class="interview-main__right-question-description">
@@ -122,7 +122,9 @@
                 (@interview.manager? && manager != current_user) ||
                 (@interview.simple? && manager != current_user) ||
                 @interview.locked?
-              ) %>
+              ),
+              company: current_user.company
+            %>
           </div>
         </div>
       <% end %>

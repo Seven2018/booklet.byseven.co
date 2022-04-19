@@ -80,10 +80,14 @@
                           <% elsif question.rating? %>
                             <div class="rating-crossed--pdf">
                               <% for i in 1..manager_answer.answer.to_i %>
-                                <div class="rating-filled"></div>
+                                <div style="color: #5A91CB">
+                                  <%= raw user.company.rating_logo %>
+                                </div>
                               <% end %>
                               <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
-                                <div class="rating-empty"></div>
+                                <div style="color: grey">
+                                  <%= raw user.company.rating_logo %>
+                                </div>
                               <% end %>
                             </div>
                           <% elsif question.mcq? || question.objective? %>
@@ -115,10 +119,14 @@
                           <% elsif question.rating? %>
                             <div class="rating-crossed--pdf">
                               <% for i in 1..employee_answer.answer.to_i %>
-                                <div class="rating-filled"></div>
+                                <div style="color: #5A91CB">
+                                  <%= raw user.company.rating_logo %>
+                                </div>
                               <% end %>
                               <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
-                                <div class="rating-empty"></div>
+                                <div style="color: grey">
+                                  <%= raw user.company.rating_logo %>
+                                </div>
                               <% end %>
                             </div>
                           <% elsif question.mcq? || question.objective? %>
@@ -156,10 +164,14 @@
                       <p>Answer</p>
                       <div class='rating--pdf'>
                         <% for i in 1..current_answer.to_i %>
-                          <div class="rating-filled"></div>
+                          <div style="color: #5A91CB">
+                            <%= raw user.company.rating_logo %>
+                          </div>
                         <% end %>
                         <% for i in current_answer.to_i+1..question.options.keys.first.to_i %>
-                          <div class="rating-empty"></div>
+                          <div style="color: grey">
+                            <%= raw user.company.rating_logo %>
+                          </div>
                         <% end %>
                       </div>
 
@@ -178,10 +190,14 @@
                         <% question.options.keys.each do |option| %>
                           <div class="mcq-flex-box--pdf">
                             <% if option == current_answer %>
-                              <div class="rating-filled"></div>
+                              <div style="color: #5A91CB">
+                                <%= raw user.company.rating_logo %>
+                              </div>
                               <p class="rating-filled-text"><%= option %></p>
                             <% else %>
-                              <div class="rating-empty"></div>
+                              <div style="color: grey">
+                                <%= raw user.company.rating_logo %>
+                              </div>
                               <p class="rating-empty-text"><%= option %></p>
                             <% end %>
                           </div>
