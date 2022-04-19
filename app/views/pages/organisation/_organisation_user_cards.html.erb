@@ -7,7 +7,7 @@
       <% user = @user if @user.present? %>
       <div class="organisation__users-info">
         <div class="organisation__user-checkbox-container">
-          <input class='select-user hidden' id='checkbox-<%= user.id %>' type="checkbox" value="<%= user.id %>">
+          <input class='select-user hidden' id='checkbox-<%= user.id %>' type="checkbox" value="<%= user.id %>" data-action="change->employees-list#toggleUser">
           <div class="organisation__user-checkbox" onclick="selectUser(this);"></div>
         </div>
       </div>
