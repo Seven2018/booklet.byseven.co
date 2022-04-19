@@ -12,7 +12,7 @@
   </button> -->
 </div>
 
-<div class='organisation__users-list' data-fl-scrolls='{"orientation": "horizontal"}'>
+<div class='organisation__users-list' data-fl-scrolls='{"orientation": "horizontal"}' data-controller="employees-list">
 
   <div class="organisation__searchbar">
     <i class="fas fa-search organisation__search-trainings-icon"></i>
@@ -26,7 +26,7 @@
       </button>
     <% end %>
     <button class='btn-reset bkt-blue' onclick='resetAllFilter(this);'>Reset</button>
-    <div class="organisation__control-dropdown">
+    <div class="organisation__control-dropdown d-none" data-employees-list-target="usersListOpt">
       <div class="dropdown">
         <div class="btn-icon" id="dropdownMenu" data-toggle="dropdown">
           <i class="fas fa-ellipsis-h"></i>
