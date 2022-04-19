@@ -5,13 +5,11 @@
 
       <div class='p-2rem'>
         <h1 class='mb-2rem'>Hello, <%= "#{current_user.firstname}" %> !</h1>
-        <% if current_user.manager_or_above? %>
-          <p class='d-none d-sm-block fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem mb-2rem'>
-            You will find all interviews as interviewee here. <br>
-            You have <span class="bkt-blue"><%= @interviews_to_fill_count %> interviews to fill</span> from your <span class="font-weight-700"><%= "#{@ongoing_campaigns.count}"  %> current interviews.</span> <br>
-            All reviews of an interview has to be locked to be a <span class="font-weight-700">‘Completed Interviews’</span> <br>
-          </p>
-        <% end %>
+        <p class='d-none d-sm-block fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem mb-2rem'>
+          You will find all interviews as interviewee here. <br>
+          You have <span class="bkt-blue"><%= @interviews_to_fill_count %> interviews to fill</span> from your <span class="font-weight-700"><%= "#{@ongoing_campaigns.count}"  %> current interviews.</span> <br>
+          All reviews of an interview has to be locked to be a <span class="font-weight-700">‘Completed Interviews’</span> <br>
+        </p>
       </div>
 
       <%= render_component AsClAssetComponent.new(
