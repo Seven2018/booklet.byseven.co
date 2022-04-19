@@ -115,15 +115,31 @@
     message_storage = document.getElementById('content-edit__update-status')
 
     if (message == 'Up to date') {
-      message_storage.classList.add('bkt-green')
+      message_storage.classList.remove('bkt-red')
       message_storage.classList.remove('bkt-yellow')
+      message_storage.classList.add('bkt-green')
+    } else if (message == 'Update failed') {
+      message_storage.classList.remove('bkt-green')
+      message_storage.classList.remove('bkt-yellow')
+      message_storage.classList.add('bkt-red')
     } else {
       message_storage.classList.remove('bkt-green')
+      message_storage.classList.remove('bkt-red')
       message_storage.classList.add('bkt-yellow')
     }
 
-
     message_storage.innerText = message
+  }
+
+  function checkVideoCompatibility(element) {
+    video_link = element.value
+    if (video_link.split('=')[0].replace("https://", "") == 'www.youtube.com/watch?v' || video_link == '') {
+      element.style.color = '#333333'
+      saveForm(element)
+    } else {
+      updateStatusMessage("Update failed")
+      element.style.color = '#FF5656'
+    }
   }
 
   // EXPAND / COLLAPSE MOD //
