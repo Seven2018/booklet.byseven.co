@@ -20,11 +20,11 @@
 
           <div class="flex-row-between-centered">
 
-            <a data-toggle='modal' data-target='#editUser'>
+            <%= link_to edit_user_path do %>
               <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
                 <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
               </div>
-            </a>
+            <% end %>
 
             <a data-toggle='modal' data-target='#editPassword'>
               <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
