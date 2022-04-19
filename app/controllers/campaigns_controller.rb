@@ -9,7 +9,8 @@ class CampaignsController < ApplicationController
                       .distinct
                       .where(company_id: current_user.company_id)
                       .pluck(:title)
-    campaigns = policy_scope(Campaign).where_exists(:interviews)
+    campaigns = policy_scope(Campaign).where(company: current_user.company)
+                                      .where_exists(:interviews)
                                       .order(created_at: :desc)
 
     filter_campaigns(campaigns)
@@ -45,20 +46,12 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    @campaigns =
-      Campaign.where(company: current_user.company)
-              .order(created_at: :desc)
-              .where(id: Interview.where(employee: current_user).distinct.pluck(:campaign_id))
-
-    @manager_campaigns =
-      Campaign.where(company: current_user.company)
-              .order(created_at: :desc)
-              .where(id: Interview.where(interviewer: current_user).distinct.pluck(:campaign_id))
-
+    @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc).where \
+      id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 
-    @ongoing_campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
-    @completed_campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, employee: current_user, locked_at: nil)
+    @completed_campaigns = @campaigns.where_not_exists(:interviews, employee: current_user, locked_at: nil)
 
     @campaigns =
       if params.dig(:period) == 'completed'
@@ -68,7 +61,8 @@ class CampaignsController < ApplicationController
       end
 
     @campaigns = CampaignDecorator.decorate_collection @campaigns
-    @manager_campaigns = CampaignDecorator.decorate_collection @manager_campaigns
+
+    @interviews_to_fill_count = Interview.where(employee: current_user, label: 'Employee', completed: false).count
 
     respond_to do |format|
       format.html
@@ -78,12 +72,19 @@ class CampaignsController < ApplicationController
 
   def my_team_interviews
     campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
-    @personal_campaigns = campaigns.where_exists(:interviews, employee: current_user)
-    @campaigns = campaigns.where_exists(:interviews, interviewer: current_user)
-    authorize @campaigns
+    campaigns = campaigns.where_exists(:interviews, interviewer: current_user)
+    authorize campaigns
 
-    @ongoing_campaigns = @campaigns.where_exists(:interviews, locked_at: nil)
-    @completed_campaigns = @campaigns.where_not_exists(:interviews, locked_at: nil)
+    @interviews_completed_count = Interview.where(interviewer: current_user,
+                                                  label: ['Manager', 'Crossed'],
+                                                  locked_at: nil)
+                                           .count
+    @interviews_to_fill_count = Interview.where(interviewer: current_user,
+                                                label: ['Manager', 'Crossed'],
+                                                completed: false).count
+
+    @ongoing_campaigns = campaigns.where_exists(:interviews, interviewer: current_user, locked_at: nil)
+    @completed_campaigns = campaigns.where_not_exists(:interviews, interviewer: current_user, locked_at: nil)
 
     @campaigns =
       if params.dig(:period) == 'completed'

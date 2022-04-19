@@ -319,6 +319,9 @@
 
     element_checkbox = element.parentNode.querySelector('.select-user')
     element_checkbox.checked = !element_checkbox.checked
+    const event = new Event('change');
+
+    element_checkbox.dispatchEvent(event)
 
     if (element_checkbox.checked) {
       element.classList.add('active')

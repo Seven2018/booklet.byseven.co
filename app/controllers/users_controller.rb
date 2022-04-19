@@ -1,7 +1,7 @@
 # Updated : 2021/07/19
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :add_tag_category_tags]
   before_action :set_current_user, only: [:import, :create]
   skip_before_action :verify_authenticity_token, only: [:update]
   before_action :show_navbar_home
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def show
     authorize @user
 
-    trainings = Training.joins(sessions: :attendees).where(attendees: {user: @user}).distinct
+    trainings = Training.joins(sessions: :attendees).where(attendees: { user: @user }).distinct
     @trainings_current = trainings.where_exists(:attendees, user: current_user, status: 'Not completed')
     @trainings_completed = trainings.where_not_exists(:attendees, user: current_user, status: 'Not completed')
 
@@ -29,18 +29,33 @@ class UsersController < ApplicationController
     @user.firstname = @user.firstname.capitalize
     @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
     @user.company_id = current_user.company_id
-    @user.authentication_token = Base64.encode64(@user.email).gsub("\n","") + SecureRandom.hex(32)
+    @user.authentication_token = Base64.encode64(@user.email).gsub("\n", "") + SecureRandom.hex(32)
 
     new_user = User.find_by(email: params.dig(:user, :email)).nil?
     send_invite = params.dig(:user, :send_invite) == 'true'
 
     # Send invitation
     if new_user
-      send_invite && Rails.env == 'production' ? @user.invite! : @user.save(validate: false)
+      if send_invite && Rails.env == 'production'
+        @user.save(validate: false)
+        @user.invite!
+      else
+        @user.save(validate: false)
+      end
+
+      params[:tags].each do |tag_category_name, tag_name|
+        tag_category = TagCategory.find_by(name: tag_category_name)
+
+        UserTag.create(
+          user: @user,
+          tag_category: tag_category,
+          tag: Tag.find_by(tag_name: tag_name, tag_category: tag_category)
+        )
+      end
     end
 
     respond_to do |format|
-      format.html {redirect_to organisation_path}
+      format.html { redirect_to organisation_path }
       format.js
     end
   end
@@ -75,9 +90,14 @@ class UsersController < ApplicationController
     @selected_users = params[:selected_users]
 
     respond_to do |format|
-      format.html {redirect_to organisation_path}
+      format.html { redirect_to organisation_path }
       format.js {}
     end
+  end
+
+  def edit
+    authorize @user
+    @tag_categories = TagCategory.distinct.where(company: @user.company).joins(:tags)
   end
 
   # Update user profile (users/show)
@@ -89,21 +109,8 @@ class UsersController < ApplicationController
     else
       @user.update(user_params)
     end
-    unless params[:user].nil?
-      if params[:user][:tags].present?
-        tags = params[:user][:tags].reject{|x| x.empty?}.map{|c| c.to_i}
-        del_tags = Tag.where(company_id: current_user.company_id).map(&:id) - tags
-      end
-    end
+
     if @user.save
-      unless params[:user].nil?
-        if params[:user][:tags].present?
-          UserTag.where(user_id: @user.id, tag_id: del_tags).destroy_all
-          tags.each do |tag|
-            UserTag.create(user_id: @user.id, tag_id: tag, tag_category_id: Tag.find(tag).tag_category_id)
-          end
-        end
-      end
       if params[:access_level_int].present?
         if params[:last_page] == "catalogue"
           redirect_to catalogue_path
@@ -115,14 +122,27 @@ class UsersController < ApplicationController
       else
         respond_to do |format|
           if params[:page] != 'show'
-            format.html {redirect_to user_path(@user)}
+            format.html { redirect_to user_path(@user) }
           else
-            format.html {redirect_to organisation_path}
+            format.html { redirect_to organisation_path }
             format.js
           end
-        end 
+        end
       end
     end
+  end
+
+  def add_tag_category_tags
+    authorize @user
+    tag_category = TagCategory.find(params.require(:tag_category_id))
+    tag = Tag.find_by(id: params[:tag_id])
+    tag = Tag.create(
+      tag_name: params.require(:tag_name),
+      company: @user.company,
+      tag_category: tag_category) if tag.nil?
+
+    UserTag.where(user: @user, tag_category: tag_category).delete_all
+    UserTag.create(user: @user, tag_category: tag_category, tag: tag)
   end
 
   # Remove user
@@ -153,12 +173,12 @@ class UsersController < ApplicationController
           next if user.company_id != current_user.company_id
           user_row.each do |key, value|
             # begin
-              user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
-              if (user.attributes.key?(key) == true && user.attributes[key]&.downcase != value&.downcase)
-                @updating << {lastname: user.lastname, firstname: user.firstname, former: user.attributes[key], new: value}
-              elsif  (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
-                @updating << {lastname: user.lastname, firstname: user.firstname, former: user_tag.tag.tag_name, new: value}
-              end
+            user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
+            if (user.attributes.key?(key) == true && user.attributes[key]&.downcase != value&.downcase)
+              @updating << { lastname: user.lastname, firstname: user.firstname, former: user.attributes[key], new: value }
+            elsif (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
+              @updating << { lastname: user.lastname, firstname: user.firstname, former: user_tag.tag.tag_name, new: value }
+            end
             # rescue
             # end
           end
@@ -170,7 +190,7 @@ class UsersController < ApplicationController
       @deleting = User.none
       @file = params[:file]
       respond_to do |format|
-        format.html {redirect_back(fallback_location: root_path)}
+        format.html { redirect_back(fallback_location: root_path) }
         format.js
       end
     elsif params[:button] == 'import'
@@ -188,12 +208,17 @@ class UsersController < ApplicationController
   def users_search
     skip_authorization
 
-    @users = User.where(company: current_user.company)
-    @users = @users.manager_or_above if params[:manager].present?
+    @users =
+      if params[:manager].present?
+        User.where(company_id: current_user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin'])
+      else
+        User.where(company_id: current_user.company_id)
+      end
+
     @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
 
     respond_to do |format|
-      format.html{}
+      format.html {}
       format.json {
         @users = @users.limit(5)
       }

@@ -1,6 +1,6 @@
 <div class='organisation__controls'>
   <div class="organisation__title-tags">
-    <h1>Employees (<%= current_user.company.users.count %>)</h1>
+    <h1>Employees (<%= User.where(company_id: current_user.company_id).count %>)</h1>
   </div>
   <% if UserPolicy.new(current_user, nil).create? %>
     <button data-toggle='modal' data-target='#newUser' class="p-3 bkt-bg-dark-grey bkt-white rounded-5px font-weight-700">
@@ -9,7 +9,7 @@
   <% end %>
 </div>
 
-<div class='organisation__users-list' data-fl-scrolls='{"orientation": "horizontal"}'>
+<div class='organisation__users-list' data-fl-scrolls='{"orientation": "horizontal"}' data-controller="employees-list">
 
   <div class="organisation__searchbar">
     <i class="fas fa-search organisation__search-trainings-icon"></i>
@@ -25,16 +25,15 @@
     <button class='btn-reset bkt-blue' onclick='resetAllFilter(this);'>Reset</button>
 
     <% if UserPolicy.new(current_user, nil).create? %>
-      <div class="organisation__control-dropdown" data-handle='create-employee-ctas'>
-        <div class="dropdown">
-          <div class="btn-icon" id="dropdownMenu" data-toggle="dropdown">
-            <i class="fas fa-ellipsis-h"></i>
-          </div>
-          <ul class="dropdown-menu dropdown-menu-right organisation__dropdown-menu" aria-labelledby="dropdownMenu">
-            <!-- <li><a data-toggle='modal' data-target='#newUser'>Create new user</a></li> -->
-            <li class="hidden"><a id='organisation-dropdown__create-user-redirect' data-toggle='modal' data-target='#userCreated'>
-            <li class='hidden'><a id='organisation-dropdown__remove-user-redirect' data-toggle='modal' data-target='#removeUser'>Remove Selected User</li>
-            </a></li>
+    <div class="organisation__control-dropdown d-none" data-employees-list-target="usersListOpt">
+      <div class="dropdown">
+        <div class="btn-icon" id="dropdownMenu" data-toggle="dropdown">
+          <i class="fas fa-ellipsis-h"></i>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-right organisation__dropdown-menu" aria-labelledby="dropdownMenu">
+<!--          <li><a data-toggle='modal' data-target='#newUser'>Create new user</a></li>-->
+          <li class="hidden"><a id='organisation-dropdown__create-user-redirect' data-toggle='modal' data-target='#userCreated'></a></li>
+          <li class='hidden'><a id='organisation-dropdown__remove-user-redirect' data-toggle='modal' data-target='#removeUser'>Remove Selected User</a></li>
             <li><a data-toggle='modal' data-target='#importUsers'>Import Users</a></li>
             <li><a data-toggle='modal' data-target='#exportUsers' id="export-users-modal-link">Export All Users</a></li>
             <li class='hidden'><a id='organisation-dropdown__import-infos-link' data-toggle='modal' data-target='#importUsersInfos'></a></li>

@@ -7,11 +7,40 @@
   </div>
   <div class="modal-body">
 
-    <%= simple_form_for User.new, class:'form-group' do |f| %>
+    <%= simple_form_for User.new,
+                        html: { class: 'form-group',
+                                data: {
+                                  controller: 'profile-tag-category',
+                                  add_tag_category_tags_path: nil,
+                                  create_tag_category_tags_path: create_tag_category_tags_path,
+                                }
+                        } do |f| %>
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control', required:true %>
       <%= f.input :email, label: 'Email:', class:'form-control', input_html: {value: ''} %>
       <%= render 'users/access_level_input', f: f, user: User.new %>
+
+      <%# TODO: UpdatePermission %>
+      <% if current_user.hr_or_above? %>
+        <% @tag_categories.each do |category| %>
+          <div class="mt-3">
+            <label for="<%= category.name.sub(' ', '') %>" class="d-flex">
+              <%= category.name %>:
+            </label>
+            <input
+              type="text"
+              class="width-100 p-1"
+              name="tags[<%= category.name %>]"
+              id="<%= category.name.sub(' ', '') %>"
+              data-profile-tag-category-target="tagCategories"
+              data-tag-category-id="<%= category.id %>"
+              data-selector="#<%= category.name.sub(' ', '') %>"
+              data-tags-available="<%= Tag.where(tag_category_id: category.id).to_json(only: [:id, :tag_name]) %>"
+            >
+          </div>
+        <% end %>
+      <% end %>
+
       <%= f.hidden_field :send_invite, value: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>

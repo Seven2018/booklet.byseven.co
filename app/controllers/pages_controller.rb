@@ -25,7 +25,7 @@ class PagesController < ApplicationController
   def catalogue
     complete_profile
 
-    @contents = policy_scope(Content).order(title: :asc)
+    @contents = policy_scope(Content).where(company_id: current_user.company_id).order(title: :asc)
     @categories = Category.where(company_id: current_user.company_id).order(title: :asc)
 
     @contents = @contents.search(params.dig(:search, :title)) if params.dig(:search, :title).present?
@@ -73,11 +73,7 @@ class PagesController < ApplicationController
   def organisation
     users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
 
-    @tag_categories =
-      TagCategory.includes([:tags])
-                 .where(company: current_user.company)
-                 .where.not(name: 'Job Title')
-                 .order(position: :asc)
+    @tag_categories = TagCategory.distinct.where(company_id: current_user.company_id).joins(:tags)
 
     filter_users(users)
 
@@ -86,6 +82,16 @@ class PagesController < ApplicationController
       format.js
       format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
+  end
+
+  def create_tag_category_tags
+    tag_category_id = params.require(:tag_category_id)
+    tag = Tag.create(
+      tag_name: params.require(:tag_name),
+      company_id: current_user.company_id,
+      tag_category_id: tag_category_id)
+
+    render json: tag, status: :ok
   end
 
   # Display user info card (not used)

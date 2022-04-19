@@ -156,6 +156,7 @@ Rails.application.routes.draw do
   get :home, controller: :pages
   get :catalogue, controller: :pages
   get :organisation, controller: :pages
+  post :create_tag_category_tags, controller: :pages
 
   get :book_contents, controller: :pages # TODO deprecate => replaced by training_draft
   get :book_users, controller: :pages # TODO deprecate => replaced by training_draft
@@ -216,7 +217,8 @@ Rails.application.routes.draw do
     post '/u/check', to: 'users/sessions#check', via: :post
     get '/u/resend_email', to: 'users/sessions#resend_email'
   end
-  resources :users, only: %i[create show update destroy] do
+  resources :users, only: %i[create show update destroy edit] do
+    member { post 'add_tag_category_tags' }
     resource :permissions, only: %i[edit update]
   end
   get :complete_profile, controller: :users

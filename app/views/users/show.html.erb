@@ -21,6 +21,11 @@
           <div class="flex-row-between-centered">
 
             <% if UserPolicy.new(current_user, @user).edit? %>
+              <%= link_to edit_user_path do %>
+                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
+                  <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
+                </div>
+              <% end %>
               <a data-toggle='modal' data-target='#editUser' data-handle='edit-user-cta'>
                 <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
                   <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
