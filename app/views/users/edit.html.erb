@@ -45,8 +45,7 @@
         <%= f.input :social_security, label: 'Social Security', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
         <%= f.input :picture, label: 'Photo URL', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
 
-        <%# TODO: UpdatePermission %>
-        <% if current_user.hr_or_above? %>
+        <% if UserPolicy.new(current_user, @user).edit? %>
           <% @tag_categories.each do |category| %>
             <%= f.input :tags,
                         label: category.name,
