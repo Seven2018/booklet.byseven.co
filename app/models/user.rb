@@ -63,7 +63,7 @@ class User < ApplicationRecord
     case
     when employee?       then assign_attributes EMPLOYEE_PERMISSIONS
     when manager?        then assign_attributes MANAGER_PERMISSIONS
-    when hr?             then assign_attributes MANAGER_PERMISSIONS
+    when hr?             then assign_attributes ADMIN_PERMISSIONS
     when account_owner?  then assign_attributes ADMIN_PERMISSIONS
     when admin?          then assign_attributes ADMIN_PERMISSIONS
     end
