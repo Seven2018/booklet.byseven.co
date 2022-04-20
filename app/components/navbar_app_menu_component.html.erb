@@ -7,11 +7,11 @@
       <div class="flex-row-between-centered flex-wrap p-2rem" style='width: 24rem;'>
 
         <% shortcut_counter = 0 %>
-        <% active_applications.each do |application| %>
+        <% active_applications.each_with_index do |application, index| %>
 
           <% shortcut_counter += 1 %>
 
-          <%= link_to send(application[:link]), class: "flex-column-between-centered height-6rem #{'mb-2rem' unless (shortcut_counter == active_applications.count) && (shortcut_counter % 2 == 1)}" do %>
+          <%= link_to send(application[:link]), class: "flex-column-between-centered height-6rem #{'mb-2rem' unless (shortcut_counter == active_applications.count) && (shortcut_counter % 2 == 1) || (!UserPolicy::Scope.new(@user, nil).can_read && index > shortcut_counter - 2)}" do %>
 
             <span class="iconify <%= application[:color] %> fs-3_5rem mb-1rem" data-icon="<%= application[:icon] %>" style="font-size: 3.4rem"></span>
             <p><%= application[:name] %></p>

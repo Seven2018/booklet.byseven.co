@@ -1,3 +1,7 @@
+##########
+# EMAILS #
+##########
+
 task :interviews_send_reminders => :environment do
 
   reminder_days = [7,3,0].map{|num| Time.zone.today + num.days}
@@ -34,4 +38,15 @@ task :sessions_send_reminders => :environment do
 
   end
 
+end
+
+
+###################
+# CAMPAIGN DRAFTS #
+###################
+
+namespace :campaign_drafts do
+  task :clean_campaign_drafts => :environment do
+    CampaignDraft.where('created_at < ?', 7.days.ago.beginning_of_day).destroy_all
+  end
 end

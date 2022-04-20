@@ -233,7 +233,7 @@
   <!----------->
 
 <% if UserPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal fade" id="editUser" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document" style="border-radius: 20px">
       <%= render 'users/modals/edit', user: @user %>
     </div>
@@ -241,7 +241,7 @@
 <% end %>
 
 <% if PermissionsPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editPermissions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal fade" id="editPermissions" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document" style="border-radius: 20px">
       <%= render 'users/modals/edit_permissions', user: @user %>
     </div>
@@ -249,7 +249,7 @@
 <% end %>
 
 <% if UserPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal fade" id="editPassword" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document" style="border-radius: 20px">
       <%= render 'users/modals/changepassword', user: @user %>
     </div>
