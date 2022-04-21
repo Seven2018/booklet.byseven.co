@@ -22,6 +22,10 @@ module Poro
       @campaign.interviews.where(employee_id: @employee_id).find(&:crossed?)&.decorate
     end
 
+    def interviews
+      [employee_interview, manager_interview, crossed_interview]
+    end
+
     def completed?
       [employee_interview, manager_interview, crossed_interview].compact.all?(&:completed?)
     end
