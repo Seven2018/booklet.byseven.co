@@ -16,12 +16,12 @@ export default class extends Controller {
       this.selectedUsers.splice(idx, 1)
     } else this.selectedUsers.push(event.target.id)
 
-    if (this.selectedUsers.length) {
-      this.usersListOptTarget.classList.remove('d-none')
-      this.usersListOptTarget.classList.add('d-block')
-    } else {
-      this.usersListOptTarget.classList.remove('d-block')
-      this.usersListOptTarget.classList.add('d-none')
-    }
+    // if (this.selectedUsers.length) {
+    //   this.usersListOptTarget.classList.remove('d-none')
+    //   this.usersListOptTarget.classList.add('d-block')
+    // } else {
+    //   this.usersListOptTarget.classList.remove('d-block')
+    //   this.usersListOptTarget.classList.add('d-none')
+    // }
   }
 }

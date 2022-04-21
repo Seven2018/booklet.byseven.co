@@ -1,19 +1,13 @@
 class TagCategoryPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
-
   def create?
-    user.hr_or_above?
+    user.can_create_contents
   end
 
   def update_tag_category?
-    user.hr_or_above?
+    create?
   end
 
   def destroy?
-    user.hr_or_above?
+    create?
   end
 end

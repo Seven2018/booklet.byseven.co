@@ -108,6 +108,11 @@ class InterviewsController < ApplicationController
     interviewee = interview.employee
     campaign = interview.campaign
 
+    unless interview.fully_answered?
+      flash[:error] = 'Interview not completed'
+      raise
+    end
+
     interview.complete!
     interview.lock!
 

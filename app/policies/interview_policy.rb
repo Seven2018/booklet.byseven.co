@@ -1,21 +1,16 @@
 class InterviewPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.manager_or_above? && user.company_id.present?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.can_create_campaigns
+
+      scope.all
     end
   end
 
-  def create?
-    # used in campaign_drafts TODO non regression test
-    user.manager_or_above?
-  end
-
   def show?
-    return true if user.hr_or_above?
+    return true if user.can_create_campaigns
 
     case
     when record.employee?
@@ -57,6 +52,6 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def unlock_interview?
-    user.hr_or_above?
+    user.can_create_campaigns
   end
 end

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
 
   require 'sidekiq/web'
-  authenticate :user, ->(u) { u.super_admin? } do
+  authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
   root to: 'pages#home'
@@ -219,6 +219,7 @@ Rails.application.routes.draw do
   end
   resources :users, only: %i[create show update destroy edit] do
     member { post 'add_tag_category_tags' }
+    resource :permissions, only: %i[edit update]
   end
   get :complete_profile, controller: :users
   get :link_to_company, controller: :users

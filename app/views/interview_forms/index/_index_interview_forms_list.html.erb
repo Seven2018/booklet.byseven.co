@@ -23,31 +23,31 @@
       </div>
     <% end %>
 
-    <div class="cursor-pointer z-index-5 pr-1rem" onclick="openContentMenu(this);">
-      <% if current_user.manager_or_above? %>
+    <% if CampaignPolicy.new(current_user, nil).create? %>
+      <div class="cursor-pointer z-index-5 pr-1rem" onclick="openContentMenu(this);">
         <i class="fas fa-ellipsis-v bkt-light-grey"></i>
-      <% end %>
-    </div>
+      </div>
 
-    <div
-      data-actions="interview-form"
-      class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
-      style='right: 0; top: 6rem;'
-    >
-      <%= link_to 'Duplicate', duplicate_interview_form_path(template),
-        class: 'px-3 py-2 bkt-light-grey-hover w-100'
-      %>
-      <% unless Campaign.where(interview_form: template).exists? %>
-        <%= link_to 'Delete', interview_form_path(template),
-          method: :delete,
-          remote: true,
-          data: {
-            confirm: 'Are you sure ?'
-          },
+      <div
+        data-actions="interview-form"
+        class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
+        style='right: 0; top: 6rem;'
+      >
+        <%= link_to 'Duplicate', duplicate_interview_form_path(template),
           class: 'px-3 py-2 bkt-light-grey-hover w-100'
         %>
-      <% end %>
-    </div>
+        <% unless Campaign.where(interview_form: template).exists? %>
+          <%= link_to 'Delete', interview_form_path(template),
+            method: :delete,
+            remote: true,
+            data: {
+              confirm: 'Are you sure ?'
+            },
+            class: 'px-3 py-2 bkt-light-grey-hover w-100'
+          %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
 <% end %>

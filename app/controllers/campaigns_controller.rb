@@ -1,6 +1,6 @@
 class CampaignsController < ApplicationController
   include InterviewUsersFilter
-  before_action :set_campaign, only: [:show, :edit, :send_notification_email, :destroy]
+  before_action :set_campaign, only: %i[show edit send_notification_email destroy]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -15,7 +15,7 @@ class CampaignsController < ApplicationController
 
     filter_campaigns(campaigns)
 
-    redirect_to my_interviews_path unless current_user.hr_or_above?
+    redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
 
     respond_to do |format|
       format.html
@@ -46,7 +46,7 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc).where \
+    @campaigns = Campaign.where(company: current_user.company).order(created_at: :desc).where \
       id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 

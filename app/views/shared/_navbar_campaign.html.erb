@@ -5,7 +5,7 @@
       <span class="iconify fs-2_4rem bkt-blue" data-icon="bxs:home"></span>
     </a>
 
-    <% if user_signed_in? %>
+    <% if CampaignPolicy.new(current_user, nil).my_interviews? %>
       <%= link_to my_interviews_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_interviews %>
@@ -15,7 +15,7 @@
       <% end %>
     <% end %>
 
-    <% if current_user.manager_or_above? %>
+    <% if CampaignPolicy.new(current_user, nil).my_team_interviews? %>
       <%= link_to my_team_interviews_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_team_interviews %>
@@ -25,13 +25,14 @@
       <% end %>
     <% end %>
 
-    <% if current_user.hr_or_above? %>
+    <% if Navigation::InterviewsAdminLink.new(user: current_user).should_render? %>
       <button class="left-buttons">
-        <%= link_to campaigns_path do %>
-          <div class="navbar-buttons <%= 'navbar-buttons--active' if @show_navbar_admin.present? %> ">
-            <h4>Create</h4>
-          </div>
-        <% end %>
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if %i[campaigns_index interview_forms_index reports_index].include?(@controller_action) %>">
+          <h4>
+            <%= render_component Navigation::InterviewsAdminLink.new(user: current_user) %>
+          </h4>
+        </div>
       </button>
     <% end %>
 
@@ -67,28 +68,34 @@
   </div>
 <% end %>
 
-<% if @show_navbar_admin.present? %>
+<% if @show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render? %>
   <div class="navbar-admin  navbar-admin-campaigns">
     <% klass = 'navbar-admin__button' %>
     <% active_klass = "navbar-admin__button--active" %>
 
-    <%= link_to campaigns_path,
-      class: "#{klass} #{active_klass if @controller_action == :campaigns_index}" do %>
-      <h4>Campaigns</h4>
+    <% if CampaignPolicy.new(current_user, nil).create? %>
+      <%= link_to campaigns_path,
+        class: "#{klass} #{active_klass if @controller_action == :campaigns_index}" do %>
+        <h4>Campaigns</h4>
+      <% end %>
     <% end %>
 
-    <%= link_to interview_forms_path,
-      class: "#{klass} #{active_klass if @controller_action == :interview_forms_index}" do %>
-      <h4>Templates</h4>
+    <% if InterviewFormPolicy.new(current_user, nil).create? %>
+      <%= link_to interview_forms_path,
+        class: "#{klass} #{active_klass if @controller_action == :interview_forms_index}" do %>
+        <h4>Templates</h4>
+      <% end %>
     <% end %>
 
-    <%= link_to interviews_reports_path,
-      class: "#{klass} #{
-        active_klass if
-          @controller_action == :reports_index ||
-          @controller_action == :reports_new
-      }" do %>
-      <h4>Report</h4>
+    <% if InterviewReportPolicy.new(current_user, nil).create? %>
+      <%= link_to interviews_reports_path,
+        class: "#{klass} #{
+          active_klass if
+            @controller_action == :reports_index ||
+            @controller_action == :reports_new
+        }" do %>
+        <h4>Report</h4>
+      <% end %>
     <% end %>
   </div>
 <% end %>

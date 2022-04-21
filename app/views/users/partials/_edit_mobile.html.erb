@@ -79,50 +79,16 @@
       <%= f.input :firstname, label: 'First Name:', label_html: {class: 'bkt-light-grey'}, class: 'form-control', required: true, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :lastname, label: 'Last Name:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :email, label: 'Email:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
-      <% if @user.admin? %>
-        <%= f.input :access_level, label: 'Access Level:', label_html: {class: 'bkt-light-grey'},  collection: ['Super Admin', 'Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
-      <% elsif @user.account_owner? %>
-        <%= f.input :access_level, label: 'Access Level:', label_html: {class: 'bkt-light-grey'},  collection: ['Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
-      <% elsif @user.hr? %>
-        <%= f.input :access_level, label: 'Access Level:', label_html: {class: 'bkt-light-grey'},  collection: ['HR', 'Manager', 'Employee'], include_blank: false, selected: @user.access_level.split('-').first, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
-      <% end %>
-      <% if @user.admin? %>
-        <%= f.input :company, collection: Company.all, include_blank: false, label: 'Company:', label_html: {class: 'bkt-light-grey'}, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}}  %>
-      <% end %>
-      <%= f.input :manager_id, collection: User.where(company_id: @user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin']).where.not(id: @user.id).order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: {class: 'bkt-light-grey'}, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}}  %>
+      <%= f.input :manager_id, collection: User.where(company: @user.company).manager_or_above.order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: {class: 'bkt-light-grey'}, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}}  %>
       <%= f.input :phone_number, label: 'Phone:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :linkedin, label: 'Linkedin (url):', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <%= f.input :birth_date, as: :date, label: 'Birth date:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
                   end_year: Date.today.year - 12, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
-      <% if @user.hr_or_above? %>
+      <% if PermissionsPolicy.new(current_user, @user).edit? %>
         <%= f.input :hire_date, as: :date, label: 'Hire date:', label_html: {class: 'bkt-light-grey'},  class: 'form-control', start_year: Date.today.year - 70,
                     end_year: Date.today.year, disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
       <% end %>
       <%= f.input :picture, label: 'Photo URL', label_html: {class: 'bkt-light-grey'},  class: 'form-control', disabled: true, input_html: {data: {profile_activity_target: 'profileInput'}} %>
-      <%# if @user.hr_or_above? %>
-<!--        <div class="new_user_tags">-->
-          <%# checked_tags = Tag.joins(:user_tags).where(user_tags: { user_id: @user.id }).map(&:id) %>
-          <%# TagCategory.where(company_id: @user.company_id).each do |category| %>
-            <%# if category.tags.present? %>
-<!--              <div class="organisation-filter-block-user">-->
-<!--                <div class="organisation-filter-block-title-user-show">-->
-<!--                  <div>-->
-<!--                    <p><b><%#= category.name.capitalize %></b></p>-->
-<!--                    <div class="organisation-filter-block-title-buttons">-->
-<!--                      <div class="btn-icon" onclick='toggleTagCategoryDropdownUser(this);'>-->
-<!--                        <i class="fas fa-angle-down" data-rotated='0'></i>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="organisation-filter-block-checkboxes-user">-->
-                  <%#= f.input_field :tags, collection: Tag.where(tag_category_id: category.id).order(tag_name: :asc), label_method: lambda { |tag| "#{tag.tag_name}" }, label: false, as: :check_boxes, checked: checked_tags %>
-<!--                </div>-->
-<!--              </div>-->
-            <%# end %>
-          <%# end %>
-<!--        </div>-->
-      <%# end %>
       <div class="d-flex-row-center-centered mt-5">
         <%= button_tag type: 'submit', class: 'bkt-bg-dark-grey p-4 bkt-white rounded-5px  d-none m-auto', disabled: true, data: {profile_activity_target: 'profileInput saveButton'} do %>
           Save changes

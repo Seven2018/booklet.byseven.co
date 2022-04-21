@@ -1,10 +1,18 @@
-<div class="flex-column-start-centered width-100 bkt-bg-light-grey2 <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %> <%= 'container-admin-height' if @show_navbar_admin %> hide-scrollbar" style='min-height: calc(100vh - 7.5rem);'
-               data-scrollbar-target='container'
-               data-action='scroll->scrollbar#showScrollbar'>
+<div class="flex-column-start-centered width-100 bkt-bg-light-grey2
+  <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
+  <%=
+    'container-admin-height' if
+      (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
+      (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
+  %>
+  hide-scrollbar"
+  style='min-height: calc(100vh - 7.5rem);'
+  data-scrollbar-target='container'
+  data-action='scroll->scrollbar#showScrollbar'>
 
   <div class="width-90 from_medium__width-80 pt-5rem mb-3rem" style='max-width: 950px;'>
-    <h1 class='mb-2rem'>Welcome on Booklet, <%= "#{current_user.firstname}" %> !</h1>
-    <strong><p>Get instant access to your trainings, and all your interviews from here.</p></strong>
+    <h1 class='fs-2_4rem font-weight-700 mb-2rem'>Welcome on Booklet, <%= "#{current_user.firstname}" %> !</h1>
+    <p class="font-weight-600">Get instant access to your trainings, and all your interviews from here.</p>
   </div>
 
   <% if current_user.company.applications_to_sym.include? :interviews %>
@@ -63,7 +71,7 @@
 
     <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_interviews_path, title: 'My interviews', nbr: @my_interviews.count) %>
 
-    <% if current_user.manager_or_above? %>
+    <% if CampaignPolicy.new(current_user, nil).my_team_interviews? %>
 
       <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
         <%= link_to '', my_team_interviews_path, class: 'stretched-link' %>
@@ -195,7 +203,7 @@
 
     <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_trainings_path, title: 'My trainings', nbr: @my_trainings.count) %>
 
-    <% if current_user.manager_or_above? %>
+    <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
 
       <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
         <%= link_to '', my_team_trainings_path, class: 'stretched-link' %>

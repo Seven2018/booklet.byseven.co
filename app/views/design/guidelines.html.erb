@@ -1,8 +1,8 @@
 <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
 <div class=m-2>
-  <h1 class="my-5">Guidelines</h1>
+  <h1 class="fs-2_4rem font-weight-700 my-5">Guidelines</h1>
 
-  <h1 class="my-5">Responsivenes</h1>
+  <h1 class="fs-2_4rem font-weight-700 my-5">Responsivenes</h1>
 
   <div class="bkt-bg-orange height-5rem width-5rem m-sm-5 d-sm-none text-primary">text</div>
   <div class="bkt-bg-dark-grey height-5rem width-5rem m-sm-5 d-none d-sm-block text-white text-sm-primary">text</div>
@@ -287,6 +287,11 @@
 
   <h3 class="my-2">form with bootstrap</h3>
 
+  <div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+    <label class="custom-control-label cursor-pointer" for="customSwitch1">Toggle this switch element</label>
+  </div>
+
   <div
     class='d-flex justify-content-start align-items-center pos-rel p-2'
   >
@@ -342,6 +347,11 @@
 
 
   <h3 class="my-2">form without bootstrap</h3>
+
+  <div class="">Not remembering initial state</div>
+  <%= render_component ToggleSwitch.new(name: :toggle88, checked: false) %>
+  <div class="">Remembering initial state</div>
+  <%= render_component ToggleSwitch.new(name: :toggle99, checked: true, remember_initial_state: true) %>
 
   <h4 class="my-2">title</h4>
 

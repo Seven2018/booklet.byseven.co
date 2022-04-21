@@ -69,5 +69,4 @@ class Trainings::ReportsController < ApplicationController
     params.require(:training_report)
           .permit(:mode, :start_time, :end_time, :company_id, :creator_id)
   end
-
 end

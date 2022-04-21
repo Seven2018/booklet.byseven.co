@@ -51,7 +51,7 @@ class TrainingDraft::BaseController < ApplicationController
 
   def authorize_training_draft
     raise Pundit::NotAuthorizedError unless
-      InterviewPolicy.new(current_user, Training.new).create?
+      TrainingDraftPolicy.new(current_user).update?
   end
 
   def training_draft

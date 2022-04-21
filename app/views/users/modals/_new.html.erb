@@ -1,11 +1,11 @@
-<div class="modal-content">
-  <div class="modal-header">
-    <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Add a new user</h3>
-      <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
-    </div>
+<div class="modal-content action-modal__content">
+  <div class="modal-header action-modal__header">
+    <h3 class="modal-title action-modal__title" id="myModalLabel">Add a new user</h3>
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body action-modal__body">
 
     <%= simple_form_for User.new,
                         html: { class: 'form-group',
@@ -15,24 +15,16 @@
                                   create_tag_category_tags_path: create_tag_category_tags_path,
                                 }
                         } do |f| %>
+
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control', required:true %>
       <%= f.input :email, label: 'Email:', class:'form-control', input_html: {value: ''} %>
-      <%# f.input :password, label: 'Password:', class:'form-control', input_html: {value: ''} %>
-      <% if current_user.admin? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Super Admin', 'Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false %>
-      <% elsif current_user.account_owner? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['Account Owner', 'HR', 'Manager', 'Employee'], include_blank: false %>
-      <% elsif current_user.hr? %>
-        <%= f.input :access_level, label: 'Access Level:', collection: ['HR', 'Manager', 'Employee'], include_blank: false %>
-      <% end %>
-      <% if current_user.admin? %>
-        <%= f.input :company, collection: Company.all, include_blank: false, label: 'Company:' %>
-      <% end %>
+      <%= render 'users/access_level_input', f: f, user: User.new %>
 
-      <%# TODO: UpdatePermission %>
-      <% if current_user.hr_or_above? %>
+      <% if UserPolicy.new(current_user, nil).create? %>
+
         <% @tag_categories.each do |category| %>
+
           <div class="mt-3">
             <label for="<%= category.name.sub(' ', '') %>" class="d-flex">
               <%= category.name %>:
@@ -48,7 +40,9 @@
               data-tags-available="<%= Tag.where(tag_category_id: category.id).to_json(only: [:id, :tag_name]) %>"
             >
           </div>
+
         <% end %>
+
       <% end %>
 
       <%= f.hidden_field :send_invite, value: false %>
@@ -71,25 +65,6 @@
 <!---------------->
 
 <script>
-
-  // function toggleTagCategoryDropdownUser(element) {
-  //   caret = element.querySelector('i')
-  //   angle = parseInt(caret.getAttribute('data-rotated'), 10)
-  //   caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.setAttribute('data-rotated', (angle + 180).toString())
-  //   block = element.parentNode.parentNode.parentNode.parentNode;
-  //   if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
-  //     block.style.maxHeight = '10000px';
-  //     block.classList.add('active');
-  //   } else {
-  //     block.style.maxHeight = '61px';
-  //     block.classList.remove('active');
-  //   }
-  // }
 
   function sendInvitation(element, send_invite) {
     form = element.closest('.modal-body').querySelector('form')

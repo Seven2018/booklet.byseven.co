@@ -5,7 +5,7 @@
       <span class="iconify fs-2_4rem bkt-orange" data-icon="bxs:home"></span>
     </a>
 
-    <% if user_signed_in? %>
+    <% if TrainingPolicy.new(current_user, nil).my_trainings? %>
       <%= link_to my_trainings_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :trainings_my_trainings %>
@@ -15,33 +15,33 @@
       <% end %>
     <% end %>
     
-    <% if current_user.manager_or_above? %>
+    <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
       <%= link_to my_team_trainings_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if [:trainings_my_team_trainings, :trainings_my_team_trainings_user_details].include?(@controller_action) %>
-          ">
+          <%= 'navbar-buttons--active' if [:trainings_my_team_trainings, :trainings_my_team_trainings_user_details].include?(@controller_action) %>">
           <h4 title='My team trainings'>My team trainings</h4>
         </div>
       <% end %>
     <% end %>
 
-    <% if user_signed_in? %>
+    <% if ContentPolicy::Scope.new(current_user, nil).can_read %>
       <%= link_to catalogue_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :pages_catalogue %>
-          ">
+        ">
           <h4 title='Catalogue'>Catalogue</h4>
         </div>
       <% end %>
     <% end %>
 
-    <% if current_user.hr_or_above? %>
+    <% if Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
       <button class="left-buttons">
-        <%= link_to trainings_path do %>
-          <div class="navbar-buttons <%= 'navbar-buttons--active' if @show_navbar_admin.present? %>">
-            <h4>Create</h4>
-          </div>
-        <% end %>
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if  %i[trainings_index reports_index].include?(@controller_action) %>">
+          <h4>
+            <%= render_component Navigation::TrainingsAdminLink.new(user: current_user) %>
+          </h4>
+        </div>
       </button>
     <% end %>
 
@@ -79,22 +79,26 @@
 <% end %>
 
 
-<% if @show_navbar_admin.present? %>
+<% if @show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
   <div class="navbar-admin navbar-admin-trainings">
     <% klass = 'navbar-admin__button' %>
     <% active_klass = "navbar-admin__button--active" %>
 
-    <%= link_to trainings_path,
-      class: "#{klass} #{active_klass if @controller_action == :trainings_index}" do %>
-      <h4>Trainings</h4>
+    <% if TrainingPolicy.new(current_user, nil).create? %>
+      <%= link_to trainings_path,
+        class: "#{klass} #{active_klass if @controller_action == :trainings_index}" do %>
+        <h4>Trainings</h4>
+      <% end %>
     <% end %>
 
-    <%= link_to trainings_reports_path,
-      class: "#{klass} #{
-        active_klass if
-          @controller_action == :reports_index
-      }" do %>
-      <h4>Report</h4>
+    <% if TrainingReportPolicy.new(current_user, nil).create? %>
+      <%= link_to trainings_reports_path,
+        class: "#{klass} #{
+          active_klass if
+            @controller_action == :reports_index
+        }" do %>
+        <h4>Report</h4>
+      <% end %>
     <% end %>
   </div>
 <% end %>

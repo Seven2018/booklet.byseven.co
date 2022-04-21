@@ -1,0 +1,8 @@
+<% if UserPolicy.new(current_user, nil).create? %>
+  <%= f.input :access_level_int,
+    label: 'Access Level:',
+    collection: User::ACCESS_LEVEL_LABELS.slice(:employee, :manager, :hr).invert,
+    include_blank: false,
+    selected: user.access_level_int
+  %>
+<% end %>

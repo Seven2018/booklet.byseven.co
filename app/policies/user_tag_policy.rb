@@ -1,15 +1,14 @@
 class UserTagPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.employee_or_above?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.can_edit_employees
+
+      scope.all
     end
   end
 
   def create?
-    user.hr_or_above?
+    user.can_edit_employees
   end
 end

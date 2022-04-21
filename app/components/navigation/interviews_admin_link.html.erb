@@ -1,0 +1,7 @@
+<% if CampaignPolicy.new(@user, nil).create? %>
+  <%= link_to admin_link_text, campaigns_path %>
+<% elsif InterviewFormPolicy.new(@user, nil).create? %>
+  <%= link_to admin_link_text, interview_forms_path %>
+<% elsif InterviewReportPolicy.new(@user, nil).create? %>
+  <%= link_to admin_link_text, interviews_reports_path %>
+<% end %>
