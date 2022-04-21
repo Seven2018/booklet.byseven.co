@@ -20,7 +20,7 @@
   </div>
 
   <div class="flex-row-between-centered">
-    <% if current_user.hr_or_above? && !params[:content_access].present? %>
+    <% if CampaignPolicy.new(current_user, nil).create? && !params[:content_access].present? %>
 
       <% if first_question %>
         <a class='px-1' disabled style='cursor: default;'>

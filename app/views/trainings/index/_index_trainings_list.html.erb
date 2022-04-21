@@ -20,26 +20,26 @@
     <% end %>
     <%= link_to '', training_path(training), class: 'stretched-link' %>
 
-    <div class="cursor-pointer z-index-5" onclick="openContentMenu(this);">
-      <% if current_user.manager_or_above? %>
-        <i class="fas fa-ellipsis-v"></i>
-      <% end %>
-    </div>
+    <% if TrainingPolicy.new(current_user, training).destroy? %>
+      <div class="cursor-pointer z-index-5" onclick="openContentMenu(this);">
+          <i class="fas fa-ellipsis-v"></i>
+      </div>
 
-    <div
-      data-actions="interview-form"
-      class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
-      style='right: 0; top: 4rem;'
-    >
-      <%= link_to 'Delete', training_path(training),
-        method: :delete,
-        remote: true,
-        class: 'px-3 py-2 bkt-light-grey-hover w-100',
-        data: {
-          confirm: 'Are you sure ?'
-        }
-      %>
-    </div>
+      <div
+        data-actions="interview-form"
+        class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
+        style='right: 0; top: 4rem;'
+      >
+        <%= link_to 'Delete', training_path(training),
+          method: :delete,
+          remote: true,
+          class: 'px-3 py-2 bkt-light-grey-hover w-100',
+          data: {
+            confirm: 'Are you sure ?'
+          }
+        %>
+      </div>
+    <% end %>
   </div>
 
 <% end %>

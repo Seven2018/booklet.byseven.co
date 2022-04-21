@@ -1,6 +1,7 @@
 require 'csv'
 
 class User < ApplicationRecord
+  include Users::Permissions
   include Users::Access
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable,
@@ -27,9 +28,25 @@ class User < ApplicationRecord
   has_many :training_reports, foreign_key: 'creator_id'
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
 
+  before_create :set_initial_permissions!
+
   validates :email, presence: true
 
   paginates_per 50
+
+  enum access_level_int: {
+    employee:       0,
+    # manager_light: 10, # deprecated
+    # hr_light:      20, # deprecated
+    manager:       30,
+    hr:            40,
+    account_owner: 50,
+    admin:         60
+  }
+
+  scope :employee_or_above, -> {      where(access_level_int: [:account_owner, :hr, :manager, :employee] ) }
+  scope :manager_or_above, -> {       where(access_level_int: [:account_owner, :hr, :manager]            ) }
+  scope :hr_or_above, -> {            where(access_level_int: [:account_owner, :hr]                      ) }
 
   include PgSearch::Model
   pg_search_scope :search_users,
@@ -107,7 +124,7 @@ class User < ApplicationRecord
     rows.each do |row_h|
       manager_email = row_h['manager']&.downcase
       row_h.delete('manager')
-      user_attr = "firstname,lastname,email,access_level,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
+      user_attr = "firstname,lastname,email,access_level_int,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
       tag_categories_to_create_user = row_h.keys - user_attr - ['manager']
       tag_categories_to_create_user_h = {}
       tag_categories_to_create_user.each do |tag|
@@ -122,7 +139,7 @@ class User < ApplicationRecord
         manager = User.find_by(email: manager_email)
 
         unless manager.present?
-          manager = User.new(email: manager_email, company_id: company_id, access_level: 'Manager')
+          manager = User.new(email: manager_email, company_id: company_id, access_level_int: :manager)
           manager.save(validate: false)
         end
       else
@@ -138,7 +155,7 @@ class User < ApplicationRecord
         user = User.new(row_h)
         user.lastname = user.lastname.upcase
         user.firstname = user.firstname.capitalize
-        user.access_level = 'Employee' unless ['HR', 'Manager', 'Employee'].include?(row_h['access_level'])
+        user.access_level_int = :employee unless ['HR', 'Manager', 'Employee'].include?(row_h['access_level_int'])
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id

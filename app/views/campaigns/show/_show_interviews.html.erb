@@ -3,7 +3,7 @@
   <% employees.each do |employee| %>
     <% interviews = campaign.interviews_for(employee.id) %>
     <% employee_view = current_user == employee %>
-    <% manager_view = current_user == selected_interviewer || current_user.hr_or_above? %>
+    <% manager_view = current_user == selected_interviewer || CampaignPolicy.new(current_user, nil).create? %>
     <% next unless employee_view || manager_view %>
     <% interview_form = campaign.interviews.where(employee_id: employee).first.interview_form %>
 
@@ -25,7 +25,7 @@
                 campaign.interviews.find_by(employee_id: employee.id, label: 'Employee', completed: false).nil? %>
                 <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
               <% end %>
-              <% if current_user.hr_or_above? %>
+              <% if InterviewPolicy.new(current_user, nil).unlock_interview? %>
                 <% interviews.select{|x| x&.locked_at&.present?}.each do |interview| %>
                   <%= link_to "Unlock #{interview.label} interview", unlock_interview_path(interview_id: interview.id, interviewer_id: @selected_interviewer&.id), remote: true %>
                 <% end %>

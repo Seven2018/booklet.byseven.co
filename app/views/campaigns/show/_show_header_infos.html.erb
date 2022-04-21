@@ -20,7 +20,7 @@
                               [selected_interviewer.fullname, selected_interviewer.id] : ['All', ''],
                   label: false,
                   include_blank: false,
-                  disabled: !current_user.hr_or_above?,
+                  disabled: !CampaignPolicy.new(current_user, nil).create?,
                   input_html: {
                     onchange: 'submitForm(this);'
                   } %>

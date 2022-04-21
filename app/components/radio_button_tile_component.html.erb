@@ -21,7 +21,7 @@
     <div class="m-1"></div>
     <div class="font-weight-600 fs-1_4rem text-center"><%= @title %></div>
   </div>
-  <div class="text-center fs-1_2rem"><%= @subtitle %></div>
+  <div class="text-center fs-1_2rem"><%= @subtitle.html_safe %></div>
   <%= radio_button_tag(
         @model,
         @name,

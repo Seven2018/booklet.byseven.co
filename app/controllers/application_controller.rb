@@ -85,18 +85,13 @@ class ApplicationController < ActionController::Base
       root_path
     end
   end
-  # def set_time_zone
-  #   Time.zone = current_user.time_zone
-  # end
 
   def authenticate_admin!
     redirect_to new_user_session_path unless current_user&.admin?
   end
 
   def redirect_unless_admin
-    # once setup_sidekiq branch merged
-    # redirect_to root_path, notice: 'Espace réservé aux admins' unless true_user&.admin || current_user&.admin
-    redirect_to root_path, notice: 'Espace réservé aux admins' unless current_user&.admin
+    redirect_to root_path, notice: 'Espace réservé aux admins' unless current_user&.admin?
   end
 
   def ensure_company
@@ -111,7 +106,7 @@ class ApplicationController < ActionController::Base
   end
 
   def show_navbar_admin
-    @show_navbar_admin = true if current_user&.hr_or_above?
+    @show_navbar_admin = true
   end
 
   def show_navbar_home
@@ -123,6 +118,7 @@ class ApplicationController < ActionController::Base
   end
 
   def show_navbar_campaign
+    # TODO rename _campaign => _interviews everywhere it's about the interviews application
     @show_navbar_campaign = true
   end
 end

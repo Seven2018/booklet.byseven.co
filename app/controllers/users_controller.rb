@@ -106,14 +106,12 @@ class UsersController < ApplicationController
     if params[:type] == 'address'
       address = params[:user][:address].gsub(address.split(/\d+/)[-2], address.split(/\d+/)[-2][0..-2] + "\n")
       @user.update(address: address)
-    elsif params[:access_level].present?
-      @user.update(access_level: params[:access_level])
     else
       @user.update(user_params)
     end
 
     if @user.save
-      if params[:access_level].present?
+      if params[:access_level_int].present?
         if params[:last_page] == "catalogue"
           redirect_to catalogue_path
         elsif ['campaigns', 'interview_forms'].include?(params[:last_page].split('-').first)
@@ -156,7 +154,8 @@ class UsersController < ApplicationController
 
   def import_users
     skip_authorization
-    return unless current_user.hr_or_above?
+    return unless UserPolicy.new(current_user, nil).create?
+
     if params[:button] == 'summary'
       @errors = []
       @creating = []
@@ -237,6 +236,9 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:firstname, :lastname, :email, :access_level, :manager_id, :birth_date, :hire_date, :termination_date, :address, :phone_number, :social_security, :gender, :picture, :linkedin, :job_title, :company_id, :reset_password_token, :password, :password_confirmation)
+    params.require(:user).permit(:firstname, :lastname, :email, :access_level_int,
+      :manager_id, :birth_date, :hire_date, :termination_date, :address,
+      :phone_number, :social_security, :gender, :picture, :linkedin, :job_title,
+      :company_id, :reset_password_token, :password, :password_confirmation)
   end
 end

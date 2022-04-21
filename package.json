@@ -2,6 +2,8 @@
   "name": "booklet_byseven_co",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@popperjs/core": "^2.10.1",
@@ -9,7 +11,9 @@
     "@rails/actiontext": "^6.0.0",
     "@rails/activestorage": "^6.0.0-alpha",
     "@rails/ujs": "^6.0.0-alpha",
-    "@rails/webpacker": "4.2.2",
+    "@rails/webpacker": "^5.4.3",
+    "autoprefixer": "^10.4.4",
+    "babel-loader": "^8.2.4",
     "@tarekraafat/autocomplete.js": "^10.2.7",
     "bootstrap": "^5.1.1",
     "choices.js": "^9.0.1",
@@ -18,16 +22,14 @@
     "floating-scroll": "^3.2.0",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.0",
+    "postcss": "^8.4.12",
     "stimulus-use": "^0.50.0-2",
+    "tailwindcss": "^3.0.23",
     "trix": "^1.0.0",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.2",
-    "babel-loader": "^8.2.2",
-    "webpack": "^4.42.0",
     "webpack-dev-server": "^3.10.1"
   }
 }

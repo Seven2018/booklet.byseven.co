@@ -1,8 +1,7 @@
 class PagesController < ApplicationController
   before_action :check_company_presence
   before_action :show_navbar_training
-  before_action :show_navbar_admin, only: %i[organisation]
-  before_action :show_navbar_home, only: [:home, :organisation]
+  before_action :show_navbar_home, only: %i[home organisation]
 
   def home
     @my_interviews = Interview.joins(:campaign)
@@ -25,7 +24,7 @@ class PagesController < ApplicationController
   def catalogue
     complete_profile
 
-    @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    @contents = policy_scope(Content).where(company_id: current_user.company_id).order(title: :asc)
     @categories = Category.where(company_id: current_user.company_id).order(title: :asc)
 
     @contents = @contents.search(params.dig(:search, :title)) if params.dig(:search, :title).present?
@@ -78,7 +77,7 @@ class PagesController < ApplicationController
     filter_users(users)
 
     respond_to do |format|
-      format.html {organisation_path}
+      format.html { organisation_path }
       format.js
       format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
@@ -181,8 +180,10 @@ class PagesController < ApplicationController
   end
 
   def book_dates
+    raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+      CampaignPolicy.new(current_user, nil).create?
+
     book_data
-    raise "Access denied" unless current_user.hr_or_above?
   end
 
   private
@@ -217,9 +218,11 @@ class PagesController < ApplicationController
   end
 
   # TEMP #
+  # TODO cleanup
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
-    if current_user.hr_or_above?
+
+    if UserPolicy.new(current_user, nil).edit?
 
       @tag_categories = TagCategory.where(company_id: current_user.company_id)
       # If a name is entered in the search bar

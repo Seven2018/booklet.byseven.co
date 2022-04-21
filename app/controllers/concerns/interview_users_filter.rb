@@ -11,7 +11,7 @@ module InterviewUsersFilter
     @selected_interviewer =
       if params_interviewer_id.present?
         User.find(params_interviewer_id)
-      elsif !current_user.hr_or_above? && @campaign.interviewers.uniq.include?(current_user)
+      elsif !CampaignPolicy.new(current_user, nil).create? && @campaign.interviewers.uniq.include?(current_user)
         current_user
       end
 
