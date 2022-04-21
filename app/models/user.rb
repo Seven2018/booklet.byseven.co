@@ -59,16 +59,6 @@ class User < ApplicationRecord
     },
     ignoring: :accents
 
-  def set_initial_permissions!
-    case
-    when employee?       then assign_attributes EMPLOYEE_PERMISSIONS
-    when manager?        then assign_attributes MANAGER_PERMISSIONS
-    when hr?             then assign_attributes ADMIN_PERMISSIONS
-    when account_owner?  then assign_attributes ADMIN_PERMISSIONS
-    when admin?          then assign_attributes ADMIN_PERMISSIONS
-    end
-  end
-
   def campaign_draft
     campaign_drafts.processing.last || CampaignDraft.create(user: self)
   end
