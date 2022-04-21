@@ -2,6 +2,10 @@
 //ACTION MODAL//
 ////////////////
 
+.action-modal.show {
+  display: flex !important;
+}
+
 .action-modal__content {
   height: auto !important;
   border-radius: 1rem !important;
@@ -18,6 +22,9 @@
 }
 
 .action-modal__close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0;
 }
 

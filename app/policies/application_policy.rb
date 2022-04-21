@@ -43,6 +43,9 @@ class ApplicationPolicy
     end
 
     def resolve
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.company_id.present?
+
       scope.all
     end
   end

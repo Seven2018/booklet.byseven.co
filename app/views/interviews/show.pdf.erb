@@ -1,6 +1,6 @@
 <div id="container-pdf">
 
-  <% visibility = current_user.manager_or_above? ? ['all', 'manager'] : ['all', 'employee'] %>
+  <% visibility = InterviewPolicy.new(current_user, @interview).show? ? ['all', 'manager'] : ['all', 'employee'] %>
   <% interview_form = @interview.interview_form %>
   <% fully_answered = @interview.fully_answered? %>
   <% employee = @interview.employee %>

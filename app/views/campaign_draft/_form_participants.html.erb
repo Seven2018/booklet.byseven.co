@@ -118,38 +118,40 @@
   ></div>
 </div>
 
-<%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add participants') %>
+<%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add interviewer') %>
 
-<div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
+<div data-controller="campaign-draft-participants">
+  <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
 
-  <%= render_component RadioButtonTileComponent.new(
-    model: :interviewer_selection_method,
-    name: :manager,
-    checked: campaign.interviewer_selection_method == :manager.to_s || campaign.interviewer_selection_method.nil?,
-    title: "Direct manager",
-    subtitle: "Each participant is assigned to their manager",
-    # compact: true
-  ) do %>
-    <%# TODOCHANGEICON %>
-    <span class="iconify fs-3rem" data-icon="fluent:person-arrow-right-24-filled"></span>
+    <%= render_component RadioButtonTileComponent.new(
+      model: :interviewer_selection_method,
+      name: :manager,
+      checked: campaign.interviewer_selection_method == :manager.to_s || campaign.interviewer_selection_method.nil?,
+      title: "Direct manager",
+      subtitle: "Each participant is assigned to their manager",
+      data_actions: 'click->campaign-draft-participants#chooseDirectManagerText'
+      ) do %>
+      <span class="iconify fs-3rem" data-icon="fluent:person-arrow-right-24-filled"></span>
+    <% end %>
+
+    <%= render_component RadioButtonTileComponent.new(
+      model: :interviewer_selection_method,
+      name: :specific_manager,
+      checked: campaign.interviewer_selection_method == :specific_manager.to_s,
+      title: "Chose an interviewer",
+      subtitle: "Chose a specific user as the campaign sole interviewer",
+      data_actions: 'click->campaign-draft-participants#choseInterviewerText'
+      ) do %>
+      <span class="iconify fs-3rem" data-icon="bx:search"></span>
+    <% end %>
+
+  </div>
+
+  <%= render_component FormSectionTitleComponent.new(title: 'Interviewer') %>
+  <%= render_component FormSectionSubtitleComponent.new do %>
+    <span data-campaign-draft-participants-target="directManagerText" class="bkt-light-grey6">In case of interviewees not linked to a manager in the database,<br> please chose a default interviewer</span>
+    <span data-campaign-draft-participants-target="interviewerText" class="d-none bkt-light-grey6">The interviewer will handle all interviews for selected participants</span>
   <% end %>
-
-  <%= render_component RadioButtonTileComponent.new(
-    model: :interviewer_selection_method,
-    name: :specific_manager,
-    checked: campaign.interviewer_selection_method == :specific_manager.to_s,
-    title: "Chose an interviewer",
-    subtitle: "Chose a specific user as the campaign sole interviewer",
-    # compact: true
-  ) do %>
-    <span class="iconify fs-3rem" data-icon="bx:search"></span>
-  <% end %>
-
 </div>
-
-<%= render_component FormSectionTitleComponent.new(title: 'Interviewer') %>
-<%= render_component FormSectionSubtitleComponent.new do %>
-  The interviewer will handle all interviews for selected participants
-<% end %>
 
 <%= hidden_field_tag :default_interviewer_id %>

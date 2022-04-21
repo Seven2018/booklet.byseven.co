@@ -18,15 +18,19 @@
     margin: 0 2rem;
     color: white;
 
-    h4 {
+    h4, a {
       font-size: 1.6rem !important;
       font-weight: 400;
       white-space: nowrap;
     }
 
+    a {
+      color: $bkt-white;
+    }
+
     &.navbar-buttons--active {
 
-      h4 {
+      h4, a {
         font-weight: bolder;
       }
     }
