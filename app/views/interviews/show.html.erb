@@ -25,12 +25,16 @@
       <% end %>
       <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
 
-        <button class="btn-blue-text" onclick="saveButton();">
+        <button class="btn-blue-text ml-2rem" onclick="saveButton();">
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
 
-        <a href='<%= complete_interview_path(interview_id: @interview.id) %>' data-remote='true'>
+        <a href='<%= complete_interview_path(interview_id: @interview.id) if fully_answered %>'
+           data-url='<%= complete_interview_path(interview_id: @interview.id) %>'
+           data-remote='true'
+           id='submit-interview-link'
+           class='ml-2rem'>
           <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
             <p>Submit</p>
             <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
@@ -225,11 +229,14 @@
   function enableSubmit() {
     required_answers = document.querySelectorAll('#interview_answer_answer:required, #interview_answer_objective:required')
     submit_buttons = document.querySelectorAll('#submit-interview')
+    link = document.getElementById('submit-interview-link')
+
     required_answers.forEach((input) => {
       if (input.value == '') {
         submit_buttons.forEach((button) => {
           button.classList.add('btn-blue-disabled')
           button.disabled = true
+          link.href = ''
         })
         return
       }

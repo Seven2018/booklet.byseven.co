@@ -143,6 +143,10 @@ class InterviewsController < ApplicationController
     @interview = Interview.find interview_id
     authorize @interview
 
+    @campaign = @interview.campaign
+    @employee = @interview.employee
+    @selected_interviewer = User.find_by(id: params[:selected_interviewer_id])
+
     @interview.unlock!
 
     respond_to do |format|

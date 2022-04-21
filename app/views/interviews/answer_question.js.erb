@@ -1,11 +1,14 @@
 submit_buttons = document.querySelectorAll('#submit-interview')
+link = document.getElementById('submit-interview-link')
 
 submit_buttons.forEach((button) => {
   if (<%= @fully_answered %> && button != null) {
     button.classList.remove('btn-blue-disabled')
     button.disabled = false
+    link.href = link.getAttribute('data-url')
   } else if (button != null) {
     button.classList.add('btn-blue-disabled')
     button.disabled = true
+    link.href = ''
   }
 })
