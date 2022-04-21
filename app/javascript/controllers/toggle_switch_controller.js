@@ -11,9 +11,19 @@ export default class extends Controller {
 
   toggle() {
 
-    const permissions_groups = {
+    const permissions_group_true = {
       'user[can_create_employees],user[can_edit_employees],user[can_edit_permissions]': 'user[can_read_employees]',
-      'user[can_create_trainings]': 'user[can_read_contents]'
+      'user[can_create_trainings],user[can_create_contents]': 'user[can_read_contents]'
+    }
+
+    const permissions_group_false = {
+      'user[can_read_employees]': 'user[can_create_employees],user[can_edit_employees],user[can_edit_permissions]',
+      'user[can_read_contents]': 'user[can_create_contents],user[can_create_trainings]'
+    }
+
+    const permissions_groups = {
+      'true': permissions_group_true,
+      'false': permissions_group_false
     }
 
     function toggleInput(input, toggle, container) {
@@ -31,15 +41,20 @@ export default class extends Controller {
         toggle.dataset.initial = true
       }
 
-      Object.keys(permissions_groups).forEach((key) => {
-        if (key.split(',').includes(input.id)) {
-          var target = document.getElementById(permissions_groups[key])
-          if (target.checked != input.checked && target.checked == false) {
-            var target_toggle = target.parentNode.querySelector('label')
-            var target_container = target.parentNode.querySelector('div')
-            toggleInput(target, target_toggle, target_container)
+      Object.keys(permissions_groups).forEach((boolean) => {
+        Object.keys(permissions_groups[boolean]).forEach((key) => {
+          if (key.split(',').includes(input.id)) {
+            permissions_groups[boolean][key].split(',').forEach((target_ref) => {
+              var target = document.getElementById(target_ref)
+              var condition = !(boolean == 'true')
+              if (target != null && target.checked != input.checked && target.checked == condition) {
+                var target_toggle = target.parentNode.querySelector('label')
+                var target_container = target.parentNode.querySelector('div')
+                toggleInput(target, target_toggle, target_container)
+              }
+            })
           }
-        }
+        })
       })
     }
 
