@@ -2,9 +2,6 @@ class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       super
-      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
-        user.can_create_campaigns
-
       scope.where(company: user.company)
     end
   end
@@ -26,8 +23,7 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def my_team_interviews?
-    # TODO UpdatePermission
-    true
+    user.access_level_int.to_sym != :employee
   end
 
   def send_notification_email?

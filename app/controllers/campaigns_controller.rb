@@ -46,7 +46,7 @@ class CampaignsController < ApplicationController
   end
 
   def my_interviews
-    @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc).where \
+    @campaigns = Campaign.where(company: current_user.company).order(created_at: :desc).where \
       id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 

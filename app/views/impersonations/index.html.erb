@@ -6,7 +6,7 @@
       <% unless index.zero? %>
         <span class="mx-1">|</span>
        <% end %>
-      <%= link_to access_level_label, impersonations_path(access_level_int: access_level_key), class: 'text-secondary ml-2' %>
+      <%= link_to access_level_key, impersonations_path(access_level_int: access_level_key), class: 'text-secondary ml-2' %>
     <% end %>
   </div>
 

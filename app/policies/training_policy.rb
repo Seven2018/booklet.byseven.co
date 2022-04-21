@@ -11,8 +11,7 @@ class TrainingPolicy < ApplicationPolicy
   end
 
   def my_team_trainings?
-    # TODO UpdatePermission
-    true
+    user.access_level_int.to_sym != :employee
   end
 
   def my_team_trainings_user_details?
