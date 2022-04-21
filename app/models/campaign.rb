@@ -58,9 +58,13 @@ class Campaign < ApplicationRecord
     interviews.order(date: :asc).first&.date
   end
 
-  def interview_sets
+  def interview_sets(employee_id = nil)
     @interview_sets ||=
-      employees.distinct.ids.map { |employee_id| interviews.find_by(employee_id: employee_id).set }
+      if employee_id.nil?
+        employees.distinct.ids.map { |employee_id| interviews.find_by(employee_id: employee_id).set }
+      else
+        interviews.find_by(employee_id: employee_id).set
+      end
   end
 
   def interview_forms

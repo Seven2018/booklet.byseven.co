@@ -1,29 +1,21 @@
 class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.employee_or_above? && user.company_id.present?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      super
+      scope.where(company: user.company)
     end
   end
 
-  def index?
-    user.hr_or_above?
-  end
-
   def show?
-    record.interviewers.uniq.include?(user) || user.hr_or_above?
+    record.interviewers.uniq.include?(user) || create?
   end
 
   def create?
-    # used in campaign_drafts TODO non regression test
-    user.manager_or_above?
+    user.can_create_campaigns
   end
 
   def destroy?
-    user.manager_or_above?
+    create? || record.interviews.where(completed: true).empty?
   end
 
   def my_interviews?
@@ -31,26 +23,18 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def my_team_interviews?
-    user.manager_or_above?
+    user.access_level_int.to_sym != :employee
   end
 
   def send_notification_email?
-    user.manager_or_above?
+    create?
   end
 
   def add_interview_set?
-    user.manager_or_above?
+    create?
   end
 
   def remove_interview_set?
-    user.manager_or_above?
-  end
-
-  def edit_rights?
-    user.hr_or_above? || user == record.owner
-  end
-
-  def campaign_edit_date?
-    user.hr_or_above? || user == record.owner
+    create?
   end
 end

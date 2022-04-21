@@ -1,11 +1,10 @@
 class UserInterestPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.hr_or_above?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.can_edit_employees
+
+      scope.all
     end
   end
 
@@ -14,7 +13,7 @@ class UserInterestPolicy < ApplicationPolicy
   end
 
   def recommend?
-    user.hr_or_above?
+    user.can_edit_employees
   end
 
   def update_recommendation?

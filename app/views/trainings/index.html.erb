@@ -4,9 +4,12 @@
          class='d-flex justify-content-between align-items-center mb-4'>
       <h1>Trainings</h1>
 
-      <% if current_user.hr_or_above? %>
-        <%= link_to edit_training_draft_participants_path, class: 'bkt-btn-orange' do  %>
-          <i class="fas fa-plus mr-1rem"></i>
+      <% if TrainingPolicy.new(current_user, nil).create? %>
+        <%= link_to edit_training_draft_participants_path, class: 'bkt-btn-orange', data: {
+          handle: 'book-training-cta'
+        } do  %>
+          <i class="fas fa-plus"></i>
+          &nbsp;
           Book Training
         <% end %>
       <% end %>

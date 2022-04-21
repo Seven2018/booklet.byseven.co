@@ -1,51 +1,51 @@
 class InterviewFormPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.hr_or_above? && user.company_id.present?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.can_create_templates
+
+      scope.where(company: user.company)
     end
   end
 
   def create?
-    user.hr_or_above?
+    user.can_create_templates
   end
 
   def show?
-    user.hr_or_above?
+    create?
   end
 
   def edit?
-    user.hr_or_above? && record.company_id == user.company_id && !record.used?
+    create? && record.company_id == user.company_id && !record.used?
   end
 
   def update?
-    user.hr_or_above? && !record.used?
+    edit?
   end
 
   def duplicate?
-    user.hr_or_above? && !record.used?
+    edit?
   end
 
   def interview_form_link_tags?
-    user.hr_or_above?
+    edit?
   end
 
   def destroy?
-    user.hr_or_above? && !record.used?
+    edit?
   end
 
   def toggle_tag?
-    user.hr_or_above? && !record.used?
+    create? && !record.used?
   end
 
   def remove_company_tag?
-    user.hr_or_above? && !record.used?
+    create? && !record.used?
   end
 
   def search_tags?
-    user.hr_or_above? && !record.used?
+    create? && !record.used?
   end
 end

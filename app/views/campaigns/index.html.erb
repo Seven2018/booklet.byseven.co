@@ -8,12 +8,17 @@
         </div>
       </div>
 
-      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-blue' do  %>
-        <i class="fas fa-plus mr-1rem"></i>
-        Create Campaign
+      <% if CampaignPolicy.new(current_user, nil).create? %>
+        <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-blue', data: {
+          handle: 'create-campaign-cta'
+        } do  %>
+          <i class="fas fa-plus"></i>
+          &nbsp;
+          Create Campaign
+        <% end %>
       <% end %>
-
     </div>
+
     <div class="campaigns-index__main" data-controller='change-page remember-search'>
       <div class="campaigns-index__searchbar">
         <i class="fas fa-search campaigns-index__search-trainings-icon"></i>

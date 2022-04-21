@@ -13,11 +13,8 @@
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
-    <!-- <script src="https://cdn.ckeditor.com/4.13.0/full/ckeditor.js"></script> -->
-    <%# javascript_include_tag Ckeditor.cdn_url %>
-    <%= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
+    <%= stylesheet_pack_tag 'application' %>
     <%= javascript_pack_tag 'application', defer: true %>
-
   </head>
   <body data-controller="mobile-displayer">
     <%= render 'shared/impersonations' %>
@@ -41,7 +38,14 @@
         <% if params[:controller] == 'users' && params[:action] == 'show' %>
           <%= yield %>
         <% else %>
-          <div id="booklet-container" class="<%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %> <%= 'container-admin-height' if @show_navbar_admin %>">
+          <div id="booklet-container"
+            class="
+            <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
+            <%=
+              'container-admin-height' if
+                (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
+                (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
+            %>">
             <%= yield %>
           </div>
         <% end %>

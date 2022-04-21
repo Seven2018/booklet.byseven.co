@@ -6,7 +6,7 @@ ActiveAdmin.register User do
   filter :lastname
   filter :job_title
   filter :company, as: :select, collection: Company.pluck(:name, :id)
-  filter :access_level, as: :select, collection: User::ACCESS_LEVELS
+  filter :access_level_int, as: :select, collection: User::access_level_ints
 
   index do
     selectable_column
@@ -16,7 +16,7 @@ ActiveAdmin.register User do
     column :lastname
     column :job_title
     column :company
-    column :access_level
+    column :access_level_int
     actions
   end
 
@@ -28,7 +28,7 @@ ActiveAdmin.register User do
       row :lastname
       row :job_title
       row :company_id
-      row :access_level
+      row :access_level_int
       row :social_security
       row :gender
       row :birth_date
@@ -53,8 +53,7 @@ ActiveAdmin.register User do
       f.input :lastname
       f.input :job_title
       render partial: 'admin/users/company'
-      # f.input :company, as: :select, collection: Company.pluck(:name, :id), include_blank: false
-      f.input :access_level, as: :select, collection: User::ACCESS_LEVELS, include_blank: false
+      f.input :access_level_int, as: :select, collection: User::access_level_ints.keys, include_blank: false
       f.input :social_security
       f.input :gender
       f.input :birth_date
@@ -63,11 +62,6 @@ ActiveAdmin.register User do
       f.input :phone_number
       f.input :linkedin
       f.input :picture
-      # f.input :encrypted_password
-      # f.input :reset_password_token
-      # f.input :reset_password_sent_at
-      # f.input :remember_created_at
-      # f.input :authentication_token
     end
     f.actions
   end
@@ -75,5 +69,5 @@ ActiveAdmin.register User do
 
   permit_params :email, :encrypted_password, :reset_password_token, :reset_password_sent_at,
   :remember_created_at, :firstname, :lastname, :birth_date, :hire_date, :authentication_token,
-  :address, :phone_number, :social_security, :gender, :job_title, :linkedin, :picture, :access_level
+  :address, :phone_number, :social_security, :gender, :job_title, :linkedin, :picture, :access_level_int
 end

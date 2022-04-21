@@ -1,27 +1,21 @@
 class AssessmentQuestionPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
-
   def view_mode?
     true
   end
 
   def update?
-    user.hr_or_above?
+    user.can_create_campaigns
   end
 
   def move_up?
-    user.hr_or_above?
+    update?
   end
 
   def move_down?
-    user.hr_or_above?
+    update?
   end
 
   def destroy?
-    user.hr_or_above?
+    update?
   end
 end

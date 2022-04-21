@@ -1,6 +1,7 @@
 import "bootstrap";
 import "floating-scroll";
 
+import '../stylesheets/application.css';
 require("../plugins/flatpickr")
 require("../plugins/floatingscroll")
 

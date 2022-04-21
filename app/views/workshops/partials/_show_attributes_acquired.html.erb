@@ -1,5 +1,5 @@
 <p style='color:#808080;'><b>Workshop acquired ?</b></p>
-<% if current_user.hr_or_above? %>
+<% if TrainingPolicy.new(current_user, nil).create? %>
   <% @attendees.each do |attendee| %>
     <h3 class="mt-3 ml-2"><%= attendee.user.fullname %></h3>
     <%= render 'workshops/partials/workshop_acquired_radiobutton.html', attendee: attendee %>
