@@ -27,7 +27,7 @@
         <% end %>
       </div>
       <div class="organisation__users-info">
-        <p data-toggle="tooltip" title="<%= user.access_level_int %>"><%= user.access_level_int_preset %><%= '*' if user.preset_permissions_is_dirty? %></p>
+        <p class="cursor-pointer" data-toggle="tooltip" title="<%= 'This preset have been modified' if user.preset_permissions_is_dirty? %>"><%= user.access_level_int_preset %><%= '*' if user.preset_permissions_is_dirty? %></p>
       </div>
       <div class="organisation__users-info test">
         <% if manager.present? %>
