@@ -126,7 +126,9 @@
                 (@interview.manager? && manager != current_user) ||
                 (@interview.simple? && manager != current_user) ||
                 @interview.locked?
-              ) %>
+              ),
+              company: current_user.company
+            %>
           </div>
         </div>
       <% end %>
