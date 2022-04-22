@@ -57,4 +57,12 @@ class InterviewQuestion < ApplicationRecord
       self.where(required_for: ['all', 'manager'])
     end
   end
+
+  def required_for?(option)
+    if option == 'employee'
+      self.required_for_employee? || self.required_for_all?
+    else
+      self.required_for_manager? || self.required_for_all?
+    end
+  end
 end

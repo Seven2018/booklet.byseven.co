@@ -52,10 +52,10 @@
           <% elsif question.rating? %>
             <div class="flex-row-start-centered rating-crossed">
               <% for i in 1..manager_answer.answer.to_i %>
-                <i class="fas fa-star"></i>
+                <%= raw company.rating_logo %>
               <% end %>
               <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
-                <i class="far fa-star"></i>
+                <%= raw company.rating_logo %>
               <% end %>
             </div>
           <% elsif question.mcq? || question.objective? %>
@@ -91,10 +91,10 @@
           <% elsif question.rating? %>
             <div class="flex-row-start-centered rating-crossed">
               <% for i in 1..employee_answer.answer.to_i %>
-                <i class="fas fa-star"></i>
+                <%= raw company.rating_logo %>
               <% end %>
               <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
-                <i class="far fa-star"></i>
+                <%= raw company.rating_logo %>
               <% end %>
             </div>
           <% elsif question.mcq? || question.objective? %>
@@ -138,7 +138,7 @@
 
     <% elsif question.rating? %>
 
-      <fieldset class="rating<%= ' rating-pizza' if current_user.company_id == 2 %><%= ' read_only' if read_only %>">
+      <fieldset class="rating <%= ' read_only' if read_only %>">
         <% for i in 1..question.options.keys.first.to_i %>
           <% stars_count = question.options.keys.first.to_i - i + 1 %>
           <% input_label_key = "star-position(#{question.position})-#{i}" %>
@@ -156,7 +156,10 @@
             class="full"
             for="<%= input_label_key %>"
             title="<%= stars_count %> stars"
-          ><%= stars_count %></label>
+          >
+            <%= raw company.rating_logo %>
+            <%= stars_count %>
+          </label>
         <% end %>
       </fieldset>
 
