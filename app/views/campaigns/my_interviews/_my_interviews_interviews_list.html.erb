@@ -65,7 +65,9 @@
       <div class="campaigns-my-interviews__card-review-link">
 
         <%= link_to interview_path(crossed_interview&.completed? ? crossed_interview : employee_interview) do %>
-          <p>Go to my review <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+          <p class='d-flex align-items-center'>
+            <span class="mr-3">Go to my review</span> <span class="iconify" data-icon="akar-icons:chevron-right"></span>
+          </p>
         <% end %>
 
       </div>
@@ -152,7 +154,9 @@
 
       <div class="campaigns-my-interviews__card-review-link">
         <%= link_to interview_path(employee_interview || manager_interview) do %>
-          <p>Go to my review <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+          <p class='d-flex align-items-center'>
+            <span class="mr-3">Go to my review</span> <span class="iconify" data-icon="akar-icons:chevron-right"></span>
+          </p>
         <% end %>
       </div>
 

@@ -37,4 +37,8 @@ class CampaignPolicy < ApplicationPolicy
   def remove_interview_set?
     create?
   end
+
+  def can_unlock?
+    create?
+  end
 end

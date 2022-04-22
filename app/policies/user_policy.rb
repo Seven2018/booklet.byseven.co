@@ -48,7 +48,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def add_tag_category_tags?
-    user.can_edit_employees
+    edit?
   end
 
   def destroy?

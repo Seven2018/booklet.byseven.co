@@ -2,7 +2,7 @@
   <div class="col-4 ml-0"><%= render_component BackComponent.new(fallback: edit_user_path) %></div>
   <div class="col-4 mt-4rem flex-column justify-content-center ml-0">
     <div class="text-center">
-      <div>
+      <div class="d-flex justify-center">
         <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='rounded-5px width-20 height-20 mb-2rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
       </div>
       <div>
