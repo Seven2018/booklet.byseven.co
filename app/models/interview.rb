@@ -47,7 +47,7 @@ class Interview < ApplicationRecord
         interview_questions.not_separator.required_for_manager.count
       else
         interview_questions.not_separator
-        .required?(self.label == 'Employee' ? 'employee' : 'manager')
+        .required_for(self.label == 'Employee' ? 'employee' : 'manager')
         .count
       end
   end

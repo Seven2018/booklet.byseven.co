@@ -10,7 +10,6 @@
 
       <%= f.input :answer,
           as: :text,
-          required: question.required?,
           disabled: read_only %>
 
     <% elsif question.rating? %>
@@ -54,7 +53,6 @@
       <%= f.input(
         :objective,
         as: :text,
-        required: question.required?,
         disabled: read_only
       ) if question.objective? %>
 
