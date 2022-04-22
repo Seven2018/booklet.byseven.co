@@ -110,7 +110,7 @@
             <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
               <p><%= question_num %>. </p>
               <span class="iconify" data-icon="<%= question.icon %>"></span>
-              <p><%= question.question %> <%= "*" if question.required?(@interview.label == 'Employee' ? 'employee' : 'manager') %></p>
+              <p><%= question.question %> <%= "*" if question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') %></p>
             </div>
             <div class="interview-main__right-question-description">
               <%= sanitize question.description %>
