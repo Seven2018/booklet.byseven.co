@@ -2,7 +2,7 @@
   <div class='bkt-page-container-content'>
     <div id='controls'
          class='d-flex justify-content-between align-items-center mb-4'>
-      <h1>Trainings</h1>
+      <h1 class="fs-3rem font-weight-600">Trainings</h1>
 
       <% if TrainingPolicy.new(current_user, nil).create? %>
         <%= link_to edit_training_draft_participants_path, class: 'bkt-btn-orange', data: {
