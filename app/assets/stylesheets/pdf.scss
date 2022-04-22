@@ -138,27 +138,18 @@ div.nobreak--pdf{ page-break-inside: avoid; }
 .interview-crossed-answer__header--pdf > span { font-weight: 600; font-style: italic; color: #C4C4C4; }
 
 .rating-crossed--pdf {
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.rating-filled, .rating-empty {
-  height: 18px;
-  width: 18px;
-  border-radius: 10px;
-  border: 2px solid #3177B7;
+.rating--pdf > div > svg, .rating-crossed--pdf > div > svg {
+  margin-right: 1rem;
 }
 
-.rating-filled {
-  background-color: #3177B7;
-}
-
-.rating-filled-text, .rating-empty-text {
-  font-size: 1rem;
-  margin: 0 0 0 1rem;
-}
 
 .rating-filled-text { color: #3177B7; }
 .rating-empty-text { color: #C4C4C4; }
@@ -264,7 +255,3 @@ div.nobreak--pdf{ page-break-inside: avoid; }
   color: hsl(0, 0%, 40%);
 }
 
-.rating--pdf > img {
-  height: 20px;
-  width: 20px;
-}

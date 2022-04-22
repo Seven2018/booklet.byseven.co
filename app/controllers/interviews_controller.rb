@@ -76,7 +76,7 @@ class InterviewsController < ApplicationController
       answer: answer,
       comments: comments,
       objective: objective
-    ) if answer.present? || !question.required?
+    ) if answer.present?
 
     @fully_answered = interview.fully_answered?
 

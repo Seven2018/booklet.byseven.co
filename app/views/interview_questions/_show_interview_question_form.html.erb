@@ -52,10 +52,14 @@
           <% elsif question.rating? %>
             <div class="flex-row-start-centered rating-crossed">
               <% for i in 1..manager_answer.answer.to_i %>
-                <%= raw company.rating_logo %>
+                <div class="rating-filled">
+                  <%= raw company.rating_logo %>
+                </div>
               <% end %>
               <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
-                <%= raw company.rating_logo %>
+                <div class="rating-empty">
+                  <%= raw company.rating_logo %>
+                </div>
               <% end %>
             </div>
           <% elsif question.mcq? || question.objective? %>
@@ -91,10 +95,14 @@
           <% elsif question.rating? %>
             <div class="flex-row-start-centered rating-crossed">
               <% for i in 1..employee_answer.answer.to_i %>
-                <%= raw company.rating_logo %>
+                <div class="rating-filled">
+                  <%= raw company.rating_logo %>
+                </div>
               <% end %>
               <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
-                <%= raw company.rating_logo %>
+                <div class="rating-empty">
+                  <%= raw company.rating_logo %>
+                </div>
               <% end %>
             </div>
           <% elsif question.mcq? || question.objective? %>
@@ -131,7 +139,7 @@
             as: :text,
             input_html: {
               value: current_answer,
-              onkeyup: 'autoSave(this, true);enableSubmit();'
+              onkeyup: 'autoSave(this, true); enableSubmit();'
             },
             required: question.required?,
             disabled: read_only %>
@@ -148,7 +156,7 @@
             id="<%= input_label_key %>"
             name="interview_answer[answer]"
             value="<%= stars_count %>"
-            onchange="autoSave(this);enableSubmit();"
+            onchange="autoSave(this); enableSubmit();"
             <% if current_answer.to_i == stars_count %> checked <% end %>
             <%= 'disabled' if read_only %>
           />
@@ -183,7 +191,7 @@
         as: :text,
         input_html: {
           value: current_objective,
-          onkeyup: 'autoSave(this, true);enableSubmit();'
+          onkeyup: 'autoSave(this, true); enableSubmit();'
         },
         required: question.required?,
         disabled: read_only
@@ -193,7 +201,7 @@
         <div class="booklet-select__selected" onclick="<%= 'BookletSelectExpand(this);' unless read_only %>">
           <p><%= current_answer.present? ? current_answer : '' %></p>
           <div class="booklet-select__controls">
-            <% unless question.required? || current_answer == '' %>
+            <% unless question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') && current_answer == '' %>
               <div class="booklet-select__controls-icon" onclick='BookletSelectRemoveAnswer(this);'>
                 <i class="fas fa-times"></i>
               </div>
