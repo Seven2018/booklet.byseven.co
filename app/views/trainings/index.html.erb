@@ -2,7 +2,7 @@
   <div class='bkt-page-container-content'>
     <div id='controls'
          class='d-flex justify-content-between align-items-center mb-4'>
-      <h1>Trainings</h1>
+      <h1 class="fs-2_4rem font-weight-700">Trainings</h1>
 
       <% if TrainingPolicy.new(current_user, nil).create? %>
         <%= link_to edit_training_draft_participants_path, class: 'bkt-btn-orange', data: {
@@ -15,23 +15,24 @@
       <% end %>
     </div>
 
-    <div id='searchbar' class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">
-      <div
-        class='d-flex justify-content-start align-items-center position-relative'
-        style='margin-bottom: 4rem'
-      >
+    <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px mb-5rem">
+      <div id="searchbar"
+        class="d-flex justify-content-start align-items-center position-relative"
+        style="margin-bottom: 4rem;"
+        data-controller="remember-search">
+
         <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
-          style='left: 25rem; bottom: 16.6px;'
-        ></i>
+          style='left: 25rem; bottom: 16.6px;'></i>
+
         <%= simple_form_for(:search, url: trainings_path, method: :get, remote: true,
           html: {
             class: 'search d-flex align-items-center'
           },
           data: {
-            controller:'remember-search',
             remember_search_key_value: 'bookletInterviewFormsSearches',
           }
         ) do |f| %>
+
           <%=
             f.input(
               :title,
@@ -53,15 +54,18 @@
               required: false
             )
           %>
+
           <%= f.input :period,
-                      collection: ['Current', 'Completed', 'All'],
+                      collection: ['All', 'Current', 'Completed'],
                       label: false,
                       required: false,
-                      selected: 'Current',
+                      selected: 'All',
                       input_html: {class: 'height-5rem border-bkt-light-grey bkt-light-grey rounded-5px ml-1rem', onchange: 'resetPage(this); autoSubmit(this);'} %>
+
           <%= f.hidden_field :tags %>
           <%= f.hidden_field :page, value: '1' %>
           <div class="mr-3"></div>
+
           <%=
             f.submit(
               '',
@@ -72,11 +76,18 @@
               }
             )
           %>
+
           <button type='submit' class="btn-search d-block d-sm-none">
             <i class="fas fa-search"></i>
           </button>
-          <button class='height-5rem fs-1_6rem bkt-orange ml-1rem' onclick='resetAllFilter(this);'>Reset</button>
+
+          <button class='height-5rem fs-1_6rem bkt-orange ml-1rem'
+                  data-action="click->remember-search#resetAllFilter">
+            Reset
+          </button>
+
         <% end %>
+
       </div>
 
       <% headers = ["Training title", "Employees", "Training Creator"] %>
@@ -168,26 +179,6 @@
   ///////////////
   // SEARCHBAR //
   ///////////////
-
-  function resetAllFilter(element, recommendation = false) {
-    searchbar = element.closest('#searchbar')
-
-    searchbar.querySelector('#search_page').value = '1'
-
-    searchbar.querySelectorAll('input').forEach((input) => {
-      if (input.type == 'text') {
-        input.value = ''
-      } else if (input.type == 'checkbox') {
-        input.checked = false
-      }
-    })
-
-    searchbar.querySelectorAll('select').forEach((select) => {
-      select.selectedIndex = 0
-    })
-
-    searchbar.querySelector('.btn-search').click()
-  }
 
   // function showResetMobile(boolean) {
   //   return
