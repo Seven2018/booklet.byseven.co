@@ -53,6 +53,7 @@
                         class: 'form-control',
                         input_html: {
                           value: @user.tags.find_by(tag_category_id: category.id)&.tag_name,
+                          autocomplete: 'off',
                           data: {
                             profile_tag_category_target: 'tagCategories',
                             tag_category_id: category.id,
@@ -66,7 +67,7 @@
         <% end %>
 
         <div class="flex-row-center-centered mt-5">
-          <%= button_tag type: 'submit', class: 'bkt-bg-dark-grey p-4 bkt-white rounded-5px m-auto fs-1_6rem' do %>
+          <%= button_tag type: 'submit', class: 'bkt-btn-dark-grey' do %>
             Save changes
           <% end %>
         </div>

@@ -89,7 +89,7 @@ class TrainingsController < ApplicationController
       end
 
     users.uniq.each do |user|
-      # TO DO: UPDATE AS SOON AS A TRAINING CAN CONTAIN MULTIPLE WORKSHOPS
+      # TODO: UPDATE AS SOON AS A TRAINING CAN CONTAIN MULTIPLE WORKSHOPS
       TrainingMailer.with(user: user).training_reminder(user, @training).deliver_later
     end
 
@@ -105,12 +105,12 @@ class TrainingsController < ApplicationController
     search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
 
     @trainings =
-      if search_period == 'All'
-        @trainings
-      elsif search_period == 'Completed'
-        @trainings.where_not_exists(:sessions, 'date < ?', Time.zone.today)
-      else
+      if search_period == 'Current'
         @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today)
+      elsif search_period == 'Completed'
+        @trainings.where_not_exists(:sessions, 'date >= ?', Time.zone.today)
+      else
+        @trainings
       end
 
     # if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?
