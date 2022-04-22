@@ -2,6 +2,10 @@
 //ACTION MODAL//
 ////////////////
 
+.action-modal.show {
+  display: flex !important;
+}
+
 .action-modal__content {
   height: auto !important;
   border-radius: 1rem !important;
@@ -18,15 +22,19 @@
 }
 
 .action-modal__close {
-  padding: 0;
-}
-
-.action-modal__close-icon {
-  display: block;
   height: 4rem;
   width: 4rem;
   max-height: 4rem;
   max-width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.action-modal__close-icon {
+  height: 4rem;
+  display: block;
   font-size: 4rem;
   font-weight: 400;
 }

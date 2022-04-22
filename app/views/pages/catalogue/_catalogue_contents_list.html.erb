@@ -10,7 +10,7 @@
         <% else %>
           <%= image_tag 'booklet_training_picture_test.png', style: 'height: 100px; object-fit: cover;' %>
         <% end %>
-        <% if current_user.hr_or_above? %>
+        <% if ContentPolicy.new(current_user, content).edit? %>
           <div class="flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-white pos-abs cursor-pointer z-index-5 rounded-20px" onclick="openContentMenu(this);" style='top: 1rem; right: 1rem;'>
               <i class="fas fa-ellipsis-v bkt-light-grey"></i>
           </div>

@@ -20,17 +20,29 @@
 
           <div class="flex-row-between-centered">
 
-            <a data-toggle='modal' data-target='#editUser'>
-              <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
-                <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
-              </div>
-            </a>
+            <% if UserPolicy.new(current_user, @user).edit? %>
+              <%= link_to edit_user_path do %>
+                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
+                  <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
+                </div>
+              <% end %>
+            <% end %>
 
-            <a data-toggle='modal' data-target='#editPassword'>
-              <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
-                <span class="iconify fs-1_6rem bkt-white" data-icon="bi:key-fill"></span>
-              </div>
-            </a>
+            <% if PermissionsPolicy.new(current_user, @user).edit? %>
+              <a data-toggle='modal' data-target='#editPermissions' data-handle='edit-user-permissions-cta'>
+                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
+                  <span class="iconify fs-1_6rem bkt-white" data-icon="bi:key-fill"></span>
+                </div>
+              </a>
+            <% end %>
+
+            <% if UserPolicy.new(current_user, @user).edit? %>
+              <a data-toggle='modal' data-target='#editPassword' data-handle='edit-user-password-cta'>
+                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey ml-1rem">
+                  <span class="iconify fs-1_6rem bkt-white" data-icon="bi:lock-fill"></span>
+                </div>
+              </a>
+            <% end %>
 
           </div>
 
@@ -120,7 +132,7 @@
         <div class="flex-row-between-centered px-5rem">
 
           <div id='command__trainings-completed'
-               class="command-tab flex-column-between-centered bkt-bg-light-orange active rounded-5px p-1rem mr-1rem cursor-pointer"
+               class="command-tab flex-column-between-centered bkt-bg-light-orange active rounded-5px mr-1rem cursor-pointer"
                style='height: 14rem; width: 14rem; border: 2px solid transparent;'
                onclick="displaySelectedTab(this);">
             <p class='fs-3rem'>🙌</p>
@@ -129,7 +141,7 @@
           </div>
 
           <div id='command__trainings-current'
-               class="command-tab flex-column-between-centered bkt-bg-light-orange rounded-5px p-1rem ml-1rem cursor-pointer"
+               class="command-tab flex-column-between-centered bkt-bg-light-orange rounded-5px ml-1rem cursor-pointer"
                style='height: 14rem; width: 14rem; border: 2px solid transparent;'
                onclick="displaySelectedTab(this);">
             <p class='fs-3rem'>👉</p>
@@ -157,7 +169,7 @@
         <div class="flex-row-between-centered px-5rem">
 
           <div id='command__campaigns-completed'
-               class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px p-1rem mr-1rem cursor-pointer"
+               class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px mr-1rem cursor-pointer"
                style='height: 14rem; width: 14rem; border: 2px solid transparent;'
                onclick="displaySelectedTab(this);">
             <p class='fs-3rem'>🙌</p>
@@ -166,7 +178,7 @@
           </div>
 
           <div id='command__campaigns-current'
-               class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px p-1rem ml-1rem cursor-pointer"
+               class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px ml-1rem cursor-pointer"
                style='height: 14rem; width: 14rem; border: 2px solid transparent;'
                onclick="displaySelectedTab(this);"
                >
@@ -211,21 +223,33 @@
 
 <%= render 'users/partials/edit_mobile' %>
 
-<!----------->
-<!-- MODAL -->
-<!----------->
+  <!----------->
+  <!-- MODAL -->
+  <!----------->
 
-<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'users/modals/edit', user: @user %>
+<% if UserPolicy.new(current_user, @user).edit? %>
+  <div class="modal fade" id="editUser" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="border-radius: 20px">
+      <%= render 'users/modals/edit', user: @user %>
+    </div>
   </div>
-</div>
+<% end %>
 
-<div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="border-radius: 20px">
-    <%= render 'users/modals/changepassword', user: @user %>
+<% if PermissionsPolicy.new(current_user, @user).edit? %>
+  <div class="modal fade" id="editPermissions" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="border-radius: 20px">
+      <%= render 'users/modals/edit_permissions', user: @user %>
+    </div>
   </div>
-</div>
+<% end %>
+
+<% if UserPolicy.new(current_user, @user).edit? %>
+  <div class="modal fade" id="editPassword" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="border-radius: 20px">
+      <%= render 'users/modals/changepassword', user: @user %>
+    </div>
+  </div>
+<% end %>
 
 
 <!----------->
@@ -241,7 +265,7 @@
 <!-- JAVASCRIPT -->
 <!---------------->
 
-<% if current_user.hr_or_above? %>
+<% if UserPolicy.new(current_user, @user).edit? || PermissionsPolicy.new(current_user, @user).edit? %>
 
   <script>
     doubleClickGuardian = false

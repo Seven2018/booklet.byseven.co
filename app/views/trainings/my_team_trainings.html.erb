@@ -4,8 +4,9 @@
     <div class="flex-row-between-centered rounded-30px bkt-bg-white bkt-box-shadow mb-5rem overflow-hidden">
 
       <div class=' p-2rem'>
-        <h1 class='mb-2rem'>Hello, <%= "#{@current_user.firstname}" %> !</h1>
-        <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>Welcome to My Team Trainings section, your team have <%# "team trainings count" %> trainings to do and/or validate, please see them below. </p>
+        <h1 class='fs-2_4rem font-weight-700 mb-2rem'>Hello, <%= "#{@current_user.firstname}" %> !</h1>
+        <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>Welcome to My Team Trainings section, your
+          team have <%# "team trainings count" %> trainings to do and/or validate, please see them below. </p>
       </div>
 
       <%= render_component AsClAssetComponent.new(
@@ -16,7 +17,6 @@
       ) %>
 
     </div>
-
 
 
     <div class="my-team-trainings-card-list">
@@ -43,7 +43,9 @@
           <div class="my-team-trainings-card__right">
             <%= link_to my_team_trainings_user_details_path(id: data.user.id) do %>
               <div class="my-team-trainings-card__right-link">
-                <p class='bkt-orange'>See details <span class="iconify bkt-orange" data-icon="akar-icons:chevron-right"></span></p>
+                <p class='bkt-orange d-flex align-items-center'>
+                  <span class="mr-3">See details</span><span class="iconify bkt-orange" data-icon="akar-icons:chevron-right"></span>
+                </p>
               </div>
             <% end %>
           </div>
@@ -54,8 +56,10 @@
             <div class="flex-row-between-centered">
               <img src="<%= data.user.picture %>" alt="<%= data.user.fullname %>" class='avatar-md m-auto' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
             </div>
-            <div class="flex-row-between-centered mt-3"><p class="m-auto fs-1_2rem font-weight-500"><%= data.user.fullname %></p></div>
-            <div class="flex-row-between-centered mt-2"><p class="m-auto fs-1rem bkt-light-grey"><%= data.user.job_title %></p></div>
+            <div class="flex-row-between-centered mt-3">
+              <p class="m-auto fs-1_2rem font-weight-500"><%= data.user.fullname %></p></div>
+            <div class="flex-row-between-centered mt-2">
+              <p class="m-auto fs-1rem bkt-light-grey"><%= data.user.job_title %></p></div>
             <div class="flex-row-around-centered mt-4">
               <div class="flex-column fs-1_2rem font-weight-600 ">
                 <div class="flex-row-center-centered ">👉</div>
@@ -67,7 +71,7 @@
                 <div class="flex-row-center-centered bkt-orange"><%= data.done %> trainings done</div>
               </div>
             </div>
-          <% end  %>
+          <% end %>
         </div>
 
       <% end %>

@@ -24,7 +24,7 @@
               </div>
             </div>
 
-            <% if current_user.hr_or_above? %>
+            <% if ModPolicy.new(current_user, nil).create? %>
               <%= render 'contents/show/show_content_mods', content: @content %>
             <% else %>
               <%= render 'contents/show/show_content_mods_teaser', content: @content %>

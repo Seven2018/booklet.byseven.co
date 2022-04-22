@@ -1,5 +1,5 @@
 <div class="content-show-infos-delete orange">
-  <% if current_user.hr_or_above? %>
+  <% if ContentPolicy.new(current_user, nil).create? %>
     <% unless page == 'edit' %>
       <% if content.class.to_s == 'Content' %>
         <%= link_to edit_content_path(content) do %>

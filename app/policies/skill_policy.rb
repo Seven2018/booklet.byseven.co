@@ -1,27 +1,21 @@
 class SkillPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
-
   def create?
     user.admin?
   end
 
   def show?
-    user.admin?
+    create?
   end
 
   def edit?
-    user.admin?
+    create?
   end
 
   def update?
-    user.admin?
+    create?
   end
 
   def destroy?
-    user.admin?
+    create?
   end
 end

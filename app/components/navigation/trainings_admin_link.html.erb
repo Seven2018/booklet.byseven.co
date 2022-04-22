@@ -1,0 +1,5 @@
+<% if TrainingPolicy.new(@user, nil).create? %>
+  <%= link_to admin_link_text, trainings_path %>
+<% elsif TrainingReportPolicy.new(@user, nil).create? %>
+  <%= link_to admin_link_text, trainings_reports_path %>
+<% end %>

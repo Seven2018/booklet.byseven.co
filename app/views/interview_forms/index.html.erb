@@ -2,34 +2,40 @@
   <div class='bkt-page-container-content'>
     <div id='controls'
          class='d-flex justify-content-between align-items-center mb-2rem'>
-      <h1>Templates</h1>
-      <div>
+      <h1 class="fs-2_4rem font-weight-700">Templates</h1>
+
+      <% if InterviewFormPolicy.new(current_user, nil).create? %>
         <a data-toggle='modal' data-target='#newTemplate'>
-          <div class="bkt-btn-blue" data-toggle='tooltip' title='Add a template'>
-            <i class="fas fa-plus mr-1rem"></i>
+          <div class="bkt-btn-blue" data-toggle='tooltip' title='Add a template' data-handle='add-a-template-cta'>
+            <i class="fas fa-plus"></i>
+            &nbsp;
             <span>Add a Template</span>
           </div>
         </a>
-      </div>
+      <% end %>
+
     </div>
 
     <div class="bkt-box-shadow p-2rem bkt-bg-white rounded-20px mb-5rem">
-      <div
-        class='d-flex justify-content-start align-items-center position-relative'
-        style='margin-bottom: 4rem'
-      >
+
+      <div id="searchbar"
+           class="d-flex justify-content-start align-items-center position-relative"
+           style="margin-bottom: 4rem;"
+           data-controller="remember-search">
+
         <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
-          style='left: 25rem; bottom: 16.6px;'
+          style="left: 25rem; bottom: 16.6px;"
         ></i>
+
         <%= simple_form_for(:search, url: interview_forms_path, method: :get, remote: true,
           html: {
             class: 'd-flex align-items-center'
           },
           data: {
-            controller:'remember-search',
             remember_search_key_value: 'bookletInterviewFormsSearches',
           }
         ) do |f| %>
+
           <%=
             f.input(
               :title,
@@ -51,8 +57,10 @@
               required: false
             )
           %>
+
           <%= f.hidden_field :page, value: '1' %>
           <div class="mr-3"></div>
+
           <%=
             f.submit(
               'Search',
@@ -63,10 +71,16 @@
               }
             )
           %>
+
           <button type='submit' class="btn-search d-block d-sm-none">
             <i class="fas fa-search"></i>
           </button>
-          <button class='btn-reset bkt-blue ml-1rem' onclick='resetAllFilter(this);'>Reset</button>
+
+          <button class='btn-reset bkt-blue ml-1rem'
+                  data-action="click->remember-search#resetAllFilter">
+            Reset
+          </button>
+
         <% end %>
       </div>
 
@@ -81,6 +95,7 @@
       <div id='lines'>
         <%= render 'interview_forms/index/index_interview_forms_list', templates: @templates %>
       </div>
+
 
     </div>
   </div>
@@ -143,18 +158,6 @@
         this.removeEventListener('click', arguments.callee, false)
       }
     });
-  }
-
-  function resetAllFilter(element) {
-    form = element.closest('div').querySelector('form')
-    form.querySelectorAll('input').forEach((input) => {
-      if (input.type == 'text') {
-        input.value = ''
-      } else if (input.type == 'checkbox') {
-        input.checked = false
-      }
-    })
-    form.querySelector('.btn-search').click()
   }
 
   function showResetMobile(boolean) {

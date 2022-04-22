@@ -1,43 +1,33 @@
 class FolderPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      if user.employee_or_above?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
-    end
-  end
-
   def show?
     true
   end
 
   def edit?
-    user.hr_or_above?
+    create?
   end
 
   def create?
-    user.hr_or_above?
+    user.can_create_contents
   end
 
   def update?
-    user.hr_or_above?
+    create?
   end
 
   def destroy?
-    user.hr_or_above?
+    create?
   end
 
   def duplicate?
-    user.hr_or_above?
+    create?
   end
 
   def folder_manage_children?
-    user.hr_or_above?
+    create?
   end
 
   def book_contents?
-    user.hr_or_above?
+    create?
   end
 end

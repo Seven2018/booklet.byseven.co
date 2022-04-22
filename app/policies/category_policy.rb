@@ -1,19 +1,13 @@
 class CategoryPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
-
   def create?
-    user.hr_or_above?
+    user.can_create_trainings
   end
 
   def update?
-    user.hr_or_above?
+    create?
   end
 
   def destroy?
-    user.hr_or_above?
+    create?
   end
 end

@@ -236,3 +236,17 @@
     margin-right: 10px;
   }
 }
+
+.auto-complete-js-list > li {
+  padding: 1rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.auto-complete-js-list > li:hover {
+  background-color: $bkt-light-grey;
+
+  mark {
+    background-color: $bkt-light-grey;
+  }
+}

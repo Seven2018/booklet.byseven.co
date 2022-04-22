@@ -17,7 +17,11 @@
   </div>
 
   <div class="flex-row-between-centered">
-    <% if current_user.hr_or_above? && !params[:content_access].present? %>
+    <%
+      if !params[:content_access].present? &&
+        ModPolicy.new(current_user, nil).move_down? &&
+        ModPolicy.new(current_user, nil).move_up?
+    %>
 
       <% if first_mod %>
         <a class='px-1' disabled style='cursor: default;'>

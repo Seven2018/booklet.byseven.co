@@ -1,24 +1,38 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
+    attr_reader :user, :scope, :can_read
+
     def resolve
-      if user.hr_or_above?
-        scope.all
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        can_read
+
+      scope.where(company: user.company)
+    end
+
+    def can_read
+      user.can_read_employees
     end
   end
 
   def create?
-    user.hr_or_above?
+    user.can_create_employees
   end
 
   def import_users?
-    user.hr_or_above?
+    create?
   end
 
   def show?
     true
+  end
+
+  def edit?
+    user.can_edit_employees || user.id == record.id
+  end
+
+  def update?
+    edit?
   end
 
   def complete_profile?
@@ -30,26 +44,22 @@ class UserPolicy < ApplicationPolicy
   end
 
   def unlink_from_company?
-    user.hr_or_above?
+    create?
   end
 
-  def update?
-    true
+  def add_tag_category_tags?
+    edit?
   end
 
   def destroy?
-    user.hr_or_above?
-  end
-
-  def organisation?
-    user.hr_or_above?
+    create?
   end
 
   def recommendation?
-    user.hr_or_above?
+    create?
   end
 
   def book_users?
-    user.hr_or_above?
+    create?
   end
 end

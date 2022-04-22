@@ -108,6 +108,11 @@ class InterviewsController < ApplicationController
     interviewee = interview.employee
     campaign = interview.campaign
 
+    unless interview.fully_answered?
+      flash[:error] = 'Interview not completed'
+      raise
+    end
+
     interview.complete!
     interview.lock!
 
@@ -142,6 +147,10 @@ class InterviewsController < ApplicationController
 
     @interview = Interview.find interview_id
     authorize @interview
+
+    @campaign = @interview.campaign
+    @employee = @interview.employee
+    @selected_interviewer = User.find_by(id: params[:selected_interviewer_id])
 
     @interview.unlock!
 

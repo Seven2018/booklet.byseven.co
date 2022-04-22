@@ -10,7 +10,7 @@
     [employee_interview, manager_interview, crossed_interview].find(&:present?).employee %>
 
   <%#:::::: VERSION DESKTOP START ::::::%>
-  <div class="campaigns-my-interviews__card">
+  <div class="campaigns-my-interviews__card pl-5rem py-3rem">
     <div class="campaigns-my-interviews__card-left">
       <div class="campaigns-my-interviews__card-header">
         <div class="campaigns-my-interviews__card-header-left">
@@ -38,38 +38,16 @@
         <div class="campaigns-my-interviews__card-manager">
 
           <div class="campaigns-my-interviews__card-avatar">
-            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='width-5rem height-5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           </div>
 
           <div class="campaigns-my-interviews__card-name-status">
 
-            <h6><%= manager.fullname %><em style="color:darkgray"> - Manager</em></h6>
+            <h6><%= manager.fullname %><em style="color:darkgray"> - Interviewer</em></h6>
 
             <% if manager_interview&.completed? %>
               <p class='bkt-green'>Review completed</p>
             <% elsif manager_interview.present? %>
-              <p class='bkt-red'>Review not completed</p>
-            <% else %>
-              <p class='bkt-light-grey6'>N/A</p>
-            <% end %>
-
-          </div>
-
-        </div>
-
-        <div class="campaigns-my-interviews__card-employee">
-
-          <div class="campaigns-my-interviews__card-avatar">
-            <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          </div>
-
-          <div class="campaigns-my-interviews__card-name-status">
-
-            <h6><%= "#{employee.fullname}" %><em style="color:darkgray"> - Employee</em></h6>
-
-            <% if employee_interview&.completed? %>
-              <p class='bkt-green'>Review completed</p>
-            <% elsif employee_interview.present? %>
               <p class='bkt-red'>Review not completed</p>
             <% else %>
               <p class='bkt-light-grey6'>N/A</p>
@@ -87,7 +65,9 @@
       <div class="campaigns-my-interviews__card-review-link">
 
         <%= link_to interview_path(crossed_interview&.completed? ? crossed_interview : employee_interview) do %>
-          <p>Go to my review <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+          <p class='d-flex align-items-center'>
+            <span class="mr-3">Go to my review</span> <span class="iconify" data-icon="akar-icons:chevron-right"></span>
+          </p>
         <% end %>
 
       </div>
@@ -174,7 +154,9 @@
 
       <div class="campaigns-my-interviews__card-review-link">
         <%= link_to interview_path(employee_interview || manager_interview) do %>
-          <p>Go to my review <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+          <p class='d-flex align-items-center'>
+            <span class="mr-3">Go to my review</span> <span class="iconify" data-icon="akar-icons:chevron-right"></span>
+          </p>
         <% end %>
       </div>
 

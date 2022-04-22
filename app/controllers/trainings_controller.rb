@@ -3,91 +3,18 @@ class TrainingsController < ApplicationController
   before_action :show_navbar_training
 
   def index
-    @trainings = policy_scope(Training).where(company_id: current_user.company_id)
-                                       .order(created_at: :desc)
+    @trainings = policy_scope(Training).order(created_at: :desc)
     @categories = Category.where(company_id: current_user.company_id)
 
     filter_trainings
 
-    redirect_to my_trainings_path unless current_user.hr_or_above?
+    redirect_to my_trainings_path unless TrainingPolicy.new(current_user, nil).create?
 
     respond_to do |format|
       format.html
       format.js
     end
   end
-
-  # Outdated Index function
-  # def index
-  #   @trainings = Training.where(company: current_user.company)
-  #   @employees_form = User.where(company: current_user.company)
-  #   @types_form = ["Synchronous", "Asynchronous"]
-
-  #   @recommendations = UserInterest.where(user_id: current_user.id)
-
-  #   unless current_user.hr_or_above?
-  #     @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: current_user.id }).distinct
-  #     @recommendations = @recommendations.where(user_id: current_user.id)
-  #   end
-
-  #   # SEARCH TRAININGS
-  #   if params[:search_trainings].present?
-  #     unless params[:search_trainings][:title].blank?
-  #       @trainings = @trainings.search_trainings("#{params[:search_trainings][:title]}")
-  #     end
-  #     unless params[:training][:categories].reject{|c| c.empty?}.blank?
-  #       @trainings = @trainings.joins(folder: :folder_categories).where(folder_categories: {category_id: params[:training][:categories].reject{|c| c.empty?}.map{|x| x.to_i}}) + @trainings.joins(sessions: {workshop: {content: :content_categories}}).where(content_categories: {category_id: params[:training][:categories].reject{|c| c.empty?}.map{|x| x.to_i}})
-  #       @trainings = Training.where(id: @trainings.map{|x| x.id})
-  #     end
-  #     if params[:search_trainings][:period] == 'All'
-  #       @trainings = @trainings
-  #     elsif params[:search_trainings][:period] == 'Current'
-  #       @trainings = @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Time.zone.today))
-  #     elsif params[:search_trainings][:period] == 'Completed'
-  #       @trainings = @trainings.where_not_exists(:sessions, 'date >= ?', Time.zone.today).where_not_exists(:sessions, 'available_date >= ?', Time.zone.today)
-  #     end
-  #     if current_user.hr_or_above?
-  #       unless params[:search_trainings][:employee].blank?
-  #         selected_employee = User.search_by_name("#{params[:search_trainings][:employee]}").first
-  #         @trainings = @trainings.joins(sessions: :attendees).where(attendees: { user_id: selected_employee.id }).distinct
-  #       end
-  #     end
-  #     unless params[:search_trainings][:type].blank?
-  #       @trainings = @trainings.joins(sessions: :workshop).where(workshops: {content_type: params[:search_trainings][:type]})
-  #     end
-  #   end
-
-  #   # SEARCHING RECOMMENDATIONS
-  #   if params[:search_recommendations].present?
-  #     unless params[:search_recommendations][:title].blank?
-  #       @recommendations = @recommendations.search_recommendations("#{params[:search_recommendations][:title]}")
-  #     end
-  #     if current_user.hr_or_above?
-  #       unless params[:search_recommendations][:employee].blank?
-  #         selected_employee = User.find(params[:search_recommendations][:employee])
-  #         @recommendations = UserInterest.where(user_id: selected_employee.id)
-  #       end
-  #     end
-  #     unless params[:search_recommendations][:type].blank?
-  #       @recommendations = @recommendations.joins(:content).where(contents: {content_type: params[:search_recommendations][:type]})
-  #     end
-  #   end
-
-  #   @pending_recommendations = @recommendations.where(recommendation: "Pending")
-  #   @accepted_recommendations = @recommendations.where(recommendation: "Yes")
-  #   @declined_recommendations = @recommendations.where(recommendation: "No")
-  #   @answered_recommendations = @accepted_recommendations + @declined_recommendations
-
-  #   # @current_trainings = @trainings.joins(:sessions).where('date >= ?', Time.zone.today).or(@trainings.joins(:sessions).where(sessions: {date: nil})).order(date: :desc).uniq.reverse
-  #   # @current_trainings = @trainings.sort_by { |training| training.next_session }
-  #   @current_trainings = @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today).or(@trainings.where_exists(:sessions, 'available_date >= ?', Time.zone.today))
-  #   @pasts_trainings = (@trainings - @current_trainings)
-
-  #   respond_to do |format|
-  #     format.html {trainings_path}
-  #     format.js
-  #   end
-  # end
 
   def show
     @training = Training.find(params[:id])
@@ -162,7 +89,7 @@ class TrainingsController < ApplicationController
       end
 
     users.uniq.each do |user|
-      # TO DO: UPDATE AS SOON AS A TRAINING CAN CONTAIN MULTIPLE WORKSHOPS
+      # TODO: UPDATE AS SOON AS A TRAINING CAN CONTAIN MULTIPLE WORKSHOPS
       TrainingMailer.with(user: user).training_reminder(user, @training).deliver_later
     end
 
@@ -178,12 +105,12 @@ class TrainingsController < ApplicationController
     search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
 
     @trainings =
-      if search_period == 'All'
-        @trainings
-      elsif search_period == 'Completed'
-        @trainings.where_not_exists(:sessions, 'date < ?', Time.zone.today)
-      else
+      if search_period == 'Current'
         @trainings.where_exists(:sessions, 'date >= ?', Time.zone.today)
+      elsif search_period == 'Completed'
+        @trainings.where_not_exists(:sessions, 'date >= ?', Time.zone.today)
+      else
+        @trainings
       end
 
     # if (params.dig(:filter_tags) && params.dig(:filter_tags, :tag)).present? || params.dig(:search, :tags).present?

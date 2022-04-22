@@ -3,8 +3,9 @@
 class CampaignDraft::LaunchesController < CampaignDraft::BaseController
   def update
     new_campaign = CampaignDrafts::Campaigns::Launch.call(campaign_draft: campaign_draft)
-    if new_campaign.present?
+    if new_campaign&.id.present?
       @campaign.launches_set!
+      campaign_draft.destroy
       if params[:send_email] == 'true'
         interviewers = new_campaign.interviewers.uniq
         interviewees = new_campaign.employees.uniq
@@ -27,7 +28,7 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
       redirect_to campaign_path(new_campaign)
     else
       flash[:alert] = validation_error_flash_message
-      redirect_to edit_campaign_draft_launches_path
+      redirect_to edit_campaign_draft_settings_path
     end
   end
 

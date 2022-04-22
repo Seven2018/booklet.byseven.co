@@ -2,7 +2,7 @@
 
   <% manager = current_user %>
 
-  <div class="campaigns-my-team-interviews__card">
+  <div class="campaigns-my-team-interviews__card p-5">
     <div class="campaigns-my-interviews__card-inner">
       <div class="campaigns-my-interviews__card-header">
         <div class="campaigns-my-interviews__card-header-left">
@@ -20,7 +20,9 @@
         </div>
         <div class="campaigns-my-interviews__card-review-link">
           <%= link_to campaign_path(campaign, interviewer_id: current_user.id) do %>
-            <p>Manage campaign <span class="iconify" data-icon="akar-icons:chevron-right"></span></p>
+            <p class="d-flex align-items-center">
+              <span class="mr-3">Manage campaign</span> <span class="iconify" data-icon="akar-icons:chevron-right"></span>
+            </p>
           <% end %>
         </div>
       </div>
@@ -37,40 +39,18 @@
             campaign.interviews_for(employee.id)
         %>
 
-        <div class="campaigns-my-interviews__card-group">
+        <div class="campaigns-my-interviews__card-group border-bottom-bkt-light-grey5-not-last-child pb-3">
           <div class="campaigns-my-interviews__card-group-left">
-
-            <div class="campaigns-my-interviews__card-manager">
-
-              <div class="campaigns-my-interviews__card-avatar">
-                <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-              </div>
-
-              <div class="campaigns-my-interviews__card-name-status">
-
-                <h6><%= manager.fullname %><em style="color:darkgray">- Manager</em></h6>
-
-                <% if interview_form.answerable_by_employee? %>
-                  <p class='bkt-light-grey6'>N/A</p>
-                <% elsif manager_interview&.completed? %>
-                  <p class='bkt-green'>Review completed</p>
-                <% else %>
-                  <p class='bkt-red'>Review not completed</p>
-                <% end %>
-
-              </div>
-
-            </div>
 
             <div class="campaigns-my-interviews__card-employee">
 
               <div class="campaigns-my-interviews__card-avatar">
-                <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+                <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='width-5rem height-5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
               </div>
 
               <div class="campaigns-my-interviews__card-name-status">
 
-                <h6><%= employee.fullname %><em style="color:darkgray">- Employee</em></h6>
+                <h6><%= employee.fullname %><em style="color:darkgray">- Interviewee</em></h6>
 
                 <% if interview_form.answerable_by_manager? %>
                   <p class='bkt-light-grey6'>N/A</p>

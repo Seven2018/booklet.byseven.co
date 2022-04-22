@@ -1,8 +1,7 @@
 class PagesController < ApplicationController
   before_action :check_company_presence
   before_action :show_navbar_training
-  before_action :show_navbar_admin, only: %i[organisation]
-  before_action :show_navbar_home, only: [:home, :organisation]
+  before_action :show_navbar_home, only: %i[home organisation]
 
   def home
     @my_interviews = Interview.joins(:campaign)
@@ -25,14 +24,14 @@ class PagesController < ApplicationController
   def catalogue
     complete_profile
 
-    @contents = Content.where(company_id: current_user.company_id).order(title: :asc)
+    @contents = policy_scope(Content).where(company_id: current_user.company_id).order(title: :asc)
     @categories = Category.where(company_id: current_user.company_id).order(title: :asc)
 
     @contents = @contents.search(params.dig(:search, :title)) if params.dig(:search, :title).present?
     @contents = @contents.where(content_type: params.dig(:search, :content_type)) if params.dig(:search, :content_type).present?
     @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params.dig(:search, :selected_categories).split(',')}).distinct if params.dig(:search, :selected_categories).present?
 
-    # TO DO : add pagination
+    # TODO : add pagination
 
     respond_to do |format|
       format.html {catalogue_path}
@@ -73,15 +72,25 @@ class PagesController < ApplicationController
   def organisation
     users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
 
-    @tag_categories = TagCategory.includes([:tags]).where(company_id: current_user.company_id).order(position: :asc)
+    @tag_categories = TagCategory.distinct.where(company_id: current_user.company_id).joins(:tags)
 
     filter_users(users)
 
     respond_to do |format|
-      format.html {organisation_path}
+      format.html { organisation_path }
       format.js
       format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
+  end
+
+  def create_tag_category_tags
+    tag_category_id = params.require(:tag_category_id)
+    tag = Tag.create(
+      tag_name: params.require(:tag_name),
+      company_id: current_user.company_id,
+      tag_category_id: tag_category_id)
+
+    render json: tag, status: :ok
   end
 
   # Display user info card (not used)
@@ -171,8 +180,10 @@ class PagesController < ApplicationController
   end
 
   def book_dates
+    raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+      CampaignPolicy.new(current_user, nil).create?
+
     book_data
-    raise "Access denied" unless current_user.hr_or_above?
   end
 
   private
@@ -207,9 +218,11 @@ class PagesController < ApplicationController
   end
 
   # TEMP #
+  # TODO cleanup
   # Filter the users (pages/organisation, pages/book)
   def index_function(parameter)
-    if current_user.hr_or_above?
+
+    if UserPolicy.new(current_user, nil).edit?
 
       @tag_categories = TagCategory.where(company_id: current_user.company_id)
       # If a name is entered in the search bar

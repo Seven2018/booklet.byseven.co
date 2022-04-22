@@ -13,7 +13,7 @@ class CompaniesController < ApplicationController
     authorize @company
     if @company.save
       if current_user.employee?
-        current_user.update(access_level: 'Account Owner', company_id: @company.id)
+        current_user.update(access_level_int: :account_owner, company_id: @company.id)
       end
       redirect_to trainings_path
     else
