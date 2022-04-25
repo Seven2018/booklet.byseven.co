@@ -47,9 +47,8 @@ class UserPolicy < ApplicationPolicy
     create?
   end
 
-  # TODO: UpdatePermission
   def add_tag_category_tags?
-    user.hr_or_above?
+    edit?
   end
 
   def destroy?

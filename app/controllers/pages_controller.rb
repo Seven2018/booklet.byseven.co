@@ -31,7 +31,7 @@ class PagesController < ApplicationController
     @contents = @contents.where(content_type: params.dig(:search, :content_type)) if params.dig(:search, :content_type).present?
     @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params.dig(:search, :selected_categories).split(',')}).distinct if params.dig(:search, :selected_categories).present?
 
-    # TO DO : add pagination
+    # TODO : add pagination
 
     respond_to do |format|
       format.html {catalogue_path}

@@ -76,7 +76,7 @@ class InterviewsController < ApplicationController
       answer: answer,
       comments: comments,
       objective: objective
-    ) if answer.present? || !question.required?
+    ) if answer.present?
 
     @fully_answered = interview.fully_answered?
 
@@ -147,6 +147,10 @@ class InterviewsController < ApplicationController
 
     @interview = Interview.find interview_id
     authorize @interview
+
+    @campaign = @interview.campaign
+    @employee = @interview.employee
+    @selected_interviewer = User.find_by(id: params[:selected_interviewer_id])
 
     @interview.unlock!
 

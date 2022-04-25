@@ -25,7 +25,7 @@ export default class extends Controller {
   }
 
   resetAllFilter(_) {
-    const searchbar = document.querySelector('.campaigns-index__searchbar');
+    const searchbar = document.getElementById('searchbar');
 
     // Reset Search and Period input
     searchbar.querySelectorAll('input').forEach((input) => {
@@ -39,12 +39,15 @@ export default class extends Controller {
       select.selectedIndex = 0
     })
 
-    // Reset Tags
-    searchbar.querySelector('#search_tags').value = ''
-    const filter_counter = searchbar.querySelectorAll('.searchbar-campaign-filter__selected')
-    // pill_container = searchbar.querySelector('.searchbar-campaign__pill-container')
-    filter_counter.forEach((counter) => {counter.innerText = '0'; counter.style.backgroundColor = '#C4C4C4'})
-    // pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => pill.remove())
+    // TODO : Unify all searches by tags
+    try {
+      // Reset Tags
+      searchbar.querySelector('#search_tags').value = ''
+      const filter_counter = searchbar.querySelectorAll('.searchbar-campaign-filter__selected')
+      // pill_container = searchbar.querySelector('.searchbar-campaign__pill-container')
+      filter_counter.forEach((counter) => {counter.innerText = '0'; counter.style.backgroundColor = '#C4C4C4'})
+      // pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => pill.remove())
+    } catch {}
 
     // Reset offset
     searchbar.querySelector('#search_page').value = '1'

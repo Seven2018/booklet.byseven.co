@@ -22,6 +22,11 @@ class InterviewQuestion < ApplicationRecord
 
   # TODO refacto question_type => enum
   # for perf + having below getters out of the box
+
+  ####################
+  # INSTANCE METHODS #
+  ####################
+
   def open_question?
     question_type == 'open_question'
   end
@@ -42,6 +47,24 @@ class InterviewQuestion < ApplicationRecord
     question_type == 'objective'
   end
 
+  def required?
+    required_for != 'none'
+  end
+
+  def required_for?(option = nil)
+    if option == 'employee'
+      self.required_for_employee? || self.required_for_all?
+    elsif option == 'manager'
+      self.required_for_manager? || self.required_for_all?
+    end
+  end
+
+
+
+  #################
+  # CLASS METHODS #
+  #################
+
   def self.visible?(option)
     if option == 'employee'
       self.where(visible_for: ['all', 'employee'])
@@ -50,7 +73,7 @@ class InterviewQuestion < ApplicationRecord
     end
   end
 
-  def self.required?(option)
+  def self.required_for(option)
     if option == 'employee'
       self.where(required_for: ['all', 'employee'])
     else

@@ -22,7 +22,7 @@ export default class extends Controller {
           return true
         },
         resultsList: {
-          class: 'border-bkt-light-grey pt-2 auto-complete-js-list',
+          class: 'border-bkt-light-grey auto-complete-js-list',
           element: (list, data) => {
             if (!data.results.length) {
               const message = document.createElement("div");

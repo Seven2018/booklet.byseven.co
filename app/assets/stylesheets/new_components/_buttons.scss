@@ -2,6 +2,77 @@
 // COLORS //
 ////////////
 
+.bkt-btn-white {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-dark-grey;
+  background-color: $bkt-white !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  border: 1px solid transparent;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid $bkt-light-grey4;
+    background-color: $bkt-light-grey4 !important;
+  }
+
+  &:focus {
+    background-color: $bkt-white;
+    color: $bkt-dark-grey;
+  }
+
+  &.disabled {
+    border: 1px solid $bkt-light-grey5;
+    color: $bkt-light-grey5;
+  }
+
+  &.pressed {
+    border: 1px solid $bkt-light-grey;
+    background-color: $bkt-light-grey;
+  }
+}
+
+.bkt-btn-dark-grey {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-white;
+  background-color: $bkt-dark-grey !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  border: 1px solid transparent;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bkt-light-grey5 !important;
+  }
+
+  &:focus {
+    background-color: $bkt-white;
+    color: $bkt-dark-grey;
+  }
+
+  &.disabled {
+    color: $bkt-light-grey5;
+  }
+
+  &.pressed {
+    background-color: $bkt-light-grey5;
+  }
+}
+
 .bkt-btn-blue {
   display: flex;
   align-items: center;
@@ -99,43 +170,6 @@
   }
 
   &.pressed {}
-}
-
-.bkt-btn-white {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  color: $bkt-dark-grey;
-  background-color: $bkt-white !important;
-  padding: 1.6rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  line-height: 2rem;
-  border-radius: .5rem;
-  border: 1px solid transparent;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    border: 1px solid $bkt-light-grey4;
-    background-color: $bkt-light-grey4 !important;
-  }
-
-  &:focus {
-    background-color: $bkt-white;
-    color: $bkt-dark-blue;
-  }
-
-  &.disabled {
-    border: 1px solid $bkt-light-grey5;
-    color: $bkt-light-grey5
-  }
-
-  &.pressed {
-    border: 1px solid $bkt-light-grey;
-    background-color: $bkt-light-grey;
-  }
 }
 
 .bkt-btn-orange {

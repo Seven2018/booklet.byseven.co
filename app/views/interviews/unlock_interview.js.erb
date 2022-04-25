@@ -1,1 +1,1 @@
-document.querySelector('#interview-<%= @interview.id %>').querySelector('.campaign-show__card-interview-status--complete').innerText = 'Completed !'
+document.querySelector('#employee-<%= @interview.employee.id %>').innerHTML = '<%= j render("campaigns/show/show_interview_card", campaign: @campaign, employee: @employee, selected_interviewer: @selected_interviewer) %>';

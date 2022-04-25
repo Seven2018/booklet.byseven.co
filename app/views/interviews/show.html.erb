@@ -25,12 +25,16 @@
       <% end %>
       <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
 
-        <button class="btn-blue-text" onclick="saveButton();">
+        <button class="btn-blue-text ml-2rem" onclick="saveButton();">
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
 
-        <a href='<%= complete_interview_path(interview_id: @interview.id) %>' data-remote='true'>
+        <a href='<%= complete_interview_path(interview_id: @interview.id) if fully_answered %>'
+           data-url='<%= complete_interview_path(interview_id: @interview.id) %>'
+           data-remote='true'
+           id='submit-interview-link'
+           class='ml-2rem'>
           <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
             <p>Submit</p>
             <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
@@ -60,13 +64,13 @@
     <div class="interview-main__right">
 
       <div class="flex-row-start-centered width-100">
-        <%= link_to :back, class: 'flex-row-center-centered height-5rem width-5rem' do %>
+        <%= link_to :back, class: 'flex-row-center-centered d-sm-none height-5rem width-5rem' do %>
           <i class="fas fa-angle-left fs-2_4rem"></i>
         <% end %>
       </div>
 
 
-      <h1 class="fs-3rem mb-2rem"><%= template.title %></h1>
+      <h1 class="fs-2_4rem font-weight-700 mb-2rem"><%= @interview.campaign.title %></h1>
 
       <div class="trix-display">
         <%= sanitize template.description %>
@@ -106,7 +110,7 @@
             <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
               <p><%= question_num %>. </p>
               <span class="iconify" data-icon="<%= question.icon %>"></span>
-              <p><%= question.question %> <%= "*" if question.required? %></p>
+              <p><%= question.question %> <%= "*" if question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') %></p>
             </div>
             <div class="interview-main__right-question-description">
               <%= sanitize question.description %>
@@ -122,7 +126,9 @@
                 (@interview.manager? && manager != current_user) ||
                 (@interview.simple? && manager != current_user) ||
                 @interview.locked?
-              ) %>
+              ),
+              company: current_user.company
+            %>
           </div>
         </div>
       <% end %>
@@ -225,11 +231,14 @@
   function enableSubmit() {
     required_answers = document.querySelectorAll('#interview_answer_answer:required, #interview_answer_objective:required')
     submit_buttons = document.querySelectorAll('#submit-interview')
+    link = document.getElementById('submit-interview-link')
+
     required_answers.forEach((input) => {
       if (input.value == '') {
         submit_buttons.forEach((button) => {
           button.classList.add('btn-blue-disabled')
           button.disabled = true
+          link.href = ''
         })
         return
       }
