@@ -26,17 +26,32 @@ export default class extends Controller {
       'false': permissions_group_false
     }
 
+    const controls = document.getElementById('control-buttons')
+    const inputs = document.querySelectorAll('input[type="checkbox"]')
+
     function toggleInput(input, toggle, container) {
       if (event != undefined) input.checked = !input.checked
       toggle.classList.toggle('left-96pc', input.checked)
       toggle.classList.toggle('left-4pc', !input.checked)
-      container.classList.toggle('bg-teal-600', input.checked)
-      container.classList.toggle('bg-gray-300', !input.checked)
       if (toggle.dataset.rememberInitialState != 'true') return
 
       if (toggle.dataset.initial) {
-        toggle.classList.toggle('bg-white')
-        toggle.classList.toggle('bkt-bg-light-grey6')
+        if (input.checked && input.dataset.initialState == 'false') {
+          toggle.classList.add('bkt-bg-green')
+          container.classList.add('bkt-bg-transparent-green')
+          toggle.classList.remove('bkt-bg-negative-red')
+          container.classList.remove('bkt-bg-transparent-negative-red')
+        } else if (!input.checked && input.dataset.initialState == 'true') {
+          toggle.classList.add('bkt-bg-negative-red')
+          container.classList.add('bkt-bg-transparent-negative-red')
+          toggle.classList.remove('bkt-bg-green')
+          container.classList.remove('bkt-bg-transparent-green')
+        } else {
+          toggle.classList.remove('bkt-bg-negative-red')
+          container.classList.remove('bkt-bg-transparent-negative-red')
+          toggle.classList.remove('bkt-bg-green')
+          container.classList.remove('bkt-bg-transparent-green')
+        }
       } else {
         toggle.dataset.initial = true
       }
@@ -56,8 +71,20 @@ export default class extends Controller {
           }
         })
       })
+
+
     }
 
     toggleInput(this.inputTarget, this.togglableTarget, this.containerTarget)
+
+    var counter = 0
+    inputs.forEach((input) => {
+      if (input.checked.toString() != input.dataset.initialState) {
+        controls.classList.remove('hidden')
+        return
+      }
+      counter += 1
+    })
+    if (counter == inputs.length) controls.classList.add('hidden')
   }
 }
