@@ -3,7 +3,7 @@
   <div class="campaign-show__header">
     <div class="campaign-show__header-banner">
       <div class="campaign-show__header-banner-text">
-        <h1>Manage the campaign</h1>
+        <h1 class="fs-3rem">Manage the campaign</h1>
         <p>There are <%= @campaign.employees.distinct.count %> employees in this campaign.<br>
           You can add or remove employees, change the reviews deadlines, <br>or change the campaign manager.
         </p>
@@ -30,6 +30,7 @@
 
 <a id='campaignInfoMessageTrigger' class='hidden' data-toggle='modal' data-target='#campaignInfoMessage'></a>
 <a id='sendEmailSuccessTrigger' class='hidden' data-toggle='modal' data-target='#sendEmailSuccess'></a>
+
 
 <!------------>
 <!-- MODALS -->

@@ -42,14 +42,12 @@ class Interview < ApplicationRecord
   end
 
   def fully_answered?
-    interview_answers.count >=
-      if self.crossed?
-        interview_questions.not_separator.required_for_manager.count
-      else
-        interview_questions.not_separator
-        .required?(self.label == 'Employee' ? 'employee' : 'manager')
-        .count
-      end
+    interview_answers
+      .where_exists(:interview_question, required_for: ["#{self.label == 'Employee' ? 'employee' : 'manager'}", "all"])
+      .count >= interview_questions.not_separator
+                  .required_for(self.label == 'Employee' ? 'employee' : 'manager')
+                  .count
+
   end
 
   def last_updated?

@@ -64,13 +64,13 @@
     <div class="interview-main__right">
 
       <div class="flex-row-start-centered width-100">
-        <%= link_to :back, class: 'flex-row-center-centered height-5rem width-5rem' do %>
+        <%= link_to :back, class: 'flex-row-center-centered d-sm-none height-5rem width-5rem' do %>
           <i class="fas fa-angle-left fs-2_4rem"></i>
         <% end %>
       </div>
 
 
-      <h1 class="fs-3rem mb-2rem"><%= template.title %></h1>
+      <h1 class="fs-2_4rem font-weight-700 mb-2rem"><%= @interview.campaign.title %></h1>
 
       <div class="trix-display">
         <%= sanitize template.description %>
@@ -110,7 +110,7 @@
             <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
               <p><%= question_num %>. </p>
               <span class="iconify" data-icon="<%= question.icon %>"></span>
-              <p><%= question.question %> <%= "*" if question.required? %></p>
+              <p><%= question.question %> <%= "*" if question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') %></p>
             </div>
             <div class="interview-main__right-question-description">
               <%= sanitize question.description %>
@@ -126,7 +126,9 @@
                 (@interview.manager? && manager != current_user) ||
                 (@interview.simple? && manager != current_user) ||
                 @interview.locked?
-              ) %>
+              ),
+              company: current_user.company
+            %>
           </div>
         </div>
       <% end %>

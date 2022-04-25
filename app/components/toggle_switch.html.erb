@@ -7,18 +7,20 @@
     id="<%= @name %>"
     class="hidden"
     <% if @checked %> checked <% end %>
+    data-initial-state='<%= @checked %>'
     value='true'
     data-toggle-switch-target="input"/>
 
   <div
-    class="<%= @checked ? 'bg-teal-600' : 'bg-gray-300' %> rounded-full" style="height: 16px;"
+    class="<%= @checked ? 'bkt-bg-light-grey' : 'bkt-bg-light-grey8' %> rounded-full" style="height: 16px;"
     data-toggle-switch-target='container'
     data-action="click->toggle-switch#toggle">
     <label
       data-remember-initial-state='<%= @remember_initial_state %>'
       data-toggle-switch-target="togglable"
       data-label-for="<%= @name %>"
-      class="-ml-4  w-8 h-8 absolute transition-all transform ease-linear duration-100 flex items-center justify-center rounded-full bg-white shadow-toggle border-gray-300 top-0 cursor-pointer <%= @checked ? 'left-96pc' : 'left-4pc' %>"
+      class="-ml-4 w-8 h-8 absolute transition-all transform ease-linear duration-100 flex items-center justify-center rounded-full <%= @checked ? 'bkt-bg-dark-grey' : 'bkt-bg-light-grey' %> shadow-toggle border-gray-300 top-0 cursor-pointer <%= @checked ? 'left-96pc' : 'left-4pc' %>"
+      style='margin-top: .1rem;'
     ></label>
   </div>
 

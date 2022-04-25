@@ -58,15 +58,21 @@
 
             <div class="interview-main__right-question">
               <a id="anchor-<%= question.id %>" style='position:absolute; top: -20rem;'></a>
-              <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
+              <div class='interview-main__right-question-title'>
                 <p><%= question_number %>. </p>
                 <span class="iconify" data-icon="<%= icon[question.question_type] %>"></span>
-                <p><%= question.question %> <%= "*" if question.required? %> <em>- visible by <%= question.visible_for %></em></p>
+                <p><%= question.question %> <em class="ml-1rem"><%= "required for #{question.required_for}" if question.required? %> - visible by <%= question.visible_for %></em></p>
               </div>
               <div class="interview-main__right-question-description">
                 <%= sanitize question.description %>
               </div>
-              <%= render 'interview_forms/show/show_interview_form_question_form', questions: @template.interview_questions, question: question, j: question_number, read_only: true %>
+              <%= render 'interview_forms/show/show_interview_form_question_form',
+                         questions: @template.interview_questions,
+                         question: question,
+                         j: question_number,
+                         read_only: true,
+                         company: current_user.company
+              %>
             </div>
           <% end %>
         </div>

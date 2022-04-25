@@ -19,14 +19,20 @@
       <% end %>
     </div>
 
-    <div class="campaigns-index__main" data-controller='change-page remember-search'>
-      <div class="campaigns-index__searchbar">
+    <div class="campaigns-index__main">
+
+      <div id="searchbar"
+           class="campaigns-index__searchbar"
+           data-controller='change-page remember-search'>
+
         <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
+
         <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true,
           data: {
             remember_search_key_value: 'bookletCampaignsSearches',
           }
           )do |f| %>
+
           <%=
             f.input(
               :title,
@@ -44,9 +50,12 @@
               required: false
             )
           %>
+
           <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current', input_html: {onchange: 'resetPage(this);'} %>
+
           <%= f.hidden_field :tags %>
           <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
+
           <%=
             f.submit(
               'Search',
@@ -58,11 +67,17 @@
               }
             )
           %>
+
           <button type='submit' class="btn-search btn-search--mobile">
             <i class="fas fa-search"></i>
           </button>
+
         <% end %>
-        <button class='btn-reset bkt-blue' data-action="click->remember-search#resetAllFilter">Reset</button>
+
+        <button class='btn-reset bkt-blue'
+                data-action="click->remember-search#resetAllFilter">
+          Reset
+        </button>
 
         <div
           class="width-100 position-relative"
@@ -96,6 +111,7 @@
         </div>
 
       </div>
+
       <div class="campaigns-index__list">
         <div class="campaigns-index__list-headers">
           <p>Campaign title</p>
@@ -108,7 +124,26 @@
           <%= render 'campaigns/index/index_campaigns_list', campaigns: @campaigns %>
         </div>
       </div>
+
     </div>
+
+  </div>
+</div>
+
+<!------------>
+<!-- HIDDEN -->
+<!------------>
+
+<a id='sendEmailSuccessTrigger' class='hidden' data-toggle='modal' data-target='#sendEmailSuccess'></a>
+
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade' id='sendEmailSuccess' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
   </div>
 </div>
 

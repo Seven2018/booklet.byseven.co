@@ -2,16 +2,16 @@
 <div class='bkt-bg-white bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'
   style='min-height: calc(100vh - 7.5rem);'
 >
-  <div class="bkt-page-container-content mb-4"
+  <div class="bkt-page-container-content mb-10rem"
     data-controller='permissions-form'
   >
     <div class="d-flex justify-content-center align-items-center mb-4">
-      <h1>Permissions</h1>
+      <h1 class="fs-3rem font-weight-700">Permissions</h1>
     </div>
 
     <div class="fs-1_6rem my-3rem bkt-dark-grey">
       <span class="font-weight-900">Choose a preset role</span>
-      <span class="fs-1_6rem bkt-light-grey italic">(optionnal)</span>
+      <span class="fs-1_6rem bkt-light-grey italic">(optional)</span>
     </div>
 
 
@@ -21,14 +21,15 @@
       name: :employee,
       checked: false,
       title: "Employee",
-      subtitle: "For lambda users.<br>This role concerns only the user and his/her personnal tasks.",
+      subtitle: "For standard users.<br>This role concerns only the user and his/her personal tasks.",
       data_actions: 'change->permissions-form#select',
       data_attributes: {
         cans: User::EMPLOYEE_PERMISSIONS.cans,
         cants: User::EMPLOYEE_PERMISSIONS.cants
-      }
+      },
+      checked_color: 'dark-grey'
     ) do %>
-      <span class="iconify fs-3rem" data-icon="emojione:hammer"></span>
+      <span class="iconify fs-5rem" data-icon="noto:hammer"></span>
     <% end %>
 
     <%= render_component RadioButtonTileComponent.new(
@@ -41,9 +42,10 @@
       data_attributes: {
         cans: User::MANAGER_PERMISSIONS.cans,
         cants: User::MANAGER_PERMISSIONS.cants
-      }
+      },
+      checked_color: 'dark-grey'
     ) do %>
-      <span class="iconify fs-3rem" data-icon="emojione:hammer-and-pick"></span>
+    <span class="iconify fs-5rem" data-icon="noto:hammer-and-pick"></span>
     <% end %>
 
     <%= render_component RadioButtonTileComponent.new(
@@ -56,43 +58,61 @@
       data_attributes: {
         cans: User::ADMIN_PERMISSIONS.cans,
         cants: User::ADMIN_PERMISSIONS.cants
-      }
+      },
+      checked_color: 'dark-grey'
     ) do %>
-      <span class="iconify fs-3rem" data-icon="emojione:hammer-and-wrench"></span>
+      <span class="iconify fs-5rem" data-icon="noto:hammer-and-wrench"></span>
     <% end %>
     </div>
 
 
-    <div class="fs-1_6rem pb-2rem bkt-dark-grey font-weight-900">
+    <div class="fs-1_6rem bkt-dark-grey font-weight-500">
       Manage granted access
     </div>
 
-    <div class="flex items-center justify-content-between fs-1_4rem w-full bkt-light-grey border-bottom-bkt-light-grey">
-      <div>Feature</div>
-      <div>Grant access</div>
-    </div>
+    <%= simple_form_for @user, url: user_permissions_path(@user), method: :patch, local: true do |f| %>
 
-      <%= simple_form_for @user, url: user_permissions_path(@user), method: :patch, local: true do |f| %>
-        <% User::ADMIN_PERMISSIONS.keys.each do |permission| %>
-          <div class='flex items-center justify-content-between fs-1_4rem w-full py-2'>
-            <div><%= permission.to_s.gsub('_', ' ').capitalize %></div>
-            <%= render_component ToggleSwitch.new(
-              name: "user[#{permission}]",
-              checked: @user.send(permission),
-              remember_initial_state: true) %>
+      <div class="pos-rel">
+
+        <% User::PERMISSIONS_DISPLAY.each do |group| %>
+
+          <div class="flex items-center justify-content-between mt-2rem fs-1_4rem w-full bkt-light-grey border-bottom-bkt-light-grey">
+            <div><%= group.keys.first.capitalize %></div>
+            <div>Grant access</div>
           </div>
+
+          <% group.values.flatten.each do |obj| %>
+            <div class='flex items-center justify-content-between fs-1_4rem w-full py-2'>
+              <div class="width-90">
+                <p class="fs-1_4rem font-weight-600"><%= obj.title %></p>
+                <p class="fs-1_2rem font-weight-500 italic"><%= obj.description %></p>
+              </div>
+              <%= render_component ToggleSwitch.new(
+                name: "user[#{obj.permission}]",
+                checked: @user.send(obj.permission),
+                remember_initial_state: true) %>
+            </div>
+          <% end %>
+
         <% end %>
+
         <input
           type="texr"
           name="user[strong_params_passer]"
           class="hidden"
           value='true'
         />
-        <div class="flex justify-center items-center mt-5 w-full">
-          <%= link_to 'Reset', edit_user_permissions_path(@user), class: 'bkt-blue' %>
+
+        <div id="control-buttons"
+             class="flex justify-center items-center mt-5 w-full pos-fix py-2rem hidden" style='bottom: 0; left: 0; right: 0;'>
+          <%= link_to 'Reset', edit_user_permissions_path(@user), class: 'bkt-btn-white' %>
           <div class="mx-4"></div>
-          <%= button_tag 'Save', type: 'submit', class: 'bkt-btn-white' %>
+          <%= button_tag 'Apply changes', type: 'submit', class: 'bkt-btn-dark-grey' %>
         </div>
-      <% end %>
-    </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
 </div>

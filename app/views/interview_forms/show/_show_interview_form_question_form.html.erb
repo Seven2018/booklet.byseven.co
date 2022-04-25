@@ -10,7 +10,6 @@
 
       <%= f.input :answer,
           as: :text,
-          required: question.required?,
           disabled: read_only %>
 
     <% elsif question.rating? %>
@@ -32,7 +31,10 @@
             class="full"
             for="<%= input_label_key %>"
             title="<%= stars_count %> stars"
-          ><%= stars_count %></label>
+          >
+            <%= raw company.rating_logo %>
+            <%= stars_count %>
+          </label>
         <% end %>
       </fieldset>
 
@@ -51,7 +53,6 @@
       <%= f.input(
         :objective,
         as: :text,
-        required: question.required?,
         disabled: read_only
       ) if question.objective? %>
 

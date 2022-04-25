@@ -71,7 +71,8 @@
           <% unless campaign.completion_for(:all) == 100 %>
             <%= link_to 'Send Email', send_notification_email_path(id: campaign.id),
               data: { action: 'click->dropdown#hide' },
-              class: 'px-3 py-2 bkt-light-grey-hover w-100' %>
+              class: 'px-3 py-2 bkt-light-grey-hover w-100',
+              remote: true %>
           <% end %>
         </div>
       </div>
