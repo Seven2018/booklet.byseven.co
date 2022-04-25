@@ -39,83 +39,111 @@
             campaign.interviews_for(employee.id)
         %>
 
-        <div class="campaigns-my-interviews__card-group border-bottom-bkt-light-grey5-not-last-child pb-3">
-          <div class="campaigns-my-interviews__card-group-left">
-
-            <div class="campaigns-my-interviews__card-employee">
-
-              <div class="campaigns-my-interviews__card-avatar">
-                <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='width-5rem height-5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+        <div class="d-flex py-4 border-bottom-bkt-light-grey5-not-last-child">
+          <div class="flex-column">
+            <div class="flex-row-start-centered">
+              <div class="flex-column">
+                <div class="flex-row-start-centered">
+                  <div class="flex-column mr-2">
+                    <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='width-5rem height-5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+                  </div>
+                  <div class="flex-column">
+                    <div class="flex-row-start-centered">
+                      <p class="fs-1_6rem font-weight-500 text-truncate width-30rem"><%= employee.fullname %></p>
+                    </div>
+                    <div class="flex-row-start-centered">
+                      <p class="bkt-light-grey italic">Interviewee</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              <div class="campaigns-my-interviews__card-name-status">
-
-                <h6><%= employee.fullname %><em style="color:darkgray">- Interviewee</em></h6>
-
-                <% if interview_form.answerable_by_manager? %>
-                  <p class='bkt-light-grey6'>N/A</p>
-                <% elsif employee_interview&.submitted? %>
-                  <p class='bkt-green'>Review completed</p>
-                <% else %>
-                  <p class='bkt-red'>Review not completed</p>
-                <% end %>
-
+              <div class="flex-column">
+                status
               </div>
-
             </div>
-
           </div>
 
-          <% if interview_form.answerable_by_manager? %>
-
-            <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
-              <%= manager_interview&.submitted? ? 'Update' : 'Start review' %>
-            <% end %>
-
-          <% elsif interview_form.answerable_by_employee? && employee_interview.submitted? %>
-
-            <%= link_to interview_path(employee_interview), class: 'bkt-btn-blue' do %>
-              Review
-            <% end %>
-
-          <% elsif interview_form.answerable_by_both? %>
-
-            <% if interviews.where(locked_at: nil).empty? %>
-
-              <button class="bkt-btn-blue disabled">
-                Locked
-                <span class="iconify" data-icon="bxs:lock-alt"></span>
-              </button>
-
-            <% elsif interview_form.cross && crossed_interview.submitted? %>
-
-              <%= link_to lock_interview_path(interview_id: crossed_interview.id), class: 'bkt-btn-blue' do %>
-                Lock interview
-              <% end %>
-
-            <% elsif interview_form.cross && manager_interview.submitted? && employee_interview.submitted? %>
-
-              <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue' do %>
-                Start cross review
-              <% end %>
-
-            <% elsif interview_form.cross && manager_interview.submitted? && !employee_interview.submitted? %>
-
-              <button class="bkt-bg-light-grey p-1rem rounded-5px">
-                Waiting for employee's review
-              </button>
-
-            <% else %>
-
-              <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
-                Start review
-              <% end %>
-
-            <% end %>
-
-          <% end %>
-
+          <div class="flex-column">
+            actions
+          </div>
         </div>
+<!--        <div class="campaigns-my-interviews__card-group border-bottom-bkt-light-grey5-not-last-child pb-3">-->
+<!--          <div class="campaigns-my-interviews__card-group-left">-->
+
+<!--            <div class="campaigns-my-interviews__card-employee">-->
+
+<!--              <div class="campaigns-my-interviews__card-avatar">-->
+<!--                <img src="<%#= employee.picture %>" alt="<%#= employee.fullname %>" class='width-5rem height-5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>-->
+<!--              </div>-->
+
+<!--              <div class="campaigns-my-interviews__card-name-status">-->
+
+<!--                <h6><%#= employee.fullname %><em style="color:darkgray">- Interviewee</em></h6>-->
+
+                <%# if interview_form.answerable_by_manager? %>
+<!--                  <p class='bkt-light-grey6'>N/A</p>-->
+                <%# elsif employee_interview&.submitted? %>
+<!--                  <p class='bkt-green'>Review completed</p>-->
+                <%# else %>
+<!--                  <p class='bkt-red'>Review not completed</p>-->
+                <%# end %>
+
+<!--              </div>-->
+
+<!--            </div>-->
+
+<!--          </div>-->
+
+          <%# if interview_form.answerable_by_manager? %>
+
+            <%#= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
+              <%#= manager_interview&.submitted? ? 'Update' : 'Start review' %>
+            <%# end %>
+
+          <%# elsif interview_form.answerable_by_employee? && employee_interview.submitted? %>
+
+            <%#= link_to interview_path(employee_interview), class: 'bkt-btn-blue' do %>
+<!--              Review-->
+            <%# end %>
+
+          <%# elsif interview_form.answerable_by_both? %>
+
+            <%# if interviews.where(locked_at: nil).empty? %>
+
+<!--              <button class="bkt-btn-blue disabled">-->
+<!--                Locked-->
+<!--                <span class="iconify" data-icon="bxs:lock-alt"></span>-->
+<!--              </button>-->
+
+            <%# elsif interview_form.cross && crossed_interview.submitted? %>
+
+              <%#= link_to lock_interview_path(interview_id: crossed_interview.id), class: 'bkt-btn-blue' do %>
+<!--                Lock interview-->
+              <%# end %>
+
+            <%# elsif interview_form.cross && manager_interview.submitted? && employee_interview.submitted? %>
+
+              <%#= link_to interview_path(crossed_interview), class: 'bkt-btn-blue' do %>
+<!--                Start cross review-->
+              <%# end %>
+
+            <%# elsif interview_form.cross && manager_interview.submitted? && !employee_interview.submitted? %>
+
+<!--              <button class="bkt-bg-light-grey p-1rem rounded-5px">-->
+<!--                Waiting for employee's review-->
+<!--              </button>-->
+
+            <%# else %>
+
+              <%#= link_to interview_path(manager_interview), class: 'bkt-btn-blue' do %>
+<!--                Start review-->
+              <%# end %>
+
+            <%# end %>
+
+          <%# end %>
+
+<!--        </div>-->
 
       <% end %>
 
