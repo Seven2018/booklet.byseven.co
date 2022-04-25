@@ -6,7 +6,7 @@ task :interviews_send_reminders => :environment do
 
   reminder_days = [7,3,0].map{|num| Time.zone.today + num.days}
 
-  Interview.where(completed: false, date: reminder_days).each do |interview|
+  Interview.where.not(status: :submitted).where(date: reminder_days).each do |interview|
 
     interviewee = interview.employee
     interviewer = interview.interviewer

@@ -62,7 +62,7 @@ class CampaignsController < ApplicationController
 
     @campaigns = CampaignDecorator.decorate_collection @campaigns
 
-    @interviews_to_fill_count = Interview.where(employee: current_user, label: 'Employee', completed: false).count
+    @interviews_to_fill_count = Interview.where(employee: current_user, label: 'Employee').where.not(status: :submitted).count
 
     respond_to do |format|
       format.html
@@ -79,9 +79,9 @@ class CampaignsController < ApplicationController
                                                   label: ['Manager', 'Crossed'],
                                                   locked_at: nil)
                                            .count
-    @interviews_to_fill_count = Interview.where(interviewer: current_user,
-                                                label: ['Manager', 'Crossed'],
-                                                completed: false).count
+    @interviews_to_fill_count = Interview
+                                  .where(interviewer: current_user, label: ['Manager', 'Crossed'])
+                                  .where.not(status: :submitted).count
 
     @ongoing_campaigns = campaigns.where_exists(:interviews, interviewer: current_user, locked_at: nil)
     @completed_campaigns = campaigns.where_not_exists(:interviews, interviewer: current_user, locked_at: nil)

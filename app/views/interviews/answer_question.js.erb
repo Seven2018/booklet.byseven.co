@@ -12,3 +12,8 @@ submit_buttons.forEach((button) => {
     link.href = ''
   }
 })
+
+status_to_update = document.getElementById('xhr-form-status-btn')
+status_to_update.classList.remove('bkt-yellow')
+status_to_update.classList.add('bkt-green')
+status_to_update.innerText = 'Up to date'

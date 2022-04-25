@@ -5,9 +5,9 @@
   <% next unless employee_interview %>
 
   <% manager =
-    [employee_interview, manager_interview, crossed_interview].find(&:present?).interviewer %>
+       [employee_interview, manager_interview, crossed_interview].find(&:present?).interviewer %>
   <% employee =
-    [employee_interview, manager_interview, crossed_interview].find(&:present?).employee %>
+       [employee_interview, manager_interview, crossed_interview].find(&:present?).employee %>
 
   <%#:::::: VERSION DESKTOP START ::::::%>
   <div class="campaigns-my-interviews__card pl-5rem py-3rem">
@@ -24,8 +24,8 @@
             <h2><%= campaign.title %></h2>
 
             <div class="flex-row-start-centered">
-              <p class="campaigns-my-interviews__card-status <%= campaign.completion_status(current_user) %>"><%= campaign.completion_status_string(current_user) %></p>
-              <div class="deadline"><p>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p></div>
+              <div class="deadline"><p>Deadline
+                : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p></div>
             </div>
 
           </div>
@@ -36,27 +36,48 @@
       <div class="campaigns-my-interviews__card-group">
 
         <div class="campaigns-my-interviews__card-manager">
-
           <div class="campaigns-my-interviews__card-avatar">
             <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='width-5rem height-5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           </div>
 
           <div class="campaigns-my-interviews__card-name-status">
 
-            <h6><%= manager.fullname %><em style="color:darkgray"> - Interviewer</em></h6>
+            <h6 class="fs-1_6rem"><%= manager.fullname %></h6>
 
-            <% if manager_interview&.completed? %>
-              <p class='bkt-green'>Review completed</p>
-            <% elsif manager_interview.present? %>
-              <p class='bkt-red'>Review not completed</p>
-            <% else %>
-              <p class='bkt-light-grey6'>N/A</p>
-            <% end %>
+            <p class="fs-1_4rem" style="color:darkgray"> Interviewer</p>
 
           </div>
-
         </div>
 
+        <div class="border-left-bkt-light-grey pl-4 justify-content-center">
+          <div class="flex-row-start-centered">
+            <p class="fs-1rem">
+              <%= employee_interview.get_status_str %>
+              <% if manager_interview %>
+                and <%= manager_interview.get_status_str %>
+              <% end %>
+              <% if crossed_interview %>
+                , <%= crossed_interview.get_status_str %>
+              <% end %>
+            </p>
+            <span class="ml-3 cursor-pointer rounded-circle bkt-light-grey border-bkt-light-grey h-9 w-9 text-center" data-toggle='modal' data-target='#interview-status-info'>?</span>
+          </div>
+          <div class="flex-row-start-centered">
+            <div class="flex-column mr-5">
+              IE <span class="h-2.5 w-2.5 inline-block <%= employee_interview.get_status_bg_class %>"></span>
+            </div>
+            <div class="flex-column mr-5">
+              IR<%= manager_interview.id %>
+              <span class="h-2.5 w-2.5 inline-block bkt-bg-green <%= manager_interview.get_status_bg_class %>"></span>
+            </div>
+            <% if crossed_interview %>
+              <div class="flex-column mr-5">
+                CR <%= crossed_interview.id %>
+                <span class="h-2.5 w-2.5 inline-block bkt-bg-light-grey <%= crossed_interview.get_status_bg_class %>"></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -64,7 +85,7 @@
     <div class="campaigns-my-interviews__card-part-right">
       <div class="campaigns-my-interviews__card-review-link">
 
-        <%= link_to interview_path(crossed_interview&.completed? ? crossed_interview : employee_interview) do %>
+        <%= link_to interview_path(crossed_interview&.submitted? ? crossed_interview : employee_interview) do %>
           <p class='d-flex align-items-center'>
             <span class="mr-3">Go to my review</span> <span class="iconify" data-icon="akar-icons:chevron-right"></span>
           </p>
@@ -82,7 +103,8 @@
       <p class="campaigns-my-interviews__card-status ml-4 mt-4 <%= campaign.completion_status(current_user) %>">
         <%= campaign.completion_status_string(current_user) %>
       </p>
-      <p class="bkt-dark-grey fs-1rem font-weight-100 mr-1rem"><em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
+      <p class="bkt-dark-grey fs-1rem font-weight-100 mr-1rem">
+        <em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
     </div>
     <div class="campaigns-my-interviews__card-left">
       <div class="campaigns-my-interviews__card-header mx-4">
@@ -111,7 +133,7 @@
 
               <h6><%= manager.fullname %><em style="color:darkgray">- Interviewer</em></h6>
 
-              <% if manager_interview&.completed? %>
+              <% if manager_interview&.submitted? %>
                 <p class='bkt-green'>Review completed</p>
               <% elsif manager_interview.present? %>
                 <p class='bkt-red'>Review not completed</p>
@@ -134,7 +156,7 @@
 
               <h6><%= "#{employee.fullname}" %><em style="color:darkgray">- Interviewee</em></h6>
 
-              <% if employee_interview.completed? %>
+              <% if employee_interview.submitted? %>
                 <p class='bkt-green'>Review completed</p>
               <% else %>
                 <p class='bkt-red'>Review not completed</p>
@@ -162,9 +184,10 @@
 
     </div>
 
-    <a href="<% link_to interview_path(employee_interview || manager_interview) %>"></a>
-    <script>$(".campaigns-my-interviews__card--mobile").click(function() {
-    window.location = $(this).find("a").attr("href");
+    <a href="
+      <% link_to interview_path(employee_interview || manager_interview) %>"></a>
+    <script>$(".campaigns-my-interviews__card--mobile").click(function () {
+      window.location = $(this).find("a").attr("href");
       return false;
     });</script>
 
