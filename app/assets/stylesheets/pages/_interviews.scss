@@ -347,6 +347,10 @@
   flex-direction: column;
   align-items: center;
 
+  svg {
+    color: #ddd;
+  }
+
   .saved_answers {
     display: flex;
     justify-content: center;
@@ -367,7 +371,7 @@
 
 .rating > input:checked ~ label, /* show gold star when clicked */
 .rating:not(:checked, .read_only) > label:hover, /* hover current star */
-.rating:not(:checked, .read_only) > label:hover ~ label { color: $bkt-blue; cursor: pointer } /* hover previous stars in list */
+.rating:not(:checked, .read_only) > label:hover ~ label { color: $bkt-blue; cursor: pointer; svg {color: $bkt-blue;} } /* hover previous stars in list */
 
 .rating:not(.read_only) > input:checked + label:hover, /* hover current star when changing rating */
 .rating:not(.read_only) > input:checked ~ label:hover,
@@ -506,6 +510,14 @@
 
   .rating-crossed {
     margin-bottom: 1rem;
+
+    .rating-filled > svg {
+      color: $bkt-dark-grey;
+    }
+
+    .rating-empty > svg {
+      color: #ddd;
+    }
   }
 
   .interview-crossed-answer__text, .interview-crossed-answer__objective {

@@ -98,7 +98,7 @@ class CampaignsController < ApplicationController
 
   def send_notification_email
     authorize @campaign
-    interviewee = User.find(params[:user_id])
+    interviewee = User.find_by(id: params[:user_id])
 
     if interviewee.present?
       interview = Interview.find_by(campaign: @campaign, employee: interviewee, label: 'Employee')
