@@ -9,6 +9,6 @@ class UserTag < ApplicationRecord
 
   def same_company
     errors.add(:base, 'a locked interview can not be changed') unless
-      user.company_id == tag.company_id
+      tag.present? && user.company_id == tag.company_id
   end
 end
