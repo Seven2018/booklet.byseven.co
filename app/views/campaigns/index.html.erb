@@ -130,6 +130,23 @@
   </div>
 </div>
 
+<!------------>
+<!-- HIDDEN -->
+<!------------>
+
+<a id='sendEmailSuccessTrigger' class='hidden' data-toggle='modal' data-target='#sendEmailSuccess'></a>
+
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div class='modal fade' id='sendEmailSuccess' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
+  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+    <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
+  </div>
+</div>
+
 
 <!---------------->
 <!-- JAVASCRIPT -->

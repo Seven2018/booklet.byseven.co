@@ -9,7 +9,7 @@ class UserMailer < ApplicationMailer
     @title = "Hello, #{@user.fullname}"
     @description = "Your have been invited to join Booklet !\n Click here to create your password"
     @button_text = "Create my password"
-    @button_link = accept_invitation_url(@user, invitation_token: @token)
+    @button_link = accept_user_invitation_url(@user, invitation_token: @token)
 
     mail(to: @user.email, subject: 'Welcome to Booklet !')
   end
