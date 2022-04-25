@@ -67,12 +67,12 @@
               IE <span class="h-2.5 w-2.5 inline-block <%= employee_interview.get_status_bg_class %>"></span>
             </div>
             <div class="flex-column mr-5">
-              IR<%= manager_interview.id %>
+              IR
               <span class="h-2.5 w-2.5 inline-block bkt-bg-green <%= manager_interview.get_status_bg_class %>"></span>
             </div>
             <% if crossed_interview %>
               <div class="flex-column mr-5">
-                CR <%= crossed_interview.id %>
+                CR
                 <span class="h-2.5 w-2.5 inline-block bkt-bg-light-grey <%= crossed_interview.get_status_bg_class %>"></span>
               </div>
             <% end %>
