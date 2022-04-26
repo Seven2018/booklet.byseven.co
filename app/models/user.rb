@@ -110,12 +110,10 @@ class User < ApplicationRecord
   end
 
   def invite!
-    invitation_token = SecureRandom.hex(32)
-
-    self.update invitation_token: invitation_token
+    self.generate_invitation_token!
 
     UserMailer.with(user: self)
-        .account_created(self)
+        .account_created(self, self.raw_invitation_token)
         .deliver_later
   end
 
