@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
     # Send invitation
     if new_user
-      if send_invite && Rails.env == 'production'
+      if send_invite
         @user.save(validate: false)
         @user.invite!
       else

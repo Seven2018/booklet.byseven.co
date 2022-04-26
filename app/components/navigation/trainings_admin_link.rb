@@ -6,7 +6,7 @@ class Navigation::TrainingsAdminLink < ViewComponent::Base
   end
 
   def admin_link_text
-    'Create'
+    'Admin'
   end
 
   def should_render?

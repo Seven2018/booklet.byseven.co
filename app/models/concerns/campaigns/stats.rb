@@ -11,7 +11,7 @@ module Campaigns::Stats
         id: manager_interview.id,
         interviewer_id: manager_interview.interviewer.id,
         answers_count: manager_interview.answers.count,
-        completed: manager_interview.completed,
+        completed: manager_interview.submitted?,
         locked_at: manager_interview.locked_at
       } if manager_interview
 
@@ -19,7 +19,7 @@ module Campaigns::Stats
         id: employee_interview.id,
         interviewer_id: employee_interview.interviewer.id,
         answers_count: employee_interview.answers.count,
-        completed: employee_interview.completed,
+        completed: employee_interview.submitted?,
         locked_at: employee_interview.locked_at
       } if employee_interview
 
@@ -27,7 +27,7 @@ module Campaigns::Stats
         id: crossed_interview.id,
         interviewer_id: crossed_interview.interviewer.id,
         answers_count: crossed_interview.answers.count,
-        completed: crossed_interview.completed,
+        completed: crossed_interview.submitted?,
         locked_at: crossed_interview.locked_at
       } if crossed_interview
 
@@ -35,7 +35,7 @@ module Campaigns::Stats
         id: simple_interview.id,
         interviewer_id: simple_interview.interviewer.id,
         answers_count: simple_interview.answers.count,
-        completed: simple_interview.completed,
+        completed: simple_interview.submitted?,
         locked_at: simple_interview.locked_at
       } if simple_interview
 
