@@ -201,7 +201,7 @@
         <div class="booklet-select__selected" onclick="<%= 'BookletSelectExpand(this);' unless read_only %>">
           <p><%= current_answer.present? ? current_answer : '' %></p>
           <div class="booklet-select__controls">
-            <% unless question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') && current_answer == '' %>
+            <% if !question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') && current_answer == '' %>
               <div class="booklet-select__controls-icon" onclick='BookletSelectRemoveAnswer(this);'>
                 <i class="fas fa-times"></i>
               </div>

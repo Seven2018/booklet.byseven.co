@@ -14,7 +14,7 @@
       <div class="organisation__users-info streched-link">
         <%= link_to user_path(user) do %>
           <img src="<%= user.picture %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          <p class='organisation__user-name' data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname %> <%= user.firstname %></p>
+          <p class='organisation__user-name' data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname.titleize %> <%= user.firstname %></p>
         <% end %>
       </div>
       <div class="organisation__users-info">
