@@ -44,6 +44,52 @@ module Users::Permissions
     can_edit_permissions:         true
   }
 
+  PERMISSIONS_DISPLAY = [
+    {interviews: [
+        OpenStruct.new(permission: 'can_create_campaigns',
+                       title: 'Create and edit campaigns',
+                       description: 'Access to campaign index. Allows to create new campaigns using existing templates. Campaigns created can also be edited (deadline, interviewees, interviewers, unlock interviews ...)'),
+        OpenStruct.new(permission: 'can_create_templates',
+                       title: 'Create and edit templates',
+                       description: 'Access to template index. Allows to create and edit existing templates.'),
+        OpenStruct.new(permission: 'can_create_interview_reports',
+                       title: 'Create interview reports',
+                       description: 'Access to report index. Allows to create reports on any campaign.')
+    ]},
+    {trainings: [
+        OpenStruct.new(permission: 'can_read_contents',
+                       title: 'View catalog',
+                       description: 'Access to the Catalog page. Allows read created contents.'),
+        OpenStruct.new(permission: 'can_create_contents',
+                       title: 'Create and edit contents',
+                       description: 'Allow to create, edit and delete contents in the catalog.'),
+        OpenStruct.new(permission: 'can_create_trainings',
+                       title: 'Create trainings',
+                       description: 'Access to training index. Allows to view, create and delete trainings.'),
+        OpenStruct.new(permission: 'can_edit_training_workshops',
+                       title: 'Edit trainings',
+                       description: 'Allows to edit workshops within existing trainings (update text, videos ...)'),
+        OpenStruct.new(permission: 'can_create_training_reports',
+                       title: 'Create training reports',
+                       description: 'Access to report index. Allows to view and create reports on existing trainings.')
+    ]},
+    {employees: [
+        OpenStruct.new(permission: 'can_read_employees',
+                       title: 'View employees',
+                       description: 'Access to the Employees page. Allows to view the employees list and their profiles.'),
+        OpenStruct.new(permission: 'can_create_employees',
+                       title: 'Create employees',
+                       description: 'Allows to create, remove and export employees.'),
+        OpenStruct.new(permission: 'can_edit_employees',
+                       title: 'Edit users profiles',
+                       description: 'Allows to edit informations on users profiles (name, birth date, tags ...).'),
+        OpenStruct.new(permission: 'can_edit_permissions',
+                       title: 'Edit users premission',
+                       description: 'Allows to edit users permissions.')
+    ]}
+
+  ]
+
   def compare_permissions(preset)
     user_permissions = self.slice(preset.keys).symbolize_keys
 

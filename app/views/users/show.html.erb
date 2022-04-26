@@ -112,84 +112,92 @@
 
     </div>
 
-    <div class="flex-row-between-centered width-100 mb-2rem">
+    <div class="flex-row-center-centered width-100 mb-2rem">
 
-      <div class="p-2rem bkt-box-shadow rounded-10px" style='width: 45%;'>
+      <% if @user.company.applications.include?('trainings') %>
 
-        <div class="flex-row-start-centered mb-1rem">
+        <div class="p-2rem bkt-box-shadow rounded-10px" style='width: 45%;'>
 
-          <div class="flex-row-between-centered">
-            <div class="flex-row-center-centered height-4rem width-4rem rounded-20px bkt-bg-light-orange mr-1rem">
-              <svg width="25" height="25" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.5 0L0 7.53846L4.4 9.47692V13.1385C3.08 13.5692 2.2 14.8615 2.2 16.1538C2.2 17.4462 3.08 18.7385 4.4 19.1692V19.3846L2.42 23.9077C1.76 25.8462 2.2 28 5.5 28C8.8 28 9.24 25.8462 8.58 23.9077L6.6 19.3846C7.92 18.7385 8.8 17.6615 8.8 16.1538C8.8 14.6462 7.92 13.5692 6.6 13.1385V10.5538L16.5 15.0769L33 7.53846L16.5 0ZM26.18 14L16.28 18.3077L11 15.9385V16.1538C11 17.6615 10.34 18.9538 9.24 20.0308L10.56 23.0462V23.2615C10.78 24.1231 11 24.9846 10.78 25.8462C12.32 26.4923 14.08 26.9231 16.28 26.9231C23.54 26.9231 26.18 22.6154 26.18 20.4615V14V14Z" fill="#EF8C64"/>
-              </svg>
+          <div class="flex-row-start-centered mb-1rem">
+
+            <div class="flex-row-between-centered">
+              <div class="flex-row-center-centered height-4rem width-4rem rounded-20px bkt-bg-light-orange mr-1rem">
+                <svg width="25" height="25" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.5 0L0 7.53846L4.4 9.47692V13.1385C3.08 13.5692 2.2 14.8615 2.2 16.1538C2.2 17.4462 3.08 18.7385 4.4 19.1692V19.3846L2.42 23.9077C1.76 25.8462 2.2 28 5.5 28C8.8 28 9.24 25.8462 8.58 23.9077L6.6 19.3846C7.92 18.7385 8.8 17.6615 8.8 16.1538C8.8 14.6462 7.92 13.5692 6.6 13.1385V10.5538L16.5 15.0769L33 7.53846L16.5 0ZM26.18 14L16.28 18.3077L11 15.9385V16.1538C11 17.6615 10.34 18.9538 9.24 20.0308L10.56 23.0462V23.2615C10.78 24.1231 11 24.9846 10.78 25.8462C12.32 26.4923 14.08 26.9231 16.28 26.9231C23.54 26.9231 26.18 22.6154 26.18 20.4615V14V14Z" fill="#EF8C64"/>
+                </svg>
+              </div>
+              <p class='fs-1_6rem font-weight-600 bkt-dark-grey'>Trainings</p>
             </div>
-            <p class='fs-1_6rem font-weight-600 bkt-dark-grey'>Trainings</p>
+
           </div>
 
-        </div>
+          <div class="flex-row-between-centered px-5rem">
 
-        <div class="flex-row-between-centered px-5rem">
-
-          <div id='command__trainings-completed'
-               class="command-tab flex-column-between-centered bkt-bg-light-orange active rounded-5px mr-1rem cursor-pointer"
-               style='height: 14rem; width: 14rem; border: 2px solid transparent;'
-               onclick="displaySelectedTab(this);">
-            <p class='fs-3rem'>🙌</p>
-            <p class='fs-3rem font-weight-600 bkt-orange'><%= @trainings_completed.count %></p>
-            <p class='width-70 fs-1_4rem font-weight-500 text-center'>Trainings done</p>
-          </div>
-
-          <div id='command__trainings-current'
-               class="command-tab flex-column-between-centered bkt-bg-light-orange rounded-5px ml-1rem cursor-pointer"
-               style='height: 14rem; width: 14rem; border: 2px solid transparent;'
-               onclick="displaySelectedTab(this);">
-            <p class='fs-3rem'>👉</p>
-            <p class='fs-3rem font-weight-600 bkt-orange'><%= @trainings_current.count %></p>
-            <p class='width-70 fs-1_4rem font-weight-500 text-center'>Trainings to do</p>
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="p-2rem bkt-box-shadow rounded-10px" style='width: 45%;'>
-
-        <div class="flex-row-start-centered mb-1rem">
-
-          <div class="flex-row-between-centered">
-            <div class="flex-row-center-centered height-4rem width-4rem rounded-20px bkt-bg-light-blue mr-1rem">
-              <span class="iconify fs-2_4rem bkt-blue" data-icon="fluent:chat-multiple-24-filled"></span>
+            <div id='command__trainings-completed'
+                 class="command-tab flex-column-between-centered bkt-bg-light-orange active rounded-5px mr-1rem cursor-pointer"
+                 style='height: 14rem; width: 14rem; border: 2px solid transparent;'
+                 onclick="displaySelectedTab(this);">
+              <p class='fs-3rem'>🙌</p>
+              <p class='fs-3rem font-weight-600 bkt-orange'><%= @trainings_completed.count %></p>
+              <p class='width-70 fs-1_4rem font-weight-500 text-center'>Trainings done</p>
             </div>
-            <p class='fs-1_6rem font-weight-600 bkt-dark-grey'>Interviews</p>
+
+            <div id='command__trainings-current'
+                 class="command-tab flex-column-between-centered bkt-bg-light-orange rounded-5px ml-1rem cursor-pointer"
+                 style='height: 14rem; width: 14rem; border: 2px solid transparent;'
+                 onclick="displaySelectedTab(this);">
+              <p class='fs-3rem'>👉</p>
+              <p class='fs-3rem font-weight-600 bkt-orange'><%= @trainings_current.count %></p>
+              <p class='width-70 fs-1_4rem font-weight-500 text-center'>Trainings to do</p>
+            </div>
+
           </div>
 
         </div>
 
-        <div class="flex-row-between-centered px-5rem">
+      <% end %>
 
-          <div id='command__campaigns-completed'
-               class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px mr-1rem cursor-pointer"
-               style='height: 14rem; width: 14rem; border: 2px solid transparent;'
-               onclick="displaySelectedTab(this);">
-            <p class='fs-3rem'>🙌</p>
-            <p class='fs-3rem font-weight-600 bkt-blue'><%= @campaigns_completed.count %></p>
-            <p class='width-70 fs-1_4rem font-weight-500 text-center'>Interviews done</p>
+      <% if @user.company.applications.include?('interviews') %>
+
+        <div class="p-2rem bkt-box-shadow rounded-10px" style='width: 45%;'>
+
+          <div class="flex-row-start-centered mb-1rem">
+
+            <div class="flex-row-between-centered">
+              <div class="flex-row-center-centered height-4rem width-4rem rounded-20px bkt-bg-light-blue mr-1rem">
+                <span class="iconify fs-2_4rem bkt-blue" data-icon="fluent:chat-multiple-24-filled"></span>
+              </div>
+              <p class='fs-1_6rem font-weight-600 bkt-dark-grey'>Interviews</p>
+            </div>
+
           </div>
 
-          <div id='command__campaigns-current'
-               class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px ml-1rem cursor-pointer"
-               style='height: 14rem; width: 14rem; border: 2px solid transparent;'
-               onclick="displaySelectedTab(this);"
-               >
-            <p class='fs-3rem'>👉</p>
-            <p class='fs-3rem font-weight-600 bkt-blue'><%= @campaigns_current.count %></p>
-            <p class='width-70 fs-1_4rem font-weight-500 text-center'>Interviews to do</p>
+          <div class="flex-row-between-centered px-5rem">
+
+            <div id='command__campaigns-completed'
+                 class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px mr-1rem cursor-pointer"
+                 style='height: 14rem; width: 14rem; border: 2px solid transparent;'
+                 onclick="displaySelectedTab(this);">
+              <p class='fs-3rem'>🙌</p>
+              <p class='fs-3rem font-weight-600 bkt-blue'><%= @campaigns_completed.count %></p>
+              <p class='width-70 fs-1_4rem font-weight-500 text-center'>Interviews done</p>
+            </div>
+
+            <div id='command__campaigns-current'
+                 class="command-tab flex-column-between-centered bkt-bg-light-blue rounded-5px ml-1rem cursor-pointer"
+                 style='height: 14rem; width: 14rem; border: 2px solid transparent;'
+                 onclick="displaySelectedTab(this);"
+                 >
+              <p class='fs-3rem'>👉</p>
+              <p class='fs-3rem font-weight-600 bkt-blue'><%= @campaigns_current.count %></p>
+              <p class='width-70 fs-1_4rem font-weight-500 text-center'>Interviews to do</p>
+            </div>
+
           </div>
 
         </div>
 
-      </div>
+      <% end %>
 
     </div>
 
