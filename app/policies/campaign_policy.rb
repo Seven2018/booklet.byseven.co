@@ -15,7 +15,7 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def destroy?
-    create? || record.interviews.where(completed: true).empty?
+    create? || record.interviews.where(status: :submitted).empty?
   end
 
   def my_interviews?

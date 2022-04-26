@@ -13,6 +13,13 @@ class Interview < ApplicationRecord
 
   alias answers interview_answers
 
+  enum status: [
+    :not_started,
+    :in_progress,
+    :submitted,
+    :not_available_yet
+  ]
+
   include PgSearch::Model
   pg_search_scope :search_interviews,
     against: [ :title ],
@@ -27,7 +34,7 @@ class Interview < ApplicationRecord
   delegate :interviews, :owner, to: :campaign
   delegate :interview_questions, to: :interview_form
 
-  scope :completed, -> { where(completed: true) }
+  scope :submitted, -> { where(status: :submitted) }
   scope :locked, -> { where.not(locked_at: nil) }
 
   def set
@@ -54,10 +61,10 @@ class Interview < ApplicationRecord
     self.interview_answers.order(updated_at: :desc).first.updated_at.strftime('%d %b, %Y')
   end
 
-  def complete!
+  def submit!
     return unless fully_answered?
 
-    update completed: true
+    update status: :submitted
   end
 
   def time
