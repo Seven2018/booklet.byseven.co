@@ -14,6 +14,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    height: 100%;
 
     p {
       text-transform: none;
@@ -276,48 +277,6 @@
 
   .booklet-select__container {
     margin-top: 2rem;
-  }
-}
-
-.interview-thanks {
-  min-height: calc(100vh - 7.5rem);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
-  p {
-    text-align: center;
-    font-weight: bolder;
-  }
-
-  p:first-of-type {
-    margin-bottom: 2rem;
-  }
-
-  .fa-check-square {
-    color: #57E054;
-  }
-
-  .fa-thumbs-up {
-    color: #3177B7;
-  }
-
-  .interview-thanks__controls {
-    position:absolute;
-    bottom: 10rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    button {
-      margin: 0 2rem;
-
-      p {
-        margin: 0;
-      }
-    }
   }
 }
 

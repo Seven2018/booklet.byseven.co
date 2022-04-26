@@ -13,12 +13,12 @@ class Interview < ApplicationRecord
 
   alias answers interview_answers
 
-  enum status: [
-    :not_started,
-    :in_progress,
-    :submitted,
-    :not_available_yet
-  ]
+  enum status: {
+    not_started: 0,
+    not_available_yet: 10,
+    in_progress: 20,
+    submitted: 30
+  }
 
   include PgSearch::Model
   pg_search_scope :search_interviews,

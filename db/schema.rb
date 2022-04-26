@@ -260,7 +260,6 @@ ActiveRecord::Schema.define(version: 2022_04_22_160157) do
     t.text "options"
     t.string "question_type"
     t.integer "position"
-    t.boolean "required", default: false
     t.boolean "allow_comments", default: false
     t.bigint "interview_form_id"
     t.datetime "created_at", precision: 6, null: false
@@ -390,7 +389,7 @@ ActiveRecord::Schema.define(version: 2022_04_22_160157) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"

@@ -78,16 +78,16 @@
                 </div>
                 <div class="flex-row-start-centered ">
                   <div class="flex-column mr-5">
-                    IE <span class="h-2.5 w-2.5 inline-block <%= employee_interview.get_status_bg_class %>"></span>
+                    IE <span class="h-2.5 w-2.5 inline-block <%= employee_interview&.get_status_bg_class %>"></span>
                   </div>
                   <div class="flex-column mr-5">
                     IR
-                    <span class="h-2.5 w-2.5 inline-block <%= manager_interview.get_status_bg_class %>"></span>
+                    <span class="h-2.5 w-2.5 inline-block <%= manager_interview&.get_status_bg_class %>"></span>
                   </div>
                   <% if crossed_interview %>
                     <div class="flex-column mr-5">
                       CR
-                      <span class="h-2.5 w-2.5 inline-block <%= crossed_interview.get_status_bg_class %>"></span>
+                      <span class="h-2.5 w-2.5 inline-block <%= crossed_interview&.get_status_bg_class %>"></span>
                     </div>
                   <% end %>
                 </div>
