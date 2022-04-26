@@ -1,6 +1,7 @@
 required_answers = document.querySelectorAll('#interview_answer_answer:required, #interview_answer_objective:required')
 submit_buttons = document.querySelectorAll('#submit-interview')
 link = document.getElementById('submit-interview-link')
+status_to_update = document.getElementById('xhr-form-status-btn')
 
 submit_buttons.forEach((button) => {
   if (<%= @fully_answered %> && button != null) {
@@ -24,3 +25,7 @@ required_answers.forEach((input) => {
     return
   }
 })
+
+status_to_update.classList.remove('bkt-yellow')
+status_to_update.classList.add('bkt-green')
+status_to_update.innerText = 'Up to date'
