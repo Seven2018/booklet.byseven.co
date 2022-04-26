@@ -94,11 +94,15 @@ class InterviewsController < ApplicationController
 
     interview.submit!
 
-    other_interview_label = interview.employee? ? 'Manager' : 'Employee'
-    other_interview = Interview.find_by(label: other_interview_label, employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
-    cross_interview = Interview.find_by(label: 'Crossed', employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
-    if other_interview.status.to_sym == :submitted && cross_interview
-      cross_interview.update(status: :not_started)
+    if interview.label != 'Crossed'
+      # If it's not a crossed and Manager, Employee have answer/lock then
+      # we update cross review from not_available_yet to not_started
+      other_interview_label = interview.employee? ? 'Manager' : 'Employee'
+      other_interview = Interview.find_by(label: other_interview_label, employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
+      cross_interview = Interview.find_by(label: 'Crossed', employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
+      if other_interview.status.to_sym == :submitted && cross_interview
+        cross_interview.update(status: :not_started)
+      end
     end
 
     respond_to do |format|

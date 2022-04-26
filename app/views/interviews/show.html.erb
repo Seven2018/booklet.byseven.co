@@ -17,14 +17,24 @@
 <div class="interview-container">
 
   <div class="d-none d-sm-flex justify-content-between interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
-    <button
-      data-toggle='modal'
-      data-target='#confirmGoBack'
-      class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500 <%= 'opacity_0' if @interview.locked? %>"
-    >
-      <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
-      <p class="">Close and submit later</p>
-    </button>
+    <% if @interview.locked? %>
+      <button
+        class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500"
+        onclick="window.history.back()"
+      >
+        <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
+        <p class="">Close</p>
+      </button>
+    <% else %>
+      <button
+        data-toggle='modal'
+        data-target='#confirmGoBack'
+        class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500"
+      >
+        <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
+        <p class="">Close and submit later</p>
+      </button>
+    <% end %>
 
     <div class="flex-column">
       <div class="interview-controls__buttons">
@@ -233,7 +243,8 @@
     <div class="flex-row-center-centered">
       <span class="iconify ml-3" data-icon="noto:thumbs-up" data-height="70" data-width="70"></span>
     </div>
-    <p class="text-center fs-1_6rem font-weight-700 mt-5">Your answers are saved, you can come back later <br>to finish your interview and submit it.</p>
+    <p class="text-center fs-1_6rem font-weight-700 mt-5">Your answers are saved, you can come back later <br>to finish
+      your interview and submit it.</p>
     <p class="text-center fs-1_6rem  my-5">Your interview state will stay as ‘In Progress’.</p>
     <%= link_to 'Go to ‘My Interviews’', my_interviews_path, class: 'm-auto mt-5 p-3 bkt-white bkt-bg-blue rounded-5px' %>
   </div>
