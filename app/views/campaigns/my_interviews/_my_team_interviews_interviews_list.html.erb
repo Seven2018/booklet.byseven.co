@@ -12,7 +12,6 @@
           <div class="campaigns-my-interviews__card-title-deadline">
             <h2><%= campaign.title %></h2>
             <div class="flex-row-start-centered">
-              <!--              <p class="campaigns-my-interviews__card-status <%#= campaign.completion_status %>"><%#= campaign.completion_status_string %></p>-->
               <div class="deadline"><p>Deadline : <%= campaign.deadline %></p></div>
             </div>
           </div>
@@ -46,11 +45,11 @@
               <div class="flex-column">
                 <div class="flex-row-start-centered">
                   <div class="flex-column mr-2">
-                    <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='width-5rem height-5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+                    <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='width-3_5rem height-3_5rem min-w-3_5rem min-h-3_5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
                   </div>
-                  <div class="flex-column">
+                  <div class="flex-column width-25rem">
                     <div class="flex-row-start-centered">
-                      <p class="fs-1_6rem font-weight-500 text-truncate width-30rem"><%= employee.fullname %></p>
+                      <p class="fs-1_6rem font-weight-500 text-truncate width-25rem"><%= employee.fullname %></p>
                     </div>
                     <div class="flex-row-start-centered">
                       <% if employee_interview&.submitted? %>
@@ -66,14 +65,13 @@
               </div>
               <div class="flex-column border-left-bkt-light-grey pl-4">
                 <div class="flex-row-start-centered">
-                  <p class="fs-1rem">
-                    <%= employee_interview&.get_status_str %>
-                    <% if manager_interview %>
-                      and <%= manager_interview.get_status_str %>
-                    <% end %>
-                    <% if crossed_interview %>
-                      , <%= crossed_interview.get_status_str %>
-                    <% end %>
+                  <p class="fs-1_2rem font-weight-500">
+                    <%= campaign.decorate.generate_interviews_status_sentence(
+                          employee_interview: employee_interview,
+                          manager_interview: manager_interview,
+                          crossed_interview: crossed_interview
+                        )
+                    %>
                   </p>
                   <span class="ml-3 cursor-pointer rounded-circle bkt-light-grey border-bkt-light-grey w-6 fs-9px text-center" data-toggle='modal' data-target='#interview-status-info'>?</span>
                 </div>
@@ -83,12 +81,12 @@
                   </div>
                   <div class="flex-column mr-5">
                     IR
-                    <span class="h-2.5 w-2.5 inline-block bkt-bg-green <%= manager_interview&.get_status_bg_class %>"></span>
+                    <span class="h-2.5 w-2.5 inline-block <%= manager_interview.get_status_bg_class %>"></span>
                   </div>
                   <% if crossed_interview %>
                     <div class="flex-column mr-5">
                       CR
-                      <span class="h-2.5 w-2.5 inline-block bkt-bg-light-grey <%= crossed_interview&.get_status_bg_class %>"></span>
+                      <span class="h-2.5 w-2.5 inline-block <%= crossed_interview.get_status_bg_class %>"></span>
                     </div>
                   <% end %>
                 </div>
@@ -98,9 +96,13 @@
 
           <div class="grow">
             <div class="flex-row-end-centered">
-              <% if manager_interview&.submitted? %>
+              <% if manager_interview&.submitted? && crossed_interview.nil? %>
                 <%= link_to interview_path(manager_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
                   View my answers
+                <% end %>
+              <% elsif crossed_interview&.submitted? %>
+                <%= link_to interview_path(crossed_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
+                  View cross review answers
                 <% end %>
               <% end %>
 
