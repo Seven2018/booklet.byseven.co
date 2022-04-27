@@ -10,7 +10,7 @@
 
     <p id='template-edit__update-status'
        class='bkt-green mr-2rem'
-       data-controller="interviews--interviews-edit">Up to date</p>
+       data-controller="interviews--interview-forms-edit">Up to date</p>
 
     <%= link_to interview_form_path(@template), class: 'flex-row-between-centered rounded-10px p-2rem', style: 'background: rgba(49, 119, 183, 0.1);' do %>
       <span class="iconify bkt-blue mr-1rem" data-icon="akar-icons:eye"></span>
@@ -23,7 +23,7 @@
 <div id="template-show__container"
      class='flex-row-between-start bkt-bg-light-grey2 pos-rel bkt-box-shadow-compact-top'
      style='margin-top: 9rem;'
-     data-controller="interviews--interviews-edit">
+     data-controller="interviews--interview-forms-edit">
 
   <div id="template-show__container-left"
        class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100'
@@ -128,103 +128,6 @@
     else return false;
   }
 
-  // function checkVideoCompatibility(element) {
-  //   video_link = element.value
-  //   if (video_link.split('=')[0].replace("https://", "") == 'www.youtube.com/watch?v' || video_link == '') {
-  //     element.style.color = '#333333'
-  //     saveForm(element)
-  //   } else {
-  //     updateStatusMessage("Update failed")
-  //     element.style.color = '#FF5656'
-  //   }
-  // }
-
-  // function updateStatusMessage(message) {
-  //   message_storage = document.getElementById('template-edit__update-status')
-
-  //   if (message == 'Up to date') {
-  //     message_storage.classList.remove('bkt-red')
-  //     message_storage.classList.remove('bkt-yellow')
-  //     message_storage.classList.add('bkt-green')
-  //   } else if (message == 'Update failed') {
-  //     message_storage.classList.remove('bkt-green')
-  //     message_storage.classList.remove('bkt-yellow')
-  //     message_storage.classList.add('bkt-red')
-  //   } else {
-  //     message_storage.classList.remove('bkt-green')
-  //     message_storage.classList.remove('bkt-red')
-  //     message_storage.classList.add('bkt-yellow')
-  //   }
-
-  //   message_storage.innerText = message
-  // }
-
-  // AUTO UPDATE TEXTAREA HEIGHT //
-
-  const tx = document.getElementsByTagName("textarea");
-  for (let i = 0; i < tx.length; i++) {
-    tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
-    tx[i].addEventListener("click", OnInput, false);
-    tx[i].addEventListener("input", OnInput, false);
-    tx[i].click()
-  }
-
-  function OnInput() {
-    this.style.height = "auto";
-    this.style.height = (this.scrollHeight) + "px";
-  }
-
-
-  ///////////////////////
-  // ADD QUESTION MENU //
-  ///////////////////////
-
-  function addQuestionMenu(element) {
-
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      container = element.parentNode
-      button_add = element
-      button_remove = container.querySelector('.add_button_hide')
-      menu = container.querySelector('.template-edit__add-question-menu')
-
-      container.classList.add('active')
-      button_add.classList.add('hidden')
-      button_remove.classList.remove('hidden')
-      menu.classList.remove('hidden')
-
-      window.addEventListener('click', function(e) {
-        if (doubleClickGuardian == false) {
-          container.classList.remove('active')
-          button_add.classList.remove('hidden')
-          button_remove.classList.add('hidden')
-          menu.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-
-      setTimeout(function(){doubleClickGuardian = false}, 100)
-    }
-  }
-
-  function addQuestion(type, referenceNode) {
-    newDiv = document.createElement("div")
-
-    newDiv.classList.add('add-' + type)
-    template = document.querySelector('.add-' + type + '-template')
-    templateinfo = template.innerHTML
-    newDiv.innerHTML = templateinfo
-    position = referenceNode.id.split('-')[1]
-    position_storage = newDiv.querySelector('#interview_question_position')
-
-    position_storage.value = position
-    content = document.querySelector('#template-show__lines')
-    if (position == 0) {
-      content.insertBefore(newDiv, content.firstChild)
-    } else {
-      content.insertBefore(newDiv, referenceNode.nextSibling)
-    }
-  }
 
   //////////////////////
   // QUESTION OPTIONS //
@@ -350,60 +253,59 @@
 
 
 
-  ///////////////////////
-  // TEMPLATE SETTINGS //
-  ///////////////////////
+  // ///////////////////////
+  // // TEMPLATE SETTINGS //
+  // ///////////////////////
 
-  function BookletSelectExpand(element) {
-    doubleClickGuardian = true
-    dropdown = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-dropdown')
-    setTimeout(() => {
-      doubleClickGuardian = false
-    }, 100);
-    if (dropdown.classList.contains('hidden')) {
-      dropdown.classList.remove('hidden')
-      window.addEventListener('click', function(e) {
-        if (!doubleClickGuardian) {
-          dropdown.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    } else {
-      dropdown.classList.add('hidden')
-    }
-  }
+  // function BookletSelectExpand(element) {
+  //   doubleClickGuardian = true
+  //   dropdown = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-dropdown')
+  //   setTimeout(() => {
+  //     doubleClickGuardian = false
+  //   }, 100);
+  //   if (dropdown.classList.contains('hidden')) {
+  //     dropdown.classList.remove('hidden')
+  //     window.addEventListener('click', function(e) {
+  //       if (!doubleClickGuardian) {
+  //         dropdown.classList.add('hidden')
+  //         this.removeEventListener('click', arguments.callee, false);
+  //       }
+  //     });
+  //   } else {
+  //     dropdown.classList.add('hidden')
+  //   }
+  // }
 
-  function BookletSelectSubmit(element, attribute) {
-    updateStatusMessage("Updating...")
-    form = element.closest('form')
-    container = element.closest('.booklet-select__template-edit-container')
-    selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
-    selected_value = element.querySelector('p').innerText
-    storage = form.querySelector('#interview_form_' + attribute)
-    submit_button = form.querySelector('.hidden-submit')
+  // function BookletSelectSubmit(element, attribute) {
+  //   updateStatusMessage("Updating...")
+  //   form = element.closest('form')
+  //   container = element.closest('.booklet-select__template-edit-container')
+  //   selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
+  //   selected_value = element.querySelector('p').innerText
+  //   storage = form.querySelector('#interview_form_' + attribute)
+  //   submit_button = form.querySelector('.hidden-submit')
 
-    storage.value = selected_value.toLowerCase()
-    selected_display.innerText = selected_value
+  //   storage.value = selected_value.toLowerCase()
+  //   selected_display.innerText = selected_value
 
-    checkCrossAvailability(storage)
-    // submit_button.click()
-  }
+  //   checkCrossAvailability(storage)
+  // }
 
-  function checkCrossAvailability(element) {
-    form = element.closest('form')
-    cross_toggle = form.querySelector('#template-edit__settings-cross-toggle')
-    cross_toggle_input = cross_toggle.querySelector('input')
-    input_value = element.value
-    submit_button = form.querySelector('.hidden-submit')
+  // function checkCrossAvailability(element) {
+  //   form = element.closest('form')
+  //   cross_toggle = form.querySelector('#template-edit__settings-cross-toggle')
+  //   cross_toggle_input = cross_toggle.querySelector('input')
+  //   input_value = element.value
+  //   submit_button = form.querySelector('.hidden-submit')
 
-    if (input_value == 'both') {
-      cross_toggle_input.disabled = false
-    } else {
-      if (cross_toggle_input.checked) { cross_toggle_input.checked = false; switchSide(cross_toggle_input, false) }
-      cross_toggle_input.disabled = true
-    }
-    submit_button.click()
-  }
+  //   if (input_value == 'both') {
+  //     cross_toggle_input.disabled = false
+  //   } else {
+  //     if (cross_toggle_input.checked) { cross_toggle_input.checked = false; switchSide(cross_toggle_input, false) }
+  //     cross_toggle_input.disabled = true
+  //   }
+  //   submit_button.click()
+  // }
 
   ///////////////////
   // AUTO COMPLETE //

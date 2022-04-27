@@ -19,7 +19,7 @@ export default class extends Controller {
   }
 
   update(e) {
-    updateStatusMessage("Updating...")
+    this.updateStatusMessage("Updating...")
 
     clearTimeout(this.timer);
 
@@ -35,7 +35,8 @@ export default class extends Controller {
   //////////
 
   updateStatusMessage(message) {
-    message_storage = document.getElementById('template-edit__update-status')
+    const message_storage = document.getElementById('template-edit__update-status')
+
     if (message_storage == undefined) return
 
     if (message == 'Up to date') {
