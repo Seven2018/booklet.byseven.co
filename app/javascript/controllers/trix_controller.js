@@ -7,6 +7,9 @@ export default class extends Controller {
 
   connect() {
     this.setup()
+
+    this.timer
+    this.waitTime = 1000
   }
 
   setup() {
@@ -19,15 +22,12 @@ export default class extends Controller {
     if(window.updateStatusMessage != undefined) {
       window.updateStatusMessage("Updating...")
     }
-    if (typeof saving !== 'undefined') {
-      saving = false
-      if (!saving) {
-        saving = true
-        // TODO stop faking :/
-        setTimeout(function(){ saving = false }, 3000)
-      }
-    }
-    this.inputTarget.value = this.editorTarget.innerHTML
-    this.editorTarget.closest('form').querySelector('.hidden-submit').click()
+
+    clearTimeout(this.timer);
+
+    this.timer = setTimeout(() => {
+      this.inputTarget.value = this.editorTarget.innerHTML
+      this.editorTarget.closest('form').querySelector('.hidden-submit').click()
+    }, this.waitTime);
   }
 }
