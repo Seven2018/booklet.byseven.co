@@ -68,7 +68,7 @@
                 </div>
               <% end %>
               <% if crossed_interview %>
-                <div class="flex-column mr-5">
+                <div class="flex-column mr-5 <%= crossed_interview.get_status_color_class if crossed_interview.not_available_yet? %>">
                   CR
                   <span class="h-2.5 w-2.5 inline-block <%= crossed_interview.get_status_bg_class %>"></span>
                 </div>

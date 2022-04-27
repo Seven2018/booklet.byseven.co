@@ -22,6 +22,15 @@ class InterviewDecorator < Draper::Decorator
     end
   end
 
+  def get_status_color_class
+    case status.to_sym
+    when :not_available_yet then 'bkt-light-grey5'
+    when :not_started then 'bkt-red'
+    when :in_progress then 'bkt-yellow'
+    when :submitted then 'bkt-green'
+    end
+  end
+
   def get_status_str
     "Cross review #{status.tr('_', ' ')}" if crossed?
     "1 interview #{status.tr('_', ' ')}"
