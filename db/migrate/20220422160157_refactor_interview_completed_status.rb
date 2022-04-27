@@ -3,13 +3,19 @@ class RefactorInterviewCompletedStatus < ActiveRecord::Migration[6.0]
     add_column :interviews, :status, :integer, default: 0
 
     Interview.where(completed: true).each do |interview|
-      interview.update(status: 'submitted')
+      interview.update(status: :submitted)
+      
+      if interview.locked_at.nil?
+        interview.update_column(:locked_at, DateTime.now)
+      else
+        interview.update_column(:locked_at, interview.locked_at)
+      end
     end
     Interview.where(label: 'Crossed', completed: false).each do |interview|
       set = interview.set
 
       unless [set.employee_interview&.submitted?, set.manager_interview&.submitted?].compact.uniq == [true]
-        interview.update(status: 'not_available_yet')
+        interview.update(status: :not_available_yet)
       end
     end
 
