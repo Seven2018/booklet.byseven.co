@@ -101,22 +101,22 @@
           <div class="grow">
             <div class="flex-row-end-centered">
               <% if manager_interview&.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
-                <%= link_to interview_path(manager_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
+                <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue-white' do %>
                   View my answers
                 <% end %>
               <% elsif crossed_interview&.submitted? %>
-                <%= link_to interview_path(crossed_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
+                <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-white' do %>
                   View cross review answers
                 <% end %>
               <% end %>
 
               <% if manager_interview&.not_started? || manager_interview&.in_progress? %>
-                <%= link_to interview_path(manager_interview), class: 'flex-row-between-centered p-3 fs-1_4rem bkt-bg-blue rounded-5px bkt-white font-weight-600' do %>
+                <%= link_to interview_path(manager_interview), class: 'flex-row-between-centered bkt-btn-blue ml-5' do %>
                   <%= manager_interview.not_started? ? 'Start my interview' : 'Continue my interview' %>
                   <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
                 <% end %>
               <% elsif crossed_interview && crossed_interview.status.to_sym != :submitted %>
-                <%= link_to interview_path(crossed_interview), class: 'flex-row-between-centered p-3 fs-1_4rem bkt-bg-blue rounded-5px bkt-white font-weight-600' do %>
+                <%= link_to interview_path(crossed_interview), class: 'flex-row-between-centered bkt-btn-blue ml-5' do %>
                   <%= crossed_interview.not_started? ? 'Start Cross Review' : 'Continue my cross review' %>
                   <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
                 <% end %>
