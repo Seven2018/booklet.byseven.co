@@ -65,7 +65,8 @@ class CampaignDecorator < Draper::Decorator
       '2 interviews submitted, Cross Review in progress'
     elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.submitted? ||
       employee_interview&.submitted? && manager_interview.nil? && crossed_interview.nil? ||
-      employee_interview&.nil? && manager_interview&.submitted? && crossed_interview.nil?
+      employee_interview.nil? && manager_interview&.submitted? && crossed_interview.nil? ||
+      employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview.nil?
       'All interviews submitted'
     else
       'no status to show'
