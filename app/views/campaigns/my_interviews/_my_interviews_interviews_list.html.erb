@@ -10,87 +10,91 @@
        [employee_interview, manager_interview, crossed_interview].find(&:present?).employee %>
 
   <%#:::::: VERSION DESKTOP START ::::::%>
-  <div class="campaigns-my-interviews__card pl-5rem py-3rem">
-    <div class="campaigns-my-interviews__card-left">
-      <div class="campaigns-my-interviews__card-header">
-        <div class="campaigns-my-interviews__card-header-left">
+  <div class="bkt-bg-white rounded-20px p-5 mb-5">
 
-          <div class="campaigns-my-interviews__card-icon">
-            <span class="iconify" data-icon="<%= campaign.icon %>"></span>
+    <div class="flex-row-start-centered">
+      <div class="flex-column mr-3">
+        <span class="iconify bkt-blue bkt-bg-light-blue p-2 rounded-5px" data-width="30" data-height="30" data-icon="<%= campaign.icon %>"></span>
+      </div>
+      <div class="flex-column">
+        <div class="flex-row-start-centered">
+          <p class="font-weight-600"><%= campaign.title %></p>
+        </div>
+        <div class="flex-row-start-centered">
+          <div>
+            <p class="bkt-light-grey font-weight-500 fs-1_2rem">Deadline
+              : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p>
           </div>
-
-          <div class="campaigns-my-interviews__card-title-deadline">
-
-            <h2><%= campaign.title %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="flex-row-start-centered mt-5">
+      <div class="flex-column">
+        <div class="flex-row-start-centered">
+          <div class="flex-column  mr-3">
+            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='width-3_5rem height-3_5rem min-w-3_5rem min-h-3_5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+          </div>
+          <div class="flex-column width-25rem border-right-bkt-light-grey-2px mr-4">
+            <div class="flex-row-start-centered">
+              <p class="fs-1_2rem font-weight-600 text-truncate"><%= manager.fullname %></p>
+            </div>
+            <div class="flex-row-start-centered">
+              <p class="fs-1_2rem font-weight-600 bkt-light-grey">Interviewer</p>
+            </div>
+          </div>
+          <div class="flex-column">
 
             <div class="flex-row-start-centered">
-              <div class="deadline"><p>Deadline
-                : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p></div>
+              <p class="fs-1_2rem font-weight-500">
+                <%= campaign.decorate.generate_interviews_status_sentence(
+                      employee_interview: employee_interview,
+                      manager_interview: manager_interview,
+                      crossed_interview: crossed_interview
+                    )
+                %>
+              </p>
+              <span class="ml-3 cursor-pointer rounded-circle bkt-light-grey border-bkt-light-grey w-6 fs-9px text-center" data-toggle='modal' data-target='#interview-status-info'>?</span>
             </div>
-
-          </div>
-
-        </div>
-      </div>
-
-      <div class="campaigns-my-interviews__card-group">
-
-        <div class="campaigns-my-interviews__card-manager">
-          <div class="campaigns-my-interviews__card-avatar">
-            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='width-5rem height-5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          </div>
-
-          <div class="campaigns-my-interviews__card-name-status">
-
-            <h6 class="fs-1_6rem"><%= manager.fullname %></h6>
-
-            <p class="fs-1_4rem" style="color:darkgray"> Interviewer</p>
-
-          </div>
-        </div>
-
-        <div class="border-left-bkt-light-grey pl-4 justify-content-center">
-          <div class="flex-row-start-centered">
-            <p class="fs-1rem">
-              <%= employee_interview.get_status_str %>
+            <div class="flex-row-start-centered">
+              <% if employee_interview %>
+                <div class="flex-column mr-5">
+                  IE <span class="h-2.5 w-2.5 inline-block <%= employee_interview.get_status_bg_class %>"></span>
+                </div>
+              <% end %>
               <% if manager_interview %>
-                and <%= manager_interview.get_status_str %>
+                <div class="flex-column mr-5">
+                  IR
+                  <span class="h-2.5 w-2.5 inline-block <%= manager_interview.get_status_bg_class %>"></span>
+                </div>
               <% end %>
               <% if crossed_interview %>
-                , <%= crossed_interview.get_status_str %>
+                <div class="flex-column mr-5 <%= crossed_interview.get_status_color_class if crossed_interview.not_available_yet? %>">
+                  CR
+                  <span class="h-2.5 w-2.5 inline-block <%= crossed_interview.get_status_bg_class %>"></span>
+                </div>
               <% end %>
-            </p>
-            <span class="ml-3 cursor-pointer rounded-circle bkt-light-grey border-bkt-light-grey w-6 fs-9px text-center" data-toggle='modal' data-target='#interview-status-info'>?</span>
-          </div>
-          <div class="flex-row-start-centered">
-            <div class="flex-column mr-5">
-              IE <span class="h-2.5 w-2.5 inline-block <%= employee_interview.get_status_bg_class %>"></span>
             </div>
-            <div class="flex-column mr-5">
-              IR
-              <span class="h-2.5 w-2.5 inline-block bkt-bg-green <%= manager_interview.get_status_bg_class %>"></span>
-            </div>
-            <% if crossed_interview %>
-              <div class="flex-column mr-5">
-                CR
-                <span class="h-2.5 w-2.5 inline-block bkt-bg-light-grey <%= crossed_interview.get_status_bg_class %>"></span>
-              </div>
-            <% end %>
+
           </div>
         </div>
       </div>
-
-    </div>
-
-    <div class="campaigns-my-interviews__card-part-right">
-      <div class="campaigns-my-interviews__card-review-link">
-
-        <%= link_to interview_path(crossed_interview&.submitted? ? crossed_interview : employee_interview) do %>
-          <p class='d-flex align-items-center'>
-            <span class="mr-3">Go to my review</span> <span class="iconify" data-icon="akar-icons:chevron-right"></span>
-          </p>
-        <% end %>
-
+      <div class="grow">
+        <div class="flex-row-end-centered">
+          <% if employee_interview.status.to_sym != :submitted %>
+            <%= link_to interview_path(employee_interview), class: 'flex-row-between-centered p-3 fs-1_4rem bkt-bg-blue rounded-5px bkt-white font-weight-600' do %>
+              <%= employee_interview.not_started? ? 'Start my interview' : 'Continue my interview' %>
+              <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
+            <% end %>
+          <% elsif employee_interview.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
+            <%= link_to interview_path(employee_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
+              View my answers
+            <% end %>
+          <% elsif crossed_interview&.submitted? %>
+            <%= link_to interview_path(crossed_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
+              View cross review answers
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
 
