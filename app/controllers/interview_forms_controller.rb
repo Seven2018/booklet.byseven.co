@@ -49,17 +49,20 @@ class InterviewFormsController < ApplicationController
     description = @template.description
     @template.update(template_params)
 
-    cross_status =
-      params.dig(:interview_form, :cross).present? && @template.answerable_by_both?
-    @template.update(cross: cross_status)
+    @update_description =
+      params.dig(:interview_form, :description).present? || false
 
-    answerable_by_status = @template.answerable_by
-    unless @template.answerable_by_both?
-      @template.interview_questions.update_all(visible_for: answerable_by_status)
-      @template.interview_questions.where.not(required_for: ['none', answerable_by_status]).update_all(required_for: answerable_by_status)
+    unless @update_description
+      cross_status =
+        params.dig(:interview_form, :cross).present? && @template.answerable_by_both?
+      @template.update(cross: cross_status)
+
+      answerable_by_status = @template.answerable_by
+      unless @template.answerable_by_both?
+        @template.interview_questions.update_all(visible_for: answerable_by_status)
+        @template.interview_questions.where.not(required_for: ['none', answerable_by_status]).update_all(required_for: answerable_by_status)
+      end
     end
-
-    @update_description = description != @template.description
 
     respond_to do |format|
       format.html { interview_form_path(@template) }
