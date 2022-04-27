@@ -3,7 +3,13 @@ class RefactorInterviewCompletedStatus < ActiveRecord::Migration[6.0]
     add_column :interviews, :status, :integer, default: 0
 
     Interview.where(completed: true).each do |interview|
-      interview.update(status: :submitted, locked_at: DateTime.now)
+      interview.update(status: :submitted)
+      
+      if interview.locked_at.nil?
+        interview.update_column(:locked_at, DateTime.now)
+      else
+        interview.update_column(:locked_at, interview.locked_at)
+      end
     end
     Interview.where(label: 'Crossed', completed: false).each do |interview|
       set = interview.set
@@ -20,7 +26,7 @@ class RefactorInterviewCompletedStatus < ActiveRecord::Migration[6.0]
     add_column :interviews, :completed, :boolean, default: false
 
     Interview.where(status: :submitted).each do |interview|
-      interview.update(completed: true, locked_at: nil)
+      interview.update(completed: true)
     end
 
     remove_column :interviews, :status
