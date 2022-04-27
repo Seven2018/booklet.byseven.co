@@ -18,13 +18,10 @@
 
   <div class="d-none d-sm-flex justify-content-between interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
     <% if @interview.locked? %>
-      <button
-        class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500"
-        onclick="window.history.back()"
-      >
-        <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
-        <p class="">Close</p>
-      </button>
+      <%= link_to my_interviews_path, class: 'd-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500' do %>
+          <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
+          <p class="">Close</p>
+      <% end %>
     <% else %>
       <button
         data-toggle='modal'
@@ -55,12 +52,12 @@
 
           <%= link_to '', lock_interview_path(interview_id: @interview.id), remote: true, id: 'lock-interview-link', class: 'd-none' %>
 
-          <button
-            data-toggle='modal'
-            data-target='#interviewConfirmSubmit'
-            class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>" <%= 'disabled' unless fully_answered %>
-          >
-            <p>Submit test</p>
+          <button id="submit-interview"
+                  class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
+                  data-toggle='modal'
+                  data-target='#interviewConfirmSubmit'
+                  <%= 'disabled' unless fully_answered %>>
+            <p>Submit</p>
             <span class="iconify ml-2" data-icon="fluent:send-16-filled" style="color: white;"></span>
           </button>
 
@@ -161,33 +158,19 @@
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
-        <a data-toggle='modal width-fit-content' data-target='#lockInterview'>
-          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
-            <p>Submit</p>
-            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-          </button>
-        </a>
+        <button id="submit-interview"
+                class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
+                data-toggle='modal'
+                data-target='#interviewConfirmSubmit'
+                <%= 'disabled' unless fully_answered %>>
+          <p>Submit</p>
+          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+        </button>
       <% end %>
     </div>
   </div>
 
 </div>
-
-<div class="interview-thanks hidden">
-  <div class="flex-column-start-centered">
-    <p>Review Submitted ! <i class="fas fa-check-square"></i></p>
-    <p>Thank you for completing this review ! <i class="far fa-thumbs-up"></i></p>
-    <p>You can go back to the interview, or exit to the dashboard.</p>
-  </div>
-  <div class="interview-thanks__controls">
-    <button class="btn-blue-text" onclick='thankYou("back");'><p><i class="fas fa-long-arrow-alt-left"></i> Back</p>
-    </button>
-    <%= link_to :back do %>
-      <button class="btn-blue"><p>Exit</p></button>
-    <% end %>
-  </div>
-</div>
-
 
 <div class="saved-message hidden">
   <p>SAVED!</p>
@@ -198,55 +181,15 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='lockInterview' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg rounded-20px' role='document'>
-    <%= render 'interviews/modals/lock_interview' %>
-  </div>
-</div>
-
-<div class='modal fade' id='confirmLocked' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog rounded-20px' role='document'>
-    <%= render 'interviews/modals/confirm_locked' %>
-  </div>
-</div>
-
-<div class='modal fade' id='interviewConfirmSubmit' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-content bkt-bg-white rounded-5px py-5' role='document'>
-    <div class=" flex-row-end-centered">
-      <button class="mr-5 fs-2rem" data-dismiss="modal" aria-label="Close">X</button>
-    </div>
-    <div class="flex-row-center-centered">
-      <span class="iconify" data-icon="noto:closed-mailbox-with-raised-flag" data-height="85" data-width="85"></span>
-    </div>
-    <p class="text-center fs-2rem font-weight-700 mt-5">You are about to submit you answers <br> and lock them 🔒</p>
-    <p class="text-center fs-1_6rem font-weight-600 mt-5">The state of your interview will be updated to :</p>
-    <p class="text-center fs-1_6rem font-weight-600 mt-1 bkt-green mb-5">Interview submitted</p>
-    <div class="flex-row-between-centered width-60 m-auto">
-      <button class="border-bkt-blue-2px bkt-blue p-4 rounded-5px fs-1_6rem" data-dismiss="modal" aria-label="Close">Maybe
-        Later
-      </button>
-      <button
-        class="bkt-bg-blue bkt-white p-4 rounded-5px fs-1_6rem d-flex align-items-center"
-        onclick="submitAndLock()"
-      >
-        Submit <span class="iconify ml-3" data-icon="bxs:lock"></span>
-      </button>
-    </div>
+<div class='modal fade' id='interviewConfirmSubmit' tabindex='-1' role='dialog' data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document'>
+    <%= render 'interviews/modals/confirm_submit' %>
   </div>
 </div>
 
 <div class='modal fade' id='confirmGoBack' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-content bkt-bg-white rounded-5px py-5' role='document'>
-    <div class=" flex-row-end-centered">
-      <button class="mr-5 fs-2rem" data-dismiss="modal" aria-label="Close">X</button>
-    </div>
-    <div class="flex-row-center-centered">
-      <span class="iconify ml-3" data-icon="noto:thumbs-up" data-height="70" data-width="70"></span>
-    </div>
-    <p class="text-center fs-1_6rem font-weight-700 mt-5">Your answers are saved, you can come back later <br>to finish
-      your interview and submit it.</p>
-    <p class="text-center fs-1_6rem  my-5">Your interview state will stay as ‘In Progress’.</p>
-    <%= link_to 'Go to ‘My Interviews’', my_interviews_path, class: 'm-auto mt-5 p-3 bkt-white bkt-bg-blue rounded-5px' %>
+  <div class='modal-dialog' role='document'>
+    <%= render 'interviews/modals/confirm_later' %>
   </div>
 </div>
 

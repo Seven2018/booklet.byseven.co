@@ -260,7 +260,6 @@ ActiveRecord::Schema.define(version: 2022_04_22_160157) do
     t.text "options"
     t.string "question_type"
     t.integer "position"
-    t.boolean "required", default: false
     t.boolean "allow_comments", default: false
     t.bigint "interview_form_id"
     t.datetime "created_at", precision: 6, null: false
