@@ -18,13 +18,10 @@
 
   <div class="d-none d-sm-flex justify-content-between interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
     <% if @interview.locked? %>
-      <button
-        class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500"
-        onclick="window.history.back()"
-      >
-        <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
-        <p class="">Close</p>
-      </button>
+      <% link_to my_interviews_path, class: 'd-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500' do %>
+          <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
+          <p class="">Close</p>
+      <% end %>
     <% else %>
       <button
         data-toggle='modal'

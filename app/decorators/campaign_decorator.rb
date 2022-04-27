@@ -47,7 +47,9 @@ class CampaignDecorator < Draper::Decorator
   end
 
   def generate_interviews_status_sentence(employee_interview: nil, manager_interview: nil, crossed_interview: nil)
-    if employee_interview&.not_started? && manager_interview&.not_started?
+    if employee_interview&.not_started? && manager_interview&.not_started? ||
+      employee_interview.not_started? && manager_interview.nil? ||
+      manager_interview.not_started? && employee_interview.nil?
       'No interview started'
     elsif employee_interview&.in_progress? && manager_interview&.status&.to_sym != :in_progress || manager_interview&.in_progress? && employee_interview&.status&.to_sym != :in_progress
       '1 interview in progress'
