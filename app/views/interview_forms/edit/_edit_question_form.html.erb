@@ -153,11 +153,13 @@
           <% unless template.answerable_by_both? %>
             <div class="pos-abs z-index-100"
                  style='top: 0; bottom: 0; left: 0; right: 0;'
-                 onclick='displayMessage(this);'></div>
+                 data-action="click->interviews--interviews-edit#displayMessage"></div>
           <% end %>
-          <div class="message-container rounded-5px bkt-bg-white border-bkt-dark-grey bkt-box-shadow-compact p-1rem pos-abs hidden" style='width: 20rem; height: 5.4rem;top: -6rem; left: -1rem;'>
+
+          <div class="message-container rounded-5px bkt-bg-white border-bkt-dark-grey bkt-box-shadow-compact p-1rem pos-abs hidden" style='width: 20rem; top: -8rem; left: -1rem;'>
             <p class="fs-1_6rem bkt-dark-grey">Only the <%= template.answerable_by %> can answer this form !</p>
           </div>
+
         </div>
 
         <div class="flex-row-start-centered pos-rel" style='width: 20rem;'>
@@ -184,11 +186,13 @@
           <% unless template.answerable_by_both? %>
             <div class="pos-abs z-index-100"
                  style='top: 0; bottom: 0; left: 0; right: 0;'
-                 onclick='displayMessage(this);'></div>
+                 data-action="click->interviews--interviews-edit#displayMessage"></div>
           <% end %>
-          <div class="message-container rounded-5px bkt-bg-white border-bkt-dark-grey bkt-box-shadow-compact p-1rem pos-abs hidden" style='width: 20rem; height: 5.4rem;top: -6rem; left: -1rem;'>
+
+          <div class="message-container rounded-5px bkt-bg-white border-bkt-dark-grey bkt-box-shadow-compact p-1rem pos-abs hidden" style='width: 20rem; top: -8rem; left: -1rem;'>
             <p class="fs-1_6rem bkt-dark-grey">Only the <%= template.answerable_by %> can answer this form !</p>
           </div>
+
         </div>
 
       </div>
@@ -217,11 +221,13 @@
           <% if template.answerable_by_manager? %>
             <div class="pos-abs z-index-100"
                  style='top: 0; bottom: 0; left: 0; right: 0;'
-                 onclick='displayMessage(this);'></div>
+                 data-action="click->interviews--interviews-edit#displayMessage"></div>
           <% end %>
-          <div class="message-container rounded-5px bkt-bg-white border-bkt-dark-grey bkt-box-shadow-compact p-1rem pos-abs hidden" style='width: 20rem; height: 5.4rem;top: -7rem; left: 0;'>
+
+          <div class="message-container rounded-5px bkt-bg-white border-bkt-dark-grey bkt-box-shadow-compact p-1rem pos-abs hidden" style='width: 20rem; top: -8rem; left: 0;'>
             <p class="fs-1_6rem bkt-dark-grey">Only the manager can answer this form !</p>
           </div>
+
         </div>
 
         <div class="flex-row-end-centered pos-rel" style='width: 20rem;'>
@@ -245,11 +251,13 @@
           <% if template.answerable_by_employee? %>
             <div class="pos-abs z-index-100"
                  style='top: 0; bottom: 0; left: 0; right: 0;'
-                 onclick='displayMessage(this);'></div>
+                 data-action="click->interviews--interviews-edit#displayMessage"></div>
           <% end %>
-          <div class="message-container rounded-5px bkt-bg-white border-bkt-dark-grey bkt-box-shadow-compact p-1rem pos-abs hidden" style='top: -6rem; left: 0;'>
+
+          <div class="message-container rounded-5px bkt-bg-white border-bkt-dark-grey bkt-box-shadow-compact p-1rem pos-abs hidden" style='width: 20rem; top: -8rem; left: 0;'>
             <p class="fs-1_6rem bkt-dark-grey">Only the employee can answer this form !</p>
           </div>
+
         </div>
 
       </div>

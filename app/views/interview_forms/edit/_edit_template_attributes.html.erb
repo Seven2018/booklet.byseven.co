@@ -2,7 +2,13 @@
   <%= simple_form_for template, remote: true do |f| %>
     <p class='font-weight-600 mb-2rem'>Template</p>
 
-    <%= f.input :title, label: false, input_html: {class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px', autocomplete: "off", onkeyup: 'saveForm(this, true);'}, placeholder: 'Untitled' %>
+    <%= f.input :title,
+                label: false,
+                input_html:
+                  { class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px',
+                    autocomplete: "off",
+                    data: { action: 'keyup->interviews--interviews-edit#saveForm' } },
+                placeholder: 'Untitled' %>
 
     <%= render_component TrixInputComponent.new(
     name: 'interview_form[description]',
@@ -11,7 +17,13 @@
     klasses: "bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem fs-1_4rem"
   ) %>
 
-    <%= f.input :video, label: false, input_html: {class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px', autocomplete: "off", onkeyup: 'checkVideoCompatibility(this);'}, placeholder: 'Video link (Youtube)' %>
+    <%= f.input :video,
+                label: false,
+                input_html:
+                  { class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px',
+                    autocomplete: "off",
+                    data: { action: 'keyup->interviews--interviews-edit#checkVideoCompatibility' } },
+                placeholder: 'Video link (Youtube)' %>
 
     <%= f.submit '', class: 'hidden-submit hidden' %>
   <% end %>
