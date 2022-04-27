@@ -100,7 +100,7 @@
 
           <div class="grow">
             <div class="flex-row-end-centered">
-              <% if manager_interview&.submitted? && crossed_interview.nil? %>
+              <% if manager_interview&.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
                 <%= link_to interview_path(manager_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
                   View my answers
                 <% end %>
