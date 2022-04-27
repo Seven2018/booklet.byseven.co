@@ -134,7 +134,7 @@
           <div class="flex-row-between-centered px-5rem">
 
             <div id='command__trainings-completed'
-                 class="command-tab flex-column-between-centered bkt-bg-light-orange active rounded-5px mr-1rem cursor-pointer"
+                 class="command-tab flex-column-between-centered bkt-bg-light-orange rounded-5px mr-1rem cursor-pointer active"
                  style='height: 14rem; width: 14rem; border: 2px solid transparent;'
                  onclick="displaySelectedTab(this);">
               <p class='fs-3rem'>🙌</p>
@@ -345,7 +345,7 @@
     current_button = document.querySelector('.command-tab.active')
     current_tab = document.querySelector('.display-tab:not(.hidden)')
 
-    current_button.classList.remove('active')
+    if (current_button) current_button.classList.remove('active')
     current_tab.classList.add('hidden')
     element.classList.add('active')
     selected_tab.classList.remove('hidden')
