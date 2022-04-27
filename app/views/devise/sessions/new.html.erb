@@ -6,6 +6,7 @@
   Please enter your email.
 <% end %>
 
+      <%= render 'shared/flashes' %>
 <div class="flew-row">
   <%= simple_form_for(resource, url: u_check_path) do |f| %>
       <%= f.input :email,
@@ -15,7 +16,8 @@
                   label_html: {class: 'font-weight-500'}
       %>
     <div class="">
-      <button class="btn width-100 bkt-bg-dark-grey bkt-white rounded-2px mt-4 p-3">Continue</button>
+      <button class="width-100 bkt-bg-dark-grey bkt-white rounded-2px mt-4 p-3">continue</button>
     </div>
   <% end %>
+    <%= button_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path, :class => "width-100 bkt-bg-white bkt-dark-grey rounded-2px mt-4 p-3", :method => :post %>
 </div>
