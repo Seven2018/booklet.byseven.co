@@ -73,7 +73,7 @@
             <%=
               f.submit(
                 'Search',
-                class: 'hidden-submit py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                class: 'hidden-submit btn-search',
                 onclick: "document.querySelector('body').classList.add('wait');",
                 data: {
                   remember_search_target: :submit,
@@ -83,7 +83,8 @@
             <button type='submit' class="btn-search d-block d-sm-none">
               <i class="fas fa-search"></i>
             </button>
-            <button class='height-5rem bkt-orange px-1rem fs-1_6rem' onclick='resetSearch();'>Reset</button>
+
+            <button class='btn-reset bkt-orange' onclick='resetSearch();'>Reset</button>
           <% end %>
         </div>
         <div>
