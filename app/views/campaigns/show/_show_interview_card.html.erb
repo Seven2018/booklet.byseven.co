@@ -23,7 +23,7 @@
           <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
 
           <% if CampaignPolicy.new(current_user, @campaign).remove_interview_set? ||
-            !interview_set.employee_interview&.completed? %>
+            !interview_set.employee_interview&.submitted? %>
             <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
           <% end %>
 
@@ -52,9 +52,9 @@
         <% interview = Interview.find_by(campaign_id: campaign.id, employee_id: employee.id) %>
         <% active_link =
           if interview.manager?
-            interview.completed? && employee_view || manager_view && (current_user == interview.interviewer)
+            interview.submitted? && employee_view || manager_view && (current_user == interview.interviewer)
           else
-            interview.completed? && manager_view || employee_view
+            interview.submitted? && manager_view || employee_view
           end
         %>
 
@@ -68,7 +68,7 @@
               <p class="campaign-show__card-interview-status--complete">
                 Locked !
               </p>
-            <% elsif interview.completed? %>
+            <% elsif interview.submitted? %>
               <p class="campaign-show__card-interview-status--complete">
                 Completed !
               </p>
@@ -93,9 +93,9 @@
         <% manager_interview = interviews.find_by(label: 'Manager') %>
         <% crossed_interview = interviews.find_by(label: 'Crossed') %>
         <% crossed_availability =
-          employee_interview&.completed? &&
-          manager_interview&.completed? &&
-          (manager_view || crossed_interview&.completed?) if interview_form.cross %>
+          employee_interview&.submitted? &&
+          manager_interview&.submitted? &&
+          (manager_view || crossed_interview&.submitted?) if interview_form.cross %>
         <% interviews = [employee_interview, manager_interview, crossed_interview].compact %>
 
         <% interview_title = {'Employee' => "Employee's",
@@ -107,8 +107,8 @@
 
           <% active_link = (interview.crossed? && crossed_availability) ||
                            ((employee_view && interview.employee?) ||
-                           (user_is_manager && (interview.manager? || interview.completed?)) ||
-                           (interview.completed? && !manager_view && !interview.manager?)) %>
+                           (user_is_manager && (interview.manager? || interview.submitted?)) ||
+                           (interview.submitted? && !manager_view && !interview.manager?)) %>
 
           <div id='interview-<%= interview.id %>' class="campaign-show__card-interview">
             <% if active_link %>
@@ -124,7 +124,7 @@
                 <p class="campaign-show__card-interview-status--complete">
                   Locked !
                 </p>
-              <% elsif interview.completed? %>
+              <% elsif interview.submitted? %>
                 <p class="campaign-show__card-interview-status--complete">
                   Completed !
                 </p>
@@ -151,7 +151,7 @@
               <p>Interview locked</p>
               <span class="iconify" data-icon="akar-icons:circle-check-fill"></span>
             </div>
-          <% elsif crossed_interview.completed? %>
+          <% elsif crossed_interview.submitted? %>
             <div class="campaign-show__card-interviews-info-complete mb-1rem">
               <p>Interview completed !</p>
             </div>

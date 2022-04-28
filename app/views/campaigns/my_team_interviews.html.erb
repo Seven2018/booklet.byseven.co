@@ -6,7 +6,7 @@
       <div class='p-2rem'>
         <h1 class='fs-2_4rem font-weight-700 mb-2rem'>Hello, <%= "#{current_user.firstname}" %> !</h1>
         <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>
-          You will find all interviews as interviewee here. <br>
+          You will find all interviews as interviewer here. <br>
           You have <span class="bkt-blue"><%= @interviews_to_fill_count %> interviews to fill</span>
           from your <span class="font-weight-700"><%= "#{@interviews_completed_count}"  %> current interviews.</span> <br>
           All reviews of an interview has to be locked to be a <span class="font-weight-700">‘Completed Interviews’</span> <br>
@@ -44,6 +44,31 @@
       <div class="campaigns-my-interviews__list campaigns-my-interviews__list-crossed">
         <%= render 'campaigns/my_interviews/my_team_interviews_interviews_list', campaigns: @campaigns %>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class='modal fade' id='interview-status-info' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">
+  <div class='modal-dialog modal-content bkt-bg-white rounded-5px py-5' role='document' >
+    <div class="flex-row-end-centered">
+      <button class=" font-weight-500 mr-5 mb-5 fs-2rem" data-dismiss="modal" aria-label="Close">
+        <span class="iconify" data-icon="akar-icons:cross"></span>
+      </button>
+    </div>
+    <div class="flex-row-center-centered">
+      <span class="iconify" data-icon="noto:light-bulb" data-width="70" data-height="70"></span>
+    </div>
+    <div class="flex-row-center-centered text-center my-4 font-weight-600">
+      <p>Up to 3 interviews can be requiere to submit :<br> Interviewee (IE), Interviewer (IR) and Cross Review (CR).</p>
+    </div>
+    <div class="flex-row-center-centered text-center my-4 d-block">
+      <p>Their different states are :</p>
+    </div>
+    <div class="width-30 m-auto mb-4">
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-light-grey"></span> Not available yet</p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-red"></span> Not Started</p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-yellow"></span> In Progress</p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-green"></span> Submitted</p>
     </div>
   </div>
 </div>

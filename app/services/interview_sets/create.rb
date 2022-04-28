@@ -31,7 +31,7 @@ module InterviewSets
       when :answerable_by_both_crossed
         Interview.create(interview_params.merge(label: 'Employee')) &&
         Interview.create(interview_params.merge(label: 'Manager')) &&
-        Interview.create(interview_params.merge(label: 'Crossed'))
+        Interview.create(interview_params.merge(label: 'Crossed', status: :not_available_yet))
       else
         # will raise InterviewForm::UnknownKind
       end

@@ -11,7 +11,7 @@ class InterviewsController < ApplicationController
       (campaign.crossed? &&
       Interview.create(interview_params.merge(title: interview_form.title, label: 'Employee')) &&
       Interview.create(interview_params.merge(title: interview_form.title, label: 'Manager')) &&
-      Interview.create(interview_params.merge(title: interview_form.title, label: 'Crossed'))) ||
+      Interview.create(interview_params.merge(title: interview_form.title, label: 'Crossed', status: :not_available_yet))) ||
       (campaign.simple? &&
       Interview.create(interview_params.merge(title: interview_form.title, label: 'Simple')))
 
@@ -32,6 +32,7 @@ class InterviewsController < ApplicationController
     @questions = @interview.interview_questions.order(position: :asc)
     authorize @interview
 
+    @interview.update(status: :in_progress) if @interview.status.to_sym != :submitted && @interview.status.to_sym != :in_progress
     if @interview.crossed?
       @interview.campaign.interviews.where(employee: @employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user == @manager
     end
@@ -91,7 +92,18 @@ class InterviewsController < ApplicationController
     interview = Interview.find interview_id
     authorize interview
 
-    interview.complete!
+    interview.submit!
+
+    if interview.label != 'Crossed'
+      # If it's not a crossed and Manager, Employee have answer/lock then
+      # we update cross review from not_available_yet to not_started
+      other_interview_label = interview.employee? ? 'Manager' : 'Employee'
+      other_interview = Interview.find_by(label: other_interview_label, employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
+      cross_interview = Interview.find_by(label: 'Crossed', employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
+      if other_interview.status.to_sym == :submitted && cross_interview
+        cross_interview.update(status: :not_started)
+      end
+    end
 
     respond_to do |format|
       format.js
@@ -113,7 +125,7 @@ class InterviewsController < ApplicationController
       raise
     end
 
-    interview.complete!
+    interview.submit!
     interview.lock!
 
     if interview.set.locked?

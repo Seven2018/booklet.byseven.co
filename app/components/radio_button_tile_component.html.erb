@@ -7,8 +7,8 @@
       data: {
         controller: 'toggle-checked',
         toggle_checked_target: 'target',
-        toggle_checked_checked_classes_value: 'border-bkt-dark-blue bkt-dark-blue',
-        toggle_checked_unchecked_classes_value: 'border-bkt-light-grey6 bkt-light-grey6 bkt-bg-white',
+        toggle_checked_checked_classes_value: "border-bkt-#{@checked_color} bkt-#{@checked_color}",
+        toggle_checked_unchecked_classes_value: 'border-bkt-light-grey6 bkt-light-grey6 bkt-bg-white opacity_60pc',
         toggle_checked_toggle_all_event_value: toggle_all_event,
         action: "click->toggle-checked#dispatchToggleAll #{toggle_all_event}@window->toggle-checked#debouncedToggle
         #{@data_actions}
