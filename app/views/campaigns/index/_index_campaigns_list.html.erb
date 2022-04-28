@@ -44,15 +44,12 @@
     </div>
 
     <% if CampaignPolicy.new(current_user, campaign).create? %>
-      <div
-        data-controller="dropdown"
-        class="pos-rel d-flex justify-content-end"
-      >
-        <div
-          data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide"
-          class="cursor-pointer z-index-5 pr-1rem "
-        >
-          <i class="fas fa-ellipsis-v bkt-light-grey"></i>
+      <div data-controller="dropdown"
+           class="pos-rel d-flex justify-content-end">
+
+        <div class="flex-row-center-centered height-2_5rem width-2_5rem-forced rounded-15px bkt-light-grey bkt-white-hover            bkt-bg-light-grey-hover cursor-pointer z-index-5 smooth-transition"
+              data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide">
+          <i class="fas fa-ellipsis-v"></i>
         </div>
 
         <div
@@ -75,6 +72,7 @@
               remote: true %>
           <% end %>
         </div>
+
       </div>
     <% end %>
 
