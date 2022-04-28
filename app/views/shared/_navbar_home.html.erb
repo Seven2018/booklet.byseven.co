@@ -1,8 +1,8 @@
 <div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light flex-row-between-centered navbar-white bkt-bg-white bkt-box-shadow-medium px-2rem pos-rel">
 
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' href="/home">
-      <span class="iconify fs-2_4rem bkt-dark-grey" data-icon="bxs:home"></span>
-    </a>
+  <%= link_to root_path, class: 'flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' do %>
+    <span class="iconify fs-2_4rem bkt-dark-grey" data-icon="bxs:home"></span>
+  <% end %>
 
     <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :clear_bg_logo) %>
 

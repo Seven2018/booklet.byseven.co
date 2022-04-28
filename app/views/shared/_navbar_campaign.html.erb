@@ -1,9 +1,9 @@
 <div class="navbar navbar-expand-sm navbar-light navbar__blue px-2rem">
 
   <div class="flex-row-between-centered">
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' href="/home">
+    <%= link_to root_path, class: 'flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' do %>
       <span class="iconify fs-2_4rem bkt-blue" data-icon="bxs:home"></span>
-    </a>
+    <% end %>
 
     <% if CampaignPolicy.new(current_user, nil).my_interviews? %>
       <%= link_to my_interviews_path do %>

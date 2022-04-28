@@ -1,0 +1,9 @@
+
+<div style="position: fixed; right: 30rem; z-index: 10000">
+  <% country_map = {en: '🇬🇧', fr: '🇫🇷'} %>
+  <% I18n.available_locales.each do |country_idx| %>
+    <%= link_to url_for(locale: country_idx), class: 'mr-3' do %>
+      <%= country_map[country_idx] %>
+    <% end %>
+  <% end %>
+</div>

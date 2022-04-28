@@ -11,8 +11,8 @@
   data-action='scroll->scrollbar#showScrollbar'>
 
   <div class="width-90 from_medium__width-80 pt-5rem mb-3rem" style='max-width: 950px;'>
-    <h1 class='fs-2_4rem font-weight-700 mb-2rem'>Welcome on Booklet, <%= "#{current_user.firstname}" %> !</h1>
-    <p class="font-weight-600">Get instant access to your trainings, and all your interviews from here.</p>
+    <h1 class='fs-2_4rem font-weight-700 mb-2rem'><%= t '.welcome', name: current_user.firstname %></h1>
+    <p class="font-weight-600"><%= t '.subtitle' %></p>
   </div>
 
   <% if current_user.company.applications_to_sym.include? :interviews %>

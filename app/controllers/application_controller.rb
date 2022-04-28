@@ -3,6 +3,8 @@ require 'action_text'
 class ApplicationController < ActionController::Base
   impersonates :user
 
+  around_action :switch_locale
+
   protect_from_forgery with: :exception
   before_action :booklet_authenticate_user
   # before_action :authenticate_user!
@@ -28,9 +30,18 @@ class ApplicationController < ActionController::Base
       password: ENV['STAGING_BASIC_AUTH_PWD']
   end
 
+  def switch_locale(&action)
+    locale = I18n.available_locales.include?(params[:locale]&.to_sym) ? params[:locale].to_sym : I18n.default_locale
+    I18n.with_locale(locale, &action)
+  end
+
   def user_not_authorized
     flash[:alert] = "You are not authorized to perform this action."
     redirect_to(root_path)
+  end
+
+  def default_url_options
+    { locale: I18n.locale }
   end
 
   protected

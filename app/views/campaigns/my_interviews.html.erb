@@ -4,11 +4,9 @@
     <div class="flex-row-between-centered rounded-30px bkt-bg-white bkt-box-shadow mb-5rem overflow-hidden">
 
       <div class='p-2rem'>
-        <h1 class='fs-2_4rem font-weight-700 mb-2rem'>Hello, <%= "#{current_user.firstname}" %> !</h1>
+        <h1 class='fs-2_4rem font-weight-700 mb-2rem'><%= t '.hello', name: current_user.firstname %></h1>
         <p class='d-none d-sm-block fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>
-          You will find all interviews as interviewee here. <br>
-          You have <span class="bkt-blue"><%= @interviews_to_fill_count %> interviews to fill</span> from your <span class="font-weight-700"><%= "#{@ongoing_campaigns.count}"  %> current interviews.</span> <br>
-          All reviews of an interview has to be locked to be a <span class="font-weight-700">‘Completed Interviews’</span> <br>
+          <%= raw t('.sub_hello', interviews_to_fill: @interviews_to_fill_count, ongoing_campaigns: @ongoing_campaigns.count) %>
         </p>
       </div>
 

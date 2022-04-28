@@ -1,9 +1,9 @@
 <div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light navbar-orange bkt-bg-orange px-2rem">
   <div class="flex-row-between-centered">
 
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' href="/home">
+    <%= link_to root_path, class: 'flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' do %>
       <span class="iconify fs-2_4rem bkt-orange" data-icon="bxs:home"></span>
-    </a>
+    <% end %>
 
     <% if TrainingPolicy.new(current_user, nil).my_trainings? %>
       <%= link_to my_trainings_path do %>

@@ -11,10 +11,10 @@ module BookletBysevenCo
   class Application < Rails::Application
 
     config.generators do |generate|
-          generate.assets false
-          generate.helper false
-          generate.test_framework  :test_unit, fixture: false
-        end
+      generate.assets false
+      generate.helper false
+      generate.test_framework :test_unit, fixture: false
+    end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
@@ -37,5 +37,11 @@ module BookletBysevenCo
     config.view_component.render_monkey_patch_enabled = false
     # as a consequence of the above we need ot use :render_component instead of :render
     # https://github.com/jonspalmer/view_component_storybook/issues/16
+
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    # Permitted locales available for the application
+    I18n.available_locales = [:en, :fr]
+    # Set default locale to something other than :en
+    I18n.default_locale = :en
   end
 end

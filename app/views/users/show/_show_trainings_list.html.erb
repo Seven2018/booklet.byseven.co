@@ -18,7 +18,7 @@
           <div class="flex-row-center-centered" style='margin-right: .5rem;'>
             <span class="iconify fs-1_2rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
           </div>
-          <p class='fs-1rem bkt-dark-grey'><%= TimeConversion.convert(training.duration) %></p>
+          <p class='fs-1rem bkt-dark-grey'><%= t 'duration', TimeConversion.gen_time_duration_args(training.duration) %></p>
         </div>
       </div>
 
