@@ -4,54 +4,68 @@
 <% template = @interview.interview_form %>
 
 <% visibility =
-    if @interview.crossed?
-      ['all', 'manager', 'employee']
-    elsif @interview.manager?
-      ['all', 'manager']
-    else
-      ['all', 'employee']
-    end %>
+     if @interview.crossed?
+       ['all', 'manager', 'employee']
+     elsif @interview.manager?
+       ['all', 'manager']
+     else
+       ['all', 'employee']
+     end %>
 
 <% fully_answered = @interview.fully_answered? %>
 
 <div class="interview-container">
 
-  <div class="d-none d-sm-block interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
-    <%= render_component BackComponent.new(fallback: campaign_path(@interview.campaign)) %>
-    <div class="interview-controls__buttons">
-      <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
-        <span class="iconify" data-icon="bx:bx-download"></span>
-        <p>Download PDF</p>
-      <% end %>
-      <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
+  <div class="d-none d-sm-flex justify-content-between interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
+    <% if @interview.locked? %>
+      <button
+        class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500"
+        onclick="window.history.back()"
+      >
+        <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
+        <p class="">Close</p>
+      </button>
+    <% else %>
+      <button
+        data-toggle='modal'
+        data-target='#confirmGoBack'
+        class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500"
+      >
+        <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
+        <p class="">Close and submit later</p>
+      </button>
+    <% end %>
 
-        <button class="btn-blue-text ml-2rem" onclick="saveButton();">
-          <span class="iconify" data-icon="fluent:save-16-regular"></span>
-          <p>Save</p>
-        </button>
+    <div class="flex-column">
+      <div class="interview-controls__buttons">
+        <%= link_to interview_path(@interview, format: :pdf), class: 'd-flex bkt-blue rounded-5px p-2', id: 'interview-export-pdf', target: :_blank do %>
+          <span class="iconify" data-icon="bx:bx-download"></span>
+          <p>Download PDF</p>
+        <% end %>
 
-        <a href='<%= complete_interview_path(interview_id: @interview.id) if fully_answered %>'
-           data-url='<%= complete_interview_path(interview_id: @interview.id) %>'
-           data-remote='true'
-           id='submit-interview-link'
-           class='ml-2rem'>
-          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
+        <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
+          <p class="p-2 bkt-green mx-5" id="xhr-form-status-btn">Up to date</p>
+
+          <a href='<%= complete_interview_path(interview_id: @interview.id) if fully_answered %>'
+             data-url='<%= complete_interview_path(interview_id: @interview.id) %>'
+             data-remote='true'
+             id='submit-interview-link'
+             class='ml-2rem d-none'>
+          </a>
+
+          <%= link_to '', lock_interview_path(interview_id: @interview.id), remote: true, id: 'lock-interview-link', class: 'd-none' %>
+
+          <button id="submit-interview"
+                  class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
+                  data-toggle='modal'
+                  data-target='#interviewConfirmSubmit'
+                  <%= 'disabled' unless fully_answered %>>
             <p>Submit</p>
-            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+            <span class="iconify ml-2" data-icon="fluent:send-16-filled" style="color: white;"></span>
           </button>
-        </a>
 
-        <a id='lock-interview-link'
-           class='d-none'
-           data-toggle='modal'
-           data-target='#lockInterview'></a>
-
-        <a id='confirm-interview-locked-link'
-           class='d-none'
-           data-toggle='modal'
-           data-target='#confirmLocked'></a>
-
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 
@@ -64,13 +78,13 @@
     <div class="interview-main__right">
 
       <div class="flex-row-start-centered width-100">
-        <%= link_to :back, class: 'flex-row-center-centered height-5rem width-5rem' do %>
+        <%= link_to :back, class: 'flex-row-center-centered d-sm-none height-5rem width-5rem' do %>
           <i class="fas fa-angle-left fs-2_4rem"></i>
         <% end %>
       </div>
 
 
-      <h1 class="fs-3rem mb-2rem"><%= template.title %></h1>
+      <h1 class="fs-2_4rem font-weight-700 mb-2rem"><%= @interview.campaign.title %></h1>
 
       <div class="trix-display">
         <%= sanitize template.description %>
@@ -87,9 +101,9 @@
       <%
         QuestionDecorator.decorate_collection(
           @interview.interview_form.interview_questions
-                                   .order(position: :asc)
-                                   .where(visible_for: visibility)
-          ).each do |question|
+                    .order(position: :asc)
+                    .where(visible_for: visibility)
+        ).each do |question|
       %>
         <% if question.separator? %>
           <div class="interview-main__right-separator">
@@ -110,23 +124,25 @@
             <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
               <p><%= question_num %>. </p>
               <span class="iconify" data-icon="<%= question.icon %>"></span>
-              <p><%= question.question %> <%= "*" if question.required? %></p>
+              <p><%= question.question %> <%= "*" if question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') %></p>
             </div>
             <div class="interview-main__right-question-description">
               <%= sanitize question.description %>
             </div>
 
             <%= render 'interview_questions/show_interview_question_form',
-              interview: @interview,
-              question: question,
-              manager: manager,
-              employee: employee,
-              read_only: (
-                (@interview.employee? && employee != current_user) ||
-                (@interview.manager? && manager != current_user) ||
-                (@interview.simple? && manager != current_user) ||
-                @interview.locked?
-              ) %>
+                       interview: @interview,
+                       question: question,
+                       manager: manager,
+                       employee: employee,
+                       read_only: (
+                         (@interview.employee? && employee != current_user) ||
+                           (@interview.manager? && manager != current_user) ||
+                           (@interview.simple? && manager != current_user) ||
+                           @interview.locked?
+                       ),
+                       company: current_user.company
+            %>
           </div>
         </div>
       <% end %>
@@ -145,32 +161,19 @@
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
-        <a data-toggle='modal width-fit-content' data-target='#lockInterview'>
-          <button class="btn-blue btn-blue <%= 'btn-blue-disabled' unless fully_answered %>" id='submit-interview' <%= 'disabled' unless fully_answered %>>
-            <p>Submit</p>
-            <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
-          </button>
-        </a>
+        <button id="submit-interview"
+                class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
+                data-toggle='modal'
+                data-target='#interviewConfirmSubmit'
+                <%= 'disabled' unless fully_answered %>>
+          <p>Submit</p>
+          <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+        </button>
       <% end %>
     </div>
   </div>
 
 </div>
-
-<div class="interview-thanks hidden">
-  <div class="flex-column-start-centered">
-    <p>Review Submitted ! <i class="fas fa-check-square"></i></p>
-    <p>Thank you for completing this review ! <i class="far fa-thumbs-up"></i></p>
-    <p>You can go back to the interview, or exit to the dashboard.</p>
-  </div>
-  <div class="interview-thanks__controls">
-    <button class="btn-blue-text" onclick='thankYou("back");'><p><i class="fas fa-long-arrow-alt-left"></i> Back</p></button>
-    <%= link_to :back do %>
-      <button class="btn-blue"><p>Exit</p></button>
-    <% end %>
-  </div>
-</div>
-
 
 <div class="saved-message hidden">
   <p>SAVED!</p>
@@ -181,15 +184,15 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='lockInterview' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg rounded-20px' role='document'>
-    <%= render 'interviews/modals/lock_interview' %>
+<div class='modal fade' id='interviewConfirmSubmit' tabindex='-1' role='dialog' data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document'>
+    <%= render 'interviews/modals/confirm_submit' %>
   </div>
 </div>
 
-<div class='modal fade' id='confirmLocked' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog rounded-20px' role='document'>
-    <%= render 'interviews/modals/confirm_locked' %>
+<div class='modal fade' id='confirmGoBack' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
+  <div class='modal-dialog' role='document'>
+    <%= render 'interviews/modals/confirm_later' %>
   </div>
 </div>
 
@@ -205,10 +208,10 @@
     notelem = $(notelem); // jquerize (optional)
     // check outside click for multiple elements
     var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
+    for (i = 0; i < len; i++) {
+      if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+        clickedOut = false;
+      }
     }
     if (clickedOut) return true;
     else return false;
@@ -217,11 +220,19 @@
   function autoSave(element, delayed = false) {
     if (delayed && auto_save) {
       auto_save = false
-      setTimeout(function(){
+      setTimeout(function () {
         auto_save = true
+        const status = document.getElementById('xhr-form-status-btn')
+        status.classList.remove('bkt-green')
+        status.classList.add('bkt-yellow')
+        status.innerText = 'Updating...'
         element.closest('form').querySelector('.hidden-submit').click()
       }, 1000)
     } else {
+      const status = document.getElementById('xhr-form-status-btn')
+      status.classList.remove('bkt-green')
+      status.classList.add('bkt-yellow')
+      status.innerText = 'Updating...'
       element.closest('form').querySelector('.hidden-submit').click()
     }
   }
@@ -245,23 +256,36 @@
 
   function saveButton(message = true) {
     document.querySelector('body').classList.add('wait')
-    if (<%= @interview.crossed? && !@interview.completed? %>) {
+    if (<%= @interview.crossed? && !@interview.submitted? %>) {
       document.querySelectorAll('form.interview_answer').forEach((form) => {
-        setTimeout(function(){form.querySelector('.hidden-submit').click();}, 1000);
+        setTimeout(function () {
+          form.querySelector('.hidden-submit').click();
+        }, 1000);
 
       })
     }
     if (message) {
-      setTimeout(function(){
+      setTimeout(function () {
         document.querySelector('body').classList.remove('wait')
         document.querySelector('.saved-message').classList.remove('hidden')
-        setTimeout(function(){
+        setTimeout(function () {
           document.querySelector('.saved-message').classList.add('hidden')
         }, 1500)
-       }, 1500)
+      }, 1500)
     } else {
       document.querySelector('body').classList.remove('wait')
     }
+  }
+
+  function submitAndLock() {
+    const submit = document.getElementById('submit-interview-link')
+    const lock = document.getElementById('lock-interview-link')
+
+    submit.click()
+    lock.click()
+    setTimeout(() => {
+      location.reload();
+    }, 500)
   }
 
   // AUTO UPDATE TEXTAREA HEIGHT //
@@ -292,7 +316,7 @@
     }, 100);
     if (dropdown.classList.contains('hidden')) {
       dropdown.classList.remove('hidden')
-      window.addEventListener('click', function(e) {
+      window.addEventListener('click', function (e) {
         if (outsideClick(e, element) && !doubleClickGuardian) {
           dropdown.classList.add('hidden')
           this.removeEventListener('click', arguments.callee, false);

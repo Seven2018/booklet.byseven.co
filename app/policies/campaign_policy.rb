@@ -15,7 +15,7 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def destroy?
-    create? || record.interviews.where(completed: true).empty?
+    create? || record.interviews.where(status: :submitted).empty?
   end
 
   def my_interviews?
@@ -35,6 +35,10 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def remove_interview_set?
+    create?
+  end
+
+  def can_unlock?
     create?
   end
 end

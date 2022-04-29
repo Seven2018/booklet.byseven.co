@@ -6,7 +6,7 @@
         <%= simple_form_for :edit_option, url: edit_mcq_option_path, method: :patch, remote: true do |f| %>
           <div class="flex-row-between-centered mb-1rem">
             <div class="flex-row-start-centered mcq-input-div">
-              <%= f.text_field :option, value: option[0], autocomplete: 'off', class: 'bkt-bg-light-blue', onkeyup: 'submitForm(this);' %>
+              <%= f.text_field :option, value: option[0], autocomplete: 'off', class: 'bkt-bg-light-blue', onkeyup: 'saveForm(this, true);' %>
               <%= f.submit '', class: 'hidden-submit hidden' %>
             </div>
             <div class="flex-row-end-centered">
@@ -24,7 +24,7 @@
         <%= simple_form_for :add_option, url: add_mcq_option_path, remote: true do |f| %>
           <div class='flex-row-start-centered mb-1rem'>
 
-            <%= f.text_field :option, autocomplete: 'off', class: 'bkt-bg-light-blue', onchange: 'submitForm(this);' %>
+            <%= f.text_field :option, autocomplete: 'off', class: 'bkt-bg-light-blue', onchange: 'saveForm(this, true);' %>
             <%= f.submit '', class: 'hidden-submit hidden' %>
 
             <div class="flex-row-end-centered">

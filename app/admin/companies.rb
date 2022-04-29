@@ -86,6 +86,8 @@ ActiveAdmin.register Company do
               height: f.object.my_team_trainings_bg_picture_meta(:desktop).height)
           end
         end
+
+        f.input :rating_logo
       end
     end
 
@@ -95,6 +97,6 @@ ActiveAdmin.register Company do
   permit_params :name, :address, :zipcode, :city, :logo, :siret, :auth_token,
     :clear_bg_logo, :dark_bg_logo,
     :my_interviews_bg_picture, :my_team_interviews_bg_picture,
-    :my_trainings_bg_picture, :my_team_trainings_bg_picture,
+    :my_trainings_bg_picture, :my_team_trainings_bg_picture, :rating_logo,
     applications: []
 end

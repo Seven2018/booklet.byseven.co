@@ -47,6 +47,24 @@
 //   }
 // }
 
+trix-editor {
+
+  ul {
+    list-style: disc;
+    padding-left: 2rem;
+  }
+
+  ol {
+    list-style: decimal;
+    padding-left: 2rem;
+  }
+
+  li {
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
 .trix-content {
   margin-bottom: 2rem;
   border: 0.5px solid $bkt-light-grey5 !important;
@@ -79,6 +97,7 @@
 .trix-display {
   width: 100%;
   margin: 1rem 0 5rem 0;
+  font-size: 1.6rem;
 
   div, p, strong {
     font-size: 1.6rem;
@@ -86,5 +105,20 @@
 
   strong {
     font-weight: 600;
+  }
+
+  ul {
+    list-style: disc;
+    padding-left: 2rem;
+  }
+
+  ol {
+    list-style: decimal;
+    padding-left: 2rem;
+  }
+
+  li {
+    font-size: 1.4rem;
+    margin: 0;
   }
 }

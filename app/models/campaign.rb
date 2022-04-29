@@ -74,12 +74,12 @@ class Campaign < ApplicationRecord
   def completion_for(employee)
     return 0 if interviews.count.zero?
 
-    return (interviews.completed.count.fdiv(interviews.count) * 100).round if employee == :all
+    return (interviews.submitted.count.fdiv(interviews.count) * 100).round if employee == :all
 
     return 0 if interviews.where(employee: employee).count.zero?
 
     (
-      interviews.completed.where(employee: employee).count
+      interviews.submitted.where(employee: employee).count
       .fdiv(interviews.where(employee: employee).count) * 100
     ).round
   end

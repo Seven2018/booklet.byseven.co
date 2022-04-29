@@ -14,6 +14,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    height: 100%;
 
     p {
       text-transform: none;
@@ -224,10 +225,16 @@
     }
   }
 
+  .interview-title-logo {
+    color: $bkt-blue;
+  }
+
   svg {
     height: 2.4rem;
     width: 2.4rem;
-    margin: -4px 10px 0px 10px;
+    min-height: 2.4rem;
+    min-width: 2.4rem;
+    margin: 0px 10px 0px 10px;
     color: #3177B7;
     align-self: flex-start;
   }
@@ -273,48 +280,6 @@
   }
 }
 
-.interview-thanks {
-  min-height: calc(100vh - 7.5rem);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
-  p {
-    text-align: center;
-    font-weight: bolder;
-  }
-
-  p:first-of-type {
-    margin-bottom: 2rem;
-  }
-
-  .fa-check-square {
-    color: #57E054;
-  }
-
-  .fa-thumbs-up {
-    color: #3177B7;
-  }
-
-  .interview-thanks__controls {
-    position:absolute;
-    bottom: 10rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    button {
-      margin: 0 2rem;
-
-      p {
-        margin: 0;
-      }
-    }
-  }
-}
-
 ////////////////////
 // RATINGS SYSTEM //
 ////////////////////
@@ -334,56 +299,16 @@
 
 .rating > input { display: none; }
 
-.rating > label:before {
-  margin: .5rem;
-  font-size: 1.5rem;
-  font-family: "Font Awesome 5 Free";
-  display: inline-block;
-  font-style: normal;
-  font-variant: normal;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  font-weight: 900;
-  content: "\f005";
-
-  @include from-medium {
-    font-size: 3rem;
-  }
-}
-
-.rating > .half:before {
-  content: "\f10c";
-  position: absolute;
-}
-
-.rating-pizza > label:before {
-  margin: .5rem;
-  font-size: 1.5rem;
-  font-family: "Font Awesome 5 Free";
-  display: inline-block;
-  font-style: normal;
-  font-variant: normal;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  font-weight: 900;
-  content: "\f818";
-
-  @include from-medium {
-    font-size: 3rem;
-  }
-}
-
-.rating-pizza > .half:before {
-  content: "\f10c";
-  position: absolute;
-}
-
 .rating > label {
   color: #ddd;
   float: right;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  svg {
+    color: #ddd;
+  }
 
   .saved_answers {
     display: flex;
@@ -405,12 +330,12 @@
 
 .rating > input:checked ~ label, /* show gold star when clicked */
 .rating:not(:checked, .read_only) > label:hover, /* hover current star */
-.rating:not(:checked, .read_only) > label:hover ~ label { color: #5b92c5; cursor: pointer } /* hover previous stars in list */
+.rating:not(:checked, .read_only) > label:hover ~ label { color: $bkt-blue; cursor: pointer; svg {color: $bkt-blue;} } /* hover previous stars in list */
 
 .rating:not(.read_only) > input:checked + label:hover, /* hover current star when changing rating */
 .rating:not(.read_only) > input:checked ~ label:hover,
 .rating:not(.read_only) > label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating:not(.read_only) > input:checked ~ label:hover ~ label { color: #5b92c5; opacity: .7 }
+.rating:not(.read_only) > input:checked ~ label:hover ~ label { color: $bkt-blue; opacity: .7 }
 .read_only {
   label { cursor: default !important }
 }
@@ -544,6 +469,14 @@
 
   .rating-crossed {
     margin-bottom: 1rem;
+
+    .rating-filled > svg {
+      color: $bkt-dark-grey;
+    }
+
+    .rating-empty > svg {
+      color: #ddd;
+    }
   }
 
   .interview-crossed-answer__text, .interview-crossed-answer__objective {

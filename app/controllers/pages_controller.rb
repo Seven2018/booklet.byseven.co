@@ -5,9 +5,11 @@ class PagesController < ApplicationController
 
   def home
     @my_interviews = Interview.joins(:campaign)
-                              .where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, label: 'Employee', completed: false)
+                              .where(campaigns: {company_id: current_user.company_id}, employee_id: current_user.id, label: 'Employee')
+                              .where.not(status: :submitted)
     @my_team_interviews = Interview.joins(:campaign)
-                                   .where(campaigns: {company_id: current_user.company_id}, interviewer: current_user, label: ['Manager', 'Crossed'], completed: false)
+                                   .where(campaigns: {company_id: current_user.company_id}, interviewer: current_user, label: ['Manager', 'Crossed'])
+                                   .where.not(status: :submitted)
     @my_trainings = Training.joins(sessions: :attendees)
                             .where(attendees: {user: current_user})
                             .where('sessions.date >= ?', Time.zone.today)
@@ -31,7 +33,7 @@ class PagesController < ApplicationController
     @contents = @contents.where(content_type: params.dig(:search, :content_type)) if params.dig(:search, :content_type).present?
     @contents = @contents.joins(:content_categories).where(content_categories: {category_id: params.dig(:search, :selected_categories).split(',')}).distinct if params.dig(:search, :selected_categories).present?
 
-    # TO DO : add pagination
+    # TODO : add pagination
 
     respond_to do |format|
       format.html {catalogue_path}

@@ -1,8 +1,14 @@
-<div id='add_question-<%= position %>' class="template-edit__add-question-btn my-2rem pos-rel" style='border: 2px solid #CDCDCD;'>
-  <div class='add_button_show flex-row-center-centered pos-abs height-2_5rem width-2_5rem' style='top: -1.25rem; right: -1.25rem; border-radius: 1.25rem;background-color: #CDCDCD;' onclick='addQuestionMenu(this);'>
+<div id='add_question-<%= position %>' class="template-edit__add-question-btn my-2rem pos-rel"
+     style='border: 2px solid #CDCDCD;'>
+
+  <div class='add_button_show flex-row-center-centered pos-abs height-2_5rem width-2_5rem'
+       style='top: -1.25rem; right: -1.25rem; border-radius: 1.25rem;background-color: #CDCDCD;'
+       data-action='click->interviews--interview-forms-edit#addQuestionMenu'>
     <span class="iconify fs-1_8rem bkt-white" data-icon="akar-icons:plus"></span>
   </div>
-  <div class='add_button_hide flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-grey2 pos-abs hidden' style='top: -1.25rem; right: -1.25rem; border-radius: 1.25rem;background-color: transparent;'>
+
+  <div class='add_button_hide flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-grey2 pos-abs hidden'
+       style='top: -1.25rem; right: -1.25rem; border-radius: 1.25rem;background-color: transparent;'>
     <span class="iconify fs-1_8rem bkt-blue" data-icon="uil:times"></span>
   </div>
 
@@ -11,35 +17,62 @@
   <!----------------------->
 
   <div class="template-edit__add-question-menu rounded-5px bkt-bg-white bkt-box-shadow-compact z-index-100 pos-abs hidden" style='top: -11.3rem; right: -20rem;'>
-    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem" onclick="addQuestion('separator', this.closest('.template-edit__add-question-btn'));">
+
+    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem"
+       data-type="separator"
+       data-action="click->interviews--interview-forms-edit#addQuestion">
+
       <div class="flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-blue mr-1rem">
         <i class="fas fa-list-ol bkt-blue"></i>
       </div>
       <p>Chapter</p>
+
     </a>
-    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem" onclick="addQuestion('open_question', this.closest('.template-edit__add-question-btn'));">
+
+    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem"
+       data-type="open_question"
+       data-action="click->interviews--interview-forms-edit#addQuestion">
+
       <div class="flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-blue mr-1rem">
         <i class="fas fa-question-circle bkt-blue"></i>
       </div>
       <p>Open Question</p>
+
     </a>
-    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem" onclick="addQuestion('rating', this.closest('.template-edit__add-question-btn'));">
+
+    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem"
+       data-type="rating"
+       data-action="click->interviews--interview-forms-edit#addQuestion">
+
       <div class="flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-blue mr-1rem">
         <i class="fas fa-star-half-alt bkt-blue"></i>
       </div>
       <p>Rating</p>
+
     </a>
-    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem" onclick="addQuestion('mcq', this.closest('.template-edit__add-question-btn'));">
+
+    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem"
+       data-type="mcq"
+       data-action="click->interviews--interview-forms-edit#addQuestion">
+
       <div class="flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-blue mr-1rem">
         <i class="far fa-check-square bkt-blue"></i>
       </div>
       <p>Multi-Select</p>
+
     </a>
-    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem" onclick="addQuestion('objective', this.closest('.template-edit__add-question-btn'));">
+
+    <a class="flex-row-start-centered bkt-bg-light-blue-hover p-1rem"
+       data-type="objective"
+       data-action="click->interviews--interview-forms-edit#addQuestion">
+
       <div class="flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-light-blue mr-1rem">
         <i class="fas fa-bullseye bkt-blue"></i>
       </div>
       <p>Objective</p>
+
     </a>
+
   </div>
+
 </div>

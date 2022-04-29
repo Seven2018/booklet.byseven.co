@@ -2,7 +2,8 @@
 
   <% employees.each do |employee| %>
 
-    <div id="employee-<%= employee.id %>">
+    <div id="employee-<%= employee.id %>"
+         class="campaign-show__card-container col-sm-12 col-md-6 col-xl-4">
       <%= render 'campaigns/show/show_interview_card', campaign: campaign, employee: employee, selected_interviewer: selected_interviewer %>
     </div>
 
