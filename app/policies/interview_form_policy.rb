@@ -29,10 +29,6 @@ class InterviewFormPolicy < ApplicationPolicy
     edit?
   end
 
-  def interview_form_link_tags?
-    edit?
-  end
-
   def destroy?
     edit?
   end

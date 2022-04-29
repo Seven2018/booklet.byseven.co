@@ -75,55 +75,38 @@ export default class extends Controller {
   // TEMPLATE SETTINGS //
   ///////////////////////
 
-  // function BookletSelectExpand(element) {
-  //   doubleClickGuardian = true
-  //   dropdown = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-dropdown')
-  //   setTimeout(() => {
-  //     doubleClickGuardian = false
-  //   }, 100);
-  //   if (dropdown.classList.contains('hidden')) {
-  //     dropdown.classList.remove('hidden')
-  //     window.addEventListener('click', function(e) {
-  //       if (!doubleClickGuardian) {
-  //         dropdown.classList.add('hidden')
-  //         this.removeEventListener('click', arguments.callee, false);
-  //       }
-  //     });
-  //   } else {
-  //     dropdown.classList.add('hidden')
-  //   }
-  // }
 
-  // function BookletSelectSubmit(element, attribute) {
-  //   updateStatusMessage("Updating...")
-  //   form = element.closest('form')
-  //   container = element.closest('.booklet-select__template-edit-container')
-  //   selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
-  //   selected_value = element.querySelector('p').innerText
-  //   storage = form.querySelector('#interview_form_' + attribute)
-  //   submit_button = form.querySelector('.hidden-submit')
+  selectSubmit(e) {
+    this.updateStatusMessage("Updating...")
 
-  //   storage.value = selected_value.toLowerCase()
-  //   selected_display.innerText = selected_value
+    const element = e.currentTarget
+    const attribute = element.dataset.attribute
+    const form = element.closest('form')
+    const selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
+    const selected_value = element.querySelector('p').innerText
+    const storage = form.querySelector('#interview_form_' + attribute)
 
-  //   checkCrossAvailability(storage)
-  // }
+    storage.value = selected_value.toLowerCase()
+    selected_display.innerText = selected_value
 
-  // function checkCrossAvailability(element) {
-  //   form = element.closest('form')
-  //   cross_toggle = form.querySelector('#template-edit__settings-cross-toggle')
-  //   cross_toggle_input = cross_toggle.querySelector('input')
-  //   input_value = element.value
-  //   submit_button = form.querySelector('.hidden-submit')
+    this.checkCrossAvailability(storage)
+  }
 
-  //   if (input_value == 'both') {
-  //     cross_toggle_input.disabled = false
-  //   } else {
-  //     if (cross_toggle_input.checked) { cross_toggle_input.checked = false; switchSide(cross_toggle_input, false) }
-  //     cross_toggle_input.disabled = true
-  //   }
-  //   submit_button.click()
-  // }
+  checkCrossAvailability(element) {
+    const form = element.closest('form')
+    const cross_toggle = form.querySelector('#template-edit__settings-cross-toggle')
+    const cross_toggle_input = cross_toggle.querySelector('input')
+    const input_value = element.value
+    const submit_button = form.querySelector('.hidden-submit')
+
+    if (input_value == 'both') {
+      cross_toggle_input.disabled = false
+    } else {
+      if (cross_toggle_input.checked) { cross_toggle_input.checked = false; this.switchSide(cross_toggle_input, false) }
+      cross_toggle_input.disabled = true
+    }
+    submit_button.click()
+  }
 
 
   ///////////////////////
@@ -181,6 +164,101 @@ export default class extends Controller {
     }
   }
 
+  //////////////////////
+  // QUESTION OPTIONS //
+  //////////////////////
+
+  checkCustomCheckbox(e) {
+    const element = e.currentTarget
+    const checkbox = element.querySelector('input')
+    const icon = element.querySelector('svg')
+
+    if (checkbox.value == 'true') {
+      checkbox.value = 'false'
+      icon.classList.add('hidden')
+    } else {
+      checkbox.value = 'true'
+      icon.classList.remove('hidden')
+    }
+
+    this.saveForm(e)
+  }
+
+  switchSide(e) {
+    this.updateStatusMessage("Updating...")
+
+    const element = e.currentTarget
+    const save = element.dataset.save == 'true'
+    const switch_button = element.parentNode
+    const form = element.closest('form')
+    const hidden_submit = form.querySelector('.hidden-submit')
+
+    if (element.checked == true) {
+      setTimeout(function(){switch_button.classList.add('switch_checked')}, 100)
+    } else {
+      setTimeout(function(){switch_button.classList.remove('switch_checked')}, 100)
+    }
+    if (hidden_submit != undefined && save) {
+      hidden_submit.click();
+    }
+  }
+
+  checkSwitchCompatibility(e) {
+    const element = e.currentTarget
+    const mode = element.dataset.mode
+
+    if (this.doubleClickGuardian == false) {
+      this.doubleClickGuardian = true
+      setTimeout(function(){this.doubleClickGuardian = false}, 100)
+
+      const question_card = element.closest('form')
+      var element1 = question_card.querySelector('#interview_question_required_options-' + element.id.split('-')[1])
+      var element2 = question_card.querySelector('#interview_question_visible_options-' + element.id.split('-')[1])
+
+      if (element == element1 && element1.checked == true) {
+        this.horizontalCompatibilityPair(element1, element2)
+      } else if (element == element2 && element2.checked == false) {
+        this.horizontalCompatibilityPair(element2, element1)
+      }
+
+      if (mode == 'visible_for') {
+        const set = question_card.querySelectorAll('.interview_question_visible_options')
+        const set_array = Array.from(set)
+        element1 = element
+        const index = set_array.indexOf(element1)
+        if (index > -1) {
+          set_array.splice(index, 1);
+        }
+        element2 = set_array[0]
+
+        this.verticalCompatibilityPair(element1, element2)
+      }
+
+      this.switchSide(e)
+    }
+  }
+
+  horizontalCompatibilityPair(element1, element2) {
+    if (element1.checked) {
+      element2.checked = true;
+      setTimeout(function(){
+        element2.parentNode.classList.add('switch_checked')
+      }, 100)
+    } else {
+      element2.checked = false;
+      setTimeout(function(){
+        element2.parentNode.classList.remove('switch_checked')
+      }, 100)
+    }
+  }
+
+  verticalCompatibilityPair(element1, element2) {
+    if (!element1.checked && !element2.checked) {
+      element2.checked = true
+      setTimeout(function(){element2.parentNode.classList.add('switch_checked')}, 100)
+    }
+  }
+
 
   /////////////////////
   // INFO MESSAGE //
@@ -221,5 +299,36 @@ export default class extends Controller {
     }
 
     message_storage.innerText = message
+  }
+
+  toggleMod(e) {
+    const element = e.currentTarget
+    const caret = element.querySelector('i')
+    var angle = parseInt(caret.getAttribute('data-rotated'), 10)
+
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+
+    const block = element.parentNode.parentNode
+    const p = element.querySelector('p')
+    const block_width = block.offsetWidth
+
+    if (block.style.maxHeight == '64px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '100000px'
+      p.style.maxHeight = '100000px'
+      p.style.whiteSpace = 'normal'
+      block.style.width = block_width.toString() + 'px'
+      block.classList.add('active')
+    } else if (block.style.maxHeight == '100000px') {
+      block.style.maxHeight = '64px'
+      p.style.maxHeight = '18px'
+      p.style.whiteSpace = 'nowrap'
+      block.style.width = 'auto'
+      block.classList.remove('active')
+    }
   }
 }

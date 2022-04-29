@@ -8,15 +8,19 @@
 <% first_question = question.position == 1 %>
 <% last_question = question.position >= template.interview_questions.count %>
 
-<div class="line-top flex-row-between-start mb-3rem">
+<div class="line-top flex-row-between-centered height-2_4rem-forced mb-3rem">
 
   <div class="line-title <%= 'line-title-separator' if question.separator? %>"
-       onclick='toggleMod(this);'>
+       data-action="click->interviews--interview-forms-edit#toggleMod">
+
     <i class="fas fa-angle-down" data-rotated='0'></i>
+
     <% unless question.separator? %>
       <i class="<%= question_icon[question.question_type] %>"></i>
     <% end %>
-    <p class='question-title' title='<%= question.question %>'><%= question.question %></p>
+
+    <p class='question-title height-2_4rem-forced' title='<%= question.question %>'><%= question.question %></p>
+
   </div>
 
   <div class="flex-row-between-centered">
@@ -77,8 +81,11 @@
 
   <% if question.rating? %>
     <div class="flex-row-between-centered mb-2rem">
+
       <div class="flex-row-between-centered">
+
         <label class='mr-1rem'>Max rating</label>
+
         <%= f.input(:options,
           as: :select,
           collection: (1..10),
@@ -88,35 +95,45 @@
           },
           selected: question.options.keys.first
         ) %>
+
       </div>
+
       <div class="flex-row-between-centered">
+
         <% comments_status = question.allow_comments %>
+
         <label class='mb-0 mr-1rem'>Allow comments</label>
-        <div class="flex-row-center-centered border-bkt-blue" style='height: 19.5333px; width: 19.533px;' onclick='checkBookletCheckbox(this);'>
+
+        <div class="flex-row-center-centered border-bkt-blue" style='height: 19.5333px; width: 19.533px;'
+             data-action="click->interviews--interview-forms-edit#checkCustomCheckbox">
+
           <span class="iconify height-2_5rem-forced width-2_5rem-forced bkt-blue <%= 'hidden' unless comments_status %>" data-icon="ant-design:check-square-filled"></span>
+
           <%= f.hidden_field(
             :allow_comments,
             label: false,
             value: comments_status
           ) %>
+
         </div>
+
       </div>
+
     </div>
-<!--     <div class="show-rating">
-      <%# question.options.keys.first.to_i.times do %>
-        <i class="far fa-star"></i>
-      <%# end %>
-    </div> -->
+
   <% end %>
 
   <%= f.submit '', class: 'hidden-submit hidden' %>
 <% end %>
 
 <% if question.mcq? || question.objective? %>
+
   <label class='fs-1_4rem font-weight-500'>Answer options</label>
+
   <div id='mcq-<%= question.id %>' class='mb-2rem'>
     <%= render 'interview_forms/edit/edit_show_mcq', question: question %>
   </div>
+
 <% end %>
 
 <% unless question.separator? %>
@@ -136,18 +153,25 @@
           <% visible_for_employee_default_value = (!visible_for_employee_disable || !visible_for_employee_check) ? 'off' : 'on' %>
 
           <label class="required-question-switch <%= 'switch_checked' if visible_for_employee_check %>">
+
             <input type='hidden' value='<%= visible_for_employee_default_value %>' name='interview_question[visible_for_employee]'>
+
             <input value='on'
                    id='interview_question_visible_options-employee'
                    class='interview_question_visible_options'
                    type="checkbox"
                    name='interview_question[visible_for_employee]'
-                   onclick='checkSwitchCompatibility(this, "visible_for");'
+                   data-mode="visible_for"
+                   data-save='true'
+                   data-action="click->interviews--interview-forms-edit#checkSwitchCompatibility"
                    <%= 'checked' if visible_for_employee_check %>
                    <%= 'disabled' if visible_for_employee_disable %>
             />
+
             <div><%# do not remove %></div>
+
           </label>
+
           <label class='ml-1rem font-weight-500'>Employee</label>
 
           <% unless template.answerable_by_both? %>
@@ -169,18 +193,24 @@
           <% visible_for_manager_default_value = (!visible_for_manager_disable || !visible_for_manager_check) ? 'off' : 'on' %>
 
           <label class="required-question-switch <%= 'switch_checked' if visible_for_manager_check %>">
+
             <input type='hidden' value='<%= visible_for_manager_default_value %>' name='interview_question[visible_for_manager]'>
+
             <input value='on'
                    id='interview_question_visible_options-manager'
                    class='interview_question_visible_options'
                    type="checkbox"
                    name='interview_question[visible_for_manager]'
-                   onclick='checkSwitchCompatibility(this, "visible_for");'
+                   data-mode="visible_for"
+                   data-save='true'
+                   data-action="click->interviews--interview-forms-edit#checkSwitchCompatibility"
                    <%= 'checked' if visible_for_manager_check %>
                    <%= 'disabled' if visible_for_manager_disable %>
             />
             <div><%# do not remove %></div>
+
           </label>
+
           <label class='ml-1rem font-weight-500'>Manager</label>
 
           <% unless template.answerable_by_both? %>
@@ -204,18 +234,25 @@
           <% required_for_employee_check = question.required_for_employee? || question.required_for_all? %>
 
           <label class='mr-1rem font-weight-500'>Employee</label>
+
           <label class="required-question-switch <%= 'switch_checked' if required_for_employee_check %>">
+
             <input type='hidden' value='off' name='interview_question[required_for_employee]'>
+
             <input value='on'
                    id='interview_question_required_options-employee'
                    type="checkbox"
                    <%= title='Only the employee can answer this template questions.' if template.answerable_by_manager? %>
                    name='interview_question[required_for_employee]'
-                   onclick='checkSwitchCompatibility(this, "required_for");'
+                   data-mode="required_for"
+                   data-save='true'
+                   data-action="click->interviews--interview-forms-edit#checkSwitchCompatibility"
                    <%= 'checked' if required_for_employee_check %>
                    <%= 'disabled' if template.answerable_by_manager? %>
             />
+
             <div><%# do not remove %></div>
+
           </label>
 
           <% if template.answerable_by_manager? %>
@@ -235,17 +272,24 @@
           <% required_for_manager_check = question.required_for_manager? || question.required_for_all? %>
 
           <label class='mr-1rem font-weight-500'>Manager</label>
+
           <label class="required-question-switch <%= 'switch_checked' if required_for_manager_check %>">
+
             <input type='hidden' value='off' name='interview_question[required_for_manager]'>
+
             <input value='on'
                    id='interview_question_required_options-manager'
                    type="checkbox"
                    name='interview_question[required_for_manager]'
-                   onclick='checkSwitchCompatibility(this, "required_for");'
+                   data-mode="required_for"
+                   data-save='true'
+                   data-action="click->interviews--interview-forms-edit#checkSwitchCompatibility"
                    <%= 'checked' if required_for_manager_check %>
                    <%= 'disabled' if template.answerable_by_employee? %>
             />
+
             <div><%# do not remove %></div>
+
           </label>
 
           <% if template.answerable_by_employee? %>
