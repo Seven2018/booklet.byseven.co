@@ -66,7 +66,7 @@
       input_html: {
         class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem',
         autocomplete: 'off',
-        onkeyup: 'saveForm(this, true)'
+        data: { action: 'keyup->interviews--interview-forms-edit#saveForm' }
       },
       required: true,
       label: (question.separator? ? 'Title' : false )
@@ -91,7 +91,7 @@
           collection: (1..10),
           label: false,
           input_html: {
-            onchange: 'saveForm(this);'
+            data: { action: 'change->interviews--interview-forms-edit#saveForm' }
           },
           selected: question.options.keys.first
         ) %>

@@ -6,7 +6,7 @@
         <%= simple_form_for :edit_option, url: edit_mcq_option_path, method: :patch, remote: true do |f| %>
           <div class="flex-row-between-centered mb-1rem">
             <div class="flex-row-start-centered mcq-input-div">
-              <%= f.text_field :option, value: option[0], autocomplete: 'off', class: 'bkt-bg-light-blue', onkeyup: 'saveForm(this, true);' %>
+              <%= f.text_field :option, value: option[0], autocomplete: 'off', class: 'bkt-bg-light-blue', data: { action: 'keyup->interviews--interview-forms-edit#saveForm' } %>
               <%= f.submit '', class: 'hidden-submit hidden' %>
             </div>
             <div class="flex-row-end-centered">
@@ -24,7 +24,7 @@
         <%= simple_form_for :add_option, url: add_mcq_option_path, remote: true do |f| %>
           <div class='flex-row-start-centered mb-1rem'>
 
-            <%= f.text_field :option, autocomplete: 'off', class: 'bkt-bg-light-blue', onchange: 'saveForm(this, true);' %>
+            <%= f.text_field :option, autocomplete: 'off', class: 'bkt-bg-light-blue', data: { action: 'keyup->interviews--interview-forms-edit#saveForm' } %>
             <%= f.submit '', class: 'hidden-submit hidden' %>
 
             <div class="flex-row-end-centered">
@@ -41,12 +41,17 @@
         <div id="mcq-add-answer" onclick="this.closest('#mcq-options-list').querySelector('.add-option-form').classList.remove('hidden');"><p class="bkt-btn-light-blue">Add an option</p></div>
 
         <div class="flex-row-between-centered">
+
           <% comments_status = question.allow_comments %>
+
           <label class='fs-1_4rem mb-0 mr-1rem'>Allow comments</label>
 
           <%= simple_form_for question, remote: true do |f| %>
 
-            <div class="flex-row-center-centered border-bkt-blue" style='height: 19.5333px; width: 19.533px;' onclick='checkBookletCheckbox(this);'>
+            <div class="flex-row-center-centered border-bkt-blue"
+                 style='height: 19.5333px; width: 19.533px;'
+                 data-action="click->interviews--interview-forms-edit#checkCustomCheckbox">
+
               <span class="iconify height-2_5rem-forced width-2_5rem-forced bkt-blue <%= 'hidden' unless comments_status %>" data-icon="ant-design:check-square-filled"></span>
 
               <%= f.hidden_field(
@@ -56,9 +61,13 @@
               ) %>
 
             </div>
+
             <%= f.submit '', class: 'hidden-submit hidden' %>
+
           <% end %>
+
         </div>
+
       </div>
 
   </div>

@@ -129,7 +129,7 @@ export default class extends Controller {
       this.doubleClickGuardian = false
       const container = document.querySelector('.template-edit__add-question-btn.active')
 
-      this.toggleQuestionMenuElements(container)
+      if (container !=null) this.toggleQuestionMenuElements(container)
     }
   }
 
