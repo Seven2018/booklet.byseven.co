@@ -1,0 +1,175 @@
+global:
+  back: 'Retour'
+  delete: 'Supprimer'
+  'yes': 'oui'
+  'no': 'non'
+  deadline: 'date de fin'
+  submit: 'Envoyer'
+  interview:
+    title: 'Bonjour {name} !'
+    subtitle: "Vous devez remplir tous les entretiens comme un candidat ici. Vous avez {interviews_to_fill} entretiens a remplir sur {current_interviews} entretiens. Toutes les revues d'un entretien doivent etre vérouillées pour être un 'entretien terminé'"
+    no_interview_started: "Pas d'entretien lancé"
+    one_interview_in_progress: '1 entretien en cours'
+    two_interview_in_progress: '2 entretiens en cours'
+    one_interview_submitted_and_one_interview_in_progress: '1 entretien terminé et 1 entretien en cours'
+    one_interview_submitted: '1 entretien terminé'
+    two_interviews_submitted_cross_review_available: '2 entretiens terminés, Revue Croisée disponible'
+    two_interviews_submitted_cross_review_in_progress: '2 entretiens terminés, Revue Croisée en cours'
+    all_interviews_submitted: 'Tous les entretiens terminés'
+    no_status_to_show: 'rien a montrer'
+    ongoing: 'Entretiens en cours'
+    completed: 'Entretiens terminés'
+    card:
+      view_my_answers: 'Voir mes réponses'
+      start_interview: 'Demarrer mon entretien'
+      view_cross: 'Voir les réponses de la Revue Croisée'
+      continue_my_interview: 'Continuer mon entretien'
+
+
+pages:
+  home:
+    welcome: 'Bienvenu sur Booklet, %{name} !'
+    subtitle: 'Accedez aux formations et aux en ici.'
+
+    my_interviews:
+      title: 'Mes Interviews - {number} revues a faire'
+      first_subtitle: 'Vous avez {number} revues a faire. Vous pouvez les completer sur `Mes Entretien` section !'
+      second_subtitle: 'Vos reviews a completer son'
+      campaign_zero: "Vous n'avez pas d'entretien a faire cette fois."
+      campaign:
+        title: "{campaign_name} with {interviewer_name}"
+        deadline: 'La date de fin pour cette campagne est {date}'
+      remaining: 'et {number} de plus.'
+
+    my_team_interviews:
+      title: 'Mon team interviews - {reviews} revues a faire'
+      first_subtitle: 'Vous avez {reviews} revues a faire dans cette section. Vous pouvez les completer dans <a class="font-weight-700" href="">`mes team entretiens`</a> section !'
+      second_subtitle: 'Vos revues a completer sont :'
+      campaign_zero: "Vous n'avez pas d'entretien a faire cette fois"
+      campaign:
+        title: '{campaign_name} avec <strong>{interviewee_name}</strong>'
+        deadline: 'La date de fin pour cette campagne est <strong>{date}</strong>'
+      remaining: 'Et {number} de plus.'
+
+    my_trainigs:
+      title: 'Mes formations - {reviews} revues a faire'
+      first_subtitle: 'Vous avez {reviews} revues a faire dans cette section. Vous pouvez les completer dans <a class="font-weight-700" href="">`mes formations`</a> section !'
+      second_subtitle: 'Vos revues a completer sont :'
+      training_zero: "Vous n'avez pas de formation a faire cette fois"
+      training:
+        title: '{campaign_name} avec <strong>{name}</strong>'
+        deadline: 'La date de fin pour cette formation est <strong>{date}</strong>'
+      remaining: 'Et {number} de plus.'
+
+    my_team_trainigs:
+      title: "Mes formation d'equipe - {reviews} formation a faire"
+      first_subtitle: "Vous avez {formation} a faire dans cette section. Vous pouvez les completer dans <a class=\"font-weight-700\" href="">`mes formation d'equipe`</a> section !"
+      second_subtitle: 'Vos revues a completer sont : '
+      training_zero: "Vous n'avez pas de formation a faire cette fois"
+      training:
+        title: '{campaign_name} avec <strong>{name}</strong>'
+        deadline: 'La date de fin pour cette formation est <strong>{date}</strong>'
+      remaining: 'Et {number} de plus.'
+
+my_interviews:
+  navbar:
+    my_interviews: 'Mes entretiens'
+  index:
+    interviewer: 'Manager'
+
+my_team_interviews:
+  navbar:
+    my_interviews: "Mes entretiens d'equipe"
+  index:
+    interviewee: 'employee'
+    manage_campaign: 'Gerer campagne'
+
+interviews:
+  show:
+    close: 'Fermer et envoyer plus tard'
+    download_pdf: 'telecharger PDF'
+    up_to_date: 'A jour'
+    popup_close:
+      title: "Vos reponses sont sauvegarde, vous pouvez revenir plus tard<br> pour finir votre entretien et l'envoyer."
+      subtitle: "L'etat de votre entretien restera sur 'In Progress'."
+      go_to: "Aller a 'Mes entretiens'"
+    popup_submit:
+      title: 'Vous allez envoyer vos reponses <br> et les verouiller 🔒'
+      subtitle: "L'etat de voter entretien sera mis a jour sur :<br> entretien envoyer"
+
+
+my_trainings:
+  button_title: 'Mes formation'
+  title: 'Bonjour, {name} !'
+  subtitle: 'Bienvenu sur mes formation section, vous avez {number} formation a faire et/ou les valider.'
+  search: 'Recherche'
+  reset: 'Reset'
+  go_to_training: 'Aller voir la formation'
+  trainings:
+    type: 'En ligne | face a face'
+
+
+my_team_trainings:
+  button_title: "Mes formation d'equipe"
+  title: 'Bonjour, {name} !'
+  subtitle: "Bienvenu sur Mes formations d'equipe section, votre a des formation a faire et/ou a valider."
+  see_details: 'Voir details'
+  trainees:
+    todo: '{number} formation a faire'
+    done: '{number} formation fini'
+
+
+catalogue:
+  button_title: 'Catalogue'
+  title: 'Ateliers ({number})'
+  choose_category: 'Quel categorie vous interesse ?'
+  trainings:
+    type: 'En ligne | face a face'
+
+  show:
+    title: 'Atelier'
+    tags: 'Atelier tags'
+
+
+trainings:
+  button_title: 'Admin'
+  sub_button_trainings: 'Formation'
+  trainings:
+    add_book_trainging: '+ Reserver une formation'
+    table:
+      title: 'Titre de formation'
+      employees: 'Employees'
+      creator: 'Createur de formation'
+
+    show:
+      title: 'Formation'
+      tags: 'Formation tags'
+      acquired: 'Aquis ({number})'
+      not_acquired: 'Pas encore aquis ({number})'
+
+  sub_button_report: 'Raport'
+  report:
+    title: 'Raports'
+    add_report: '+ Cree un raport'
+    table:
+      creator: 'Createur'
+      created_at: 'Cree a'
+      type: 'Type'
+      from: 'De'
+      to: 'A'
+      data: 'Donne'
+
+
+organitation:
+  index:
+    title: 'Employees ({number})'
+    add_user: '+ Ajouter un utilisateur'
+    import_users: 'Importer un utilisateur'
+    export_all_users: 'Exporter tout les utilisateurs'
+    remove_selected_user: "Supprimer l'utisateur selectionne"
+    table:
+      name: 'Nom'
+      job_title: 'Metier'
+      email: 'Email'
+      access_preset: "Preset d'acces"
+      manager: 'Manager'
