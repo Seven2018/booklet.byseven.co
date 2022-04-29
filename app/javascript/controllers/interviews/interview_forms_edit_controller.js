@@ -113,33 +113,35 @@ export default class extends Controller {
   // ADD QUESTION MENU //
   ///////////////////////
 
-  addQuestionMenu(e) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
+  showQuestionMenu(e) {
+    console.log('start')
+
+    if (!this.doubleClickGuardian) {
       const container = e.target.closest('.template-edit__add-question-btn')
-      const button_add = e.target
-      const button_remove = container.querySelector('.add_button_hide')
-      const menu = container.querySelector('.template-edit__add-question-menu')
 
-      container.classList.add('active')
-      button_add.classList.add('hidden')
-      button_remove.classList.remove('hidden')
-      menu.classList.remove('hidden')
-
-      function closeMenu(event) {
-        if (doubleClickGuardian == false) {
-          container.classList.remove('active')
-          button_add.classList.remove('hidden')
-          button_remove.classList.add('hidden')
-          menu.classList.add('hidden')
-          window.removeEventListener('click', closeMenu)
-        }
-      }
-
-      window.addEventListener('click', closeMenu);
-
-      setTimeout(function(){doubleClickGuardian = false}, 100)
+      this.toggleQuestionMenuElements(container)
+      setTimeout(() => this.doubleClickGuardian = true, 100)
     }
+  }
+
+  hideQuestionMenu() {
+    if (this.doubleClickGuardian) {
+      this.doubleClickGuardian = false
+      const container = document.querySelector('.template-edit__add-question-btn.active')
+
+      this.toggleQuestionMenuElements(container)
+    }
+  }
+
+  toggleQuestionMenuElements(container) {
+    const button_add = container.querySelector('.add_button_show')
+    const button_remove = container.querySelector('.add_button_hide')
+    const menu = container.querySelector('.template-edit__add-question-menu')
+
+    container.classList.toggle('active')
+    button_add.classList.toggle('hidden')
+    button_remove.classList.toggle('hidden')
+    menu.classList.toggle('hidden')
   }
 
   addQuestion(e) {
@@ -152,6 +154,7 @@ export default class extends Controller {
     const template = document.querySelector('.add-' + type + '-template')
     const templateinfo = template.innerHTML
     newDiv.innerHTML = templateinfo
+    newDiv.style.maxHeight = '100000px'
     const position = referenceNode.id.split('-')[1]
     const position_storage = newDiv.querySelector('#interview_question_position')
 
@@ -331,4 +334,5 @@ export default class extends Controller {
       block.classList.remove('active')
     }
   }
+
 }
