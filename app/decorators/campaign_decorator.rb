@@ -47,7 +47,9 @@ class CampaignDecorator < Draper::Decorator
   end
 
   def generate_interviews_status_sentence(employee_interview: nil, manager_interview: nil, crossed_interview: nil)
-    if employee_interview&.not_started? && manager_interview&.not_started?
+    if employee_interview&.not_started? && manager_interview&.not_started? ||
+      employee_interview&.not_started? && manager_interview.nil? ||
+      manager_interview&.not_started? && employee_interview.nil?
       'No interview started'
     elsif employee_interview&.in_progress? && manager_interview&.status&.to_sym != :in_progress || manager_interview&.in_progress? && employee_interview&.status&.to_sym != :in_progress
       '1 interview in progress'
@@ -61,7 +63,10 @@ class CampaignDecorator < Draper::Decorator
       '2 interviews submitted, Cross Review available'
     elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.in_progress?
       '2 interviews submitted, Cross Review in progress'
-    elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.submitted?
+    elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.submitted? ||
+      employee_interview&.submitted? && manager_interview.nil? && crossed_interview.nil? ||
+      employee_interview.nil? && manager_interview&.submitted? && crossed_interview.nil? ||
+      employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview.nil?
       'All interviews submitted'
     else
       'no status to show'

@@ -19,7 +19,7 @@
         </div>
         <div class="campaigns-my-interviews__card-review-link">
           <%= link_to campaign_path(campaign, interviewer_id: current_user.id) do %>
-            <p class="d-flex align-items-center">
+            <p class="d-flex align-items-center bkt-bg-light-grey4-hover p-1rem rounded-5px">
               <span class="mr-3">Manage campaign</span>
               <span class="iconify" data-icon="akar-icons:chevron-right"></span>
             </p>
@@ -49,7 +49,7 @@
                   </div>
                   <div class="flex-column width-25rem">
                     <div class="flex-row-start-centered">
-                      <p class="fs-1_6rem font-weight-500 text-truncate width-25rem"><%= employee.fullname %></p>
+                      <p class="fs-1_2rem font-weight-600 text-truncate width-25rem"><%= employee.fullname %></p>
                     </div>
                     <div class="flex-row-start-centered">
                       <% if employee_interview&.submitted? %>
@@ -57,7 +57,7 @@
                           View interviewee answers
                         <% end %>
                       <% else %>
-                        <p class="bkt-light-grey italic">Interviewee</p>
+                        <p class="fs-1_2rem font-weight-600 bkt-light-grey">Interviewee</p>
                       <% end %>
                     </div>
                   </div>
@@ -76,17 +76,21 @@
                   <span class="ml-3 cursor-pointer rounded-circle bkt-light-grey border-bkt-light-grey w-6 fs-9px text-center" data-toggle='modal' data-target='#interview-status-info'>?</span>
                 </div>
                 <div class="flex-row-start-centered ">
-                  <div class="flex-column mr-5">
-                    IE <span class="h-2.5 w-2.5 inline-block <%= employee_interview&.get_status_bg_class %>"></span>
-                  </div>
-                  <div class="flex-column mr-5">
-                    IR
-                    <span class="h-2.5 w-2.5 inline-block <%= manager_interview&.get_status_bg_class %>"></span>
-                  </div>
-                  <% if crossed_interview %>
+                  <% if employee_interview %>
                     <div class="flex-column mr-5">
+                      IE <span class="h-2.5 w-2.5 inline-block <%= employee_interview.get_status_bg_class %>"></span>
+                    </div>
+                  <% end %>
+                  <% if manager_interview %>
+                    <div class="flex-column mr-5">
+                      IR
+                      <span class="h-2.5 w-2.5 inline-block <%= manager_interview.get_status_bg_class %>"></span>
+                    </div>
+                  <% end %>
+                  <% if crossed_interview %>
+                    <div class="flex-column mr-5 <%= crossed_interview.get_status_color_class if crossed_interview.not_available_yet? %>">
                       CR
-                      <span class="h-2.5 w-2.5 inline-block <%= crossed_interview&.get_status_bg_class %>"></span>
+                      <span class="h-2.5 w-2.5 inline-block <%= crossed_interview.get_status_bg_class %>"></span>
                     </div>
                   <% end %>
                 </div>
@@ -96,23 +100,23 @@
 
           <div class="grow">
             <div class="flex-row-end-centered">
-              <% if manager_interview&.submitted? && crossed_interview.nil? %>
-                <%= link_to interview_path(manager_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
+              <% if manager_interview&.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
+                <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue-white' do %>
                   View my answers
                 <% end %>
               <% elsif crossed_interview&.submitted? %>
-                <%= link_to interview_path(crossed_interview), class: 'p-3 fs-1_4rem border-bkt-blue-2px rounded-5px bkt-blue mr-5 font-weight-600' do %>
+                <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-white' do %>
                   View cross review answers
                 <% end %>
               <% end %>
 
               <% if manager_interview&.not_started? || manager_interview&.in_progress? %>
-                <%= link_to interview_path(manager_interview), class: 'flex-row-between-centered p-3 fs-1_4rem bkt-bg-blue rounded-5px bkt-white font-weight-600' do %>
+                <%= link_to interview_path(manager_interview), class: 'flex-row-between-centered bkt-btn-blue ml-5' do %>
                   <%= manager_interview.not_started? ? 'Start my interview' : 'Continue my interview' %>
                   <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
                 <% end %>
               <% elsif crossed_interview && crossed_interview.status.to_sym != :submitted %>
-                <%= link_to interview_path(crossed_interview), class: 'flex-row-between-centered p-3 fs-1_4rem bkt-bg-blue rounded-5px bkt-white font-weight-600' do %>
+                <%= link_to interview_path(crossed_interview), class: 'flex-row-between-centered bkt-btn-blue ml-5' do %>
                   <%= crossed_interview.not_started? ? 'Start Cross Review' : 'Continue my cross review' %>
                   <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
                 <% end %>

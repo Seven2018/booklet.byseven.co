@@ -1,29 +1,19 @@
-<div class="modal-content">
-  <div class="modal-header">
-    <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Export selected users to .csv</h3>
+<div class="modal-content action-modal__content">
+
+  <div class="modal-header action-modal__header">
+    <div id="modal-title" ckass='action-modal__title' style=" display: flex; justify-content: space-between;">
+      <h3 class="fs-2rem" id="myModalLabel">Export selected users to .csv</h3>
     </div>
-    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
   </div>
+
   <div class="modal-body modal-export__body">
     <%= simple_form_for :csv, url: organisation_path(format: :csv), method: :get do |f| %>
-      <div class="organisation-controls__export-dates">
-        <%= f.label 'From' %>
-        <%= f.input :start_date, label: false, input_html: {class: 'datepicker', value: Time.zone.today.beginning_of_year, onchange: 'selectOverviewDate()'}, onchange: 'selectOverviewDate()' %>
-        <%= f.label 'Until' %>
-        <%= f.input :end_date, label: false, input_html: {class: 'datepicker', value: Time.zone.today, onchange: 'selectOverviewDate()'} %>
-        <%= f.hidden_field :content_ids, value: '' %>
-        <%= f.submit '', class: 'hidden-submit hidden' %>
-      </div>
-      <% if params[:redirected_from] == 'campaigns' %>
-        <% pill_color = 'modal-filter__pill-blue' %>
-        <% color = '#3177B7' %>
-      <% else %>
-        <% pill_color = 'modal-filter__pill-orange' %>
-        <% color = '#F26419' %>
-      <% end %>
+
       <div class="organisation-controls__export_attributes">
-        <div class="modal-filter__pill <%= pill_color %>" onclick='selectAllAttributes(this, "<%= color %>")'>
+        <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectAllAttributes(this, "#333333")'>
           <input type="checkbox" id="select_all">
           <div class="flex-row-start-centered">
             <i class="fas fa-plus"></i>
@@ -31,14 +21,12 @@
           </div>
         </div>
       </div>
+
       <div class="organisation-controls__export_attributes">
         <% attributes = %w(firstname lastname email birthdate hire_date social_security address phone_number) %>
         <% attributes.each do |attribute| %>
           <% checked = false %>
-          <% if ['firstname', 'lastname', 'email'].include?(attribute) %>
-            <% checked = true %>
-          <% end %>
-          <div class="modal-filter__pill <%= pill_color %>" onclick='selectCsvAttributes(this, "<%= color %>");'>
+          <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectCsvAttributes(this, "#333333");'>
             <%= f.check_box attribute, checked: checked %>
             <div class="flex-row-start-centered">
               <i class="fas fa-plus"></i>
@@ -47,7 +35,7 @@
           </div>
         <% end %>
         <%= collection_check_boxes(:tag_category, :id, TagCategory.where(company_id: current_user.company_id).order(name: :asc), :id, :name) do |b| %>
-          <div class="modal-filter__pill <%= pill_color %>" onclick='selectCsvAttributes(this, "<%= color %>");'>
+          <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectCsvAttributes(this, "#333333");'>
             <%= b.check_box %>
             <div class="flex-row-start-centered">
               <i class="fas fa-plus"></i>
@@ -55,40 +43,38 @@
             </div>
           </div>
         <% end %>
-        <div class="modal-filter__pill <%= pill_color %>" onclick='selectCsvAttributes(this, "<%= color %>");'>
-          <%= f.check_box :cost, checked: true %>
+        <!-- <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectCsvAttributes(this, "#333333");'>
+          <%= f.check_box :cost, checked: false %>
           <div class="flex-row-start-centered">
             <i class="fas fa-plus"></i>
             <%= f.label "Cost" %>
           </div>
         </div>
-        <div class="modal-filter__pill <%= pill_color %>" onclick='selectCsvAttributes(this, "<%= color %>");'>
-          <%= f.check_box :trainings, checked: true %>
+        <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectCsvAttributes(this, "#333333");'>
+          <%= f.check_box :trainings, checked: false %>
           <div class="flex-row-start-centered">
             <i class="fas fa-plus"></i>
             <%= f.label "Trainings attended" %>
           </div>
         </div>
-        <div class="modal-filter__pill <%= pill_color %>" onclick='selectCsvAttributes(this, "<%= color %>");'>
-          <%= f.check_box :interviews, checked: true %>
+        <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectCsvAttributes(this, "#333333");'>
+          <%= f.check_box :interviews, checked: false %>
           <div class="flex-row-start-centered">
             <i class="fas fa-plus"></i>
             <%= f.label "Interviews" %>
           </div>
-        </div>
+        </div> -->
         <%= f.hidden_field :selected_users %>
       </div>
+
       <div class="flex-row-center-centered" style='margin-top: 2rem;'>
+
         <%= f.submit '', class: 'hidden-submit hidden' %>
-        <% if params[:redirected_from] == 'campaigns' %>
-          <div class="btn-blue__white-border" onclick='exportUsers(this);'>
-            <p>Export</p>
-          </div>
-        <% else %>
-          <div class="btn-orange__white-border" onclick='exportUsers(this);'>
-            <p>Export</p>
-          </div>
-        <% end %>
+
+        <div class="bkt-btn-white" onclick='exportUsers(this);'>
+          <p>Export</p>
+        </div>
+
       </div>
     <% end %>
   </div>

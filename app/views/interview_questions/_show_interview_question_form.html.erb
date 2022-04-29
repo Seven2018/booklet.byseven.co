@@ -1,5 +1,7 @@
 <div class="interview-question__form">
 
+  <% is_required = question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') %>
+
   <% existing_answer =
     InterviewAnswer.find_by(
     interview: interview,
@@ -141,7 +143,7 @@
               value: current_answer,
               onkeyup: 'autoSave(this, true); enableSubmit();'
             },
-            required: question.required?,
+            required: is_required,
             disabled: read_only %>
 
     <% elsif question.rating? %>
@@ -193,7 +195,7 @@
           value: current_objective,
           onkeyup: 'autoSave(this, true); enableSubmit();'
         },
-        required: question.required?,
+        required: is_required,
         disabled: read_only
       ) if question.objective? %>
 
