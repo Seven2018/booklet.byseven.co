@@ -89,21 +89,6 @@ class InterviewFormsController < ApplicationController
     redirect_to interview_form_path(new_template)
   end
 
-  def interview_form_link_tags
-    @template = InterviewForm.find(params[:add_tags][:form_id])
-    authorize @template
-    selected_tags = params[:interview_form][:tags].reject { |x| x.empty? }.join(',').split(',')
-    selected_tags.each do |tag|
-      unless InterviewFormTag.where(interview_form_id: @template.id, tag_id: tag).present?
-        InterviewFormTag.create(interview_form_id: @template.id, tag_id: tag, tag_name: Tag.find(tag).tag_name)
-      end
-    end
-    InterviewFormTag.where(interview_form_id: @template.id).where.not(tag_id: selected_tags).destroy_all
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def destroy
     authorize @template
     @card_id = @template.id
