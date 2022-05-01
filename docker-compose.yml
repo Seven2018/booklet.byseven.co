@@ -69,6 +69,8 @@ services:
       - RAILS_ENV=development
       - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
       - DOCKER_BKT=true
+    networks:
+      - seven_booklet
 
 networks:
   seven_booklet:
