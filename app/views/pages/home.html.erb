@@ -152,7 +152,7 @@
 
         <div class="ml-3rem">
         <% if @my_trainings.count == 0 %>
-          <p>You have no interview to do at this time.</p><br>
+          <p>You have no training to do at this time.</p><br>
         <% else %>
           <p>You have <%= @my_trainings.count %> trainings to do in this section. You can review them in <%= link_to '`My Trainings`', my_trainings_path, class: 'font-weight-700' %> section !</p><br>
           <p>Your upcoming trainings :</p>
@@ -160,7 +160,7 @@
           <% myt_firsts = @my_trainings.first(3) %>
           <% myt_firsts.each do |myt_first| %>
 
-            <% next_session = myt_first.next_session %>
+            <% session = myt_first.sessions.last %>
 
             <div class='mt-1rem'>
               <div class="flex-row-start-centered">
@@ -169,19 +169,21 @@
                   <div class="flex-row-center-centered height-2_5rem width-2_5rem">
                     <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
                   </div>
-                  <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(next_session.workshop.duration) %></p>
+                  <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(session&.workshop&.duration) %></p>
                 </div>
                 <div class="flex-row-center-centered height-2_5rem width-2_5rem">
                   <span class="iconify fs-1_6rem bkt-orange"
-                    data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
+                    data-icon="<%= session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
                   </span>
                 </div>
               </div>
 
-              <% if next_session.workshop.synchronous? %>
-                <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+              <% if session.workshop.synchronous? %>
+                <p>On <strong><%= "#{session.date} at #{session.starts_at.strftime('%H:%M')}" %></strong></p>
+              <% elsif session.available_date.present? %>
+                <p>Available until <strong><%= "#{session.available_date}" %></strong></p>
               <% else %>
-                <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
+                <p>Available from <strong><%= "#{session.date}" %></strong></p>
               <% end %>
             </div>
 
@@ -235,7 +237,7 @@
               <% myt_firsts = @my_team_trainings.first(3) %>
               <% myt_firsts.each do |myt_first| %>
 
-                <% next_session = myt_first.next_session %>
+                <% session = myt_first.sessions.last %>
 
                 <div class='mt-1rem'>
                   <div class="flex-row-start-centered">
@@ -244,19 +246,21 @@
                       <div class="flex-row-center-centered height-2_5rem width-2_5rem">
                         <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
                       </div>
-                      <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(next_session.workshop.duration) %></p>
+                      <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(session.workshop.duration) %></p>
                     </div>
                     <div class="flex-row-center-centered height-2_5rem width-2_5rem">
                       <span class="iconify fs-1_6rem bkt-orange"
-                        data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
+                        data-icon="<%= session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
                       </span>
                     </div>
                   </div>
 
-                  <% if next_session.workshop.synchronous? %>
-                    <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+                  <% if session.workshop.synchronous? %>
+                    <p>On <strong><%= "#{session.date} at #{session.starts_at.strftime('%H:%M')}" %></strong></p>
+                  <% elsif session.available_date.present? %>
+                    <p>Available until <strong><%= "#{session.available_date}" %></strong></p>
                   <% else %>
-                    <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
+                    <p>Available from <strong><%= "#{session.date}" %></strong></p>
                   <% end %>
 
                 </div>

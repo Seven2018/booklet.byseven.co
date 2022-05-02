@@ -10,16 +10,12 @@ class PagesController < ApplicationController
     @my_team_interviews = Interview.joins(:campaign)
                                    .where(campaigns: {company_id: current_user.company_id}, interviewer: current_user, label: ['Manager', 'Crossed'])
                                    .where.not(status: :submitted)
-    @my_trainings = Training.joins(sessions: :attendees)
-                            .where(attendees: {user: current_user})
-                            .where('sessions.date >= ?', Time.zone.today)
+    @my_trainings = Training.where_exists(:attendees, {user: current_user, status: 'Not completed'})
                             .distinct
-                            .sort_by{|x| x.next_date}
-    @my_team_trainings = Training.joins(sessions: :attendees)
-                                 .where(attendees: {user_id: current_user.employees.ids})
-                                 .where('sessions.date >= ?', Time.zone.today)
+                            .sort_by{|x| x.sessions.last.available_date.presence || x.sessions.last.date }
+    @my_team_trainings = Training.where_exists(:attendees, {user: current_user.employees.ids, status: 'Not completed'})
                                  .distinct
-                                 .sort_by{|x| x.next_date}
+                                 .sort_by{|x| x.sessions.last.available_date.presence || x.sessions.last.date }
   end
 
   # Display folders/contents catalogue
