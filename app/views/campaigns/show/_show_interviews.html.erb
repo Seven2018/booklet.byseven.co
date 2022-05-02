@@ -14,19 +14,25 @@
 <div class="paginate-container paginate-container-blue">
 
   <% if params.dig(:select, :page).present? && params.dig(:select, :page).to_i > 1 %>
-    <div class="paginate__previous-button paginate__button-blue" onclick='changePage("previous");'>
+
+    <div class="paginate__previous-button paginate__button-blue"
+         data-action='click->change-page#previous'>
       <span class="iconify" data-icon="fontisto:angle-left"></span>
       <p>Previous</p>
     </div>
+
   <% end %>
 
   <%= paginate employees, left: 3, right: 1 %>
 
   <% if @employees.count == 10 && @any_more %>
-    <div class="paginate__next-button paginate__button-blue" onclick='changePage("next");'>
+
+    <div class="paginate__next-button paginate__button-blue"
+         data-action='click->change-page#next'>
       <p>Next</p>
       <span class="iconify" data-icon="fontisto:angle-right"></span>
     </div>
+
   <% end %>
 
 </div>

@@ -1,26 +1,37 @@
-<div class="campaign-show__main">
+<div class="campaign-show__main"
+     data-controller="change-page">
+
   <%= render_component BackComponent.new(fallback: campaigns_path) %>
+
   <div class="campaign-show__header">
+
     <div class="campaign-show__header-banner">
+
       <div class="campaign-show__header-banner-text">
         <h1 class="fs-3rem">Manage the campaign</h1>
         <p>There are <%= @campaign.employees.distinct.count %> employees in this campaign.<br>
           You can add or remove employees, change the reviews deadlines, <br>or change the campaign manager.
         </p>
       </div>
+
       <div class="campaign-show__header-banner-img">
         <%= image_tag('campaigns-show-banner.png') %>
       </div>
+
     </div>
+
     <div class="campaign-show__header-infos">
       <%= render 'campaigns/show/show_header_infos', campaign: @campaign, selected_interviewer: @selected_interviewer %>
     </div>
+
   </div>
+
   <div class="campaign-show__interviews-list">
     <%= render 'campaigns/show/show_interviews', campaign: @campaign,
                                                  employees: @employees,
                                                  selected_interviewer: @selected_interviewer %>
   </div>
+
 </div>
 
 
@@ -118,24 +129,6 @@
         this.removeEventListener('click', arguments.callee, false)
       }
     });
-  }
-
-
-  ////////////////
-  // PAGINATION //
-  ////////////////
-
-  function changePage(direction) {
-    page_value = document.querySelector('#select_page')
-    submit_button = page_value.closest('form').querySelector('.hidden-submit')
-
-
-    if(direction == 'next') {
-      page_value.value = (parseInt(page_value.value,10) + 1).toString()
-    } else {
-      page_value.value = (parseInt(page_value.value,10) - 1).toString()
-    }
-    submit_button.click()
   }
 
 

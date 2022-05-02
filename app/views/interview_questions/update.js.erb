@@ -1,4 +1,6 @@
 document.querySelector('#anchor-<%= @question.id %>').parentNode.querySelector('.question-title').innerText = '<%= @question.question %>'
 document.querySelector('#template-show__container-left').innerHTML = '<%= j render("interview_forms/edit/edit_show_summary", template: @question.interview_form) %>';
 
-setTimeout(function(){updateStatusMessage('Up to date')}, 1000)
+setTimeout(function(){
+  document.getElementById('template-edit__update-status').interviewFormsEdit.updateStatusMessage('Up to date')
+}, 1000)

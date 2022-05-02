@@ -49,17 +49,20 @@ class InterviewFormsController < ApplicationController
     description = @template.description
     @template.update(template_params)
 
-    cross_status =
-      params.dig(:interview_form, :cross).present? && @template.answerable_by_both?
-    @template.update(cross: cross_status)
+    @update_description =
+      params.dig(:interview_form, :description).present? || false
 
-    answerable_by_status = @template.answerable_by
-    unless @template.answerable_by_both?
-      @template.interview_questions.update_all(visible_for: answerable_by_status)
-      @template.interview_questions.where.not(required_for: ['none', answerable_by_status]).update_all(required_for: answerable_by_status)
+    unless @update_description
+      cross_status =
+        params.dig(:interview_form, :cross).present? && @template.answerable_by_both?
+      @template.update(cross: cross_status)
+
+      answerable_by_status = @template.answerable_by
+      unless @template.answerable_by_both?
+        @template.interview_questions.update_all(visible_for: answerable_by_status)
+        @template.interview_questions.where.not(required_for: ['none', answerable_by_status]).update_all(required_for: answerable_by_status)
+      end
     end
-
-    @update_description = description != @template.description
 
     respond_to do |format|
       format.html { interview_form_path(@template) }
@@ -84,21 +87,6 @@ class InterviewFormsController < ApplicationController
       i += 1
     end
     redirect_to interview_form_path(new_template)
-  end
-
-  def interview_form_link_tags
-    @template = InterviewForm.find(params[:add_tags][:form_id])
-    authorize @template
-    selected_tags = params[:interview_form][:tags].reject { |x| x.empty? }.join(',').split(',')
-    selected_tags.each do |tag|
-      unless InterviewFormTag.where(interview_form_id: @template.id, tag_id: tag).present?
-        InterviewFormTag.create(interview_form_id: @template.id, tag_id: tag, tag_name: Tag.find(tag).tag_name)
-      end
-    end
-    InterviewFormTag.where(interview_form_id: @template.id).where.not(tag_id: selected_tags).destroy_all
-    respond_to do |format|
-      format.js
-    end
   end
 
   def destroy

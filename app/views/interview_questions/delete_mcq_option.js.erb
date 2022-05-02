@@ -1,4 +1,6 @@
 target = document.querySelector('#mcq-<%= @question.id %>');
 target.innerHTML = '<%= j render("interview_forms/edit/edit_show_mcq", question: @question) %>';
 
-setTimeout(function(){updateStatusMessage('Up to date')}, 1000)
+setTimeout(function(){
+  document.getElementById('template-edit__update-status').interviewFormsEdit.updateStatusMessage('Up to date')
+}, 1000)
