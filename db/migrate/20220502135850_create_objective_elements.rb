@@ -4,7 +4,8 @@ class CreateObjectiveElements < ActiveRecord::Migration[6.0]
       t.string :title, null: false
       t.text :description, default: ""
       t.date :due_date
-      t.references :objectivable, polymorphic: true
+      t.bigint :objectivable_id
+      t.string :objectivable_type
       t.references :company, foreign_key: true
 
       t.timestamps

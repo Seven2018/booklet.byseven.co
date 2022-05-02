@@ -7,8 +7,8 @@ class CreateObjectiveLogs < ActiveRecord::Migration[6.0]
       t.string :initial_value
       t.string :updated_value
       t.references :owner, foreign_key: { to_table: 'users' }
-      t.references :objective_element_id, foreign_key: true
-      t.references :objective_indicator_id, foreign_key: true
+      t.references :objective_element, foreign_key: true
+      t.references :objective_indicator, foreign_key: true
 
       t.timestamps
     end
