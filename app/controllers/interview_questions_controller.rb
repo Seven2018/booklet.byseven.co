@@ -100,7 +100,9 @@ class InterviewQuestionsController < ApplicationController
     options_hash[params.dig(:edit_option, :option)] = params.dig(:edit_option, :position).to_i
     @question.update(options: options_hash)
 
-    head :no_content
+    respond_to do |format|
+      format.js
+    end
   end
 
   def delete_mcq_option

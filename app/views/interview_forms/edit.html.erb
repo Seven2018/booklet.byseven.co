@@ -1,17 +1,33 @@
-<div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
+<div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150"
+     style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
+
   <%= render_component BackComponent.new(fallback: interview_forms_path) %>
+
   <h2>1 to 1 template</h2>
-  <div class="height-5rem flex-row-between-centered pos-abs" style='top: 2rem; right: 2rem;'>
-    <p id='template-edit__update-status' class='bkt-green mr-2rem'>Up to date</p>
+
+  <div class="height-5rem flex-row-between-centered pos-abs"
+       style='top: 2rem; right: 2rem;'>
+
+    <p id='template-edit__update-status'
+       class='bkt-green mr-2rem'
+       data-controller="interviews--interview-forms-edit">Up to date</p>
+
     <%= link_to interview_form_path(@template), class: 'flex-row-between-centered rounded-10px p-2rem', style: 'background: rgba(49, 119, 183, 0.1);' do %>
       <span class="iconify bkt-blue mr-1rem" data-icon="akar-icons:eye"></span>
       <p class='bkt-blue'>See template preview</p>
     <% end %>
   </div>
+
 </div>
 
-<div id="template-show__container" class='flex-row-between-start bkt-bg-light-grey2 pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
-  <div id="template-show__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
+<div id="template-show__container"
+     class='flex-row-between-start bkt-bg-light-grey2 pos-rel bkt-box-shadow-compact-top'
+     style='margin-top: 9rem;'
+     data-controller="interviews--interview-forms-edit">
+
+  <div id="template-show__container-left"
+       class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100'
+       style='top: 16.5rem; left: 0;'>
     <%= render 'interview_forms/edit/edit_show_summary', template: @template %>
   </div>
 
@@ -44,6 +60,7 @@
     </div>
 
   </div>
+
 </div>
 
 <div class='line-templates hidden'>
@@ -71,17 +88,6 @@
 </div>
 
 
-<!------------>
-<!-- MODALS -->
-<!------------>
-
-<div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
-    <%= render 'interview_forms/modals/manage_tags', form: @template %>
-  </div>
-</div>
-
-
 <!---------------->
 <!-- JAVASCRIPT -->
 <!---------------->
@@ -89,328 +95,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
 
 <script>
-
-  ///////////
-  // TOOLS //
-  ///////////
-
-  doubleClickGuardian = false
-  opened_message = false
-  saving = false
-
-  function outsideClick(event, notelem) {
-    notelem = $(notelem); // jquerize (optional)
-    // check outside click for multiple elements
-    var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
-    }
-    if (clickedOut) return true;
-    else return false;
-  }
-
-  function displayMessage(element) {
-    if (!doubleClickGuardian && !opened_message) {
-      doubleClickGuardian = true
-      opened_message = true
-      message_storage = element.parentNode.querySelector('.message-container')
-
-      message_storage.classList.remove('hidden')
-
-      window.addEventListener('click', function(e) {
-        if (outsideClick(e, element) && !doubleClickGuardian) {
-          opened_message = false
-          message_storage.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-
-      setTimeout(function(){doubleClickGuardian = false}, 100)
-    }
-  }
-
-  function submitForm(element) {
-    element.closest('form').querySelector('.hidden-submit').click()
-  }
-
-  function checkVideoCompatibility(element) {
-    video_link = element.value
-    if (video_link.split('=')[0].replace("https://", "") == 'www.youtube.com/watch?v' || video_link == '') {
-      element.style.color = '#333333'
-      saveForm(element)
-    } else {
-      updateStatusMessage("Update failed")
-      element.style.color = '#FF5656'
-    }
-  }
-
-  function updateStatusMessage(message) {
-    message_storage = document.getElementById('template-edit__update-status')
-
-    if (message == 'Up to date') {
-      message_storage.classList.remove('bkt-red')
-      message_storage.classList.remove('bkt-yellow')
-      message_storage.classList.add('bkt-green')
-    } else if (message == 'Update failed') {
-      message_storage.classList.remove('bkt-green')
-      message_storage.classList.remove('bkt-yellow')
-      message_storage.classList.add('bkt-red')
-    } else {
-      message_storage.classList.remove('bkt-green')
-      message_storage.classList.remove('bkt-red')
-      message_storage.classList.add('bkt-yellow')
-    }
-
-    message_storage.innerText = message
-  }
-
-  // AUTO UPDATE TEXTAREA HEIGHT //
-
-  const tx = document.getElementsByTagName("textarea");
-  for (let i = 0; i < tx.length; i++) {
-    tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
-    tx[i].addEventListener("click", OnInput, false);
-    tx[i].addEventListener("input", OnInput, false);
-    tx[i].click()
-  }
-
-  function OnInput() {
-    this.style.height = "auto";
-    this.style.height = (this.scrollHeight) + "px";
-  }
-
-
-  ///////////////////////
-  // ADD QUESTION MENU //
-  ///////////////////////
-
-  function addQuestionMenu(element) {
-
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      container = element.parentNode
-      button_add = element
-      button_remove = container.querySelector('.add_button_hide')
-      menu = container.querySelector('.template-edit__add-question-menu')
-
-      container.classList.add('active')
-      button_add.classList.add('hidden')
-      button_remove.classList.remove('hidden')
-      menu.classList.remove('hidden')
-
-      window.addEventListener('click', function(e) {
-        if (doubleClickGuardian == false) {
-          container.classList.remove('active')
-          button_add.classList.remove('hidden')
-          button_remove.classList.add('hidden')
-          menu.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-
-      setTimeout(function(){doubleClickGuardian = false}, 100)
-    }
-  }
-
-  function addQuestion(type, referenceNode) {
-    newDiv = document.createElement("div")
-
-    newDiv.classList.add('add-' + type)
-    template = document.querySelector('.add-' + type + '-template')
-    templateinfo = template.innerHTML
-    newDiv.innerHTML = templateinfo
-    position = referenceNode.id.split('-')[1]
-    position_storage = newDiv.querySelector('#interview_question_position')
-
-    position_storage.value = position
-    content = document.querySelector('#template-show__lines')
-    if (position == 0) {
-      content.insertBefore(newDiv, content.firstChild)
-    } else {
-      content.insertBefore(newDiv, referenceNode.nextSibling)
-    }
-  }
-
-  //////////////////////
-  // QUESTION OPTIONS //
-  //////////////////////
-
-  function checkBookletCheckbox(element) {
-    updateStatusMessage("Updating...")
-    checkbox = element.querySelector('input')
-    icon = element.querySelector('svg')
-
-    if (checkbox.value == 'true') {
-      checkbox.value = 'false'
-      icon.classList.add('hidden')
-    } else {
-      checkbox.value = 'true'
-      icon.classList.remove('hidden')
-    }
-    saveForm(element)
-  }
-
-  // function setRating(element) {
-  //   target = element.closest('form').querySelector('.show-rating')
-  //   target.innerHTML = '<i class="far fa-star"></i>'
-  //   multiplyNode(target.querySelector('i'), parseInt(element.value,10), true);
-  // }
-
-  function switchSide(element, save = true) {
-
-      updateStatusMessage("Updating...")
-      switch_button = element.parentNode
-      form = element.closest('form')
-      hidden_submit = form.querySelector('.hidden-submit')
-
-      if (element.checked == true) {
-        setTimeout(function(){switch_button.classList.add('switch_checked')}, 100)
-      } else {
-        setTimeout(function(){switch_button.classList.remove('switch_checked')}, 100)
-      }
-      if (hidden_submit != undefined && save) {
-        hidden_submit.click();
-      }
-
-  }
-
-  function checkSwitchCompatibility(element, mode) {
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      setTimeout(function(){doubleClickGuardian = false}, 100)
-
-      question_card = element.closest('form')
-
-      element1 = question_card.querySelector('#interview_question_required_options-' + element.id.split('-')[1])
-      element2 = question_card.querySelector('#interview_question_visible_options-' + element.id.split('-')[1])
-      if (element == element1 && element1.checked == true) {
-        horizontalCompatibilityPair(element1, element2)
-      } else if (element == element2 && element2.checked == false) {
-        horizontalCompatibilityPair(element2, element1)
-      }
-
-      if (mode == 'visible_for') {
-        set = question_card.querySelectorAll('.interview_question_visible_options')
-        set_array = Array.from(set)
-        element1 = element
-        index = set_array.indexOf(element1)
-        if (index > -1) {
-          set_array.splice(index, 1);
-        }
-        element2 = set_array[0]
-
-        verticalCompatibilityPair(element1, element2)
-      }
-
-      switchSide(element)
-    }
-  }
-
-  function horizontalCompatibilityPair(element1, element2) {
-    if (element1.checked) {
-      element2.checked = true;
-      setTimeout(function(){
-        element2.parentNode.classList.add('switch_checked')
-      }, 100)
-    } else {
-      element2.checked = false;
-      setTimeout(function(){
-        element2.parentNode.classList.remove('switch_checked')
-      }, 100)
-    }
-  }
-
-  function verticalCompatibilityPair(element1, element2) {
-    if (!element1.checked && !element2.checked) {
-      element2.checked = true
-      setTimeout(function(){element2.parentNode.classList.add('switch_checked')}, 100)
-    }
-  }
-
-  ///////////////////
-  // SAVE QUESTION //
-  ///////////////////
-
-  function saveForm(element, keyup = false) {
-    updateStatusMessage("Updating...")
-    form = element.closest('form')
-
-    if (doubleClickGuardian == false) {
-      doubleClickGuardian = true
-      initial_value = element.value;
-
-      if (keyup && !saving) {
-        saving = true
-        setTimeout(function(){
-          form.querySelector('.hidden-submit').click()
-          saving = false
-        }, 3000)
-      } else {
-        form.querySelector('.hidden-submit').click()
-      }
-
-      setTimeout(function(){doubleClickGuardian = false}, 500)
-    }
-  }
-
-
-
-  ///////////////////////
-  // TEMPLATE SETTINGS //
-  ///////////////////////
-
-  function BookletSelectExpand(element) {
-    doubleClickGuardian = true
-    dropdown = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-dropdown')
-    setTimeout(() => {
-      doubleClickGuardian = false
-    }, 100);
-    if (dropdown.classList.contains('hidden')) {
-      dropdown.classList.remove('hidden')
-      window.addEventListener('click', function(e) {
-        if (!doubleClickGuardian) {
-          dropdown.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    } else {
-      dropdown.classList.add('hidden')
-    }
-  }
-
-  function BookletSelectSubmit(element, attribute) {
-    updateStatusMessage("Updating...")
-    form = element.closest('form')
-    container = element.closest('.booklet-select__template-edit-container')
-    selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
-    selected_value = element.querySelector('p').innerText
-    storage = form.querySelector('#interview_form_' + attribute)
-    submit_button = form.querySelector('.hidden-submit')
-
-    storage.value = selected_value.toLowerCase()
-    selected_display.innerText = selected_value
-
-    checkCrossAvailability(storage)
-    // submit_button.click()
-  }
-
-  function checkCrossAvailability(element) {
-    form = element.closest('form')
-    cross_toggle = form.querySelector('#template-edit__settings-cross-toggle')
-    cross_toggle_input = cross_toggle.querySelector('input')
-    input_value = element.value
-    submit_button = form.querySelector('.hidden-submit')
-
-    if (input_value == 'both') {
-      cross_toggle_input.disabled = false
-    } else {
-      if (cross_toggle_input.checked) { cross_toggle_input.checked = false; switchSide(cross_toggle_input, false) }
-      cross_toggle_input.disabled = true
-    }
-    submit_button.click()
-  }
 
   ///////////////////
   // AUTO COMPLETE //
@@ -437,82 +121,4 @@
   }
 
   $input_tag.easyAutocomplete(options_tag);
-
-
-  /////////////////
-  // MANAGE TAGS //
-  /////////////////
-
-  function manageTag(element, option) {
-    tag_id = element.id.split('-')[1]
-    tag_checkbox = document.querySelector('#interview_form_tags_' + tag_id)
-
-    if (option == 'add') {
-      tag_checkbox.checked = true
-    } else if (option == 'remove') {
-      tag_checkbox.checked = false
-    }
-
-    tag_checkbox.closest('form').querySelector('.hidden-submit').click()
-  }
-
-  function toggleTagCategoryDropdown(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode
-    if (block.style.maxHeight == '60px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '10000px'
-      block.classList.add('active')
-    } else {
-      block.style.maxHeight = '60px'
-      block.classList.remove('active')
-    }
-  }
-
-  function autoSubmitTag(element) {
-    element.closest('form').querySelector('.hidden-submit').click()
-  }
-
-  ///////////////////////
-
-  // function multiplyNode(node, count, deep) {
-  //   for (var i = 0, copy; i < count - 1; i++) {
-  //       copy = node.cloneNode(deep);
-  //       node.parentNode.insertBefore(copy, node);
-  //   }
-  // }
-
-  function toggleMod(element) {
-    caret = element.querySelector('i')
-    angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)'
-    caret.setAttribute('data-rotated', (angle + 180).toString())
-    block = element.parentNode.parentNode
-    p = element.querySelector('p')
-    block_width = block.offsetWidth
-    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
-      block.style.maxHeight = '100000px'
-      p.style.maxHeight = '100000px'
-      p.style.whiteSpace = 'normal'
-      block.style.width = block_width.toString() + 'px'
-      block.classList.add('active')
-    } else if (block.style.maxHeight == '100000px') {
-      block.style.maxHeight = '61px'
-      p.style.maxHeight = '18px'
-      p.style.whiteSpace = 'nowrap'
-      block.style.width = 'auto'
-      block.classList.remove('active')
-    }
-  }
-
 </script>

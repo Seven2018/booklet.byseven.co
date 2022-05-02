@@ -133,7 +133,6 @@ Rails.application.routes.draw do
       delete 'remove_company_tag'
     end
   end
-  get :interview_form_link_tags, controller: :interview_forms
   get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'
 
   # INTERVIEW QUESTIONS

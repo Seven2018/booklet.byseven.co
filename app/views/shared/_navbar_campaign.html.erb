@@ -1,8 +1,8 @@
 <div class="navbar navbar-expand-sm navbar-light navbar__blue px-2rem">
 
   <div class="flex-row-between-centered">
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' href="/home">
-      <span class="iconify fs-2_4rem bkt-blue" data-icon="bxs:home"></span>
+    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-blue-hover bkt-blue bkt-white-hover bkt-box-shadow-compact rounded-25px smooth-transition' href="/home">
+      <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
     </a>
 
     <% if CampaignPolicy.new(current_user, nil).my_interviews? %>
@@ -51,7 +51,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="flex-row-between-centered">
 
-      <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white') %>
+      <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white', hover_background_color: 'bkt-bg-dark-blue-hover') %>
 
       <%= render_component NavbarUserProfileComponent.new(user: current_user) %>
 
@@ -75,14 +75,14 @@
 
     <% if CampaignPolicy.new(current_user, nil).create? %>
       <%= link_to campaigns_path,
-        class: "#{klass} #{active_klass if @controller_action == :campaigns_index}" do %>
+        class: "#{klass} #{active_klass if @controller_action == :campaigns_index} rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Campaigns</h4>
       <% end %>
     <% end %>
 
     <% if InterviewFormPolicy.new(current_user, nil).create? %>
       <%= link_to interview_forms_path,
-        class: "#{klass} #{active_klass if @controller_action == :interview_forms_index}" do %>
+        class: "#{klass} #{active_klass if @controller_action == :interview_forms_index} rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Templates</h4>
       <% end %>
     <% end %>
@@ -93,7 +93,7 @@
           active_klass if
             @controller_action == :reports_index ||
             @controller_action == :reports_new
-        }" do %>
+        } rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Report</h4>
       <% end %>
     <% end %>
