@@ -22,14 +22,14 @@
     <div class="flex-row-start-centered height-2_4rem-forced width-100 mb-2rem border-bottom-bkt-light-grey5-0_5px">
 
       <%= link_to my_interviews_path(period: 'current'), class: "interviews-tab-control flex-row-start-centered height-2_4rem-forced mr-1rem pb-0_75rem z-index-5 cursor-pointer #{'active' unless params[:period] == 'completed'}" do %>
-        <p class="fs-1_6rem font-weight-500">Ongoing interviews</p>
+        <p class="fs-1_6rem font-weight-500"><%= t('.ongoing_interviews') %></p>
         <div class="interviews-tab-control__counter flex-row-center-centered height-2rem width-2rem rounded-10px ml-0_75rem">
           <p class="fs-1rem font-weight-600"><%= @ongoing_campaigns.count %></p>
         </div>
       <% end %>
 
       <%= link_to my_interviews_path(period: 'completed'), class: "interviews-tab-control flex-row-start-centered height-2_4rem-forced mr-1rem pb-0_75rem z-index-5 cursor-pointer  #{'active' if params[:period] == 'completed'}" do %>
-        <p class="fs-1_6rem font-weight-500">Completed interviews</p>
+        <p class="fs-1_6rem font-weight-500"><%= t('.completed_interviews') %></p>
         <div class="interviews-tab-control__counter flex-row-center-centered height-2rem width-2rem rounded-10px ml-0_75rem">
           <p class="fs-1rem font-weight-600"><%= @completed_campaigns.count %></p>
         </div></p>

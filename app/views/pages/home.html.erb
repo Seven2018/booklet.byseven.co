@@ -1,14 +1,13 @@
 <div class="flex-column-start-centered width-100 bkt-bg-light-grey2
   <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
   <%=
-    'container-admin-height' if
-      (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
-      (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
-  %>
+  'container-admin-height' if (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
+    (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
+%>
   hide-scrollbar"
-  style='min-height: calc(100vh - 7.5rem);'
-  data-scrollbar-target='container'
-  data-action='scroll->scrollbar#showScrollbar'>
+     style='min-height: calc(100vh - 7.5rem);'
+     data-scrollbar-target='container'
+     data-action='scroll->scrollbar#showScrollbar'>
 
   <div class="width-90 from_medium__width-80 pt-5rem mb-3rem" style='max-width: 950px;'>
     <h1 class='fs-2_4rem font-weight-700 mb-2rem'><%= t '.welcome', name: current_user.firstname %></h1>
@@ -26,39 +25,38 @@
           </div>
 
           <div class="flex-row-start-centered">
-            <h2 class='mx-1rem' ><Strong>My Interviews</Strong></h2>
-            <p class='bkt-blue font-weight-600'>- <%= @my_interviews.count  %> reviews to do</p>
+            <%= raw t('.interviews.title', reviews: pluralize(@my_interviews.count, t('review'), t('review') + 's')) %>
           </div>
         </div>
 
 
         <div class="ml-3rem">
-        <% if @my_interviews.count == 0 %>
+          <% if @my_interviews.count == 0 %>
+            <p><%= t('.interviews.campaign_zero') %></p><br>
+          <% else %>
+            <p><%= raw t('.first_subtitle', number: pluralize(@my_interviews.count, t('review'), t('review') + 's'), mode: t('.interviews.my_interviews')) %></p>
+            <br>
+            <p><%= t('.interviews.second_subtitle') %></p>
 
-          <p>You have no interview to do at this time.</p><br>
+            <% myi_firsts = @my_interviews.order(date: :asc).first(3) %>
+            <% myi_firsts.each do |myi_first| %>
 
-        <% else %>
-
-          <p>You have <%= @my_interviews.count %> reviews to do in this section. You can complete them in <%= link_to '`My Interviews`', my_interviews_path, class: 'font-weight-700' %> section !</p><br>
-          <p>Your reviews to complete are :</p>
-
-          <% myi_firsts = @my_interviews.order(date: :asc).first(3) %>
-          <% myi_firsts.each do |myi_first| %>
-
-            <div class='mt-1rem'>
-              <div class="flex-row-start-centered">
-                <p class="font-weight-700 bkt-blue mb-1rem"><%= myi_first.title %> with <strong><%= myi_first.campaign.interviews.find_by(employee: current_user).interviewer.fullname %></strong></p>
+              <div class='mt-1rem'>
+                <div class="flex-row-start-centered">
+                  <p class="font-weight-700 bkt-blue mb-1rem"><%= myi_first.title %> <%= t('with') %>
+                    <strong><%= myi_first.campaign.interviews.find_by(employee: current_user).interviewer.fullname %></strong>
+                  </p>
+                </div>
+                <p><%= t('.interviews.deadline') %> <strong><%= l(myi_first.date, format: :long) %></strong></p>
               </div>
-              <p>The deadline for this campaign is the <strong><%= myi_first.date %></strong></p>
-            </div>
+
+            <% end %>
+
+            <% if @my_interviews.count > 3 %>
+              <strong><p><%= t('.interviews.remaining', reviews: @my_interviews.count - 3) %></p></strong>
+            <% end %>
 
           <% end %>
-
-          <% if @my_interviews.count > 3 %>
-            <strong><p>And <%= @my_interviews.count - 3 %> more.</p></strong>
-          <% end %>
-
-        <% end %>
 
 
         </div>
@@ -69,7 +67,7 @@
       </div>
     </div>
 
-    <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_interviews_path, title: 'My interviews', nbr: @my_interviews.count) %>
+    <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_interviews_path, title: t('.interviews.my_team_interviews'), nbr: @my_interviews.count) %>
 
     <% if CampaignPolicy.new(current_user, nil).my_team_interviews? %>
 
@@ -82,36 +80,35 @@
               <span class="iconify fs-3rem" data-icon="fluent:chat-multiple-24-filled" style="color: #3177b7;"></span>
             </div>
             <div class="flex-row-start-centered">
-              <h2 class='mx-1rem' ><Strong>My Team Interviews</Strong></h2>
-              <p class='bkt-blue font-weight-600'>- <%= "#{@my_team_interviews.count}" %> reviews to do</p>
+              <h2 class='mx-1rem'><Strong><%= t('.interviews.my_team_interviews') %></Strong></h2>
+              <p class='bkt-blue font-weight-600'>- <%= t('todo', number: pluralize(@my_team_interviews.count, t('review'), t('review') + 's')) %></p>
             </div>
           </div>
 
           <div class="ml-3rem">
 
             <% if @my_team_interviews.count == 0 %>
-
-              <p>You have no interview to do at this time.</p>
-
+              <p><%= t('.interviews.campaign_zero') %></p>
             <% else %>
 
-              <p>You have <%= "#{@my_team_interviews.count}" %> reviews to do in this section. You can complete them in <%= link_to '`My Team Interviews`', my_team_interviews_path, class: 'font-weight-700' %> section !</p><br>
-              <p>Your reviews to complete are :</p><br>
+              <p><%= raw t('.first_subtitle', number: pluralize(@my_team_interviews.count, t('review'), t('review') + 's'), mode: t('.interviews.my_interviews')) %></p><br>
+              <p><%= t('.interviews.second_subtitle') %></p><br>
 
               <% myt_firsts = @my_team_interviews.order(date: :asc).first(3) %>
               <% myt_firsts.each do |myt_first| %>
 
                 <div class='mt-1rem'>
                   <div class="flex-row-start-centered">
-                    <p class="font-weight-700 bkt-blue mb-1rem"><%= myt_first.title %> with <strong><%= myt_first.employee.fullname %></strong></p>
+                    <p class="font-weight-700 bkt-blue mb-1rem"><%= myt_first.title %> <%= t 'with' %>
+                      <strong><%= myt_first.employee.fullname %></strong></p>
                   </div>
-                  <p>The deadline for this campaign is the <strong><%= myt_first.date %></strong></p>
+                  <p><%= t '.interviews.deadline' %> <strong><%= l myt_first.date, format: :long %></strong></p>
                 </div>
 
               <% end %>
 
               <% if @my_team_interviews.count > 3 %>
-                <strong><p>And <%= @my_team_interviews.count - 3 %> more.</p></strong>
+                <strong><p><%= t '.interviews.remaining', reviews: @my_team_interviews.count - 3 %></p></strong>
               <% end %>
 
             <% end %>
@@ -125,7 +122,7 @@
         </div>
       </div>
 
-      <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_team_interviews_path, title: 'My team interviews', nbr: @my_team_interviews.count) %>
+      <%= render_component HomeFieldComponent.new(color: 'bkt-blue', path: my_team_interviews_path, title: t('.interviews.my_team_interviews'), nbr: @my_team_interviews.count) %>
     <% end %>
 
   <% end %>
@@ -144,52 +141,53 @@
           </div>
 
           <div class="flex-row-start-centered">
-            <h2 class='mx-1rem' ><Strong>My Trainings</Strong></h2>
-            <p class='bkt-orange font-weight-600'>- <%= @my_trainings.count  %> trainings to do</p>
+            <h2 class='mx-1rem'><Strong><%= t '.training.my_tainings' %></Strong></h2>
+            <p class='bkt-orange font-weight-600'>- <%= t('todo', number: pluralize(@my_trainings.count, t('training'), t('training') + 's')) %></p>
           </div>
         </div>
 
 
         <div class="ml-3rem">
-        <% if @my_trainings.count == 0 %>
-          <p>You have no interview to do at this time.</p><br>
-        <% else %>
-          <p>You have <%= @my_trainings.count %> trainings to do in this section. You can review them in <%= link_to '`My Trainings`', my_trainings_path, class: 'font-weight-700' %> section !</p><br>
-          <p>Your upcoming trainings :</p>
+          <% if @my_trainings.count == 0 %>
+            <p><%= t('.training.training_zero') %></p><br>
+          <% else %>
+            <p><%= t('.first_subtitle', number: pluralize(@my_trainings.count, t('training'), t('training') + 's'), mode: t('.training.my_tainings')) %></p><br>
+            <p><%= t '.training.second_subtitle' %></p>
 
-          <% myt_firsts = @my_trainings.first(3) %>
-          <% myt_firsts.each do |myt_first| %>
+            <% myt_firsts = @my_trainings.first(3) %>
+            <% myt_firsts.each do |myt_first| %>
 
-            <% next_session = myt_first.next_session %>
+              <% next_session = myt_first.next_session %>
 
-            <div class='mt-1rem'>
-              <div class="flex-row-start-centered">
-                <p class="font-weight-700 bkt-orange"><%= myt_first.title %></p>
-                <div class="flex-row-between-centered border-bkt-dark-grey rounded-20px mx-1rem" style='padding: .25rem .75rem;'>
-                  <div class="flex-row-center-centered height-2_5rem width-2_5rem">
-                    <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
+              <div class='mt-1rem'>
+                <div class="flex-row-start-centered">
+                  <p class="font-weight-700 bkt-orange"><%= myt_first.title %></p>
+                  <div class="flex-row-between-centered border-bkt-dark-grey rounded-20px mx-1rem" style='padding: .25rem .75rem;'>
+                    <div class="flex-row-center-centered height-2_5rem width-2_5rem">
+                      <span class="iconify fs-1_6rem bkt-dark-grey" data-icon="akar-icons:clock"></span>
+                    </div>
+                    <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(next_session.workshop.duration) %></p>
                   </div>
-                  <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(next_session.workshop.duration) %></p>
-                </div>
-                <div class="flex-row-center-centered height-2_5rem width-2_5rem">
+                  <div class="flex-row-center-centered height-2_5rem width-2_5rem">
                   <span class="iconify fs-1_6rem bkt-orange"
-                    data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
+                        data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
                   </span>
+                  </div>
                 </div>
+
+                <% if next_session.workshop.synchronous? %>
+                  <p><%= t('.training.next_session_hour') %>
+                    <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+                <% else %>
+                  <p><%= t('.training.next_session') %> <strong><%= "#{next_session.date}" %></strong></p>
+                <% end %>
               </div>
 
-              <% if next_session.workshop.synchronous? %>
-                <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
-              <% else %>
-                <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
-              <% end %>
-            </div>
-
+            <% end %>
+            <% if @my_trainings.count > 3 %>
+              <p class='font-weight-600'><%= t('.interviews.remaining', reviews: @my_trainings.count) %></p>
+            <% end %>
           <% end %>
-          <% if @my_trainings.count > 3 %>
-            <p class='font-weight-600'>And <%= @my_trainings.count - 3 %> more.</p>
-          <% end %>
-        <% end %>
 
 
         </div>
@@ -201,7 +199,7 @@
 
     </div>
 
-    <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_trainings_path, title: 'My trainings', nbr: @my_trainings.count) %>
+    <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_trainings_path, title: t('.training.my_tainings'), nbr: @my_trainings.count) %>
 
     <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
 
@@ -216,8 +214,8 @@
               </svg>
             </div>
             <div class="flex-row-start-centered">
-              <h2 class='mx-1rem' ><Strong>My Team Trainings</Strong></h2>
-              <p class='bkt-orange font-weight-600'>- <%= "#{@my_team_trainings.count}" %> trainings to do</p>
+              <h2 class='mx-1rem'><Strong><%= t '.interviews.my_team_interviews' %></Strong></h2>
+              <p class='bkt-orange font-weight-600'>- <% t('todo', number: pluralize(@my_team_interviews.count, t('training'), t('training') + 's')) %></p>
             </div>
           </div>
 
@@ -225,12 +223,13 @@
 
             <% if @my_team_trainings.count == 0 %>
 
-              <p>You have no training to do at this time.</p>
+              <p><%= t('.training.training_zero') %></p>
 
             <% else %>
 
-              <p>You have <%= "#{@my_team_trainings.count}" %> trainings to do in this section. You can review them in <%= link_to '`My Team Trainings`', my_team_trainings_path, class: 'font-weight-700' %> section !</p><br>
-              <p>Your upcoming trainings :</p><br>
+              <p><%= raw t('.first_subtitle', number: pluralize(@my_team_trainings.count, t('training'), t('training') + 's'), mode: t('.training.my_team_tainings')) %></p>
+              <br>
+              <p><%= t('.training.second_subtitle') %></p><br>
 
               <% myt_firsts = @my_team_trainings.first(3) %>
               <% myt_firsts.each do |myt_first| %>
@@ -248,15 +247,16 @@
                     </div>
                     <div class="flex-row-center-centered height-2_5rem width-2_5rem">
                       <span class="iconify fs-1_6rem bkt-orange"
-                        data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
+                            data-icon="<%= next_session.workshop.synchronous? ? 'fa6-solid:user-group' : 'heroicons-outline:status-online' %>">
                       </span>
                     </div>
                   </div>
 
                   <% if next_session.workshop.synchronous? %>
-                    <p>The next will session take place on <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
+                    <p><%= t('.training.next_session_hour') %>
+                      <strong><%= "#{next_session.date} at #{next_session.starts_at.strftime('%H:%M')}" %></strong></p>
                   <% else %>
-                    <p>The next will session begin on <strong><%= "#{next_session.date}" %></strong></p>
+                    <p><%= t('.training.next_session') %> <strong><%= "#{next_session.date}" %></strong></p>
                   <% end %>
 
                 </div>
@@ -264,7 +264,7 @@
               <% end %>
 
               <% if @my_team_trainings.count > 3 %>
-                <strong><p>And <%= @my_team_trainings.count - 3 %> more.</p></strong>
+                <strong><p><%= t('.interviews.remaining', reviews: @my_team_trainings.count - 3) %></p></strong>
               <% end %>
 
             <% end %>
@@ -278,7 +278,7 @@
         </div>
       </div>
 
-      <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_team_trainings_path, title: 'My team trainings', nbr: @my_team_trainings.count) %>
+      <%= render_component HomeFieldComponent.new(color: 'bkt-orange', path: my_team_trainings_path, title: t('.training.my_team_tainings'), nbr: @my_team_trainings.count) %>
     <% end %>
 
   <% end %>

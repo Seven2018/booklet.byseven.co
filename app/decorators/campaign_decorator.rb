@@ -50,26 +50,26 @@ class CampaignDecorator < Draper::Decorator
     if employee_interview&.not_started? && manager_interview&.not_started? ||
       employee_interview&.not_started? && manager_interview.nil? ||
       manager_interview&.not_started? && employee_interview.nil?
-      'No interview started'
+      I18n.t('campaigns.my_interviews.no_interview_started')
     elsif employee_interview&.in_progress? && manager_interview&.status&.to_sym != :in_progress || manager_interview&.in_progress? && employee_interview&.status&.to_sym != :in_progress
-      '1 interview in progress'
+      I18n.t('campaigns.my_interviews.one_interview_in_progress')
     elsif employee_interview&.in_progress? && manager_interview&.in_progress?
-      '2 interview in progress'
+      I18n.t('campaigns.my_interviews.two_interview_in_progress')
     elsif employee_interview&.submitted? && manager_interview&.in_progress? || employee_interview&.in_progress? && manager_interview&.submitted?
-      '1 interview submitted and 1 interview in progress'
+      I18n.t('campaigns.my_interviews.one_interview_submitted_and_one_interview_in_progress')
     elsif employee_interview&.submitted? && manager_interview&.not_started? || employee_interview&.not_started? && manager_interview&.submitted?
-      '1 interview submitted'
+      I18n.t('campaigns.my_interviews.one_interview_submitted')
     elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.not_started?
-      '2 interviews submitted, Cross Review available'
+      I18n.t('campaigns.my_interviews.two_interviews_submitted_cross_review_available')
     elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.in_progress?
-      '2 interviews submitted, Cross Review in progress'
+      I18n.t('campaigns.my_interviews.two_interviews_submitted_cross_review_in_progress')
     elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.submitted? ||
       employee_interview&.submitted? && manager_interview.nil? && crossed_interview.nil? ||
       employee_interview.nil? && manager_interview&.submitted? && crossed_interview.nil? ||
       employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview.nil?
-      'All interviews submitted'
+      I18n.t('campaigns.my_interviews.all_interviews_submitted')
     else
-      'no status to show'
+      I18n.t('campaigns.my_interviews.no_status_to_show')
     end
   end
 end

@@ -22,7 +22,7 @@
         </div>
         <div class="flex-row-start-centered">
           <div>
-            <p class="bkt-light-grey font-weight-500 fs-1_2rem">Deadline
+            <p class="bkt-light-grey font-weight-500 fs-1_2rem"><%= t('deadline') %>
               : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p>
           </div>
         </div>
@@ -82,16 +82,16 @@
         <div class="flex-row-end-centered">
           <% if employee_interview.status.to_sym != :submitted %>
             <%= link_to interview_path(employee_interview), class: 'flex-row-between-centered bkt-btn-blue' do %>
-              <%= employee_interview.not_started? ? 'Start my interview' : 'Continue my interview' %>
+              <%= employee_interview.not_started? ? t('campaigns.my_interviews.card.start_interview') : t('campaigns.my_interviews.card.continue_my_interview') %>
               <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
             <% end %>
           <% elsif employee_interview.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
             <%= link_to interview_path(employee_interview), class: 'bkt-btn-blue-white' do %>
-              View my answers
+              <%= t('campaigns.my_interviews.card.view_my_answers') %>
             <% end %>
           <% elsif crossed_interview&.submitted? %>
             <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-white' do %>
-              View cross review answers
+              <%= t('campaigns.my_interviews.card.view_cross') %>
             <% end %>
           <% end %>
         </div>

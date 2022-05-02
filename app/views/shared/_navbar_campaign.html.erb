@@ -10,7 +10,7 @@
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_interviews %>
           ">
-          <h4 title='My interviews'>My interviews</h4>
+          <h4 title='My interviews'><%= t('pages.home.interviews.my_interviews') %></h4>
         </div>
       <% end %>
     <% end %>
@@ -20,7 +20,7 @@
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_team_interviews %>
           ">
-          <h4 title='My team interviews'>My team interviews</h4>
+          <h4 title='My team interviews'><%= t('pages.home.interviews.my_team_interviews') %></h4>
         </div>
       <% end %>
     <% end %>
@@ -76,14 +76,14 @@
     <% if CampaignPolicy.new(current_user, nil).create? %>
       <%= link_to campaigns_path,
         class: "#{klass} #{active_klass if @controller_action == :campaigns_index}" do %>
-        <h4>Campaigns</h4>
+        <h4><%= t('campaign').upcase_first + 's' %></h4>
       <% end %>
     <% end %>
 
     <% if InterviewFormPolicy.new(current_user, nil).create? %>
       <%= link_to interview_forms_path,
         class: "#{klass} #{active_klass if @controller_action == :interview_forms_index}" do %>
-        <h4>Templates</h4>
+        <h4><%= t('template').upcase_first + 's' %></h4>
       <% end %>
     <% end %>
 
@@ -94,7 +94,7 @@
             @controller_action == :reports_index ||
             @controller_action == :reports_new
         }" do %>
-        <h4>Report</h4>
+        <h4><%= t('report').upcase_first + 's' %></h4>
       <% end %>
     <% end %>
   </div>
