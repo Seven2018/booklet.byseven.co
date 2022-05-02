@@ -52,22 +52,32 @@
 <% end %>
 
 <% if @any_more %>
+
   <div class="paginate-container paginate-container-orange">
+
     <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
-      <div class="paginate__previous-button paginate__button-orange" onclick='changePage("previous");'>
+
+      <div class="paginate__previous-button paginate__button-orange"
+           data-action='click->change-page#previous'>
         <span class="iconify" data-icon="fontisto:angle-left"></span>
         <p>Previous</p>
       </div>
+
     <% end %>
 
     <%= paginate @trainings, left: 3, right: 1 %>
 
     <% if @trainings.count == 10 && @any_more %>
-      <div class="paginate__next-button paginate__button-orange" onclick='changePage("next");'>
+
+      <div class="paginate__next-button paginate__button-orange"
+           data-action='click->change-page#next'>
         <p>Next</p>
         <span class="iconify" data-icon="fontisto:angle-right"></span>
       </div>
+
     <% end %>
+
   </div>
+
 <% end %>
 

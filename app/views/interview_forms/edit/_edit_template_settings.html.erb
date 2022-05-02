@@ -1,7 +1,10 @@
-<div id='template-edit__settings-container' class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
+<div id='template-edit__settings-container'
+     class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
+
   <div class='mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
     <p>Template settings</p>
   </div>
+
   <%= simple_form_for template, remote: true do |f| %>
     <div class='mb-2rem'>
 
@@ -9,24 +12,39 @@
 
           <p class='fs-1_4rem font-weight-600 bkt-dark-grey'>Who can answer this form ?</p>
 
-          <div class='booklet-select__template-edit-container pos-rel cursor-pointer' style='width: 110px;'>
-            <div class="flex-row-between-centered p-0_75rem bkt-bg-light-blue rounded-5px" onclick="<%= 'BookletSelectExpand(this);' %>">
+          <div class='booklet-select__template-edit-container pos-rel cursor-pointer'
+               style='width: 110px;'
+               data-controller="dropdown">
+
+            <div class="flex-row-between-centered p-0_75rem bkt-bg-light-blue rounded-5px"
+                 data-action="click->dropdown#toggle">
+
               <p class='booklet-select__template-edit-selected fs-1_4rem font-weight-500 bkt-blue'><%= template.answerable_by.capitalize %></p>
               <div class="flex-row-center-centered ml-1rem">
                 <i class="fas fa-angle-down bkt-blue"></i>
               </div>
+
             </div>
-            <div class="booklet-select__template-edit-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150 pos-abs hidden" style='top: 3.5rem; left: 0;'>
-              <div onclick='BookletSelectSubmit(this, "answerable_by");'>
+
+            <div class="booklet-select__template-edit-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150            pos-abs hidden"
+                 style='top: 3.5rem; left: 0;'
+                 data-dropdown-target="menu">
+
+              <div data-action="click->interviews--interview-forms-edit#selectSubmit"
+                   data-attribute="answerable_by">
                 <p class='fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer' style='width: 110px;'>Both</p>
               </div>
-              <div onclick='BookletSelectSubmit(this, "answerable_by");'>
+              <div data-action="click->interviews--interview-forms-edit#selectSubmit"
+                   data-attribute="answerable_by">
                 <p class='fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer' style='width: 110px;'>Manager</p>
               </div>
-              <div onclick='BookletSelectSubmit(this, "answerable_by");'>
+              <div data-action="click->interviews--interview-forms-edit#selectSubmit"
+                   data-attribute="answerable_by">
                 <p class='fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer' style='width: 110px;'>Employee</p>
               </div>
+
             </div>
+
           </div>
 
           <%= f.hidden_field :answerable_by %>
@@ -35,6 +53,7 @@
         </div>
 
       <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Select the persons who will fill out this form</p>
+
     </div>
 
     <div>
@@ -44,13 +63,17 @@
         <p class='fs-1_4rem font-weight-600 bkt-dark-grey'>Enable cross review ?</p>
 
         <label id='template-edit__settings-cross-toggle' class="required-question-switch <%= 'switch_checked' if template.cross? && template.answerable_by_both? %> m-0">
+
           <input type="checkbox"
                  name='interview_form[cross]'
-                 onclick='switchSide(this);'
+                 data-save="true"
+                 data-action="interviews--interview-forms-edit#switchSide"
                  <%= 'checked' if template.cross? && template.answerable_by_both? %>
                  <%= 'disabled' if !template.answerable_by_both? %>
           />
+
           <div><%# do not remove %></div>
+
         </label>
 
       </div>
@@ -60,6 +83,7 @@
     </div>
 
   <% end %>
+
 
 </div>
 

@@ -15,22 +15,32 @@
 
 <% separator = question_type == 'separator' %>
 
-<div class="line-top flex-row-between-start mb-3rem">
-  <div class="line-title <%= 'line-title-separator' if separator %>" onclick='toggleMod(this);'>
+<div class="line-top flex-row-between-centered height-2_4rem-forced mb-3rem">
+
+  <div class="line-title <%= 'line-title-separator' if separator %>"
+       data-action="click->interviews--interview-forms-edit#toggleMod">
+
     <i class="fas fa-angle-down" data-rotated='0'></i>
+
     <% unless separator %>
       <i class="<%= question_icon[question_type] %>"></i>
     <% end %>
-    <p><%= form_title[question_type] %></p>
+
+    <p class="height-2_4rem-forced"><%= form_title[question_type] %></p>
+
   </div>
+
   <div class="line-controls-new">
+
     <a class="line-delete"
        onclick="
         this.closest('<%= ".add-#{question_type}" %>').remove();"
      >
      <span class="iconify fs-2_4rem bkt-light-grey5 ml-1rem" data-icon="uil:times"></span>
    </a>
+
   </div>
+
 </div>
 
 <%= simple_form_for InterviewQuestion.new, remote: true do |f| %>
