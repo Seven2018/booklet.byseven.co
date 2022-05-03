@@ -1,24 +1,29 @@
-<div class="navbar navbar-expand-sm navbar-light navbar__blue px-2rem">
+<div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light bkt-bg-objective-blue px-2rem">
 
   <div class="flex-row-between-centered">
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-blue-hover bkt-blue bkt-white-hover bkt-box-shadow-compact rounded-25px smooth-transition' href="/home">
+    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-objective-blue-hover bkt-objective-blue bkt-white-hover bkt-box-shadow-compact rounded-25px smooth-transition' href="/home">
       <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
     </a>
 
+    <% if Objective::ElementPolicy.new(current_user, nil).my_objectives? %>
+      <%= link_to objectives_my_objectives_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_interviews %>
+          <%= 'navbar-buttons--active' if @controller_action == :elements_my_objectives %>
           ">
           <h4 title='My interviews'>My objectives</h4>
         </div>
+      <% end %>
+    <% end %>
 
-
+    <% if Objective::ElementPolicy.new(current_user, nil).my_team_objectives? %>
+      <%= link_to objectives_my_team_objectives_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :campaigns_my_team_interviews %>
+          <%= 'navbar-buttons--active' if @controller_action == :elements_my_team_objectives %>
           ">
           <h4 title='My team interviews'>My team objectives</h4>
         </div>
       <% end %>
-
+    <% end %>
 
     <% if Navigation::ObjectivesAdminLink.new(user: current_user).should_render? %>
       <button class="left-buttons">
@@ -43,7 +48,7 @@
     <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
   </div>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div>
     <ul class="flex-row-between-centered">
 
       <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white', hover_background_color: 'bkt-bg-dark-blue-hover') %>
