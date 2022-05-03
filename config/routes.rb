@@ -145,11 +145,18 @@ Rails.application.routes.draw do
   get 'interview_questions/:id/move_up', to: 'interview_questions#move_up', as: 'move_up_interview_question'
   get 'interview_questions/:id/move_down', to: 'interview_questions#move_down', as: 'move_down_interview_question'
 
-  #MODS
+  # MODS
   resources :mods, only: %i[create update destroy]
   post :duplicate, controller: :mods, as: :duplicate_mod
   get 'mods/:id/move_up', to: 'mods#move_up', as: 'move_up_mod'
   get 'mods/:id/move_down', to: 'mods#move_down', as: 'move_down_mod'
+
+  # OBJECTIVES
+  namespace :objectives do
+    resources :elements
+    resources :indicators
+    resources :logs
+  end
 
   # PAGES
   get :home, controller: :pages
