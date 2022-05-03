@@ -7,7 +7,7 @@
       <div class="bkt-progress-thread"></div>
       <% CampaignDraft::PROGRESS_STATES.each do |state, state_label| %>
         <%= link_to send "edit_campaign_draft_#{state}_path".to_sym do %>
-          <div class="bkt-progress-pearl bkt-progress-pearl-blue <%= @campaign.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
+          <div class="bkt-progress-pearl bkt-progress-pearl-blue <%= @campaign.progress_state_klass(state, controller_name) %>" data-title='<%= t state_label %>'>
             <% if @campaign.state_set_or_above?(state) %>
               <i class="fas fa-check"></i>
             <% end %>
@@ -25,7 +25,7 @@
         <%= f.hidden_field :send_email %>
         <div class="d-flex justify-content-center pt-5">
           <a class='bkt-btn-blue bkt-white' data-toggle='modal' data-target='#launchCampaign'>
-            Launch Campaign
+            <%= t('.launch_campaign') %>
           </a>
           <%= f.submit '', class: 'hidden-submit hidden' %>
 
@@ -43,7 +43,7 @@
         </div>
       <% else %>
         <div class="d-flex justify-content-end pt-5">
-          <button class='bkt-btn-blue'><p class="mr-3">Next</p> <i class="fa fa-arrow-right"></i></button>
+          <button class='bkt-btn-blue'><p class="mr-3"><%= t('next').upcase_first %></p> <i class="fa fa-arrow-right"></i></button>
         </div>
       <% end %>
     <% end %>
@@ -65,7 +65,7 @@
           listLocation: "users",
           getValue: 'name',
           url: function(phrase) {
-            return "/users_search.json?manager=true&search=" + phrase
+            return "/en/users_search.json?manager=true&search=" + phrase
           },
           list: {
             onChooseEvent: function() {

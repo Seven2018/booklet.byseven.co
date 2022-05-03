@@ -4,12 +4,9 @@
     <div class="flex-row-between-centered rounded-30px bkt-bg-white bkt-box-shadow mb-5rem overflow-hidden">
 
       <div class='p-2rem'>
-        <h1 class='fs-2_4rem font-weight-700 mb-2rem'>Hello, <%= "#{current_user.firstname}" %> !</h1>
+        <h1 class='fs-2_4rem font-weight-700 mb-2rem'><%= t 'campaigns.my_interviews.hello', name: current_user.firstname %></h1>
         <p class='fs-1_4rem font-weight-500 bkt-dark-grey line-height-2rem'>
-          You will find all interviews as interviewer here. <br>
-          You have <span class="bkt-blue"><%= @interviews_to_fill_count %> interviews to fill</span>
-          from your <span class="font-weight-700"><%= "#{@interviews_completed_count}"  %> current interviews.</span> <br>
-          All reviews of an interview has to be locked to be a <span class="font-weight-700">‘Completed Interviews’</span> <br>
+          <%= raw t('campaigns.my_interviews.sub_hello', interviews_to_fill: @interviews_to_fill_count, ongoing_campaigns: @interviews_completed_count) %>
         </p>
       </div>
 
@@ -25,14 +22,14 @@
     <div class="flex-row-start-centered height-2_4rem-forced width-100 mb-2rem border-bottom-bkt-light-grey5-0_5px">
 
       <%= link_to my_team_interviews_path(period: 'current'), class: "interviews-tab-control flex-row-start-centered height-2_4rem-forced mr-1rem pb-0_75rem z-index-5 cursor-pointer #{'active' unless params[:period] == 'completed'}" do %>
-        <p class="fs-1_6rem font-weight-500">Ongoing interviews</p>
+        <p class="fs-1_6rem font-weight-500"><%= t('campaigns.my_interviews.ongoing_interviews') %></p>
         <div class="interviews-tab-control__counter flex-row-center-centered height-2rem width-2rem rounded-10px ml-0_75rem">
           <p class="fs-1rem font-weight-600"><%= @ongoing_campaigns.count %></p>
         </div>
       <% end %>
 
       <%= link_to my_team_interviews_path(period: 'completed'), class: "interviews-tab-control flex-row-start-centered height-2_4rem-forced mr-1rem pb-0_75rem z-index-5 cursor-pointer  #{'active' if params[:period] == 'completed'}" do %>
-        <p class="fs-1_6rem font-weight-500">Completed interviews</p>
+        <p class="fs-1_6rem font-weight-500"><%= t('campaigns.my_interviews.completed_interviews') %></p>
         <div class="interviews-tab-control__counter flex-row-center-centered height-2rem width-2rem rounded-10px ml-0_75rem">
           <p class="fs-1rem font-weight-600"><%= @completed_campaigns.count %></p>
         </div></p>
@@ -59,16 +56,16 @@
       <span class="iconify" data-icon="noto:light-bulb" data-width="70" data-height="70"></span>
     </div>
     <div class="flex-row-center-centered text-center my-4 font-weight-600">
-      <p>Up to 3 interviews can be requiere to submit :<br> Interviewee (IE), Interviewer (IR) and Cross Review (CR).</p>
+      <p><%= raw t('campaigns.my_interviews.popup_status_info') %></p>
     </div>
     <div class="flex-row-center-centered text-center my-4 d-block">
-      <p>Their different states are :</p>
+      <p><%= t('campaigns.my_interviews.popup_status_subtitle') %></p>
     </div>
     <div class="width-30 m-auto mb-4">
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-light-grey"></span> Not available yet</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-red"></span> Not Started</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-yellow"></span> In Progress</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-green"></span> Submitted</p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-light-grey"></span> <%= t('campaigns.my_interviews.popup_status_not_available') %></p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-red"></span> <%= t('campaigns.my_interviews.popup_status_not_started') %></p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-yellow"></span> <%= t('campaigns.my_interviews.popup_status_in_progress') %></p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-green"></span> <%= t('campaigns.my_interviews.popup_status_submitted') %></p>
     </div>
   </div>
 </div>

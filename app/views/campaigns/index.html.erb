@@ -2,9 +2,9 @@
   <div class="campaigns-index">
     <div class="campaigns-index__controls">
       <div class="campaigns-index__title-tags">
-        <h1>Campaigns</h1>
+        <h1><%= t('campaign').upcase_first + 's' %></h1>
         <div class="campaigns-index__tags">
-          <p class='campaigns-index__tag'>All</p>
+          <p class='campaigns-index__tag'><%= t('all').upcase_first %></p>
         </div>
       </div>
 
@@ -14,7 +14,7 @@
         } do  %>
           <i class="fas fa-plus"></i>
           &nbsp;
-          Create Campaign
+          <%= t('.create_campaign') %>
         <% end %>
       <% end %>
     </div>
@@ -36,7 +36,7 @@
           <%=
             f.input(
               :title,
-              placeholder: 'Search by title, job ...',
+              placeholder: t('.search_placeholder'),
               input_html: {
                 class: 'mr-3',
                 autocomplete: 'off',
@@ -58,7 +58,7 @@
 
           <%=
             f.submit(
-              'Search',
+              t('search'),
               class: 'btn-search',
               onclick: "document.querySelector('body').classList.add('wait');",
               data: {
@@ -76,7 +76,7 @@
 
         <button class='btn-reset bkt-blue'
                 data-action="click->remember-search#resetAllFilter">
-          Reset
+          <%= t('reset') %>
         </button>
 
         <div
@@ -88,16 +88,16 @@
           <div class="flex-row-end-centered">
             <button data-action="click->campaign-tag-filter#displayList" class="flex-row-between-centered bkt-blue px-3 py-2 bkt-box-shadow-medium">
               <span class="iconify m-2" data-width="20" data-height="20" data-icon="fluent:filter-28-filled"></span>
-              <p>Filter</p>
+              <p><%= t('filter').upcase_first %></p>
             </button>
           </div>
           <div
             data-campaign-tag-filter-target="tagList"
             data-action="click->campaign-tag-filter#stopPropagation"
             class="d-none position-absolute z-index-50 right-0 width-35rem bkt-box-shadow-medium bkt-bg-white max-h-40rem overflow-y-auto">
-            <div class="pl-3 my-4"><p class="bkt-light-grey">Filter by template tags</p></div>
-            <div data-campaign-tag-filter-target="selectedTagsDom" class="pl-3 my-4"><p class="">Empty</p></div>
-            <div class="pl-3 my-4"><input data-action="keyup->campaign-tag-filter#search" type="text" placeholder="Search" class="rounded-5px pl-2rem"></div>
+            <div class="pl-3 my-4"><p class="bkt-light-grey"><%= t('.filter_by_tags') %></p></div>
+            <div data-campaign-tag-filter-target="selectedTagsDom" class="pl-3 my-4"><p class=""><%= t('empty').upcase_first %></p></div>
+            <div class="pl-3 my-4"><input data-action="keyup->campaign-tag-filter#search" type="text" placeholder="<%= t('search') %>" class="rounded-5px pl-2rem"></div>
             <div data-campaign-tag-filter-target="unselectedTagsDom" class="pl-3 py-4 border-top">
               <% @company_tags.each do |tag| %>
                 <div class="flex-row-start-centered bkt-light-grey-placeholder" >
@@ -114,11 +114,11 @@
 
       <div class="campaigns-index__list">
         <div class="campaigns-index__list-headers">
-          <p>Campaign title</p>
-          <p>Campaign Type</p>
-          <p>Tags</p>
-          <p class='campaigns-index__list-headers-employee'>Employees</p>
-          <p class='campaigns-index__list-headers-completion'>Completion</p>
+          <p><%= t('.table.campaign_title') %></p>
+          <p><%= t('.table.campaign_type') %></p>
+          <p><%= t('tag').upcase_first + 's' %></p>
+          <p class='campaigns-index__list-headers-employee'><%= t('employee').upcase_first + 's' %></p>
+          <p class='campaigns-index__list-headers-completion'><%= t('completion').upcase_first %></p>
         </div>
         <div class="campaigns-index__list-lines">
           <%= render 'campaigns/index/index_campaigns_list', campaigns: @campaigns %>

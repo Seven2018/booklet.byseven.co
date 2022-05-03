@@ -1,4 +1,4 @@
-<%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to display template(s)') %>
+<%= render_component FormSectionTitleComponent.new(title: t('campaign_draft.edit.choose_how_display_template')) %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
 
@@ -7,7 +7,7 @@
     name: :single,
     checked: campaign.templates_selection_method == :single.to_s || campaign.templates_selection_method.nil?,
     title: "Single template",
-    subtitle: "Select participants from your employee list"
+    subtitle: t('campaign_draft.edit.select_participant_from_list')
   ) do %>
     <%# TODOCHANGEICON %>
     <span class="iconify fs-3rem" data-icon="akar-icons:file"></span>
@@ -18,7 +18,7 @@
     name: :multiple,
     checked: campaign.templates_selection_method == :multiple.to_s,
     title: "Multiple templates",
-    subtitle: "Add participants by their arrival date in the company",
+    subtitle: t('campaign_draft.edit.add_participant_by_arrival'),
     disabled: true
   ) do %>
     <span class="iconify fs-3rem" data-icon="akar-icons:network"></span>

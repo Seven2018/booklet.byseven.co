@@ -13,11 +13,11 @@ class CampaignDraft < ApplicationRecord
   }, _suffix: :set
 
   PROGRESS_STATES = {
-    settings: "Settings",
-    participants: "Participants",
-    templates: "Templates",
-    dates: "Dates",
-    launches: "Review & Launch"
+    settings: 'settings',
+    participants: 'participants',
+    templates: 'templates',
+    dates: 'dates',
+    launches: 'launches'
   }
 
   scope :launched, -> { where(state: :launches) }

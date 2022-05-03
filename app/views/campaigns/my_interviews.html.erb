@@ -57,16 +57,16 @@
       <span class="iconify" data-icon="noto:light-bulb" data-width="70" data-height="70"></span>
     </div>
     <div class="flex-row-center-centered text-center my-4 font-weight-600">
-      <p>Up to 3 interviews can be requiere to submit :<br> Interviewee (IE), Interviewer (IR) and Cross Review (CR).</p>
+      <p><%= raw t('campaigns.my_interviews.popup_status_info') %></p>
     </div>
     <div class="flex-row-center-centered text-center my-4 d-block">
-      <p>Their different states are :</p>
+      <p><%= t('campaigns.my_interviews.popup_status_subtitle') %></p>
     </div>
     <div class="width-30 m-auto mb-4">
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-light-grey"></span> Not available yet</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-red"></span> Not Started</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-yellow"></span> In Progress</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-green"></span> Submitted</p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-light-grey"></span> <%= t('campaigns.my_interviews.popup_status_not_available') %></p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-red"></span> <%= t('campaigns.my_interviews.popup_status_not_started') %></p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-yellow"></span> <%= t('.popup_status_in_progress') %></p>
+      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-green"></span> <%= t('.popup_status_submitted') %></p>
     </div>
   </div>
 </div>

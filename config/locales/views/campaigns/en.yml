@@ -1,6 +1,14 @@
 
 en:
   campaigns:
+    index:
+      search_placeholder: 'Search by title, job ...'
+      create_campaign: 'Create Campaign'
+      table:
+        campaign_title: 'Campaign title'
+        campaign_type: 'Campaign type'
+      filter_by_tags: 'Filter by template tags'
+
     my_interviews:
       hello: 'Hello %{name} !'
       sub_hello: 'You will find all interviews as interviewee here. <br> You have <span class="bkt-blue">%{interviews_to_fill} interviews to fill</span> from your <span class="font-weight-700">%{ongoing_campaigns} current interviews.</span> <br> All reviews of an interview has to be locked to be a <span class="font-weight-700">‘Completed Interviews’</span> <br>'
@@ -15,8 +23,41 @@ en:
       two_interviews_submitted_cross_review_in_progress: '2 interviews submitted, Cross Review in progress'
       all_interviews_submitted: 'All interviews submitted'
       no_status_to_show: 'no status to show'
+
+      popup_status_info: 'Up to 3 interviews can be requiere to submit :<br> Interviewee (IE), Interviewer (IR) and Cross Review (CR).'
+      popup_status_subtitle: 'Their different states are :'
+      popup_status_not_available: 'Not available yet'
+      popup_status_not_started: 'Not Started'
+      popup_status_in_progress: 'In Progress'
+      popup_status_submitted: 'Submitted'
       card:
         view_my_answers: 'View my answers'
         start_interview: 'Start my interview'
-        view_cross: 'View cross review answers'
         continue_my_interview: 'Continue my interview'
+        start_cross_interview: 'Start my cross interview'
+        continue_my_cross_interview: 'Continue my cross interview'
+        view_cross: 'View cross review answers'
+        view_interviewee_answers: 'View interviewee answers'
+      manage_campaign: 'Manage campaign'
+
+  campaign_draft:
+    edit:
+      choose_campaign_name: 'Choose a campaign name'
+      choose_campaign_type: 'Choose a campaign type'
+      one_to_one_subtitle: 'Use this type of campaign for annual review, discovery report, onboarding ...'
+      feedback_360_subtitle: 'Each participant can receive feedbacks from other users.'
+      choose_how_add_participant: 'Choose how you want to add participants'
+      select_participant_from_list: "Select participants from your employee list"
+      add_participant_by_arrival: "Add participants by their arrival date in the company"
+      choose_participant: 'Chose interviewee(s) you want to participate this campaign'
+      choose_how_add_interviewer: 'Chose how you want to add interviewer'
+      each_participant_assigned_manager: "Each participant is assigned to their manager"
+      choose_specific_user: "Chose a specific user as the campaign sole interviewer"
+      in_case_manager_not_linked: 'In case of interviewees not linked to a manager in the database,<br> please chose a default interviewer'
+      choose_interviewer_desc: 'The interviewer will handle all interviews for selected participants'
+      choose_how_display_template: 'Chose how you want to display template(s)'
+#      select_participant_from_list_title: "Select participants from your employee list"
+      apply_dates: 'Apply dates for your campaign'
+      apply_dates_desc: 'Deadline is only informative, reviews can be done even if the <br> deadline is outdated.'
+      summary: 'Summary of your campaign'
+      launch_campaign: 'Launch campaign'

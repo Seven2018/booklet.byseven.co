@@ -1,12 +1,12 @@
-<%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add participants') %>
+<%= render_component FormSectionTitleComponent.new(title: t('campaign_draft.edit.choose_how_add_participant')) %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
   <%= render_component RadioButtonTileComponent.new(
     model: :interviewee_selection_method,
     name: :manual,
     checked: campaign.interviewee_selection_method == :manual.to_s || campaign.interviewee_selection_method.nil?,
-    title: "Manual",
-    subtitle: "Select participants from your employee list"
+    title: t('manual'),
+    subtitle: t('campaign_draft.edit.select_participant_from_list')
   ) do %>
     <span class="iconify fs-3rem" data-icon="fluent:cursor-click-24-filled"></span>
   <% end %>
@@ -15,8 +15,8 @@
     model: :interviewee_selection_method,
     name: :auto,
     checked: campaign.interviewee_selection_method == :auto.to_s,
-    title: "Auto",
-    subtitle: "Add participants by their arrival date in the company",
+    title: t('auto'),
+    subtitle: t('campaign_draft.edit.add_participant_by_arrival'),
     disabled: true
   ) do %>
     <%# TODOCHANGEICON %>
@@ -25,7 +25,7 @@
 </div>
 
 
-<%= render_component FormSectionTitleComponent.new(title: 'Chose interviewee(s) you want to participate this campaign') %>
+<%= render_component FormSectionTitleComponent.new(title: t('campaign_draft.edit.choose_participant')) %>
 
 
 <div data-controller='participant-ids search-inject'
@@ -36,7 +36,7 @@
   '
 >
   <div class='fs-1_2rem mb-1rem'>
-    Selected
+    <%= t('selected') %>
     <span class='fs-1_2rem'
       data-participant-ids-target="selectedCount">
       <%= @campaign.interviewee_ids.count %>
@@ -54,7 +54,7 @@
           text_field_tag(
             :search,
             nil,
-            placeholder: 'Filter',
+            placeholder: t('filter'),
             data: {
               search_inject_target: 'search',
               action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
@@ -71,19 +71,19 @@
     <div class="flex-row-between-centered">
       <div class='fs-1_2rem bkt-blue cursor-pointer'
         data-action="click->participant-ids#unselectAll"
-      >Unselect all</div>
+      ><%= t('unselect_all') %></div>
 
       <div class="mx-2">|</div>
 
       <div class='fs-1_2rem bkt-blue cursor-pointer'
         data-action="click->participant-ids#selectAll"
-      >Select all</div>
+      ><%= t('select_all') %></div>
 
       <div class="mx-2">|</div>
 
       <div class="cursor-pointer d-flex align-items-center">
         <div class='fs-1_2rem bkt-blue'>
-          Select Filtered
+          <%= t('select_filtered') %>
           <span class='fs-1_2rem' data-participant-ids-target='filteredCount'></span>
         </div>
         <div class="mx-2"></div>
@@ -118,7 +118,7 @@
   ></div>
 </div>
 
-<%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add interviewer') %>
+<%= render_component FormSectionTitleComponent.new(title: t('campaign_draft.edit.choose_how_add_interviewer')) %>
 
 <div data-controller="campaign-draft-participants">
   <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
@@ -128,7 +128,7 @@
       name: :manager,
       checked: campaign.interviewer_selection_method == :manager.to_s || campaign.interviewer_selection_method.nil?,
       title: "Direct manager",
-      subtitle: "Each participant is assigned to their manager",
+      subtitle: t('campaign_draft.edit.each_participant_assigned_manager'),
       data_actions: 'click->campaign-draft-participants#chooseDirectManagerText'
       ) do %>
       <span class="iconify fs-3rem" data-icon="fluent:person-arrow-right-24-filled"></span>
@@ -139,7 +139,7 @@
       name: :specific_manager,
       checked: campaign.interviewer_selection_method == :specific_manager.to_s,
       title: "Chose an interviewer",
-      subtitle: "Chose a specific user as the campaign sole interviewer",
+      subtitle: t('campaign_draft.edit.choose_specific_user'),
       data_actions: 'click->campaign-draft-participants#choseInterviewerText'
       ) do %>
       <span class="iconify fs-3rem" data-icon="bx:search"></span>
@@ -149,8 +149,8 @@
 
   <%= render_component FormSectionTitleComponent.new(title: 'Interviewer') %>
   <%= render_component FormSectionSubtitleComponent.new do %>
-    <span data-campaign-draft-participants-target="directManagerText" class="bkt-light-grey6">In case of interviewees not linked to a manager in the database,<br> please chose a default interviewer</span>
-    <span data-campaign-draft-participants-target="interviewerText" class="d-none bkt-light-grey6">The interviewer will handle all interviews for selected participants</span>
+    <span data-campaign-draft-participants-target="directManagerText" class="bkt-light-grey6"><%= raw t('campaign_draft.edit.in_case_manager_not_linked') %></span>
+    <span data-campaign-draft-participants-target="interviewerText" class="d-none bkt-light-grey6"><%= t('campaign_draft.edit.choose_interviewer_desc') %></span>
   <% end %>
 </div>
 

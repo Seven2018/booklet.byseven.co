@@ -1,21 +1,21 @@
-<%= render_component FormSectionTitleComponent.new(title: 'Summary of your campaign') %>
+<%= render_component FormSectionTitleComponent.new(title: t('campaign_draft.edit.summary')) %>
 
 <div class="fs-1_4rem my-2 bkt-dark-grey">
-  Title :
+  <%= t('title') %> :
   <span class="font-weight-600">
     <%= campaign.title %>
   </span>
 </div>
 
 <div class="fs-1_4rem my-2 bkt-dark-grey">
-  Template used :
+  <%= t('template_used') %> :
   <span class="font-weight-600">
     <%= campaign.interview_form.title %>
   </span>
 </div>
 
 <div class="fs-1_4rem my-2 bkt-dark-grey">
-  Selected participants :
+  <%= t('selected_participants') %> :
   <span class="font-weight-600">
     <%= campaign.interviewee_ids.count %>
   </span>
@@ -24,7 +24,7 @@
 
 <div class="fs-1_4rem my-2 bkt-dark-grey">
   <% if campaign.direct_manager? %>
-    Interviewer(s) : Direct managers or
+    Interviewer(s) : Direct managers <%= t('or') %>
   <% end %>
   <% if campaign.specific_manager? %>
     Interviewer :

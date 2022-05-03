@@ -1,8 +1,7 @@
-<%= render_component FormSectionTitleComponent.new(title: 'Apply dates for your campaign') %>
+<%= render_component FormSectionTitleComponent.new(title: t('campaign_draft.edit.apply_dates')) %>
 
 <%= render_component FormSectionSubtitleComponent.new do %>
-  Deadline is only informative, reviews can be done even if the <br><%# TODO improve  %>
-  deadline is outdated.
+  <%= raw t('campaign_draft.edit.apply_dates_desc') %>
 <% end %>
 
 <%# TODO %>

@@ -20,7 +20,7 @@
         <div class="campaigns-my-interviews__card-review-link">
           <%= link_to campaign_path(campaign, interviewer_id: current_user.id) do %>
             <p class="d-flex align-items-center">
-              <span class="mr-3">Manage campaign</span>
+              <span class="mr-3"><%= t('campaigns.my_interviews.manage_campaign') %></span>
               <span class="iconify" data-icon="akar-icons:chevron-right"></span>
             </p>
           <% end %>
@@ -54,7 +54,7 @@
                     <div class="flex-row-start-centered">
                       <% if employee_interview&.submitted? %>
                         <%= link_to interview_path(employee_interview), class: 'bkt-blue underline fs-1_2rem' do %>
-                          View interviewee answers
+                          <%= t('campaigns.my_interviews.card.view_interviewee_answers') %>
                         <% end %>
                       <% else %>
                         <p class="fs-1_2rem font-weight-600 bkt-light-grey">Interviewee</p>
@@ -102,22 +102,22 @@
             <div class="flex-row-end-centered">
               <% if manager_interview&.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
                 <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue-white' do %>
-                  View my answers
+                  <%= t('campaigns.my_interviews.card.view_my_answers') %>
                 <% end %>
               <% elsif crossed_interview&.submitted? %>
                 <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-white' do %>
-                  View cross review answers
+                  <%= t('campaigns.my_interviews.card.view_cross') %>
                 <% end %>
               <% end %>
 
               <% if manager_interview&.not_started? || manager_interview&.in_progress? %>
                 <%= link_to interview_path(manager_interview), class: 'flex-row-between-centered bkt-btn-blue ml-5' do %>
-                  <%= manager_interview.not_started? ? 'Start my interview' : 'Continue my interview' %>
+                  <%= manager_interview.not_started? ? t('campaigns.my_interviews.card.start_interview') : t('campaigns.my_interviews.card.continue_my_interview') %>
                   <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
                 <% end %>
               <% elsif crossed_interview && crossed_interview.status.to_sym != :submitted %>
                 <%= link_to interview_path(crossed_interview), class: 'flex-row-between-centered bkt-btn-blue ml-5' do %>
-                  <%= crossed_interview.not_started? ? 'Start Cross Review' : 'Continue my cross review' %>
+                  <%= crossed_interview.not_started? ? t('campaigns.my_interviews.card.start_cross_interview') : t('campaigns.my_interviews.card.continue_my_cross_interview') %>
                   <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
                 <% end %>
               <% end %>

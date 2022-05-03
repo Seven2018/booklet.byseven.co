@@ -42,7 +42,7 @@ class CampaignDraft::BaseController < ApplicationController
   end
 
   def set_multi_step_form_navbar_content
-    @multi_step_form_navbar_content = campaign_draft.title.presence || 'New Campaign'
+    @multi_step_form_navbar_content = campaign_draft.title.presence || I18n.t('new_campaign')
   end
 
   def skip_pundit?

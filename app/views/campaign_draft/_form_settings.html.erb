@@ -1,12 +1,12 @@
-<%= render_component FormSectionTitleComponent.new(title: 'Choose a campaign name') %>
+<%= render_component FormSectionTitleComponent.new(title: t('campaign_draft.edit.choose_campaign_name')) %>
 
 <div class="py-4rem">
-  <%= text_field_tag :title, campaign.title, placeholder: 'Enter name', class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 w-100' %>
+  <%= text_field_tag :title, campaign.title, placeholder: t('enter_name'), class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px py-3 px-3 w-100' %>
 </div>
 
 <div class="my-5rem"></div>
 
-<%= render_component FormSectionTitleComponent.new(title: 'Choose a campaign type') %>
+<%= render_component FormSectionTitleComponent.new(title: t('campaign_draft.edit.choose_campaign_type')) %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
 
@@ -15,7 +15,7 @@
     name: :one_to_one,
     checked: campaign.kind == :one_to_one.to_s || campaign.kind.nil?,
     title: "1 to 1",
-    subtitle: "Use this type of campaign for annual review, discovery report, onboarding ..."
+    subtitle: t('campaign_draft.edit.one_to_one_subtitle')
   ) do %>
     <span class="iconify fs-3rem" data-icon="uil:exchange-alt"></span>
   <% end %>
@@ -25,7 +25,7 @@
     name: :feedback_360,
     checked: campaign.kind == :feedback_360.to_s,
     title: "Feedback 360",
-    subtitle: "Each participant can receive feedbacks from other users.",
+    subtitle: t('campaign_draft.edit.feedback_360_subtitle'),
     disabled: true
   ) do %>
     <span class="iconify fs-3rem" data-icon="uil:rotate-360"></span>

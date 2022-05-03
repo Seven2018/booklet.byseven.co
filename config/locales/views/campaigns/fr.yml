@@ -1,6 +1,14 @@
 
 fr:
   campaigns:
+    index:
+      search_placeholder: 'Chercher par titre ...'
+      create_campaign: 'Creer une campagne'
+      table:
+        campaign_title: 'Titre de campagne'
+        campaign_type: 'Type de campagne'
+      filter_by_tags: 'Filtrer par tags'
+
     my_interviews:
       hello: 'Bonjour %{name} !'
       sub_hello: 'Vous allez trouver les interviews comme interviewee. <br> Vous avez <span class="bkt-blue">%{interviews_to_fill} interviews a remplir</span> de <span class="font-weight-700">%{ongoing_campaigns} interviews.</span> <br> Toutes les reviews d une interview doivent etre locker <span class="font-weight-700">‘Completed Interviews’</span> <br>'
@@ -15,8 +23,41 @@ fr:
       two_interviews_submitted_cross_review_in_progress: '2 entretiens terminés, Revue Croisée en cours'
       all_interviews_submitted: 'Tous les entretiens terminés'
       no_status_to_show: 'rien a montrer'
+
+      popup_status_info: '3 entretiens peuvent etre demandé :<br> employé (IE), manager (IR) et cross revue (CR).'
+      popup_status_subtitle: 'Les états sont :'
+      popup_status_not_available: 'Pas encore disponible'
+      popup_status_not_started: 'Pas demarré'
+      popup_status_in_progress: 'en cours'
+      popup_status_submitted: 'Envoyé'
       card:
         view_my_answers: 'Voir mes réponses'
-        start_interview: 'Demarrer mon entretien'
-        view_cross: 'Voir les réponses de la Revue Croisée'
+        start_interview: 'Démarrer mon entretien'
         continue_my_interview: 'Continuer mon entretien'
+        start_cross_interview: 'Démarrer mon entretien cross'
+        continue_my_cross_interview: 'Continuer mon entretien cross'
+        view_cross: 'Voir les réponses de la Revue Croisée'
+        view_interviewee_answers: 'Voir les réponses employé'
+      manage_campaign: 'Gérer la campagne'
+
+  campaign_draft:
+    edit:
+      choose_campaign_name: 'Choisir le nom de campagne'
+      choose_campaign_type: 'Choisir le type de campagne'
+      one_to_one_subtitle: 'Utilisez ce type de campagne pour une revue annuelle...'
+      feedback_360_subtitle: "Chaque participant peut avoir des retours d'autres participant"
+      choose_how_add_participant: "Choisisez la manière d'ajouter des participant"
+      select_participant_from_list: "Sélectionnez les participants"
+      add_participant_by_arrival: "Ajoutez les participants par date d'arriver"
+      choose_participant: 'Choisissez les participants'
+      choose_how_add_interviewer: "Choisisez la manière d'ajouter des interviewer"
+      each_participant_assigned_manager: "Chaque participant est relié à son manager"
+      choose_specific_user: "Choissez un utilisateur spécifique"
+      in_case_manager_not_linked: "Dans le case où le participant n'est pas relié a un manager,<br>choisissez un interviewer par defaut"
+      choose_interviewer_desc: "L'interviewer va gerer tout les entretiens des participants"
+      choose_how_display_template: 'Choisissez comment afficher les templates'
+#      select_participant_from_list_title: "Selection de participant"
+      apply_dates: 'Appliquez les dates pour vos campagnes'
+      apply_dates_desc: 'La date de fin est à titre indicatif, les revues peuvent être fait meme si <br> la date de fin est dépassée.'
+      summary: 'Récapitulatif de votre campagne'
+      launch_campaign: 'Lancer la campagne'
