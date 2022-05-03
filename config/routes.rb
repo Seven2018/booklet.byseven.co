@@ -154,6 +154,8 @@ Rails.application.routes.draw do
   # OBJECTIVES
   namespace :objectives do
     resources :elements
+    get :my_objectives, to: 'elements#my_objectives'
+    get :my_team_objectives, to: 'elements#my_team_objectives'
     resources :indicators
     resources :logs
   end

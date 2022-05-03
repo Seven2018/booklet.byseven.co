@@ -18,6 +18,15 @@ module Companies::Applications
       perso: 'My trainings',
       team: 'My team trainings',
       link_team: :my_team_trainings_path
+    },
+    objectives: {
+      name: 'Objectives',
+      link: :my_objectives_path,
+      icon: 'fluent:target-arrow-20-filled',
+      color: 'bkt-objective-blue',
+      perso: 'My objectives',
+      team: 'My team objectives',
+      link_team: :my_team_objectives_path
     }
   }
 
