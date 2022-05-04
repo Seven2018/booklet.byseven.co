@@ -9,23 +9,57 @@
   <% end %>
 </div>
 
-<div class='organisation__users-list' data-fl-scrolls='{"orientation": "horizontal"}' data-controller="employees-list">
+<div class='organisation__users-list'
+     data-fl-scrolls='{"orientation": "horizontal"}'
+     data-controller="employees-list change-page">
 
-  <div class="organisation__searchbar">
+  <div id="searchbar"
+       class="organisation__searchbar"
+       data-controller="remember-search"
+       data-remember-search-key-value="bookletOrganisationSearches">
+
     <i class="fas fa-search organisation__search-trainings-icon"></i>
-    <%= simple_form_for :search, url: organisation_path, method: :get, remote: true do |f| %>
-      <%= f.input :name, placeholder: 'Search', input_html: {autocomplete: 'off', onkeyup: 'resetPage(this);'}, label: false, required: false %>
+
+    <%= simple_form_for :search, url: organisation_path,
+                                 method: :get,
+                                 remote: true do |f| %>
+
+      <%= f.input :name, placeholder: 'Search',
+                         input_html: {
+                           autocomplete: 'off',
+                           data: {
+                             remember_search_target: :search,
+                             action: 'keyup->remember-search#storeSearch'
+                           }
+                         },
+                         label: false,
+                         required: false %>
+
       <%= f.hidden_field :tags %>
-      <%= f.hidden_field :page, value: '1' %>
-      <%= f.submit 'Search', class: 'btn-search', onclick: "document.querySelector('body').classList.add('wait');" %>
+      <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
+
+      <%= f.submit 'Search', class: 'btn-search',
+                             onclick: "document.querySelector('body').classList.add('wait');",
+                             data: {
+                               remember_search_target: :submit,
+                               change_page_target: :submit
+                              } %>
+
       <button type='submit' class="btn-search btn-search--mobile">
         <i class="fas fa-search"></i>
       </button>
+
     <% end %>
-    <button class='btn-reset bkt-blue' onclick='resetAllFilter(this);'>Reset</button>
+
+    <button class='btn-reset bkt-dark-grey'
+            data-action="click->remember-search#resetAllFilter">
+      Reset
+    </button>
 
     <% if UserPolicy.new(current_user, nil).create? %>
+
       <div class="organisation__control-dropdown" data-employees-list-target="usersListOpt">
+
         <div class="dropdown">
           <div class="btn-icon" id="dropdownMenu" data-toggle="dropdown">
             <i class="fas fa-ellipsis-h"></i>
@@ -40,8 +74,11 @@
             <li class='hidden'><a id='organisation-dropdown__import-infos-link' data-toggle='modal' data-target='#importUsersInfos'></a></li>
           </ul>
         </div>
+
       </div>
+
     <% end %>
+
   </div>
 
   <div class='organisation__users'>

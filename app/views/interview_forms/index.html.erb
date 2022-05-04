@@ -16,7 +16,8 @@
 
     </div>
 
-    <div class="bkt-box-shadow p-2rem bkt-bg-white rounded-20px mb-5rem">
+    <div class="bkt-box-shadow p-2rem bkt-bg-white rounded-20px mb-5rem"
+         data-controller="change-page">
 
       <div id="searchbar"
            class="d-flex justify-content-start align-items-center position-relative"
@@ -47,7 +48,6 @@
                 class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
                 style: 'width: 28rem; padding: 0 4rem 0 1rem;',
                 autocomplete: 'off',
-                onkeyup: 'resetPage(this);',
                 data: {
                   remember_search_target: :search,
                   action: 'keyup->remember-search#storeSearch'
@@ -199,21 +199,4 @@
   }
 
   hideOverflowingTags()
-
-  function changePage(direction) {
-    page_value = document.querySelector('#search_page')
-    submit_button = document.querySelector('.btn-search')
-
-    if(direction == 'next') {
-      page_value.value = (parseInt(page_value.value,10) + 1).toString()
-    } else {
-      page_value.value = (parseInt(page_value.value,10) - 1).toString()
-    }
-    submit_button.click()
-  }
-
-  function resetPage(element) {
-    element.closest('form').querySelector('#search_page').value = '1'
-  }
-
 </script>

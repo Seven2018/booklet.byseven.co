@@ -190,15 +190,11 @@
                         <% question.options.keys.each do |option| %>
                           <div class="mcq-flex-box--pdf">
                             <% if option == current_answer %>
-                              <div style="color: #5A91CB">
-                                <%= raw user.company.rating_logo %>
-                              </div>
-                              <p class="rating-filled-text"><%= option %></p>
+                              <div class="select-filled--pdf"></div>
+                              <p class="select-filled-text--pdf"><%= option %></p>
                             <% else %>
-                              <div style="color: grey">
-                                <%= raw user.company.rating_logo %>
-                              </div>
-                              <p class="rating-empty-text"><%= option %></p>
+                              <div class="select-empty--pdf"></div>
+                              <p class="select-empty-text--pdf"><%= option %></p>
                             <% end %>
                           </div>
                         <% end %>

@@ -26,7 +26,7 @@
       <button
         data-toggle='modal'
         data-target='#confirmGoBack'
-        class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500"
+        class="bkt-btn-white-light bkt-blue"
       >
         <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
         <p class=""><%= t('close_submit_later').upcase_first %></p>
@@ -35,7 +35,7 @@
 
     <div class="flex-column">
       <div class="interview-controls__buttons">
-        <%= link_to interview_path(@interview, format: :pdf), class: 'd-flex bkt-blue rounded-5px p-2', id: 'interview-export-pdf', target: :_blank do %>
+        <%= link_to interview_path(@interview, format: :pdf), class: 'height-4rem flex-row-center-centered bkt-blue bkt-bg-light-grey4-hover rounded-5px p-2rem', id: 'interview-export-pdf', target: :_blank do %>
           <span class="iconify" data-icon="bx:bx-download"></span>
           <p><%= t('.download_pdf') %></p>
         <% end %>
