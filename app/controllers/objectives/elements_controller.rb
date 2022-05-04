@@ -6,7 +6,13 @@ class Objectives::ElementsController < ApplicationController
   end
 
   def new
+    @objective = Objective::Element.new
+    authorize @objective
+  end
 
+  def create
+    @objective = Objective::Element.new(objective_params)
+    authorize @objective
   end
 
   def my_objectives
@@ -17,5 +23,11 @@ class Objectives::ElementsController < ApplicationController
   def my_team_objectives
     @objectives = Objective::Element.all
     authorize @objectives
+  end
+
+  private
+
+  def objective_params
+    params.require(:objective_element).permit(:title, :description, :due_date)
   end
 end

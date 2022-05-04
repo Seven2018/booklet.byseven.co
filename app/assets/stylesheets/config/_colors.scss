@@ -88,7 +88,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-light-grey5                    { background-color: $bkt-light-grey5 !important; }
 .bkt-bg-light-grey6                    { background-color: $bkt-light-grey6 !important; }
 .bkt-bg-light-grey8                    { background-color: $bkt-light-grey8 !important; }
-.bkt-bg-light-grey9                    { background-color: $bkt-light-grey9; }
+.bkt-bg-light-grey9                    { background-color: $bkt-light-grey9 !important; }
 .bkt-bg-dark-grey                      { background-color: $bkt-dark-grey !important; }
 .bkt-bg-green                          { background-color: $bkt-green !important; }
 .bkt-bg-transparent-green              { background-color: $bkt-transparent-green !important; }
@@ -127,11 +127,25 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-red-hover              { &:hover { background-color: $bkt-red !important; } }
 .bkt-bg-light-grey2-hover      { &:hover { background-color: $bkt-light-grey2 !important; } }
 
-.bkt-light-grey-placeholder {
+
+/////////////////
+// PLACEHOLDER //
+/////////////////
+
+.bkt-placeholder-light-grey {
   &::placeholder { color: $bkt-light-grey !important; }
   &::-webkit-input-placeholder { color: $bkt-light-grey !important; }
   &::-moz-placeholder { color: $bkt-light-grey !important; }
   &::-ms-placeholder { color: $bkt-light-grey !important; }
+}
+
+.bkt-placeholder-dark-grey {
+  &::placeholder { color: $bkt-dark-grey !important; }
+  &::-webkit-input-placeholder { color: $bkt-dark-grey !important; }
+  &::-moz-placeholder { color: $bkt-dark-grey !important; }
+  &::-ms-placeholder { color: $bkt-dark-grey !important; }
+
+  &::before { color: $bkt-dark-grey !important; }
 }
 
 // .hover-bkt-blue:hover        { color: $bkt-blue !important; }

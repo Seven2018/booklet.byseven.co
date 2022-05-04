@@ -105,7 +105,7 @@
             <div class="pl-3 my-4"><input data-action="keyup->campaign-tag-filter#search" type="text" placeholder="Search" class="rounded-5px pl-2rem"></div>
             <div data-campaign-tag-filter-target="unselectedTagsDom" class="pl-3 py-4 border-top">
               <% @company_tags.each do |tag| %>
-                <div class="flex-row-start-centered bkt-light-grey-placeholder" >
+                <div class="flex-row-start-centered bkt-placeholder-light-grey" >
                   <button class="d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 rounded-2px fs-1_2rem" data-action="click->campaign-tag-filter#toggleTag">
                     <%= tag %>
                   </button>

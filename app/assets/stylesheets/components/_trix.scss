@@ -122,3 +122,12 @@ trix-editor {
     margin: 0;
   }
 }
+
+.trix__hide-toolbar {
+
+  trix-toolbar {
+    height: 0;
+    overflow: hidden;
+    transition: all .25s ease-in-out;
+  }
+}

@@ -1,0 +1,149 @@
+<div class="d-flex justify-content-center">
+
+  <div class="width-50 d-flex flex-column justify-content-start align-items-center my-10rem">
+
+    <h1 class="fs-3rem font-weight-500 bkt-dark-grey mb-5rem">New Objective</h1>
+
+    <div class="width-100">
+      <%= simple_form_for objectives_elements_path, method: :post do |f| %>
+
+        <p class="fs-1_6rem mb-2rem font-weight-500 bkt-dark-grey">Objective Informations</p>
+
+        <%= f.hidden_field :user_ids %>
+
+        <%= f.input :title,
+                    label: false,
+                    placeholder: 'Title',
+                    input_html: {
+                      class: 'height-5rem bkt-bg-light-grey9 mb-2rem border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey'
+                    } %>
+
+        <%= render_component TrixInputComponent.new(
+          name: '_objectives_elements_description',
+          value: '',
+          placeholder: 'Description',
+          klasses: "min-h-10rem bkt-bg-light-grey9 mb-2rem border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-input-focus",
+          hide_toolbar: true
+        ) %>
+
+        <%= f.input :due_date,
+                    as: :string,
+                    html5: true,
+                    label: false,
+                    placeholder: 'Select date',
+                    input_html: {
+                      class: 'bkt-bg-light-grey9 mb-5rem border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey datepicker'
+                    }
+                  %>
+
+        <p class="fs-1_6rem mb-2rem font-weight-500 bkt-dark-grey">Objective Measure</p>
+
+        <div data-controller="objectives--objective-new">
+
+          <div class="d-flex flex-wrap gap-1rem mb-2rem">
+
+            <%= render_component RadioButtonTileComponent.new(
+              model: :indicator,
+              name: :boolean,
+              checked: true,
+              compact: true,
+              title: "True/False",
+              subtitle: "For non quantifiable objectives, you can choose the booleans displayed values.",
+              checked_color: 'objective-blue',
+              data_actions: "click->objectives--objective-new#display_settings",
+              data_attributes: { target: "boolean" }
+            ) do %>
+              <span class="iconify fs-3rem" data-icon="gg:toggle-off"></span>
+            <% end %>
+
+            <%= render_component RadioButtonTileComponent.new(
+              model: :indicator,
+              name: :numeric_value,
+              checked: false,
+              compact: true,
+              title: "Numeric Value",
+              subtitle: "For quantifiable objectives, choose an unit type (currency, persons, apples, etc...), a starting and a target value.",
+              checked_color: 'objective-blue',
+              data_actions: "click->objectives--objective-new#display_settings",
+              data_attributes: { target: "numeric_value" }
+            ) do %>
+              <span class="iconify fs-3rem" data-icon="clarity:hashtag-solid"></span>
+            <% end %>
+
+            <%= render_component RadioButtonTileComponent.new(
+              model: :indicator,
+              name: :percentage,
+              checked: false,
+              compact: true,
+              title: "Percentage",
+              subtitle: "Useful to easily measure a quantifiable objective.",
+              checked_color: 'objective-blue',
+              data_actions: "click->objectives--objective-new#display_settings",
+              data_attributes: { target: "percentage" }
+            ) do %>
+              <span class="iconify fs-3rem" data-icon="fa6-solid:percent"></span>
+            <% end %>
+
+            <%= render_component RadioButtonTileComponent.new(
+              model: :indicator,
+              name: :multi_choice,
+              checked: false,
+              compact: true,
+              title: "Multi-choice",
+              subtitle: "For non quantifiable objectives, you can add and edit choices to rate or qualify your objective.",
+              checked_color: 'objective-blue',
+              data_actions: "click->objectives--objective-new#display_settings",
+              data_attributes: { target: "multi_choice" }
+            ) do %>
+              <span class="iconify fs-3rem" data-icon="fa6-solid:list-ul"></span>
+            <% end %>
+
+          </div>
+
+          <div class=""
+               data-objectives--objective-new-target="displayElement"
+               data-display="boolean">
+
+            <p class="fs-1_6rem bkt-dark-grey mb-1rem">True/False :</p>
+            <p class="fs-1_6rem bkt-light-grey mb-2rem">
+              Define the two status you need to measure the objective completion.<br>
+            </p>
+
+            <div class="d-flex">
+
+              <div class="d-flex align-items-center">
+                <label class="mb-0 mr-1rem">Starting status :</label>
+                <input id=""
+                       class="height-5rem flex-grow bkt-bg-light-grey9 border-transparent-1px fs-1_4rem"
+                       type="text" >
+              </div>
+
+            </div>
+          </div>
+
+          <div class="d-none"
+               data-objectives--objective-new-target="displayElement"
+               data-display="numeric_value">
+            <p>Numeric</p>
+          </div>
+
+          <div class="d-none"
+               data-objectives--objective-new-target="displayElement"
+               data-display="percentage">
+            <p>Percentage</p>
+          </div>
+
+          <div class="d-none"
+               data-objectives--objective-new-target="displayElement"
+               data-display="multi_choice">
+            <p>Multi-choice</p>
+          </div>
+
+        </div>
+
+      <% end %>
+    </div>
+
+  </div>
+
+</div>

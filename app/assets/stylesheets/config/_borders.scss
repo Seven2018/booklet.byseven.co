@@ -25,6 +25,12 @@
 .border-left-bkt-dark-blue    { border-left:   1px solid $bkt-dark-blue !important; }
 .border-bottom-bkt-dark-blue  { border-bottom: 1px solid $bkt-dark-blue !important; }
 
+.border-bkt-objective-blue         { border:        1px solid $bkt-objective-blue !important; }
+.border-top-bkt-objective-blue     { border-top:    1px solid $bkt-objective-blue !important; }
+.border-right-bkt-objective-blue   { border-right:  1px solid $bkt-objective-blue !important; }
+.border-left-bkt-objective-blue    { border-left:   1px solid $bkt-objective-blue !important; }
+.border-bottom-bkt-objective-blue  { border-bottom: 1px solid $bkt-objective-blue !important; }
+
 .border-bkt-light-grey        { border:        1px solid $bkt-light-grey !important; }
 .border-top-bkt-light-grey    { border-top:    1px solid $bkt-light-grey !important; }
 .border-right-bkt-light-grey  { border-right:  1px solid $bkt-light-grey !important; }
@@ -80,3 +86,10 @@
 
 .border-bottom-sm-none { @include from-medium-high { border-bottom: none !important; } }
 .border-bottom-sm-bkt-light-grey { @include from-medium-high { border-bottom: 1px solid $bkt-light-grey !important; } }
+
+
+///////////
+// FOCUS //
+///////////
+
+.bkt-input-focus { &:focus { box-shadow: 0 0 0 0.2rem rgba(22, 127, 251, 0.25); } }

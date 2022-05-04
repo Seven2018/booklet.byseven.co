@@ -1,4 +1,5 @@
-<div data-controller="trix">
+<div class="<%= 'trix__hide-toolbar' if @hide_toolbar %>"
+     data-controller="trix">
   <input
     type="hidden"
     id="<%= @rand_uuid %>"
@@ -12,7 +13,7 @@
     data-trix-target="editor"
     data-direct-upload-url="<%= rails_direct_uploads_url %>"
     data-blob-url-template="<%= rails_service_blob_url(filename: ':filename', signed_id: ':signed_id') %>"
-    class='<%= @klasses %>'
+    class="<%= @klasses %>"
     input="<%= @rand_uuid %>"
     placeholder="<%= @placeholder %>"
   ></trix-editor>
