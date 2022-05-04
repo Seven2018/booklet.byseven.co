@@ -57,7 +57,7 @@
     <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
       <div class="paginate__previous-button paginate__button-blue" onclick='changePage("previous");'>
         <span class="iconify" data-icon="fontisto:angle-left"></span>
-        <p>Previous</p>
+        <p><%= t('previous') %></p>
       </div>
     <% end %>
 
@@ -65,7 +65,7 @@
 
     <% if @templates.count == 10 && @any_more %>
       <div class="paginate__next-button paginate__button-blue" onclick='changePage("next");'>
-        <p>Next</p>
+        <p><%= t('next') %></p>
         <span class="iconify" data-icon="fontisto:angle-right"></span>
       </div>
     <% end %>

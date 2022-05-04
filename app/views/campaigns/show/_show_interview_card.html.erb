@@ -17,20 +17,20 @@
 
         <div class="content-dropdown hidden">
 
-          <%= link_to 'See profile', user_path(employee) %>
-          <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'invite'), remote: true %>
-          <%= link_to 'Send reminder email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'reminder'), remote: true %>
-          <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
+          <%= link_to t('see_profile'), user_path(employee) %>
+          <%= link_to t('send_invitation_email'), send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'invite'), remote: true %>
+          <%= link_to t('campaigns.show.send_reminder_email'), send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'reminder'), remote: true %>
+          <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'><%= t('campaigns.show.edit_interview_deadline') %></a>
 
           <% if CampaignPolicy.new(current_user, @campaign).remove_interview_set? ||
             !interview_set.employee_interview&.submitted? %>
-            <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
+            <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'><%= t('campaigns.show.remove_from_campaign') %></a>
           <% end %>
 
             <% if CampaignPolicy.new(current_user, @campaign).can_unlock? %>
               <% interviews.select{|x| x&.locked_at&.present?}.each do |interview| %>
                 <% unless interviews.count == 3 && interviews.last.locked? && !interview.crossed? %>
-                  <%= link_to "Unlock #{interview.label} interview", unlock_interview_path(interview_id: interview.id, interviewer_id: selected_interviewer&.id), remote: true %>
+                  <%= link_to t('campaigns.show.unlock_interview', type: interview.label), unlock_interview_path(interview_id: interview.id, interviewer_id: selected_interviewer&.id), remote: true %>
                 <% end %>
               <% end %>
             <% end %>
@@ -66,15 +66,15 @@
             <p><%= interview.title %> review <br><em class='campaign-show__card-deadline'><%= "Until #{interview.date}" %></em></p>
             <% if interview.locked? %>
               <p class="campaign-show__card-interview-status--complete">
-                Locked !
+                <%= t('locked').upcase_first %> !
               </p>
             <% elsif interview.submitted? %>
               <p class="campaign-show__card-interview-status--complete">
-                Completed !
+                <%= t('completed').upcase_first %> !
               </p>
             <% else %>
               <p class="campaign-show__card-interview-status--incomplete">
-                Not completed
+                Not <%= t('not_completed').upcase_first %>
               </p>
             <% end %>
           </div>
@@ -84,7 +84,7 @@
         </div>
 
         <div class="campaign-show__card-interviews-info-incomplete mb-2rem">
-          <p>The <%= interview.label %> may update his/her answer at any time.</p>
+          <p><%= t('campaigns.show.update_answer', type: interview.label) %></p>
         </div>
 
       <% else %>
@@ -98,9 +98,9 @@
           (manager_view || crossed_interview&.submitted?) if interview_form.cross %>
         <% interviews = [employee_interview, manager_interview, crossed_interview].compact %>
 
-        <% interview_title = {'Employee' => "Employee's",
-                              'Manager' => "Manager's",
-                              'Crossed' => "Cross"} %>
+        <% interview_title = {'Employee' => "employee_review",
+                              'Manager' => "manager_review",
+                              'Crossed' => "cross_review"} %>
 
         <% interviews.each do |interview| %>
           <% user_is_manager = current_user == interview.interviewer %>
@@ -115,26 +115,26 @@
               <%= link_to '', interview_path(interview), class: 'stretched-link' %>
             <% end %>
             <div>
-              <p><%= interview_title[interview.label] %> review
+              <p><%= t interview_title[interview.label] %>
                 <% if interview.crossed? %>
-                  <em class='campaign-show__card-deadline'><%= "- Until #{interview.date}" %></em>
+                  <em class='campaign-show__card-deadline'><%= "- #{t('until_date')} #{l(interview.date, format: :long)}" %></em>
                 <% end %>
               </p>
               <% if interview.locked? %>
                 <p class="campaign-show__card-interview-status--complete">
-                  Locked !
+                  <%= t('locked').upcase_first %> !
                 </p>
               <% elsif interview.submitted? %>
                 <p class="campaign-show__card-interview-status--complete">
-                  Completed !
+                  <%= t('completed').upcase_first %> !
                 </p>
               <% elsif interview.crossed? && !crossed_availability && manager_view %>
                 <p class="campaign-show__card-interview-status--unavailable">
-                  Not available yet
+                  <%= t('not_available_yet').upcase_first %>
                 </p>
               <% else %>
                 <p class="campaign-show__card-interview-status--incomplete">
-                  Not completed
+                  <%= t('not_completed').upcase_first %>
                 </p>
               <% end %>
             </div>
@@ -148,16 +148,16 @@
         <% if crossed_interview.present? %>
           <% if crossed_interview.locked? %>
             <div class="campaign-show__card-interviews-info-locked mb-1rem">
-              <p>Interview locked</p>
+              <p><%= t('interview').upcase_first %> <%= t('locked') %></p>
               <span class="iconify" data-icon="akar-icons:circle-check-fill"></span>
             </div>
           <% elsif crossed_interview.submitted? %>
             <div class="campaign-show__card-interviews-info-complete mb-1rem">
-              <p>Interview completed !</p>
+              <p><%= t('interview').upcase_first %> <%= t('completed') %> !</p>
             </div>
           <% else %>
             <div class="campaign-show__card-interviews-info-incomplete mb-1rem">
-              <p>Start a cross review when employee and manager’s reviews are done</p>
+              <p><%= t('campaigns.show.start_cross_when_all_done') %></p>
             </div>
           <% end %>
         <% end %>

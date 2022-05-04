@@ -1,9 +1,9 @@
 <% form_title = {
-  'separator' => 'Chapter',
-  'open_question' => 'Open Question',
-  'rating' => 'Rating',
-  'mcq' => 'MCQ',
-  'objective' => 'Objective'
+  'separator' => 'interview_forms.edit.chapter',
+  'open_question' => 'interview_forms.edit.open_question',
+  'rating' => 'interview_forms.edit.rating',
+  'mcq' => 'interview_forms.edit.multi_select',
+  'objective' => 'interview_forms.edit.objective'
 } %>
 
 <% question_icon = {
@@ -21,7 +21,7 @@
     <% unless separator %>
       <i class="<%= question_icon[question_type] %>"></i>
     <% end %>
-    <p><%= form_title[question_type] %></p>
+    <p><%= t form_title[question_type] %></p>
   </div>
   <div class="line-controls-new">
     <a class="line-delete"
@@ -39,15 +39,15 @@
   <%= f.hidden_field :position %>
 
   <%= f.input(:question, {
-    placeholder: 'Title (required)',
+    placeholder: t('title_required').upcase_first,
     input_html: {
       autocomplete: 'off'
     },
     required: true,
-    label: (question_type == 'separator' ? 'Title' : false )
+    label: (question_type == 'separator' ? t('title').upcase_first : false )
   }.compact) %>
 
   <%= button_tag type: 'submit', class: 'btn-blue__white-border' do %>
-    <p>Create</p>
+    <p><%= t('create').upcase_first %></p>
   <% end %>
 <% end %>

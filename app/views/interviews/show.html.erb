@@ -20,7 +20,7 @@
     <% if @interview.locked? %>
       <%= link_to my_interviews_path, class: 'd-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500' do %>
           <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
-          <p class="">Close</p>
+          <p class=""><%= t('close').upcase_first %></p>
       <% end %>
     <% else %>
       <button
@@ -29,7 +29,7 @@
         class="d-inline-flex align-items-center fs-2rem bkt-blue bkt-box-shadow-medium p-3 rounded-5px font-weight-500"
       >
         <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
-        <p class="">Close and submit later</p>
+        <p class=""><%= t('close_submit_later').upcase_first %></p>
       </button>
     <% end %>
 
@@ -37,11 +37,11 @@
       <div class="interview-controls__buttons">
         <%= link_to interview_path(@interview, format: :pdf), class: 'd-flex bkt-blue rounded-5px p-2', id: 'interview-export-pdf', target: :_blank do %>
           <span class="iconify" data-icon="bx:bx-download"></span>
-          <p>Download PDF</p>
+          <p><%= t('.download_pdf') %></p>
         <% end %>
 
         <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
-          <p class="p-2 bkt-green mx-5" id="xhr-form-status-btn">Up to date</p>
+          <p class="p-2 bkt-green mx-5" id="xhr-form-status-btn"><%= t('up_to_date') %></p>
 
           <a href='<%= complete_interview_path(interview_id: @interview.id) if fully_answered %>'
              data-url='<%= complete_interview_path(interview_id: @interview.id) %>'
@@ -57,7 +57,7 @@
                   data-toggle='modal'
                   data-target='#interviewConfirmSubmit'
                   <%= 'disabled' unless fully_answered %>>
-            <p>Submit</p>
+            <p><%= t('submit') %></p>
             <span class="iconify ml-2" data-icon="fluent:send-16-filled" style="color: white;"></span>
           </button>
 
@@ -156,14 +156,14 @@
       <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
         <button class="btn-blue-text" id="save-interview" onclick="saveButton();">
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
-          <p>Save</p>
+          <p><%= t('save') %></p>
         </button>
         <button id="submit-interview"
                 class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
                 data-toggle='modal'
                 data-target='#interviewConfirmSubmit'
                 <%= 'disabled' unless fully_answered %>>
-          <p>Submit</p>
+          <p><%= t('submit') %></p>
           <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
         </button>
       <% end %>

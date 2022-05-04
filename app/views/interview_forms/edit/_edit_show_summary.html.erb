@@ -5,7 +5,7 @@
 
 <div id='template-summary-container' class='width-100'>
   <div  class='mb-2rem'>
-    <h3 class='fs-2_4rem font-weight-500 bkt-light-grey text-center'>Summary</h3>
+    <h3 class='fs-2_4rem font-weight-500 bkt-light-grey text-center'><%= t('summary').upcase_first %></h3>
   </div>
   <% separator_number = 1 %>
   <% template.interview_questions.order(position: :asc).each do |question| %>

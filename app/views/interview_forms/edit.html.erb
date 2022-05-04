@@ -2,10 +2,10 @@
   <%= render_component BackComponent.new(fallback: interview_forms_path) %>
   <h2>1 to 1 template</h2>
   <div class="height-5rem flex-row-between-centered pos-abs" style='top: 2rem; right: 2rem;'>
-    <p id='template-edit__update-status' class='bkt-green mr-2rem'>Up to date</p>
+    <p id='template-edit__update-status' class='bkt-green mr-2rem'><%= t('up_to_date') %></p>
     <%= link_to interview_form_path(@template), class: 'flex-row-between-centered rounded-10px p-2rem', style: 'background: rgba(49, 119, 183, 0.1);' do %>
       <span class="iconify bkt-blue mr-1rem" data-icon="akar-icons:eye"></span>
-      <p class='bkt-blue'>See template preview</p>
+      <p class='bkt-blue'><%= t('see_template_preview') %></p>
     <% end %>
   </div>
 </div>

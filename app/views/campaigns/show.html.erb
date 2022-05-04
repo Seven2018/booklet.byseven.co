@@ -3,10 +3,8 @@
   <div class="campaign-show__header">
     <div class="campaign-show__header-banner">
       <div class="campaign-show__header-banner-text">
-        <h1 class="fs-3rem">Manage the campaign</h1>
-        <p>There are <%= @campaign.employees.distinct.count %> employees in this campaign.<br>
-          You can add or remove employees, change the reviews deadlines, <br>or change the campaign manager.
-        </p>
+        <h1 class="fs-3rem"><%= t('.title') %></h1>
+        <p><%= raw t('.subtitle', employees: @campaign.employees.distinct.count) %></p>
       </div>
       <div class="campaign-show__header-banner-img">
         <%= image_tag('campaigns-show-banner.png') %>

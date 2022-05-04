@@ -4,13 +4,13 @@
       <span class="iconify" data-icon="<%= campaign.icon %>"></span>
     </div>
     <h2><%= campaign.title %></h2>
-    <p class='<%= campaign.completion_status %>'><%= campaign.completion_status_string %></p>
+    <p class='<%= campaign.completion_status %>'><%= t campaign.completion_status %></p>
   </div>
-  <p>Employees</p>
+  <p><%= t('employees').upcase_first %></p>
 </div>
 <div class="campaign-show__header-infos-controls">
   <div class="flex-row-between-centered">
-    <p class='mb-1rem mr-1rem'>Select Interviewer:</p>
+    <p class='mb-1rem mr-1rem'><%= t('select_interviewer') %>:</p>
     <%= simple_form_for :select, url: campaign_path(campaign), method: :get, remote: true do |f| %>
       <%= f.input :interviewer_id,
                   collection: [['All', '']] + campaign.interviewers.distinct.order(lastname: :asc).map{|x| [x.fullname, x.id]},
@@ -32,7 +32,7 @@
   <% if selected_interviewer.present? && CampaignPolicy.new(current_user, @campaign).add_interview_set? %>
     <a class='campaign-show__header-infos-controls-employee' data-toggle='modal' data-target='#addParticipant'>
       <span class="iconify" data-icon="akar-icons:circle-plus"></span>
-      <p>Add an employee</p>
+      <p><%= t('add_employee') %></p>
     </a>
   <% end %>
 </div>

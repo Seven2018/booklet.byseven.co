@@ -1,13 +1,13 @@
 <div id='template-edit__settings-container' class='bkt-bg-white mb-2rem p-2rem rounded-10px'>
   <div class='mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
-    <p>Template settings</p>
+    <p>Template <%= t('settings') %></p>
   </div>
   <%= simple_form_for template, remote: true do |f| %>
     <div class='mb-2rem'>
 
         <div class="flex-row-between-centered mb-1rem">
 
-          <p class='fs-1_4rem font-weight-600 bkt-dark-grey'>Who can answer this form ?</p>
+          <p class='fs-1_4rem font-weight-600 bkt-dark-grey'><%= t('interview_forms.edit.who_can_answer_this_form') %></p>
 
           <div class='booklet-select__template-edit-container pos-rel cursor-pointer' style='width: 110px;'>
             <div class="flex-row-between-centered p-0_75rem bkt-bg-light-blue rounded-5px" onclick="<%= 'BookletSelectExpand(this);' %>">
@@ -34,14 +34,14 @@
 
         </div>
 
-      <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Select the persons who will fill out this form</p>
+      <p class='fs-1_4rem font-weight-500 bkt-light-grey5'><%= t('interview_forms.edit.select_persons_who will_fill_out') %></p>
     </div>
 
     <div>
 
       <div class="flex-row-between-centered mb-1rem">
 
-        <p class='fs-1_4rem font-weight-600 bkt-dark-grey'>Enable cross review ?</p>
+        <p class='fs-1_4rem font-weight-600 bkt-dark-grey'><%= t('interview_forms.edit.enable_cross_question') %></p>
 
         <label id='template-edit__settings-cross-toggle' class="required-question-switch <%= 'switch_checked' if template.cross? && template.answerable_by_both? %> m-0">
           <input type="checkbox"
@@ -55,7 +55,7 @@
 
       </div>
 
-      <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Manager and Employee both agree on the final version of the interview</p>
+      <p class='fs-1_4rem font-weight-500 bkt-light-grey5'><%= t('interview_forms.edit.manager_employee_agree') %></p>
 
     </div>
 

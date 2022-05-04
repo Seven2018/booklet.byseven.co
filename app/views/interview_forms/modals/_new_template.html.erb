@@ -3,7 +3,7 @@
   <div class="modal-header action-modal__header bkt-bg-blue">
 
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title fs-2rem bkt-white">Create a new Template</h3>
+      <h3 class="modal-title fs-2rem bkt-white"><%= t('interview_forms.index.create_new') %></h3>
     </div>
 
   </div>
@@ -12,16 +12,16 @@
 
     <%= simple_form_for InterviewForm.new do |f| %>
 
-      <%= f.input :title, input_html: {autocomplete: 'off'}, required: true %>
+      <%= f.input :title, input_html: {autocomplete: 'off'}, label: t('title'), required: true %>
 
       <div style=" display: flex; justify-content: center;margin-top:3rem;">
 
         <button type="button" class="bkt-btn-white mr-2rem" data-dismiss="modal" aria-label="Close">
-          Cancel
+          <%= t('cancel') %>
         </button>
 
         <%= button_tag type: 'submit', class: 'bkt-btn-blue', id: 'save_button' do %>
-          Save
+          <%= t('save') %>
         <% end %>
 
       </div>
