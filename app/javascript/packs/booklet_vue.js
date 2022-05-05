@@ -40,11 +40,13 @@
 
 
 import Vue from 'vue/dist/vue.esm'
+import vuetify from '../vue/plugins/vuetify'
 import App from '../vue/app.vue'
 import ObjectiveIndex from '../vue/pages/objectives/index.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
+    vuetify,
     el: '#app',
     data: {
       message: "Can you say hello?"

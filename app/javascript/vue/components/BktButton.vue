@@ -16,8 +16,8 @@ export default {
   data() {
     return {
       assets: {
-        blue: "bkt-bg-blue bkt-white rounded-5px p-3 font-weight-600",
-        white: "bkt-bg-white bkt-blue rounded-5px p-3 font-weight-600"
+        blue: "bkt-bg-objective-blue bkt-white rounded-5px p-3 font-weight-600 bkt-bg-light-blue2-hover",
+        white: "bkt-bg-white bkt-objective-blue rounded-5px p-3 font-weight-600 bkt-box-shadow-medium bkt-bg-light-blue2-hover"
       }
     }
   },
