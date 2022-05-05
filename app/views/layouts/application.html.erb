@@ -13,53 +13,57 @@
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_pack_tag 'booklet_vue' %>
+    <%= javascript_pack_tag 'booklet_vue' %>
     <%= stylesheet_pack_tag 'application' %>
     <%= javascript_pack_tag 'application', defer: true %>
   </head>
   <body data-controller="mobile-displayer">
-    <%= render 'shared/impersonations' %>
-    <% if user_signed_in? %>
-
-      <% if @show_navbar_home %>
-        <%= render 'shared/navbar_home' %>
-        <%= render 'shared/navbar_mobile' %>
-      <% elsif @show_navbar_training %>
-        <%= render 'shared/navbar_trainings' %>
-        <%= render 'shared/navbar_mobile' %>
-      <% elsif @show_navbar_campaign %>
-        <%= render 'shared/navbar_campaign' %>
-        <%= render 'shared/navbar_mobile' %>
-      <% elsif @show_navbar_objective %>
-        <%= render 'shared/navbar_objective' %>
-        <%= render 'shared/navbar_mobile' %>
-    <% end %>
-
-    <% end %>
-    <div data-mobile-displayer-target="body">
-      <%= render 'shared/flashes' %>
+    <div id='app'>
+      <%= render 'shared/impersonations' %>
       <% if user_signed_in? %>
-        <% if params[:controller] == 'users' && params[:action] == 'show' %>
-          <%= yield %>
-        <% else %>
-          <div id="booklet-container"
-            class="
-            <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
-            <%=
-              'container-admin-height' if
-                (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
-                (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
-            %>">
-            <%= yield %>
-          </div>
-        <% end %>
-      <% else %>
-        <%= yield %>
+
+        <% if @show_navbar_home %>
+          <%= render 'shared/navbar_home' %>
+          <%= render 'shared/navbar_mobile' %>
+        <% elsif @show_navbar_training %>
+          <%= render 'shared/navbar_trainings' %>
+          <%= render 'shared/navbar_mobile' %>
+        <% elsif @show_navbar_campaign %>
+          <%= render 'shared/navbar_campaign' %>
+          <%= render 'shared/navbar_mobile' %>
+        <% elsif @show_navbar_objective %>
+          <%= render 'shared/navbar_objective' %>
+          <%= render 'shared/navbar_mobile' %>
       <% end %>
+
+      <% end %>
+      <div data-mobile-displayer-target="body">
+        <%= render 'shared/flashes' %>
+        <% if user_signed_in? %>
+          <% if params[:controller] == 'users' && params[:action] == 'show' %>
+            <%= yield %>
+          <% else %>
+            <div id="booklet-container"
+              class="
+              <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
+              <%=
+                'container-admin-height' if
+                  (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
+                  (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
+              %>">
+              <%= yield %>
+            </div>
+          <% end %>
+        <% else %>
+          <%= yield %>
+        <% end %>
+      </div>
+
+      <%= render_component MobileMenuComponent.new(current_user) %>
+
     </div>
-
-    <%= render_component MobileMenuComponent.new(current_user) %>
-
-    <%= javascript_include_tag 'application' %>
   </body>
 
 </html>
