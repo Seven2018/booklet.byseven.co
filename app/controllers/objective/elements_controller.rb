@@ -1,4 +1,4 @@
-class Objectives::ElementsController < ApplicationController
+class Objective::ElementsController < ApplicationController
   before_action :show_navbar_objective
 
   def index
@@ -12,10 +12,21 @@ class Objectives::ElementsController < ApplicationController
 
   def create
     @objective = Objective::Element.new(objective_params)
+    @objective.company = current_user.company
     authorize @objective
+
+    if @objective.save
+      @indicator = Objective::Indicator.create(objective_element: @objective,
+                                            indicator_type: params.dig(:indicator, :indicator_type),
+                                            options: params.dig(:indicator, :options))
+
+      redirect_to objective_elements_path
+    else
+      raise
+    end
   end
 
-  def my_objectives
+  def my_objectivess
     @objectives = Objective::Element.all
     authorize @objectives
   end

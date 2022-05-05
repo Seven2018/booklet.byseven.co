@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return ['displayElement']
+    return ['displayElement', 'multiChoiceContainer', 'multiChoiceTemplate']
   }
 
   connect() {
@@ -50,12 +50,49 @@ export default class extends Controller {
     const target_displays = this.displayElementTargets
 
     target_displays.forEach((display) => {
+
       if (display.dataset.display == checkbox.dataset.target) {
+
         display.classList.remove('d-none')
+        display.querySelectorAll('input').forEach((input) => {
+          input.disabled = false
+        })
+
       } else {
+
         display.classList.add('d-none')
+        display.querySelectorAll('input').forEach((input) => {
+          input.disabled = true
+        })
+
       }
+
     })
+  }
+
+
+  //////////////////////////
+  // MULTI-CHOICE OPTIONS //
+  //////////////////////////
+
+  addOption() {
+    const template = this.multiChoiceTemplateTarget
+    const newDiv = document.createElement("div")
+    const container = this.multiChoiceContainerTarget
+
+    newDiv.classList = template.classList
+    newDiv.innerHTML = template.innerHTML
+
+    const new_input = newDiv.querySelector('input')
+    new_input.name = "indicator[options][choice_" + (container.querySelectorAll('input').length + 1).toString() + "]"
+
+    container.appendChild(newDiv)
+  }
+
+  removeOption(e) {
+    const option = e.currentTarget.parentNode
+
+    option.remove()
   }
 
 }

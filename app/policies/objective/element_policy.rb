@@ -1,6 +1,6 @@
 class Objective::ElementPolicy < ApplicationPolicy
 
-  def my_objectives?
+  def my_objectivess?
     true
   end
 

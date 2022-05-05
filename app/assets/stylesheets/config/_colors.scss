@@ -118,6 +118,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-light-grey5-hover      { &:hover { background-color: $bkt-light-grey5 !important; } }
 .bkt-bg-light-grey6-hover      { &:hover { background-color: $bkt-light-grey6 !important; } }
 .bkt-bg-light-grey8-hover      { &:hover { background-color: $bkt-light-grey8 !important; } }
+.bkt-bg-light-grey9-hover      { &:hover { background-color: $bkt-light-grey9 !important; } }
 .bkt-bg-dark-grey-hover        { &:hover { background-color: $bkt-dark-grey !important; } }
 .bkt-bg-green-hover            { &:hover { background-color: $bkt-green !important; } }
 .bkt-bg-yellow-hover           { &:hover { background-color: $bkt-yellow !important; } }
@@ -146,6 +147,15 @@ $bkt-light-red: #ec6d6d40;
   &::-ms-placeholder { color: $bkt-dark-grey !important; }
 
   &::before { color: $bkt-dark-grey !important; }
+}
+
+.bkt-placeholder-fs-1_4rem {
+  &::placeholder { font-size: 1.4rem !important; font-weight: 500 !important; }
+  &::-webkit-input-placeholder { font-size: 1.4rem !important; font-weight: 500 !important; }
+  &::-moz-placeholder { font-size: 1.4rem !important; font-weight: 500 !important; }
+  &::-ms-placeholder { font-size: 1.4rem !important; font-weight: 500 !important; }
+
+  &::before { font-size: 1.4rem !important; font-weight: 500 !important; }
 }
 
 // .hover-bkt-blue:hover        { color: $bkt-blue !important; }
