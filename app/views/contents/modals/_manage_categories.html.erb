@@ -7,14 +7,14 @@
   <div class="modal-body" id="modalNewBookinBody">
     <div class="categories-form">
       <% checked = content.categories.ids %>
-      <% if !Category.where(company_id: current_user.company_id).present? %>
+      <% if !Category.where(company_id: current_user.company_id, kind: :training).present? %>
         <p style='margin-bottom: 50px !important;'>No themes have been created. Categorize your trainings by adding specific themes. It will allow to filter and find trainings more easily.</p>
       <% end %>
 
       <%= simple_form_for :add_categories, url: content_link_category_path, method: :get, remote: true do |f| %>
 
         <div class="categories-form-checkboxes">
-          <%= collection_check_boxes(:content, :categories, Category.where(company_id: current_user.company_id).order(title: :asc), :id, :title, checked: checked) do |b| %>
+          <%= collection_check_boxes(:content, :categories, Category.where(company_id: current_user.company_id, kind: :training).order(title: :asc), :id, :title, checked: checked) do |b| %>
 
             <div class="flex-row-between-centered mb-1rem">
               <%= b.check_box(onclick: 'submitForm(this);') %>

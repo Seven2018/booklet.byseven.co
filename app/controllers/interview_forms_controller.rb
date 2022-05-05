@@ -6,8 +6,20 @@ class InterviewFormsController < ApplicationController
   def index
     @templates = policy_scope(InterviewForm)
     @templates = @templates.unused.where(company: current_user.company)
+    @company_tags = Category
+                      .distinct
+                      .where(company_id: current_user.company_id, kind: :interview)
+                      .pluck(:title)
+
     if params[:search].present? && !params[:search][:title].blank?
       @templates = @templates.search_templates(params[:search][:title])
+      @filtered = 'true'
+    elsif params.dig(:search, :tags).present?
+      selected_tags = params.dig(:search, :tags).split(',')
+
+      @templates = @templates.distinct.joins(:categories).where(categories: {title: selected_tags})
+                            .select { |template| (selected_tags & template.categories.pluck(:title)) == selected_tags }
+      @templates = InterviewForm.get_activerecord_relation(@templates)
       @filtered = 'true'
     else
       @filtered = 'false'
@@ -39,7 +51,7 @@ class InterviewFormsController < ApplicationController
     authorize @template
     @tags = @template.categories.pluck(:title)
     @company_tags = Category
-                      .where(company_id: current_user.company_id)
+                      .where(company_id: current_user.company_id, kind: :interview)
                       .where.not(title: @tags)
                       .pluck(:title)
   end
@@ -101,10 +113,10 @@ class InterviewFormsController < ApplicationController
   def toggle_tag
     authorize @template
     tag = params.require(:tag)
-    category = Category.find_by(company_id: current_user.company_id, title: tag)
+    category = Category.find_by(company_id: current_user.company_id, title: tag, kind: :interview)
 
     if category.nil?
-      new_category = Category.create(company_id: current_user.company_id, title: tag)
+      new_category = Category.create(company_id: current_user.company_id, title: tag, kind: :interview)
       @template.categories << new_category
     else
       if @template.categories.exists?(category.id)
@@ -120,7 +132,7 @@ class InterviewFormsController < ApplicationController
     authorize @template
     tag = params.require(:tag)
 
-    Category.where(company_id: current_user.company_id, title: tag).destroy_all
+    Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
     head :ok
   end
 

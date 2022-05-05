@@ -73,5 +73,6 @@ export default class extends Controller {
     searchbar.querySelector('.btn-search').click()
     document.querySelector('body').classList.add('wait')
     window.localStorage.setItem(this.keyValue, '')
+    location.reload()
   }
 }

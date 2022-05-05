@@ -7,7 +7,7 @@ class CampaignsController < ApplicationController
   def index
     @company_tags = Category
                       .distinct
-                      .where(company_id: current_user.company_id)
+                      .where(company_id: current_user.company_id, kind: :interview)
                       .pluck(:title)
     campaigns = policy_scope(Campaign).where(company: current_user.company)
                                       .where_exists(:interviews)
