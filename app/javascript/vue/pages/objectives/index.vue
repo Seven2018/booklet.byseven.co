@@ -10,22 +10,15 @@
         </bkt-button>
       </div>
     </div>
-<!--    <v-chip-->
-<!--        close-->
-<!--        close-icon="mdi-close-outline"-->
-<!--        color="red"-->
-<!--    ></v-chip>-->
   </div>
 </template>
 
 <script>
 import BktButton from '../../components/BktButton.vue'
-// import { VChip } from 'vuetify/lib'
 
 export default {
   components: {
     BktButton,
-    // VChip
   }
 }
 </script>
