@@ -23,7 +23,7 @@ class PagesController < ApplicationController
     complete_profile
 
     @contents = policy_scope(Content).where(company_id: current_user.company_id).order(title: :asc)
-    @categories = Category.where(company_id: current_user.company_id).order(title: :asc)
+    @categories = Category.where(company_id: current_user.company_id, kind: :training).order(title: :asc)
 
     @contents = @contents.search(params.dig(:search, :title)) if params.dig(:search, :title).present?
     @contents = @contents.where(content_type: params.dig(:search, :content_type)) if params.dig(:search, :content_type).present?

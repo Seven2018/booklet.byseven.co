@@ -2,7 +2,7 @@ import {Controller} from "@hotwired/stimulus";
 
 export default class extends Controller {
   static get targets() {
-    return ['selectedTagsDom', 'unselectedTagsDom', 'tagList']
+    return ['selectedTagsDom', 'unselectedTagsDom', 'tagList', 'filterCount']
   }
 
   connect() {
@@ -46,6 +46,14 @@ export default class extends Controller {
         this.companyTags.push(value)
       })
     }
+    this.updateFilterTag()
+  }
+
+  updateFilterTag() {
+    if (this.selectedTags.length == 0) this.filterCountTarget.classList.add('hidden')
+    else this.filterCountTarget.classList.remove('hidden')
+
+    this.filterCountTarget.innerText = this.selectedTags.length
   }
 
   search(e) {
