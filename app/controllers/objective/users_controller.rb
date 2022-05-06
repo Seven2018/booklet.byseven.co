@@ -11,8 +11,6 @@ class Objective::UsersController < CampaignDraft::BaseController
   def users
     company_users = current_user.company.users.order(lastname: :asc)
 
-    # binding.pry
-
     if current_user.access_level_int.to_sym == :manager
       manager_users = company_users.where(manager_id: current_user.id)
       params[:search].blank? ? manager_users : manager_users.search_users(params[:search])

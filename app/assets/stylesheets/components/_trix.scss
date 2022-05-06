@@ -48,6 +48,9 @@
 // }
 
 trix-editor {
+  span {
+    font-size: 1.4rem;
+  }
 
   ul {
     list-style: disc;
@@ -99,7 +102,7 @@ trix-editor {
   margin: 1rem 0 5rem 0;
   font-size: 1.6rem;
 
-  div, p, strong {
+  div, p, span, strong {
     font-size: 1.6rem;
   }
 
@@ -123,6 +126,11 @@ trix-editor {
   }
 }
 
+
+////////////////////
+// CUSTOM TOOLBAR //
+////////////////////
+
 .trix__hide-toolbar {
 
   trix-toolbar {
@@ -130,4 +138,75 @@ trix-editor {
     overflow: hidden;
     transition: all .25s ease-in-out;
   }
+}
+
+.trix__toolbar-within {
+  position: relative;
+
+  trix-toolbar {
+    padding: 1px 1px 0 1px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: .5;
+    transition: all .25s ease-in-out;
+
+    .trix-button {
+      border: none !important;
+    }
+
+    .trix-button-group {
+      margin: 0 !important;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      border: none;
+      border-radius: 0;
+
+      &:first-of-type {
+        padding-left: 0;
+        border-right: 1px solid $bkt-light-grey;
+      }
+
+      &:last-of-type {
+        padding-right: 0;
+      }
+    }
+
+    .trix-button {
+      width: 3rem;
+      padding: 0 !important;
+      margin: 0 0.25em;
+
+      &:first-of-type { margin-left: 0; }
+      &:last-of-type { margin-right: 0; }
+    }
+
+    button.underline {
+      font-size: 18px;
+      vertical-align: bottom;
+      text-decoration: underline;
+    }
+
+    .trix-active {
+      background: $bkt-light-grey !important;
+    }
+  }
+
+  trix-editor {
+    padding-top: 4.5rem !important;
+  }
+}
+
+
+///////////////////////
+// BUTTON MANAGEMENT //
+///////////////////////
+
+.trix-button--icon-quote, .trix-button--icon-code {
+  display: none;
+}
+
+.trix-button-group:nth-of-type(3) {
+  display: none;
 }

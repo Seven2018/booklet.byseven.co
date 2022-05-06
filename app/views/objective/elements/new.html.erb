@@ -44,8 +44,9 @@
           value: '',
           placeholder: 'Description',
           klasses: "min-h-10rem bkt-bg-light-grey9 mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus",
-          hide_toolbar: true,
-          ignore_stimulus_controller: true
+          hide_toolbar: false,
+          toolbar_within: true,
+          auto_update: false
         ) %>
 
         <%= f.input :due_date,

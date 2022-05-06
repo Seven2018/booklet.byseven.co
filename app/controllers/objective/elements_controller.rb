@@ -11,22 +11,20 @@ class Objective::ElementsController < ApplicationController
   end
 
   def create
-    # raise
     user_ids = params.dig(:selected_users_ids).split(',')
 
     user_ids.each do |user_id|
 
       user = User.find(user_id)
 
-      objective = user.objective_elements.new(objective_params)
-      # objective = Objective::Element.new(objective_params)
+      objective = Objective::Element.new(objective_params.merge(objectivable: user))
       objective.company = user.company
       authorize objective
 
       if objective.save
         indicator = Objective::Indicator.create(objective_element: objective,
-                                              indicator_type: params.dig(:indicator, :indicator_type),
-                                              options: params.dig(:indicator, :options))
+                                                indicator_type: params.dig(:indicator, :indicator_type),
+                                                options: params.dig(:indicator, :options))
       end
 
     end
