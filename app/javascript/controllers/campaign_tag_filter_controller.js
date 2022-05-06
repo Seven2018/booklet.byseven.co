@@ -26,30 +26,26 @@ export default class extends Controller {
 
     if (this.companyTags.includes(value)) {
       this.selectedTags.push(value)
-      this.request(this.selectedTags, async response => {
-        eval(await response.text())
-        const checkEmpty = this.selectedTagsDomTarget.innerText.trim()
+      const checkEmpty = this.selectedTagsDomTarget.innerText.trim()
 
-        if (checkEmpty === 'Empty') this.selectedTagsDomTarget.innerHTML = ''
-        this.selectedTagsDomTarget.append(e.target)
-        this.companyTags = this.companyTags.filter(item => !(item === value))
-      })
+      if (checkEmpty === 'Empty') this.selectedTagsDomTarget.innerHTML = ''
+      this.selectedTagsDomTarget.append(e.target)
+      this.companyTags = this.companyTags.filter(item => !(item === value))
     } else {
       this.selectedTags = this.selectedTags.filter(item => !(item === value))
-      this.request(this.selectedTags, async response => {
-        eval(await response.text())
-        const div = document.createElement('div')
-        div.className = 'flex-row-start-centered bkt-light-grey-placeholder'
+      const div = document.createElement('div')
+      div.className = 'flex-row-start-centered bkt-light-grey-placeholder'
 
-        div.append(e.target)
-        this.unselectedTagsDomTarget.append(div)
-        this.companyTags.push(value)
-      })
+      div.append(e.target)
+      this.unselectedTagsDomTarget.append(div)
+      this.companyTags.push(value)
     }
-    this.updateFilterTag()
+    this.updateFilterTagCount()
+    document.querySelector('input[data-filter="tags"]').value = this.selectedTags.join(',')
+    document.querySelector('input[data-search-form="submit"]').click()
   }
 
-  updateFilterTag() {
+  updateFilterTagCount() {
     if (this.selectedTags.length == 0) this.filterCountTarget.classList.add('hidden')
     else this.filterCountTarget.classList.remove('hidden')
 

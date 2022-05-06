@@ -20,6 +20,7 @@
     </div>
 
     <div class="campaigns-index__main"
+         id="stimulus-change-page-controller"
          data-controller="change-page">
 
       <div id="searchbar"
@@ -58,7 +59,7 @@
                                  }
                                } %>
 
-          <%= f.hidden_field :tags %>
+          <%= f.hidden_field :tags, data: {filter: :tags} %>
           <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
 
           <%=
@@ -68,7 +69,8 @@
               onclick: "document.querySelector('body').classList.add('wait');",
               data: {
                 remember_search_target: :submit,
-                change_page_target: :submit
+                change_page_target: :submit,
+                search_form: :submit
               }
             )
           %>
