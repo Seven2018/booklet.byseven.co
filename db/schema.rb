@@ -428,7 +428,7 @@ ActiveRecord::Schema.define(version: 2022_05_05_125102) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}, null: false
+    t.jsonb "data", default: {}
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"

@@ -6,6 +6,18 @@ export default class extends Controller {
   }
 
   connect() {
+    this.element[
+      (str => {
+        return str
+          .split('--')
+          .slice(-1)[0]
+          .split(/[-_]/)
+          .map(w => w.replace(/./, m => m.toUpperCase()))
+          .join('')
+          .replace(/^\w/, c => c.toLowerCase())
+      })(this.identifier)
+      ] = this
+
     setTimeout(this._setPaginationLinks, 1000)
   }
 

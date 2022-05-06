@@ -150,18 +150,13 @@ class CampaignsController < ApplicationController
                      .tag_matches(selected_tags)
                      .select { |campaign| (selected_tags & campaign.tags) == selected_tags }
       @campaigns = Campaign.get_activerecord_relation(@campaigns) # to cast Array to ActiveRecord Relation
-      @filtered_by_tags = 'true'
     end
 
     if search_title.present?
       interview_forms = InterviewForm.where(company_id: current_user.company_id).search_templates(search_title)
-      campaigns_by_form = @campaigns.where(interview_form: interview_forms)
+      campaigns_by_form = @campaigns.where_exists(:interviews, interview_form: interview_forms)
       campaigns = @campaigns.search_campaigns(search_title)
       @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
-      @filtered = true
-    else
-      @filtered_by_tags = 'false'
-      @filtered = false
     end
 
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1

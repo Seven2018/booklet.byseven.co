@@ -13,16 +13,17 @@ class InterviewFormsController < ApplicationController
 
     if params[:search].present? && !params[:search][:title].blank?
       @templates = @templates.search_templates(params[:search][:title])
-      @filtered = 'true'
-    elsif params.dig(:search, :tags).present?
+    end
+
+    if params.dig(:search, :tags).present?
       selected_tags = params.dig(:search, :tags).split(',')
 
-      @templates = @templates.distinct.joins(:categories).where(categories: {title: selected_tags})
-                            .select { |template| (selected_tags & template.categories.pluck(:title)) == selected_tags }
+      @templates = @templates
+                             .joins(:categories)
+                             .where(categories: { title: selected_tags })
+                             .uniq
+                             .select { |template| (selected_tags & template.categories.pluck(:title)) == selected_tags }
       @templates = InterviewForm.get_activerecord_relation(@templates)
-      @filtered = 'true'
-    else
-      @filtered = 'false'
     end
 
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
