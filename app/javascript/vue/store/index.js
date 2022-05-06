@@ -1,16 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import searchModule from "./search.module";
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  state: {
-    search: ''
-  },
-  mutations: {
-    setSearch(state, value) {
-      state.search = value
-    }
+  // strict: true,
+  modules: {
+    search: searchModule
   }
 })
 
