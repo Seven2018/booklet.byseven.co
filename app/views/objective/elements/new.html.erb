@@ -1,4 +1,5 @@
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center"
+     data-controller="objectives--objective-new">
 
   <div class="width-50 d-flex flex-column justify-content-start align-items-center my-10rem">
 
@@ -12,18 +13,23 @@
 
         <a data-toggle='modal' data-target='#objectiveUsers'>
 
-          <div class="d-flex align-items-center height-5rem max-h-10rem bkt-bg-white mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey rounded-3px bkt-droplight-shadow">
+          <div class="d-flex align-items-start min-h-5rem max-h-10rem bkt-bg-white mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey rounded-3px bkt-droplight-shadow">
 
-            <p class="fs-1_4rem font-weight-500">Employee(s) :</p>
-            <div class="d-flex flex-wrap overflow-y-scroll"></div>
+            <div class="d-flex align-items-center height-3rem">
+              <p class="fs-1_4rem font-weight-500 min-w-10rem pb-0_2rem">Employee(s) :</p>
+            </div>
+            <div class="d-flex flex-wrap max-h-6rem overflow-y-scroll px-1rem"
+                 data-objectives--objective-new-target="selectedUsersPillStorage"></div>
 
           </div>
 
         </a>
 
-        <input id="user_ids"
+        <input name="selected_user_ids"
                class="d-none"
-               type="text" >
+               data-objectives--objective-new-target="selectedUsers"
+               type="text"
+               value="">
 
         <%= f.input :title,
                     label: false,
@@ -38,7 +44,8 @@
           value: '',
           placeholder: 'Description',
           klasses: "min-h-10rem bkt-bg-light-grey9 mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus",
-          hide_toolbar: true
+          hide_toolbar: true,
+          ignore_stimulus_controller: true
         ) %>
 
         <%= f.input :due_date,
@@ -53,8 +60,7 @@
 
         <p class="fs-1_6rem mb-2rem font-weight-500 bkt-dark-grey">Objective Measure</p>
 
-        <div class="mb-5rem"
-             data-controller="objectives--objective-new">
+        <div class="mb-5rem">
 
           <div class="d-flex flex-wrap gap-1rem mb-2rem">
 
@@ -280,17 +286,20 @@
 
   </div>
 
-</div>
+  <!------------>
+  <!-- MODALS -->
+  <!------------>
 
+  <div class='modal action-modal fade' id='objectiveUsers' tabindex='-1' role='dialog' data-keyboard="false" data-backdrop="static">
 
-<!------------>
-<!-- MODALS -->
-<!------------>
+    <div class='modal-dialog modal-lg' role='document'>
+      <%= render 'objective/elements/modals/new_objective_users' %>
+    </div>
 
-<div class='modal action-modal fade' id='objectiveUsers' tabindex='-1' role='dialog' data-keyboard="false" data-backdrop="static">
-
-  <div class='modal-dialog modal-lg' role='document'>
-    <%= render 'objective/elements/modals/new_objective_users' %>
   </div>
 
+  <!------------>
+
 </div>
+
+

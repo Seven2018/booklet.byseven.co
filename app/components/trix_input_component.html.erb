@@ -1,16 +1,16 @@
 <div class="<%= 'trix__hide-toolbar' if @hide_toolbar %>"
-     data-controller="trix">
+     data-controller="<%= 'trix' unless @ignore_stimulus_controller %>">
   <input
     type="hidden"
     id="<%= @rand_uuid %>"
     value="<%= @value %>"
-    data-trix-target="input"
-    data-untouched-value="<%= @value %>"
+    data-trix-target="<%= 'input' unless @ignore_stimulus_controller %>"
+    data-untouched-value="<%= @value unless @ignore_stimulus_controller %>"
     name="<%= @name %>"
   >
   <trix-editor
-    data-action="window@trix-initialize->trix#setup keyup->trix#update"
-    data-trix-target="editor"
+    data-action="<%= 'window@trix-initialize->trix#setup keyup->trix#update' unless @ignore_stimulus_controller %>"
+    data-trix-target="<%= 'editor' unless @ignore_stimulus_controller %>"
     data-direct-upload-url="<%= rails_direct_uploads_url %>"
     data-blob-url-template="<%= rails_service_blob_url(filename: ':filename', signed_id: ':signed_id') %>"
     class="<%= @klasses %>"

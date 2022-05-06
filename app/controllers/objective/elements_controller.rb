@@ -11,6 +11,7 @@ class Objective::ElementsController < ApplicationController
   end
 
   def create
+    raise
     @objective = Objective::Element.new(objective_params)
     @objective.company = current_user.company
     authorize @objective

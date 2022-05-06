@@ -2,7 +2,15 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return ['displayElement', 'multiChoiceContainer', 'multiChoiceTemplate']
+    return ['displayElement', 'multiChoiceContainer', 'multiChoiceTemplate',
+            'selectedUsers', 'selectedUsersPillStorage', 'selectedUsersPillStorageModal',
+            'filteredCount', 'selectFiltered' ,'results']
+  }
+
+  static get values () {
+    return {
+      path: {type: String, default: '/objective/users'}
+    }
   }
 
   connect() {
@@ -95,4 +103,125 @@ export default class extends Controller {
     option.remove()
   }
 
+
+  //////////////////
+  // MANAGE USERS //
+  //////////////////
+
+  get _selected_ids() {
+    return this.selectedUsersTarget.value.split(',').filter(str => str.length > 0)
+  }
+
+  _update_storage(array) {
+    this.selectedUsersTarget.value = array.join(',')
+  }
+
+  refreshFilteredCount() {
+    this.filteredCountTarget.innerText = `(${this.resultsTarget.childElementCount})`
+  }
+
+  unselectAll() {
+    const buttons = this.selectedUsersPillStorageModalTarget.querySelectorAll('[data-type="pill"]')
+
+    buttons.forEach((button) => {
+      button.click()
+    })
+
+    this.selectFilteredTarget.checked && this.selectFilteredTarget.click()
+  }
+
+  selectAll() {
+    this._persist('all', true)
+  }
+
+  selectFiltered(e) {
+    const checkboxes = this.resultsTarget.querySelectorAll('input[type="checkbox"][data-id]')
+
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked != e.currentTarget.checked) {
+        checkbox.click()
+      }
+    })
+  }
+
+  storeUser(e) {
+    var element = e.currentTarget
+    const id = element.dataset.id
+
+    if (element.dataset.type == 'pill') {
+      element = document.querySelector(`input[data-id='${id}']`)
+      element.click()
+    }
+    element.checked ? this._add(id, element) : this._remove(id, element)
+  }
+
+  _add(id, element) {
+    const array = this._selected_ids
+    array.push(id)
+    this._update_storage(array)
+
+    const newDivModal = document.createElement('div')
+    const newDiv = document.createElement('div')
+    const div_class_list = 'd-flex justify-content-between align-items-center height-2rem p-0_1rem m-0_5rem rounded-10px border-bkt-light-grey5 overflow-hidden'
+
+    newDivModal.classList = div_class_list
+    newDivModal.dataset.pill_id = id
+
+    newDiv.classList = div_class_list
+    newDiv.dataset.pill_id = id
+
+    this.selectedUsersPillStorageModalTarget.appendChild(newDivModal)
+    this.selectedUsersPillStorageTarget.appendChild(newDiv)
+
+    const user_card = element.parentNode.parentNode
+    const target_picture = user_card.querySelector('img')
+    const target_name = element.dataset.name
+    const pill_avatar = target_picture.cloneNode()
+    const pill_name = document.createElement('p')
+    const pill_button = document.createElement('p')
+    pill_button.dataset.id = id
+
+    pill_avatar.classList = 'avatar-xs'
+    pill_name.classList = 'fs-1_2rem font-weight-500 px-0_75rem'
+    pill_name.innerText = target_name
+    pill_button.classList = 'fs-2_4rem bkt-light-grey cursor-pointer'
+    pill_button.dataset.action = 'click->objectives--objective-new#storeUser'
+    pill_button.dataset.type = 'pill'
+    pill_button.innerHTML = '&times;'
+
+    newDivModal.appendChild(pill_avatar)
+    newDivModal.appendChild(pill_name)
+    newDivModal.appendChild(pill_button)
+
+    newDiv.appendChild(pill_avatar.cloneNode())
+    newDiv.appendChild(pill_name.cloneNode(true))
+  }
+
+  _remove(id, element) {
+    const array = this._selected_ids
+    const index = array.indexOf(id);
+    if (index > -1) { array.splice(index, 1); }
+    this._update_storage(array)
+
+    document.querySelectorAll(`[data-pill_id='${id}']`).forEach((pill) => {
+      pill.remove()
+    })
+  }
+
+  // _persist(ids_string, refresh = false) {
+  //   fetch(this.pathValue, {
+  //     method: "GET",
+  //     headers: {
+  //       "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({ [this.inputIdsName]: ids_string })
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     if(refresh) { this._refreshForm() }
+  //     this.arrayTarget.value = data[`${this.inputIdsName}_str`]
+  //     this._refreshSelectedCount(data[`${this.inputIdsName}_count`])
+  //   })
+  // }
 }

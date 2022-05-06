@@ -10,22 +10,23 @@
 
   </div>
 
-  <div class="modal-body action-modal__body min-w-65rem">
+  <div class="modal-body action-modal__body width-65rem max-w-95vw">
 
     <div class="d-flex align-items-center px-4rem mb-3rem">
 
-      <p class="fs-1_4rem font-weight-500 mr-2rem">Employee(s) :</p>
+      <p class="fs-1_4rem font-weight-500 min-w-10rem mr-2rem">Employee(s) :</p>
 
-      <div class="d-flex flex-wrap flex-grow-1 height-5rem max-h-10rem border-bkt-light-grey5 rounded-3px overflow-y-scroll"></div>
+      <div class="d-flex align-items-center flex-wrap flex-grow-1 height-7rem max-h-7rem p-0_5rem border-bkt-light-grey5 rounded-3px overflow-y-scroll"
+           data-objectives--objective-new-target="selectedUsersPillStorageModal"></div>
 
     </div>
 
     <div class="px-4rem"
-         data-controller='participant-ids search-inject'
-         data-participant-ids-path-value='<%= campaign_draft_interviewees_ids_path %>'
+         data-controller='search-inject'
          data-action='
           refreshParticipantIdsSearch@window->search-inject#debouncedSearch
-          refreshParticipantIdsFilteredCount@window->participant-ids#refreshFilteredCount'>
+          refreshParticipantIdsFilteredCount@window->objectives--objective-new#refreshFilteredCount'>
+
 
       <div class="pos-rel">
         <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
@@ -37,7 +38,7 @@
             data: {
               search_inject_target: 'search',
               action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
-              path: campaign_draft_interviewees_users_path
+              path: objective_users_path
             },
             class: 'height-4rem width-100 pl-3rem mb-2rem rounded-3px border-none border-bottom-bkt-light-grey5-0_5px',
             autocomplete: 'off',
@@ -47,68 +48,70 @@
         %>
       </div>
 
-      <input id="selected-users-ids"
-             class="d-none"
-             type="text"
-             data-participant-ids-target="array">
-
       <div class="flex-row-between-centered mb-1rem">
 
         <div class="d-flex">
           <p class="fs-1_4rem font-weight-500 mr-0_5rem">Selected :</p>
           <p class="fs-1_4rem font-weight-500"
-             data-participant-ids-target="selectedCount">
+             data-objectives--objective-new-target="selectedCount">
             0
           </p>
         </div>
 
         <div class="flex-row-between-centered">
           <div class='fs-1_2rem bkt-blue cursor-pointer'
-            data-action="click->participant-ids#unselectAll"
+            data-action="click->objectives--objective-new#unselectAll"
           >Unselect all</div>
 
           <div class="mx-2">|</div>
 
           <div class='fs-1_2rem bkt-blue cursor-pointer'
-            data-action="click->participant-ids#selectAll"
+            data-action="click->objectives--objective-new#selectAll"
           >Select all</div>
 
           <div class="mx-2">|</div>
 
           <div class="cursor-pointer d-flex align-items-center">
+
             <div class='fs-1_2rem bkt-blue'>
               Select Filtered
-              <span class='fs-1_2rem' data-participant-ids-target='filteredCount'></span>
+              <span class='fs-1_2rem' data-objectives--objective-new-target='filteredCount'></span>
             </div>
+
             <div class="mx-2"></div>
+
             <label
               class='flex-row-center-centered rounded-3px mb-0 border-bkt-light-grey5-0_5px'
               style='height: 2.4rem; width: 2.4rem;'
-              data-controller='toggle-checked-participants'
-            >
+              data-controller='toggle-checked-participants'>
+
               <%= check_box_tag(
                 "_",
                 nil,
                 false,
                 class: "hidden",
                 data: {
-                  action: "change->toggle-checked-participants#toggle change->participant-ids#selectFiltered",
-                  toggle_checked_participants_target: "togglable"
+                  action: "change->objectives--objective-new#selectFiltered change->toggle-checked-participants#toggle",
+                  toggle_checked_participants_target: "togglable",
+                  objectives__objective_new_target: "selectFiltered"
                 }
               ) %>
+
               <span
                 class="iconify fs-1_8rem bkt-blue hidden"
                 data-toggle-checked-participants-target="icon"
                 data-icon="bi:check">
               </span>
+
             </label>
+
           </div>
         </div>
       </div>
 
       <div class='border-bkt-light-grey mb-2rem overflow-y-scroll' style='height: 400px;'
         data-search-inject-target="results"
-        data-participant-ids-target="results"
+        data-objectives--objective-new-target="results"
       ></div>
     </div>
 
