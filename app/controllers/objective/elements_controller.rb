@@ -11,20 +11,27 @@ class Objective::ElementsController < ApplicationController
   end
 
   def create
-    raise
-    @objective = Objective::Element.new(objective_params)
-    @objective.company = current_user.company
-    authorize @objective
+    # raise
+    user_ids = params.dig(:selected_users_ids).split(',')
 
-    if @objective.save
-      @indicator = Objective::Indicator.create(objective_element: @objective,
-                                            indicator_type: params.dig(:indicator, :indicator_type),
-                                            options: params.dig(:indicator, :options))
+    user_ids.each do |user_id|
 
-      redirect_to objective_elements_path
-    else
-      raise
+      user = User.find(user_id)
+
+      objective = user.objective_elements.new(objective_params)
+      # objective = Objective::Element.new(objective_params)
+      objective.company = user.company
+      authorize objective
+
+      if objective.save
+        indicator = Objective::Indicator.create(objective_element: objective,
+                                              indicator_type: params.dig(:indicator, :indicator_type),
+                                              options: params.dig(:indicator, :options))
+      end
+
     end
+
+    redirect_to objective_elements_path
   end
 
   def my_objectivess

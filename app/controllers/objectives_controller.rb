@@ -1,2 +1,0 @@
-class ObjectivesController < ApplicationController
-end

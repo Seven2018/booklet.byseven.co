@@ -27,6 +27,7 @@ class User < ApplicationRecord
   belongs_to :manager, class_name: "User", optional: true
   has_many :training_reports, foreign_key: 'creator_id'
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
+  has_many :objective_elements, as: :objectivable
 
   before_create :set_initial_permissions!
 

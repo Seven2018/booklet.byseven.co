@@ -4,7 +4,7 @@ export default class extends Controller {
   static get targets () {
     return ['displayElement', 'multiChoiceContainer', 'multiChoiceTemplate',
             'selectedUsers', 'selectedUsersPillStorage', 'selectedUsersPillStorageModal',
-            'filteredCount', 'selectFiltered' ,'results']
+            'selectedCount', 'filteredCount', 'selectAllButton', 'results']
   }
 
   static get values () {
@@ -109,32 +109,44 @@ export default class extends Controller {
   //////////////////
 
   get _selected_ids() {
-    return this.selectedUsersTarget.value.split(',').filter(str => str.length > 0)
+    return this.selectedUsersTargets[0].value.split(',').filter(str => str.length > 0)
   }
 
   _update_storage(array) {
-    this.selectedUsersTarget.value = array.join(',')
+    this.selectedUsersTargets.forEach((target) => {
+      target.value = array.join(',')
+    })
   }
 
   refreshFilteredCount() {
-    this.filteredCountTarget.innerText = `(${this.resultsTarget.childElementCount})`
+    const filtered_count = this.resultsTarget.childElementCount
+
+    this.filteredCountTarget.innerText = `(${filtered_count})`
+
+    if (this.resultsTarget.querySelectorAll('input[type="checkbox"]:checked').length == filtered_count) {
+      this.toggleSelectAllButton(true)
+    }
   }
 
-  unselectAll() {
-    const buttons = this.selectedUsersPillStorageModalTarget.querySelectorAll('[data-type="pill"]')
-
-    buttons.forEach((button) => {
-      button.click()
-    })
-
-    this.selectFilteredTarget.checked && this.selectFilteredTarget.click()
+  refreshSelectedCount() {
+    this.selectedCountTarget.innerText = `${this._selected_ids.length}`
   }
 
-  selectAll() {
-    this._persist('all', true)
+  toggleSelectAllButton(boolean) {
+    this.selectAllButtonTarget.checked = boolean
+
+    if (boolean) {
+      this.selectAllButtonTarget.parentNode.classList.add('border-bkt-objective-blue-0_5px')
+      this.selectAllButtonTarget.parentNode.classList.remove('border-bkt-light-grey5-0_5px')
+      this.selectAllButtonTarget.parentNode.querySelector('svg').classList.remove('hidden')
+    } else {
+      this.selectAllButtonTarget.parentNode.classList.remove('border-bkt-objective-blue-0_5px')
+      this.selectAllButtonTarget.parentNode.classList.add('border-bkt-light-grey5-0_5px')
+      this.selectAllButtonTarget.parentNode.querySelector('svg').classList.add('hidden')
+    }
   }
 
-  selectFiltered(e) {
+  selectAll(e) {
     const checkboxes = this.resultsTarget.querySelectorAll('input[type="checkbox"][data-id]')
 
     checkboxes.forEach((checkbox) => {
@@ -195,6 +207,8 @@ export default class extends Controller {
 
     newDiv.appendChild(pill_avatar.cloneNode())
     newDiv.appendChild(pill_name.cloneNode(true))
+
+    this.refreshSelectedCount()
   }
 
   _remove(id, element) {
@@ -206,22 +220,8 @@ export default class extends Controller {
     document.querySelectorAll(`[data-pill_id='${id}']`).forEach((pill) => {
       pill.remove()
     })
-  }
 
-  // _persist(ids_string, refresh = false) {
-  //   fetch(this.pathValue, {
-  //     method: "GET",
-  //     headers: {
-  //       "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify({ [this.inputIdsName]: ids_string })
-  //   })
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     if(refresh) { this._refreshForm() }
-  //     this.arrayTarget.value = data[`${this.inputIdsName}_str`]
-  //     this._refreshSelectedCount(data[`${this.inputIdsName}_count`])
-  //   })
-  // }
+    this.refreshSelectedCount()
+    this.toggleSelectAllButton(false)
+  }
 }

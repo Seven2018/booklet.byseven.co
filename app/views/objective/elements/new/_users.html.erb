@@ -1,17 +1,19 @@
-<% users.each do |user| %>
-  <% selected = false %>
+<% selected_array = selected.split(',') %>
 
-  <div class='flex-row-between-centered height-5rem'>
+<% users.each do |user| %>
+  <% selected = selected_array.include?(user.id.to_s) %>
+
+  <div class='flex-row-between-centered height-4rem border-bottom-bkt-light-grey5-0_5px' style='width: 51rem;'>
     <img
       src="<%= user.picture %>"
       alt="<%= user.fullname %>"
-      class='avatar-sm my-1rem mx-2rem'
+      class='avatar-sm my-1rem mr-1rem'
       onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'
     >
 
     <div class='flex-grow-1 fs-1_2rem'>
-      <div class='font-weight-600'><%= user.fullname %></div>
-      <div><%= user.job_title %></div>
+      <div class='fs-1_2rem font-weight-400 bkt-dark-grey'><%= user.fullname %></div>
+      <div class="fs-1rem bkt-light-grey5"><%= user.job_title %></div>
     </div>
 
     <% key = "check-box-user-id-#{user.id}" %>
@@ -30,13 +32,14 @@
         data: {
           id: user.id,
           name: user.fullname,
+          bordercolor: 'border-bkt-objective-blue-0_5px',
           participant_ids_target: 'result',
           action: "change->objectives--objective-new#storeUser change->toggle-checked-participants#toggle",
           toggle_checked_participants_target: "togglable"
         }
       ) %>
       <span
-        class="iconify fs-1_8rem bkt-blue"
+        class="iconify fs-1_8rem bkt-objective-blue"
         data-toggle-checked-participants-target="icon"
         data-selected='<%= selected %>'
         data-icon="bi:check">

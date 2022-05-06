@@ -27,6 +27,12 @@
           refreshParticipantIdsSearch@window->search-inject#debouncedSearch
           refreshParticipantIdsFilteredCount@window->objectives--objective-new#refreshFilteredCount'>
 
+      <input type="text"
+             class="d-none"
+             data-search-inject-target="selected"
+             data-objectives--objective-new-target="selectedUsers"
+             value="">
+
 
       <div class="pos-rel">
         <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
@@ -48,7 +54,7 @@
         %>
       </div>
 
-      <div class="flex-row-between-centered mb-1rem">
+      <div class="flex-row-between-centered mb-1rem" style='width: 51rem;'>
 
         <div class="d-flex">
           <p class="fs-1_4rem font-weight-500 mr-0_5rem">Selected :</p>
@@ -59,30 +65,20 @@
         </div>
 
         <div class="flex-row-between-centered">
-          <div class='fs-1_2rem bkt-blue cursor-pointer'
-            data-action="click->objectives--objective-new#unselectAll"
-          >Unselect all</div>
-
-          <div class="mx-2">|</div>
-
-          <div class='fs-1_2rem bkt-blue cursor-pointer'
-            data-action="click->objectives--objective-new#selectAll"
-          >Select all</div>
-
-          <div class="mx-2">|</div>
 
           <div class="cursor-pointer d-flex align-items-center">
 
-            <div class='fs-1_2rem bkt-blue'>
-              Select Filtered
-              <span class='fs-1_2rem' data-objectives--objective-new-target='filteredCount'></span>
+            <div class='fs-1_2rem bkt-objective-blue'>
+              Select All
+              <span class='fs-1_2rem'
+                    data-objectives--objective-new-target='filteredCount'></span>
             </div>
 
             <div class="mx-2"></div>
 
             <label
-              class='flex-row-center-centered rounded-3px mb-0 border-bkt-light-grey5-0_5px'
-              style='height: 2.4rem; width: 2.4rem;'
+              class='d-flex align-items-center justify-content-center height-2_4rem-forced width-2_4rem-forced rounded-3px mb-0
+                     border-bkt-light-grey5-0_5px mr-2rem'
               data-controller='toggle-checked-participants'>
 
               <%= check_box_tag(
@@ -91,14 +87,15 @@
                 false,
                 class: "hidden",
                 data: {
-                  action: "change->objectives--objective-new#selectFiltered change->toggle-checked-participants#toggle",
+                  bordercolor: 'border-bkt-objective-blue-0_5px',
+                  action: "change->objectives--objective-new#selectAll change->toggle-checked-participants#toggle",
                   toggle_checked_participants_target: "togglable",
-                  objectives__objective_new_target: "selectFiltered"
+                  objectives__objective_new_target: "selectAllButton"
                 }
               ) %>
 
               <span
-                class="iconify fs-1_8rem bkt-blue hidden"
+                class="iconify fs-1_8rem bkt-objective-blue hidden"
                 data-toggle-checked-participants-target="icon"
                 data-icon="bi:check">
               </span>
@@ -109,12 +106,20 @@
         </div>
       </div>
 
-      <div class='border-bkt-light-grey mb-2rem overflow-y-scroll' style='height: 400px;'
+      <div class='mb-2rem overflow-y-scroll' style='height: 400px;'
         data-search-inject-target="results"
         data-objectives--objective-new-target="results"
       ></div>
     </div>
 
+
   </div>
+
+  <button type="button"
+          class="d-flex justify-content-center align-items-center width-100-important bkt-btn-objective-blue rounded-b-5px"
+          data-dismiss="modal"
+          aria-label="Close">
+    Assign employee(s)
+  </button>
 
 </div>
