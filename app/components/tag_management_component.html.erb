@@ -31,7 +31,7 @@
 
     <input data-action="click->tag-management#displayList keyup->tag-management#escape keyup->tag-management#filter"
            data-tag-management-target="inputFilter"
-           class="tag-input bkt-bg-light-grey9 bkt-bg-light-grey8-focus bkt-light-grey-placeholder border-0 d-inline-block m-2 cursor-pointer"
+           class="tag-input bkt-bg-light-grey9 bkt-bg-light-grey8-focus bkt-placeholder-light-grey border-0 d-inline-block m-2 cursor-pointer"
            placeholder="<%= @form_tags.count.zero? ? 'Empty' : '' %>" type="text">
 
     <div data-tag-management-target="tagList" class="d-none width-100 max-h-14rem position-absolute bkt-bg-white overflow-y-scroll" style="left: 0px">

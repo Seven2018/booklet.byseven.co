@@ -214,7 +214,7 @@
           </div>
         </div>
         <div class="booklet-select__dropdown hidden">
-          <% question.options.sort_by {|k, v| v}.keys.each do |option| %>
+          <% question.options.sort_by {|k, v| v}.each do |option| %>
             <div class="booklet-select__option" onclick='BookletSelectSubmit(this);'>
               <p><%= option %></p>
             </div>

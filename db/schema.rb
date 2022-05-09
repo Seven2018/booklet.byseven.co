@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_22_160157) do
+ActiveRecord::Schema.define(version: 2022_05_02_135919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -328,6 +328,44 @@ ActiveRecord::Schema.define(version: 2022_04_22_160157) do
     t.index ["company_id"], name: "index_mods_on_company_id"
   end
 
+  create_table "objective_elements", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", default: ""
+    t.date "due_date"
+    t.bigint "objectivable_id"
+    t.string "objectivable_type"
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_objective_elements_on_company_id"
+  end
+
+  create_table "objective_indicators", force: :cascade do |t|
+    t.integer "indicator_type", null: false
+    t.integer "status", default: 0
+    t.jsonb "options", default: {}, null: false
+    t.bigint "objective_element_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["objective_element_id"], name: "index_objective_indicators_on_objective_element_id"
+  end
+
+  create_table "objective_logs", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "comments"
+    t.integer "log_type", default: 0, null: false
+    t.string "initial_value"
+    t.string "updated_value"
+    t.bigint "owner_id"
+    t.bigint "objective_element_id"
+    t.bigint "objective_indicator_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["objective_element_id"], name: "index_objective_logs_on_objective_element_id"
+    t.index ["objective_indicator_id"], name: "index_objective_logs_on_objective_indicator_id"
+    t.index ["owner_id"], name: "index_objective_logs_on_owner_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.date "date"
     t.date "available_date"
@@ -565,6 +603,11 @@ ActiveRecord::Schema.define(version: 2022_04_22_160157) do
   add_foreign_key "interviews", "users", column: "employee_id"
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
+  add_foreign_key "objective_elements", "companies"
+  add_foreign_key "objective_indicators", "objective_elements"
+  add_foreign_key "objective_logs", "objective_elements"
+  add_foreign_key "objective_logs", "objective_indicators"
+  add_foreign_key "objective_logs", "users", column: "owner_id"
   add_foreign_key "sessions", "trainings"
   add_foreign_key "sessions", "workshops"
   add_foreign_key "skills", "skill_groups"
