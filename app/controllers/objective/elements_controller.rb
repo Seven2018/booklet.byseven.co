@@ -2,7 +2,14 @@ class Objective::ElementsController < ApplicationController
   before_action :show_navbar_objective
 
   def index
-    @objectives = policy_scope(Objective::Element).where(company: current_user.company)
+    policy_scope(Objective::Element)
+  end
+
+  def list
+    @users = User.where(company: current_user.company)
+    authorize @users
+
+    render json: @users
   end
 
   def new

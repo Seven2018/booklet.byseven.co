@@ -3,12 +3,12 @@ import HTTP from '../plugins/axios'
 export default {
   namespaced: true,
   state: {
-    objectives: null,
+    users: null,
     error: null
   },
   mutations: {
-    setObjectives(state, value) {
-      state.objectives = value
+    setUsers(state, value) {
+      state.users = value
     },
     setError(state, value) {
       state.error = value
@@ -17,9 +17,9 @@ export default {
   actions: {
     async fetch(ctx) {
       try {
-        const res = await HTTP.get('objectives/elements/list')
+        const res = await HTTP.get('objective/elements/list')
 
-        ctx.commit('setObjectives', res.data)
+        ctx.commit('setUsers', res.data)
       } catch (e) {
         ctx.commit('setError', e.message)
       }

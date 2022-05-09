@@ -5,7 +5,7 @@
         <h1 class="font-weight-700 fs-2_4rem">Employees objectives</h1>
       </div>
       <div class="flex-column">
-        <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" href="/objectives/elements/new">
+        <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" href="/objective/elements/new">
           New objective
         </bkt-button>
       </div>
@@ -21,22 +21,23 @@
 
       <index-table
           :headers="headers"
-          :tableData="tableData">
-        <template v-slot="{name, jobTitle, accessLevel, manager, objectives, objectivesTeamLink, objectiveLink}">
+          :tableData="tableData.users">
+        <template v-slot="{firstname, lastname, picture, job_title, access_level_int, manager, objectives_count}">
           <td>
             <div class="d-flex align-items-center">
               <div class="flex-column ">
                 <img class="rounded-circle width-3rem height-3rem"
-                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png"
+                     :src="picture"
+                     onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
                      alt="">
               </div>
 
-              <div class="flex-column ml-3">
+              <div class="flex-column ml-3 width-25rem ">
                 <div class="flex-row-start-centered">
-                  <p class="font-weight-500">{{ name }}</p>
+                  <p class="font-weight-500 text-truncate">{{ `${firstname} ${lastname}` }}</p>
                 </div>
                 <div class="flex-row-start-centered">
-                  <p class="font-weight-500 fs-1_2rem bkt-light-grey6">{{ jobTitle }}</p>
+                  <p class="font-weight-500 fs-1_2rem bkt-light-grey6 text-truncate">{{ job_title }}</p>
                 </div>
               </div>
             </div>
@@ -46,7 +47,7 @@
             <div class="align-items-center">
               <div class="flex-column ">
                 <p>
-                  {{ accessLevel }}
+                  {{ access_level_int }}
                 </p>
                 <a class="bkt-objective-blue " style="text-decoration: underline">View Team Objective</a>
               </div>
@@ -54,16 +55,17 @@
           </td>
 
           <td>
-            <div class="d-flex align-items-center">
+            <div v-if="manager" class="d-flex align-items-center">
               <div class="flex-column ">
                 <img class="rounded-circle width-3rem height-3rem"
-                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png"
+                     :src="manager.picture"
+                     onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
                      alt="">
               </div>
 
-              <div class="flex-column ml-3">
+              <div class="flex-column ml-3 width-25rem">
                 <div class="flex-row-start-centered">
-                  <p class="font-weight-500">{{ manager.name }}</p>
+                  <p class="font-weight-500 text-truncate">{{ `${manager.firstname} ${manager.lastname}` }}</p>
                 </div>
               </div>
             </div>
@@ -72,7 +74,7 @@
 
           <td>
             <p>
-              {{ objectives }}
+              {{ objectives_count }}
             </p>
           </td>
 
@@ -93,9 +95,7 @@
         </template>
       </index-table>
     </bkt-box>
-    
-<!--    TODO: test fetch axios-->
-    {{ adminObjectives.objectives }}
+
   </div>
 </template>
 
@@ -110,27 +110,7 @@ export default {
   data() {
     return {
       headers: ['Name', 'Access Level', 'Manager', 'Objectives', ''],
-      tableData: [
-        {
-          name: 'Marvin',
-          jobTitle: 'Web Designer',
-          accessLevel: 'Manager',
-          manager: {image: '', name: 'Ralph Edwards'},
-          objectives: 4,
-          objectivesTeamLink: 'teamlink',
-          objectiveLink: 'link'
-        },
-        {
-          name: 'Marvin',
-          jobTitle: 'Web Designer',
-          accessLevel: 'Manager',
-          manager: {image: '', name: 'Ralph Edwards'},
-          objectives: 4,
-          objectivesTeamLink: 'teamlink',
-          objectiveLink: 'link'
-        },
-      ],
-      adminObjectives: store.state.adminObjectives
+      tableData: store.state.adminObjectives,
     }
   },
   created() {

@@ -11,8 +11,4 @@ class Objective::ElementPolicy < ApplicationPolicy
   def create?
     true
   end
-
-  # def list?
-  #   true
-  # end
 end
