@@ -2,7 +2,10 @@
 const routes = {
   objective_new: '/objective/elements/new',
   objective_list: '/objective/elements/list',
-  objective_user_show: '/objective/users/{id}'
+  objective_user_show: '/objective/users/{id}',
+  objective_user_info: '/objective/users/{id}/info',
+  objective_user_list_current: '/objective/users/{id}/list_current',
+  objective_user_list_archived: '/objective/users/{id}/list_archived',
 }
 
 export default {

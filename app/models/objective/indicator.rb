@@ -7,4 +7,10 @@ class Objective::Indicator < ApplicationRecord
     percentage: 20,
     multi_choice: 30
   }
+
+  enum status: {
+    not_completed: 0,
+    in_progress: 50,
+    completed: 100
+  }
 end

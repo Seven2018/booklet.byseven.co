@@ -160,7 +160,13 @@ Rails.application.routes.draw do
     get :my_team_objectives, controller: :elements
     resources :indicators
     resources :logs
-    resources :users, only: [:index, :show]
+    resources :users, only: [:index, :show] do
+      member do
+        get :info
+        get :list_current
+        get :list_archived
+      end
+    end
   end
 
   # PAGES
