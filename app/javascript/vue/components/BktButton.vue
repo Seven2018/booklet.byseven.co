@@ -1,10 +1,10 @@
 <template>
-  <button class="flex-row-between-centered" :class="assets[type]">
+  <a class="flex-row-between-centered" :class="assets[type]" :href="href">
     <span v-if="iconify" class="iconify mr-3" v-bind:data-icon="iconify"></span>
     <p class="">
       <slot></slot>
     </p>
-  </button>
+  </a>
 </template>
 
 <script>
@@ -12,6 +12,7 @@ export default {
   props: {
     iconify: String,
     type: String,
+    href: String
   },
   data() {
     return {

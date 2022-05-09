@@ -153,7 +153,9 @@ Rails.application.routes.draw do
 
   # OBJECTIVES
   namespace :objectives do
-    resources :elements
+    resources :elements do
+      collection { get 'list' }
+    end
     get :my_objectives, controller: :elements
     get :my_team_objectives, controller: :elements
     resources :indicators

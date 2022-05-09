@@ -5,7 +5,7 @@
         <h1 class="font-weight-700 fs-2_4rem">Employees objectives</h1>
       </div>
       <div class="flex-column">
-        <bkt-button type="blue" iconify="ant-design:plus-circle-outlined">
+        <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" href="/objectives/elements/new">
           New objective
         </bkt-button>
       </div>
@@ -93,6 +93,9 @@
         </template>
       </index-table>
     </bkt-box>
+    
+<!--    TODO: test fetch axios-->
+    {{ adminObjectives.objectives }}
   </div>
 </template>
 
@@ -101,6 +104,7 @@ import BktButton from '../../components/BktButton';
 import BktBox from "../../components/BktBox";
 import BktSearch from "../../components/bktSearch";
 import IndexTable from '../../components/IndexTable'
+import store from "../../store";
 
 export default {
   data() {
@@ -125,8 +129,12 @@ export default {
           objectivesTeamLink: 'teamlink',
           objectiveLink: 'link'
         },
-      ]
+      ],
+      adminObjectives: store.state.adminObjectives
     }
+  },
+  created() {
+    store.dispatch('adminObjectives/fetch')
   },
   components: {
     BktSearch,
