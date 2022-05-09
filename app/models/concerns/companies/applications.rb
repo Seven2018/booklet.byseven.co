@@ -21,12 +21,12 @@ module Companies::Applications
     },
     objectives: {
       name: 'Objectives',
-      link: :objectives_my_objectives_path,
+      link: :objective_my_objectives_path,
       icon: 'fluent:target-arrow-20-filled',
       color: 'bkt-objective-blue',
       perso: 'My objectives',
       team: 'My team objectives',
-      link_team: :objectives_my_team_objectives_path
+      link_team: :objective_my_team_objectives_path
     }
   }
 

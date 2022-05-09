@@ -152,7 +152,7 @@ Rails.application.routes.draw do
   get 'mods/:id/move_down', to: 'mods#move_down', as: 'move_down_mod'
 
   # OBJECTIVES
-  namespace :objectives do
+  namespace :objective do
     resources :elements do
       collection { get 'list' }
     end
@@ -160,6 +160,7 @@ Rails.application.routes.draw do
     get :my_team_objectives, controller: :elements
     resources :indicators
     resources :logs
+    resources :users, only: :index
   end
 
   # PAGES

@@ -203,6 +203,68 @@
   &.pressed {}
 }
 
+.bkt-btn-objective-blue {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-white;
+  background-color: $bkt-objective-blue !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bkt-dark-blue !important;
+    color: $bkt-white;
+  }
+
+  &:focus {
+    background-color: $bkt-white;
+    color: $bkt-objective-blue;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  &.pressed {}
+}
+
+.bkt-btn-objective-blue-white {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-objective-blue;
+  background-color: $bkt-light-grey9 !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bkt-objective-blue !important;
+    color: $bkt-white;
+  }
+
+  &:focus {
+    background-color: $bkt-white;
+    color: $bkt-white;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  &.pressed {}
+}
+
 .bkt-btn-orange {
   display: flex;
   align-items: center;

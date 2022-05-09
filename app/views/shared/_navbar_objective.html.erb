@@ -6,9 +6,9 @@
     </a>
 
     <% if Objective::ElementPolicy.new(current_user, nil).my_objectives? %>
-      <%= link_to objectives_my_objectives_path do %>
+      <%= link_to objective_my_objectives_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :elements_my_objectives %>
+          <%= 'navbar-buttons--active' if @controller_action == :elements_my_objectivess %>
           ">
           <h4 title='My interviews'>My objectives</h4>
         </div>
@@ -16,7 +16,7 @@
     <% end %>
 
     <% if Objective::ElementPolicy.new(current_user, nil).my_team_objectives? %>
-      <%= link_to objectives_my_team_objectives_path do %>
+      <%= link_to objective_my_team_objectives_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :elements_my_team_objectives %>
           ">

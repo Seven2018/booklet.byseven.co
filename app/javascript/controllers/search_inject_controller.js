@@ -3,7 +3,7 @@ import { debounce } from "debounce"
 
 export default class extends Controller {
   static get targets () {
-    return [ "search", "results" ]
+    return [ "search", "results", "selected" ]
   }
   connect() {
     this.search()
@@ -29,9 +29,10 @@ export default class extends Controller {
       document.querySelector('.search-inject-date-start').value : null // is not a controller target to avoid dates dependencies
     const dateEnd = document.querySelector('.search-inject-date-end') ?
       document.querySelector('.search-inject-date-end').value : null // is not a controller target to avoid dates dependencies
+    const selected = this.hasSelectedTarget ? this.selectedTarget.value : null
     const path = this.searchTarget.dataset.path
     const query = this.searchTarget.value
-    const url = `${path}?search=${query}&page=${page}&mode=${mode}&date_start=${dateStart}&date_end=${dateEnd}`
+    const url = `${path}?search=${query}&page=${page}&mode=${mode}&date_start=${dateStart}&date_end=${dateEnd}&selected=${selected}`
     fetch(url)
       .then(response => response.text())
       .then(html => {

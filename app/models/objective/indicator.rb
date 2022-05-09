@@ -1,7 +1,7 @@
 class Objective::Indicator < ApplicationRecord
-  belongs_to: :objective_element
+  belongs_to :objective_element, class_name: "Objective::Element"
 
-  enum campaign_type: {
+  enum indicator_type: {
     boolean: 0,
     numeric_value: 10,
     percentage: 20,
