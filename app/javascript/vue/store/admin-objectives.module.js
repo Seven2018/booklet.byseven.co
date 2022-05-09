@@ -1,4 +1,5 @@
 import HTTP from '../plugins/axios'
+import routes from '../constants/routes'
 
 export default {
   namespaced: true,
@@ -17,7 +18,7 @@ export default {
   actions: {
     async fetch(ctx) {
       try {
-        const res = await HTTP.get('objective/elements/list')
+        const res = await HTTP.get(routes.generate('objective_list'))
 
         ctx.commit('setUsers', res.data)
       } catch (e) {

@@ -6,6 +6,9 @@ class Objective::UsersController < CampaignDraft::BaseController
     render partial: 'objective/elements/new/users', locals: { users: users, selected: params.dig(:selected) }
   end
 
+  def show
+  end
+
   private
 
   def users

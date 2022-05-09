@@ -160,7 +160,7 @@ Rails.application.routes.draw do
     get :my_team_objectives, controller: :elements
     resources :indicators
     resources :logs
-    resources :users, only: :index
+    resources :users, only: [:index, :show]
   end
 
   # PAGES

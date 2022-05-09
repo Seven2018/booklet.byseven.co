@@ -5,7 +5,7 @@
         <h1 class="font-weight-700 fs-2_4rem">Employees objectives</h1>
       </div>
       <div class="flex-column">
-        <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" href="/objective/elements/new">
+        <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" :href="$routes.generate('objective_new')">
           New objective
         </bkt-button>
       </div>
@@ -21,8 +21,8 @@
 
       <index-table
           :headers="headers"
-          :tableData="tableData.users">
-        <template v-slot="{firstname, lastname, picture, job_title, access_level_int, manager, objectives_count}">
+          :tableData="adminObjectives.users">
+        <template v-slot="{id, firstname, lastname, picture, job_title, access_level_int, manager, objectives_count}">
           <td>
             <div class="d-flex align-items-center">
               <div class="flex-column ">
@@ -86,7 +86,7 @@
               </div>
 
               <div class="flex-column">
-                <bkt-button type="blue" >
+                <bkt-button type="blue" :href="$routes.generate('objective_user_show', {id})">
                   View objectives
                 </bkt-button>
               </div>
@@ -110,7 +110,7 @@ export default {
   data() {
     return {
       headers: ['Name', 'Access Level', 'Manager', 'Objectives', ''],
-      tableData: store.state.adminObjectives,
+      adminObjectives: store.state.adminObjectives,
     }
   },
   created() {
