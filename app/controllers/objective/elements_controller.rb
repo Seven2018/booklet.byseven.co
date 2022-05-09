@@ -32,7 +32,7 @@ class Objective::ElementsController < ApplicationController
     redirect_to objective_elements_path
   end
 
-  def my_objectivess
+  def my_objectives
     @objectives = Objective::Element.all
     authorize @objectives
   end

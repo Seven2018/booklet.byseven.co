@@ -5,7 +5,7 @@
       <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
     </a>
 
-    <% if Objective::ElementPolicy.new(current_user, nil).my_objectivess? %>
+    <% if Objective::ElementPolicy.new(current_user, nil).my_objectives? %>
       <%= link_to objective_my_objectives_path do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if @controller_action == :elements_my_objectivess %>
