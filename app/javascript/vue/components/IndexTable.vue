@@ -31,6 +31,7 @@ table {
 table td {
   padding-top: 17px;
   padding-bottom: 17px;
+  vertical-align: middle;
 }
 
 </style>

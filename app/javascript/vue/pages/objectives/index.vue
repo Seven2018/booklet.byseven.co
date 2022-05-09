@@ -26,45 +26,69 @@
           <td>
             <div class="d-flex align-items-center">
               <div class="flex-column ">
-                <img class="rounded-circle width-3rem height-3rem" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png" alt="">
+                <img class="rounded-circle width-3rem height-3rem"
+                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png"
+                     alt="">
               </div>
 
               <div class="flex-column ml-3">
                 <div class="flex-row-start-centered">
-                  <p class="font-weight-500">{{name}}</p>
+                  <p class="font-weight-500">{{ name }}</p>
                 </div>
                 <div class="flex-row-start-centered">
-                  <p class="font-weight-500 fs-1_2rem bkt-light-grey6">{{jobTitle}}</p>
+                  <p class="font-weight-500 fs-1_2rem bkt-light-grey6">{{ jobTitle }}</p>
                 </div>
               </div>
             </div>
           </td>
 
           <td>
+            <div class="align-items-center">
+              <div class="flex-column ">
+                <p>
+                  {{ accessLevel }}
+                </p>
+                <a class="bkt-objective-blue " style="text-decoration: underline">View Team Objective</a>
+              </div>
+            </div>
+          </td>
+
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="flex-column ">
+                <img class="rounded-circle width-3rem height-3rem"
+                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png"
+                     alt="">
+              </div>
+
+              <div class="flex-column ml-3">
+                <div class="flex-row-start-centered">
+                  <p class="font-weight-500">{{ manager.name }}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+
+
+          <td>
             <p>
-              {{accessLevel}}
+              {{ objectives }}
             </p>
           </td>
 
           <td>
-            <p>
-              {{manager}}
-            </p>
-          </td>
 
+            <div class="flex-row-around-centered align-items-center">
+              <div class="flex-column ">
+                <a class="bkt-objective-blue " style="text-decoration: underline">View Objective of his/her Team</a>
+              </div>
 
-          <td>
-            <p>
-              {{objectives}}
-            </p>
-          </td>
-
-          <td>
-            <p>
-              {{objectivesTeamLink}}
-
-              {{objectiveLink}}
-            </p>
+              <div class="flex-column">
+                <bkt-button type="blue" >
+                  View objectives
+                </bkt-button>
+              </div>
+            </div>
           </td>
         </template>
       </index-table>
@@ -83,8 +107,24 @@ export default {
     return {
       headers: ['Name', 'Access Level', 'Manager', 'Objectives', ''],
       tableData: [
-        {name: 'Marvin', jobTitle: 'Web Designer', accessLevel: 'Manager', manager: {image: '', name: 'Ralph Edwards'}, objectives: 4, objectivesTeamLink: 'teamlink', objectiveLink: 'link'},
-        {name: 'Marvin', jobTitle: 'Web Designer', accessLevel: 'Manager', manager: {image: '', name: 'Ralph Edwards'}, objectives: 4, objectivesTeamLink: 'teamlink', objectiveLink: 'link'},
+        {
+          name: 'Marvin',
+          jobTitle: 'Web Designer',
+          accessLevel: 'Manager',
+          manager: {image: '', name: 'Ralph Edwards'},
+          objectives: 4,
+          objectivesTeamLink: 'teamlink',
+          objectiveLink: 'link'
+        },
+        {
+          name: 'Marvin',
+          jobTitle: 'Web Designer',
+          accessLevel: 'Manager',
+          manager: {image: '', name: 'Ralph Edwards'},
+          objectives: 4,
+          objectivesTeamLink: 'teamlink',
+          objectiveLink: 'link'
+        },
       ]
     }
   },

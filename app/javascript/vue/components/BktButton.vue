@@ -1,7 +1,7 @@
 <template>
   <button class="flex-row-between-centered" :class="assets[type]">
-    <span class="iconify" v-bind:data-icon="iconify"></span>
-    <p class="ml-3">
+    <span v-if="iconify" class="iconify mr-3" v-bind:data-icon="iconify"></span>
+    <p class="">
       <slot></slot>
     </p>
   </button>
