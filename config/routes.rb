@@ -212,7 +212,7 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
   devise_scope :user do
-    match '/sessions/user', to: 'devise/sessions#create', via: :post
+    match '/sessions/user', to: 'users/sessions#create', via: :post
     post '/u/check', to: 'users/sessions#check', via: :post
     get '/u/resend_email', to: 'users/sessions#resend_email'
   end

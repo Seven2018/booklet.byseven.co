@@ -5,6 +5,14 @@
   Please enter your password.
 <% end %>
 
+<% wrong_password = false %>
+<% flash.each do |type, msg| %>
+  <% if type == 'alert' && msg == 'Invalid Email or password.' %>
+    <% wrong_password = true %>
+  <% end %>
+<% end %>
+<%= wrong_password %>
+
 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), method: :post) do |f| %>
   <%= f.input :email,
               required: true,
@@ -19,8 +27,16 @@
   <%= f.input :password,
               required: true,
               autofocus: true,
-              input_html: { autocomplete: "current-password" },
-              label_html: { class: 'font-weight-500 mb-3' } %>
+              input_html: { autocomplete: "current-password", class: wrong_password ? 'border-bkt-red' : '' },
+              label_html: { class: wrong_password ? 'font-weight-500 mb-3 bkt-red' : 'font-weight-500 mb-3' } %>
+
+  <% if wrong_password %>
+    <div class="flex-row-start-centered bkt-red mb-4">
+      <span class="iconify mr-2" data-icon="ant-design:exclamation-circle-outlined"></span>
+      Wrong password
+    </div>
+  <% end %>
+
   <div class="flex-row-between-centered">
     <div class="">
       <%= f.input :remember_me, as: :boolean, label_html: { class: 'fs-1rem ml-1rem py-1' } if devise_mapping.rememberable? %>
