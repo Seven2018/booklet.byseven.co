@@ -14,6 +14,7 @@ $bkt-light-blue2: #B1CBE3;
 $bkt-blue: #3177B7;
 $bkt-dark-blue: #0D4F8B;
 $bkt-objective-blue: #5C95FF;
+$bkt-objective-blue2: #5C95FF59;
 $bkt-white: #FFFFFF;
 $bkt-light-grey: #C4C4C4;
 $bkt-light-grey2: #F5F8FB;
@@ -24,6 +25,7 @@ $bkt-light-grey6: #787878;
 $bkt-light-grey7: #E3E3E3;
 $bkt-light-grey8: #ECECEC;
 $bkt-light-grey9: #F6F6F6;
+$bkt-light-grey10: #F0F0F0;
 $bkt-dark-grey: #333333;
 $bkt-green: #7BC079;
 $bkt-transparent-green: #D8EDD7;
@@ -42,6 +44,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-blue             { color: $bkt-blue !important; }
 .bkt-dark-blue        { color: $bkt-dark-blue !important; }
 .bkt-objective-blue   { color: $bkt-objective-blue !important; }
+.bkt-objective-blue2   { color: $bkt-objective-blue2 !important; }
 .bkt-white            { color: $bkt-white !important; }
 .bkt-light-grey       { color: $bkt-light-grey !important; }
 .bkt-light-grey2      { color: $bkt-light-grey2 !important; }
@@ -61,6 +64,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-blue-hover             { &:hover { color: $bkt-blue !important; } }
 .bkt-dark-blue-hover        { &:hover { color: $bkt-dark-blue !important; } }
 .bkt-objective-blue-hover   { &:hover { color: $bkt-objective-blue !important; } }
+.bkt-objective-blue2-hover   { &:hover { color: $bkt-objective-blue2 !important; } }
 .bkt-white-hover            { &:hover { color: $bkt-white !important; } }
 .bkt-light-grey-hover       { &:hover { color: $bkt-light-grey !important; } }
 .bkt-light-grey2-hover      { &:hover { color: $bkt-light-grey2 !important; } }
@@ -80,6 +84,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-blue                           { background-color: $bkt-blue !important; }
 .bkt-bg-dark-blue                      { background-color: $bkt-dark-blue !important; }
 .bkt-bg-objective-blue                 { background-color: $bkt-objective-blue !important; }
+.bkt-bg-objective-blue2                 { background-color: $bkt-objective-blue2 !important; }
 .bkt-bg-white                          { background-color: $bkt-white !important; }
 .bkt-bg-light-grey                     { background-color: $bkt-light-grey !important; }
 .bkt-bg-light-grey2                    { background-color: $bkt-light-grey2 !important; }
@@ -119,6 +124,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-light-grey6-hover      { &:hover { background-color: $bkt-light-grey6 !important; } }
 .bkt-bg-light-grey8-hover      { &:hover { background-color: $bkt-light-grey8 !important; } }
 .bkt-bg-light-grey9-hover      { &:hover { background-color: $bkt-light-grey9 !important; } }
+.bkt-bg-light-grey10-hover      { &:hover { background-color: $bkt-light-grey10 !important; } }
 .bkt-bg-dark-grey-hover        { &:hover { background-color: $bkt-dark-grey !important; } }
 .bkt-bg-green-hover            { &:hover { background-color: $bkt-green !important; } }
 .bkt-bg-yellow-hover           { &:hover { background-color: $bkt-yellow !important; } }
@@ -128,6 +134,12 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-red-hover              { &:hover { background-color: $bkt-red !important; } }
 .bkt-bg-light-grey2-hover      { &:hover { background-color: $bkt-light-grey2 !important; } }
 
+
+
+/////////////////
+// ON CLICK //
+/////////////////
+.bkt-white-onclick { &:active { color: $bkt-white !important; } }
 
 /////////////////
 // PLACEHOLDER //

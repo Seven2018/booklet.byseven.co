@@ -16,23 +16,23 @@ class Objective::UsersController < ApplicationController
     render json: user
   end
 
-  # TODO: to test
-  # user.objective_elements.joins(:objective_indicator).where(objective_indicators: {status: ["completed"] }).count
   def list_current
     user = User.find(params[:id])
-    objectives_current = user
-                             .objective_elements
-                             .where(objective_indicator: {status: [:not_completed, :in_progress]})
+    # objectives_current = user
+    #                        .objective_elements
+    #                        .joins(:objective_indicator)
+    #                        .where(objective_indicators: {status: [:not_completed, :in_progress] })
 
-    render json: objectives_current
+    render json: user.objective_elements
   end
 
-  # TODO: to test
   def list_archived
     user = User.find(params[:id])
+    # TODO: how to check archived objective
     objectives_archived = user
-                           .objective_elements
-                           .where(objective_indicator: {status: :completed})
+                            .objective_elements
+                            .joins(:objective_indicator)
+                            .where(objective_indicators: {status: :completed })
 
     render json: objectives_archived
   end

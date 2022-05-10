@@ -24,29 +24,91 @@
         </bkt-button>
       </div>
     </div>
-    <div v-if="objectiveUser.objectives">
-      test
+    <div class="flex-row-start-centered width-70 mt-5 mx-auto border-bottom-bkt-light-grey">
+      <button
+          class="pb-3 fs-1_6rem"
+          :class="[panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
+          @click="togglePanelCurrentObjective"
+      >
+        Currents objectives
+        <span
+            v-if="objectiveUser.objectivesCurrent"
+            class="px-1 rounded-5px fs-1_2rem"
+            :class="[panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
+          {{objectiveUser.objectivesCurrent.length}}
+        </span>
+        <span
+            v-else
+            class="px-1 rounded-5px fs-1_2rem"
+            :class="[panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
+          0
+        </span>
+      </button>
+
+      <button
+          class="pb-3 pl-3 fs-1_6rem"
+          :class="[!panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', !panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
+          @click="togglePanelCurrentObjective"
+      >
+        Archived objectives
+        <span
+            v-if="objectiveUser.objectivesArchived"
+            class="px-1 rounded-5px fs-1_2rem"
+            :class="[!panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', !panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
+          {{objectiveUser.objectivesArchived.length}}
+        </span>
+        <span
+            v-else
+            class="px-1 rounded-5px fs-1_2rem"
+            :class="[!panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', !panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
+          0
+        </span>
+      </button>
+    </div>
+    <div class="width-70 mt-5 mx-auto">
+      <objectives-user-table
+          v-if="panelCurrentObjective"
+          :headers="headers"
+          :table-data="objectiveUser.objectivesCurrent"
+      ></objectives-user-table>
+      <objectives-user-table
+          v-else-if="!panelCurrentObjective"
+          :headers="headers"
+          :table-data="objectiveUser.objectivesArchived"
+      ></objectives-user-table>
     </div>
   </div>
 </template>
 
 <script>
-
 import store from "../../../store";
 import BktButton from "../../../components/BktButton";
+import IndexTable from "../../../components/IndexTable";
+import ObjectivesUserTable from "./ObjectivesUserTable";
 
 export default {
-  components: {BktButton},
   props: ['userId'],
   data() {
     return {
-      objectiveUser: store.state.objectiveUser
+      headers: ['Objectives', 'Completion', 'Deadline', ''],
+      objectiveUser: store.state.objectiveUser,
+      panelCurrentObjective: true,
     }
   },
   created() {
     store.dispatch('objectiveUser/fetchUser', this.userId)
     store.dispatch('objectiveUser/fetchUserObjectivesCurrent', this.userId)
-    store.dispatch('objectiveUser/fetchUserObjectivesArchived', this.userId)
-  }
+    // store.dispatch('objectiveUser/fetchUserObjectivesArchived', this.userId)
+  },
+  methods: {
+    togglePanelCurrentObjective() {
+      this.panelCurrentObjective = !this.panelCurrentObjective
+    }
+  },
+  components: {
+    ObjectivesUserTable,
+    BktButton,
+    IndexTable
+  },
 }
 </script>
