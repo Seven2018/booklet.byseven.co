@@ -456,8 +456,8 @@
       users_array.push(el.value)
     })
     element.closest('form').querySelector('#csv_selected_users').value = users_array.join(',')
-    element.closest('.modal-content').querySelector('.btn-icon').click()
     element.parentNode.querySelector('.hidden-submit').click()
+    element.closest('.modal-content').querySelector('.action-modal__close').click()
   }
 
   function selectCsvAttributes(element, color) {

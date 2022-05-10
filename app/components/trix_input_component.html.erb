@@ -1,6 +1,6 @@
 <div class="<%= 'trix__toolbar-within' if @toolbar_within %> <%= 'trix__hide-toolbar' if @hide_toolbar %>"
      data-controller="<%= 'trix' unless @ignore_stimulus_controller %>"
-     data-action="focus->trix#showToolbar">
+     data-action="focus->trix#showToolbar <%= @optional_data_action %>">
   <input
     type="hidden"
     id="<%= @rand_uuid %>"

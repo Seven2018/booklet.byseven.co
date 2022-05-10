@@ -156,7 +156,7 @@ Rails.application.routes.draw do
     resources :elements
     get :my_objectives, controller: :elements
     get :my_team_objectives, controller: :elements
-    resources :indicators
+    resources :indicators, only: %i[update destroy]
     resources :logs
     resources :users, only: :index
   end

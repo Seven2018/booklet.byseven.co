@@ -8,8 +8,7 @@
       src="<%= user.picture %>"
       alt="<%= user.fullname %>"
       class='avatar-sm my-1rem mr-1rem'
-      onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'
-    >
+      onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
 
     <div class='flex-grow-1 fs-1_2rem'>
       <div class='fs-1_2rem font-weight-400 bkt-dark-grey'><%= user.fullname %></div>
