@@ -62,4 +62,8 @@ class UserPolicy < ApplicationPolicy
   def book_users?
     create?
   end
+
+  def list?
+    true
+  end
 end

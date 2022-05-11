@@ -40,10 +40,18 @@
 
 
 import Vue from 'vue/dist/vue.esm'
+import 'es6-promise/auto'
+import '../vue/plugins/directives'
+import '../vue/plugins/pop-up'
+import routes from "../vue/constants/routes";
 import App from '../vue/app.vue'
 import ObjectiveIndex from '../vue/pages/objectives/index.vue'
+import ObjectiveUserShow from '../vue/pages/objectives/users/show.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  Vue.prototype.$routes = routes
+
   const app = new Vue({
     el: '#app',
     data: {
@@ -51,10 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     components: {
       App,
-      ObjectiveIndex
+      ObjectiveIndex,
+      ObjectiveUserShow,
     }
   })
 })
+
 //
 //
 //

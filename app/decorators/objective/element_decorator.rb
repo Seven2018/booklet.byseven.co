@@ -1,8 +1,8 @@
 class Objective::ElementDecorator < Draper::Decorator
   delegate_all
-  decorates_association :objective_indicators
+  decorates_association :objective_indicator
 
   def completion
-    objective_indicators.first.completion
+    objective_indicator.completion
   end
 end
