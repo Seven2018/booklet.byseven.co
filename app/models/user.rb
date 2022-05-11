@@ -151,7 +151,8 @@ class User < ApplicationRecord
         user = User.new(row_h)
         user.lastname = user.lastname.upcase
         user.firstname = user.firstname.capitalize
-        user.access_level_int = :employee unless ['HR', 'Manager', 'Employee'].include?(row_h['access_level_int'])
+        user.access_level_int = :employee unless ['admin', 'manager', 'employee'].include?(row_h['access_level_int'].downcase)
+        user.access_level_int = :hr if row_h['access_level_int'].downcase == 'admin'
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
