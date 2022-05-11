@@ -18,21 +18,18 @@ class Objective::UsersController < ApplicationController
 
   def list_current
     user = User.find(params[:id])
-    # objectives_current = user
-    #                        .objective_elements
-    #                        .joins(:objective_indicator)
-    #                        .where(objective_indicators: {status: [:not_completed, :in_progress] })
+    objectives_current = user
+                           .objective_elements
+                           .where(status: :opened)
 
-    render json: user.objective_elements
+    render json: objectives_current
   end
 
   def list_archived
     user = User.find(params[:id])
-    # TODO: how to check archived objective
     objectives_archived = user
                             .objective_elements
-                            .joins(:objective_indicator)
-                            .where(objective_indicators: {status: :completed })
+                            .where(status: :archived)
 
     render json: objectives_archived
   end

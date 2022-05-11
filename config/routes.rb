@@ -155,6 +155,9 @@ Rails.application.routes.draw do
   namespace :objective do
     resources :elements do
       collection { get 'list' }
+      member do
+        post :archive
+      end
     end
     get :my_objectives, controller: :elements
     get :my_team_objectives, controller: :elements

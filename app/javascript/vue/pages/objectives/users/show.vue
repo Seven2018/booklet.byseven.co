@@ -5,7 +5,7 @@
         <h1 class="fs-2_4rem font-weight-500">My Objective</h1>
       </div>
       <div class="flex-row-center-centered mt-5">
-        <img class="rounded-circle width-5rem height-5rem"
+        <img class="rounded-circle width-5rem height-5rem border-bkt-blue-2px"
              :src="objectiveUser.user.picture"
              onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
              alt="">
@@ -33,13 +33,13 @@
         Currents objectives
         <span
             v-if="objectiveUser.objectivesCurrent"
-            class="px-1 rounded-5px fs-1_2rem"
+            class="px-2 rounded-5px fs-1_2rem"
             :class="[panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
           {{objectiveUser.objectivesCurrent.length}}
         </span>
         <span
             v-else
-            class="px-1 rounded-5px fs-1_2rem"
+            class="px-2 rounded-5px fs-1_2rem"
             :class="[panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
           0
         </span>
@@ -53,13 +53,13 @@
         Archived objectives
         <span
             v-if="objectiveUser.objectivesArchived"
-            class="px-1 rounded-5px fs-1_2rem"
+            class="px-2 rounded-5px fs-1_2rem"
             :class="[!panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', !panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
           {{objectiveUser.objectivesArchived.length}}
         </span>
         <span
             v-else
-            class="px-1 rounded-5px fs-1_2rem"
+            class="px-2 rounded-5px fs-1_2rem"
             :class="[!panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', !panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
           0
         </span>
@@ -75,6 +75,7 @@
           v-else-if="!panelCurrentObjective"
           :headers="headers"
           :table-data="objectiveUser.objectivesArchived"
+          :show-options="false"
       ></objectives-user-table>
     </div>
   </div>
@@ -98,7 +99,7 @@ export default {
   created() {
     store.dispatch('objectiveUser/fetchUser', this.userId)
     store.dispatch('objectiveUser/fetchUserObjectivesCurrent', this.userId)
-    // store.dispatch('objectiveUser/fetchUserObjectivesArchived', this.userId)
+    store.dispatch('objectiveUser/fetchUserObjectivesArchived', this.userId)
   },
   methods: {
     togglePanelCurrentObjective() {

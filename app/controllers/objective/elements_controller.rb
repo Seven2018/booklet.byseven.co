@@ -1,6 +1,10 @@
 class Objective::ElementsController < ApplicationController
   before_action :show_navbar_objective
 
+  skip_forgery_protection
+
+  skip_after_action :verify_authorized, only: [:archive, :destroy]
+
   def index
     policy_scope(Objective::Element)
   end
@@ -47,6 +51,27 @@ class Objective::ElementsController < ApplicationController
   def my_team_objectives
     @objectives = Objective::Element.all
     authorize @objectives
+  end
+
+  def archive
+    objective = Objective::Element.find(params[:id])
+
+    if objective.update(status: :archived)
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
+
+  def destroy
+    objective = Objective::Element.find(params[:id])
+    model = objective.destroy
+
+    if model.valid?
+      head :ok
+    else
+      render json: model.errors.messages
+    end
   end
 
   private

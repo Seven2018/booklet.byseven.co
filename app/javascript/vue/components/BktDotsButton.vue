@@ -9,7 +9,8 @@
     </button>
     <div
         v-if="display"
-        class="position-absolute bkt-bg-white p-3 rounded-5px bkt-box-shadow-medium" >
+        class="position-absolute bkt-bg-white rounded-5px bkt-box-shadow-medium z-index-5 width-max-content"
+    >
       <slot></slot>
     </div>
   </div>
@@ -27,7 +28,6 @@ export default {
       this.display = !this.display
     },
     hide() {
-      console.log('test')
       this.display = false
     }
   }

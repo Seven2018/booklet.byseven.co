@@ -6,6 +6,8 @@ const routes = {
   objective_user_info: '/objective/users/{id}/info',
   objective_user_list_current: '/objective/users/{id}/list_current',
   objective_user_list_archived: '/objective/users/{id}/list_archived',
+  objective_elements_archive: '/objective/elements/{id}/archive',
+  objective_elements_delete: '/objective/elements/{id}',
 }
 
 export default {
