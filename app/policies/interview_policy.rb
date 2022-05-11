@@ -33,15 +33,6 @@ class InterviewPolicy < ApplicationPolicy
     end
   end
 
-  def complete_interview?
-    case
-    when record.crossed? || record.manager?
-      user == record.interviewer
-    when record.employee?
-      user == record.employee
-    end
-  end
-
   def lock_interview?
     case
     when record.crossed? || record.manager?
