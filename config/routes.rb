@@ -112,7 +112,6 @@ Rails.application.routes.draw do
   resources :interviews do
     resource :locks, module: :interview, only: :create
   end
-  get :complete_interview, controller: :interviews
   get :lock_interview, controller: :interviews
   get :unlock_interview, controller: :interviews
   get :show_crossed_and_lock, controller: :interviews
@@ -212,7 +211,7 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
   devise_scope :user do
-    match '/sessions/user', to: 'devise/sessions#create', via: :post
+    match '/sessions/user', to: 'users/sessions#create', via: :post
     post '/u/check', to: 'users/sessions#check', via: :post
     get '/u/resend_email', to: 'users/sessions#resend_email'
   end
