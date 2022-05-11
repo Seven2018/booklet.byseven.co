@@ -7,8 +7,6 @@ export default class extends Controller {
 
   connect() {
     this.doubleClickGuardian = false
-    this.opened_message = false
-    this.saving = false
     this.timer
     this.waitTime = 1000
 
