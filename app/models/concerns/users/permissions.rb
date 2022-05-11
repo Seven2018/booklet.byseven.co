@@ -96,7 +96,7 @@ module Users::Permissions
     user_permissions != preset
   end
   
-    def set_initial_permissions!
+  def set_initial_permissions!
     case
     when employee?       then assign_attributes EMPLOYEE_PERMISSIONS
     when manager?        then assign_attributes MANAGER_PERMISSIONS

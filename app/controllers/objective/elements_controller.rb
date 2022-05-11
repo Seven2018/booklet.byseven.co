@@ -1,5 +1,6 @@
 class Objective::ElementsController < ApplicationController
   before_action :show_navbar_objective
+  before_action :set_objective_element, only: [:show, :update]
 
   def index
     @objectives = policy_scope(Objective::Element).where(company: current_user.company)
@@ -41,10 +42,21 @@ class Objective::ElementsController < ApplicationController
   end
 
   def show
-    @objective = Objective::Element.find(params[:id])
     authorize @objective
 
     @objective = @objective.decorate
+  end
+
+  def update
+    authorize @objective
+
+    @objective.update(objective_params)
+
+    @objective = @objective.decorate
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def my_objectives
@@ -58,6 +70,10 @@ class Objective::ElementsController < ApplicationController
   end
 
   private
+
+  def set_objective_element
+    @objective = Objective::Element.find(params[:id])
+  end
 
   def objective_params
     params.require(:objective_element).permit(:title, :description, :due_date)

@@ -9,6 +9,10 @@ class Objective::ElementPolicy < ApplicationPolicy
     user == record.employee || record.manager
   end
 
+  def update?
+    true
+  end
+
   def my_objectives?
     true
   end

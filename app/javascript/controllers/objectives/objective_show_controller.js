@@ -27,20 +27,20 @@ export default class extends Controller {
   }
 
   setup() {
-    // function OnInput() {
-    //   this.style.height = "auto";
-    //   this.style.height = (this.scrollHeight) + "px";
-    // }
+    function OnInput() {
+      if (this.tagName != 'TRIX-EDITOR') {
+        this.style.height = "40px";
+        this.style.height = (this.scrollHeight) + "px";
+      }
+    }
 
-    // const tx = document.getElementsByTagName("textarea");
-    // for (let i = 0; i < tx.length; i++) {
-    //   tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
-    //   tx[i].addEventListener("click", OnInput, false);
-    //   tx[i].addEventListener("input", OnInput, false);
-    //   tx[i].click()
-    // }
+    const tx = document.querySelectorAll("textarea, trix-editor");
+    for (let i = 0; i < tx.length; i++) {
+      tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
+      tx[i].addEventListener("focus", OnInput, false);
+      tx[i].addEventListener("input", OnInput, false);
+    }
 
-    // console.log(parseInt(this.descriptionTarget.parentNode.offsetHeight, 10) > 79)
     const description = this.descriptionTarget.querySelector('div')
     const button = this.showDescriptionButtonTarget
 
@@ -56,15 +56,15 @@ export default class extends Controller {
   // HEADER //
   ////////////
 
-  showDescription(e) {
-    const button = e.currentTarget
+  showDescription(event = null) {
+    const button = event.currentTarget
 
     if (button.dataset.state == 'closed') {
       this.descriptionTarget.style.maxHeight = '1000000px'
       button.dataset.state = 'opened'
       button.innerText = 'See less'
     } else {
-      this.descriptionTarget.style.maxHeight = '79px'
+      this.descriptionTarget.style.maxHeight = '59px'
       button.dataset.state = 'closed'
       button.innerText = 'See all'
     }
@@ -79,7 +79,7 @@ export default class extends Controller {
     const attribute_div = e.currentTarget
     const edit_button = attribute_div.querySelector('.edit_button')
     const display = document.querySelector(`#${edit_button.dataset.target}`)
-    const input = display.parentNode.querySelector('trix-editor') || display.parentNode.querySelector('input')
+    const input = display.parentNode.querySelector('trix-editor') || display.parentNode.querySelector('input') || display.parentNode.querySelector('textarea')
 
     if (edit_button.classList.contains('opacity_0') || input === document.activeElement) {
       attribute_div.classList.add('bkt-bg-light-grey9')
@@ -93,27 +93,27 @@ export default class extends Controller {
   showInput(e) {
     const edit_button = e.currentTarget
     const display = document.querySelector(`#${edit_button.dataset.target}`)
-    const input = display.parentNode.querySelector('trix-editor') || display.parentNode.querySelector('input')
+    const input = display.parentNode.querySelector('trix-editor') || display.parentNode.querySelector('input') || display.parentNode.querySelector('textarea')
 
     display.classList.add('d-none')
     input.classList.remove('d-none')
-    input.tagName == 'INPUT' ? this.setFocus(input) : input.focus()
+    input.tagName == 'INPUT' || input.tagName == 'TEXTAREA' ? this.setFocus(input) : input.focus()
   }
 
-  hideInput(e) {
-    const input = e.currentTarget
-    const display = input.parentNode.firstElementChild
-    const attribute_div = display.closest('.input_container')
+  expandInput(e) {
+    const button = event.currentTarget
 
-    attribute_div.classList.remove('bkt-bg-light-grey9')
-    display.classList.remove('d-none')
-    input.querySelector('trix-editor') == undefined ?
-      input.classList.add('d-none') : input.querySelector('trix-editor').classList.add('d-none')
-    // input.blur()
+    if (button.dataset.state == 'closed') {
+      this.descriptionTarget.style.maxHeight = '1000000px'
+      button.dataset.state = 'opened'
+    }
+  }
 
-    document.querySelectorAll('.edit_button').forEach((button) => {
-      button.classList.add('opacity_0')
-    })
+  autoSave(e) {
+    const form = e.currentTarget.closest('form')
+    const submit_button = form.querySelector('.hidden-submit')
+
+    submit_button.click()
   }
 
 
