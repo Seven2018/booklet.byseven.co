@@ -43,14 +43,12 @@
         <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
           <p class="p-2 bkt-green mx-5" id="xhr-form-status-btn">Up to date</p>
 
-          <a href='<%= complete_interview_path(interview_id: @interview.id) if fully_answered %>'
-             data-url='<%= complete_interview_path(interview_id: @interview.id) %>'
+          <a href='<%= lock_interview_path(interview_id: @interview.id) if fully_answered %>'
+             data-url='<%= lock_interview_path(interview_id: @interview.id) %>'
              data-remote='true'
-             id='submit-interview-link'
-             class='ml-2rem d-none'>
+             id='lock-interview-link'
+             class='d-none'>
           </a>
-
-          <%= link_to '', lock_interview_path(interview_id: @interview.id), remote: true, id: 'lock-interview-link', class: 'd-none' %>
 
           <button id="submit-interview"
                   class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
@@ -275,10 +273,8 @@
   }
 
   function submitAndLock() {
-    const submit = document.getElementById('submit-interview-link')
     const lock = document.getElementById('lock-interview-link')
 
-    submit.click()
     lock.click()
     setTimeout(() => {
       location.reload();
