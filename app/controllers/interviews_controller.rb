@@ -135,10 +135,7 @@ class InterviewsController < ApplicationController
 
     end
 
-    respond_to do |format|
-      format.html {redirect_to campaign_path(campaign)}
-      format.js
-    end
+    redirect_to interview_path(interview)
   end
 
   def unlock_interview

@@ -45,8 +45,7 @@
 
           <a href='<%= lock_interview_path(interview_id: @interview.id) if fully_answered %>'
              data-url='<%= lock_interview_path(interview_id: @interview.id) %>'
-             data-remote='true'
-             id='lock-interview-link'
+             id='submit-interview-link'
              class='d-none'>
           </a>
 
@@ -196,8 +195,10 @@
 <!---------------->
 
 <script>
-  auto_save = true
-  doubleClickGuardian = false
+  var auto_save = true
+  var doubleClickGuardian = false
+  var timer
+  const waitTime = 1000
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
@@ -212,24 +213,15 @@
     else return false;
   }
 
-  function autoSave(element, delayed = false) {
-    if (delayed && auto_save) {
-      auto_save = false
-      setTimeout(function () {
-        auto_save = true
-        const status = document.getElementById('xhr-form-status-btn')
-        status.classList.remove('bkt-green')
-        status.classList.add('bkt-yellow')
-        status.innerText = 'Updating...'
-        element.closest('form').querySelector('.hidden-submit').click()
-      }, 1000)
-    } else {
-      const status = document.getElementById('xhr-form-status-btn')
-      status.classList.remove('bkt-green')
-      status.classList.add('bkt-yellow')
-      status.innerText = 'Updating...'
-      element.closest('form').querySelector('.hidden-submit').click()
-    }
+  function autoSave(element) {
+    updateStatusMessage("Updating...")
+    const form = element.closest('form')
+
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      form.querySelector('.hidden-submit').click()
+    }, waitTime);
   }
 
   function enableSubmit() {
@@ -273,12 +265,9 @@
   }
 
   function submitAndLock() {
-    const lock = document.getElementById('lock-interview-link')
+    const submit_button = document.getElementById('submit-interview-link')
 
-    lock.click()
-    setTimeout(() => {
-      location.reload();
-    }, 500)
+    submit_button.click()
   }
 
   // AUTO UPDATE TEXTAREA HEIGHT //
@@ -342,6 +331,33 @@
     element.classList.add('hidden')
     storage.value = ''
     submit_button.click()
+  }
+
+
+  ////////////////////
+  // STATUS MESSAGE //
+  ////////////////////
+
+  function updateStatusMessage(message) {
+    const message_storage = document.getElementById('xhr-form-status-btn')
+
+    if (message_storage == undefined) return
+
+    if (message == 'Up to date') {
+      message_storage.classList.remove('bkt-red')
+      message_storage.classList.remove('bkt-yellow')
+      message_storage.classList.add('bkt-green')
+    } else if (message == 'Update failed') {
+      message_storage.classList.remove('bkt-green')
+      message_storage.classList.remove('bkt-yellow')
+      message_storage.classList.add('bkt-red')
+    } else {
+      message_storage.classList.remove('bkt-green')
+      message_storage.classList.remove('bkt-red')
+      message_storage.classList.add('bkt-yellow')
+    }
+
+    message_storage.innerText = message
   }
 
 
