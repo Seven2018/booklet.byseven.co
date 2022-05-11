@@ -26,17 +26,17 @@
         <% @tag_categories.each do |category| %>
 
           <div class="mt-3">
-            <label for="<%= category.name.sub(' ', '') %>" class="d-flex">
+            <label for="<%= category.name.gsub(' ', '') %>" class="d-flex">
               <%= category.name %>:
             </label>
             <input
               type="text"
               class="width-100 p-1"
               name="tags[<%= category.name %>]"
-              id="<%= category.name.sub(' ', '') %>"
+              id="<%= category.name.gsub(' ', '') %>"
               data-profile-tag-category-target="tagCategories"
               data-tag-category-id="<%= category.id %>"
-              data-selector="#<%= category.name.sub(' ', '') %>"
+              data-selector="#<%= category.name.gsub(' ', '') %>"
               data-tags-available="<%= Tag.where(tag_category_id: category.id).to_json(only: [:id, :tag_name]) %>"
             >
           </div>
