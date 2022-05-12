@@ -67,6 +67,9 @@ gem 'faker'
 gem 'cloudinary'
 gem 'local_time'
 
+# API
+gem 'active_model_serializers'
+
 group :development do
   # gem 'better_errors'
   # gem 'binding_of_caller'

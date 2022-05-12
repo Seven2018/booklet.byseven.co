@@ -6,7 +6,7 @@ class Objective::ElementPolicy < ApplicationPolicy
 
   def show?
     #TODO Better definition of this policy
-    user == record.employee || record.manager
+    true
   end
 
   def update?

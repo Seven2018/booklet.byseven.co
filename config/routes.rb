@@ -153,12 +153,23 @@ Rails.application.routes.draw do
 
   # OBJECTIVES
   namespace :objective do
-    resources :elements
+    resources :elements do
+      collection { get 'list' }
+      member do
+        post :archive
+      end
+    end
     get :my_objectives, controller: :elements
     get :my_team_objectives, controller: :elements
     resources :indicators, only: %i[update destroy]
     resources :logs
-    resources :users, only: :index
+    resources :users, only: [:index, :show] do
+      member do
+        get :info
+        get :list_current
+        get :list_archived
+      end
+    end
   end
 
   # PAGES

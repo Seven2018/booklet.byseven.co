@@ -2,8 +2,19 @@ class Objective::ElementsController < ApplicationController
   before_action :show_navbar_objective
   before_action :set_objective_element, only: [:show, :update]
 
+  skip_forgery_protection
+
+  skip_after_action :verify_authorized, only: [:archive, :destroy]
+
   def index
-    @objectives = policy_scope(Objective::Element).where(company: current_user.company)
+    policy_scope(Objective::Element)
+  end
+
+  def list
+    @users = User.where(company: current_user.company)
+    authorize @users
+
+    render json: @users
   end
 
   def new
@@ -67,6 +78,27 @@ class Objective::ElementsController < ApplicationController
   def my_team_objectives
     @objectives = Objective::Element.all
     authorize @objectives
+  end
+
+  def archive
+    objective = Objective::Element.find(params[:id])
+
+    if objective.update(status: :archived)
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
+
+  def destroy
+    objective = Objective::Element.find(params[:id])
+    model = objective.destroy
+
+    if model.valid?
+      head :ok
+    else
+      render json: model.errors.messages
+    end
   end
 
   private
