@@ -47,24 +47,20 @@
 
   </div>
 
-  <%# TODO improve : brittle ! %>
-  <div style='
-    height: 2rem;
-    top: 2.75rem;
-    left: calc(50vw - 7.5rem);
-    position: absolute;
-  '>
-    <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
-  </div>
-
   <div>
+
     <ul class="flex-row-between-centered">
+
+      <div class="mr-1rem">
+        <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
+      </div>
 
       <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white', hover_background_color: 'bkt-bg-dark-orange-hover') %>
 
       <%= render_component NavbarUserProfileComponent.new(user: current_user) %>
 
     </ul>
+
   </div>
 
 </div>
@@ -72,9 +68,16 @@
 
 <% if @multi_step_form_navbar_content.present? %>
   <div class="navbar-admin">
+
+    <div class="pos-abs"
+         style="top: 1.75rem; left: 2rem;">
+      <%= render_component Buttons::BackButton.new(fallback: trainings_path) %>
+    </div>
+
     <div class="navbar-admin__button">
       <h4><%= @multi_step_form_navbar_content %></h4>
     </div>
+
   </div>
 <% end %>
 
