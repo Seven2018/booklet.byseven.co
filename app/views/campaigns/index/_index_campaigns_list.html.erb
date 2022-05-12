@@ -25,8 +25,8 @@
       <% campaign.tags.each_with_index do |tag, idx| %>
 
         <% if idx > 2 && !tag_overflow %>
-          <% tag_overflow = true %>
           <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px">+<%= campaign.tags.count - 3 %></div>
+          <% break %>
         <% else %>
           <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px"><%= tag %></div>
         <% end %>

@@ -141,7 +141,7 @@
             as: :text,
             input_html: {
               value: current_answer,
-              onkeyup: 'autoSave(this, true); enableSubmit();'
+              onkeyup: 'autoSave(this); enableSubmit();'
             },
             required: is_required,
             disabled: read_only %>
@@ -180,7 +180,7 @@
             as: :text,
             input_html: {
               value: current_comments,
-              onkeyup: 'autoSave(this, true);'
+              onkeyup: 'autoSave(this);'
             },
             required: false) %>
 
@@ -193,7 +193,7 @@
         as: :text,
         input_html: {
           value: current_objective,
-          onkeyup: 'autoSave(this, true); enableSubmit();'
+          onkeyup: 'autoSave(this); enableSubmit();'
         },
         required: is_required,
         disabled: read_only
@@ -216,7 +216,7 @@
         <div class="booklet-select__dropdown hidden">
           <% question.options.sort_by {|k, v| v}.each do |option| %>
             <div class="booklet-select__option" onclick='BookletSelectSubmit(this);'>
-              <p><%= option %></p>
+              <p><%= option[0] %></p>
             </div>
           <% end %>
         </div>
@@ -233,7 +233,7 @@
             as: :text,
             input_html: {
               value: current_comments,
-              onkeyup: 'autoSave(this, true);'
+              onkeyup: 'autoSave(this);'
             },
             required: false,
             disabled: read_only) if question.allow_comments %>

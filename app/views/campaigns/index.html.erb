@@ -20,6 +20,7 @@
     </div>
 
     <div class="campaigns-index__main"
+         id="stimulus-change-page-controller"
          data-controller="change-page">
 
       <div id="searchbar"
@@ -58,7 +59,7 @@
                                  }
                                } %>
 
-          <%= f.hidden_field :tags %>
+          <%= f.hidden_field :tags, data: {filter: :tags} %>
           <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
 
           <%=
@@ -68,7 +69,8 @@
               onclick: "document.querySelector('body').classList.add('wait');",
               data: {
                 remember_search_target: :submit,
-                change_page_target: :submit
+                change_page_target: :submit,
+                search_form: :submit
               }
             )
           %>
@@ -93,7 +95,7 @@
           <div class="flex-row-end-centered">
             <button data-action="click->campaign-tag-filter#displayList" class="flex-row-between-centered bkt-blue px-3 py-2 bkt-box-shadow-medium">
               <span class="iconify m-2" data-width="20" data-height="20" data-icon="fluent:filter-28-filled"></span>
-              <p>Filter</p>
+              <p>Filter <span class="rounded-5px bkt-bg-light-blue px-2 hidden" data-campaign-tag-filter-target="filterCount"></span></p>
             </button>
           </div>
           <div
