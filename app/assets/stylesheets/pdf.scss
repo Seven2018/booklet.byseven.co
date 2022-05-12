@@ -146,13 +146,29 @@ div.nobreak--pdf{ page-break-inside: avoid; }
   margin-bottom: 1rem;
 }
 
+.select-filled--pdf, .select-empty--pdf {
+  height: 18px;
+  width: 18px;
+  border-radius: 10px;
+  border: 2px solid #3177B7;
+}
+
+.select-filled--pdf {
+  background-color: #3177B7;
+}
+
+.select-filled-text--pdf, .select-empty-text--pdf {
+  font-size: 1rem;
+  margin: 0 0 0 1rem;
+}
+
+.select-filled-text--pdf { color: #3177B7; width: 80%;}
+.select-empty-text--pdf { color: #C4C4C4; width: 80%;}
+
 .rating--pdf > div > svg, .rating-crossed--pdf > div > svg {
   margin-right: 1rem;
 }
 
-
-.rating-filled-text { color: #3177B7; }
-.rating-empty-text { color: #C4C4C4; }
 
 .interview-crossed-answer__text--pdf, .interview-crossed-answer__objective--pdf {
   font-style: italic;

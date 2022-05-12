@@ -86,30 +86,6 @@ class InterviewsController < ApplicationController
     end
   end
 
-  def complete_interview
-    interview_id = params[:interview_id]
-
-    interview = Interview.find interview_id
-    authorize interview
-
-    interview.submit!
-
-    if interview.label != 'Crossed'
-      # If it's not a crossed and Manager, Employee have answer/lock then
-      # we update cross review from not_available_yet to not_started
-      other_interview_label = interview.employee? ? 'Manager' : 'Employee'
-      other_interview = Interview.find_by(label: other_interview_label, employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
-      cross_interview = Interview.find_by(label: 'Crossed', employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
-      if other_interview.status.to_sym == :submitted && cross_interview
-        cross_interview.update(status: :not_started)
-      end
-    end
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def lock_interview
     interview_id = params[:interview_id]
 
@@ -127,6 +103,17 @@ class InterviewsController < ApplicationController
 
     interview.submit!
     interview.lock!
+
+    if interview.label != 'Crossed'
+      # If it's not a crossed and Manager, Employee have answer/lock then
+      # we update cross review from not_available_yet to not_started
+      other_interview_label = interview.employee? ? 'Manager' : 'Employee'
+      other_interview = Interview.find_by(label: other_interview_label, employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
+      cross_interview = Interview.find_by(label: 'Crossed', employee: interview.employee, interviewer: interview.interviewer, campaign: interview.campaign)
+      if cross_interview && other_interview.status.to_sym == :submitted
+        cross_interview.update(status: :not_started)
+      end
+    end
 
     if interview.set.locked?
 
@@ -148,10 +135,7 @@ class InterviewsController < ApplicationController
 
     end
 
-    respond_to do |format|
-      format.html {redirect_to campaign_path(campaign)}
-      format.js
-    end
+    redirect_to interview_path(interview)
   end
 
   def unlock_interview

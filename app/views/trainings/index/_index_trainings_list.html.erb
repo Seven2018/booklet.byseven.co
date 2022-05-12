@@ -21,23 +21,30 @@
     <%= link_to '', training_path(training), class: 'stretched-link' %>
 
     <% if TrainingPolicy.new(current_user, training).destroy? %>
-      <div class="cursor-pointer z-index-5" onclick="openContentMenu(this);">
-          <i class="fas fa-ellipsis-v"></i>
-      </div>
 
-      <div
-        data-actions="interview-form"
-        class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
-        style='right: 0; top: 4rem;'
-      >
-        <%= link_to 'Delete', training_path(training),
-          method: :delete,
-          remote: true,
-          class: 'px-3 py-2 bkt-light-grey-hover w-100',
-          data: {
-            confirm: 'Are you sure ?'
-          }
-        %>
+      <div data-controller="dropdown"
+           class="pos-rel d-flex justify-content-end">
+
+        <div class="flex-row-center-centered height-2_5rem width-2_5rem-forced rounded-15px bkt-light-grey bkt-white-hover            bkt-bg-light-grey-hover cursor-pointer z-index-5 smooth-transition"
+              data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide">
+          <i class="fas fa-ellipsis-v"></i>
+        </div>
+
+        <div
+          data-dropdown-target="menu"
+          class="pos-abs rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
+          style='right: 0; top: 3rem; width: 120px;'
+        >
+          <%= link_to 'Delete', training_path(training),
+            method: :delete,
+            remote: true,
+            class: 'px-3 py-2 bkt-light-grey-hover w-100',
+            data: {
+              confirm: 'Are you sure ?'
+            }
+          %>
+        </div>
+
       </div>
     <% end %>
   </div>
@@ -45,22 +52,32 @@
 <% end %>
 
 <% if @any_more %>
+
   <div class="paginate-container paginate-container-orange">
+
     <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
-      <div class="paginate__previous-button paginate__button-orange" onclick='changePage("previous");'>
+
+      <div class="paginate__previous-button paginate__button-orange"
+           data-action='click->change-page#previous'>
         <span class="iconify" data-icon="fontisto:angle-left"></span>
         <p>Previous</p>
       </div>
+
     <% end %>
 
     <%= paginate @trainings, left: 3, right: 1 %>
 
     <% if @trainings.count == 10 && @any_more %>
-      <div class="paginate__next-button paginate__button-orange" onclick='changePage("next");'>
+
+      <div class="paginate__next-button paginate__button-orange"
+           data-action='click->change-page#next'>
         <p>Next</p>
         <span class="iconify" data-icon="fontisto:angle-right"></span>
       </div>
+
     <% end %>
+
   </div>
+
 <% end %>
 

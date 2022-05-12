@@ -41,7 +41,7 @@ services:
 
   rails:
     build: .
-    command: bash -c "cd /app && bundle install && bundle exec rails db:migrate && bundle exec rails s -b 0.0.0.0"
+    command: bash -c "cd /app && bundle install && bundle exec rails db:migrate ; rm tmp/pids/server.pid ; bundle exec rails s -b 0.0.0.0"
     ports:
       - '3000:3000'
     environment:
@@ -69,6 +69,8 @@ services:
       - RAILS_ENV=development
       - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
       - DOCKER_BKT=true
+    networks:
+      - seven_booklet
 
 networks:
   seven_booklet:

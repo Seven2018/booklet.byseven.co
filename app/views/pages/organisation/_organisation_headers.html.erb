@@ -20,7 +20,7 @@
   <p>Manager</p>
 </div>
 
-<% @tag_categories.each do |tag_category| %>
+<% @tag_categories.where.not(name: 'Job Title').order(position: :asc).each do |tag_category| %>
   <div class="organisation__users-headers-div">
     <p><%= tag_category.name %></p>
   </div>

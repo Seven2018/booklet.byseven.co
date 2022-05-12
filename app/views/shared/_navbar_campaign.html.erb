@@ -1,8 +1,8 @@
 <div class="navbar navbar-expand-sm navbar-light navbar__blue px-2rem">
 
   <div class="flex-row-between-centered">
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' href="/home">
-      <span class="iconify fs-2_4rem bkt-blue" data-icon="bxs:home"></span>
+    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-blue-hover bkt-blue bkt-white-hover bkt-box-shadow-compact rounded-25px smooth-transition' href="/home">
+      <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
     </a>
 
     <% if CampaignPolicy.new(current_user, nil).my_interviews? %>
@@ -36,35 +36,46 @@
       </button>
     <% end %>
 
-  </div>
+    <% if CampaignPolicy.new(current_user, nil).create? %>
+      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-light-blue ml-2rem', data: {
+        handle: 'create-campaign-cta'
+      } do  %>
+        Create Campaign
+      <% end %>
+    <% end %>
 
-  <%# TODO improve : brittle ! %>
-  <div style='
-    height: 2rem;
-    top: 2.75rem;
-    left: calc(50vw - 7.5rem);
-    position: absolute;
-  '>
-    <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
   </div>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
     <ul class="flex-row-between-centered">
 
-      <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white') %>
+      <div class="mr-1rem">
+        <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
+      </div>
+
+      <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white', hover_background_color: 'bkt-bg-dark-blue-hover') %>
 
       <%= render_component NavbarUserProfileComponent.new(user: current_user) %>
 
     </ul>
+
   </div>
 
 </div>
 
 <% if @multi_step_form_navbar_content.present? %>
   <div class="navbar-admin">
+
+    <div class="pos-abs"
+         style="top: 1.75rem; left: 2rem;">
+      <%= render_component Buttons::BackButton.new(fallback: campaigns_path) %>
+    </div>
+
     <div class="navbar-admin__button">
       <h4><%= @multi_step_form_navbar_content %></h4>
     </div>
+
   </div>
 <% end %>
 
@@ -75,14 +86,14 @@
 
     <% if CampaignPolicy.new(current_user, nil).create? %>
       <%= link_to campaigns_path,
-        class: "#{klass} #{active_klass if @controller_action == :campaigns_index}" do %>
+        class: "#{klass} #{active_klass if @controller_action == :campaigns_index} rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Campaigns</h4>
       <% end %>
     <% end %>
 
     <% if InterviewFormPolicy.new(current_user, nil).create? %>
       <%= link_to interview_forms_path,
-        class: "#{klass} #{active_klass if @controller_action == :interview_forms_index}" do %>
+        class: "#{klass} #{active_klass if @controller_action == :interview_forms_index} rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Templates</h4>
       <% end %>
     <% end %>
@@ -93,7 +104,7 @@
           active_klass if
             @controller_action == :reports_index ||
             @controller_action == :reports_new
-        }" do %>
+        } rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Report</h4>
       <% end %>
     <% end %>

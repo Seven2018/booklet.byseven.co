@@ -1,5 +1,6 @@
 class Trainings::ReportsController < ApplicationController
-  before_action :show_navbar_training, :show_navbar_admin, :ensure_company
+  before_action :show_navbar_admin, except: [:edit]
+  before_action :show_navbar_training, :ensure_company
 
   def index
     @reports = policy_scope(TrainingReport).at_least_started.order(created_at: :desc)

@@ -1,8 +1,8 @@
 <div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light navbar-orange bkt-bg-orange px-2rem">
   <div class="flex-row-between-centered">
 
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-box-shadow-compact rounded-25px' href="/home">
-      <span class="iconify fs-2_4rem bkt-orange" data-icon="bxs:home"></span>
+    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-orange-hover bkt-orange bkt-white-hover bkt-box-shadow-compact rounded-25px smooth-transition' href="/home">
+      <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
     </a>
 
     <% if TrainingPolicy.new(current_user, nil).my_trainings? %>
@@ -47,24 +47,20 @@
 
   </div>
 
-  <%# TODO improve : brittle ! %>
-  <div style='
-    height: 2rem;
-    top: 2.75rem;
-    left: calc(50vw - 7.5rem);
-    position: absolute;
-  '>
-    <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
-  </div>
-
   <div>
+
     <ul class="flex-row-between-centered">
 
-      <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white') %>
+      <div class="mr-1rem">
+        <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
+      </div>
+
+      <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white', hover_background_color: 'bkt-bg-dark-orange-hover') %>
 
       <%= render_component NavbarUserProfileComponent.new(user: current_user) %>
 
     </ul>
+
   </div>
 
 </div>
@@ -72,9 +68,16 @@
 
 <% if @multi_step_form_navbar_content.present? %>
   <div class="navbar-admin">
+
+    <div class="pos-abs"
+         style="top: 1.75rem; left: 2rem;">
+      <%= render_component Buttons::BackButton.new(fallback: trainings_path) %>
+    </div>
+
     <div class="navbar-admin__button">
       <h4><%= @multi_step_form_navbar_content %></h4>
     </div>
+
   </div>
 <% end %>
 
@@ -86,7 +89,7 @@
 
     <% if TrainingPolicy.new(current_user, nil).create? %>
       <%= link_to trainings_path,
-        class: "#{klass} #{active_klass if @controller_action == :trainings_index}" do %>
+        class: "#{klass} #{active_klass if @controller_action == :trainings_index} rounded-10px bkt-bg-light-orange-hover" do %>
         <h4>Trainings</h4>
       <% end %>
     <% end %>
@@ -96,7 +99,7 @@
         class: "#{klass} #{
           active_klass if
             @controller_action == :reports_index
-        }" do %>
+        } rounded-10px bkt-bg-light-orange-hover" do %>
         <h4>Report</h4>
       <% end %>
     <% end %>

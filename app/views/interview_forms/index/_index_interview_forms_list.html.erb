@@ -2,9 +2,10 @@
   <% lines = [
     template.class,
     template.interview_questions.count,
-    template.updated_at.strftime("%d/%m/%Y")
-    ] %>
-  <% width = (1/lines.count.to_f)*100 %>
+    template.updated_at.strftime("%d/%m/%Y"),
+    template.categories.pluck(:title)
+  ] %>
+  <% width = (1 / lines.count.to_f) * 100 %>
   <div
     data-interview-form-id="<%= template.id %>"
     class="d-flex justify-content-between align-items-center px-0 py-2rem border-top-bkt-light-grey position-relative">
@@ -17,9 +18,23 @@
       <%= template.title %>
     </div>
 
-    <% lines.each do |line| %>
+    <% lines.each_with_index do |line, idx_temp| %>
       <div class='fs-1_6rem' style='flex-basis: <%= width %>%;'>
-        <%= line %>
+        <% if idx_temp == 3 %>
+
+          <% tag_overflow = false %>
+          <% line.each_with_index do |tag, idx| %>
+            <% if idx > 1 && !tag_overflow %>
+              <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem">+<%= line.count - 2 %></div>
+              <% break %>
+            <% else %>
+              <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem"><%= tag %></div>
+            <% end %>
+          <% end %>
+
+        <% else %>
+          <%= line %>
+        <% end %>
       </div>
     <% end %>
 
@@ -34,16 +49,16 @@
         style='right: 0; top: 6rem;'
       >
         <%= link_to 'Duplicate', duplicate_interview_form_path(template),
-          class: 'px-3 py-2 bkt-light-grey-hover w-100'
+                    class: 'px-3 py-2 bkt-light-grey-hover w-100'
         %>
         <% unless Campaign.where(interview_form: template).exists? %>
           <%= link_to 'Delete', interview_form_path(template),
-            method: :delete,
-            remote: true,
-            data: {
-              confirm: 'Are you sure ?'
-            },
-            class: 'px-3 py-2 bkt-light-grey-hover w-100'
+                      method: :delete,
+                      remote: true,
+                      data: {
+                        confirm: 'Are you sure ?'
+                      },
+                      class: 'px-3 py-2 bkt-light-grey-hover w-100'
           %>
         <% end %>
       </div>
@@ -53,22 +68,32 @@
 <% end %>
 
 <% if @any_more %>
+
   <div class="paginate-container paginate-container-blue">
+
     <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
-      <div class="paginate__previous-button paginate__button-blue" onclick='changePage("previous");'>
+
+      <div class="paginate__previous-button paginate__button-blue"
+           data-action='click->change-page#previous'>
         <span class="iconify" data-icon="fontisto:angle-left"></span>
         <p>Previous</p>
       </div>
+
     <% end %>
 
     <%= paginate @templates, left: 3, right: 1 %>
 
     <% if @templates.count == 10 && @any_more %>
-      <div class="paginate__next-button paginate__button-blue" onclick='changePage("next");'>
+
+      <div class="paginate__next-button paginate__button-blue"
+           data-action='click->change-page#next'>
         <p>Next</p>
         <span class="iconify" data-icon="fontisto:angle-right"></span>
       </div>
+
     <% end %>
+
   </div>
+
 <% end %>
 

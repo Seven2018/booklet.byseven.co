@@ -10,6 +10,11 @@ class Users::SessionsController < Devise::SessionsController
     super
   end
 
+  # POST /resource/sign_in
+  def create
+    super
+  end
+
   def check
     @user = User.find_by(email)
 
@@ -26,6 +31,10 @@ class Users::SessionsController < Devise::SessionsController
       @user.invite! if @user.present?
       render 'devise/sessions/email_sent', notice: 'Email sent'
     end
+  end
+
+  def auth_options
+    { scope: resource_name, recall: "#{controller_path}#check" }
   end
 
   private
