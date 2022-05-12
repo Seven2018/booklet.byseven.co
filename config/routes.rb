@@ -154,7 +154,11 @@ Rails.application.routes.draw do
   # OBJECTIVES
   namespace :objective do
     resources :elements do
-      collection { get 'list' }
+      collection do
+        get :list
+        get :my_team_objectives_current_list
+        get :my_team_objectives_archived_list
+      end
       member do
         post :archive
       end

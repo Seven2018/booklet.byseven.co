@@ -45,8 +45,9 @@ import '../vue/plugins/directives'
 import '../vue/plugins/pop-up'
 import routes from "../vue/constants/routes";
 import App from '../vue/app.vue'
-import ObjectiveIndex from '../vue/pages/objectives/index.vue'
+import ObjectiveIndex from '../vue/pages/objectives/users'
 import ObjectiveUserShow from '../vue/pages/objectives/users/show.vue'
+import MyTeamObjectives from '../vue/pages/objectives/my_team_objectives'
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       App,
       ObjectiveIndex,
       ObjectiveUserShow,
+      MyTeamObjectives
     }
   })
 })

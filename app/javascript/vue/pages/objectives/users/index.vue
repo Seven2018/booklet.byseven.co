@@ -100,11 +100,11 @@
 </template>
 
 <script>
-import BktButton from '../../components/BktButton';
-import BktBox from "../../components/BktBox";
-import BktSearch from "../../components/bktSearch";
-import IndexTable from '../../components/IndexTable'
-import store from "../../store";
+import BktButton from '../../../components/BktButton';
+import BktBox from "../../../components/BktBox";
+import BktSearch from "../../../components/bktSearch";
+import IndexTable from '../../../components/IndexTable'
+import store from "../../../store";
 
 export default {
   data() {

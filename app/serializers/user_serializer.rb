@@ -3,6 +3,8 @@ class UserSerializer < ActiveModel::Serializer
 
   belongs_to :manager
 
+  has_many :objective_elements
+
   def objectives_count
     object.objective_elements.count
   end

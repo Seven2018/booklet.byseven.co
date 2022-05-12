@@ -8,6 +8,8 @@ const routes = {
   objective_user_list_archived: '/objective/users/{id}/list_archived',
   objective_elements_archive: '/objective/elements/{id}/archive',
   objective_elements_delete: '/objective/elements/{id}',
+  objective_my_team_current_list: '/objective/elements/my_team_objectives_current_list',
+  objective_my_team_archived_list: '/objective/elements/my_team_objectives_archived_list',
 }
 
 export default {

@@ -3,7 +3,9 @@ class Objective::ElementsController < ApplicationController
 
   skip_forgery_protection
 
-  skip_after_action :verify_authorized, only: [:archive, :destroy]
+  skip_after_action :verify_authorized, only: [
+    :archive, :destroy, :my_objectives, :my_team_objectives, :my_team_objectives_current_list, :my_team_objectives_archived_list
+  ]
 
   def index
     policy_scope(Objective::Element)
@@ -13,6 +15,7 @@ class Objective::ElementsController < ApplicationController
     @users = User.where(company: current_user.company)
     authorize @users
 
+    # render json: @users, include: ['objective_elements.objective_indicator']
     render json: @users
   end
 
@@ -59,13 +62,21 @@ class Objective::ElementsController < ApplicationController
   end
 
   def my_objectives
-    @objectives = Objective::Element.all
-    authorize @objectives
   end
 
   def my_team_objectives
-    @objectives = Objective::Element.all
-    authorize @objectives
+  end
+
+  def my_team_objectives_current_list
+    employees = current_user.employees.joins(:objective_elements).where(objective_elements: { status: :opened }).distinct
+
+    render json: employees, include: ['objective_elements.objective_indicator']
+  end
+
+  def my_team_objectives_archived_list
+    employees = current_user.employees.joins(:objective_elements).where(objective_elements: { status: :archived }).distinct
+
+    render json: employees, include: ['objective_elements.objective_indicator']
   end
 
   def archive

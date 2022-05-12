@@ -7,8 +7,10 @@
     <template v-slot="{id, title, due_date, objective_indicator}">
       <td>
         <div class="flex-row-start-centered max-w-25rem">
-          <span v-if="isCompleted(objective_indicator)" class="iconify mr-2 bkt-light-grey5" data-width="20"
-                data-icon="akar-icons:check"></span>
+          <div v-if="isCompleted(objective_indicator)">
+            <span  class="iconify mr-2 bkt-light-grey5" data-width="20"
+                  data-icon="akar-icons:check"></span>
+          </div>
           <p
               class="font-weight-500 text-truncate"
               :class="{'bkt-light-grey5': isCompleted(objective_indicator)}"

@@ -10,7 +10,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="row in tableData" class="border-bottom-bkt-light-grey5-not-last-child bkt-bg-light-grey10-hover">
+    <tr v-for="row in tableData" class="border-bottom-bkt-light-grey5-not-last-child" :class="{'bkt-bg-light-grey10-hover': withoutHover === false}">
       <slot v-bind="row"></slot>
     </tr>
     </tbody>
@@ -19,7 +19,17 @@
 
 <script>
 export default {
-  props: ['headers', 'tableData', 'headerClass']
+  props: {
+    headers: Array,
+    tableData: Array,
+    headerClass: String,
+    withoutHover: {
+      type: Boolean,
+      default() {
+        return false
+      }
+    }
+  }
 }
 </script>
 

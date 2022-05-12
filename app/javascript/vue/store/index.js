@@ -4,6 +4,7 @@ import searchModule from "./search.module";
 import adminObjectivesModule from "./admin-objectives.module";
 import objectiveUserModule from "./objective-user.module";
 import popUpModule from "./pop-up.module";
+import myTeamObjectivesModule from "./my-team-objectives.module";
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
     search: searchModule,
     adminObjectives: adminObjectivesModule,
     objectiveUser: objectiveUserModule,
-    popUp: popUpModule
+    popUp: popUpModule,
+    myTeamObjectives: myTeamObjectivesModule
   }
 })
 
