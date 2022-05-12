@@ -2,7 +2,7 @@
   <div>
     <div v-if="objectiveUser.user" class="width-70 mt-5 mx-auto">
       <div class="flex-row-center-centered">
-        <h1 class="fs-2_4rem font-weight-500">My Objective</h1>
+        <h1 class="fs-2_4rem font-weight-500">My Objectives</h1>
       </div>
       <div class="flex-row-center-centered mt-5">
         <img class="rounded-circle width-5rem height-5rem border-bkt-blue-2px"
