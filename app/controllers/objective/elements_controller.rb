@@ -55,14 +55,33 @@ class Objective::ElementsController < ApplicationController
   def show
     authorize @objective
 
+    set_logs
     @objective = @objective.decorate
   end
 
   def update
     authorize @objective
 
-    @objective.update(objective_params)
+    @objective.assign_attributes(objective_params)
+    changed_attributes = @objective.changed_attributes
 
+    if changed_attributes && @objective.save
+
+      changed_attributes.each do |k, v|
+        log_params = {title: "#{k.capitalize} updated",
+                    owner: current_user,
+                    log_type: "#{k}_updated",
+                    initial_value: v,
+                    updated_value: objective_params[k],
+                    objective_element_id: @objective.id
+                   }
+
+        Objective::Log.create(log_params)
+      end
+
+    end
+
+    set_logs
     @objective = @objective.decorate
 
     respond_to do |format|
@@ -102,6 +121,10 @@ class Objective::ElementsController < ApplicationController
   end
 
   private
+
+  def set_logs
+    @logs = @objective.objective_logs.order(created_at: :desc)
+  end
 
   def set_objective_element
     @objective = Objective::Element.find(params[:id])

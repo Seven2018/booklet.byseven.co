@@ -82,11 +82,18 @@
       <%= render 'objective/elements/show/indicator_values', indicator: indicator %>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center width-100">
+    <div class="d-flex justify-content-center align-items-center width-100 mb-10rem">
 
       <a class='bkt-btn-objective-blue bkt-white' data-toggle='modal' data-target='#updateCompletion'>
         Update completion
       </a>
+
+    </div>
+
+    <div id="objective-logs"
+         class="width-80 bkt-droplight-shadow rounded-5px">
+
+      <%= render 'objective/elements/show/objective_logs', logs: @logs %>
 
     </div>
 

@@ -10,20 +10,26 @@ class Objective::IndicatorsController < ApplicationController
     log_params = {title: 'Completion updated',
                   comments: params.dig(:objective_log, :comments),
                   owner: current_user,
+                  log_type: :value_updated,
                   initial_value: options['current_value'],
                   objective_element_id: @indicator.objective_element.id,
                   objective_indicator_id: @indicator.id
                  }
 
-    if @indicator.multi_choice?
+    if @indicator.boolean?
+      options['current_value'] =
+        params[:indicator_checked].present? ? options['target_value'] : options['starting_value']
+    elsif @indicator.multi_choice?
       options['current_value'] = options[params[:selected_option]] if params[:selected_option].present?
-
-      log_params.merge!(updated_value: options[params[:selected_option]])
-
-      @indicator.update options: options if options['current_value'] != initial_value
     end
 
-    Objective::Log.create(log_params) if options['current_value'] != initial_value
+    log_params.merge!(updated_value: options[params[:selected_option]])
+
+    @indicator.update options: options if options['current_value'] != initial_value
+
+    Objective::Log.create(log_params.merge(updated_value: options['current_value'])) if options['current_value'] != initial_value
+
+    @logs = @indicator.objective_element.objective_logs.order(created_at: :desc)
 
     respond_to do |format|
       format.js

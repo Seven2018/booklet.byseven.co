@@ -1,2 +1,4 @@
 document.getElementById('objective_attributes').innerHTML = '<%= j render("objective/elements/show/objective_attributes", objective: @objective) %>';
+document.getElementById('objective-logs').innerHTML = '<%= j render("objective/elements/show/objective_logs", logs: @logs) %>';
+
 document.getElementById('main-container').objectiveShow.setup()

@@ -121,6 +121,17 @@ export default class extends Controller {
   // UPDATE INDICATOR //
   //////////////////////
 
+  switchSide(e) {
+    const element = e.currentTarget
+    const switch_button = element.parentNode
+
+    if (element.checked == true) {
+      setTimeout(function(){switch_button.classList.add('switch_checked')}, 100)
+    } else {
+      setTimeout(function(){switch_button.classList.remove('switch_checked')}, 100)
+    }
+  }
+
   selectOption(e) {
     const modal = e.currentTarget.closest('.modal')
     const input = e.currentTarget.querySelector('input')
