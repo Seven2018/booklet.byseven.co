@@ -42,7 +42,7 @@ class TrainingDraft::BaseController < ApplicationController
   end
 
   def set_multi_step_form_navbar_content
-    @multi_step_form_navbar_content = training_draft.content&.title.presence || 'New training'
+    @multi_step_form_navbar_content = training_draft.content&.title.presence || 'Book training'
   end
 
   def skip_pundit?

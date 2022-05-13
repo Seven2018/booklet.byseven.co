@@ -168,24 +168,24 @@
   // }
 
 
-  // function toggleTagCategoryDropdown(element) {
-  //   caret = element.querySelector('i')
-  //   angle = parseInt(caret.getAttribute('data-rotated'), 10)
-  //   caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
-  //   caret.setAttribute('data-rotated', (angle + 180).toString())
-  //   block = element.parentNode.parentNode.parentNode.parentNode;
-  //   if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
-  //     block.style.maxHeight = '10000px';
-  //     block.classList.add('active');
-  //   } else {
-  //     block.style.maxHeight = '61px';
-  //     block.classList.remove('active');
-  //   }
-  // }
+  function toggleTagCategoryDropdown(element) {
+    caret = element.querySelector('i')
+    angle = parseInt(caret.getAttribute('data-rotated'), 10)
+    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.setAttribute('data-rotated', (angle + 180).toString())
+    block = element.parentNode.parentNode.parentNode.parentNode;
+    if (block.style.maxHeight == '61px' || block.style.maxHeight == '') {
+      block.style.maxHeight = '10000px';
+      block.classList.add('active');
+    } else {
+      block.style.maxHeight = '61px';
+      block.classList.remove('active');
+    }
+  }
 
   // function hideClearFilterButton() {
   //   form = document.querySelector('.filter_user');
@@ -456,7 +456,7 @@
       users_array.push(el.value)
     })
     element.closest('form').querySelector('#csv_selected_users').value = users_array.join(',')
-    element.closest('.modal-content').querySelector('.btn-icon').click()
+    element.closest('.modal-content').querySelector('.action-modal__close').click()
     element.parentNode.querySelector('.hidden-submit').click()
   }
 

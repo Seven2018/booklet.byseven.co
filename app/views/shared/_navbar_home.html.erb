@@ -4,10 +4,12 @@
       <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
     </a>
 
-    <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :clear_bg_logo) %>
-
     <div>
       <ul class="flex-row-between-centered">
+
+        <div class="mr-1rem">
+          <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :clear_bg_logo) %>
+        </div>
 
         <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-dark-grey', hover_background_color: 'bkt-bg-light-grey-hover') %>
 
