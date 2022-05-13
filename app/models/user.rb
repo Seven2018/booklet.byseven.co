@@ -153,6 +153,7 @@ class User < ApplicationRecord
         user = User.new(row_h)
         user.lastname = user.lastname.upcase
         user.firstname = user.firstname.capitalize
+        user.email = user.email.downcase
         user.access_level_int = access_level&.to_sym
         user.access_level_int = :employee unless ['admin', 'manager', 'employee'].include?(access_level)
         user.access_level_int = :hr if access_level == 'admin'
