@@ -32,7 +32,7 @@
             @mouseover="setHover(`key-${id}-${idx}`)"
             @mouseleave="removeHover(`key-${id}-${idx}`)"
             :class="`key-${id}-${idx}`"
-            class="flex-row-start-centered pl-4"
+            class="flex-row-start-centered pl-4 my-2 py-2"
         >
           <div class="flex-row-start-centered max-w-25rem">
             <div v-if="isCompleted(element.objective_indicator)">
@@ -52,7 +52,7 @@
             @mouseover="setHover(`key-${id}-${idx}`)"
             @mouseleave="removeHover(`key-${id}-${idx}`)"
             :class="`key-${id}-${idx}`"
-            class="flex-row-start-centered"
+            class="flex-row-start-centered my-2 py-2"
         >
           <p
               class="font-weight-500"
@@ -89,7 +89,7 @@
             @mouseover="setHover(`key-${id}-${idx}`)"
             @mouseleave="removeHover(`key-${id}-${idx}`)"
             :class="`key-${id}-${idx}`"
-            class="flex-row-start-centered"
+            class="flex-row-start-centered my-2 py-2"
         >
           <p
               class="font-weight-500 text-truncate"
@@ -104,7 +104,7 @@
             @mouseover="setHover(`key-${id}-${idx}`)"
             @mouseleave="removeHover(`key-${id}-${idx}`)"
             :class="`key-${id}-${idx}`"
-            class="flex-row-start-centered"
+            class="flex-row-start-centered my-2 py-1"
         >
           <bkt-dots-button>
             <button
@@ -162,10 +162,9 @@ export default {
         close() {
         },
         confirm() {
-          // TODO: change dispatch
-          // store
-          //     .dispatch('objectiveUser/archiveObjectiveUser', id)
-          //     .then(() => this.$modal.close())
+          store
+              .dispatch('myTeamObjectives/archiveObjectiveUser', id)
+              .then(() => this.$modal.close())
         }
       })
     },
@@ -178,10 +177,9 @@ export default {
         close() {
         },
         confirm() {
-          // TODO: change dispatch
-          // store
-          //     .dispatch('objectiveUser/deleteObjectiveUser', id)
-          //     .then(() => this.$modal.close())
+          store
+              .dispatch('myTeamObjectives/deleteObjectiveUser')
+              .then(() => this.$modal.close())
         }
       })
     },

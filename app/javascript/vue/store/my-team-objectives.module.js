@@ -37,6 +37,26 @@ export default {
       } catch (e) {
         commit('setError', e.message)
       }
+    },
+    async archiveObjectiveUser({commit, dispatch}, objectiveId) {
+      try {
+        await axios.post(routes.generate('objective_elements_archive', {id: objectiveId}))
+
+        dispatch('fetchEmployeesCurrent')
+        dispatch('fetchEmployeesArchived')
+      } catch (e) {
+        commit('setError', e.message)
+      }
+    },
+    async deleteObjectiveUser({commit, dispatch}, objectiveId) {
+      try {
+        await axios.delete(routes.generate('objective_elements_delete', {id: objectiveId}))
+
+        dispatch('fetchEmployeesCurrent')
+        dispatch('fetchEmployeesArchived')
+      } catch (e) {
+        commit('setError', e.message)
+      }
     }
   }
 }
