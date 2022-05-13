@@ -153,7 +153,7 @@ class User < ApplicationRecord
         user = User.new(row_h)
         user.lastname = user.lastname.upcase
         user.firstname = user.firstname.capitalize
-        user.access_level_int = access_level.to_sym
+        user.access_level_int = access_level&.to_sym
         user.access_level_int = :employee unless ['admin', 'manager', 'employee'].include?(access_level)
         user.access_level_int = :hr if access_level == 'admin'
         user.company_id = company_id
@@ -175,7 +175,7 @@ class User < ApplicationRecord
       end
       tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: row_h['job_title'])
       unless tag.present?
-        tag = Tag.create(company_id: company_id, tag_category: category, tag_name: row_h['job_title'], tag_category_position: category.position)
+        tag = Tag.create(company_id: company_id, tag_category: category, tag_name: row_h['job_title'].strip, tag_category_position: category.position)
       end
       previous_job = UserTag.find_by(user: user, tag_category: category)
       update_job = update.present? && previous_job.present?
@@ -187,12 +187,12 @@ class User < ApplicationRecord
       tag_categories_to_create_user.each do |x|
         category = TagCategory.find_by(company_id: company_id, name: x)
         unless category.present?
-          category = TagCategory.create(company_id: company_id, name: x, position: tag_category_last_position + 1)
+          category = TagCategory.create(company_id: company_id, name: x.strip, position: tag_category_last_position + 1)
           tag_category_last_position += 1
         end
         tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x])
         unless tag.present?
-          tag = Tag.create(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x], tag_category_position: category.position)
+          tag = Tag.create(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip], tag_category_position: category.position)
         end
         previous_tag = UserTag.find_by(user: user, tag_category: category)
         update = update.present? && previous_tag.present?

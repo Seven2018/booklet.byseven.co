@@ -37,7 +37,7 @@
     <% end %>
 
     <% if CampaignPolicy.new(current_user, nil).create? %>
-      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-light-blue ml-2rem', data: {
+      <%= link_to edit_campaign_draft_settings_path, class: 'bkt-blue-hover bkt-bg-white-hover bkt-btn-light-blue ml-2rem', data: {
         handle: 'create-campaign-cta'
       } do  %>
         Create Campaign
