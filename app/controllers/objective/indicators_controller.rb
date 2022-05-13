@@ -16,12 +16,14 @@ class Objective::IndicatorsController < ApplicationController
                   objective_indicator_id: @indicator.id
                  }
 
-    if @indicator.boolean?
-      options['current_value'] =
+    options['current_value'] =
+      if @indicator.boolean?
         params[:indicator_checked].present? ? options['target_value'] : options['starting_value']
-    elsif @indicator.multi_choice?
-      options['current_value'] = options[params[:selected_option]] if params[:selected_option].present?
-    end
+      elsif @indicator.numeric_value? || @indicator.percentage?
+        params[:chosen_value]
+      elsif @indicator.multi_choice?
+        options[params[:selected_option]] if params[:selected_option].present?
+      end
 
     log_params.merge!(updated_value: options[params[:selected_option]])
 

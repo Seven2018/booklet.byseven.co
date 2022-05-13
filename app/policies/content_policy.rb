@@ -38,8 +38,4 @@ class ContentPolicy < ApplicationPolicy
   def duplicate?
     create?
   end
-
-  def book_contents?
-    create?
-  end
 end

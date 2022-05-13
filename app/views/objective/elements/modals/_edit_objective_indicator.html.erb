@@ -51,6 +51,44 @@
 
         </div>
 
+      <% elsif indicator.numeric_value? %>
+
+        <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Starting value : <%= indicator_options['starting_value'] %></p>
+
+          <div class="d-flex justify-content-center align-items-center mx-2rem">
+
+            <p class="fs-1_4rem font-weight-600 bkt-light-grey5 mr-0_5rem">Current value :</p>
+
+            <input type="numeric"
+                   name="chosen_value"
+                   value="<%= indicator_options['current_value'] %>"
+                   class="px-0_5rem text-center"
+                   style="width: <%= indicator_options['target_value'].length + 1 %>rem;"
+                   min="indicator_options['starting_value']">
+
+          </div>
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Target value : <%= indicator_options['target_value'] %></p>
+
+        </div>
+
+      <% elsif indicator.percentage? %>
+
+        <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Current value :</p>
+
+          <input type="numeric"
+                 name="chosen_value"
+                 value="<%= indicator_options['current_value'] %>"
+                 class="width-4rem px-0_5rem mx-0_5rem text-center"
+                 min="indicator_options['starting_value']">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">%</p>
+
+        </div>
 
       <% elsif indicator.multi_choice? %>
 

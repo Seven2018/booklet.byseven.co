@@ -177,13 +177,7 @@ Rails.application.routes.draw do
   get :organisation, controller: :pages
   post :create_tag_category_tags, controller: :pages
 
-  get :book_contents, controller: :pages # TODO deprecate => replaced by training_draft
-  get :book_users, controller: :pages # TODO deprecate => replaced by training_draft
-  get :book_dates, controller: :pages # TODO deprecate => replaced by training_draft
-  get :recommendation, controller: :pages
-  get :catalogue_content_link_category, controller: :pages
-  # NOT (USED)
-  # get :organisation_user_card, controller: :pages
+  # get :recommendation, controller: :pages # NOT USED ATM
 
   # TRAININGS
   resources :trainings
