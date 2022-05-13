@@ -33,6 +33,7 @@ export default class extends Controller {
       this.companyTags = this.companyTags.filter(item => !(item === value))
     } else {
       this.selectedTags = this.selectedTags.filter(item => !(item === value))
+
       const div = document.createElement('div')
       div.className = 'flex-row-start-centered bkt-light-grey-placeholder'
 
@@ -64,7 +65,7 @@ export default class extends Controller {
     this.unselectedTagsDomTarget.innerHTML = ''
     filtered.forEach(tag => {
       const div = document.createElement('div')
-      div.className = 'flex-row-start-centered bkt-light-grey-placeholder'
+      div.className = 'flex-row-start-centered bkt-placeholder-light-grey'
       div.innerHTML = `<button class="d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 rounded-2px fs-1_2rem" data-action="click->campaign-tag-filter#toggleTag">${tag}</button>`
       this.unselectedTagsDomTarget.append(div)
     })

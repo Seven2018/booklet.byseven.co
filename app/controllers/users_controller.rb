@@ -163,8 +163,8 @@ class UsersController < ApplicationController
       present = []
       CSV.foreach(params[:file].path, headers: true) do |row|
         user_row = row.to_hash
-        user = User.find_by(email: user_row['email']&.downcase)
-        if !user_row['email'].present? || (user_row['email'].downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).nil?
+        user = User.find_by(email: user_row['email']&.strip&.downcase)
+        if !user_row['email'].present? || (user_row['email'].strip.downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).nil?
           @errors << row
         elsif user.nil?
           @creating << row
@@ -174,7 +174,7 @@ class UsersController < ApplicationController
           user_row.each do |key, value|
             # begin
             user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
-            if (user.attributes.key?(key) == true && user.attributes[key]&.downcase != value&.downcase)
+            if (user.attributes.key?(key) && (user.attributes[key].class == Date ? user.attributes[key].strftime('%d/%m/%Y') != value : (user.attributes[key]&.strip&.downcase != value&.strip&.downcase)))
               @updating << { lastname: user.lastname, firstname: user.firstname, former: user.attributes[key], new: value }
             elsif (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
               @updating << { lastname: user.lastname, firstname: user.firstname, former: user_tag.tag.tag_name, new: value }

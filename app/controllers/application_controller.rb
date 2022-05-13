@@ -121,4 +121,8 @@ class ApplicationController < ActionController::Base
     # TODO rename _campaign => _interviews everywhere it's about the interviews application
     @show_navbar_campaign = true
   end
+
+  def show_navbar_objective
+    @show_navbar_objective = true
+  end
 end

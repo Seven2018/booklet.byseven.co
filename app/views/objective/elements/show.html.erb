@@ -1,0 +1,121 @@
+<% employee = @objective.employee %>
+<% manager = @objective.manager %>
+<% creator = @objective.creator %>
+<% indicator = @objective.objective_indicator %>
+
+<div id='main-container'
+     class="d-flex justify-content-center"
+     data-controller="objectives--objective-show">
+
+  <div class="d-flex flex-column justify-content-start align-items-center width-80 my-10rem">
+
+    <div class="d-flex justify-content-between align-items-center width-100 mb-2rem">
+
+      <%= render_component Buttons::BackButton.new(fallback: objective_elements_path) %>
+
+      <%= render_component Buttons::OptionsButton.new do %>
+
+        <li>Option test</li>
+
+      <% end %>
+
+    </div>
+
+    <div class="d-flex justify-content-between align-items-start width-100 mb-10rem">
+
+      <div id="objective_attributes"
+           class="width-70 pr-2rem pos-rel">
+
+        <%= render "objective/elements/show/objective_attributes", objective: @objective %>
+
+      </div>
+
+      <div class="width-30rem height-20rem d-flex flex-column justify-content-center bkt-bg-light-grey9 p-2rem">
+
+        <div class="d-flex justify-content-between align-items-center mb-2rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-dark-grey mr-2rem">Employee</p>
+
+          <div class="d-flex align-items-center width-60">
+            <img src="<%= employee.picture %>"
+                 alt="<%= employee.fullname %>"
+                 class='avatar-sm mr-1rem'
+                 onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <p class="fs-1_2rem font-weight-500 bkt-dark-grey"><%= employee.fullname %></p>
+          </div>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-dark-grey mr-2rem">Manager</p>
+
+          <div class="d-flex align-items-center width-60">
+            <img src="<%= manager.picture %>"
+                 alt="<%= manager.fullname %>"
+                 class='avatar-sm mr-1rem'
+                 onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <p class="fs-1_2rem font-weight-500 bkt-dark-grey"><%= manager.fullname %></p>
+          </div>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+
+          <p class="fs-1_4rem font-weight-600 bkt-dark-grey mr-2rem">Creator</p>
+
+          <div class="d-flex align-items-center width-60">
+            <img src="<%= creator.picture %>"
+                 alt="<%= creator.fullname %>"
+                 class='avatar-sm mr-1rem'
+                 onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <p class="fs-1_2rem font-weight-500 bkt-dark-grey"><%= creator.fullname %></p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="indicator-<%= indicator.id %>">
+      <%= render 'objective/elements/show/indicator_values', indicator: indicator %>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center width-100 mb-10rem">
+
+      <a class='bkt-btn-objective-blue bkt-white' data-toggle='modal' data-target='#updateCompletion'>
+        Update completion
+      </a>
+
+    </div>
+
+    <div id="objective-logs"
+         class="width-80 bkt-droplight-shadow rounded-5px">
+
+      <%= render 'objective/elements/show/objective_logs', logs: @logs %>
+
+    </div>
+
+  </div>
+
+
+  <!------------>
+  <!-- MODALS -->
+  <!------------>
+
+  <div id='updateCompletion'
+       class='modal action-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static"
+       data-objectives--objective-show-target="updateModal">
+
+    <div class='modal-dialog action-modal__dialog modal-lg' role='document'>
+      <%= render 'objective/elements/modals/edit_objective_indicator', indicator: indicator, employee: employee %>
+    </div>
+
+  </div>
+
+</div>

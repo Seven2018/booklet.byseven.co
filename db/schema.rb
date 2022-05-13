@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_11_155313) do
+ActiveRecord::Schema.define(version: 2022_05_12_143921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -338,7 +338,10 @@ ActiveRecord::Schema.define(version: 2022_05_11_155313) do
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0
+    t.bigint "creator_id"
     t.index ["company_id"], name: "index_objective_elements_on_company_id"
+    t.index ["creator_id"], name: "index_objective_elements_on_creator_id"
   end
 
   create_table "objective_indicators", force: :cascade do |t|
@@ -428,7 +431,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_155313) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"
@@ -607,6 +610,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_155313) do
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "objective_elements", "companies"
+  add_foreign_key "objective_elements", "users", column: "creator_id"
   add_foreign_key "objective_indicators", "objective_elements"
   add_foreign_key "objective_logs", "objective_elements"
   add_foreign_key "objective_logs", "objective_indicators"
