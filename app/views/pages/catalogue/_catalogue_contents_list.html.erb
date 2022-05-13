@@ -1,45 +1,73 @@
 <% contents.each do |content| %>
 
   <div id='content-<%= content.id %>' class="col-xs-12 col-sm-6 col-md-4 col-xl-3 flex-row-center-centered">
+
     <div class="rounded-15px bkt-bg-white overflow-hidden bkt-box-shadow mb-5rem pos-rel" data-content-id="<%= content.id %>" style='width: 30rem;'>
+
       <%= link_to '', content_path(content), class: 'stretched-link' %>
+
       <div class="catalogue__card-overlay hidden"></div>
+
       <div class="pos-rel" style='height: 10rem;'>
+
         <% if content.picture.attached? %>
+
           <%= cl_image_tag content.picture.key, height: 100, width: 300, crop: :fill, gravity: :center %>
+
         <% else %>
+
           <%= image_tag 'booklet_training_picture_test.png', style: 'height: 100px; object-fit: cover;' %>
+
         <% end %>
+
         <% if ContentPolicy.new(current_user, content).edit? %>
-          <div class="flex-row-center-centered height-2_5rem width-2_5rem bkt-bg-white pos-abs cursor-pointer z-index-5 rounded-20px" onclick="openContentMenu(this);" style='top: 1rem; right: 1rem;'>
-              <i class="fas fa-ellipsis-v bkt-light-grey"></i>
+
+          <div class="pos-rel d-flex justify-content-end pos-abs"
+               style='top: 1rem; right: 1rem;'
+               data-controller="dropdown">
+
+            <div class="flex-row-center-centered height-2_5rem width-2_5rem-forced rounded-15px bkt-light-grey bkt-white-hover            bkt-bg-white bkt-bg-light-grey-hover cursor-pointer z-index-5 smooth-transition"
+                  data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide">
+              <i class="fas fa-ellipsis-v"></i>
+            </div>
+
+            <div
+              data-dropdown-target="menu"
+              class="pos-abs rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
+              style='right: 0; top: 3rem; width: 120px;'
+            >
+              <%= link_to 'Edit', edit_content_path(content),
+                class: 'px-3 py-2 bkt-light-grey-hover w-100'
+              %>
+              <%= link_to 'Delete', content_path(content),
+               method: :delete,
+                remote: true,
+                data: {
+                  confirm: 'Are you sure ?'
+                },
+                class: 'px-3 py-2 bkt-light-grey-hover w-100'
+              %>
+            </div>
+
           </div>
-          <div data-actions="content"
-               class="position-absolute rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start bkt-bg-white bkt-dark-grey hidden"
-               style='right: 1rem; top: 4rem;'>
-            <%= link_to 'Edit', edit_content_path(content),
-              class: 'px-3 py-2 bkt-light-grey-hover w-100'
-            %>
-            <%= link_to 'Delete', content_path(content),
-             method: :delete,
-              remote: true,
-              data: {
-                confirm: 'Are you sure ?'
-              },
-              class: 'px-3 py-2 bkt-light-grey-hover w-100'
-            %>
-          </div>
+
         <% end %>
+
       </div>
       <div class="flex-column-start-left p-2rem" style='height: 20rem;'>
+
         <div class="flex-row-start-centered mb-2rem" style='height: 1rem;'>
           <% content.categories.each do |category| %>
             <p class="fs-1rem font-weight-600 bkt-orange mr-1rem"><%= category.title %></p>
           <% end %>
         </div>
+
         <div class="flex-column-between-left flex-grow-1">
+
           <p class='fs-1_6rem font-weight-600 line-height-2rem bkt-dark-grey'><%= content.title %></p>
+
           <div>
+
             <div class="flex-row-start-centered mb-1rem">
               <div class="flex-row-center-centered height-2_5rem width-2_5rem mr-1rem">
                 <span class="iconify fs-1_6rem bkt-orange"
@@ -48,16 +76,21 @@
               </div>
               <p class='fs-1_4rem bkt-dark-grey'><%= content.synchronous? ? 'Face-to-face' : 'Online' %></p>
             </div>
+
             <div class="flex-row-start-centered">
               <div class="flex-row-center-centered height-2_5rem width-2_5rem mr-1rem">
                 <span class="iconify fs-2_4rem bkt-orange" data-icon="ic:baseline-watch-later"></span>
               </div>
               <p class='fs-1_4rem bkt-dark-grey'><%= TimeConversion.convert(content.duration) %></p>
             </div>
+
           </div>
+
         </div>
+
       </div>
     </div>
+
   </div>
 
 <% end %>

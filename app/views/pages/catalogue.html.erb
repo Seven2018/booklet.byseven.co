@@ -12,18 +12,22 @@
       <% end %>
     </div>
     <div class="bkt-bg-white rounded-20px p-2rem">
+
       <div id="catalogue__controls">
-        <div class="flex-row-start-centered pos-rel mb-2rem">
+
+        <div id="searchbar"
+             class="flex-row-start-centered pos-rel mb-2rem"
+             data-controller="remember-search"
+             data-remember-search-key-value="bookletCatalogueSearches">
+
           <i class="fas fa-search position-absolute z-index-150 bkt-light-grey" style='left: 25rem; bottom: 16.6px;'></i>
+
           <%= simple_form_for(:search, url: catalogue_path, method: :get, remote: true,
             html: {
               class: 'd-flex align-items-center'
-            },
-            data: {
-              controller:'remember-search',
-              remember_search_key_value: 'bookletInterviewFormsSearches',
             }
           ) do |f| %>
+
             <%=
               f.input(
                 :title,
@@ -35,7 +39,6 @@
                   class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
                   style: 'width: 28rem; padding: 0 4rem 0 1rem;',
                   autocomplete: 'off',
-                  onkeyup: 'resetPage(this);',
                   data: {
                     remember_search_target: :search,
                     action: 'keyup->remember-search#storeSearch'
@@ -46,44 +49,78 @@
               )
             %>
 
-            <div class='booklet-select__catalogue-container border-bkt-light-grey bkt-bg-light-grey3 rounded-5px pos-rel cursor-pointer ml-1rem' style='width: 14rem;'>
-              <div class="flex-row-between-centered height-5rem px-1rem" onclick="<%= 'BookletSelectExpand(this);' %>">
-                <p id='search_select' class='booklet-select__catalogue-selected fs-1_4rem font-weight-500 bkt-dark-grey'>All</p>
+            <div class='booklet-select__catalogue-container border-bkt-light-grey bkt-bg-light-grey3 rounded-5px pos-rel            cursor-pointer ml-1rem'
+                 style='width: 14rem;'
+                 data-controller="dropdown"
+                 data-remember-search-target="dropdown">
+
+              <%= f.hidden_field :content_type %>
+
+              <div class="flex-row-between-centered height-5rem px-1rem"
+                   data-action="click->dropdown#toggle">
+
+                <p id='search_select'
+                   class='booklet-select__catalogue-selected fs-1_4rem font-weight-500 bkt-dark-grey'
+                   data-dropdown-target="display">
+                  All
+                </p>
+
                 <div class="flex-row-center-centered ml-1rem">
                   <i class="fas fa-angle-down bkt-light-grey"></i>
                 </div>
+
               </div>
-              <div class="booklet-select__catalogue-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150 pos-abs hidden" style='top: 5.1rem; left: 0;'>
-                <div onclick='BookletSelectSubmit(this, "answerable_by");'>
-                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer' style='width: 110px;' data-value=''>All</p>
+
+              <div class="booklet-select__catalogue-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150            pos-abs hidden"
+                   style='top: 5.1rem; left: 0;'
+                   data-dropdown-target="menu">
+
+                <div data-action="click->dropdown#selectOption">
+                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
+                     style='width: 110px;'
+                     data-value=''>All</p>
                 </div>
-                <div onclick='BookletSelectSubmit(this, "answerable_by");'>
-                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer' style='width: 110px;' data-value='Synchronous'>Face-to-face</p>
+
+                <div data-action="click->dropdown#selectOption">
+                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
+                     style='width: 110px;'
+                     data-value='Synchronous'>Face-to-face</p>
                 </div>
-                <div onclick='BookletSelectSubmit(this, "answerable_by");'>
-                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer' style='width: 110px;' data-value='Asynchronous'>Online</p>
+
+                <div data-action="click->dropdown#selectOption">
+                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
+                     style='width: 110px;'
+                     data-value='Asynchronous'>Online</p>
                 </div>
+
               </div>
+
             </div>
 
-            <%= f.hidden_field :content_type %>
             <%= f.hidden_field :selected_categories %>
             <%= f.hidden_field :page, value: '1' %>
             <div class="mr-3"></div>
+
             <%=
               f.submit(
                 'Search',
-                class: 'hidden-submit py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                class: 'hidden-submit btn-search',
                 onclick: "document.querySelector('body').classList.add('wait');",
                 data: {
                   remember_search_target: :submit,
                 }
               )
             %>
+
             <button type='submit' class="btn-search d-block d-sm-none">
               <i class="fas fa-search"></i>
             </button>
-            <button class='height-5rem bkt-orange px-1rem fs-1_6rem' onclick='resetSearch();'>Reset</button>
+
+            <button class='btn-reset bkt-orange'
+                    data-action="click->remember-search#resetAllFilter">
+              Reset
+            </button>
+
           <% end %>
         </div>
         <div>
@@ -98,10 +135,13 @@
             <% end %>
           </div>
         </div>
+
       </div>
+
       <div id="catalogue__contents-list" class='row'>
         <%= render 'pages/catalogue/catalogue_contents_list', contents: @contents %>
       </div>
+
     </div>
   </div>
 </div>
@@ -147,38 +187,6 @@
   // SEARCHBAR //
   ///////////////
 
-  function BookletSelectExpand(element) {
-    doubleClickGuardian = true
-    dropdown = element.closest('.booklet-select__catalogue-container').querySelector('.booklet-select__catalogue-dropdown')
-    setTimeout(() => {
-      doubleClickGuardian = false
-    }, 100);
-    if (dropdown.classList.contains('hidden')) {
-      dropdown.classList.remove('hidden')
-      window.addEventListener('click', function(e) {
-        if (!doubleClickGuardian) {
-          dropdown.classList.add('hidden')
-          this.removeEventListener('click', arguments.callee, false);
-        }
-      });
-    } else {
-      dropdown.classList.add('hidden')
-    }
-  }
-
-  function BookletSelectSubmit(element, attribute) {
-    form = element.closest('form')
-    container = element.closest('.booklet-select__catalogue-container')
-    selected_display = element.closest('.booklet-select__catalogue-container').querySelector('.booklet-select__catalogue-selected')
-    selected_option = element.querySelector('p')
-    storage = form.querySelector('#search_content_type')
-    submit_button = form.querySelector('.hidden-submit')
-
-    storage.value = selected_option.getAttribute('data-value')
-    selected_display.innerText = selected_option.innerText
-
-    // submit_button.click()
-  }
 
   function selectCategory(element) {
     const category_storage = document.getElementById('search_selected_categories')

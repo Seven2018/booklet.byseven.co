@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return [ "search", "submit" ]
+    return [ "search", "dropdown", "submit" ]
   }
   static get values () {
     return {
@@ -12,11 +12,17 @@ export default class extends Controller {
   }
 
   connect() {
-    this.searchTarget.value = this.currentSearch()
-    this.submitTarget.click()
+    if (this.hasSearchTarget && this.hasSubmitTarget) {
+      this.searchTarget.value = this.currentSearch()
+      this.submitTarget.click()
+    }
   }
 
   storeSearch() {
+    const searchbar = document.getElementById('searchbar');
+
+    searchbar.querySelector('#search_page').value = '1'
+
     window.localStorage.setItem(this.keyValue, this.searchTarget.value)
   }
 
@@ -26,6 +32,7 @@ export default class extends Controller {
 
   resetAllFilter(_) {
     const searchbar = document.getElementById('searchbar');
+    const dropdowns = this.dropdownTargets
 
     // Reset Search and Period input
     searchbar.querySelectorAll('input').forEach((input) => {
@@ -37,6 +44,17 @@ export default class extends Controller {
     })
     searchbar.querySelectorAll('select').forEach((select) => {
       select.selectedIndex = 0
+    })
+
+    // Reset custom dropdowns
+    dropdowns.forEach((dropdown) => {
+      const ps = dropdown.querySelectorAll('p')
+      const display_container = ps[0]
+      const default_value = ps[1]
+      const value_storage = dropdown.querySelector("input[type='hidden']")
+
+      display_container.innerText = default_value.innerText
+      value_storage.value = default_value.dataset.value
     })
 
     // TODO : Unify all searches by tags
@@ -55,5 +73,6 @@ export default class extends Controller {
     searchbar.querySelector('.btn-search').click()
     document.querySelector('body').classList.add('wait')
     window.localStorage.setItem(this.keyValue, '')
+    location.reload()
   }
 }

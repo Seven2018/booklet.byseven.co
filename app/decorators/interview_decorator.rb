@@ -15,10 +15,19 @@ class InterviewDecorator < Draper::Decorator
 
   def get_status_bg_class
     case status.to_sym
-    when :not_available_yet then 'bkt-bg-light-grey'
+    when :not_available_yet then 'bkt-bg-light-grey5'
     when :not_started then 'bkt-bg-red'
     when :in_progress then 'bkt-bg-yellow'
     when :submitted then 'bkt-bg-green'
+    end
+  end
+
+  def get_status_color_class
+    case status.to_sym
+    when :not_available_yet then 'bkt-light-grey5'
+    when :not_started then 'bkt-red'
+    when :in_progress then 'bkt-yellow'
+    when :submitted then 'bkt-green'
     end
   end
 

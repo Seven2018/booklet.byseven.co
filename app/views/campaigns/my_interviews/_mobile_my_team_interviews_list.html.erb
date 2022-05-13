@@ -95,7 +95,7 @@
             <p><%= manager_interview&.submitted? ? 'Update' : 'Start review' %></p>
           <% end %>
 
-        <% elsif interview_form.answerable_by_employee? && employee_interview.completed %>
+        <% elsif interview_form.answerable_by_employee? && employee_interview&.submitted? %>
 
           <%= link_to interview_path(employee_interview), class: 'bkt-btn-blue' do %>
             <p>Review</p>

@@ -6,11 +6,24 @@ class InterviewFormsController < ApplicationController
   def index
     @templates = policy_scope(InterviewForm)
     @templates = @templates.unused.where(company: current_user.company)
+    @company_tags = Category
+                      .distinct
+                      .where(company_id: current_user.company_id, kind: :interview)
+                      .pluck(:title)
+
     if params[:search].present? && !params[:search][:title].blank?
       @templates = @templates.search_templates(params[:search][:title])
-      @filtered = 'true'
-    else
-      @filtered = 'false'
+    end
+
+    if params.dig(:search, :tags).present?
+      selected_tags = params.dig(:search, :tags).split(',')
+
+      @templates = @templates
+                             .joins(:categories)
+                             .where(categories: { title: selected_tags })
+                             .uniq
+                             .select { |template| (selected_tags & template.categories.pluck(:title)) == selected_tags }
+      @templates = InterviewForm.get_activerecord_relation(@templates)
     end
 
     page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
@@ -39,7 +52,7 @@ class InterviewFormsController < ApplicationController
     authorize @template
     @tags = @template.categories.pluck(:title)
     @company_tags = Category
-                      .where(company_id: current_user.company_id)
+                      .where(company_id: current_user.company_id, kind: :interview)
                       .where.not(title: @tags)
                       .pluck(:title)
   end
@@ -49,17 +62,20 @@ class InterviewFormsController < ApplicationController
     description = @template.description
     @template.update(template_params)
 
-    cross_status =
-      params.dig(:interview_form, :cross).present? && @template.answerable_by_both?
-    @template.update(cross: cross_status)
+    @update_description =
+      params.dig(:interview_form, :description).present? || false
 
-    answerable_by_status = @template.answerable_by
-    unless @template.answerable_by_both?
-      @template.interview_questions.update_all(visible_for: answerable_by_status)
-      @template.interview_questions.where.not(required_for: ['none', answerable_by_status]).update_all(required_for: answerable_by_status)
+    unless @update_description
+      cross_status =
+        params.dig(:interview_form, :cross).present? && @template.answerable_by_both?
+      @template.update(cross: cross_status)
+
+      answerable_by_status = @template.answerable_by
+      unless @template.answerable_by_both?
+        @template.interview_questions.update_all(visible_for: answerable_by_status)
+        @template.interview_questions.where.not(required_for: ['none', answerable_by_status]).update_all(required_for: answerable_by_status)
+      end
     end
-
-    @update_description = description != @template.description
 
     respond_to do |format|
       format.html { interview_form_path(@template) }
@@ -86,21 +102,6 @@ class InterviewFormsController < ApplicationController
     redirect_to interview_form_path(new_template)
   end
 
-  def interview_form_link_tags
-    @template = InterviewForm.find(params[:add_tags][:form_id])
-    authorize @template
-    selected_tags = params[:interview_form][:tags].reject { |x| x.empty? }.join(',').split(',')
-    selected_tags.each do |tag|
-      unless InterviewFormTag.where(interview_form_id: @template.id, tag_id: tag).present?
-        InterviewFormTag.create(interview_form_id: @template.id, tag_id: tag, tag_name: Tag.find(tag).tag_name)
-      end
-    end
-    InterviewFormTag.where(interview_form_id: @template.id).where.not(tag_id: selected_tags).destroy_all
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def destroy
     authorize @template
     @card_id = @template.id
@@ -113,10 +114,10 @@ class InterviewFormsController < ApplicationController
   def toggle_tag
     authorize @template
     tag = params.require(:tag)
-    category = Category.find_by(company_id: current_user.company_id, title: tag)
+    category = Category.find_by(company_id: current_user.company_id, title: tag, kind: :interview)
 
     if category.nil?
-      new_category = Category.create(company_id: current_user.company_id, title: tag)
+      new_category = Category.create(company_id: current_user.company_id, title: tag, kind: :interview)
       @template.categories << new_category
     else
       if @template.categories.exists?(category.id)
@@ -132,7 +133,7 @@ class InterviewFormsController < ApplicationController
     authorize @template
     tag = params.require(:tag)
 
-    Category.where(company_id: current_user.company_id, title: tag).destroy_all
+    Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
     head :ok
   end
 

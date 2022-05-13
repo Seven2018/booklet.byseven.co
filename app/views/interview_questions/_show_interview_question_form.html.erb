@@ -1,5 +1,7 @@
 <div class="interview-question__form">
 
+  <% is_required = question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') %>
+
   <% existing_answer =
     InterviewAnswer.find_by(
     interview: interview,
@@ -139,9 +141,9 @@
             as: :text,
             input_html: {
               value: current_answer,
-              onkeyup: 'autoSave(this, true); enableSubmit();'
+              onkeyup: 'autoSave(this); enableSubmit();'
             },
-            required: question.required?,
+            required: is_required,
             disabled: read_only %>
 
     <% elsif question.rating? %>
@@ -178,7 +180,7 @@
             as: :text,
             input_html: {
               value: current_comments,
-              onkeyup: 'autoSave(this, true);'
+              onkeyup: 'autoSave(this);'
             },
             required: false) %>
 
@@ -191,9 +193,9 @@
         as: :text,
         input_html: {
           value: current_objective,
-          onkeyup: 'autoSave(this, true); enableSubmit();'
+          onkeyup: 'autoSave(this); enableSubmit();'
         },
-        required: question.required?,
+        required: is_required,
         disabled: read_only
       ) if question.objective? %>
 
@@ -212,9 +214,9 @@
           </div>
         </div>
         <div class="booklet-select__dropdown hidden">
-          <% question.options.keys.each do |option| %>
+          <% question.options.sort_by {|k, v| v}.each do |option| %>
             <div class="booklet-select__option" onclick='BookletSelectSubmit(this);'>
-              <p><%= option %></p>
+              <p><%= option[0] %></p>
             </div>
           <% end %>
         </div>
@@ -231,7 +233,7 @@
             as: :text,
             input_html: {
               value: current_comments,
-              onkeyup: 'autoSave(this, true);'
+              onkeyup: 'autoSave(this);'
             },
             required: false,
             disabled: read_only) if question.allow_comments %>

@@ -10,16 +10,12 @@ class PagesController < ApplicationController
     @my_team_interviews = Interview.joins(:campaign)
                                    .where(campaigns: {company_id: current_user.company_id}, interviewer: current_user, label: ['Manager', 'Crossed'])
                                    .where.not(status: :submitted)
-    @my_trainings = Training.joins(sessions: :attendees)
-                            .where(attendees: {user: current_user})
-                            .where('sessions.date >= ?', Time.zone.today)
+    @my_trainings = Training.where_exists(:attendees, {user: current_user, status: 'Not completed'})
                             .distinct
-                            .sort_by{|x| x.next_date}
-    @my_team_trainings = Training.joins(sessions: :attendees)
-                                 .where(attendees: {user_id: current_user.employees.ids})
-                                 .where('sessions.date >= ?', Time.zone.today)
+                            .sort_by{|x| x.sessions.last.available_date.presence || x.sessions.last.date }
+    @my_team_trainings = Training.where_exists(:attendees, {user: current_user.employees.ids, status: 'Not completed'})
                                  .distinct
-                                 .sort_by{|x| x.next_date}
+                                 .sort_by{|x| x.sessions.last.available_date.presence || x.sessions.last.date }
   end
 
   # Display folders/contents catalogue
@@ -27,7 +23,7 @@ class PagesController < ApplicationController
     complete_profile
 
     @contents = policy_scope(Content).where(company_id: current_user.company_id).order(title: :asc)
-    @categories = Category.where(company_id: current_user.company_id).order(title: :asc)
+    @categories = Category.where(company_id: current_user.company_id, kind: :training).order(title: :asc)
 
     @contents = @contents.search(params.dig(:search, :title)) if params.dig(:search, :title).present?
     @contents = @contents.where(content_type: params.dig(:search, :content_type)) if params.dig(:search, :content_type).present?
@@ -72,16 +68,40 @@ class PagesController < ApplicationController
 
   # Display organisation page
   def organisation
-    users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
 
-    @tag_categories = TagCategory.distinct.where(company_id: current_user.company_id).joins(:tags)
+    if params[:csv].present?
 
-    filter_users(users)
+      @users =
+        if params.dig(:csv, :selected_users).present?
+          User.where(id: params.dig(:csv, :selected_users).split(',')).order(lastname: :asc).distinct
+        else
+          User.where(company_id: current_user.company_id)
+        end
+
+      attributes = []
+      params[:csv].each do |key, value|
+        if !['selected_users', 'cost', 'trainings'].include?(key) && value == '1'
+          attributes << key
+        end
+      end
+      cost = params.dig(:csv, :cost)
+      trainings = params.dig(:csv, :trainings).to_i > 0
+      interviews = params.dig(:csv, :interviews).to_i > 0
+
+    else
+
+      users = policy_scope(User).where(company: current_user.company).order(lastname: :asc)
+
+      @tag_categories = TagCategory.distinct.where(company_id: current_user.company_id).joins(:tags)
+
+      filter_users(users)
+
+    end
 
     respond_to do |format|
       format.html { organisation_path }
       format.js
-      format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, interviews, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
+      format.csv { send_data @users.to_csv(attributes, params[:tag_category][:id], cost, trainings, params[:csv][:start_date], params[:csv][:end_date]), :filename => "Overview - #{params[:csv][:start_date]} to #{params[:csv][:end_date]}.csv" }
     end
   end
 

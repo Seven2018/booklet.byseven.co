@@ -338,10 +338,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_155313) do
     t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "status", default: 0
-    t.bigint "creator_id"
     t.index ["company_id"], name: "index_objective_elements_on_company_id"
-    t.index ["creator_id"], name: "index_objective_elements_on_creator_id"
   end
 
   create_table "objective_indicators", force: :cascade do |t|

@@ -94,32 +94,6 @@
   // SEARCHBAR //
   ///////////////
 
-  function resetAllFilter(element) {
-    searchbar = element.closest('.organisation__searchbar')
-
-    // Reset Search and Period input
-    searchbar.querySelectorAll('input').forEach((input) => {
-      if (input.type == 'text') {
-        input.value = ''
-      } else if (input.type == 'checkbox') {
-        input.checked = false
-      }
-    })
-
-    // Reset Tags
-    searchbar.querySelector('#search_tags').value = ''
-    // filter_counter = searchbar.querySelectorAll('.searchbar-campaign-filter__selected')
-    // pill_container = searchbar.querySelector('.searchbar-campaign__pill-container')
-    // filter_counter.forEach((counter) => {counter.innerText = '0'; counter.style.backgroundColor = '#C4C4C4'})
-    // pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => pill.remove())
-
-    // Reset offset
-    searchbar.querySelector('#search_page').value = '1'
-
-    searchbar.querySelector('.btn-search').click()
-    document.querySelector('body').classList.add('wait')
-  }
-
   function showResetMobile(element, boolean) {
     search_button = element.querySelector('.btn-search--mobile')
     reset_button = element.querySelector('.btn-reset--mobile')
@@ -558,57 +532,9 @@
   }
 
 
-  //////////////
-  // PAGINATE //
-  //////////////
-
-  function setPage(url) {
-    page_value = document.querySelector('#search_page')
-    submit_button = document.querySelector('.btn-search')
-    url_storage = new URL(url)
-    target_page = url_storage.searchParams.get('page')
-
-    page_value.value = target_page
-    submit_button.click()
-  }
-
-  function changePage(direction) {
-    page_value = document.querySelector('#search_page')
-    submit_button = document.querySelector('.btn-search')
-
-    if(direction == 'next') {
-      page_value.value = (parseInt(page_value.value,10) + 1).toString()
-    } else {
-      page_value.value = (parseInt(page_value.value,10) - 1).toString()
-    }
-    submit_button.click()
-  }
-
-  function resetPage(element) {
-    element.closest('form').querySelector('#search_page').value = '1'
-  }
-
-
   //////////
   // MISC //
   //////////
-
-  // function infiniteScroll() {
-  //   if ($("nav ul.pagination a[rel=next]").length) {
-  //     $('.organisation__users-index').infiniteScroll({
-  //       path: "nav ul.pagination a[rel=next]",
-  //       append: ".organisation__users-card",
-  //       hideNav: "nav ul.pagination",
-  //       history: false,
-  //       scrollThreshold: 5000,
-  //       elementScroll: '#booklet-wrapper',
-  //       debug: false,
-  //       loadOnScroll: true
-  //     });
-  //   };
-  // }
-
-  // infiniteScroll()
 
   tag_category_names = document.querySelectorAll('#tag_category_name')
   tag_category_names.forEach((element) => {
@@ -618,11 +544,4 @@
       }
     })
   })
-
-  document.querySelectorAll('.page-link').forEach((link) => {
-    link.addEventListener('click', function(e) {
-      setPage(window.location.host + link.id)
-    })
-  })
-
 </script>

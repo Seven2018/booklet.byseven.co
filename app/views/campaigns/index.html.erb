@@ -19,19 +19,18 @@
       <% end %>
     </div>
 
-    <div class="campaigns-index__main">
+    <div class="campaigns-index__main"
+         id="stimulus-change-page-controller"
+         data-controller="change-page">
 
       <div id="searchbar"
            class="campaigns-index__searchbar"
-           data-controller='change-page remember-search'>
+           data-controller="remember-search"
+           data-remember-search-key-value="bookletCampaignsSearches">
 
         <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
 
-        <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true,
-          data: {
-            remember_search_key_value: 'bookletCampaignsSearches',
-          }
-          )do |f| %>
+        <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true)do |f| %>
 
           <%=
             f.input(
@@ -40,7 +39,6 @@
               input_html: {
                 class: 'mr-3',
                 autocomplete: 'off',
-                onkeyup: 'resetPage(this);',
                 data: {
                   remember_search_target: :search,
                   action: 'keyup->remember-search#storeSearch'
@@ -51,9 +49,17 @@
             )
           %>
 
-          <%= f.input :period, collection: ['Current', 'Completed', 'All'], label: false, required: false, selected: 'Current', input_html: {onchange: 'resetPage(this);'} %>
+          <%= f.input :period, collection: ['Current', 'Completed', 'All'],
+                               selected: 'Current',
+                               label: false,
+                               required: false,
+                               input_html: {
+                                 data: {
+                                   action: 'change->remember-search#storeSearch'
+                                 }
+                               } %>
 
-          <%= f.hidden_field :tags %>
+          <%= f.hidden_field :tags, data: {filter: :tags} %>
           <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
 
           <%=
@@ -63,7 +69,8 @@
               onclick: "document.querySelector('body').classList.add('wait');",
               data: {
                 remember_search_target: :submit,
-                change_page_target: :submit
+                change_page_target: :submit,
+                search_form: :submit
               }
             )
           %>
@@ -88,7 +95,7 @@
           <div class="flex-row-end-centered">
             <button data-action="click->campaign-tag-filter#displayList" class="flex-row-between-centered bkt-blue px-3 py-2 bkt-box-shadow-medium">
               <span class="iconify m-2" data-width="20" data-height="20" data-icon="fluent:filter-28-filled"></span>
-              <p>Filter</p>
+              <p>Filter <span class="rounded-5px bkt-bg-light-blue px-2 hidden" data-campaign-tag-filter-target="filterCount"></span></p>
             </button>
           </div>
           <div
@@ -318,10 +325,6 @@
       pill.remove()
     })
     form.querySelector('.hidden-submit').click()
-  }
-
-  function resetPage(element) {
-    element.closest('form').querySelector('#search_page').value = '1'
   }
 
   // Add corresponding id to each Tag checkbox

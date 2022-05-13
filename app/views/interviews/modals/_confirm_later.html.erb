@@ -1,0 +1,23 @@
+<div class="modal-content action-modal__content">
+
+  <div class="modal-header action-modal__header flex-row-end-centered">
+    <div class="flex-row-end-centered width-100">
+      <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-body action-modal__body">
+
+    <div class="flex-row-center-centered">
+      <span class="iconify ml-3" data-icon="noto:thumbs-up" data-height="70" data-width="70"></span>
+    </div>
+    <p class="text-center fs-1_6rem font-weight-700 mt-5">Your answers are saved, you can come back later <br>to finish
+      your interview and submit it.</p>
+    <p class="text-center fs-1_6rem  my-5">Your interview state will stay as ‘In Progress’.</p>
+    <%= link_to 'Go to ‘My Interviews’', my_interviews_path, class: 'bkt-btn-blue m-auto' %>
+
+  </div>
+
+</div>

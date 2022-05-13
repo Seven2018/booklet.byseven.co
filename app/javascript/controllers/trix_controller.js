@@ -7,6 +7,9 @@ export default class extends Controller {
 
   connect() {
     this.setup()
+
+    this.timer
+    this.waitTime = 1000
   }
 
   setup() {
@@ -16,18 +19,41 @@ export default class extends Controller {
   }
 
   update(e) {
-    if(window.updateStatusMessage != undefined) {
-      window.updateStatusMessage("Updating...")
+    this.updateStatusMessage("Updating...")
+
+    clearTimeout(this.timer);
+
+    this.timer = setTimeout(() => {
+      this.inputTarget.value = this.editorTarget.innerHTML
+      this.editorTarget.closest('form').querySelector('.hidden-submit').click()
+    }, this.waitTime);
+  }
+
+
+  //////////
+  // MISC //
+  //////////
+
+  updateStatusMessage(message) {
+    const message_storage = document.getElementById('template-edit__update-status')
+
+    if (message_storage == undefined) return
+
+    if (message == 'Up to date') {
+      message_storage.classList.remove('bkt-red')
+      message_storage.classList.remove('bkt-yellow')
+      message_storage.classList.add('bkt-green')
+    } else if (message == 'Update failed') {
+      message_storage.classList.remove('bkt-green')
+      message_storage.classList.remove('bkt-yellow')
+      message_storage.classList.add('bkt-red')
+    } else {
+      message_storage.classList.remove('bkt-green')
+      message_storage.classList.remove('bkt-red')
+      message_storage.classList.add('bkt-yellow')
     }
-    if (typeof saving !== 'undefined') {
-      saving = false
-      if (!saving) {
-        saving = true
-        // TODO stop faking :/
-        setTimeout(function(){ saving = false }, 3000)
-      }
-    }
-    this.inputTarget.value = this.editorTarget.innerHTML
-    this.editorTarget.closest('form').querySelector('.hidden-submit').click()
+
+    message_storage.innerText = message
   }
 }
+

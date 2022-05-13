@@ -13,7 +13,10 @@
   box-shadow: 0 0 .5rem rgba(0,0,0,0.2);
 }
 
-.action-modal__header {}
+.action-modal__header {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
 
 .action-modal__title {
   font-size: 2rem;
@@ -33,7 +36,6 @@
 }
 
 .action-modal__close-icon {
-  height: 4rem;
   display: block;
   font-size: 4rem;
   font-weight: 400;
