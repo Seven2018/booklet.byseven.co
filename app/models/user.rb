@@ -151,9 +151,9 @@ class User < ApplicationRecord
         user.invite! if Rails.env == 'production' && send_invite && manager_invite
       else
         user = User.new(row_h)
-        user.lastname = user.lastname.upcase
-        user.firstname = user.firstname.capitalize
-        user.email = user.email.downcase
+        user.lastname = user.lastname.strip.upcase
+        user.firstname = user.firstname.strip.capitalize
+        user.email = user.email.strip.downcase
         user.access_level_int = access_level&.to_sym
         user.access_level_int = :employee unless ['admin', 'manager', 'employee'].include?(access_level)
         user.access_level_int = :hr if access_level == 'admin'
@@ -186,7 +186,7 @@ class User < ApplicationRecord
         UserTag.create(user: user, tag_id: tag.id, tag_category: category)
       end
       tag_categories_to_create_user.each do |x|
-        category = TagCategory.find_by(company_id: company_id, name: x)
+        category = TagCategory.find_by(company_id: company_id, name: x.strip)
         unless category.present?
           category = TagCategory.create(company_id: company_id, name: x.strip, position: tag_category_last_position + 1)
           tag_category_last_position += 1
