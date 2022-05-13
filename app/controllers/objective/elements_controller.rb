@@ -67,18 +67,6 @@ class Objective::ElementsController < ApplicationController
   def my_team_objectives
   end
 
-  def my_team_objectives_current_list
-    employees = current_user.employees.joins(:objective_elements).where(objective_elements: { status: :opened }).distinct
-
-    render json: employees, include: ['objective_elements.objective_indicator']
-  end
-
-  def my_team_objectives_archived_list
-    employees = current_user.employees.joins(:objective_elements).where(objective_elements: { status: :archived }).distinct
-
-    render json: employees, include: ['objective_elements.objective_indicator']
-  end
-
   def archive
     objective = Objective::Element.find(params[:id])
 

@@ -2,9 +2,15 @@
   <div>
     <div v-if="objectiveUser.user" class="width-70 mt-5 mx-auto">
       <div class="flex-row-center-centered">
-        <h1 class="fs-2_4rem font-weight-500">My Objectives</h1>
+        <h1 v-if="title" class="fs-2_4rem font-weight-500">{{title}}</h1>
+        <h1 v-else class="fs-2_4rem font-weight-500">My Objectives</h1>
       </div>
-      <div class="flex-row-center-centered mt-5">
+      <div class="flex-row-center-centered mt-5 position-relative">
+        <div
+            v-if="backButton"
+            class="position-absolute" style="left: 0">
+          <bkt-back-button></bkt-back-button>
+        </div>
         <img class="rounded-circle width-5rem height-5rem border-bkt-blue-2px"
              :src="objectiveUser.user.picture"
              onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
@@ -16,7 +22,7 @@
           }}</h1>
       </div>
       <div class="flex-row-center-centered mt-2">
-        <p class="font-weight-500 fs-1_2rem bkt-light-grey6 ">{{ objectiveUser.user.job_title }}</p>
+        <p class="font-weight-600 fs-1_4rem bkt-light-grey6 ">{{ objectiveUser.user.job_title }}</p>
       </div>
       <div class="flex-row-end-centered mt-5">
         <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" :href="$routes.generate('objective_new')">
@@ -56,9 +62,10 @@ import BktButton from "../../../components/BktButton";
 import IndexTable from "../../../components/IndexTable";
 import ObjectivesUserTable from "./ObjectivesUserTable";
 import ObjectiveSwitcher from "../../../components/ObjectiveSwitcher";
+import BktBackButton from "../../../components/BktBackButton";
 
 export default {
-  props: ['userId'],
+  props: ['userId', 'title', 'backButton'],
   data() {
     return {
       headers: ['Objectives', 'Completion', 'Deadline', ''],
@@ -77,6 +84,7 @@ export default {
     }
   },
   components: {
+    BktBackButton,
     ObjectiveSwitcher,
     ObjectivesUserTable,
     BktButton,

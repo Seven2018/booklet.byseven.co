@@ -3,6 +3,10 @@
 class Objective::UsersController < ApplicationController
   before_action :show_navbar_objective
 
+  skip_after_action :verify_authorized, only: [
+    :my_team_objectives, :my_team_objectives_current_list, :my_team_objectives_archived_list
+  ]
+
   def index
     render partial: 'objective/elements/new/users', locals: { users: users, selected: params.dig(:selected) }
   end
@@ -32,6 +36,25 @@ class Objective::UsersController < ApplicationController
                             .where(status: :archived)
 
     render json: objectives_archived
+  end
+
+  def my_team_objectives
+    @user = User.find(params[:id])
+  end
+
+  # TODO: check url
+  def my_team_objectives_current_list
+    @user = User.find(params[:id])
+    employees = @user.employees.joins(:objective_elements).where(objective_elements: { status: :opened }).distinct
+
+    render json: employees, include: ['objective_elements.objective_indicator']
+  end
+
+  def my_team_objectives_archived_list
+    @user = User.find(params[:id])
+    employees = @user.employees.joins(:objective_elements).where(objective_elements: { status: :archived }).distinct
+
+    render json: employees, include: ['objective_elements.objective_indicator']
   end
 
   private

@@ -4,11 +4,15 @@ import routes from "../constants/routes";
 export default {
   namespaced: true,
   state: {
+    userId: null,
     employeesCurrent: null,
     employeesArchived: null,
     error: null
   },
   mutations: {
+    setUserId(state, userId) {
+      state.userId = userId
+    },
     setEmployeesCurrent(state, value) {
       state.employeesCurrent = value
     },
@@ -20,18 +24,18 @@ export default {
     }
   },
   actions: {
-    async fetchEmployeesCurrent({commit}) {
+    async fetchEmployeesCurrent({commit, state}) {
       try {
-        const res = await axios.get(routes.generate('objective_my_team_current_list'))
+        const res = await axios.get(routes.generate('objective_user_my_team_current_list', {id: state.userId}))
 
         commit('setEmployeesCurrent', res.data)
       } catch (e) {
         commit('setError', e.message)
       }
     },
-    async fetchEmployeesArchived({commit}) {
+    async fetchEmployeesArchived({commit, state}) {
       try {
-        const res = await axios.get(routes.generate('objective_my_team_archived_list'))
+        const res = await axios.get(routes.generate('objective_user_my_team_archived_list', {id: state.userId}))
 
         commit('setEmployeesArchived', res.data)
       } catch (e) {

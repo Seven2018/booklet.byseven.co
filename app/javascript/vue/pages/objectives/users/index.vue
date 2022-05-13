@@ -49,7 +49,11 @@
                 <p>
                   {{ access_level_int }}
                 </p>
-                <a class="bkt-objective-blue " style="text-decoration: underline">View Team Objective</a>
+                <a
+                    v-if="access_level_int !== 'employee'"
+                    :href="$routes.generate('objective_user_my_team_objectives', {id})"
+                    class="bkt-objective-blue"
+                    style="text-decoration: underline">View Team Objective</a>
               </div>
             </div>
           </td>
@@ -79,10 +83,13 @@
           </td>
 
           <td>
-
-            <div class="flex-row-around-centered align-items-center">
+            <div class="flex-row-between-centered align-items-center">
               <div class="flex-column ">
-                <a class="bkt-objective-blue " style="text-decoration: underline">View Objective of his/her Team</a>
+                <a
+                    v-if="manager"
+                    :href="$routes.generate('objective_user_my_team_objectives', {id: manager.id})"
+                    class="bkt-objective-blue"
+                    style="text-decoration: underline">View Team Objective of his/her manager</a>
               </div>
 
               <div class="flex-column">

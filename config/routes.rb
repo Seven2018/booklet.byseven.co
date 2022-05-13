@@ -156,8 +156,6 @@ Rails.application.routes.draw do
     resources :elements do
       collection do
         get :list
-        get :my_team_objectives_current_list
-        get :my_team_objectives_archived_list
       end
       member do
         post :archive
@@ -172,6 +170,9 @@ Rails.application.routes.draw do
         get :info
         get :list_current
         get :list_archived
+        get :my_team_objectives
+        get :my_team_objectives_current_list
+        get :my_team_objectives_archived_list
       end
     end
   end

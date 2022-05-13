@@ -8,7 +8,7 @@
     <% if Objective::ElementPolicy.new(current_user, nil).my_objectives? %>
       <%= link_to objective_my_objectives_path do %>
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :elements_my_objectivess %>
+          <%= 'navbar-buttons--active' if @controller_action == :elements_my_objectives %>
           ">
           <h4 title='My interviews'>My objectives</h4>
         </div>
@@ -28,7 +28,7 @@
     <% if Navigation::ObjectivesAdminLink.new(user: current_user).should_render? %>
       <button class="left-buttons">
         <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if %i[elements_index elements_new].include?(@controller_action) %>">
+          <%= 'navbar-buttons--active' if %i[elements_index elements_new users_show].include?(@controller_action) %>">
           <h4>
             <%= render_component Navigation::ObjectivesAdminLink.new(user: current_user) %>
           </h4>
