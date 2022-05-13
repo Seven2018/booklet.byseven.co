@@ -13,7 +13,6 @@ module GoogleOauth2Helper
         :token => 'token',
         :refresh_token => 'refresh token'
       }
-    }
-                                                                      )
+    })
   end
 end
