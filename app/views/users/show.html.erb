@@ -2,7 +2,12 @@
 
   <div class="flex-column-start-centered mt-5rem" style='width: 75%; max-width: 100rem;'>
 
-    <div class="flex-row-between-start width-100 mb-2rem">
+    <div class="flex-row-between-start width-100 mb-2rem pos-rel">
+
+      <div class="pos-abs"
+           style="top: 0; left: -10rem;">
+        <%= render_component Buttons::BackButton.new(fallback: trainings_reports_path) %>
+      </div>
 
       <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='avatar-xlarge mr-2rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
 
