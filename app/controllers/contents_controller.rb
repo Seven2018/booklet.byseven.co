@@ -71,7 +71,7 @@ class ContentsController < ApplicationController
   def content_link_category
     skip_authorization
     if params[:new_category].present?
-      Category.create(company_id: current_user.company_id, title: params[:new_category][:title])
+      Category.create(company_id: current_user.company_id, title: params[:new_category][:title], kind: :training)
       @content = Content.find(params[:new_category][:content_id])
       @modal = 'true'
     elsif params[:delete].present?

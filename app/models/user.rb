@@ -120,8 +120,10 @@ class User < ApplicationRecord
     present = []
     rows.each do |row_h|
       manager_email = row_h['manager']&.downcase
+      access_level = row_h['access_level']&.downcase
       row_h.delete('manager')
-      user_attr = "firstname,lastname,email,access_level_int,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
+      row_h.delete('access_level')
+      user_attr = "firstname,lastname,email,birth_date,hire_date,address,phone_number,social_security,gender,job_title".split(',')
       tag_categories_to_create_user = row_h.keys - user_attr - ['manager']
       tag_categories_to_create_user_h = {}
       tag_categories_to_create_user.each do |tag|
@@ -152,7 +154,9 @@ class User < ApplicationRecord
         user = User.new(row_h)
         user.lastname = user.lastname.upcase
         user.firstname = user.firstname.capitalize
-        user.access_level_int = :employee unless ['HR', 'Manager', 'Employee'].include?(row_h['access_level_int'])
+        user.access_level_int = access_level.to_sym
+        user.access_level_int = :employee unless ['admin', 'manager', 'employee'].include?(access_level)
+        user.access_level_int = :hr if access_level == 'admin'
         user.company_id = company_id
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
@@ -182,12 +186,12 @@ class User < ApplicationRecord
         UserTag.create(user: user, tag_id: tag.id, tag_category: category)
       end
       tag_categories_to_create_user.each do |x|
-        category = TagCategory.where(company_id: company_id, name: x).first
+        category = TagCategory.find_by(company_id: company_id, name: x)
         unless category.present?
           category = TagCategory.create(company_id: company_id, name: x, position: tag_category_last_position + 1)
           tag_category_last_position += 1
         end
-        tag = Tag.where(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x]).first
+        tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x])
         unless tag.present?
           tag = Tag.create(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x], tag_category_position: category.position)
         end

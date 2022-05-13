@@ -66,9 +66,9 @@
           </div>
         </div>
         <div class="booklet-select__dropdown hidden">
-          <% question.options.keys.each do |option| %>
+          <% question.options.sort_by {|k, v| v}.each do |option| %>
             <div class="booklet-select__option" onclick='BookletSelectSubmit(this);'>
-              <p><%= option %></p>
+              <p><%= option[0] %></p>
             </div>
           <% end %>
         </div>

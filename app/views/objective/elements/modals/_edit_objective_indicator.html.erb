@@ -31,11 +31,70 @@
 
       <% if indicator.boolean? %>
 
+        <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5"><%= indicator_options['starting_value'] %></p>
+
+          <label class="objective-switch <%= 'switch_checked' if indicator_options['current_value'] == indicator_options['target_value'] %>
+                        mx-2rem my-0">
+
+            <input type="checkbox"
+                   name='indicator_checked'
+                   data-action="objectives--objective-show#switchSide"
+                   <%= 'checked' if indicator_options['current_value'] == indicator_options['target_value'] %>/>
+
+            <div><%# do not remove %></div>
+
+          </label>
+
+          <p class="fs-1_4rem font-weight-600 bkt-objective-blue"><%= indicator_options['target_value'] %></p>
+
+        </div>
+
+      <% elsif indicator.numeric_value? %>
+
+        <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Starting value : <%= indicator_options['starting_value'] %></p>
+
+          <div class="d-flex justify-content-center align-items-center mx-2rem">
+
+            <p class="fs-1_4rem font-weight-600 bkt-light-grey5 mr-0_5rem">Current value :</p>
+
+            <input type="numeric"
+                   name="chosen_value"
+                   value="<%= indicator_options['current_value'] %>"
+                   class="px-0_5rem text-center"
+                   style="width: <%= indicator_options['target_value'].length + 1 %>rem;"
+                   min="indicator_options['starting_value']">
+
+          </div>
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Target value : <%= indicator_options['target_value'] %></p>
+
+        </div>
+
+      <% elsif indicator.percentage? %>
+
+        <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Current value :</p>
+
+          <input type="numeric"
+                 name="chosen_value"
+                 value="<%= indicator_options['current_value'] %>"
+                 class="width-4rem px-0_5rem mx-0_5rem text-center"
+                 min="indicator_options['starting_value']">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">%</p>
+
+        </div>
+
       <% elsif indicator.multi_choice? %>
 
         <p class="fs-1_6rem font-weight-500 bkt-light-grey6 text-center mb-2rem">Target value : <%= indicator_options['choice_1'] %></p>
 
-        <div class="d-flex flex-column align-items-center min-w-30rem mb-3rem">
+        <div class="d-flex flex-column align-items-center min-w-30rem mb-2rem">
 
           <% indicator_options.keys.each do |key| %>
 

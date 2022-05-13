@@ -9,6 +9,10 @@ class Objective::ElementPolicy < ApplicationPolicy
     true
   end
 
+  def update?
+    true
+  end
+
   def my_objectives?
     true
   end
