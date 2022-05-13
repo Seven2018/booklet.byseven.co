@@ -13,6 +13,9 @@
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_pack_tag 'booklet_vue' %>
+    <%= javascript_pack_tag 'booklet_vue' %>
     <%= stylesheet_pack_tag 'application' %>
     <%= javascript_pack_tag 'application', defer: true %>
   </head>
@@ -28,6 +31,9 @@
         <%= render 'shared/navbar_mobile' %>
       <% elsif @show_navbar_campaign %>
         <%= render 'shared/navbar_campaign' %>
+        <%= render 'shared/navbar_mobile' %>
+      <% elsif @show_navbar_objective %>
+        <%= render 'shared/navbar_objective' %>
         <%= render 'shared/navbar_mobile' %>
     <% end %>
 
@@ -56,7 +62,6 @@
 
     <%= render_component MobileMenuComponent.new(current_user) %>
 
-    <%= javascript_include_tag 'application' %>
   </body>
 
 </html>

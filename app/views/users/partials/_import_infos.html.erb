@@ -80,14 +80,12 @@
       <div class="import-infos__block-list">
         <div class="import-infos__user-card import-infos__user-card--headers">
           <p>Fullname</p>
-          <p>From</p>
-          <p>To</p>
+          <p>Email</p>
         </div>
         <% errors.each do |user| %>
           <div class="import-infos__user-card import-infos__user-card--update">
-            <p><%= "#{user[:lastname]}, #{user[:firstname]}" %></p>
-            <p><%= user[:former] %></p>
-            <p><%= user[:new] %></p>
+            <p><%= "#{user['lastname']}, #{user['firstname']}" %></p>
+            <p><%= user['email'] %></p>
           </div>
         <% end %>
       </div>

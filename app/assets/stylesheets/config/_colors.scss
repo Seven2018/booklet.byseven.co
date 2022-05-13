@@ -13,6 +13,10 @@ $bkt-light-blue: #EAF1F8;
 $bkt-light-blue2: #B1CBE3;
 $bkt-blue: #3177B7;
 $bkt-dark-blue: #0D4F8B;
+$bkt-light-objective-blue: #D6E4FF;
+$bkt-objective-light-blue: #5C95FF26;
+$bkt-objective-blue: #5C95FF;
+$bkt-objective-blue2: #5C95FF59;
 $bkt-white: #FFFFFF;
 $bkt-light-grey: #C4C4C4;
 $bkt-light-grey2: #F5F8FB;
@@ -23,6 +27,7 @@ $bkt-light-grey6: #787878;
 $bkt-light-grey7: #E3E3E3;
 $bkt-light-grey8: #ECECEC;
 $bkt-light-grey9: #F6F6F6;
+$bkt-light-grey10: #F0F0F0;
 $bkt-dark-grey: #333333;
 $bkt-green: #7BC079;
 $bkt-transparent-green: #D8EDD7;
@@ -36,97 +41,150 @@ $bkt-transparent-negative-red: #FAD4D4;
 $bkt-light-red: #ec6d6d40;
 
 
-.bkt-light-blue  { color: $bkt-light-blue !important; }
-.bkt-light-blue2 { color: $bkt-light-blue2 !important; }
-.bkt-blue        { color: $bkt-blue !important; }
-.bkt-dark-blue   { color: $bkt-dark-blue !important; }
-.bkt-white       { color: $bkt-white !important; }
-.bkt-light-grey  { color: $bkt-light-grey !important; }
-.bkt-light-grey2 { color: $bkt-light-grey2 !important; }
-.bkt-light-grey3 { color: $bkt-light-grey3 !important; }
-.bkt-light-grey4 { color: $bkt-light-grey4 !important; }
-.bkt-light-grey5 { color: $bkt-light-grey5 !important; }
-.bkt-light-grey6 { color: $bkt-light-grey6 !important; }
-.bkt-dark-grey   { color: $bkt-dark-grey !important; }
-.bkt-green       { color: $bkt-green !important; }
-.bkt-yellow      { color: $bkt-yellow !important; }
-.bkt-orange      { color: $bkt-orange !important; }
-.bkt-light-orange{ color: $bkt-light-orange !important; }
-.bkt-red         { color: $bkt-red !important; }
+.bkt-light-blue       { color: $bkt-light-blue !important; }
+.bkt-light-blue2      { color: $bkt-light-blue2 !important; }
+.bkt-blue             { color: $bkt-blue !important; }
+.bkt-dark-blue        { color: $bkt-dark-blue !important; }
+.bkt-light-objective-blue   { color: $bkt-light-objective-blue !important; }
+.bkt-objective-blue   { color: $bkt-objective-blue !important; }
+.bkt-objective-blue2   { color: $bkt-objective-blue2 !important; }
+.bkt-white            { color: $bkt-white !important; }
+.bkt-light-grey       { color: $bkt-light-grey !important; }
+.bkt-light-grey2      { color: $bkt-light-grey2 !important; }
+.bkt-light-grey3      { color: $bkt-light-grey3 !important; }
+.bkt-light-grey4      { color: $bkt-light-grey4 !important; }
+.bkt-light-grey5      { color: $bkt-light-grey5 !important; }
+.bkt-light-grey6      { color: $bkt-light-grey6 !important; }
+.bkt-dark-grey        { color: $bkt-dark-grey !important; }
+.bkt-green            { color: $bkt-green !important; }
+.bkt-yellow           { color: $bkt-yellow !important; }
+.bkt-orange           { color: $bkt-orange !important; }
+.bkt-light-orange     { color: $bkt-light-orange !important; }
+.bkt-red              { color: $bkt-red !important; }
+.bkt-negative-red     { color: $bkt-negative-red !important; }
 
-.bkt-light-blue-hover  { &:hover { color: $bkt-light-blue !important; } }
-.bkt-light-blue2-hover { &:hover { color: $bkt-light-blue2 !important; } }
-.bkt-blue-hover        { &:hover { color: $bkt-blue !important; } }
-.bkt-dark-blue-hover   { &:hover { color: $bkt-dark-blue !important; } }
-.bkt-white-hover       { &:hover { color: $bkt-white !important; } }
-.bkt-light-grey-hover  { &:hover { color: $bkt-light-grey !important; } }
-.bkt-light-grey2-hover { &:hover { color: $bkt-light-grey2 !important; } }
-.bkt-light-grey3-hover { &:hover { color: $bkt-light-grey3 !important; } }
-.bkt-light-grey4-hover { &:hover { color: $bkt-light-grey4 !important; } }
-.bkt-light-grey5-hover { &:hover { color: $bkt-light-grey5 !important; } }
-.bkt-light-grey6-hover { &:hover { color: $bkt-light-grey6 !important; } }
-.bkt-dark-grey-hover   { &:hover { color: $bkt-dark-grey !important; } }
-.bkt-green-hover       { &:hover { color: $bkt-green !important; } }
-.bkt-yellow-hover      { &:hover { color: $bkt-yellow !important; } }
-.bkt-orange-hover      { &:hover { color: $bkt-orange !important; } }
-.bkt-light-orange-hover{ &:hover { color: $bkt-light-orange !important; } }
-.bkt-red-hover         { &:hover { color: $bkt-red !important; } }
+.bkt-light-blue-hover       { &:hover { color: $bkt-light-blue !important; } }
+.bkt-light-blue2-hover      { &:hover { color: $bkt-light-blue2 !important; } }
+.bkt-blue-hover             { &:hover { color: $bkt-blue !important; } }
+.bkt-dark-blue-hover        { &:hover { color: $bkt-dark-blue !important; } }
+.bkt-light-objective-blue-hover   { &:hover { color: $bkt-light-objective-blue !important; } }
+.bkt-objective-blue-hover   { &:hover { color: $bkt-objective-blue !important; } }
+.bkt-objective-blue2-hover   { &:hover { color: $bkt-objective-blue2 !important; } }
+.bkt-white-hover            { &:hover { color: $bkt-white !important; } }
+.bkt-light-grey-hover       { &:hover { color: $bkt-light-grey !important; } }
+.bkt-light-grey2-hover      { &:hover { color: $bkt-light-grey2 !important; } }
+.bkt-light-grey3-hover      { &:hover { color: $bkt-light-grey3 !important; } }
+.bkt-light-grey4-hover      { &:hover { color: $bkt-light-grey4 !important; } }
+.bkt-light-grey5-hover      { &:hover { color: $bkt-light-grey5 !important; } }
+.bkt-light-grey6-hover      { &:hover { color: $bkt-light-grey6 !important; } }
+.bkt-dark-grey-hover        { &:hover { color: $bkt-dark-grey !important; } }
+.bkt-green-hover            { &:hover { color: $bkt-green !important; } }
+.bkt-yellow-hover           { &:hover { color: $bkt-yellow !important; } }
+.bkt-orange-hover           { &:hover { color: $bkt-orange !important; } }
+.bkt-light-orange-hover     { &:hover { color: $bkt-light-orange !important; } }
+.bkt-red-hover              { &:hover { color: $bkt-red !important; } }
 
-.bkt-bg-light-blue                { background-color: $bkt-light-blue !important; }
-.bkt-bg-light-blue2               { background-color: $bkt-light-blue2 !important; }
-.bkt-bg-blue                      { background-color: $bkt-blue !important; }
-.bkt-bg-dark-blue                 { background-color: $bkt-dark-blue !important; }
-.bkt-bg-white                     { background-color: $bkt-white !important; }
-.bkt-bg-light-grey                { background-color: $bkt-light-grey !important; }
-.bkt-bg-light-grey2               { background-color: $bkt-light-grey2 !important; }
-.bkt-bg-light-grey3               { background-color: $bkt-light-grey3 !important; }
-.bkt-bg-light-grey4               { background-color: $bkt-light-grey4 !important; }
-.bkt-bg-light-grey5               { background-color: $bkt-light-grey5 !important; }
-.bkt-bg-light-grey6               { background-color: $bkt-light-grey6 !important; }
-.bkt-bg-light-grey8               { background-color: $bkt-light-grey8 !important; }
-.bkt-bg-light-grey9               { background-color: $bkt-light-grey9; }
-.bkt-bg-dark-grey                 { background-color: $bkt-dark-grey !important; }
-.bkt-bg-green                     { background-color: $bkt-green !important; }
-.bkt-bg-transparent-green         { background-color: $bkt-transparent-green !important; }
-.bkt-bg-yellow                    { background-color: $bkt-yellow !important; }
-.bkt-bg-orange                    { background-color: $bkt-orange !important; }
-.bkt-bg-light-orange              { background-color: $bkt-light-orange !important; }
-.bkt-bg-light2-orange             { background-color: #ef8c6496 !important; }
-.bkt-bg-red                       { background-color: $bkt-red !important; }
-.bkt-bg-light-red                 { background-color: $bkt-light-red !important;}
-.bkt-bg-negative-red              { background-color: $bkt-negative-red !important; }
-.bkt-bg-transparent-negative-red  { background-color: $bkt-transparent-negative-red !important; }
+.bkt-bg-light-blue                     { background-color: $bkt-light-blue !important; }
+.bkt-bg-light-blue2                    { background-color: $bkt-light-blue2 !important; }
+.bkt-bg-blue                           { background-color: $bkt-blue !important; }
+.bkt-bg-dark-blue                      { background-color: $bkt-dark-blue !important; }
+.bkt-bg-light-objective-blue           { background-color: $bkt-light-objective-blue !important; }
+.bkt-bg-objective-light-blue           { background-color: $bkt-objective-light-blue !important; }
+.bkt-bg-objective-blue                 { background-color: $bkt-objective-blue !important; }
+.bkt-bg-objective-blue2                 { background-color: $bkt-objective-blue2 !important; }
+.bkt-bg-white                          { background-color: $bkt-white !important; }
+.bkt-bg-light-grey                     { background-color: $bkt-light-grey !important; }
+.bkt-bg-light-grey2                    { background-color: $bkt-light-grey2 !important; }
+.bkt-bg-light-grey3                    { background-color: $bkt-light-grey3 !important; }
+.bkt-bg-light-grey4                    { background-color: $bkt-light-grey4 !important; }
+.bkt-bg-light-grey5                    { background-color: $bkt-light-grey5 !important; }
+.bkt-bg-light-grey6                    { background-color: $bkt-light-grey6 !important; }
+.bkt-bg-light-grey8                    { background-color: $bkt-light-grey8 !important; }
+.bkt-bg-light-grey9                    { background-color: $bkt-light-grey9 !important; }
+.bkt-bg-light-grey10      { background-color: $bkt-light-grey10 !important; }
+.bkt-bg-dark-grey                      { background-color: $bkt-dark-grey !important; }
+.bkt-bg-green                          { background-color: $bkt-green !important; }
+.bkt-bg-transparent-green              { background-color: $bkt-transparent-green !important; }
+.bkt-bg-yellow                         { background-color: $bkt-yellow !important; }
+.bkt-bg-orange                         { background-color: $bkt-orange !important; }
+.bkt-bg-light-orange                   { background-color: $bkt-light-orange !important; }
+.bkt-bg-light2-orange                  { background-color: #ef8c6496 !important; }
+.bkt-bg-red                            { background-color: $bkt-red !important; }
+.bkt-bg-light-red                      { background-color: $bkt-light-red !important;}
+.bkt-bg-negative-red                   { background-color: $bkt-negative-red !important; }
+.bkt-bg-transparent-negative-red       { background-color: $bkt-transparent-negative-red !important; }
 
 .bkt-sm-bg-light-orange { @include from-medium-high { background-color: $bkt-light-orange !important; } }
 
 .bkt-bg-light-grey8-focus { &:focus { background-color: $bkt-light-grey8 !important; } }
 
-.bkt-bg-light-blue-hover  { &:hover { background-color: $bkt-light-blue !important; } }
-.bkt-bg-light-blue2-hover { &:hover { background-color: $bkt-light-blue2 !important; } }
-.bkt-bg-blue-hover        { &:hover { background-color: $bkt-blue !important; } }
-.bkt-bg-dark-blue-hover   { &:hover { background-color: $bkt-dark-blue !important; } }
-.bkt-bg-white-hover       { &:hover { background-color: $bkt-white !important; } }
-.bkt-bg-light-grey-hover  { &:hover { background-color: $bkt-light-grey !important; } }
-.bkt-bg-light-grey2-hover { &:hover { background-color: $bkt-light-grey2 !important; } }
-.bkt-bg-light-grey3-hover { &:hover { background-color: $bkt-light-grey3 !important; } }
-.bkt-bg-light-grey4-hover { &:hover { background-color: $bkt-light-grey4 !important; } }
-.bkt-bg-light-grey5-hover { &:hover { background-color: $bkt-light-grey5 !important; } }
-.bkt-bg-light-grey6-hover { &:hover { background-color: $bkt-light-grey6 !important; } }
-.bkt-bg-light-grey8-hover { &:hover { background-color: $bkt-light-grey8 !important; } }
-.bkt-bg-dark-grey-hover   { &:hover { background-color: $bkt-dark-grey !important; } }
-.bkt-bg-green-hover       { &:hover { background-color: $bkt-green !important; } }
-.bkt-bg-yellow-hover      { &:hover { background-color: $bkt-yellow !important; } }
-.bkt-bg-orange-hover      { &:hover { background-color: $bkt-orange !important; } }
-.bkt-bg-light-orange-hover{ &:hover { background-color: $bkt-light-orange !important; } }
-.bkt-bg-dark-orange-hover { &:hover { background-color: $bkt-dark-orange !important; } }
-.bkt-bg-red-hover         { &:hover { background-color: $bkt-red !important; } }
-.bkt-bg-light-grey2-hover { &:hover { background-color: $bkt-light-grey2 !important; } }
+.bkt-bg-light-blue-hover       { &:hover { background-color: $bkt-light-blue !important; } }
+.bkt-bg-light-blue2-hover      { &:hover { background-color: $bkt-light-blue2 !important; } }
+.bkt-bg-blue-hover             { &:hover { background-color: $bkt-blue !important; } }
+.bkt-bg-dark-blue-hover        { &:hover { background-color: $bkt-dark-blue !important; } }
+.bkt-bg-objective-blue-hover   { &:hover { background-color: $bkt-objective-blue !important; } }
+.bkt-bg-white-hover            { &:hover { background-color: $bkt-white !important; } }
+.bkt-bg-light-grey-hover       { &:hover { background-color: $bkt-light-grey !important; } }
+.bkt-bg-light-grey2-hover      { &:hover { background-color: $bkt-light-grey2 !important; } }
+.bkt-bg-light-grey3-hover      { &:hover { background-color: $bkt-light-grey3 !important; } }
+.bkt-bg-light-grey4-hover      { &:hover { background-color: $bkt-light-grey4 !important; } }
+.bkt-bg-light-grey5-hover      { &:hover { background-color: $bkt-light-grey5 !important; } }
+.bkt-bg-light-grey6-hover      { &:hover { background-color: $bkt-light-grey6 !important; } }
+.bkt-bg-light-grey8-hover      { &:hover { background-color: $bkt-light-grey8 !important; } }
+.bkt-bg-light-grey9-hover      { &:hover { background-color: $bkt-light-grey9 !important; } }
+.bkt-bg-light-grey10-hover      { &:hover { background-color: $bkt-light-grey10 !important; } }
+.bkt-bg-dark-grey-hover        { &:hover { background-color: $bkt-dark-grey !important; } }
+.bkt-bg-green-hover            { &:hover { background-color: $bkt-green !important; } }
+.bkt-bg-yellow-hover           { &:hover { background-color: $bkt-yellow !important; } }
+.bkt-bg-orange-hover           { &:hover { background-color: $bkt-orange !important; } }
+.bkt-bg-light-orange-hover     { &:hover { background-color: $bkt-light-orange !important; } }
+.bkt-bg-dark-orange-hover      { &:hover { background-color: $bkt-dark-orange !important; } }
+.bkt-bg-red-hover              { &:hover { background-color: $bkt-red !important; } }
+.bkt-bg-light-grey2-hover      { &:hover { background-color: $bkt-light-grey2 !important; } }
 
-.bkt-light-grey-placeholder {
+
+
+/////////////////
+// ON CLICK //
+/////////////////
+.bkt-white-onclick { &:active { color: $bkt-white !important; } }
+
+/////////////////
+// PLACEHOLDER //
+/////////////////
+
+.bkt-placeholder-light-grey {
   &::placeholder { color: $bkt-light-grey !important; }
   &::-webkit-input-placeholder { color: $bkt-light-grey !important; }
   &::-moz-placeholder { color: $bkt-light-grey !important; }
   &::-ms-placeholder { color: $bkt-light-grey !important; }
+}
+
+.bkt-placeholder-light-grey5 {
+  &::placeholder { color: $bkt-light-grey5 !important; }
+  &::-webkit-input-placeholder { color: $bkt-light-grey5 !important; }
+  &::-moz-placeholder { color: $bkt-light-grey5 !important; }
+  &::-ms-placeholder { color: $bkt-light-grey5 !important; }
+
+  &::before { color: $bkt-light-grey5 !important; }
+}
+
+.bkt-placeholder-dark-grey {
+  &::placeholder { color: $bkt-dark-grey !important; }
+  &::-webkit-input-placeholder { color: $bkt-dark-grey !important; }
+  &::-moz-placeholder { color: $bkt-dark-grey !important; }
+  &::-ms-placeholder { color: $bkt-dark-grey !important; }
+
+  &::before { color: $bkt-dark-grey !important; }
+}
+
+.bkt-placeholder-fs-1_4rem {
+  &::placeholder { font-size: 1.4rem !important; font-weight: 500 !important; }
+  &::-webkit-input-placeholder { font-size: 1.4rem !important; font-weight: 500 !important; }
+  &::-moz-placeholder { font-size: 1.4rem !important; font-weight: 500 !important; }
+  &::-ms-placeholder { font-size: 1.4rem !important; font-weight: 500 !important; }
+
+  &::before { font-size: 1.4rem !important; font-weight: 500 !important; }
 }
 
 // .hover-bkt-blue:hover        { color: $bkt-blue !important; }

@@ -26,8 +26,4 @@ class FolderPolicy < ApplicationPolicy
   def folder_manage_children?
     create?
   end
-
-  def book_contents?
-    create?
-  end
 end
