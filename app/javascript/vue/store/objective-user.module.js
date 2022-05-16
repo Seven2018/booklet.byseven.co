@@ -64,7 +64,7 @@ export default {
     },
     async deleteObjectiveUser({commit, dispatch, state}, objectiveId) {
       try {
-        await axios.delete(routes.generate('objective_elements_delete', {id: objectiveId}))
+        await axios.delete(routes.generate('objective_elements_id', {id: objectiveId}))
 
         dispatch('fetchUserObjectivesCurrent', state.user.id)
         dispatch('fetchUserObjectivesArchived', state.user.id)

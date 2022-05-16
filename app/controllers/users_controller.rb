@@ -51,7 +51,7 @@ class UsersController < ApplicationController
           tag_category: tag_category,
           tag: Tag.find_by(tag_name: tag_name, tag_category: tag_category)
         )
-      end
+      end if params[:tags].present?
     end
 
     respond_to do |format|
