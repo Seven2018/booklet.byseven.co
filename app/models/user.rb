@@ -32,7 +32,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true
 
-  paginates_per 50
+  paginates_per 25
 
   enum access_level_int: {
     employee:       0,
