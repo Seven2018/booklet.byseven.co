@@ -6,7 +6,6 @@ export default class extends Controller {
   }
 
   chooseDirectManagerText(event) {
-    console.log('chooseDirectManagerText')
     this.directManagerTextTarget.classList.remove('d-none')
     this.directManagerTextTarget.classList.add('d-block')
     this.interviewerTextTarget.classList.remove('d-block')
@@ -14,7 +13,6 @@ export default class extends Controller {
   }
 
   choseInterviewerText(event) {
-    console.log('choseInterviewerText')
     this.interviewerTextTarget.classList.remove('d-none')
     this.interviewerTextTarget.classList.add('d-block')
     this.directManagerTextTarget.classList.remove('d-block')
