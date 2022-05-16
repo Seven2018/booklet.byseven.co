@@ -133,7 +133,7 @@ class TrainingsController < ApplicationController
       @filtered = false
     end
 
-    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+    page_index = (params.dig(:search, :page).presence || 1).to_i
 
     total_trainings_count = @trainings.count
     @trainings = @trainings.page(page_index)
