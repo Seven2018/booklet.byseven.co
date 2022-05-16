@@ -34,15 +34,17 @@
             :class="`key-${id}-${idx}`"
             class="flex-row-start-centered pl-4 my-2 py-2"
         >
-          <div class="flex-row-start-centered max-w-25rem">
-            <div v-if="isCompleted(element.objective_indicator)">
-              <span class="iconify mr-2 bkt-light-grey5" data-width="20" data-icon="akar-icons:check"></span>
+          <a class="width-100" :href="$routes.generate('objective_elements_id', {id: element.id})">
+            <div class="flex-row-start-centered max-w-25rem">
+              <div v-if="isCompleted(element.objective_indicator)">
+                <span class="iconify mr-2 bkt-light-grey5" data-width="20" data-icon="akar-icons:check"></span>
+              </div>
+              <p
+                  class="font-weight-500 text-truncate"
+                  :class="{'bkt-light-grey5': isCompleted(element.objective_indicator)}"
+              >{{ element.title }}</p>
             </div>
-            <p
-                class="font-weight-500 text-truncate"
-                :class="{'bkt-light-grey5': isCompleted(element.objective_indicator)}"
-            >{{ element.title }}</p>
-          </div>
+          </a>
         </div>
       </td>
 
@@ -52,34 +54,40 @@
             @mouseover="setHover(`key-${id}-${idx}`)"
             @mouseleave="removeHover(`key-${id}-${idx}`)"
             :class="`key-${id}-${idx}`"
-            class="flex-row-start-centered my-2 py-2"
+            class="flex-row-start-centered my-2 py-2 width-100"
         >
-          <p
-              class="font-weight-500"
-              :class="{'bkt-light-grey5': isCompleted(element.objective_indicator)}"
-          >
+          <a class="width-100" :href="$routes.generate('objective_elements_id', {id: element.id})">
+            <p
+                class="font-weight-500"
+                :class="{'bkt-light-grey5': isCompleted(element.objective_indicator)}"
+            >
             <span
                 v-if="element.objective_indicator.indicator_type === 'boolean'"
             >
-              actual value: {{ element.objective_indicator.options.starting_value }}, target value: {{ element.objective_indicator.options.target_value }}
+              actual value: {{
+                element.objective_indicator.options.starting_value
+              }}, target value: {{ element.objective_indicator.options.target_value }}
             </span>
-            <span
-                v-else-if="element.objective_indicator.indicator_type === 'numeric_value'"
-            >
-              {{ element.objective_indicator.options.starting_value }}/{{ element.objective_indicator.options.target_value }}
+              <span
+                  v-else-if="element.objective_indicator.indicator_type === 'numeric_value'"
+              >
+              {{
+                  element.objective_indicator.options.starting_value
+                }}/{{ element.objective_indicator.options.target_value }}
             </span>
-            <span
-                v-else-if="element.objective_indicator.indicator_type === 'percentage'"
-            >
+              <span
+                  v-else-if="element.objective_indicator.indicator_type === 'percentage'"
+              >
               {{ element.objective_indicator.options.target_value }}%
             </span>
-            <span
-                v-else-if="element.objective_indicator.indicator_type === 'multi_choice'"
-            >
+              <span
+                  v-else-if="element.objective_indicator.indicator_type === 'multi_choice'"
+              >
               <span v-if="!element.objective_indicator.options.starting_value">Not set yet</span>
               <span v-else>{{ element.objective_indicator.options.starting_value }}</span>
             </span>
-          </p>
+            </p>
+          </a>
         </div>
       </td>
 
@@ -89,12 +97,14 @@
             @mouseover="setHover(`key-${id}-${idx}`)"
             @mouseleave="removeHover(`key-${id}-${idx}`)"
             :class="`key-${id}-${idx}`"
-            class="flex-row-start-centered my-2 py-2"
+            class="flex-row-start-centered my-2 py-2 width-100"
         >
-          <p
-              class="font-weight-500 text-truncate"
-              :class="{'bkt-light-grey5': isCompleted(element.objective_indicator)}"
-          >{{ element.due_date || '-' }}</p>
+          <a class="width-100" :href="$routes.generate('objective_elements_id', {id: element.id})">
+            <p
+                class="font-weight-500 text-truncate"
+                :class="{'bkt-light-grey5': isCompleted(element.objective_indicator)}"
+            >{{ element.due_date || '-' }}</p>
+          </a>
         </div>
       </td>
 
