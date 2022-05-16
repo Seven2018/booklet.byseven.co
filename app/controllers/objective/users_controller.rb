@@ -16,12 +16,15 @@ class Objective::UsersController < ApplicationController
 
   def info
     user = User.find(params[:id])
+    skip_authorization
 
     render json: user
   end
 
   def list_current
     user = User.find(params[:id])
+    skip_authorization
+
     objectives_current = user
                            .objective_elements
                            .where(status: :opened)
@@ -31,6 +34,8 @@ class Objective::UsersController < ApplicationController
 
   def list_archived
     user = User.find(params[:id])
+    skip_authorization
+
     objectives_archived = user
                             .objective_elements
                             .where(status: :archived)
@@ -40,6 +45,7 @@ class Objective::UsersController < ApplicationController
 
   def my_team_objectives
     @user = User.find(params[:id])
+    authorize @user, policy_class: Objective::UserPolicy
   end
 
   # TODO: check url
@@ -68,9 +74,5 @@ class Objective::UsersController < ApplicationController
     else
       params[:search].blank? ? company_users : company_users.search_users(params[:search])
     end
-  end
-
-  def skip_pundit?
-    true
   end
 end

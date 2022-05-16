@@ -95,9 +95,6 @@ class Objective::ElementsController < ApplicationController
   def my_objectives
   end
 
-  def my_team_objectives
-  end
-
   def archive
     objective = Objective::Element.find(params[:id])
 
