@@ -26,7 +26,7 @@ class InterviewFormsController < ApplicationController
       @templates = InterviewForm.get_activerecord_relation(@templates)
     end
 
-    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+    page_index = (params.dig(:search, :page).presence || 1).to_i
 
     total_templates_count = @templates.count
     @templates = @templates.order(created_at: :desc).page(page_index)

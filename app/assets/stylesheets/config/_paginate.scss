@@ -56,6 +56,14 @@
     }
   }
 
+  .paginate__button-dark-grey {
+    border: 2px solid $bkt-dark-grey;
+
+    p, svg {
+      color: $bkt-dark-grey;
+    }
+  }
+
   .paginate__button-blue {
     border: 2px solid $bkt-blue;
 
@@ -69,6 +77,20 @@
 
      p, svg {
       color: $bkt-orange;
+    }
+  }
+}
+
+.paginate-container-dark-grey {
+
+  .pagination {
+
+    .page-link {
+      color: $bkt-dark-grey;
+    }
+
+    .page-item.active > .page-link {
+      color: $bkt-dark-grey;
     }
   }
 }
