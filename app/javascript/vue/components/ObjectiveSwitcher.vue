@@ -1,12 +1,12 @@
 <template>
   <div class="width-100">
-    <div class="border-bottom-bkt-light-grey mb-4">
+    <div class="height-3_6rem border-bottom-bkt-light-grey mb-4">
       <button
-          class="pb-3 fs-1_6rem"
+          class="height-3_5rem pb-3 fs-1_6rem"
           :class="[panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >
-        Currents objectives
+        Current objectives
         <span
             v-if="currentNbr"
             class="px-2 rounded-5px fs-1_2rem"
@@ -22,7 +22,7 @@
       </button>
 
       <button
-          class="pb-3 pl-3 fs-1_6rem"
+          class="height-3_5rem pb-3 pl-3 fs-1_6rem"
           :class="[!panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', !panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >

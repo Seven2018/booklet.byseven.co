@@ -1,14 +1,24 @@
 <template>
   <div class="width-70 mt-5 mx-auto">
-    <div class="flex-row-center-centered">
+
+    <div class="flex-row-center-centered pos-rel">
+
+      <bkt-back-button v-if="backButton"
+                       class="pos-abs"
+                       style="top: 0; left: 0;">
+      </bkt-back-button>
+
       <h1 v-if="title" class="fs-2_4rem font-weight-500">{{title}}</h1>
       <h1 v-else class="fs-2_4rem font-weight-500">My team objectives</h1>
+
     </div>
 
     <div class="flex-row-end-centered mt-5">
+
       <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" :href="$routes.generate('objective_new')">
         New objective
       </bkt-button>
+
     </div>
 
     <div class="flex-row-start-centered">
@@ -37,12 +47,13 @@
 
 <script>
 import BktButton from "../../../components/BktButton";
+import BktBackButton from "../../../components/BktBackButton";
 import ObjectiveSwitcher from "../../../components/ObjectiveSwitcher";
 import MyTeamObjectivesTable from "./MyTeamObjectivesTable";
 import store from "../../../store";
 
 export default {
-  props: ['userId', 'title'],
+  props: ['userId', 'title', 'backButton'],
   data() {
     return {
       headers: ['Employees', 'Objectives', 'Completion', 'Deadline', ''],
@@ -57,6 +68,7 @@ export default {
   components: {
     MyTeamObjectivesTable,
     BktButton,
+    BktBackButton,
     ObjectiveSwitcher
   }
 }
