@@ -22,7 +22,7 @@ RSpec.feature 'Permission :can_create_interview_reports', type: :feature, js: tr
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_interview_reports: true) }
+      before { login_as create(:user, access_level_int: :hr, company: company, can_create_interview_reports: true) }
       scenario 'should have access' do
         visit edit_interviews_reports_path
         expect(page).to have_current_path edit_interviews_reports_path
@@ -47,7 +47,7 @@ RSpec.feature 'Permission :can_create_interview_reports', type: :feature, js: tr
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_interview_reports: true) }
+      before { login_as create(:user, access_level_int: :hr, company: company, can_create_interview_reports: true) }
       scenario 'should have access' do
         visit interviews_reports_path
         expect(page).to have_selector("[data-handle='create-an-interview-report-cta']")

@@ -3,13 +3,10 @@
 require 'rails_helper'
 
 RSpec.feature 'Permission :can_create_employees', type: :feature, js: true do
-  let(:company) { create(:company) }
   let(:user) do
     create(
       :user,
-      firstname: 'John',
-      lastname: 'Doe',
-      company: company,
+      access_level_int: :hr,
       can_read_employees: true,
       can_create_employees: can_create_employees
     )
