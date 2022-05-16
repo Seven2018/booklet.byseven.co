@@ -1,6 +1,6 @@
 <% if params.dig(:search, :page).present? && params.dig(:search, :page).to_i > 1 %>
 
-  <div class="paginate__previous-button"
+  <div class="paginate__previous-button paginate__button-dark-grey"
        data-action='click->change-page#previous'>
     <span class="iconify" data-icon="fontisto:angle-left"></span>
     <p>Previous</p>
@@ -12,7 +12,7 @@
 
 <% if @users.count == 50 && @any_more %>
 
-  <div class="paginate__next-button"
+  <div class="paginate__next-button paginate__button-dark-grey"
        data-action='click->change-page#next'>
     <p>Next</p>
     <span class="iconify" data-icon="fontisto:angle-right"></span>
