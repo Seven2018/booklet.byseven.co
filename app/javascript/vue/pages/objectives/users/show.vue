@@ -1,16 +1,18 @@
 <template>
   <div>
     <div v-if="objectiveUser.user" class="width-70 mt-5 mx-auto">
-      <div class="flex-row-center-centered">
+      <div class="flex-row-center-centered pos-rel">
+
+        <bkt-back-button v-if="backButton"
+                       class="pos-abs"
+                       style="top: 0; left: 0;">
+        </bkt-back-button>
+
         <h1 v-if="title" class="fs-2_4rem font-weight-500">{{title}}</h1>
         <h1 v-else class="fs-2_4rem font-weight-500">My Objectives</h1>
+
       </div>
       <div class="flex-row-center-centered mt-5 position-relative">
-        <div
-            v-if="backButton"
-            class="position-absolute" style="left: 0">
-          <bkt-back-button></bkt-back-button>
-        </div>
         <img class="rounded-circle width-5rem height-5rem border-bkt-blue-2px"
              :src="objectiveUser.user.picture"
              onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"

@@ -3,12 +3,12 @@
 class Objective::UsersController < ApplicationController
   before_action :show_navbar_objective
 
-  skip_after_action :verify_authorized, only: [
-    :my_team_objectives, :my_team_objectives_current_list, :my_team_objectives_archived_list
+  skip_after_action :verify_authorized, only: [:my_team_objectives_current_list, :my_team_objectives_archived_list
   ]
 
   def index
     render partial: 'objective/elements/new/users', locals: { users: users, selected: params.dig(:selected) }
+    policy_scope(Objective::Element)
   end
 
   def show
@@ -16,12 +16,15 @@ class Objective::UsersController < ApplicationController
 
   def info
     user = User.find(params[:id])
+    skip_authorization
 
     render json: user
   end
 
   def list_current
     user = User.find(params[:id])
+    skip_authorization
+
     objectives_current = user
                            .objective_elements
                            .where(status: :opened)
@@ -31,6 +34,8 @@ class Objective::UsersController < ApplicationController
 
   def list_archived
     user = User.find(params[:id])
+    skip_authorization
+
     objectives_archived = user
                             .objective_elements
                             .where(status: :archived)
@@ -40,6 +45,7 @@ class Objective::UsersController < ApplicationController
 
   def my_team_objectives
     @user = User.find(params[:id])
+    authorize @user, policy_class: Objective::UserPolicy
   end
 
   # TODO: check url
@@ -68,9 +74,5 @@ class Objective::UsersController < ApplicationController
     else
       params[:search].blank? ? company_users : company_users.search_users(params[:search])
     end
-  end
-
-  def skip_pundit?
-    true
   end
 end

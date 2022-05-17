@@ -48,6 +48,10 @@
 // }
 
 trix-editor {
+  a {
+    text-decoration: underline !important;
+  }
+
   span {
     font-size: 1.4rem;
   }
@@ -149,8 +153,11 @@ trix-editor {
     top: 0;
     left: 0;
     right: 0;
-    opacity: .5;
     transition: all .25s ease-in-out;
+
+    .trix-button-row {
+      opacity: .5;
+    }
 
     .trix-button {
       border: none !important;
@@ -173,7 +180,7 @@ trix-editor {
       }
     }
 
-    .trix-button {
+    .trix-button--icon {
       width: 3rem;
       padding: 0 !important;
       margin: 0 0.25em;

@@ -136,14 +136,9 @@ class PagesController < ApplicationController
 
     if search_name.present?
       users = users.search_users(search_name)
-      @filtered = true
-    else
-      @filtered_by_tags = 'false'
-      @filtered = false
     end
 
-    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
-    page_index = params[:page] if params[:page].present?
+    page_index = (params.dig(:search, :page).presence || 1).to_i
 
     @total_users_count = users.count
     @users = users.page(page_index)

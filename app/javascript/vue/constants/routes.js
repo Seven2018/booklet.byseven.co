@@ -9,7 +9,7 @@ const routes = {
   objective_elements_archive: '/objective/elements/{id}/archive',
   objective_elements_id: '/objective/elements/{id}',
   objective_user_my_team_current_list: '/objective/users/{id}/my_team_objectives_current_list',
-  objective_user_my_team_archived_list: '/objective/users/{id}/my_team_objectives_current_list',
+  objective_user_my_team_archived_list: '/objective/users/{id}/my_team_objectives_archived_list',
   objective_user_my_team_objectives: '/objective/users/{id}/my_team_objectives'
 }
 
