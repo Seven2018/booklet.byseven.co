@@ -12,7 +12,7 @@ RSpec.describe "Users::Sessions", type: :system do
   end
 
   let(:user) {create(:user)}
-  it 'should be able to create a session by connecting user' do
+  it 'should be able to create a session by connecting user and pass check action' do
     visit '/u/sign_in'
 
     fill_in("user_email", with: user.email)
