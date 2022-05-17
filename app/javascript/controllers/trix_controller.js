@@ -53,11 +53,11 @@ export default class extends Controller {
   }
 
   showToolbar() {
-    this.element.querySelector('trix-toolbar').style.opacity = '1'
+    this.element.querySelector('.trix-button-row').style.opacity = '1'
   }
 
-  hideToolbar() {
-    this.element.querySelector('trix-toolbar').style.opacity = '0.5'
+  hideToolbar(e) {
+    this.element.querySelector('.trix-button-row').style.opacity = '0.5'
     this.element.querySelectorAll('.trix-button.trix-active').forEach((button) => {
       button.classList.remove('trix-active')
       button.click()

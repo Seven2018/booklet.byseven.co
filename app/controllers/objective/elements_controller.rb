@@ -52,7 +52,7 @@ class Objective::ElementsController < ApplicationController
 
     end
 
-    redirect_to objective_elements_path
+    redirect_to (params[:redirect_to_storage].presence || objective_elements_path)
   end
 
   def show

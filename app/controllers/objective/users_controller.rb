@@ -3,12 +3,12 @@
 class Objective::UsersController < ApplicationController
   before_action :show_navbar_objective
 
-  skip_after_action :verify_authorized, only: [
-    :my_team_objectives, :my_team_objectives_current_list, :my_team_objectives_archived_list
+  skip_after_action :verify_authorized, only: [:my_team_objectives_current_list, :my_team_objectives_archived_list
   ]
 
   def index
     render partial: 'objective/elements/new/users', locals: { users: users, selected: params.dig(:selected) }
+    policy_scope(Objective::Element)
   end
 
   def show
