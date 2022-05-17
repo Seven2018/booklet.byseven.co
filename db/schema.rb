@@ -545,6 +545,8 @@ ActiveRecord::Schema.define(version: 2022_05_12_143921) do
     t.boolean "can_create_employees", default: false, null: false
     t.boolean "can_edit_employees", default: false, null: false
     t.boolean "can_edit_permissions", default: false, null: false
+    t.string "provider"
+    t.string "uid"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

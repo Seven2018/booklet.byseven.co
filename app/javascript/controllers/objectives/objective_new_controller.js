@@ -14,10 +14,6 @@ export default class extends Controller {
   }
 
   connect() {
-    this.doubleClickGuardian = false
-    this.timer
-    this.waitTime = 1000
-
     this.element[
       (str => {
         return str
@@ -34,6 +30,9 @@ export default class extends Controller {
   }
 
   setup() {
+    this.history = document.referrer
+    document.getElementById('redirect_storage').value = this.history
+
     function OnInput() {
       this.style.height = "auto";
       this.style.height = (this.scrollHeight) + "px";

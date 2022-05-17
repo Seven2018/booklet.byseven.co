@@ -13,8 +13,10 @@ export default class extends Controller {
 
   connect() {
     if (this.hasSearchTarget && this.hasSubmitTarget) {
-      this.searchTarget.value = this.currentSearch()
-      this.submitTarget.click()
+      if (this.currentSearch()) {
+        this.searchTarget.value = this.currentSearch()
+        this.submitTarget.click()
+      }
     }
   }
 
@@ -27,7 +29,7 @@ export default class extends Controller {
   }
 
   currentSearch () {
-    return window.localStorage.getItem(this.keyValue)
+    return window.localStorage.getItem(this.keyValue) || false
   }
 
   resetAllFilter(_) {
@@ -73,6 +75,5 @@ export default class extends Controller {
     searchbar.querySelector('.btn-search').click()
     document.querySelector('body').classList.add('wait')
     window.localStorage.setItem(this.keyValue, '')
-    location.reload()
   }
 }

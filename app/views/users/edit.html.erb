@@ -26,8 +26,8 @@
         <%= f.input :firstname, label: 'First Name', label_html: { class: 'bkt-light-grey' }, class: 'form-control', required: true %>
         <%= f.input :lastname, label: 'Last Name', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
         <%#= f.input :email, label: 'Email', label_html: {class: 'bkt-light-grey'},  class: 'form-control' %>
-        <%= render 'users/access_level_input', f: f, user: User.new %>
-        <%= f.input :manager_id, collection: User.where(company_id: @user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin']).where.not(id: @user.id).order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: { class: 'bkt-light-grey' } %>
+        <%= render 'users/access_level_input', f: f, user: @user %>
+        <%= f.input :manager_id, collection: User.where(company_id: @user.company_id, access_level_int: [:manager, :hr, :admin]).where.not(id: @user.id).order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: { class: 'bkt-light-grey' } %>
         <%= f.input :phone_number, label: 'Phone', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
         <%= f.input :linkedin, label: 'Linkedin (url)', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
         <%= f.input :birth_date, as: :date, label: 'Birth date', label_html: { class: 'bkt-light-grey' }, class: 'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,

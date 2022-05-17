@@ -159,7 +159,7 @@ class CampaignsController < ApplicationController
       @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
     end
 
-    page_index = params.dig(:search, :page).present? ? params.dig(:search, :page).to_i : 1
+    page_index = (params.dig(:search, :page).presence || 1).to_i
 
     total_campaigns_count = @campaigns.count
     @campaigns = @campaigns.page(page_index)

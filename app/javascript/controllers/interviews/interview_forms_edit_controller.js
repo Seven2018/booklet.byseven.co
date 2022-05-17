@@ -112,8 +112,6 @@ export default class extends Controller {
   ///////////////////////
 
   showQuestionMenu(e) {
-    console.log('start')
-
     if (!this.doubleClickGuardian) {
       const container = e.target.closest('.template-edit__add-question-btn')
 
