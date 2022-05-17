@@ -72,8 +72,16 @@ RSpec.feature 'Permission :can_edit_training_workshops', type: :feature, js: tru
     end
 
     context 'a signed in user with permission' do
-      let(:user) { create(:user, company: company, can_edit_training_workshops: true) }
+      let(:user) do
+        model = FactoryBot.build(:user,
+                                 can_edit_training_workshops: true
+        )
+        model.skip_before_create = true
+        model.save
+        model
+      end
       before { login_as user }
+
       scenario 'should not have access' do
         visit training_path(training)
         expect(page).to have_selector("[data-handle='training-workshop-edit-cta']")

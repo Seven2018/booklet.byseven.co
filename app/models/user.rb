@@ -1,6 +1,8 @@
 require 'csv'
 
 class User < ApplicationRecord
+  attr_accessor :skip_before_create
+
   include Users::Permissions
   include Users::Access
   acts_as_token_authenticatable
@@ -29,7 +31,7 @@ class User < ApplicationRecord
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
   has_many :objective_elements, as: :objectivable, class_name: "Objective::Element"
 
-  before_create :set_initial_permissions!
+  before_create :set_initial_permissions!, unless: :skip_before_create
 
   validates :email, presence: true
 

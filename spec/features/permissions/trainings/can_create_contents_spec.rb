@@ -7,12 +7,13 @@ RSpec.feature 'Permission :can_create_contents', type: :feature, js: true do
 
     let(:can_create_contents) { false }
     let(:user) do
-      create(
-        :user,
-        access_level_int: :hr,
+      model = FactoryBot.build(:user,
         can_read_contents: true,
         can_create_contents: can_create_contents
       )
+      model.skip_before_create = true
+      model.save
+      model
     end
 
     before { login_as user }
