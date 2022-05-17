@@ -38,7 +38,6 @@ export default class extends Controller {
 
   _submit() {
     this.submitTarget.click()
-    setTimeout(this._setPaginationLinks, 1000)
   }
 
   _setPaginationLinks() {

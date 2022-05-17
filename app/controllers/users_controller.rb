@@ -210,7 +210,7 @@ class UsersController < ApplicationController
 
     @users =
       if params[:manager].present?
-        User.where(company_id: current_user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin'])
+        User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :admin])
       else
         User.where(company_id: current_user.company_id)
       end

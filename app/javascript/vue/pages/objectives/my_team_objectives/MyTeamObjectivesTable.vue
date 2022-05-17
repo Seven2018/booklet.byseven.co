@@ -188,7 +188,7 @@ export default {
         },
         confirm() {
           store
-              .dispatch('myTeamObjectives/deleteObjectiveUser')
+              .dispatch('myTeamObjectives/deleteObjectiveUser', id)
               .then(() => this.$modal.close())
         }
       })
