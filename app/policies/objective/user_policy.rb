@@ -1,5 +1,9 @@
 class Objective::UserPolicy < ApplicationPolicy
 
+  def show?
+    user == record || user = record.manager || user.hr_or_above?
+  end
+
   def info?
     true
   end

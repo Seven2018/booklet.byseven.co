@@ -4,7 +4,7 @@ export default class extends Controller {
   static get targets () {
     return ['displayElement', 'multiChoiceContainer', 'multiChoiceTemplate',
             'selectedUsers', 'selectedUsersPillStorage', 'selectedUsersPillStorageModal',
-            'selectedCount', 'filteredCount', 'selectAllButton', 'results']
+            'selectedCount', 'filteredCount', 'selectAllButton', 'results', 'requiredInput', 'submitButton']
   }
 
   static get values () {
@@ -44,6 +44,31 @@ export default class extends Controller {
       tx[i].addEventListener("click", OnInput, false);
       tx[i].addEventListener("input", OnInput, false);
       tx[i].click()
+    }
+  }
+
+
+  ////////////
+  // SUBMIT //
+  ////////////
+
+  enableSubmit() {
+    const submit_button = this.submitButtonTarget
+    const pill_storage = this.selectedUsersPillStorageTarget
+    var enable = pill_storage.hasChildNodes()
+
+    this.requiredInputTargets.forEach((input) => {
+      if (!input.disabled && !input.value) {
+        enable = false
+      }
+    })
+
+    if (enable) {
+      submit_button.disabled = false
+      submit_button.classList.remove('disabled')
+    } else {
+      submit_button.disabled = true
+      submit_button.classList.add('disabled')
     }
   }
 
@@ -129,6 +154,7 @@ export default class extends Controller {
 
   refreshSelectedCount() {
     this.selectedCountTarget.innerText = `${this._selected_ids.length}`
+    this.enableSubmit()
   }
 
   toggleSelectAllButton(boolean) {
