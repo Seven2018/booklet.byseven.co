@@ -47,7 +47,7 @@
             <div class="align-items-center">
               <div class="flex-column ">
                 <p>
-                  {{ access_level_int }}
+                  {{ access_level_int | convert_hr | capitalize }}
                 </p>
                 <a
                     v-if="access_level_int !== 'employee'"

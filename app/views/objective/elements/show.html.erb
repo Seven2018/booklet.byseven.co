@@ -30,9 +30,9 @@
 
       </div>
 
-      <div class="width-30rem height-20rem d-flex flex-column justify-content-center bkt-bg-light-grey9 p-2rem">
+      <div class="width-30rem height-20rem d-flex flex-column justify-content-between bkt-bg-light-grey9 p-2rem">
 
-        <div class="d-flex justify-content-between align-items-center mb-2rem">
+        <div class="d-flex justify-content-between align-items-center flex-basis-33">
 
           <p class="fs-1_4rem font-weight-600 bkt-dark-grey mr-2rem">Employee</p>
 
@@ -46,21 +46,25 @@
 
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-2rem">
+        <% if manager.present? %>
 
-          <p class="fs-1_4rem font-weight-600 bkt-dark-grey mr-2rem">Manager</p>
+          <div class="d-flex justify-content-between align-items-center flex-basis-33">
 
-          <div class="d-flex align-items-center width-60">
-            <img src="<%= manager.picture %>"
-                 alt="<%= manager.fullname %>"
-                 class='avatar-sm mr-1rem'
-                 onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-            <p class="fs-1_2rem font-weight-500 bkt-dark-grey"><%= manager.fullname %></p>
+            <p class="fs-1_4rem font-weight-600 bkt-dark-grey mr-2rem">Manager</p>
+
+            <div class="d-flex align-items-center width-60">
+              <img src="<%= manager.picture %>"
+                   alt="<%= manager.fullname %>"
+                   class='avatar-sm mr-1rem'
+                   onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+              <p class="fs-1_2rem font-weight-500 bkt-dark-grey"><%= manager.fullname %></p>
+            </div>
+
           </div>
 
-        </div>
+        <% end %>
 
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center flex-basis-33">
 
           <p class="fs-1_4rem font-weight-600 bkt-dark-grey mr-2rem">Creator</p>
 

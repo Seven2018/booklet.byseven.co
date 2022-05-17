@@ -18,30 +18,34 @@
 </template>
 
 <script>
-export default {
-  props: {
-    headers: Array,
-    tableData: Array,
-    headerClass: String,
-    withoutHover: {
-      type: Boolean,
-      default() {
-        return false
+
+  export default {
+    props: {
+      headers: Array,
+      tableData: Array,
+      headerClass: String,
+      withoutHover: {
+        type: Boolean,
+        default() {
+          return false
+        }
       }
     }
   }
-}
+
 </script>
 
 <style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-table td, table th {
-  padding-top: 17px;
-  padding-bottom: 17px;
-  vertical-align: middle;
-}
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table td, table th {
+    padding-top: 17px;
+    padding-bottom: 17px;
+    vertical-align: middle;
+  }
 
 </style>

@@ -95,6 +95,10 @@ export default class extends Controller {
     const display = document.querySelector(`#${edit_button.dataset.target}`)
     const input = display.parentNode.querySelector('trix-editor') || display.parentNode.querySelector('input') || display.parentNode.querySelector('textarea')
 
+    if (edit_button.dataset.target == "objective-description") {
+      this.showDescriptionButtonTarget.classList.add('d-none')
+    }
+
     display.classList.add('d-none')
     input.classList.remove('d-none')
     input.tagName == 'INPUT' || input.tagName == 'TEXTAREA' ? this.setFocus(input) : input.focus()

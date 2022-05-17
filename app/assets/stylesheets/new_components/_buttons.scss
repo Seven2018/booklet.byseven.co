@@ -218,20 +218,24 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $bkt-dark-blue !important;
+    background-color: #9EC0FF !important;
     color: $bkt-white;
   }
 
   &:focus {
-    background-color: $bkt-white;
-    color: $bkt-objective-blue;
+    background-color: #2D77FF !important;
+    color: $bkt-white;
   }
 
   &.disabled {
     opacity: 0.5;
-  }
 
-  &.pressed {}
+    &:hover {
+      background-color: $bkt-objective-blue !important;
+      color: $bkt-white;
+      cursor: not-allowed;
+    }
+  }
 }
 
 .bkt-btn-objective-blue-white {

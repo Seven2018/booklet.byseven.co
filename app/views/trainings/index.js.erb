@@ -1,3 +1,5 @@
 document.querySelector('#lines').innerHTML = '<%= j render("trainings/index/index_trainings_list", trainings: @trainings) %>';
 
 document.querySelector('body').classList.remove('wait');
+
+document.getElementById('stimulus-change-page-controller').changePage._setPaginationLinks()

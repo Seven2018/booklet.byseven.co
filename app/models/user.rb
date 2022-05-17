@@ -60,6 +60,16 @@ class User < ApplicationRecord
     },
     ignoring: :accents
 
+  ################
+  # ACCESS LEVEL #
+  ################
+
+  def hr_or_above?
+    [:hr, :account_owner, :admin].include? access_level_int.to_sym
+  end
+
+  ################
+
   def campaign_draft
     campaign_drafts.processing.last || CampaignDraft.create(user: self)
   end
