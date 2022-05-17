@@ -229,6 +229,12 @@
 
   &.disabled {
     opacity: 0.5;
+
+    &:hover {
+      background-color: $bkt-objective-blue !important;
+      color: $bkt-white;
+      cursor: not-allowed;
+    }
   }
 }
 
