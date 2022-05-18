@@ -4,11 +4,16 @@
 
 .action-modal {
   padding: 5rem 0 !important;
+
+  &:before {
+    height: 0 !important;
+  }
 }
 
 .action-modal.show {
   display: flex !important;
   flex-direction: column !important;
+  justify-content: center !important;
 }
 
 .action-modal__dialog {
@@ -16,7 +21,6 @@
 }
 
 .action-modal__content {
-  height: auto !important;
   border-radius: 1rem !important;
   border: none !important;
   box-shadow: 0 0 .5rem rgba(0,0,0,0.2);
@@ -25,6 +29,7 @@
 .action-modal__header {
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
+  padding: 3rem !important;
 }
 
 .action-modal__title {
@@ -51,7 +56,9 @@
 }
 
 .action-modal__body {
-  padding: 3rem 2rem;
+  max-height: calc(100vh - 20rem);
+  overflow-y: scroll;
+  padding: 0 2rem;
   border: none;
   text-align: justify;
 }

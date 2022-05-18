@@ -22,7 +22,6 @@
   <body data-controller="mobile-displayer">
     <%= render 'shared/impersonations' %>
     <% if user_signed_in? %>
-
       <% if @show_navbar_home %>
         <%= render 'shared/navbar_home' %>
         <%= render 'shared/navbar_mobile' %>
@@ -36,7 +35,6 @@
         <%= render 'shared/navbar_objective' %>
         <%= render 'shared/navbar_mobile' %>
     <% end %>
-
     <% end %>
     <div data-mobile-displayer-target="body">
       <%= render 'shared/flashes' %>
@@ -45,13 +43,9 @@
           <%= yield %>
         <% else %>
           <div id="booklet-container"
-            class="
-            <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
-            <%=
-              'container-admin-height' if
-                (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
-                (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
-            %>">
+                class="overflow-y-scroll overflow-x-hidden pos-rel <%= 'container-admin-height' if
+                      (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
+                      (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?) || @multi_step_form_navbar_content.present? %>">
             <%= yield %>
           </div>
         <% end %>
