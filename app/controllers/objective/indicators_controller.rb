@@ -2,6 +2,7 @@ class Objective::IndicatorsController < ApplicationController
 
   def update
     @indicator = Objective::Indicator.find(params[:id])
+    @objective = @indicator.objective_element
     authorize @indicator
 
     options = @indicator.options
@@ -12,7 +13,7 @@ class Objective::IndicatorsController < ApplicationController
                   owner: current_user,
                   log_type: :value_updated,
                   initial_value: options['current_value'],
-                  objective_element_id: @indicator.objective_element.id,
+                  objective_element_id: @objective.id,
                   objective_indicator_id: @indicator.id
                  }
 
@@ -28,6 +29,7 @@ class Objective::IndicatorsController < ApplicationController
     log_params.merge!(updated_value: options[params[:selected_option]])
 
     @indicator.update options: options if options['current_value'] != initial_value
+    @objective = @objective.decorate
 
     Objective::Log.create(log_params.merge(updated_value: options['current_value'])) if options['current_value'] != initial_value
 

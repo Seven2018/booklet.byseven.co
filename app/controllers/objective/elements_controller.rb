@@ -101,7 +101,9 @@ class Objective::ElementsController < ApplicationController
   def archive
     objective = Objective::Element.find(params[:id])
 
-    if objective.update(status: :archived)
+    if objective.update(status: :archived) && params[:redirected_from]
+      redirect_to params[:redirected_from]
+    elsif objective.update(status: :archived)
       head :ok
     else
       head :unprocessable_entity
@@ -112,7 +114,9 @@ class Objective::ElementsController < ApplicationController
     objective = Objective::Element.find(params[:id])
     model = objective.destroy
 
-    if model.valid?
+    if model.valid? && params[:redirected_from]
+      redirect_to params[:redirected_from]
+    elsif model.valid?
       head :ok
     else
       render json: model.errors.messages

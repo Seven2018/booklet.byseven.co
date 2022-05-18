@@ -15,7 +15,21 @@
 
       <%= render_component Buttons::OptionsButton.new do %>
 
-        <li>Option test</li>
+        <% unless @objective.archived? %>
+
+          <button class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                  data-toggle='modal'
+                  data-target='#archiveObjective'>
+            Archive objective
+          </button>
+
+        <% end %>
+
+        <button class="flex-row-start-centered fs-1_4rem bkt-red bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
+                data-toggle='modal'
+                data-target='#deleteObjective'>
+          Delete
+        </button>
 
       <% end %>
 
@@ -118,6 +132,32 @@
 
     <div class='modal-dialog action-modal__dialog modal-lg' role='document'>
       <%= render 'objective/elements/modals/edit_objective_indicator', indicator: indicator, employee: employee %>
+    </div>
+
+  </div>
+
+  <div id='archiveObjective'
+       class='modal action-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static">
+
+    <div class='modal-dialog action-modal__dialog' role='document'>
+      <%= render 'objective/elements/modals/show_option_archive', objective: @objective %>
+    </div>
+
+  </div>
+
+  <div id='deleteObjective'
+       class='modal action-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static">
+
+    <div class='modal-dialog action-modal__dialog' role='document'>
+      <%= render 'objective/elements/modals/show_option_delete', objective: @objective %>
     </div>
 
   </div>

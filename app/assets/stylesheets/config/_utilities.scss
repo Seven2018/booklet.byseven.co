@@ -22,6 +22,23 @@ a.disabled-link { pointer-events: none; }
 .d-none-changeable { display: none; }
 
 
+///////////
+// INPUT //
+///////////
+
+.input_number_simple {
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  -moz-appearance: textfield;
+}
+
+
 /////////////
 // Z-INDEX //
 /////////////
