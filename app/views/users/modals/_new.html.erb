@@ -20,6 +20,7 @@
       <%= f.input :lastname, label: 'Last Name:', class:'form-control', required:true %>
       <%= f.input :email, label: 'Email:', class:'form-control', input_html: {value: ''} %>
       <%= render 'users/access_level_input', f: f, user: User.new %>
+      <%= f.input :manager_id, collection: User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin]).order(lastname: :asc), label_method: lambda { |k| k.fullname } %>
 
       <% if UserPolicy.new(current_user, nil).create? %>
 
