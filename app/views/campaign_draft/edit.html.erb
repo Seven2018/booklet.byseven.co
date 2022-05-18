@@ -1,20 +1,26 @@
-<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pt-2rem'>
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start py-2rem'>
+
   <div class="from_medium__h-60vh"
-                             <%# top navbar1 + navbar2 + pt-2rem %>
-    style="position: sticky; top: calc(7.5rem + 7.5rem + 2rem);"
-  >
+       style="position: sticky; top: 2rem;">
+
     <div class="bkt-progress">
+
       <div class="bkt-progress-thread"></div>
+
       <% CampaignDraft::PROGRESS_STATES.each do |state, state_label| %>
         <%= link_to send "edit_campaign_draft_#{state}_path".to_sym do %>
+
           <div class="bkt-progress-pearl bkt-progress-pearl-blue <%= @campaign.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
             <% if @campaign.state_set_or_above?(state) %>
               <i class="fas fa-check"></i>
             <% end %>
           </div>
+
         <% end %>
       <% end %>
+
     </div>
+
   </div>
 
   <div style='margin: 0 5%;'></div>
@@ -49,6 +55,7 @@
     <% end %>
 
     <div id="users_search" class="pos-abs <%= 'd-none' unless @controller_action == :participants_edit %>" style='left: 1.5rem; bottom: 9rem;'>
+
       <%= simple_form_for :search, method: :get do |f| %>
         <%= f.text_field :manager, placeholder: 'Search in Managers',
                                    value: @campaign.default_interviewer&.fullname,
@@ -56,30 +63,17 @@
                                    data: {behavior: 'autocomplete'} %>
       <% end %>
 
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+    </div>
 
-      <script>
-        $input_manager = $("#search_manager");
+    <div id="templates_search" class="pos-abs <%= 'd-none' unless @controller_action == :templates_edit %>" style='left: 1.5rem; bottom: 8rem;'>
 
-        var options_manager = {
-          listLocation: "users",
-          getValue: 'name',
-          url: function(phrase) {
-            return "/users_search.json?manager=true&search=" + phrase
-          },
-          list: {
-            onChooseEvent: function() {
-              user_id = $input_manager.getSelectedItemData().id
-              document.getElementById('default_interviewer_id').value = user_id
-            },
-            match: {
-              enabled: true
-            }
-          }
-        }
+      <%= simple_form_for :search, method: :get do |f| %>
+        <%= f.text_field :template, placeholder: 'Search in Templates',
+                                   value: @campaign.default_template&.title,
+                                   label: false,
+                                   data: {behavior: 'autocomplete'} %>
+      <% end %>
 
-        $input_manager.easyAutocomplete(options_manager);
-      </script>
     </div>
   </div>
 
@@ -90,3 +84,47 @@
     <%= @campaign.data %>
   </div>
 <% end %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
+<script>
+  $input_manager = $("#search_manager");
+  $input_template = $("#search_template");
+
+  var options_manager = {
+    listLocation: "users",
+    getValue: 'name',
+    url: function(phrase) {
+      return "/users_search.json?manager=true&search=" + phrase
+    },
+    list: {
+      onChooseEvent: function() {
+        user_id = $input_manager.getSelectedItemData().id
+        document.getElementById('default_interviewer_id').value = user_id
+      },
+      match: {
+        enabled: true
+      }
+    }
+  }
+
+  var options_template = {
+    listLocation: "templates",
+    getValue: 'title',
+    url: function(phrase) {
+      return "/templates_search.json?search=" + phrase
+    },
+    list: {
+      onChooseEvent: function() {
+        template_id = $input_template.getSelectedItemData().id
+        document.getElementById('default_template_id').value = template_id
+      },
+      match: {
+        enabled: true
+      }
+    }
+  }
+
+  $input_manager.easyAutocomplete(options_manager);
+  $input_template.easyAutocomplete(options_template);
+</script>
