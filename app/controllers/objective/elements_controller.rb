@@ -5,7 +5,13 @@ class Objective::ElementsController < ApplicationController
   skip_forgery_protection
 
   skip_after_action :verify_authorized, only: [
-    :archive, :destroy, :my_objectives, :my_team_objectives, :my_team_objectives_current_list, :my_team_objectives_archived_list
+    :archive,
+    :unarchive,
+    :destroy,
+    :my_objectives,
+    :my_team_objectives,
+    :my_team_objectives_current_list,
+    :my_team_objectives_archived_list
   ]
 
   def index
@@ -102,6 +108,16 @@ class Objective::ElementsController < ApplicationController
     objective = Objective::Element.find(params[:id])
 
     if objective.update(status: :archived)
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
+
+  def unarchive
+    objective = Objective::Element.find(params[:id])
+
+    if objective.update(status: :opened)
       head :ok
     else
       head :unprocessable_entity

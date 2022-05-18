@@ -158,6 +158,7 @@ Rails.application.routes.draw do
       end
       member do
         post :archive
+        post :unarchive
       end
     end
     get :my_objectives, controller: :elements

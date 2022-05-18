@@ -115,28 +115,7 @@
       </td>
 
       <td v-if="showOptions">
-        <div
-            v-for="(element, idx) in objective_elements"
-            @mouseover="setHover(`key-${id}-${idx}`)"
-            @mouseleave="removeHover(`key-${id}-${idx}`)"
-            :class="`key-${id}-${idx}`"
-            class="flex-row-start-centered my-2 py-1"
-        >
-          <bkt-dots-button>
-            <button
-                class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
-                @click="openPopUpArchive(element.id)"
-            >
-              Archive objective
-            </button>
-            <button
-                class="flex-row-start-centered fs-1_4rem bkt-red bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
-                @click="openPopUpDelete(element.id)"
-            >
-              Delete
-            </button>
-          </bkt-dots-button>
-        </div>
+        <slot v-bind:obj="{objective_elements, userId: id}"></slot>
       </td>
     </template>
   </index-table>
@@ -145,9 +124,10 @@
 <script>
 import IndexTable from "../../../components/IndexTable";
 import BktDotsButton from '../../../components/BktDotsButton'
-import store from "../../../store";
+import tools from '../../../mixins/tools'
 
 export default {
+  mixins: [tools],
   props: {
     headers: Array,
     tableData: Array,
@@ -169,48 +149,6 @@ export default {
         return indicator.options.starting_value == indicator.options.choice_1
       }
     },
-    openPopUpArchive(id) {
-      this.$modal.open({
-        type: 'normal',
-        title: `Are you sure you want to archive this objective ?<br/>(This is not a permanent action)`,
-        textClose: 'No',
-        textConfirm: 'Yes, archive',
-        close() {
-        },
-        confirm() {
-          store
-              .dispatch('myTeamObjectives/archiveObjectiveUser', id)
-              .then(() => this.$modal.close())
-        }
-      })
-    },
-    openPopUpDelete(id) {
-      this.$modal.open({
-        type: 'delete',
-        title: `Are you sure you want to delete this objective ?<br/>(This is a permanent action)`,
-        textClose: 'No',
-        textConfirm: 'Yes, delete',
-        close() {
-        },
-        confirm() {
-          store
-              .dispatch('myTeamObjectives/deleteObjectiveUser', id)
-              .then(() => this.$modal.close())
-        }
-      })
-    },
-    setHover(className) {
-      const elems = document.querySelectorAll(`.${className}`)
-      elems.forEach(el => {
-        el.classList.add('bkt-bg-light-grey10')
-      })
-    },
-    removeHover(className) {
-      const elems = document.querySelectorAll(`.${className}`)
-      elems.forEach(el => {
-        el.classList.remove('bkt-bg-light-grey10')
-      })
-    }
   },
   components: {
     IndexTable,

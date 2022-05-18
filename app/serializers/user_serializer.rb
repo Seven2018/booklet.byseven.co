@@ -9,8 +9,6 @@ class UserSerializer < ActiveModel::Serializer
     :picture,
     :gender,
     :objectives_count,
-    # :objective_elements_current,
-    # :objective_elements_archived,
   )
 
 
