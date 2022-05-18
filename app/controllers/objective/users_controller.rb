@@ -50,19 +50,18 @@ class Objective::UsersController < ApplicationController
     authorize @user, policy_class: Objective::UserPolicy
   end
 
-  # TODO: check url
   def my_team_objectives_current_list
     @user = User.find(params[:id])
     employees = @user.employees.joins(:objective_elements).where(objective_elements: { status: :opened }).distinct
 
-    render json: employees, include: ['objective_elements.objective_indicator']
+    render json: employees, objective_elements_current: true, include: ['objective_elements.objective_indicator']
   end
 
   def my_team_objectives_archived_list
     @user = User.find(params[:id])
     employees = @user.employees.joins(:objective_elements).where(objective_elements: { status: :archived }).distinct
 
-    render json: employees, include: ['objective_elements.objective_indicator']
+    render json: employees, objective_elements_archived: true, include: ['objective_elements.objective_indicator']
   end
 
   private

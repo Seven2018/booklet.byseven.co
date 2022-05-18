@@ -6,24 +6,30 @@
       :without-hover="true"
   >
     <template v-slot="{id, firstname, lastname, job_title, picture, objective_elements}">
-      <td style="vertical-align: top">
-        <div class="d-flex align-items-center ml-3">
-          <div class="flex-column ">
-            <img class="rounded-circle width-3rem height-3rem"
-                 :src="picture"
-                 onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
-                 alt="">
-          </div>
+      <td style="vertical-align: top" class="position-relative">
+        <a
+            class="bkt-bg-light-grey9-hover position-absolute rounded-5px cursor-pointer"
+            style="top: 8px;left: 8px;right: 8px;bottom: 8px;"
+            :href="$routes.generate('objective_user_show', {id})"
+        >
+          <div class="d-flex align-items-center ml-3 " >
+            <div class="flex-column ">
+              <img class="rounded-circle width-4rem height-3rem"
+                   :src="picture"
+                   onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
+                   alt="">
+            </div>
 
-          <div class="flex-column ml-3 width-25rem ">
-            <div class="flex-row-start-centered">
-              <p class="font-weight-500 text-truncate">{{ `${firstname} ${lastname}` }}</p>
-            </div>
-            <div class="flex-row-start-centered">
-              <p class="font-weight-500 fs-1_2rem bkt-light-grey6 text-truncate">{{ job_title }}</p>
+            <div class="flex-column ml-3 width-25rem ">
+              <div class="flex-row-start-centered">
+                <p class="font-weight-500 text-truncate">{{ `${firstname} ${lastname}` }}</p>
+              </div>
+              <div class="flex-row-start-centered">
+                <p class="font-weight-500 fs-1_2rem bkt-light-grey6 text-truncate">{{ job_title }}</p>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </td>
 
       <td class="border-left-bkt-light-grey">
