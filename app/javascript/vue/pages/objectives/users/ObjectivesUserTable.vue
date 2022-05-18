@@ -41,7 +41,7 @@
             <span
                 v-else-if="objective_indicator.indicator_type === 'percentage'"
             >
-            {{ objective_indicator.options.target_value }}%
+            {{ objective_indicator.options.current_value }}%
           </span>
             <span
                 v-else-if="objective_indicator.indicator_type === 'multi_choice'"

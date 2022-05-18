@@ -1,2 +1,3 @@
+document.getElementById('objective_attributes').innerHTML = '<%= j render("objective/elements/show/objective_attributes", objective: @objective) %>';
 document.getElementById('indicator-<%= @indicator.id %>').innerHTML = '<%= j render("objective/elements/show/indicator_values", indicator: @indicator) %>';
 document.getElementById('objective-logs').innerHTML = '<%= j render("objective/elements/show/objective_logs", logs: @logs) %>';

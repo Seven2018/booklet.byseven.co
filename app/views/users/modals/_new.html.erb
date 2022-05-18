@@ -1,10 +1,15 @@
 <div class="modal-content action-modal__content">
+
   <div class="modal-header action-modal__header">
+
     <h3 class="modal-title action-modal__title" id="myModalLabel">Add a new user</h3>
+
     <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
     </button>
+
   </div>
+
   <div class="modal-body action-modal__body">
 
     <%= simple_form_for User.new,
@@ -46,18 +51,25 @@
       <% end %>
 
       <%= f.hidden_field :send_invite, value: false %>
+
       <%= f.submit '', class: 'hidden-submit hidden' %>
+
     <% end %>
-    <div style="display:flex;justify-content:center;margin-top:3rem;">
+
+    <div class="d-flex justify-content-center mt-3rem">
+
       <button class="btn-blue-text" onclick='sendInvitation(this, true);'>
         <p>Create & Send Invitation </p>
       </button>
+
       <button class="btn-orange-text" onclick='sendInvitation(this, false);'>
         <p>Create</p>
       </button>
+
     </div>
 
   </div>
+
 </div>
 
 <!---------------->
