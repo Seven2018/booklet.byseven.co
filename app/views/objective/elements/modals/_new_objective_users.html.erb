@@ -10,13 +10,13 @@
 
   </div>
 
-  <div class="modal-body action-modal__body width-65rem max-w-95vw">
+  <div class="modal-body action-modal__body p-0">
 
     <div class="d-flex align-items-center px-4rem mb-3rem">
 
       <p class="fs-1_4rem font-weight-500 min-w-10rem mr-2rem">Employee(s) :</p>
 
-      <div class="d-flex align-items-center flex-wrap flex-grow-1 height-7rem max-h-7rem p-0_5rem border-bkt-light-grey5 rounded-3px overflow-y-scroll"
+      <div class="d-flex align-items-center flex-wrap flex-grow-1 min-h-4rem max-h-9rem px-0_5rem border-bkt-light-grey5 rounded-3px overflow-y-scroll"
            data-objectives--objective-new-target="selectedUsersPillStorageModal"></div>
 
     </div>
@@ -54,7 +54,7 @@
         %>
       </div>
 
-      <div class="flex-row-between-centered mb-1rem" style='width: 51rem;'>
+      <div class="flex-row-between-centered mb-1rem" style='width: calc(100% - 2rem);'>
 
         <div class="d-flex">
           <p class="fs-1_4rem font-weight-500 mr-0_5rem">Selected :</p>
@@ -112,13 +112,13 @@
       ></div>
     </div>
 
-  </div>
+    <button type="button"
+            class="d-flex justify-content-center align-items-center width-100-important bkt-btn-objective-blue rounded-b-10px"
+            data-dismiss="modal"
+            aria-label="Close">
+      Assign employee(s)
+    </button>
 
-  <button type="button"
-          class="d-flex justify-content-center align-items-center width-100-important bkt-btn-objective-blue rounded-b-10px"
-          data-dismiss="modal"
-          aria-label="Close">
-    Assign employee(s)
-  </button>
+  </div>
 
 </div>

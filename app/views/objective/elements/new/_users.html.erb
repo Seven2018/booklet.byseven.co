@@ -3,7 +3,7 @@
 <% users.each do |user| %>
   <% selected = selected_array.include?(user.id.to_s) %>
 
-  <div class='flex-row-between-centered height-4rem border-bottom-bkt-light-grey5-0_5px' style='width: 51rem;'>
+  <div class='flex-row-between-centered height-4rem border-bottom-bkt-light-grey5-0_5px' style='width: calc(100% - 2rem);'>
     <img
       src="<%= user.picture %>"
       alt="<%= user.fullname %>"
