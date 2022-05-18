@@ -4,11 +4,16 @@
 
 .action-modal {
   padding: 5rem 0 !important;
+
+  &:before {
+    height: 0 !important;
+  }
 }
 
 .action-modal.show {
   display: flex !important;
   flex-direction: column !important;
+  justify-content: center !important;
 }
 
 .action-modal__dialog {

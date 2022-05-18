@@ -133,6 +133,7 @@ Rails.application.routes.draw do
     end
   end
   get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'
+  get :templates_search, controller: :interview_forms
 
   # INTERVIEW QUESTIONS
   resources :interview_questions

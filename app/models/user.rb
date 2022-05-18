@@ -156,11 +156,19 @@ class User < ApplicationRecord
       end
 
       if user.present?
-        next unless user.company_id == company_id
+
+        if user.company_id.nil?
+          user.update(company_id: current_user.company_id)
+        elsif user.company_id != current_user.company_id
+          next
+        end
+
         user.firstname.present? && user.lastname.present? && user.invitation_created_at.nil? ? manager_invite = true : manager_invite = false
         update = user.update row_h
         user.invite! if Rails.env == 'production' && send_invite && manager_invite
+
       else
+
         user = User.new(row_h)
         user.lastname = user.lastname.strip.upcase
         user.firstname = user.firstname.strip.capitalize
@@ -173,6 +181,7 @@ class User < ApplicationRecord
         user.invited_by_id = invited_by_id
         user.manager_id = manager.id if manager.present?
         Rails.env == 'production' && send_invite ? user.invite! : user.save(validate: false)
+
       end
 
       present << user.id
