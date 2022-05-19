@@ -1,10 +1,10 @@
-<div class="modal-content">
-  <div class="modal-header">
+<div class="modal-content action-modal__content">
+  <div class="modal-header action-modal__header">
     <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Manage Categories for <em><%= content.title %></em></h3>
+      <h3 class="modal-title action-modal__title" id="myModalLabel">Manage Categories for <em><%= content.title %></em></h3>
     </div>
   </div>
-  <div class="modal-body" id="modalNewBookinBody">
+  <div class="modal-body action-modal__body" id="modalNewBookinBody">
     <div class="categories-form">
       <% checked = content.categories.ids %>
       <% if !Category.where(company_id: current_user.company_id, kind: :training).present? %>
