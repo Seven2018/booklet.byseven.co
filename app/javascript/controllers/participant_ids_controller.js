@@ -22,6 +22,18 @@ export default class extends Controller {
 
   connect() {
     this._refreshSelectedCount(this.ids.length)
+
+    this.element[
+      (str => {
+        return str
+          .split('--')
+          .slice(-1)[0]
+          .split(/[-_]/)
+          .map(w => w.replace(/./, m => m.toUpperCase()))
+          .join('')
+          .replace(/^\w/, c => c.toLowerCase())
+      })(this.identifier)
+    ] = this
   }
 
   store(e) {
@@ -50,12 +62,17 @@ export default class extends Controller {
     const checking = e.currentTarget.checked
       const checkboxes = [...this.resultTargets].filter(checkBox => checkBox.checked == !checking)
       const checkboxes_ids = checkboxes.map(checkBox => checkBox.dataset.id)
-      checking ? this._bulk_add(checkboxes_ids) : this._bulk_remove(checkboxes_ids)
       checkboxes.forEach((checkBox) => {
-        checkBox.click()
+        if (checking) {
+          checkBox.parentNode.querySelector('svg').classList.remove('hidden')
+        } else {
+          checkBox.parentNode.querySelector('svg').classList.add('hidden')
+        }
+        // checkBox.click()
         checkBox.checked = checking
       })
 
+      checking ? this._bulk_add(checkboxes_ids) : this._bulk_remove(checkboxes_ids)
     this.arrayTarget.dataset.bulkOperationLock = false
   }
 
@@ -118,5 +135,10 @@ export default class extends Controller {
 
   refreshFilteredCount() {
     this.filteredCountTarget.innerText = `(${this.resultsTarget.childElementCount})`
+  }
+
+  blockEvents() {
+    document.getElementById('bkt-blockDiv').classList.toggle('d-none')
+    document.querySelector('body').classList.toggle('wait')
   }
 }

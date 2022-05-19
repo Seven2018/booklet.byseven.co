@@ -1,0 +1,16 @@
+var select_filtered = document.getElementById('select_filtered')
+
+var checkboxes = document.getElementById('employees-list').querySelectorAll('input[type="checkbox"')
+
+checkboxes.forEach((checkBox) => {
+  checkBox.parentNode.querySelector('svg').classList.remove('hidden')
+  checkBox.checked = true
+})
+
+select_filtered.querySelector('#_').checked = true
+select_filtered.querySelector('svg').classList.remove('hidden')
+
+document.getElementById('participants-controller').participantIds._refreshSelectedCount(<%= @users.count %>)
+
+document.getElementById('bkt-blockDiv').classList.add('d-none')
+document.querySelector('body').classList.remove('wait')
