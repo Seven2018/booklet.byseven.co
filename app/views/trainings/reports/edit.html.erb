@@ -15,7 +15,6 @@
     <%= simple_form_for current_user.training_report, url: trainings_reports_path do |f| %>
       <%= f.hidden_field :company_id, value: current_user.company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
-
       <%= render_component FormSectionTitleComponent.new(title: 'Filter per period') %>
 
       <div class="d-flex align-items-center">

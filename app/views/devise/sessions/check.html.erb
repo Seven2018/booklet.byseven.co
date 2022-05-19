@@ -37,9 +37,9 @@
   <% end %>
 
   <div class="flex-row-between-centered">
-    <div class="">
-      <%= f.input :remember_me, as: :boolean, label_html: { class: 'fs-1rem ml-1rem py-1' } if devise_mapping.rememberable? %>
-    </div>
+<!--    <div class="">-->
+      <%#= f.input :remember_me, as: :boolean, label_html: { class: 'fs-1rem ml-1rem py-1' } if devise_mapping.rememberable? %>
+<!--    </div>-->
     <div class="">
       <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
         <%# link_to "Forgot your password", new_password_path(resource_name), class: 'fs-1rem ml-2 py-1 font-weight-500 underline' %>

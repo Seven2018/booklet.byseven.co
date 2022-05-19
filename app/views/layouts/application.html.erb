@@ -22,7 +22,6 @@
   <body data-controller="mobile-displayer">
     <%= render 'shared/impersonations' %>
     <% if user_signed_in? %>
-
       <% if @show_navbar_home %>
         <%= render 'shared/navbar_home' %>
         <%= render 'shared/navbar_mobile' %>
@@ -36,7 +35,6 @@
         <%= render 'shared/navbar_objective' %>
         <%= render 'shared/navbar_mobile' %>
     <% end %>
-
     <% end %>
     <div data-mobile-displayer-target="body">
       <%= render 'shared/flashes' %>

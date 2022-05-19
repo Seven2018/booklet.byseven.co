@@ -12,6 +12,6 @@ class CreateObjectiveElements < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    Company.first.update applications: ['trainings', 'interviews', 'objectives']
+    Company.first.update applications: ['trainings', 'interviews', 'objectives'] if Company.count > 0
   end
 end

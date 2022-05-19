@@ -22,7 +22,7 @@ RSpec.feature 'Permission :can_create_training_reports', type: :feature, js: tru
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_training_reports: true) }
+      before { login_as create(:user, access_level_int: :hr, company: company, can_create_training_reports: true) }
       scenario 'should have access' do
         visit edit_trainings_reports_path
         expect(page).to have_current_path edit_trainings_reports_path
@@ -47,7 +47,7 @@ RSpec.feature 'Permission :can_create_training_reports', type: :feature, js: tru
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_training_reports: true) }
+      before { login_as create(:user, access_level_int: :hr, company: company, can_create_training_reports: true) }
       scenario 'should have access' do
         visit trainings_reports_path
         expect(page).to have_selector("[data-handle='create-a-training-report-cta']")

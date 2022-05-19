@@ -16,8 +16,6 @@
     <%= simple_form_for current_user.interview_report, url: interviews_reports_path do |f| %>
       <%= f.hidden_field :company_id, value: current_user.company.id %>
       <%= f.hidden_field :creator_id, value: current_user.id %>
-
-
       <%= render_component FormSectionTitleComponent.new(title: 'Chose report type') %>
 
 
@@ -38,7 +36,6 @@
         ) do %>
           <span class="iconify fs-2rem" data-icon="bi:clipboard2-data-fill"></span>
         <% end %>
-
         <%= render_component RadioButtonTileComponent.new(
           model: 'interview_report[mode]',
           name: :classic,
@@ -55,7 +52,6 @@
         ) do %>
           <span class="iconify fs-2rem" data-icon="clarity:line-chart-solid"></span>
         <% end %>
-
         <%= render_component RadioButtonTileComponent.new(
           model: 'interview_report[mode]',
           name: :answers,
@@ -77,7 +73,6 @@
 
 
       <%= render_component FormSectionTitleComponent.new(title: 'Filter per period') %>
-
       <%= render_component FormSectionSubtitleComponent.new do %>
         The period is based on the interview deadline
       <% end %>
@@ -124,8 +119,6 @@
 
       <div data-interview-report-form-target='tagCategoryInput'>
         <%= render_component FormSectionTitleComponent.new(title: 'Select TagCategory') %>
-
-
         <%= render_component(SelectComponent.new(width: '200px', title: 'Select Tag Category')) do  %>
           <% current_user.company.tag_categories.order(position: :asc).each do |tag_category| %>
             <% key = "interview_report_tag_category_id_#{tag_category.id}" %>

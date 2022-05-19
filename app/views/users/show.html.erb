@@ -27,7 +27,7 @@
 
             <% if UserPolicy.new(current_user, @user).edit? %>
               <%= link_to edit_user_path do %>
-                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey">
+                <div class="flex-row-center-centered height-3rem width-3rem rounded-5px bkt-bg-dark-grey" data-handle='edit-user-cta'>
                   <span class="iconify fs-1_6rem bkt-white" data-icon="ci:edit"></span>
                 </div>
               <% end %>

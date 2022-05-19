@@ -22,7 +22,16 @@ RSpec.feature 'Permission :can_create_trainings', type: :feature, js: true do
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_trainings: true) }
+      let(:user) do
+        model = FactoryBot.build(:user,
+                                 can_create_trainings: true
+        )
+        model.skip_before_create = true
+        model.save
+        model
+      end
+      before { login_as user }
+
       scenario 'should have access' do
         visit edit_training_draft_participants_path
         expect(page).to have_current_path edit_training_draft_participants_path
@@ -47,7 +56,16 @@ RSpec.feature 'Permission :can_create_trainings', type: :feature, js: true do
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_trainings: true) }
+      let(:user) do
+        model = FactoryBot.build(:user,
+                                 can_create_trainings: true
+        )
+        model.skip_before_create = true
+        model.save
+        model
+      end
+      before { login_as user }
+
       scenario 'should have access' do
         visit trainings_path
         expect(page).to have_selector("[data-handle='book-training-cta']")

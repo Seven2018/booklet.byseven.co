@@ -4,10 +4,11 @@ on:
     branches-ignore:
       - master
       - dev
-  pull_request:
-    branches:
-      - master
-      - dev
+# Ignoring to avoid double run
+#  pull_request:
+#    branches:
+#      - master
+#      - dev
 
 jobs:
   verify:
