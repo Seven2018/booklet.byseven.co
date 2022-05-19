@@ -1,5 +1,6 @@
 import HTTP from '../plugins/axios'
 import routes from '../constants/routes'
+import store from "./index";
 
 export default {
   namespaced: true,
@@ -16,13 +17,16 @@ export default {
     }
   },
   actions: {
-    async fetch(ctx) {
+    async fetch({commit}) {
       try {
-        const res = await HTTP.get(routes.generate('objective_list'))
+        const res = await HTTP.get(
+          routes.generate('objective_list'),
+          {params: {search: store.state.search.value} }
+          )
 
-        ctx.commit('setUsers', res.data)
+        commit('setUsers', res.data)
       } catch (e) {
-        ctx.commit('setError', e.message)
+        commit('setError', e.message)
       }
     }
   }

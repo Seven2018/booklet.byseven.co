@@ -19,7 +19,12 @@ class Objective::ElementsController < ApplicationController
   end
 
   def list
-    @users = User.where(company: current_user.company)
+    if params[:search].blank?
+      @users = User.where(company: current_user.company)
+    else
+      @users = User.where(company: current_user.company).search_users(params[:search])
+    end
+
     authorize @users
 
     # render json: @users, include: ['objective_elements.objective_indicator']
