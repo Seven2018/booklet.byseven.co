@@ -7,6 +7,7 @@ class Objective::Log < ApplicationRecord
     no_update: 0,
     title_updated: 1,
     description_updated: 2,
-    value_updated: 3
+    value_updated: 3,
+    due_date_updated: 4,
   }
 end
