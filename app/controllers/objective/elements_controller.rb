@@ -77,7 +77,7 @@ class Objective::ElementsController < ApplicationController
     if changed_attributes && @objective.save
 
       changed_attributes.each do |k, v|
-        log_params = {title: "#{k.capitalize} updated",
+        log_params = {title: "#{k.split('_').join(' ').capitalize} updated",
                     owner: current_user,
                     log_type: "#{k}_updated",
                     initial_value: v,

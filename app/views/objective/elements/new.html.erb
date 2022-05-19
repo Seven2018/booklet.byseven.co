@@ -304,9 +304,9 @@
                value="">
 
         <%= f.submit 'Save', class: "bkt-btn-objective-blue width-100-important disabled",
-                             disabled: true,
                              data: {
-                              objectives__objective_new_target: "submitButton"
+                              objectives__objective_new_target: "submitButton",
+                              action: "click->objectives--objective-new#checkMissingInput"
                              } %>
 
       <% end %>
@@ -330,5 +330,3 @@
   <!------------>
 
 </div>
-
-

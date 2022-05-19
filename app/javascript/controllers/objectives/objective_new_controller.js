@@ -57,19 +57,54 @@ export default class extends Controller {
     const pill_storage = this.selectedUsersPillStorageTarget
     var enable = pill_storage.hasChildNodes()
 
+    if (pill_storage.hasChildNodes()) {
+      pill_storage.parentNode.classList.remove('border-bkt-negative-red')
+    } else {
+      pill_storage.parentNode.classList.add('border-bkt-negative-red')
+    }
+
     this.requiredInputTargets.forEach((input) => {
       if (!input.disabled && !input.value) {
         enable = false
       }
+
+      if (input.checkValidity()) {
+        if (input.value) {
+          input.classList.remove('border-bkt-negative-red')
+        }
+      } else {
+        input.classList.add('border-bkt-negative-red')
+      }
     })
 
     if (enable) {
-      submit_button.disabled = false
       submit_button.classList.remove('disabled')
     } else {
-      submit_button.disabled = true
       submit_button.classList.add('disabled')
     }
+  }
+
+  checkMissingInput(e) {
+    const pill_storage = this.selectedUsersPillStorageTarget
+    var enable = true
+
+    if (pill_storage.hasChildNodes()) {
+      pill_storage.parentNode.classList.remove('border-bkt-negative-red')
+    } else {
+      pill_storage.parentNode.classList.add('border-bkt-negative-red')
+      enable = false
+    }
+
+    this.requiredInputTargets.forEach((input) => {
+      if (input.disabled || (input.value && input.checkValidity())) {
+        input.classList.remove('border-bkt-negative-red')
+      } else {
+        input.classList.add('border-bkt-negative-red')
+        enable = false
+      }
+    })
+
+    if (!enable) { e.preventDefault() }
   }
 
 
