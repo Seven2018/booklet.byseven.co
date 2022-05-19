@@ -3,7 +3,7 @@
     <h1>Employees (<%= User.where(company_id: current_user.company_id).count %>)</h1>
   </div>
   <% if UserPolicy.new(current_user, nil).create? %>
-    <button data-toggle='modal' data-target='#newUser' class="fs-1_6rem p-3 bkt-bg-dark-grey bkt-white rounded-5px font-weight-700">
+    <button data-toggle='modal' data-target='#newUser' class="fs-1_6rem p-3 bkt-bg-dark-grey bkt-white rounded-5px font-weight-700" data-handle='create-employee-ctas'>
       + Add a user
     </button>
   <% end %>
