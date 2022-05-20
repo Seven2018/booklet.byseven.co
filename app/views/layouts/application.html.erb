@@ -48,6 +48,11 @@
       <% end %>
     </div>
 
+    <div id="bkt-blockDiv"
+         class="d-none"
+         onclick='return false'>
+    </div>
+
     <%= render_component MobileMenuComponent.new(current_user) %>
 
     <%= javascript_include_tag 'application' %>
