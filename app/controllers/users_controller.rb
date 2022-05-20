@@ -22,14 +22,12 @@ class UsersController < ApplicationController
 
   # Create new User (user_registration, pages/organisation)
   def create
-    @user = User.find_by(email: params.dig(:user, :email).strip.downcase)
+    @user = User.find_by(email: params.dig(:user, :email).strip.downcase).presence || User.new(user_params)
     authorize @user
 
-    if @user.present?
+    if @user.id.present?
       @user.update company_id: current_user.company_id if @user.company_id.nil?
     else
-      @user = User.new(user_params)
-
       @user.lastname = @user.lastname.upcase
       @user.firstname = @user.firstname.capitalize
       @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
@@ -92,7 +90,20 @@ class UsersController < ApplicationController
     selected_users.each do |user|
       user.update company_id: nil
       user.user_tags.destroy_all
+
+      CampaignDraft.select{|x| x.interviewee_ids.include?(user.id.to_s)}.each do |draft|
+        data = draft.data
+        data['interviewee_ids'] = draft.interviewee_ids - [user.id.to_s]
+        draft.update(data: data, interviewee_ids: data['interviewee_ids'])
+      end
+
+      TrainingDraft.select{|x| x.interviewee_ids.include?(user.id.to_s)}.each do |draft|
+        data = draft.data
+        data['interviewee_ids'] = draft.interviewee_ids - [user.id.to_s]
+        draft.update(data: data, interviewee_ids: data['interviewee_ids'])
+      end
     end
+
     @selected_users = params[:selected_users]
 
     respond_to do |format|
