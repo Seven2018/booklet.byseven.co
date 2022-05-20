@@ -24,8 +24,9 @@ module CampaignDrafts
 
       def interview_form
         case @campaign_draft.templates_selection_method
-        when 'single' then
+        when 'single'
           template = InterviewForm.find @campaign_draft.default_template_id
+
           new_form = InterviewForm.create(
             template.attributes.except('id', 'created_at', 'updated_at').merge(used: true, categories: template.categories)
           )
@@ -37,16 +38,11 @@ module CampaignDrafts
                       .merge(interview_form: new_form, position: question.position)
           end
 
-          # TODO : Tag system update incoming
-          template.interview_form_tags.each do |tag|
-            InterviewFormTag.create \
-              tag.attributes
-                 .except('id', 'interview_form_id', 'created_at', 'updated_at')
-                 .merge(interview_form: new_form)
+          template.categories.each do |category|
+            new_form.categories << category
           end
 
           return new_form
-        # when 'multiple' then # TODO
         end
       end
 
@@ -81,11 +77,14 @@ module CampaignDrafts
       end
 
       def create_interviews
+        new_form = interview_form
+
         interviewees.map do |interviewee|
           InterviewSets::Create.call(
             interview_params.merge(
               employee: interviewee,
-              interviewer: interviewer(interviewee)
+              interviewer: interviewer(interviewee),
+              interview_form: new_form
             )
           )
         end
@@ -98,7 +97,6 @@ module CampaignDrafts
           starts_at: @campaign_draft.starts_at,
           ends_at: @campaign_draft.ends_at,
           creator: campaign.owner,
-          interview_form: interview_form,
           campaign: campaign
         }
       end

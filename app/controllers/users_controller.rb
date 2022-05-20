@@ -22,35 +22,39 @@ class UsersController < ApplicationController
 
   # Create new User (user_registration, pages/organisation)
   def create
-    @user = User.new(user_params)
+    @user = User.find_by(email: params.dig(:user, :email).strip.downcase).presence || User.new(user_params)
     authorize @user
 
-    @user.lastname = @user.lastname.upcase
-    @user.firstname = @user.firstname.capitalize
-    @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
-    @user.company_id = current_user.company_id
-    @user.authentication_token = Base64.encode64(@user.email).gsub("\n", "") + SecureRandom.hex(32)
+    if @user.id.present?
+      @user.update company_id: current_user.company_id if @user.company_id.nil?
+    else
+      @user.lastname = @user.lastname.upcase
+      @user.firstname = @user.firstname.capitalize
+      @user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png' if @user.picture == ''
+      @user.company_id = current_user.company_id
+      @user.authentication_token = Base64.encode64(@user.email).gsub("\n", "") + SecureRandom.hex(32)
 
-    new_user = User.find_by(email: params.dig(:user, :email)).nil?
-    send_invite = params.dig(:user, :send_invite) == 'true'
+      new_user = User.find_by(email: params.dig(:user, :email)).nil?
+      send_invite = params.dig(:user, :send_invite) == 'true'
 
-    # Send invitation
-    if new_user
-      if send_invite
-        @user.save(validate: false)
-        @user.invite!
-      else
-        @user.save(validate: false)
-      end
+      # Send invitation
+      if new_user
+        if send_invite
+          @user.save(validate: false)
+          @user.invite!
+        else
+          @user.save(validate: false)
+        end
 
-      params[:tags].each do |tag_category_name, tag_name|
-        tag_category = TagCategory.find_by(name: tag_category_name)
+        params[:tags].each do |tag_category_name, tag_name|
+          tag_category = TagCategory.find_by(name: tag_category_name)
 
-        UserTag.create(
-          user: @user,
-          tag_category: tag_category,
-          tag: Tag.find_by(tag_name: tag_name, tag_category: tag_category)
-        )
+          UserTag.create(
+            user: @user,
+            tag_category: tag_category,
+            tag: Tag.find_by(tag_name: tag_name, tag_category: tag_category)
+          )
+        end if params[:tags].present?
       end
     end
 
@@ -86,7 +90,20 @@ class UsersController < ApplicationController
     selected_users.each do |user|
       user.update company_id: nil
       user.user_tags.destroy_all
+
+      CampaignDraft.select{|x| x.interviewee_ids.include?(user.id.to_s)}.each do |draft|
+        data = draft.data
+        data['interviewee_ids'] = draft.interviewee_ids - [user.id.to_s]
+        draft.update(data: data, interviewee_ids: data['interviewee_ids'])
+      end
+
+      TrainingDraft.select{|x| x.participant_ids.include?(user.id.to_s)}.each do |draft|
+        data = draft.data
+        data['participant_ids'] = draft.participant_ids - [user.id.to_s]
+        draft.update(data: data, participant_ids: data['participant_ids'])
+      end
     end
+
     @selected_users = params[:selected_users]
 
     respond_to do |format|
@@ -162,15 +179,23 @@ class UsersController < ApplicationController
       @updating = []
       present = []
       CSV.foreach(params[:file].path, headers: true) do |row|
+
         user_row = row.to_hash
         user = User.find_by(email: user_row['email']&.strip&.downcase)
-        if !user_row['email'].present? || (user_row['email'].strip.downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).nil?
+
+        if !user_row['email'].present? ||
+          (user_row['email'].strip.downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).nil? ||
+          (user.company_id.present? && (user.company_id != current_user.company_id))
+
           @errors << row
+
         elsif user.nil?
+
           @creating << row
           present << user_row['email'].downcase
+
         else
-          next if user.company_id != current_user.company_id
+
           user_row.each do |key, value|
             # begin
             user_tag = user.user_tags.find_by(tag_category_id: TagCategory.find_by(name: key)&.id)
@@ -178,12 +203,16 @@ class UsersController < ApplicationController
               @updating << { lastname: user.lastname, firstname: user.firstname, former: user.attributes[key], new: value }
             elsif (user_tag.present? && user_tag.tag_category.name.capitalize == key.capitalize && user_tag.tag.tag_name.capitalize != value.capitalize)
               @updating << { lastname: user.lastname, firstname: user.firstname, former: user_tag.tag.tag_name, new: value }
+            elsif user.company_id.nil?
+              @updating << { lastname: user.lastname, firstname: user.firstname, former: '', new: current_user.company.name }
             end
             # rescue
             # end
           end
           present << user_row['email'].downcase
+
         end
+
       end
       # pause_deleting_employees_on_csv_import
       # @deleting = User.where(email: (User.where(company_id: current_user.company_id).map{|x| x.email.downcase} - present))
@@ -210,7 +239,7 @@ class UsersController < ApplicationController
 
     @users =
       if params[:manager].present?
-        User.where(company_id: current_user.company_id, access_level: ['Manager', 'HR', 'Admin', 'Super Admin'])
+        User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :admin])
       else
         User.where(company_id: current_user.company_id)
       end
