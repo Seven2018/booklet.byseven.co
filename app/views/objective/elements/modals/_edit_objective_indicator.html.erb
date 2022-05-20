@@ -2,29 +2,23 @@
 
 <div class="modal-content action-modal__content">
 
-  <div class="modal-body action-modal__body width-80rem max-w-95vw pos-rel">
-
-    <button type="button"
-            class="action-modal__close pos-abs"
-            style="top: 3rem; right: 3rem;"
-            data-dismiss="modal"
-            aria-label="Close">
-      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
-    </button>
+  <div class="modal-body action-modal__body width-80rem max-w-95vw pos-rel mt-5">
 
     <div class="width-100 d-flex justify-content-center mb-5rem">
-
-      <div class="d-flex flex-column justify-content-start align-items-center">
-
+      <div class="d-flex flex-column justify-content-start align-items-center position-relative">
         <img src="<%= employee.picture %>"
                  alt="<%= employee.fullname %>"
                  class='avatar-md mb-2rem'
                  onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-
         <p class="fs-2rem font-weight-600 bkt-dark-grey"><%= @objective.title %></p>
-
       </div>
-
+      <button type="button"
+              class="action-modal__close pos-abs position-absolute"
+              style="top: -5px; right: 3rem;"
+              data-dismiss="modal"
+              aria-label="Close">
+        <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+      </button>
     </div>
 
     <%= simple_form_for indicator, method: :patch, remote: true do |f| %>

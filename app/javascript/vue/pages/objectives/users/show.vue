@@ -13,7 +13,7 @@
 
       </div>
       <div class="flex-row-center-centered mt-5 position-relative">
-        <img class="rounded-circle width-5rem height-5rem border-bkt-blue-2px"
+        <img class="rounded-circle width-5rem height-5rem border-bkt-objective-blue-2px"
              :src="objectiveUser.user.picture"
              onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
              alt="">

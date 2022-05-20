@@ -56,7 +56,7 @@
           <td>
             <div v-if="manager" class="d-flex align-items-center">
               <div class="flex-column ">
-                <img class="rounded-circle width-4rem height-3rem"
+                <img class="rounded-circle width-3rem height-3rem"
                      :src="manager.picture"
                      onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
                      alt="">
