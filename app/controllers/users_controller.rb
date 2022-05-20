@@ -97,10 +97,10 @@ class UsersController < ApplicationController
         draft.update(data: data, interviewee_ids: data['interviewee_ids'])
       end
 
-      TrainingDraft.select{|x| x.interviewee_ids.include?(user.id.to_s)}.each do |draft|
+      TrainingDraft.select{|x| x.participant_ids.include?(user.id.to_s)}.each do |draft|
         data = draft.data
-        data['interviewee_ids'] = draft.interviewee_ids - [user.id.to_s]
-        draft.update(data: data, interviewee_ids: data['interviewee_ids'])
+        data['participant_ids'] = draft.participant_ids - [user.id.to_s]
+        draft.update(data: data, participant_ids: data['participant_ids'])
       end
     end
 
