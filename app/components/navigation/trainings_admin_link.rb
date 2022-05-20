@@ -9,8 +9,13 @@ class Navigation::TrainingsAdminLink < ViewComponent::Base
     'Admin'
   end
 
-  def should_render?
-    TrainingPolicy.new(@user, nil).create? ||
-      TrainingReportPolicy.new(@user, nil).create?
+  def should_render?(trainings_path, trainings_reports_path)
+    if TrainingPolicy.new(@user, nil).create?
+      trainings_path
+    elsif TrainingReportPolicy.new(@user, nil).create?
+      trainings_reports_path
+    else
+      false
+    end
   end
 end
