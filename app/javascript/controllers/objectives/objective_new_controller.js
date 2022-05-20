@@ -4,7 +4,7 @@ export default class extends Controller {
   static get targets () {
     return ['displayElement', 'multiChoiceContainer', 'multiChoiceTemplate',
             'selectedUsers', 'selectedUsersPillStorage', 'selectedUsersPillStorageModal',
-            'selectedCount', 'filteredCount', 'selectAllButton', 'results']
+            'selectedCount', 'filteredCount', 'selectAllButton', 'results', 'requiredInput', 'submitButton']
   }
 
   static get values () {
@@ -14,10 +14,6 @@ export default class extends Controller {
   }
 
   connect() {
-    this.doubleClickGuardian = false
-    this.timer
-    this.waitTime = 1000
-
     this.element[
       (str => {
         return str
@@ -34,6 +30,9 @@ export default class extends Controller {
   }
 
   setup() {
+    this.history = document.referrer
+    document.getElementById('redirect_storage').value = this.history
+
     function OnInput() {
       this.style.height = "auto";
       this.style.height = (this.scrollHeight) + "px";
@@ -46,6 +45,66 @@ export default class extends Controller {
       tx[i].addEventListener("input", OnInput, false);
       tx[i].click()
     }
+  }
+
+
+  ////////////
+  // SUBMIT //
+  ////////////
+
+  enableSubmit() {
+    const submit_button = this.submitButtonTarget
+    const pill_storage = this.selectedUsersPillStorageTarget
+    var enable = pill_storage.hasChildNodes()
+
+    if (pill_storage.hasChildNodes()) {
+      pill_storage.parentNode.classList.remove('border-bkt-negative-red')
+    } else {
+      pill_storage.parentNode.classList.add('border-bkt-negative-red')
+    }
+
+    this.requiredInputTargets.forEach((input) => {
+      if (!input.disabled && !input.value) {
+        enable = false
+      }
+
+      if (input.checkValidity()) {
+        if (input.value) {
+          input.classList.remove('border-bkt-negative-red')
+        }
+      } else {
+        input.classList.add('border-bkt-negative-red')
+      }
+    })
+
+    if (enable) {
+      submit_button.classList.remove('disabled')
+    } else {
+      submit_button.classList.add('disabled')
+    }
+  }
+
+  checkMissingInput(e) {
+    const pill_storage = this.selectedUsersPillStorageTarget
+    var enable = true
+
+    if (pill_storage.hasChildNodes()) {
+      pill_storage.parentNode.classList.remove('border-bkt-negative-red')
+    } else {
+      pill_storage.parentNode.classList.add('border-bkt-negative-red')
+      enable = false
+    }
+
+    this.requiredInputTargets.forEach((input) => {
+      if (input.disabled || (input.value && input.checkValidity())) {
+        input.classList.remove('border-bkt-negative-red')
+      } else {
+        input.classList.add('border-bkt-negative-red')
+        enable = false
+      }
+    })
+
+    if (!enable) { e.preventDefault() }
   }
 
 
@@ -130,6 +189,7 @@ export default class extends Controller {
 
   refreshSelectedCount() {
     this.selectedCountTarget.innerText = `${this._selected_ids.length}`
+    this.enableSubmit()
   }
 
   toggleSelectAllButton(boolean) {

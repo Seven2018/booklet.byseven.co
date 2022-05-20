@@ -44,20 +44,14 @@
 
   </div>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
+  <div>
     <ul class="flex-row-between-centered">
-
-      <div class="mr-1rem">
-        <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
-      </div>
 
       <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white', hover_background_color: 'bkt-bg-dark-blue-hover') %>
 
       <%= render_component NavbarUserProfileComponent.new(user: current_user) %>
 
     </ul>
-
   </div>
 
 </div>

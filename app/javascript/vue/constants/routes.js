@@ -7,9 +7,10 @@ const routes = {
   objective_user_list_current: '/objective/users/{id}/list_current',
   objective_user_list_archived: '/objective/users/{id}/list_archived',
   objective_elements_archive: '/objective/elements/{id}/archive',
+  objective_elements_unarchive: '/objective/elements/{id}/unarchive',
   objective_elements_id: '/objective/elements/{id}',
   objective_user_my_team_current_list: '/objective/users/{id}/my_team_objectives_current_list',
-  objective_user_my_team_archived_list: '/objective/users/{id}/my_team_objectives_current_list',
+  objective_user_my_team_archived_list: '/objective/users/{id}/my_team_objectives_archived_list',
   objective_user_my_team_objectives: '/objective/users/{id}/my_team_objectives'
 }
 

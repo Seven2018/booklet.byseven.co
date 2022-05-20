@@ -41,7 +41,7 @@
             <span
                 v-else-if="objective_indicator.indicator_type === 'percentage'"
             >
-            {{ objective_indicator.options.target_value }}%
+            {{ objective_indicator.options.current_value }}%
           </span>
             <span
                 v-else-if="objective_indicator.indicator_type === 'multi_choice'"
@@ -63,20 +63,7 @@
       </td>
 
       <td v-if="showOptions">
-        <bkt-dots-button>
-          <button
-              class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
-              @click="openPopUpArchive(id)"
-          >
-            Archive objective
-          </button>
-          <button
-              class="flex-row-start-centered fs-1_4rem bkt-red bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
-              @click="openPopUpDelete(id)"
-          >
-            Delete
-          </button>
-        </bkt-dots-button>
+        <slot v-bind:id="id"></slot>
       </td>
     </template>
   </index-table>
@@ -109,34 +96,6 @@ export default {
         return indicator.options.starting_value == indicator.options.choice_1
       }
     },
-    openPopUpArchive(id) {
-      this.$modal.open({
-        type: 'normal',
-        title: `Are you sure you want to archive this objective ?<br/>(This is not a permanent action)`,
-        textClose: 'No',
-        textConfirm: 'Yes, archive',
-        close() {},
-        confirm() {
-          store
-              .dispatch('objectiveUser/archiveObjectiveUser', id)
-              .then(() => this.$modal.close())
-        }
-      })
-    },
-    openPopUpDelete(id) {
-      this.$modal.open({
-        type: 'delete',
-        title: `Are you sure you want to delete this objective ?<br/>(This is a permanent action)`,
-        textClose: 'No',
-        textConfirm: 'Yes, delete',
-        close() {},
-        confirm() {
-          store
-              .dispatch('objectiveUser/deleteObjectiveUser', id)
-              .then(() => this.$modal.close())
-        }
-      })
-    }
   },
   components: {
     IndexTable,

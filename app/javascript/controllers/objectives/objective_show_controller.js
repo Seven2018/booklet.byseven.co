@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return ['description', 'showDescriptionButton', 'updateModal']
+    return ['description', 'showDescriptionButton', 'updateModal', 'submitIndicatorButton', 'archiveButton', 'deleteButton']
   }
 
   connect() {
@@ -27,12 +27,36 @@ export default class extends Controller {
   }
 
   setup() {
+
+    // TOOLS //
+
     function OnInput() {
       if (this.tagName != 'TRIX-EDITOR') {
         this.style.height = "40px";
         this.style.height = (this.scrollHeight) + "px";
       }
     }
+
+    function updateURLParameter(url, param, paramVal){
+      var newAdditionalURL = "";
+      var tempArray = url.split("?");
+      var baseURL = tempArray[0];
+      var additionalURL = tempArray[1];
+      var temp = "";
+      if (additionalURL) {
+          tempArray = additionalURL.split("&");
+          for (var i=0; i<tempArray.length; i++){
+              if(tempArray[i].split('=')[0] != param){
+                  newAdditionalURL += temp + tempArray[i];
+                  temp = "&";
+              }
+          }
+      }
+      var rows_txt = temp + "" + param + "=" + paramVal;
+      return baseURL + "?" + newAdditionalURL + rows_txt;
+    }
+
+    ///////////
 
     const tx = document.querySelectorAll("textarea, trix-editor");
     for (let i = 0; i < tx.length; i++) {
@@ -49,6 +73,14 @@ export default class extends Controller {
         button.classList.remove('d-none')
       }
     }, 100)
+
+    // Set up redirection for archive and delete functions
+
+    const archive_button = this.archiveButtonTarget
+    const delete_button = this.deleteButtonTarget
+
+    delete_button.href = updateURLParameter(delete_button.href, 'redirected_from', document.referrer)
+    archive_button.href = updateURLParameter(archive_button.href, 'redirected_from', document.referrer)
   }
 
 
@@ -94,6 +126,10 @@ export default class extends Controller {
     const edit_button = e.currentTarget
     const display = document.querySelector(`#${edit_button.dataset.target}`)
     const input = display.parentNode.querySelector('trix-editor') || display.parentNode.querySelector('input') || display.parentNode.querySelector('textarea')
+
+    if (edit_button.dataset.target == "objective-description") {
+      this.showDescriptionButtonTarget.classList.add('d-none')
+    }
 
     display.classList.add('d-none')
     input.classList.remove('d-none')
@@ -159,6 +195,19 @@ export default class extends Controller {
 
     submit_button.click()
     close_button.click()
+  }
+
+  enableIndicatorSubmit(e) {
+    const input = e.currentTarget
+    const submit_button = this.submitIndicatorButtonTarget
+
+    if (parseFloat(input.value, 10)) {
+      submit_button.disabled = false
+      submit_button.classList.remove('disabled')
+    } else {
+      submit_button.disabled = true
+      submit_button.classList.add('disabled')
+    }
   }
 
 

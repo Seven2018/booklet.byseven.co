@@ -56,7 +56,6 @@ class UsersController < ApplicationController
           )
         end if params[:tags].present?
       end
-
     end
 
     respond_to do |format|

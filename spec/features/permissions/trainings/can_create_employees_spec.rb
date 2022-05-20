@@ -3,16 +3,15 @@
 require 'rails_helper'
 
 RSpec.feature 'Permission :can_create_employees', type: :feature, js: true do
-  let(:company) { create(:company) }
+
   let(:user) do
-    create(
-      :user,
-      firstname: 'John',
-      lastname: 'Doe',
-      company: company,
-      can_read_employees: true,
-      can_create_employees: can_create_employees
+    model = FactoryBot.build(:user,
+                             can_read_employees: true,
+                             can_create_employees: can_create_employees
     )
+    model.skip_before_create = true
+    model.save
+    model
   end
 
   before { login_as user }

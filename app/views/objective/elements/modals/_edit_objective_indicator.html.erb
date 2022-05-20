@@ -2,29 +2,23 @@
 
 <div class="modal-content action-modal__content">
 
-  <div class="modal-body action-modal__body width-80rem max-w-95vw pos-rel">
-
-    <button type="button"
-            class="action-modal__close pos-abs"
-            style="top: 3rem; right: 3rem;"
-            data-dismiss="modal"
-            aria-label="Close">
-      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
-    </button>
+  <div class="modal-body action-modal__body width-80rem max-w-95vw pos-rel mt-5">
 
     <div class="width-100 d-flex justify-content-center mb-5rem">
-
-      <div class="d-flex flex-column justify-content-start align-items-center">
-
+      <div class="d-flex flex-column justify-content-start align-items-center position-relative">
         <img src="<%= employee.picture %>"
                  alt="<%= employee.fullname %>"
                  class='avatar-md mb-2rem'
                  onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-
         <p class="fs-2rem font-weight-600 bkt-dark-grey"><%= @objective.title %></p>
-
       </div>
-
+      <button type="button"
+              class="action-modal__close pos-abs position-absolute"
+              style="top: -5px; right: 3rem;"
+              data-dismiss="modal"
+              aria-label="Close">
+        <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+      </button>
     </div>
 
     <%= simple_form_for indicator, method: :patch, remote: true do |f| %>
@@ -33,7 +27,7 @@
 
         <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
 
-          <p class="fs-1_4rem font-weight-600 bkt-light-grey5"><%= indicator_options['starting_value'] %></p>
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6"><%= indicator_options['starting_value'] %></p>
 
           <label class="objective-switch <%= 'switch_checked' if indicator_options['current_value'] == indicator_options['target_value'] %>
                         mx-2rem my-0">
@@ -55,22 +49,24 @@
 
         <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
 
-          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Starting value : <%= indicator_options['starting_value'] %></p>
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Starting value : <%= indicator_options['starting_value'] %></p>
 
           <div class="d-flex justify-content-center align-items-center mx-2rem">
 
-            <p class="fs-1_4rem font-weight-600 bkt-light-grey5 mr-0_5rem">Current value :</p>
+            <p class="fs-1_4rem font-weight-600 bkt-light-grey6 mr-0_5rem">Current value :</p>
 
-            <input type="numeric"
+            <input type="number"
                    name="chosen_value"
                    value="<%= indicator_options['current_value'] %>"
-                   class="px-0_5rem text-center"
-                   style="width: <%= indicator_options['target_value'].length + 1 %>rem;"
-                   min="indicator_options['starting_value']">
+                   class="px-0_5rem text-center input_number_simple"
+                   style="width: <%= indicator_options['target_value'].length + 2 %>rem;"
+                   min="indicator_options['starting_value']"
+                   autocomplete="off"
+                   data-action="keyup->objectives--objective-show#enableIndicatorSubmit">
 
           </div>
 
-          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Target value : <%= indicator_options['target_value'] %></p>
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Target value : <%= indicator_options['target_value'] %></p>
 
         </div>
 
@@ -78,15 +74,17 @@
 
         <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
 
-          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">Current value :</p>
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Current value :</p>
 
-          <input type="numeric"
+          <input type="number"
                  name="chosen_value"
                  value="<%= indicator_options['current_value'] %>"
-                 class="width-4rem px-0_5rem mx-0_5rem text-center"
-                 min="indicator_options['starting_value']">
+                 class="width-4rem px-0_5rem mx-0_5rem text-center input_number_simple"
+                 min="indicator_options['starting_value']"
+                 autocomplete="off"
+                 data-action="keyup->objectives--objective-show#enableIndicatorSubmit">
 
-          <p class="fs-1_4rem font-weight-600 bkt-light-grey5">%</p>
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">%</p>
 
         </div>
 
@@ -141,6 +139,7 @@
 
   <button type="button"
           class="d-flex justify-content-center align-items-center width-100-important bkt-btn-objective-blue rounded-b-10px"
+          data-objectives--objective-show-target="submitIndicatorButton"
           data-action="click->objectives--objective-show#updateCompletion">
     Post update
   </button>

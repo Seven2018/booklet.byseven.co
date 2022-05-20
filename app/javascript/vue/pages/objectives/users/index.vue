@@ -12,12 +12,7 @@
     </div>
 
     <bkt-box>
-      <div class="flex-row-start-centered mb-5">
-        <bkt-search></bkt-search>
-        <p class="ml-5 font-weight-500">
-          Reset
-        </p>
-      </div>
+      <bkt-search></bkt-search>
 
       <index-table
           :headers="headers"
@@ -119,9 +114,6 @@ export default {
       headers: ['Name', 'Access Level', 'Manager', 'Objectives', ''],
       adminObjectives: store.state.adminObjectives,
     }
-  },
-  created() {
-    store.dispatch('adminObjectives/fetch')
   },
   components: {
     BktSearch,

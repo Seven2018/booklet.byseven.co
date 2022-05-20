@@ -89,5 +89,6 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'dotenv-rails'
+  gem 'launchy'
 end
 

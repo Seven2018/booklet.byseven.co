@@ -8,6 +8,7 @@
       <div class="bkt-progress-thread"></div>
 
       <% TrainingDraft::PROGRESS_STATES.each do |state, state_label| %>
+
         <%= link_to send "edit_training_draft_#{state}_path".to_sym do %>
 
           <div class="bkt-progress-pearl bkt-progress-pearl-orange <%= @training.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
@@ -17,6 +18,7 @@
           </div>
 
         <% end %>
+
       <% end %>
 
     </div>

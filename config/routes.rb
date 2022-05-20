@@ -137,6 +137,7 @@ Rails.application.routes.draw do
     end
   end
   get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'
+  get :templates_search, controller: :interview_forms
 
   # INTERVIEW QUESTIONS
   resources :interview_questions
@@ -162,6 +163,7 @@ Rails.application.routes.draw do
       end
       member do
         post :archive
+        post :unarchive
       end
     end
     get :my_objectives, controller: :elements

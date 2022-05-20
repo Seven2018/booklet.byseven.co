@@ -1,0 +1,27 @@
+<div class="modal-content action-modal__content">
+
+  <div class="modal-body action-modal__body py-2rem px-3rem">
+
+    <div class="d-flex justify-content-center align-items-center">
+      <h1 class="fs-1_8rem font-weight-700 text-center">Are you sure you want to delete this objective ? <br>(This is a permanent action)</h1>
+    </div>
+
+    <div class="flex-row-around-centered mt-5 fs-1_8rem">
+
+      <button class="bkt-btn-white width-15rem"
+              data-dismiss="modal"
+              aria-label="Close">
+        No
+      </button>
+
+      <%= link_to objective_element_path(@objective, redirected_from: ''), method: :delete,
+                                              class: "bkt-btn-negative-red-white width-15rem",
+                                              data: { objectives__objective_show_target: 'deleteButton' } do %>
+        Yes, delete
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

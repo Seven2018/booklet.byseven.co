@@ -5,7 +5,13 @@ class Objective::ElementsController < ApplicationController
   skip_forgery_protection
 
   skip_after_action :verify_authorized, only: [
-    :archive, :destroy, :my_objectives, :my_team_objectives, :my_team_objectives_current_list, :my_team_objectives_archived_list
+    :archive,
+    :unarchive,
+    :destroy,
+    :my_objectives,
+    :my_team_objectives,
+    :my_team_objectives_current_list,
+    :my_team_objectives_archived_list
   ]
 
   def index
@@ -13,7 +19,12 @@ class Objective::ElementsController < ApplicationController
   end
 
   def list
-    @users = User.where(company: current_user.company)
+    if params[:search].blank?
+      @users = User.where(company: current_user.company)
+    else
+      @users = User.where(company: current_user.company).search_users(params[:search])
+    end
+
     authorize @users
 
     # render json: @users, include: ['objective_elements.objective_indicator']
@@ -52,7 +63,7 @@ class Objective::ElementsController < ApplicationController
 
     end
 
-    redirect_to objective_elements_path
+    redirect_to (params[:redirect_to_storage].presence || objective_elements_path)
   end
 
   def show
@@ -71,7 +82,7 @@ class Objective::ElementsController < ApplicationController
     if changed_attributes && @objective.save
 
       changed_attributes.each do |k, v|
-        log_params = {title: "#{k.capitalize} updated",
+        log_params = {title: "#{k.split('_').join(' ').capitalize} updated",
                     owner: current_user,
                     log_type: "#{k}_updated",
                     initial_value: v,
@@ -101,7 +112,19 @@ class Objective::ElementsController < ApplicationController
   def archive
     objective = Objective::Element.find(params[:id])
 
-    if objective.update(status: :archived)
+    if objective.update(status: :archived) && params[:redirected_from]
+      redirect_to params[:redirected_from]
+    elsif objective.update(status: :archived)
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
+
+  def unarchive
+    objective = Objective::Element.find(params[:id])
+
+    if objective.update(status: :opened)
       head :ok
     else
       head :unprocessable_entity
@@ -112,7 +135,9 @@ class Objective::ElementsController < ApplicationController
     objective = Objective::Element.find(params[:id])
     model = objective.destroy
 
-    if model.valid?
+    if model.valid? && params[:redirected_from]
+      redirect_to params[:redirected_from]
+    elsif model.valid?
       head :ok
     else
       render json: model.errors.messages

@@ -4,12 +4,16 @@ import routes from "../constants/routes";
 export default {
   namespaced: true,
   state: {
+    user: null,
     userId: null,
     employeesCurrent: null,
     employeesArchived: null,
     error: null
   },
   mutations: {
+    setUser(state, value) {
+      state.user = value
+    },
     setUserId(state, userId) {
       state.userId = userId
     },
@@ -24,6 +28,15 @@ export default {
     }
   },
   actions: {
+    async fetchUser({commit, state}) {
+      try {
+        const res = await axios.get(routes.generate('objective_user_info', {id: state.userId}))
+
+        commit('setUser', res.data)
+      } catch (e) {
+        commit('setError', e.message)
+      }
+    },
     async fetchEmployeesCurrent({commit, state}) {
       try {
         const res = await axios.get(routes.generate('objective_user_my_team_current_list', {id: state.userId}))
@@ -45,6 +58,16 @@ export default {
     async archiveObjectiveUser({commit, dispatch}, objectiveId) {
       try {
         await axios.post(routes.generate('objective_elements_archive', {id: objectiveId}))
+
+        dispatch('fetchEmployeesCurrent')
+        dispatch('fetchEmployeesArchived')
+      } catch (e) {
+        commit('setError', e.message)
+      }
+    },
+    async unarchiveObjectiveUser({commit, dispatch}, objectiveId) {
+      try {
+        await axios.post(routes.generate('objective_elements_unarchive', {id: objectiveId}))
 
         dispatch('fetchEmployeesCurrent')
         dispatch('fetchEmployeesArchived')
