@@ -1,18 +1,32 @@
-<div class="modal-content">
-  <div class="modal-header">
-    <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Remove User(s)</h3>
-      <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
-    </div>
-  </div>
-  <div class="modal-body">
+<div class="modal-content action-modal__content">
 
-    <p>Are you sure to delete this or these user(s) ?</p>
-    <p>Removed users will no longer appear</p>
-    <div class="flex-row-between-centered modal-button-centered">
-      <button type="button" class="btn-blue" data-dismiss="modal" aria-label="Close">No, Thanks</button>
-      <%= link_to 'Yes, remove user(s)', unlink_from_company_path(company_id: current_user.company_id, selected_users: ''), id: 'unlink_users', class: 'btn-blue-text', remote: true %>
-    </div>
+  <div class="modal-header action-modal__header">
+
+    <h3 class="modal-title action-modal__title" id="myModalLabel">Remove User(s)</h3>
+
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
 
   </div>
+
+  <div class="modal-body action-modal__body">
+
+    <div class="d-flex flex-column align-items-center mt-2rem">
+
+      <p>Are you sure to delete this or these user(s) ?</p>
+      <p>Removed users will no longer appear</p>
+
+    </div>
+
+    <div class="d-flex justify-content-center mb-3rem">
+
+      <button type="button" class="bkt-btn-white mr-2rem" data-dismiss="modal" aria-label="Close">No, Thanks</button>
+
+      <%= link_to 'Yes, remove user(s)', unlink_from_company_path(company_id: current_user.company_id, selected_users: ''), id: 'unlink_users', class: 'bkt-btn-dark-grey', remote: true %>
+
+    </div>
+
+  </div>
+
 </div>

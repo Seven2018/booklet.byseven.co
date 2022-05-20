@@ -1,10 +1,15 @@
 <div class="modal-content action-modal__content">
+
   <div class="modal-header action-modal__header">
+
     <h3 class="modal-title action-modal__title" id="myModalLabel">Add a new user</h3>
+
     <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
     </button>
+
   </div>
+
   <div class="modal-body action-modal__body">
 
     <%= simple_form_for User.new,
@@ -15,14 +20,13 @@
                                   create_tag_category_tags_path: create_tag_category_tags_path,
                                 }
                         } do |f| %>
-
       <%= f.input :firstname, label: 'First Name:', class:'form-control', required:true %>
       <%= f.input :lastname, label: 'Last Name:', class:'form-control', required:true %>
       <%= f.input :email, label: 'Email:', class:'form-control', input_html: {value: ''} %>
       <%= render 'users/access_level_input', f: f, user: User.new %>
+      <%= f.input :manager_id, collection: User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin]).order(lastname: :asc), label_method: lambda { |k| k.fullname } %>
 
       <% if UserPolicy.new(current_user, nil).create? %>
-
         <% @tag_categories.each do |category| %>
 
           <div class="mt-3">
@@ -42,22 +46,25 @@
           </div>
 
         <% end %>
-
       <% end %>
-
       <%= f.hidden_field :send_invite, value: false %>
       <%= f.submit '', class: 'hidden-submit hidden' %>
     <% end %>
-    <div style="display:flex;justify-content:center;margin-top:3rem;">
+
+    <div class="d-flex justify-content-center my-3rem">
+
       <button class="btn-blue-text" onclick='sendInvitation(this, true);'>
         <p>Create & Send Invitation </p>
       </button>
+
       <button class="btn-orange-text" onclick='sendInvitation(this, false);'>
         <p>Create</p>
       </button>
+
     </div>
 
   </div>
+
 </div>
 
 <!---------------->
