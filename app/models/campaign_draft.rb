@@ -51,6 +51,12 @@ class CampaignDraft < ApplicationRecord
     User.find  default_interviewer_id
   end
 
+  def default_template
+    return unless default_template_id
+
+    InterviewForm.find  default_template_id
+  end
+
   def interview_form
     return unless default_template_id
 

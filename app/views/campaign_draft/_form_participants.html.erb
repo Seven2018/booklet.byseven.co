@@ -28,12 +28,13 @@
 <%= render_component FormSectionTitleComponent.new(title: 'Chose interviewee(s) you want to participate this campaign') %>
 
 
-<div data-controller='participant-ids search-inject'
-  data-participant-ids-path-value='<%= campaign_draft_interviewees_ids_path %>'
-  data-action='
-    refreshParticipantIdsSearch@window->search-inject#debouncedSearch
-    refreshParticipantIdsFilteredCount@window->participant-ids#refreshFilteredCount
-  '>
+<div id="participants-controller"
+     data-controller='participant-ids search-inject'
+     data-participant-ids-path-value='<%= campaign_draft_interviewees_ids_path %>'
+     data-action='
+      refreshParticipantIdsSearch@window->search-inject#debouncedSearch
+      refreshParticipantIdsFilteredCount@window->participant-ids#refreshFilteredCount
+     '>
 
   <div class='fs-1_2rem mb-1rem'>
     Selected
@@ -69,26 +70,38 @@
     </div>
 
     <div class="flex-row-between-centered">
-      <div class='fs-1_2rem bkt-blue cursor-pointer'
+
+      <!-- <div class='fs-1_2rem bkt-blue cursor-pointer'
         data-action="click->participant-ids#unselectAll"
-      >Unselect all</div>
+      >Unselect all</div> -->
+
+      <%= link_to 'Unselect all', campaign_draft_participants_unselect_all_path(id: @campaign.id),
+                                class: "fs-1_2rem bkt-blue cursor-pointer",
+                                data: { action: 'click->participant-ids#blockEvents' },
+                                remote: true %>
 
       <div class="mx-2">|</div>
 
-      <div class='fs-1_2rem bkt-blue cursor-pointer'
+    <!--   <div class='fs-1_2rem bkt-blue cursor-pointer'
         data-action="click->participant-ids#selectAll"
-      >Select all</div>
+      >Select all</div> -->
+
+      <%= link_to 'Select all', campaign_draft_participants_select_all_path(id: @campaign.id),
+                                class: "fs-1_2rem bkt-blue cursor-pointer",
+                                data: { action: 'click->participant-ids#blockEvents' },
+                                remote: true %>
 
       <div class="mx-2">|</div>
 
-      <div class="cursor-pointer d-flex align-items-center">
+      <div id="select_filtered"
+           class="d-flex align-items-center">
         <div class='fs-1_2rem bkt-blue'>
           Select Filtered
           <span class='fs-1_2rem' data-participant-ids-target='filteredCount'></span>
         </div>
         <div class="mx-2"></div>
         <label
-          class='flex-row-center-centered rounded-3px mb-0 border-bkt-light-grey5-0_5px'
+          class='flex-row-center-centered rounded-3px mb-0 border-bkt-light-grey5-0_5px cursor-pointer'
           style='height: 2.4rem; width: 2.4rem;'
           data-controller='toggle-checked-participants'
         >
@@ -109,13 +122,16 @@
           </span>
         </label>
       </div>
+
     </div>
   </div>
 
-  <div class='border-bkt-light-grey mb-2rem overflow-y-scroll' style='height: 400px;'
-    data-search-inject-target="results"
-    data-participant-ids-target="results"
-  ></div>
+  <div id="employees-list"
+       class='border-bkt-light-grey mb-2rem overflow-y-scroll' style='height: 400px;'
+       data-search-inject-target="results"
+       data-participant-ids-target="results">
+  </div>
+
 </div>
 
 <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add interviewer') %>

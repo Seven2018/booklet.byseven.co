@@ -5,3 +5,7 @@ $(document).ready(function () {
   $(".organisation__users-index").floatingScroll();
 });
 document.querySelector('body').classList.remove('wait');
+
+document.getElementById('stimulus-change-page-controller').changePage._setPaginationLinks()
+
+document.querySelector('#booklet-container').scrollTop = 0;

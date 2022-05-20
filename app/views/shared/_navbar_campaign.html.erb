@@ -1,7 +1,7 @@
 <div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light bkt-bg-blue px-2rem">
 
   <div class="flex-row-between-centered">
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-blue-hover bkt-blue bkt-white-hover bkt-box-shadow-compact rounded-25px smooth-transition' href="/home">
+    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-blue-hover bkt-blue bkt-white-hover bkt-box-shadow-compact rounded-25px' href="/home">
       <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
     </a>
 
@@ -25,21 +25,19 @@
       <% end %>
     <% end %>
 
-    <% if Navigation::InterviewsAdminLink.new(user: current_user).should_render? %>
-      <button class="left-buttons">
+    <% if (admin_link = Navigation::InterviewsAdminLink.new(user: current_user).should_render?(campaigns_path, interview_forms_path, interviews_reports_path)) %>
+      <%= link_to admin_link, class: 'left-buttons' do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if %i[campaigns_index interview_forms_index reports_index].include?(@controller_action) %>">
-          <h4>
-            <%= render_component Navigation::InterviewsAdminLink.new(user: current_user) %>
-          </h4>
+          <h4 title="Admin">Admin</h4>
         </div>
-      </button>
+      <% end %>
     <% end %>
 
     <% if CampaignPolicy.new(current_user, nil).create? %>
       <%= link_to edit_campaign_draft_settings_path, class: 'bkt-blue-hover bkt-bg-white-hover bkt-btn-light-blue ml-2rem', data: {
         handle: 'create-campaign-cta'
-      } do  %>
+      } do %>
         Create Campaign
       <% end %>
     <% end %>
@@ -79,32 +77,31 @@
   </div>
 <% end %>
 
-<% if @show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render? %>
+<% if @show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?(campaigns_path, interview_forms_path, interviews_reports_path) %>
   <div class="navbar-admin  navbar-admin-campaigns">
     <% klass = 'navbar-admin__button' %>
     <% active_klass = "navbar-admin__button--active" %>
 
     <% if CampaignPolicy.new(current_user, nil).create? %>
       <%= link_to campaigns_path,
-        class: "#{klass} #{active_klass if @controller_action == :campaigns_index} rounded-10px bkt-bg-light-grey2-hover" do %>
+                  class: "#{klass} #{active_klass if @controller_action == :campaigns_index} rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Campaigns</h4>
       <% end %>
     <% end %>
 
     <% if InterviewFormPolicy.new(current_user, nil).create? %>
       <%= link_to interview_forms_path,
-        class: "#{klass} #{active_klass if @controller_action == :interview_forms_index} rounded-10px bkt-bg-light-grey2-hover" do %>
+                  class: "#{klass} #{active_klass if @controller_action == :interview_forms_index} rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Templates</h4>
       <% end %>
     <% end %>
 
     <% if InterviewReportPolicy.new(current_user, nil).create? %>
       <%= link_to interviews_reports_path,
-        class: "#{klass} #{
-          active_klass if
-            @controller_action == :reports_index ||
-            @controller_action == :reports_new
-        } rounded-10px bkt-bg-light-grey2-hover" do %>
+                  class: "#{klass} #{
+                    active_klass if @controller_action == :reports_index ||
+                      @controller_action == :reports_new
+                  } rounded-10px bkt-bg-light-grey2-hover" do %>
         <h4>Report</h4>
       <% end %>
     <% end %>

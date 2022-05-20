@@ -2,8 +2,8 @@
   <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
   <%=
     'container-admin-height' if
-      (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
-      (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
+      (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?(campaigns_path, interview_forms_path, interviews_reports_path)) ||
+      (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path))
   %>
   hide-scrollbar"
   style='min-height: calc(100vh - 7.5rem);'
@@ -17,7 +17,7 @@
 
   <% if current_user.company.applications_to_sym.include? :interviews %>
 
-    <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-bg-light-blue-hover bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel smooth-transition" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+    <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-bg-light-blue-hover bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
       <%= link_to '', my_interviews_path, class: 'stretched-link' %>
       <div style='border-left: 4px solid #3177B7;'>
         <div class="flex-row-start-centered mb-2rem">
@@ -73,7 +73,7 @@
 
     <% if CampaignPolicy.new(current_user, nil).my_team_interviews? %>
 
-      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-bg-light-blue-hover bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel smooth-transition" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-bg-light-blue-hover bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
         <%= link_to '', my_team_interviews_path, class: 'stretched-link' %>
 
         <div style='border-left: 4px solid #3177B7;'>
@@ -132,7 +132,7 @@
 
   <% if current_user.company.applications_to_sym.include? :trainings %>
 
-    <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-bg-light-orange-hover bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel smooth-transition" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+    <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-bg-light-orange-hover bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
       <%= link_to '', my_trainings_path, class: 'stretched-link' %>
 
       <div style='border-left: 4px solid #EF8C64;'>
@@ -207,7 +207,7 @@
 
     <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
 
-      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-bg-light-orange-hover bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel smooth-transition" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
+      <div class="d-none d-sm-flex flex-column-start-left bkt-bg-white bkt-bg-light-orange-hover bkt-box-shadow rounded-10px mb-3rem overflow-hidden pos-rel" style='width: 80%; max-width: 96rem; padding: 3rem 3rem 9rem 3rem;'>
         <%= link_to '', my_team_trainings_path, class: 'stretched-link' %>
 
         <div style='border-left: 4px solid #EF8C64;'>

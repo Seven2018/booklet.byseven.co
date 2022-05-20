@@ -9,20 +9,23 @@
   <% end %>
 </div>
 
-<div class='organisation__users-list'
+<div id="stimulus-change-page-controller"
+     class='organisation__users-list'
      data-fl-scrolls='{"orientation": "horizontal"}'
      data-controller="employees-list change-page">
 
   <div id="searchbar"
        class="organisation__searchbar"
-       data-controller="remember-search"
-       data-remember-search-key-value="bookletOrganisationSearches">
+       data-controller="remember-search">
 
     <i class="fas fa-search organisation__search-trainings-icon"></i>
 
     <%= simple_form_for :search, url: organisation_path,
                                  method: :get,
-                                 remote: true do |f| %>
+                                 remote: true,
+                                 data: {
+                                   remember_search_key_value: 'bookletOrganisationSearches',
+                                 } do |f| %>
 
       <%= f.input :name, placeholder: 'Search',
                          input_html: {
@@ -38,12 +41,18 @@
       <%= f.hidden_field :tags %>
       <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
 
-      <%= f.submit 'Search', class: 'btn-search',
-                             onclick: "document.querySelector('body').classList.add('wait');",
-                             data: {
-                               remember_search_target: :submit,
-                               change_page_target: :submit
-                              } %>
+      <%=
+          f.submit(
+            'Search',
+            class: 'py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+            onclick: "document.querySelector('body').classList.add('wait');",
+            data: {
+              remember_search_target: :submit,
+              change_page_target: :submit,
+              search_form: :submit
+            }
+          )
+        %>
 
       <button type='submit' class="btn-search btn-search--mobile">
         <i class="fas fa-search"></i>
@@ -89,8 +98,13 @@
       <%= render 'pages/organisation/organisation_user_cards', users: users %>
     </div>
   </div>
-  <div class="paginate-container paginate-container-blue">
-    <%= render 'pages/organisation/organisation_paginate', users: users %>
-  </div>
+
+  <% if @any_more %>
+
+    <div class="paginate-container paginate-container-dark-grey">
+      <%= render 'pages/organisation/organisation_paginate', users: users %>
+    </div>
+
+  <% end %>
 </div>
 

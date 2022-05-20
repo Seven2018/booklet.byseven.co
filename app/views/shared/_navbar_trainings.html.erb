@@ -1,7 +1,7 @@
 <div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light bkt-bg-orange px-2rem">
   <div class="flex-row-between-centered">
 
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-orange-hover bkt-orange bkt-white-hover bkt-box-shadow-compact rounded-25px smooth-transition' href="/home">
+    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-orange-hover bkt-orange bkt-white-hover bkt-box-shadow-compact rounded-25px' href="/home">
       <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
     </a>
 
@@ -34,15 +34,13 @@
       <% end %>
     <% end %>
 
-    <% if Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
-      <button class="left-buttons">
+    <% if (admin_link = Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path)) %>
+      <%= link_to admin_link, class: 'left-buttons' do %>
         <div class="navbar-buttons
           <%= 'navbar-buttons--active' if  %i[trainings_index reports_index].include?(@controller_action) %>">
-          <h4>
-            <%= render_component Navigation::TrainingsAdminLink.new(user: current_user) %>
-          </h4>
+          <h4 title="Admin">Admin</h4>
         </div>
-      </button>
+      <% end %>
     <% end %>
 
   </div>
@@ -82,7 +80,7 @@
 <% end %>
 
 
-<% if @show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render? %>
+<% if @show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path) %>
   <div class="navbar-admin navbar-admin-trainings">
     <% klass = 'navbar-admin__button' %>
     <% active_klass = "navbar-admin__button--active" %>
