@@ -2,8 +2,8 @@
   <%= 'overflow-y-scroll overflow-x-hidden' unless @multi_step_form_navbar_content.present? %>
   <%=
     'container-admin-height' if
-      (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?) ||
-      (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?)
+      (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?(campaigns_path, interview_forms_path, interviews_reports_path)) ||
+      (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path))
   %>
   hide-scrollbar"
   style='min-height: calc(100vh - 7.5rem);'
