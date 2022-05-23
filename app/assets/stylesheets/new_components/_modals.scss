@@ -1,13 +1,33 @@
-////////////////
-//ACTION MODAL//
-////////////////
+/////////
+// ALL //
+/////////
+
+.action-modal, .info-modal, .ays-modal {
+  h3 {
+    color: $bkt-dark-grey;
+  }
+}
+
+
+//////////////////
+// ACTION MODAL //
+//////////////////
+
+.action-modal {
+  padding: 5rem 0 !important;
+
+  &:before {
+    height: 0 !important;
+  }
+}
 
 .action-modal.show {
   display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
 }
 
 .action-modal__content {
-  height: auto !important;
   border-radius: 1rem !important;
   border: none !important;
   box-shadow: 0 0 .5rem rgba(0,0,0,0.2);
@@ -16,19 +36,20 @@
 .action-modal__header {
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
+  padding: 1.5rem 3rem !important;
+  border: 1px solid $bkt-light-grey;
 }
 
 .action-modal__title {
   font-size: 2rem;
   font-weight: 500;
-  padding: 0 1rem;
 }
 
 .action-modal__close {
-  height: 4rem;
-  width: 4rem;
-  max-height: 4rem;
-  max-width: 4rem;
+  height: 2rem;
+  width: 2rem;
+  max-height: 2rem;
+  max-width: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,22 +63,40 @@
 }
 
 .action-modal__body {
-  padding: 3rem 2rem;
+  min-height: 0;
+  max-height: calc(100vh - 20rem);
+  overflow-y: scroll;
+  padding: 2rem 3rem;
   border: none;
   text-align: justify;
 }
 
 .action-modal__footer {
   justify-content: center !important;
-  margin-bottom: 12px;
+  padding: 0 3rem 1.5rem 3rem;
   border: none !important;
 }
 
-//////////////
-//INFO MODAL//
-//////////////
 
-.info-modal-content {
+////////////////
+// INFO MODAL //
+////////////////
+
+.info-modal {
+  padding: 5rem 0 !important;
+
+  &:before {
+    height: 0 !important;
+  }
+}
+
+.info-modal.show {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.info-modal__content {
   border-radius: 10px !important;
   border: none !important;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
@@ -65,39 +104,197 @@
   width: auto !important;
 }
 
-.info-modal-header {
+.info-modal__header {
+  flex-direction: row-reverse;
   border: none !important;
-  height: 0;
+  padding: 2rem 2.5rem !important;
 }
 
-
-.info-modal-body {
-  margin-left: 30px;
-  margin-right: 30px;
-  border: none !important;
-  color: $bkt-blue;
-  font-size: 16px;
-
+.info-modal__close {
+  height: 2rem;
+  width: 2rem;
+  max-height: 2rem;
+  max-width: 2rem;
+  display: flex;
   justify-content: center;
   align-items: center;
-
-  svg {
-    margin-bottom: 20px;
-  }
-
-  p {
-    font-weight: 500;
-  }
+  padding: 0;
 }
 
-.close-info-modal {
-  margin-left: 42rem;
-  font-size: 4.5rem;
+.info-modal__close-icon {
+  display: block;
+  font-size: 4rem;
   font-weight: 400;
 }
 
-.info-modal-body {
-  margin-left: 30px;
-  margin-right: 30px;
-  margin-bottom: 10px;
+.info-modal__body {
+  justify-content: start;
+  align-items: center;
+  min-height: 0;
+  padding: 0 2.5rem 2.5rem 2.5rem !important;
+  margin: 0;
+  font-size: 16px;
+  border: none !important;
+
+  h3 {
+    font-weight: 600;
+  }
+}
+
+.info-modal__footer {
+  justify-content: center !important;
+  padding: 0 2.5rem 3.5rem 2.5rem !important;
+  border: none !important;
+  font-size: 16px;
+}
+
+
+
+////////////////////////
+// ARE YOU SURE MODAL //
+////////////////////////
+
+.ays-modal {
+  padding: 5rem 0 !important;
+
+  &:before {
+    height: 0 !important;
+  }
+}
+
+.ays-modal.show {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.ays-modal__content {
+  border-radius: 10px !important;
+  border: none !important;
+  width: 43.5rem !important;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  height: auto !important;
+}
+
+.ays-modal__header {
+  flex-direction: row-reverse;
+  border: none !important;
+  padding: 2rem 2.5rem !important;
+}
+
+.ays-modal__close {
+  height: 2rem;
+  width: 2rem;
+  max-height: 2rem;
+  max-width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.ays-modal__close-icon {
+  display: block;
+  font-size: 4rem;
+  font-weight: 400;
+}
+
+.ays-modal__body {
+  justify-content: start;
+  align-items: center;
+  min-height: 0;
+  padding: 3rem 5rem !important;
+  margin: 0;
+  font-size: 16px;
+  border: none !important;
+  text-align: center;
+
+  h3 {
+    font-weight: 600;
+  }
+}
+
+.ays-modal__footer {
+  justify-content: space-between !important;
+  gap: 3.5rem;
+  padding: 0 5rem 3rem 5rem !important;
+  border: none !important;
+}
+
+
+////////////////
+// DATE MODAL //
+////////////////
+
+.date-modal {
+  padding: 5rem 0 !important;
+
+  &:before {
+    height: 0 !important;
+  }
+}
+
+.date-modal {
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.date-modal.show {
+  display: flex !important;
+}
+
+.date-modal__dialog {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.date-modal__content {
+  width: 312px;
+  border-radius: 1rem !important;
+  border: none !important;
+  box-shadow: 0 0 .5rem rgba(0,0,0,0.2);
+}
+
+.date-modal__header {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 1.5rem 3rem !important;
+  border: 1px solid $bkt-light-grey;
+}
+
+.date-modal__title {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.date-modal__close {
+  height: 2rem;
+  width: 2rem;
+  max-height: 2rem;
+  max-width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.date-modal__close-icon {
+  display: block;
+  font-size: 4rem;
+  font-weight: 400;
+}
+
+.date-modal__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2rem 0 0 0!important;
+  border: none !important;
+
+  .flatpickr-calendar {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+  }
 }

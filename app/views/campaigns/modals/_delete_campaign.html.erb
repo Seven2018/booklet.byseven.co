@@ -1,0 +1,26 @@
+<div class="modal-content ays-modal__content">
+
+  <div class="modal-body ays-modal__body">
+
+    <h3>Do you wish to permanently delete this campaign ?</h3>
+
+  </div>
+
+  <div class="modal-footer ays-modal__footer">
+
+      <%= link_to campaign_path(campaign),
+            class: 'bkt-btn-ays-red',
+            method: :delete,
+            remote: true do %>
+
+        Yes, delete
+
+      <% end %>
+
+      <button class="bkt-btn-ays-dark-grey ays-close" data-dismiss="modal" aria-label="Close">
+        No
+      </button>
+
+  </div>
+
+</div>

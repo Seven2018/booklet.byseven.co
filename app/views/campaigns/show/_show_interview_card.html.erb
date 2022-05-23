@@ -9,7 +9,8 @@
   <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
 
     <div class="campaign-show__card-overlay hidden"></div>
-    <div class="campaign-card__options" onclick="openContentMenu(this);">
+    <div class="campaign-card__options d-flex justify-content-center align-items-center height-2rem width-2rem"
+         onclick="openContentMenu(this);">
 
       <% if manager_view %>
 
@@ -169,16 +170,41 @@
     <!-- MODAL -->
     <!----------->
 
-    <div class='modal fade' id='editDeadline-<%= employee.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-      <div class='modal-dialog modal-date' role='document' style='border-radius: 20px'>
-        <%= render 'campaigns/modals/edit_deadline', campaign: campaign, employee: employee, interview: Interview.where(campaign_id: campaign.id, employee_id: employee.id).first %>
+    <div id='editDeadline-<%= employee.id %>'
+         class='modal date-modal fade fade-scale'
+         tabindex='-1'
+         role='dialog'
+         data-keyboard="false"
+         data-backdrop="static">
+
+      <div class='modal-dialog date-modal__dialog'
+           role='document'>
+
+        <%= render 'campaigns/modals/edit_deadline',
+            campaign: campaign,
+            employee: employee,
+            interview: Interview.where(campaign_id: campaign.id, employee_id: employee.id).first %>
+
       </div>
+
     </div>
 
-    <div class='modal fade' id='removeParticipant-<%= employee.id %>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-      <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
-        <%= render 'campaigns/modals/remove_participant', employee: employee, selected_interviewer: selected_interviewer %>
+    <div id='removeParticipant-<%= employee.id %>'
+         class='modal ays-modal fade'
+         tabindex='-1'
+         role='dialog'
+         data-keyboard="false"
+         data-backdrop="static">
+
+      <div class='modal-dialog ays-modal__dialog'
+           role='document'>
+
+        <%= render 'campaigns/modals/remove_participant',
+            employee: employee,
+            selected_interviewer: selected_interviewer %>
+
       </div>
+
     </div>
 
     <!----------->

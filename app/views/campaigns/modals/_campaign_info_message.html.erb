@@ -1,9 +1,19 @@
-<div class="modal-content">
-  <div class="modal-header modal-header__simple">
-    <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+<div class="modal-content info-modal__content">
+
+  <div class="modal-header info-modal__header">
+
+    <button type="button" class="info-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="info-modal__close-icon">&times;</span>
+    </button>
+
   </div>
-  <div class="modal-body modal-body__simple">
+
+  <div class="modal-body info-modal__body">
     <span class="iconify modal-icon-success" data-icon="akar-icons:circle-check-fill"></span>
-    <h3><%= message %></h3>
   </div>
+
+  <div class="modal-footer info-modal__footer">
+    <h3 class="bkt-blue text-center"><%= message %></h3>
+  </div>
+
 </div>

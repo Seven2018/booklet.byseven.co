@@ -39,6 +39,7 @@
   }
 }
 
+
 .bkt-btn-white-light {
   display: flex;
   align-items: center;
@@ -303,6 +304,98 @@
   }
 
   &.pressed {}
+}
+
+
+
+//////////////////////////
+// ARE YOU SURE BUTTONS //
+//////////////////////////
+
+.bkt-btn-ays-dark-grey {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 15rem;
+  width: 15rem;
+  padding: 1rem;
+  margin: 0 !important;
+  color: $bkt-dark-grey;
+  background-color: $bkt-white !important;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .3rem;
+  border: 1px solid $bkt-dark-grey;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bkt-light-grey8 !important;
+  }
+
+  &.disabled {
+    opacity: .7 !important;
+    cursor: not-allowed;
+  }
+}
+
+.bkt-btn-ays-red {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 15rem;
+  width: 15rem;
+  padding: 1rem;
+  margin: 0 !important;
+  color: $bkt-negative-red;
+  background-color: $bkt-white !important;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .3rem;
+  border: 1px solid $bkt-negative-red;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bkt-transparent-negative-red !important;
+    color: $bkt-negative-red;
+  }
+
+  &.disabled {
+    opacity: .7 !important;
+    cursor: not-allowed;
+  }
+}
+
+.bkt-btn-ays-blue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 15rem;
+  width: 15rem;
+  padding: 1rem;
+  margin: 0 !important;
+  color: $bkt-objective-blue;
+  background-color: $bkt-white !important;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .3rem;
+  border: 1px solid $bkt-objective-blue;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bkt-light-objective-blue !important;
+    color: $bkt-objective-blue;
+  }
+
+  &.disabled {
+    opacity: .7 !important;
+    cursor: not-allowed;
+  }
 }
 
 
