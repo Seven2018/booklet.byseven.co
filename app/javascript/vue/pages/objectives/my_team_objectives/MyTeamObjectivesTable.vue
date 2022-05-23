@@ -6,18 +6,19 @@
       :without-hover="true"
   >
     <template v-slot="{id, firstname, lastname, job_title, picture, objective_elements}">
-      <td style="vertical-align: top" class="position-relative">
+      <td style="vertical-align: top" class="px-2">
         <a
-            class="bkt-bg-light-grey9-hover position-absolute rounded-5px cursor-pointer"
-            style="top: 8px;left: 8px;right: 8px;bottom: 8px;"
+            class="d-block bkt-bg-light-grey9-hover p-4 rounded-5px cursor-pointer"
             :href="$routes.generate('objective_user_show', {id})"
         >
-          <div class="d-flex align-items-center ml-3 " >
+          <div class="flex-row-start-centered align-items-center ml-3 " >
             <div class="flex-column ">
-              <img class="rounded-circle width-4rem height-3rem"
-                   :src="picture"
-                   onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
-                   alt="">
+              <div class="flex-row-start-centered width-4rem height-3rem">
+                <img class="rounded-circle"
+                     :src="picture"
+                     onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
+                     alt="">
+              </div>
             </div>
 
             <div class="flex-column ml-3 width-25rem ">
@@ -32,7 +33,7 @@
         </a>
       </td>
 
-      <td class="border-left-bkt-light-grey">
+      <td class="border-left-bkt-light-grey px-2">
         <div
             v-for="(element, idx) in objective_elements"
             @mouseover="setHover(`key-${id}-${idx}`)"
@@ -54,7 +55,7 @@
         </div>
       </td>
 
-      <td>
+      <td class="px-2">
         <div
             v-for="(element, idx) in objective_elements"
             @mouseover="setHover(`key-${id}-${idx}`)"
@@ -70,9 +71,9 @@
             <span
                 v-if="element.objective_indicator.indicator_type === 'boolean'"
             >
-              actual value: {{
+              value: {{
                 element.objective_indicator.options.starting_value
-              }}, target value: {{ element.objective_indicator.options.target_value }}
+              }}, target: {{ element.objective_indicator.options.target_value }}
             </span>
               <span
                   v-else-if="element.objective_indicator.indicator_type === 'numeric_value'"
@@ -97,7 +98,7 @@
         </div>
       </td>
 
-      <td>
+      <td class="px-2">
         <div
             v-for="(element, idx) in objective_elements"
             @mouseover="setHover(`key-${id}-${idx}`)"
@@ -114,7 +115,7 @@
         </div>
       </td>
 
-      <td v-if="showOptions">
+      <td v-if="showOptions" class="px-2">
         <slot v-bind:obj="{objective_elements, userId: id}"></slot>
       </td>
     </template>

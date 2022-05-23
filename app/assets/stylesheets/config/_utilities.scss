@@ -70,8 +70,10 @@ a.disabled-link { pointer-events: none; }
 .overflow-y-hidden { overflow-y: hidden; }
 .overflow-x-hidden { overflow-x: hidden; }
 .overflow-y-scroll { overflow-y: scroll; }
-.overflow-y-auto { overflow-y: auto; }
 .overflow-x-scroll { overflow-x: scroll; }
+.overflow-y-auto { overflow-y: auto; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-x-auto-mobile { @include small-down { overflow-x: auto; } }
 .overflow-ellipsis {overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 
 .hide-scrollbar {
@@ -193,6 +195,7 @@ a.disabled-link { pointer-events: none; }
 
 .min-w-3_5rem  { min-width: 3.5rem; }
 .min-w-10rem   { min-width: 10rem; }
+.min-w-15rem   { min-width: 15rem; }
 .min-w-30rem   { min-width: 30rem; }
 .min-w-65rem   { min-width: 65rem; }
 
@@ -479,6 +482,7 @@ a.disabled-link { pointer-events: none; }
 
 .pos-rel { position: relative; }
 .pos-abs { position: absolute; }
+.pos-abs-sm { @include from-medium { position: absolute; }}
 .pos-fix { position: fixed; }
 
 .top-0 { top: 0px }

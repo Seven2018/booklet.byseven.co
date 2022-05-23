@@ -3,7 +3,6 @@ import BktPopUp from "../components/BktPopUp";
 import store from "../store";
 
 
-// make use of store and, jquery
 Vue.component('bkt-pop-up', BktPopUp)
 
 
@@ -13,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
       store.commit('popUp/update', {open: true, ...opt})
     },
     close() {
-      store.commit('popUp/update', {open: false})
+      store.commit('popUp/update', {open: false, loading: false})
     },
   }
 

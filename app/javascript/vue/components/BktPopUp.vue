@@ -10,14 +10,27 @@
           <div v-if="popUp.data.textClose && popUp.data.textConfirm" class="flex-row-around-centered mt-5 fs-1_8rem">
             <button class="border-bkt-dark-grey width-15rem rounded-2px py-2" @click="close">{{popUp.data.textClose}}</button>
             <button
-                class="width-15rem rounded-2px border-bkt-objective-blue py-2"
+                class="min-w-15rem rounded-2px border-bkt-objective-blue py-2"
                 :class="[!popUp.data.type
                   || popUp.data.type === 'normal' ?
                   'bkt-bg-objective-light-blue bkt-objective-blue border-bkt-objective-blue' : '',
                    popUp.data.type === 'delete' ?
-                   'bkt-bg-light-red bkt-red border-bkt-red' : '']"
+                   'bkt-bg-light-red bkt-red border-bkt-red' : '',
+                   popUp.data.loading ? 'bkt-bg-white' : '']"
                 @click="confirm"
-            >{{popUp.data.textConfirm}}</button>
+            >
+<!--              TODO: change if, by style, display block-->
+              <bkt-spinner
+                  :color="!popUp.data.type || popUp.data.type === 'normal' ? 'blue' : (popUp.data.type === 'delete' ? 'red' : '')" >
+                {{popUp.data.textLoading}}
+              </bkt-spinner>
+<!--              <bkt-spinner-->
+<!--                  v-if="popUp.data.loading"-->
+<!--                  :color="!popUp.data.type || popUp.data.type === 'normal' ? 'blue' : (popUp.data.type === 'delete' ? 'red' : '')" >-->
+<!--                {{popUp.data.textLoading}}-->
+<!--              </bkt-spinner>-->
+<!--              <span v-else>{{popUp.data.textConfirm}}</span>-->
+            </button>
           </div>
         </div>
       </div>
@@ -27,6 +40,7 @@
 
 <script>
 import store from "../store";
+import BktSpinner from './BktSpinner'
 
 export default {
   data() {
@@ -40,9 +54,11 @@ export default {
       if (this.popUp.data.close) this.popUp.data.close()
     },
     confirm() {
+      store.commit('popUp/update', {loading: true})
       this.popUp.data.confirm()
     }
-  }
+  },
+  components: {BktSpinner},
 }
 </script>
 

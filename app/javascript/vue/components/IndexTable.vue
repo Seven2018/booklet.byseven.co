@@ -2,7 +2,7 @@
   <table class="">
     <thead>
     <tr class="border-bottom-bkt-light-grey5" :class="headerClass">
-      <th v-for="col in headers">
+      <th v-for="col in headers" class="px-2">
         <p class="font-weight-500">
           {{ col }}
         </p>
@@ -46,6 +46,15 @@
     padding-top: 17px;
     padding-bottom: 17px;
     vertical-align: middle;
+  }
+
+  .table-borderless > tbody > tr > td,
+  .table-borderless > tbody > tr > th,
+  .table-borderless > tfoot > tr > td,
+  .table-borderless > tfoot > tr > th,
+  .table-borderless > thead > tr > td,
+  .table-borderless > thead > tr > th {
+    border: none;
   }
 
 </style>

@@ -5,7 +5,7 @@
       :table-data="tableData"
   >
     <template v-slot="{id, title, due_date, objective_indicator}">
-      <td>
+      <td class="px-2">
         <a :href="$routes.generate('objective_elements_id', {id})">
           <div class="flex-row-start-centered max-w-25rem">
             <div v-if="isCompleted(objective_indicator)">
@@ -20,7 +20,7 @@
         </a>
       </td>
 
-      <td>
+      <td class="px-2">
         <a :href="$routes.generate('objective_elements_id', {id})">
           <p
               class="font-weight-500"
@@ -53,7 +53,7 @@
         </a>
       </td>
 
-      <td>
+      <td class="px-2">
         <a :href="$routes.generate('objective_elements_id', {id})">
           <p
               class="font-weight-500 text-truncate"

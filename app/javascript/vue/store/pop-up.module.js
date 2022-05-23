@@ -4,7 +4,8 @@ export default {
   namespaced: true,
   state: {
     data: {
-      open: false
+      open: false,
+      loading: false
     }
   },
   mutations: {
