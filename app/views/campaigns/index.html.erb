@@ -148,10 +148,18 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='sendEmailSuccess' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='sendEmailSuccess'
+     class='modal info-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-keyboard="false"
+     data-backdrop="static">
+
+  <div class='modal-dialog info-modal__dialog'
+       role='document'>
     <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
   </div>
+
 </div>
 
 

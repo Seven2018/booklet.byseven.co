@@ -2,45 +2,7 @@
 // COLORS //
 ////////////
 
-.bkt-btn-white {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  color: $bkt-dark-grey;
-  background-color: $bkt-white !important;
-  padding: 1.6rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  line-height: 2rem;
-  border-radius: .5rem;
-  border: 1px solid transparent;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    border: 1px solid $bkt-light-grey4;
-    background-color: $bkt-light-grey4 !important;
-  }
-
-  &:focus {
-    background-color: $bkt-white;
-    color: $bkt-dark-grey;
-  }
-
-  &.disabled {
-    border: 1px solid $bkt-light-grey5;
-    color: $bkt-light-grey5;
-  }
-
-  &.pressed {
-    border: 1px solid $bkt-light-grey;
-    background-color: $bkt-light-grey;
-  }
-}
-
-
-.bkt-btn-white-light {
+.bkt-btn-white-dark-grey-light {
   display: flex;
   align-items: center;
   width: fit-content;
@@ -63,11 +25,8 @@
   }
 
   &.disabled {
-    color: $bkt-light-grey5;
-  }
-
-  &.pressed {
-    background-color: $bkt-light-grey;
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
@@ -97,17 +56,16 @@
   }
 
   &.disabled {
-    color: $bkt-light-grey5;
-  }
-
-  &.pressed {
-    background-color: $bkt-light-grey5;
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
 .bkt-btn-blue {
   display: flex;
+  justify-content: center;
   align-items: center;
+  min-width: 12rem;
   width: fit-content;
   color: $bkt-white;
   background-color: $bkt-blue !important;
@@ -134,9 +92,8 @@
 
   &.disabled {
     opacity: 0.5;
+    cursor: not-allowed;
   }
-
-  &.pressed {}
 }
 
 .bkt-btn-light-blue {
@@ -165,43 +122,8 @@
 
   &.disabled {
     opacity: 0.5;
+    cursor: not-allowed;
   }
-
-  &.pressed {}
-}
-
-.bkt-btn-blue-white {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  color: $bkt-blue;
-  background-color: $bkt-white !important;
-  padding: 1.6rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  line-height: 2rem;
-  border-radius: .5rem;
-  border: 2px solid $bkt-blue;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-
-  &:hover, &:focus {
-    color: $bkt-white;
-    background-color: $bkt-blue !important;
-  }
-
-  &:focus {
-    color: $bkt-white;
-    background-color: $bkt-dark-blue;
-    border: 2px solid $bkt-dark-blue;
-  }
-
-  &.disabled {
-    opacity: 0.5;
-  }
-
-  &.pressed {}
 }
 
 .bkt-btn-orange {
@@ -227,49 +149,14 @@
   }
 
   &:focus {
-    background-color: $bkt-white;
-    color: $bkt-dark-orange;
-  }
-
-  &.disabled {
-    opacity: 0.5;
-  }
-
-  &.pressed {}
-}
-
-.bkt-btn-orange-white {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  color: $bkt-orange;
-  background-color: $bkt-white !important;
-  padding: 1.6rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  line-height: 2rem;
-  border-radius: .5rem;
-  border: 2px solid $bkt-orange;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  transition: all .25s ease-in-out;
-  cursor: pointer;
-
-  &:hover, &:focus {
-    color: $bkt-white;
-    background-color: $bkt-orange;
-  }
-
-  &:focus {
     color: $bkt-white;
     background-color: $bkt-dark-orange !important;
-    border: 2px solid $bkt-dark-orange;
   }
 
   &.disabled {
     opacity: 0.5;
+    cursor: not-allowed;
   }
-
-  &.pressed {}
 }
 
 .bkt-btn-red-white {
@@ -301,12 +188,185 @@
 
   &.disabled {
     opacity: 0.5;
+    cursor: not-allowed;
   }
-
-  &.pressed {}
 }
 
 
+///////////////////////////////////
+// WHITE WITH TEXT COLOR BUTTONS //
+///////////////////////////////////
+
+.bkt-btn-white-dark-grey {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-dark-grey;
+  background-color: $bkt-white !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  border: 1px solid transparent;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:not(.disabled):hover {
+    border: 1px solid $bkt-light-grey4;
+    background-color: $bkt-light-grey4 !important;
+  }
+
+  &:not(.disabled):focus {
+    background-color: $bkt-white;
+    color: $bkt-dark-grey;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.bkt-btn-white-blue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 12rem;
+  width: fit-content;
+  color: $bkt-blue;
+  background-color: $bkt-white !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:not(.disabled):hover {
+    color: $bkt-white;
+    background-color: $bkt-blue !important;
+  }
+
+  &:not(.disabled):focus {
+    color: $bkt-white;
+    background-color: $bkt-dark-blue;
+    border: 2px solid $bkt-dark-blue;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.bkt-btn-white-orange {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 12rem;
+  width: fit-content;
+  color: $bkt-orange;
+  background-color: $bkt-white !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:not(.disabled):hover {
+    color: $bkt-white;
+    background-color: $bkt-orange !important;
+  }
+
+  &:not(.disabled):focus {
+    color: $bkt-white;
+    background-color: $bkt-dark-orange;
+    border: 2px solid $bkt-dark-orange;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+
+////////////////////
+// BORDER BUTTONS //
+////////////////////
+
+.bkt-btn-dark-grey-border {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-dark-grey;
+  background-color: $bkt-white !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  border: 2px solid $bkt-dark-grey;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:not(.disabled):hover {
+    color: $bkt-white;
+    background-color: $bkt-dark-grey !important;
+  }
+
+  &:not(.disabled):focus {
+    color: $bkt-white;
+    background-color: black !important;
+    border: 2px solid black !important;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.bkt-btn-blue-border {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-blue;
+  background-color: $bkt-white !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  border: 2px solid $bkt-blue;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:not(.disabled):hover {
+    color: $bkt-white;
+    background-color: $bkt-blue !important;
+  }
+
+  &:not(.disabled):focus {
+    color: $bkt-white;
+    background-color: $bkt-dark-blue !important;
+    border: 2px solid $bkt-dark-blue;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
 
 //////////////////////////
 // ARE YOU SURE BUTTONS //
@@ -330,7 +390,7 @@
   transition: all .25s ease-in-out;
   cursor: pointer;
 
-  &:hover {
+  &:not(.disabled):hover {
     background-color: $bkt-light-grey8 !important;
   }
 
@@ -358,7 +418,7 @@
   transition: all .25s ease-in-out;
   cursor: pointer;
 
-  &:hover {
+  &:not(.disabled):hover {
     background-color: $bkt-transparent-negative-red !important;
     color: $bkt-negative-red;
   }
@@ -387,7 +447,7 @@
   transition: all .25s ease-in-out;
   cursor: pointer;
 
-  &:hover {
+  &:not(.disabled):hover {
     background-color: $bkt-light-objective-blue !important;
     color: $bkt-objective-blue;
   }

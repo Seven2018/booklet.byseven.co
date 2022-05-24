@@ -33,10 +33,17 @@
           <!-- MODAL -->
           <!----------->
 
-          <div class='modal fade' id='launchCampaign' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-            <div class='modal-dialog rounded-20px' role='document'>
+          <div id='launchCampaign'
+               class='modal action-modal fade'
+               tabindex='-1'
+               role='dialog'
+               data-keyboard="false"
+               data-backdrop="static">
+
+            <div class='modal-dialog action-modal__dialog' role='document'>
               <%= render 'campaigns/modals/send_notification_email_on_confirm' %>
             </div>
+
           </div>
 
           <!----------->

@@ -1,29 +1,42 @@
-<div class="modal-content">
-  <div class="modal-header">
-    <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title" id="myModalLabel">Import Users from .csv</h3>
-    </div>
-    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+<div class="modal-content action-modal__content">
+
+  <div class="modal-header action-modal__header">
+
+    <h3 class="modal-title action-modal__title">Import Users from .csv</h3>
+
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+
   </div>
-  <div class="modal-body">
-    <%= form_tag import_users_path, multipart: true, class: 'import_users_form flex-row-between-centered', remote: true do %>
-      <%= file_field_tag :file %>
-      <%= hidden_field_tag :send_invite, 'false' %>
-      <%= button_tag type: 'submit', class: 'hidden-submit hidden', value: 'summary' %>
-      <% if params[:redirected_from] == 'campaigns' %>
-        <button class='btn-blue__white-border' onclick="importSummary(this);">
+
+  <div class="modal-body action-modal__body">
+
+    <div class="mb-2rem">
+
+      <%= form_tag import_users_path, multipart: true,
+                                      class: 'organisation-import-modal_users_form flex-row-between-centered',
+                                      remote: true do %>
+
+        <%= file_field_tag :file %>
+
+        <%= hidden_field_tag :send_invite, 'false' %>
+
+        <%= button_tag type: 'submit', class: 'hidden-submit hidden', value: 'summary' %>
+
+        <button class='bkt-btn-dark-grey-border' onclick="importSummary(this);">
           <p>Import CSV</p>
         </button>
-      <% else %>
-        <button class='btn-orange__white-border' onclick="importSummary(this);">
-          <p>Import CSV</p>
-        </button>
+
       <% end %>
-    <% end %>
-    <br>
+
+    </div>
+
     <p>Example: </p>
     <img src="<%= asset_path('import-example.png') %>" alt="" width='450px'>
-    <p>Ensure that these following columns are properally named.</p><br>
-    <p>firstname <br> lastname <br> access_level_int <br> email <br> password <br> social_security</p>
+    <p>Ensure that these following columns are properally named.</p>
+    <p>firstname <br> lastname <br> access_level_int <br> email</p>
+
   </div>
+
 </div>

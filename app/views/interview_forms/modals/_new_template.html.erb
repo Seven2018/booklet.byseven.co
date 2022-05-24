@@ -1,33 +1,35 @@
 <div class="modal-content action-modal__content">
 
-  <div class="modal-header action-modal__header bkt-bg-blue">
+  <div class="modal-header action-modal__header">
 
-    <div id="modal-title" style=" display: flex; justify-content: space-between;">
-      <h3 class="modal-title fs-2rem bkt-white">Create a new Template</h3>
+    <h3 class="modal-title action-modal__title">Create a new Template</h3>
+
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+
+  </div>
+
+  <%= simple_form_for InterviewForm.new do |f| %>
+
+    <div class="modal-body action-modal__body width-35rem">
+
+        <%= f.input :title, input_html: {autocomplete: 'off'}, required: true %>
+
     </div>
 
-  </div>
+    <div class="modal-footer action-modal__footer">
 
-  <div class="modal-body">
+      <button type="button" class="bkt-btn-white-blue mr-3rem" data-dismiss="modal" aria-label="Close">
+        Cancel
+      </button>
 
-    <%= simple_form_for InterviewForm.new do |f| %>
+      <%= button_tag type: 'submit', class: 'bkt-btn-blue', id: 'save_button' do %>
+        Save
+      <% end %>
 
-      <%= f.input :title, input_html: {autocomplete: 'off'}, required: true %>
+    </div>
 
-      <div style=" display: flex; justify-content: center;margin-top:3rem;">
-
-        <button type="button" class="bkt-btn-white mr-2rem" data-dismiss="modal" aria-label="Close">
-          Cancel
-        </button>
-
-        <%= button_tag type: 'submit', class: 'bkt-btn-blue', id: 'save_button' do %>
-          Save
-        <% end %>
-
-      </div>
-
-    <% end %>
-
-  </div>
+  <% end %>
 
 </div>

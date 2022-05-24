@@ -11,7 +11,7 @@
     <p>Removed users will no longer appear</p>
     <div class="flex-row-between-centered modal-button-centered">
       <button type="button" class="btn-blue" data-dismiss="modal" aria-label="Close">No, Thanks</button>
-      <%= link_to 'Yes, remove user(s)', unlink_from_company_path(company_id: current_user.company_id, selected_users: ''), id: 'unlink_users', class: 'btn-blue-text', remote: true %>
+      <%= link_to 'Yes, remove user(s)', unlink_from_company_path(company_id: current_user.company_id, selected_users: ''), id: 'unlink_users', class: 'bkt-btn-white-blue', remote: true %>
     </div>
 
   </div>

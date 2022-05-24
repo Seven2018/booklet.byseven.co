@@ -89,7 +89,6 @@ Rails.application.routes.draw do
   end
 
   # CATEGORIES
-  resources :categories, only: %i[create update destroy]
   get :categories_search, controller: :categories
 
   # COMPANIES

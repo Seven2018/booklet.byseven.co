@@ -1,16 +1,26 @@
 <div class="flex-row-center-centered p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
+
   <%= render_component BackComponent.new(fallback: catalogue_path) %>
+
   <h2>Edit Workshop</h2>
+
   <div class="height-5rem flex-row-between-centered pos-abs" style='top: 2rem; right: 2rem;'>
+
     <p id='content-edit__update-status' class='bkt-green mr-2rem'>Up to date</p>
+
     <%= link_to content_path(@content), class: 'flex-row-between-centered bkt-bg-light-orange rounded-10px p-2rem' do %>
+
       <span class="iconify bkt-orange mr-1rem" data-icon="akar-icons:eye"></span>
       <p class='bkt-orange'>See worskhop preview</p>
+
     <% end %>
+
   </div>
+
 </div>
 
 <div id="content-edit__container" class='flex-row-between-start bkt-bg-light-orange pos-rel bkt-box-shadow-compact-top' style='margin-top: 9rem;'>
+
   <div id="content-edit__container-left" class='bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
     <%= render 'contents/edit/edit_show_summary', content: @content %>
   </div>
@@ -50,6 +60,7 @@
     </div>
 
   </div>
+
 </div>
 
 
@@ -74,10 +85,18 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='addTags' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='addTags'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
     <%= render 'contents/modals/manage_categories', content: @content %>
   </div>
+
 </div>
 
 

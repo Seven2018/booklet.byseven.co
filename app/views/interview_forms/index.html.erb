@@ -140,10 +140,18 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade modal_folder' id='newTemplate' data-target='folder' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='newTemplate'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
     <%= render 'interview_forms/modals/new_template' %>
   </div>
+
 </div>
 
 

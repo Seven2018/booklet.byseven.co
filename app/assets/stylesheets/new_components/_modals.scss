@@ -53,6 +53,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 2rem;
   padding: 0;
 }
 
@@ -72,6 +73,7 @@
 }
 
 .action-modal__footer {
+  flex-direction: row !important;
   justify-content: center !important;
   padding: 0 3rem 1.5rem 3rem;
   border: none !important;
@@ -105,9 +107,9 @@
 }
 
 .info-modal__header {
-  flex-direction: row-reverse;
+  justify-content: center !important;
   border: none !important;
-  padding: 2rem 2.5rem !important;
+  padding: 5rem 3rem 2.5rem 3rem !important;
 }
 
 .info-modal__close {
@@ -131,7 +133,7 @@
   justify-content: start;
   align-items: center;
   min-height: 0;
-  padding: 0 2.5rem 2.5rem 2.5rem !important;
+  padding: 0 3rem 2rem 3rem !important;
   margin: 0;
   font-size: 16px;
   border: none !important;
@@ -142,8 +144,9 @@
 }
 
 .info-modal__footer {
+  flex-direction: row !important;
   justify-content: center !important;
-  padding: 0 2.5rem 3.5rem 2.5rem !important;
+  padding: 0 3rem 3rem 3rem;
   border: none !important;
   font-size: 16px;
 }
@@ -296,5 +299,149 @@
   .flatpickr-calendar {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
+  }
+}
+
+
+///////////////////
+// UNIQUE MODALS //
+///////////////////
+
+.organisation-export-modal__body {
+
+  .organisation-controls__export-dates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    div {
+      margin: 0 1rem;
+    }
+
+    label {
+      margin: 0;
+    }
+
+    input {
+      width: 10rem;
+      border-radius: 25px;
+      color: #F26419;
+      background-color: white !important;
+
+      &:focus {
+        color: #F26419;
+      }
+
+      &:focus-visible {
+        text-shadow: none;
+      }
+    }
+  }
+
+  .organisation-controls__export_attributes {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+
+.organisation-import-modal__block {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 1rem;
+  max-height: 61px;
+  overflow: hidden;
+
+
+  .organisation-import-modal__block-title {
+    height: 4rem;
+    margin-bottom: 1rem;
+
+
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      p {
+        margin-left: 2rem;
+      }
+
+      p, span {
+        font-weight: 700;
+      }
+    }
+
+    .organisation-import-modal__block-title-buttons {
+      display: inherit;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        font-size: 1.2rem;
+        color: #F26419;
+        opacity: 0;
+        transition: opacity .25s ease-in-out;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .organisation-import-modal__block-list {
+    margin-left: 27px;
+    overflow: scroll;
+
+    label {
+      padding-left: 1rem;
+    }
+  }
+}
+
+.organisation-import-modal__block.active {
+  background-color: white !important;
+}
+
+.organisation-import-modal_users_form {
+
+  input {
+    width: 30rem;
+    max-width: 30rem;
+  }
+}
+
+.organisation-import-modal__user-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem;
+  border: 1px solid white;
+
+  p {
+    width: 50%;
+    font-weight: 300;
+  }
+}
+
+.organisation-import-modal__user-card--headers {
+  border-bottom: 1px solid black;
+}
+
+.organisation-import-modal__user-card--create {
+  background-color: #F8D9C8;
+}
+
+.organisation-import-modal__user-card--delete {
+  background-color: #C4C4C4;
+}
+
+.organisation-import-modal__user-card--update:nth-child(even) {
+  background-color: #E0E0E0;
+}
+
+.organisation-import-modal__user-card--update, .organisation-import-modal__user-card--headers {
+
+  p {
+    width: 30%;
   }
 }

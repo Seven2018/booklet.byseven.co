@@ -1,48 +1,72 @@
 <div class="modal-content action-modal__content">
 
   <div class="modal-header action-modal__header">
-    <div id="modal-title" ckass='action-modal__title' style=" display: flex; justify-content: space-between;">
-      <h3 class="fs-2rem" id="myModalLabel">Export selected users to .csv</h3>
-    </div>
+
+    <h3 class="modal-title action-modal__title">Export selected users to .csv</h3>
+
     <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
     </button>
+
   </div>
 
-  <div class="modal-body modal-export__body">
+  <div class="modal-body action-modal__body organisation-export-modal__body">
+
     <%= simple_form_for :csv, url: organisation_path(format: :csv), method: :get do |f| %>
 
       <div class="organisation-controls__export_attributes">
+
         <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectAllAttributes(this, "#333333")'>
+
           <input type="checkbox" id="select_all">
+
           <div class="flex-row-start-centered">
             <i class="fas fa-plus"></i>
             <label class='string required' for="select_all" onclick='this.closest(".modal-filter__pill").click()'>Select/Remove all</label>
           </div>
+
         </div>
+
       </div>
 
       <div class="organisation-controls__export_attributes">
+
         <% attributes = %w(firstname lastname email birthdate hire_date social_security address phone_number) %>
+
         <% attributes.each do |attribute| %>
+
           <% checked = false %>
-          <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectCsvAttributes(this, "#333333");'>
+
+          <div class="modal-filter__pill border-bkt-dark-grey-2px"
+               style='color: #333333'
+               onclick='selectCsvAttributes(this, "#333333");'>
+
             <%= f.check_box attribute, checked: checked %>
             <div class="flex-row-start-centered">
               <i class="fas fa-plus"></i>
               <%= f.label "#{attribute}" %>
             </div>
+
           </div>
+
         <% end %>
+
         <%= collection_check_boxes(:tag_category, :id, TagCategory.where(company_id: current_user.company_id).order(name: :asc), :id, :name) do |b| %>
-          <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectCsvAttributes(this, "#333333");'>
+
+          <div class="modal-filter__pill border-bkt-dark-grey-2px"
+               style='color: #333333'
+               onclick='selectCsvAttributes(this, "#333333");'>
+
             <%= b.check_box %>
             <div class="flex-row-start-centered">
               <i class="fas fa-plus"></i>
               <%= b.label %>
             </div>
+
           </div>
+
         <% end %>
+
         <!-- <div class="modal-filter__pill border-bkt-dark-grey-2px" style='color: #333333' onclick='selectCsvAttributes(this, "#333333");'>
           <%= f.check_box :cost, checked: false %>
           <div class="flex-row-start-centered">
@@ -64,18 +88,23 @@
             <%= f.label "Interviews" %>
           </div>
         </div> -->
-        <%= f.hidden_field :selected_users %>
-      </div>
 
-      <div class="flex-row-center-centered" style='margin-top: 2rem;'>
+        <%= f.hidden_field :selected_users %>
 
         <%= f.submit '', class: 'hidden-submit hidden' %>
 
-        <div class="bkt-btn-white" onclick='exportUsers(this);'>
-          <p>Export</p>
-        </div>
-
       </div>
+
     <% end %>
+
   </div>
+
+  <div class="modal-footer action-modal__footer">
+
+    <div class="bkt-btn-white-dark-grey" onclick='exportUsers(this);'>
+      <p>Export</p>
+    </div>
+
+  </div>
+
 </div>

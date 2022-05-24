@@ -240,28 +240,36 @@
   <!-- MODAL -->
   <!----------->
 
-<% if UserPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editUser" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="border-radius: 20px">
-      <%= render 'users/modals/edit', user: @user %>
-    </div>
-  </div>
-<% end %>
-
 <% if PermissionsPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editPermissions" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="border-radius: 20px">
+
+  <div id="editPermissions"
+       class="modal fade"
+       tabindex="-1"
+       role="dialog">
+
+    <div class="modal-dialog"
+         role="document">
       <%= render 'users/modals/edit_permissions', user: @user %>
     </div>
+
   </div>
+
 <% end %>
 
 <% if UserPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editPassword" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="border-radius: 20px">
+
+  <div id="editPassword"
+       class="modal action-modal fade"
+       tabindex="-1"
+       role="dialog">
+
+    <div class="modal-dialog action-modal__dialog"
+         role="document">
       <%= render 'users/modals/changepassword', user: @user %>
     </div>
+
   </div>
+
 <% end %>
 
 

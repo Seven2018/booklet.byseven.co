@@ -39,22 +39,46 @@
   </div>
 </div>
 
-<div class='modal fade' id='importUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='importUsers'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
     <%= render 'users/modals/import' %>
   </div>
+
 </div>
 
-<div class='modal fade' id='importUsersInfos' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg modal-import-infos' role='document' style='border-radius: 20px'>
-    <%= render 'users/partials/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
+<div id='importUsersInfos'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog action-modal__dialog modal-lg modal-import-infos min-w-60vw'
+       role='document'>
+    <%= render 'users/modals/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
   </div>
+
 </div>
 
-<div class='modal fade' id='exportUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='exportUsers'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
     <%= render 'users/modals/export' %>
   </div>
+
 </div>
 
 <!---------------->
@@ -452,12 +476,14 @@
 
   function exportUsers(element) {
     users_array = []
+    modal = element.closest('.modal-content')
+
     document.querySelectorAll('.select-user:checked').forEach((el) => {
       users_array.push(el.value)
     })
-    element.closest('form').querySelector('#csv_selected_users').value = users_array.join(',')
-    element.closest('.modal-content').querySelector('.action-modal__close').click()
-    element.parentNode.querySelector('.hidden-submit').click()
+    modal.querySelector('#csv_selected_users').value = users_array.join(',')
+    modal.querySelector('.action-modal__close').click()
+    modal.querySelector('.hidden-submit').click()
   }
 
   function selectCsvAttributes(element, color) {
@@ -517,7 +543,7 @@
 
   function importSummary(element) {
     document.querySelector('body').classList.add('wait')
-    element.classList.add('btn-orange__white-border-disabled')
+    element.classList.add('disabled')
     element.disabled = true
     element.closest('form').querySelector('.hidden-submit').click()
   }
