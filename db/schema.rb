@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_12_143921) do
+ActiveRecord::Schema.define(version: 2022_05_11_134932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -336,10 +336,10 @@ ActiveRecord::Schema.define(version: 2022_05_12_143921) do
     t.bigint "objectivable_id"
     t.string "objectivable_type"
     t.bigint "company_id"
+    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
-    t.bigint "creator_id"
     t.index ["company_id"], name: "index_objective_elements_on_company_id"
     t.index ["creator_id"], name: "index_objective_elements_on_creator_id"
   end
@@ -431,7 +431,7 @@ ActiveRecord::Schema.define(version: 2022_05_12_143921) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}, null: false
+    t.jsonb "data", default: {}
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"

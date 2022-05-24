@@ -33,7 +33,7 @@
         </a>
       </td>
 
-      <td class="border-left-bkt-light-grey px-2">
+      <td class="border-left-bkt-light-grey px-2-mobile">
         <div
             v-for="(element, idx) in objective_elements"
             @mouseover="setHover(`key-${id}-${idx}`)"
@@ -55,7 +55,7 @@
         </div>
       </td>
 
-      <td class="px-2">
+      <td class="px-2-mobile">
         <div
             v-for="(element, idx) in objective_elements"
             @mouseover="setHover(`key-${id}-${idx}`)"
@@ -98,7 +98,7 @@
         </div>
       </td>
 
-      <td class="px-2">
+      <td class="px-2-mobile">
         <div
             v-for="(element, idx) in objective_elements"
             @mouseover="setHover(`key-${id}-${idx}`)"
@@ -115,7 +115,7 @@
         </div>
       </td>
 
-      <td v-if="showOptions" class="px-2">
+      <td v-if="showOptions" class="px-2-mobile">
         <slot v-bind:obj="{objective_elements, userId: id}"></slot>
       </td>
     </template>

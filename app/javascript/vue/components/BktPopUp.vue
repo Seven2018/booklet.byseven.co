@@ -19,17 +19,14 @@
                    popUp.data.loading ? 'bkt-bg-white' : '']"
                 @click="confirm"
             >
-<!--              TODO: change if, by style, display block-->
               <bkt-spinner
+                  v-show="popUp.data.loading"
                   :color="!popUp.data.type || popUp.data.type === 'normal' ? 'blue' : (popUp.data.type === 'delete' ? 'red' : '')" >
                 {{popUp.data.textLoading}}
               </bkt-spinner>
-<!--              <bkt-spinner-->
-<!--                  v-if="popUp.data.loading"-->
-<!--                  :color="!popUp.data.type || popUp.data.type === 'normal' ? 'blue' : (popUp.data.type === 'delete' ? 'red' : '')" >-->
-<!--                {{popUp.data.textLoading}}-->
-<!--              </bkt-spinner>-->
-<!--              <span v-else>{{popUp.data.textConfirm}}</span>-->
+              <span
+                  v-show="!popUp.data.loading"
+              >{{popUp.data.textConfirm}}</span>
             </button>
           </div>
         </div>

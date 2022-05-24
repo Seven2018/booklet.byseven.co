@@ -67,6 +67,17 @@
 
     </div>
 
+    <div id="templates_search" class="pos-abs <%= 'd-none' unless @controller_action == :templates_edit %>" style='left: 1.5rem; bottom: 8rem;'>
+
+      <%= simple_form_for :search, method: :get do |f| %>
+        <%= f.text_field :template, placeholder: 'Search in Templates',
+                                   value: @campaign.default_template&.title,
+                                   label: false,
+                                   data: {behavior: 'autocomplete'} %>
+      <% end %>
+
+    </div>
+
   </div>
 
 </div>

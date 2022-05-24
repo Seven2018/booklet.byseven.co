@@ -6,8 +6,8 @@
 <!--    <div></div>-->
 <!--  </div>-->
   <div class="flex-row-between-centered align-items-center">
-    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_hmnalrkv.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
-<!--    <lottie-player :style="{display: color === 'red' ? 'block' : 'none'}" src="https://assets2.lottiefiles.com/packages/lf20_rjfxtksx.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>-->
+    <lottie-player v-show="color === 'blue'" src="https://assets10.lottiefiles.com/packages/lf20_hmnalrkv.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
+    <lottie-player v-show="color === 'red'" src="https://assets2.lottiefiles.com/packages/lf20_rjfxtksx.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
     <span class="pr-2">
       <slot></slot>
     </span>
