@@ -26,14 +26,13 @@
     <% end %>
 
     <% if Navigation::ObjectivesAdminLink.new(user: current_user).should_render? %>
-      <button class="left-buttons">
-        <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if %i[elements_index elements_new users_show].include?(@controller_action) %>">
+      <%= link_to objective_elements_path do %>
+        <div class="navbar-buttons <%= 'navbar-buttons--active' if %i[elements_index elements_new users_show].include?(@controller_action) %>">
           <h4>
-            <%= render_component Navigation::ObjectivesAdminLink.new(user: current_user) %>
+            Admin
           </h4>
         </div>
-      </button>
+      <% end %>
     <% end %>
 
   </div>
