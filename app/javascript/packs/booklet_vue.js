@@ -49,23 +49,39 @@ import App from '../vue/app.vue'
 import ObjectiveIndex from '../vue/pages/objectives/users'
 import ObjectiveUserShow from '../vue/pages/objectives/users/show.vue'
 import MyTeamObjectives from '../vue/pages/objectives/my_team_objectives'
+import ObjectiveDatePicker from '../vue/components/ObjectiveDatePicker'
+
+let app = null
+let vuejsOpt = {
+  el: '#app',
+  data: {
+    message: "Can you say hello?"
+  },
+  components: {
+    App,
+    ObjectiveIndex,
+    ObjectiveUserShow,
+    MyTeamObjectives,
+    ObjectiveDatePicker
+  }
+}
+Vue.prototype.$routes = routes
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  Vue.prototype.$routes = routes
+  app = new Vue(vuejsOpt)
 
-  const app = new Vue({
-    el: '#app',
-    data: {
-      message: "Can you say hello?"
-    },
-    components: {
-      App,
-      ObjectiveIndex,
-      ObjectiveUserShow,
-      MyTeamObjectives
-    }
-  })
+// listening rebuildvuejs just in case we need to rebuild
+  const event = document.createEvent('Event');
+// Define that the event name is 'build'.
+  event.initEvent('rebuildvuejs', true, true);
+// Listen for the event.
+  document.body.addEventListener('rebuildvuejs', (_) => {
+    if (app) app.$destroy()
+
+    app = new Vue(vuejsOpt)
+  }, false);
+
 })
 
 //

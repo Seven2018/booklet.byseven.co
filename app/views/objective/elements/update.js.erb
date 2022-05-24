@@ -2,3 +2,7 @@ document.getElementById('objective_attributes').innerHTML = '<%= j render("objec
 document.getElementById('objective-logs').innerHTML = '<%= j render("objective/elements/show/objective_logs", logs: @logs) %>';
 
 document.getElementById('main-container').objectiveShow.setup()
+
+console.log(app)
+const event = new CustomEvent('rebuildvuejs');
+document.body.dispatchEvent(event);

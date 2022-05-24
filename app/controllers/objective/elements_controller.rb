@@ -100,6 +100,7 @@ class Objective::ElementsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.json { head :ok }
     end
   end
 
