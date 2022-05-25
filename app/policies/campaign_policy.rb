@@ -41,4 +41,9 @@ class CampaignPolicy < ApplicationPolicy
   def can_unlock?
     create?
   end
+
+  def campaign_edit_date?
+    # TODO devise a better policy
+    true
+  end
 end

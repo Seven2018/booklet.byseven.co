@@ -1,24 +1,33 @@
-<div class="modal-content action-modal__content">
+<div class="modal-content info-modal__content">
 
-  <div class="modal-body action-modal__body">
+  <div class="modal-header info-modal__header flex-row-end-centered">
 
     <div class="flex-row-center-centered mt-5">
       <span class="iconify" data-icon="noto:closed-mailbox-with-raised-flag" data-height="85" data-width="85"></span>
     </div>
-    <p class="text-center fs-2rem font-weight-700 mt-5">You are about to submit you answers <br> and lock them 🔒</p>
-    <p class="text-center fs-1_6rem font-weight-600 mt-5">The state of your interview will be updated to :</p>
-    <p class="text-center fs-1_6rem font-weight-600 mt-1 bkt-green mb-5">Interview submitted</p>
-    <div class="flex-row-between-centered width-60 mx-auto mb-5">
-      <button class="bkt-btn-blue-white" data-dismiss="modal" aria-label="Close">Maybe
-        Later
-      </button>
-      <button
-        class="bkt-btn-blue"
-        onclick="submitAndLock()"
-      >
-        Submit <span class="iconify ml-3" data-icon="bxs:lock"></span>
-      </button>
-    </div>
+
+  </div>
+
+  <div class="modal-body info-modal__body">
+
+    <p class="text-center fs-2rem font-weight-700 mb-2rem">You are about to submit you answers <br> and lock them 🔒</p>
+    <p class="text-center fs-1_6rem font-weight-600 mb-1rem">The state of your interview will be updated to :</p>
+    <p class="text-center fs-1_6rem font-weight-600 bkt-green">Interview submitted</p>
+
+  </div>
+
+  <div class="modal-footer info-modal__footer">
+
+    <button class="bkt-btn-blue-border mr-3rem"
+            data-dismiss="modal"
+            aria-label="Close">
+      Maybe later
+    </button>
+
+    <button class="bkt-btn-blue"
+            onclick="submitAndLock()">
+      Submit <span class="iconify ml-3" data-icon="bxs:lock"></span>
+    </button>
 
   </div>
 

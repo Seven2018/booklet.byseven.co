@@ -164,19 +164,39 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='manageAttendees' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+<div id='manageAttendees'
+     class='modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog modal-lg'
+       role='document'>
+
     <%= render 'workshops/modals/manage_attendees',
                workshop: @workshop,
                attendees_acquired: attendees_acquired.presence || [],
                attendees_not_acquired: attendees_not_acquired.presence || [] %>
+
   </div>
+
 </div>
 
-<div class='modal fade' id='manageAttendeesEmailSent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg' role='document' style='border-radius: 20px'>
+<div id='manageAttendeesEmailSent'
+     class='modal info-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog info-modal__dialog'
+       role='document'>
+
     <%= render 'workshops/modals/manage_attendees_email_sent' %>
+
   </div>
+
 </div>
 
 

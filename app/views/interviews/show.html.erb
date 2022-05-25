@@ -27,7 +27,7 @@
       <button
         data-toggle='modal'
         data-target='#confirmGoBack'
-        class="bkt-btn-white-light bkt-blue">
+        class="bkt-btn-white-dark-grey-light bkt-blue">
 
         <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
         <p class="">Close and submit later</p>
@@ -158,11 +158,11 @@
 
   <div class="interview-controls--mobile">
     <div class="interview-controls__buttons--mobile">
-      <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
+      <%= link_to interview_path(@interview, format: :pdf), class: 'bkt-btn-white-blue', id: 'interview-export-pdf', target: :_blank do %>
         <span class="iconify" data-icon="bx:bx-download"></span>
       <% end %>
       <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
-        <button class="btn-blue-text" id="save-interview" onclick="saveButton();">
+        <button class="bkt-btn-white-blue" id="save-interview" onclick="saveButton();">
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
@@ -189,16 +189,32 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='interviewConfirmSubmit' tabindex='-1' role='dialog' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document'>
+<div id='interviewConfirmSubmit'
+     class='modal info-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog info-modal__dialog'
+       role='document'>
     <%= render 'interviews/modals/confirm_submit' %>
   </div>
+
 </div>
 
-<div class='modal fade' id='confirmGoBack' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document'>
+<div id='confirmGoBack'
+     class='modal info-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog info-modal__dialog'
+       role='document'>
     <%= render 'interviews/modals/confirm_later' %>
   </div>
+
 </div>
 
 <!---------------->
