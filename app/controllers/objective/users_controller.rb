@@ -12,6 +12,8 @@ class Objective::UsersController < ApplicationController
   end
 
   def show
+    cancel_cache
+
     @user = User.find(params[:id])
     authorize @user
   end
@@ -46,6 +48,7 @@ class Objective::UsersController < ApplicationController
   end
 
   def my_team_objectives
+    cancel_cache
     @user = User.find(params[:id])
     authorize @user, policy_class: Objective::UserPolicy
   end

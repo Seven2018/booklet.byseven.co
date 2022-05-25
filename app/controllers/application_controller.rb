@@ -43,6 +43,12 @@ class ApplicationController < ActionController::Base
   #   request.referrer
   # end
 
+  def cancel_cache
+    headers["Cache-Control"] = "no-cache, no-store, must-revalidate" # HTTP 1.1.
+    headers["Pragma"] = "no-cache" # HTTP 1.0.
+    headers["Expires"] = "0" # Proxies.
+  end
+
   private
 
   def skip_pundit?

@@ -105,9 +105,11 @@ class Objective::ElementsController < ApplicationController
   end
 
   def my_objectives
+    cancel_cache
   end
 
   def my_team_objectives
+    cancel_cache
   end
 
   def archive
