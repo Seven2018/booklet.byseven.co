@@ -17,12 +17,16 @@ export default {
     }
   },
   actions: {
-    async fetch({commit}) {
+    async fetch({commit}, text) {
       try {
         const res = await HTTP.get(
           routes.generate('objective_list'),
-          {params: {search: store.state.search.value} }
-          )
+          {
+            params: {
+              search: text
+            }
+          }
+        )
 
         commit('setUsers', res.data)
       } catch (e) {
