@@ -137,6 +137,7 @@ Rails.application.routes.draw do
     end
   end
   get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'
+  get :templates_search, controller: :interview_forms
 
   # INTERVIEW QUESTIONS
   resources :interview_questions
@@ -148,11 +149,38 @@ Rails.application.routes.draw do
   get 'interview_questions/:id/move_up', to: 'interview_questions#move_up', as: 'move_up_interview_question'
   get 'interview_questions/:id/move_down', to: 'interview_questions#move_down', as: 'move_down_interview_question'
 
-  #MODS
+  # MODS
   resources :mods, only: %i[create update destroy]
   post :duplicate, controller: :mods, as: :duplicate_mod
   get 'mods/:id/move_up', to: 'mods#move_up', as: 'move_up_mod'
   get 'mods/:id/move_down', to: 'mods#move_down', as: 'move_down_mod'
+
+  # OBJECTIVES
+  namespace :objective do
+    resources :elements do
+      collection do
+        get :list
+      end
+      member do
+        post :archive
+        post :unarchive
+      end
+    end
+    get :my_objectives, controller: :elements
+    get :my_team_objectives, controller: :elements
+    resources :indicators, only: %i[update destroy]
+    resources :logs
+    resources :users, only: [:index, :show] do
+      member do
+        get :info
+        get :list_current
+        get :list_archived
+        get :my_team_objectives
+        get :my_team_objectives_current_list
+        get :my_team_objectives_archived_list
+      end
+    end
+  end
 
   # PAGES
   get :home, controller: :pages
@@ -160,13 +188,7 @@ Rails.application.routes.draw do
   get :organisation, controller: :pages
   post :create_tag_category_tags, controller: :pages
 
-  get :book_contents, controller: :pages # TODO deprecate => replaced by training_draft
-  get :book_users, controller: :pages # TODO deprecate => replaced by training_draft
-  get :book_dates, controller: :pages # TODO deprecate => replaced by training_draft
-  get :recommendation, controller: :pages
-  get :catalogue_content_link_category, controller: :pages
-  # NOT (USED)
-  # get :organisation_user_card, controller: :pages
+  # get :recommendation, controller: :pages # NOT USED ATM
 
   # TRAININGS
   resources :trainings

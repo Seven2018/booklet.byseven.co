@@ -1,0 +1,137 @@
+<%= simple_form_for objective, method: :patch, remote: true do |f| %>
+
+  <div class="d-flex height-7rem mb-2rem">
+
+    <div class="flex-grow-1">
+
+      <p class="fs-1_6rem font-weight-600 bkt-light-grey5">Objective</p>
+
+      <div class="input_container d-flex justify-content-between align-items-start"
+           data-action="mouseover->objectives--objective-show#showEditButton mouseout->objectives--objective-show#showEditButton">
+
+        <p id="objective-title"
+           class="height-4rem max-w-40rem fs-2_6rem font-weight-500 bkt-dark-grey mr-1rem overflow-ellipsis"
+           title="<%= objective.title %>">
+          <%= objective.title %>
+        </p>
+
+        <%= f.text_area :title, label: false,
+                                 class: "d-none fs-2_6rem font-weight-500 bkt-bg-light-grey9 bkt-dark-grey p-0 m-0 mr-1rem border-none resize-none z-index-5",
+                                 data: { action: "focusout->objectives--objective-show#autoSave" } %>
+
+        <div class="edit_button height-3rem width-3rem d-flex justify-content-center align-items-center mt-0_5rem
+                    bkt-light-grey5 bkt-dark-grey-hover smooth-transition cursor-pointer opacity_0"
+             data-target="objective-title"
+             data-action="click->objectives--objective-show#showInput">
+          <span class="iconify" data-icon="fa6-solid:pen" data-width="15" data-height="15"></span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="px-2rem">
+
+      <p class="fs-1_6rem font-weight-600 bkt-light-grey5">Completion</p>
+
+      <div class="d-flex justify-content-between align-items-center">
+
+        <p class="height-4rem fs-2_6rem font-weight-500 bkt-dark-grey mr-1rem flex-grow-1"><%= objective.completion %></p>
+
+      </div>
+
+    </div>
+
+    <div>
+
+      <p class="fs-1_6rem font-weight-600 bkt-light-grey5">Deadline</p>
+
+      <div class="input_container d-flex height-4rem justify-content-between align-items-start"
+           data-action="mouseover->objectives--objective-show#showEditButton mouseout->objectives--objective-show#showEditButton">
+
+        <p id="objective-due-date"
+           class="width-20rem fs-2_6rem font-weight-500 bkt-dark-grey"><%= objective.due_date %></p>
+
+        <%= f.input :due_date,
+                    as: :string,
+                    label: false,
+                    placeholder: 'Select date',
+                    input_html: {
+                      class: 'd-none width-20rem height-4rem fs-2_6rem font-weight-500 bkt-bg-light-grey9 bkt-dark-grey p-0 m-0 border-none resize-none z-index-5 datepicker',
+                      data: {
+                        action: "change->objectives--objective-show#autoSave"
+                      }
+                    }
+                  %>
+
+        <div class="edit_button height-4rem width-3rem d-flex justify-content-center align-items-center
+                    bkt-light-grey5 bkt-dark-grey-hover smooth-transition cursor-pointer opacity_0"
+             data-target="objective-due-date"
+             data-action="click->objectives--objective-show#showInput">
+          <span class="iconify" data-icon="fa6-solid:pen" data-width="15" data-height="15"></span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="input_container overflow-y-hidden py-1rem"
+       data-action="mouseover->objectives--objective-show#showEditButton mouseout->objectives--objective-show#showEditButton">
+
+    <div class="d-flex justify-content-between align-items-center">
+
+      <p class="fs-1_4rem font-weight-500 bkt-dark-grey mb-1rem">Description</p>
+
+      <div class="edit_button height-3rem width-3rem d-flex justify-content-center align-items-center
+                  bkt-light-grey5 bkt-dark-grey-hover mr-1rem smooth-transition cursor-pointer opacity_0"
+            data-target="objective-description"
+            data-state="closed"
+            data-action="click->objectives--objective-show#showInput click->objectives--objective-show#expandInput">
+        <span class="iconify" data-icon="fa6-solid:pen" data-width="15" data-height="15"></span>
+      </div>
+
+    </div>
+
+    <div class="fs-1_2rem font-weight-400 line-height-1_7rem bkt-dark-grey pr-4rem"
+         style="max-height: 59px;"
+         data-objectives--objective-show-target="description">
+
+      <div>
+
+        <div id="objective-description"
+             class="px-1rem"
+             style="min-height: 59px;">
+          <%= sanitize objective.description.presence || 'No description' %>
+        </div>
+
+        <%= render_component TrixInputComponent.new(
+          name: 'objective_element[description]',
+          value: objective.description,
+          placeholder: 'No description',
+          klasses: "d-none fs-1_2rem font-weight-400 line-height-1_7rem bkt-dark-grey px-1rem py-0 border-none",
+          hide_toolbar: true,
+          toolbar_within: false,
+          auto_update: false,
+          optional_data_action: "focusout->objectives--objective-show#autoSave"
+        ) %>
+
+      </div>
+
+
+    </div>
+
+    <p class="d-none fs-1_2rem font-weight-600 bkt-objective-blue pos-abs cursor-pointer"
+       style="bottom: 0; right: 2rem;"
+       data-objectives--objective-show-target="showDescriptionButton"
+       data-state="closed"
+       data-action="click->objectives--objective-show#showDescription">
+      See all
+    </p>
+
+  </div>
+
+  <%= f.submit '', class: 'hidden-submit d-none' %>
+
+<% end %>

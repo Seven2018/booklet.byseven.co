@@ -1,0 +1,147 @@
+<% indicator_options = indicator.options %>
+
+<div class="modal-content action-modal__content">
+
+  <div class="modal-body action-modal__body width-80rem max-w-95vw pos-rel mt-5">
+
+    <div class="width-100 d-flex justify-content-center mb-5rem">
+      <div class="d-flex flex-column justify-content-start align-items-center position-relative">
+        <img src="<%= employee.picture %>"
+                 alt="<%= employee.fullname %>"
+                 class='avatar-md mb-2rem'
+                 onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+        <p class="fs-2rem font-weight-600 bkt-dark-grey"><%= @objective.title %></p>
+      </div>
+      <button type="button"
+              class="action-modal__close pos-abs position-absolute"
+              style="top: -5px; right: 3rem;"
+              data-dismiss="modal"
+              aria-label="Close">
+        <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+      </button>
+    </div>
+
+    <%= simple_form_for indicator, method: :patch, remote: true do |f| %>
+
+      <% if indicator.boolean? %>
+
+        <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6"><%= indicator_options['starting_value'] %></p>
+
+          <label class="objective-switch <%= 'switch_checked' if indicator_options['current_value'] == indicator_options['target_value'] %>
+                        mx-2rem my-0">
+
+            <input type="checkbox"
+                   name='indicator_checked'
+                   data-action="objectives--objective-show#switchSide"
+                   <%= 'checked' if indicator_options['current_value'] == indicator_options['target_value'] %>/>
+
+            <div><%# do not remove %></div>
+
+          </label>
+
+          <p class="fs-1_4rem font-weight-600 bkt-objective-blue"><%= indicator_options['target_value'] %></p>
+
+        </div>
+
+      <% elsif indicator.numeric_value? %>
+
+        <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Starting value : <%= indicator_options['starting_value'] %></p>
+
+          <div class="d-flex justify-content-center align-items-center mx-2rem">
+
+            <p class="fs-1_4rem font-weight-600 bkt-light-grey6 mr-0_5rem">Current value :</p>
+
+            <input type="number"
+                   name="chosen_value"
+                   value="<%= indicator_options['current_value'] %>"
+                   class="px-0_5rem text-center input_number_simple"
+                   style="width: <%= indicator_options['target_value'].length + 2 %>rem;"
+                   min="indicator_options['starting_value']"
+                   autocomplete="off"
+                   data-action="keyup->objectives--objective-show#enableIndicatorSubmit">
+
+          </div>
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Target value : <%= indicator_options['target_value'] %></p>
+
+        </div>
+
+      <% elsif indicator.percentage? %>
+
+        <div class="width-100 d-flex justify-content-center align-items-center mb-3rem">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Current value :</p>
+
+          <input type="number"
+                 name="chosen_value"
+                 value="<%= indicator_options['current_value'] %>"
+                 class="width-4rem px-0_5rem mx-0_5rem text-center input_number_simple"
+                 min="indicator_options['starting_value']"
+                 autocomplete="off"
+                 data-action="keyup->objectives--objective-show#enableIndicatorSubmit">
+
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">%</p>
+
+        </div>
+
+      <% elsif indicator.multi_choice? %>
+
+        <p class="fs-1_6rem font-weight-500 bkt-light-grey6 text-center mb-2rem">Target value : <%= indicator_options['choice_1'] %></p>
+
+        <div class="d-flex flex-column align-items-center min-w-30rem mb-2rem">
+
+          <% indicator_options.keys.each do |key| %>
+
+            <% if key.split('_')[0] == 'choice' %>
+
+              <label for="<%= key %>"
+                     class="width-50 d-flex justify-content-center align-items-center <%= indicator_options[key] == indicator_options['current_value'] ? 'bkt-bg-light-objective-blue border-bkt-objective-blue-0_5px bkt-objective-blue' : 'bkt-bg-light-grey9 border-bkt-light-grey6 bkt-light-grey6' %> py-1rem mb-2rem rounded-2px"
+                     data-action="click->objectives--objective-show#selectOption">
+
+                <input type="radio"
+                       name="selected_option"
+                       value="<%= key %>"
+                       class="d-none">
+
+                <p class="fs-1_2rem font-weight-500"><%= indicator_options[key] %></p>
+
+              </label>
+
+
+            <% end %>
+
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+      <%= render_component TrixInputComponent.new(
+          name: 'objective_log[comments]',
+          value: '',
+          placeholder: 'Write your comment here',
+          klasses: "min-h-20rem bkt-bg-light-grey9 mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-light-grey5 bkt-placeholder-fs-1_4rem bkt-input-focus",
+          hide_toolbar: true,
+          toolbar_within: false,
+          auto_update: false
+        ) %>
+
+      <%= f.submit '', class: 'hidden-submit d-none' %>
+
+    <% end %>
+
+  </div>
+
+  <button type="button"
+          class="d-flex justify-content-center align-items-center width-100-important bkt-btn-objective-blue rounded-b-10px"
+          data-objectives--objective-show-target="submitIndicatorButton"
+          data-action="click->objectives--objective-show#updateCompletion">
+    Post update
+  </button>
+
+</div>

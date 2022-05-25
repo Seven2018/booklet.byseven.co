@@ -150,6 +150,23 @@ class InterviewFormsController < ApplicationController
     render json: tags, status: :ok
   end
 
+  # Search from templates with autocomplete
+  def templates_search
+    skip_authorization
+
+    @templates =
+      InterviewForm.unused.where(company_id: current_user.company_id)
+
+    @templates = @templates.ransack(title_cont: params[:search]).result(distinct: true)
+
+    respond_to do |format|
+      format.html {}
+      format.json {
+        @templates = @templates.limit(5)
+      }
+    end
+  end
+
   private
 
   def set_template

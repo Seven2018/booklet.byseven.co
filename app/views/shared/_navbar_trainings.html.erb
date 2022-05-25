@@ -1,4 +1,4 @@
-<div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light navbar-orange bkt-bg-orange px-2rem">
+<div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light bkt-bg-orange px-2rem">
   <div class="flex-row-between-centered">
 
     <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-orange-hover bkt-orange bkt-white-hover bkt-box-shadow-compact rounded-25px' href="/home">
@@ -47,7 +47,7 @@
 
   <div>
 
-    <ul class="flex-row-between-centered">
+    <div class="flex-row-between-centered">
 
       <div class="mr-1rem">
         <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
@@ -57,7 +57,7 @@
 
       <%= render_component NavbarUserProfileComponent.new(user: current_user) %>
 
-    </ul>
+    </div>
 
   </div>
 

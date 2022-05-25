@@ -4,6 +4,7 @@
 
 .bkt-btn-white {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   color: $bkt-dark-grey;
@@ -41,6 +42,7 @@
 
 .bkt-btn-white-light {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   background-color: $bkt-white !important;
@@ -72,6 +74,7 @@
 
 .bkt-btn-dark-grey {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   color: $bkt-white;
@@ -106,6 +109,7 @@
 
 .bkt-btn-blue {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   color: $bkt-white;
@@ -140,6 +144,7 @@
 
 .bkt-btn-light-blue {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   color: $bkt-blue;
@@ -171,6 +176,7 @@
 
 .bkt-btn-blue-white {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   color: $bkt-blue;
@@ -203,8 +209,77 @@
   &.pressed {}
 }
 
+.bkt-btn-objective-blue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-white;
+  background-color: $bkt-objective-blue !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #9EC0FF !important;
+    color: $bkt-white;
+  }
+
+  &:focus {
+    background-color: #2D77FF !important;
+    color: $bkt-white;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+
+    &:hover {
+      background-color: $bkt-objective-blue !important;
+      color: $bkt-white;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.bkt-btn-objective-blue-white {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-objective-blue;
+  background-color: $bkt-light-grey9 !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bkt-objective-blue !important;
+    color: $bkt-white;
+  }
+
+  &:focus {
+    background-color: $bkt-white;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  &.pressed {}
+}
+
 .bkt-btn-orange {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   color: $bkt-white;
@@ -239,6 +314,7 @@
 
 .bkt-btn-orange-white {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   color: $bkt-orange;
@@ -273,6 +349,7 @@
 
 .bkt-btn-red-white {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: fit-content;
   color: $bkt-red;
@@ -297,6 +374,41 @@
   //   background-color: $bkt-dark-red !important;
   //   border: 2px solid $bkt-dark-red;
   // }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  &.pressed {}
+}
+
+.bkt-btn-negative-red-white {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  color: $bkt-negative-red;
+  background-color: $bkt-white !important;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2rem;
+  border-radius: .5rem;
+  border: 2px solid $bkt-negative-red;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all .25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    color: $bkt-white;
+    background-color: $bkt-negative-red !important;
+  }
+
+  &:focus {
+    color: $bkt-white;
+    background-color: $bkt-light-red !important;
+    border: 2px solid $bkt-light-red !important;
+  }
 
   &.disabled {
     opacity: 0.5;

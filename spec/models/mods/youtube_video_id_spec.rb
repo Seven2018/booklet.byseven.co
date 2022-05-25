@@ -14,11 +14,10 @@ RSpec.describe Mod, type: :model do
       end
     end
 
-    # not yet possible due to valid_video validation
-    xcontext 'with a random link' do
-      let(:video) { 'lien de la vidéo' }
+    context 'with a random invalid link' do
+      # let(:video) { 'lien de la vidéo' }
       it 'works' do
-        expect(mod.youtube_video_id).to eq nil
+        expect(Mod.create(video: 'lien de la vidéo')).not_to be_valid
       end
     end
 

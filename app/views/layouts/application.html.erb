@@ -9,10 +9,14 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
     <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <%= favicon_link_tag asset_path('favicon.png') %>
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_pack_tag 'booklet_vue' %>
+    <%= javascript_pack_tag 'booklet_vue' %>
     <%= stylesheet_pack_tag 'application' %>
     <%= javascript_pack_tag 'application', defer: true %>
   </head>
@@ -27,6 +31,9 @@
         <%= render 'shared/navbar_mobile' %>
       <% elsif @show_navbar_campaign %>
         <%= render 'shared/navbar_campaign' %>
+        <%= render 'shared/navbar_mobile' %>
+      <% elsif @show_navbar_objective %>
+        <%= render 'shared/navbar_objective' %>
         <%= render 'shared/navbar_mobile' %>
     <% end %>
     <% end %>
@@ -55,7 +62,6 @@
 
     <%= render_component MobileMenuComponent.new(current_user) %>
 
-    <%= javascript_include_tag 'application' %>
   </body>
 
 </html>

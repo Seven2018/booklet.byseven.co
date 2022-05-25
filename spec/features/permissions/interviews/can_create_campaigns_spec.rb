@@ -22,7 +22,7 @@ RSpec.feature 'Permission :can_create_campaigns', type: :feature, js: true do
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_campaigns: true) }
+      before { login_as create(:user, company: company, access_level_int: :hr, can_create_campaigns: true) }
       scenario 'should have access' do
         visit edit_campaign_draft_settings_path
         expect(page).to have_current_path edit_campaign_draft_settings_path
@@ -47,7 +47,7 @@ RSpec.feature 'Permission :can_create_campaigns', type: :feature, js: true do
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_campaigns: true) }
+      before { login_as create(:user, company: company, access_level_int: :hr, can_create_campaigns: true) }
       scenario 'should have access' do
         visit campaigns_path
         expect(page).to have_selector("[data-handle='create-campaign-cta']")

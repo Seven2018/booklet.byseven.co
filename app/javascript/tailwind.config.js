@@ -3,6 +3,7 @@ module.exports = {
     './app/**/*.html.*',
     './app/**/*.js.*',
     './app/**/*.js',
+    './app/**/*.vue',
   ],
   theme: {
     extend: {},

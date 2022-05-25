@@ -1,0 +1,85 @@
+<% indicator_options = indicator.options %>
+
+<% if indicator.boolean? || indicator.numeric_value? %>
+
+  <div class="d-flex justify-content-center align-items-center mb-5rem">
+
+    <div class="d-flex flex-column align-items-center">
+
+      <div class="d-flex align-items-center">
+
+        <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="lucide:flag"></span>
+        <p class="fs-1_6rem font-weight-500 bkt-dark-grey">Starting value</p>
+
+      </div>
+
+      <p class="fs-4_5rem font-weight-500 bkt-dark-grey"><%= indicator_options['starting_value'] %></p>
+
+    </div>
+
+    <div class="d-flex flex-column align-items-center mx-10rem">
+
+      <div class="d-flex align-items-center">
+
+        <p class="fs-1_6rem font-weight-500 bkt-dark-grey">Current value</p>
+
+      </div>
+
+      <p class="fs-4_5rem font-weight-500 bkt-objective-blue"><%= indicator_options['current_value'] %></p>
+
+    </div>
+
+    <div class="d-flex flex-column align-items-center">
+
+      <div class="d-flex align-items-center">
+
+        <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="fluent:target-arrow-20-filled"></span>
+        <p class="fs-1_6rem font-weight-500 bkt-dark-grey">Target value</p>
+
+      </div>
+
+      <p class="fs-4_5rem font-weight-500 bkt-dark-grey"><%= indicator_options['target_value'] %></p>
+
+    </div>
+
+  </div>
+
+<% elsif indicator.percentage? %>
+
+  <div class="d-flex justify-content-center align-items-center mb-5rem">
+
+    <div class="d-flex flex-column align-items-center mx-10rem">
+
+      <div class="d-flex align-items-center">
+
+        <p class="fs-1_6rem font-weight-500 bkt-dark-grey">Current value</p>
+
+      </div>
+
+      <p class="fs-4_5rem font-weight-500 bkt-objective-blue"><%= indicator_options['current_value'] %>%</p>
+
+    </div>
+
+  </div>
+
+<% elsif indicator.multi_choice? %>
+
+  <div class="min-w-30rem mb-3rem">
+
+    <% indicator_options.keys.each do |key| %>
+
+      <% if key.split('_')[0] == 'choice' %>
+
+        <div class="width-100 d-flex justify-content-center align-items-center <%= indicator_options[key] == indicator_options['current_value'] ? 'bkt-bg-light-objective-blue border-bkt-objective-blue-0_5px bkt-objective-blue' : 'bkt-bg-light-grey9 border-bkt-light-grey6 bkt-light-grey6' %> py-1rem mb-2rem rounded-2px">
+
+          <p class="fs-1_2rem font-weight-500"><%= indicator_options[key] %></p>
+
+        </div>
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+<% end %>
