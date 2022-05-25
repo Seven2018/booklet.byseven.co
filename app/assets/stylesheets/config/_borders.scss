@@ -121,3 +121,21 @@
 ///////////
 
 .bkt-input-focus { &:focus { box-shadow: 0 0 0 0.2rem rgba(22, 127, 251, 0.25); } }
+
+/////////////////
+// date picker //
+/////////////////
+.vdp-datepicker input {
+  border: none;
+  width: 0px;
+  height: 0px;
+}
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover,
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover,
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover {
+  border: 1px solid $bkt-objective-blue !important;
+}
+.vdp-datepicker__calendar .cell.selected,
+.vdp-datepicker__calendar .cell.selected:hover {
+  background-color: $bkt-objective-blue !important;
+}
