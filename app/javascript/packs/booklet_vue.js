@@ -46,7 +46,8 @@ import '../vue/plugins/pipes'
 import '../vue/plugins/pop-up'
 import routes from "../vue/constants/routes";
 import App from '../vue/app.vue'
-import ObjectiveIndex from '../vue/pages/objectives/users'
+import ObjectiveUserIndex from '../vue/pages/objectives/users'
+import ObjectiveElementIndex from '../vue/pages/objectives/elements'
 import ObjectiveUserShow from '../vue/pages/objectives/users/show.vue'
 import MyTeamObjectives from '../vue/pages/objectives/my_team_objectives'
 import ObjectiveDatePicker from '../vue/components/ObjectiveDatePicker'
@@ -59,7 +60,8 @@ let vuejsOpt = {
   },
   components: {
     App,
-    ObjectiveIndex,
+    ObjectiveUserIndex,
+    ObjectiveElementIndex,
     ObjectiveUserShow,
     MyTeamObjectives,
     ObjectiveDatePicker

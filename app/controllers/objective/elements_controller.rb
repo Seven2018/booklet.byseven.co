@@ -11,7 +11,8 @@ class Objective::ElementsController < ApplicationController
     :my_objectives,
     :my_team_objectives,
     :my_team_objectives_current_list,
-    :my_team_objectives_archived_list
+    :my_team_objectives_archived_list,
+    :targets
   ]
 
   def index
@@ -109,6 +110,10 @@ class Objective::ElementsController < ApplicationController
   end
 
   def my_team_objectives
+    cancel_cache
+  end
+
+  def targets
     cancel_cache
   end
 
