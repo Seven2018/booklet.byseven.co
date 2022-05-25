@@ -1,0 +1,54 @@
+<div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light bkt-bg-objective-blue px-2rem">
+
+  <div class="flex-row-between-centered">
+    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-objective-blue-hover bkt-objective-blue bkt-white-hover bkt-box-shadow-compact rounded-25px smooth-transition' href="/home">
+      <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
+    </a>
+
+    <% if Objective::ElementPolicy.new(current_user, nil).my_objectives? %>
+      <%= link_to objective_my_objectives_path do %>
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if @controller_action == :elements_my_objectives %>
+          ">
+          <h4 title='My interviews'>My objectives</h4>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if Objective::ElementPolicy.new(current_user, nil).my_team_objectives? %>
+      <%= link_to objective_my_team_objectives_path do %>
+        <div class="navbar-buttons
+          <%= 'navbar-buttons--active' if @controller_action == :elements_my_team_objectives %>
+          ">
+          <h4 title='My team interviews'>My team objectives</h4>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if Navigation::ObjectivesAdminLink.new(user: current_user).should_render? %>
+      <%= link_to objective_elements_path do %>
+        <div class="navbar-buttons <%= 'navbar-buttons--active' if %i[elements_index elements_new users_show].include?(@controller_action) %>">
+          <h4>
+            Admin
+          </h4>
+        </div>
+      <% end %>
+    <% end %>
+
+  </div>
+
+  <div>
+    <div class="flex-row-between-centered">
+
+      <div class="mr-1rem">
+        <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
+      </div>
+
+      <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white', hover_background_color: 'bkt-bg-dark-blue-hover') %>
+
+      <%= render_component NavbarUserProfileComponent.new(user: current_user) %>
+
+    </div>
+  </div>
+
+</div>

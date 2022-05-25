@@ -8,9 +8,9 @@
 
 <% end %>
 
-<%= paginate users, left: 3, right: 1, remote: true %>
+<%= paginate users, left: 3, right: 1 %>
 
-<% if @users.count == 50 && @any_more %>
+<% if @users.count == 25 && @any_more %>
 
   <div class="paginate__next-button paginate__button-dark-grey"
        data-action='click->change-page#next'>

@@ -10,6 +10,9 @@ export default class extends Controller {
   }
 
   toggle() {
+    const border_color = this.togglableTarget.dataset.bordercolor ? this.togglableTarget.dataset.bordercolor : 'border-bkt-blue-0_5px'
+
     this.iconTarget.classList.toggle('hidden', !this.togglableTarget.checked)
+    this.togglableTarget.closest('label').classList.toggle(border_color, this.togglableTarget.checked)
   }
 }

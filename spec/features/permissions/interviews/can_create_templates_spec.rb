@@ -22,7 +22,7 @@ RSpec.feature 'Permission :can_create_templates', type: :feature, js: true do
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, company: company, can_create_templates: true) }
+      before { login_as create(:user, access_level_int: :hr, company: company, can_create_templates: true) }
       scenario 'should have access' do
         visit interview_forms_path
         expect(page).to have_selector("[data-handle='add-a-template-cta']")

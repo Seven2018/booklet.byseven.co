@@ -1,3 +1,5 @@
+.border-none { border: none; }
+
 .border-transparent-1px   { border: 1px solid transparent !important; }
 .border-transparent-2px   { border: 2px solid transparent !important; }
 
@@ -6,6 +8,12 @@
 .border-right-bkt-light-blue-0_5px  { border-right:  0.5px solid $bkt-light-blue !important; }
 .border-left-bkt-light-blue-0_5px   { border-left:   0.5px solid $bkt-light-blue !important; }
 .border-bottom-bkt-light-blue-0_5px { border-bottom: 0.5px solid $bkt-light-blue !important; }
+
+.border-bkt-blue-0_5px              { border:        0.5px solid $bkt-blue !important; }
+.border-top-bkt-blue-0_5px          { border-top:    0.5px solid $bkt-blue !important; }
+.border-right-bkt-blue-0_5px        { border-right:  0.5px solid $bkt-blue !important; }
+.border-left-bkt-blue-0_5px         { border-left:   0.5px solid $bkt-blue !important; }
+.border-bottom-bkt-blue-0_5px       { border-bottom: 0.5px solid $bkt-blue !important; }
 
 .border-bkt-blue              { border:        1px solid $bkt-blue !important; }
 .border-top-bkt-blue          { border-top:    1px solid $bkt-blue !important; }
@@ -24,6 +32,31 @@
 .border-right-bkt-dark-blue   { border-right:  1px solid $bkt-dark-blue !important; }
 .border-left-bkt-dark-blue    { border-left:   1px solid $bkt-dark-blue !important; }
 .border-bottom-bkt-dark-blue  { border-bottom: 1px solid $bkt-dark-blue !important; }
+
+.border-bkt-objective-blue-0_5px         { border:        0.5px solid $bkt-objective-blue !important; }
+.border-bkt-objective-blue-2px         { border:        2px solid $bkt-objective-blue !important; }
+.border-top-bkt-objective-blue-0_5px     { border-top:    0.5px solid $bkt-objective-blue !important; }
+.border-right-bkt-objective-blue-0_5px   { border-right:  0.5px solid $bkt-objective-blue !important; }
+.border-left-bkt-objective-blue-0_5px    { border-left:   0.5px solid $bkt-objective-blue !important; }
+.border-bottom-bkt-objective-blue-0_5px  { border-bottom: 0.5px solid $bkt-objective-blue !important; }
+
+.border-bkt-objective-blue         { border:        1px solid $bkt-objective-blue !important; }
+.border-top-bkt-objective-blue     { border-top:    1px solid $bkt-objective-blue !important; }
+.border-right-bkt-objective-blue   { border-right:  1px solid $bkt-objective-blue !important; }
+.border-left-bkt-objective-blue    { border-left:   1px solid $bkt-objective-blue !important; }
+.border-bottom-bkt-objective-blue  { border-bottom: 1px solid $bkt-objective-blue !important; }
+
+.border-bkt-objective-blue-2px         { border:        2px solid $bkt-objective-blue !important; }
+.border-top-bkt-objective-blue-2px     { border-top:    2px solid $bkt-objective-blue !important; }
+.border-right-bkt-objective-blue-2px   { border-right:  2px solid $bkt-objective-blue !important; }
+.border-left-bkt-objective-blue-2px    { border-left:   2px solid $bkt-objective-blue !important; }
+.border-bottom-bkt-objective-blue-2px  { border-bottom: 2px solid $bkt-objective-blue !important; }
+
+.border-bkt-light-grey-0_5px        { border:        0.5px solid $bkt-light-grey !important; }
+.border-top-bkt-light-grey-0_5px    { border-top:    0.5px solid $bkt-light-grey !important; }
+.border-right-bkt-light-grey-0_5px  { border-right:  0.5px solid $bkt-light-grey !important; }
+.border-left-bkt-light-grey-0_5px   { border-left:   0.5px solid $bkt-light-grey !important; }
+.border-bottom-bkt-light-grey-0_5px { border-bottom: 0.5px solid $bkt-light-grey !important; }
 
 .border-bkt-light-grey        { border:        1px solid $bkt-light-grey !important; }
 .border-top-bkt-light-grey    { border-top:    1px solid $bkt-light-grey !important; }
@@ -77,6 +110,32 @@
 .border-bottom-bkt-orange-2px { border-bottom: 2px solid $bkt-orange !important; }
 
 .border-bkt-red { border: 1px solid $bkt-red !important; }
+.border-bkt-negative-red { border: 1px solid $bkt-negative-red !important; }
 
 .border-bottom-sm-none { @include from-medium-high { border-bottom: none !important; } }
 .border-bottom-sm-bkt-light-grey { @include from-medium-high { border-bottom: 1px solid $bkt-light-grey !important; } }
+
+
+///////////
+// FOCUS //
+///////////
+
+.bkt-input-focus { &:focus { box-shadow: 0 0 0 0.2rem rgba(22, 127, 251, 0.25); } }
+
+/////////////////
+// date picker //
+/////////////////
+.vdp-datepicker input {
+  border: none;
+  width: 0px;
+  height: 0px;
+}
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover,
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover,
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover {
+  border: 1px solid $bkt-objective-blue !important;
+}
+.vdp-datepicker__calendar .cell.selected,
+.vdp-datepicker__calendar .cell.selected:hover {
+  background-color: $bkt-objective-blue !important;
+}

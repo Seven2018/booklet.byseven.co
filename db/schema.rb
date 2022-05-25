@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_05_125102) do
+ActiveRecord::Schema.define(version: 2022_05_11_134932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -336,9 +336,12 @@ ActiveRecord::Schema.define(version: 2022_05_05_125102) do
     t.bigint "objectivable_id"
     t.string "objectivable_type"
     t.bigint "company_id"
+    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0
     t.index ["company_id"], name: "index_objective_elements_on_company_id"
+    t.index ["creator_id"], name: "index_objective_elements_on_creator_id"
   end
 
   create_table "objective_indicators", force: :cascade do |t|
@@ -542,6 +545,8 @@ ActiveRecord::Schema.define(version: 2022_05_05_125102) do
     t.boolean "can_create_employees", default: false, null: false
     t.boolean "can_edit_employees", default: false, null: false
     t.boolean "can_edit_permissions", default: false, null: false
+    t.string "provider"
+    t.string "uid"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -605,6 +610,7 @@ ActiveRecord::Schema.define(version: 2022_05_05_125102) do
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "objective_elements", "companies"
+  add_foreign_key "objective_elements", "users", column: "creator_id"
   add_foreign_key "objective_indicators", "objective_elements"
   add_foreign_key "objective_logs", "objective_elements"
   add_foreign_key "objective_logs", "objective_indicators"

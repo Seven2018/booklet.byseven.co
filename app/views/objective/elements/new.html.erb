@@ -1,0 +1,332 @@
+<div class="d-flex justify-content-center"
+     data-controller="objectives--objective-new">
+
+  <div class="width-50 d-flex flex-column justify-content-start align-items-center my-10rem">
+
+    <h1 class="fs-3rem font-weight-500 bkt-dark-grey mb-5rem">New Objective</h1>
+
+    <div class="width-100">
+
+      <%= simple_form_for Objective::Element.new do |f| %>
+
+        <p class="fs-1_6rem mb-2rem font-weight-500 bkt-dark-grey">Objective Informations</p>
+
+        <a data-toggle='modal' data-target='#objectiveUsers'>
+
+          <div class="d-flex align-items-start min-h-5rem max-h-10rem bkt-bg-white mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey rounded-3px bkt-droplight-shadow">
+
+            <div class="d-flex align-items-center height-3rem">
+              <p class="fs-1_4rem font-weight-500 min-w-10rem pb-0_2rem">Employee(s) :</p>
+            </div>
+            <div class="d-flex flex-wrap max-h-6rem overflow-y-scroll px-1rem"
+                 data-objectives--objective-new-target="selectedUsersPillStorage"></div>
+
+          </div>
+
+        </a>
+
+        <input name="selected_users_ids"
+               class="d-none"
+               data-objectives--objective-new-target="selectedUsers"
+               type="text"
+               value="">
+
+        <%= f.input :title,
+                    label: false,
+                    placeholder: 'Title',
+                    input_html: {
+                      class: 'height-5rem bkt-bg-light-grey9 mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px',
+                      autocomplete: 'off',
+                      data: {
+                        objectives__objective_new_target: 'requiredInput',
+                        action: "keyup->objectives--objective-new#enableSubmit"
+                      }
+                    } %>
+
+        <%= render_component TrixInputComponent.new(
+          name: 'objective_element[description]',
+          value: '',
+          placeholder: 'Description',
+          klasses: "min-h-10rem bkt-bg-light-grey9 mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus",
+          hide_toolbar: false,
+          toolbar_within: true,
+          auto_update: false
+        ) %>
+
+        <%= f.input :due_date,
+                    as: :string,
+                    label: false,
+                    placeholder: 'Select date',
+                    input_html: {
+                      class: 'height-5rem bkt-bg-light-grey9 mb-5rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem datepicker rounded-3px',
+                      data: {
+                        objectives__objective_new_target: 'requiredInput',
+                        action: "change->objectives--objective-new#enableSubmit"
+                      }
+                    }
+                  %>
+
+        <p class="fs-1_6rem mb-2rem font-weight-500 bkt-dark-grey">Objective Measure</p>
+
+        <div class="mb-5rem">
+
+          <div class="d-flex flex-wrap gap-1rem mb-2rem">
+
+            <%= render_component RadioButtonTileComponent.new(
+              model: 'indicator[indicator_type]',
+              name: :boolean,
+              checked: true,
+              compact: true,
+              title: "True/False",
+              subtitle: "For non quantifiable objectives, you can choose the booleans displayed values.",
+              checked_color: 'objective-blue',
+              data_actions: "click->objectives--objective-new#display_settings click->objectives--objective-new#enableSubmit",
+              data_attributes: { target: "boolean" }
+            ) do %>
+              <span class="iconify fs-3rem" data-icon="gg:toggle-off"></span>
+            <% end %>
+
+            <%= render_component RadioButtonTileComponent.new(
+              model: 'indicator[indicator_type]',
+              name: :numeric_value,
+              checked: false,
+              compact: true,
+              title: "Numeric Value",
+              subtitle: "For quantifiable objectives, choose an unit type (currency, persons, apples, etc...), a starting and a target value.",
+              checked_color: 'objective-blue',
+              data_actions: "click->objectives--objective-new#display_settings click->objectives--objective-new#enableSubmit",
+              data_attributes: { target: "numeric_value" }
+            ) do %>
+              <span class="iconify fs-3rem" data-icon="clarity:hashtag-solid"></span>
+            <% end %>
+
+            <%= render_component RadioButtonTileComponent.new(
+              model: 'indicator[indicator_type]',
+              name: :percentage,
+              checked: false,
+              compact: true,
+              title: "Percentage",
+              subtitle: "Useful to easily measure a quantifiable objective.",
+              checked_color: 'objective-blue',
+              data_actions: "click->objectives--objective-new#display_settings click->objectives--objective-new#enableSubmit",
+              data_attributes: { target: "percentage" }
+            ) do %>
+              <span class="iconify fs-3rem" data-icon="fa6-solid:percent"></span>
+            <% end %>
+
+            <%= render_component RadioButtonTileComponent.new(
+              model: 'indicator[indicator_type]',
+              name: :multi_choice,
+              checked: false,
+              compact: true,
+              title: "Multi-choice",
+              subtitle: "For non quantifiable objectives, you can add and edit choices to rate or qualify your objective.",
+              checked_color: 'objective-blue',
+              data_actions: "click->objectives--objective-new#display_settings click->objectives--objective-new#enableSubmit",
+              data_attributes: { target: "multi_choice" }
+            ) do %>
+              <span class="iconify fs-3rem" data-icon="fa6-solid:list-ul"></span>
+            <% end %>
+
+          </div>
+
+          <div class=""
+               data-objectives--objective-new-target="displayElement"
+               data-display="boolean">
+
+            <p class="fs-1_2rem font-weight-600 bkt-dark-grey mb-1rem">True/False :</p>
+            <p class="fs-1_2rem font-weight-500 bkt-light-grey6 mb-2rem">
+              Define the two status you need to measure the objective completion.
+            </p>
+
+            <div class="">
+
+              <div class="d-flex align-items-center width-100 mb-2rem">
+                <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-12rem mb-0 mr-1rem">Starting status :</label>
+                <input name="indicator[options][starting_value]"
+                       class="height-4rem flex-grow-1 bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       type="text"
+                       autocomplete="off"
+                       data-objectives--objective-new-target="requiredInput"
+                       data-action="keyup->objectives--objective-new#enableSubmit">
+              </div>
+
+              <div class="d-flex align-items-center width-100">
+                <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-12rem mb-0 mr-1rem">Target status :</label>
+                <input name="indicator[options][target_value]"
+                       class="height-4rem flex-grow-1 bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       type="text"
+                       autocomplete="off"
+                       data-objectives--objective-new-target="requiredInput"
+                       data-action="keyup->objectives--objective-new#enableSubmit">
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="d-none"
+               data-objectives--objective-new-target="displayElement"
+               data-display="numeric_value">
+
+            <p class="fs-1_2rem font-weight-600 bkt-dark-grey mb-1rem">Numeric Value :</p>
+            <p class="fs-1_2rem font-weight-500 bkt-light-grey6 mb-2rem">
+              Define a starting and a target value to measure the objective completion.
+            </p>
+
+            <div class="d-flex justify-content-between align-items-center">
+
+              <div class="d-flex align-items-center">
+
+                <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="lucide:flag"></span>
+                <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-10rem mb-0 mr-1rem">Starting value</label>
+                <input name="indicator[options][starting_value]"
+                       class="height-4rem width-10rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       type="number"
+                       value="0"
+                       data-objectives--objective-new-target="requiredInput"
+                       data-action="keyup->objectives--objective-new#enableSubmit"
+                       disabled>
+
+              </div>
+
+              <div class="d-flex align-items-center">
+
+                <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="fluent:target-arrow-20-filled"></span>
+                <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-10rem mb-0 mr-1rem">Target value</label>
+                <input name="indicator[options][target_value]"
+                       class="height-4rem width-10rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       type="number"
+                       value="100"
+                       data-objectives--objective-new-target="requiredInput"
+                       data-action="keyup->objectives--objective-new#enableSubmit"
+                       disabled>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="d-none"
+               data-objectives--objective-new-target="displayElement"
+               data-display="percentage">
+
+            <p class="fs-1_2rem font-weight-600 bkt-dark-grey mb-1rem">Percentage :</p>
+            <p class="fs-1_2rem font-weight-500 bkt-light-grey6 mb-2rem">
+              Use a percentage based value to measure the objective completion.
+            </p>
+
+            <div class="d-flex justify-content-between align-items-center">
+
+              <div class="d-flex align-items-center">
+
+                <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="lucide:flag"></span>
+                <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-10rem mb-0 mr-1rem">Starting value</label>
+                <input name="indicator[options][starting_value]"
+                       class="height-4rem width-10rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem mr-1rem bkt-input-focus p-input rounded-3px"
+                       type="number"
+                       value="0"
+                       min="0"
+                       max="100"
+                       data-objectives--objective-new-target="requiredInput"
+                       data-action="keyup->objectives--objective-new#enableSubmit"
+                       disabled>
+                <p class="fs-1_2rem font-weight-500 bkt-dark-grey">%</p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="d-none"
+               data-objectives--objective-new-target="displayElement"
+               data-display="multi_choice">
+
+            <p class="fs-1_2rem font-weight-600 bkt-dark-grey mb-1rem">Multi-choice :</p>
+            <p class="fs-1_2rem font-weight-500 bkt-light-grey6 mb-2rem">
+              Add options to qualify the objective completion.
+            </p>
+
+            <div class="d-flex flex-column justify-content-start align-items-start"
+                 data-objectives--objective-new-target="multiChoiceContainer">
+
+              <div class="width-100 d-flex justify-content-between align-items-center mb-1rem">
+
+                <input name="indicator[options][choice_1]"
+                       class="flex-grow-1 height-4rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       type="text"
+                       value="Option 1"
+                       disabled>
+
+                <div class="d-flex justify-content-center align-items-center height-4rem width-4rem ml-2rem"></div>
+
+              </div>
+
+            </div>
+
+            <div class="d-none">
+
+              <div class="width-100 d-flex justify-content-between align-items-center mb-1rem"
+                   data-objectives--objective-new-target="multiChoiceTemplate">
+
+                <input name=""
+                       class="flex-grow-1 height-4rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       type="text"
+                       value="">
+
+                <div class="d-flex justify-content-center align-items-center height-4rem width-4rem ml-2rem cursor-pointer
+                            bkt-bg-light-grey9-hover"
+                     data-action="click->objectives--objective-new#removeOption">
+                  <span class="iconify fs-2_4rem bkt-objective-blue" data-icon="uil:times"></span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div>
+
+              <div data-action="click->objectives--objective-new#addOption">
+                <p class="bkt-btn-objective-blue-white">Add an option</p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <input type="hidden"
+               id="redirect_storage"
+               name="redirect_to_storage"
+               value="">
+
+        <%= f.submit 'Save', class: "bkt-btn-objective-blue width-100-important disabled",
+                             data: {
+                              objectives__objective_new_target: "submitButton",
+                              action: "click->objectives--objective-new#checkMissingInput"
+                             } %>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+  <!------------>
+  <!-- MODALS -->
+  <!------------>
+
+  <div class='modal action-modal fade' id='objectiveUsers' tabindex='-1' role='dialog' data-keyboard="false" data-backdrop="static">
+
+    <div class='modal-dialog action-modal__dialog modal-lg width-65rem max-w-95vw' role='document'>
+      <%= render 'objective/elements/modals/new_objective_users' %>
+    </div>
+
+  </div>
+
+  <!------------>
+
+</div>

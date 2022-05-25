@@ -8,6 +8,7 @@
       <div class="bkt-progress-thread"></div>
 
       <% CampaignDraft::PROGRESS_STATES.each do |state, state_label| %>
+
         <%= link_to send "edit_campaign_draft_#{state}_path".to_sym do %>
 
           <div class="bkt-progress-pearl bkt-progress-pearl-blue <%= @campaign.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
@@ -17,6 +18,7 @@
           </div>
 
         <% end %>
+
       <% end %>
 
     </div>
@@ -59,6 +61,17 @@
       <%= simple_form_for :search, method: :get do |f| %>
         <%= f.text_field :manager, placeholder: 'Search in Managers',
                                    value: @campaign.default_interviewer&.fullname,
+                                   label: false,
+                                   data: {behavior: 'autocomplete'} %>
+      <% end %>
+
+    </div>
+
+    <div id="templates_search" class="pos-abs <%= 'd-none' unless @controller_action == :templates_edit %>" style='left: 1.5rem; bottom: 8rem;'>
+
+      <%= simple_form_for :search, method: :get do |f| %>
+        <%= f.text_field :template, placeholder: 'Search in Templates',
+                                   value: @campaign.default_template&.title,
                                    label: false,
                                    data: {behavior: 'autocomplete'} %>
       <% end %>

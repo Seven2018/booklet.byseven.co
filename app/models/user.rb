@@ -1,6 +1,8 @@
 require 'csv'
 
 class User < ApplicationRecord
+  attr_accessor :skip_before_create
+
   include Users::Permissions
   include Users::Access
   acts_as_token_authenticatable
@@ -27,12 +29,13 @@ class User < ApplicationRecord
   belongs_to :manager, class_name: "User", optional: true
   has_many :training_reports, foreign_key: 'creator_id'
   has_many :staff_members, class_name: "User", foreign_key: 'manager_id'
+  has_many :objective_elements, as: :objectivable, class_name: "Objective::Element"
 
-  before_create :set_initial_permissions!
+  before_create :set_initial_permissions!, unless: :skip_before_create
 
   validates :email, presence: true
 
-  paginates_per 50
+  paginates_per 25
 
   enum access_level_int: {
     employee:       0,
@@ -56,6 +59,16 @@ class User < ApplicationRecord
       tsearch: { prefix: true }
     },
     ignoring: :accents
+
+  ################
+  # ACCESS LEVEL #
+  ################
+
+  def hr_or_above?
+    [:hr, :account_owner, :admin].include? access_level_int.to_sym
+  end
+
+  ################
 
   def campaign_draft
     campaign_drafts.processing.last || CampaignDraft.create(user: self)

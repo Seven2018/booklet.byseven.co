@@ -22,7 +22,16 @@ RSpec.feature 'Permission :can_read_contents', type: :feature, js: true do
     end
 
     context 'a signed in user with permission' do
-      before { login_as create(:user, firstname: 'John', lastname: 'Doe', company: company, can_read_contents: true) }
+      let(:user) do
+        model = FactoryBot.build(:user,
+                                 can_read_contents: true
+        )
+        model.skip_before_create = true
+        model.save
+        model
+      end
+      before { login_as user }
+
       scenario 'should have access' do
         visit catalogue_path
         expect(page).to have_current_path catalogue_path

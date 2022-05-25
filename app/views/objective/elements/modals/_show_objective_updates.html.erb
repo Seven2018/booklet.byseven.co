@@ -1,0 +1,37 @@
+<div class="modal-content action-modal__content">
+
+  <div class="modal-body action-modal__body rounded-15px">
+
+    <button type="button"
+            class="action-modal__close pos-abs"
+            style="top: 3rem; right: 3rem;"
+            data-dismiss="modal"
+            aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+
+    <div class="width-100 d-flex justify-content-center my-3rem">
+
+      <p class="fs-2rem font-weight-600 bkt-dark-grey"><%= log.title %></p>
+
+    </div>
+
+    <div class="d-flex flex-column align-items-center mb-3rem">
+
+      <div class="min-w-30rem d-flex justify-content-center align-items-center bkt-bg-light-grey9
+                  border-bkt-light-grey9 py-1rem px-2rem">
+        <p class="fs-1_2rem font-weight-500 bkt-light-grey6"><%= log.initial_value %></p>
+      </div>
+
+      <span class="iconify bkt-objective-blue fs-3rem my-1rem" data-icon="bi:arrow-down"></span>
+
+      <div class="min-w-30rem d-flex justify-content-center align-items-center bkt-bg-light-grey9
+                  border-bkt-light-grey9 py-1rem px-2rem">
+        <p class="fs-1_2rem font-weight-500 bkt-light-grey6"><%= log.updated_value %></p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

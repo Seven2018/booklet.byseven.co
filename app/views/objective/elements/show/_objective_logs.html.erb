@@ -1,0 +1,117 @@
+<div class="d-flex justify-content-start align-items-center width-100 height-10rem p-2rem">
+
+  <p class="fs-1_4rem font-weight-500 bkt-dark-grey">Last events</p>
+
+</div>
+
+<% logs.each do |log| %>
+
+  <% owner = log.owner %>
+
+  <div class="d-flex flex-column align-items-center border-top-bkt-light-grey">
+
+    <div class="width-100 d-flex justify-content-between align-items-center p-2rem">
+
+      <div class="d-flex align-items-center">
+
+        <img src="<%= owner.picture %>"
+                   alt="<%= owner.fullname %>"
+                   class='avatar-sm mr-1rem'
+                   onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+
+        <div class="d-flex flex-column justify-content-between align-items-start">
+
+          <p class="fs-1_2rem font-weight-600 bkt-dark-grey">
+            <%= log.objective_indicator.present? ? log.title : "Objective modified" %> - <span class="fs-1rem font-weight-500 bkt-light-grey6"><%= (log.created_at + 2.hours).strftime('%d/%m/%Y at %H:%M') %></span>
+          </p>
+
+          <p class="fs-1rem font-weight-500 bkt-dark-grey"><%= owner.fullname %></p>
+
+        </div>
+
+      </div>
+
+      <div class="d-flex align-items-center">
+
+        <% if log.objective_indicator.present? %>
+
+          <% indicator = log.objective_indicator %>
+
+          <% if indicator.boolean? %>
+
+            <% checked = log.updated_value == indicator.options['target_value'] %>
+
+            <p class="fs-1rem font-weight-500 bkt-white <%= checked ? 'bkt-bg-green' : 'bkt-bg-negative-red' %> p-1rem mr-1rem">Switch</p>
+
+            <p class="width-7rem fs-1rem font-weight-500 <%= checked ? 'bkt-green' : 'bkt-negative-red' %>">
+              <%= checked ? 'Validated' : 'Not validated' %>
+            </p>
+
+          <% elsif indicator.numeric_value? || indicator.percentage? %>
+
+            <% result = log.updated_value.to_i - log.initial_value.to_i  %>
+            <% is_percentage = indicator.percentage? %>
+
+            <p class="fs-1rem font-weight-500 bkt-white <%= result >= 0 ? 'bkt-bg-green' : 'bkt-bg-negative-red' %>
+                      p-0_5rem mr-1rem text-center"
+                style="width: <%= (indicator.options['target_value']&.length || 3) + 1 %>rem;">
+              <%= sprintf("%+d", result) %><%= "%" if is_percentage %>
+            </p>
+
+            <p class="d-flex align-items-center fs-1rem font-weight-500
+                      <%= result >= 0 ? 'bkt-green' : 'bkt-negative-red' %>"
+                      style="width: <%= (indicator.options['target_value']&.length || 3) * 2 + 2 %>rem;">
+              <%= log.initial_value %><%= "%" if is_percentage %>
+              <span class="iconify mx-0_5rem" data-icon="bi:arrow-right"></span>
+              <%= log.updated_value %><%= "%" if is_percentage %>
+            </p>
+
+          <% elsif indicator.multi_choice? %>
+
+            <p class="fs-1rem font-weight-500 bkt-white bkt-bg-light-grey6 p-1rem mr-1rem">Option changed</p>
+            <a class="fs-1rem font-weight-500 bkt-objective-blue border-bottom-bkt-objective-blue mx-1rem" data-toggle="modal" data-target="#viewChanges-<%= log.id %>">
+              View changes
+            </a>
+
+          <% end %>
+
+        <% else %>
+
+          <p class="fs-1rem font-weight-500 bkt-objective-blue border-bkt-objective-blue p-1rem">
+            <%= log.title %>
+          </p>
+
+        <% end %>
+
+        <!------------>
+        <!-- MODALS -->
+        <!------------>
+
+        <div id='viewChanges-<%= log.id %>'
+             class='modal action-modal fade'
+             tabindex='-1'
+             role='dialog'
+             data-keyboard="false"
+             data-backdrop="static">
+
+          <div class='modal-dialog action-modal__dialog' role='document'>
+            <%= render 'objective/elements/modals/show_objective_updates', log: log %>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="width-90 border-left-bkt-objective-blue-2px px-1rem mb-2rem">
+
+      <p class="fs-1_2rem font-weight-500 bkt-light-grey6">
+        <%= sanitize log.comments %>
+      </p>
+
+    </div>
+
+  </div>
+
+<% end %>
