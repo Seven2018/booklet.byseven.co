@@ -31,7 +31,7 @@ export default {
     selectedDateCallback(date) {
       this.showDatePicker = false
       axios.patch(
-          this.$routes.generate('objective_elements_id', {id: this.objectiveId}),
+          this.$routes.generate('objective_elements_id', {id: this.objectiveId}) + '.json',
           {objective_element: {due_date: this.$options.filters.formatDate(date, 'DD MMM, YYYY')} }
       )
     }
