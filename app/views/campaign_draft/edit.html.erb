@@ -65,7 +65,7 @@
 
     <div id="users_search" class="pos-abs <%= 'd-none' unless @controller_action == :participants_edit %>" style='left: 1.5rem; bottom: 9rem;'>
 
-      <%= simple_form_for :search, method: :get do |f| %>
+      <%= simple_form_for :search, html: { class: 'bkt-select-autocomplete' }, method: :get do |f| %>
         <%= f.text_field :manager, placeholder: 'Search in Managers',
                                    value: @campaign.default_interviewer&.fullname,
                                    label: false,
@@ -74,13 +74,18 @@
 
     </div>
 
-    <div id="templates_search" class="pos-abs <%= 'd-none' unless @controller_action == :templates_edit %>" style='left: 1.5rem; bottom: 8rem;'>
+    <div id="templates_search"
+         class="pos-abs <%= 'd-none' unless @controller_action == :templates_edit %>"
+         data-controller="tools--easyautocomplete"
+         style='left: 1.5rem; right: 1.5rem; bottom: 8rem;'>
 
-      <%= simple_form_for :search, method: :get do |f| %>
+      <%= simple_form_for :search, html: { class: 'bkt-select-autocomplete width-100' }, method: :get do |f| %>
+
         <%= f.text_field :template, placeholder: 'Search in Templates',
-                                   value: @campaign.default_template&.title,
+                                   value: @campaign.default_template&.title || "",
                                    label: false,
-                                   data: {behavior: 'autocomplete'} %>
+                                   data: { behavior: 'autocomplete' } %>
+
       <% end %>
 
     </div>
@@ -129,12 +134,30 @@
         template_id = $input_template.getSelectedItemData().id
         document.getElementById('default_template_id').value = template_id
       },
+      maxNumberOfElements: Infinity,
       match: {
         enabled: true
       }
     }
   }
 
-  $input_manager.easyAutocomplete(options_manager);
-  $input_template.easyAutocomplete(options_template);
+  $input_manager.easyAutocomplete(options_manager).click(function(){
+    $(this).triggerHandler(jQuery.Event("keyup", { keyCode: 65, which: 65}))
+  });
+
+  $input_manager.easyAutocomplete(options_manager).keyup(function(event){
+    if (event.which == 8 && $(this).val() == '') {
+      $(this).triggerHandler(jQuery.Event("keyup", { keyCode: 65, which: 65}))
+    }
+  });
+
+  $input_template.easyAutocomplete(options_template).click(function(){
+    $(this).triggerHandler(jQuery.Event("keyup", { keyCode: 65, which: 65}))
+  });
+
+  $input_template.easyAutocomplete(options_template).keyup(function(event){
+    if (event.which == 8 && $(this).val() == '') {
+      $(this).triggerHandler(jQuery.Event("keyup", { keyCode: 65, which: 65}))
+    }
+  });
 </script>

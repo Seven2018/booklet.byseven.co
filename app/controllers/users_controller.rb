@@ -47,7 +47,7 @@ class UsersController < ApplicationController
         end
 
         params[:tags].each do |tag_category_name, tag_name|
-          tag_category = TagCategory.find_by(name: tag_category_name)
+          tag_category = TagCategory.find_by(name: tag_category_name, company: current_user.company)
 
           UserTag.create(
             user: @user,

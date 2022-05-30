@@ -3,19 +3,19 @@
   <div class="modal-body action-modal__body py-2rem px-3rem">
 
     <div class="d-flex justify-content-center align-items-center">
-      <h1 class="fs-1_8rem font-weight-700 text-center">Are you sure you want to delete this objective ? <br>(This is a permanent action)</h1>
+      <h1 class="fs-1_8rem font-weight-700 text-center">Are you sure you want to archive this objective ? <br>(This is not a permanent action)</h1>
     </div>
 
     <div class="flex-row-around-centered mt-5 fs-1_8rem">
 
-      <button class="bkt-btn-white width-15rem"
+      <button class="bkt-btn-ays-dark-grey"
               data-dismiss="modal"
               aria-label="Close">
         No
       </button>
 
       <%= link_to archive_objective_element_path(@objective, redirected_from: ''), method: :post,
-                                              class: "bkt-btn-white-objective-blue width-15rem",
+                                              class: "bkt-btn-ays-blue",
                                               data: { objectives__objective_show_target: 'archiveButton' } do %>
         Yes, archive
       <% end %>

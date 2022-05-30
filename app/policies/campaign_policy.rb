@@ -39,7 +39,7 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def can_unlock?
-    create?
+    user.hr_or_above?
   end
 
   def campaign_edit_date?

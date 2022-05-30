@@ -8,7 +8,7 @@ class UserTag < ApplicationRecord
   private
 
   def same_company
-    errors.add(:base, 'a locked interview can not be changed') unless
+    errors.add(:base, 'user and tag must belong to the same company') unless
       tag.present? && user.company_id == tag.company_id
   end
 end
