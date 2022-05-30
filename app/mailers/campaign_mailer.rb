@@ -4,7 +4,7 @@ class CampaignMailer < ApplicationMailer
 
   def invite_employee(interviewer, interviewee, interview)
     interview_email_settings(interviewer, interviewee, interview)
-    @icon = 'noto_person-running.png'
+    @icon = '🏃'
     @title = '3,2,1 Start !'
     @description = "The campaign #{@interview.campaign.title} has just begun !\n #{@interviewer.firstname} #{@interviewer.lastname} invites you to complete your interview."
     @button_text = "Go to My Interviews"
@@ -17,7 +17,7 @@ class CampaignMailer < ApplicationMailer
     @interviewer = interviewer
     @interviewees_count = interviewees_count
     @campaign = campaign
-    @icon = 'noto_person-running.png'
+    @icon = '🏃'
     @title = '3,2,1 Start !'
     @description = "The campaign #{@campaign.title} has just begun !\n You have #{@interviewees_count} interviewees to manage for this campaign."
     @button_text = "Go to My Team Interviews"
@@ -28,7 +28,7 @@ class CampaignMailer < ApplicationMailer
 
   def interview_reminder(interviewer, interviewee, interview)
     interview_email_settings(interviewer, interviewee, interview)
-    @icon = 'noto-v1_bell.png'
+    @icon = '🏁'
     @title = 'Here is a reminder for you !'
     @description = "#{@interviewer.firstname} needs you to complete your interview #{@interview.campaign.title}."
     @button_text = "Go to my review"
@@ -41,7 +41,7 @@ class CampaignMailer < ApplicationMailer
     interview_email_settings(interviewer, interviewee, interview)
     @time_remaining = time_remaining
     @days_left = @time_remaining > 0 ? (@time_remaining.to_s + " days left") : "Last day"
-    @icon = 'noto-v1_eleven-oclock.png'
+    @icon = '🕖'
     @title = @time_remaining > 0 ? "Only #{@time_remaining} days left !" : "Last day of the campaign"
     @description = "You have yet to submit your answers for the campaign #{@interview.campaign.title},\n don't forget to do it !"
     @button_text = "Go to my review"
@@ -52,7 +52,7 @@ class CampaignMailer < ApplicationMailer
 
   def interview_set_completed_interviewee(interviewer, interviewee, interview)
     interview_email_settings(interviewer, interviewee, interview)
-    @icon = 'noto_chequered-flag.png'
+    @icon = '🏁'
     @title = "Interview completed !"
     @description = "Your interview in the '#{@interview.campaign.title}' campaign is completed !\n You may still access your answers :"
     @button_text = "See my answers"
@@ -63,7 +63,7 @@ class CampaignMailer < ApplicationMailer
 
   def interview_set_completed_interviewer(interviewer, interviewee, interview)
     interview_email_settings(interviewer, interviewee, interview)
-    @icon = 'noto_raising-hands.png'
+    @icon = '🙌'
     @title = "Interviews Completed with #{@interviewee.fullname} !"
     @description = "You have finished the interview process with #{@interviewee.fullname}\n for the '#{@interview.campaign.title}' campaign !\n You may still access the interview(s)"
     @button_text = "See interviews"
@@ -75,7 +75,7 @@ class CampaignMailer < ApplicationMailer
   def campaign_completed(interviewer, campaign)
     @interviewer = interviewer
     @campaign = campaign
-    @icon = 'noto_chequered-flag.png'
+    @icon = '🏁'
     @title = "Campaign completed, nice work !"
     @description = "Your have just completed all your interviews in the '#{@campaign.title}' campaign !\n You may have other ongoing campaigns"
     @button_text = "See my campaigns"

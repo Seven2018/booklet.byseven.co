@@ -5,7 +5,7 @@ class TrainingMailer < ApplicationMailer
   def invite_attendee(attendee, training)
     @attendee = attendee
     @training = training
-    @icon = 'noto_person-lifting-weights.png'
+    @icon = '🏋️'
     @title = 'Training time !'
     @description = "You have been invited to the training #{@training.title} !\n Let's review the details."
     @button_text = "Go to My Trainings"
@@ -17,7 +17,7 @@ class TrainingMailer < ApplicationMailer
   def training_reminder(attendee, training)
     @attendee = attendee
     @training = training
-    @icon = 'noto-v1_bell.png'
+    @icon = '🏁'
     @title = 'Here is a reminder for you !'
     @description = "It seems you have not validated all the workshops in the training #{@training.title},\n don't forget to do it !"
     @button_text = "Go to the training"
@@ -31,7 +31,7 @@ class TrainingMailer < ApplicationMailer
     @session = session
     @eta = eta
     @email_object = @eta > 0 ? "Next training in #{@eta} days" : "D-Day !"
-    @icon = 'noto-v1_eleven-oclock.png'
+    @icon = '🕖'
     @title = @email_object
 
     if @eta > 0
