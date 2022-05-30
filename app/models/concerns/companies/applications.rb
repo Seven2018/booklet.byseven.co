@@ -20,7 +20,7 @@ module Companies::Applications
       link_team: :my_team_trainings_path
     },
     objectives: {
-      name: 'Objectives',
+      name: 'Roadmaps',
       link: :objective_my_objectives_path,
       icon: 'fluent:target-arrow-20-filled',
       color: 'bkt-objective-blue',
