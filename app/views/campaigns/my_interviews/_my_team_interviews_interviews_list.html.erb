@@ -103,22 +103,14 @@
             <div class="flex-row-end-centered">
 
               <% if manager_interview&.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
-<<<<<<< HEAD
-                <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue-border' do %>
-=======
 
-                <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue-white' do %>
->>>>>>> origin/dev
+                <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue-border' do %>
                   View my answers
                 <% end %>
 
               <% elsif crossed_interview&.submitted? %>
-<<<<<<< HEAD
-                <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-border' do %>
-=======
 
-                <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-white' do %>
->>>>>>> origin/dev
+                <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-border' do %>
                   View cross review answers
                 <% end %>
 
