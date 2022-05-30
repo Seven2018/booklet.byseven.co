@@ -6,6 +6,7 @@
             v-model="searchText"
             @input="update"
         ></bkt-search>
+        <input type="submit" value="Search" class="ml-5 btn-search" @click="submit">
         <select
             v-model="indicatorType"
             @change="update"
@@ -71,11 +72,13 @@ export default {
   },
   methods: {
     update(_) {
-      console.log('big test ', this.searchText, this.indicatorType, this.indicatorStatus, this.from, this.to)
       // store.dispatch('adminObjectives/fetch', text)
     },
     reset() {
       // store.dispatch('adminObjectives/fetch')
+    },
+    submit() {
+      console.log(this.searchText, this.indicatorType, this.indicatorStatus, this.from, this.to)
     }
   },
   components: {BktSearch}

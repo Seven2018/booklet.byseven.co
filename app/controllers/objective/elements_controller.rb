@@ -13,6 +13,7 @@ class Objective::ElementsController < ApplicationController
     :my_team_objectives_current_list,
     :my_team_objectives_archived_list,
     :targets,
+    :target_list,
     :employees
   ]
 
@@ -116,6 +117,12 @@ class Objective::ElementsController < ApplicationController
 
   def targets
     cancel_cache
+  end
+
+  def target_list
+    elements = Objective::Element.where(company: current_user.company).page(1).per(1)
+
+    render json: elements, meta: pagination_dict(elements)
   end
 
   def employees

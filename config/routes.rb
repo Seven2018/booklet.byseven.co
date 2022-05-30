@@ -160,6 +160,7 @@ Rails.application.routes.draw do
     resources :elements do
       collection do
         get :list
+        get :target_list
       end
       member do
         post :archive
