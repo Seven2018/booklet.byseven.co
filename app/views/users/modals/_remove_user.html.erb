@@ -19,13 +19,13 @@
 
     </div>
 
-    <div class="d-flex justify-content-center mb-3rem">
+  </div>
 
-      <button type="button" class="bkt-btn-white mr-2rem" data-dismiss="modal" aria-label="Close">No, Thanks</button>
+  <div class="modal-footer action-modal__footer">
 
-      <%= link_to 'Yes, remove user(s)', unlink_from_company_path(company_id: current_user.company_id, selected_users: ''), id: 'unlink_users', class: 'bkt-btn-dark-grey', remote: true %>
+    <button type="button" class="bkt-btn-white-dark-grey mr-3rem" data-dismiss="modal" aria-label="Close">No, Thanks</button>
 
-    </div>
+    <%= link_to 'Yes, remove user(s)', unlink_from_company_path(company_id: current_user.company_id, selected_users: ''), id: 'unlink_users', class: 'bkt-btn-dark-grey', remote: true %>
 
   </div>
 

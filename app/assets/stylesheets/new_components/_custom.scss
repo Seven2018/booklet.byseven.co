@@ -60,3 +60,29 @@
      -moz-transform: translateX(100%);
           transform: translateX(100%);
 }
+
+
+
+/////////////////////////
+// SELECT AUTOCOMPLETE //
+/////////////////////////
+
+.bkt-select-autocomplete {
+  width: 30rem;
+
+  input {
+    width: 100% !important;
+    font-size: 1.4rem !important;
+    border: 1px solid $bkt-light-grey5 !important;
+    border-radius: 0 !important;
+
+    &::placeholder { color: $bkt-light-grey6 !important; font-size: 1.4rem !important;}
+    &::-webkit-input-placeholder { color: $bkt-light-grey6 !important; font-size: 1.4rem !important; }
+    &::-moz-placeholder { color: $bkt-light-grey6 !important; font-size: 1.4rem !important; }
+    &::-ms-placeholder { color: $bkt-light-grey6 !important; font-size: 1.4rem !important; }
+  }
+
+  .easy-autocomplete-container, .easy-autocomplete-container ul {
+    width: 100% !important;
+  }
+}

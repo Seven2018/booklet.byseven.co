@@ -162,7 +162,7 @@ class InterviewFormsController < ApplicationController
     respond_to do |format|
       format.html {}
       format.json {
-        @templates = @templates.limit(5)
+        @templates
       }
     end
   end

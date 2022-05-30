@@ -8,14 +8,14 @@
 
     <div class="flex-row-around-centered mt-5 fs-1_8rem">
 
-      <button class="bkt-btn-white width-15rem"
+      <button class="bkt-btn-ays-dark-grey"
               data-dismiss="modal"
               aria-label="Close">
         No
       </button>
 
       <%= link_to objective_element_path(@objective, redirected_from: ''), method: :delete,
-                                              class: "bkt-btn-negative-red-border width-15rem",
+                                              class: "bkt-btn-ays-red",
                                               data: { objectives__objective_show_target: 'deleteButton' } do %>
         Yes, delete
       <% end %>
