@@ -1,3 +1,5 @@
 document.querySelector('.campaign-show__header-infos').innerHTML = '<%= j render("campaigns/show/show_header_infos", campaign: @campaign, selected_interviewer: @selected_interviewer) %>';
 document.querySelector('.campaign-show__interviews-list').innerHTML = '<%= j render("campaigns/show/show_interviews", campaign: @campaign, employees: @employees, selected_interviewer: @selected_interviewer) %>';
-document.querySelector('#add_participant-modal').innerHTML = '<%= j render("campaigns/modals/add_participant", campaign: @campaign, selected_interviewer: @selected_interviewer) %>';
+
+button = document.getElementById('add-participant-button')
+button.href = updateURLParameter(button.href, 'add_to_interviewer_id', '<%= @selected_interviewer.id %>')

@@ -35,7 +35,7 @@ export default class extends Controller {
       this.selectedTags = this.selectedTags.filter(item => !(item === value))
 
       const div = document.createElement('div')
-      div.className = 'flex-row-start-centered bkt-light-grey-placeholder'
+      div.className = 'flex-row-start-centered bkt-placeholder-light-grey'
 
       div.append(e.target)
       this.unselectedTagsDomTarget.append(div)

@@ -1,35 +1,43 @@
 <div class="d-none d-sm-flex modal-content action-modal__content">
 
   <div class="modal-header action-modal__header">
-    <h5 class="modal-title action-modal__title"></h5>
+
+    <h3 class="modal-title action-modal__title"></h3>
+
     <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
     </button>
+
   </div>
 
-  <div class="modal-body action-modal__body" data-controller='tabs workshop-show' data-tabs-target='tabContainer'>
+  <div class="modal-body action-modal__body">
 
-    <div class="text-center mb-5rem">
-      <p class="fs-2rem font-weight-600 bkt-dark-grey mb-1rem">Are you sure this workshop has no more secrets for you ?</p>
-      <p class="fs-1_4rem font-weight-500 bkt-dark-grey">Your manager will be noticed of your confirmation.</p>
-    </div>
+    <p class="fs-2rem font-weight-600 bkt-dark-grey text-center mb-1rem">
+      Are you sure this workshop has no more secrets for you ?
+    </p>
 
-    <div class="flex-row-center-centered">
+    <p class="fs-1_4rem font-weight-500 bkt-dark-grey text-center">
+      Your manager will be noticed of your confirmation.
+    </p>
 
-      <button class="bkt-btn-orange-white mr-2rem"
-              data-dismiss="modal">
-        Not really <span class="iconify fs-1_8rem" data-icon="twemoji:thinking-face"></span>
-      </button>
-
-      <button class="bkt-btn-orange"
-              onclick='selectCompletion(this);'
-              data-value='Completed'>
-        Yes, of course ! <span class="iconify fs-1_8rem" data-icon="twemoji:nerd-face"></span>
-      </button>
-
-    </div>
     <a id='manage-attendees__email-sent' class='d-none' data-toggle='modal' data-target='#manageAttendeesEmailSent'></a>
   </div>
+
+  <div class="modal-footer action-modal__footer">
+
+    <button class="bkt-btn-white-orange mr-3rem"
+            data-dismiss="modal">
+      Not really <span class="iconify fs-1_8rem ml-0_75rem" data-icon="twemoji:thinking-face"></span>
+    </button>
+
+    <button class="bkt-btn-orange"
+            onclick='selectCompletion(this);'
+            data-value='Completed'>
+      Yes, of course ! <span class="iconify fs-1_8rem ml-0_75rem" data-icon="twemoji:nerd-face"></span>
+    </button>
+
+  </div>
+
 </div>
 
 <div class="d-sm-none modal-content bkt-bg-white width-90-important m-auto" style="border-radius: 25px !important;">

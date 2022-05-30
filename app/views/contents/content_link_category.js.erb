@@ -1,5 +1,4 @@
+document.querySelector('#content-edit__tags').innerHTML = '<%= j render("contents/edit/edit_content_tags_list", content: @content) %>';
 if ('<%= @modal %>' == 'true') {
   document.querySelector('#addTags').querySelector('.modal-dialog').innerHTML = '<%= j render("contents/modals/manage_categories", content: @content) %>';
-} else {
-  document.querySelector('#content-edit__tags').innerHTML = '<%= j render("contents/edit/edit_content_tags_list", content: @content) %>';
 }

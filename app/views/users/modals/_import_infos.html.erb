@@ -1,0 +1,116 @@
+<div class="modal-content action-modal__content">
+
+  <div class="modal-header action-modal__header">
+
+    <h3 class="modal-title action-modal__title">Importing summary</h3>
+
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+
+  </div>
+
+  <div class="modal-body action-modal__body">
+
+    <div class="organisation-import-modal__block">
+      <div class="organisation-import-modal__block-title">
+        <div>
+          <p>
+            New employees :
+            <span style='color:#F8D9C8;'>(<%= creating.count %>)</span>
+            <br>
+            & Former employees :
+            <span style='color:#C4C4C4;'>(<%= deleting.count %>)</span>
+          </p>
+          <div class="organisation-import-modal__block-title-buttons">
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="organisation-import-modal__block-list">
+        <% creating.each do |user| %>
+          <div class="organisation-import-modal__user-card organisation-import-modal__user-card--create">
+            <p><%= "#{user['lastname']}, #{user['firstname']}" %></p>
+            <p><%= user['email'] %></p>
+          </div>
+        <% end %>
+      </div>
+      <div class="organisation-import-modal__block-list">
+        <% deleting.each do |user| %>
+          <div class="organisation-import-modal__user-card organisation-import-modal__user-card--delete">
+            <p><%= "#{user.lastname}, #{user.firstname}" %></p>
+            <p><%= user.email %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="organisation-import-modal__block">
+      <div class="organisation-import-modal__block-title">
+        <div>
+          <p>Updated accounts : (<%= updating.count %>)</p>
+          <div class="organisation-import-modal__block-title-buttons">
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="organisation-import-modal__block-list">
+        <div class="organisation-import-modal__user-card organisation-import-modal__user-card--headers">
+          <p>Fullname</p>
+          <p>From</p>
+          <p>To</p>
+        </div>
+        <% updating.each do |user| %>
+          <div class="organisation-import-modal__user-card organisation-import-modal__user-card--update">
+            <p><%= "#{user[:lastname]}, #{user[:firstname]}" %></p>
+            <p><%= user[:former] %></p>
+            <p><%= user[:new] %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="organisation-import-modal__block">
+      <div class="organisation-import-modal__block-title">
+        <div>
+          <p>Errors : (<%= errors.count %>)</p>
+          <div class="organisation-import-modal__block-title-buttons">
+            <div class="btn-icon" onclick='toggleTagCategoryDropdown(this);'>
+              <i class="fas fa-angle-down" data-rotated='0'></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="organisation-import-modal__block-list">
+        <div class="organisation-import-modal__user-card organisation-import-modal__user-card--headers">
+          <p>Fullname</p>
+          <p>Email</p>
+        </div>
+        <% errors.each do |user| %>
+          <div class="organisation-import-modal__user-card organisation-import-modal__user-card--update">
+            <p><%= "#{user['lastname']}, #{user['firstname']}" %></p>
+            <p><%= user['email'] %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer action-modal__footer">
+
+    <button class="bkt-btn-dark-grey-border mr-3rem" onclick='fileTransfer(this, true);'>
+      <p>Submit & Send Invitations</p>
+    </button>
+
+    <button class="bkt-btn-dark-grey" onclick='fileTransfer(this, false);'>
+      <p>Submit</p>
+    </button>
+
+  </div>
+
+</div>
