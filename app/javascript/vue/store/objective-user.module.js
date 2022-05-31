@@ -29,7 +29,7 @@ export default {
       try {
         const res = await axios.get(routes.generate('objective_user_info', {id: userId}))
 
-        commit('setUser', res.data)
+        commit('setUser', res.data.user)
       } catch (e) {
         commit('setError', e.message)
       }
@@ -38,7 +38,7 @@ export default {
       try {
         const res = await axios.get(routes.generate('objective_user_list_current', {id: userId}))
 
-        commit('setObjectivesCurrent', res.data)
+        commit('setObjectivesCurrent', res.data['objective/elements'])
       } catch (e) {
         commit('setError', e.message)
       }
@@ -47,7 +47,7 @@ export default {
       try {
         const res = await axios.get(routes.generate('objective_user_list_archived', {id: userId}))
 
-        commit('setObjectivesArchived', res.data)
+        commit('setObjectivesArchived', res.data['objective/elements'])
       } catch (e) {
         commit('setError', e.message)
       }

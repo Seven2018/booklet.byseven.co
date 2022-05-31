@@ -120,7 +120,25 @@ class Objective::ElementsController < ApplicationController
   end
 
   def target_list
-    elements = Objective::Element.where(company: current_user.company).page(1).per(1)
+    if params[:search]
+      elements = Objective::Element.where(company: current_user.company)
+      elements = elements.where('title LIKE ?', "%#{params[:search][:title]}%") if params[:search][:title].present?
+      elements = elements
+                   .joins(:objective_indicator)
+                   .where(objective_indicators: {indicator_type: params[:search][:indicator_type]}) if params[:search][:indicator_type].present?
+      elements = elements
+                   .joins(:objective_indicator)
+                   .where(objective_indicators: {status: params[:search][:indicator_status]}) if params[:search][:indicator_status].present?
+      elements = elements.where('due_date >= ?', Date.parse(params[:search][:from].to_s)) if params[:search][:from]
+      elements = elements.where('due_date <= ?', Date.parse(params[:search][:to].to_s)) if params[:search][:to]
+    else
+      elements = Objective::Element.where(company: current_user.company)
+    end
+
+    page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : 1
+
+    elements = elements.page(page).per(size)
 
     render json: elements, meta: pagination_dict(elements)
   end

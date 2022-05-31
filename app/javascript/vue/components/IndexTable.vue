@@ -26,27 +26,41 @@
           type="white"
           custom-class="border-bkt-objective-blue position-absolute"
           left="0px"
+          @click="$emit('fetch-page', pagination.prev_page)"
       >Prev
       </bkt-button>
 
       <div class="d-flex">
+<!--        before-->
+        <a
+            class="bkt-objective-blue3 mx-2"
+            v-for="n in makeRange(0, pagination.current_page)"
+            @click="$emit('fetch-page', n)"
+        >{{ n }}</a>
+        <span
+            v-if="makeRange(0, pagination.current_page).length && !makeRange(0, pagination.current_page).includes(pagination.current_page - 1)"
+            class="bkt-objective-blue3 mx-2">...</span>
+<!--        current-->
         <a
             class="bkt-objective-blue mx-2"
-            :href="`${path}?page[number]=${pagination.current_page}&page[size]=10`"
+            @click="$emit('fetch-page', pagination.current_page)"
         >
           {{pagination.current_page}}</a>
         <a
             class="bkt-objective-blue3 mx-2"
             v-for="n in makeRange(pagination.current_page, pagination.total_pages)"
-            :href="`${path}?page[number]=${n}&page[size]=10`"
+            @click="$emit('fetch-page', n)"
         >{{ n }}</a>
 <!--        last-->
         <span
-            v-if="!makeRange(pagination.current_page, pagination.total_pages).includes(pagination.total_pages - 1)"
+            v-if="!makeRange(pagination.current_page, pagination.total_pages).includes(pagination.total_pages - 1)
+            && pagination.current_page != pagination.total_pages - 1
+            && pagination.current_page < pagination.total_pages"
             class="bkt-objective-blue3 mx-2">...</span>
         <a
+            v-if="pagination.current_page < pagination.total_pages"
             class="bkt-objective-blue3 mx-2"
-            :href="`${path}?page[number]=${pagination.total_pages}&page[size]=10`"
+            @click="$emit('fetch-page', pagination.total_pages)"
         >
           {{pagination.total_pages}}</a>
       </div>
@@ -56,6 +70,7 @@
           type="white"
           custom-class="border-bkt-objective-blue position-absolute"
           right="0px"
+          @click="$emit('fetch-page', pagination.next_page)"
       >Next
       </bkt-button>
     </div>
@@ -78,7 +93,6 @@ export default {
       }
     },
     pagination: Object,
-    path: String
   },
   methods: {
     makeRange(from, to) {

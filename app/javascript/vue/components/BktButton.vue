@@ -3,7 +3,9 @@
       class="flex-row-between-centered"
       :class="`${assets[type]} ${customClass}`"
       :href="href"
-      :style="{right: right || 'unset', left: left || 'unset' }">
+      :style="{right: right || 'unset', left: left || 'unset' }"
+      @click="$emit('click', $event)"
+  >
     <span v-if="iconify" class="iconify mr-3" v-bind:data-icon="iconify"></span>
     <p class="">
       <slot></slot>

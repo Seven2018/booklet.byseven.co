@@ -4,7 +4,7 @@
       headerClass="bkt-light-grey6"
       :table-data="targetObjectives.targetList"
       :pagination="targetObjectives.pagination"
-      :path="$routes.generate('objective_target_list')"
+      @fetch-page="fetchPage"
   >
     <template v-slot="{id, title, due_date, comments_count, objectivable, objective_indicator}">
       <td>
@@ -95,6 +95,15 @@ export default {
   },
   created() {
     store.dispatch('targetObjectives/fetchTargetList')
+  },
+  methods: {
+    fetchPage(page) {
+      // ${path}?page[number]=${pagination.current_page}&page[size]=10`
+      store.dispatch('targetObjectives/fetchTargetList', {
+        'page[number]': page,
+        // 'page[size]': 1,
+      })
+    }
   },
   components: {IndexTable}
 }

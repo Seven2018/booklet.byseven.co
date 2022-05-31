@@ -28,7 +28,7 @@ export default {
           }
         )
 
-        commit('setUsers', res.data)
+        commit('setUsers', res.data.users)
       } catch (e) {
         commit('setError', e.message)
       }

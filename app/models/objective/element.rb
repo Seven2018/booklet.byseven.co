@@ -11,6 +11,20 @@ class Objective::Element < ApplicationRecord
     archived: 10
   }
 
+  include PgSearch::Model
+  pg_search_scope :search_elements,
+                  against: [ :title ],
+                  associated_against: {
+                    objective_indicator: [:indicator_type, :status]
+                  },
+                  using: {
+                    tsearch: {
+                      prefix: true,
+                      # any_word: true
+                    }
+                  },
+                  ignoring: :accents
+
   def employee
     objectivable_type == 'User' ? User.find(objectivable_id) : nil
   end

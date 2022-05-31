@@ -60,7 +60,7 @@ import store from "../../../store";
 export default {
   data() {
     return {
-      searchText: '',
+      searchText: null,
       indicatorType: null,
       indicatorStatus: null,
       from: null,
@@ -68,17 +68,28 @@ export default {
     }
   },
   created() {
-    // store.dispatch('adminObjectives/fetch')
   },
   methods: {
     update(_) {
-      // store.dispatch('adminObjectives/fetch', text)
     },
     reset() {
-      // store.dispatch('adminObjectives/fetch')
+      store.commit('targetObjectives/setSearch')
+      this.searchText = null
+      this.indicatorType = null
+      this.indicatorStatus = null
+      this.from = null
+      this.to = null
+      store.dispatch('targetObjectives/fetchTargetList')
     },
     submit() {
-      console.log(this.searchText, this.indicatorType, this.indicatorStatus, this.from, this.to)
+      store.commit('targetObjectives/setSearch', {
+        'search[title]': this.searchText,
+        'search[indicator_type]': this.indicatorType,
+        'search[indicator_status]': this.indicatorStatus,
+        'search[from]': this.from,
+        'search[to]': this.to,
+      })
+      store.dispatch('targetObjectives/fetchTargetList')
     }
   },
   components: {BktSearch}
