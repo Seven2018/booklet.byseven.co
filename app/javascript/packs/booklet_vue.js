@@ -51,6 +51,8 @@ import ObjectiveElementIndex from '../vue/pages/objectives/elements'
 import ObjectiveUserShow from '../vue/pages/objectives/users/show.vue'
 import MyTeamObjectives from '../vue/pages/objectives/my_team_objectives'
 import ObjectiveDatePicker from '../vue/components/ObjectiveDatePicker'
+import ObjectiveTemplateIndex from '../vue/pages/objectives/templates'
+import ObjectiveTemplateNew from '../vue/pages/objectives/templates/new'
 
 let app = null
 let vuejsOpt = {
@@ -64,7 +66,9 @@ let vuejsOpt = {
     ObjectiveElementIndex,
     ObjectiveUserShow,
     MyTeamObjectives,
-    ObjectiveDatePicker
+    ObjectiveDatePicker,
+    ObjectiveTemplateIndex,
+    ObjectiveTemplateNew
   }
 }
 Vue.prototype.$routes = routes

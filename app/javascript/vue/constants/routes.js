@@ -13,6 +13,7 @@ const routes = {
   objective_user_my_team_archived_list: '/objective/users/{id}/my_team_objectives_archived_list',
   objective_user_my_team_objectives: '/objective/users/{id}/my_team_objectives',
   objective_target_list: '/objective/elements/target_list',
+  objective_templates_new: '/objective/templates/new',
 }
 
 export default {

@@ -14,7 +14,7 @@ class Objective::ElementsController < ApplicationController
     :my_team_objectives_archived_list,
     :targets,
     :target_list,
-    :employees
+    :employees,
   ]
 
   def index
@@ -30,8 +30,13 @@ class Objective::ElementsController < ApplicationController
 
     authorize @users
 
+    page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+
+    @users = @users.page(page).per(size)
+
     # render json: @users, include: ['objective_elements.objective_indicator']
-    render json: @users
+    render json: @users, meta: pagination_dict(@users)
   end
 
   def new
@@ -136,7 +141,7 @@ class Objective::ElementsController < ApplicationController
     end
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
 
     elements = elements.page(page).per(size)
 

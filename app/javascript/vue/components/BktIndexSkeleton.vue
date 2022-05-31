@@ -8,7 +8,9 @@
         </h1>
       </div>
       <div class="flex-column">
-        <bkt-new-target-button></bkt-new-target-button>
+        <slot name="create-index">
+          <bkt-new-target-button></bkt-new-target-button>
+        </slot>
       </div>
     </div>
 

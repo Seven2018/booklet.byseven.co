@@ -1,7 +1,10 @@
 <template>
   <index-table
       :headers="headers"
-      :tableData="adminObjectives.users">
+      :tableData="adminObjectives.users"
+      :pagination="adminObjectives.pagination"
+      @fetch-page="fetchPage"
+  >
     <template v-slot="{id, firstname, lastname, picture, job_title, access_level_int, manager, objectives_count}">
       <td>
         <div class="d-flex align-items-center">
@@ -93,6 +96,16 @@ export default {
     return {
       headers: ['Name', 'Access Level', 'Manager', 'Objectives', ''],
       adminObjectives: store.state.adminObjectives,
+    }
+  },
+  created() {
+    store.dispatch('adminObjectives/fetch')
+  },
+  methods: {
+    fetchPage(page) {
+      store.dispatch('adminObjectives/fetch', {
+        'page[number]': page,
+      })
     }
   },
   components: {
