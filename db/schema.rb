@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_11_134932) do
+ActiveRecord::Schema.define(version: 2022_05_31_124448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,13 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.index ["company_id"], name: "index_campaigns_on_company_id"
     t.index ["interview_form_id"], name: "index_campaigns_on_interview_form_id"
     t.index ["owner_id"], name: "index_campaigns_on_owner_id"
+  end
+
+  create_table "campaigns_categories", id: false, force: :cascade do |t|
+    t.bigint "campaign_id"
+    t.bigint "category_id"
+    t.index ["campaign_id"], name: "index_campaigns_categories_on_campaign_id"
+    t.index ["category_id"], name: "index_campaigns_categories_on_category_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -431,7 +438,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"

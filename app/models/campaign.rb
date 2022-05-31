@@ -10,6 +10,7 @@ class Campaign < ApplicationRecord
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
   has_many :interviewers, through: :interviews
+  has_and_belongs_to_many :categories
 
   validates :title, presence: true
 
@@ -122,9 +123,12 @@ class Campaign < ApplicationRecord
     interviews.where(employee_id: employee_id).find(&:crossed?)
   end
 
-  def tags
-    return [] unless interviews.present? && interviews.first.interview_form.present?
+  # CATEGORIES ADDED DIRECTLY TO CAMPAIGN (obsolete?)
+  # def tags
+  #   return [] unless interviews.present? && interviews.first.interview_form.present?
 
-    interviews.first.interview_form.categories.pluck(:title)
-  end
+  #   interviews.first.interview_form.categories.pluck(:title)
+  # end
+
+
 end

@@ -121,7 +121,14 @@
 
       <div class="d-flex justify-content-start align-items-center flex-wrap mb-2rem">
 
+        <% Category.where(company: current_user.company, kind: 'campaign').order(title: :asc).each do |category| %>
 
+          <p class="fs-1_2rem font-weight-600 bkt-dark-grey bkt-bg-light-grey8
+                    px-0_75rem py-0_5rem rounded-15px">
+            <%= category.title %>
+          </p>
+
+        <% end %>
 
       </div>
 
