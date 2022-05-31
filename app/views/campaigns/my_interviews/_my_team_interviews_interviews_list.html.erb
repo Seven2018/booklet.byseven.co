@@ -2,29 +2,56 @@
 
   <% manager = current_user %>
 
-  <div class="campaigns-my-team-interviews__card p-5">
+  <div class="campaigns-my-team-interviews__card p-5 pos-rel">
+
+    <div class="pos-abs"
+     style="top: 3rem; right: 3rem;">
+
+      <%= render_component Buttons::OptionsButton.new(vertical: true) do %>
+
+        <%= link_to archive_interviewer_interviews_path(campaign_id: campaign.id, interviewer_id: manager.id),
+              class: "flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3", remote: true do %>
+
+            <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span> <%= 'Archive campaign' %>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
+
     <div class="campaigns-my-interviews__card-inner">
       <div class="campaigns-my-interviews__card-header">
+
         <div class="campaigns-my-interviews__card-header-left">
+
           <div class="campaigns-my-interviews__card-icon">
             <span class="iconify" data-icon="<%= campaign.icon %>"></span>
           </div>
+
           <div class="campaigns-my-interviews__card-title-deadline">
+
             <h2><%= campaign.title %></h2>
             <div class="flex-row-start-centered">
               <div class="deadline"><p>Deadline : <%= campaign.deadline %></p></div>
             </div>
+
           </div>
 
         </div>
-        <div class="campaigns-my-interviews__card-review-link">
-          <%= link_to campaign_path(campaign, interviewer_id: current_user.id) do %>
-            <p class="d-flex align-items-center bkt-bg-light-grey4-hover p-1rem rounded-5px">
-              <span class="mr-3">Manage campaign</span>
-              <span class="iconify" data-icon="akar-icons:chevron-right"></span>
-            </p>
-          <% end %>
-        </div>
+
+      </div>
+
+      <div class="d-flex justify-content-end mb-2rem">
+
+        <%= link_to campaign_path(campaign, interviewer_id: current_user.id) do %>
+          <p class="d-flex align-items-center bkt-bg-light-grey4-hover p-1rem rounded-5px
+                    fs-1_4rem font-weight-600 bkt-blue">
+            <span class="mr-3">Manage campaign</span>
+            <span class="iconify" data-icon="akar-icons:chevron-right"></span>
+          </p>
+        <% end %>
+
       </div>
 
       <% campaign.employees_for(current_user.id).each do |employee| %>
@@ -149,4 +176,4 @@
 
   <%= render 'campaigns/my_interviews/mobile_my_team_interviews_list', campaign: campaign, manager: manager %>
 
-<% end %>
+<% end if campaigns.present? %>

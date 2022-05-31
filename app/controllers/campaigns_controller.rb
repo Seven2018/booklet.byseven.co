@@ -50,19 +50,20 @@ class CampaignsController < ApplicationController
       id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 
-    @ongoing_campaigns = @campaigns.where_exists(:interviews, employee: current_user, locked_at: nil)
-    @completed_campaigns = @campaigns.where_not_exists(:interviews, employee: current_user, locked_at: nil)
+    @todo_campaigns = @campaigns.where_not_exists(:interviews, employee: current_user, status: ['submitted', 'archived'])
+    @ongoing_campaigns = @campaigns.where_not_exists(:interviews, employee: current_user, status: 'archived')
+    @archived_campaigns = @campaigns.where_exists(:interviews, employee: current_user, status: 'archived')
+
+    @active_tab = params.dig(:status).presence || 'ongoing'
 
     @campaigns =
-      if params.dig(:period) == 'completed'
-        @completed_campaigns
+      if @active_tab == 'archived'
+        @archived_campaigns
       else
         @ongoing_campaigns
       end
 
     @campaigns = CampaignDecorator.decorate_collection @campaigns
-
-    @interviews_to_fill_count = Interview.where(employee: current_user, label: 'Employee').where.not(status: :submitted).count
 
     respond_to do |format|
       format.html
@@ -71,29 +72,29 @@ class CampaignsController < ApplicationController
   end
 
   def my_team_interviews
-    campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
-    campaigns = campaigns.where_exists(:interviews, interviewer: current_user)
-    authorize campaigns
+    @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
+    @campaigns = @campaigns.where_exists(:interviews, interviewer: current_user)
+    authorize @campaigns
 
-    @interviews_completed_count = Interview.where(interviewer: current_user,
-                                                  label: ['Manager', 'Crossed'],
-                                                  locked_at: nil)
-                                           .count
-    @interviews_to_fill_count = Interview
-                                  .where(interviewer: current_user, label: ['Manager', 'Crossed'])
-                                  .where.not(status: :submitted).count
+    @todo_campaigns = @campaigns.where_not_exists(:interviews, interviewer: current_user, status: ['submitted', 'archived'])
+    @ongoing_campaigns = @campaigns.where_not_exists(:interviews, interviewer: current_user, status: 'archived')
+    @archived_campaigns = @campaigns.where_exists(:interviews, interviewer: current_user, status: 'archived')
 
-    @ongoing_campaigns = campaigns.where_exists(:interviews, interviewer: current_user, locked_at: nil)
-    @completed_campaigns = campaigns.where_not_exists(:interviews, interviewer: current_user, locked_at: nil)
+    @active_tab = params.dig(:status).presence || 'ongoing'
 
     @campaigns =
-      if params.dig(:period) == 'completed'
-        @completed_campaigns
+      if params.dig(:status) == 'archived'
+        @archived_campaigns
       else
         @ongoing_campaigns
       end
 
-    @campaigns = @campaigns.sort { |x| x.deadline }.reverse
+    @campaigns = @campaigns&.sort { |x| x.deadline }&.reverse
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def send_notification_email
@@ -173,6 +174,7 @@ class CampaignsController < ApplicationController
                          User.find(params[:search][:user_id])
                        end
   end
+
 
   ##########################
   ## EMAILS NOTIFICATIONS ##

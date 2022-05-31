@@ -17,7 +17,8 @@ class Interview < ApplicationRecord
     not_started: 0,
     not_available_yet: 10,
     in_progress: 20,
-    submitted: 30
+    submitted: 30,
+    archived: 100
   }
 
   include PgSearch::Model

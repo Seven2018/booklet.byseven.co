@@ -123,6 +123,8 @@ a.disabled-link { pointer-events: none; }
 .rounded-25px { border-radius: 25px !important; }
 .rounded-30px { border-radius: 30px !important; }
 
+.rounded-t-10px { border-radius: 10px 10px 0px 0px !important; }
+
 .rounded-b-5px { border-radius: 0px 0px 5px 5px !important; }
 .rounded-b-10px { border-radius: 0px 0px 10px 10px !important; }
 .rounded-b-15px { border-radius: 0px 0px 15px 15px !important; }
@@ -182,6 +184,7 @@ a.disabled-link { pointer-events: none; }
 .height-7_5rem        { height: 7.5rem !important; }
 .height-10rem         { height: 10rem !important; }
 .height-11rem         { height: 11rem !important; }
+.height-12rem         { height: 12rem !important; }
 .height-14rem         { height: 14rem !important; }
 .height-20rem         { height: 20rem !important; }
 .height-24rem         { height: 24rem !important; }
@@ -510,9 +513,31 @@ a.disabled-link { pointer-events: none; }
 //////////////
 
 .pos-rel { position: relative; }
-.pos-abs { position: absolute; }
+.pos-abs { position: absolute !important; }
 .pos-abs-sm { @include from-medium { position: absolute; }}
 .pos-fix { position: fixed; }
 
 .top-0 { top: 0px }
 .bottom-0 { bottom: 0px }
+
+
+///////////
+// IMAGE //
+///////////
+
+.object-fit-cover { object-fit: cover !important; }
+
+.object-position-50-15 { object-position: 50% 15% !important; }
+.object-position-50-50 { object-position: 50% 50% !important; }
+
+.black-gradient {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6));
+  }
+}
