@@ -1,2 +1,3 @@
+document.querySelector('#my_interviews_stats').innerHTML = '<%= j render("campaigns/my_interviews/my_interviews_stats", ongoing_campaigns: @ongoing_campaigns, archived_campaigns: @archived_campaigns, todo_campaigns: @todo_campaigns) %>';
 document.querySelector('#my_interviews_tabs').innerHTML = '<%= j render("campaigns/my_interviews/my_interviews_tabs", ongoing_campaigns: @ongoing_campaigns, archived_campaigns: @archived_campaigns, active_tab: @active_tab) %>';
 document.querySelector('.campaigns-my-interviews__list').innerHTML = '<%= j render("campaigns/my_interviews/my_interviews_interviews_list", campaigns: @campaigns) %>';

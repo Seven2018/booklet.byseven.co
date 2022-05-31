@@ -21,7 +21,7 @@
               class: "flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3",
               remote: true do %>
 
-            <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span> <%= employee_interview.archived? ? 'Unarchive interview' : 'Archive interview' %>
+            <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span> <%= employee_interview.archived_for['Employee'] ? 'Unarchive interview' : 'Archive interview' %>
 
         <% end %>
 
