@@ -10,50 +10,47 @@
 <div class="d-flex justify-content-start align-items-center px-1rem">
 
   <% if TrainingPolicy.new(current_user, nil).my_trainings? %>
-    <%= link_to my_trainings_path do %>
-      <div class="navbar-buttons width-12rem
-        <%= 'navbar-buttons--active' if @controller_action == :trainings_my_trainings %>
-        ">
-        <h4 title='My trainings'>My trainings</h4>
-      </div>
+
+    <%= link_to my_trainings_path, class: "navbar-buttons width-12rem #{'navbar-buttons--active' if @controller_action == :trainings_my_trainings}" do %>
+
+      <h4>My trainings</h4>
+
     <% end %>
+
   <% end %>
 
   <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
-    <%= link_to my_team_trainings_path do %>
-      <div class="navbar-buttons width-16rem
-        <%= 'navbar-buttons--active' if [:trainings_my_team_trainings, :trainings_my_team_trainings_user_details].include?(@controller_action) %>">
-        <h4 title='My team trainings'>My team trainings</h4>
-      </div>
+
+    <%= link_to my_team_trainings_path, class: "navbar-buttons width-16rem #{'navbar-buttons--active' if [:trainings_my_team_trainings, :trainings_my_team_trainings_user_details].include?(@controller_action)}" do %>
+
+      <h4>My team trainings</h4>
+
     <% end %>
+
   <% end %>
 
   <% if ContentPolicy::Scope.new(current_user, nil).can_read %>
-    <%= link_to catalogue_path do %>
-      <div class="navbar-buttons width-10rem
-        <%= 'navbar-buttons--active' if @controller_action == :pages_catalogue %>
-      ">
-        <h4 title='Catalogue'>Catalogue</h4>
-      </div>
+
+    <%= link_to catalogue_path, class: "navbar-buttons width-10rem #{'navbar-buttons--active' if @controller_action == :pages_catalogue}" do %>
+
+      <h4>Catalogue</h4>
+
     <% end %>
+
   <% end %>
 
   <% if (admin_link = Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path)) %>
 
-    <%= link_to trainings_path do %>
-      <div class="navbar-buttons width-9rem
-        <%= 'navbar-buttons--active' if @controller_action == :trainings_index %>
-        ">
+    <%= link_to trainings_path, class: "navbar-buttons width-9rem #{'navbar-buttons--active' if @controller_action == :trainings_index}" do %>
+
         <h4>Trainings</h4>
-      </div>
+
     <% end %>
 
-    <%= link_to trainings_reports_path do %>
-      <div class="navbar-buttons width-8rem
-        <%= 'navbar-buttons--active' if @controller_action == :reports_index %>
-        ">
-        <h4>Reports</h4>
-      </div>
+    <%= link_to trainings_reports_path, class: "navbar-buttons width-9rem #{'navbar-buttons--active' if @controller_action == :reports_index}" do %>
+
+      <h4>Reports</h4>
+
     <% end %>
 
   <% end %>
