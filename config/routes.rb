@@ -118,6 +118,8 @@ Rails.application.routes.draw do
   get :lock_interview, controller: :interviews
   get :unlock_interview, controller: :interviews
   get :show_crossed_and_lock, controller: :interviews
+  get :archive_interview, controller: :interviews
+  get :archive_interviewer_interviews, controller: :interviews
 
   namespace :interview do
     namespace :answer do

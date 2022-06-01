@@ -156,6 +156,50 @@ class InterviewsController < ApplicationController
     end
   end
 
+
+  ####################
+  ## ARCHIVE SYSTEM ##
+  ####################
+
+  def archive_interview
+    @interview = Interview.find(params[:id])
+    authorize @interview
+
+    if @interview.archived_for['Employee']
+      to_archive = false
+      tab = 'archived'
+    else
+      to_archive = true
+      tab = 'ongoing'
+    end
+
+    @interview.update_archived_for('Employee', to_archive)
+
+    redirect_to my_interviews_path(status: tab), format: 'js'
+  end
+
+  def archive_interviewer_interviews
+    @interviews = Interview.where(campaign_id: params[:campaign_id],
+                                  interviewer_id: params[:interviewer_id])
+    authorize @interviews
+
+    if @interviews.map{|x| x.archived_for['Manager']}.uniq == [true]
+      to_archive = false
+      tab = 'archived'
+    else
+      to_archive = true
+      tab = 'ongoing'
+    end
+
+    @interviews.each do |interview|
+     interview.update_archived_for('Manager', to_archive)
+    end
+
+    redirect_to my_team_interviews_path(status: tab), format: 'js'
+  end
+
+  ####################
+
   private
 
   def interview_params

@@ -11,6 +11,7 @@ class Company < ApplicationRecord
   validates :siret, presence: true, length: { is: 14 }
   validates :siret, uniqueness: true
 
+  has_one_attached :home_banner
   has_one_attached :clear_bg_logo
   has_one_attached :dark_bg_logo
   has_one_attached :my_interviews_bg_picture

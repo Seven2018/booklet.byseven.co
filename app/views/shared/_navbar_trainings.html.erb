@@ -1,105 +1,61 @@
-<div class="d-none d-sm-flex navbar navbar-expand-sm navbar-light bkt-bg-orange px-2rem">
-  <div class="flex-row-between-centered">
+<div class="d-flex justify-content-center align-items-center px-2rem">
 
-    <a class='flex-row-center-centered height-5rem width-5rem bkt-bg-white bkt-bg-dark-orange-hover bkt-orange bkt-white-hover bkt-box-shadow-compact rounded-25px' href="/home">
-      <span class="iconify fs-2_4rem" data-icon="bxs:home"></span>
-    </a>
-
-    <% if TrainingPolicy.new(current_user, nil).my_trainings? %>
-      <%= link_to my_trainings_path do %>
-        <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :trainings_my_trainings %>
-          ">
-          <h4 title='My trainings'>My trainings</h4>
-        </div>
-      <% end %>
-    <% end %>
-    
-    <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
-      <%= link_to my_team_trainings_path do %>
-        <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if [:trainings_my_team_trainings, :trainings_my_team_trainings_user_details].include?(@controller_action) %>">
-          <h4 title='My team trainings'>My team trainings</h4>
-        </div>
-      <% end %>
-    <% end %>
-
-    <% if ContentPolicy::Scope.new(current_user, nil).can_read %>
-      <%= link_to catalogue_path do %>
-        <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if @controller_action == :pages_catalogue %>
-        ">
-          <h4 title='Catalogue'>Catalogue</h4>
-        </div>
-      <% end %>
-    <% end %>
-
-    <% if (admin_link = Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path)) %>
-      <%= link_to admin_link, class: 'left-buttons' do %>
-        <div class="navbar-buttons
-          <%= 'navbar-buttons--active' if  %i[trainings_index reports_index].include?(@controller_action) %>">
-          <h4 title="Admin">Admin</h4>
-        </div>
-      <% end %>
-    <% end %>
-
-  </div>
-
-  <div>
-
-    <div class="flex-row-between-centered">
-
-      <div class="mr-1rem">
-        <%= render_component AsClAssetComponent.new(model: current_user.company, asset: :dark_bg_logo) %>
-      </div>
-
-      <%= render_component NavbarAppMenuComponent.new(user: current_user, color: 'bkt-white', hover_background_color: 'bkt-bg-dark-orange-hover') %>
-
-      <%= render_component NavbarUserProfileComponent.new(user: current_user) %>
-
-    </div>
-
-  </div>
+  <%= image_tag 'icons/trainings.svg', style: 'height: 22px;' %>
+  <p class="fs-2rem font-weight-500 bkt-dark-grey ml-1rem">Trainings</p>
 
 </div>
 
+<div class="height-3rem border-bkt-dark-grey"></div>
 
-<% if @multi_step_form_navbar_content.present? %>
-  <div class="navbar-admin">
+<div class="d-flex justify-content-start align-items-center px-1rem">
 
-    <div class="pos-abs"
-         style="top: 1.75rem; left: 2rem;">
-      <%= render_component Buttons::BackButton.new(fallback: trainings_path) %>
-    </div>
+  <% if TrainingPolicy.new(current_user, nil).my_trainings? %>
+    <%= link_to my_trainings_path do %>
+      <div class="navbar-buttons width-12rem
+        <%= 'navbar-buttons--active' if @controller_action == :trainings_my_trainings %>
+        ">
+        <h4 title='My trainings'>My trainings</h4>
+      </div>
+    <% end %>
+  <% end %>
 
-    <div class="navbar-admin__button">
-      <h4><%= @multi_step_form_navbar_content %></h4>
-    </div>
+  <% if TrainingPolicy.new(current_user, nil).my_team_trainings? %>
+    <%= link_to my_team_trainings_path do %>
+      <div class="navbar-buttons width-16rem
+        <%= 'navbar-buttons--active' if [:trainings_my_team_trainings, :trainings_my_team_trainings_user_details].include?(@controller_action) %>">
+        <h4 title='My team trainings'>My team trainings</h4>
+      </div>
+    <% end %>
+  <% end %>
 
-  </div>
-<% end %>
+  <% if ContentPolicy::Scope.new(current_user, nil).can_read %>
+    <%= link_to catalogue_path do %>
+      <div class="navbar-buttons width-10rem
+        <%= 'navbar-buttons--active' if @controller_action == :pages_catalogue %>
+      ">
+        <h4 title='Catalogue'>Catalogue</h4>
+      </div>
+    <% end %>
+  <% end %>
 
+  <% if (admin_link = Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path)) %>
 
-<% if @show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path) %>
-  <div class="navbar-admin navbar-admin-trainings">
-    <% klass = 'navbar-admin__button' %>
-    <% active_klass = "navbar-admin__button--active" %>
-
-    <% if TrainingPolicy.new(current_user, nil).create? %>
-      <%= link_to trainings_path,
-        class: "#{klass} #{active_klass if @controller_action == :trainings_index} rounded-10px bkt-bg-light-orange-hover" do %>
+    <%= link_to trainings_path do %>
+      <div class="navbar-buttons width-9rem
+        <%= 'navbar-buttons--active' if @controller_action == :trainings_index %>
+        ">
         <h4>Trainings</h4>
-      <% end %>
+      </div>
     <% end %>
 
-    <% if TrainingReportPolicy.new(current_user, nil).create? %>
-      <%= link_to trainings_reports_path,
-        class: "#{klass} #{
-          active_klass if
-            @controller_action == :reports_index
-        } rounded-10px bkt-bg-light-orange-hover" do %>
-        <h4>Report</h4>
-      <% end %>
+    <%= link_to trainings_reports_path do %>
+      <div class="navbar-buttons width-8rem
+        <%= 'navbar-buttons--active' if @controller_action == :reports_index %>
+        ">
+        <h4>Reports</h4>
+      </div>
     <% end %>
-  </div>
-<% end %>
+
+  <% end %>
+
+</div>

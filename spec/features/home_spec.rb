@@ -15,9 +15,9 @@ RSpec.feature 'Home', type: :feature, js: true do
     before do
       login_as user
     end
-    scenario 'should be redirected to the profile page' do
+    scenario 'should be redirected to the home page' do
       visit root_path
-      expect(page).to have_selector('.nav-item')
+      expect(page).to have_selector('#navbar-home-logo')
     end
   end
 end

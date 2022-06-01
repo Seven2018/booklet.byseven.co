@@ -1,4 +1,5 @@
 <% campaigns.each do |campaign| %>
+
   <% employee_interview = campaign.employee_interview(current_user.id)&.decorate %>
   <% manager_interview = campaign.manager_interview(current_user.id)&.decorate %>
   <% crossed_interview = campaign.crossed_interview(current_user.id)&.decorate %>
@@ -10,7 +11,23 @@
        [employee_interview, manager_interview, crossed_interview].find(&:present?).employee %>
 
   <%#:::::: VERSION DESKTOP START ::::::%>
-  <div class="bkt-bg-white rounded-20px p-5 mb-5">
+  <div class="bkt-bg-white rounded-20px p-5 mb-5 pos-rel">
+    <div class="pos-abs"
+         style="top: 3rem; right: 3rem;">
+
+      <%= render_component Buttons::OptionsButton.new(vertical: true) do %>
+
+        <%= link_to archive_interview_path(id: employee_interview.id),
+              class: "flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3",
+              remote: true do %>
+
+            <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span> <%= employee_interview.archived_for['Employee'] ? 'Unarchive interview' : 'Archive interview' %>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
 
     <div class="flex-row-start-centered">
       <div class="flex-column mr-3">

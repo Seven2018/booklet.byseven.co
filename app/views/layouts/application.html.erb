@@ -21,22 +21,27 @@
     <%= javascript_pack_tag 'application', defer: true %>
   </head>
   <body data-controller="mobile-displayer">
+
     <%= render 'shared/impersonations' %>
+
+    <% active_app = {interviews: @show_navbar_campaign, trainings: @show_navbar_training, objectives: @show_navbar_objective} %>
+
     <% if user_signed_in? %>
-      <% if @show_navbar_home %>
-        <%= render 'shared/navbar_home' %>
-        <%= render 'shared/navbar_mobile' %>
-      <% elsif @show_navbar_training %>
-        <%= render 'shared/navbar_trainings' %>
-        <%= render 'shared/navbar_mobile' %>
-      <% elsif @show_navbar_campaign %>
-        <%= render 'shared/navbar_campaign' %>
-        <%= render 'shared/navbar_mobile' %>
-      <% elsif @show_navbar_objective %>
-        <%= render 'shared/navbar_objective' %>
-        <%= render 'shared/navbar_mobile' %>
+
+      <%= render_component Navigation::NavbarComponent.new(active_app: active_app.key(true).to_s, user: current_user, controller_action: @controller_action) do %>
+
+        <% if active_app.key(true).present? %>
+
+          <%= render "shared/navbar_#{active_app.key(true).to_s}" %>
+
+        <% end %>
+
+      <% end %>
+
+      <%= render 'shared/navbar_mobile' %>
+
     <% end %>
-    <% end %>
+
     <div data-mobile-displayer-target="body">
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
@@ -44,9 +49,7 @@
           <%= yield %>
         <% else %>
           <div id="booklet-container"
-                class="overflow-y-scroll overflow-x-hidden pos-rel <%= 'container-admin-height' if
-                      (@show_navbar_admin && Navigation::InterviewsAdminLink.new(user: current_user).should_render?(campaigns_path, interview_forms_path, interviews_reports_path)) ||
-                      (@show_navbar_admin && Navigation::TrainingsAdminLink.new(user: current_user).should_render?(trainings_path, trainings_reports_path)) || @multi_step_form_navbar_content.present? %>">
+                class="overflow-y-scroll overflow-x-hidden pos-rel">
             <%= yield %>
           </div>
         <% end %>
