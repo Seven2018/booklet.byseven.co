@@ -57,9 +57,6 @@ import ObjectiveTemplateNew from '../vue/pages/objectives/templates/new'
 let app = null
 let vuejsOpt = {
   el: '#app',
-  data: {
-    message: "Can you say hello?"
-  },
   components: {
     App,
     ObjectiveUserIndex,

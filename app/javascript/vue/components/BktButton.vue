@@ -1,7 +1,6 @@
 <template>
   <a
-      class="flex-row-between-centered"
-      :class="`${assets[type]} ${customClass}`"
+      :class="[`${assets[type]} ${customClass}`, iconify ? 'flex-row-between-centered' : 'flex-row-center-centered']"
       :href="href"
       :style="{right: right || 'unset', left: left || 'unset' }"
       @click="$emit('click', $event)"

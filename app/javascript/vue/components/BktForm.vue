@@ -7,13 +7,18 @@
             iconify="iconoir:cancel"
             class="pos-abs" style="right: -25px"></bkt-back-button>
         <slot></slot>
+
+        <bkt-button class="mt-5" type="blue" @click="$emit('submit')">
+          Create
+        </bkt-button>
       </div>
     </div>
   </div>
 </template>
 <script>
 import BktBackButton from "./BktBackButton";
+import BktButton from "./BktButton";
 export default {
-  components: {BktBackButton}
+  components: {BktButton, BktBackButton}
 }
 </script>
