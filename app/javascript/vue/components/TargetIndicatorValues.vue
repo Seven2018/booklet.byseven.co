@@ -42,7 +42,7 @@
             <span class="iconify bkt-objective-blue" data-icon="lucide:flag"></span>
             <p class="mx-3 fs-1_2rem font-weight-500 bkt-dark-grey ">Starting value</p>
             <bkt-input-form
-                input-class="width-7rem"
+                class="width-7rem"
                 :type="box.type === 'boolean' ? 'text' : 'number'"
             ></bkt-input-form>
           </div>
@@ -51,7 +51,7 @@
             <span class="iconify bkt-objective-blue" data-icon="fluent:target-arrow-20-filled"></span>
             <p class="mx-3 fs-1_2rem font-weight-500 bkt-dark-grey">Target value</p>
             <bkt-input-form
-                input-class="width-7rem"
+                class="width-7rem"
                 :type="box.type === 'boolean' ? 'text' : 'number'"
             ></bkt-input-form>
           </div>
@@ -67,7 +67,14 @@ import BktInputForm from "./BktInputForm";
 import BktButton from "./BktButton";
 
 export default {
-  components: {BktButton, BktInputForm, TargetIndicatorBox},
+  props: ['value'],
+  // TODO: add input and emit to every field for fit with
+  // {
+  //   type: 'boolean',
+  //   starting_value: null,
+  //   target_value: null,
+  //   multiChoiceList: null
+  // }
   data() {
     return {
       activeBox: 'boolean',
@@ -123,6 +130,7 @@ export default {
     addOption(value) {
       this.multiChoiceValues.push({placeholder: 'Write an option...', value})
     }
-  }
+  },
+  components: {BktButton, BktInputForm, TargetIndicatorBox},
 }
 </script>
