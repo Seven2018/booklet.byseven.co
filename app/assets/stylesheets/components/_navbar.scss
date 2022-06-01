@@ -14,24 +14,29 @@
   }
 
   .navbar-buttons {
-    text-align: left;
-    margin: 0 2rem;
-    color: #d4dde5c4;
+    text-align: center;
+    margin: 0 1rem;
+    color: $bkt-dark-grey;
 
     h4, a {
-      font-size: 1.6rem !important;
-      font-weight: bolder;
+      padding: 1rem;
+      font-size: 1.4rem !important;
+      font-weight: 500;
       white-space: nowrap;
-    }
-
-    a {
-      color: $bkt-white;
+      border-radius: 3px;
+      transition: color .25s ease-in-out, background-color .25s ease-in-out;
     }
 
     &.navbar-buttons--active {
-
       h4, a {
-        color: white;
+        font-weight: 700;
+        background-color: $bkt-light-grey8;
+      }
+    }
+
+    &:hover {
+      h4, a {
+        background-color: $bkt-light-grey8;
       }
     }
   }
@@ -74,44 +79,6 @@
   }
 }
 
-.navbar-admin-campaigns {
-
-  .navbar-admin__button {
-
-    h4 {
-      color: $bkt-blue;
-    }
-
-    &.navbar-admin__button--active {
-
-      h4 {
-        background: $bkt-light-grey2;
-      }
-    }
-  }
-}
-
-.navbar-admin-trainings {
-
-  .navbar-admin__button {
-
-    h4 {
-      color: $bkt-orange;
-    }
-
-    &.navbar-admin__button--active {
-
-      h4 {
-        background: $bkt-light-orange;
-      }
-    }
-  }
-}
-
-.navbar-active {
-  display: flex;
-}
-
 .navbar--mobile {
   display: flex;
   flex-direction: row;
@@ -140,6 +107,27 @@
     color: white;
   }
 
+}
+
+#navbar-home-logo {
+
+  &:hover {
+    path {
+      fill: #333333;
+    }
+  }
+}
+
+
+//////////////////////
+// NAVBAR DROPDOWNS //
+//////////////////////
+
+#navbar-menu, #navbar-profile {
+
+  &.show {
+    background-color: $bkt-light-grey8;
+  }
 }
 
 

@@ -48,23 +48,51 @@
 <!------------>
 
 <% if CampaignPolicy.new(current_user, @campaign).add_interview_set? %>
-  <div class='modal fade' id='addParticipant' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-    <div id='add_participant-modal' class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
-      <%= render 'campaigns/modals/add_participant', campaign: @campaign, selected_interviewer: @selected_interviewer %>
+
+  <div id='addParticipant'
+       class='modal action-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static">
+
+    <div id='add_participant-modal'
+         class='modal-dialog action-modal__dialog'
+         role='document'>
+      <%= render 'campaigns/modals/add_participant', campaign: @campaign %>
     </div>
+
   </div>
+
 <% end %>
 
-<div class='modal fade' id='sendEmailSuccess' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='sendEmailSuccess'
+     class='modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-keyboard="false"
+     data-backdrop="static">
+
+  <div class='modal-dialog'
+       role='document'>
     <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
   </div>
+
 </div>
 
-<div class='modal fade' id='campaignInfoMessage' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-  <div class='modal-dialog modal-sm' role='document' style='border-radius: 20px'>
+<div id='campaignInfoMessage'
+     class='modal info-modal fade'
+     tabindex='-1'
+     role='dialog'
+     aria-labelledby='myModalLabel'
+     data-keyboard="false"
+     data-backdrop="static">
+
+  <div class='modal-dialog info-modal__dialog modal-sm'
+       role='document'>
     <%= render 'campaigns/modals/campaign_info_message', message: '' %>
   </div>
+
 </div>
 
 
@@ -93,6 +121,25 @@
     }
     if (clickedOut) return true;
     else return false;
+  }
+
+  function updateURLParameter(url, param, paramVal){
+    var newAdditionalURL = "";
+    var tempArray = url.split("?");
+    var baseURL = tempArray[0];
+    var additionalURL = tempArray[1];
+    var temp = "";
+    if (additionalURL) {
+        tempArray = additionalURL.split("&");
+        for (var i=0; i<tempArray.length; i++){
+            if(tempArray[i].split('=')[0] != param){
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    }
+    var rows_txt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rows_txt;
   }
 
   function submitForm(element) {
@@ -161,12 +208,8 @@
     list: {
       onChooseEvent: function() {
         user_id = $input_participant.getSelectedItemData().id
-        interviewer_id = document.querySelector('#search_add_to_interviewer_id').value
         button = document.getElementById('add-participant-button')
-        new_url = new URL(button.href)
-        new_url.searchParams.set('user_id', user_id)
-        new_url.searchParams.set('add_to_interviewer_id', interviewer_id)
-        button.href = new_url.href
+        button.href = updateURLParameter(button.href, 'user_id', user_id)
       },
       match: {
         enabled: true

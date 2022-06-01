@@ -70,27 +70,37 @@ class ContentsController < ApplicationController
   # Manage content_categories (contents/edit_mode)
   def content_link_category
     skip_authorization
+
     if params[:new_category].present?
+
       Category.create(company_id: current_user.company_id, title: params[:new_category][:title], kind: :training)
       @content = Content.find(params[:new_category][:content_id])
       @modal = 'true'
+
     elsif params[:delete].present?
+
       Category.find(params[:category_id]).destroy
       @content = Content.find(params[:content_id])
       @modal = 'true'
+
     elsif params[:add_categories].present?
+
       @action = params[:add_categories][:page]
       @content = Content.find(params[:add_categories][:content_id])
       ids = params[:content][:categories].reject{|x| x.empty?}
+
       ids.each do |category_id|
         unless ContentCategory.find_by(content_id: @content.id, category_id: category_id).present?
           ContentCategory.create(content_id: @content.id, category_id: category_id)
         end
       end
+
       ContentCategory.where(content_id: @content.id).where.not(category_id: ids).each do |content_category|
         content_category.destroy
       end
+
     end
+
     respond_to do |format|
       format.js
     end

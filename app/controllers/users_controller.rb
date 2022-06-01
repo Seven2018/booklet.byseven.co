@@ -47,7 +47,7 @@ class UsersController < ApplicationController
         end
 
         params[:tags].each do |tag_category_name, tag_name|
-          tag_category = TagCategory.find_by(name: tag_category_name)
+          tag_category = TagCategory.find_by(name: tag_category_name, company: current_user.company)
 
           UserTag.create(
             user: @user,
@@ -239,10 +239,14 @@ class UsersController < ApplicationController
 
     @users =
       if params[:manager].present?
-        User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :admin])
+        User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin])
       else
         User.where(company_id: current_user.company_id)
       end
+
+    if params[:campaign_id].present?
+      @users = @users - Campaign.find(params[:campaign_id]).users.distinct
+    end
 
     @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
 

@@ -151,10 +151,18 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='newContent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='newContent'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-keyboard="false"
+     data-backdrop="static">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
     <%= render 'contents/modals/new_content' %>
   </div>
+
 </div>
 
 

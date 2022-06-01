@@ -20,6 +20,8 @@ class Interview < ApplicationRecord
     submitted: 30
   }
 
+  serialize :archived_for, Hash
+
   include PgSearch::Model
   pg_search_scope :search_interviews,
     against: [ :title ],
@@ -105,6 +107,11 @@ class Interview < ApplicationRecord
 
   def locked?
     locked_at.present? && !will_save_change_to_locked_at?
+  end
+
+  def update_archived_for(name, value)
+    archived_for[name] = value
+    update_column(:archived_for, archived_for)
   end
 
   private
