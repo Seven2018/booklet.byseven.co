@@ -11,14 +11,14 @@
 
     <new-entity-subtitle class="mt-5">Target settings</new-entity-subtitle>
     <div class="flex-row-between-centered mt-2">
-      <p class="fs-1_2rem font-weight-500 bkt-light-grey6 mt-2">Employee can edit completion</p>
+      <p class="fs-1_2rem font-weight-500 bkt-light-grey6 mt-2">Employee can edit target</p>
 
-      <bkt-toggle :value="true"></bkt-toggle>
+      <bkt-toggle v-model="canEmployeeEdit"></bkt-toggle>
     </div>
     <div class="flex-row-between-centered mt-2">
       <p class="fs-1_2rem font-weight-500 bkt-light-grey6 mt-2">Employee can view target</p>
 
-      <bkt-toggle :value="true"></bkt-toggle>
+      <bkt-toggle v-model="canEmployeeView"></bkt-toggle>
     </div>
   </bkt-form>
 </template>
@@ -44,7 +44,9 @@ export default {
         starting_value: null,
         target_value: null,
         multiChoiceList: ['Option 1 (will the target value)']
-      }
+      },
+      canEmployeeEdit: true,
+      canEmployeeView: true,
     }
   },
   methods: {
