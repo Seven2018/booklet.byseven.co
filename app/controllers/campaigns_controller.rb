@@ -180,7 +180,11 @@ class CampaignsController < ApplicationController
 
     Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
 
-    head :ok
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:campaigns)
+                              .order(title: :asc)
+
+    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
   end
 
   def search_tags

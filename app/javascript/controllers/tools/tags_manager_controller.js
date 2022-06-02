@@ -33,5 +33,16 @@ export default class extends Controller {
 
     this.selectedTagsTarget.value = storage_array.filter(Boolean)
     this.element.querySelector('.btn-search').click()
+
+    this.blockEvents()
+  }
+
+  ///////////
+  // TOOLS //
+  ///////////
+
+  blockEvents() {
+    document.getElementById('bkt-blockDiv').classList.toggle('d-none')
+    document.querySelector('body').classList.toggle('wait')
   }
 }

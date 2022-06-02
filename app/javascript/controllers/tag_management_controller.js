@@ -6,6 +6,9 @@ export default class extends Controller {
   }
 
   connect() {
+    this.timer
+    this.waitTime = 500
+
     this.allTags = this.element.dataset.allTags.split(',').filter(value => value ? true : false)
 
     window.addEventListener('click', () => {
@@ -56,11 +59,16 @@ export default class extends Controller {
     const value = e.target.value
     const formTags = Array.from(document.querySelectorAll('.tag-value')).map(el => el.innerText)
 
-    this.searchTags(value, toPrint => {
-      const createTag = !toPrint.includes(value) ? value : null
+    clearTimeout(this.timer);
 
-      this.updateSuggestionList(toPrint, createTag)
-    })
+    this.timer = setTimeout(() => {
+      this.searchTags(value, toPrint => {
+        const displayed = Array.from(this.displayZoneTarget.querySelectorAll('.tag-value')).map(x => x.innerText.toLowerCase())
+        const createTag = !toPrint.includes(value) && !displayed.includes(value.toLowerCase()) ? value : null
+
+        this.updateSuggestionList(toPrint, createTag)
+      })
+    }, this.waitTime);
   }
 
   updateSuggestionList(arr, createTag) {
@@ -73,9 +81,9 @@ export default class extends Controller {
     if (createTag) {
       const div = document.createElement('div')
       div.className = 'tag-company-item d-flex align-items-center bkt-bg-light-grey-hover'
-      div.innerHTML = `<p class="tag-company-item ml-4 fs-1_2rem">Create</p> <button data-action="click->tag-management#addTag" data-create="tag" class="tag-company-item-value bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${createTag}</button>`
+      div.innerHTML = `<p class="tag-company-item ml-4 fs-1_2rem">Create</p> <button data-action="click->tag-management#addTag" data-create="tag" class="tag-company-item-value d-flex align-items-center fs-1_2rem font-weight-600 bkt-dark-grey bkt-bg-light-grey8 px-1rem py-0_5rem m-1rem rounded-15px width-fit-content"><div class="tag-value">${createTag}</div></button>`
 
-      this.tagListTarget.append(div)
+      this.tagListTarget.insertBefore(div, this.tagListTarget.firstElementChild.nextSibling)
     }
   }
 
@@ -150,10 +158,6 @@ export default class extends Controller {
       .then(callback)
   }
 
-  closeModal() {
-    this.modalTarget.classList.add('hidden')
-  }
-
   makeRemoveCompanyTagRequest(event) {
     const tag = event.target.dataset.tag.trim()
     const id = event.target.dataset.id.trim()
@@ -169,6 +173,9 @@ export default class extends Controller {
 
           if (suggestionTag === tag) div.remove()
         })
+
+        this.updateTagList(response)
+        this.updateCardTags(true)
       }
     })
   }
@@ -216,16 +223,20 @@ export default class extends Controller {
 
     if (tags_container != undefined) {
       const response_text = response.text()
-      console.log(response_text)
       response_text.then(value => {
         tags_container.innerHTML = value
       })
     }
   }
 
-  updateCardTags(e) {
+  updateCardTags(all = false) {
     const modal = document.querySelector('.modal.show')
-    const link = modal.querySelector('.update-line')
+    var link = modal.querySelector('.update-line')
+
+    if (all) {
+      link = modal.querySelector('.update-list')
+      modal.querySelector('.action-modal__close').click()
+    }
 
     link.click()
   }
