@@ -16,9 +16,7 @@
       <user-quick-indo :user="objectiveUser.user"></user-quick-indo>
 
       <div class="flex-row-end-centered mt-5">
-        <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" :href="$routes.generate('objective_new')">
-          New objective
-        </bkt-button>
+        <bkt-new-target-button></bkt-new-target-button>
       </div>
     </div>
 
@@ -89,6 +87,7 @@ import ObjectiveSwitcher from "../../../components/ObjectiveSwitcher";
 import BktBackButton from "../../../components/BktBackButton";
 import BktDotsButton from '../../../components/BktDotsButton'
 import UserQuickIndo from "../../../components/UserQuickIndo";
+import BktNewTargetButton from "../../../components/BktNewTargetButton";
 
 export default {
   props: ['userId', 'title', 'backButton'],
@@ -155,6 +154,7 @@ export default {
     }
   },
   components: {
+    BktNewTargetButton,
     UserQuickIndo,
     BktBackButton,
     ObjectiveSwitcher,

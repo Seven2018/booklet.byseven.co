@@ -1,5 +1,10 @@
 <template>
-  <a class="flex-row-between-centered" :class="assets[type]" :href="href">
+  <a
+      :class="[`${assets[type]} ${customClass}`, iconify ? 'flex-row-between-centered' : 'flex-row-center-centered']"
+      :href="href"
+      :style="{right: right || 'unset', left: left || 'unset' }"
+      @click="$emit('click', $event)"
+  >
     <span v-if="iconify" class="iconify mr-3" v-bind:data-icon="iconify"></span>
     <p class="">
       <slot></slot>
@@ -12,7 +17,10 @@ export default {
   props: {
     iconify: String,
     type: String,
-    href: String
+    href: String,
+    customClass: '',
+    right: String,
+    left: String
   },
   data() {
     return {

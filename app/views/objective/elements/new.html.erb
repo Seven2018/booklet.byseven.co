@@ -236,6 +236,21 @@
 
               </div>
 
+              <div class="d-flex align-items-center">
+
+                <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="fluent:target-arrow-20-filled"></span>
+                <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-10rem mb-0 mr-1rem">Target value</label>
+                <input name="indicator[options][target_value]"
+                       class="height-4rem width-10rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       type="number"
+                       value="100"
+                       data-objectives--objective-new-target="requiredInput"
+                       data-action="keyup->objectives--objective-new#enableSubmit"
+                       disabled>
+                <p class="fs-1_2rem font-weight-500 bkt-dark-grey">%</p>
+
+              </div>
+
             </div>
 
           </div>
@@ -248,13 +263,22 @@
             <p class="fs-1_2rem font-weight-500 bkt-light-grey6 mb-2rem">
               Add options to qualify the objective completion.
             </p>
+            <input
+              data-objectives--objective-new-target="multiChoiceValue"
+              name="indicator[options][target_value]"
+              class="hidden flex-grow-1 height-4rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+              type="text"
+              value="Option 1"
+              disabled>
 
             <div class="d-flex flex-column justify-content-start align-items-start"
                  data-objectives--objective-new-target="multiChoiceContainer">
 
               <div class="width-100 d-flex justify-content-between align-items-center mb-1rem">
 
-                <input name="indicator[options][choice_1]"
+                <input
+                  data-action="keyup->objectives--objective-new#updateMultichoseValue"
+                  name="indicator[options][choice_1]"
                        class="flex-grow-1 height-4rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                        type="text"
                        value="Option 1"

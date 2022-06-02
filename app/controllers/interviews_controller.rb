@@ -156,6 +156,7 @@ class InterviewsController < ApplicationController
     end
   end
 
+
   ####################
   ## ARCHIVE SYSTEM ##
   ####################
@@ -164,49 +165,40 @@ class InterviewsController < ApplicationController
     @interview = Interview.find(params[:id])
     authorize @interview
 
-    if @interview.archived?
-      @interview.update status: 'submitted'
+    if @interview.archived_for['Employee']
+      to_archive = false
       tab = 'archived'
     else
-      @interview.update status: 'archived'
+      to_archive = true
       tab = 'ongoing'
     end
+
+    @interview.update_archived_for('Employee', to_archive)
 
     redirect_to my_interviews_path(status: tab), format: 'js'
   end
 
   def archive_interviewer_interviews
     @interviews = Interview.where(campaign_id: params[:campaign_id],
-                                  interviewer_id: params[:interviewer_id],
-                                  label: ['Manager', 'Crossed'])
+                                  interviewer_id: params[:interviewer_id])
     authorize @interviews
 
-    if @interviews.map(&:status).uniq == ['archived']
-      @interviews.update_all status: 'submitted'
-
-      @interviews.each do |interview|
-
-        if interview.fully_answered?
-          interview.update status: 'submitted'
-        elsif interview.interview_answers.present?
-          interview.update status: 'in_progress'
-        elsif interview.crossed? && Interview.where(campaign: interview.campaign,
-                          employee: interview.employee,
-                          label: ['Employee', 'Manager']).map{|x| x.locked? }.uniq == [false]
-          interview.update status: 'not_available_yet'
-        else
-          interview.update status: 'not_started'
-        end
-      end
-
+    if @interviews.map{|x| x.archived_for['Manager']}.uniq == [true]
+      to_archive = false
       tab = 'archived'
     else
-      @interviews.update_all status: 'archived'
+      to_archive = true
       tab = 'ongoing'
+    end
+
+    @interviews.each do |interview|
+     interview.update_archived_for('Manager', to_archive)
     end
 
     redirect_to my_team_interviews_path(status: tab), format: 'js'
   end
+
+  ####################
 
   private
 

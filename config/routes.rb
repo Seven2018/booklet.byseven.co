@@ -169,6 +169,7 @@ Rails.application.routes.draw do
     resources :elements do
       collection do
         get :list
+        get :target_list
       end
       member do
         post :archive
@@ -177,6 +178,8 @@ Rails.application.routes.draw do
     end
     get :my_objectives, controller: :elements
     get :my_team_objectives, controller: :elements
+    get :targets, controller: :elements
+    get :employees, controller: :elements
     resources :indicators, only: %i[update destroy]
     resources :logs
     resources :users, only: [:index, :show] do
@@ -189,6 +192,7 @@ Rails.application.routes.draw do
         get :my_team_objectives_archived_list
       end
     end
+    resources :templates, only: [:index, :new, :create]
   end
 
   # PAGES

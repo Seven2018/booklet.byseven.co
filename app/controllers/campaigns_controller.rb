@@ -55,9 +55,16 @@ class CampaignsController < ApplicationController
       id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 
-    @todo_campaigns = @campaigns.where_not_exists(:interviews, employee: current_user, status: ['submitted', 'archived'])
-    @ongoing_campaigns = @campaigns.where_not_exists(:interviews, employee: current_user, status: 'archived')
-    @archived_campaigns = @campaigns.where_exists(:interviews, employee: current_user, status: 'archived')
+    ongoing_interviews = Interview.where(employee: current_user, label: 'Employee')
+                                 .select{|x| !x.archived_for['Employee']}
+    archived_interviews = Interview.where(employee: current_user, label: 'Employee')
+                                   .select{|x| x.archived_for['Employee']}
+
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id))
+    @archived_campaigns = @campaigns.where_exists(:interviews, id: archived_interviews.map(&:id))
+    @todo_campaigns = @ongoing_campaigns.where_not_exists(:interviews, employee: current_user,
+                                                                       label: 'Employee',
+                                                                       status: 'submitted')
 
     @active_tab = params.dig(:status).presence || 'ongoing'
 
@@ -81,9 +88,16 @@ class CampaignsController < ApplicationController
     @campaigns = @campaigns.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
 
-    @todo_campaigns = @campaigns.where_not_exists(:interviews, interviewer: current_user, status: ['submitted', 'archived'])
-    @ongoing_campaigns = @campaigns.where_not_exists(:interviews, interviewer: current_user, status: 'archived')
-    @archived_campaigns = @campaigns.where_exists(:interviews, interviewer: current_user, status: 'archived')
+    ongoing_interviews = Interview.where(interviewer: current_user)
+                                  .select{|x| !x.archived_for['Manager'].present?}
+    archived_interviews = Interview.where(employee: current_user)
+                                   .select{|x| x.archived_for['Manager'].present?}
+
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id)).distinct
+    @archived_campaigns = @campaigns.where_exists(:interviews, id: archived_interviews.map(&:id)).distinct
+    @todo_campaigns = @ongoing_campaigns.where_not_exists(:interviews, interviewer: current_user,
+                                                                       label: ['Manager', 'Crossed'],
+                                                                       status: 'submitted')
 
     @active_tab = params.dig(:status).presence || 'ongoing'
 

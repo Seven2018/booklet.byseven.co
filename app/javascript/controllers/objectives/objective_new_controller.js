@@ -4,7 +4,7 @@ export default class extends Controller {
   static get targets () {
     return ['displayElement', 'multiChoiceContainer', 'multiChoiceTemplate',
             'selectedUsers', 'selectedUsersPillStorage', 'selectedUsersPillStorageModal',
-            'selectedCount', 'filteredCount', 'selectAllButton', 'results', 'requiredInput', 'submitButton']
+            'selectedCount', 'filteredCount', 'selectAllButton', 'results', 'requiredInput', 'submitButton', 'multiChoiceValue']
   }
 
   static get values () {
@@ -160,6 +160,10 @@ export default class extends Controller {
     const option = e.currentTarget.parentNode
 
     option.remove()
+  }
+
+  updateMultichoseValue(e) {
+    this.multiChoiceValueTarget.value = e.currentTarget.value
   }
 
 

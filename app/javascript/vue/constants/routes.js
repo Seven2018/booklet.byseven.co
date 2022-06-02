@@ -11,17 +11,22 @@ const routes = {
   objective_elements_id: '/objective/elements/{id}',
   objective_user_my_team_current_list: '/objective/users/{id}/my_team_objectives_current_list',
   objective_user_my_team_archived_list: '/objective/users/{id}/my_team_objectives_archived_list',
-  objective_user_my_team_objectives: '/objective/users/{id}/my_team_objectives'
+  objective_user_my_team_objectives: '/objective/users/{id}/my_team_objectives',
+  objective_target_list: '/objective/elements/target_list',
+  objective_templates_new: '/objective/templates/new',
 }
 
 export default {
-  generate(path, options) {
+  generate(path, options, pagination = null) {
     if (path in routes) {
       let pathValue = routes[path]
 
       for (const key in options) {
         pathValue = pathValue.replace(`{${key}}`, options[key])
       }
+
+      if (pagination) pathValue = `${pathValue}?page[number]=${pagination}&page[size]=10`
+
       return pathValue
     } else {
       console.log('===== logs =====')
