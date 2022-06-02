@@ -46,4 +46,16 @@ class CampaignPolicy < ApplicationPolicy
     # TODO devise a better policy
     true
   end
+
+  def toggle_tag?
+    create?
+  end
+
+  def remove_company_tag?
+    create?
+  end
+
+  def search_tags?
+    create?
+  end
 end

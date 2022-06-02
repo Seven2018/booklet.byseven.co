@@ -14,6 +14,8 @@ module CampaignDrafts
       def call
         if create_interviews.all?(&:present?)
           campaign
+          @campaign.categories << @campaign.interview_forms.map(&:categories).flatten.uniq
+          @campaign
         else
           campaign.destroy
           nil

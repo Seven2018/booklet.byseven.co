@@ -1,0 +1,12 @@
+<% displayed_tags.each do |category| %>
+
+  <button class="d-flex align-items-center fs-1_2rem font-weight-600
+                 bkt-dark-grey bkt-bg-light-grey8 px-1rem py-0_5rem mr-1rem mb-1rem rounded-15px width-fit-content"
+          data-action="click->tools--tags-manager#selectTag"
+          data-id="<%= category.id %>">
+    <%= category.title %>
+    <input class="d-none"
+           type="checkbox">
+  </button>
+
+<% end %>

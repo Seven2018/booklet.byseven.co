@@ -9,7 +9,6 @@ class Category < ApplicationRecord
 
   enum kind: {
     interview: 0,
-    campaign: 5,
     training: 10,
   }
 end

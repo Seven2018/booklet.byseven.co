@@ -18,12 +18,11 @@
     </div>
 
     <% key = "check-box-user-id-#{user.id}" %>
-    <label
-      data-controller='toggle-checked-participants'
-      class='flex-row-center-centered rounded-3px my-1rem mx-2rem border-bkt-light-grey5-0_5px'
-      style='height: 2.4rem; width: 2.4rem;'
-      for='<%= key %>'
-    >
+    <label class='flex-row-center-centered rounded-3px my-1rem mx-2rem border-bkt-light-grey5-0_5px'
+           style='height: 2.4rem; width: 2.4rem;'
+           for='<%= key %>'
+           data-controller='toggle-checked-participants'>
+
       <%= check_box_tag(
         "_",
         nil,
@@ -37,12 +36,14 @@
           toggle_checked_participants_target: "togglable"
         }
       ) %>
+
       <span
         class="iconify fs-1_8rem bkt-blue"
         data-toggle-checked-participants-target="icon"
         data-selected='<%= selected %>'
         data-icon="bi:check">
       </span>
+
     </label>
   </div>
 <% end %>

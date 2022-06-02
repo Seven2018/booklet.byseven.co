@@ -1,19 +1,24 @@
 class CampaignsController < ApplicationController
   include InterviewUsersFilter
-  before_action :set_campaign, only: %i[show edit send_notification_email destroy]
+  before_action :set_campaign, only: %i[show edit send_notification_email destroy toggle_tag remove_company_tag search_tags index_line]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
   def index
-    @company_tags = Category
-                      .distinct
-                      .where(company_id: current_user.company_id, kind: :interview)
-                      .pluck(:title)
     campaigns = policy_scope(Campaign).where(company: current_user.company)
                                       .where_exists(:interviews)
                                       .order(created_at: :desc)
 
     filter_campaigns(campaigns)
+
+    @company_tags = Category
+                      .distinct
+                      .where(company_id: current_user.company_id, kind: :interview)
+                      .pluck(:title)
+
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:campaigns)
+                              .order(title: :asc)
 
     redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
 
@@ -128,6 +133,67 @@ class CampaignsController < ApplicationController
     head :no_content
   end
 
+  ###########################
+  ## CATEGORIES MANAGEMENT ##
+  ###########################
+
+  def toggle_tag
+    authorize @campaign
+    tag = params.require(:tag)
+    category = Category.find_by(company_id: current_user.company_id, title: tag, kind: :interview)
+
+    if category.nil?
+      new_category = Category.create(company_id: current_user.company_id, title: tag, kind: :interview)
+      @campaign.categories << new_category
+    else
+      if @campaign.categories.exists?(category.id)
+        @campaign.categories.delete(category)
+      else
+        @campaign.categories << category
+      end
+    end
+
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:campaigns)
+                              .order(title: :asc)
+
+    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
+  end
+
+  def remove_company_tag
+    authorize @campaign
+    tag = params.require(:tag)
+
+    Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
+
+    head :ok
+  end
+
+  def search_tags
+    authorize @campaign
+    input = params[:input]
+    black_tags = Campaign.find(@campaign.id).categories.pluck(:title)
+    tags = Category
+             .where(company_id: current_user.company_id, kind: :interview)
+             .where.not(title: black_tags)
+             .where('lower(title) LIKE ?', "%#{input.downcase}%")
+             .pluck(:title)
+
+    render json: tags, status: :ok
+  end
+
+  def index_line
+    skip_authorization
+
+    @campaign = @campaign.decorate
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  ###########################
+
   private
 
   def filter_campaigns(campaigns)
@@ -146,11 +212,9 @@ class CampaignsController < ApplicationController
     if params.dig(:search, :tags).present?
       selected_tags = params.dig(:search, :tags).split(',')
 
-      @campaigns = @campaigns
-                     .where(company_id: current_user.company_id)
-                     .tag_matches(selected_tags)
-                     .select { |campaign| (selected_tags & campaign.tags) == selected_tags }
-      @campaigns = Campaign.get_activerecord_relation(@campaigns) # to cast Array to ActiveRecord Relation
+      selected_tags.each do |tag|
+        @campaigns = @campaigns.where_exists(:categories, id: tag)
+      end
     end
 
     if search_title.present?

@@ -31,7 +31,14 @@ Rails.application.routes.draw do
     resources :users, only: :index
     resources :interview_sets, only: %i[create destroy]
   end
-  resources :campaigns, only: %i[index show destroy]
+  resources :campaigns, only: %i[index show destroy] do
+    member do
+      post 'search_tags'
+      post 'toggle_tag'
+      delete 'remove_company_tag'
+      get 'index_line'
+    end
+  end
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
   get :send_notification_email, controller: :campaigns
@@ -135,6 +142,7 @@ Rails.application.routes.draw do
       post 'search_tags'
       post 'toggle_tag'
       delete 'remove_company_tag'
+      get 'index_line'
     end
   end
   get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'

@@ -25,12 +25,8 @@ export default class extends Controller {
     this.toogleTag(tag, response => {
       if (response.status >= 200 && response.status < 400) {
         const buttonElement = document.createElement('button');
-        buttonElement.className = 'tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem mb-1'
-        buttonElement.innerHTML = `
-          <div class="d-flex align-items-center">
-            <div class="tag-value pl-2">${tag}
-            </div> <div class="pl-2 opacity_0 opacity-hover_1" data-action="click->tag-management#remove">X</div>
-          </div>`
+        buttonElement.className = `tags d-flex align-items-center fs-1_2rem font-weight-600 ${this.element.dataset.color} ${this.element.dataset.background_color} px-1rem py-0_5rem mr-1rem mb-1rem rounded-15px width-fit-content`
+        buttonElement.innerHTML = `<div class="tag-value">${tag}</div> <div class="fs-1_6rem pl-2 opacity_70pc opacity-hover_1" data-action="click->tag-management#remove">&times;</div>`
 
         this.displayZoneTarget.prepend(buttonElement)
         targetItemValue.remove()
@@ -39,8 +35,12 @@ export default class extends Controller {
         this.inputFilterTarget.value = ''
         this.inputFilterTarget.placeholder = ''
         this.inputFilterTarget.focus()
+
+        this.updateTagList(response)
+        this.updateCardTags()
       }
     })
+
   }
 
   displayList() {
@@ -89,12 +89,18 @@ export default class extends Controller {
         formTags.forEach(div => {
           const formTag = div.innerText.trim()
 
-          if (tag === formTag) div.parentElement.parentElement.remove()
+          if (tag === formTag) {
+            div.parentElement.remove()
+            const suggestionItem = this.createSuggestionItem(tag)
+            this.tagListTarget.append(suggestionItem)
+          }
         })
-        const suggestionItem = this.createSuggestionItem(tag)
-        this.tagListTarget.append(suggestionItem)
+
+        this.updateTagList(response)
+        this.updateCardTags()
       }
     })
+
   }
 
   toogleTag(tag, callback) {
@@ -173,7 +179,7 @@ export default class extends Controller {
              id="tag-suggestion-${Date.now()}"
              data-tag-name="${tag}"
         >
-          <button class="tag-company-item-value d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem">${tag}</button>
+          <button class="tag-company-item-value d-flex align-items-center fs-1_2rem font-weight-600 bkt-dark-grey bkt-bg-light-grey8 px-0_75rem py-0_5rem m-1rem rounded-15px width-fit-content">${tag}</button>
           <div class="position-relative">
             <button class="p-2 rounded-2px bkt-bg-light-grey-hover mr-2" data-action="click->tag-management#showTagOptions">···</button>
             <div class="company-tag-options d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
@@ -200,4 +206,28 @@ export default class extends Controller {
       .then(response => response.json())
       .then(callback)
   }
+
+  /////////////////////////
+  // UPDATE TAGS DISPLAY //
+  /////////////////////////
+
+  updateTagList(response) {
+    const tags_container = document.querySelector('#displayed-tags')
+
+    if (tags_container != undefined) {
+      const response_text = response.text()
+      console.log(response_text)
+      response_text.then(value => {
+        tags_container.innerHTML = value
+      })
+    }
+  }
+
+  updateCardTags(e) {
+    const modal = document.querySelector('.modal.show')
+    const link = modal.querySelector('.update-line')
+
+    link.click()
+  }
 }
+
