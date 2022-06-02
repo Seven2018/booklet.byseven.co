@@ -1,5 +1,5 @@
 <template>
-  <bkt-form @submit="handleSubmit">
+  <bkt-form @submit="handleSubmit" :loading="loading">
     <new-entity-title>Create a target template</new-entity-title>
 
     <new-entity-subtitle>Target informations</new-entity-subtitle>
@@ -31,17 +31,19 @@ import BktInputForm from "../../../components/BktInputForm";
 import BktTextareaForm from "../../../components/BktTextareaForm";
 import TargetIndicatorValues from "../../../components/TargetIndicatorValues";
 import BktToggle from '../../../components/BktToggle'
+import BktSpinner from "../../../components/BktSpinner";
 
 export default {
   data() {
     return {
+      loading: false,
       title: null,
       desc: null,
       indicator: {
         type: 'boolean',
         starting_value: null,
         target_value: null,
-        multiChoiceList: null
+        multiChoiceList: ['Option 1 (will the target value)']
       }
     }
   },
@@ -63,6 +65,7 @@ export default {
     }
   },
   components: {
+    BktSpinner,
     TargetIndicatorValues,
     BktTextareaForm,
     BktInputForm,

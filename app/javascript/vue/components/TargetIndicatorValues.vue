@@ -7,7 +7,7 @@
       >
         <target-indicator-box
             :options="box"
-            @click="activeBox = box.type"
+            @click="$emit('input', {...value, type: box.type})"
         ></target-indicator-box>
       </div>
     </div>
@@ -26,12 +26,14 @@
             v-if="box.type === 'multi-choice'"
             class="flex-column mt-2">
           <bkt-input-form
-              v-for="multiChoiceValue in multiChoiceValues"
-              :placeholder="multiChoiceValue.placeholder"
               class="mt-2"
+              v-for="multiChoiceValue in value.multiChoiceList"
+              placeholder="New option"
+              :value="multiChoiceValue"
+              @input="updateOption(multiChoiceValue, $event)"
           ></bkt-input-form>
           <bkt-button
-              @click="addOption($event.target.value)"
+              @click="addOption"
               class="mt-3 width-15rem" type="blue">
             Add an option
           </bkt-button>
@@ -44,6 +46,7 @@
             <bkt-input-form
                 class="width-7rem"
                 :type="box.type === 'boolean' ? 'text' : 'number'"
+                @input="$emit('input', {...value, starting_value: $event})"
             ></bkt-input-form>
           </div>
 
@@ -53,6 +56,7 @@
             <bkt-input-form
                 class="width-7rem"
                 :type="box.type === 'boolean' ? 'text' : 'number'"
+                @input="$emit('input', {...value, target_value: $event})"
             ></bkt-input-form>
           </div>
         </div>
@@ -77,7 +81,6 @@ export default {
   // }
   data() {
     return {
-      activeBox: 'boolean',
       boxes: [
         {
           type: 'boolean',
@@ -112,23 +115,29 @@ export default {
           selected: false
         },
       ],
-      multiChoiceValues: [
-        {placeholder: 'Option 1 (will the target value)', value: null}
-      ]
     }
   },
   computed: {
     getBoxes() {
       return this.boxes.map(box => {
         return {
-          ...box, selected: this.activeBox === box.type
+          ...box, selected: this.value.type === box.type
         }
       })
     }
   },
   methods: {
-    addOption(value) {
-      this.multiChoiceValues.push({placeholder: 'Write an option...', value})
+    addOption() {
+      this.value.multiChoiceList.push('')
+      this.$emit('input', {...this.value})
+    },
+    updateOption(option, newOption) {
+      for (const key in this.value.multiChoiceList) {
+        if (this.value.multiChoiceList[key] === option) {
+          this.value.multiChoiceList[key] = newOption
+          this.$emit('input', {...this.value})
+        }
+      }
     }
   },
   components: {BktButton, BktInputForm, TargetIndicatorBox},

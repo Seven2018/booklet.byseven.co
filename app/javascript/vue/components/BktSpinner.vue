@@ -6,8 +6,9 @@
 <!--    <div></div>-->
 <!--  </div>-->
   <div class="flex-row-between-centered align-items-center">
-    <lottie-player v-show="color === 'blue'" src="https://assets10.lottiefiles.com/packages/lf20_hmnalrkv.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
-    <lottie-player v-show="color === 'red'" src="https://assets2.lottiefiles.com/packages/lf20_rjfxtksx.json"  background="transparent"  speed="1" loop  autoplay></lottie-player>
+    <lottie-player v-show="color === 'blue'" src="https://assets10.lottiefiles.com/packages/lf20_hmnalrkv.json"  background="transparent"  speed="1" loop  autoplay :style="{width: width || '30px', height: height || '30px'}"></lottie-player>
+    <lottie-player v-show="color === 'red'" src="https://assets2.lottiefiles.com/packages/lf20_rjfxtksx.json"  background="transparent"  speed="1" loop  autoplay :style="{width: width || '30px', height: height || '30px'}"></lottie-player>
+    <lottie-player v-show="color === 'white'" src="https://assets6.lottiefiles.com/packages/lf20_0npgmmyq.json"  background="transparent"  speed="1" loop  autoplay :style="{width: width || '30px', height: height || '30px'}"></lottie-player>
     <span class="pr-2">
       <slot></slot>
     </span>
@@ -16,15 +17,15 @@
 
 <script>
 export default {
-  props: ['color']
+  props: ['color', 'width', 'height']
 }
 </script>
 
 <style scoped>
-lottie-player {
-  width: 30px;
-  height: 30px
-}
+/*lottie-player {*/
+/*  width: 30px;*/
+/*  height: 30px*/
+/*}*/
 /*.lds-ring {*/
 /*  display: inline-block;*/
 /*  position: relative;*/
