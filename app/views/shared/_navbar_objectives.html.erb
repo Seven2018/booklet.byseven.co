@@ -29,4 +29,36 @@
 
   <% end %>
 
+
+  <% if Objective::ElementPolicy.new(current_user, nil).targets? %>
+
+    <%= link_to objective_targets_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :elements_targets}" do %>
+
+      <h4>Targets</h4>
+
+    <% end %>
+
+  <% end %>
+
+  <% if Objective::ElementPolicy.new(current_user, nil).employees? %>
+
+    <%= link_to objective_employees_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :elements_employees}" do %>
+
+      <h4>Employees</h4>
+
+    <% end %>
+
+  <% end %>
+
+
+  <% if Objective::ElementPolicy.new(current_user, nil).templates? %>
+
+    <%= link_to objective_templates_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :elements_templates}" do %>
+
+      <h4>Templates</h4>
+
+    <% end %>
+
+  <% end %>
+
 </div>
