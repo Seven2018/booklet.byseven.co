@@ -1,5 +1,5 @@
 class Objective::Indicator < ApplicationRecord
-  belongs_to :objective_element, class_name: "Objective::Element"
+  belongs_to :objective_element, class_name: "Objective::Element", optional: true
   has_many :objective_logs, class_name: "Objective::Log", foreign_key: "objective_indicator_id", dependent: :destroy
 
   enum indicator_type: {
@@ -10,7 +10,7 @@ class Objective::Indicator < ApplicationRecord
   }
 
   enum status: {
-    not_completed: 0,
+    uncompleted: 0,
     in_progress: 50,
     completed: 100
   }

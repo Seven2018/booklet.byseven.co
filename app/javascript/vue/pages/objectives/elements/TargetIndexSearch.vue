@@ -26,7 +26,7 @@
         >
           <option value="completed">Completed</option>
           <option value="in_progress">In progress</option>
-          <option value="not_completed">Not Completed</option>
+          <option value="uncompleted">Not Completed</option>
         </select>
         <button class="ml-5 font-weight-500 fs-1_6rem" @click="reset">
           Reset

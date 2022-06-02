@@ -7,7 +7,7 @@
       >
         <target-indicator-box
             :options="box"
-            @click="$emit('input', {...value, type: box.type})"
+            @click="$emit('input', {...value, indicator_type: box.type})"
         ></target-indicator-box>
       </div>
     </div>
@@ -23,7 +23,7 @@
 
 <!--        for multi-->
         <div
-            v-if="box.type === 'multi-choice'"
+            v-if="box.type === 'multi_choice'"
             class="flex-column mt-2">
           <bkt-input-form
               class="mt-2"
@@ -72,13 +72,6 @@ import BktButton from "./BktButton";
 
 export default {
   props: ['value'],
-  // TODO: add input and emit to every field for fit with
-  // {
-  //   type: 'boolean',
-  //   starting_value: null,
-  //   target_value: null,
-  //   multiChoiceList: null
-  // }
   data() {
     return {
       boxes: [
@@ -91,7 +84,7 @@ export default {
           selected: false
         },
         {
-          type: 'number',
+          type: 'numeric_value',
           iconify: 'ic:baseline-numbers',
           title: 'Number',
           shortDesc: 'For quantifiable objectives, chose a value (persons, money, apples, ...), a start and target value.',
@@ -107,7 +100,7 @@ export default {
           selected: false
         },
         {
-          type: 'multi-choice',
+          type: 'multi_choice',
           iconify: 'fluent:text-bullet-list-ltr-16-filled',
           title: 'Multi-choice',
           shortDesc: 'For non quantifiable objectives, you can add and edit choices to rate or qualify your objective.',
@@ -121,7 +114,7 @@ export default {
     getBoxes() {
       return this.boxes.map(box => {
         return {
-          ...box, selected: this.value.type === box.type
+          ...box, selected: this.value.indicator_type === box.type
         }
       })
     }

@@ -1,7 +1,9 @@
 class Objective::Element < ApplicationRecord
+  default_scope { where(template: false ) }
+
   belongs_to :company
   belongs_to :creator, class_name: 'User', optional: true
-  belongs_to :objectivable, polymorphic: true
+  belongs_to :objectivable, polymorphic: true, optional: true
 
   has_one :objective_indicator, class_name: "Objective::Indicator", foreign_key: "objective_element_id", dependent: :destroy
   has_many :objective_logs, class_name: "Objective::Log", foreign_key: "objective_element_id", dependent: :destroy
@@ -31,6 +33,10 @@ class Objective::Element < ApplicationRecord
 
   def manager
     objectivable_type == 'User' ? employee.manager : nil
+  end
+
+  def self.templates
+    rewhere(template: true)
   end
 
 end

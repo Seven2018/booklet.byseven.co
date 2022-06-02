@@ -4,6 +4,7 @@
 
     <new-entity-subtitle>Target informations</new-entity-subtitle>
     <bkt-input-form v-model="title" class="mt-3" placeholder="Title"></bkt-input-form>
+    <bkt-input-error-text v-if="titleError">Fill the title please</bkt-input-error-text>
     <bkt-textarea-form v-model="desc" class="mt-3 " inputClass="min-h-10rem" placeholder="Description"></bkt-textarea-form>
 
     <new-entity-subtitle class="mt-5">Target Indicator</new-entity-subtitle>
@@ -32,15 +33,18 @@ import BktTextareaForm from "../../../components/BktTextareaForm";
 import TargetIndicatorValues from "../../../components/TargetIndicatorValues";
 import BktToggle from '../../../components/BktToggle'
 import BktSpinner from "../../../components/BktSpinner";
+import BktInputErrorText from "../../../components/BktInputErrorText";
+import axios from "../../../plugins/axios";
 
 export default {
   data() {
     return {
       loading: false,
       title: null,
+      titleError: false,
       desc: null,
       indicator: {
-        type: 'boolean',
+        indicator_type: 'boolean',
         starting_value: null,
         target_value: null,
         multiChoiceList: ['Option 1 (will the target value)']
@@ -50,7 +54,7 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       // elements
       // objective_element[title]
       // objective_element[description]
@@ -63,10 +67,34 @@ export default {
 
       // can_employee_edit
       // can_employee_view
-      console.log('submit', this.title, this.desc, this.indicator)
+      console.log('submit', this.title, this.desc, this.indicator, this.canEmployeeEdit, this.canEmployeeView)
+      if (!this.title) {
+        this.titleError = true
+        return
+      }
+
+      this.loading = true
+      try {
+        await axios.post(
+            this.$routes.generate('objective_templates'),
+            {
+              title: this.title,
+              description: this.desc,
+              indicator: this.indicator,
+              can_employee_edit: this.canEmployeeEdit,
+              can_employee_view: this.canEmployeeView,
+            }
+        )
+
+      } catch (e) {
+        console.log('error', e.response.data) // TODO: maybe a notification ?
+      }
+      this.loading = false
+      window.location.href = this.$routes.generate('objective_templates')
     }
   },
   components: {
+    BktInputErrorText,
     BktSpinner,
     TargetIndicatorValues,
     BktTextareaForm,
