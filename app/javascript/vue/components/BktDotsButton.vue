@@ -10,6 +10,7 @@
     <div
         v-if="display"
         class="position-absolute bkt-bg-white rounded-5px bkt-box-shadow-medium z-index-5 width-max-content"
+        style="right: 0"
     >
       <slot></slot>
     </div>

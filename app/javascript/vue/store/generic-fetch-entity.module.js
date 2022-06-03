@@ -1,6 +1,7 @@
 import HTTP from '../plugins/axios'
 import routes from '../constants/routes'
 import store from "./index";
+import axios from "../plugins/axios";
 
 export default {
   namespaced: true,
@@ -40,6 +41,18 @@ export default {
 
         commit('setData', res.data)
         commit('setPagination', res.data.meta)
+      } catch (e) {
+        commit('setError', e.message)
+      }
+    },
+    async delete({commit, state}, {pathKey, id, dataKind}) {
+      try {
+        await axios.delete(routes.generate(pathKey, {id: id}))
+
+        commit('setData', {
+          ...state.data,
+          [dataKind]: state.data[dataKind].filter(item => item.id != id)
+        })
       } catch (e) {
         commit('setError', e.message)
       }

@@ -16,6 +16,7 @@ const routes = {
   objective_templates_new: '/objective/templates/new',
   objective_templates: '/objective/templates',
   objective_templates_list: '/objective/templates/list',
+  objective_templates_id: '/objective/templates/{id}',
 }
 
 export default {

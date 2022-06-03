@@ -51,9 +51,14 @@
 
       <td>
         <div class="d-flex align-items-center">
-          <a class="bkt-objective-blue underline" :href="$routes.generate('objective_elements_id', {id})">
-            See details
-          </a>
+          <bkt-dots-button>
+            <button
+                class="flex-row-start-centered fs-1_4rem bkt-red bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
+                @click="deleteTemplate(id)"
+            >
+              Delete
+            </button>
+          </bkt-dots-button>
         </div>
       </td>
     </template>
@@ -64,6 +69,7 @@
 import tools from "../../../mixins/tools";
 import store from "../../../store";
 import IndexTable from "../../../components/IndexTable";
+import BktDotsButton from '../../../components/BktDotsButton'
 
 export default {
   mixins: [tools],
@@ -97,8 +103,15 @@ export default {
         if (regex.test(opt)) count++
       }
       return count
+    },
+    deleteTemplate(id) {
+      store.dispatch('genericFetchEntity/delete', {
+        pathKey: 'objective_templates_id',
+        id,
+        dataKind: 'objective/templates'
+      })
     }
   },
-  components: {IndexTable}
+  components: {IndexTable, BktDotsButton}
 }
 </script>

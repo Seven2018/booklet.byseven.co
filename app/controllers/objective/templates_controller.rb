@@ -53,6 +53,16 @@ class Objective::TemplatesController < ApplicationController
     end
   end
 
+  def destroy
+    template = Objective::Template.find(params.require(:id))
+
+    if template.destroy!
+      head :ok
+    else
+      render json: template.errors.messages, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def prepare_options
