@@ -107,6 +107,13 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.index ["owner_id"], name: "index_campaigns_on_owner_id"
   end
 
+  create_table "campaigns_categories", id: false, force: :cascade do |t|
+    t.bigint "campaign_id"
+    t.bigint "category_id"
+    t.index ["campaign_id"], name: "index_campaigns_categories_on_campaign_id"
+    t.index ["category_id"], name: "index_campaigns_categories_on_category_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "title", default: "", null: false
     t.bigint "company_id"
@@ -435,7 +442,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"

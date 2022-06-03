@@ -1,7 +1,10 @@
-<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column' data-controller="change-page">
+<div class='height-100 bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column' data-controller="change-page">
+
   <div class='bkt-page-container-content'>
+
     <div id='controls'
          class='d-flex justify-content-between align-items-center mb-2rem'>
+
       <h1 class="fs-2_4rem font-weight-700">Templates</h1>
 
       <% if InterviewFormPolicy.new(current_user, nil).create? %>
@@ -21,102 +24,84 @@
          data-controller="change-page">
 
       <div id="searchbar"
-           class="d-flex justify-content-start align-items-center position-relative"
-           style="margin-bottom: 4rem;"
-           data-controller="remember-search">
+           class="position-relative mb-4rem"
+           data-controller="remember-search tools--tags-manager"
+           data-color="bkt-blue"
+           data-background-color="bkt-bg-light-blue">
 
-        <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
-          style="left: 25rem; bottom: 16.6px;"
-        ></i>
+        <div class="d-flex justify-content-start align-items-center mb-2rem">
 
-        <%= simple_form_for(:search, url: interview_forms_path, method: :get, remote: true,
-          html: {
-            class: 'd-flex align-items-center'
-          },
-          data: {
-            remember_search_key_value: 'bookletInterviewFormsSearches',
-          }
-        ) do |f| %>
+          <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
+            style="left: 25rem; top: 16.6px;"></i>
 
-          <%=
-            f.input(
-              :title,
-              placeholder: 'Search',
-              wrapper_html: {
-                class: 'my-0 height-5rem'
-              },
-              input_html: {
-                class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-                style: 'width: 28rem; padding: 0 4rem 0 1rem;',
-                autocomplete: 'off',
+          <%= simple_form_for(:search, url: interview_forms_path, method: :get, remote: true,
+            html: {
+              class: 'd-flex align-items-center'
+            },
+            data: {
+              remember_search_key_value: 'bookletInterviewFormsSearches',
+            }
+          ) do |f| %>
+
+            <%=
+              f.input(
+                :title,
+                placeholder: 'Search',
+                wrapper_html: {
+                  class: 'my-0 height-5rem'
+                },
+                input_html: {
+                  class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                  style: 'width: 28rem; padding: 0 4rem 0 1rem;',
+                  autocomplete: 'off',
+                  data: {
+                    remember_search_target: :search,
+                    action: 'keyup->remember-search#storeSearch'
+                  }
+                },
+                label: false,
+                required: false
+              )
+            %>
+
+            <%= f.hidden_field :tags, value: [], data: { tools__tags_manager_target: "selectedTags" } %>
+            <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
+            <div class="mr-3"></div>
+
+            <%=
+              f.submit(
+                'Search',
+                class: 'py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                onclick: "document.querySelector('body').classList.add('wait');",
                 data: {
-                  remember_search_target: :search,
-                  action: 'keyup->remember-search#storeSearch'
+                  remember_search_target: :submit,
+                  change_page_target: :submit,
+                  search_form: :submit
                 }
-              },
-              label: false,
-              required: false
-            )
-          %>
+              )
+            %>
 
-          <%= f.hidden_field :tags, data: {filter: :tags} %>
-          <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
-          <div class="mr-3"></div>
-
-          <%=
-            f.submit(
-              'Search',
-              class: 'py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-              onclick: "document.querySelector('body').classList.add('wait');",
-              data: {
-                remember_search_target: :submit,
-                change_page_target: :submit,
-                search_form: :submit
-              }
-            )
-          %>
-
-          <button type='submit' class="btn-search d-block d-sm-none">
-            <i class="fas fa-search"></i>
-          </button>
-
-          <button class='btn-reset bkt-blue ml-1rem'
-                  data-action="click->remember-search#resetAllFilter">
-            Reset
-          </button>
-
-        <% end %>
-
-        <div
-          class="width-100 position-relative"
-          data-controller="campaign-tag-filter"
-          data-company-tags="<%= @company_tags.join(',') %>"
-          data-path="<%= interview_forms_path %>"
-        >
-          <div class="flex-row-end-centered">
-            <button data-action="click->campaign-tag-filter#displayList" class="flex-row-between-centered bkt-blue px-3 py-2 bkt-box-shadow-medium">
-              <span class="iconify m-2" data-width="20" data-height="20" data-icon="fluent:filter-28-filled"></span>
-              <p>Filter <span class="rounded-5px bkt-bg-light-blue px-2 hidden" data-campaign-tag-filter-target="filterCount"></span></p>
+            <button type='submit' class="btn-search d-block d-sm-none">
+              <i class="fas fa-search"></i>
             </button>
-          </div>
-          <div
-            data-campaign-tag-filter-target="tagList"
-            data-action="click->campaign-tag-filter#stopPropagation"
-            class="d-none position-absolute z-index-50 right-0 width-35rem bkt-box-shadow-medium bkt-bg-white max-h-40rem overflow-y-auto">
-            <div class="pl-3 my-4"><p class="bkt-light-grey">Filter by template tags</p></div>
-            <div data-campaign-tag-filter-target="selectedTagsDom" class="pl-3 my-4"><p class="">Empty</p></div>
-            <div class="pl-3 my-4"><input data-action="keyup->campaign-tag-filter#search" type="text" placeholder="Search" class="rounded-5px pl-2rem"></div>
-            <div data-campaign-tag-filter-target="unselectedTagsDom" class="pl-3 py-4 border-top">
-              <% @company_tags.each do |tag| %>
-                <div class="flex-row-start-centered bkt-placeholder-light-grey" >
-                  <button class="d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 rounded-2px fs-1_2rem" data-action="click->campaign-tag-filter#toggleTag">
-                    <%= tag %>
-                  </button>
-                </div>
-              <% end %>
-            </div>
-          </div>
+
+            <button class='btn-reset bkt-blue ml-1rem'
+                    data-action="click->remember-search#resetAllFilter">
+              Reset
+            </button>
+
+          <% end %>
+
         </div>
+
+        <div id="displayed-tags"
+             class="d-flex justify-content-start align-items-center flex-wrap pt-1rem pl-1rem mb-2rem"
+             data-tools--tags-manager-target="tagContainer">
+
+          <%= render 'campaigns/index/index_campaigns_displayed_tags', displayed_tags: @displayed_tags %>
+
+        </div>
+
       </div>
 
       <% headers = ["Template title", "Type", "Questions", "Last Update", 'Tags'] %>
@@ -133,7 +118,9 @@
 
 
     </div>
+
   </div>
+
 </div>
 
 <!------------>
