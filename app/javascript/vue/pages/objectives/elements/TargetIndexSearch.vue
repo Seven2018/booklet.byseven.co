@@ -73,23 +73,27 @@ export default {
     update(_) {
     },
     reset() {
-      store.commit('targetObjectives/setSearch')
+      store.commit('genericFetchEntity/setSearch')
       this.searchText = null
       this.indicatorType = null
       this.indicatorStatus = null
       this.from = null
       this.to = null
-      store.dispatch('targetObjectives/fetchTargetList')
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'objective_target_list',
+      })
     },
     submit() {
-      store.commit('targetObjectives/setSearch', {
+      store.commit('genericFetchEntity/setSearch', {
         'search[title]': this.searchText,
         'search[indicator_type]': this.indicatorType,
         'search[indicator_status]': this.indicatorStatus,
         'search[from]': this.from,
         'search[to]': this.to,
       })
-      store.dispatch('targetObjectives/fetchTargetList')
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'objective_target_list',
+      })
     }
   },
   components: {BktSearch}

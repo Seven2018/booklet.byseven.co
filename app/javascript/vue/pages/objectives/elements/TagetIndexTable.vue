@@ -1,9 +1,10 @@
 <template>
   <index-table
+      v-if="genericFetchEntity.data"
       :headers="headers"
       headerClass="bkt-light-grey6"
-      :table-data="targetObjectives.targetList"
-      :pagination="targetObjectives.pagination"
+      :table-data="genericFetchEntity.data['objective/elements']"
+      :pagination="genericFetchEntity.pagination"
       @fetch-page="fetchPage"
   >
     <template v-slot="{id, title, due_date, comments_count, objectivable, objective_indicator}">
@@ -90,18 +91,24 @@ export default {
   data() {
     return {
       headers: ['Target title', 'Employee', 'Indicator', 'Deadline', 'Comments', ''],
-      targetObjectives: store.state.targetObjectives
+      genericFetchEntity: store.state.genericFetchEntity
     }
   },
   created() {
-    store.dispatch('targetObjectives/fetchTargetList')
+    store.dispatch('genericFetchEntity/fetch',
+        {
+          pathKey: 'objective_target_list'
+        }
+    )
   },
   methods: {
     fetchPage(page) {
       // ${path}?page[number]=${pagination.current_page}&page[size]=10`
-      store.dispatch('targetObjectives/fetchTargetList', {
-        'page[number]': page,
-        // 'page[size]': 1,
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'objective_target_list',
+        params: {
+          'page[number]': page,
+        }
       })
     }
   },
