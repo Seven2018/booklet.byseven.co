@@ -10,7 +10,7 @@
       >New template</bkt-button>
     </template>
     <template v-slot:body>
-      <employees-index-search path-key="objective_templates_list"></employees-index-search>
+      <generic-index-search path-key="objective_templates_list"></generic-index-search>
       <target-template-table></target-template-table>
     </template>
   </bkt-index-skeleton>
@@ -20,11 +20,11 @@
 import BktIndexSkeleton from "../../../components/BktIndexSkeleton";
 import BktButton from "../../../components/BktButton";
 import TargetTemplateTable from "./TargetTemplateTable";
-import EmployeesIndexSearch from "../users/EmployeesIndexSearch";
+import GenericIndexSearch from "../users/GenericIndexSearch";
 
 export default {
   components: {
-    EmployeesIndexSearch,
+    GenericIndexSearch,
     TargetTemplateTable,
     BktButton,
     BktIndexSkeleton,
