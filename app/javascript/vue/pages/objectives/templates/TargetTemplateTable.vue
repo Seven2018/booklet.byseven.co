@@ -6,6 +6,7 @@
       :table-data="genericFetchEntity.data['objective/templates']"
       :pagination="genericFetchEntity.pagination"
       @fetch-page="fetchPage"
+      @row-click="rowClick"
   >
     <template v-slot="{id, title, updated_at, objective_indicator}">
       <td>
@@ -54,7 +55,7 @@
           <bkt-dots-button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-red bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
-                @click="deleteTemplate(id)"
+                @click.stop="deleteTemplate(id)"
             >
               Delete
             </button>
@@ -110,6 +111,10 @@ export default {
         id,
         dataKind: 'objective/templates'
       })
+    },
+    rowClick(row) {
+      // console.log(row, this.$routes.generate('objective_templates_edit', {id: row.id}))
+      window.location.href = this.$routes.generate('objective_templates_edit', {id: row.id})
     }
   },
   components: {IndexTable, BktDotsButton}

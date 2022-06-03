@@ -9,7 +9,7 @@
         <slot></slot>
 
         <bkt-button class="mt-5" style="height: 50px" type="blue" @click="$emit('submit')">
-          <span v-if="loading === false">Create</span>
+          <span v-if="loading === false">Save</span>
           <bkt-spinner
               v-show="loading"
               color="white"

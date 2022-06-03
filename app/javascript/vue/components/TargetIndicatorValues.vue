@@ -47,6 +47,7 @@
                 class="width-7rem"
                 :type="box.type === 'boolean' ? 'text' : 'number'"
                 @input="$emit('input', {...value, starting_value: $event})"
+                :value="value.starting_value"
             ></bkt-input-form>
           </div>
 
@@ -57,6 +58,7 @@
                 class="width-7rem"
                 :type="box.type === 'boolean' ? 'text' : 'number'"
                 @input="$emit('input', {...value, target_value: $event})"
+                :value="value.target_value"
             ></bkt-input-form>
           </div>
         </div>

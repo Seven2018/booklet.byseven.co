@@ -32,6 +32,8 @@ class Objective::TemplatesController < ApplicationController
     template = Objective::Template.create(
       title: params.dig(:title),
       description: params.dig(:description),
+      can_employee_edit: params.dig(:can_employee_edit),
+      can_employee_view: params.dig(:can_employee_view),
       company: current_user.company,
       creator: current_user
     )
@@ -61,6 +63,33 @@ class Objective::TemplatesController < ApplicationController
     else
       render json: template.errors.messages, status: :unprocessable_entity
     end
+  end
+
+  def edit
+  end
+
+  def update
+    template = Objective::Template.find(params.require(:id))
+    update_template = template.update(
+      title: params.dig(:title),
+      description: params.dig(:description),
+      can_employee_edit: params.dig(:can_employee_edit),
+      can_employee_view: params.dig(:can_employee_view))
+    update_indicator = template.objective_indicator.update(
+      indicator_type: params.require(:indicator)[:indicator_type],
+      options: prepare_options)
+
+    if update_template && update_indicator
+      head :ok
+    else
+      render json: {message: 'An error occurred'}, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    template = Objective::Template.find(params.require(:id))
+
+    render json: template, status: :ok
   end
 
   private

@@ -11,8 +11,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="row in tableData" class="border-bottom-bkt-light-grey5-not-last-child"
-          :class="{'bkt-bg-light-grey10-hover': withoutHover === false}">
+      <tr
+          v-for="row in tableData" class="border-bottom-bkt-light-grey5-not-last-child"
+          :key="row.id"
+          :class="{'bkt-bg-light-grey10-hover': withoutHover === false}"
+          @click="$emit('row-click', row)"
+      >
         <slot v-bind="row"></slot>
       </tr>
       </tbody>

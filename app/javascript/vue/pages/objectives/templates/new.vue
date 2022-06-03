@@ -1,6 +1,9 @@
 <template>
   <bkt-form @submit="handleSubmit" :loading="loading">
-    <new-entity-title>Create a target template</new-entity-title>
+    <new-entity-title>
+      <h1 v-if="this.editId">Update target template</h1>
+      <h1 v-else>Create a target template</h1>
+    </new-entity-title>
 
     <new-entity-subtitle>Target informations</new-entity-subtitle>
     <bkt-input-form v-model="title" class="mt-3" placeholder="Title"></bkt-input-form>
@@ -37,6 +40,7 @@ import BktInputErrorText from "../../../components/BktInputErrorText";
 import axios from "../../../plugins/axios";
 
 export default {
+  props: ['editId'],
   data() {
     return {
       loading: false,
@@ -53,7 +57,29 @@ export default {
       canEmployeeView: true,
     }
   },
+  async created() {
+    if (this.editId) {
+      const entity = (await axios.get(`/objective/templates/${this.editId}`)).data['objective/template']
+      this.mergeToCurrentTemplate(entity)
+    }
+  },
   methods: {
+    mergeToCurrentTemplate(template) {
+      this.title = template.title
+      this.desc = template.description
+      this.canEmployeeEdit = template.can_employee_edit
+      this.canEmployeeView = template.can_employee_view
+      this.indicator.indicator_type = template.objective_indicator.indicator_type
+      // this.starting_value = template.objective_indicator.indicator_type == 'multi_choice' ? '' : ''
+      this.indicator.starting_value = template.objective_indicator.options.starting_value
+      this.indicator.target_value = template.objective_indicator.options.target_value
+      this.indicator.multiChoiceList = []
+
+      const regex = new RegExp(/^choice_.*/)
+      for (const opt in template.objective_indicator.options) {
+        if (regex.test(opt)) this.indicator.multiChoiceList.push(template.objective_indicator.options[opt])
+      }
+    },
     async handleSubmit() {
       // elements
       // objective_element[title]
@@ -67,7 +93,6 @@ export default {
 
       // can_employee_edit
       // can_employee_view
-      console.log('submit', this.title, this.desc, this.indicator, this.canEmployeeEdit, this.canEmployeeView)
       if (!this.title) {
         this.titleError = true
         return
@@ -75,16 +100,25 @@ export default {
 
       this.loading = true
       try {
-        await axios.post(
-            this.$routes.generate('objective_templates'),
-            {
-              title: this.title,
-              description: this.desc,
-              indicator: this.indicator,
-              can_employee_edit: this.canEmployeeEdit,
-              can_employee_view: this.canEmployeeView,
-            }
-        )
+        const toSend = {
+          title: this.title,
+          description: this.desc,
+          indicator: this.indicator,
+          can_employee_edit: this.canEmployeeEdit,
+          can_employee_view: this.canEmployeeView,
+        }
+
+        if (this.editId) {
+          await axios.patch(
+              this.$routes.generate('objective_templates_id', {id: this.editId}),
+              toSend
+          )
+        } else {
+          await axios.post(
+              this.$routes.generate('objective_templates'),
+              toSend
+          )
+        }
 
       } catch (e) {
         console.log('error', e.response.data) // TODO: maybe a notification ?
