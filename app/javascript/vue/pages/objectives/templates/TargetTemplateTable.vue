@@ -35,7 +35,7 @@
           <p v-else-if="objective_indicator.indicator_type == 'percentage'">
             {{objective_indicator.options.target_value}}
           </p>
-        <p v-else-if="objective_indicator.indicator_type == 'multi_choice'">
+          <p v-else-if="objective_indicator.indicator_type == 'multi_choice'">
             {{filterMultiChoice(objective_indicator.options)}}
           </p>
         </div>
