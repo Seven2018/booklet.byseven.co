@@ -2,7 +2,7 @@
   <bkt-index-skeleton>
     <template v-slot:title>Employees objectives</template>
     <template v-slot:body>
-      <employees-index-search></employees-index-search>
+      <employees-index-search path-key="objective_list"></employees-index-search>
 
       <employees-index-table></employees-index-table>
     </template>

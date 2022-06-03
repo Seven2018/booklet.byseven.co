@@ -1,8 +1,9 @@
 <template>
   <index-table
+      v-if="genericFetchEntity.data"
       :headers="headers"
-      :tableData="adminObjectives.users"
-      :pagination="adminObjectives.pagination"
+      :tableData="genericFetchEntity.data.users"
+      :pagination="genericFetchEntity.pagination"
       @fetch-page="fetchPage"
   >
     <template v-slot="{id, firstname, lastname, picture, job_title, access_level_int, manager, objectives_count}">
@@ -95,16 +96,23 @@ export default {
   data() {
     return {
       headers: ['Name', 'Access Level', 'Manager', 'Objectives', ''],
-      adminObjectives: store.state.adminObjectives,
+      genericFetchEntity: store.state.genericFetchEntity
     }
   },
   created() {
-    store.dispatch('adminObjectives/fetch')
+    store.dispatch('genericFetchEntity/fetch',
+        {
+          pathKey: 'objective_list'
+        }
+)
   },
   methods: {
     fetchPage(page) {
-      store.dispatch('adminObjectives/fetch', {
-        'page[number]': page,
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'objective_list',
+        params: {
+          'page[number]': page,
+        }
       })
     }
   },
