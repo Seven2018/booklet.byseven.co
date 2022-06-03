@@ -53,6 +53,7 @@ import MyTeamObjectives from '../vue/pages/objectives/my_team_objectives'
 import ObjectiveDatePicker from '../vue/components/ObjectiveDatePicker'
 import ObjectiveTemplateIndex from '../vue/pages/objectives/templates'
 import ObjectiveTemplateNew from '../vue/pages/objectives/templates/new'
+import ObjectiveTemplateNewTargetView from '../vue/pages/objectives/templates/new_target_view'
 
 let app = null
 let vuejsOpt = {
@@ -65,7 +66,8 @@ let vuejsOpt = {
     MyTeamObjectives,
     ObjectiveDatePicker,
     ObjectiveTemplateIndex,
-    ObjectiveTemplateNew
+    ObjectiveTemplateNew,
+    ObjectiveTemplateNewTargetView
   }
 }
 Vue.prototype.$routes = routes

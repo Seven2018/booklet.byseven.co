@@ -92,6 +92,9 @@ class Objective::TemplatesController < ApplicationController
     render json: template, status: :ok
   end
 
+  def new_target_view
+  end
+
   private
 
   def prepare_options

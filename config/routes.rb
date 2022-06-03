@@ -195,6 +195,7 @@ Rails.application.routes.draw do
     resources :templates do
       collection do
         get :list
+        get :new_target_view
       end
     end
   end

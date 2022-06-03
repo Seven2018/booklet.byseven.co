@@ -19,7 +19,7 @@
         class="position-absolute bkt-bg-white rounded-5px bkt-box-shadow-medium z-index-5 width-max-content"
     >
       <a
-          href=""
+          :href="$routes.generate('objective_templates_new_target_view')"
           class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover bkt-objective-blue width-100 p-3"
       >
         Use existing template
