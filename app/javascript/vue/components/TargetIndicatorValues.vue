@@ -92,7 +92,7 @@ export default {
           selected: false
         },
         {
-          type: 'percent',
+          type: 'percentage',
           iconify: 'fa6-solid:percent',
           title: 'Percent',
           shortDesc: 'Useful to measure easily a quantifiable objective.',

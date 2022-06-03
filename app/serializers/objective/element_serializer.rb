@@ -1,5 +1,5 @@
 class Objective::ElementSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :due_date, :comments_count
+  attributes :id, :title, :description, :due_date, :comments_count, :updated_at
 
   has_one :objective_indicator
   belongs_to :objectivable

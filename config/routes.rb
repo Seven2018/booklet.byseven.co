@@ -184,7 +184,11 @@ Rails.application.routes.draw do
         get :my_team_objectives_archived_list
       end
     end
-    resources :templates, only: [:index, :new, :create]
+    resources :templates, only: [:index, :new, :create] do
+      collection do
+        get :list
+      end
+    end
   end
 
   # PAGES

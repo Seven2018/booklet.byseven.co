@@ -8,6 +8,23 @@ class Objective::TemplatesController < ApplicationController
   def index
   end
 
+  def list
+    if params[:search]
+      elements = Objective::Template.where(company: current_user.company)
+      # elements = elements.where('title LIKE ?', "%#{params[:search][:title]}%") if params[:search][:title].present?
+      elements = elements.search_elements(params[:search]) if params[:search].present? # TODO: to test
+    else
+      elements = Objective::Template.where(company: current_user.company)
+    end
+
+    page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+
+    elements = elements.page(page).per(size)
+
+    render json: elements, meta: pagination_dict(elements)
+  end
+
   def new
   end
 

@@ -6,6 +6,8 @@ import objectiveUserModule from "./objective-user.module";
 import popUpModule from "./pop-up.module";
 import myTeamObjectivesModule from "./my-team-objectives.module";
 import targetModule from "./target.module";
+import targetTemplateModule from "./target-template.module";
+import genericFetchEntityModule from "./generic-fetch-entity.module";
 
 Vue.use(Vuex)
 
@@ -17,7 +19,9 @@ const store = new Vuex.Store({
     objectiveUser: objectiveUserModule,
     popUp: popUpModule,
     myTeamObjectives: myTeamObjectivesModule,
-    targetObjectives: targetModule
+    targetObjectives: targetModule,
+    targetTemplateObjectives: targetTemplateModule,
+    genericFetchEntity: genericFetchEntityModule
   }
 })
 

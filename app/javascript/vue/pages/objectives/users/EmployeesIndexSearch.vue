@@ -10,19 +10,25 @@
 <script>
 import BktSearch from "../../../components/bktSearch";
 import store from "../../../store";
+
 export default {
+  props: ['pathKey'],
   methods: {
     update(text) {
-      store.commit('adminObjectives/setSearch', {
-        search: text
+      store.commit('genericFetchEntity/setSearch', {
+          search: text
       })
-      store.dispatch('adminObjectives/fetch')
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: this.pathKey,
+      })
     },
     reset() {
-      store.commit('adminObjectives/setSearch', {
-        search: null
+      store.commit('genericFetchEntity/setSearch', {
+          search: null
       })
-      store.dispatch('adminObjectives/fetch')
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: this.pathKey,
+      })
     }
   },
   components: {BktSearch}
