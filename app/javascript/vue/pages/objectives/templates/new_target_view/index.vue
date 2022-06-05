@@ -66,6 +66,7 @@ import NewEntityTitle from "../../../../components/NewEntityTitle";
 import NewTargetViewSearch from "./NewTargetViewSearch";
 import store from "../../../../store";
 import tools from "../../../../mixins/tools";
+import axios from "../../../../plugins/axios";
 
 export default {
   mixins: [tools],
@@ -82,7 +83,8 @@ export default {
     )
   },
   methods: {
-    createTargetFromTemplate(row) {
+    async createTargetFromTemplate(row) {
+      window.location.href = this.$routes.generate('objective_new') + `?objective_template_id=${row.id}`
     }
   },
   components: {NewTargetViewSearch, NewEntityTitle, BktBackButton}

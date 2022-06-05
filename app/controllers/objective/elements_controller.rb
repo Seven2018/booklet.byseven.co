@@ -40,7 +40,13 @@ class Objective::ElementsController < ApplicationController
   end
 
   def new
-    @objective = Objective::Element.new
+    if params[:objective_template_id].present?
+      template = Objective::Template.find(params[:objective_template_id])
+      @objective = Objective::Element.new(template.clone.attributes.merge(template: false))
+    else
+      @objective = Objective::Element.new
+    end
+
     authorize @objective
   end
 
@@ -71,7 +77,8 @@ class Objective::ElementsController < ApplicationController
 
     end
 
-    redirect_to (params[:redirect_to_storage].presence || objective_elements_path)
+    # redirect_to (params[:redirect_to_storage].presence || objective_elements_path)
+    redirect_to objective_elements_path
   end
 
   def show
@@ -198,6 +205,6 @@ class Objective::ElementsController < ApplicationController
   end
 
   def objective_params
-    params.require(:objective_element).permit(:title, :description, :due_date)
+    params.require(:objective_element).permit(:title, :description, :due_date, :can_employee_edit, :can_employee_view)
   end
 end

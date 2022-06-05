@@ -54,6 +54,7 @@ import ObjectiveDatePicker from '../vue/components/ObjectiveDatePicker'
 import ObjectiveTemplateIndex from '../vue/pages/objectives/templates'
 import ObjectiveTemplateNew from '../vue/pages/objectives/templates/new'
 import ObjectiveTemplateNewTargetView from '../vue/pages/objectives/templates/new_target_view'
+import CustomToggleForErbForm from '../vue/components/CustomToggleForErbForm'
 
 let app = null
 let vuejsOpt = {
@@ -67,7 +68,8 @@ let vuejsOpt = {
     ObjectiveDatePicker,
     ObjectiveTemplateIndex,
     ObjectiveTemplateNew,
-    ObjectiveTemplateNewTargetView
+    ObjectiveTemplateNewTargetView,
+    CustomToggleForErbForm
   }
 }
 Vue.prototype.$routes = routes

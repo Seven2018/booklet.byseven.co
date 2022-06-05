@@ -4,7 +4,7 @@ export default class extends Controller {
   static get targets () {
     return ['displayElement', 'multiChoiceContainer', 'multiChoiceTemplate',
             'selectedUsers', 'selectedUsersPillStorage', 'selectedUsersPillStorageModal',
-            'selectedCount', 'filteredCount', 'selectAllButton', 'results', 'requiredInput', 'submitButton', 'multiChoiceValue']
+            'selectedCount', 'filteredCount', 'selectAllButton', 'results', 'requiredInput', 'submitButton', 'multiChoiceValue', 'defaultIndicatorType']
   }
 
   static get values () {
@@ -26,6 +26,11 @@ export default class extends Controller {
       })(this.identifier)
     ] = this
 
+    if (this.defaultIndicatorTypeTarget.dataset.target.length > 0) {
+      this.display_settings({
+        currentTarget: this.defaultIndicatorTypeTarget
+      })
+    }
     this.setup()
   }
 
