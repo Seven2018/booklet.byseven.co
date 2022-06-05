@@ -8,9 +8,11 @@
         ></bkt-search>
         <select
             v-model="indicatorType"
+            @change="update"
             class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey"
             name="indicatorType"
         >
+          <option value="">All</option>
           <option value="boolean">True/False</option>
           <option value="numeric_value">Numeric value</option>
           <option value="percentage">Percentage</option>
@@ -33,26 +35,23 @@ export default {
   data() {
     return {
       searchText: null,
-      indicatorType: null,
-      indicatorStatus: null,
-      from: null,
-      to: null,
+      indicatorType: '',
     }
   },
   methods: {
     reset() {
-      // TODO: rethink search
-      // store.commit('genericFetchEntity/setSearch')
-      // this.searchText = null
-      // this.indicatorType = null
-      // store.dispatch('genericFetchEntity/fetch', {
-      //   pathKey: 'objective_templates_list',
-      // })
+      store.commit('genericFetchEntity/setSearch', {
+        search: null,
+        search_indicator_type: null
+      })
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'objective_templates_list',
+      })
     },
     update() {
       store.commit('genericFetchEntity/setSearch', {
         search: this.searchText,
-        // 'search[indicator_type]': this.indicatorType,
+        search_indicator_type: this.indicatorType
       })
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: 'objective_templates_list',

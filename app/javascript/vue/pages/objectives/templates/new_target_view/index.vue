@@ -19,6 +19,7 @@
               class="flex-row-between-centered bkt-box-shadow-medium p-3 mb-4 rounded-5px"
               v-for="row in genericFetchEntity.data['objective/templates']"
               :key="row.id"
+              @click="createTargetFromTemplate(row)"
           >
             <div>
               <p class="fs-1_8rem font-weight-500">
@@ -79,6 +80,10 @@ export default {
           pathKey: 'objective_templates_list'
         }
     )
+  },
+  methods: {
+    createTargetFromTemplate(row) {
+    }
   },
   components: {NewTargetViewSearch, NewEntityTitle, BktBackButton}
 }
