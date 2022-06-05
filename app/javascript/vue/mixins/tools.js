@@ -23,6 +23,15 @@ export default {
       } else if (type === 'multi_choice') {
         return 'fluent:text-bullet-list-ltr-16-filled'
       }
-    }
+    },
+    filterMultiChoiceCount(opts) {
+      let count = 0
+      const regex = new RegExp(/^choice_.*/)
+
+      for (const opt in opts) {
+        if (regex.test(opt)) count++
+      }
+      return count
+    },
   }
 }

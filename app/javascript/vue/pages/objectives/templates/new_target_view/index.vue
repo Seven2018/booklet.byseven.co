@@ -46,7 +46,7 @@
                     {{ row.objective_indicator.options.target_value }}
                   </p>
                   <p v-else-if="row.objective_indicator.indicator_type == 'multi_choice'">
-                    {{ filterMultiChoice(row.objective_indicator.options) }}
+                    {{ filterMultiChoiceCount(row.objective_indicator.options) }}
                   </p>
                 </div>
 

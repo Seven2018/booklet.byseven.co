@@ -36,7 +36,7 @@
             {{objective_indicator.options.target_value}}
           </p>
           <p v-else-if="objective_indicator.indicator_type == 'multi_choice'">
-            {{filterMultiChoice(objective_indicator.options)}}
+            {{filterMultiChoiceCount(objective_indicator.options)}}
           </p>
         </div>
       </td>
@@ -95,15 +95,6 @@ export default {
           'page[number]': page,
         }
       })
-    },
-    filterMultiChoice(opts) {
-      let count = 0
-      const regex = new RegExp(/^choice_.*/)
-
-      for (const opt in opts) {
-        if (regex.test(opt)) count++
-      }
-      return count
     },
     deleteTemplate(id) {
       store.dispatch('genericFetchEntity/delete', {
