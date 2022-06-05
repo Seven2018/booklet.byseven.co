@@ -53,7 +53,7 @@
 
   <% if Objective::ElementPolicy.new(current_user, nil).templates? %>
 
-    <%= link_to objective_templates_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :elements_templates}" do %>
+    <%= link_to objective_templates_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :templates_index}" do %>
 
       <h4>Templates</h4>
 

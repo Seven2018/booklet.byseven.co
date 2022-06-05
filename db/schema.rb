@@ -621,6 +621,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "objective_elements", "companies"
+  add_foreign_key "objective_elements", "users", column: "creator_id"
   add_foreign_key "objective_indicators", "objective_elements"
   add_foreign_key "objective_logs", "objective_elements"
   add_foreign_key "objective_logs", "objective_indicators"
