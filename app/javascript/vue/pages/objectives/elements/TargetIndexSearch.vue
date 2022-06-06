@@ -10,9 +10,10 @@
         <select
             v-model="indicatorType"
             @change="update"
-            class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey"
+            class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
             name="indicatorType"
         >
+          <option value="">All</option>
           <option value="boolean">True/False</option>
           <option value="numeric_value">Numeric value</option>
           <option value="percentage">Percentage</option>
@@ -21,9 +22,10 @@
         <select
             v-model="indicatorStatus"
             @change="update"
-            class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey"
+            class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
             name="indicatorStatus"
         >
+          <option value="">All</option>
           <option value="completed">Completed</option>
           <option value="in_progress">In progress</option>
           <option value="uncompleted">Not Completed</option>
@@ -34,19 +36,19 @@
       </div>
     </div>
 
-    <div class="flex-column">
+    <div class="flex-column ml-4">
       <div class="flex-row-start-centered">
         <p>From </p>
         <input
             v-model="from"
             @change="update"
-            class="ml-3 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey"
+            class="ml-3 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
             type="date">
         <p class="ml-3">To </p>
         <input
             v-model="to"
             @change="update"
-            class="ml-3 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey"
+            class="ml-3 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
             type="date">
       </div>
     </div>
@@ -61,8 +63,8 @@ export default {
   data() {
     return {
       searchText: null,
-      indicatorType: null,
-      indicatorStatus: null,
+      indicatorType: '',
+      indicatorStatus: '',
       from: null,
       to: null,
     }

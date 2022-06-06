@@ -9,7 +9,7 @@
         <select
             v-model="indicatorType"
             @change="update"
-            class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey"
+            class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
             name="indicatorType"
         >
           <option value="">All</option>

@@ -141,8 +141,8 @@ class Objective::ElementsController < ApplicationController
       elements = elements
                    .joins(:objective_indicator)
                    .where(objective_indicators: {status: params[:search][:indicator_status]}) if params[:search][:indicator_status].present?
-      elements = elements.where('due_date >= ?', Date.parse(params[:search][:from].to_s)) if params[:search][:from]
-      elements = elements.where('due_date <= ?', Date.parse(params[:search][:to].to_s)) if params[:search][:to]
+      elements = elements.where('due_date >= ?', Date.parse(params[:search][:from].to_s)) if params[:search][:from].present?
+      elements = elements.where('due_date <= ?', Date.parse(params[:search][:to].to_s)) if params[:search][:to].present?
     else
       elements = Objective::Element.where(company: current_user.company)
     end

@@ -2,7 +2,7 @@
   <div class="position-relative">
     <input
         placeholder="Search"
-        class="p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey"
+        class="p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
         :value="value"
         @input="event => $emit('input', event.target.value)">
     <span class="iconify bkt-light-grey" data-icon="entypo:magnifying-glass" data-width="30" data-height="30"></span>
