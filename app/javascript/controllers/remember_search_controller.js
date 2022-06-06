@@ -71,11 +71,17 @@ export default class extends Controller {
     // TODO : Unify all searches by tags
     try {
       // Reset Tags
+      const pill_container = searchbar.querySelector('#displayed-tags')
+      const default_color = searchbar.dataset.color
+      const default_background_color = searchbar.dataset.backgroundColor
+
       searchbar.querySelector('#search_tags').value = ''
-      const filter_counter = searchbar.querySelectorAll('.searchbar-campaign-filter__selected')
-      // pill_container = searchbar.querySelector('.searchbar-campaign__pill-container')
-      filter_counter.forEach((counter) => {counter.innerText = '0'; counter.style.backgroundColor = '#C4C4C4'})
-      // pill_container.querySelectorAll('.searchbar-campaign__pill:not(.hidden)').forEach((pill) => pill.remove())
+
+      pill_container.querySelectorAll('.tag-pill').forEach((pill) => {
+        pill.querySelector('input').checked = false
+        pill.classList.remove(default_color, default_background_color)
+        pill.classList.add('bkt-dark-grey', 'bkt-bg-light-grey8')
+      })
     } catch {}
 
     // Reset offset

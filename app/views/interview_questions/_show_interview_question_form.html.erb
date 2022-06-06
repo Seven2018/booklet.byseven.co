@@ -8,20 +8,25 @@
     interview_question: question,
     user: interview.responder
   ) %>
+
   <% if existing_answer.nil? && interview.crossed? && question.visible_for_employee? %>
+
     <% existing_answer =
       InterviewAnswer.find_by(
       interview: interview.campaign.employee_interview(employee.id),
       interview_question: question,
       user: employee
     ) %>
+
   <% elsif existing_answer.nil? && interview.crossed? %>
+
     <% existing_answer =
       InterviewAnswer.find_by(
       interview: interview.campaign.manager_interview(employee.id),
       interview_question: question,
       user: manager
     ) %>
+
   <% end %>
 
   <% current_answer   = existing_answer&.answer || '' %>
@@ -44,42 +49,65 @@
       <% if manager_answer.present? %>
 
         <div class="interview-crossed-answer">
+
           <div class="interview-crossed-answer__header">
+
             <img src="<%= manager.picture %>" alt="<%= manager.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
             <p><%= manager.fullname %></p>
             <p>- Interviewer</p>
+
           </div>
+
           <% if question.open_question? %>
+
             <p class='interview-crossed-answer__text'><%= manager_answer.answer %></p>
+
           <% elsif question.rating? %>
+
             <div class="flex-row-start-centered rating-crossed">
+
               <% for i in 1..manager_answer.answer.to_i %>
+
                 <div class="rating-filled">
                   <%= raw company.rating_logo %>
                 </div>
+
               <% end %>
+
               <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
+
                 <div class="rating-empty">
                   <%= raw company.rating_logo %>
                 </div>
+
               <% end %>
+
             </div>
+
           <% elsif question.mcq? || question.objective? %>
+
             <% if question.objective? %>
+
               <div class="interview-crossed-answer__objective">
                 <p><%= manager_answer.objective %></p>
               </div>
+
             <% end %>
+
             <div class="interview-crossed-answer__mcq">
               <p><%= manager_answer.answer %></p>
             </div>
+
           <% end %>
 
           <% if manager_answer.comments.present? %>
+
             <div class="interview-crossed-answer__objective">
               <p><%= manager_answer.comments %></p>
             </div>
+
           <% end %>
+
         </div>
 
       <% end %>
@@ -87,42 +115,65 @@
       <% if employee_answer.present? %>
 
         <div class="interview-crossed-answer">
+
           <div class="interview-crossed-answer__header">
+
             <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
             <p><%= employee.fullname %></p>
             <p>- Employee</p>
+
           </div>
+
           <% if question.open_question? %>
+
             <p class='interview-crossed-answer__text'><%= employee_answer.answer %></p>
+
           <% elsif question.rating? %>
+
             <div class="flex-row-start-centered rating-crossed">
+
               <% for i in 1..employee_answer.answer.to_i %>
+
                 <div class="rating-filled">
                   <%= raw company.rating_logo %>
                 </div>
+
               <% end %>
+
               <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
+
                 <div class="rating-empty">
                   <%= raw company.rating_logo %>
                 </div>
+
               <% end %>
+
             </div>
+
           <% elsif question.mcq? || question.objective? %>
+
             <% if question.objective? %>
+
               <div class="interview-crossed-answer__objective">
                 <p><%= employee_answer.objective %></p>
               </div>
+
             <% end %>
+
             <div class="interview-crossed-answer__mcq">
               <p><%= employee_answer.answer %></p>
             </div>
+
           <% end %>
 
           <% if employee_answer.comments.present? %>
+
             <div class="interview-crossed-answer__objective">
               <p><%= employee_answer.comments %></p>
             </div>
+
           <% end %>
+
         </div>
 
       <% end %>
@@ -135,6 +186,7 @@
     data: {
       question_type: question.question_type
     }) do |f| %>
+
     <% if question.open_question? %>
 
         <%= f.input :answer,
@@ -149,9 +201,12 @@
     <% elsif question.rating? %>
 
       <fieldset class="rating <%= ' read_only' if read_only %>">
+
         <% for i in 1..question.options.keys.first.to_i %>
+
           <% stars_count = question.options.keys.first.to_i - i + 1 %>
           <% input_label_key = "star-position(#{question.position})-#{i}" %>
+
           <input
             type="radio"
             class='radio-rating'
@@ -160,17 +215,20 @@
             value="<%= stars_count %>"
             onchange="autoSave(this); enableSubmit();"
             <% if current_answer.to_i == stars_count %> checked <% end %>
-            <%= 'disabled' if read_only %>
-          />
+            <%= 'disabled' if read_only %>/>
+
           <label
             class="full"
             for="<%= input_label_key %>"
-            title="<%= stars_count %> stars"
-          >
+            title="<%= stars_count %> stars">
+
             <%= raw company.rating_logo %>
             <%= stars_count %>
+
           </label>
+
         <% end %>
+
       </fieldset>
 
       <% if (!read_only || current_comments.present?) && question.allow_comments %>
@@ -200,26 +258,41 @@
       ) if question.objective? %>
 
       <div class="booklet-select__container" >
+
         <div class="booklet-select__selected" onclick="<%= 'BookletSelectExpand(this);' unless read_only %>">
+
           <p><%= current_answer.present? ? current_answer : '' %></p>
+
           <div class="booklet-select__controls">
+
             <% if !question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') && current_answer == '' %>
+
               <div class="booklet-select__controls-icon" onclick='BookletSelectRemoveAnswer(this);'>
                 <i class="fas fa-times"></i>
               </div>
+
             <% end %>
+
             <div class="booklet-select__controls-icon">
               <i class="fas fa-angle-down"></i>
             </div>
+
           </div>
+
         </div>
+
         <div class="booklet-select__dropdown hidden">
+
           <% question.options.sort_by {|k, v| v}.each do |option| %>
+
             <div class="booklet-select__option" onclick='BookletSelectSubmit(this);'>
               <p><%= option[0] %></p>
             </div>
+
           <% end %>
+
         </div>
+
       </div>
 
       <%= f.hidden_field :answer,
@@ -242,9 +315,11 @@
 
     <% end %>
 
-      <%= f.hidden_field :interview_id, value: interview.id %>
-      <%= f.hidden_field :interview_question_id, value: question.id %>
+    <%= f.hidden_field :interview_id, value: interview.id %>
+    <%= f.hidden_field :interview_question_id, value: question.id %>
+
     <%= f.submit '', class: 'hidden-submit hidden' %>
+
   <% end %>
 
 </div>

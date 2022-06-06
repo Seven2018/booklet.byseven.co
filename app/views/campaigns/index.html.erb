@@ -31,7 +31,6 @@
          data-controller="change-page">
 
       <div id="searchbar"
-           class="campaigns-index__searchbar"
            data-controller="remember-search tools--tags-manager"
            data-remember-search-key-value="bookletCampaignsSearches"
            data-color="bkt-blue"
@@ -39,7 +38,7 @@
 
         <div class="d-flex justify-content-start align-items-center mb-2rem">
 
-          <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
+          <i class="fas fa-search searchbar-icon"></i>
 
           <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true) do |f| %>
 
@@ -48,7 +47,6 @@
                 :title,
                 placeholder: 'Search by title, job ...',
                 input_html: {
-                  class: 'mr-3',
                   autocomplete: 'off',
                   data: {
                     remember_search_target: :search,
