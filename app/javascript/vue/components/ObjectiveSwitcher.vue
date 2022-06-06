@@ -6,7 +6,7 @@
           :class="[panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >
-        Current objectives
+        Current targets
         <span
             v-if="currentNbr"
             class="px-2 rounded-5px fs-1_2rem"
@@ -26,7 +26,7 @@
           :class="[!panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', !panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >
-        Archived objectives
+        Archived targets
         <span
             v-if="archivedNbr"
             class="px-2 rounded-5px fs-1_2rem"

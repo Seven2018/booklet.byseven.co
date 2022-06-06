@@ -1,6 +1,6 @@
 <template>
   <bkt-index-skeleton>
-    <template v-slot:title>Employees objectives</template>
+    <template v-slot:title>Employees targets</template>
     <template v-slot:body>
       <generic-index-search path-key="objective_list"></generic-index-search>
 

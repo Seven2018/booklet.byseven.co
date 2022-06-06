@@ -9,7 +9,7 @@
         </bkt-back-button>
 
         <h1 v-if="title" class="flex-column fs-2_4rem font-weight-500">{{title}}</h1>
-        <h1 v-else class="flex-column fs-2_4rem font-weight-500">My Objectives</h1>
+        <h1 v-else class="flex-column fs-2_4rem font-weight-500">My Roadmap</h1>
 
       </div>
 
@@ -93,7 +93,7 @@ export default {
   props: ['userId', 'title', 'backButton'],
   data() {
     return {
-      headers: ['Objectives', 'Completion', 'Deadline', ''],
+      headers: ['Targets', 'Completion', 'Deadline', ''],
       objectiveUser: store.state.objectiveUser,
       panelCurrentObjective: true,
     }
