@@ -5,3 +5,15 @@ document.querySelector('body').classList.remove('wait')
 
 document.getElementById('stimulus-change-page-controller').changePage._setPaginationLinks()
 
+el = document.querySelectorAll('.setup-search-arg')
+
+if (el) {
+  el.forEach(a => {
+    const text = localStorage.getItem('bookletCampaignsSearches')
+
+    if (text) {
+      a.href += `?back_search_text=${text}`
+    }
+  })
+  localStorage.setItem('bookletCampaignsSearches', '')
+}

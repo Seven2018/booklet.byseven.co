@@ -12,18 +12,27 @@ export default class extends Controller {
   }
 
   connect() {
-    if (this.hasSearchTarget && this.hasSubmitTarget) {
-      if (this.currentSearch()) {
-        this.searchTarget.value = this.currentSearch()
-        this.submitTarget.click()
-      }
+    // if (this.hasSearchTarget && this.hasSubmitTarget) {
+    //   if (this.currentSearch()) {
+    //     this.searchTarget.value = this.currentSearch()
+    //     this.submitTarget.click()
+    //   }
+    // }
+
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    if (params.back_search_text) {
+      this.searchTarget.value = params.back_search_text
     }
   }
 
   storeSearch() {
     const searchbar = document.getElementById('searchbar');
 
-    searchbar.querySelector('#search_page').value = '1'
+    if (searchbar.querySelector('#search_page'))
+      searchbar.querySelector('#search_page').value = '1'
 
     window.localStorage.setItem(this.keyValue, this.searchTarget.value)
   }
