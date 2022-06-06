@@ -11,7 +11,7 @@
 
   <% if Objective::ElementPolicy.new(current_user, nil).my_objectives? %>
 
-    <%= link_to objective_my_objectives_path, class: "navbar-buttons width-13rem #{'navbar-buttons--active' if @controller_action == :elements_my_objectives}" do %>
+    <%= link_to objective_my_objectives_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :elements_my_objectives}" do %>
 
       <h4>My Roadmap</h4>
 
