@@ -2,9 +2,9 @@
   <div>
     <table>
       <thead>
-      <tr class="border-bottom-bkt-light-grey5" :class="headerClass">
+      <tr class="border-bottom-bkt-light-grey5 bkt-light-grey6" :class="headerClass">
         <th v-for="col in headers" class="px-2">
-          <p class="font-weight-500">
+          <p class="font-weight-600">
             {{ col }}
           </p>
         </th>

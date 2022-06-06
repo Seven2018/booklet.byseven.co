@@ -6,7 +6,7 @@
             v-model="searchText"
             @input="update"
         ></bkt-search>
-        <input type="submit" value="Search" class="ml-5 btn-search" @click="submit">
+        <input type="submit" value="Search" class="ml-5 bkt-bg-light-grey12-important px-4 py-3 rounded-5px border-none" @click="submit">
         <select
             v-model="indicatorType"
             @change="update"

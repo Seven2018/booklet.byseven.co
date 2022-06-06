@@ -2,7 +2,6 @@
   <index-table
       v-if="genericFetchEntity.data"
       :headers="headers"
-      headerClass="bkt-light-grey6"
       :table-data="genericFetchEntity.data['objective/elements']"
       :pagination="genericFetchEntity.pagination"
       @fetch-page="fetchPage"
@@ -11,7 +10,7 @@
       <td>
         <div class="align-items-center">
           <div class="flex-column ">
-            <p>
+            <p class="font-weight-600 bkt-dark-grey">
               {{ title }}
             </p>
           </div>
@@ -45,10 +44,15 @@
               :data-icon="getIndicatorIconifyName(objective_indicator.indicator_type)"
               data-width="15"
           ></span>
-          <p v-if="objective_indicator.indicator_type === 'multi_choice'">
-            {{filterMultiChoiceCount(objective_indicator.options)}}
+          <p class="font-weight-600" :class="[objective_indicator.status == 'completed' ? ' bkt-objective-blue' : 'bkt-red']">
+            <span v-if="objective_indicator.indicator_type === 'multi_choice'">
+              {{filterMultiChoiceCount(objective_indicator.options)}}
+            </span>
+            <span v-else>
+              {{objective_indicator.options.current_value}}
+            </span>
           </p>
-          <p v-else >{{objective_indicator.options.current_value}}</p>
+<!--          <p v-else >{{// objective_indicator.options.current_value}}</p>-->
 <!--          <p v-if="objective_indicator.status == 'completed'">-->
 <!--            Confirmed-->
 <!--          </p>-->
