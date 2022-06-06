@@ -86,39 +86,3 @@
   </div>
 
 </div>
-
-
-<!---------------->
-<!-- JAVASCRIPT -->
-<!---------------->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
-
-<script>
-
-  ///////////////////
-  // AUTO COMPLETE //
-  ///////////////////
-
-  $input_tag = $("#search_tags");
-
-  var options_tag = {
-    listLocation: "tags",
-    getValue: 'tag_name',
-    url: function(phrase) {
-      return "/tags_search.json?search=" + phrase
-    },
-    list: {
-      onChooseEvent: function() {
-        tag_id = $input_tag.getSelectedItemData().id
-        button = document.querySelector('#template-edit__tags-search').querySelector('.bkt-btn-blue')
-        button.id = 'add_tag-' + tag_id
-      },
-      match: {
-        enabled: true
-      }
-    }
-  }
-
-  $input_tag.easyAutocomplete(options_tag);
-</script>

@@ -31,8 +31,7 @@
 
         <div class="d-flex justify-content-start align-items-center mb-2rem">
 
-          <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
-            style="left: 25rem; top: 16.6px;"></i>
+          <i class="fas fa-search searchbar-icon"></i>
 
           <%= simple_form_for(:search, url: interview_forms_path, method: :get, remote: true,
             html: {
@@ -47,12 +46,7 @@
               f.input(
                 :title,
                 placeholder: 'Search',
-                wrapper_html: {
-                  class: 'my-0 height-5rem'
-                },
                 input_html: {
-                  class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-                  style: 'width: 28rem; padding: 0 4rem 0 1rem;',
                   autocomplete: 'off',
                   data: {
                     remember_search_target: :search,
@@ -66,12 +60,11 @@
 
             <%= f.hidden_field :tags, value: [], data: { tools__tags_manager_target: "selectedTags" } %>
             <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
-            <div class="mr-3"></div>
 
             <%=
               f.submit(
                 'Search',
-                class: 'py-0 px-3 border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
+                class: 'btn-search',
                 onclick: "document.querySelector('body').classList.add('wait');",
                 data: {
                   remember_search_target: :submit,

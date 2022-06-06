@@ -1,10 +1,14 @@
 <div class='height-100 bkt-bg-light-orange bkt-page-container-min-height d-flex justify-content-start align-items-center flex-column'>
+
   <div class='bkt-page-container-content'>
+
     <div id='controls'
          class='d-flex justify-content-between align-items-center mb-4'>
+
       <h1 class="fs-2_4rem font-weight-700">Trainings</h1>
 
       <% if TrainingPolicy.new(current_user, nil).create? %>
+
         <%= link_to edit_training_draft_participants_path, class: 'bkt-btn-orange', data: {
           handle: 'book-training-cta'
         } do  %>
@@ -12,82 +16,74 @@
           &nbsp;
           Book Training
         <% end %>
+
       <% end %>
+
     </div>
 
     <div class="bkt-box-shadow p-2rem bkt-bg-white rounded-20px mb-5rem"
          data-controller="change-page">
 
       <div id="searchbar"
-           class="d-flex justify-content-start align-items-center position-relative"
            style="margin-bottom: 4rem;"
            data-controller="remember-search"
            data-remember-search-key-value="bookletTrainingsSearches">
 
-        <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
-          style='left: 25rem; bottom: 16.6px;'></i>
+        <div class="d-flex justify-content-start align-items-center mb-2rem">
 
-        <%= simple_form_for(:search, url: trainings_path, method: :get, remote: true,
-          html: {
-            class: 'search d-flex align-items-center'
-          }
-        ) do |f| %>
+          <i class="fas fa-search searchbar-icon"></i>
 
-          <%=
-            f.input(
-              :title,
-              placeholder: 'Search',
-              wrapper_html: {
-                class: 'my-0 height-5rem'
-              },
-              input_html: {
-                class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-                style: 'width: 28rem; padding: 0 4rem 0 1rem;',
-                autocomplete: 'off',
-                data: {
-                  remember_search_target: :search,
-                  action: 'keyup->remember-search#storeSearch'
-                }
-              },
-              label: false,
-              required: false
-            )
-          %>
+          <%= simple_form_for(:search, url: trainings_path, method: :get, remote: true) do |f| %>
 
-          <%= f.input :period,
-                      collection: ['All', 'Current', 'Completed'],
-                      label: false,
-                      required: false,
-                      selected: 'All',
-                      input_html: {
-                        class: 'height-5rem border-bkt-light-grey bkt-light-grey rounded-5px ml-1rem',
-                        data: {
-                          action: 'change->remember-search#storeSearch'
-                        }
-                      } %>
+            <%=
+              f.input(
+                :title,
+                placeholder: 'Search',
+                input_html: {
+                  autocomplete: 'off',
+                  data: {
+                    remember_search_target: :search,
+                    action: 'keyup->remember-search#storeSearch'
+                  }
+                },
+                label: false,
+                required: false
+              )
+            %>
 
-          <%= f.hidden_field :tags %>
-          <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
+            <%= f.input :period,
+                        collection: ['All', 'Current', 'Completed'],
+                        label: false,
+                        required: false,
+                        selected: 'All',
+                        input_html: {
+                          data: {
+                            action: 'change->remember-search#storeSearch'
+                          }
+                        } %>
 
-          <div class="mx-1rem"></div>
+            <%= f.hidden_field :tags %>
+            <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
 
-          <%= f.submit 'Search', class: 'btn-search',
-                                 onclick: "document.querySelector('body').classList.add('wait');",
-                                 data: {
-                                   remember_search_target: :submit,
-                                   change_page_target: :submit
-                                  } %>
+            <%= f.submit 'Search', class: 'btn-search',
+                                   onclick: "document.querySelector('body').classList.add('wait');",
+                                   data: {
+                                     remember_search_target: :submit,
+                                     change_page_target: :submit
+                                    } %>
 
-          <button type='submit' class="btn-search d-block d-sm-none">
-            <i class="fas fa-search"></i>
-          </button>
+            <button type='submit' class="btn-search d-block d-sm-none">
+              <i class="fas fa-search"></i>
+            </button>
 
-          <button class='btn-reset bkt-orange'
-                  data-action="click->remember-search#resetAllFilter">
-            Reset
-          </button>
+            <button class='btn-reset bkt-orange'
+                    data-action="click->remember-search#resetAllFilter">
+              Reset
+            </button>
 
-        <% end %>
+          <% end %>
+
+        </div>
 
       </div>
 
@@ -104,7 +100,9 @@
       </div>
 
     </div>
+
   </div>
+
 </div>
 
 
