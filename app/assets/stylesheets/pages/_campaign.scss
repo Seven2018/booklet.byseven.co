@@ -784,15 +784,17 @@
 }
 
 .campaign-show__header-banner {
+  height: 22rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3rem;
   background-color: white;
   box-shadow: 0px 2px 26px rgba(0, 0, 0, 0.05);
   border-radius: 3rem;
 
   .campaign-show__header-banner-text {
+    padding: 3rem;
+    width: 50%;
 
     h1, p {
       color: #333333;
@@ -810,9 +812,10 @@
   }
 
   .campaign-show__header-banner-img {
+    width: 50%;
 
     img {
-      height: 17rem;
+      height: 22rem;
     }
   }
 }
