@@ -134,7 +134,7 @@ class Objective::ElementsController < ApplicationController
   def target_list
     if params[:search]
       elements = Objective::Element.where(company: current_user.company)
-      elements = elements.where('title LIKE ?', "%#{params[:search][:title]}%") if params[:search][:title].present?
+      elements = elements.where('lower(title) LIKE ?', "%#{params[:search][:title].downcase}%") if params[:search][:title].present?
       elements = elements
                    .joins(:objective_indicator)
                    .where(objective_indicators: {indicator_type: params[:search][:indicator_type]}) if params[:search][:indicator_type].present?

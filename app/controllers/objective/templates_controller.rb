@@ -11,7 +11,7 @@ class Objective::TemplatesController < ApplicationController
   def list
     if params[:search].present? || params[:search_indicator_type].present?
       elements = Objective::Template.where(company: current_user.company)
-      elements = elements.where('title LIKE ?', "%#{params[:search]}%") if params[:search].present?
+      elements = elements.where('lower(title) LIKE ?', "%#{params[:search].downcase}%") if params[:search].present?
       # elements = elements.search_elements(params[:search]) if params[:search].present? if params[:search].present?
       elements = elements
                    .joins(:objective_indicator)
