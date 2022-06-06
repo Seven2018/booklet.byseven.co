@@ -3,9 +3,9 @@
   <div class="width-100 h-40vh black-gradient mb-5rem">
 
     <%= render_component AsClAssetComponent.new(model: current_user.company,
-                                            asset: :home_banner,
-                                            class_name: 'width-100 h-40vh object-fit-cover object-position-50-15',
-                                            fallback: 'home/banner.png') %>
+                                          asset: :my_team_interviews_banner,
+                                          class_name: 'width-100 h-40vh object-fit-cover',
+                                          fallback: 'banners/my_team_interviews_banner.png') %>
 
     <div class="width-100 h-40vh d-flex flex-column justify-content-center align-items-center pos-abs z-index-5"
          style="top: 0; left: 0; right: 0;">

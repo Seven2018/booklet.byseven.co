@@ -52,12 +52,6 @@
     width: 10.5rem !important;
   }
 
-  .btn-search, .btn-reset {
-    width: 75px;
-    padding: 0;
-    font-weight: bold;
-  }
-
   .searchbar__checkboxes-container {
     position: relative;
 
@@ -121,90 +115,6 @@
       }
     }
   }
-}
-
-.searchbar {
-  width: calc(100vw - 6rem);
-  margin: 0 0 2rem 0;
-
-  @include from-medium {
-    width: auto;
-    margin: 0 1rem 0 0;
-  }
-
-  form {
-    flex-grow: 1;
-    max-width: 100%;
-    justify-content: space-between;
-
-    @include from-medium {
-      flex-grow: 0;
-      justify-content: flex-start;
-    }
-  }
-
-  .search_title, #search_title, #search_name {
-    flex-grow: 1;
-    max-width: calc(100vw - 12rem);
-
-    @include from-medium {
-      width: 30rem;
-      flex-grow: 0;
-    }
-  }
-
-  .search_period {
-    display: none;
-
-    @include from-medium {
-      display: block;
-    }
-  }
-
-  .btn-search {
-    display: none;
-
-    @include from-medium {
-      display: block;
-    }
-  }
-
-  .btn-search--mobile, .btn-reset--mobile {
-    display: block;
-    height: 5rem;
-    width: 5rem !important;
-    min-width: 5rem !important;
-    margin: 0 !important;
-    background-color: #D0D0D7;
-    border-radius: 4px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-
-    i {
-      color: black;
-    }
-
-    @include from-medium {
-      display: none;
-    }
-  }
-
-  .btn-reset {
-    display: none;
-
-    @include from-medium {
-      display: block;
-    }
-  }
-}
-
-
-
-.catalogue-controls__search-trainings-icon {
-  position: absolute;
-  z-index: 150;
-  left: 12px;
-  bottom: 11px;
-  color: #C4C4C4;
 }
 
 

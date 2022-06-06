@@ -18,7 +18,20 @@
 
   <div class="modal-footer info-modal__footer">
 
-    <%= link_to 'Go to ‘My Interviews’', my_interviews_path, class: 'bkt-btn-blue m-auto' %>
+    <% redirections = {
+      my_interviews: {
+        title: 'My Interviews',
+        path: my_interviews_url
+      },
+      my_team_interviews: {
+        title: 'My Team Interviews',
+        path: my_team_interviews_url
+      }
+    } %>
+
+    <% redirect = request.referer == redirections[:my_interviews][:path] ? redirections[:my_interviews] : redirections[:my_team_interviews] %>
+
+    <%= link_to "Go to ‘#{redirect[:title]}’", redirect[:path], class: 'bkt-btn-blue m-auto' %>
 
   </div>
 

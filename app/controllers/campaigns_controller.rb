@@ -29,6 +29,8 @@ class CampaignsController < ApplicationController
   end
 
   def show
+    cancel_cache
+
     authorize @campaign
 
     filter_interviewees
