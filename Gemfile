@@ -67,6 +67,8 @@ gem 'faker'
 gem 'cloudinary'
 gem 'local_time'
 
+gem 'rack-cors'
+
 # API
 gem 'active_model_serializers'
 
