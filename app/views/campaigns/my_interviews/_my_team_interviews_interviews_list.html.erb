@@ -12,7 +12,7 @@
         <%= link_to archive_interviewer_interviews_path(campaign_id: campaign.id, interviewer_id: manager.id),
               class: "flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3", remote: true do %>
 
-            <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span> <%= 'Archive campaign' %>
+            <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span> <%= active_tab == 'ongoing' ? 'Archive campaign' : 'Unarchive campaign' %>
 
         <% end %>
 
@@ -21,21 +21,24 @@
     </div>
 
     <div class="campaigns-my-interviews__card-inner">
+
       <div class="campaigns-my-interviews__card-header">
 
-        <div class="campaigns-my-interviews__card-header-left">
+        <div class="flex-row-start-centered">
 
-          <div class="campaigns-my-interviews__card-icon">
-            <span class="iconify" data-icon="<%= campaign.icon %>"></span>
+          <div class="flex-column mr-3">
+            <span class="iconify bkt-blue bkt-bg-light-blue p-2 rounded-5px" data-width="30" data-height="30" data-icon="<%= campaign.icon %>"></span>
           </div>
 
-          <div class="campaigns-my-interviews__card-title-deadline">
-
-            <h2><%= campaign.title %></h2>
+          <div class="flex-column">
             <div class="flex-row-start-centered">
-              <div class="deadline"><p>Deadline : <%= campaign.deadline %></p></div>
+              <p class="font-weight-600"><%= campaign.title %></p>
             </div>
-
+            <div class="flex-row-start-centered">
+              <div>
+                <p class="bkt-light-grey font-weight-500 fs-1_2rem">Deadline : <%= campaign.deadline %></p>
+              </div>
+            </div>
           </div>
 
         </div>

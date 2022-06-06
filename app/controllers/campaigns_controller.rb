@@ -90,7 +90,7 @@ class CampaignsController < ApplicationController
 
     ongoing_interviews = Interview.where(interviewer: current_user)
                                   .select{|x| !x.archived_for['Manager'].present?}
-    archived_interviews = Interview.where(employee: current_user)
+    archived_interviews = Interview.where(interviewer: current_user)
                                    .select{|x| x.archived_for['Manager'].present?}
 
     @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id)).distinct
@@ -98,7 +98,6 @@ class CampaignsController < ApplicationController
     @todo_campaigns = @ongoing_campaigns.where_not_exists(:interviews, interviewer: current_user,
                                                                        label: ['Manager', 'Crossed'],
                                                                        status: 'submitted')
-
     @active_tab = params.dig(:status).presence || 'ongoing'
 
     @campaigns =
@@ -197,7 +196,7 @@ class CampaignsController < ApplicationController
              .where('lower(title) LIKE ?', "%#{input.downcase}%")
              .pluck(:title)
 
-    render json: tags, status: :ok
+    render json: tags, root: 'categories', status: :ok
   end
 
   def index_line
