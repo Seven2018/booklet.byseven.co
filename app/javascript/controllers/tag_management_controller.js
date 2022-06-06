@@ -64,9 +64,9 @@ export default class extends Controller {
     this.timer = setTimeout(() => {
       this.searchTags(value, toPrint => {
         const displayed = Array.from(this.displayZoneTarget.querySelectorAll('.tag-value')).map(x => x.innerText.toLowerCase())
-        const createTag = !toPrint.includes(value) && !displayed.includes(value.toLowerCase()) ? value : null
+        const createTag = !toPrint.categories.includes(value) && !displayed.includes(value.toLowerCase()) ? value : null
 
-        this.updateSuggestionList(toPrint, createTag)
+        this.updateSuggestionList(toPrint.categories, createTag)
       })
     }, this.waitTime);
   }

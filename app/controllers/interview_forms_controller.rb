@@ -146,7 +146,7 @@ class InterviewFormsController < ApplicationController
 
     Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
 
-    head :ok
+    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
   end
 
   def search_tags
@@ -159,7 +159,7 @@ class InterviewFormsController < ApplicationController
              .where('title LIKE ?', "%#{input}%")
              .pluck(:title)
 
-    render json: tags, status: :ok
+    render json: tags, root: 'categories', status: :ok
   end
 
   def index_line
