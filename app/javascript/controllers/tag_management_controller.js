@@ -11,13 +11,16 @@ export default class extends Controller {
 
     this.allTags = this.element.dataset.allTags.split(',').filter(value => value ? true : false)
 
-    window.addEventListener('click', () => {
-      this.tagListTarget.classList.add('d-none')
-      document.querySelectorAll('.tag-suggestion-option').forEach(el => el.classList.add('d-none'))
-    });
     $(this.displayZoneTarget).click(event => event.stopPropagation());
     this.inputFilterTarget.addEventListener('focus', _ => this.displayZoneTarget.classList.add('bkt-bg-light-grey8'))
     this.inputFilterTarget.addEventListener('focusout', _ => this.displayZoneTarget.classList.remove('bkt-bg-light-grey8'))
+    this.inputFilterTarget.addEventListener('keyup', _ => {
+      if (_.keyCode == '27') {
+        this.tagListTarget.classList.add('d-none')
+      }
+    })
+
+    this.tagListTarget.classList.remove('d-none')
   }
 
   addTag(e) {
@@ -63,11 +66,8 @@ export default class extends Controller {
 
     this.timer = setTimeout(() => {
       this.searchTags(value, toPrint => {
-        console.log(toPrint)
         const displayed = Array.from(this.displayZoneTarget.querySelectorAll('.tag-value')).map(x => x.innerText.toLowerCase())
-
         const result_array = toPrint.categories == undefined ? toPrint : toPrint.categories
-
         const createTag = !result_array.includes(value) && !displayed.includes(value.toLowerCase()) ? value : null
 
         this.updateSuggestionList(result_array, createTag)
