@@ -29,7 +29,7 @@
           <%= simple_form_for(:search, url: my_trainings_path, method: :get, remote: true,
             data: {
               controller:'remember-search',
-              remember_search_key_value: 'bookletInterviewFormsSearches',
+              remember_search_key_value: 'bookletTrainingsSearches',
             }
           ) do |f| %>
 
@@ -42,7 +42,8 @@
                   data: {
                     remember_search_target: :search,
                     action: 'keyup->remember-search#storeSearch'
-                  }
+                  },
+                  id: 'searchbar'
                 },
                 label: false,
                 required: false
@@ -93,6 +94,18 @@
 <!---------------->
 
 <script>
+  let el = document.querySelectorAll('.setup-search-arg')
+
+  if (el) {
+    el.forEach(a => {
+      const text = localStorage.getItem('bookletTrainingsSearches')
+
+      if (text) {
+        a.href += `?back_search_text=${text}`
+      }
+    })
+    localStorage.setItem('bookletTrainingsSearches', '')
+  }
 
   ///////////
   // TOOLS //

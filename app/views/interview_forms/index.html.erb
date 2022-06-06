@@ -27,7 +27,9 @@
            class="position-relative mb-4rem"
            data-controller="remember-search tools--tags-manager"
            data-color="bkt-blue"
-           data-background-color="bkt-bg-light-blue">
+           data-background-color="bkt-bg-light-blue"
+           data-remember-search-key-value="bookletInterviewFormsSearches"
+      >
 
         <div class="d-flex justify-content-start align-items-center mb-2rem">
 
@@ -141,6 +143,18 @@
 
 <script>
   formGuardian = false;
+  let el = document.querySelectorAll('.setup-search-arg')
+
+  if (el) {
+    el.forEach(a => {
+      const text = localStorage.getItem('bookletInterviewFormsSearches')
+
+      if (text) {
+        a.href += `?back_search_text=${text}`
+      }
+    })
+    localStorage.setItem('bookletInterviewFormsSearches', '')
+  }
 
   <%# TODO refacto into stimulus controller %>
   function outsideClick(event, notelem) {

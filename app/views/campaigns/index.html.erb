@@ -17,7 +17,7 @@
       <% if CampaignPolicy.new(current_user, nil).create? %>
         <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-blue', data: {
           handle: 'create-campaign-cta'
-        } do  %>
+        } do %>
           <i class="fas fa-plus"></i>
           &nbsp;
           Create Campaign
@@ -40,7 +40,7 @@
 
           <i class="fas fa-search searchbar-icon"></i>
 
-          <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true)do |f| %>
+          <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true) do |f| %>
 
             <%=
               f.input(
@@ -50,7 +50,7 @@
                   autocomplete: 'off',
                   data: {
                     remember_search_target: :search,
-                    # action: 'keyup->remember-search#storeSearch'
+                    action: 'keyup->remember-search#storeSearch'
                   }
                 },
                 label: false,
@@ -59,14 +59,14 @@
             %>
 
             <%= f.input :period, collection: ['Current', 'Completed', 'All'],
-                                 selected: 'Current',
-                                 label: false,
-                                 required: false,
-                                 input_html: {
-                                   data: {
-                                     action: 'change->remember-search#storeSearch'
-                                   }
-                                 } %>
+                        selected: 'Current',
+                        label: false,
+                        required: false,
+                        input_html: {
+                          data: {
+                            action: 'change->remember-search#storeSearch'
+                          }
+                        } %>
 
             <%= f.hidden_field :tags, value: [], data: { tools__tags_manager_target: "selectedTags" } %>
             <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
@@ -161,15 +161,27 @@
 
 <script>
   formGuardian = false;
+  let el = document.querySelectorAll('.setup-search-arg')
+
+  if (el) {
+    el.forEach(a => {
+      const text = localStorage.getItem('bookletCampaignsSearches')
+
+      if (text) {
+        a.href += `?back_search_text=${text}`
+      }
+    })
+    localStorage.setItem('bookletCampaignsSearches', '')
+  }
 
   function outsideClick(event, notelem) {
     notelem = $(notelem); // jquerize (optional)
     // check outside click for multiple elements
     var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
+    for (i = 0; i < len; i++) {
+      if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+        clickedOut = false;
+      }
     }
     if (clickedOut) return true;
     else return false;
@@ -187,17 +199,17 @@
     card_link.classList.add('disabled')
     card_link_href = "/campaigns/" + element.closest('.campaigns-index__list-line').id.split('-')[2]
     card_link.href = "javascript:void(0)";
-    setTimeout(function(){
+    setTimeout(function () {
       formGuardian = false
     }, 1);
-    window.addEventListener('click', function(e) {
+    window.addEventListener('click', function (e) {
       if (outsideClick(e, dropdown) && formGuardian == false) {
         formGuardian = true
-        setTimeout(function(){
+        setTimeout(function () {
           formGuardian = false
         }, 1);
         dropdown.classList.add('hidden')
-        setTimeout(function(){
+        setTimeout(function () {
           card_link.classList.remove('disabled')
           card_link.href = card_link_href
         }, 1);
@@ -240,11 +252,11 @@
   function toggleTagCategoryDropdown(element) {
     caret = element.querySelector('i')
     angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.webkitTransform = 'rotate(' + (angle + 180).toString() + 'deg)';
+    caret.style.mozTransform = 'rotate(' + (angle + 180).toString() + 'deg)';
+    caret.style.msTransform = 'rotate(' + (angle + 180).toString() + 'deg)';
+    caret.style.oTransform = 'rotate(' + (angle + 180).toString() + 'deg)';
+    caret.style.transform = 'rotate(' + (angle + 180).toString() + 'deg)';
     caret.setAttribute('data-rotated', (angle + 180).toString())
     block = element.parentNode.parentNode.parentNode.parentNode;
     if (block.style.maxHeight == '50px' || block.style.maxHeight == '') {
