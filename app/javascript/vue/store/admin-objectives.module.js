@@ -5,10 +5,18 @@ import store from "./index";
 export default {
   namespaced: true,
   state: {
+    pagination: null,
     users: null,
-    error: null
+    error: null,
+    search: null
   },
   mutations: {
+    setPagination(state, value) {
+      state.pagination = value
+    },
+    setSearch(state, value) {
+      state.search = value
+    },
     setUsers(state, value) {
       state.users = value
     },
@@ -17,14 +25,21 @@ export default {
     }
   },
   actions: {
-    async fetch({commit}) {
+    async fetch({commit, state}, params = {}) {
+      if (state.search) {
+        params = { ...params, ...state.search}
+      }
+
       try {
         const res = await HTTP.get(
           routes.generate('objective_list'),
-          {params: {search: store.state.search.value} }
-          )
+          {
+            params
+          }
+        )
 
-        commit('setUsers', res.data)
+        commit('setUsers', res.data.users)
+        commit('setPagination', res.data.meta)
       } catch (e) {
         commit('setError', e.message)
       }

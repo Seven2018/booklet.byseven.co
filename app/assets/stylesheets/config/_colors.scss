@@ -17,6 +17,7 @@ $bkt-light-objective-blue: #D6E4FF;
 $bkt-objective-light-blue: #5C95FF26;
 $bkt-objective-blue: #5C95FF;
 $bkt-objective-blue2: #5C95FF59;
+$bkt-objective-blue3: #3177B7BF;
 $bkt-white: #FFFFFF;
 $bkt-light-grey: #C4C4C4;
 $bkt-light-grey2: #F5F8FB;
@@ -28,6 +29,8 @@ $bkt-light-grey7: #E3E3E3;
 $bkt-light-grey8: #ECECEC;
 $bkt-light-grey9: #F6F6F6;
 $bkt-light-grey10: #F0F0F0;
+$bkt-light-grey11: rgba(51, 51, 51, 0.35);
+$bkt-light-grey12: #E7E7E7;
 $bkt-dark-grey: #333333;
 $bkt-green: #7BC079;
 $bkt-transparent-green: #D8EDD7;
@@ -41,78 +44,136 @@ $bkt-transparent-negative-red: #FAD4D4;
 $bkt-light-red: #ec6d6d40;
 
 
-.bkt-light-blue       { color: $bkt-light-blue !important; }
-.bkt-light-blue2      { color: $bkt-light-blue2 !important; }
-.bkt-blue             { color: $bkt-blue !important; }
-.bkt-dark-blue        { color: $bkt-dark-blue !important; }
-.bkt-light-objective-blue   { color: $bkt-light-objective-blue !important; }
-.bkt-objective-blue   { color: $bkt-objective-blue !important; }
-.bkt-objective-blue2   { color: $bkt-objective-blue2 !important; }
-.bkt-white            { color: $bkt-white !important; }
-.bkt-light-grey       { color: $bkt-light-grey !important; }
-.bkt-light-grey2      { color: $bkt-light-grey2 !important; }
-.bkt-light-grey3      { color: $bkt-light-grey3 !important; }
-.bkt-light-grey4      { color: $bkt-light-grey4 !important; }
-.bkt-light-grey5      { color: $bkt-light-grey5 !important; }
-.bkt-light-grey6      { color: $bkt-light-grey6 !important; }
-.bkt-dark-grey        { color: $bkt-dark-grey !important; }
-.bkt-green            { color: $bkt-green !important; }
-.bkt-yellow           { color: $bkt-yellow !important; }
-.bkt-orange           { color: $bkt-orange !important; }
-.bkt-light-orange     { color: $bkt-light-orange !important; }
-.bkt-red              { color: $bkt-red !important; }
-.bkt-negative-red     { color: $bkt-negative-red !important; }
+.bkt-light-blue             { color: $bkt-light-blue; }
+.bkt-light-blue2            { color: $bkt-light-blue2; }
+.bkt-blue                   { color: $bkt-blue; }
+.bkt-dark-blue              { color: $bkt-dark-blue; }
+.bkt-light-objective-blue   { color: $bkt-light-objective-blue; }
+.bkt-objective-blue         { color: $bkt-objective-blue; }
+.bkt-objective-blue2        { color: $bkt-objective-blue2; }
+.bkt-objective-blue3        { color: $bkt-objective-blue3; }
+.bkt-white                  { color: $bkt-white; }
+.bkt-light-grey             { color: $bkt-light-grey; }
+.bkt-light-grey2            { color: $bkt-light-grey2; }
+.bkt-light-grey3            { color: $bkt-light-grey3; }
+.bkt-light-grey4            { color: $bkt-light-grey4; }
+.bkt-light-grey5            { color: $bkt-light-grey5; }
+.bkt-light-grey6            { color: $bkt-light-grey6; }
+.bkt-light-grey11           { color: $bkt-light-grey11; }
+.bkt-dark-grey              { color: $bkt-dark-grey; }
+.bkt-green                  { color: $bkt-green; }
+.bkt-yellow                 { color: $bkt-yellow; }
+.bkt-orange                 { color: $bkt-orange; }
+.bkt-light-orange           { color: $bkt-light-orange; }
+.bkt-red                    { color: $bkt-red; }
+.bkt-negative-red           { color: $bkt-negative-red; }
 
-.bkt-light-blue-hover       { &:hover { color: $bkt-light-blue !important; } }
-.bkt-light-blue2-hover      { &:hover { color: $bkt-light-blue2 !important; } }
-.bkt-blue-hover             { &:hover { color: $bkt-blue !important; } }
-.bkt-dark-blue-hover        { &:hover { color: $bkt-dark-blue !important; } }
+.bkt-light-blue-important             { color: $bkt-light-blue !important; }
+.bkt-light-blue2-important            { color: $bkt-light-blue2 !important; }
+.bkt-blue-important                   { color: $bkt-blue !important; }
+.bkt-dark-blue-important              { color: $bkt-dark-blue !important; }
+.bkt-light-objective-blue-important   { color: $bkt-light-objective-blue !important; }
+.bkt-objective-blue-important         { color: $bkt-objective-blue !important; }
+.bkt-objective-blue2-important        { color: $bkt-objective-blue2 !important; }
+.bkt-objective-blue3-important        { color: $bkt-objective-blue3 !important; }
+.bkt-white-important                  { color: $bkt-white !important; }
+.bkt-light-grey-important             { color: $bkt-light-grey !important; }
+.bkt-light-grey2-important            { color: $bkt-light-grey2 !important; }
+.bkt-light-grey3-important            { color: $bkt-light-grey3 !important; }
+.bkt-light-grey4-important            { color: $bkt-light-grey4 !important; }
+.bkt-light-grey5-important            { color: $bkt-light-grey5 !important; }
+.bkt-light-grey6-important            { color: $bkt-light-grey6 !important; }
+.bkt-light-grey11-important           { color: $bkt-light-grey11 !important; }
+.bkt-dark-grey-important              { color: $bkt-dark-grey !important; }
+.bkt-green-important                  { color: $bkt-green !important; }
+.bkt-yellow-important                 { color: $bkt-yellow !important; }
+.bkt-orange-important                 { color: $bkt-orange !important; }
+.bkt-light-orange-important           { color: $bkt-light-orange !important; }
+.bkt-red-important                    { color: $bkt-red !important; }
+.bkt-negative-red-important           { color: $bkt-negative-red !important; }
+
+.bkt-light-blue-hover             { &:hover { color: $bkt-light-blue !important; } }
+.bkt-light-blue2-hover            { &:hover { color: $bkt-light-blue2 !important; } }
+.bkt-blue-hover                   { &:hover { color: $bkt-blue !important; } }
+.bkt-dark-blue-hover              { &:hover { color: $bkt-dark-blue !important; } }
 .bkt-light-objective-blue-hover   { &:hover { color: $bkt-light-objective-blue !important; } }
-.bkt-objective-blue-hover   { &:hover { color: $bkt-objective-blue !important; } }
-.bkt-objective-blue2-hover   { &:hover { color: $bkt-objective-blue2 !important; } }
-.bkt-white-hover            { &:hover { color: $bkt-white !important; } }
-.bkt-light-grey-hover       { &:hover { color: $bkt-light-grey !important; } }
-.bkt-light-grey2-hover      { &:hover { color: $bkt-light-grey2 !important; } }
-.bkt-light-grey3-hover      { &:hover { color: $bkt-light-grey3 !important; } }
-.bkt-light-grey4-hover      { &:hover { color: $bkt-light-grey4 !important; } }
-.bkt-light-grey5-hover      { &:hover { color: $bkt-light-grey5 !important; } }
-.bkt-light-grey6-hover      { &:hover { color: $bkt-light-grey6 !important; } }
-.bkt-dark-grey-hover        { &:hover { color: $bkt-dark-grey !important; } }
-.bkt-green-hover            { &:hover { color: $bkt-green !important; } }
-.bkt-yellow-hover           { &:hover { color: $bkt-yellow !important; } }
-.bkt-orange-hover           { &:hover { color: $bkt-orange !important; } }
-.bkt-light-orange-hover     { &:hover { color: $bkt-light-orange !important; } }
-.bkt-red-hover              { &:hover { color: $bkt-red !important; } }
+.bkt-objective-blue-hover         { &:hover { color: $bkt-objective-blue !important; } }
+.bkt-objective-blue2-hover        { &:hover { color: $bkt-objective-blue2 !important; } }
+.bkt-white-hover                  { &:hover { color: $bkt-white !important; } }
+.bkt-light-grey-hover             { &:hover { color: $bkt-light-grey !important; } }
+.bkt-light-grey2-hover            { &:hover { color: $bkt-light-grey2 !important; } }
+.bkt-light-grey3-hover            { &:hover { color: $bkt-light-grey3 !important; } }
+.bkt-light-grey4-hover            { &:hover { color: $bkt-light-grey4 !important; } }
+.bkt-light-grey5-hover            { &:hover { color: $bkt-light-grey5 !important; } }
+.bkt-light-grey6-hover            { &:hover { color: $bkt-light-grey6 !important; } }
+.bkt-dark-grey-hover              { &:hover { color: $bkt-dark-grey !important; } }
+.bkt-green-hover                  { &:hover { color: $bkt-green !important; } }
+.bkt-yellow-hover                 { &:hover { color: $bkt-yellow !important; } }
+.bkt-orange-hover                 { &:hover { color: $bkt-orange !important; } }
+.bkt-light-orange-hover           { &:hover { color: $bkt-light-orange !important; } }
+.bkt-red-hover                    { &:hover { color: $bkt-red !important; } }
 
-.bkt-bg-light-blue                     { background-color: $bkt-light-blue !important; }
-.bkt-bg-light-blue2                    { background-color: $bkt-light-blue2 !important; }
-.bkt-bg-blue                           { background-color: $bkt-blue !important; }
-.bkt-bg-dark-blue                      { background-color: $bkt-dark-blue !important; }
-.bkt-bg-light-objective-blue           { background-color: $bkt-light-objective-blue !important; }
-.bkt-bg-objective-light-blue           { background-color: $bkt-objective-light-blue !important; }
-.bkt-bg-objective-blue                 { background-color: $bkt-objective-blue !important; }
-.bkt-bg-objective-blue2                 { background-color: $bkt-objective-blue2 !important; }
-.bkt-bg-green                          { background-color: $bkt-green !important; }
-.bkt-bg-transparent-green              { background-color: $bkt-transparent-green !important; }
-.bkt-bg-yellow                         { background-color: $bkt-yellow !important; }
-.bkt-bg-orange                         { background-color: $bkt-orange !important; }
-.bkt-bg-light-orange                   { background-color: $bkt-light-orange !important; }
-.bkt-bg-light2-orange                  { background-color: #ef8c6496 !important; }
-.bkt-bg-red                            { background-color: $bkt-red !important; }
-.bkt-bg-light-red                      { background-color: $bkt-light-red !important;}
-.bkt-bg-negative-red                   { background-color: $bkt-negative-red !important; }
-.bkt-bg-transparent-negative-red       { background-color: $bkt-transparent-negative-red !important; }
-.bkt-bg-white                          { background-color: $bkt-white !important; }
-.bkt-bg-light-grey                     { background-color: $bkt-light-grey !important; }
-.bkt-bg-light-grey2                    { background-color: $bkt-light-grey2 !important; }
-.bkt-bg-light-grey3                    { background-color: $bkt-light-grey3 !important; }
-.bkt-bg-light-grey4                    { background-color: $bkt-light-grey4 !important; }
-.bkt-bg-light-grey5                    { background-color: $bkt-light-grey5 !important; }
-.bkt-bg-light-grey6                    { background-color: $bkt-light-grey6 !important; }
-.bkt-bg-light-grey8                    { background-color: $bkt-light-grey8 !important; }
-.bkt-bg-light-grey9                    { background-color: $bkt-light-grey9 !important; }
-.bkt-bg-light-grey10      { background-color: $bkt-light-grey10 !important; }
-.bkt-bg-dark-grey                      { background-color: $bkt-dark-grey !important; }
+.bkt-bg-light-blue                     { background-color: $bkt-light-blue; }
+.bkt-bg-light-blue2                    { background-color: $bkt-light-blue2; }
+.bkt-bg-blue                           { background-color: $bkt-blue; }
+.bkt-bg-dark-blue                      { background-color: $bkt-dark-blue; }
+.bkt-bg-light-objective-blue           { background-color: $bkt-light-objective-blue; }
+.bkt-bg-objective-light-blue           { background-color: $bkt-objective-light-blue; }
+.bkt-bg-objective-blue                 { background-color: $bkt-objective-blue; }
+.bkt-bg-objective-blue2                { background-color: $bkt-objective-blue2; }
+.bkt-bg-green                          { background-color: $bkt-green; }
+.bkt-bg-transparent-green              { background-color: $bkt-transparent-green; }
+.bkt-bg-yellow                         { background-color: $bkt-yellow; }
+.bkt-bg-orange                         { background-color: $bkt-orange; }
+.bkt-bg-light-orange                   { background-color: $bkt-light-orange; }
+.bkt-bg-light2-orange                  { background-color: #ef8c6496; }
+.bkt-bg-red                            { background-color: $bkt-red; }
+.bkt-bg-light-red                      { background-color: $bkt-light-red;}
+.bkt-bg-negative-red                   { background-color: $bkt-negative-red; }
+.bkt-bg-transparent-negative-red       { background-color: $bkt-transparent-negative-red; }
+.bkt-bg-white                          { background-color: $bkt-white; }
+.bkt-bg-light-grey                     { background-color: $bkt-light-grey; }
+.bkt-bg-light-grey2                    { background-color: $bkt-light-grey2; }
+.bkt-bg-light-grey3                    { background-color: $bkt-light-grey3; }
+.bkt-bg-light-grey4                    { background-color: $bkt-light-grey4; }
+.bkt-bg-light-grey5                    { background-color: $bkt-light-grey5; }
+.bkt-bg-light-grey6                    { background-color: $bkt-light-grey6; }
+.bkt-bg-light-grey8                    { background-color: $bkt-light-grey8; }
+.bkt-bg-light-grey9                    { background-color: $bkt-light-grey9; }
+.bkt-bg-light-grey10                   { background-color: $bkt-light-grey10; }
+.bkt-bg-light-grey12                   { background-color: $bkt-light-grey12; }
+.bkt-bg-dark-grey                      { background-color: $bkt-dark-grey; }
+
+.bkt-bg-light-blue-important                     { background-color: $bkt-light-blue !important; }
+.bkt-bg-light-blue2-important                    { background-color: $bkt-light-blue2 !important; }
+.bkt-bg-blue-important                           { background-color: $bkt-blue !important; }
+.bkt-bg-dark-blue-important                      { background-color: $bkt-dark-blue !important; }
+.bkt-bg-light-objective-blue-important           { background-color: $bkt-light-objective-blue !important; }
+.bkt-bg-objective-light-blue-important           { background-color: $bkt-objective-light-blue !important; }
+.bkt-bg-objective-blue-important                 { background-color: $bkt-objective-blue !important; }
+.bkt-bg-objective-blue2-important                { background-color: $bkt-objective-blue2 !important; }
+.bkt-bg-green-important                          { background-color: $bkt-green !important; }
+.bkt-bg-transparent-green-important              { background-color: $bkt-transparent-green !important; }
+.bkt-bg-yellow-important                         { background-color: $bkt-yellow !important; }
+.bkt-bg-orange-important                         { background-color: $bkt-orange !important; }
+.bkt-bg-light-orange-important                   { background-color: $bkt-light-orange !important; }
+.bkt-bg-light2-orange-important                  { background-color: #ef8c6496 !important; }
+.bkt-bg-red-important                            { background-color: $bkt-red !important; }
+.bkt-bg-light-red-important                      { background-color: $bkt-light-red !important;}
+.bkt-bg-negative-red-important                   { background-color: $bkt-negative-red !important; }
+.bkt-bg-transparent-negative-red-important       { background-color: $bkt-transparent-negative-red !important; }
+.bkt-bg-white-important                          { background-color: $bkt-white !important; }
+.bkt-bg-light-grey-important                     { background-color: $bkt-light-grey !important; }
+.bkt-bg-light-grey2-important                    { background-color: $bkt-light-grey2 !important; }
+.bkt-bg-light-grey3-important                    { background-color: $bkt-light-grey3 !important; }
+.bkt-bg-light-grey4-important                    { background-color: $bkt-light-grey4 !important; }
+.bkt-bg-light-grey5-important                    { background-color: $bkt-light-grey5 !important; }
+.bkt-bg-light-grey6-important                    { background-color: $bkt-light-grey6 !important; }
+.bkt-bg-light-grey8-important                    { background-color: $bkt-light-grey8 !important; }
+.bkt-bg-light-grey9-important                    { background-color: $bkt-light-grey9 !important; }
+.bkt-bg-light-grey10-important                   { background-color: $bkt-light-grey10 !important; }
+.bkt-bg-light-grey12-important                   { background-color: $bkt-light-grey12 !important; }
+.bkt-bg-dark-grey-important                      { background-color: $bkt-dark-grey !important; }
 
 .bkt-sm-bg-light-orange { @include from-medium-high { background-color: $bkt-light-orange !important; } }
 
@@ -132,7 +193,7 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-light-grey6-hover      { &:hover { background-color: $bkt-light-grey6 !important; } }
 .bkt-bg-light-grey8-hover      { &:hover { background-color: $bkt-light-grey8 !important; } }
 .bkt-bg-light-grey9-hover      { &:hover { background-color: $bkt-light-grey9 !important; } }
-.bkt-bg-light-grey10-hover      { &:hover { background-color: $bkt-light-grey10 !important; } }
+.bkt-bg-light-grey10-hover     { &:hover { background-color: $bkt-light-grey10 !important; } }
 .bkt-bg-dark-grey-hover        { &:hover { background-color: $bkt-dark-grey !important; } }
 .bkt-bg-green-hover            { &:hover { background-color: $bkt-green !important; } }
 .bkt-bg-yellow-hover           { &:hover { background-color: $bkt-yellow !important; } }
@@ -143,10 +204,10 @@ $bkt-light-red: #ec6d6d40;
 .bkt-bg-light-grey2-hover      { &:hover { background-color: $bkt-light-grey2 !important; } }
 
 
-
-/////////////////
+//////////////
 // ON CLICK //
-/////////////////
+//////////////
+
 .bkt-white-onclick { &:active { color: $bkt-white !important; } }
 
 /////////////////

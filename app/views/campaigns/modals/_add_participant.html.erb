@@ -1,17 +1,35 @@
-<div class="modal-content">
-  <div class="modal-header modal-header__simple">
-    <button type="button" class="btn-icon cancel-close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+<div class="modal-content action-modal__content">
+
+  <div class="modal-header action-modal__header">
+
+    <h3 class="modal-title action-modal__title">Choose employee</h3>
+
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+
   </div>
-  <div class="modal-body modal-body__simple">
-    <h3>Choose employee</h3>
+
+  <div class="modal-body action-modal__body width-35rem height-14rem overflow-y-visible">
+
     <%= simple_form_for :search, method: :get do |f| %>
-      <%= f.text_field :participant, placeholder: 'Search for Users', label: false, data: {behavior: 'autocomplete'} %>
-      <%= f.hidden_field :add_to_interviewer_id, value: selected_interviewer&.id %>
+
+      <%= f.text_field :participant,
+                       class: 'width-30rem',
+                       placeholder: 'Search for Users',
+                       label: false,
+                       data: {behavior: 'autocomplete'} %>
+
     <% end %>
-    <div class="flex-row-between-centered">
-      <%= link_to campaigns_interview_sets_path(id: campaign), id: 'add-participant-button', class: 'btn-grey', method: :post, remote: true do %>
-        <p>Add employee</p>
-      <% end %>
-    </div>
+
   </div>
+
+  <div class="modal-footer action-modal__footer">
+
+    <%= link_to campaigns_interview_sets_path(id: campaign, add_to_interviewer_id: ''), id: 'add-participant-button', class: 'bkt-btn-blue', method: :post, remote: true do %>
+      <p>Add employee</p>
+    <% end %>
+
+  </div>
+
 </div>

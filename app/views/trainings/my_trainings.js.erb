@@ -1,2 +1,15 @@
 document.querySelector('#my-trainings__list').innerHTML = '<%= j render("trainings/my_trainings/my_trainings_list", trainings: @trainings) %>';
 document.querySelector('body').classList.remove('wait')
+
+el = document.querySelectorAll('.setup-search-arg')
+
+if (el) {
+  el.forEach(a => {
+    const text = localStorage.getItem('bookletTrainingsSearches')
+
+    if (text) {
+      a.href += `?back_search_text=${text}`
+    }
+  })
+  localStorage.setItem('bookletTrainingsSearches', '')
+}

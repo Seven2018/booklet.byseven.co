@@ -1,0 +1,32 @@
+<% template_id = template.id %>
+
+<div class="modal-content action-modal__content">
+
+  <div class="modal-header action-modal__header">
+
+    <h3 class="modal-title action-modal__title">Edit template tags</h3>
+
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+
+  </div>
+
+  <div class="modal-body action-modal__body min-h-30rem">
+
+    <%= render_component TagManagementComponent.new(
+      company_tags: @company_tags,
+      tags: template.categories.order(title: :asc).pluck(:title),
+      toggle_path: toggle_tag_interview_form_path(id: template_id),
+      remove_company_tag_path: remove_company_tag_interview_form_path(id: template_id),
+      search_tag_path: search_tags_interview_form_path(id: template_id),
+      color: 'bkt-blue',
+      background_color: 'bkt-bg-light-blue'
+    )%>
+
+    <%= link_to '', index_line_interview_form_path(template), class: 'update-line d-none', remote: true %>
+    <%= link_to '', interview_forms_path, class: 'update-list d-none', remote: true %>
+
+  </div>
+
+</div>

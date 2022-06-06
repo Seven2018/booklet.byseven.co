@@ -27,7 +27,7 @@
       <button
         data-toggle='modal'
         data-target='#confirmGoBack'
-        class="bkt-btn-white-light bkt-blue">
+        class="bkt-btn-white-dark-grey-light bkt-blue">
 
         <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
         <p class="">Close and submit later</p>
@@ -103,20 +103,22 @@
 
       <% question_num = 0 %>
 
-      <%
-        QuestionDecorator.decorate_collection(
+      <% QuestionDecorator.decorate_collection(
           @interview.interview_form.interview_questions
                     .order(position: :asc)
                     .where(visible_for: visibility)
-        ).each do |question|
-      %>
+        ).each do |question| %>
+
         <% if question.separator? %>
+
           <div class="interview-main__right-separator">
             <p class='pb-1rem'><%= question.question %></p>
           </div>
+
           <div class="trix-display">
             <%= sanitize question.description %>
           </div>
+
         <% end %>
 
         <% next if question.separator? %>
@@ -124,13 +126,19 @@
         <% question_num += 1 %>
 
         <div class="interview-main__right-questions">
+
           <div class="interview-main__right-question">
+
             <a id="anchor-<%= question.id %>" style='position:absolute; top: -21.5rem;'></a>
+
             <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
+
               <p><%= question_num %>. </p>
               <span class="iconify" data-icon="<%= question.icon %>"></span>
               <p><%= question.question %> <%= "*" if question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') %></p>
+
             </div>
+
             <div class="interview-main__right-question-description">
               <%= sanitize question.description %>
             </div>
@@ -146,10 +154,12 @@
                            (@interview.simple? && manager != current_user) ||
                            @interview.locked?
                        ),
-                       company: current_user.company
-            %>
+                       company: current_user.company %>
+
           </div>
+
         </div>
+
       <% end %>
 
     </div>
@@ -157,15 +167,20 @@
   </div>
 
   <div class="interview-controls--mobile">
+
     <div class="interview-controls__buttons--mobile">
-      <%= link_to interview_path(@interview, format: :pdf), class: 'btn-blue-text', id: 'interview-export-pdf', target: :_blank do %>
+
+      <%= link_to interview_path(@interview, format: :pdf), class: 'bkt-btn-white-blue', id: 'interview-export-pdf', target: :_blank do %>
         <span class="iconify" data-icon="bx:bx-download"></span>
       <% end %>
+
       <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
-        <button class="btn-blue-text" id="save-interview" onclick="saveButton();">
+
+        <button class="bkt-btn-white-blue" id="save-interview" onclick="saveButton();">
           <span class="iconify" data-icon="fluent:save-16-regular"></span>
           <p>Save</p>
         </button>
+
         <button id="submit-interview"
                 class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
                 data-toggle='modal'
@@ -174,8 +189,11 @@
           <p>Submit</p>
           <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
         </button>
+
       <% end %>
+
     </div>
+
   </div>
 
 </div>
@@ -189,16 +207,32 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='interviewConfirmSubmit' tabindex='-1' role='dialog' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document'>
+<div id='interviewConfirmSubmit'
+     class='modal info-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog info-modal__dialog'
+       role='document'>
     <%= render 'interviews/modals/confirm_submit' %>
   </div>
+
 </div>
 
-<div class='modal fade' id='confirmGoBack' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document'>
+<div id='confirmGoBack'
+     class='modal info-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog info-modal__dialog'
+       role='document'>
     <%= render 'interviews/modals/confirm_later' %>
   </div>
+
 </div>
 
 <!---------------->
@@ -288,12 +322,20 @@
     tx[i].setAttribute("style", "height:auto;overflow-y:hidden;");
     tx[i].addEventListener("click", OnInput, false);
     tx[i].addEventListener("input", OnInput, false);
-    tx[i].click()
+    // tx[i].click()
+    OnInput(tx[i])
   }
 
-  function OnInput() {
-    this.style.height = "auto";
-    this.style.height = (this.scrollHeight) + "px";
+  function OnInput(target = undefined) {
+
+    if (target.target) {
+      this.style.height = "auto";
+      this.style.height = (this.scrollHeight) + "px";
+    } else {
+      target.style.height = "auto";
+      target.style.height = (target.scrollHeight) + "px";
+    }
+
   }
 
 

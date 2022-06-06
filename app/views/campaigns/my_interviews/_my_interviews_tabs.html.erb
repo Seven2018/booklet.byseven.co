@@ -1,0 +1,23 @@
+<% ongoing_active = active_tab == 'ongoing' %>
+
+<%= link_to my_interviews_path(status: 'ongoing'), class: "interviews-tab-control flex-row-start-centered mr-1rem pb-0_5rem z-index-5 cursor-pointer #{'active' if ongoing_active}", remote: true do %>
+
+  <p class="fs-1_6rem font-weight-500">Ongoing interviews</p>
+
+  <div class="interviews-tab-control__counter flex-row-center-centered height-2rem
+              width-2rem rounded-10px ml-0_75rem">
+    <p class="fs-1rem font-weight-600"><%= ongoing_campaigns.count %></p>
+  </div>
+
+<% end %>
+
+<%= link_to my_interviews_path(status: 'archived'), class: "interviews-tab-control flex-row-start-centered mr-1rem pb-0_5rem z-index-5 cursor-pointer  #{'active' unless ongoing_active}", remote: true do %>
+
+  <p class="fs-1_6rem font-weight-500">Archived interviews</p>
+
+  <div class="interviews-tab-control__counter flex-row-center-centered height-2rem
+              width-2rem rounded-10px ml-0_75rem">
+    <p class="fs-1rem font-weight-600"><%= archived_campaigns.count %></p>
+  </div></p>
+
+<% end %>

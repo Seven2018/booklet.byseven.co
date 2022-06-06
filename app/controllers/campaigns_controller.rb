@@ -1,19 +1,24 @@
 class CampaignsController < ApplicationController
   include InterviewUsersFilter
-  before_action :set_campaign, only: %i[show edit send_notification_email destroy]
+  before_action :set_campaign, only: %i[show edit send_notification_email destroy toggle_tag remove_company_tag search_tags index_line]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
   def index
-    @company_tags = Category
-                      .distinct
-                      .where(company_id: current_user.company_id, kind: :interview)
-                      .pluck(:title)
     campaigns = policy_scope(Campaign).where(company: current_user.company)
                                       .where_exists(:interviews)
                                       .order(created_at: :desc)
 
     filter_campaigns(campaigns)
+
+    @company_tags = Category
+                      .distinct
+                      .where(company_id: current_user.company_id, kind: :interview)
+                      .pluck(:title)
+
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:campaigns)
+                              .order(title: :asc)
 
     redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
 
@@ -24,6 +29,8 @@ class CampaignsController < ApplicationController
   end
 
   def show
+    cancel_cache
+
     authorize @campaign
 
     filter_interviewees
@@ -50,19 +57,27 @@ class CampaignsController < ApplicationController
       id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
     authorize @campaigns
 
-    @ongoing_campaigns = @campaigns.where_exists(:interviews, employee: current_user, locked_at: nil)
-    @completed_campaigns = @campaigns.where_not_exists(:interviews, employee: current_user, locked_at: nil)
+    ongoing_interviews = Interview.where(employee: current_user, label: 'Employee')
+                                 .select{|x| !x.archived_for['Employee']}
+    archived_interviews = Interview.where(employee: current_user, label: 'Employee')
+                                   .select{|x| x.archived_for['Employee']}
+
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id))
+    @archived_campaigns = @campaigns.where_exists(:interviews, id: archived_interviews.map(&:id))
+    @todo_campaigns = @ongoing_campaigns.where_not_exists(:interviews, employee: current_user,
+                                                                       label: 'Employee',
+                                                                       status: 'submitted')
+
+    @active_tab = params.dig(:status).presence || 'ongoing'
 
     @campaigns =
-      if params.dig(:period) == 'completed'
-        @completed_campaigns
+      if @active_tab == 'archived'
+        @archived_campaigns
       else
         @ongoing_campaigns
       end
 
     @campaigns = CampaignDecorator.decorate_collection @campaigns
-
-    @interviews_to_fill_count = Interview.where(employee: current_user, label: 'Employee').where.not(status: :submitted).count
 
     respond_to do |format|
       format.html
@@ -71,29 +86,35 @@ class CampaignsController < ApplicationController
   end
 
   def my_team_interviews
-    campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
-    campaigns = campaigns.where_exists(:interviews, interviewer: current_user)
-    authorize campaigns
+    @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
+    @campaigns = @campaigns.where_exists(:interviews, interviewer: current_user)
+    authorize @campaigns
 
-    @interviews_completed_count = Interview.where(interviewer: current_user,
-                                                  label: ['Manager', 'Crossed'],
-                                                  locked_at: nil)
-                                           .count
-    @interviews_to_fill_count = Interview
-                                  .where(interviewer: current_user, label: ['Manager', 'Crossed'])
-                                  .where.not(status: :submitted).count
+    ongoing_interviews = Interview.where(interviewer: current_user)
+                                  .select{|x| !x.archived_for['Manager'].present?}
+    archived_interviews = Interview.where(interviewer: current_user)
+                                   .select{|x| x.archived_for['Manager'].present?}
 
-    @ongoing_campaigns = campaigns.where_exists(:interviews, interviewer: current_user, locked_at: nil)
-    @completed_campaigns = campaigns.where_not_exists(:interviews, interviewer: current_user, locked_at: nil)
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id)).distinct
+    @archived_campaigns = @campaigns.where_exists(:interviews, id: archived_interviews.map(&:id)).distinct
+    @todo_campaigns = @ongoing_campaigns.where_not_exists(:interviews, interviewer: current_user,
+                                                                       label: ['Manager', 'Crossed'],
+                                                                       status: 'submitted')
+    @active_tab = params.dig(:status).presence || 'ongoing'
 
     @campaigns =
-      if params.dig(:period) == 'completed'
-        @completed_campaigns
+      if params.dig(:status) == 'archived'
+        @archived_campaigns
       else
         @ongoing_campaigns
       end
 
-    @campaigns = @campaigns.sort { |x| x.deadline }.reverse
+    @campaigns = @campaigns&.sort { |x| x.deadline }&.reverse
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def send_notification_email
@@ -127,6 +148,72 @@ class CampaignsController < ApplicationController
     head :no_content
   end
 
+  ###########################
+  ## CATEGORIES MANAGEMENT ##
+  ###########################
+
+  def toggle_tag
+    authorize @campaign
+    tag = params.require(:tag)
+    category = Category.find_by(company_id: current_user.company_id, title: tag, kind: :interview)
+
+    if category.nil?
+      new_category = Category.create(company_id: current_user.company_id, title: tag, kind: :interview)
+      @campaign.categories << new_category
+    else
+      if @campaign.categories.exists?(category.id)
+        @campaign.categories.delete(category)
+      else
+        @campaign.categories << category
+      end
+    end
+
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:campaigns)
+                              .order(title: :asc)
+
+    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
+  end
+
+  def remove_company_tag
+    authorize @campaign
+    tag = params.require(:tag)
+
+    Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
+
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:campaigns)
+                              .order(title: :asc)
+
+    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
+  end
+
+  def search_tags
+    authorize @campaign
+    input = params[:input]
+    black_tags = Campaign.find(@campaign.id).categories.pluck(:title)
+    tags = Category
+             .where(company_id: current_user.company_id, kind: :interview)
+             .where.not(title: black_tags)
+             .where('lower(title) LIKE ?', "%#{input.downcase}%")
+             .order(title: :asc)
+             .pluck(:title)
+
+    render json: tags, root: 'categories', status: :ok
+  end
+
+  def index_line
+    skip_authorization
+
+    @campaign = @campaign.decorate
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  ###########################
+
   private
 
   def filter_campaigns(campaigns)
@@ -145,11 +232,9 @@ class CampaignsController < ApplicationController
     if params.dig(:search, :tags).present?
       selected_tags = params.dig(:search, :tags).split(',')
 
-      @campaigns = @campaigns
-                     .where(company_id: current_user.company_id)
-                     .tag_matches(selected_tags)
-                     .select { |campaign| (selected_tags & campaign.tags) == selected_tags }
-      @campaigns = Campaign.get_activerecord_relation(@campaigns) # to cast Array to ActiveRecord Relation
+      selected_tags.each do |tag|
+        @campaigns = @campaigns.where_exists(:categories, id: tag)
+      end
     end
 
     if search_title.present?
@@ -173,6 +258,7 @@ class CampaignsController < ApplicationController
                          User.find(params[:search][:user_id])
                        end
   end
+
 
   ##########################
   ## EMAILS NOTIFICATIONS ##

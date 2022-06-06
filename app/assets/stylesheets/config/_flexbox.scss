@@ -8,9 +8,6 @@
 .flex-basis-33 { flex-basis: 33% !important }
 .flex-basis-50 { flex-basis: 50% !important }
 
-.medium__flex-row { flex-direction: row; }
-.medium__flex-column { flex-direction: column; }
-
 .flex-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -129,3 +126,20 @@
 }
 
 // .flex-auto { flex: 0 0 auto; } already exists in tailwind and => { flex: 1 1 auto; }
+
+////////////////////
+// RESPONSIVENESS //
+////////////////////
+
+.small__flex-column { flex-direction: column; }
+
+@include from-medium {
+  .medium__flex-row { flex-direction: row !important; }
+  .medium__flex-column { flex-direction: column; }
+}
+
+
+@include from-large {
+  .large__flex-row { flex-direction: row !important; }
+  .large__flex-column { flex-direction: column; }
+}

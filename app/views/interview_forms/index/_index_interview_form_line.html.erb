@@ -1,0 +1,120 @@
+<% lines = [
+    template.class,
+    template.interview_questions.count,
+    template.updated_at.strftime("%d/%m/%Y"),
+    template.categories.pluck(:title)
+  ] %>
+
+<% width = (1 / lines.count.to_f + 1) * 100 %>
+
+<%= link_to '', edit_interview_form_path(template), class: 'stretched-link setup-search-arg', title: template.title %>
+
+<div class='fs-1_6rem font-weight-600 overflow-ellipsis width-20 min-width-20'
+     title='<%= template.title %>'>
+  <%= template.title %>
+</div>
+
+<% lines.each_with_index do |line, idx_temp| %>
+
+  <div class="fs-1_6rem width-20 <%= 'min-width-20' unless idx_temp == 3 %>">
+
+    <% if idx_temp == 3 %>
+
+      <div class="d-flex justify-content-start align-items-center">
+
+        <% tag_overflow = false %>
+
+        <% line.each_with_index do |tag, idx| %>
+
+          <% if idx > 1 && !tag_overflow %>
+
+            <div class="d-flex align-items-center fs-1_2rem font-weight-600
+                       bkt-blue bkt-bg-light-blue px-1rem py-0_5rem mx-2 rounded-15px width-fit-content">
+              +<%= line.count - 2 %>
+            </div>
+
+            <% break %>
+
+          <% else %>
+
+            <div class="d-flex align-items-center fs-1_2rem font-weight-600
+                       bkt-blue bkt-bg-light-blue px-1rem py-0_5rem mx-2 rounded-15px width-fit-content">
+              <%= tag %>
+            </div>
+
+          <% end %>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <%= line %>
+
+    <% end %>
+
+  </div>
+
+<% end %>
+
+<% if InterviewFormPolicy.new(current_user, nil).create? %>
+
+  <div data-controller="dropdown"
+       class="pos-rel d-flex justify-content-end">
+
+    <div class="flex-row-center-centered height-2_5rem width-2_5rem-forced rounded-15px bkt-light-grey
+                bkt-white-hover bkt-bg-light-grey-hover cursor-pointer z-index-5"
+          data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide">
+      <i class="fas fa-ellipsis-v"></i>
+    </div>
+
+    <div class="pos-abs rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start
+                bkt-bg-white bkt-dark-grey hidden"
+         data-dropdown-target="menu"
+         style='right: 0; top: 3rem; width: 18rem;'>
+
+      <a data-toggle='modal' data-target='#editTags-<%= template.id %>'>
+
+        <button class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                       width-100 p-3">
+          Edit campaign tags
+        </button>
+
+      </a>
+
+      <%= link_to duplicate_interview_form_path(template),
+                class: 'width-100' do %>
+
+        <button class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                       width-100 p-3">
+          Duplicate
+        </button>
+
+      <% end %>
+
+      <% if InterviewFormPolicy.new(current_user, template).destroy? %>
+
+        <%= link_to interview_form_path(template),
+                  class: 'width-100',
+                  method: :delete,
+                  remote: true,
+                  data: {
+                    confirm: 'Are you sure ?'
+                  } do %>
+
+          <button class='flex-row-start-centered fs-1_6rem font-weight-500 bkt-red bkt-bg-light-grey10-hover
+                         width-100 pl-3 pr-3 p-3'
+                  data-action="click->dropdown#hide">
+             Delete
+          </button>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+<% end %>

@@ -46,23 +46,30 @@ import '../vue/plugins/pipes'
 import '../vue/plugins/pop-up'
 import routes from "../vue/constants/routes";
 import App from '../vue/app.vue'
-import ObjectiveIndex from '../vue/pages/objectives/users'
+import ObjectiveUserIndex from '../vue/pages/objectives/users'
+import ObjectiveElementIndex from '../vue/pages/objectives/elements'
 import ObjectiveUserShow from '../vue/pages/objectives/users/show.vue'
 import MyTeamObjectives from '../vue/pages/objectives/my_team_objectives'
 import ObjectiveDatePicker from '../vue/components/ObjectiveDatePicker'
+import ObjectiveTemplateIndex from '../vue/pages/objectives/templates'
+import ObjectiveTemplateNew from '../vue/pages/objectives/templates/new'
+import ObjectiveTemplateNewTargetView from '../vue/pages/objectives/templates/new_target_view'
+import CustomToggleForErbForm from '../vue/components/CustomToggleForErbForm'
 
 let app = null
 let vuejsOpt = {
   el: '#app',
-  data: {
-    message: "Can you say hello?"
-  },
   components: {
     App,
-    ObjectiveIndex,
+    ObjectiveUserIndex,
+    ObjectiveElementIndex,
     ObjectiveUserShow,
     MyTeamObjectives,
-    ObjectiveDatePicker
+    ObjectiveDatePicker,
+    ObjectiveTemplateIndex,
+    ObjectiveTemplateNew,
+    ObjectiveTemplateNewTargetView,
+    CustomToggleForErbForm
   }
 }
 Vue.prototype.$routes = routes

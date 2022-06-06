@@ -1,73 +1,73 @@
-<div
-  class='bkt-bg-white mb-2rem p-2rem rounded-10px'
-  data-controller="tag-management"
-  data-all-tags="<%= @company_tags.join(',') %>"
-  data-toggle-path="<%= @toggle_path %>"
-  data-search-tag-path="<%= @search_tag_path %>"
-  data-remove-company-tag-path="<%= @remove_company_tag_path %>"
->
+<div class="pos-rel"
+     data-controller="tag-management"
+     data-all-tags="<%= @company_tags.join(',') %>"
+     data-toggle-path="<%= @toggle_path %>"
+     data-search-tag-path="<%= @search_tag_path %>"
+     data-remove-company-tag-path="<%= @remove_company_tag_path %>"
+     data-color="<%= @color %>"
+     data-background_color="<%= @background_color %>">
 
-  <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
-    <p>Template tags</p>
-  </div>
+  <div class="d-flex justify-content-start align-items-center flex-wrap position-relative width-100 mt-4
+              bkt-bg-light-grey9 pt-1rem pl-1rem rounded-2px"
+       data-tag-management-target="displayZone">
 
-  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your template in order to search through templates
-    efficiently and create accurate reports</p>
+    <% @tags.each do |tag| %>
 
-  <div data-tag-management-target="displayZone" class="position-relative width-100 mt-4 bkt-bg-light-grey9 p-2 rounded-2px">
-
-    <% @form_tags.each do |tag| %>
-
-      <button class="tags d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem mb-1">
-
-        <div class="d-flex align-items-center">
-          <div class="tag-value pl-2"><%= tag %></div>
-          <div class="pl-2 opacity_0 opacity-hover_1" data-action="click->tag-management#remove">X</div>
-        </div>
-
+      <button class="tags d-flex align-items-center fs-1_2rem font-weight-600
+                     <%= @color %> <%= @background_color %> px-1rem py-0_5rem mr-1rem mb-1rem rounded-15px width-fit-content">
+        <div class="tag-value"><%= tag %></div>
+        <div class="fs-1_6rem pl-2 opacity_70pc opacity-hover_1"
+             data-action="click->tag-management#remove">&times;</div>
       </button>
 
     <% end %>
 
-    <input data-action="click->tag-management#displayList keyup->tag-management#escape keyup->tag-management#filter"
+    <input data-action="click->tag-management#displayList keyup->tag-management#escape
+                        keyup->tag-management#filter"
            data-tag-management-target="inputFilter"
-           class="tag-input bkt-bg-light-grey9 bkt-bg-light-grey8-focus bkt-placeholder-light-grey border-0 d-inline-block m-2 cursor-pointer"
-           placeholder="<%= @form_tags.count.zero? ? 'Empty' : '' %>" type="text">
+           class="tag-input bkt-bg-light-grey9 bkt-placeholder-light-grey border-0 d-inline-block mr-1rem mb-1rem cursor-pointer"
+           placeholder="<%= 'Search tags' %>" type="text">
 
-    <div data-tag-management-target="tagList" class="d-none width-100 max-h-14rem position-absolute bkt-bg-white overflow-y-scroll" style="left: 0px">
 
-      <div class="d-flex m-4 bkt-light-grey">Select a tag or create new one</div>
+  </div>
 
-      <% @company_tags.each_with_index do |tag, idx| %>
+  <div class="d-none width-100 max-h-16rem position-absolute bkt-bg-white overflow-y-scroll"
+       style="left: 0; right: 0; top: 100%;"
+       data-tag-management-target="tagList">
 
-         <div data-action="click->tag-management#addTag"
-                 class="tag-company-item width-100 flex-row-between-centered align-items-center bkt-bg-light-grey8-hover fs-1_2rem cursor-pointer"
-                 id="tag-suggestion-<%= idx %>"
-                 data-tag-name="<%= tag %>"
-         >
+    <div class="d-flex m-4 bkt-light-grey">Select a tag or create new one</div>
 
-           <button class="tag-company-item-value d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 ml-4 rounded-2px fs-1_2rem"><%= tag %></button>
+    <% (@company_tags - @tags).each_with_index do |tag, idx| %>
 
-           <div class="position-relative">
+      <div id="tag-suggestion-<%= idx %>"
+            class="tag-company-item width-100 flex-row-between-centered align-items-center
+                   bkt-bg-light-grey8-hover fs-1_2rem cursor-pointer"
+            data-action="click->tag-management#addTag"
+            data-tag-name="<%= tag %>">
 
-             <button class="p-2 rounded-2px bkt-bg-light-grey-hover mr-2" data-action="click->tag-management#showTagOptions">···</button>
+        <button class="tag-company-item-value d-flex align-items-center fs-1_2rem font-weight-600
+                    bkt-dark-grey bkt-bg-light-grey8 px-1rem py-0_5rem m-1rem rounded-15px width-fit-content">
+          <%= tag %>
+        </button>
 
-             <div class="company-tag-options d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
+        <div class="position-relative">
 
-               <button class="flex-row-between-centered" data-action="click->tag-management#preparModal" >
-                 <span class="iconify mr-1" data-icon="akar-icons:trash-can" ></span>
-                 <p class="fs-1_2rem bkt-dark-grey" >Delete</p>
-               </button>
+         <button class="p-2 rounded-2px bkt-bg-light-grey-hover mr-2" data-action="click->tag-management#showTagOptions">···</button>
 
-             </div>
+         <div class="company-tag-options d-none position-absolute right-0 bkt-bg-white bkt-box-shadow-medium rounded-5px p-2 z-index-5 tag-suggestion-option">
 
-           </div>
+           <button class="flex-row-between-centered" data-action="click->tag-management#preparModal" >
+             <span class="iconify mr-1" data-icon="akar-icons:trash-can" ></span>
+             <p class="fs-1_2rem bkt-dark-grey" >Delete</p>
+           </button>
 
          </div>
 
-      <% end %>
+        </div>
 
-    </div>
+      </div>
+
+    <% end %>
 
   </div>
 
@@ -89,13 +89,13 @@
 
             <div class="modal-footer action-modal__footer">
 
-              <button class="bkt-btn-red-white"
+              <button class="bkt-btn-red-border"
                       data-action="click->tag-management#makeRemoveCompanyTagRequest"
                       data-tag-management-target="modalConfirm">
                 Yes
               </button>
 
-              <button class="bkt-btn-white mr-2rem"
+              <button class="bkt-btn-white-dark-grey mr-2rem"
                       data-action="click->tag-management#closeModal">
                 No
               </button>

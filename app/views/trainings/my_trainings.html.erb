@@ -19,50 +19,43 @@
 
     </div>
 
-      <div id='searchbar' class="d-none d-sm-block mb-5rem">
-        <div
-          class='d-flex justify-content-start align-items-center position-relative'
-          style='margin-bottom: 4rem'
-        >
-          <i class="fas fa-search position-absolute z-index-150 bkt-light-grey"
-            style='left: 25rem; bottom: 16.6px;'
-          ></i>
+      <div id='searchbar'
+           class="d-none d-sm-block mb-5rem">
+
+        <div class="d-flex justify-content-start align-items-center mb-4rem">
+
+          <i class="fas fa-search searchbar-icon"></i>
+
           <%= simple_form_for(:search, url: my_trainings_path, method: :get, remote: true,
-            html: {
-              class: 'search d-flex align-items-center'
-            },
             data: {
               controller:'remember-search',
-              remember_search_key_value: 'bookletInterviewFormsSearches',
+              remember_search_key_value: 'bookletTrainingsSearches',
             }
           ) do |f| %>
+
             <%=
               f.input(
                 :title,
                 placeholder: 'Search',
-                wrapper_html: {
-                  class: 'my-0 height-5rem'
-                },
                 input_html: {
-                  class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-                  style: 'width: 28rem; padding: 0 4rem 0 1rem;',
                   autocomplete: 'off',
                   data: {
                     remember_search_target: :search,
                     action: 'keyup->remember-search#storeSearch'
-                  }
+                  },
                 },
                 label: false,
                 required: false
               )
             %>
+
             <%= f.input :period,
                         collection: ['Current', 'Completed'],
                         label: false,
                         required: false,
                         selected: 'Current',
-                        input_html: {class: 'height-5rem border-bkt-light-grey bkt-light-grey rounded-5px ml-1rem', onchange: 'autoSubmit(this);'} %>
-            <div class="mr-3"></div>
+                        input_html: {onchange: 'autoSubmit(this);'} %>
+
             <%=
               f.submit(
                 '',
@@ -72,12 +65,18 @@
                 }
               )
             %>
+
             <button type='submit' class="btn-search d-block d-sm-none">
               <i class="fas fa-search"></i>
             </button>
-            <button class='height-5rem fs-1_6rem bkt-orange px-1rem bkt-bg-white-hover rounded-5px ml-1rem' onclick='resetAllFilter(this);'>Reset</button>
+
+            <button class='btn-reset bkt-orange'
+                    onclick='resetAllFilter(this);'>Reset</button>
+
           <% end %>
+
         </div>
+
       </div>
 
       <div id="my-trainings__list">
@@ -94,6 +93,18 @@
 <!---------------->
 
 <script>
+  let el = document.querySelectorAll('.setup-search-arg')
+
+  if (el) {
+    el.forEach(a => {
+      const text = localStorage.getItem('bookletTrainingsSearches')
+
+      if (text) {
+        a.href += `?back_search_text=${text}`
+      }
+    })
+    localStorage.setItem('bookletTrainingsSearches', '')
+  }
 
   ///////////
   // TOOLS //

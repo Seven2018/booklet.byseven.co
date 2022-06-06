@@ -1,6 +1,14 @@
 <div id="container-pdf">
 
-  <% visibility = InterviewPolicy.new(current_user, @interview).show? ? ['all', 'manager'] : ['all', 'employee'] %>
+  <% visibility =
+     if @interview.crossed?
+       ['all', 'manager', 'employee']
+     elsif @interview.manager?
+       ['all', 'manager']
+     else
+       ['all', 'employee']
+     end %>
+
   <% interview_form = @interview.interview_form %>
   <% fully_answered = @interview.fully_answered? %>
   <% employee = @interview.employee %>
@@ -16,48 +24,63 @@
     <div class="interview-main--pdf">
 
       <div class="interview-main__right--pdf">
+
         <h1><%= @interview.title %></h1>
         <h2><%= employee.fullname %></h2>
 
         <% question_hash = {} %>
         <% j = 0 %>
+
         <% interview_form.interview_questions.order(position: :asc).where(visible_for: visibility).each do |question| %>
+
           <% if question.separator? %>
             <% j += 1 %>
           <% end %>
+
           <% question_hash[j] = question_hash[j].present? ? question_hash[j] + [question] : [question] %>
         <% end %>
+
         <% question_number = 0 %>
+
         <% question_hash.each do |key, value| %>
+
           <% if key.to_i > 0 %>
             <div class="interview-main__right-separator--pdf">
               <p><%= key %>. <%= value.first.question %></p>
             </div>
           <% end %>
+
           <div class="interview-main__right-questions--pdf">
+
             <% start_value = key > 0 ? 1 : 0 %>
+
             <% value[start_value..-1].each do |question| %>
+
               <% question_number += 1 %>
 
               <div class="interview-main__right-question--pdf">
+
                 <div class="flex-box--pdf">
                   <p class="mr-1rem"><%= question_number %>. </p>
                   <p><%= question.question %> <%= "*" if question.required? %></p>
                 </div>
+
                 <div class="interview-main__right-question-description--pdf">
                   <%= sanitize question.description %>
                 </div>
+
                 <div class="interview-question__form--pdf">
 
                   <% existing_answer =
                     InterviewAnswer.find_by(
                     interview: @interview,
-                    interview_question: question,
-                    user: user
+                    interview_question: question
                   ) %>
+
                   <% current_answer   = existing_answer&.answer || '' %>
                   <% current_comments = existing_answer&.comments || '' %>
                   <% current_objective = existing_answer&.objective || '' %>
+
                   <% if @interview.crossed? %>
                     <% employee_answer = InterviewAnswer.joins(:interview).find_by(
                         interview: @interview.campaign.employee_interview(employee.id),
@@ -69,110 +92,166 @@
                         interview_question: question,
                         user: manager
                       ) %>
+
                       <% if manager_answer.present? %>
 
                         <div class="interview-crossed-answer--pdf nobreak--pdf">
+
                           <div class="interview-crossed-answer__header--pdf">
                             <p><%= manager.fullname %> <span>- Interviewer</span></p>
                           </div>
+
                           <% if question.open_question? %>
+
                             <p class='interview-crossed-answer__text--pdf'><%= manager_answer.answer %></p>
+
                           <% elsif question.rating? %>
+
                             <div class="rating-crossed--pdf">
+
                               <% for i in 1..manager_answer.answer.to_i %>
+
                                 <div style="color: #5A91CB">
                                   <%= raw user.company.rating_logo %>
                                 </div>
+
                               <% end %>
+
                               <% for i in manager_answer.answer.to_i+1..question.options.keys.first.to_i %>
+
                                 <div style="color: grey">
                                   <%= raw user.company.rating_logo %>
                                 </div>
+
                               <% end %>
+
                             </div>
+
                           <% elsif question.mcq? || question.objective? %>
+
                             <% if question.objective? %>
                               <div class="interview-crossed-answer__objective--pdf">
                                 <p><%= manager_answer.objective %></p>
                               </div>
                             <% end %>
+
                             <div class="interview-crossed-answer__mcq--pdf">
                               <p><%= manager_answer.answer %></p>
                             </div>
+
                           <% end %>
+
                           <% if manager_answer.comments.present? %>
+
                             <div class="interview-crossed-answer__objective--pdf">
                               <p><%= manager_answer.comments %></p>
                             </div>
+
                           <% end %>
+
                         </div>
 
                       <% end %>
+
                       <% if employee_answer.present? %>
 
                         <div class="interview-crossed-answer--pdf nobreak--pdf">
+
                           <div class="interview-crossed-answer__header--pdf">
                             <p><%= employee.fullname %> <span>- Employee</span></p>
                           </div>
+
                           <% if question.open_question? %>
+
                             <p class='interview-crossed-answer__text--pdf'><%= employee_answer.answer %></p>
+
                           <% elsif question.rating? %>
+
                             <div class="rating-crossed--pdf">
+
                               <% for i in 1..employee_answer.answer.to_i %>
+
                                 <div style="color: #5A91CB">
                                   <%= raw user.company.rating_logo %>
                                 </div>
+
                               <% end %>
+
                               <% for i in employee_answer.answer.to_i+1..question.options.keys.first.to_i %>
+
                                 <div style="color: grey">
                                   <%= raw user.company.rating_logo %>
                                 </div>
+
                               <% end %>
+
                             </div>
+
                           <% elsif question.mcq? || question.objective? %>
+
                             <% if question.objective? %>
+
                               <div class="interview-crossed-answer__objective--pdf">
                                 <p><%= employee_answer.objective %></p>
                               </div>
+
                             <% end %>
+
                             <div class="interview-crossed-answer__mcq--pdf">
                               <p><%= employee_answer.answer %></p>
                             </div>
+
                           <% end %>
+
                           <% if employee_answer.comments.present? %>
+
                             <div class="interview-crossed-answer__objective--pdf">
                               <p><%= employee_answer.comments %></p>
                             </div>
+
                           <% end %>
+
                         </div>
 
                       <% end %>
+
                   <% end %>
+
                   <%= simple_form_for(:interview_answer,
                     url: answer_interview_question_path,
                     remote: true,
                     data: {
                       question_type: question.question_type
                     }) do |f| %>
+
                     <% if question.open_question? %>
 
                       <p>Answer</p>
+
                       <p class='interview__textarea--pdf'><%= current_answer %></p>
 
                     <% elsif question.rating? %>
 
                       <p>Answer</p>
+
                       <div class='rating--pdf'>
+
                         <% for i in 1..current_answer.to_i %>
+
                           <div style="color: #5A91CB">
                             <%= raw user.company.rating_logo %>
                           </div>
+
                         <% end %>
+
                         <% for i in current_answer.to_i+1..question.options.keys.first.to_i %>
+
                           <div style="color: grey">
                             <%= raw user.company.rating_logo %>
                           </div>
+
                         <% end %>
+
                       </div>
 
                       <% if current_comments.present? %>
@@ -181,37 +260,53 @@
                       <% end %>
 
                     <% elsif question.mcq? || question.objective? %>
+
                       <% if question.objective? %>
                         <p>Objective</p>
                         <p class='interview__textarea--pdf'><%= current_objective %></p>
                       <% end %>
 
                       <div class="mcq--pdf">
+
                         <% question.options.keys.each do |option| %>
+
                           <div class="mcq-flex-box--pdf">
+
                             <% if option == current_answer %>
+
                               <div class="select-filled--pdf"></div>
                               <p class="select-filled-text--pdf"><%= option %></p>
+
                             <% else %>
+
                               <div class="select-empty--pdf"></div>
                               <p class="select-empty-text--pdf"><%= option %></p>
+
                             <% end %>
+
                           </div>
+
                         <% end %>
+
                       </div>
 
                       <% if current_comments.present? %>
                         <p>Comments</p>
                         <p class='interview__textarea--pdf'><%= current_comments %></p>
                       <% end %>
+
                     <% end %>
+
                   <% end %>
 
                 </div>
 
               </div>
+
             <% end %>
+
           </div>
+
         <% end %>
 
       </div>

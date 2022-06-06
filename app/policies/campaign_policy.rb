@@ -39,6 +39,23 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def can_unlock?
+    user.hr_or_above?
+  end
+
+  def campaign_edit_date?
+    # TODO devise a better policy
+    true
+  end
+
+  def toggle_tag?
+    create?
+  end
+
+  def remove_company_tag?
+    create?
+  end
+
+  def search_tags?
     create?
   end
 end

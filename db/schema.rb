@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_11_134932) do
+ActiveRecord::Schema.define(version: 2022_06_02_163642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,13 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.index ["company_id"], name: "index_campaigns_on_company_id"
     t.index ["interview_form_id"], name: "index_campaigns_on_interview_form_id"
     t.index ["owner_id"], name: "index_campaigns_on_owner_id"
+  end
+
+  create_table "campaigns_categories", id: false, force: :cascade do |t|
+    t.bigint "campaign_id"
+    t.bigint "category_id"
+    t.index ["campaign_id"], name: "index_campaigns_categories_on_campaign_id"
+    t.index ["category_id"], name: "index_campaigns_categories_on_category_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -304,6 +311,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.datetime "locked_at"
     t.bigint "interviewer_id"
     t.integer "status", default: 0
+    t.text "archived_for"
     t.index ["campaign_id"], name: "index_interviews_on_campaign_id"
     t.index ["creator_id"], name: "index_interviews_on_creator_id"
     t.index ["employee_id"], name: "index_interviews_on_employee_id"
@@ -336,10 +344,13 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.bigint "objectivable_id"
     t.string "objectivable_type"
     t.bigint "company_id"
-    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
+    t.bigint "creator_id"
+    t.boolean "template", default: false
+    t.boolean "can_employee_edit", default: true
+    t.boolean "can_employee_view", default: true
     t.index ["company_id"], name: "index_objective_elements_on_company_id"
     t.index ["creator_id"], name: "index_objective_elements_on_creator_id"
   end
@@ -610,7 +621,6 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "objective_elements", "companies"
-  add_foreign_key "objective_elements", "users", column: "creator_id"
   add_foreign_key "objective_indicators", "objective_elements"
   add_foreign_key "objective_logs", "objective_elements"
   add_foreign_key "objective_logs", "objective_indicators"

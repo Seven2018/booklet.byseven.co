@@ -1,16 +1,26 @@
-<div id="catalogue__container" class='flex-column-start-centered bkt-bg-light-orange py-5rem' style='min-height: calc(100vh - 7.5rem);'>
-  <div id="catalogue__contents" style='width: 80%; max-width: 150rem'>
+<div class='height-100 bkt-bg-light-orange bkt-page-container-min-height d-flex justify-content-start
+            align-items-center flex-column' >
+
+  <div id="catalogue__contents"
+       class="mt-5rem"
+       style='width: 80%; max-width: 150rem'>
+
     <div id="catalogue__contents-header" class="flex-row-between-centered mb-2rem">
+
       <h2 class="fs-2_4rem font-weight-600 bkt-dark-grey">Workshops (<%= @contents.count %>)</h2>
 
       <% if ContentPolicy.new(current_user, nil).create? %>
+
         <button class="bkt-btn-orange" data-toggle='modal' data-target='#newContent' data-handle='create-a-new-workshop-cta'>
           <i class="fas fa-plus"></i>
           &nbsp;
           Create a new workshop
         </button>
+
       <% end %>
+
     </div>
+
     <div class="bkt-bg-white rounded-20px p-2rem">
 
       <div id="catalogue__controls">
@@ -20,108 +30,105 @@
              data-controller="remember-search"
              data-remember-search-key-value="bookletCatalogueSearches">
 
-          <i class="fas fa-search position-absolute z-index-150 bkt-light-grey" style='left: 25rem; bottom: 16.6px;'></i>
+          <div class="d-flex justify-content-start align-items-center mb-2rem">
 
-          <%= simple_form_for(:search, url: catalogue_path, method: :get, remote: true,
-            html: {
-              class: 'd-flex align-items-center'
-            }
-          ) do |f| %>
+            <i class="fas fa-search searchbar-icon"></i>
 
-            <%=
-              f.input(
-                :title,
-                placeholder: 'Search',
-                wrapper_html: {
-                  class: 'my-0 height-5rem'
-                },
-                input_html: {
-                  class: 'border-bkt-light-grey bkt-bg-light-grey3 rounded-5px height-5rem',
-                  style: 'width: 28rem; padding: 0 4rem 0 1rem;',
-                  autocomplete: 'off',
+            <%= simple_form_for(:search, url: catalogue_path, method: :get, remote: true) do |f| %>
+
+              <%=
+                f.input(
+                  :title,
+                  placeholder: 'Search',
+                  input_html: {
+                    autocomplete: 'off',
+                    data: {
+                      remember_search_target: :search,
+                      action: 'keyup->remember-search#storeSearch'
+                    }
+                  },
+                  label: false,
+                  required: false
+                )
+              %>
+
+              <div class='booklet-select__catalogue-container border-bkt-light-grey bkt-bg-light-grey3 rounded-5px
+                         pos-rel cursor-pointer'
+                   style='width: 14rem;'
+                   data-controller="dropdown"
+                   data-remember-search-target="dropdown">
+
+                <%= f.hidden_field :content_type %>
+
+                <div class="flex-row-between-centered height-5rem px-1rem"
+                     data-action="click->dropdown#toggle">
+
+                  <p id='search_select'
+                     class='booklet-select__catalogue-selected fs-1_4rem font-weight-500 bkt-dark-grey'
+                     data-dropdown-target="display">
+                    All
+                  </p>
+
+                  <div class="flex-row-center-centered ml-1rem">
+                    <i class="fas fa-angle-down bkt-light-grey"></i>
+                  </div>
+
+                </div>
+
+                <div class="booklet-select__catalogue-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150            pos-abs hidden"
+                     style='top: 5.1rem; left: 0;'
+                     data-dropdown-target="menu">
+
+                  <div data-action="click->dropdown#selectOption">
+                    <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
+                       style='width: 110px;'
+                       data-value=''>All</p>
+                  </div>
+
+                  <div data-action="click->dropdown#selectOption">
+                    <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
+                       style='width: 110px;'
+                       data-value='Synchronous'>Face-to-face</p>
+                  </div>
+
+                  <div data-action="click->dropdown#selectOption">
+                    <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
+                       style='width: 110px;'
+                       data-value='Asynchronous'>Online</p>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <%= f.hidden_field :selected_categories %>
+              <%= f.hidden_field :page, value: '1' %>
+              <div class="mr-3"></div>
+
+              <%=
+                f.submit(
+                  'Search',
+                  class: 'hidden-submit btn-search',
+                  onclick: "document.querySelector('body').classList.add('wait');",
                   data: {
-                    remember_search_target: :search,
-                    action: 'keyup->remember-search#storeSearch'
+                    remember_search_target: :submit,
                   }
-                },
-                label: false,
-                required: false
-              )
-            %>
+                )
+              %>
 
-            <div class='booklet-select__catalogue-container border-bkt-light-grey bkt-bg-light-grey3 rounded-5px pos-rel            cursor-pointer ml-1rem'
-                 style='width: 14rem;'
-                 data-controller="dropdown"
-                 data-remember-search-target="dropdown">
+              <button type='submit' class="btn-search d-block d-sm-none">
+                <i class="fas fa-search"></i>
+              </button>
 
-              <%= f.hidden_field :content_type %>
+              <button class='btn-reset bkt-orange'
+                      data-action="click->remember-search#resetAllFilter">
+                Reset
+              </button>
 
-              <div class="flex-row-between-centered height-5rem px-1rem"
-                   data-action="click->dropdown#toggle">
+            <% end %>
 
-                <p id='search_select'
-                   class='booklet-select__catalogue-selected fs-1_4rem font-weight-500 bkt-dark-grey'
-                   data-dropdown-target="display">
-                  All
-                </p>
+          </div>
 
-                <div class="flex-row-center-centered ml-1rem">
-                  <i class="fas fa-angle-down bkt-light-grey"></i>
-                </div>
-
-              </div>
-
-              <div class="booklet-select__catalogue-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150            pos-abs hidden"
-                   style='top: 5.1rem; left: 0;'
-                   data-dropdown-target="menu">
-
-                <div data-action="click->dropdown#selectOption">
-                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
-                     style='width: 110px;'
-                     data-value=''>All</p>
-                </div>
-
-                <div data-action="click->dropdown#selectOption">
-                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
-                     style='width: 110px;'
-                     data-value='Synchronous'>Face-to-face</p>
-                </div>
-
-                <div data-action="click->dropdown#selectOption">
-                  <p class='fs-1_4rem font-weight-500 p-1rem bkt-orange-hover cursor-pointer'
-                     style='width: 110px;'
-                     data-value='Asynchronous'>Online</p>
-                </div>
-
-              </div>
-
-            </div>
-
-            <%= f.hidden_field :selected_categories %>
-            <%= f.hidden_field :page, value: '1' %>
-            <div class="mr-3"></div>
-
-            <%=
-              f.submit(
-                'Search',
-                class: 'hidden-submit btn-search',
-                onclick: "document.querySelector('body').classList.add('wait');",
-                data: {
-                  remember_search_target: :submit,
-                }
-              )
-            %>
-
-            <button type='submit' class="btn-search d-block d-sm-none">
-              <i class="fas fa-search"></i>
-            </button>
-
-            <button class='btn-reset bkt-orange'
-                    data-action="click->remember-search#resetAllFilter">
-              Reset
-            </button>
-
-          <% end %>
         </div>
         <div>
           <p class='mb-2rem'>What category are you interested in ?</p>
@@ -143,7 +150,9 @@
       </div>
 
     </div>
+
   </div>
+
 </div>
 
 
@@ -151,10 +160,18 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='newContent' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='newContent'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-keyboard="false"
+     data-backdrop="static">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
     <%= render 'contents/modals/new_content' %>
   </div>
+
 </div>
 
 

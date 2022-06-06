@@ -1,5 +1,19 @@
 document.querySelector('.campaigns-index__list-lines').innerHTML = '<%= j render("campaigns/index/index_campaigns_list", campaigns: @campaigns, interviews: @interviews) %>';
 
-document.querySelector('body').classList.remove('wait');
+document.getElementById('bkt-blockDiv').classList.add('d-none')
+document.querySelector('body').classList.remove('wait')
 
 document.getElementById('stimulus-change-page-controller').changePage._setPaginationLinks()
+
+el = document.querySelectorAll('.setup-search-arg')
+
+if (el) {
+  el.forEach(a => {
+    const text = localStorage.getItem('bookletCampaignsSearches')
+
+    if (text) {
+      a.href += `?back_search_text=${text}`
+    }
+  })
+  localStorage.setItem('bookletCampaignsSearches', '')
+}

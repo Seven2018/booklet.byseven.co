@@ -1,0 +1,52 @@
+<div class="d-none d-sm-flex navbar navbar-expand-sm bkt-bg-white bkt-box-shadow-medium pl-0 pr-2rem">
+
+  <div class="flex-row-between-centered">
+    <a id="navbar-home-logo"
+       class='flex-row-center-centered height-7_5rem width-7_5rem bkt-light-grey11
+              bkt-bg-light-grey8'
+       href="/home">
+      <%# image_tag 'icons/home.svg', style: 'height: 22px;' %>
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           aria-hidden="true"
+           role="img"
+           width="2.4rem"
+           height="2.4rem"
+           preserveAspectRatio="xMidYMid meet"
+           viewBox="0 0 24 24">
+           <path fill="<%= @controller_action == :pages_home ? '#333333' : '#c4c4c4' %>" d="m21.743 12.331l-9-10c-.379-.422-1.107-.422-1.486 0l-9 10a.998.998 0 0 0-.17 1.076c.16.361.518.593.913.593h2v7a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-4h4v4a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-7h2a.998.998 0 0 0 .743-1.669z"/>
+      </svg>
+
+    </a>
+
+    <%= content %>
+
+  </div>
+
+  <div>
+    <div class="flex-row-between-centered">
+
+
+      <%= render_component NavbarAppMenuComponent.new(user: @user, color: 'bkt-dark-grey', hover_background_color: 'bkt-bg-light-grey8-hover') %>
+
+      <%= render_component NavbarUserProfileComponent.new(user: @user) %>
+
+    </div>
+  </div>
+
+</div>
+
+<% if @multi_step_form_navbar_content.present? %>
+  <div class="navbar-admin">
+
+    <div class="pos-abs"
+         style="top: 1.75rem; left: 2rem;">
+      <%= render_component Buttons::BackButton.new(fallback: campaigns_path) %>
+    </div>
+
+    <div class="navbar-admin__button">
+      <h4><%= @multi_step_form_navbar_content %></h4>
+    </div>
+
+  </div>
+<% end %>

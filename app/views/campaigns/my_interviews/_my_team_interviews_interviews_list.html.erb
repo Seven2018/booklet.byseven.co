@@ -2,29 +2,59 @@
 
   <% manager = current_user %>
 
-  <div class="campaigns-my-team-interviews__card p-5">
+  <div class="campaigns-my-team-interviews__card p-5 pos-rel">
+
+    <div class="pos-abs"
+     style="top: 3rem; right: 3rem;">
+
+      <%= render_component Buttons::OptionsButton.new(vertical: true) do %>
+
+        <%= link_to archive_interviewer_interviews_path(campaign_id: campaign.id, interviewer_id: manager.id),
+              class: "flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3", remote: true do %>
+
+            <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span> <%= active_tab == 'ongoing' ? 'Archive campaign' : 'Unarchive campaign' %>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
+
     <div class="campaigns-my-interviews__card-inner">
+
       <div class="campaigns-my-interviews__card-header">
-        <div class="campaigns-my-interviews__card-header-left">
-          <div class="campaigns-my-interviews__card-icon">
-            <span class="iconify" data-icon="<%= campaign.icon %>"></span>
+
+        <div class="flex-row-start-centered">
+
+          <div class="flex-column mr-3">
+            <span class="iconify bkt-blue bkt-bg-light-blue p-2 rounded-5px" data-width="30" data-height="30" data-icon="<%= campaign.icon %>"></span>
           </div>
-          <div class="campaigns-my-interviews__card-title-deadline">
-            <h2><%= campaign.title %></h2>
+
+          <div class="flex-column">
             <div class="flex-row-start-centered">
-              <div class="deadline"><p>Deadline : <%= campaign.deadline %></p></div>
+              <p class="font-weight-600"><%= campaign.title %></p>
+            </div>
+            <div class="flex-row-start-centered">
+              <div>
+                <p class="bkt-light-grey font-weight-500 fs-1_2rem">Deadline : <%= campaign.deadline %></p>
+              </div>
             </div>
           </div>
 
         </div>
-        <div class="campaigns-my-interviews__card-review-link">
-          <%= link_to campaign_path(campaign, interviewer_id: current_user.id) do %>
-            <p class="d-flex align-items-center bkt-bg-light-grey4-hover p-1rem rounded-5px">
-              <span class="mr-3">Manage campaign</span>
-              <span class="iconify" data-icon="akar-icons:chevron-right"></span>
-            </p>
-          <% end %>
-        </div>
+
+      </div>
+
+      <div class="d-flex justify-content-end mb-2rem">
+
+        <%= link_to campaign_path(campaign, interviewer_id: current_user.id) do %>
+          <p class="d-flex align-items-center bkt-bg-light-grey4-hover p-1rem rounded-5px
+                    fs-1_4rem font-weight-600 bkt-blue">
+            <span class="mr-3">Manage campaign</span>
+            <span class="iconify" data-icon="akar-icons:chevron-right"></span>
+          </p>
+        <% end %>
+
       </div>
 
       <% campaign.employees_for(current_user.id).each do |employee| %>
@@ -99,29 +129,41 @@
           </div>
 
           <div class="grow">
+
             <div class="flex-row-end-centered">
+
               <% if manager_interview&.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
-                <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue-white' do %>
+
+                <%= link_to interview_path(manager_interview), class: 'bkt-btn-blue-border' do %>
                   View my answers
                 <% end %>
+
               <% elsif crossed_interview&.submitted? %>
-                <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-white' do %>
+
+                <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-border' do %>
                   View cross review answers
                 <% end %>
+
               <% end %>
 
               <% if manager_interview&.not_started? || manager_interview&.in_progress? %>
+
                 <%= link_to interview_path(manager_interview), class: 'flex-row-between-centered bkt-btn-blue ml-5' do %>
                   <%= manager_interview.not_started? ? 'Start my interview' : 'Continue my interview' %>
                   <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
                 <% end %>
-              <% elsif crossed_interview && crossed_interview.status.to_sym != :submitted %>
+
+              <% elsif crossed_interview && employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview.status.to_sym != :submitted %>
+
                 <%= link_to interview_path(crossed_interview), class: 'flex-row-between-centered bkt-btn-blue ml-5' do %>
                   <%= crossed_interview.not_started? ? 'Start Cross Review' : 'Continue my cross review' %>
                   <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
                 <% end %>
+
               <% end %>
+
             </div>
+
           </div>
         </div>
 
@@ -137,4 +179,4 @@
 
   <%= render 'campaigns/my_interviews/mobile_my_team_interviews_list', campaign: campaign, manager: manager %>
 
-<% end %>
+<% end if campaigns.present? %>

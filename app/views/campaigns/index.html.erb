@@ -1,22 +1,29 @@
 <div class="campaigns-index-container">
+
   <div class="campaigns-index">
+
     <div class="campaigns-index__controls">
+
       <div class="campaigns-index__title-tags">
+
         <h1>Campaigns</h1>
+
         <div class="campaigns-index__tags">
           <p class='campaigns-index__tag'>All</p>
         </div>
+
       </div>
 
       <% if CampaignPolicy.new(current_user, nil).create? %>
         <%= link_to edit_campaign_draft_settings_path, class: 'bkt-btn-blue', data: {
           handle: 'create-campaign-cta'
-        } do  %>
+        } do %>
           <i class="fas fa-plus"></i>
           &nbsp;
           Create Campaign
         <% end %>
       <% end %>
+
     </div>
 
     <div class="campaigns-index__main"
@@ -24,102 +31,84 @@
          data-controller="change-page">
 
       <div id="searchbar"
-           class="campaigns-index__searchbar"
-           data-controller="remember-search"
-           data-remember-search-key-value="bookletCampaignsSearches">
+           data-controller="remember-search tools--tags-manager"
+           data-remember-search-key-value="bookletCampaignsSearches"
+           data-color="bkt-blue"
+           data-background-color="bkt-bg-light-blue">
 
-        <i class="fas fa-search campaigns-index__search-trainings-icon"></i>
+        <div class="d-flex justify-content-start align-items-center mb-2rem">
 
-        <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true)do |f| %>
+          <i class="fas fa-search searchbar-icon"></i>
 
-          <%=
-            f.input(
-              :title,
-              placeholder: 'Search by title, job ...',
-              input_html: {
-                class: 'mr-3',
-                autocomplete: 'off',
+          <%= simple_form_for(:search, url: campaigns_path, method: :get, remote: true) do |f| %>
+
+            <%=
+              f.input(
+                :title,
+                placeholder: 'Search by title, job ...',
+                input_html: {
+                  autocomplete: 'off',
+                  data: {
+                    remember_search_target: :search,
+                    action: 'keyup->remember-search#storeSearch'
+                  }
+                },
+                label: false,
+                required: false
+              )
+            %>
+
+            <%= f.input :period, collection: ['Current', 'Completed', 'All'],
+                        selected: 'Current',
+                        label: false,
+                        required: false,
+                        input_html: {
+                          data: {
+                            action: 'change->remember-search#storeSearch'
+                          }
+                        } %>
+
+            <%= f.hidden_field :tags, value: [], data: { tools__tags_manager_target: "selectedTags" } %>
+            <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
+
+            <%=
+              f.submit(
+                'Search',
+                class: 'btn-search',
+                onclick: "document.querySelector('body').classList.add('wait');",
                 data: {
-                  remember_search_target: :search,
-                  action: 'keyup->remember-search#storeSearch'
+                  remember_search_target: :submit,
+                  change_page_target: :submit,
+                  search_form: :submit
                 }
-              },
-              label: false,
-              required: false
-            )
-          %>
+              )
+            %>
 
-          <%= f.input :period, collection: ['Current', 'Completed', 'All'],
-                               selected: 'Current',
-                               label: false,
-                               required: false,
-                               input_html: {
-                                 data: {
-                                   action: 'change->remember-search#storeSearch'
-                                 }
-                               } %>
+            <button type='submit' class="btn-search btn-search--mobile">
+              <i class="fas fa-search"></i>
+            </button>
 
-          <%= f.hidden_field :tags, data: {filter: :tags} %>
-          <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
+          <% end %>
 
-          <%=
-            f.submit(
-              'Search',
-              class: 'btn-search',
-              onclick: "document.querySelector('body').classList.add('wait');",
-              data: {
-                remember_search_target: :submit,
-                change_page_target: :submit,
-                search_form: :submit
-              }
-            )
-          %>
-
-          <button type='submit' class="btn-search btn-search--mobile">
-            <i class="fas fa-search"></i>
+          <button class='btn-reset bkt-blue'
+                  data-action="click->remember-search#resetAllFilter">
+            Reset
           </button>
 
-        <% end %>
+        </div>
 
-        <button class='btn-reset bkt-blue'
-                data-action="click->remember-search#resetAllFilter">
-          Reset
-        </button>
+        <div id="displayed-tags"
+             class="d-flex justify-content-start align-items-center flex-wrap pt-1rem pl-1rem mb-2rem"
+             data-tools--tags-manager-target="tagContainer">
 
-        <div
-          class="width-100 position-relative"
-          data-controller="campaign-tag-filter"
-          data-company-tags="<%= @company_tags.join(',') %>"
-          data-path="<%= campaigns_path %>"
-        >
-          <div class="flex-row-end-centered">
-            <button data-action="click->campaign-tag-filter#displayList" class="flex-row-between-centered bkt-blue px-3 py-2 bkt-box-shadow-medium">
-              <span class="iconify m-2" data-width="20" data-height="20" data-icon="fluent:filter-28-filled"></span>
-              <p>Filter <span class="rounded-5px bkt-bg-light-blue px-2 hidden" data-campaign-tag-filter-target="filterCount"></span></p>
-            </button>
-          </div>
-          <div
-            data-campaign-tag-filter-target="tagList"
-            data-action="click->campaign-tag-filter#stopPropagation"
-            class="d-none position-absolute z-index-50 right-0 width-35rem bkt-box-shadow-medium bkt-bg-white max-h-40rem overflow-y-auto">
-            <div class="pl-3 my-4"><p class="bkt-light-grey">Filter by template tags</p></div>
-            <div data-campaign-tag-filter-target="selectedTagsDom" class="pl-3 my-4"><p class="">Empty</p></div>
-            <div class="pl-3 my-4"><input data-action="keyup->campaign-tag-filter#search" type="text" placeholder="Search" class="rounded-5px pl-2rem"></div>
-            <div data-campaign-tag-filter-target="unselectedTagsDom" class="pl-3 py-4 border-top">
-              <% @company_tags.each do |tag| %>
-                <div class="flex-row-start-centered bkt-placeholder-light-grey" >
-                  <button class="d-inline-block bkt-bg-light-blue p-3 m-2 font-weight-600 rounded-2px fs-1_2rem" data-action="click->campaign-tag-filter#toggleTag">
-                    <%= tag %>
-                  </button>
-                </div>
-              <% end %>
-            </div>
-          </div>
+          <%= render 'campaigns/index/index_campaigns_displayed_tags', displayed_tags: @displayed_tags %>
+
         </div>
 
       </div>
 
       <div class="campaigns-index__list">
+
         <div class="campaigns-index__list-headers">
           <p>Campaign title</p>
           <p>Campaign Type</p>
@@ -127,14 +116,17 @@
           <p class='campaigns-index__list-headers-employee'>Employees</p>
           <p class='campaigns-index__list-headers-completion'>Completion</p>
         </div>
+
         <div class="campaigns-index__list-lines">
           <%= render 'campaigns/index/index_campaigns_list', campaigns: @campaigns %>
         </div>
+
       </div>
 
     </div>
 
   </div>
+
 </div>
 
 <!------------>
@@ -148,10 +140,18 @@
 <!-- MODALS -->
 <!------------>
 
-<div class='modal fade' id='sendEmailSuccess' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false" data-backdrop="static">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='sendEmailSuccess'
+     class='modal info-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-keyboard="false"
+     data-backdrop="static">
+
+  <div class='modal-dialog info-modal__dialog'
+       role='document'>
     <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
   </div>
+
 </div>
 
 
@@ -166,10 +166,10 @@
     notelem = $(notelem); // jquerize (optional)
     // check outside click for multiple elements
     var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
+    for (i = 0; i < len; i++) {
+      if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+        clickedOut = false;
+      }
     }
     if (clickedOut) return true;
     else return false;
@@ -187,17 +187,17 @@
     card_link.classList.add('disabled')
     card_link_href = "/campaigns/" + element.closest('.campaigns-index__list-line').id.split('-')[2]
     card_link.href = "javascript:void(0)";
-    setTimeout(function(){
+    setTimeout(function () {
       formGuardian = false
     }, 1);
-    window.addEventListener('click', function(e) {
+    window.addEventListener('click', function (e) {
       if (outsideClick(e, dropdown) && formGuardian == false) {
         formGuardian = true
-        setTimeout(function(){
+        setTimeout(function () {
           formGuardian = false
         }, 1);
         dropdown.classList.add('hidden')
-        setTimeout(function(){
+        setTimeout(function () {
           card_link.classList.remove('disabled')
           card_link.href = card_link_href
         }, 1);
@@ -240,11 +240,11 @@
   function toggleTagCategoryDropdown(element) {
     caret = element.querySelector('i')
     angle = parseInt(caret.getAttribute('data-rotated'), 10)
-    caret.style.webkitTransform = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.mozTransform    = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.msTransform     = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.oTransform      = 'rotate('+ (angle + 180).toString() +'deg)';
-    caret.style.transform       = 'rotate('+ (angle + 180).toString() +'deg)';
+    caret.style.webkitTransform = 'rotate(' + (angle + 180).toString() + 'deg)';
+    caret.style.mozTransform = 'rotate(' + (angle + 180).toString() + 'deg)';
+    caret.style.msTransform = 'rotate(' + (angle + 180).toString() + 'deg)';
+    caret.style.oTransform = 'rotate(' + (angle + 180).toString() + 'deg)';
+    caret.style.transform = 'rotate(' + (angle + 180).toString() + 'deg)';
     caret.setAttribute('data-rotated', (angle + 180).toString())
     block = element.parentNode.parentNode.parentNode.parentNode;
     if (block.style.maxHeight == '50px' || block.style.maxHeight == '') {

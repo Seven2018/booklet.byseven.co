@@ -9,18 +9,14 @@
       </bkt-back-button>
 
       <h1 v-if="title" class="flex-column fs-2_4rem font-weight-500">{{title}}</h1>
-      <h1 v-else class="fs-2_4rem font-weight-500">My team objectives</h1>
+      <h1 v-else class="fs-2_4rem font-weight-500">My team Roadmap</h1>
 
     </div>
 
     <user-quick-indo :user="myTeamObjectives.user"></user-quick-indo>
 
     <div class="flex-row-end-centered mt-5">
-
-      <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" :href="$routes.generate('objective_new')">
-        New objective
-      </bkt-button>
-
+      <bkt-new-target-button></bkt-new-target-button>
     </div>
 
     <div class="flex-row-start-centered">
@@ -105,13 +101,14 @@ import BktDotsButton from '../../../components/BktDotsButton'
 import tools from '../../../mixins/tools'
 import store from "../../../store";
 import UserQuickIndo from "../../../components/UserQuickIndo";
+import BktNewTargetButton from "../../../components/BktNewTargetButton";
 
 export default {
   mixins: [tools],
   props: ['userId', 'title', 'backButton'],
   data() {
     return {
-      headers: ['Employees', 'Objectives', 'Completion', 'Deadline', ''],
+      headers: ['Employees', 'Targets', 'Completion', 'Deadline', ''],
       myTeamObjectives: store.state.myTeamObjectives
     }
   },
@@ -177,7 +174,8 @@ export default {
     BktButton,
     BktBackButton,
     ObjectiveSwitcher,
-    BktDotsButton
+    BktDotsButton,
+    BktNewTargetButton
   }
 }
 </script>

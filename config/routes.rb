@@ -31,7 +31,14 @@ Rails.application.routes.draw do
     resources :users, only: :index
     resources :interview_sets, only: %i[create destroy]
   end
-  resources :campaigns, only: %i[index show destroy]
+  resources :campaigns, only: %i[index show destroy] do
+    member do
+      post 'search_tags'
+      post 'toggle_tag'
+      delete 'remove_company_tag'
+      get 'index_line'
+    end
+  end
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
   get :send_notification_email, controller: :campaigns
@@ -93,7 +100,6 @@ Rails.application.routes.draw do
   end
 
   # CATEGORIES
-  resources :categories, only: %i[create update destroy]
   get :categories_search, controller: :categories
 
   # COMPANIES
@@ -119,6 +125,8 @@ Rails.application.routes.draw do
   get :lock_interview, controller: :interviews
   get :unlock_interview, controller: :interviews
   get :show_crossed_and_lock, controller: :interviews
+  get :archive_interview, controller: :interviews
+  get :archive_interviewer_interviews, controller: :interviews
 
   namespace :interview do
     namespace :answer do
@@ -134,6 +142,7 @@ Rails.application.routes.draw do
       post 'search_tags'
       post 'toggle_tag'
       delete 'remove_company_tag'
+      get 'index_line'
     end
   end
   get 'interview_forms/:id/duplicate', to: 'interview_forms#duplicate', as: 'duplicate_interview_form'
@@ -160,6 +169,7 @@ Rails.application.routes.draw do
     resources :elements do
       collection do
         get :list
+        get :target_list
       end
       member do
         post :archive
@@ -168,6 +178,8 @@ Rails.application.routes.draw do
     end
     get :my_objectives, controller: :elements
     get :my_team_objectives, controller: :elements
+    get :targets, controller: :elements
+    get :employees, controller: :elements
     resources :indicators, only: %i[update destroy]
     resources :logs
     resources :users, only: [:index, :show] do
@@ -178,6 +190,12 @@ Rails.application.routes.draw do
         get :my_team_objectives
         get :my_team_objectives_current_list
         get :my_team_objectives_archived_list
+      end
+    end
+    resources :templates do
+      collection do
+        get :list
+        get :new_target_view
       end
     end
   end

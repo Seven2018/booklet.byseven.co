@@ -1,29 +1,38 @@
-<div class="nav-item dropdown m-0_5rem">
-  <div class="dropdown show">
-    <a class="navbar-user-card dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='avatar-md border-transparent-2px border-bkt-dark-grey-hover-2px' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-    </a>
-    <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
-      <div class="dropdown-card">
-        <div class="user-info">
-          <p><%= @user.fullname%></p>
-          <h6><%= @user.email%></h6>
+<div id="navbar-profile"
+     class="dropdown d-flex align-items-center gap-1rem bkt-bg-light-grey8-hover
+            border-bkt-dark-grey5-0_5px px-1rem py-0_5rem ml-1rem rounded-5px smooth-transition-color">
+
+  <a class="navbar-user-card dropdown-toggle flex-row-between-centered" href="#" role="button" id="dropdownMenuLogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+    <%= render_component AsClAssetComponent.new(model: @user.company, asset: :clear_bg_logo) %>
+
+    <% if @user.picture.present? %>
+      <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='avatar ml-1rem'>
+    <% else %>
+      <%= image_tag 'empty-avatar.png', class: 'avatar ml-1rem' %>
+    <% end %>
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
+    <div class="dropdown-card">
+      <div class="user-info">
+        <p><%= @user.fullname%></p>
+        <h6><%= @user.email%></h6>
+      </div>
+    </div>
+    <%= link_to user_path(@user) do %>
+      <div class="dropdown-card dropdown-item ">
+        <div class='dropdown-card-text'>
+          <h6>Profile</h6>
         </div>
       </div>
-      <%= link_to user_path(@user) do %>
-        <div class="dropdown-card dropdown-item ">
-          <div class='dropdown-card-text'>
-            <h6>Profile</h6>
-          </div>
+    <% end %>
+    <%= link_to destroy_user_session_path, method: :delete do %>
+      <div class="dropdown-card dropdown-item flex-row-between-centered">
+        <div class='dropdown-card-text'>
+          <h6>Log out</h6>
         </div>
-      <% end %>
-      <%= link_to destroy_user_session_path, method: :delete do %>
-        <div class="dropdown-card dropdown-item flex-row-between-centered">
-          <div class='dropdown-card-text'>
-            <h6>Log out</h6>
-          </div>
-        </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
+
 </div>

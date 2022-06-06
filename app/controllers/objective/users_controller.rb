@@ -72,11 +72,15 @@ class Objective::UsersController < ApplicationController
   def users
     company_users = current_user.company.users.order(lastname: :asc)
 
-    if current_user.access_level_int.to_sym == :manager
+    if current_user.access_level_int.to_sym == :hr ||
+      current_user.access_level_int.to_sym == :account_owner ||
+      current_user.access_level_int.to_sym == :admin
+      params[:search].blank? ? company_users : company_users.search_users(params[:search])
+    elsif current_user.access_level_int.to_sym == :manager
       manager_users = company_users.where(manager_id: current_user.id)
       params[:search].blank? ? manager_users : manager_users.search_users(params[:search])
     else
-      params[:search].blank? ? company_users : company_users.search_users(params[:search])
+      []
     end
   end
 end

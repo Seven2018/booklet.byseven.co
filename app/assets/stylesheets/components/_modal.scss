@@ -44,11 +44,6 @@ body.filter-open {
   }
 }
 
-.modal-date {
-  width: 312px;
-}
-
-
 
 ////////////
 // HEADER //
@@ -64,20 +59,6 @@ body.filter-open {
   padding: 0;
   display: flex;
   justify-content: flex-end;
-}
-
-.modal-header__date {
-  padding: 0 0 0 1rem;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #C4C4C4;
-
-  p {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    color: #333333;
-  }
 }
 
 .modal-header__content {
@@ -130,20 +111,6 @@ body.filter-open {
   }
 }
 
-.modal-body__date {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0 !important;
-  border: none !important;
-
-  .flatpickr-calendar {
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-  }
-}
-
 .modal-icon-success {
   height: 6rem;
   width: 6rem;
@@ -151,16 +118,6 @@ body.filter-open {
 }
 
 //////////
-
-.mod-date {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-
-  @include from-large {
-    flex-direction: row;
-  }
-}
 
 #modal-title {
   display: flex;

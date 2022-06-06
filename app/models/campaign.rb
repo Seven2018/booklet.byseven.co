@@ -10,6 +10,7 @@ class Campaign < ApplicationRecord
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
   has_many :interviewers, through: :interviews
+  has_and_belongs_to_many :categories
 
   validates :title, presence: true
 
@@ -46,12 +47,6 @@ class Campaign < ApplicationRecord
     joins(:interviews)
       .where('date <= ?', date)
       .distinct
-  end
-
-  # @param [Array<String>] tags
-  # @return [Array<Campaign>] campaigns
-  def self.tag_matches(tags)
-    distinct.joins(interviews: {interview_form: :categories}).where(categories: {title: tags})
   end
 
   def deadline
@@ -122,9 +117,12 @@ class Campaign < ApplicationRecord
     interviews.where(employee_id: employee_id).find(&:crossed?)
   end
 
-  def tags
-    return [] unless interviews.present? && interviews.first.interview_form.present?
+  # CATEGORIES ADDED DIRECTLY TO CAMPAIGN (obsolete?)
+  # def tags
+  #   return [] unless interviews.present? && interviews.first.interview_form.present?
 
-    interviews.first.interview_form.categories.pluck(:title)
-  end
+  #   interviews.first.interview_form.categories.pluck(:title)
+  # end
+
+
 end

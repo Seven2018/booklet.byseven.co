@@ -1,5 +1,5 @@
 class InterviewFormsController < ApplicationController
-  before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag, :remove_company_tag, :search_tags]
+  before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag, :remove_company_tag, :search_tags, :index_line]
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
@@ -18,12 +18,9 @@ class InterviewFormsController < ApplicationController
     if params.dig(:search, :tags).present?
       selected_tags = params.dig(:search, :tags).split(',')
 
-      @templates = @templates
-                             .joins(:categories)
-                             .where(categories: { title: selected_tags })
-                             .uniq
-                             .select { |template| (selected_tags & template.categories.pluck(:title)) == selected_tags }
-      @templates = InterviewForm.get_activerecord_relation(@templates)
+      selected_tags.each do |tag|
+        @templates = @templates.where_exists(:categories, id: tag)
+      end
     end
 
     page_index = (params.dig(:search, :page).presence || 1).to_i
@@ -31,6 +28,10 @@ class InterviewFormsController < ApplicationController
     total_templates_count = @templates.count
     @templates = @templates.order(created_at: :desc).page(page_index)
     @any_more = @templates.count * page_index < total_templates_count
+
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:interview_forms)
+                              .order(title: :asc)
 
     respond_to do |format|
       format.html
@@ -50,7 +51,7 @@ class InterviewFormsController < ApplicationController
 
   def edit
     authorize @template
-    @tags = @template.categories.pluck(:title)
+    @tags = @template.categories.order(title: :asc).pluck(:title)
     @company_tags = Category
                       .where(company_id: current_user.company_id, kind: :interview)
                       .where.not(title: @tags)
@@ -111,6 +112,11 @@ class InterviewFormsController < ApplicationController
     end
   end
 
+
+  ###########################
+  ## CATEGORIES MANAGEMENT ##
+  ###########################
+
   def toggle_tag
     authorize @template
     tag = params.require(:tag)
@@ -126,7 +132,12 @@ class InterviewFormsController < ApplicationController
         @template.categories << category
       end
     end
-    head :ok
+
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:interview_forms)
+                              .order(title: :asc)
+
+    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
   end
 
   def remove_company_tag
@@ -134,7 +145,8 @@ class InterviewFormsController < ApplicationController
     tag = params.require(:tag)
 
     Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
-    head :ok
+
+    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
   end
 
   def search_tags
@@ -144,11 +156,22 @@ class InterviewFormsController < ApplicationController
     tags = Category
              .where(company_id: current_user.company_id)
              .where.not(title: black_tags)
-             .where('title LIKE ?', "%#{input}%")
+             .where('lower(title) LIKE ?', "%#{input.downcase}%")
+             .order(title: :asc)
              .pluck(:title)
 
-    render json: tags, status: :ok
+    render json: tags, root: 'categories', status: :ok
   end
+
+  def index_line
+    skip_authorization
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  ###########################
 
   # Search from templates with autocomplete
   def templates_search
@@ -162,7 +185,7 @@ class InterviewFormsController < ApplicationController
     respond_to do |format|
       format.html {}
       format.json {
-        @templates = @templates.limit(5)
+        @templates
       }
     end
   end
