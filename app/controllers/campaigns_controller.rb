@@ -196,6 +196,7 @@ class CampaignsController < ApplicationController
              .where(company_id: current_user.company_id, kind: :interview)
              .where.not(title: black_tags)
              .where('lower(title) LIKE ?', "%#{input.downcase}%")
+             .order(title: :asc)
              .pluck(:title)
 
     render json: tags, root: 'categories', status: :ok
