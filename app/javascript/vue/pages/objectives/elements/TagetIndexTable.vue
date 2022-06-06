@@ -45,10 +45,14 @@
               :data-icon="getIndicatorIconifyName(objective_indicator.indicator_type)"
               data-width="15"
           ></span>
-          <p v-if="objective_indicator.status == 'completed'">
-            Confirmed
+          <p v-if="objective_indicator.indicator_type === 'multi_choice'">
+            {{filterMultiChoiceCount(objective_indicator.options)}}
           </p>
-          <p v-else>Not confirmed</p>
+          <p v-else >{{objective_indicator.options.current_value}}</p>
+<!--          <p v-if="objective_indicator.status == 'completed'">-->
+<!--            Confirmed-->
+<!--          </p>-->
+<!--          <p v-else>Not confirmed</p>-->
         </div>
       </td>
 
