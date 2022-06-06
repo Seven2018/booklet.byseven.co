@@ -37,7 +37,7 @@
                 v-if="access_level_int !== 'employee'"
                 :href="$routes.generate('objective_user_my_team_objectives', {id})"
                 class="bkt-objective-blue"
-                style="text-decoration: underline">View Team Objective</a>
+                style="text-decoration: underline">View Team Roadmap</a>
           </div>
         </div>
       </td>
@@ -73,12 +73,12 @@
                 v-if="manager"
                 :href="$routes.generate('objective_user_my_team_objectives', {id: manager.id})"
                 class="bkt-objective-blue"
-                style="text-decoration: underline">View Team Objective of his/her manager</a>
+                style="text-decoration: underline">View Team Roadmap of his/her manager</a>
           </div>
 
           <div class="flex-column">
             <bkt-button type="blue" :href="$routes.generate('objective_user_show', {id})">
-              View objectives
+              View Target
             </bkt-button>
           </div>
         </div>
@@ -95,7 +95,7 @@ import store from "../../../store";
 export default {
   data() {
     return {
-      headers: ['Name', 'Access Level', 'Manager', 'Objectives', ''],
+      headers: ['Name', 'Access Level', 'Manager', 'Targets', ''],
       genericFetchEntity: store.state.genericFetchEntity
     }
   },

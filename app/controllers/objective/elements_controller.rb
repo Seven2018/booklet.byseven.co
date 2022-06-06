@@ -134,15 +134,15 @@ class Objective::ElementsController < ApplicationController
   def target_list
     if params[:search]
       elements = Objective::Element.where(company: current_user.company)
-      elements = elements.where('title LIKE ?', "%#{params[:search][:title]}%") if params[:search][:title].present?
+      elements = elements.where('lower(title) LIKE ?', "%#{params[:search][:title].downcase}%") if params[:search][:title].present?
       elements = elements
                    .joins(:objective_indicator)
                    .where(objective_indicators: {indicator_type: params[:search][:indicator_type]}) if params[:search][:indicator_type].present?
       elements = elements
                    .joins(:objective_indicator)
                    .where(objective_indicators: {status: params[:search][:indicator_status]}) if params[:search][:indicator_status].present?
-      elements = elements.where('due_date >= ?', Date.parse(params[:search][:from].to_s)) if params[:search][:from]
-      elements = elements.where('due_date <= ?', Date.parse(params[:search][:to].to_s)) if params[:search][:to]
+      elements = elements.where('due_date >= ?', Date.parse(params[:search][:from].to_s)) if params[:search][:from].present?
+      elements = elements.where('due_date <= ?', Date.parse(params[:search][:to].to_s)) if params[:search][:to].present?
     else
       elements = Objective::Element.where(company: current_user.company)
     end
