@@ -1,4 +1,4 @@
-<div id="app" class="d-flex justify-content-center"
+<div class="d-flex justify-content-center"
      data-controller="objectives--objective-new">
 
   <div class="width-50 d-flex flex-column justify-content-start align-items-center my-10rem">
@@ -54,7 +54,7 @@
         ) %>
 
         <%= f.input :due_date,
-                    as: :date,
+                    as: :string,
                     label: false,
                     placeholder: 'Select date',
                     input_html: {
