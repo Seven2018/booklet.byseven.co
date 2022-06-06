@@ -143,18 +143,6 @@
 
 <script>
   formGuardian = false;
-  let el = document.querySelectorAll('.setup-search-arg')
-
-  if (el) {
-    el.forEach(a => {
-      const text = localStorage.getItem('bookletInterviewFormsSearches')
-
-      if (text) {
-        a.href += `?back_search_text=${text}`
-      }
-    })
-    localStorage.setItem('bookletInterviewFormsSearches', '')
-  }
 
   <%# TODO refacto into stimulus controller %>
   function outsideClick(event, notelem) {

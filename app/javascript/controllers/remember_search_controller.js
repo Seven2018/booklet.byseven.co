@@ -26,6 +26,23 @@ export default class extends Controller {
     if (params.back_search_text) {
       this.searchTarget.value = params.back_search_text
     }
+
+    this.setupHrefs()
+  }
+
+  setupHrefs() {
+    let el = document.querySelectorAll('.setup-search-arg')
+
+    if (el) {
+      el.forEach(a => {
+        const text = localStorage.getItem(this.keyValue)
+
+        if (text) {
+          a.href = `${window.location.pathname}?back_search_text=${text}`
+        }
+      })
+      localStorage.setItem(this.keyValue, '')
+    }
   }
 
   storeSearch() {
@@ -90,5 +107,7 @@ export default class extends Controller {
     searchbar.querySelector('.btn-search').click()
     document.querySelector('body').classList.add('wait')
     window.localStorage.setItem(this.keyValue, '')
+
+    this.setupHrefs()
   }
 }
