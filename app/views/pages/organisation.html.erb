@@ -1,19 +1,9 @@
 <div class="organisation__container">
+
   <div class="organisation__main">
     <%= render 'pages/organisation/organisation_users_list', users: @users %>
   </div>
-  <div class="organisation__filter-container">
-    <div class="organisation__filter-background" onclick='closeFilter();'></div>
-    <div class="organisation__filter-dropright">
-      <%= render 'pages/organisation/organisation_filter_dropright' %>
-    </div>
-  </div>
-  <!-- <div class="organisation-manage-users-container">
-    <div class="organisation-manage-users-background" onclick='closeManager();'></div>
-    <div class="organisation-manage-users-dropright">
-      <%# render 'pages/organisation/organisation_manage_users_dropright', users: @users %>
-    </div>
-  </div> -->
+
 </div>
 
 <!------------>
