@@ -76,7 +76,7 @@
               model: 'indicator[indicator_type]',
               name: :boolean,
               checked: if @objective.objective_indicator
-                         @objective.objective_indicator.indicator_type == 'numeric_value' ? true : false
+                         @objective.objective_indicator.indicator_type == 'boolean' ? true : false
                        else
                          true
                        end,
