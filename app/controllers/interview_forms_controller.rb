@@ -156,7 +156,8 @@ class InterviewFormsController < ApplicationController
     tags = Category
              .where(company_id: current_user.company_id)
              .where.not(title: black_tags)
-             .where('title LIKE ?', "%#{input}%")
+             .where('lower(title) LIKE ?', "%#{input.downcase}%")
+             .order(title: :asc)
              .pluck(:title)
 
     render json: tags, root: 'categories', status: :ok
