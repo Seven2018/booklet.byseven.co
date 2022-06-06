@@ -32,7 +32,7 @@
 
   <% if Objective::ElementPolicy.new(current_user, nil).targets? %>
 
-    <%= link_to objective_targets_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :elements_targets}" do %>
+    <%= link_to objective_targets_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :elements_targets || @controller_action == :elements_index}" do %>
 
       <h4>Targets</h4>
 
