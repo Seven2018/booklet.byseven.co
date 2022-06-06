@@ -57,6 +57,16 @@ ActiveAdmin.register Company do
           end
         end
 
+        f.input(:campaign_banner, as: :file,
+          hint: f.object.campaign_banner_meta(:desktop).hint)
+        div do
+          if f.object.campaign_banner.attached?
+            cl_image_tag(f.object.campaign_banner.key, crop: :fit, gravity: :center,
+              width: f.object.campaign_banner_meta(:desktop).width,
+              height: f.object.campaign_banner_meta(:desktop).height)
+          end
+        end
+
         f.input(:clear_bg_logo, as: :file,
           hint: f.object.clear_bg_logo_meta(:desktop).hint)
         div do
@@ -128,6 +138,7 @@ ActiveAdmin.register Company do
     :home_banner,
     :my_interviews_banner,
     :my_team_interviews_banner,
+    :campaign_banner,
     :clear_bg_logo, :dark_bg_logo,
     :my_interviews_bg_picture, :my_team_interviews_bg_picture,
     :my_trainings_bg_picture, :my_team_trainings_bg_picture, :rating_logo,
