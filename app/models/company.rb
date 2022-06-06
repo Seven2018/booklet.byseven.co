@@ -14,6 +14,7 @@ class Company < ApplicationRecord
   has_one_attached :home_banner
   has_one_attached :my_interviews_banner
   has_one_attached :my_team_interviews_banner
+  has_one_attached :campaign_banner
   has_one_attached :clear_bg_logo
   has_one_attached :dark_bg_logo
   has_one_attached :my_interviews_bg_picture

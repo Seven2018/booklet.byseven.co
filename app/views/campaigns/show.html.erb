@@ -15,7 +15,11 @@
       </div>
 
       <div class="campaign-show__header-banner-img">
-        <%= image_tag('campaigns-show-banner.png') %>
+
+        <%= render_component AsClAssetComponent.new(model: current_user.company,
+                                          asset: :campaign_banner,
+                                          class_name: 'width-100 object-fit-cover rounded-r-30px') %>
+
       </div>
 
     </div>

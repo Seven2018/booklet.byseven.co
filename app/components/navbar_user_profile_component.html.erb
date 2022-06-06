@@ -7,10 +7,18 @@
     <%= render_component AsClAssetComponent.new(model: @user.company, asset: :clear_bg_logo) %>
 
     <% if @user.picture.present? %>
-      <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='avatar ml-1rem'>
+
+      <img class='avatar ml-1rem'
+           src="<%= @user.picture %>"
+           alt="<%= @user.fullname %>"
+           onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+
     <% else %>
+
       <%= image_tag 'empty-avatar.png', class: 'avatar ml-1rem' %>
+
     <% end %>
+
   </a>
   <div class="dropdown-menu dropdown-menu-right" id='dropdown-user-menu' aria-labelledby="dropdownMenuLogout">
     <div class="dropdown-card">

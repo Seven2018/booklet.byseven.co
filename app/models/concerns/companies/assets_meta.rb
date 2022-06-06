@@ -27,6 +27,15 @@ module Companies::AssetsMeta
     end
   end
 
+  def campaign_banner_meta(size)
+    case size
+    when :desktop then AssetMeta.new(width: 1920, height: 220)
+    when :mobile  then AssetMeta.new(width: 150, height: 30)
+    else
+      raise AssetMetableFormatError, "#{self.class} => #{id}"
+    end
+  end
+
   def clear_bg_logo_meta(size)
     case size
     when :desktop then AssetMeta.new(width: 150, height: 30)
