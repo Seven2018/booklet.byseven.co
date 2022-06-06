@@ -17,6 +17,7 @@
   } %>
 
   <div class="flex-row-between-centered mb-1rem">
+
     <div class="pos-rel">
       <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
         <%=
@@ -38,29 +39,32 @@
     </div>
 
     <div class="flex-row-between-centered">
+
       <div class='fs-1_2rem bkt-blue cursor-pointer'
-        data-action="click->participant-ids#unselectAll"
-      >Unselect all</div>
+        data-action="click->participant-ids#unselectAll">Unselect all</div>
 
       <div class="mx-2">|</div>
 
       <div class='fs-1_2rem bkt-blue cursor-pointer'
-        data-action="click->participant-ids#selectAll"
-      >Select all</div>
+        data-action="click->participant-ids#selectAll">Select all</div>
 
       <div class="mx-2">|</div>
 
-      <div class="cursor-pointer d-flex align-items-center">
+      <div id="select_filtered"
+           class="cursor-pointer d-flex align-items-center">
+
         <div class='fs-1_2rem bkt-blue'>
           Select Filtered
           <span class='fs-1_2rem' data-participant-ids-target='filteredCount'></span>
         </div>
+
         <div class="mx-2"></div>
+
         <label
           class='flex-row-center-centered rounded-3px mb-0 border-bkt-light-grey5-0_5px'
           style='height: 2.4rem; width: 2.4rem;'
-          data-controller='toggle-checked-participants'
-        >
+          data-controller='toggle-checked-participants'>
+
           <%= check_box_tag(
             "_",
             nil,
@@ -71,14 +75,19 @@
               toggle_checked_participants_target: "togglable"
             }
           ) %>
+
           <span
             class="iconify fs-1_8rem bkt-blue hidden"
             data-toggle-checked-participants-target="icon"
             data-icon="bi:check">
           </span>
+
         </label>
+
       </div>
+
     </div>
+
   </div>
 
   <div class='border-bkt-light-grey mb-2rem overflow-y-scroll' style='height: 400px;'

@@ -5,34 +5,57 @@
     template.categories.pluck(:title)
   ] %>
 
-<% width = (1 / lines.count.to_f) * 100 %>
+<% width = (1 / lines.count.to_f + 1) * 100 %>
 
 <%= link_to '', edit_interview_form_path(template), class: 'stretched-link', title: template.title %>
 
-<div class='fs-1_6rem font-weight-600 overflow-ellipsis'
-     style='flex-basis: <%= width %>%;'
+<div class='fs-1_6rem font-weight-600 overflow-ellipsis width-20 min-width-20'
      title='<%= template.title %>'>
   <%= template.title %>
 </div>
 
 <% lines.each_with_index do |line, idx_temp| %>
-  <div class='fs-1_6rem' style='flex-basis: <%= width %>%;'>
+
+  <div class="fs-1_6rem width-20 <%= 'min-width-20' unless idx_temp == 3 %>">
+
     <% if idx_temp == 3 %>
 
-      <% tag_overflow = false %>
-      <% line.each_with_index do |tag, idx| %>
-        <% if idx > 1 && !tag_overflow %>
-          <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem">+<%= line.count - 2 %></div>
-          <% break %>
-        <% else %>
-          <div class="d-inline-block bkt-bg-light-blue p-3 mx-2 font-weight-600 rounded-2px fs-1_2rem"><%= tag %></div>
+      <div class="d-flex justify-content-start align-items-center">
+
+        <% tag_overflow = false %>
+
+        <% line.each_with_index do |tag, idx| %>
+
+          <% if idx > 1 && !tag_overflow %>
+
+            <div class="d-flex align-items-center fs-1_2rem font-weight-600
+                       bkt-blue bkt-bg-light-blue px-1rem py-0_5rem mx-2 rounded-15px width-fit-content">
+              +<%= line.count - 2 %>
+            </div>
+
+            <% break %>
+
+          <% else %>
+
+            <div class="d-flex align-items-center fs-1_2rem font-weight-600
+                       bkt-blue bkt-bg-light-blue px-1rem py-0_5rem mx-2 rounded-15px width-fit-content">
+              <%= tag %>
+            </div>
+
+          <% end %>
+
         <% end %>
-      <% end %>
+
+      </div>
 
     <% else %>
+
       <%= line %>
+
     <% end %>
+
   </div>
+
 <% end %>
 
 <% if InterviewFormPolicy.new(current_user, nil).create? %>
