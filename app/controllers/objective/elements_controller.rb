@@ -27,6 +27,7 @@ class Objective::ElementsController < ApplicationController
     else
       @users = User.where(company: current_user.company).search_users(params[:search])
     end
+    @users = @users.order(lastname: :asc)
 
     authorize @users
 
