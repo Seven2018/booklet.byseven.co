@@ -87,11 +87,11 @@ export default {
     },
     submit() {
       store.commit('genericFetchEntity/setSearch', {
-        'search[title]': this.searchText,
-        'search[indicator_type]': this.indicatorType,
-        'search[indicator_status]': this.indicatorStatus,
-        'search[from]': this.from,
-        'search[to]': this.to,
+        title: this.searchText,
+        indicator_type: this.indicatorType,
+        indicator_status: this.indicatorStatus,
+        from: this.from,
+        to: this.to,
       })
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: 'objective_target_list',

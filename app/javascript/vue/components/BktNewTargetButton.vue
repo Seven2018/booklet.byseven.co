@@ -8,7 +8,7 @@
         @click="toggleDisplay"
     >
       <bkt-button
-          :type="display ? 'white' : 'blue'"
+          :type="display ? 'white' : 'roadmap'"
           iconify="ant-design:plus-circle-outlined"
       >
         New Target
