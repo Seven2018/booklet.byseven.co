@@ -3,7 +3,7 @@
     <template v-slot:title>Employees targets</template>
     <template v-slot:body>
       <generic-index-search path-key="objective_list"></generic-index-search>
-      <employees-index-table></employees-index-table>
+      <employees-index-table v-show="genericFetchEntity.data && genericFetchEntity.data['users'] && genericFetchEntity.data['users'].length > 0"></employees-index-table>
       <bkt-create-entity-from-index
           v-show="genericFetchEntity.data && genericFetchEntity.data['users'] && genericFetchEntity.data['users'].length === 0 && !genericFetchEntity.search"
           type="roadmap"
