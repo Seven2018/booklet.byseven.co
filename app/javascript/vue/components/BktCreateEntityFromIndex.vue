@@ -5,15 +5,13 @@
     </div>
     <p class="text-center">
       Hey ! It seems there is no
-      <span v-if="type === 'roadmap'">target</span>
+      <slot></slot>
       to show,<br>
       how about create your first ?</p>
 
     <div class="mt-3">
       <bkt-button :type="type" :href="href">
-        <span v-if="type === 'roadmap'">
-          Create my first target
-        </span>
+          Create my first <slot></slot>
       </bkt-button>
     </div>
   </div>

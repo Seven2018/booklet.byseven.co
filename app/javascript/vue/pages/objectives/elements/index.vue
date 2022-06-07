@@ -9,7 +9,9 @@
           v-show="genericFetchEntity.data && genericFetchEntity.data['objective/elements'] && genericFetchEntity.data['objective/elements'].length === 0 && !genericFetchEntity.search"
           type="roadmap"
           :href="$routes.generate('objective_new')"
-      ></bkt-create-entity-from-index>
+      >
+        target
+      </bkt-create-entity-from-index>
       <bkt-no-entity-from-index
           v-show="genericFetchEntity.data && genericFetchEntity.data['objective/elements'] && genericFetchEntity.data['objective/elements'].length === 0 && genericFetchEntity.search"
       ></bkt-no-entity-from-index>

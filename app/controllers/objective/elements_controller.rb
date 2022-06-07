@@ -22,11 +22,8 @@ class Objective::ElementsController < ApplicationController
   end
 
   def list
-    if params[:search].blank?
-      @users = User.where(company: current_user.company)
-    else
-      @users = User.where(company: current_user.company).search_users(params[:search])
-    end
+    @users = User.where(company: current_user.company)
+    @users = User.where(company: current_user.company).search_users(params[:title]) if params[:title]
     @users = @users.order(lastname: :asc)
 
     authorize @users

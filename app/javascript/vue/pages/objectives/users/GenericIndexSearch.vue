@@ -16,7 +16,7 @@ export default {
   methods: {
     update(text) {
       store.commit('genericFetchEntity/setSearch', {
-          search: text
+          title: text
       })
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: this.pathKey,
