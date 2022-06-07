@@ -35,7 +35,7 @@
                     label: false,
                     placeholder: 'Title',
                     input_html: {
-                      class: 'height-5rem bkt-bg-light-grey9 mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px',
+                      class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px',
                       autocomplete: 'off',
                       data: {
                         objectives__objective_new_target: 'requiredInput',
@@ -47,7 +47,7 @@
           name: 'objective_element[description]',
           value: @objective.description,
           placeholder: 'Description',
-          klasses: "min-h-10rem bkt-bg-light-grey9 mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus",
+          klasses: "min-h-10rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus",
           hide_toolbar: false,
           toolbar_within: true,
           auto_update: false
@@ -58,7 +58,7 @@
                     label: false,
                     placeholder: 'Select date',
                     input_html: {
-                      class: 'height-5rem bkt-bg-light-grey9 mb-5rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem datepicker rounded-3px',
+                      class: 'height-5rem bkt-bg-light-grey9-important mb-5rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem datepicker rounded-3px',
                       data: {
                         objectives__objective_new_target: 'requiredInput',
                         action: "change->objectives--objective-new#enableSubmit"
@@ -166,7 +166,7 @@
                 <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-12rem mb-0 mr-1rem">Starting status
                   :</label>
                 <input name="indicator[options][starting_value]"
-                       class="height-4rem flex-grow-1 bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       class="height-4rem flex-grow-1 bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                        value="<%= @objective.objective_indicator && @objective.objective_indicator.indicator_type == 'boolean' ? @objective.objective_indicator.options['starting_value'] : '' %>"
                        type="text"
                        autocomplete="off"
@@ -177,7 +177,7 @@
               <div class="d-flex align-items-center width-100">
                 <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-12rem mb-0 mr-1rem">Target status :</label>
                 <input name="indicator[options][target_value]"
-                       class="height-4rem flex-grow-1 bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       class="height-4rem flex-grow-1 bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                        value="<%= @objective.objective_indicator && @objective.objective_indicator.indicator_type == 'boolean' ? @objective.objective_indicator.options['target_value'] : '' %>"
                        type="text"
                        autocomplete="off"
@@ -205,7 +205,7 @@
                 <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="lucide:flag"></span>
                 <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-10rem mb-0 mr-1rem">Starting value</label>
                 <input name="indicator[options][starting_value]"
-                       class="height-4rem width-10rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       class="height-4rem width-10rem bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                        type="number"
                        value="<%= @objective.objective_indicator && @objective.objective_indicator.indicator_type == 'numeric_value' ? @objective.objective_indicator.options['starting_value'] : '' %>"
                        data-objectives--objective-new-target="requiredInput"
@@ -219,7 +219,7 @@
                 <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="fluent:target-arrow-20-filled"></span>
                 <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-10rem mb-0 mr-1rem">Target value</label>
                 <input name="indicator[options][target_value]"
-                       class="height-4rem width-10rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       class="height-4rem width-10rem bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                        type="number"
                        value="<%= @objective.objective_indicator && @objective.objective_indicator.indicator_type == 'numeric_value' ? @objective.objective_indicator.options['target_value'] : '' %>"
                        data-objectives--objective-new-target="requiredInput"
@@ -248,7 +248,7 @@
                 <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="lucide:flag"></span>
                 <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-10rem mb-0 mr-1rem">Starting value</label>
                 <input name="indicator[options][starting_value]"
-                       class="height-4rem width-10rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem mr-1rem bkt-input-focus p-input rounded-3px"
+                       class="height-4rem width-10rem bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem mr-1rem bkt-input-focus p-input rounded-3px"
                        type="number"
                        value="<%= @objective.objective_indicator && @objective.objective_indicator.indicator_type == 'percentage' ? @objective.objective_indicator.options['starting_value'] : '0' %>"
                        min="0"
@@ -265,7 +265,7 @@
                 <span class="iconify fs-1_6rem bkt-objective-blue mr-1rem" data-icon="fluent:target-arrow-20-filled"></span>
                 <label class="fs-1_2rem font-weight-500 bkt-dark-grey width-10rem mb-0 mr-1rem">Target value</label>
                 <input name="indicator[options][target_value]"
-                       class="height-4rem width-10rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       class="height-4rem width-10rem bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                        type="number"
                        value="<%= @objective.objective_indicator && @objective.objective_indicator.indicator_type == 'percentage' ? @objective.objective_indicator.options['target_value'] : '100' %>"
                        data-objectives--objective-new-target="requiredInput"
@@ -290,7 +290,7 @@
             <input
               data-objectives--objective-new-target="multiChoiceValue"
               name="indicator[options][target_value]"
-              class="hidden flex-grow-1 height-4rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+              class="hidden flex-grow-1 height-4rem bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
               type="text"
               value="<%= @objective.objective_indicator && @objective.objective_indicator.indicator_type == 'multi_choice' ? @objective.objective_indicator.options['target_value'] : 'Option 1' %>"
               disabled>
@@ -304,7 +304,7 @@
                       <input
                         data-action="<%= ('keyup->objectives--objective-new#updateMultichoseValue') if key == 'choice_1' %>"
                         name="indicator[options][<%= key %>]"
-                        class="flex-grow-1 height-4rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                        class="flex-grow-1 height-4rem bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                         type="text"
                         value="<%= value %>"
                         disabled>
@@ -317,7 +317,7 @@
                   <input
                     data-action="keyup->objectives--objective-new#updateMultichoseValue"
                     name="indicator[options][choice_1]"
-                    class="flex-grow-1 height-4rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                    class="flex-grow-1 height-4rem bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                     type="text"
                     value="Option 1"
                     disabled>
@@ -332,7 +332,7 @@
                    data-objectives--objective-new-target="multiChoiceTemplate">
 
                 <input name=""
-                       class="flex-grow-1 height-4rem bkt-bg-light-grey9 border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
+                       class="flex-grow-1 height-4rem bkt-bg-light-grey9-important border-transparent-1px fs-1_4rem bkt-input-focus p-input rounded-3px"
                        type="text"
                        value="">
 

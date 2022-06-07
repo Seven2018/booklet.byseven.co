@@ -78,7 +78,7 @@
 
           <div class="flex-column">
             <bkt-button type="blue" :href="$routes.generate('objective_user_show', {id})">
-              View Target
+              View Targets
             </bkt-button>
           </div>
         </div>

@@ -16,7 +16,7 @@
             v-if="genericFetchEntity.data"
         >
           <div
-              class="flex-row-between-centered bkt-box-shadow-medium p-3 mb-4 rounded-5px"
+              class="flex-row-between-centered bkt-box-shadow-medium p-3 mb-4 rounded-5px cursor-pointer bkt-bg-light-grey9-hover smooth-transition-color"
               v-for="row in genericFetchEntity.data['objective/templates']"
               :key="row.id"
               @click="createTargetFromTemplate(row)"
