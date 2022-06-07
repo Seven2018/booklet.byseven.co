@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-row-start-centered mb-5">
+  <div class="flex-row-start-centered mb-5 mt-4">
     <bkt-search @input="update"></bkt-search>
     <button class="ml-5 font-weight-500 fs-1_6rem" @click="reset">
       Reset
