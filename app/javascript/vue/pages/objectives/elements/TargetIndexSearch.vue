@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-row-between-centered mb-5">
-    <div class="flex-column">
+  <div class="row flex-row-between-centered mb-5">
+    <div class="flex-column mt-4">
       <div class="flex-row-start-centered">
         <bkt-search
             v-model="searchText"
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="flex-column ml-4">
+    <div class="flex-column ml-4 mt-4">
       <div class="flex-row-start-centered">
         <p>From </p>
         <input

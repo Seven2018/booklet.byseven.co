@@ -1,25 +1,26 @@
 <template>
-  <div class="width-70 mt-5 mx-auto">
+  <div>
+    <div class="width-70 mt-5 mx-auto">
+      <div class="flex-row-center-centered pos-rel">
 
-    <div class="flex-row-center-centered pos-rel">
+        <bkt-back-button v-if="backButton"
+                         class="flex-column pos-abs-sm"
+                         style="top: 0; left: 0;">
+        </bkt-back-button>
 
-      <bkt-back-button v-if="backButton"
-                       class="flex-column pos-abs-sm"
-                       style="top: 0; left: 0;">
-      </bkt-back-button>
+        <h1 v-if="title" class="flex-column fs-2_4rem font-weight-500">{{title}}</h1>
+        <h1 v-else class="fs-2_4rem font-weight-500">My team Roadmap</h1>
 
-      <h1 v-if="title" class="flex-column fs-2_4rem font-weight-500">{{title}}</h1>
-      <h1 v-else class="fs-2_4rem font-weight-500">My team Roadmap</h1>
+      </div>
 
+      <user-quick-indo :user="myTeamObjectives.user"></user-quick-indo>
+
+      <div class="flex-row-end-centered mt-5">
+        <bkt-new-target-button></bkt-new-target-button>
+      </div>
     </div>
 
-    <user-quick-indo :user="myTeamObjectives.user"></user-quick-indo>
-
-    <div class="flex-row-end-centered mt-5">
-      <bkt-new-target-button></bkt-new-target-button>
-    </div>
-
-    <div class="flex-row-start-centered">
+    <div class="width-70 mt-5 mx-auto">
       <objective-switcher
           v-if="myTeamObjectives.employeesCurrent && myTeamObjectives.employeesArchived"
           :current-nbr="myTeamObjectives.employeesCurrent.length"
