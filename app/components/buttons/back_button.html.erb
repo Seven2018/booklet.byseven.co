@@ -2,7 +2,8 @@
   class="d-none d-sm-flex bkt-btn-back justify-content-start align-items-center cursor-pointer"
   data-controller='back'
   data-action='click->back#back'
-  data-fallback='<%= @fallback %>'>
+  data-fallback='<%= @fallback %>'
+  data-force-fallback='<%= @force_fallback.presence %>'>
 
   <% if content.present? %>
     <%= content %>
@@ -18,7 +19,8 @@
   class="d-sm-none justify-content-start align-items-center cursor-pointer"
   data-controller='back'
   data-action='click->back#back'
-  data-fallback='<%= @fallback %>'>
+  data-fallback='<%= @fallback %>'
+  data-force-fallback='<%= @force_fallback.presence %>'>
 
   <% if content.present? %>
     <%= content %>

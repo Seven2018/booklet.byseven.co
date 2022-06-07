@@ -6,7 +6,7 @@
 
       <div class="pos-abs"
            style="top: 0; left: -10rem;">
-        <%= render_component Buttons::BackButton.new(fallback: trainings_reports_path) %>
+        <%= render_component Buttons::BackButton.new(fallback: organisation_path, force_fallback: true) %>
       </div>
 
       <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='avatar-xlarge mr-2rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
