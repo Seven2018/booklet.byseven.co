@@ -5,10 +5,11 @@ export default class extends Controller {
   back () {
     let from = null
 
-    if (document.referrer !== undefined) {
-      from = document.referrer
-    } else {
+    if (this.element.dataset.forceFallback || document.referrer == undefined)  {
+      console.log(this.element.dataset.forceFallback)
       from = this.element.dataset.fallback
+    } else {
+      from = document.referrer
     }
 
     const params = new Proxy(new URLSearchParams(window.location.search), {
