@@ -30,13 +30,13 @@
               v-if="objective_indicator.indicator_type === 'boolean'"
           >
             actual value: {{
-              objective_indicator.options.starting_value
+              objective_indicator.options.current_value
             }}, target value: {{ objective_indicator.options.target_value }}
           </span>
             <span
                 v-else-if="objective_indicator.indicator_type === 'numeric_value'"
             >
-            {{ objective_indicator.options.starting_value }}/{{ objective_indicator.options.target_value }}
+            {{ objective_indicator.options.current_value }}/{{ objective_indicator.options.target_value }}
           </span>
             <span
                 v-else-if="objective_indicator.indicator_type === 'percentage'"
@@ -46,8 +46,8 @@
             <span
                 v-else-if="objective_indicator.indicator_type === 'multi_choice'"
             >
-            <span v-if="!objective_indicator.options.starting_value">Not set yet</span>
-            <span v-else>{{ objective_indicator.options.starting_value }}</span>
+            <span v-if="!objective_indicator.options.current_value">Not set yet</span>
+            <span v-else>{{ objective_indicator.options.current_value }}</span>
           </span>
           </p>
         </a>

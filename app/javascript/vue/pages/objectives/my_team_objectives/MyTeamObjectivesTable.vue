@@ -72,14 +72,14 @@
                 v-if="element.objective_indicator.indicator_type === 'boolean'"
             >
               value: {{
-                element.objective_indicator.options.starting_value
+                element.objective_indicator.options.current_value
               }}, target: {{ element.objective_indicator.options.target_value }}
             </span>
               <span
                   v-else-if="element.objective_indicator.indicator_type === 'numeric_value'"
               >
               {{
-                  element.objective_indicator.options.starting_value
+                  element.objective_indicator.options.current_value
                 }}/{{ element.objective_indicator.options.target_value }}
             </span>
               <span
@@ -90,8 +90,8 @@
               <span
                   v-else-if="element.objective_indicator.indicator_type === 'multi_choice'"
               >
-              <span v-if="!element.objective_indicator.options.starting_value">Not set yet</span>
-              <span v-else>{{ element.objective_indicator.options.starting_value }}</span>
+              <span v-if="!element.objective_indicator.options.current_value">Not set yet</span>
+              <span v-else>{{ element.objective_indicator.options.current_value }}</span>
             </span>
             </p>
           </a>
