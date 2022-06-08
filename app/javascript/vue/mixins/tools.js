@@ -1,4 +1,3 @@
-
 export default {
   methods: {
     setHover(className) {
@@ -33,5 +32,23 @@ export default {
       }
       return count
     },
+    campaign_icon(type) {
+      const icon = {
+        crossed: 'uil:exchange',
+        simple: 'uil:exchange',
+        one_to_one: 'uil:exchange',
+        feedback_360: 'mdi:star-shooting'
+      }
+      return icon[type]
+    },
+    campaign_type_str(type) {
+      const types = {
+        crossed: '1 to 1',
+        simple: '1 to 1',
+        one_to_one: '1 to 1',
+        feedback_360: 'Feedback 360'
+      }
+      return types[type]
+    }
   }
 }

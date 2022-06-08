@@ -3,7 +3,6 @@ class Objective::ElementsController < ApplicationController
   before_action :set_objective_element, only: [:show, :update]
 
   skip_forgery_protection
-
   skip_after_action :verify_authorized, only: [
     :archive,
     :unarchive,

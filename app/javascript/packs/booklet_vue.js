@@ -55,6 +55,7 @@ import ObjectiveTemplateIndex from '../vue/pages/objectives/templates'
 import ObjectiveTemplateNew from '../vue/pages/objectives/templates/new'
 import ObjectiveTemplateNewTargetView from '../vue/pages/objectives/templates/new_target_view'
 import CustomToggleForErbForm from '../vue/components/CustomToggleForErbForm'
+import CampaignIndex from '../vue/pages/campaigns'
 
 let app = null
 let vuejsOpt = {
@@ -69,7 +70,8 @@ let vuejsOpt = {
     ObjectiveTemplateIndex,
     ObjectiveTemplateNew,
     ObjectiveTemplateNewTargetView,
-    CustomToggleForErbForm
+    CustomToggleForErbForm,
+    CampaignIndex
   }
 }
 Vue.prototype.$routes = routes

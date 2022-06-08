@@ -18,7 +18,11 @@ const routes = {
   objective_templates_list: '/objective/templates/list',
   objective_templates_id: '/objective/templates/{id}',
   objective_templates_edit: '/objective/templates/{id}/edit',
-  objective_templates_new_target_view: '/objective/templates/new_target_view'
+  objective_templates_new_target_view: '/objective/templates/new_target_view',
+  campaign_draft_edit: '/campaign_draft/settings/edit',
+  campaigns_list: '/campaigns/list',
+  send_notification_email: '/send_notification_email/{id}.json',
+  campaigns_id: '/campaigns/{id}'
 }
 
 export default {

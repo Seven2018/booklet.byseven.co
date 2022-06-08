@@ -4,7 +4,12 @@ class CampaignsController < ApplicationController
   before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
-  def index
+  skip_forgery_protection
+  skip_after_action :verify_authorized, only: [
+    :destroy,
+  ]
+
+    def index
     campaigns = policy_scope(Campaign).where(company: current_user.company)
                                       .where_exists(:interviews)
                                       .order(created_at: :desc)
@@ -28,6 +33,21 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def list
+    campaigns = Campaign.where(company: current_user.company)
+    campaigns = campaigns.search_campaigns(params[:title]) if params[:title]
+    campaigns = campaigns.order(created_at: :desc)
+
+
+    page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    campaigns = campaigns.page(page).per(size)
+
+    authorize campaigns
+
+    render json: campaigns, meta: pagination_dict(campaigns)
+  end
+
   def show
     cancel_cache
 
@@ -49,6 +69,7 @@ class CampaignsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.json {head :ok}
     end
   end
 
@@ -136,6 +157,9 @@ class CampaignsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.json {
+        head :ok
+      }
     end
   end
 
