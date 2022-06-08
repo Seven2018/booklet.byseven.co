@@ -1,73 +1,74 @@
 <template>
   <div>
-    <transition v-if="popUp && popUp.data.open && popUp.data.type != 'action_done'" name="modal">
-      <div class="modal-mask">
-        <div class="modal-wrapper">
-          <div class="modal-container rounded-15px">
-            <div v-if="popUp.data.title" class="flex-row-center-centered">
-              <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
-            </div>
+    <bkt-pop-up-frame v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
+                      name="modal">
+      <div v-if="popUp.data.title" class="flex-row-center-centered">
+        <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
+      </div>
 
-            <div v-if="popUp.data.textClose && popUp.data.textConfirm" class="flex-row-around-centered mt-5 fs-1_8rem">
-              <button class="border-bkt-dark-grey width-15rem rounded-2px py-2" @click="close">{{popUp.data.textClose}}</button>
-              <button
-                  class="min-w-15rem rounded-2px border-bkt-objective-blue py-2"
-                  :class="[!popUp.data.type
+      <div v-if="popUp.data.textClose && popUp.data.textConfirm" class="flex-row-around-centered mt-5 fs-1_8rem">
+        <button class="border-bkt-dark-grey width-15rem rounded-2px py-2" @click="close">{{ popUp.data.textClose }}
+        </button>
+        <button
+            class="min-w-15rem rounded-2px border-bkt-objective-blue py-2"
+            :class="[!popUp.data.type
                   || popUp.data.type === 'normal' ?
                   'bkt-bg-objective-light-blue bkt-objective-blue border-bkt-objective-blue' : '',
                    popUp.data.type === 'delete' ?
                    'bkt-bg-light-red bkt-red border-bkt-red' : '',
                    popUp.data.loading ? 'bkt-bg-white' : '']"
-                  @click="confirm"
-              >
-                <bkt-spinner
-                    v-show="popUp.data.loading"
-                    :color="!popUp.data.type || popUp.data.type === 'normal' ? 'blue' : (popUp.data.type === 'delete' ? 'red' : '')" >
-                  {{popUp.data.textLoading}}
-                </bkt-spinner>
-                <span
-                    v-show="!popUp.data.loading"
-                >{{popUp.data.textConfirm}}</span>
-              </button>
-            </div>
-          </div>
-        </div>
+            @click="confirm"
+        >
+          <bkt-spinner
+              v-show="popUp.data.loading"
+              :color="!popUp.data.type || popUp.data.type === 'normal' ? 'blue' : (popUp.data.type === 'delete' ? 'red' : '')">
+            {{ popUp.data.textLoading }}
+          </bkt-spinner>
+          <span
+              v-show="!popUp.data.loading"
+          >{{ popUp.data.textConfirm }}</span>
+        </button>
       </div>
-    </transition>
-    <transition v-else-if="popUp && popUp.data.open && popUp.data.type == 'action_done' " name="modal">
-      <div class="modal-mask">
-        <div class="modal-wrapper">
-          <div class="modal-container rounded-15px">
-            <div class="flex-row-center-centered justify-content-center">
-              <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_newtztyc.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px; margin-top: -3rem;" loop autoplay></lottie-player>
-            </div>
-
-            <div v-if="popUp.data.title" class="flex-row-center-centered">
-              <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
-            </div>
-
-            <div v-if="popUp.data.description" class="flex-row-center-centered">
-              <h1 class="fs-1_2rem font-weight-500 text-center" v-html="popUp.data.description"></h1>
-            </div>
-
-            <div v-if="popUp.data.textConfirm" class="flex-row-center-centered mt-5 fs-1_8rem">
-              <button
-                  class="min-w-15rem rounded-2px bkt-bg-blue bkt-white py-2 font-weight-600 fs-1_6rem"
-                  @click="confirm(false)"
-              >
-                <span>{{popUp.data.textConfirm}}</span>
-              </button>
-            </div>
-          </div>
-        </div>
+    </bkt-pop-up-frame>
+    <bkt-pop-up-frame v-else-if="popUp && popUp.data.open && popUp.data.type == 'action_done' " name="modal">
+      <div class="flex-row-center-centered justify-content-center">
+        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_newtztyc.json" background="transparent"
+                       speed="1" style="width: 200px; height: 200px; margin-top: -3rem;" loop autoplay></lottie-player>
       </div>
-    </transition>
+
+      <div v-if="popUp.data.title" class="flex-row-center-centered">
+        <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
+      </div>
+
+      <div v-if="popUp.data.description" class="flex-row-center-centered">
+        <h1 class="fs-1_2rem font-weight-500 text-center" v-html="popUp.data.description"></h1>
+      </div>
+
+      <div v-if="popUp.data.textConfirm" class="flex-row-center-centered mt-5 fs-1_8rem">
+        <button
+            class="min-w-15rem rounded-2px bkt-bg-blue bkt-white py-2 font-weight-600 fs-1_6rem"
+            @click="confirm(false)"
+        >
+          <span>{{ popUp.data.textConfirm }}</span>
+        </button>
+      </div>
+    </bkt-pop-up-frame>
+    <bkt-pop-up-frame v-else-if="popUp && popUp.data.open && popUp.data.type == 'edit-campaign-tags' "
+                      name="modal">
+      <component
+          :is="popUp.data.type"
+          :campaign-id="popUp.data.campaignId"
+          @close="close"
+      ></component>
+    </bkt-pop-up-frame>
   </div>
 </template>
 
 <script>
 import store from "../store";
 import BktSpinner from './BktSpinner'
+import BktPopUpFrame from "./BktPopUpFrame";
+import EditCampaignTags from './EditCampaignTags'
 
 export default {
   data() {
@@ -85,7 +86,7 @@ export default {
       this.popUp.data.confirm()
     }
   },
-  components: {BktSpinner},
+  components: {BktSpinner, BktPopUpFrame, EditCampaignTags},
 }
 </script>
 
