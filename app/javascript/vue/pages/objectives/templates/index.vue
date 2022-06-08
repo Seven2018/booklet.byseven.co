@@ -4,7 +4,7 @@
     <template v-slot:title>Target templates</template>
     <template v-slot:create-index>
       <bkt-button
-          type="blue"
+          type="roadmap"
           iconify="ant-design:plus-circle-outlined"
           :href="$routes.generate('objective_templates_new')"
       >New template</bkt-button>
