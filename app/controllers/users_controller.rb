@@ -253,7 +253,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html {}
       format.json {
-        @users = @users.limit(5)
+        @users
       }
     end
   end
