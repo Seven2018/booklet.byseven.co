@@ -52,6 +52,7 @@
 </div>
 
 <% if CampaignPolicy.new(current_user, campaign).create? %>
+
   <div data-controller="dropdown"
        class="pos-rel d-flex justify-content-end">
 
@@ -106,4 +107,5 @@
     </div>
 
   </div>
+
 <% end %>

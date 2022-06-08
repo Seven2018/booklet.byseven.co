@@ -6,41 +6,114 @@
 
 <% if employee_view || manager_view %>
 
-  <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>">
+  <div class="campaign-show__card campaign-show__card-<%= campaign.campaign_type %>"
+       data-controller="dropdown">
 
-    <div class="campaign-show__card-overlay hidden"></div>
-    <div class="campaign-card__options d-flex justify-content-center align-items-center height-2rem width-2rem"
-         onclick="openContentMenu(this);">
+    <% if manager_view %>
 
-      <% if manager_view %>
+      <div class="dark-overlay hidden"
+           style="border-radius: 1.3rem;"
+           data-dropdown-target="overlay"></div>
 
-        <i class="fas fa-ellipsis-v"></i>
+      <div
+         class="pos-abs d-flex justify-content-end"
+         style="top: 1rem; right: 1rem;">
 
-        <div class="content-dropdown hidden">
+        <div class="flex-row-center-centered height-2_5rem width-2_5rem-forced rounded-15px bkt-light-grey
+                    bkt-white-hover bkt-bg-light-grey-hover cursor-pointer z-index-5"
+              data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide">
+          <i class="fas fa-ellipsis-v"></i>
+        </div>
 
-          <%= link_to 'See profile', user_path(employee) %>
-          <%= link_to 'Send invitation email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'invite'), remote: true %>
-          <%= link_to 'Send reminder email', send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'reminder'), remote: true %>
-          <a data-toggle='modal' data-target='#editDeadline-<%= employee.id %>'>Edit interview deadline</a>
+        <div class="pos-abs rounded-5px z-index-100 bkt-box-shadow-compact d-flex flex-column align-items-start
+                    bkt-bg-white bkt-dark-grey hidden"
+             data-dropdown-target="menu"
+             style='right: 0; top: 3rem; width: 25rem;'>
+
+          <%= link_to user_path(employee), class: 'width-100' do %>
+
+            <button class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                           width-100 p-3">
+              See profile
+            </button>
+
+          <% end %>
+
+
+          <%= link_to send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'invite'), class: 'width-100', remote: true do %>
+
+            <button class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                           width-100 p-3">
+              Send invitation email
+            </button>
+
+          <% end %>
+
+
+          <%= link_to send_notification_email_path(id: campaign.id, user_id: employee.id, email_type: 'reminder'), class: 'width-100', remote: true do %>
+
+            <button class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                           width-100 p-3">
+              Send reminder email
+            </button>
+
+          <% end %>
+
+
+          <a class="width-100"
+             data-toggle='modal'
+             data-target='#editDeadline-<%= employee.id %>'>
+
+            <button class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                           width-100 p-3">
+              Edit interview deadline
+            </button>
+
+          </a>
 
           <% if CampaignPolicy.new(current_user, @campaign).remove_interview_set? ||
             !interview_set.employee_interview&.submitted? %>
-            <a data-toggle='modal' data-target='#removeParticipant-<%= employee.id %>'>Remove from campaign</a>
+
+            <a class="width-100"
+               data-toggle='modal'
+               data-target='#removeParticipant-<%= employee.id %>'>
+
+              <button class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-red bkt-bg-light-grey10-hover
+                           width-100 p-3">
+                Remove from campaign
+              </button>
+
+            </a>
+
           <% end %>
 
-            <% if CampaignPolicy.new(current_user, @campaign).can_unlock? %>
-              <% interviews.select{|x| x&.locked_at&.present?}.each do |interview| %>
-                <% unless interviews.count == 3 && interviews.last.locked? && !interview.crossed? %>
-                  <%= link_to "Unlock #{interview.label} interview", unlock_interview_path(interview_id: interview.id, interviewer_id: selected_interviewer&.id), remote: true %>
+          <% if CampaignPolicy.new(current_user, @campaign).can_unlock? %>
+
+            <% interviews.select{|x| x&.locked_at&.present?}.each do |interview| %>
+
+              <% unless interviews.count == 3 && interviews.last.locked? && !interview.crossed? %>
+
+                <%= link_to unlock_interview_path(interview_id: interview.id, interviewer_id: selected_interviewer&.id), class: 'width-100', remote: true do %>
+
+                  <button class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-red
+                                 bkt-bg-light-grey10-hover
+                           width-100 p-3">
+                    <%= "Unlock #{interview.label} interview" %>
+                  </button>
+
                 <% end %>
+
               <% end %>
+
             <% end %>
+
+          <% end %>
 
         </div>
 
-      <% end %>
+      </div>
 
-    </div>
+    <% end %>
 
     <div class="campaign-show__card-profile">
       <img src="<%= employee.picture %>" alt="<%= employee.fullname %>" class='avatar-large' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>

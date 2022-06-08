@@ -21,7 +21,8 @@
       remove_company_tag_path: remove_company_tag_campaign_path(id: campaign_id),
       search_tag_path: search_tags_campaign_path(id: campaign_id),
       color: 'bkt-blue',
-      background_color: 'bkt-bg-light-blue'
+      background_color: 'bkt-bg-light-blue',
+      always_open: true
     )%>
 
     <%= link_to '', index_line_campaign_path(campaign), class: 'update-line d-none', remote: true %>

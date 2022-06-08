@@ -20,7 +20,14 @@ export default class extends Controller {
       }
     })
 
-    this.tagListTarget.classList.remove('d-none')
+    if (this.element.dataset.alwaysOpen) {
+      this.tagListTarget.classList.remove('d-none')
+    } else {
+      window.addEventListener('click', () => {
+        this.tagListTarget.classList.add('d-none')
+        document.querySelectorAll('.tag-suggestion-option').forEach(el => el.classList.add('d-none'))
+      });
+    }
   }
 
   addTag(e) {
