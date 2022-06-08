@@ -13,7 +13,7 @@
 
         <a data-toggle='modal' data-target='#objectiveUsers'>
 
-          <div class="d-flex align-items-start min-h-5rem max-h-10rem bkt-bg-white mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey rounded-3px bkt-droplight-shadow">
+          <div class="d-flex align-items-start min-h-5rem max-h-10rem bkt-bg-white mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey rounded-3px bkt-input-focus bkt-droplight-shadow">
 
             <div class="d-flex align-items-center height-3rem">
               <p class="fs-1_4rem font-weight-500 min-w-10rem pb-0_2rem">Employee(s) :</p>
@@ -35,7 +35,7 @@
                     label: false,
                     placeholder: 'Title',
                     input_html: {
-                      class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px',
+                      class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
                       autocomplete: 'off',
                       data: {
                         objectives__objective_new_target: 'requiredInput',
@@ -47,18 +47,17 @@
           name: 'objective_element[description]',
           value: @objective.description,
           placeholder: 'Description',
-          klasses: "min-h-10rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus",
+          klasses: "min-h-10rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus",
           hide_toolbar: false,
           toolbar_within: true,
-          auto_update: false
-        ) %>
+          auto_update: false) %>
 
         <%= f.input :due_date,
                     as: :string,
                     label: false,
                     placeholder: 'Select date',
                     input_html: {
-                      class: 'height-5rem bkt-bg-light-grey9-important mb-5rem p-input-lg border-transparent-1px fs-1_4rem bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem datepicker rounded-3px',
+                      class: 'height-5rem bkt-bg-light-grey9-important mb-5rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem datepicker rounded-3px bkt-input-focus',
                       data: {
                         objectives__objective_new_target: 'requiredInput',
                         action: "change->objectives--objective-new#enableSubmit"

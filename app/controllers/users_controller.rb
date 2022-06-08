@@ -1,7 +1,7 @@
 # Updated : 2021/07/19
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :add_tag_category_tags]
+  before_action :set_user, only: [:show, :reset_password, :edit, :update, :destroy, :add_tag_category_tags]
   before_action :set_current_user, only: [:import, :create]
   skip_before_action :verify_authenticity_token, only: [:update]
   before_action :show_navbar_home

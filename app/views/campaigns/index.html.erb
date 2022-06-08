@@ -58,15 +58,10 @@
               )
             %>
 
-            <%= f.input :period, collection: ['Current', 'Completed', 'All'],
-                        selected: 'Current',
-                        label: false,
-                        required: false,
-                        input_html: {
-                          data: {
-                            action: 'change->remember-search#storeSearch'
-                          }
-                        } %>
+            <%= render_component(Tools::SelectComponent.new(width: '15rem',
+                                                            input_name: 'search[period]',
+                                                            collection: ['Current', 'Completed', 'All'],
+                                                            data_action: 'click->remember-search#storeSearch')) %>
 
             <%= f.hidden_field :tags, value: [], data: { tools__tags_manager_target: "selectedTags" } %>
             <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>

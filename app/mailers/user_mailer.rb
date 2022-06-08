@@ -13,4 +13,16 @@ class UserMailer < ApplicationMailer
 
     mail(to: @user.email, subject: 'Welcome to Booklet !')
   end
+
+  def reset_password(user, raw_token)
+    @user = user
+    @token = raw_token
+    @icon = '👋'
+    @title = "Hello, #{@user.fullname}"
+    @description = "Please follow this link to reset your password !"
+    @button_text = "Reset my password"
+    @button_link = accept_user_invitation_url(@user, invitation_token: @token, reset_password: true)
+
+    mail(to: @user.email, subject: 'Reset your password')
+  end
 end

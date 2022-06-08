@@ -128,6 +128,14 @@ class User < ApplicationRecord
         .deliver_later
   end
 
+  def reset_password!
+    self.generate_invitation_token!
+
+    UserMailer.with(user: self)
+        .reset_password(self, self.raw_invitation_token)
+        .deliver_later
+  end
+
   def self.import(rows, company_id, invited_by_id, send_invite = false)
     present = []
     rows.each do |row_h|

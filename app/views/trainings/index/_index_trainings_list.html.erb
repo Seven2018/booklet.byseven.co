@@ -10,14 +10,21 @@
   <div
     data-interview-form-id="<%= training.id %>"
     class="d-flex justify-content-between align-items-center px-0 pt-2rem pb-2rem border-top-bkt-light-grey position-relative">
+
     <% lines.each do |line| %>
+
       <div class='flex-row-start-centered fs-1_6rem' style='flex-basis: <%= width %>%;'>
+
         <% if line == training_creator&.fullname %>
           <img src="<%= training_creator&.picture %>" class='avatar-sm mr-1rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
         <% end %>
+
         <%= line %>
+
       </div>
+
     <% end %>
+
     <%= link_to '', training_path(training), class: 'stretched-link' %>
 
     <% if TrainingPolicy.new(current_user, training).destroy? %>
@@ -46,7 +53,9 @@
         </div>
 
       </div>
+
     <% end %>
+
   </div>
 
 <% end %>

@@ -7,7 +7,7 @@
     <%= f.input :title,
                 label: false,
                 input_html:
-                  { class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px',
+                  { class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
                     autocomplete: "off",
                     data: { action: 'keyup->interviews--interview-forms-edit#saveForm' } },
                 placeholder: 'Untitled' %>
@@ -16,13 +16,14 @@
     name: 'interview_form[description]',
     value: template.description,
     placeholder: 'Description (optional)',
-    klasses: "bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem fs-1_4rem"
-  ) %>
+    klasses: "min-h-10rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus",
+    hide_toolbar: false,
+    toolbar_within: true) %>
 
     <%= f.input :video,
                 label: false,
                 input_html:
-                  { class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px',
+                  { class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
                     autocomplete: "off",
                     data: { action: 'keyup->interviews--interview-forms-edit#checkVideoCompatibility' } },
                 placeholder: 'Video link (Youtube)' %>

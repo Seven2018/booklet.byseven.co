@@ -33,6 +33,16 @@ class Users::SessionsController < Devise::SessionsController
     end
   end
 
+  def reset_password
+    @user = User.find_by(email: params.dig(:email))
+
+    @user.reset_password!
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def auth_options
     { scope: resource_name, recall: "#{controller_path}#check" }
   end
