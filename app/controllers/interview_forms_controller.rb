@@ -38,6 +38,21 @@ class InterviewFormsController < ApplicationController
     end
   end
 
+  def list
+    interviewForms = InterviewForm.where(company: current_user.company)
+    interviewForms = interviewForms.search_templates(params[:title]) if params[:title].present?
+    interviewForms = interviewForms.order(created_at: :desc)
+
+
+    page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    interviewForms = interviewForms.page(page).per(size)
+
+    authorize interviewForms
+
+    render json: interviewForms, meta: pagination_dict(interviewForms)
+  end
+
   def create
     @template = InterviewForm.new template_params.merge(company: current_user.company)
     authorize @template

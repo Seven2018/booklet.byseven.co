@@ -26,14 +26,14 @@
   </bkt-index-skeleton>
 </template>
 <script>
-import BktIndexSkeleton from "../../components/BktIndexSkeleton";
-import BktButton from "../../components/BktButton";
+import BktIndexSkeleton from "../../../components/BktIndexSkeleton";
+import BktButton from "../../../components/BktButton";
 import CampaignIndexSearch from "./CampaignIndexSearch";
 import CampaignTable from "./CampaignTable";
-import store from "../../store";
-import BktCreateEntityFromIndex from "../../components/BktCreateEntityFromIndex";
-import BktNoEntityFromIndex from "../../components/BktNoEntityFromIndex";
-import BktBoxLoader from "../../components/BktBoxLoader";
+import store from "../../../store";
+import BktCreateEntityFromIndex from "../../../components/BktCreateEntityFromIndex";
+import BktNoEntityFromIndex from "../../../components/BktNoEntityFromIndex";
+import BktBoxLoader from "../../../components/BktBoxLoader";
 
 export default {
   data() {

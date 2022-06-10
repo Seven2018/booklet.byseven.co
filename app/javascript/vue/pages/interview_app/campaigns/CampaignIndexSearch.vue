@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import BktSearch from "../../components/bktSearch";
-import store from "../../store";
-import BktSelect from "../../components/BktSelect";
+import BktSearch from "../../../components/bktSearch";
+import store from "../../../store";
+import BktSelect from "../../../components/BktSelect";
 
 export default {
   data() {

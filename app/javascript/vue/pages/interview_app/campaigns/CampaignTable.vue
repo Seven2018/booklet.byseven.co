@@ -69,14 +69,14 @@
 </template>
 
 <script>
-import tools from "../../mixins/tools";
-import store from "../../store";
-import IndexTable from "../../components/IndexTable";
-import BktTableFirstColumn from "../../components/BktTableFirstColumn";
-import DisplayTagInIndex from "../../components/DisplayTagInIndex";
-import BktDotsButton from "../../components/BktDotsButton";
-import axios from "../../plugins/axios";
-import routes from "../../constants/routes";
+import tools from "../../../mixins/tools";
+import store from "../../../store";
+import IndexTable from "../../../components/IndexTable";
+import BktTableFirstColumn from "../../../components/BktTableFirstColumn";
+import DisplayTagInIndex from "../../../components/DisplayTagInIndex";
+import BktDotsButton from "../../../components/BktDotsButton";
+import axios from "../../../plugins/axios";
+import routes from "../../../constants/routes";
 
 export default {
   mixins: [tools],

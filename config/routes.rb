@@ -146,6 +146,9 @@ Rails.application.routes.draw do
 
   # INTERVIEW FORMS
   resources :interview_forms do
+    collection do
+      get :list
+    end
     member do
       post 'search_tags'
       post 'toggle_tag'
