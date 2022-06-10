@@ -6,16 +6,21 @@
             v-model="searchText"
             @input="update"
         ></bkt-search>
-        <select
+<!--        <select-->
+<!--            v-model="status"-->
+<!--            @change="update"-->
+<!--            class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"-->
+<!--            name="status"-->
+<!--        >-->
+<!--          <option value="">All</option>-->
+<!--          <option value="current">Current</option>-->
+<!--          <option value="completed">Completed</option>-->
+<!--        </select>-->
+        <bkt-select
+            class="ml-5"
             v-model="status"
-            @change="update"
-            class="ml-5 p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
-            name="status"
-        >
-          <option value="">All</option>
-          <option value="current">Current</option>
-          <option value="completed">Completed</option>
-        </select>
+            :items="selectList"
+        ></bkt-select>
         <input type="submit" value="Search" class="ml-5 bkt-bg-light-grey12-important px-4 py-3 rounded-5px border-none" @click="submit">
         <button class="ml-5 font-weight-500 fs-1_6rem" @click="reset">
           Reset
@@ -29,12 +34,14 @@
 <script>
 import BktSearch from "../../components/bktSearch";
 import store from "../../store";
+import BktSelect from "../../components/BktSelect";
 
 export default {
   data() {
     return {
       searchText: null,
       status: '',
+      selectList: [{display: 'All', value: ''}, {display: 'Current', value: 'current'}, {display: 'Completed', value: 'completed'}],
     }
   },
   methods: {
@@ -58,6 +65,6 @@ export default {
       })
     }
   },
-  components: {BktSearch}
+  components: {BktSelect, BktSearch}
 }
 </script>
