@@ -49,13 +49,19 @@
     </div>
 
     <%= form_with url: send("campaign_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
+
       <%= render "campaign_draft/form_#{controller_name}", campaign: @campaign %>
+
       <% if @controller_action.to_sym == :launches_edit %>
+
         <%= f.hidden_field :send_email %>
+
         <div class="d-flex justify-content-center pt-5">
-          <a class='bkt-btn-blue bkt-white' data-toggle='modal' data-target='#launchCampaign'>
+
+          <a class='bkt-btn-blue' data-toggle='modal' data-target='#launchCampaign'>
             Launch Campaign
           </a>
+
           <%= f.submit '', class: 'hidden-submit hidden' %>
 
           <!----------->
@@ -77,20 +83,26 @@
 
           <!----------->
         </div>
+
       <% else %>
+
         <div class="d-flex justify-content-end pt-5">
           <button class='bkt-btn-blue'><p class="mr-3">Next</p> <i class="fa fa-arrow-right"></i></button>
         </div>
+
       <% end %>
+
     <% end %>
 
     <div id="users_search" class="pos-abs <%= 'd-none' unless @controller_action == :participants_edit %>" style='left: 1.5rem; bottom: 27rem;'>
 
       <%= simple_form_for :search, html: { class: 'bkt-select-autocomplete' }, method: :get do |f| %>
+
         <%= f.text_field :manager, placeholder: 'Search in Managers',
                                    value: @campaign.default_interviewer&.fullname,
                                    label: false,
                                    data: {behavior: 'autocomplete'} %>
+
       <% end %>
 
     </div>
@@ -139,6 +151,7 @@
         user_id = $input_manager.getSelectedItemData().id
         document.getElementById('default_interviewer_id').value = user_id
       },
+      maxNumberOfElements: Infinity,
       match: {
         enabled: true
       }

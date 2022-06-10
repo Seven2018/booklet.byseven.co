@@ -1,7 +1,11 @@
 
 
 <% content_for :title do %>
-  Create your password
+  <% if params[:reset_password].present? %>
+    Reset your password
+  <% else %>
+    Create your password
+  <% end %>
 <% end %>
 <% content_for :subtitle do %>
   Your puppy name is ok but we advice
@@ -25,7 +29,7 @@
                 label_html: { class: 'font-weight-500' } %>
 
     <div class="">
-      <button class="width-100 bkt-bg-dark-grey bkt-white rounded-2px mt-4 p-3">Let’s start</button>
+      <button class="width-100 fs-1_6rem bkt-bg-dark-grey bkt-white rounded-2px mt-4 p-3">Let’s start</button>
     </div>
   <% end %>
 </div>

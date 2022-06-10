@@ -1,0 +1,49 @@
+<% string_collection = @collection.first.class == String || Integer || Float %>
+
+<% default_value =
+  if @selected.present?
+    string_collection ? @selected : @selected.id
+  else
+    string_collection ? @collection.first : @collection.first.id
+  end %>
+
+<div class="bkt-select-container"
+     data-controller="dropdown">
+
+  <div class="bkt-select-display"
+       style="width:  <%= @width %>;"
+       data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide">
+
+    <div data-dropdown-target="display">
+      <%= @title.presence || default_value %>
+    </div>
+
+  </div>
+
+  <div class="bkt-select-menu hidden"
+       style="width: <%= @width %>; max-height: <%= @menu_max_height.presence %>"
+       data-dropdown-target="menu">
+
+    <% @collection.each do |element| %>
+
+      <% if string_collection %>
+        <button data-action="click->dropdown#selectOption <%= @data_action %>"
+                data-value="<%= element %>"><%= element %></button>
+      <% else %>
+        <button data-action="click->dropdown#selectOption <%= @data_action %>"
+                data-value="<%= element.id %>"><%= element.name %></button>
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+  <% if @input_name.present? %>
+
+    <input type="hidden"
+           name="<%= @input_name %>"
+           value="<%= default_value %>"
+           data-action="">
+
+  <% end %>
+</div>

@@ -14,7 +14,7 @@
     data-trix-target="<%= 'editor' unless @ignore_stimulus_controller %>"
     data-direct-upload-url="<%= rails_direct_uploads_url %>"
     data-blob-url-template="<%= rails_service_blob_url(filename: ':filename', signed_id: ':signed_id') %>"
-    class="<%= @klasses %>"
+    class="min-h-20rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem bkt-input-focus <%= @klasses %>"
     input="<%= @rand_uuid %>"
     placeholder="<%= @placeholder %>"
   ></trix-editor>

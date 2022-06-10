@@ -8,8 +8,14 @@
           <div class="flex-row-between-centered mb-1rem">
 
             <div class="flex-row-start-centered mcq-input-div">
-              <%= f.text_field :option, value: option[0], autocomplete: 'off', class: 'bkt-bg-light-blue', data: { action: 'keyup->interviews--interview-forms-edit#saveForm' } %>
+
+              <%= f.text_field :option, value: option[0],
+                                        autocomplete: 'off',
+                                        class: 'height-5rem bkt-bg-light-grey9-important p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
+                                        data: { action: 'keyup->interviews--interview-forms-edit#saveForm' } %>
+
               <%= f.submit '', class: 'hidden-submit hidden' %>
+
             </div>
 
             <div class="flex-row-end-centered">
@@ -33,7 +39,9 @@
 
           <div class='flex-row-start-centered mb-1rem'>
 
-            <%= f.text_field :option, autocomplete: 'off', class: 'bkt-bg-light-blue', data: { action: 'keyup->interviews--interview-forms-edit#saveForm' } %>
+            <%= f.text_field :option, autocomplete: 'off',
+                                      class: 'height-5rem bkt-bg-light-grey9-important p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
+                                      data: { action: 'keyup->interviews--interview-forms-edit#saveForm' } %>
 
             <%= f.submit '', class: 'hidden-submit hidden' %>
 

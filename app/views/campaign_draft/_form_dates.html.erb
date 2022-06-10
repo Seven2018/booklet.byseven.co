@@ -6,6 +6,8 @@
 <% end %>
 
 <%# TODO %>
-<%= date_field_tag(:date, @campaign.date&.strftime("%F"), class: 'datepicker_') %>
+<%= date_field_tag(:date, @campaign.date&.strftime("%F"),
+                          placeholder: 'Select date',
+                          class: 'datepicker_ height-5rem bkt-bg-light-grey9-important mb-5rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem datepicker rounded-3px bkt-input-focus') %>
 
 

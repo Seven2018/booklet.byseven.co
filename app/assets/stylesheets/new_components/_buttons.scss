@@ -69,7 +69,7 @@
   align-items: center;
   min-width: 12rem;
   width: fit-content;
-  color: $bkt-white;
+  color: $bkt-white !important;
   background-color: $bkt-blue !important;
   padding: 1.6rem;
   font-size: 1.6rem;
@@ -84,12 +84,12 @@
   &:hover {
     border: 1px solid $bkt-dark-blue;
     background-color: $bkt-dark-blue !important;
-    color: $bkt-white;
+    color: $bkt-white !important;
   }
 
   &:focus {
     background-color: $bkt-white;
-    color: $bkt-dark-blue;
+    color: $bkt-dark-blue !important;
   }
 
   &.disabled {

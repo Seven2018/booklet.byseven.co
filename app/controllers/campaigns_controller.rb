@@ -1,7 +1,6 @@
 class CampaignsController < ApplicationController
   include InterviewUsersFilter
   before_action :set_campaign, only: %i[show edit send_notification_email destroy toggle_tag remove_company_tag search_tags index_line]
-  before_action :show_navbar_admin, only: %i[index]
   before_action :show_navbar_campaign
 
   def index

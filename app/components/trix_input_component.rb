@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TrixInputComponent < ViewComponent::Base
-  def initialize(name:, value:, placeholder:, klasses:, hide_toolbar: false, toolbar_within: false, auto_update: true, optional_data_action: '')
+  def initialize(name:, value:, placeholder:, klasses: '', hide_toolbar: false, toolbar_within: false, auto_update: true, optional_data_action: '')
     @name = name
     @value = value
     @placeholder = placeholder
