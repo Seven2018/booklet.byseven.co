@@ -14,22 +14,25 @@
           @click="focusInput"
       >
         <bkt-tag
-            v-for="(tag, idx) in selectedTags"
+            v-for="(tag, idx) in campaignTags"
             :key="idx"
             :cancelable="true"
+            @close="removeTag(tag.title)"
         >
-          {{tag}}
+          {{tag.title}}
         </bkt-tag>
         <input ref="inputField" type="text" class="border-none bg-transparent" style="height: 20px;width: 3px;">
       </div>
-      <div class="flex-column bkt-bg-red" style="height: 200px; overflow-y: auto">
-        <p class="m-4 bkt-light-grey fs-1_2rem">Select a tag or create new one</p>
+      <div v-if="allTags" class="flex-column pl-4" style="height: 200px; overflow-y: auto">
+        <p class="my-4 bkt-light-grey fs-1_2rem">Select a tag or create new one</p>
         <bkt-tag
-            v-for="(tag, idx) in suggestionTags"
+            v-for="(tag, idx) in allTags"
             :key="idx"
             :cancelable="false"
+            class="mb-3"
+            @click="addTag(tag)"
         >
-          {{tag}}
+          {{tag.title}}
         </bkt-tag>
       </div>
     </div>
@@ -38,18 +41,76 @@
 
 <script>
 import BktTag from "./BktTag";
+import store from "../store";
+import HTTP from "../plugins/axios";
+import routes from "../constants/routes";
+
 export default {
   components: {BktTag},
   props: ['campaignId'],
   data() {
     return {
-      selectedTags: ['test', 'lol', 'mdr', 'safdjk'],
-      suggestionTags: ['zxcv', 'poiu', 'qwer', 'lllllllllo']
+      campaignTags: [],
+      tagsModule: store.state.tagsModule
+    }
+  },
+  created() {
+    this.fetchCampaignTag()
+    store.dispatch('tagsModule/fetch', {kind: 'interview'})
+  },
+  computed: {
+    allTags() {
+      if (!this.tagsModule.tags) return []
+
+      return this.tagsModule.tags.filter(tag => {
+        for (const tagKey in this.campaignTags) {
+          if (this.campaignTags[tagKey].title === tag.title) return false
+        }
+        return true
+      })
     }
   },
   methods: {
     focusInput() {
       this.$refs.inputField.focus()
+    },
+    async fetchCampaignTag() {
+      try {
+        const res = await HTTP.get(
+            routes.generate('categories_from_campaign'),
+            {
+              params: {id: this.campaignId}
+            }
+        )
+
+        this.campaignTags = res.data.categories
+      } catch (e) {
+        console.log('error', e)
+      }
+    },
+    async removeTag(tag) {
+      try {
+        await HTTP.post(
+            routes.generate('campaigns_toggle_tag', {id: this.campaignId}) + '.json',
+            {tag}
+        )
+
+        this.campaignTags = this.campaignTags.filter(campaignTag => campaignTag.title !== tag)
+      } catch (e) {
+        console.log('error', e)
+      }
+    },
+    async addTag(tagObj) {
+      try {
+        await HTTP.post(
+            routes.generate('campaigns_toggle_tag', {id: this.campaignId}) + '.json',
+            {tag: tagObj.title}
+        )
+
+        this.campaignTags.push(tagObj)
+      } catch (e) {
+        console.log('error', e)
+      }
     }
   }
 }

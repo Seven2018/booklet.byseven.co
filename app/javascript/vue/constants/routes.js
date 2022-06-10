@@ -22,7 +22,10 @@ const routes = {
   campaign_draft_edit: '/campaign_draft/settings/edit',
   campaigns_list: '/campaigns/list',
   send_notification_email: '/send_notification_email/{id}.json',
-  campaigns_id: '/campaigns/{id}'
+  campaigns_id: '/campaigns/{id}',
+  categories: '/categories',
+  categories_from_campaign: '/categories/from_campaign',
+  campaigns_toggle_tag: '/campaigns/{id}/toggle_tag'
 }
 
 export default {

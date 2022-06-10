@@ -104,6 +104,11 @@ Rails.application.routes.draw do
 
   # CATEGORIES
   get :categories_search, controller: :categories
+  resources :categories, only: [:index] do
+    collection do
+      get :from_campaign
+    end
+  end
 
   # COMPANIES
   resources :companies, only: %i[new create update destroy]

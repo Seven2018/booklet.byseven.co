@@ -196,7 +196,12 @@ class CampaignsController < ApplicationController
                               .where_exists(:campaigns)
                               .order(title: :asc)
 
-    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
+    respond_to do |format|
+      format.html {
+        render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
+      }
+      format.json {head :ok}
+    end
   end
 
   def remove_company_tag
