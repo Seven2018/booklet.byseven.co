@@ -34,9 +34,9 @@ module InterviewReports
             interviews_sets_locked = 0
             interviews_sets_not_started = 0
             analytics_hash.each{|x, y| interviews_sets_total += y.count;
-                                  interviews_sets_completed += y.map{|z| z.map{|z1| z1.completed && z1.locked_at.nil?}.uniq == [true]}.select(&:itself).count;
+                                  interviews_sets_completed += y.map{|z| z.map{|z1| z1.submitted? && z1.locked_at.nil?}.uniq == [true]}.select(&:itself).count;
                                   interviews_sets_locked += y.map{|z| z.map{|z1| z1.locked_at.present?}.uniq == [true]}.select(&:itself).count;
-                                  interviews_sets_not_started += y.map{|z| z.map{|z1| z1.completed}.uniq == [false]}.select(&:itself).count;
+                                  interviews_sets_not_started += y.map{|z| z.map{|z1| z1.submitted?}.uniq == [false]}.select(&:itself).count;
                                 }
             employees_count = 0
             analytics_hash.each{|x,y| employees_count += 1 if y.count > 0}

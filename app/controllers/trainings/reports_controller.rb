@@ -1,5 +1,4 @@
 class Trainings::ReportsController < ApplicationController
-  before_action :show_navbar_admin, except: [:edit]
   before_action :show_navbar_training, :ensure_company
 
   def index
