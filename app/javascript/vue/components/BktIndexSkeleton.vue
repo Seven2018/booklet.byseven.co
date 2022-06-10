@@ -1,6 +1,6 @@
 
 <template>
-  <div class="width-80 mt-5 mx-auto">
+  <div class="width-80 py-5 mx-auto">
     <div class="flex-row-between-centered mb-5">
       <div class="flex-column">
         <h1 class="font-weight-700 fs-2_4rem">
@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <bkt-box>
+    <bkt-box :class="bodyClass">
       <slot name="body"></slot>
     </bkt-box>
   </div>
@@ -25,6 +25,7 @@ import BktBox from "./BktBox";
 import BktNewTargetButton from "./BktNewTargetButton";
 
 export default {
+  props: ['bodyClass'],
   components: {BktBox, BktNewTargetButton}
 }
 </script>

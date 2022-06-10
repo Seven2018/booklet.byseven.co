@@ -1,3 +1,5 @@
+import routes from "../constants/routes";
+
 export default {
   methods: {
     setHover(className) {
@@ -49,6 +51,9 @@ export default {
         feedback_360: 'Feedback 360'
       }
       return types[type]
+    },
+    goto(key, id = null) {
+      window.location.href = routes.generate(key, id)
     }
   }
 }

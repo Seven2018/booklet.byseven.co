@@ -25,15 +25,16 @@
       </div>
       <div v-if="allTags" class="flex-column pl-4" style="height: 200px; overflow-y: auto">
         <p class="my-4 bkt-light-grey fs-1_2rem">Select a tag or create new one</p>
-        <bkt-tag
+        <div
             v-for="(tag, idx) in allTags"
             :key="idx"
-            :cancelable="false"
-            class="mb-3"
             @click="addTag(tag)"
+            class="bkt-bg-light-blue-hover mb-3 cursor-pointer"
         >
-          {{tag.title}}
-        </bkt-tag>
+          <bkt-tag>
+            {{tag.title}}
+          </bkt-tag>
+        </div>
       </div>
     </div>
   </div>
@@ -96,6 +97,11 @@ export default {
         )
 
         this.campaignTags = this.campaignTags.filter(campaignTag => campaignTag.title !== tag)
+        store.dispatch('genericFetchEntity/fetch',
+            {
+              pathKey: 'campaigns_list'
+            }
+        )
       } catch (e) {
         console.log('error', e)
       }
@@ -107,7 +113,11 @@ export default {
             {tag: tagObj.title}
         )
 
-        this.campaignTags.push(tagObj)
+        store.dispatch('genericFetchEntity/fetch',
+            {
+              pathKey: 'campaigns_list'
+            }
+        )
       } catch (e) {
         console.log('error', e)
       }

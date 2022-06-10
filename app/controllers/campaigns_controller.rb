@@ -35,7 +35,9 @@ class CampaignsController < ApplicationController
 
   def list
     campaigns = Campaign.where(company: current_user.company)
-    campaigns = campaigns.search_campaigns(params[:title]) if params[:title]
+    campaigns = campaigns.search_campaigns(params[:title]) if params[:title].present?
+    campaigns = campaigns.where_not_exists(:interviews, locked_at: nil) if params[:status].present? && params[:status] == 'completed'
+    campaigns = campaigns.where_exists(:interviews, locked_at: nil) if params[:status].present? && params[:status] == 'current'
     campaigns = campaigns.order(created_at: :desc)
 
 

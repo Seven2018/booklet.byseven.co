@@ -1,6 +1,6 @@
 <template>
-  <bkt-index-skeleton>
-    <template v-slot:title>Target templates</template>
+  <bkt-index-skeleton body-class="bkt-bg-white">
+    <template v-slot:title>Campaigns</template>
     <template v-slot:create-index>
       <bkt-button
           type="interview"
@@ -10,20 +10,18 @@
     </template>
     <template v-slot:body>
       <campaign-index-search></campaign-index-search>
-      <campaign-table></campaign-table>
-<!--      <generic-index-search path-key="objective_templates_list"></generic-index-search>-->
-<!--      <target-template-table v-show="genericFetchEntity.data && genericFetchEntity.data['objective/templates'] && genericFetchEntity.data['objective/templates'].length > 0"></target-template-table>-->
-<!--      <bkt-create-entity-from-index-->
-<!--          v-show="genericFetchEntity.data && genericFetchEntity.data['objective/templates'] && genericFetchEntity.data['objective/templates'].length === 0 && !genericFetchEntity.search"-->
-<!--          type="roadmap"-->
-<!--          :href="$routes.generate('objective_new')"-->
-<!--      >-->
-<!--        target employee-->
-<!--      </bkt-create-entity-from-index>-->
-<!--      <bkt-no-entity-from-index-->
-<!--          v-show="genericFetchEntity.data && genericFetchEntity.data['objective/templates'] && genericFetchEntity.data['objective/templates'].length === 0 && genericFetchEntity.search"-->
-<!--      ></bkt-no-entity-from-index>-->
-<!--      <bkt-box-loader v-show="!genericFetchEntity.data" type="roadmap"></bkt-box-loader>-->
+      <campaign-table v-show="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length > 0"></campaign-table>
+      <bkt-create-entity-from-index
+          v-if="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && !genericFetchEntity.search"
+          type="interview"
+          :href="$routes.generate('campaign_draft_edit')"
+      >
+        campaign
+      </bkt-create-entity-from-index>
+      <bkt-no-entity-from-index
+          v-else-if="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && genericFetchEntity.search"
+      ></bkt-no-entity-from-index>
+      <bkt-box-loader v-else-if="!genericFetchEntity.data" type="interview"></bkt-box-loader>
     </template>
   </bkt-index-skeleton>
 </template>
@@ -32,8 +30,20 @@ import BktIndexSkeleton from "../../components/BktIndexSkeleton";
 import BktButton from "../../components/BktButton";
 import CampaignIndexSearch from "./CampaignIndexSearch";
 import CampaignTable from "./CampaignTable";
+import store from "../../store";
+import BktCreateEntityFromIndex from "../../components/BktCreateEntityFromIndex";
+import BktNoEntityFromIndex from "../../components/BktNoEntityFromIndex";
+import BktBoxLoader from "../../components/BktBoxLoader";
 
 export default {
-  components: {CampaignTable, BktButton, BktIndexSkeleton, CampaignIndexSearch}
+  data() {
+    return {
+      genericFetchEntity: store.state.genericFetchEntity
+    }
+  },
+  components: {
+    BktBoxLoader,
+    BktNoEntityFromIndex,
+    BktCreateEntityFromIndex, CampaignTable, BktButton, BktIndexSkeleton, CampaignIndexSearch}
 }
 </script>
