@@ -70,7 +70,8 @@ module CampaignDrafts
             title: @campaign_draft.title,
             owner: @campaign_draft.user,
             company: @campaign_draft.user.company,
-            campaign_type: campaign_type
+            campaign_type: campaign_type,
+            deadline: @campaign_draft.date
           )
       end
 
@@ -95,9 +96,6 @@ module CampaignDrafts
       def interview_params
         {
           title: @campaign_draft.title,
-          date: @campaign_draft.date,
-          starts_at: @campaign_draft.starts_at,
-          ends_at: @campaign_draft.ends_at,
           creator: campaign.owner,
           campaign: campaign
         }

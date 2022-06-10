@@ -1,7 +1,7 @@
-<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start py-2rem'>
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start py-10rem'>
 
   <div class="from_medium__h-60vh"
-       style="position: sticky; top: 2rem;">
+       style="position: sticky; top: 18rem;">
 
     <div class="bkt-progress">
 
@@ -26,7 +26,28 @@
   </div>
 
   <div style='margin: 0 5%;'></div>
-  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw pos-rel">
+
+  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw pos-rel mt-8rem"
+       data-controller="<%= 'interviews--campaign-drafts-templates' if @controller_action == :templates_edit %>">
+
+    <div class="width-100 d-flex justify-content-center pos-abs"
+         style="top: -10rem; left: 0; right: 0;">
+
+      <h1 class="fs-2_4rem font-weight-600 bkt-dark-grey">New campaign</h1>
+
+      <div class="pos-abs"
+           style="top: 0; right: 0;">
+        <%= render_component Buttons::BackButton.new(fallback: trainings_reports_path) do %>
+
+          <div class="d-flex justify-content-center align-items-center height-4rem width-4rem rounded-20px bkt-box-shadow-medium bkt-bg-white bkt-bg-light-grey5-hover">
+            <span class="iconify bkt-dark-grey-important m-0" data-icon="bi:x" data-width="35" data-height="35"></span>
+          </div>
+
+        <% end %>
+      </div>
+
+    </div>
+
     <%= form_with url: send("campaign_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
       <%= render "campaign_draft/form_#{controller_name}", campaign: @campaign %>
       <% if @controller_action.to_sym == :launches_edit %>
@@ -63,7 +84,7 @@
       <% end %>
     <% end %>
 
-    <div id="users_search" class="pos-abs <%= 'd-none' unless @controller_action == :participants_edit %>" style='left: 1.5rem; bottom: 24rem;'>
+    <div id="users_search" class="pos-abs <%= 'd-none' unless @controller_action == :participants_edit %>" style='left: 1.5rem; bottom: 27rem;'>
 
       <%= simple_form_for :search, html: { class: 'bkt-select-autocomplete' }, method: :get do |f| %>
         <%= f.text_field :manager, placeholder: 'Search in Managers',
@@ -77,6 +98,7 @@
     <div id="templates_search"
          class="pos-abs <%= 'd-none' unless @controller_action == :templates_edit %>"
          data-controller="tools--easyautocomplete"
+         data-interviews--campaign-drafts-templates-target="singleTemplateContainer"
          style='left: 1.5rem; right: 1.5rem; bottom: 8rem;'>
 
       <%= simple_form_for :search, html: { class: 'bkt-select-autocomplete width-100' }, method: :get do |f| %>

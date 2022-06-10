@@ -35,18 +35,3 @@
   </div>
 
 </div>
-
-<% if @multi_step_form_navbar_content.present? %>
-  <div class="navbar-admin">
-
-    <div class="pos-abs"
-         style="top: 1.75rem; left: 2rem;">
-      <%= render_component Buttons::BackButton.new(fallback: campaigns_path) %>
-    </div>
-
-    <div class="navbar-admin__button">
-      <h4><%= @multi_step_form_navbar_content %></h4>
-    </div>
-
-  </div>
-<% end %>

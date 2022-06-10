@@ -38,6 +38,10 @@ Rails.application.routes.draw do
       delete 'remove_company_tag'
       get 'index_line'
     end
+    collection do
+      get :redirect_calendar
+      get :update_calendar
+    end
   end
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
@@ -68,10 +72,6 @@ Rails.application.routes.draw do
   namespace :campaign_draft do
     resource :settings, only: %i[edit update]
     resource :participants, only: %i[edit update]
-    namespace :participants do
-      get :unselect_all
-      get :select_all
-    end
     resource :templates, only: %i[edit update]
     resource :dates, only: %i[edit update]
     resource :launches, only: %i[edit update]

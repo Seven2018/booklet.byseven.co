@@ -6,8 +6,8 @@ module InterviewSets
       new(params).call
     end
 
-    def initialize(employee:, interviewer:, interview_form:, title:, date:,
-      starts_at:, ends_at:, creator:, campaign:)
+    def initialize(employee:, interviewer:, interview_form:, title:, date: nil,
+      starts_at: nil, ends_at: nil, creator:, campaign:)
       @employee = employee
       @interviewer = interviewer
       @interview_form = interview_form

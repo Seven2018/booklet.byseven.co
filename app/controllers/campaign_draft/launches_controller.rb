@@ -25,7 +25,9 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
             .deliver_later
         end
       end
+
       redirect_to campaign_path(new_campaign)
+
     else
       flash[:alert] = validation_error_flash_message
       redirect_to edit_campaign_draft_settings_path

@@ -13,6 +13,7 @@ class Campaign < ApplicationRecord
   has_and_belongs_to_many :categories
 
   validates :title, presence: true
+  before_create :ensure_date_presence
 
   paginates_per 10
 
@@ -47,10 +48,6 @@ class Campaign < ApplicationRecord
     joins(:interviews)
       .where('date <= ?', date)
       .distinct
-  end
-
-  def deadline
-    interviews.order(date: :asc).first&.date
   end
 
   def interview_sets(employee_id = nil)
@@ -117,12 +114,11 @@ class Campaign < ApplicationRecord
     interviews.where(employee_id: employee_id).find(&:crossed?)
   end
 
-  # CATEGORIES ADDED DIRECTLY TO CAMPAIGN (obsolete?)
-  # def tags
-  #   return [] unless interviews.present? && interviews.first.interview_form.present?
+  private
 
-  #   interviews.first.interview_form.categories.pluck(:title)
-  # end
+  def ensure_deadline_presence
+    return if deadline.present?
 
-
+    self.deadline = Time.zone.today.end_of_month
+  end
 end
