@@ -14,7 +14,13 @@
 
     <div class="modal-body action-modal__body width-35rem">
 
-        <%= f.input :title, input_html: {autocomplete: 'off'}, required: true %>
+        <%= f.input :title, label: false,
+                            placeholder: 'Title',
+                            input_html: {
+                              class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
+                              autocomplete: 'off'
+                            },
+                            required: true %>
 
     </div>
 

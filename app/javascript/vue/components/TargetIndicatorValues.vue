@@ -27,7 +27,8 @@
             class="flex-column mt-2">
           <bkt-input-form
               class="mt-2"
-              v-for="multiChoiceValue in value.multiChoiceList"
+              v-for="(multiChoiceValue, idx) in value.multiChoiceList"
+              :key="idx"
               placeholder="New option"
               :value="multiChoiceValue"
               @input="updateOption(multiChoiceValue, $event)"
