@@ -1,19 +1,21 @@
 require 'action_text'
 
 class ApplicationController < ActionController::Base
-  impersonates :user
+  helper ActionText::Engine.helpers
+  include Pundit
 
   protect_from_forgery with: :exception
+
   before_action :booklet_authenticate_user
   # before_action :authenticate_user!
   before_action :store_location, :controller_action
-  add_flash_types :error
   # before_action :set_time_zone, if: :user_signed_in?
-  include Pundit
-  helper ActionText::Engine.helpers
+  before_action :redirect_to_https
 
   # authentication_token system
   acts_as_token_authentication_handler_for User
+  impersonates :user
+  add_flash_types :error
 
   # Pundit: white-list approach.
   after_action :verify_authorized, except: :index, unless: :skip_pundit?
@@ -21,6 +23,10 @@ class ApplicationController < ActionController::Base
 
   # Uncomment when you *really understand* Pundit!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  def redirect_to_https
+    redirect_to :protocol => "https://" unless (request.ssl? || request.local? || Rails.env.testing? || Rails.env.development?)
+  end
 
   if Rails.env.staging?
     http_basic_authenticate_with \
