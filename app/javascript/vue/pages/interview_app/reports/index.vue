@@ -22,7 +22,7 @@
           type="interview"
           :href="$routes.generate('interviews_reports_edit')"
       >
-        template
+        report
       </bkt-create-entity-from-index>
       <bkt-no-entity-from-index
           v-else-if="genericFetchEntity.data && genericFetchEntity.data['interview_reports'] && genericFetchEntity.data['interview_reports'].length === 0 && genericFetchEntity.search"

@@ -59,6 +59,7 @@ export default {
       store.commit('genericFetchEntity/setSearch')
       this.searchText = null
       this.status = null
+      store.commit('genericFetchEntity/setData', null)
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: 'campaigns_list',
       })
