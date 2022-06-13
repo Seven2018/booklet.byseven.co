@@ -1,10 +1,11 @@
 <template>
-  <div class="row flex-row-between-centered mb-5">
-    <div class="flex-column mt-4">
-      <div class="flex-row-start-centered">
+<!--  <div class="row flex-row-between-centered mb-5">-->
+<!--    <div class="flex-column mt-4">-->
+      <div class="flex width-100">
         <bkt-search
             v-model="searchText"
             @input="update"
+            class="flex-1"
         ></bkt-search>
 <!--        <select-->
 <!--            v-model="status"-->
@@ -17,18 +18,18 @@
 <!--          <option value="completed">Completed</option>-->
 <!--        </select>-->
         <bkt-select
-            class="ml-5"
+            class="flex-none ml-5"
             v-model="status"
             :items="selectList"
+            @input="update"
         ></bkt-select>
-        <input type="submit" value="Search" class="ml-5 bkt-bg-light-grey12-important px-4 py-3 rounded-5px border-none" @click="submit">
-        <button class="ml-5 font-weight-500 fs-1_6rem" @click="reset">
+<!--        <input type="submit" value="Search" class="flex-none ml-5 bkt-bg-light-grey12-important px-4 py-3 rounded-5px border-none" @click="submit">-->
+        <button class="flex-none ml-5 font-weight-500 fs-1_6rem" @click="reset">
           Reset
         </button>
       </div>
-    </div>
-
-  </div>
+<!--    </div>-->
+<!--  </div>-->
 </template>
 
 <script>
@@ -45,12 +46,20 @@ export default {
     }
   },
   methods: {
-    update(_) {
+    update() {
+      store.commit('genericFetchEntity/setSearch', {
+        title: this.searchText,
+        status: this.status,
+      })
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'campaigns_list',
+      })
     },
     reset() {
       store.commit('genericFetchEntity/setSearch')
       this.searchText = null
       this.status = null
+      store.commit('genericFetchEntity/setData', null)
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: 'campaigns_list',
       })

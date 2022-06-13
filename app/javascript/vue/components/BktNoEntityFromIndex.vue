@@ -1,6 +1,6 @@
 
 <template>
-  <div class="width-100 h-70vh flex-column-centered justify-content-center">
+  <div class="width-100 h-30vh flex-column-centered justify-content-center">
     <div class="fs-3_5rem">
       🤔
     </div>

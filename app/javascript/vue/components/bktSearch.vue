@@ -3,6 +3,7 @@
     <input
         placeholder="Search"
         class="p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
+        style="width: -webkit-fill-available;"
         :value="value"
         @input="event => $emit('input', event.target.value)">
     <span class="iconify bkt-light-grey" data-icon="entypo:magnifying-glass" data-width="30" data-height="30"></span>

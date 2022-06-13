@@ -1,6 +1,6 @@
 <template>
   <div class="flex-row-start-centered mb-5 mt-4">
-    <bkt-search @input="update"></bkt-search>
+    <bkt-search v-model="text" @input="update"></bkt-search>
     <button class="ml-5 font-weight-500 fs-1_6rem" @click="reset">
       Reset
     </button>
@@ -13,6 +13,11 @@ import store from "../../../store";
 
 export default {
   props: ['pathKey'],
+  data() {
+    return {
+      text: ''
+    }
+  },
   methods: {
     update(text) {
       store.commit('genericFetchEntity/setSearch', {
@@ -23,6 +28,8 @@ export default {
       })
     },
     reset() {
+      this.text = ''
+      store.commit('genericFetchEntity/setData', null)
       store.commit('genericFetchEntity/setSearch', {
           search: null
       })
