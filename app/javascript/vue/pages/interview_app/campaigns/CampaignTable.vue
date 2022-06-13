@@ -87,11 +87,11 @@ export default {
     }
   },
   created() {
-    store.dispatch('genericFetchEntity/fetch',
-        {
-          pathKey: 'campaigns_list'
-        }
-    )
+    // store.dispatch('genericFetchEntity/fetch',
+    //     {
+    //       pathKey: 'campaigns_list'
+    //     }
+    // )
   },
   methods: {
     fetchPage(page) {
