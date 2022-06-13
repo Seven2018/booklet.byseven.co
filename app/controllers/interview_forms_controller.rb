@@ -5,34 +5,6 @@ class InterviewFormsController < ApplicationController
   skip_forgery_protection
 
   def index
-    # @templates = policy_scope(InterviewForm)
-    # @templates = @templates.unused.where(company: current_user.company)
-    # @company_tags = Category
-    #                   .distinct
-    #                   .where(company_id: current_user.company_id, kind: :interview)
-    #                   .pluck(:title)
-    #
-    # if params[:search].present? && !params[:search][:title].blank?
-    #   @templates = @templates.search_templates(params[:search][:title])
-    # end
-    #
-    # if params.dig(:search, :tags).present?
-    #   selected_tags = params.dig(:search, :tags).split(',')
-    #
-    #   selected_tags.each do |tag|
-    #     @templates = @templates.where_exists(:categories, id: tag)
-    #   end
-    # end
-    #
-    # page_index = (params.dig(:search, :page).presence || 1).to_i
-    #
-    # total_templates_count = @templates.count
-    # @templates = @templates.order(created_at: :desc).page(page_index)
-    # @any_more = @templates.count * page_index < total_templates_count
-    #
-    # @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
-    #                           .where_exists(:interview_forms)
-    #                           .order(title: :asc)
 
     policy_scope(InterviewForm)
     respond_to do |format|

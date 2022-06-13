@@ -50,7 +50,11 @@ Rails.application.routes.draw do
 
   namespace :interviews do
     resource :reports, only: %i[edit update]
-    resources :reports, only: %i[index show destroy]
+    resources :reports, only: %i[index show destroy] do
+      collection do
+        get :list
+      end
+    end
     namespace :report do
       resources :campaigns, only: :index
       resource :campaigns, only: :update

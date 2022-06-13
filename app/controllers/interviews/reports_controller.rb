@@ -5,6 +5,20 @@ class Interviews::ReportsController < ApplicationController
     @reports = policy_scope(InterviewReport).at_least_started.order(created_at: :desc)
   end
 
+  def list
+    interviewReports = InterviewReport.at_least_started.where(company: current_user.company)
+    interviewReports = interviewReports.order(created_at: :desc)
+
+
+    page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    interviewReports = interviewReports.page(page).per(size)
+
+    authorize interviewReports
+
+    render json: interviewReports, meta: pagination_dict(interviewReports)
+  end
+
   def edit
     authorize interview_report
   end

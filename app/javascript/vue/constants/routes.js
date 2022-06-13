@@ -32,7 +32,9 @@ const routes = {
   interview_forms_id: '/interview_forms/{id}',
   interview_forms_id_edit: '/interview_forms/{id}/edit',
   interview_forms_id_duplicate: '/interview_forms/{id}/duplicate',
-  interview_forms_toggle_tag: '/interview_forms/{id}/toggle_tag'
+  interview_forms_toggle_tag: '/interview_forms/{id}/toggle_tag',
+  interviews_reports_edit: '/interviews/reports/edit',
+  interviews_reports: '/interviews/reports/list'
 }
 
 export default {
