@@ -10,7 +10,7 @@
       how about create your first ?</p>
 
     <div class="mt-3">
-      <bkt-button :type="type" :href="href">
+      <bkt-button :type="type" :href="href" @click="$emit('click')">
           Create my first <slot></slot>
       </bkt-button>
     </div>
