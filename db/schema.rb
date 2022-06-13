@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_02_163642) do
+ActiveRecord::Schema.define(version: 2022_06_13_154541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,7 +120,9 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "kind", default: 0
+    t.bigint "group_category_id"
     t.index ["company_id"], name: "index_categories_on_company_id"
+    t.index ["group_category_id"], name: "index_categories_on_group_category_id"
   end
 
   create_table "categories_interview_forms", id: false, force: :cascade do |t|
@@ -223,6 +225,12 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_folders_on_company_id"
+  end
+
+  create_table "group_categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "interview_answers", force: :cascade do |t|
@@ -591,6 +599,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
   add_foreign_key "campaigns", "interview_forms"
   add_foreign_key "campaigns", "users", column: "owner_id"
   add_foreign_key "categories", "companies"
+  add_foreign_key "categories", "group_categories"
   add_foreign_key "content_categories", "categories"
   add_foreign_key "content_categories", "contents"
   add_foreign_key "content_folder_links", "contents"

@@ -4,6 +4,7 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container rounded-15px">
+<!--          TODO: code here the close button-->
           <slot></slot>
         </div>
       </div>

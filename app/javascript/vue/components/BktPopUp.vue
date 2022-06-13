@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="popUp && popUp.data.open">
     <bkt-pop-up-frame v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
                       name="modal">
       <div v-if="popUp.data.title" class="flex-row-center-centered">
@@ -64,6 +64,12 @@
           @close="close"
       ></component>
     </bkt-pop-up-frame>
+    <bkt-pop-up-frame v-else-if="popUp.data.type === 'custom'">
+      <component
+          :is="popUp.data.componentName"
+          v-bind="popUp.data"
+      ></component>
+    </bkt-pop-up-frame>
   </div>
 </template>
 
@@ -72,6 +78,7 @@ import store from "../store";
 import BktSpinner from './BktSpinner'
 import BktPopUpFrame from "./BktPopUpFrame";
 import EditEntityTags from './EditEntityTags'
+import InfoFilterCategoryTags from "./InfoFilterCategoryTags";
 
 export default {
   data() {
@@ -89,7 +96,12 @@ export default {
       this.popUp.data.confirm()
     }
   },
-  components: {BktSpinner, BktPopUpFrame, EditEntityTags},
+  components: {
+    BktSpinner,
+    BktPopUpFrame,
+    EditEntityTags,
+    InfoFilterCategoryTags
+  },
 }
 </script>
 

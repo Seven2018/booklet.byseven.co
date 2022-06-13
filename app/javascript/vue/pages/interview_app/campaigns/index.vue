@@ -10,6 +10,7 @@
     </template>
     <template v-slot:body>
       <campaign-index-search></campaign-index-search>
+      <group-category-filter></group-category-filter>
       <campaign-table v-show="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length > 0"></campaign-table>
       <bkt-create-entity-from-index
           v-if="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && !genericFetchEntity.search"
@@ -34,6 +35,7 @@ import store from "../../../store";
 import BktCreateEntityFromIndex from "../../../components/BktCreateEntityFromIndex";
 import BktNoEntityFromIndex from "../../../components/BktNoEntityFromIndex";
 import BktBoxLoader from "../../../components/BktBoxLoader";
+import GroupCategoryFilter from "../../../components/GroupCategoryFilter";
 
 export default {
   data() {
@@ -42,6 +44,7 @@ export default {
     }
   },
   components: {
+    GroupCategoryFilter,
     BktBoxLoader,
     BktNoEntityFromIndex,
     BktCreateEntityFromIndex, CampaignTable, BktButton, BktIndexSkeleton, CampaignIndexSearch}
