@@ -1,42 +1,96 @@
-<%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to display template(s)') %>
+<% default_template_id = campaign.default_template_id %>
+<% default_template =
+      default_template_id.present? ? [default_template_id, InterviewForm.find(default_template_id).title] : [] %>
 
-<div class="d-flex gap-1rem w-100 mb-3rem"
-     style='max-width: 500px;'>
+<div data-controller="interviews--campaign-drafts-templates %>"
+     data-default-template="<%= default_template_id %>">
 
-  <%= render_component RadioButtonTileComponent.new(
-    model: :templates_selection_method,
-    name: :single,
-    checked: campaign.templates_selection_method == :single.to_s || campaign.templates_selection_method.nil?,
-    title: "Single template",
-    subtitle: "Select participants from your employee list",
-    data_actions: "click->interviews--campaign-drafts-templates#chooseSingleTemplate"
-  ) do %>
-    <%# TODOCHANGEICON %>
-    <span class="iconify fs-3rem" data-icon="akar-icons:file"></span>
-  <% end %>
+  <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to display template(s)') %>
 
-  <%= render_component RadioButtonTileComponent.new(
-    model: :templates_selection_method,
-    name: :multiple,
-    checked: campaign.templates_selection_method == :multiple.to_s,
-    title: "Multiple templates",
-    subtitle: "Add participants by their arrival date in the company",
-    data_actions: "click->interviews--campaign-drafts-templates#chooseMultipleTemplate"
-  ) do %>
-    <span class="iconify fs-3rem" data-icon="akar-icons:network"></span>
-  <% end %>
+  <div class="d-flex gap-1rem w-100 mb-3rem"
+       style='max-width: 500px;'>
+
+    <%= render_component RadioButtonTileComponent.new(
+      model: :templates_selection_method,
+      name: :single,
+      checked: campaign.templates_selection_method == :single.to_s || campaign.templates_selection_method.nil?,
+      title: "Single template",
+      subtitle: "Select participants from your employee list",
+      data_actions: "click->interviews--campaign-drafts-templates#chooseSingleTemplate"
+    ) do %>
+      <%# TODOCHANGEICON %>
+      <span class="iconify fs-3rem" data-icon="akar-icons:file"></span>
+    <% end %>
+
+    <%= render_component RadioButtonTileComponent.new(
+      model: :templates_selection_method,
+      name: :multiple,
+      checked: campaign.templates_selection_method == :multiple.to_s,
+      title: "Multiple templates",
+      subtitle: "Add participants by their arrival date in the company",
+      data_actions: "click->interviews--campaign-drafts-templates#chooseMultipleTemplate"
+    ) do %>
+      <span class="iconify fs-3rem" data-icon="akar-icons:network"></span>
+    <% end %>
+
+  </div>
+
+  <div data-interviews--campaign-drafts-templates-target="singleTemplateContainer requiredInput">
+
+    <%= render_component(Tools::SelectAutocompleteComponent.new(path: templates_search_path,
+                                                                width: '100%',
+                                                                menu_max_height: '22rem',
+                                                                placeholder: 'Select a template',
+                                                                input_name: "default_template_id",
+                                                                default_value: default_template,
+                                                                data_action_input: 'keydown->interviews--campaign-drafts-templates#enableSubmit',
+                                                                data_action_select: 'click->interviews--campaign-drafts-templates#enableSubmit')) %>
+
+    <input type="hidden"
+           name="multi_templates_ids">
+
+  </div>
+
+  <div class="d-none"
+       data-interviews--campaign-drafts-templates-target="multipleTemplateContainer">
+
+      <div class="mb-2rem">
+
+        <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-0_5rem">
+          Multiple templates - Category
+        </p>
+
+        <p class="fs-1_4rem font-weight-400 bkt-light-grey6 mb-1rem">
+          Choose a category to assign different templates to this campaign.
+        </p>
+
+        <%= render_component(Tools::SelectComponent.new(width: '100%',
+                                                        menu_max_height: '20rem',
+                                                        title: 'Choose category',
+                                                        collection: TagCategory.where(company_id: current_user.company_id).order(position: :asc).select(:id, :name),
+                                                        data_action: 'click->interviews--campaign-drafts-templates#displayTagsCollection')) %>
+
+      </div>
+
+      <div class="mb-2rem">
+
+        <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-0_5rem">
+          Multiple templates - Assign templates
+        </p>
+
+        <p class="fs-1_4rem font-weight-400 bkt-light-grey6 mb-1rem">
+          Select a template for each tag. You also have to choose a default template <br>for participants not assigned to either of these tags.
+        </p>
+
+      </div>
+
+      <div class=''
+           data-interviews--campaign-drafts-templates-target="categoriesResults"
+           data-path="<%= campaign_draft_templates_tags_path %>">
+
+        <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Please choose a category first</p>
+
+      </div>
+  </div>
 
 </div>
-
-<div class="d-none"
-     data-interviews--campaign-drafts-templates-target="multipleTemplateContainer">
-     <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-0_5rem">
-       Multiple templates - Category
-     </p>
-     <p class="fs-1_4rem font-weight-400 bkt-light-grey6">
-       Choose a category to assign different templates to this campaign.
-     </p>
-</div>
-
-<%# TODO %>
-<%= hidden_field_tag :default_template_id %>

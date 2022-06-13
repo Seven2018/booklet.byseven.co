@@ -1,37 +1,56 @@
-<%= render_component FormSectionTitleComponent.new(title: 'Summary of your campaign') %>
+<%= render_component FormSectionTitleComponent.new(title: 'Your campaign summary') %>
 
-<div class="fs-1_4rem my-2 bkt-dark-grey">
-  Title :
-  <span class="font-weight-600">
+<div class="width-100 d-flex flex-column justify-content-start align-items-center mb-2rem">
+
+  <span class="iconify bkt-blue fs-2_4rem" data-icon="uil:exchange-alt"></span>
+
+  <p class="fs-1_6rem font-weight-500 bkt-dark-grey"><%= campaign.title %></p>
+
+</div>
+
+<div class="d-flex justify-content-start align-items-center fs-1_4rem my-2 bkt-dark-grey">
+  <span class="iconify bkt-green fs-1_6rem mr-1rem" data-icon="akar-icons:circle-check-fill"></span>
+  <p>Title :</p>
+  <span class="font-weight-600 ml-1rem">
     <%= campaign.title %>
   </span>
 </div>
 
-<div class="fs-1_4rem my-2 bkt-dark-grey">
-  Template used :
-  <span class="font-weight-600">
-    <%= campaign.interview_form.title %>
+<div class="d-flex justify-content-start align-items-center fs-1_4rem my-2 bkt-dark-grey">
+  <span class="iconify bkt-green fs-1_6rem mr-1rem" data-icon="akar-icons:circle-check-fill"></span>
+  <p>Template used :</p>
+  <span class="font-weight-600 ml-1rem">
+    <%= campaign.templates_selection_method == 'single' ? campaign.interview_form.title : 'Multiple templates' %>
   </span>
 </div>
 
-<div class="fs-1_4rem my-2 bkt-dark-grey">
-  Selected participants :
-  <span class="font-weight-600">
+<div class="d-flex justify-content-start align-items-center fs-1_4rem my-2 bkt-dark-grey">
+  <span class="iconify bkt-green fs-1_6rem mr-1rem" data-icon="akar-icons:circle-check-fill"></span>
+  <p>Selected participants :</p>
+  <span class="font-weight-600 ml-1rem">
     <%= campaign.interviewee_ids.count %>
   </span>
 </div>
 
 
-<div class="fs-1_4rem my-2 bkt-dark-grey">
+<div class="d-flex justify-content-start align-items-center fs-1_4rem my-2 bkt-dark-grey">
+  <span class="iconify bkt-green fs-1_6rem mr-1rem" data-icon="akar-icons:circle-check-fill"></span>
   <% if campaign.direct_manager? %>
-    Interviewer(s) : Direct managers or
+    <p>Interviewer(s) : Direct managers or</p>
   <% end %>
   <% if campaign.specific_manager? %>
-    Interviewer :
+    <p>Interviewer :</p>
   <% end %>
 
-  <span class="font-weight-600">
+  <span class="font-weight-600 ml-1rem">
     <%= campaign.default_interviewer&.fullname.presence || campaign.default_interviewer&.email %>
   </span>
 </div>
 
+<div class="d-flex justify-content-start align-items-center fs-1_4rem my-2 bkt-dark-grey">
+  <span class="iconify bkt-green fs-1_6rem mr-1rem" data-icon="akar-icons:circle-check-fill"></span>
+  <p>Campaign deadline :</p>
+  <span class="font-weight-600 ml-1rem">
+    <%= campaign.date.to_date %>
+  </span>
+</div>

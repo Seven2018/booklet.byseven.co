@@ -79,6 +79,9 @@ Rails.application.routes.draw do
       resources :users, only: :index
       resource :ids, only: :update
     end
+    namespace :templates do
+      resources :tags, only: :index
+    end
   end
 
   namespace :training_draft do

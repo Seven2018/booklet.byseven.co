@@ -2,6 +2,10 @@ class InterviewFormsController < ApplicationController
   before_action :set_template, only: [:show, :edit, :update, :duplicate, :destroy, :toggle_tag, :remove_company_tag, :search_tags, :index_line]
   before_action :show_navbar_campaign
 
+  ############
+  ## BASICS ##
+  ############
+
   def index
     @templates = policy_scope(InterviewForm)
     @templates = @templates.unused.where(company: current_user.company)
@@ -170,24 +174,25 @@ class InterviewFormsController < ApplicationController
     end
   end
 
-  ###########################
 
-  # Search from templates with autocomplete
+  #########################
+  ## SEARCH AUTOCOMPLETE ##
+  #########################
+
   def templates_search
     skip_authorization
 
     @templates =
       InterviewForm.unused.where(company_id: current_user.company_id)
 
-    @templates = @templates.ransack(title_cont: params[:search]).result(distinct: true)
+    @templates = @templates.ransack(title_cont: params[:search]).result(distinct: true).map{|x| [x.id, x.title]}
 
-    respond_to do |format|
-      format.html {}
-      format.json {
-        @templates
-      }
-    end
+
+    render partial: 'shared/tools/select_autocomplete', locals: { elements: @templates }
   end
+
+
+  #########################
 
   private
 

@@ -1,3 +1,7 @@
+<% default_interviewer_id = campaign.default_interviewer_id %>
+<% default_interviewer =
+      default_interviewer_id.present? ? [default_interviewer_id, User.find(default_interviewer_id).fullname] : [] %>
+
 <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add participants') %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
@@ -131,7 +135,8 @@
 
 <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add interviewer') %>
 
-<div data-controller="interviews--campaign-drafts-participants">
+<div data-controller="interviews--campaign-drafts-participants"
+     data-default-interviewer="<%= default_interviewer_id %>">
 
   <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
 
@@ -162,25 +167,47 @@
   <div class="height-30rem">
 
     <%= render_component FormSectionSubtitleComponent.new do %>
-      <div data-interviews--campaign-drafts-participants-target="directManagerText">
+
+      <div class="mb-2rem"
+           data-interviews--campaign-drafts-participants-target="directManagerText">
+
         <div class="d-flex justify-content-start align-items-center mb-1rem">
           <span class="iconify fs-1_6rem bkt-blue mr-1rem" data-icon="fluent:person-arrow-right-24-filled"></span>
           <p class="fs-1_4rem font-weight-600 bkt-dark-grey">Direct manager - Select a default interviewer</p>
         </div>
+
         <p class="bkt-light-grey6">In case of interviewees not linked to a manager in the database,<br> please chose a default interviewer</p>
+
       </div>
-      <div class="d-none"
+
+      <div class="d-none mb-2rem"
            data-interviews--campaign-drafts-participants-target="interviewerText" class="d-none">
+
         <div class="d-flex justify-content-start align-items-center mb-1rem">
           <span class="iconify fs-1_6rem bkt-blue mr-1rem" data-icon="bx:search"></span>
           <p class="fs-1_4rem font-weight-600 bkt-dark-grey">Specific interviewer - Select interviewer</p>
         </div>
+
         <p class="bkt-light-grey6">The interviewer will handle all interviews for selected participants</p>
+
       </div>
+
+      <div data-interviews--campaign-drafts-participants-target="requiredInput">
+
+        <%= render_component(Tools::SelectAutocompleteComponent.new(path: users_search_path,
+                                                                width: '100%',
+                                                                menu_max_height: '22rem',
+                                                                placeholder: 'Select a default interviewer',
+                                                                input_name: "default_interviewer_id",
+                                                                default_value: default_interviewer,
+                                                                data_action_input: 'keydown->interviews--campaign-drafts-participants#enableSubmit',
+                                                                data_action_select: 'click->interviews--campaign-drafts-participants#enableSubmit')) %>
+
+      </div>
+
+
     <% end %>
 
   </div>
 
 </div>
-
-<%= hidden_field_tag :default_interviewer_id %>

@@ -34,6 +34,7 @@ class CampaignDraft < ApplicationRecord
                  ends_at: [:string, default: '10:00'],
                  default_interviewer_id: :integer,
                  default_template_id: :integer,
+                 multi_templates_ids: [:string, array: true, default: []],
                  interviewee_ids: [:string, array: true, default: []],
                  interview_sets: [:string, array: true, default: []]
 

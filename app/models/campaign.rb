@@ -13,7 +13,7 @@ class Campaign < ApplicationRecord
   has_and_belongs_to_many :categories
 
   validates :title, presence: true
-  before_create :ensure_date_presence
+  before_create :ensure_deadline_presence
 
   paginates_per 10
 

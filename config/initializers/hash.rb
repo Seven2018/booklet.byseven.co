@@ -12,4 +12,40 @@ class Hash
     select { |_, v| !v }.keys
   end
   alias cants falses
+
+  def to_string
+    result = ''
+    self.each do |k,v|
+      result += "#{k}:#{v}," if v.present?
+    end
+
+    return result[0...-1]
+  end
+
+  def stringify_keys
+    h = self.map do |k,v|
+      v_str = if v.instance_of? Hash
+                v.stringify_keys
+              else
+                v
+              end
+
+      [k.to_s, v_str]
+    end
+    Hash[h]
+  end
+
+  def symbol_keys
+    h = self.map do |k,v|
+      v_sym = if v.instance_of? Hash
+                v.symbol_keys
+              else
+                v
+              end
+
+      [k.to_sym, v_sym]
+    end
+    Hash[h]
+  end
+
 end
