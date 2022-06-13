@@ -53,11 +53,14 @@
         </button>
       </div>
     </bkt-pop-up-frame>
-    <bkt-pop-up-frame v-else-if="popUp && popUp.data.open && popUp.data.type == 'edit-campaign-tags' "
+    <bkt-pop-up-frame v-else-if="popUp && popUp.data.open && popUp.data.type == 'edit-entity-tags' "
                       name="modal">
       <component
           :is="popUp.data.type"
-          :campaign-id="popUp.data.campaignId"
+          :entity-id="popUp.data.entityId"
+          :fetch-tags-from-entity-path="popUp.data.fetchTagsFromEntityPath"
+          :toggle-tag-from-entity-path="popUp.data.toggleTagFromEntityPath"
+          :refresh-entity-list-path="popUp.data.refreshEntityListPath"
           @close="close"
       ></component>
     </bkt-pop-up-frame>
@@ -68,7 +71,7 @@
 import store from "../store";
 import BktSpinner from './BktSpinner'
 import BktPopUpFrame from "./BktPopUpFrame";
-import EditCampaignTags from './EditCampaignTags'
+import EditEntityTags from './EditEntityTags'
 
 export default {
   data() {
@@ -86,7 +89,7 @@ export default {
       this.popUp.data.confirm()
     }
   },
-  components: {BktSpinner, BktPopUpFrame, EditCampaignTags},
+  components: {BktSpinner, BktPopUpFrame, EditEntityTags},
 }
 </script>
 

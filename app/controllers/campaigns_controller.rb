@@ -9,23 +9,24 @@ class CampaignsController < ApplicationController
   ]
 
     def index
-    campaigns = policy_scope(Campaign).where(company: current_user.company)
-                                      .where_exists(:interviews)
-                                      .order(created_at: :desc)
+    # campaigns = policy_scope(Campaign).where(company: current_user.company)
+    #                                   .where_exists(:interviews)
+    #                                   .order(created_at: :desc)
+    #
+    # filter_campaigns(campaigns)
+    #
+    # @company_tags = Category
+    #                   .distinct
+    #                   .where(company_id: current_user.company_id, kind: :interview)
+    #                   .pluck(:title)
+    #
+    # @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+    #                           .where_exists(:campaigns)
+    #                           .order(title: :asc)
+    #
+    # redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
 
-    filter_campaigns(campaigns)
-
-    @company_tags = Category
-                      .distinct
-                      .where(company_id: current_user.company_id, kind: :interview)
-                      .pluck(:title)
-
-    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
-                              .where_exists(:campaigns)
-                              .order(title: :asc)
-
-    redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
-
+    policy_scope(Campaign)
     respond_to do |format|
       format.html
       format.js

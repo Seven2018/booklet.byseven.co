@@ -107,6 +107,7 @@ Rails.application.routes.draw do
   resources :categories, only: [:index] do
     collection do
       get :from_campaign
+      get :from_template
     end
   end
 

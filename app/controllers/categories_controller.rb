@@ -16,6 +16,13 @@ class CategoriesController < ApplicationController
     render json: campaign.categories, status: :ok
   end
 
+
+  def from_template
+    interview_form = InterviewForm.find(params.require(:id))
+
+    render json: interview_form.categories, status: :ok
+  end
+
   # Search from categories with autocomplete
   def categories_search
     skip_authorization

@@ -1,4 +1,5 @@
 import routes from "../constants/routes";
+import store from "../store";
 
 export default {
   methods: {
@@ -53,7 +54,15 @@ export default {
       return types[type]
     },
     goto(key, id = null) {
-      window.location.href = routes.generate(key, id)
-    }
+      window.location.href = routes.generate(key, {id})
+    },
+    fetchPage(page) {
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'interview_forms_list',
+        params: {
+          'page[number]': page,
+        }
+      })
+    },
   }
 }

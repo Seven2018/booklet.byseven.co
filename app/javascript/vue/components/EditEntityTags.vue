@@ -2,7 +2,7 @@
 <template>
   <div style="width: 50vh">
     <div class="flex-row-between-centered p-4">
-      <h1 class="fs-1_8rem">Edit campaign tags</h1>
+      <h1 class="fs-1_8rem">{{title}}</h1>
       <div @click="$emit('close')" class="cursor-pointer">
         <span  class="iconify" data-icon="akar-icons:cross" data-width="20" data-height="20"></span>
       </div>
@@ -14,7 +14,7 @@
           @click="focusInput"
       >
         <bkt-tag
-            v-for="(tag, idx) in campaignTags"
+            v-for="(tag, idx) in entityTags"
             :key="idx"
             :cancelable="true"
             @close="removeTag(tag.title)"
@@ -23,6 +23,7 @@
         </bkt-tag>
         <input ref="inputField" type="text" class="border-none bg-transparent" style="height: 20px;width: 3px;">
       </div>
+
       <div v-if="allTags" class="flex-column pl-4" style="height: 200px; overflow-y: auto">
         <p class="my-4 bkt-light-grey fs-1_2rem">Select a tag or create new one</p>
         <div
@@ -48,15 +49,15 @@ import routes from "../constants/routes";
 
 export default {
   components: {BktTag},
-  props: ['campaignId'],
+  props: ['title', 'entityId', 'fetchTagsFromEntityPath', 'toggleTagFromEntityPath', 'refreshEntityListPath'],
   data() {
     return {
-      campaignTags: [],
+      entityTags: [],
       tagsModule: store.state.tagsModule
     }
   },
   created() {
-    this.fetchCampaignTag()
+    this.fetchEntityTag()
     store.dispatch('tagsModule/fetch', {kind: 'interview'})
   },
   computed: {
@@ -64,8 +65,8 @@ export default {
       if (!this.tagsModule.tags) return []
 
       return this.tagsModule.tags.filter(tag => {
-        for (const tagKey in this.campaignTags) {
-          if (this.campaignTags[tagKey].title === tag.title) return false
+        for (const tagKey in this.entityTags) {
+          if (this.entityTags[tagKey].title === tag.title) return false
         }
         return true
       })
@@ -75,16 +76,16 @@ export default {
     focusInput() {
       this.$refs.inputField.focus()
     },
-    async fetchCampaignTag() {
+    async fetchEntityTag() {
       try {
         const res = await HTTP.get(
-            routes.generate('categories_from_campaign'),
+            routes.generate(this.fetchTagsFromEntityPath),
             {
-              params: {id: this.campaignId}
+              params: {id: this.entityId}
             }
         )
 
-        this.campaignTags = res.data.categories
+        this.entityTags = res.data.categories
       } catch (e) {
         console.log('error', e)
       }
@@ -92,14 +93,14 @@ export default {
     async removeTag(tag) {
       try {
         await HTTP.post(
-            routes.generate('campaigns_toggle_tag', {id: this.campaignId}) + '.json',
+            routes.generate(this.toggleTagFromEntityPath, {id: this.entityId}) + '.json',
             {tag}
         )
 
-        this.campaignTags = this.campaignTags.filter(campaignTag => campaignTag.title !== tag)
+        this.entityTags = this.entityTags.filter(campaignTag => campaignTag.title !== tag)
         store.dispatch('genericFetchEntity/fetch',
             {
-              pathKey: 'campaigns_list'
+              pathKey: this.refreshEntityListPath
             }
         )
       } catch (e) {
@@ -109,13 +110,14 @@ export default {
     async addTag(tagObj) {
       try {
         await HTTP.post(
-            routes.generate('campaigns_toggle_tag', {id: this.campaignId}) + '.json',
+            routes.generate(this.toggleTagFromEntityPath, {id: this.entityId}) + '.json',
             {tag: tagObj.title}
         )
 
+        this.entityTags.push(tagObj)
         store.dispatch('genericFetchEntity/fetch',
             {
-              pathKey: 'campaigns_list'
+              pathKey: this.refreshEntityListPath
             }
         )
       } catch (e) {

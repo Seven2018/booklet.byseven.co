@@ -5,7 +5,7 @@
       :table-data="genericFetchEntity.data['campaigns']"
       :pagination="genericFetchEntity.pagination"
       @fetch-page="fetchPage"
-      @row-click="goto('', $event.id)"
+      @row-click="goto('campaigns_id', $event.id)"
   >
     <template v-slot="{id, title, campaign_type, categories, employees_count, completion}">
       <td>
@@ -148,8 +148,12 @@ export default {
     },
     async openEditCampaignTags(id) {
       this.$modal.open({
-        type: 'edit-campaign-tags',
-        campaignId: id,
+        type: 'edit-entity-tags',
+        title: 'Edit campaign tags',
+        entityId: id,
+        fetchTagsFromEntityPath: 'categories_from_campaign',
+        toggleTagFromEntityPath: 'campaigns_toggle_tag',
+        refreshEntityListPath: 'campaigns_list'
       })
     }
   },

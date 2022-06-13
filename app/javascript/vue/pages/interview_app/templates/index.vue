@@ -6,11 +6,12 @@
       <bkt-button
           type="interview"
           iconify="ant-design:plus-circle-outlined"
-          :href="$routes.generate('campaign_draft_edit')"
+          @click="createInterviewForm"
       >Create campaign</bkt-button>
     </template>
     <template v-slot:body>
-<!--      <campaign-index-search></campaign-index-search>-->
+      <generic-index-search path-key="interview_forms_list"></generic-index-search>
+      <interview-template-table></interview-template-table>
 <!--      <campaign-table v-show="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length > 0"></campaign-table>-->
 <!--      <bkt-create-entity-from-index-->
 <!--          v-if="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && !genericFetchEntity.search"-->
@@ -29,7 +30,25 @@
 <script>
 import BktIndexSkeleton from "../../../components/BktIndexSkeleton";
 import BktButton from "../../../components/BktButton";
+import GenericIndexSearch from "../../objectives/users/GenericIndexSearch";
+import InterviewTemplateTable from "./InterviewTemplateTable";
+import axios from "../../../plugins/axios";
 export default {
-  components: {BktButton, BktIndexSkeleton}
+  methods: {
+    async createInterviewForm() {
+      try {
+        const res = await axios.post(this.$routes.generate('interview_forms'), {
+          interview_form: {
+            title: 'New template'
+          }
+        })
+
+        window.location.href = res.request.responseURL
+      } catch (e) {
+        console.log('error', e)
+      }
+    },
+  },
+  components: {InterviewTemplateTable, GenericIndexSearch, BktButton, BktIndexSkeleton}
 }
 </script>

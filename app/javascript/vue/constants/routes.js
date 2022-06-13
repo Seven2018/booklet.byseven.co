@@ -25,7 +25,14 @@ const routes = {
   campaigns_id: '/campaigns/{id}',
   categories: '/categories',
   categories_from_campaign: '/categories/from_campaign',
-  campaigns_toggle_tag: '/campaigns/{id}/toggle_tag'
+  categories_from_template: '/categories/from_template',
+  campaigns_toggle_tag: '/campaigns/{id}/toggle_tag',
+  interview_forms_list: '/interview_forms/list',
+  interview_forms: '/interview_forms',
+  interview_forms_id: '/interview_forms/{id}',
+  interview_forms_id_edit: '/interview_forms/{id}/edit',
+  interview_forms_id_duplicate: '/interview_forms/{id}/duplicate',
+  interview_forms_toggle_tag: '/interview_forms/{id}/toggle_tag'
 }
 
 export default {
