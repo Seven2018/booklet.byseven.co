@@ -2,7 +2,7 @@ class Interviews::ReportsController < ApplicationController
   before_action :show_navbar_campaign, :ensure_company
 
   def index
-    @reports = policy_scope(InterviewReport).at_least_started.order(created_at: :desc)
+    policy_scope(InterviewReport)
   end
 
   def list
