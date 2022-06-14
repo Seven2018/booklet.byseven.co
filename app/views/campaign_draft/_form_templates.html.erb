@@ -46,8 +46,14 @@
                                                                 data_action_input: 'keydown->interviews--campaign-drafts-templates#enableSubmit',
                                                                 data_action_select: 'click->interviews--campaign-drafts-templates#enableSubmit')) %>
 
-    <input type="hidden"
-           name="multi_templates_ids">
+    <div class="d-flex justify-content-end pt-5">
+
+      <button id="submit-button"
+              class='bkt-btn-blue'>
+        <p class="mr-3">Next</p> <i class="fa fa-arrow-right"></i>
+      </button>
+
+    </div>
 
   </div>
 
@@ -91,6 +97,39 @@
         <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Please choose a category first</p>
 
       </div>
+
+    <div class="d-flex justify-content-end pt-5">
+
+      <a id="submit-button"
+         class='bkt-btn-blue'
+         data-toggle="modal"
+         data-target="#confirmTemplates">
+        <p class="bkt-white mr-3">Next</p> <i class="fa fa-arrow-right"></i>
+      </a>
+
+
+      <!------------>
+      <!-- MODALS -->
+      <!------------>
+
+      <div id='confirmTemplates'
+           class='modal ays-modal fade'
+           tabindex='-1'
+           role='dialog'
+           data-keyboard="false"
+           data-backdrop="static">
+
+        <div class='modal-dialog ays-modal__dialog'
+             role='document'>
+          <%= render 'campaign_draft/modals/confirm_templates' %>
+        </div>
+
+      </div>
+
+      <!------------>
+
+    </div>
+
   </div>
 
 </div>

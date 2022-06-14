@@ -85,48 +85,19 @@
 
       <% else %>
 
-        <div class="d-flex justify-content-end pt-5">
+        <% unless @controller_action == :templates_edit %>
 
-          <% if @controller_action == :templates_edit %>
-
-            <a id="submit-button"
-               class='bkt-btn-blue'
-               data-toggle="modal"
-               data-target="#confirmTemplates">
-              <p class="bkt-white mr-3">Next</p> <i class="fa fa-arrow-right"></i>
-            </a>
-
-
-            <!------------>
-            <!-- MODALS -->
-            <!------------>
-
-            <div id='confirmTemplates'
-                 class='modal ays-modal fade'
-                 tabindex='-1'
-                 role='dialog'
-                 data-keyboard="false"
-                 data-backdrop="static">
-
-              <div class='modal-dialog ays-modal__dialog'
-                   role='document'>
-                <%= render 'campaign_draft/modals/confirm_templates' %>
-              </div>
-
-            </div>
-
-            <!------------>
-
-          <% else %>
+          <div class="d-flex justify-content-end pt-5">
 
             <button id="submit-button"
                     class='bkt-btn-blue'>
               <p class="mr-3">Next</p> <i class="fa fa-arrow-right"></i>
             </button>
 
-          <% end %>
+          </div>
 
-        </div>
+        <% end %>
+
 
       <% end %>
 

@@ -40,11 +40,10 @@ export default class extends Controller {
       return
     }
 
+    const element = event.currentTarget
     var enable = true
 
-    this.requiredInputTargets.forEach((input) => {
-      if (input.querySelector('input[type="hidden"]').value == '') { enable = false }
-    })
+    if (element.closest('.bkt-select-container').querySelector('input[type="hidden"]').value == '') { enable = false }
 
     if (enable) {
       this.submit_button.disabled = false
