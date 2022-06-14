@@ -115,6 +115,7 @@ Rails.application.routes.draw do
     collection do
       get :from_campaign
       get :from_template
+      get :groups
     end
   end
 

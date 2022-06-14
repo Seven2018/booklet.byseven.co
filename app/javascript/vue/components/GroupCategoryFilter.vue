@@ -16,11 +16,18 @@
     </div>
     <div class="flex-row-start-centered"></div>
     <div class="flex-row-start-centered"></div>
+    <div class="w-100 bkt-bg-light-grey5" style="height: 1px"></div>
   </div>
 </template>
 
 <script>
+import axios from "../plugins/axios";
+
 export default {
+  created() {
+    // TODO: erase
+    axios.get('/categories/groups')
+  },
   methods: {
     openInfo() {
       this.$modal.open({

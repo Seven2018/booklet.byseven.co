@@ -26,6 +26,7 @@
     </template>
   </bkt-index-skeleton>
 </template>
+
 <script>
 import BktIndexSkeleton from "../../../components/BktIndexSkeleton";
 import BktButton from "../../../components/BktButton";

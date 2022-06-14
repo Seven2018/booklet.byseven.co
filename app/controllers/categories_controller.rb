@@ -10,6 +10,10 @@ class CategoriesController < ApplicationController
     render json: categories, status: :ok
   end
 
+  def groups
+    render json: GroupCategory.all
+  end
+
   def from_campaign
     campaign = Campaign.find(params.require(:id))
 
