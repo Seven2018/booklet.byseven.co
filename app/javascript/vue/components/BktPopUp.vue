@@ -69,6 +69,7 @@
     <bkt-pop-up-frame
         v-else-if="popUp.data.type === 'custom'"
         :closable="popUp.data.closable"
+        @close="close"
     >
       <component
           :is="popUp.data.componentName"

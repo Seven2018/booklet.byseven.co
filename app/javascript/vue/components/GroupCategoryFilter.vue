@@ -25,8 +25,8 @@ export default {
     openInfo() {
       this.$modal.open({
         type: 'custom',
+        componentName: 'info-filter-category-tags',
         closable: true,
-        componentName: 'info-filter-category-tags'
       })
     }
   }
