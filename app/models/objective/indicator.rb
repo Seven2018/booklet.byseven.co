@@ -1,5 +1,5 @@
 class Objective::Indicator < ApplicationRecord
-  belongs_to :objective_element, class_name: "Objective::Element", optional: true
+  belongs_to :objective_element, class_name: "Objective::Element", optional: true, dependent: :destroy
   has_many :objective_logs, class_name: "Objective::Log", foreign_key: "objective_indicator_id", dependent: :destroy
 
   enum indicator_type: {

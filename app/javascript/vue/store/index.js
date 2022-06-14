@@ -8,6 +8,7 @@ import myTeamObjectivesModule from "./my-team-objectives.module";
 import targetModule from "./target.module";
 import targetTemplateModule from "./target-template.module";
 import genericFetchEntityModule from "./generic-fetch-entity.module";
+import tagsModule from "./tags.module";
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ const store = new Vuex.Store({
     myTeamObjectives: myTeamObjectivesModule,
     targetObjectives: targetModule,
     targetTemplateObjectives: targetTemplateModule,
-    genericFetchEntity: genericFetchEntityModule
+    genericFetchEntity: genericFetchEntityModule,
+    tagsModule: tagsModule
   }
 })
 

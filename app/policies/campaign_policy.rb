@@ -6,6 +6,10 @@ class CampaignPolicy < ApplicationPolicy
     end
   end
 
+  def list?
+    true
+  end
+
   def show?
     record.interviewers.uniq.include?(user) || create?
   end

@@ -32,6 +32,9 @@ Rails.application.routes.draw do
     resources :interview_sets, only: %i[create destroy]
   end
   resources :campaigns, only: %i[index show destroy] do
+    collection do
+      get :list
+    end
     member do
       post 'search_tags'
       post 'toggle_tag'
@@ -45,13 +48,17 @@ Rails.application.routes.draw do
   end
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
-  get :send_notification_email, controller: :campaigns
+  match '/send_notification_email/:id' => 'campaigns#send_notification_email', as: :send_notification_email, via: [:get]
   get :campaign_select_owner, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
 
   namespace :interviews do
     resource :reports, only: %i[edit update]
-    resources :reports, only: %i[index show destroy]
+    resources :reports, only: %i[index show destroy] do
+      collection do
+        get :list
+      end
+    end
     namespace :report do
       resources :campaigns, only: :index
       resource :campaigns, only: :update
@@ -104,6 +111,12 @@ Rails.application.routes.draw do
 
   # CATEGORIES
   get :categories_search, controller: :categories
+  resources :categories, only: [:index] do
+    collection do
+      get :from_campaign
+      get :from_template
+    end
+  end
 
   # COMPANIES
   resources :companies, only: %i[new create update destroy]
@@ -141,6 +154,9 @@ Rails.application.routes.draw do
 
   # INTERVIEW FORMS
   resources :interview_forms do
+    collection do
+      get :list
+    end
     member do
       post 'search_tags'
       post 'toggle_tag'

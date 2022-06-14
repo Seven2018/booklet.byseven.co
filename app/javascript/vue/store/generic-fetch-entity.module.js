@@ -45,7 +45,7 @@ export default {
         commit('setError', e.message)
       }
     },
-    async delete({commit, state}, {pathKey, id, dataKind}) {
+    async delete({commit, state}, {pathKey, id, dataKind, addToPath = ''}) {
       try {
         await axios.delete(routes.generate(pathKey, {id: id}))
 

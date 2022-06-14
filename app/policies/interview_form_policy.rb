@@ -9,6 +9,10 @@ class InterviewFormPolicy < ApplicationPolicy
     end
   end
 
+  def list?
+    true
+  end
+
   def create?
     user.can_create_templates
   end
@@ -18,7 +22,7 @@ class InterviewFormPolicy < ApplicationPolicy
   end
 
   def edit?
-    create? && record.company_id == user.company_id && !record.used?
+    create? # && record.company_id == user.company_id && !record.used?
   end
 
   def update?

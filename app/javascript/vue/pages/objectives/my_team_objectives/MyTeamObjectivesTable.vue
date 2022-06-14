@@ -11,25 +11,7 @@
             class="d-block bkt-bg-light-grey9-hover p-4 rounded-5px cursor-pointer"
             :href="$routes.generate('objective_user_show', {id})"
         >
-          <div class="flex-row-start-centered align-items-center ml-3 " >
-            <div class="flex-column ">
-              <div class="flex-row-start-centered width-4rem height-3rem">
-                <img class="rounded-circle"
-                     :src="picture"
-                     onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
-                     alt="">
-              </div>
-            </div>
-
-            <div class="flex-column ml-3 width-25rem ">
-              <div class="flex-row-start-centered">
-                <p class="font-weight-500 text-truncate">{{ `${firstname} ${lastname}` }}</p>
-              </div>
-              <div class="flex-row-start-centered">
-                <p class="font-weight-500 fs-1_2rem bkt-light-grey6 text-truncate">{{ job_title }}</p>
-              </div>
-            </div>
-          </div>
+          <user-info-in-table class="ml-3" :user="{picture, firstname, lastname, job_title}"></user-info-in-table>
         </a>
       </td>
 
@@ -126,6 +108,7 @@
 import IndexTable from "../../../components/IndexTable";
 import BktDotsButton from '../../../components/BktDotsButton'
 import tools from '../../../mixins/tools'
+import UserInfoInTable from "../../../components/UserInfoInTable";
 
 export default {
   mixins: [tools],
@@ -152,6 +135,7 @@ export default {
     },
   },
   components: {
+    UserInfoInTable,
     IndexTable,
     BktDotsButton,
   }

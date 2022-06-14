@@ -3,28 +3,51 @@ class CampaignsController < ApplicationController
   before_action :set_campaign, only: %i[show edit send_notification_email destroy toggle_tag remove_company_tag search_tags index_line]
   before_action :show_navbar_campaign
 
-  def index
-    campaigns = policy_scope(Campaign).where(company: current_user.company)
-                                      .where_exists(:interviews)
-                                      .order(created_at: :desc)
+  skip_forgery_protection
+  skip_after_action :verify_authorized, only: [
+    :destroy,
+  ]
 
-    filter_campaigns(campaigns)
+    def index
+    # campaigns = policy_scope(Campaign).where(company: current_user.company)
+    #                                   .where_exists(:interviews)
+    #                                   .order(created_at: :desc)
+    #
+    # filter_campaigns(campaigns)
+    #
+    # @company_tags = Category
+    #                   .distinct
+    #                   .where(company_id: current_user.company_id, kind: :interview)
+    #                   .pluck(:title)
+    #
+    # @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+    #                           .where_exists(:campaigns)
+    #                           .order(title: :asc)
+    #
+    # redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
 
-    @company_tags = Category
-                      .distinct
-                      .where(company_id: current_user.company_id, kind: :interview)
-                      .pluck(:title)
-
-    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
-                              .where_exists(:campaigns)
-                              .order(title: :asc)
-
-    redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
-
+    policy_scope(Campaign)
     respond_to do |format|
       format.html
       format.js
     end
+  end
+
+  def list
+    campaigns = Campaign.where(company: current_user.company)
+    campaigns = campaigns.search_campaigns(params[:title]) if params[:title].present?
+    campaigns = campaigns.where_not_exists(:interviews, locked_at: nil) if params[:status].present? && params[:status] == 'completed'
+    campaigns = campaigns.where_exists(:interviews, locked_at: nil) if params[:status].present? && params[:status] == 'current'
+    campaigns = campaigns.order(created_at: :desc)
+
+
+    page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    campaigns = campaigns.page(page).per(size)
+
+    authorize campaigns
+
+    render json: campaigns, meta: pagination_dict(campaigns)
   end
 
   def show
@@ -48,6 +71,7 @@ class CampaignsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.json {head :ok}
     end
   end
 
@@ -135,6 +159,9 @@ class CampaignsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.json {
+        head :ok
+      }
     end
   end
 
@@ -171,7 +198,12 @@ class CampaignsController < ApplicationController
                               .where_exists(:campaigns)
                               .order(title: :asc)
 
-    render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
+    respond_to do |format|
+      format.html {
+        render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
+      }
+      format.json {head :ok}
+    end
   end
 
   def remove_company_tag

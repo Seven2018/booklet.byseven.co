@@ -7,6 +7,7 @@ class Company < ApplicationRecord
   has_many :interview_reports, dependent: :destroy
   has_many :training_reports, dependent: :destroy
   has_many :campaigns, dependent: :destroy
+  has_many :categories
 
   validates :siret, presence: true, length: { is: 14 }
   validates :siret, uniqueness: true
