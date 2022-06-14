@@ -23,9 +23,9 @@
 export default {
   methods: {
     openInfo() {
-      console.log('testt')
       this.$modal.open({
         type: 'custom',
+        closable: true,
         componentName: 'info-filter-category-tags'
       })
     }

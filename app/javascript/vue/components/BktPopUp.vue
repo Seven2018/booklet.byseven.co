@@ -53,8 +53,9 @@
         </button>
       </div>
     </bkt-pop-up-frame>
-    <bkt-pop-up-frame v-else-if="popUp && popUp.data.open && popUp.data.type == 'edit-entity-tags' "
-                      name="modal">
+    <bkt-pop-up-frame
+        v-else-if="popUp && popUp.data.open && popUp.data.type === 'edit-entity-tags'"
+        name="modal">
       <component
           :is="popUp.data.type"
           :entity-id="popUp.data.entityId"
@@ -64,7 +65,11 @@
           @close="close"
       ></component>
     </bkt-pop-up-frame>
-    <bkt-pop-up-frame v-else-if="popUp.data.type === 'custom'">
+<!--    INFO: GENERIC MODAL-->
+    <bkt-pop-up-frame
+        v-else-if="popUp.data.type === 'custom'"
+        :closable="popUp.data.closable"
+    >
       <component
           :is="popUp.data.componentName"
           v-bind="popUp.data"
