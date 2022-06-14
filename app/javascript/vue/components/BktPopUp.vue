@@ -74,6 +74,7 @@
       <component
           :is="popUp.data.componentName"
           v-bind="popUp.data"
+          @close="close"
       ></component>
     </bkt-pop-up-frame>
   </div>
@@ -84,7 +85,7 @@ import store from "../store";
 import BktSpinner from './BktSpinner'
 import BktPopUpFrame from "./BktPopUpFrame";
 import EditEntityTags from './EditEntityTags'
-import InfoFilterCategoryTags from "./InfoFilterCategoryTags";
+import InfoFilterCategoryTags from "./InfoFilterCategoryTagsComponents/InfoFilterCategoryTags";
 
 export default {
   data() {
