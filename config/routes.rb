@@ -261,7 +261,6 @@ Rails.application.routes.draw do
   devise_scope :user do
     match '/sessions/user', to: 'users/sessions#create', via: :post
     post '/u/check', to: 'users/sessions#check', via: :post
-    get '/u/reset_password', to: 'users/sessions#reset_password'
     get '/u/resend_email', to: 'users/sessions#resend_email'
   end
 

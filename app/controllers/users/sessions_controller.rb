@@ -19,7 +19,13 @@ class Users::SessionsController < Devise::SessionsController
     @user = User.find_by(email)
 
     return render 'devise/sessions/not_found', locals: email if @user.nil?
-    render 'devise/sessions/email_sent' if @user.encrypted_password.nil?
+    return render 'devise/sessions/email_sent' if @user.encrypted_password.nil?
+
+    if params[:reset]
+      @user.reset_password!
+
+      render 'devise/sessions/email_sent', notice: 'Email sent'
+    end
   end
 
   def resend_email
@@ -30,16 +36,6 @@ class Users::SessionsController < Devise::SessionsController
       @user = User.find_by(email: params[:email])
       @user.invite! if @user.present?
       render 'devise/sessions/email_sent', notice: 'Email sent'
-    end
-  end
-
-  def reset_password
-    @user = User.find_by(email: params.dig(:email))
-
-    @user.reset_password!
-
-    respond_to do |format|
-      format.js
     end
   end
 
