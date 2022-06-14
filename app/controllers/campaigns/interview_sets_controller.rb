@@ -39,9 +39,6 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
       interviewer: (employee.manager.presence || campaign.owner),
       interview_form: last_campaign_interview.interview_form,
       title: campaign.title,
-      date: last_campaign_interview.date,
-      starts_at: last_campaign_interview.starts_at,
-      ends_at: last_campaign_interview.ends_at,
       creator: campaign.owner,
       campaign: campaign
     }

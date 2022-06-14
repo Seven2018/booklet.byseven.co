@@ -1,8 +1,8 @@
 <%= render_component FormSectionTitleComponent.new(title: 'Choose a campaign name') %>
 
-<div class="py-4rem">
-  <%= text_field_tag :title, campaign.title, placeholder: 'Enter name', class: 'height-5rem width-100 bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus' %>
-</div>
+<%= text_field_tag :title, campaign.title,
+                           placeholder: 'Type your campaign name here',
+                           class: 'width-100 p-0_5rem rounded-5px font-weight-500 bkt-dark-grey  border-bkt-light-grey border-bkt-dark-grey-focus' %>
 
 <div class="my-5rem"></div>
 

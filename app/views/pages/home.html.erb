@@ -20,9 +20,9 @@
 
   <% current_user.company.active_applications.each do |application| %>
 
-    <%= link_to send(application[:link]) do %>
+    <%= link_to send(application[:link]), class: 'm-1rem' do %>
 
-      <div class="d-flex flex-column width-30rem height-24rem m-1rem pos-rel rounded-b-10px
+      <div class="d-flex flex-column width-30rem height-24rem pos-rel rounded-b-10px
                   bkt-box-shadow bkt-box-shadow-hover">
 
         <%= image_tag "home/#{application[:name].downcase}-card.png", class: "width-100 rounded-t-10px" %>

@@ -233,7 +233,11 @@ class UsersController < ApplicationController
     end
   end
 
-  # Search from users with autocomplete
+
+  #########################
+  ## SEARCH AUTOCOMPLETE ##
+  #########################
+
   def users_search
     skip_authorization
 
@@ -244,19 +248,14 @@ class UsersController < ApplicationController
         User.where(company_id: current_user.company_id)
       end
 
-    if params[:campaign_id].present?
-      @users = @users - Campaign.find(params[:campaign_id]).users.distinct
-    end
+    @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true).map{|x| [x.id, x.fullname]}
 
-    @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
 
-    respond_to do |format|
-      format.html {}
-      format.json {
-        @users
-      }
-    end
+    render partial: 'shared/tools/select_autocomplete', locals: { elements: @users }
   end
+
+
+  #########################
 
   private
 

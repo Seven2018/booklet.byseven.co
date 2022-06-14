@@ -4,6 +4,11 @@ class InterviewFormsController < ApplicationController
 
   skip_forgery_protection
 
+
+  ############
+  ## BASICS ##
+  ############
+
   def index
 
     policy_scope(InterviewForm)
@@ -166,24 +171,25 @@ class InterviewFormsController < ApplicationController
     end
   end
 
-  ###########################
 
-  # Search from templates with autocomplete
+  #########################
+  ## SEARCH AUTOCOMPLETE ##
+  #########################
+
   def templates_search
     skip_authorization
 
     @templates =
       InterviewForm.unused.where(company_id: current_user.company_id)
 
-    @templates = @templates.ransack(title_cont: params[:search]).result(distinct: true)
+    @templates = @templates.ransack(title_cont: params[:search]).result(distinct: true).map{|x| [x.id, x.title]}
 
-    respond_to do |format|
-      format.html {}
-      format.json {
-        @templates
-      }
-    end
+
+    render partial: 'shared/tools/select_autocomplete', locals: { elements: @templates }
   end
+
+
+  #########################
 
   private
 

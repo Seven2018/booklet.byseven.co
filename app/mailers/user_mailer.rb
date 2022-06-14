@@ -19,10 +19,13 @@ class UserMailer < ApplicationMailer
     @token = raw_token
     @icon = '👋'
     @title = "Hello, #{@user.fullname}"
-    @description = "Please follow this link to reset your password !"
-    @button_text = "Reset my password"
+    @description = "It seems you have forgotten your password on Booklet,\n please click the following link to reset it easily."
+    @button_text = "LINK"
     @button_link = accept_user_invitation_url(@user, invitation_token: @token, reset_password: true)
+    @nb = "If you have not requested a password reset, please ignore this email."
 
-    mail(to: @user.email, subject: 'Reset your password')
+    mail(to: @user.email, subject: 'Reset your password') do |format|
+      format.html { render layout: 'basic_mailer' }
+    end
   end
 end

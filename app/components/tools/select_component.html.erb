@@ -1,4 +1,4 @@
-<% string_collection = @collection.first.class == String || Integer || Float %>
+<% string_collection = @collection.first.class == (String || Integer || Float) %>
 
 <% default_value =
   if @selected.present?
@@ -8,13 +8,14 @@
   end %>
 
 <div class="bkt-select-container"
-     data-controller="dropdown">
+     data-controller="tools--select">
 
   <div class="bkt-select-display"
        style="width:  <%= @width %>;"
-       data-action="click->dropdown#toggle dropdown:click:outside->dropdown#hide">
+       data-action="click->tools--select#toggle tools--select:click:outside->tools--select#hide">
 
-    <div data-dropdown-target="display">
+    <div class="<%= 'bkt-dark-grey' unless @title.present? %>"
+         data-tools--select-target="display">
       <%= @title.presence || default_value %>
     </div>
 
@@ -22,16 +23,18 @@
 
   <div class="bkt-select-menu hidden"
        style="width: <%= @width %>; max-height: <%= @menu_max_height.presence %>"
-       data-dropdown-target="menu">
+       data-tools--select-target="menu">
 
     <% @collection.each do |element| %>
 
       <% if string_collection %>
-        <button data-action="click->dropdown#selectOption <%= @data_action %>"
-                data-value="<%= element %>"><%= element %></button>
+        <div class="cursor-pointer"
+             data-action="click->tools--select#selectOption <%= @data_action %>"
+             data-value="<%= element %>"><%= element %></div>
       <% else %>
-        <button data-action="click->dropdown#selectOption <%= @data_action %>"
-                data-value="<%= element.id %>"><%= element.name %></button>
+        <div class="cursor-pointer"
+             data-action="click->tools--select#selectOption <%= @data_action %>"
+             data-value="<%= element.id %>"><%= element.name %></div>
       <% end %>
 
     <% end %>
