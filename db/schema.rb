@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(version: 2022_06_13_154541) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "campaign_type", default: 0, null: false
+    t.date "deadline"
+    t.string "calendar_uuid"
     t.index ["company_id"], name: "index_campaigns_on_company_id"
     t.index ["interview_form_id"], name: "index_campaigns_on_interview_form_id"
     t.index ["owner_id"], name: "index_campaigns_on_owner_id"
@@ -320,6 +322,7 @@ ActiveRecord::Schema.define(version: 2022_06_13_154541) do
     t.bigint "interviewer_id"
     t.integer "status", default: 0
     t.text "archived_for"
+    t.string "calendar_uuid"
     t.index ["campaign_id"], name: "index_interviews_on_campaign_id"
     t.index ["creator_id"], name: "index_interviews_on_creator_id"
     t.index ["employee_id"], name: "index_interviews_on_employee_id"
