@@ -26,25 +26,21 @@ module CampaignDrafts
 
       def interview_form
         case @campaign_draft.templates_selection_method
+
         when 'single'
-          template = InterviewForm.find @campaign_draft.default_template_id
+          return create_form_from(@campaign_draft.default_template_id)
 
-          new_form = InterviewForm.create(
-            template.attributes.except('id', 'created_at', 'updated_at').merge(used: true, categories: template.categories)
-          )
+        when 'multiple'
+          forms = {}
 
-          template.interview_questions.order(position: :asc).each do |question|
-            InterviewQuestion.create \
-              question.attributes
-                      .except('id', 'interview_form_id', 'position', 'created_at', 'updated_at')
-                      .merge(interview_form: new_form, position: question.position)
+          @campaign_draft.multi_templates_ids.each do |pair|
+            pair = pair.split(':')
+
+            forms[pair.first] = create_form_from(pair.last).id
           end
 
-          template.categories.each do |category|
-            new_form.categories << category
-          end
+          return forms
 
-          return new_form
         end
       end
 
@@ -70,7 +66,8 @@ module CampaignDrafts
             title: @campaign_draft.title,
             owner: @campaign_draft.user,
             company: @campaign_draft.user.company,
-            campaign_type: campaign_type
+            campaign_type: campaign_type,
+            deadline: @campaign_draft.date
           )
       end
 
@@ -79,14 +76,23 @@ module CampaignDrafts
       end
 
       def create_interviews
-        new_form = interview_form
+        forms = interview_form
+        multiple = forms.class == Hash
 
         interviewees.map do |interviewee|
+          if multiple
+            selected_form =
+              InterviewForm.find(forms[UserTag.find_by(user_id: interviewee, tag_id: forms.keys)&.tag_id&.to_s].presence \
+               || @campaign_draft.default_template_id)
+          else
+            selected_form = forms
+          end
+
           InterviewSets::Create.call(
             interview_params.merge(
               employee: interviewee,
               interviewer: interviewer(interviewee),
-              interview_form: new_form
+              interview_form: selected_form
             )
           )
         end
@@ -95,12 +101,30 @@ module CampaignDrafts
       def interview_params
         {
           title: @campaign_draft.title,
-          date: @campaign_draft.date,
-          starts_at: @campaign_draft.starts_at,
-          ends_at: @campaign_draft.ends_at,
           creator: campaign.owner,
           campaign: campaign
         }
+      end
+
+      def create_form_from(template_id)
+        template = InterviewForm.find template_id
+
+        new_form = InterviewForm.create(
+          template.attributes.except('id', 'created_at', 'updated_at').merge(used: true, categories: template.categories)
+        )
+
+        template.interview_questions.order(position: :asc).each do |question|
+          InterviewQuestion.create \
+            question.attributes
+                    .except('id', 'interview_form_id', 'position', 'created_at', 'updated_at')
+                    .merge(interview_form: new_form, position: question.position)
+        end
+
+        template.categories.each do |category|
+          new_form.categories << category
+        end
+
+        return new_form
       end
     end
   end

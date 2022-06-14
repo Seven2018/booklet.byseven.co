@@ -1,22 +1,28 @@
 <% content_for :title do %>
-  Check your mailbox !
+
+  Check your mailbox ! 📩
+
 <% end %>
+
 <% content_for :subtitle do %>
-  <div class="flew-row mb-4 width-70">
+
+  <p class="flew-row width-100 bkt-light-grey6 mb-2rem">
     We just sent an email to the adress
-    <strong class="underline"><%= @user.email %></strong> to let you
-    create a beautiful password.
-  </div>
-  <div class="flew-row mb-4 width-70">
-    If you don’t receive it, click here so we can
-    send it one more time (please check your
-    spams first 🙏).
-  </div>
+  </p>
+
+  <p class="font-weight-600 mb-2rem"><%= @user.email %></p>
+
+  <p class="flew-row mb-2rem width-100 bkt-light-grey6">
+    If you did not receive it, check your spams,
+    or click on the button below to send it
+    again.
+  </p>
+
 <% end %>
 
 <div class="">
-  <%= link_to u_resend_email_path(email: @user.email) do %>
-    <button class="width-70 bkt-bg-dark-grey bkt-white rounded-2px mt-4 p-3">Send it again</button>
+  <%= link_to u_check_path(user: {email: params.dig(:user, :email)}, reset: true), method: :post do %>
+    <button class="width-100 bkt-bg-dark-grey bkt-white rounded-2px p-3">Send it again</button>
   <% end %>
 </div>
 

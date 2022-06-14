@@ -7,10 +7,6 @@
     Create your password
   <% end %>
 <% end %>
-<% content_for :subtitle do %>
-  Your puppy name is ok but we advice
-  a stronger one.
-<% end %>
 
 <div class="flew-row">
   <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put }) do |f| %>

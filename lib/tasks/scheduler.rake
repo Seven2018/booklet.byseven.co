@@ -10,7 +10,7 @@ task :interviews_send_reminders => :environment do
 
     interviewee = interview.employee
     interviewer = interview.interviewer
-    time_remaining = (interview.date - Time.zone.today).to_i
+    time_remaining = ((interview.date.presence || interview.campaign.deadline) - Time.zone.today).to_i
 
     CampaignMailer.with(user: interviewee)
         .interview_reminder_time(interviewer, interviewee, interview, time_remaining)

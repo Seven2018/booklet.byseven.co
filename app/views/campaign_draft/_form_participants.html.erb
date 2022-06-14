@@ -1,3 +1,7 @@
+<% default_interviewer_id = campaign.default_interviewer_id %>
+<% default_interviewer =
+      default_interviewer_id.present? ? [default_interviewer_id, User.find(default_interviewer_id).fullname] : [] %>
+
 <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add participants') %>
 
 <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
@@ -36,12 +40,27 @@
       refreshParticipantIdsFilteredCount@window->participant-ids#refreshFilteredCount
      '>
 
-  <div class='fs-1_2rem mb-1rem'>
-    Selected
-    <span class='fs-1_2rem'
-      data-participant-ids-target="selectedCount">
-      <%= @campaign.interviewee_ids.count %>
-    </span>
+  <div class="width-100 pos-rel mb-2rem">
+
+    <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.7rem; right: 1rem;'></i>
+
+      <%=
+        text_field_tag(
+          :search,
+          nil,
+          placeholder: 'Search',
+          data: {
+            search_inject_target: 'search',
+            action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
+            path: campaign_draft_interviewees_users_path
+          },
+          class: 'width-100 height-5rem bkt-bg-light-grey9-important mb-2rem py-1_5rem pl-1_5rem pr-4rem border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-light-grey bkt-placeholder-fs-1_4rem rounded-5px border-bkt-dark-grey-focus border-bkt-light-grey',
+          autocomplete: 'off',
+          label: false,
+          required: false
+        )
+      %>
+
   </div>
 
   <%= hidden_field_tag 'participant_ids[]', @campaign.interviewee_ids.join(','), data: {
@@ -49,55 +68,23 @@
   } %>
 
   <div class="flex-row-between-centered mb-1rem">
-    <div class="pos-rel">
-      <i class="fas fa-search bkt-light-grey5 pos-abs" style='top: 1.2rem; left: 1rem;'></i>
-        <%=
-          text_field_tag(
-            :search,
-            nil,
-            placeholder: 'Filter',
-            data: {
-              search_inject_target: 'search',
-              action: 'keyup->search-inject#debouncedSearch keypress->search-inject#killEnter',
-              path: campaign_draft_interviewees_users_path
-            },
-            class: 'height-4rem pl-3rem rounded-3px border-bkt-light-grey5-0_5px',
-            autocomplete: 'off',
-            label: false,
-            required: false
-          )
-        %>
+
+    <div class='fs-1_4rem'>
+      Selected employees
+      <span class='fs-1_4rem'
+        data-participant-ids-target="selectedCount">
+        <%= @campaign.interviewee_ids.count %>
+      </span>
     </div>
 
     <div class="flex-row-between-centered">
 
-      <!-- <div class='fs-1_2rem bkt-blue cursor-pointer'
-        data-action="click->participant-ids#unselectAll"
-      >Unselect all</div> -->
-
-      <%= link_to 'Unselect all', campaign_draft_participants_unselect_all_path(id: @campaign.id),
-                                class: "fs-1_2rem bkt-blue cursor-pointer",
-                                data: { action: 'click->participant-ids#blockEvents' },
-                                remote: true %>
-
-      <div class="mx-2">|</div>
-
-    <!--   <div class='fs-1_2rem bkt-blue cursor-pointer'
-        data-action="click->participant-ids#selectAll"
-      >Select all</div> -->
-
-      <%= link_to 'Select all', campaign_draft_participants_select_all_path(id: @campaign.id),
-                                class: "fs-1_2rem bkt-blue cursor-pointer",
-                                data: { action: 'click->participant-ids#blockEvents' },
-                                remote: true %>
-
-      <div class="mx-2">|</div>
-
       <div id="select_filtered"
-           class="d-flex align-items-center">
+           class="d-flex align-items-center"
+           style="padding-right: 2.1rem;">
 
         <div class='fs-1_2rem bkt-blue'>
-          Select Filtered
+          All
           <span class='fs-1_2rem' data-participant-ids-target='filteredCount'></span>
         </div>
 
@@ -135,6 +122,7 @@
       </div>
 
     </div>
+
   </div>
 
   <div id="employees-list"
@@ -147,7 +135,9 @@
 
 <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to add interviewer') %>
 
-<div data-controller="campaign-draft-participants">
+<div data-controller="interviews--campaign-drafts-participants"
+     data-default-interviewer="<%= default_interviewer_id %>">
+
   <div class="d-flex gap-1rem w-100" style='max-width: 500px;'>
 
     <%= render_component RadioButtonTileComponent.new(
@@ -156,7 +146,7 @@
       checked: campaign.interviewer_selection_method == :manager.to_s || campaign.interviewer_selection_method.nil?,
       title: "Direct manager",
       subtitle: "Each participant is assigned to their manager",
-      data_actions: 'click->campaign-draft-participants#chooseDirectManagerText'
+      data_actions: 'click->interviews--campaign-drafts-participants#chooseDirectManagerText'
       ) do %>
       <span class="iconify fs-3rem" data-icon="fluent:person-arrow-right-24-filled"></span>
     <% end %>
@@ -165,24 +155,59 @@
       model: :interviewer_selection_method,
       name: :specific_manager,
       checked: campaign.interviewer_selection_method == :specific_manager.to_s,
-      title: "Chose an interviewer",
-      subtitle: "Chose a specific user as the campaign sole interviewer",
-      data_actions: 'click->campaign-draft-participants#choseInterviewerText'
+      title: "Choose an interviewer",
+      subtitle: "Choose a specific user as the campaign sole interviewer",
+      data_actions: 'click->interviews--campaign-drafts-participants#choseInterviewerText'
       ) do %>
       <span class="iconify fs-3rem" data-icon="bx:search"></span>
     <% end %>
 
   </div>
 
-  <div class="pb-15rem">
+  <div class="height-30rem">
 
-    <%= render_component FormSectionTitleComponent.new(title: 'Interviewer') %>
     <%= render_component FormSectionSubtitleComponent.new do %>
-      <span data-campaign-draft-participants-target="directManagerText" class="bkt-light-grey6">In case of interviewees not linked to a manager in the database,<br> please chose a default interviewer</span>
-      <span data-campaign-draft-participants-target="interviewerText" class="d-none bkt-light-grey6">The interviewer will handle all interviews for selected participants</span>
+
+      <div class="mb-2rem"
+           data-interviews--campaign-drafts-participants-target="directManagerText">
+
+        <div class="d-flex justify-content-start align-items-center mb-1rem">
+          <span class="iconify fs-1_6rem bkt-blue mr-1rem" data-icon="fluent:person-arrow-right-24-filled"></span>
+          <p class="fs-1_4rem font-weight-600 bkt-dark-grey">Direct manager - Select a default interviewer</p>
+        </div>
+
+        <p class="bkt-light-grey6">In case of interviewees not linked to a manager in the database,<br> please chose a default interviewer</p>
+
+      </div>
+
+      <div class="d-none mb-2rem"
+           data-interviews--campaign-drafts-participants-target="interviewerText" class="d-none">
+
+        <div class="d-flex justify-content-start align-items-center mb-1rem">
+          <span class="iconify fs-1_6rem bkt-blue mr-1rem" data-icon="bx:search"></span>
+          <p class="fs-1_4rem font-weight-600 bkt-dark-grey">Specific interviewer - Select interviewer</p>
+        </div>
+
+        <p class="bkt-light-grey6">The interviewer will handle all interviews for selected participants</p>
+
+      </div>
+
+      <div data-interviews--campaign-drafts-participants-target="requiredInput">
+
+        <%= render_component(Tools::SelectAutocompleteComponent.new(path: users_search_path,
+                                                                width: '100%',
+                                                                menu_max_height: '22rem',
+                                                                placeholder: 'Select a default interviewer',
+                                                                input_name: "default_interviewer_id",
+                                                                default_value: default_interviewer,
+                                                                data_action_input: 'keydown->interviews--campaign-drafts-participants#enableSubmit',
+                                                                data_action_select: 'click->interviews--campaign-drafts-participants#enableSubmit')) %>
+
+      </div>
+
+
     <% end %>
 
   </div>
-</div>
 
-<%= hidden_field_tag :default_interviewer_id %>
+</div>

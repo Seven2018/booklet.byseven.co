@@ -25,7 +25,9 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
             .deliver_later
         end
       end
+
       redirect_to campaign_path(new_campaign)
+
     else
       flash[:alert] = validation_error_flash_message
       redirect_to edit_campaign_draft_settings_path
@@ -45,7 +47,7 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
       interviewer_selection_method
       default_interviewer_id
       interviewee_ids
-      templates_selection_method default_template_id
+      templates_selection_method default_template_id multi_templates_ids
       date
     ]
   end

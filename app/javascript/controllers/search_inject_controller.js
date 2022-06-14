@@ -41,18 +41,18 @@ export default class extends Controller {
         this.resultsTarget.innerHTML = html
         this._refreshFilteredCount()
 
-      // Check the select filtered accordingly
-      const select_filtered = document.getElementById('select_filtered')
-      if (this.resultsTarget.querySelectorAll('input[type="checkbox"]:not(:checked)').length > 0 && select_filtered != undefined) {
-        select_filtered.querySelector('svg').classList.add('hidden')
-        select_filtered.querySelector('input').checked = false
-      } else {
-        select_filtered.querySelector('svg').classList.remove('hidden')
-        select_filtered.querySelector('input').checked = true
-      }
+        // Check the select filtered accordingly
+        const select_filtered = document.getElementById('select_filtered')
+        if (this.resultsTarget.querySelectorAll('input[type="checkbox"]:not(:checked)').length > 0 && select_filtered != undefined) {
+          select_filtered.querySelector('svg').classList.add('hidden')
+          select_filtered.querySelector('input').checked = false
+        } else {
+          select_filtered.querySelector('svg').classList.remove('hidden')
+          select_filtered.querySelector('input').checked = true
+        }
 
-      document.querySelector('body').classList.remove('wait')
-    })
+        document.querySelector('body').classList.remove('wait')
+      })
   }
 
   _refreshFilteredCount() {

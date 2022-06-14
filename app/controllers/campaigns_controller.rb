@@ -42,7 +42,7 @@ class CampaignsController < ApplicationController
 
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
     campaigns = campaigns.page(page).per(size)
 
     authorize campaigns
@@ -243,7 +243,43 @@ class CampaignsController < ApplicationController
     end
   end
 
-  ###########################
+
+  ##############
+  ## CALENDAR ##
+  ##############
+
+  def redirect_calendar
+    skip_authorization
+
+    client = Signet::OAuth2::Client.new(client_options)
+    client.update!(state: Base64.encode64("instance_id:#{params[:instance_id]},user_id:#{params[:user_id]},mode:#{params[:mode]}"))
+    redirect_to client.authorization_uri.to_s
+  end
+
+  def update_calendar
+    skip_authorization
+    # Gets clearance from OAuth
+    client = Signet::OAuth2::Client.new(client_options)
+    client.code = params[:code]
+    # client.update!(:additional_parameters => {"access_type" => "offline"})
+    client.update!(client.fetch_access_token!)
+    # Initiliaze GoogleCalendar
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = client
+
+    state = Base64.decode64(params[:state]).to_h
+    mode = state['mode']
+    user = User.find(state['user_id'])
+    instance = mode == 'campaign' ? Campaign.find(state['instance_id']) : Interview.find(state['instance_id'])
+
+    return if user != current_user
+
+    calendar_create_event(instance, user, service)
+
+    redirect_to my_interviews_path
+  end
+
+  ##############
 
   private
 
@@ -288,6 +324,70 @@ class CampaignsController < ApplicationController
 
                          User.find(params[:search][:user_id])
                        end
+  end
+
+  ############################
+  ## GOOGLE::APIS::CALENDAR ##
+  ############################
+
+  def client_options
+    {
+      client_id: ENV['GOOGLE_CLIENT_ID'],
+      client_secret: ENV['GOOGLE_CLIENT_SECRET'],
+      authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
+      token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
+      scope: Google::Apis::CalendarV3::AUTH_CALENDAR,
+      redirect_uri: "#{request.base_url}/campaigns/update_calendar"
+    }
+  end
+
+  def calendar_create_event(instance, user, service)
+    if instance.class == Campaign
+      date = instance.deadline.to_datetime
+      day, month, year = date.day, date.month, date.year
+      start_time = date.change(day: day, month: month, year: year, hour: 7)
+      end_time = date.change(day: day, month: month, year: year, hour: 16)
+      summary_text = "Last day of the #{instance.title} campaign on Booklet !"
+    else
+      date = instance.date
+      day, month, year = date.day, date.month, date.year
+      start_time = instance.starts_at.change(day: day, month: month, year: year)
+      end_time = instance.ends_at.change(day: day, month: month, year: year)
+      summary_text = "#{instance.campaign.title} - #{instance.label}#{ (' - ' + instance.employee.fullname) if user == instance.interviewer }"
+    end
+
+    event = Google::Apis::CalendarV3::Event.new({
+              start: {
+                date_time: start_time.rfc3339,
+                time_zone: 'Europe/Paris',
+              },
+              end: {
+                date_time: end_time.rfc3339,
+                time_zone: 'Europe/Paris',
+              },
+              summary: summary_text
+            })
+
+    if instance.class == Campaign
+      event.id = instance.calendar_uuid
+    else
+      event.id = instance.calendar_uuid.presence || SecureRandom.hex(32)
+      instance.update calendar_uuid: event.id unless instance.calendar_uuid.present?
+    end
+
+    begin
+      service.update_event('primary', event.id, event)
+    rescue
+      service.insert_event('primary', event)
+    end
+  end
+
+  def calendar_delete_event(instance, user, service)
+    begin
+      return if instance.calendar_uuid.nil?
+      service.delete_event(user.email, instance.calendar_uuid)
+    rescue
+    end
   end
 
 

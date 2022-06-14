@@ -20,10 +20,10 @@ body.wait *, body.wait
 
 #booklet-container {
   width: 100vw;
-  height: calc(100vh - 7.5rem);
+  //height: 100%;
+  //overflow-y: auto;
   background-color: #fff;
   position: relative;
-  transition: all 0.25s ease-in-out;
 
   @include from-medium {
     width: auto;

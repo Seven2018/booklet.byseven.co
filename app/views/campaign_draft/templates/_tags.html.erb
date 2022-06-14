@@ -1,0 +1,35 @@
+<ul class="list-style-inside">
+
+  <% tags.each do |tag| %>
+
+    <div class="d-flex justify-content-between align-items-center mb-2rem">
+
+      <li class="fs-1_4rem font-weight-600 bkt-dark-grey m-0"><%= tag.tag_name %></li>
+
+      <%= render_component(Tools::SelectAutocompleteComponent.new(path: templates_search_path,
+                                                                  width: '20rem',
+                                                                  menu_max_height: '22rem',
+                                                                  placeholder: 'Select a template',
+                                                                  input_name: "multi_templates_ids[#{tag.id}]")) %>
+
+    </div>
+
+  <% end %>
+
+  <div class="d-flex justify-content-between align-items-center"
+       data-interviews--campaign-drafts-templates-target="requiredInput">
+
+    <li class="fs-1_4rem font-weight-600 bkt-dark-grey m-0">Default template</li>
+
+    <%= render_component(Tools::SelectAutocompleteComponent.new(path: templates_search_path,
+                                                                width: '20rem',
+                                                                menu_max_height: '22rem',
+                                                                placeholder: 'Select a template',
+                                                                input_name: "default_template_id",
+                                                                data_action_input: 'keydown->interviews--campaign-drafts-templates#enableSubmit',
+                                                                data_action_select: 'click->interviews--campaign-drafts-templates#enableSubmit')) %>
+
+  </div>
+
+</ul>
+

@@ -51,6 +51,11 @@ class CampaignPolicy < ApplicationPolicy
     true
   end
 
+
+  ###########################
+  ## CATEGORIES MANAGEMENT ##
+  ###########################
+
   def toggle_tag?
     create?
   end
@@ -62,4 +67,15 @@ class CampaignPolicy < ApplicationPolicy
   def search_tags?
     create?
   end
+
+
+  ##############
+  ## CALENDAR ##
+  ##############
+
+  def redirect_calendar?
+    show?
+  end
+
+  ##############
 end

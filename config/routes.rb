@@ -41,6 +41,10 @@ Rails.application.routes.draw do
       delete 'remove_company_tag'
       get 'index_line'
     end
+    collection do
+      get :redirect_calendar
+      get :update_calendar
+    end
   end
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
@@ -75,16 +79,15 @@ Rails.application.routes.draw do
   namespace :campaign_draft do
     resource :settings, only: %i[edit update]
     resource :participants, only: %i[edit update]
-    namespace :participants do
-      get :unselect_all
-      get :select_all
-    end
     resource :templates, only: %i[edit update]
     resource :dates, only: %i[edit update]
     resource :launches, only: %i[edit update]
     namespace :interviewees do
       resources :users, only: :index
       resource :ids, only: :update
+    end
+    namespace :templates do
+      resources :tags, only: :index
     end
   end
 
@@ -274,7 +277,6 @@ Rails.application.routes.draw do
   devise_scope :user do
     match '/sessions/user', to: 'users/sessions#create', via: :post
     post '/u/check', to: 'users/sessions#check', via: :post
-    get '/u/reset_password', to: 'users/sessions#reset_password'
     get '/u/resend_email', to: 'users/sessions#resend_email'
   end
 
