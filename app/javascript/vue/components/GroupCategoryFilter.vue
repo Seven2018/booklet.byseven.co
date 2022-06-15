@@ -21,12 +21,11 @@
 </template>
 
 <script>
-import axios from "../plugins/axios";
+import store from "../store";
 
 export default {
   created() {
-    // TODO: erase
-    axios.get('/categories/groups')
+    store.dispatch('groupsTag/fetch', {kind: 'interview'})
   },
   methods: {
     openInfo() {

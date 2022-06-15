@@ -8,6 +8,7 @@ class Company < ApplicationRecord
   has_many :training_reports, dependent: :destroy
   has_many :campaigns, dependent: :destroy
   has_many :categories
+  has_many :group_categories
 
   validates :siret, presence: true, length: { is: 14 }
   validates :siret, uniqueness: true
@@ -24,6 +25,7 @@ class Company < ApplicationRecord
   has_one_attached :my_team_trainings_bg_picture
 
   before_save :clear_applications_params
+  after_create :create_default_group_category
 
   include Companies::AssetsMeta
   include Companies::Applications
@@ -35,5 +37,9 @@ class Company < ApplicationRecord
 
   def applications_to_sym
     applications.map(&:to_sym)
+  end
+
+  def create_default_group_category
+    # TODO: code
   end
 end

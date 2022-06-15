@@ -11,7 +11,10 @@ class CategoriesController < ApplicationController
   end
 
   def groups
-    render json: GroupCategory.all
+    kind = params.require(:kind)
+    raise ActionController::BadRequest, 'bad parameter' unless GroupCategory.kinds.include?(kind.to_sym)
+
+    render json: current_user.company.group_categories.of_kind(kind.to_sym), status: :ok
   end
 
   def from_campaign

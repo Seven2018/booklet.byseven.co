@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_14_165441) do
+ActiveRecord::Schema.define(version: 2022_06_13_154541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,6 +233,9 @@ ActiveRecord::Schema.define(version: 2022_06_14_165441) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "kind", default: 0
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_group_categories_on_company_id"
   end
 
   create_table "interview_answers", force: :cascade do |t|
@@ -355,10 +358,10 @@ ActiveRecord::Schema.define(version: 2022_06_14_165441) do
     t.bigint "objectivable_id"
     t.string "objectivable_type"
     t.bigint "company_id"
+    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
-    t.bigint "creator_id"
     t.boolean "template", default: false
     t.boolean "can_employee_edit", default: true
     t.boolean "can_employee_view", default: true
@@ -453,7 +456,7 @@ ActiveRecord::Schema.define(version: 2022_06_14_165441) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"
@@ -633,6 +636,7 @@ ActiveRecord::Schema.define(version: 2022_06_14_165441) do
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "objective_elements", "companies"
+  add_foreign_key "objective_elements", "users", column: "creator_id"
   add_foreign_key "objective_indicators", "objective_elements"
   add_foreign_key "objective_logs", "objective_elements"
   add_foreign_key "objective_logs", "objective_indicators"
