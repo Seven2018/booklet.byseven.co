@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_02_163642) do
+ActiveRecord::Schema.define(version: 2022_06_13_154541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "campaign_type", default: 0, null: false
+    t.date "deadline"
+    t.string "calendar_uuid"
     t.index ["company_id"], name: "index_campaigns_on_company_id"
     t.index ["interview_form_id"], name: "index_campaigns_on_interview_form_id"
     t.index ["owner_id"], name: "index_campaigns_on_owner_id"
@@ -120,7 +122,9 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "kind", default: 0
+    t.bigint "group_category_id"
     t.index ["company_id"], name: "index_categories_on_company_id"
+    t.index ["group_category_id"], name: "index_categories_on_group_category_id"
   end
 
   create_table "categories_interview_forms", id: false, force: :cascade do |t|
@@ -225,6 +229,12 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.index ["company_id"], name: "index_folders_on_company_id"
   end
 
+  create_table "group_categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "interview_answers", force: :cascade do |t|
     t.text "answer", default: "", null: false
     t.text "comments"
@@ -312,6 +322,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.bigint "interviewer_id"
     t.integer "status", default: 0
     t.text "archived_for"
+    t.string "calendar_uuid"
     t.index ["campaign_id"], name: "index_interviews_on_campaign_id"
     t.index ["creator_id"], name: "index_interviews_on_creator_id"
     t.index ["employee_id"], name: "index_interviews_on_employee_id"
@@ -591,6 +602,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
   add_foreign_key "campaigns", "interview_forms"
   add_foreign_key "campaigns", "users", column: "owner_id"
   add_foreign_key "categories", "companies"
+  add_foreign_key "categories", "group_categories"
   add_foreign_key "content_categories", "categories"
   add_foreign_key "content_categories", "contents"
   add_foreign_key "content_folder_links", "contents"
