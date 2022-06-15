@@ -40,6 +40,7 @@ class Company < ApplicationRecord
   end
 
   def create_default_group_category
-    # TODO: code
+    self.group_categories.create(name: 'others', kind: :interview)
+    self.group_categories.create(name: 'others', kind: :training)
   end
 end

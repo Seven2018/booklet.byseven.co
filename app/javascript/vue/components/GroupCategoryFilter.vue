@@ -14,16 +14,27 @@
         </div>
       </h2>
     </div>
-    <div class="flex-row-start-centered"></div>
-    <div class="flex-row-start-centered"></div>
+    <div class="flex-row-start-centered">
+      tags
+    </div>
+    <div class="flex-row-start-centered my-4">
+      <bkt-button
+          iconify="ant-design:plus-circle-outlined"
+          type="transparent"
+      >
+        Create category
+      </bkt-button>
+    </div>
     <div class="w-100 bkt-bg-light-grey5" style="height: 1px"></div>
   </div>
 </template>
 
 <script>
 import store from "../store";
+import BktButton from "./BktButton";
 
 export default {
+  components: {BktButton},
   created() {
     store.dispatch('groupsTag/fetch', {kind: 'interview'})
   },

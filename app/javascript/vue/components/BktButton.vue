@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       assets: {
-        transparent: ' bkt-dark-grey rounded-5px p-3 font-weight-600 bkt-box-shadow-medium bkt-bg-light-grey9-hover',
+        transparent: ' bkt-dark-grey rounded-5px p-3 font-weight-600 bkt-bg-light-grey9-hover',
         roadmap: "bkt-bg-objective-blue bkt-white-important rounded-5px p-3 font-weight-600 bkt-box-shadow-medium bkt-bg-light-blue2-hover",
         white: "bkt-bg-white bkt-objective-blue-important rounded-5px p-3 font-weight-600 bkt-box-shadow-medium bkt-bg-light-blue2-hover",
         interview: "bkt-bg-blue bkt-white-important rounded-5px p-3 font-weight-600 bkt-box-shadow-medium bkt-bg-light-blue2-hover",

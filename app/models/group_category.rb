@@ -11,4 +11,8 @@ class GroupCategory < ApplicationRecord
   def self.of_kind(kind)
     where(kind: kind)
   end
+
+  def self.default_group_for(kind)
+    find_by(name: 'others', kind: kind)
+  end
 end
