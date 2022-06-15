@@ -8,29 +8,8 @@ class CampaignsController < ApplicationController
     :destroy,
   ]
 
-    def index
-    # campaigns = policy_scope(Campaign).where(company: current_user.company)
-    #                                   .where_exists(:interviews)
-    #                                   .order(created_at: :desc)
-    #
-    # filter_campaigns(campaigns)
-    #
-    # @company_tags = Category
-    #                   .distinct
-    #                   .where(company_id: current_user.company_id, kind: :interview)
-    #                   .pluck(:title)
-    #
-    # @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
-    #                           .where_exists(:campaigns)
-    #                           .order(title: :asc)
-    #
-    # redirect_to my_interviews_path unless CampaignPolicy.new(current_user, nil).create?
-
+  def index
     policy_scope(Campaign)
-    respond_to do |format|
-      format.html
-      format.js
-    end
   end
 
   def list
@@ -55,7 +34,23 @@ class CampaignsController < ApplicationController
 
     authorize @campaign
 
-    filter_interviewees
+    @campaign = @campaign.decorate
+    @employees =
+      if current_user.can_create_campaigns?
+        @campaign.employees.order(lastname: :asc)
+      else
+        User.where_exists(:interviews, campaign_id: @campaign.id, interviewer: current_user).order(lastname: :asc)
+      end
+
+    search_name = params.dig(:search, :name)
+    search_completion = params.dig(:search, :completion)&.downcase&.gsub(' ', '_')
+
+    @employees = @employees.search_users(search_name) if search_name.present?
+
+    @employees = @employees.select{|x| @campaign.completion_status(x) == search_completion} \
+      if ['not_started', 'in_progress', 'completed'].include?(search_completion)
+
+    @employees = @employees.uniq
 
     respond_to do |format|
       format.html
@@ -140,15 +135,35 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def campaign_edit_date
+    @campaign = Campaign.find(params.dig(:edit_date, :campaign_id))
+    authorize @campaign
+
+    @campaign.interviews.where(employee_id: params.dig(:edit_date, :employee_id)).update_all date: params.dig(:edit_date, :date)
+
+    head :no_content
+  end
+
+
+  ##########################
+  ## EMAILS NOTIFICATIONS ##
+  ##########################
+
   def send_notification_email
     authorize @campaign
+
     interviewee = User.find_by(id: params[:user_id])
 
     if interviewee.present?
       interview = Interview.find_by(campaign: @campaign, employee: interviewee, label: 'Employee')
       interviewer = interview.interviewer
 
-      params[:email_type] == 'invite' ? invitation_email(interviewer, interviewee, interview) : reminder_email(interviewer, interviewee, interview)
+      if params[:email_type] == 'invite'
+        invitation_email(interviewer, interviewee, interview)
+      else
+        reminder_email(interviewer, interviewee, interview)
+      end
+
     else
       @campaign.interviews.where(label: 'Employee').each do |interview|
         params[:email_type] == 'invite' ? invitation_email(interview.interviewer, interview.employee, interview) : reminder_email(interview.interviewer, interview.employee, interview)
@@ -163,15 +178,6 @@ class CampaignsController < ApplicationController
         head :ok
       }
     end
-  end
-
-  def campaign_edit_date
-    @campaign = Campaign.find(params.dig(:edit_date, :campaign_id))
-    authorize @campaign
-
-    @campaign.interviews.where(employee_id: params.dig(:edit_date, :employee_id)).update_all date: params.dig(:edit_date, :date)
-
-    head :no_content
   end
 
   ###########################

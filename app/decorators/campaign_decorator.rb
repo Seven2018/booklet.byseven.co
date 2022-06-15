@@ -11,6 +11,16 @@ class CampaignDecorator < Draper::Decorator
     end
   end
 
+  def completion_status_color(employee = :all)
+    if completion_for(employee) == 0
+      'bkt-bg-negative-red'
+    elsif completion_for(employee) == 100
+      'bkt-bg-green'
+    else
+      'bkt-bg-yellow'
+    end
+  end
+
   def completion_status_string(employee = :all)
     completion_status(employee).capitalize.gsub(/_/, " ")
   end
