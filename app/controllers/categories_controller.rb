@@ -5,7 +5,7 @@ class CategoriesController < ApplicationController
 
   def index
     categories = current_user.company.categories.where(kind: params.require(:kind))
-    categories = categories.where(title: params[:title]) if params[:title]
+    categories = categories.where('lower(title) LIKE ?', "%#{params[:title].downcase}%") if params[:title]
 
     render json: categories, status: :ok
   end
