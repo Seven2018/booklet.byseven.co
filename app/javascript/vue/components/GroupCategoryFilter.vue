@@ -14,9 +14,26 @@
         </div>
       </h2>
     </div>
-    <div class="flex-row-start-centered">
-      tags
+
+    <div
+        v-for="item in groupTagModule.groups"
+        :key="item.key"
+        class="flex-row-between-centered mt-5">
+      <bkt-button
+          type="transparent"
+          class="mr-2 width-25" style="display: flex; justify-content: flex-start; align-items: center;"
+      >
+        Others
+      </bkt-button>
+      <div class="flex-row-start-centered ml-2 bkt-bg-light-grey9-hover p-3 rounded-5px width-75">
+        <bkt-tag
+            v-for="tag in item.categories"
+            class="mx-2"
+            :selected="false"
+        >{{tag.title}}</bkt-tag>
+      </div>
     </div>
+
     <div class="flex-row-start-centered my-4">
       <bkt-button
           iconify="ant-design:plus-circle-outlined"
@@ -32,9 +49,14 @@
 <script>
 import store from "../store";
 import BktButton from "./BktButton";
+import BktTag from "./BktTag";
 
 export default {
-  components: {BktButton},
+  data() {
+    return {
+      groupTagModule: store.state.groupsTag
+    }
+  },
   created() {
     store.dispatch('groupsTag/fetch', {kind: 'interview'})
   },
@@ -46,6 +68,7 @@ export default {
         closable: true,
       })
     }
-  }
+  },
+  components: {BktTag, BktButton},
 }
 </script>
