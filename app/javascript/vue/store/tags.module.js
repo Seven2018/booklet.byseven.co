@@ -14,12 +14,12 @@ export default {
     },
   },
   actions: {
-    async fetch({commit}, {kind}) {
+    async fetch({commit}, {kind, title}) {
       try {
         const res = await HTTP.get(
           routes.generate('categories'),
           {
-            params: {kind}
+            params: {kind, title}
           }
         )
 
