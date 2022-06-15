@@ -25,10 +25,10 @@
       >
         Others
       </bkt-button>
-      <div class="flex-row-start-centered ml-2 bkt-bg-light-grey9-hover p-3 rounded-5px width-75">
+      <div class=" ml-2 bkt-bg-light-grey9-hover px-3 rounded-5px width-75">
         <bkt-tag
             v-for="tag in item.categories"
-            class="mx-2"
+            class="mx-2 d-inline-block my-3"
             :selected="false"
         >{{tag.title}}</bkt-tag>
       </div>
