@@ -6,11 +6,10 @@ export default class extends Controller {
   }
 
   connect() {
-    this.submit_button = document.getElementById('submit-button')
+    this.submit_buttons = document.querySelectorAll('#submit-button')
 
     if (this.element.dataset.defaultTemplate == '') {
-      this.submit_button.disabled = true
-      this.submit_button.classList.add('disabled')
+      this.enableButton(false)
     }
   }
 
@@ -46,11 +45,26 @@ export default class extends Controller {
     if (element.closest('.bkt-select-container').querySelector('input[type="hidden"]').value == '') { enable = false }
 
     if (enable) {
-      this.submit_button.disabled = false
-      this.submit_button.classList.remove('disabled')
+      this.enableButton(true)
     } else {
-      this.submit_button.disabled = true
-      this.submit_button.classList.add('disabled')
+      this.enableButton(false)
     }
+  }
+
+  /////////////
+  // PRIVATE //
+  /////////////
+
+  enableButton(boolean) {
+
+    this.submit_buttons.forEach((button) => {
+      if (boolean) {
+        button.disabled = false
+        button.classList.remove('disabled')
+      } else {
+        button.disabled = true
+        button.classList.add('disabled')
+      }
+    })
   }
 }
