@@ -2,7 +2,8 @@
 
   <% tags.each do |tag| %>
 
-    <div class="d-flex justify-content-between align-items-center mb-2rem">
+    <div class="d-flex justify-content-between align-items-center mb-2rem"
+         data-interviews--campaign-drafts-templates-target="multiTemplateInput">
 
       <li class="fs-1_4rem font-weight-600 bkt-dark-grey m-0"><%= tag.tag_name %></li>
 
@@ -10,7 +11,9 @@
                                                                   width: '20rem',
                                                                   menu_max_height: '22rem',
                                                                   placeholder: 'Select a template',
-                                                                  input_name: "multi_templates_ids[#{tag.id}]")) %>
+                                                                  input_name: "multi_templates_ids[#{tag.id}]",
+                                                                  data_action_input: 'keydown->interviews--campaign-drafts-templates#enableSubmit',
+                                                                  data_action_select: 'click->interviews--campaign-drafts-templates#enableSubmit')) %>
 
     </div>
 
