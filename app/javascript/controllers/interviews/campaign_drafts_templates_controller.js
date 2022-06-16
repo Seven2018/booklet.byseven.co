@@ -9,24 +9,30 @@ export default class extends Controller {
     this.setup()
   }
 
-  setup() {
+  setup(force_disable = false) {
     this.submit_buttons = document.querySelectorAll('#submit-button')
 
-    if (this.element.dataset.defaultTemplate == '') {
+    if (this.element.dataset.defaultTemplate == '' || force_disable) {
       this.enableButton(false)
+    }
+
+    const chosen_category = this.multipleTemplateContainerTarget.dataset.chosenCategory
+
+    if (chosen_category != '') {
+      this.multipleTemplateContainerTarget.querySelector(`[data-value='${chosen_category}']`).click()
     }
   }
 
   chooseSingleTemplate() {
     this.multipleTemplateContainerTarget.classList.add('d-none')
     this.singleTemplateContainerTarget.classList.remove('d-none')
-    this.setup()
+    this.setup(true)
   }
 
   chooseMultipleTemplate() {
     this.singleTemplateContainerTarget.classList.add('d-none')
     this.multipleTemplateContainerTarget.classList.remove('d-none')
-    this.setup()
+    this.setup(true)
   }
 
   displayTagsCollection(e) {
@@ -37,6 +43,33 @@ export default class extends Controller {
       .then(response => response.text())
       .then(html => {
         this.categoriesResultsTarget.innerHTML = html
+
+        var chosen_templates = this.multipleTemplateContainerTarget.dataset.chosenTemplates
+
+        if (chosen_templates != '[]') {
+          chosen_templates = chosen_templates.substring(1, (chosen_templates.length - 1)).split(', ')
+
+          chosen_templates.forEach((pair) => {
+            var tag_id = pair.split(':')[0]
+            tag_id = tag_id.substring(1)
+            const template_id = pair.split(':')[1]
+            var template_title = pair.split(':')[2]
+            template_title = template_title.substring(0, (template_title.length - 1))
+
+            if (document.querySelector(`#tag-${tag_id}`) != undefined) {
+              document.querySelector(`#tag-${tag_id}`).querySelector('input').value = template_title
+              document.querySelector(`#tag-${tag_id}`).querySelector('input[type="hidden"]').value = template_id
+            }
+          })
+        }
+
+        const default_template = document.querySelector('#default_template')
+
+        default_template.classList.remove('d-none')
+        default_template.classList.add('d-flex')
+
+        if (default_template.querySelector('input[type="hidden"]').value != '') { this.enableButton(true) }
+
       })
   }
 

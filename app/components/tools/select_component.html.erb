@@ -1,12 +1,5 @@
 <% string_collection = @collection.first.class == (String || Integer || Float) %>
 
-<% default_value =
-  if @selected.present?
-    string_collection ? @selected : @selected.id
-  else
-    string_collection ? @collection.first : @collection.first.id
-  end %>
-
 <div class="bkt-select-container"
      data-controller="tools--select">
 
@@ -14,9 +7,9 @@
        style="width:  <%= @width %>;"
        data-action="click->tools--select#toggle tools--select:click:outside->tools--select#hide">
 
-    <div class="<%= 'bkt-dark-grey' unless @title.present? %>"
+    <div class="<%= 'bkt-dark-grey' unless (!@selected_text.present? && @title.present?) %>"
          data-tools--select-target="display">
-      <%= @title.presence || default_value %>
+      <%= @selected_text.presence || @title %>
     </div>
 
   </div>
@@ -42,10 +35,10 @@
   </div>
 
   <% if @input_name.present? %>
-
+  <%# raise if @input_name == 'multi_templates_category' %>
     <input type="hidden"
            name="<%= @input_name %>"
-           value="<%= default_value %>"
+           value="<%= @selected_value %>"
            data-action="">
 
   <% end %>

@@ -4,9 +4,10 @@ class CampaignDraft::TemplatesController < CampaignDraft::BaseController
 
   def update
     multi_templates_ids =
-      params[:multi_templates_ids].nil? ? [] : params[:multi_templates_ids].permit!.to_hash.to_string.split(',')
-    campaign_draft.update campaign_draft_params.merge(multi_templates_ids: multi_templates_ids)
-
+      params[:templates_selection_method] == 'single' ? [] : params[:multi_templates_ids].permit!.to_hash.to_string.split(',')
+    multi_templates_category = params[:templates_selection_method] == 'single' ? \
+      '' : params[:multi_templates_category]
+    campaign_draft.update campaign_draft_params.merge(multi_templates_category: multi_templates_category, multi_templates_ids: multi_templates_ids)
     if current_params_persisted?
       campaign_draft.templates_set!
       redirect_to edit_campaign_draft_dates_path
