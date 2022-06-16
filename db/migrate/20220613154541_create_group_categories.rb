@@ -6,7 +6,7 @@ class CreateGroupCategories < ActiveRecord::Migration[6.0]
       t.belongs_to :company
 
       t.timestamps
-    end unless GroupCategory.table_exists?
+    end
 
     Company.all.each do |company|
       company.group_categories.create(name: 'others', kind: :interview)
