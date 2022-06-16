@@ -20,11 +20,13 @@
         :ref="loopCatSuggestionRef + idx"
         class="flex-row-between-centered mt-5">
       <bkt-button
+          v-if="showGroups.length !== 1"
           type="transparent"
           class="mr-2 width-25 min-h-5rem" style="display: flex; justify-content: flex-start; align-items: center;"
       >
         {{ item.name | capitalize }}
       </bkt-button>
+
       <div
           class=" ml-2 bkt-bg-light-grey9-hover px-3 rounded-5px width-75 min-h-5rem"
           @click="editTagField(idx)"
