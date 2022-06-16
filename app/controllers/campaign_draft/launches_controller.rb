@@ -47,7 +47,7 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
       interviewer_selection_method
       default_interviewer_id
       interviewee_ids
-      templates_selection_method default_template_id multi_templates_ids
+      templates_selection_method default_template_id
       date
     ]
   end

@@ -17,7 +17,7 @@
 
       <%= date_field_tag(:date, @campaign.date&.strftime("%F"),
                                 placeholder: 'Select date',
-                                class: 'datepicker_ height-3rem width-10rem fs-1_4rem p-1rem font-weight-400 rounded-3px text-center border-bkt-dark-grey-focus mr-1rem',
+                                class: 'datepicker_ height-3rem width-12rem fs-1_4rem p-1rem font-weight-400 rounded-3px text-center border-bkt-dark-grey-focus mr-1rem',
                                 data: { action: "change->interviews--campaign-drafts-dates#enableSubmit" }) %>
 
       <div class="d-flex justify-content-center align-items-center height-3rem width-3rem bkt-bg-light-blue">

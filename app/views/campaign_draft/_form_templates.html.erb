@@ -5,7 +5,7 @@
 <div data-controller="interviews--campaign-drafts-templates %>"
      data-default-template="<%= default_template_id %>">
 
-  <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to display template(s)') %>
+  <%= render_component FormSectionTitleComponent.new(title: 'Choose how you want to display template(s)') %>
 
   <div class="d-flex gap-1rem w-100 mb-3rem"
        style='max-width: 500px;'>
@@ -101,11 +101,16 @@
     <div class="d-flex justify-content-end pt-5">
 
       <a id="submit-button"
-         class='bkt-btn-blue'
+         class='submit-incomplete bkt-btn-blue'
          data-toggle="modal"
          data-target="#confirmTemplates">
         <p class="bkt-white mr-3">Next</p> <i class="fa fa-arrow-right"></i>
       </a>
+
+      <button id="submit-button"
+         class='submit-complete bkt-btn-blue d-none'>
+        <p class="bkt-white mr-3">Next</p> <i class="fa fa-arrow-right"></i>
+      </button>
 
 
       <!------------>
