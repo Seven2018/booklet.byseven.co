@@ -24,7 +24,7 @@
         <p>
           {{searchText}}
         </p>
-        <input ref="inputField" v-model="searchText" @input="search" type="text" class="border-none bg-transparent" style="height: 20px;width: 1px;">
+        <input ref="inputField" v-model="searchText" @input="search" type="text" class="border-none bg-transparent" style="height: 20px;width: 1px;padding-left: 0px;">
       </div>
 
       <div v-if="allTags" class="flex-column pl-4" style="height: 200px; overflow-y: auto">
@@ -97,12 +97,14 @@ export default {
     search(e) {
       // this.searchText = e.target.value
       store.dispatch('tagsModule/fetch', {kind: 'interview', title: this.searchText})
+          .then(() => this.$refs.inputField.focus())
     },
     async createTag(text) {
       await this.addTag({id: Math.floor(Math.random() * 100), title: text})
       this.searchText = ''
       this.suggestToCreate = false
       store.dispatch('tagsModule/fetch', {kind: 'interview'})
+      store.dispatch('groupsTag/fetch', {kind: 'interview'})
 
     },
     focusInput() {
