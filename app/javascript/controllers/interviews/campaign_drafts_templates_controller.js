@@ -9,10 +9,10 @@ export default class extends Controller {
     this.setup()
   }
 
-  setup() {
+  setup(force_disable = false) {
     this.submit_buttons = document.querySelectorAll('#submit-button')
 
-    if (this.element.dataset.defaultTemplate == '') {
+    if (this.element.dataset.defaultTemplate == '' || force_disable) {
       this.enableButton(false)
     }
 
@@ -26,15 +26,13 @@ export default class extends Controller {
   chooseSingleTemplate() {
     this.multipleTemplateContainerTarget.classList.add('d-none')
     this.singleTemplateContainerTarget.classList.remove('d-none')
-    this.setup()
-    this.enableButton(false)
+    this.setup(true)
   }
 
   chooseMultipleTemplate() {
     this.singleTemplateContainerTarget.classList.add('d-none')
     this.multipleTemplateContainerTarget.classList.remove('d-none')
-    this.setup()
-    this.enableButton(false)
+    this.setup(true)
   }
 
   displayTagsCollection(e) {
