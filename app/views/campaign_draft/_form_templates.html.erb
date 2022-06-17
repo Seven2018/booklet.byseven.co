@@ -80,7 +80,7 @@
                                                         menu_max_height: '20rem',
                                                         title: 'Choose category',
                                                         input_name: 'multi_templates_category',
-                                                        collection: TagCategory.where(company_id: current_user.company_id).order(position: :asc).select(:id, :name),
+                                                        collection: TagCategory.where(company_id: current_user.company_id).where_exists(:tags).order(position: :asc).select(:id, :name),
                                                         selected_value: selected_category.first,
                                                         selected_text: selected_category.last,
                                                         data_action: 'click->interviews--campaign-drafts-templates#displayTagsCollection')) %>
