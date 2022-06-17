@@ -192,46 +192,49 @@
 
   </div>
 
-</div>
+
+  <!------------>
+  <!-- HIDDEN -->
+  <!------------>
+
+  <a id='sendEmailSuccessTrigger' class='hidden' data-toggle='modal' data-target='#sendEmailSuccess'></a>
 
 
-<!------------>
-<!-- HIDDEN -->
-<!------------>
+  <!------------>
+  <!-- MODALS -->
+  <!------------>
 
-<a id='sendEmailSuccessTrigger' class='hidden' data-toggle='modal' data-target='#sendEmailSuccess'></a>
+  <div id='sendEmailSuccess'
+       class='modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static">
 
+    <div class='modal-dialog'
+         role='document'>
+      <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
+    </div>
 
-<!------------>
-<!-- MODALS -->
-<!------------>
-
-<div id='sendEmailSuccess'
-     class='modal fade'
-     tabindex='-1'
-     role='dialog'
-     data-keyboard="false"
-     data-backdrop="static">
-
-  <div class='modal-dialog'
-       role='document'>
-    <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
   </div>
 
-</div>
+  <div id='addEmployee'
+       class='modal action-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static"
+       data-interviews--campaigns-show-target="addEmployeeModal">
 
-<div id='addEmployee'
-     class='modal action-modal fade'
-     tabindex='-1'
-     role='dialog'
-     data-keyboard="false"
-     data-backdrop="static">
+    <div class='modal-dialog action-modal__dialog'
+         role='document'>
+      <%= render 'campaigns/modals/add_employee', campaign: @campaign %>
+    </div>
 
-  <div class='modal-dialog action-modal__dialog'
-       role='document'>
-    <%= render 'campaigns/modals/add_employee', campaign: @campaign %>
   </div>
 
+  <!------------>
+
 </div>
 
-<!------------>
+

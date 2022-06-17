@@ -34,7 +34,7 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
   def interview_params
     {
       employee: employee,
-      interviewer: (employee.manager.presence || campaign.owner),
+      interviewer: interviewer,
       interview_form: last_campaign_interview.interview_form,
       title: campaign.title,
       creator: campaign.owner,
@@ -44,5 +44,9 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
 
   def employee
     @user ||= User.find(params[:user_id].presence || params.dig(:interview_set, :user_id))
+  end
+
+  def interviewer
+    @interviewer ||= User.find_by(id: params[:interviewer_id])
   end
 end
