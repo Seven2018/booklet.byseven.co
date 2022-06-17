@@ -7,7 +7,7 @@
           type="interview"
           iconify="ant-design:plus-circle-outlined"
           @click="createInterviewForm"
-      >Create campaign</bkt-button>
+      >Create template</bkt-button>
     </template>
     <template v-slot:body>
       <generic-index-search path-key="interview_forms_list"></generic-index-search>

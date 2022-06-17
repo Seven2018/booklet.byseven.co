@@ -11,7 +11,7 @@ class CampaignSerializer < ActiveModel::Serializer
   # has_many :employees, through: :interviews
 
   def employees_count
-    object.employees.count
+    object.employees.distinct.count
   end
 
   def completion

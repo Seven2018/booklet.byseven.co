@@ -21,11 +21,25 @@
         >
           {{tag.title}}
         </bkt-tag>
-        <input ref="inputField" type="text" class="border-none bg-transparent" style="height: 20px;width: 3px;">
+        <p>
+          {{searchText}}
+        </p>
+        <input ref="inputField" v-model="searchText" @input="search" type="text" class="border-none bg-transparent" style="height: 20px;width: 1px;">
       </div>
 
       <div v-if="allTags" class="flex-column pl-4" style="height: 200px; overflow-y: auto">
         <p class="my-4 bkt-light-grey fs-1_2rem">Select a tag or create new one</p>
+        <div
+            v-if="searchText"
+            @click="createTag(searchText)"
+            class="flex-row-start-centered bkt-bg-light-grey9 bkt-bg-light-blue-hover mb-3 cursor-pointer"
+        >
+          <p class="mr-3">Create +</p>
+          <bkt-tag>
+            {{searchText}}
+          </bkt-tag>
+        </div>
+
         <div
             v-for="(tag, idx) in allTags"
             :key="idx"
@@ -53,7 +67,9 @@ export default {
   data() {
     return {
       entityTags: [],
-      tagsModule: store.state.tagsModule
+      tagsModule: store.state.tagsModule,
+      searchText: '',
+      suggestToCreate: false
     }
   },
   created() {
@@ -64,15 +80,31 @@ export default {
     allTags() {
       if (!this.tagsModule.tags) return []
 
-      return this.tagsModule.tags.filter(tag => {
+      const res = this.tagsModule.tags.filter(tag => {
         for (const tagKey in this.entityTags) {
           if (this.entityTags[tagKey].title === tag.title) return false
         }
         return true
       })
+      if (res.length === 0)
+        this.suggestToCreate = true
+      else
+        this.suggestToCreate = false
+      return res
     }
   },
   methods: {
+    search(e) {
+      // this.searchText = e.target.value
+      store.dispatch('tagsModule/fetch', {kind: 'interview', title: this.searchText})
+    },
+    async createTag(text) {
+      await this.addTag({id: Math.floor(Math.random() * 100), title: text})
+      this.searchText = ''
+      this.suggestToCreate = false
+      store.dispatch('tagsModule/fetch', {kind: 'interview'})
+
+    },
     focusInput() {
       this.$refs.inputField.focus()
     },
@@ -98,6 +130,7 @@ export default {
         )
 
         this.entityTags = this.entityTags.filter(campaignTag => campaignTag.title !== tag)
+        store.dispatch('tagsModule/fetch', {kind: 'interview'})
         store.dispatch('genericFetchEntity/fetch',
             {
               pathKey: this.refreshEntityListPath
@@ -108,6 +141,7 @@ export default {
       }
     },
     async addTag(tagObj) {
+      this.searchText = ''
       try {
         await HTTP.post(
             routes.generate(this.toggleTagFromEntityPath, {id: this.entityId}) + '.json',

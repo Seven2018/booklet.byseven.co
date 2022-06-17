@@ -28,7 +28,7 @@ class Objective::ElementsController < ApplicationController
     authorize @users
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
 
     @users = @users.page(page).per(size)
 
@@ -141,7 +141,7 @@ class Objective::ElementsController < ApplicationController
     elements = elements.where('due_date <= ?', Date.parse(params[:to].to_s)) if params[:to].present?
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
 
     elements = elements.page(page).per(size)
 

@@ -25,7 +25,7 @@ class InterviewFormsController < ApplicationController
 
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
     interviewForms = interviewForms.page(page).per(size)
 
     authorize interviewForms

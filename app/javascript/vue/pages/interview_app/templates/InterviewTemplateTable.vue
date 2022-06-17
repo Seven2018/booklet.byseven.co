@@ -45,7 +45,7 @@
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
                 @click.stop="openEditTemplateTags(id)"
             >
-              Edit campaign tags
+              Edit template tags
             </button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"

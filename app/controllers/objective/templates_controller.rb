@@ -17,7 +17,7 @@ class Objective::TemplatesController < ApplicationController
                    .where(objective_indicators: {indicator_type: params[:search_indicator_type]}) if params[:search_indicator_type].present?
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
 
     elements = elements.page(page).per(size)
 
