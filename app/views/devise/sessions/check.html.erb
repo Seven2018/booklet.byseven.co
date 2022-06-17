@@ -3,7 +3,11 @@
 <% end %>
 
 <% content_for :subtitle do %>
-  Please enter your password.
+
+  <% if @user.invitation_token.nil? %>
+    Please enter your password.
+  <% end %>
+
 <% end %>
 
 <% wrong_password = false %>

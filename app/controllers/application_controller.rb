@@ -24,6 +24,8 @@ class ApplicationController < ActionController::Base
   # Uncomment when you *really understand* Pundit!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  SIZE_PAGE_INDEX = 20
+
   def redirect_to_https
     redirect_to :protocol => "https://" unless (request.ssl? || request.local? || Rails.env.testing? || Rails.env.development?)
   end

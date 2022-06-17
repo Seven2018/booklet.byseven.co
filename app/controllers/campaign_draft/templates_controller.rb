@@ -4,10 +4,10 @@ class CampaignDraft::TemplatesController < CampaignDraft::BaseController
 
   def update
     multi_templates_ids =
-      params[:multi_templates_ids].class == String ? [params[:multi_templates_ids]] : params[:multi_templates_ids].permit!.to_hash.to_string.split(',')
-
-    campaign_draft.update campaign_draft_params.merge(multi_templates_ids: multi_templates_ids)
-
+      params[:templates_selection_method] == 'single' ? [] : params[:multi_templates_ids].permit!.to_hash.to_string.split(',')
+    multi_templates_category = params[:templates_selection_method] == 'single' ? \
+      '' : params[:multi_templates_category]
+    campaign_draft.update campaign_draft_params.merge(multi_templates_category: multi_templates_category, multi_templates_ids: multi_templates_ids)
     if current_params_persisted?
       campaign_draft.templates_set!
       redirect_to edit_campaign_draft_dates_path
@@ -20,7 +20,7 @@ class CampaignDraft::TemplatesController < CampaignDraft::BaseController
   private
 
   def campaign_draft_params_keys
-    %i[templates_selection_method default_template_id multi_templates_ids]
+    %i[templates_selection_method default_template_id]
   end
 
   def previous_steps_params_keys

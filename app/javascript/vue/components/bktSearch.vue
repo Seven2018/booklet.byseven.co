@@ -2,7 +2,7 @@
   <div class="position-relative">
     <input
         placeholder="Search"
-        class="p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus"
+        class="p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus width-100"
         style="width: -webkit-fill-available;"
         :value="value"
         @input="event => $emit('input', event.target.value)">

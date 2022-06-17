@@ -21,7 +21,7 @@ class CampaignsController < ApplicationController
 
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
     campaigns = campaigns.page(page).per(size)
 
     authorize campaigns

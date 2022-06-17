@@ -1,3 +1,6 @@
+<% selected_category_id = campaign.multi_templates_category %>
+<% selected_category = selected_category_id.present? ? [selected_category_id, TagCategory.find(selected_category_id).name] : [] %>
+
 <% default_template_id = campaign.default_template_id %>
 <% default_template =
       default_template_id.present? ? [default_template_id, InterviewForm.find(default_template_id).title] : [] %>
@@ -5,7 +8,7 @@
 <div data-controller="interviews--campaign-drafts-templates %>"
      data-default-template="<%= default_template_id %>">
 
-  <%= render_component FormSectionTitleComponent.new(title: 'Chose how you want to display template(s)') %>
+  <%= render_component FormSectionTitleComponent.new(title: 'Choose how you want to display template(s)') %>
 
   <div class="d-flex gap-1rem w-100 mb-3rem"
        style='max-width: 500px;'>
@@ -35,7 +38,8 @@
 
   </div>
 
-  <div data-interviews--campaign-drafts-templates-target="singleTemplateContainer requiredInput">
+  <div class="<%= 'd-none' if campaign.multi_templates_category.present? %>"
+       data-interviews--campaign-drafts-templates-target="singleTemplateContainer requiredInput">
 
     <%= render_component(Tools::SelectAutocompleteComponent.new(path: templates_search_path,
                                                                 width: '100%',
@@ -46,13 +50,21 @@
                                                                 data_action_input: 'keydown->interviews--campaign-drafts-templates#enableSubmit',
                                                                 data_action_select: 'click->interviews--campaign-drafts-templates#enableSubmit')) %>
 
-    <input type="hidden"
-           name="multi_templates_ids">
+    <div class="d-flex justify-content-end pt-5">
+
+      <button id="submit-button"
+              class='bkt-btn-blue'>
+        <p class="mr-3">Next</p> <i class="fa fa-arrow-right"></i>
+      </button>
+
+    </div>
 
   </div>
 
-  <div class="d-none"
-       data-interviews--campaign-drafts-templates-target="multipleTemplateContainer">
+  <div class="<%= 'd-none' unless campaign.multi_templates_category.present? %>"
+       data-interviews--campaign-drafts-templates-target="multipleTemplateContainer"
+       data-chosen-category="<%= campaign.multi_templates_category %>"
+       data-chosen-templates="<%= campaign.multi_templates_ids.map{|x| [x.split(':').first, x.split(':').last, InterviewForm.find_by(id: x.split(':').last).title].join(':')} %>">
 
       <div class="mb-2rem">
 
@@ -67,9 +79,11 @@
         <%= render_component(Tools::SelectComponent.new(width: '100%',
                                                         menu_max_height: '20rem',
                                                         title: 'Choose category',
-                                                        collection: TagCategory.where(company_id: current_user.company_id).order(position: :asc).select(:id, :name),
+                                                        input_name: 'multi_templates_category',
+                                                        collection: TagCategory.where(company_id: current_user.company_id).where_exists(:tags).order(position: :asc).select(:id, :name),
+                                                        selected_value: selected_category.first,
+                                                        selected_text: selected_category.last,
                                                         data_action: 'click->interviews--campaign-drafts-templates#displayTagsCollection')) %>
-
       </div>
 
       <div class="mb-2rem">
@@ -84,13 +98,70 @@
 
       </div>
 
-      <div class=''
-           data-interviews--campaign-drafts-templates-target="categoriesResults"
-           data-path="<%= campaign_draft_templates_tags_path %>">
+      <ul class="list-style-inside">
+        <div class=''
+             data-interviews--campaign-drafts-templates-target="categoriesResults"
+             data-path="<%= campaign_draft_templates_tags_path %>">
 
-        <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Please choose a category first</p>
+          <p class="fs-1_4rem font-weight-600 bkt-light-grey6">Please choose a category first</p>
+
+        </div>
+
+        <div id="default_template"
+             class="d-none justify-content-between align-items-center"
+             data-interviews--campaign-drafts-templates-target="requiredInput">
+
+          <li class="fs-1_4rem font-weight-600 bkt-dark-grey m-0">Default template</li>
+
+          <%= render_component(Tools::SelectAutocompleteComponent.new(path: templates_search_path,
+                                                                width: '25rem',
+                                                                menu_max_height: '22rem',
+                                                                placeholder: 'Select a template',
+                                                                input_name: "default_template_id",
+                                                                default_value: default_template,
+                                                                data_action_input: 'keydown->interviews--campaign-drafts-templates#enableSubmit',
+                                                                data_action_select: 'click->interviews--campaign-drafts-templates#enableSubmit')) %>
+
+        </div>
+      </ul>
+
+    <div class="d-flex justify-content-end pt-5">
+
+      <a id="submit-button"
+         class='submit-incomplete bkt-btn-blue'
+         data-toggle="modal"
+         data-target="#confirmTemplates">
+        <p class="bkt-white mr-3">Next</p> <i class="fa fa-arrow-right"></i>
+      </a>
+
+      <button id="submit-button"
+         class='submit-complete bkt-btn-blue d-none'>
+        <p class="bkt-white mr-3">Next</p> <i class="fa fa-arrow-right"></i>
+      </button>
+
+
+      <!------------>
+      <!-- MODALS -->
+      <!------------>
+
+      <div id='confirmTemplates'
+           class='modal ays-modal fade'
+           tabindex='-1'
+           role='dialog'
+           data-keyboard="false"
+           data-backdrop="static">
+
+        <div class='modal-dialog ays-modal__dialog'
+             role='document'>
+          <%= render 'campaign_draft/modals/confirm_templates' %>
+        </div>
 
       </div>
+
+      <!------------>
+
+    </div>
+
   </div>
 
 </div>
