@@ -19,8 +19,16 @@
         :key="item.id"
         :ref="loopCatSuggestionRef + idx"
         class="flex-row-between-centered mt-5 align-items-start pos-rel">
-          <bkt-button
-              v-if="showGroups.length !== 1"
+
+      <input
+          v-if="item.inputRenameGroupCat"
+          @blur="item.inputRenameGroupCat = false"
+          v-on:keyup.enter="renameGroupCat($event, item)"
+          :ref="'inputRenameGroupCat' + idx"
+          class="mr-2 width-25 min-h-5rem p-3 rounded-5px border-bkt-dark-grey-focus fs-1_6rem "
+          type="text">
+      <bkt-button
+          v-else-if="item.inputRenameGroupCat === false && showGroups.length !== 1"
               @click.stop="showGroupOptions(idx)"
               v-click-outside="hideGroupOptions"
               type="transparent"
@@ -28,11 +36,13 @@
           >
             {{ item.name | capitalize }}
           </bkt-button>
-          <ul
-              v-if="item.groupOptions"
+      <ul
+          v-if="item.groupOptions"
               :tabindex="idx"
               class="position-absolute left-0 bkt-bg-white bkt-box-shadow-medium width-25 rounded-5px z-index-5" style="top: 5rem">
-            <li class="flex-row-start-centered align-items-center p-2 bkt-bg-light-grey9-hover mb-0 cursor-pointer">
+            <li
+                @click="showRenameGroupCat(idx)"
+                class="flex-row-start-centered align-items-center p-2 bkt-bg-light-grey9-hover mb-0 cursor-pointer">
               <span class="iconify mr-2" data-icon="jam:write"></span>
               <p>Rename</p>
             </li>
@@ -115,7 +125,7 @@ export default {
 
       if (!('showCatSuggestion' in this.groupTagModule.groups[0])) {
         this.groupTagModule.groups = this.groupTagModule.groups.map((item) => {
-          return {...item, showCatSuggestion: false, showInputCatSuggestion: false, groupOptions: false}
+          return {...item, showCatSuggestion: false, showInputCatSuggestion: false, groupOptions: false, inputRenameGroupCat: false}
         })
       }
       return this.groupTagModule.groups
@@ -157,6 +167,11 @@ export default {
       const groupName = e.target.value
       store.dispatch('groupsTag/newGroup', {name: groupName, kind: 'interview'})
     },
+    renameGroupCat(e, item) {
+      const groupName = e.target.value
+
+      store.dispatch('groupsTag/renameGroup', {name: groupName, group_id: item.id, kind: 'interview'})
+    },
     showGroupOptions(arrayIdx) {
       this.groupTagModule.groups[arrayIdx].groupOptions = true
     },
@@ -182,6 +197,12 @@ export default {
               .dispatch('groupsTag/delete', {id, kind: 'interview'})
               .then(() => this.$modal.close())
         }
+      })
+    },
+    showRenameGroupCat(arrayIdx) {
+      this.groupTagModule.groups[arrayIdx].inputRenameGroupCat = true
+      this.$nextTick(() => {
+        this.$refs[`inputRenameGroupCat${arrayIdx}`][0].focus()
       })
     }
   },

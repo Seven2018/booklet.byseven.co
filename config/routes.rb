@@ -119,7 +119,7 @@ Rails.application.routes.draw do
       post :new_group
     end
   end
-  resources :group_categories, only: [:destroy]
+  resources :group_categories, only: [:destroy, :update]
 
   # COMPANIES
   resources :companies, only: %i[new create update destroy]
