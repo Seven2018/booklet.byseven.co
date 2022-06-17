@@ -248,8 +248,10 @@ class UsersController < ApplicationController
         User.where(company_id: current_user.company_id)
       end
 
-    @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true).map{|x| [x.id, x.fullname]}
+    @users = @users.where_exists(:interviews, campaign_id: params[:campaign_id]) if params[:campaign_id].present?
+    @users = @users.where_not_exists(:interviews, campaign_id: params[:not_campaign_id]) if params[:not_campaign_id].present?
 
+    @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true).map{|x| [x.id, x.fullname]}
 
     render partial: 'shared/tools/select_autocomplete', locals: { elements: @users }
   end

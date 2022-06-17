@@ -1,10 +1,10 @@
 <% string_collection = @collection.first.class == (String || Integer || Float) %>
 
-<div class="bkt-select-container"
+<div class="bkt-select-container <%= @klasses %>"
      data-controller="tools--select">
 
   <div class="bkt-select-display"
-       style="width:  <%= @width %>;"
+       style="min-width:  <%= @width %>;"
        data-action="click->tools--select#toggle tools--select:click:outside->tools--select#hide">
 
     <div class="<%= 'bkt-dark-grey' unless (!@selected_text.present? && @title.present?) %>"
@@ -15,7 +15,7 @@
   </div>
 
   <div class="bkt-select-menu hidden"
-       style="width: <%= @width %>; max-height: <%= @menu_max_height.presence %>"
+       style="min-width: <%= @width %>; max-height: <%= @menu_max_height.presence %>"
        data-tools--select-target="menu">
 
     <% @collection.each do |element| %>

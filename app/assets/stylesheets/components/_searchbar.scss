@@ -1,11 +1,6 @@
-#searchbar {
+#searchbar, #searchbar-wrap {
   position: relative;
   margin-bottom: 2rem;
-
-  form {
-    display: flex;
-    align-items: center;
-  }
 
   input:not([type=submit]), select {
     height: 5rem;
@@ -89,6 +84,21 @@
   }
 }
 
+#searchbar {
+
+  form {
+    display: flex;
+    align-items: center;
+  }
+}
+
+#searchbar-wrap {
+
+  form {
+    display: flex;
+    align-items: start;
+  }
+}
 
 ////////////////////////
 // CAMPAIGN SEARCHBAR //

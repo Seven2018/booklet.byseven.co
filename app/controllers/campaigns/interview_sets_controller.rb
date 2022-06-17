@@ -1,7 +1,8 @@
 class Campaigns::InterviewSetsController < Campaigns::BaseController
   def create
-    # raise Pundit::NotAuthorizedError unless
-    #   CampaignPolicy.new(current_user, campaign).add_interview_set?
+    raise Pundit::NotAuthorizedError unless
+      CampaignPolicy.new(current_user, campaign).add_interview_set?
+    raise
 
     # params_set = interview_params
     # params_set[:interviewer] = User.find_by(id: params.dig(:add_to_interviewer_id)) || interview_params[:interviewer]
@@ -42,6 +43,6 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
   end
 
   def employee
-    @user ||= User.find params[:user_id]
+    @user ||= User.find(params[:user_id].presence || params.dig(:interview_set, :user_id))
   end
 end

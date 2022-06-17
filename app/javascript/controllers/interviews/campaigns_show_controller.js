@@ -2,10 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return [ 'employeeCount' ]
+    return [ 'employeeCount', 'searchSubmit' ]
   }
 
   connect() {
+    this.timer
+    this.waitTime = 500
 
     this.element[
       (str => {
@@ -18,7 +20,44 @@ export default class extends Controller {
           .replace(/^\w/, c => c.toLowerCase())
       })(this.identifier)
     ] = this
+  }
 
+  ////////////
+  // SEARCH //
+  ////////////
+
+  searchSubmit(event) {
+    if (event.type == 'keyup') {
+
+      clearTimeout(this.timer);
+
+      this.timer = setTimeout(() => {
+        this.searchSubmitTarget.click()
+      }, this.waitTime);
+
+    } else {
+
+      this.searchSubmitTarget.click()
+
+    }
+  }
+
+  searchReset() {
+    const searchbar = document.getElementById('searchbar-wrap')
+
+    searchbar.querySelectorAll('input').forEach((input) => {
+      input.value = ''
+    })
+
+    searchbar.querySelectorAll('.bkt-select-container').forEach((select) => {
+      var display = select.querySelector('.bkt-select-display').firstElementChild
+      var default_value = select.querySelector('.bkt-select-menu').firstElementChild.innerText
+
+      display.innerText = default_value
+      display.classList.remove('bkt-dark-grey')
+    })
+
+    this.searchSubmitTarget.click()
   }
 
 

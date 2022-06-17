@@ -1,0 +1,36 @@
+<div class="modal-content action-modal__content">
+
+  <div class="modal-header action-modal__header">
+
+    <h3 class="modal-title action-modal__title">Choose employee</h3>
+
+    <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+    </button>
+
+  </div>
+
+  <%= simple_form_for :interview_set, url: campaigns_interview_sets_path, method: :post do |f| %>
+
+    <div class="modal-body action-modal__body width-35rem height-14rem overflow-y-visible">
+
+      <%= render_component(Tools::SelectAutocompleteComponent.new(path: users_search_path,
+                                                                  additional_params: "not_campaign_id=#{campaign.id}",
+                                                                  width: '100%',
+                                                                  menu_max_height: '22rem',
+                                                                  placeholder: 'Search users',
+                                                                  input_name: "interview_set[user_id]")) %>
+
+    </div>
+
+    <%= f.hidden_field :campaign_id, value: campaign.id %>
+
+    <div class="modal-footer action-modal__footer">
+
+      <%= f.submit 'Add employee', class: 'bkt-btn-blue' %>
+
+    </div>
+
+  <% end %>
+
+</div>

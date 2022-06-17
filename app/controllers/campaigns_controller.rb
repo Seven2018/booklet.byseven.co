@@ -1,5 +1,4 @@
 class CampaignsController < ApplicationController
-  include InterviewUsersFilter
   before_action :set_campaign, only: %i[show edit send_notification_email destroy toggle_tag remove_company_tag search_tags index_line]
   before_action :show_navbar_campaign
 
@@ -35,17 +34,34 @@ class CampaignsController < ApplicationController
     authorize @campaign
 
     @campaign = @campaign.decorate
+    campaign_id = @campaign.id
+
+    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+
     @employees =
       if current_user.can_create_campaigns?
         @campaign.employees.order(lastname: :asc)
       else
-        User.where_exists(:interviews, campaign_id: @campaign.id, interviewer: current_user).order(lastname: :asc)
+        User.where_exists(:interviews, campaign_id: campaign_id, interviewer: current_user).order(lastname: :asc)
       end
 
     search_name = params.dig(:search, :name)
+    search_interviewer = params.dig(:search, :interviewer)
+    search_tags = params.dig(:search, :tag_categories)&.permit!&.to_hash&.compact&.values
     search_completion = params.dig(:search, :completion)&.downcase&.gsub(' ', '_')
 
     @employees = @employees.search_users(search_name) if search_name.present?
+
+    @employees = @employees.where_exists(:interviews, campaign_id: campaign_id, interviewer_id: search_interviewer) \
+      if search_interviewer.present?
+
+    if search_tags.present?
+      search_tags.each do |tag|
+        @employees = @employees.where_exists(:tags, id: tag)
+      end
+    end
+
+    @employees = @employees
 
     @employees = @employees.select{|x| @campaign.completion_status(x) == search_completion} \
       if ['not_started', 'in_progress', 'completed'].include?(search_completion)
