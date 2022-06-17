@@ -5,6 +5,9 @@
       <div v-if="popUp.data.title" class="flex-row-center-centered">
         <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
       </div>
+      <div v-if="popUp.data.subtitle" class="flex-row-center-centered mt-3 mb-5">
+        <p class="fs-1_6rem font-weight-500 text-center" v-html="popUp.data.subtitle"></p>
+      </div>
 
       <div v-if="popUp.data.textClose && popUp.data.textConfirm" class="flex-row-around-centered mt-5 fs-1_8rem">
         <button class="border-bkt-dark-grey width-15rem rounded-2px py-2" @click="close">{{ popUp.data.textClose }}

@@ -1,5 +1,6 @@
 import HTTP from "../plugins/axios";
 import routes from "../constants/routes";
+import axios from "../plugins/axios";
 
 export default {
   namespaced: true,
@@ -38,5 +39,14 @@ export default {
         commit('setError', e.message)
       }
     },
+    async delete({commit, dispatch, state}, {id, kind}) {
+      try {
+        await axios.delete(routes.generate('group_categories_id', {id}) )
+
+        dispatch('fetch', {kind})
+      } catch (e) {
+        commit('setError', e.message)
+      }
+    }
   }
 }

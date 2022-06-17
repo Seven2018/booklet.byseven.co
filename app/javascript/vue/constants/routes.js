@@ -36,7 +36,8 @@ const routes = {
   interviews_reports_edit: '/interviews/reports/edit',
   interviews_reports: '/interviews/reports/list',
   categories_groups: '/categories/groups',
-  new_group_categories: '/categories/new_group'
+  new_group_categories: '/categories/new_group',
+  group_categories_id: '/group_categories/{id}'
 }
 
 export default {
