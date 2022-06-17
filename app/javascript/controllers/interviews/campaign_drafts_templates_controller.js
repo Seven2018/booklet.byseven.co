@@ -70,6 +70,7 @@ export default class extends Controller {
 
         if (default_template.querySelector('input[type="hidden"]').value != '') { this.enableButton(true) }
 
+        this.showMissingTemplateModal()
       })
   }
 
@@ -81,6 +82,20 @@ export default class extends Controller {
     const element = event.currentTarget
     var enable = true
 
+    if (element.closest('.bkt-select-container').querySelector('input[type="hidden"]').value == '') { enable = false }
+
+    if (enable) {
+      this.enableButton(true)
+    } else {
+      this.enableButton(false)
+    }
+  }
+
+  /////////////
+  // PRIVATE //
+  /////////////
+
+  showMissingTemplateModal() {
     if (this.hasMultiTemplateInputTarget) {
       var missing = false
 
@@ -100,19 +115,7 @@ export default class extends Controller {
         document.querySelector(".submit-incomplete").classList.add('d-none')
       }
     }
-
-    if (element.closest('.bkt-select-container').querySelector('input[type="hidden"]').value == '') { enable = false }
-
-    if (enable) {
-      this.enableButton(true)
-    } else {
-      this.enableButton(false)
-    }
   }
-
-  /////////////
-  // PRIVATE //
-  /////////////
 
   enableButton(boolean) {
 

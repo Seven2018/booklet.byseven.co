@@ -20,7 +20,7 @@
     <%= stylesheet_pack_tag 'application' %>
     <%= javascript_pack_tag 'application', defer: true %>
   </head>
-  <body data-controller="mobile-displayer" class="overflow-y-auto height-100">
+  <body data-controller="mobile-displayer" class="overflow-y-auto hide-scrollbar">
 
     <%= render 'shared/impersonations' %>
 
@@ -46,7 +46,7 @@
       <%= render 'shared/flashes' %>
       <% if user_signed_in? %>
         <div id="booklet-container"
-              class="overflow-x-hidden pos-rel">
+             class="overflow-x-hidden pos-rel">
           <%= yield %>
         </div>
       <% else %>
