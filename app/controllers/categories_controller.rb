@@ -17,6 +17,18 @@ class CategoriesController < ApplicationController
     render json: current_user.company.group_categories.of_kind(kind.to_sym), status: :ok
   end
 
+  def new_group
+    group_name = params.require(:name)
+    kind = params.require(:kind)
+    group = current_user.company.group_categories.create(name: group_name, kind: kind)
+
+    if group.valid?
+      head :ok
+    else
+      render json: group.errors.messages, status: :unprocessable_entity
+    end
+  end
+
   def from_campaign
     campaign = Campaign.find(params.require(:id))
 

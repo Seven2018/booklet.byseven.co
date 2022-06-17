@@ -35,7 +35,8 @@ const routes = {
   interview_forms_toggle_tag: '/interview_forms/{id}/toggle_tag',
   interviews_reports_edit: '/interviews/reports/edit',
   interviews_reports: '/interviews/reports/list',
-  categories_groups: '/categories/groups'
+  categories_groups: '/categories/groups',
+  new_group_categories: '/categories/new_group'
 }
 
 export default {

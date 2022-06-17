@@ -116,6 +116,7 @@ Rails.application.routes.draw do
       get :from_campaign
       get :from_template
       get :groups
+      post :new_group
     end
   end
 

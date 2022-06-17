@@ -27,6 +27,16 @@ export default {
         commit('setError', e.message)
       }
     },
-    // async fetchCampaignTags({commit, dispatch}) {}
+    async newGroup({commit, dispatch}, {name, kind}) {
+      try {
+        await HTTP.post(
+          routes.generate('new_group_categories'),
+          {name, kind}
+        )
+        dispatch('fetch', {kind})
+      } catch (e) {
+        commit('setError', e.message)
+      }
+    },
   }
 }

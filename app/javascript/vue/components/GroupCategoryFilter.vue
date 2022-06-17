@@ -55,10 +55,19 @@
       </div>
     </div>
 
-    <div class="flex-row-start-centered my-4">
+    <div class="flex-row-start-centered my-4 height-4rem">
+      <input
+          v-if="showNewCatInput"
+          @blur="showNewCatInput = false"
+          v-on:keyup.enter="createNewCat"
+          ref="showNewCatInput"
+          class="p-3 rounded-5px border-bkt-dark-grey-focus fs-1_6rem "
+          type="text">
       <bkt-button
+          v-else
           iconify="ant-design:plus-circle-outlined"
           type="transparent"
+          @click="displayNewCatInput"
       >
         Create category
       </bkt-button>
@@ -76,7 +85,8 @@ export default {
   data() {
     return {
       groupTagModule: store.state.groupsTag,
-      loopCatSuggestionRef: 'loopCatSuggestion'
+      loopCatSuggestionRef: 'loopCatSuggestion',
+      showNewCatInput: false
     }
   },
   created() {
@@ -121,6 +131,16 @@ export default {
     hideCatSuggestion(arrayIdx) {
       this.groupTagModule.groups[arrayIdx].showCatSuggestion = false
     },
+    displayNewCatInput() {
+      this.showNewCatInput = true;
+      this.$nextTick(() => {
+        this.$refs.showNewCatInput.focus()
+      })
+    },
+    createNewCat(e) {
+      const groupName = e.target.value
+      store.dispatch('groupsTag/newGroup', {name: groupName, kind: 'interview'})
+    }
   },
   components: {BktTag, BktButton},
 }
