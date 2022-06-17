@@ -18,7 +18,7 @@
         v-for="(item, idx) in showGroups"
         :key="item.id"
         :ref="loopCatSuggestionRef + idx"
-        class="flex-row-between-centered mt-5">
+        class="flex-row-between-centered mt-5 align-items-start">
       <bkt-button
           v-if="showGroups.length !== 1"
           type="transparent"
@@ -28,7 +28,7 @@
       </bkt-button>
 
       <div
-          class=" ml-2 bkt-bg-light-grey9-hover px-3 rounded-5px width-75 min-h-5rem"
+          class=" ml-2 bkt-bg-light-grey9-hover px-3 py-2 rounded-5px width-75 min-h-5rem"
           @click="editTagField(idx)"
           @mouseover="showCatSuggestion(idx)"
           @mouseleave="hideCatSuggestion(idx)"
@@ -42,7 +42,7 @@
         </bkt-tag>
         <p
             v-if="item.showCatSuggestion && item.showInputCatSuggestion === false"
-            class="bkt-light-grey6 my-3 ml-3 cursor-pointer d-inline-block vertical-align-middle"
+            class="fs-1_2rem bkt-light-grey6 my-3 ml-3 cursor-pointer d-inline-block vertical-align-middle"
         >
           Move an existing tag to this category
         </p>
@@ -50,7 +50,7 @@
             v-if="item.showInputCatSuggestion"
             @blur="resetCatSuggestion(idx)"
             type="text"
-            class="border-none bg-transparent input-cat-suggestion d-inline-block my-3"
+            class="fs-1_2rem border-none bg-transparent input-cat-suggestion d-inline-block my-3"
         >
       </div>
     </div>
