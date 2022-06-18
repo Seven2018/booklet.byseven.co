@@ -6,12 +6,16 @@ export default {
   namespaced: true,
   state: {
     groups: null,
-    error: null
+    error: null,
+    suggestionTag: null
   },
   mutations: {
     setGroups(state, value) {
       state.groups = value
     },
+    setSuggestionTag(state, value) {
+      state.suggestionTag = value
+    }
   },
   actions: {
     async fetch({commit}, {kind}) {
@@ -55,6 +59,21 @@ export default {
         await axios.delete(routes.generate('group_categories_id', {id}) )
 
         dispatch('fetch', {kind})
+      } catch (e) {
+        commit('setError', e.message)
+      }
+    },
+    async searchTag({commit}, {title, except_group_category_id, kind}) {
+      try {
+        // TODO crete route for group except group
+        const res = await HTTP.get(
+          routes.generate('TODO'),
+          {
+            params: {title, kind, except_group_category_id}
+          }
+        )
+
+        commit('setSuggestionTag', res.data['TODO'])
       } catch (e) {
         commit('setError', e.message)
       }

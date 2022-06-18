@@ -73,12 +73,20 @@
         >
           Move an existing tag to this category
         </p>
-        <input
+        <div
             v-if="item.showInputCatSuggestion"
-            @blur="resetCatSuggestion(idx)"
-            type="text"
-            class="fs-1_2rem border-none bg-transparent input-cat-suggestion d-inline-block my-3"
-        >
+            class="position-relative d-inline-block">
+          <input
+              @blur="resetCatSuggestion(idx)"
+              @input="searchTagFromOtherGroups($event, item)"
+              type="text"
+              class="fs-1_2rem border-none bg-transparent input-cat-suggestion d-inline-block my-3"
+          >
+          <ul class="position-absolute left-0 height-35rem width-100 bkt-bg-white bkt-box-shadow-medium">
+            <li>harold</li>
+            <li>test</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -204,6 +212,10 @@ export default {
       this.$nextTick(() => {
         this.$refs[`inputRenameGroupCat${arrayIdx}`][0].focus()
       })
+    },
+    searchTagFromOtherGroups(e, item) {
+      const title = e.target.value
+      const except_group_category_id = item.id
     }
   },
   components: {BktTag, BktButton},
