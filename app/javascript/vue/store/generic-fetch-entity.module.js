@@ -52,9 +52,12 @@ export default {
         commit('setError', e.message)
       }
     },
-    async delete({commit, state}, {pathKey, id, dataKind, addToPath = ''}) {
+    async delete({commit, state}, {pathKey, id, dataKind, addToPath = null}) {
       try {
-        await axios.delete(routes.generate(pathKey, {id: id}))
+        let path = routes.generate(pathKey, {id: id})
+        if (addToPath) path += addToPath
+
+        await axios.delete(path)
 
         commit('setData', {
           ...state.data,
