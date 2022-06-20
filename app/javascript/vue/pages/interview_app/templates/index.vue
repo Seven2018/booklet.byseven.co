@@ -11,16 +11,18 @@
     </template>
     <template v-slot:body>
       <generic-index-search path-key="interview_forms_list"></generic-index-search>
+      <group-category-filter entity-list-key="interview_forms_list"></group-category-filter>
       <interview-template-table v-show="genericFetchEntity.data && genericFetchEntity.data['interview_forms'] && genericFetchEntity.data['interview_forms'].length > 0"></interview-template-table>
       <bkt-create-entity-from-index
-          v-if="genericFetchEntity.data && genericFetchEntity.data['interview_forms'] && genericFetchEntity.data['interview_forms'].length === 0 && !genericFetchEntity.search"
+          v-if="genericFetchEntity.data && genericFetchEntity.data['interview_forms'] && genericFetchEntity.data['interview_forms'].length === 0 && !genericFetchEntity.search && !genericFetchEntity.tags"
           type="interview"
           @click="createInterviewForm"
       >
         template
       </bkt-create-entity-from-index>
       <bkt-no-entity-from-index
-          v-else-if="genericFetchEntity.data && genericFetchEntity.data['interview_forms'] && genericFetchEntity.data['interview_forms'].length === 0 && genericFetchEntity.search"
+          v-else-if="genericFetchEntity.data && genericFetchEntity.data['interview_forms'] && genericFetchEntity.data['interview_forms'].length === 0 && genericFetchEntity.search ||
+                    genericFetchEntity.data && genericFetchEntity.data['interview_forms'] && genericFetchEntity.data['interview_forms'].length === 0 && genericFetchEntity.tags"
       ></bkt-no-entity-from-index>
       <bkt-box-loader v-else-if="!genericFetchEntity.data" type="interview"></bkt-box-loader>
     </template>
@@ -36,6 +38,7 @@ import store from "../../../store";
 import BktCreateEntityFromIndex from "../../../components/BktCreateEntityFromIndex";
 import BktNoEntityFromIndex from "../../../components/BktNoEntityFromIndex";
 import BktBoxLoader from "../../../components/BktBoxLoader";
+import GroupCategoryFilter from "../../../components/GroupCategoryFilter";
 export default {
   data() {
     return {
@@ -58,6 +61,7 @@ export default {
     },
   },
   components: {
+    GroupCategoryFilter,
     BktBoxLoader,
     BktNoEntityFromIndex,
     BktCreateEntityFromIndex, InterviewTemplateTable, GenericIndexSearch, BktButton, BktIndexSkeleton}

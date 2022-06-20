@@ -21,6 +21,7 @@ class InterviewFormsController < ApplicationController
   def list
     interviewForms = InterviewForm.unused.where(company: current_user.company)
     interviewForms = interviewForms.search_templates(params[:title]) if params[:title].present?
+    interviewForms = interviewForms.filter_by_tag_ids(params[:tags]) if params[:tags].present?
     interviewForms = interviewForms.order(created_at: :desc)
 
 

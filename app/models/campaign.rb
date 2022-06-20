@@ -2,6 +2,7 @@ require 'csv'
 
 class Campaign < ApplicationRecord
   include Campaigns::Stats
+  include Taggable
   class AmbiguousInterviewQuery < StandardError; end
 
   belongs_to :company
@@ -48,13 +49,6 @@ class Campaign < ApplicationRecord
     joins(:interviews)
       .where('date <= ?', date)
       .distinct
-  end
-
-  def self.filter_by_tag_ids(tag_ids)
-    tag_ids = tag_ids.map(&:to_i)
-    campaigns = joins(:categories).where(categories: {id: tag_ids})
-    campaigns = campaigns.select { |campaign| ((campaign.categories.pluck(:id) & tag_ids) == tag_ids) }
-    Campaign.get_activerecord_relation(campaigns)
   end
 
   def interview_sets(employee_id = nil)
