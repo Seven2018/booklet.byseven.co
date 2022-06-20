@@ -55,7 +55,8 @@
           </ul>
 
       <div
-          class=" ml-2 bkt-bg-light-grey9-hover px-3 py-2 rounded-5px width-75 min-h-5rem"
+          class=" ml-2 px-3 py-2 rounded-5px width-75 min-h-5rem cursor-pointer"
+          :class="{'bkt-bg-light-grey9-hover': showGroups.length > 1}"
           @click.stop="editTagField(idx)"
           @mouseover="showCatSuggestion(idx)"
           @mouseleave="hideCatSuggestion(idx)"
@@ -68,13 +69,13 @@
         >{{ tag.title }}
         </bkt-tag>
         <p
-            v-if="item.showCatSuggestion && item.showInputCatSuggestion === false"
+            v-if="showGroups.length > 1 && item.showCatSuggestion && item.showInputCatSuggestion === false"
             class="fs-1_2rem bkt-light-grey6 my-3 ml-3 cursor-pointer d-inline-block vertical-align-middle"
         >
           Move an existing tag to this category
         </p>
         <div
-            v-if="item.showInputCatSuggestion"
+            v-if="showGroups.length > 1 && item.showInputCatSuggestion"
             class="position-relative d-inline-block"
             v-click-outside="resetCatSuggestionV2"
         >
@@ -85,8 +86,8 @@
               class="fs-1_2rem border-none bg-transparent input-cat-suggestion d-inline-block my-3"
           >
           <ul class="position-absolute left-0 height-35rem width-100 bkt-bg-white bkt-box-shadow-medium z-index-5 max-h-16rem overflow-y-auto">
-            <li v-if="!groupTagModule.suggestionTag || groupTagModule.suggestionTag.length === 0" class="px-2 bkt-light-grey6 fs-1_2rem mt-2">This tag doesn’t exist.</li>
-            <li v-else class="px-2 bkt-light-grey6 fs-1_2rem mt-2">Select existing tag</li>
+            <li v-if="groupTagModule.suggestionTag && groupTagModule.suggestionTag.length === 0" class="px-2 bkt-light-grey6 fs-1_2rem mt-2">This tag doesn’t exist.</li>
+            <li v-else-if="groupTagModule.suggestionTag && groupTagModule.suggestionTag.length > 0" class="px-2 bkt-light-grey6 fs-1_2rem mt-2">Select existing tag</li>
             <li
                 v-for="tagObj in groupTagModule.suggestionTag"
                 :key="tagObj.id"
@@ -163,6 +164,9 @@ export default {
       })
     },
     editTagField(arrayIdx) {
+      this.groupTagModule.groups = this.groupTagModule.groups.map(item => {
+        return {...item, showInputCatSuggestion: false}
+      })
       this.groupTagModule.groups[arrayIdx].showInputCatSuggestion = true
       this.groupTagModule.groups[arrayIdx].showCatSuggestion = false
       this.$nextTick(() => {
@@ -233,6 +237,7 @@ export default {
       this.groupTagModule.groups[arrayIdx].inputRenameGroupCat = true
       this.$nextTick(() => {
         this.$refs[`inputRenameGroupCat${arrayIdx}`][0].focus()
+        this.$refs[`inputRenameGroupCat${arrayIdx}`][0].value = this.groupTagModule.groups[arrayIdx].name
       })
     },
     presearch(item) {

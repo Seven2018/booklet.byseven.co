@@ -10,7 +10,7 @@
 
     <div>
       <div
-          class="flex-row-start-centered p-4 bkt-bg-light-grey9 overflow-x-auto"
+          class=" p-4 bkt-bg-light-grey9 overflow-x-auto max-h-16rem"
           @click="focusInput"
       >
         <bkt-tag
@@ -18,10 +18,11 @@
             :key="idx"
             :cancelable="true"
             @close="removeTag(tag.title)"
+            class="d-inline-block"
         >
           {{tag.title}}
         </bkt-tag>
-        <p>
+        <p class="d-inline-block">
           {{searchText}}
         </p>
         <input ref="inputField" v-model="searchText" @input="search" type="text" class="border-none bg-transparent" style="height: 20px;width: 1px;padding-left: 0px;">

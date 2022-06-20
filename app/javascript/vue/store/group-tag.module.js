@@ -63,7 +63,7 @@ export default {
         commit('setError', e.message)
       }
     },
-    async searchTag({commit}, {search, except_group_category_id, kind}) {
+    async searchTag({commit, state}, {search, except_group_category_id, kind}) {
       try {
         const res = await HTTP.get(
           routes.generate('categories_search_v2'),
@@ -72,7 +72,7 @@ export default {
           }
         )
 
-        commit('setSuggestionTag', res.data['categories'])
+        commit('setSuggestionTag', (search === '' && res.data['categories'].length === 0) ? null : res.data['categories'])
       } catch (e) {
         commit('setError', e.message)
       }
