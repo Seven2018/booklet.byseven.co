@@ -40,6 +40,7 @@ export default {
       //Slider configuration [obj]
       options: {
         currentPage: 0,
+        pagination: false
       }
     }
   },
