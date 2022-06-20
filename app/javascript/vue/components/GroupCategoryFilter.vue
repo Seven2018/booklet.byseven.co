@@ -56,7 +56,7 @@
 
       <div
           class=" ml-2 bkt-bg-light-grey9-hover px-3 py-2 rounded-5px width-75 min-h-5rem"
-          @click="editTagField(idx)"
+          @click.stop="editTagField(idx)"
           @mouseover="showCatSuggestion(idx)"
           @mouseleave="hideCatSuggestion(idx)"
       >
@@ -75,16 +75,26 @@
         </p>
         <div
             v-if="item.showInputCatSuggestion"
-            class="position-relative d-inline-block">
+            class="position-relative d-inline-block"
+            v-click-outside="resetCatSuggestionV2"
+        >
           <input
-              @blur="resetCatSuggestion(idx)"
+              @focus="presearch(item)"
               @input="searchTagFromOtherGroups($event, item)"
               type="text"
               class="fs-1_2rem border-none bg-transparent input-cat-suggestion d-inline-block my-3"
           >
-          <ul class="position-absolute left-0 height-35rem width-100 bkt-bg-white bkt-box-shadow-medium">
-            <li>harold</li>
-            <li>test</li>
+          <ul class="position-absolute left-0 height-35rem width-100 bkt-bg-white bkt-box-shadow-medium z-index-5 max-h-16rem overflow-y-auto">
+            <li v-if="!groupTagModule.suggestionTag || groupTagModule.suggestionTag.length === 0" class="px-2 bkt-light-grey6 fs-1_2rem mt-2">This tag doesn’t exist.</li>
+            <li v-else class="px-2 bkt-light-grey6 fs-1_2rem mt-2">Select existing tag</li>
+            <li
+                v-for="tagObj in groupTagModule.suggestionTag"
+                :key="tagObj.id"
+                class="px-2 bkt-bg-light-grey9-hover cursor-pointer"
+                @click.stop="changeTagOfGroup(tagObj, item)"
+            >
+              <bkt-tag :selected="false">{{tagObj.title}}</bkt-tag>
+            </li>
           </ul>
         </div>
       </div>
@@ -159,6 +169,11 @@ export default {
       this.groupTagModule.groups[arrayIdx].showInputCatSuggestion = false
       this.groupTagModule.groups[arrayIdx].showCatSuggestion = false
     },
+    resetCatSuggestionV2() {
+      this.groupTagModule.groups = this.groupTagModule.groups.map((item) => {
+        return {...item, showInputCatSuggestion: false, showCatSuggestion: false}
+      })
+    },
     showCatSuggestion(arrayIdx) {
       this.groupTagModule.groups[arrayIdx].showCatSuggestion = true
     },
@@ -174,6 +189,7 @@ export default {
     createNewGroupCat(e) {
       const groupName = e.target.value
       store.dispatch('groupsTag/newGroup', {name: groupName, kind: 'interview'})
+      this.$refs.showNewCatInput.value = ''
     },
     renameGroupCat(e, item) {
       const groupName = e.target.value
@@ -213,9 +229,21 @@ export default {
         this.$refs[`inputRenameGroupCat${arrayIdx}`][0].focus()
       })
     },
+    presearch(item) {
+      this.searchTagFromOtherGroups({target: {value: ''}}, item)
+    },
     searchTagFromOtherGroups(e, item) {
-      const title = e.target.value
+      const search = e.target.value
       const except_group_category_id = item.id
+
+      store.dispatch('groupsTag/searchTag', {search, except_group_category_id, kind: 'interview'})
+    },
+    changeTagOfGroup(tagObj, groupCatObj) {
+      store.dispatch('groupsTag/changeCategoryGroup', {
+        tag_id: tagObj.id,
+        group_category_id: groupCatObj.id,
+        kind: 'interview'
+      })
     }
   },
   components: {BktTag, BktButton},

@@ -10,6 +10,19 @@ class CategoriesController < ApplicationController
     render json: categories, status: :ok
   end
 
+  def update
+    tag_id = params.require(:id)
+    group_category_id = params.require(:group_category_id)
+
+    tag = Category.find(tag_id)
+
+    if tag.update(group_category_id: group_category_id)
+      head :ok
+    else
+      render json: {message: "Couldn't update group category"}, status: :unprocessable_entity
+    end
+  end
+
   def groups
     kind = params.require(:kind)
     raise ActionController::BadRequest, 'bad parameter' unless GroupCategory.kinds.include?(kind.to_sym)
@@ -57,6 +70,14 @@ class CategoriesController < ApplicationController
         @users = @categories.limit(5)
       }
     end
+  end
+
+  def search_v2
+    categories = current_user.company.categories.where(kind: params.require(:kind))
+    categories = categories.ransack(title_cont: params[:search]).result(distinct: true) if params[:search].present?
+    categories = categories.where.not(group_category_id: params[:except_group_category_id]) if params[:except_group_category_id].present?
+
+    render json: categories, status: :ok
   end
 
 end

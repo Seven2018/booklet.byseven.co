@@ -111,12 +111,13 @@ Rails.application.routes.draw do
 
   # CATEGORIES
   get :categories_search, controller: :categories
-  resources :categories, only: [:index] do
+  resources :categories, only: [:index, :update] do
     collection do
       get :from_campaign
       get :from_template
       get :groups
       post :new_group
+      get :search_v2
     end
   end
   resources :group_categories, only: [:destroy, :update]

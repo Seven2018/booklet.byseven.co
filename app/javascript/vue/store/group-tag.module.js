@@ -63,17 +63,27 @@ export default {
         commit('setError', e.message)
       }
     },
-    async searchTag({commit}, {title, except_group_category_id, kind}) {
+    async searchTag({commit}, {search, except_group_category_id, kind}) {
       try {
-        // TODO crete route for group except group
         const res = await HTTP.get(
-          routes.generate('TODO'),
+          routes.generate('categories_search_v2'),
           {
-            params: {title, kind, except_group_category_id}
+            params: {search, kind, except_group_category_id}
           }
         )
 
-        commit('setSuggestionTag', res.data['TODO'])
+        commit('setSuggestionTag', res.data['categories'])
+      } catch (e) {
+        commit('setError', e.message)
+      }
+    },
+    async changeCategoryGroup({commit, dispatch}, {tag_id, group_category_id, kind}) {
+      try {
+        await HTTP.put(
+          routes.generate('categories_id', {id: tag_id}),
+          {group_category_id}
+        )
+        dispatch('fetch', {kind})
       } catch (e) {
         commit('setError', e.message)
       }
