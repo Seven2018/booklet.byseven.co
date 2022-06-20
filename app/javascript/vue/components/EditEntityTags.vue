@@ -10,7 +10,7 @@
 
     <div>
       <div
-          class="flex-row-start-centered p-4 bkt-bg-light-grey9"
+          class="flex-row-start-centered p-4 bkt-bg-light-grey9 overflow-x-auto"
           @click="focusInput"
       >
         <bkt-tag
