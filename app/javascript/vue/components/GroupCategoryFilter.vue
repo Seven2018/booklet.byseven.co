@@ -61,10 +61,10 @@
           @mouseleave="hideCatSuggestion(idx)"
       >
         <bkt-tag
-            v-for="tag in item.categories"
+            v-for="(tag, tag_idx) in item.categories"
             class="mx-2 d-inline-block my-3 vertical-align-middle"
-            :selected="false"
-            @click.stop="() => {}"
+            :selected="tag.selected"
+            @click.stop="toggleTag(idx, tag_idx)"
         >{{ tag.title }}
         </bkt-tag>
         <p
@@ -127,11 +127,13 @@ import BktButton from "./BktButton";
 import BktTag from "./BktTag";
 
 export default {
+  props: ['entityListKey'],
   data() {
     return {
       groupTagModule: store.state.groupsTag,
       loopCatSuggestionRef: 'loopCatSuggestion',
-      showNewCatInput: false
+      showNewCatInput: false,
+      selectedTags: [],
     }
   },
   created() {
@@ -143,6 +145,9 @@ export default {
 
       if (!('showCatSuggestion' in this.groupTagModule.groups[0])) {
         this.groupTagModule.groups = this.groupTagModule.groups.map((item) => {
+          item.categories = item.categories.map(tag => {
+            return {...tag, selected: false}
+          })
           return {...item, showCatSuggestion: false, showInputCatSuggestion: false, groupOptions: false, inputRenameGroupCat: false}
         })
       }
@@ -243,6 +248,21 @@ export default {
         tag_id: tagObj.id,
         group_category_id: groupCatObj.id,
         kind: 'interview'
+      })
+    },
+    toggleTag(group_idx, tag_idx) {
+      this.groupTagModule.groups[group_idx].categories[tag_idx].selected = !this.groupTagModule.groups[group_idx].categories[tag_idx].selected
+
+      const tagsLengthBackUp = this.selectedTags.length
+      this.selectedTags = this.selectedTags.filter(item => {
+        return item.id !== this.groupTagModule.groups[group_idx].categories[tag_idx].id
+      })
+      if (this.selectedTags.length === tagsLengthBackUp)
+        this.selectedTags.push(this.groupTagModule.groups[group_idx].categories[tag_idx])
+
+      store.commit('genericFetchEntity/setTags', this.selectedTags)
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: this.entityListKey,
       })
     }
   },

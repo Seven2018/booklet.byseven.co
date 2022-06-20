@@ -21,6 +21,7 @@ class CampaignsController < ApplicationController
     campaigns = campaigns.search_campaigns(params[:title]) if params[:title].present?
     campaigns = campaigns.where_not_exists(:interviews, locked_at: nil) if params[:status].present? && params[:status] == 'completed'
     campaigns = campaigns.where_exists(:interviews, locked_at: nil) if params[:status].present? && params[:status] == 'current'
+    campaigns = campaigns.filter_by_tag_ids(params[:tags]) if params[:tags].present?
     campaigns = campaigns.order(created_at: :desc)
 
 

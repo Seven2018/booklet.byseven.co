@@ -10,11 +10,11 @@
     </template>
     <template v-slot:body>
       <campaign-index-search></campaign-index-search>
-      <group-category-filter></group-category-filter>
+      <group-category-filter entity-list-key="campaigns_list"></group-category-filter>
       <campaign-table v-show="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length > 0"></campaign-table>
       <bkt-create-entity-from-index
-          v-if="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && !genericFetchEntity.search ||
-          genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && genericFetchEntity.search && !genericFetchEntity.search.title"
+          v-if="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && !genericFetchEntity.search && !genericFetchEntity.tags ||
+          genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && genericFetchEntity.search && !genericFetchEntity.search.title && !genericFetchEntity.tags"
           type="interview"
           :href="$routes.generate('campaign_draft_edit')"
       >
