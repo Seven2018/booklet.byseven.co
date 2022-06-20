@@ -36,10 +36,11 @@ Rails.application.routes.draw do
       get :list
     end
     member do
-      post 'search_tags'
-      post 'toggle_tag'
-      delete 'remove_company_tag'
-      get 'index_line'
+      get :overview
+      post :search_tags
+      post :toggle_tag
+      delete :remove_company_tag
+      get :index_line
     end
     collection do
       get :redirect_calendar

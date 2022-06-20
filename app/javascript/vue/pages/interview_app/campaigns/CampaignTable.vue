@@ -5,7 +5,8 @@
       :table-data="genericFetchEntity.data['campaigns']"
       :pagination="genericFetchEntity.pagination"
       @fetch-page="fetchPage"
-      @row-click="goto('campaigns_id', $event.id)"
+      @row-click="goto('campaigns_id_overview', $event.id)"
+      class="cursor-pointer"
   >
     <template v-slot="{id, title, campaign_type, categories, employees_count, completion}">
       <td>

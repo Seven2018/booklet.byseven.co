@@ -15,7 +15,7 @@
 
   </div>
 
-  <%= simple_form_for :interview_set, url: campaigns_interview_sets_path, method: :post do |f| %>
+  <%= simple_form_for :interview_set, url: campaigns_interview_sets_path, method: :post, remote: true do |f| %>
 
     <%= f.hidden_field :campaign_id, value: campaign.id %>
 

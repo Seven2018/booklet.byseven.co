@@ -8,18 +8,9 @@
 
   <div class="modal-footer ays-modal__footer">
 
-<!--       <%# link_to campaigns_interview_set_path(id: @campaign.id, user_id: employee.id, interviewer_id: interviewer_id),
-          class: 'bkt-btn-ays-red',
-          method: :delete,
-          remote: true do %>
-
-        Yes, remove
-
-      <%# end %> -->
-
       <button class="bkt-btn-ays-red"
               data-action="click->interviews--campaigns-show#removeEmployee"
-              data-path="<%= campaigns_interview_set_path %>"
+              data-path="<%= campaigns_interview_set_path(id: campaign.id) %>"
               data-user-id="<%= employee.id %>">
         Yes, remove
       </button>

@@ -168,13 +168,32 @@
       <![endif]-->
 
   </head>
+
   <body width="100%" bgcolor="white" style="margin: 0; mso-line-height-rule: exactly;">
-      <h1 style="font-size: 1.4rem; font-weight: 600; margin-bottom: 2rem;"><%= @icon %> <%= @title %></h1>
 
-      <p style="font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem;"><%= @description %></p>
+    <h1 style="font-size: 1rem; font-weight: 600; margin-bottom: 2rem;">
+      <%= @icon %> <%= @title %> <%= @icon %>
+    </h1>
 
-      <a href="<%= @button_link %>" style="font-size: 1.4rem !important; font-weight: 600; color: #5C95FF;"><%= @button_text %></a>
+    <p style="font-size: 1rem; font-weight: 500; margin-bottom: 1rem; white-space: pre-wrap;"><%= @description %></p>
 
-      <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem;"><%= @description %></p>
+    <a href="<%= @button_link %>"
+       style="font-size: 1rem !important; font-weight: 600; color: #5C95FF; text-decoration: none; margin-bottom: 2rem;">
+       ➡️ <%= @button_text %>
+    </a>
+
+    <% if @optional_text.present?  %>
+
+      <p style="font-size: .8rem; font-weight: 500; margin-top: 2rem;"><%= @optional_text %></p>
+
+      <a href="<%= @optional_button_link %>" style="font-size: .8rem !important; font-weight: 500; color: #5C95FF; text-decoration: none;">
+        <%= @optional_button_text %>
+      </a>
+
+    <% end %>
+
+    <p style="font-size: .6rem; font-weight: 400; margin-top: 2rem;"><%= @nb %></p>
+
   </body>
+
 </html>

@@ -35,6 +35,13 @@
     <div class="flex-row-start-centered width-100 mb-2rem border-bottom-bkt-light-grey5"
          style='height: 32.5px;'>
 
+ <!--      <div id="control_overview"
+         class="booklet-tab-control booklet-tab-blue fs-1_6rem px-1rem pb-0_75rem z-index-5
+                cursor-pointer"
+         data-action='click->tabs#selectTab click->workshop-show#hideReminderButton'>
+        <p>Overview</p>
+      </div> -->
+
       <div id="control_participants"
          class="booklet-tab-control booklet-tab-blue d-flex align-items-center fs-1_6rem px-1rem pb-0_75rem z-index-5 cursor-pointer active"
          data-action='click->tabs#selectTab'>
@@ -57,6 +64,13 @@
 
     <div id="tab_attendees"
          class="width-100">
+
+   <!--    <div id="tab_overview"
+           class='booklet-tab hidden'>
+
+        <p>Overview</p>
+
+      </div> -->
 
       <div id="tab_participants"
            class='booklet-tab bkt-box-shadow-light px-3rem py-2rem rounded-20px'>
@@ -91,6 +105,29 @@
                                                             collection: ['All completions', 'Not started', 'In progress', 'Completed'],
                                                             data_action: 'click->interviews--campaigns-show#searchSubmit')) %>
 
+                <%= render_component(Tools::SelectComponent.new(width: 'fit-content',
+                                                            menu_max_height: '20rem',
+                                                            klasses: 'mb-1rem',
+                                                            title: 'All Interviewers',
+                                                            input_name: 'search[interviewer]',
+                                                            collection: [OpenStruct.new(id: nil, name: 'All Interviewers')] + interviewers.map{|x| OpenStruct.new(id: x.id, name: x.fullname)},
+                                                            data_action: 'click->interviews--campaigns-show#searchSubmit')) %>
+
+                <% @tag_categories.each do |tag_category| %>
+
+                  <% tag_category_id = tag_category.id %>
+                  <% tag_category_name = tag_category.name %>
+
+                  <%= render_component(Tools::SelectComponent.new(width: '20rem',
+                                                            menu_max_height: '20rem',
+                                                            klasses: 'mb-1rem',
+                                                            input_name: "search[tag_categories[#{tag_category_id}]]",
+                                                            title: "All #{tag_category_name}",
+                                                            collection: [OpenStruct.new(id: nil, name: "All #{tag_category_name}")] + Tag.where(tag_category_id: tag_category_id).order(tag_name: :asc).map{|x| OpenStruct.new(id: x.id, name: x.tag_name)},
+                                                            data_action: 'click->interviews--campaigns-show#searchSubmit')) %>
+
+                <% end %>
+
               </div>
 
               <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
@@ -109,6 +146,29 @@
                     data-action="interviews--campaigns-show#searchReset">
               Reset
             </button>
+
+          </div>
+
+          <div class="d-flex justify-content-center align-items-center height-5rem">
+
+            <%= render_component Buttons::OptionsButton.new(vertical: true) do %>
+
+              <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                        width-100 p-3"
+                 data-toggle="modal"
+                 data-target="#addEmployee">
+                 <span class="iconify mr-0_75rem" data-icon="akar-icons:plus"></span>Add participant
+              </a>
+
+              <%= link_to 'Send invitation email to all', send_notification_email_path(@campaign, email_type: 'invite'), class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                        width-100 p-3",
+                          remote: true %>
+
+              <%= link_to 'Send reminder email to all', send_notification_email_path(@campaign, email_type: 'remind'), class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                        width-100 p-3",
+                        remote: true %>
+
+            <% end %>
 
           </div>
 

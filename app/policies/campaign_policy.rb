@@ -14,6 +14,10 @@ class CampaignPolicy < ApplicationPolicy
     record.interviewers.uniq.include?(user) || create?
   end
 
+  def overview?
+    create?
+  end
+
   def create?
     user.can_create_campaigns
   end
