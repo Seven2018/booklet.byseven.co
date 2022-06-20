@@ -14,7 +14,7 @@
       <tr
           v-for="row in tableData" class="border-bottom-bkt-light-grey5-not-last-child"
           :key="row.id"
-          :class="{'bkt-bg-light-grey10-hover': withoutHover === false}"
+          :class="{'bkt-bg-light-grey10-hover cursor-pointer': withoutHover === false}"
           @click="$emit('row-click', row)"
       >
         <slot v-bind="row"></slot>
