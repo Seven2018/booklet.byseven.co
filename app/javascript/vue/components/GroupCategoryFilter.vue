@@ -195,6 +195,7 @@ export default {
       const groupName = e.target.value
       store.dispatch('groupsTag/newGroup', {name: groupName, kind: 'interview'})
       this.$refs.showNewCatInput.value = ''
+      this.showNewCatInput = false
     },
     renameGroupCat(e, item) {
       const groupName = e.target.value
