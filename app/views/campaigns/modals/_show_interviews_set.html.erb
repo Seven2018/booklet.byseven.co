@@ -66,7 +66,7 @@
             <% if overview || interview.label == 'Employee' || interview.submitted? %>
 
               <button class="bkt-btn-blue-border <%= 'disabled' unless interview.submitted? %> z-index-150"
-                      disabled="<%= !interview.submitted? %>">
+                      <%= 'disabled' if !interview.submitted? %>>
                 View answers
               </button>
 
@@ -79,7 +79,7 @@
             <% elsif interview.label == 'Crossed' %>
 
               <button class="bkt-btn-blue <%= 'disabled' if interview.not_available_yet? %> z-index-150"
-                      disabled="<%= interview.not_available_yet? %>">
+                      <%= 'disabled' if interview.not_available_yet? %>>
                 <%= interview.in_progress? ? 'Continue cross interview' : 'Start cross interview' %>
               </button>
 
