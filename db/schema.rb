@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_13_154541) do
+ActiveRecord::Schema.define(version: 2022_06_17_132010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 2022_06_13_154541) do
     t.integer "campaign_type", default: 0, null: false
     t.date "deadline"
     t.string "calendar_uuid"
+    t.text "interview_forms_list"
     t.index ["company_id"], name: "index_campaigns_on_company_id"
     t.index ["interview_form_id"], name: "index_campaigns_on_interview_form_id"
     t.index ["owner_id"], name: "index_campaigns_on_owner_id"
@@ -250,16 +251,6 @@ ActiveRecord::Schema.define(version: 2022_06_13_154541) do
     t.index ["interview_id"], name: "index_interview_answers_on_interview_id"
     t.index ["interview_question_id"], name: "index_interview_answers_on_interview_question_id"
     t.index ["user_id"], name: "index_interview_answers_on_user_id"
-  end
-
-  create_table "interview_form_tags", force: :cascade do |t|
-    t.string "tag_name", default: "", null: false
-    t.bigint "interview_form_id"
-    t.bigint "tag_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["interview_form_id"], name: "index_interview_form_tags_on_interview_form_id"
-    t.index ["tag_id"], name: "index_interview_form_tags_on_tag_id"
   end
 
   create_table "interview_forms", force: :cascade do |t|
@@ -622,8 +613,6 @@ ActiveRecord::Schema.define(version: 2022_06_13_154541) do
   add_foreign_key "interview_answers", "interview_questions"
   add_foreign_key "interview_answers", "interviews"
   add_foreign_key "interview_answers", "users"
-  add_foreign_key "interview_form_tags", "interview_forms"
-  add_foreign_key "interview_form_tags", "tags"
   add_foreign_key "interview_forms", "companies"
   add_foreign_key "interview_questions", "interview_forms"
   add_foreign_key "interview_reports", "companies"
