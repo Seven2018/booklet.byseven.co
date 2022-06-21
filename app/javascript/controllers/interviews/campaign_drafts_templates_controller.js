@@ -37,8 +37,10 @@ export default class extends Controller {
 
   displayTagsCollection(e) {
     const path = this.categoriesResultsTarget.dataset.path
+    const campaign_draft_id = this.categoriesResultsTarget.dataset.campaignDraftId
     const query = e.currentTarget.dataset.value
-    const url = `${path}?search=${query}`
+    const url = `${path}?search=${query}&campaign_draft_id=${campaign_draft_id}`
+
     fetch(url)
       .then(response => response.text())
       .then(html => {

@@ -1,36 +1,11 @@
 class InterviewsController < ApplicationController
   before_action :show_navbar_campaign
 
-  ## OBSOLETE ? ##
-
-  # def create
-  #   authorize Interview.new
-
-  #   interview_form = InterviewForm.find params[:interview][:interview_form_id]
-  #   campaign = Campaign.find(params[:interview][:campaign_id])
-
-  #   unless
-  #     (campaign.crossed? &&
-  #     Interview.create(interview_params.merge(title: interview_form.title, label: 'Employee')) &&
-  #     Interview.create(interview_params.merge(title: interview_form.title, label: 'Manager')) &&
-  #     Interview.create(interview_params.merge(title: interview_form.title, label: 'Crossed', status: :not_available_yet))) ||
-  #     (campaign.simple? &&
-  #     Interview.create(interview_params.merge(title: interview_form.title, label: 'Simple')))
-
-  #     campaign&.destroy
-  #     # Sentry 2866617584 => params[:interview][:campaign_id].nil?
-  #     flash[:alert] = '/!\ Interviews NOT created - Campaign deleted - Please try again'
-  #   end
-
-  #   respond_to do |format|
-  #     format.js
-  #   end
-  # end
-
   def show
     @interview = Interview.find(params[:id])
     @employee = @interview.employee
-    @manager = @interview.campaign.owner
+    @manager = @interview.interviewer
+    @template = @interview.interview_form
     @questions = @interview.interview_questions.order(position: :asc)
     authorize @interview
 

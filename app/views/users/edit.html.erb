@@ -1,19 +1,27 @@
 <div class="row width-80 m-auto">
+
   <div class="col-4 ml-0"><%= render_component BackComponent.new(fallback: edit_user_path) %></div>
+
   <div class="col-4 mt-4rem flex-column justify-content-center ml-0">
+
     <div class="text-center">
+
       <div class="d-flex justify-center">
         <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='rounded-5px width-20 height-20 mb-2rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
       </div>
+
       <div>
         <p class="m-auto fs-1_2rem font-weight-500"><%= @user.fullname %></p>
       </div>
+
       <div>
         <p class="m-auto fs-1_2rem bkt-light-grey"><%= @user.job_title %>
       </div>
+
     </div>
 
     <div class="flex-row-center-centered mt-5">
+
       <%= simple_form_for @user,
                           html: { class: 'form-group width-90',
                                   data: {
@@ -23,21 +31,34 @@
                                   }
                           },
                           namespace: 'mobile-user-form' do |f| %>
+
         <%= f.input :firstname, label: 'First Name', label_html: { class: 'bkt-light-grey' }, class: 'form-control', required: true %>
+
         <%= f.input :lastname, label: 'Last Name', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
+
         <%#= f.input :email, label: 'Email', label_html: {class: 'bkt-light-grey'},  class: 'form-control' %>
+
         <%= render 'users/access_level_input', f: f, user: @user %>
+
         <%= f.input :manager_id, collection: User.where(company_id: @user.company_id, access_level_int: [:manager, :hr, :admin]).where.not(id: @user.id).order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: { class: 'bkt-light-grey' } %>
+
         <%= f.input :phone_number, label: 'Phone', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
+
         <%= f.input :linkedin, label: 'Linkedin (url)', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
+
         <%= f.input :birth_date, as: :date, label: 'Birth date', label_html: { class: 'bkt-light-grey' }, class: 'form-control', default: Date.new(1970, 1, 1), start_year: Date.today.year - 70,
                     end_year: Date.today.year - 12 %>
+
         <%= f.input :gender, label: 'Gender', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
+
         <%= f.input :social_security, label: 'Social Security', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
+
         <%= f.input :picture, label: 'Photo URL', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
 
         <% if UserPolicy.new(current_user, @user).edit? %>
+
           <% @tag_categories.each do |category| %>
+
             <%= f.input :tags,
                         label: category.name,
                         label_html: { class: 'bkt-light-grey' },
@@ -54,16 +75,23 @@
                         },
                         wrapper_html: { id: category.name.gsub(' ', '') }
             %>
+
           <% end %>
+
         <% end %>
 
         <div class="flex-row-center-centered mt-5">
+
           <%= button_tag type: 'submit', class: 'bkt-btn-dark-grey' do %>
             Save changes
           <% end %>
+
         </div>
+
       <% end %>
+
     </div>
 
   </div>
+
 </div>

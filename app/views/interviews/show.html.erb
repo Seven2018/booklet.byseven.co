@@ -1,8 +1,3 @@
-<% employee = @interview.employee %>
-<% manager = @interview.interviewer %>
-
-<% template = @interview.interview_form %>
-
 <% visibility =
      if @interview.crossed?
        ['all', 'manager', 'employee']
@@ -14,13 +9,23 @@
 
 <% fully_answered = @interview.fully_answered? %>
 
-<div class="interview-container">
+<div class="interview-container bkt-bg-light-blue">
 
   <div class="d-none d-sm-flex justify-content-between interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
 
     <% if @interview.locked? %>
 
-      <%= render_component Buttons::BackButton.new(fallback: trainings_reports_path) %>
+      <% fallback =
+          if current_user == @employee
+            my_interviews_path
+          elsif current_user == @manager
+            my_team_interviews_path
+          else
+            campaign_path(@interview.campaign)
+          end %>
+
+      <%= render_component Buttons::BackButton.new(fallback: fallback,
+                                                   force_fallback: fallback) %>
 
     <% else %>
 
@@ -77,7 +82,7 @@
   <div class="interview-main">
 
     <div class='interview-main__left bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
-      <%= render 'interview_forms/edit/edit_show_summary', template: template %>
+      <%= render 'interview_forms/edit/edit_show_summary', template: @template %>
     </div>
 
     <div class="interview-main__right">
@@ -92,10 +97,10 @@
       <h1 class="fs-2_4rem font-weight-700 mb-2rem"><%= @interview.campaign.title %></h1>
 
       <div class="trix-display">
-        <%= sanitize template.description %>
+        <%= sanitize @template.description %>
       </div>
 
-      <% video = template.video %>
+      <% video = @template.video %>
 
       <% if video.present? %>
         <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; aspect-ratio: 16 / 9;'></iframe>
@@ -146,12 +151,12 @@
             <%= render 'interview_questions/show_interview_question_form',
                        interview: @interview,
                        question: question,
-                       manager: manager,
-                       employee: employee,
+                       manager: @manager,
+                       employee: @employee,
                        read_only: (
-                         (@interview.employee? && employee != current_user) ||
-                           (@interview.manager? && manager != current_user) ||
-                           (@interview.simple? && manager != current_user) ||
+                         (@interview.employee? && @employee != current_user) ||
+                           (@interview.manager? && @manager != current_user) ||
+                           (@interview.simple? && @manager != current_user) ||
                            @interview.locked?
                        ),
                        company: current_user.company %>
