@@ -39,6 +39,8 @@ module CampaignDrafts
             forms[pair.first] = create_form_from(pair.last).id
           end
 
+          forms['default'] = create_form_from(@campaign_draft.default_template_id).id
+
           return forms
 
         end
@@ -83,7 +85,7 @@ module CampaignDrafts
           if multiple
             selected_form =
               InterviewForm.find(forms[UserTag.find_by(user_id: interviewee, tag_id: forms.keys)&.tag_id&.to_s].presence \
-               || @campaign_draft.default_template_id)
+               || forms['default'])
           else
             selected_form = forms
           end

@@ -3,10 +3,10 @@ class InterviewForm < ApplicationRecord
   has_many :interview_questions, dependent: :destroy
   has_many :interviews
   has_many :employees, through: :interviews
-  has_many :interview_form_tags, dependent: :destroy
   has_many :tags, through: :interview_form_tags
   has_and_belongs_to_many :categories
   belongs_to :company
+  belongs_to :tag, optional: true
 
   validates :title, presence: true
 

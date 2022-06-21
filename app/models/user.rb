@@ -169,7 +169,7 @@ class User < ApplicationRecord
 
         if user.company_id.nil?
           user.update(company_id: current_user.company_id)
-        elsif user.company_id != current_user.company_id
+        elsif user.company_id != company_id
           next
         end
 

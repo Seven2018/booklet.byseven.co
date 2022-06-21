@@ -34,7 +34,8 @@ export default class extends Controller {
     this.timer = setTimeout(() => {
       const query = this.inputTarget.value
       const path = this.element.dataset.path
-      const url = `${path}?search=${query}`
+      const additional_params = this.element.dataset.additionalParams
+      const url = `${path}?search=${query}&${additional_params}`
       const selected_value = this.element.querySelector("input[type='hidden']")
 
       if (query == '') {

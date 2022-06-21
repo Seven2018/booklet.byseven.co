@@ -196,6 +196,7 @@
            data-interviews--campaign-drafts-participants-target="requiredInput">
 
         <%= render_component(Tools::SelectAutocompleteComponent.new(path: users_search_path,
+                                                                additional_params: 'manager=true',
                                                                 width: '100%',
                                                                 menu_max_height: '22rem',
                                                                 placeholder: 'Select a default interviewer',

@@ -2,7 +2,7 @@
 
   <div class="modal-header date-modal__header">
 
-    <h3 class="modal-title date-modal__title">Edit interview date</h3>
+    <h3 class="modal-title date-modal__title">Edit campaign deadline</h3>
 
     <button type="button" class="date-modal__close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true" class="date-modal__close-icon">&times;</span>
@@ -12,11 +12,17 @@
 
   <div class="modal-body date-modal__body">
 
-    <%= simple_form_for :edit_date, url: campaign_edit_date_path, method: :get do |f| %>
-      <%= f.hidden_field :campaign_id, value: campaign.id %>
-      <%= f.hidden_field :employee_id, value: employee.id %>
-      <%= f.input :date, as: :string, label: false, input_html: { class: 'datepicker-inline hidden', value: interview.date, onchange: 'selectInterviewDate(this);' } %>
+    <%= simple_form_for campaign, remote: true do |f| %>
+
+      <%= f.input :deadline, as: :string, label: false,
+                                      input_html: {
+                                        class: 'datepicker-inline hidden',
+                                        value: campaign.deadline,
+                                        data: { action: 'change->interviews--campaigns-show#editDeadline' }
+                                      } %>
+
       <%= f.submit '', class: 'hidden-submit hidden' %>
+
     <% end %>
 
   </div>
