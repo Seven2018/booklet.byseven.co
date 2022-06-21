@@ -1,8 +1,13 @@
 .fs-9px    { font-size: .9rem !important; }
+
+.fs-0_8rem   { font-size: 0.9rem !important; }
 .fs-1rem   { font-size: 1rem !important; }
+.fs-1_1rem   { font-size: 1.1rem !important; }
 .fs-1_2rem { font-size: 1.2rem !important; }
+.fs-sm-1_2rem { @include from-medium { font-size: 1.2rem !important; }}
 .fs-1_4rem { font-size: 1.4rem !important; }
 .fs-1_6rem { font-size: 1.6rem !important; }
+.fs-sm-1_6rem { @include from-medium { font-size: 1.6rem !important; }}
 .fs-1_8rem { font-size: 1.8rem !important; }
 .fs-2rem   { font-size: 2rem !important; }
 .fs-2_4rem { font-size: 2.4rem !important; }

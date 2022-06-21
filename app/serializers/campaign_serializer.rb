@@ -4,7 +4,8 @@ class CampaignSerializer < ActiveModel::Serializer
     :title,
     :campaign_type,
     :employees_count,
-    :completion
+    :completion,
+    :deadline
   )
 
   has_many :categories

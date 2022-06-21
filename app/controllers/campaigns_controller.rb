@@ -120,6 +120,25 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def my_interviews_list
+    @campaigns = Campaign.where(company: current_user.company).order(created_at: :desc).where \
+      id: Interview.where(employee: current_user).distinct.pluck(:campaign_id)
+    authorize @campaigns
+
+    ongoing_interviews = Interview.where(employee: current_user, label: 'Employee')
+                                  .select{|x| !x.archived_for['Employee']}
+    archived_interviews = Interview.where(employee: current_user, label: 'Employee')
+                                   .select{|x| x.archived_for['Employee']}
+
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id))
+    @archived_campaigns = @campaigns.where_exists(:interviews, id: archived_interviews.map(&:id))
+
+    render json: {
+      current_campaigns: ActiveModelSerializers::SerializableResource.new(@ongoing_campaigns, {each_serializer: CampaignSerializer}),
+      archived_campaigns: ActiveModelSerializers::SerializableResource.new(@archived_campaigns, {each_serializer: CampaignSerializer}),
+    }, status: :ok
+  end
+
   def my_team_interviews
     @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
     @campaigns = @campaigns.where_exists(:interviews, interviewer: current_user)

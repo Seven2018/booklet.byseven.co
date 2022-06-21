@@ -34,6 +34,10 @@ class CampaignPolicy < ApplicationPolicy
     true
   end
 
+  def my_interviews_list?
+    true
+  end
+
   def my_team_interviews?
     user.access_level_int.to_sym != :employee
   end
