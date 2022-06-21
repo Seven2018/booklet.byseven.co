@@ -30,6 +30,7 @@
 
       <% interviews.each do |interview| %>
 
+        <% next if interview.nil? %>
         <% interview_label = interview.label %>
 
         <div class="d-flex flex-column justify-content-start align-items-center width-25rem
@@ -38,8 +39,6 @@
           <% if interview_label == 'Employee' %>
 
             <%= render_component Image::UserAvatar.new(user: employee, klasses: 'avatar') %>
-
-
 
           <% elsif interview_label == 'Manager' %>
 
