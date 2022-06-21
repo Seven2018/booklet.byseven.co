@@ -231,8 +231,11 @@ ActiveRecord::Schema.define(version: 2022_06_13_154541) do
 
   create_table "group_categories", force: :cascade do |t|
     t.string "name"
+    t.integer "kind", default: 0
+    t.bigint "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_group_categories_on_company_id"
   end
 
   create_table "interview_answers", force: :cascade do |t|
@@ -453,7 +456,7 @@ ActiveRecord::Schema.define(version: 2022_06_13_154541) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"
@@ -633,6 +636,7 @@ ActiveRecord::Schema.define(version: 2022_06_13_154541) do
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "objective_elements", "companies"
+  add_foreign_key "objective_elements", "users", column: "creator_id"
   add_foreign_key "objective_indicators", "objective_elements"
   add_foreign_key "objective_logs", "objective_elements"
   add_foreign_key "objective_logs", "objective_indicators"

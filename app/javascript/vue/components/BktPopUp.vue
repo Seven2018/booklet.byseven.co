@@ -1,9 +1,12 @@
 <template>
-  <div>
+  <div v-if="popUp && popUp.data.open">
     <bkt-pop-up-frame v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
                       name="modal">
       <div v-if="popUp.data.title" class="flex-row-center-centered">
         <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
+      </div>
+      <div v-if="popUp.data.subtitle" class="flex-row-center-centered mt-3 mb-5">
+        <p class="fs-1_6rem font-weight-500 text-center" v-html="popUp.data.subtitle"></p>
       </div>
 
       <div v-if="popUp.data.textClose && popUp.data.textConfirm" class="flex-row-around-centered mt-5 fs-1_8rem">
@@ -53,14 +56,27 @@
         </button>
       </div>
     </bkt-pop-up-frame>
-    <bkt-pop-up-frame v-else-if="popUp && popUp.data.open && popUp.data.type == 'edit-entity-tags' "
-                      name="modal">
+    <bkt-pop-up-frame
+        v-else-if="popUp && popUp.data.open && popUp.data.type === 'edit-entity-tags'"
+        name="modal">
       <component
           :is="popUp.data.type"
           :entity-id="popUp.data.entityId"
           :fetch-tags-from-entity-path="popUp.data.fetchTagsFromEntityPath"
           :toggle-tag-from-entity-path="popUp.data.toggleTagFromEntityPath"
           :refresh-entity-list-path="popUp.data.refreshEntityListPath"
+          @close="close"
+      ></component>
+    </bkt-pop-up-frame>
+<!--    INFO: GENERIC MODAL-->
+    <bkt-pop-up-frame
+        v-else-if="popUp.data.type === 'custom'"
+        :closable="popUp.data.closable"
+        @close="close"
+    >
+      <component
+          :is="popUp.data.componentName"
+          v-bind="popUp.data"
           @close="close"
       ></component>
     </bkt-pop-up-frame>
@@ -72,6 +88,7 @@ import store from "../store";
 import BktSpinner from './BktSpinner'
 import BktPopUpFrame from "./BktPopUpFrame";
 import EditEntityTags from './EditEntityTags'
+import InfoFilterCategoryTags from "./InfoFilterCategoryTagsComponents/InfoFilterCategoryTags";
 
 export default {
   data() {
@@ -89,7 +106,12 @@ export default {
       this.popUp.data.confirm()
     }
   },
-  components: {BktSpinner, BktPopUpFrame, EditEntityTags},
+  components: {
+    BktSpinner,
+    BktPopUpFrame,
+    EditEntityTags,
+    InfoFilterCategoryTags
+  },
 }
 </script>
 

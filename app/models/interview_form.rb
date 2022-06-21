@@ -1,5 +1,8 @@
 class InterviewForm < ApplicationRecord
   class UnknownKind < StandardError; end
+
+  include Taggable
+
   has_many :interview_questions, dependent: :destroy
   has_many :interviews
   has_many :employees, through: :interviews

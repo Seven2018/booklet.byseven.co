@@ -2,6 +2,7 @@ require 'csv'
 
 class Campaign < ApplicationRecord
   include Campaigns::Stats
+  include Taggable
   class AmbiguousInterviewQuery < StandardError; end
 
   belongs_to :company

@@ -7,11 +7,11 @@
 #
 # we *highly recommend* you use sslmode=verify-full when possible
 # see https://ankane.org/postgres-sslmode-explained for more info
-from: $(heroku config:get DATABASE_URL -r production)
+from: $(heroku config:get DATABASE_URL -r staging)
 # from: $(heroku config:get DATABASE_URL -r staging)
 
 # destination database URL
-to: postgres://localhost:5432/booklet_byseven_co_development
+to: postgres://postgres:password@localhost:5432/booklet_byseven_co_development
 # to: postgres://postgres:password@localhost:5432/booklet_byseven_co_development
 
 # exclude tables
@@ -28,6 +28,8 @@ groups:
     - campaigns
     - interviews
     - categories
+    - campaigns_categories
+    - categories_interview_forms
     - tag_categories
     - tags
     - interview_form_tags
@@ -66,9 +68,9 @@ groups:
 #   - public
 
 # protect sensitive information
-data_rules:
-  email: unique_email
-  phone: unique_phone
-  last_name: random_letter
-  birthday: random_date
-  encrypted_*: unique_secret
+#data_rules:
+#  email: unique_email
+#  phone: unique_phone
+#  last_name: random_letter
+#  birthday: random_date
+#  encrypted_*: unique_secret

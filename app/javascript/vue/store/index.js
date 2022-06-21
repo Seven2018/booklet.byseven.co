@@ -9,6 +9,7 @@ import targetModule from "./target.module";
 import targetTemplateModule from "./target-template.module";
 import genericFetchEntityModule from "./generic-fetch-entity.module";
 import tagsModule from "./tags.module";
+import groupTagModule from "./group-tag.module";
 
 Vue.use(Vuex)
 
@@ -23,7 +24,8 @@ const store = new Vuex.Store({
     targetObjectives: targetModule,
     targetTemplateObjectives: targetTemplateModule,
     genericFetchEntity: genericFetchEntityModule,
-    tagsModule: tagsModule
+    tagsModule: tagsModule,
+    groupsTag: groupTagModule
   }
 })
 
