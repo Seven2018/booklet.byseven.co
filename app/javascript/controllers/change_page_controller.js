@@ -38,11 +38,21 @@ export default class extends Controller {
 
   _submit() {
     this.submitTarget.click()
+    this.blockEvents()
   }
 
   _setPaginationLinks() {
     document.querySelectorAll('ul.pagination a').forEach((link) => {
       link.setAttribute('data-action', 'click->change-page#set')
     })
+  }
+
+  ///////////
+  // TOOLS //
+  ///////////
+
+  blockEvents() {
+    document.getElementById('bkt-blockDiv').classList.toggle('d-none')
+    document.querySelector('body').classList.toggle('wait')
   }
 }

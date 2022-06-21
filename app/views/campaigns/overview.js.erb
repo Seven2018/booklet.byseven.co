@@ -1,3 +1,7 @@
 document.querySelector('#employees-list').innerHTML = '<%= j render("campaigns/show/show_employees", campaign: @campaign, employees: @employees) %>';
 
 document.querySelector('body').classList.remove('wait')
+document.getElementById('bkt-blockDiv').classList.add('d-none')
+document.getElementById('employee-count').innerText = "<%= @total_employees_count %>"
+
+document.getElementById('tab_participants').changePage._setPaginationLinks()
