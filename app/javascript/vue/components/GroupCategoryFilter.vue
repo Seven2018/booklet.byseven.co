@@ -55,8 +55,8 @@
           </ul>
 
       <div
-          class=" ml-2 px-3 py-2 rounded-5px width-75 min-h-5rem cursor-pointer"
-          :class="{'bkt-bg-light-grey9-hover': showGroups.length > 1}"
+          class=" ml-2 px-3 py-2 rounded-5px width-75 min-h-5rem "
+          :class="{'bkt-bg-light-grey9-hover cursor-pointer': showGroups.length > 1}"
           @click.stop="editTagField(idx)"
           @mouseover="showCatSuggestion(idx)"
           @mouseleave="hideCatSuggestion(idx)"
