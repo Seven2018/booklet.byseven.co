@@ -16,6 +16,7 @@ class CampaignsController < ApplicationController
     campaigns = campaigns.search_campaigns(params[:title]) if params[:title].present?
     campaigns = campaigns.where_not_exists(:interviews, locked_at: nil) if params[:status].present? && params[:status] == 'completed'
     campaigns = campaigns.where_exists(:interviews, locked_at: nil) if params[:status].present? && params[:status] == 'current'
+    campaigns = campaigns.filter_by_tag_ids(params[:tags]) if params[:tags].present?
     campaigns = campaigns.order(created_at: :desc)
 
 
@@ -209,7 +210,12 @@ class CampaignsController < ApplicationController
     category = Category.find_by(company_id: current_user.company_id, title: tag, kind: :interview)
 
     if category.nil?
-      new_category = Category.create(company_id: current_user.company_id, title: tag, kind: :interview)
+      def_group_category = current_user.company.group_categories.default_group_for(:interview)
+      new_category = Category.create(
+        company_id: current_user.company_id,
+        title: tag,
+        kind: :interview,
+        group_category: def_group_category)
       @campaign.categories << new_category
     else
       if @campaign.categories.exists?(category.id)

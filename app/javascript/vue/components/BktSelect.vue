@@ -48,10 +48,13 @@ export default {
       display: false
     }
   },
+  mounted() {
+    if (!this.value)
+      this.$emit('input', this.items[0].value)
+  },
   computed: {
     toDisplay() {
       if (!this.value) {
-        this.$emit('input', this.items[0].value)
         return this.items[0].display
       } else {
         return this.items.filter(item => item.value === this.value)[0].display

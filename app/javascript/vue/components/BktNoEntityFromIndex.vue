@@ -4,8 +4,12 @@
     <div class="fs-3_5rem">
       🤔
     </div>
-    <p class="text-center">
-      Oops, it seems any items can be found with the search ‘<span v-if="genericFetchEntity.search">{{ genericFetchEntity.search.title }}</span>’.<br>
+    <p v-if="genericFetchEntity.search && genericFetchEntity.search.title" class="text-center">
+      Oops, it seems any items can be found with the search ‘<span >{{ genericFetchEntity.search.title }}</span>’.<br>
+      Please try something else.
+    </p>
+    <p v-if="genericFetchEntity.tags && genericFetchEntity.tags.length > 0" class="text-center">
+      Oops, it seems any items can be found with the tags ‘<span >{{ genericFetchEntity.tags.map(tag => tag.title).join(', ') }}</span>’.<br>
       Please try something else.
     </p>
   </div>

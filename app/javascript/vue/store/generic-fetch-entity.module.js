@@ -9,7 +9,8 @@ export default {
     pagination: null,
     data: null,
     error: null,
-    search: null
+    search: null,
+    tags: null
   },
   mutations: {
     setPagination(state, value) {
@@ -17,6 +18,9 @@ export default {
     },
     setSearch(state, value) {
       state.search = value
+    },
+    setTags(state, value) {
+      state.tags = value
     },
     setData(state, value) {
       state.data = value
@@ -28,7 +32,10 @@ export default {
   actions: {
     async fetch({commit, state}, {pathKey, params} = {}) {
       if (state.search) {
-        params = { ...params, ...state.search}
+        params = { ...params, ...state.search, tags: state.tags}
+      }
+      if (state.tags) {
+        params = {...params, tags: state.tags.map(tag => tag.id)}
       }
 
       try {

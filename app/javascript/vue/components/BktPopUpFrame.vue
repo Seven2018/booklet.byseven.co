@@ -4,6 +4,11 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container rounded-15px">
+          <div class="flex-row-end-centered">
+            <div v-if="closable" @click="$emit('close')" class="cursor-pointer">
+              <span class="iconify" data-icon="charm:cross" data-width="25" data-height="25"></span>
+            </div>
+          </div>
           <slot></slot>
         </div>
       </div>
@@ -16,6 +21,7 @@ import store from "../store";
 import BktSpinner from './BktSpinner'
 
 export default {
+  props: ['closable'],
   data() {
     return {
       popUp: store.state.popUp

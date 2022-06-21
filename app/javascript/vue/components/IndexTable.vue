@@ -73,7 +73,7 @@
           v-if="pagination.next_page"
           type="white"
           custom-class="border-bkt-objective-blue position-absolute"
-          right="0px"
+          style="right: 0px"
           @click="$emit('fetch-page', pagination.next_page)"
       >Next
       </bkt-button>

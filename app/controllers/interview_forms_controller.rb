@@ -21,6 +21,7 @@ class InterviewFormsController < ApplicationController
   def list
     interviewForms = InterviewForm.unused.where(company: current_user.company)
     interviewForms = interviewForms.search_templates(params[:title]) if params[:title].present?
+    interviewForms = interviewForms.filter_by_tag_ids(params[:tags]) if params[:tags].present?
     interviewForms = interviewForms.order(created_at: :desc)
 
 
@@ -118,7 +119,12 @@ class InterviewFormsController < ApplicationController
     category = Category.find_by(company_id: current_user.company_id, title: tag, kind: :interview)
 
     if category.nil?
-      new_category = Category.create(company_id: current_user.company_id, title: tag, kind: :interview)
+      def_group_category = current_user.company.group_categories.default_group_for(:interview)
+      new_category = Category.create(
+        company_id: current_user.company_id,
+        title: tag,
+        kind: :interview,
+        group_category: def_group_category)
       @template.categories << new_category
     else
       if @template.categories.exists?(category.id)
