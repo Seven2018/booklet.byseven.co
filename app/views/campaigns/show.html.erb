@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-start align-items-center width-100">
 
       <h1 class="d-flex align-items-center fs-2_4rem font-weight-500 bkt-dark-grey mr-2rem">
-        <a href="<%= campaigns_path %>" class="fs-2_4rem font-weight-500 bkt-dark-grey">Campaigns</a>
+        <a href="<%= my_team_interviews_path %>" class="fs-2_4rem font-weight-500 bkt-dark-grey">My team Interviews</a>
         <svg class="mx-1rem" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="2.4rem" height="2.4rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path fill="#787878" d="M96 220a12.2 12.2 0 0 1-8.5-3.5a12 12 0 0 1 0-17L159 128L87.5 56.5a12 12 0 0 1 17-17l80 80a12 12 0 0 1 0 17l-80 80A12.2 12.2 0 0 1 96 220Z"/></svg>
         <%= @campaign.title %>
       </h1>
@@ -24,7 +24,9 @@
     <div class="d-flex flex-column align-items-center">
 
       <p class="fs-1_6rem font-weight-600 bkt-dark-grey">Deadline :</p>
-      <p class="fs-1_6rem font-weight-500 bkt-light-grey6"><%= @campaign.deadline.strftime('%d/%m/%Y') %></p>
+      <p class="fs-1_6rem font-weight-500 bkt-light-grey6 text-nowrap">
+        <%= @campaign.deadline %>
+      </p>
 
     </div>
 

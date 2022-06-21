@@ -24,7 +24,10 @@
     <div class="d-flex flex-column align-items-center">
 
       <p class="fs-1_6rem font-weight-600 bkt-dark-grey">Deadline :</p>
-      <p class="fs-1_6rem font-weight-500 bkt-light-grey6"><%= @campaign.deadline.strftime('%d/%m/%Y') %></p>
+      <p class="fs-1_6rem font-weight-500 bkt-light-grey6 text-nowrap"
+         data-interviews--campaigns-show-target="deadlineDisplay">
+        <%= @campaign.deadline %>
+      </p>
 
     </div>
 
@@ -82,7 +85,7 @@
 
             <i class="fas fa-search searchbar-icon"></i>
 
-            <%= simple_form_for :search, url: campaign_path(@campaign),
+            <%= simple_form_for :search, url: overview_campaign_path(@campaign),
                                          method: :get, remote: true do |f| %>
 
               <%= f.input :name, placeholder: 'Search',
@@ -160,6 +163,13 @@
                  <span class="iconify mr-0_75rem" data-icon="akar-icons:plus"></span>Add participant
               </a>
 
+              <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                        width-100 p-3"
+                 data-toggle="modal"
+                 data-target="#editCampaignDeadline">
+                 Edit deadline
+              </a>
+
               <%= link_to 'Send invitation email to all', send_notification_email_path(@campaign, email_type: 'invite'), class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
                         width-100 p-3",
                           remote: true %>
@@ -217,6 +227,20 @@
   <!------------>
   <!-- MODALS -->
   <!------------>
+
+  <div id='editCampaignDeadline'
+       class='modal date-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static">
+
+    <div class='modal-dialog date-modal__dialog'
+         role='document'>
+      <%= render 'campaigns/modals/edit_deadline', campaign: @campaign %>
+    </div>
+
+  </div>
 
   <div id='sendEmailSuccess'
        class='modal fade'

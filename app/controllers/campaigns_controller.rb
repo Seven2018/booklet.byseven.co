@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: %i[show overview edit send_notification_email destroy toggle_tag remove_company_tag search_tags index_line]
+  before_action :set_campaign, only: %i[show overview update send_notification_email destroy toggle_tag remove_company_tag search_tags index_line]
   before_action :show_navbar_campaign
 
   skip_forgery_protection
@@ -36,35 +36,9 @@ class CampaignsController < ApplicationController
     @campaign = @campaign.decorate
     campaign_id = @campaign.id
 
-    @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
+    @employees = User.where_exists(:interviews, campaign_id: campaign_id, interviewer: current_user).order(lastname: :asc)
 
-    @employees =
-      if current_user.can_create_campaigns?
-        @campaign.employees.order(lastname: :asc)
-      else
-        User.where_exists(:interviews, campaign_id: campaign_id, interviewer: current_user).order(lastname: :asc)
-      end
-
-    search_name = params.dig(:search, :name)
-    search_interviewer = params.dig(:search, :interviewer)
-    search_tags = params.dig(:search, :tag_categories)&.permit!&.to_hash&.compact&.values
-    search_completion = params.dig(:search, :completion)&.downcase&.gsub(' ', '_')
-
-    @employees = @employees.search_users(search_name) if search_name.present?
-
-    @employees = @employees.where_exists(:interviews, campaign_id: campaign_id, interviewer_id: search_interviewer) \
-      if search_interviewer.present?
-
-    if search_tags.present?
-      search_tags.each do |tag|
-        @employees = @employees.where_exists(:tags, id: tag)
-      end
-    end
-
-    @employees = @employees.select{|x| @campaign.completion_status(x) == search_completion} \
-      if ['not_started', 'in_progress', 'completed'].include?(search_completion)
-
-    @employees = @employees.uniq
+    filter_employees(campaign_id)
 
     respond_to do |format|
       format.html
@@ -82,38 +56,22 @@ class CampaignsController < ApplicationController
 
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
 
-    @employees =
-      if current_user.can_create_campaigns?
-        @campaign.employees.order(lastname: :asc)
-      else
-        User.where_exists(:interviews, campaign_id: campaign_id, interviewer: current_user).order(lastname: :asc)
-      end
+    @employees = @campaign.employees.order(lastname: :asc)
 
-    search_name = params.dig(:search, :name)
-    search_interviewer = params.dig(:search, :interviewer)
-    search_tags = params.dig(:search, :tag_categories)&.permit!&.to_hash&.compact&.values
-    search_completion = params.dig(:search, :completion)&.downcase&.gsub(' ', '_')
-
-    @employees = @employees.search_users(search_name) if search_name.present?
-
-    @employees = @employees.where_exists(:interviews, campaign_id: campaign_id, interviewer_id: search_interviewer) \
-      if search_interviewer.present?
-
-    if search_tags.present?
-      search_tags.each do |tag|
-        @employees = @employees.where_exists(:tags, id: tag)
-      end
-    end
-
-    @employees = @employees.select{|x| @campaign.completion_status(x) == search_completion} \
-      if ['not_started', 'in_progress', 'completed'].include?(search_completion)
-
-    @employees = @employees.uniq
+    filter_employees(campaign_id)
 
     respond_to do |format|
       format.html
       format.js
     end
+  end
+
+  def update
+    authorize @campaign
+
+    @campaign.update(campaign_params)
+
+    head :ok
   end
 
   def destroy
@@ -350,47 +308,27 @@ class CampaignsController < ApplicationController
 
   private
 
-  def filter_campaigns(campaigns)
-    search_title = params.dig(:search, :title)
-    search_period = params[:filter_tags].present? ? params.dig(:filter_tags, :period) : params.dig(:search, :period)
+  def filter_employees(campaign_id)
+    search_name = params.dig(:search, :name)
+    search_interviewer = params.dig(:search, :interviewer)
+    search_tags = params.dig(:search, :tag_categories)&.permit!&.to_hash&.compact&.values
+    search_completion = params.dig(:search, :completion)&.downcase&.gsub(' ', '_')
 
-    @campaigns =
-      if search_period == 'All'
-        campaigns
-      elsif search_period == 'Completed'
-        campaigns.where_not_exists(:interviews, locked_at: nil)
-      else
-        campaigns.where_exists(:interviews, locked_at: nil)
-      end
+    @employees = @employees.search_users(search_name) if search_name.present?
 
-    if params.dig(:search, :tags).present?
-      selected_tags = params.dig(:search, :tags).split(',')
+    @employees = @employees.where_exists(:interviews, campaign_id: campaign_id, interviewer_id: search_interviewer) \
+      if search_interviewer.present?
 
-      selected_tags.each do |tag|
-        @campaigns = @campaigns.where_exists(:categories, id: tag)
+    if search_tags.present?
+      search_tags.each do |tag|
+        @employees = @employees.where_exists(:tags, id: tag)
       end
     end
 
-    if search_title.present?
-      interview_forms = InterviewForm.where(company_id: current_user.company_id).search_templates(search_title)
-      campaigns_by_form = @campaigns.where_exists(:interviews, interview_form: interview_forms)
-      campaigns = @campaigns.search_campaigns(search_title)
-      @campaigns = @campaigns.where(id: campaigns_by_form.ids + campaigns.ids)
-    end
+    @employees = @employees.select{|x| @campaign.completion_status(x) == search_completion} \
+      if ['not_started', 'in_progress', 'completed'].include?(search_completion)
 
-    page_index = (params.dig(:search, :page).presence || 1).to_i
-
-    total_campaigns_count = @campaigns.count
-    @campaigns = @campaigns.page(page_index)
-    @any_more = @campaigns.count * page_index < total_campaigns_count
-  end
-
-  def selected_user
-    @selected_user ||= begin
-                         return unless params[:search].present? && params[:search][:user_id].present?
-
-                         User.find(params[:search][:user_id])
-                       end
+    @employees = @employees.uniq
   end
 
   ############################
@@ -497,5 +435,9 @@ class CampaignsController < ApplicationController
       @selected_template = params[:campaign][:selected_template]
       @selected_users = params[:campaign][:selected_users]
     end
+  end
+
+  def campaign_params
+    params.require(:campaign).permit(:deadline)
   end
 end

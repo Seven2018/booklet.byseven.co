@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     resources :users, only: :index
     resources :interview_sets, only: %i[create destroy]
   end
-  resources :campaigns, only: %i[index show destroy] do
+  resources :campaigns, only: %i[index show update destroy] do
     collection do
       get :list
     end

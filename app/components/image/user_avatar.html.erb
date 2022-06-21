@@ -1,0 +1,11 @@
+<% if @user.picture.present? %>
+
+  <img class='<%= @klasses %>'
+       src="<%= @user.picture %>"
+       onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+
+<% else %>
+
+  <%= image_tag 'empty-avatar.png', class: 'avatar-md mb-1rem' %>
+
+<% end %>

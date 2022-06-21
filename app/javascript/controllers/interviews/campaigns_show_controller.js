@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return [ 'employeeCount', 'searchSubmit', 'addEmployeeModal' ]
+    return [ 'employeeCount', 'searchSubmit', 'addEmployeeModal', 'deadlineDisplay' ]
   }
 
   connect() {
@@ -58,6 +58,20 @@ export default class extends Controller {
     })
 
     this.searchSubmitTarget.click()
+  }
+
+
+  ///////////////////
+  // EDIT DEADLINE //
+  ///////////////////
+
+  editDeadline(event) {
+    const element = event.currentTarget
+    const form = element.closest('form')
+
+    this.deadlineDisplayTarget.innerText = element.value
+    form.querySelector('.hidden-submit').click()
+    document.querySelector('.modal.show').querySelector('.date-modal__close').click()
   }
 
 

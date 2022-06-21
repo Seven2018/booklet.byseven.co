@@ -22,6 +22,10 @@ class CampaignPolicy < ApplicationPolicy
     user.can_create_campaigns
   end
 
+  def update?
+    create?
+  end
+
   def destroy?
     create? || record.interviews.where(status: :submitted).empty?
   end

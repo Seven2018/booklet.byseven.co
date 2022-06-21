@@ -1,3 +1,5 @@
+<% overview = @controller_action == :campaigns_overview %>
+
 <% employees.each do |employee| %>
 
   <% employee_id = employee.id %>
@@ -13,21 +15,15 @@
   <% interviewer = interviews.first.interviewer %>
 
   <div class="employee-card d-flex justify-content-start align-items-center
-              border-bottom-bkt-light-grey py-2rem pos-rel">
+              border-bottom-bkt-light-grey py-2rem pos-rel cursor-pointer">
+
+    <a class="stretched-link"
+       data-toggle="modal"
+       data-target="#interviewSetShow-<%= employee_id %>"></a>
 
     <div class="d-flex align-items-center width-20 min-width-20 fs-1_6rem font-weight-700 bkt-light-grey6">
 
-      <% if employee.picture.present? %>
-
-        <img class='avatar'
-             src="<%= employee.picture %>"
-             onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-
-      <% else %>
-
-        <%= image_tag 'empty-avatar.png', class: 'avatar' %>
-
-      <% end %>
+      <%= render_component Image::UserAvatar.new(user: employee, klasses: 'avatar') %>
 
       <div class="ml-0_75rem">
         <p class="fs-1_6rem font-weight-500 bkt-dark-grey pr-0_75rem"><%= employee.fullname %></p>
@@ -110,7 +106,7 @@
 
     </div>
 
-    <div class="pos-abs"
+    <div class="pos-abs z-index-100"
          style="top: calc(50% - 2rem); right: 1rem;">
 
       <%= render_component Buttons::OptionsButton.new(vertical: true) do %>
@@ -119,8 +115,20 @@
               user_path(employee),
               class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover width-100 p-3" %>
 
-        <% if CampaignPolicy.new(current_user, campaign).remove_interview_set? ||
-            !interview_set.employee_interview&.submitted? %>
+        <% unless overview %>
+
+          <%= link_to 'Send invitation email', send_notification_email_path(@campaign, user_id: employee_id, email_type: 'invite'), class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                        width-100 p-3",
+                          remote: true %>
+
+          <%= link_to 'Send reminder email', send_notification_email_path(@campaign, user_id: employee_id, email_type: 'remind'), class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                    width-100 p-3",
+                    remote: true %>
+
+        <% end %>
+
+        <% if (CampaignPolicy.new(current_user, campaign).remove_interview_set? ||
+            !interview_set.employee_interview&.submitted?) && overview%>
 
           <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-negative-red-important
                     bkt-bg-light-grey10-hover width-100 p-3"
@@ -135,26 +143,41 @@
 
     </div>
 
-    <!------------>
-    <!-- MODALS -->
-    <!------------>
+  </div>
 
-    <div id='removeEmployee-<%= employee_id %>'
-         class='modal ays-modal fade'
-         tabindex='-1'
-         role='dialog'
-         data-keyboard="false"
-         data-backdrop="static">
 
-      <div class='modal-dialog ays-modal__dialog'
-           role='document'>
-        <%= render 'campaigns/modals/remove_employee', campaign: campaign, employee: employee, interviewer_id: interviewer.id %>
-      </div>
+  <!------------>
+  <!-- MODALS -->
+  <!------------>
 
+  <div id='interviewSetShow-<%= employee_id %>'
+       class='modal action-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static">
+
+    <div class='modal-dialog action-modal__dialog'
+         role='document'>
+      <%= render 'campaigns/modals/show_interviews_set', campaign: campaign, employee: employee, interviewer: interviewer, overview: overview %>
     </div>
 
-    <!------------>
+  </div>
+
+  <div id='removeEmployee-<%= employee_id %>'
+       class='modal ays-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static">
+
+    <div class='modal-dialog ays-modal__dialog'
+         role='document'>
+      <%= render 'campaigns/modals/remove_employee', campaign: campaign, employee: employee, interviewer_id: interviewer.id %>
+    </div>
 
   </div>
+
+  <!------------>
 
 <% end %>
