@@ -31,15 +31,16 @@ Rails.application.routes.draw do
     resources :users, only: :index
     resources :interview_sets, only: %i[create destroy]
   end
-  resources :campaigns, only: %i[index show destroy] do
+  resources :campaigns, only: %i[index show update destroy] do
     collection do
       get :list
     end
     member do
-      post 'search_tags'
-      post 'toggle_tag'
-      delete 'remove_company_tag'
-      get 'index_line'
+      get :overview
+      post :search_tags
+      post :toggle_tag
+      delete :remove_company_tag
+      get :index_line
     end
     collection do
       get :redirect_calendar

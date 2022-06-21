@@ -1,0 +1,99 @@
+<% interviews = campaign.interviews_for(employee.id) %>
+
+<% label = { 'Employee' => 'Interviewee',
+             'Manager' => 'Interviewer',
+             'Crossed' => 'Cross review' } %>
+
+<div class="modal-content info-modal__content pos-rel">
+
+  <button type="button"
+          class="action-modal__close pos-abs z-index-100"
+          style="top: 2rem; right: 2rem;"
+          data-dismiss="modal"
+          aria-label="Close">
+    <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+  </button>
+
+  <div class="pt-2rem"></div>
+
+  <div class="modal-body info-modal__body width-auto">
+
+    <div class="d-flex flex-column justify-content-start align-items-center mb-3rem">
+
+      <%= render_component Image::UserAvatar.new(user: employee, klasses: 'avatar-md mb-1rem') %>
+
+      <p class="fs-2rem font-weight-500 bkt-dark-grey"><%= employee.fullname %></p>
+
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center width-100 gap-2rem">
+
+      <% interviews.each do |interview| %>
+
+        <% interview_label = interview.label %>
+
+        <div class="d-flex flex-column justify-content-start align-items-center width-25rem
+                    border-bkt-light-grey5 rounded-5px p-1rem">
+
+          <% if interview_label == 'Employee' %>
+
+            <%= render_component Image::UserAvatar.new(user: employee, klasses: 'avatar') %>
+
+
+
+          <% elsif interview_label == 'Manager' %>
+
+            <%= render_component Image::UserAvatar.new(user: interviewer, klasses: 'avatar') %>
+
+          <% else %>
+
+            <div class="d-flex">
+
+              <%= render_component Image::UserAvatar.new(user: employee, klasses: 'avatar z-index-5 mr--2rem') %>
+              <%= render_component Image::UserAvatar.new(user: interviewer, klasses: 'avatar') %>
+
+            </div>
+
+          <% end %>
+
+          <p class="fs-1_4rem font-weight-600 bkt-dark-grey my-1rem"><%= label[interview_label] %></p>
+
+          <p class="fs-1_4rem font-weight-500 <%= interview.get_status_color_class %> mb-1rem">
+            <%= interview.get_status_str %>
+          </p>
+
+          <%= link_to interview_path(interview) do %>
+
+            <% if overview || interview.label == 'Employee' || interview.submitted? %>
+
+              <button class="bkt-btn-blue-border <%= 'disabled' unless interview.submitted? %> z-index-150"
+                      disabled="<%= !interview.submitted? %>">
+                View answers
+              </button>
+
+            <% elsif interview.label == 'Manager' %>
+
+              <button class="bkt-btn-blue z-index-150">
+                <%= interview.not_started? ? 'Start interview' : 'Continue interview' %>
+              </button>
+
+            <% elsif interview.label == 'Crossed' %>
+
+              <button class="bkt-btn-blue <%= 'disabled' if interview.not_available_yet? %> z-index-150"
+                      disabled="<%= interview.not_available_yet? %>">
+                <%= interview.in_progress? ? 'Continue cross interview' : 'Start cross interview' %>
+              </button>
+
+            <% end %>
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

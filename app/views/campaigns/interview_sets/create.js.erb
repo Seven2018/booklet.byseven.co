@@ -1,9 +1,5 @@
-modal_dialog = document.querySelector('#campaignInfoMessage').querySelector('.modal-dialog')
-if ('<%= @status %>' == 'true') {
-  document.querySelector('.campaign-show__interviews-list').innerHTML = '<%= j render("campaigns/show/show_interviews", campaign: @campaign, employees: @employees, selected_interviewer: @selected_interviewer) %>';
-  modal_dialog.innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "#{@user.fullname} added successfully.") %>';
-} else {
-  modal_dialog.innerHTML = '<%= j render("campaigns/modals/campaign_info_message", message: "An issue occurred! #{@user.fullname} not added !") %>';
-}
 document.querySelector('.modal.show').querySelector('.action-modal__close').click()
-document.querySelector('#campaignInfoMessageTrigger').click()
+
+document.getElementById('employees-list').innerHTML = '<%= j render("campaigns/show/show_employees", campaign: @campaign, employees: @employees) %>';
+
+document.getElementById('stimulus-interviews--campaigns-show-controller').campaignsShow.employeeCountTarget.innerText = "<%= @employees.count %>"

@@ -24,6 +24,8 @@ class Campaign < ApplicationRecord
     feedback_360: 30
   }
 
+  serialize :interview_forms_list, Hash
+
   include PgSearch::Model
   pg_search_scope :search_campaigns,
     against: [ :title ],

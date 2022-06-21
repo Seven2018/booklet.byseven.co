@@ -14,11 +14,17 @@
 
     <div class="flex-row-start-centered width-100 mb-2rem border-bottom-bkt-light-grey5" style='height: 32.5px;'>
 
-      <p id="control_attendees-acquired" class="booklet-tab-control fs-1_6rem mr-1rem pb-0_75rem z-index-5 cursor-pointer active" data-action='click->tabs#selectTab click->workshop-show#hideReminderButton'>
+      <p id="control_attendees-acquired"
+         class="booklet-tab-control booklet-tab-orange fs-1_6rem
+                mr-1rem pb-0_75rem z-index-5 cursor-pointer active"
+         data-action='click->tabs#selectTab click->workshop-show#hideReminderButton'>
         Acquired (<%= attendees_acquired.count %>)
       </p>
 
-      <p id="control_attendees-not-acquired" class="booklet-tab-control fs-1_6rem pb-0_75rem z-index-5 cursor-pointer" data-action='click->tabs#selectTab click->workshop-show#showReminderButton'>
+      <p id="control_attendees-not-acquired"
+         class="booklet-tab-control booklet-tab-orange fs-1_6rem
+                pb-0_75rem z-index-5 cursor-pointer"
+         data-action='click->tabs#selectTab click->workshop-show#showReminderButton'>
         Not acquired (<%= attendees_not_acquired.count %>)
       </p>
 

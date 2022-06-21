@@ -1,0 +1,24 @@
+<div class="modal-content ays-modal__content">
+
+  <div class="modal-body ays-modal__body">
+
+    <h3>Are you sure you want to remove this user ?</h3>
+
+  </div>
+
+  <div class="modal-footer ays-modal__footer">
+
+    <button class="bkt-btn-ays-red"
+            data-action="click->interviews--campaigns-show#removeEmployee"
+            data-path="<%= campaigns_interview_set_path(id: campaign.id) %>"
+            data-user-id="<%= employee.id %>">
+      Yes, remove
+    </button>
+
+    <button class="bkt-btn-ays-dark-grey close-button" data-dismiss="modal" aria-label="Close">
+      No
+    </button>
+
+  </div>
+
+</div>
