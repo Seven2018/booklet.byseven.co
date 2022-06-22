@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import BktBanner from "../../components/BktBanner";
 import BktSwitcher from "../../components/BktSwitcher";
 import store from "../../store";
 import MyInterviewCard from "./MyInterviewCard";
@@ -43,6 +42,6 @@ export default {
   created() {
     store.dispatch('genericFetchEntity/fetch', {pathKey: 'my_interviews_list'})
   },
-  components: {MyInterviewCard, BktSwitcher, BktBanner},
+  components: {MyInterviewCard, BktSwitcher},
 }
 </script>

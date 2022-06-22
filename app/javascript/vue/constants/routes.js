@@ -42,7 +42,8 @@ const routes = {
   group_categories_id: '/group_categories/{id}',
   categories_search_v2: '/categories/search_v2',
   my_interviews_list: '/my_interviews_list',
-  interviews_id: '/interviews/{id}'
+  interviews_id: '/interviews/{id}',
+  my_team_interviews_list: '/my_team_interviews_list',
 }
 
 export default {

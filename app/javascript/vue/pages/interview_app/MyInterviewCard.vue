@@ -67,7 +67,7 @@
           </div>
           <div class="ml-3">
             <p class="fs-1_2rem font-weight-500 flex-row-start-centered">
-              {{ campaign.interview_status_sentence }}
+              {{ campaign.employee_interview.status_sentence }}
               <span @click="openInfo" class="cursor-pointer">
                 <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>
               </span>

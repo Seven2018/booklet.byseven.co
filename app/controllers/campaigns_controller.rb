@@ -175,6 +175,31 @@ class CampaignsController < ApplicationController
     end
   end
 
+
+  def my_team_interviews_list
+    @campaigns = policy_scope(Campaign)
+                   .where(company: current_user.company)
+                   .where_exists(:interviews, interviewer: current_user).order(created_at: :desc)
+    authorize @campaigns
+
+    ongoing_interviews = Interview.where(interviewer: current_user)
+                                  .select{|x| !x.archived_for['Manager'].present?}
+    archived_interviews = Interview.where(interviewer: current_user)
+                                   .select{|x| x.archived_for['Manager'].present?}
+
+    @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id)).distinct
+    @archived_campaigns = @campaigns.where_exists(:interviews, id: archived_interviews.map(&:id)).distinct
+
+    render json: {
+      current_campaigns: ActiveModelSerializers::SerializableResource.new(
+        @ongoing_campaigns, {each_serializer: CampaignSerializer, for_user: current_user, schema: 'manager'}
+      ),
+      archived_campaigns: ActiveModelSerializers::SerializableResource.new(
+        @archived_campaigns, {each_serializer: CampaignSerializer, for_user: current_user, schema: 'manager'}
+      ),
+    }, status: :ok
+  end
+
   def campaign_edit_date
     @campaign = Campaign.find(params.dig(:edit_date, :campaign_id))
     authorize @campaign

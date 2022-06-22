@@ -7,10 +7,11 @@ class CampaignSerializer < ActiveModel::Serializer
     :completion,
     :deadline,
     :manager,
-    :interview_status_sentence,
+    # :interview_status_sentence,
     :manager_interview,
     :employee_interview,
     :crossed_interview,
+    :employees_interviews
   )
 
   has_many :categories
@@ -34,28 +35,28 @@ class CampaignSerializer < ActiveModel::Serializer
   end
 
   def manager
-    return nil unless instance_options[:for_user]
+    return nil unless instance_options[:for_user] && instance_options[:schema] != 'manager'
 
     ActiveModelSerializers::SerializableResource.new(
-      get_manager_interview(instance_options[:for_user]).interviewer,
+      get_manager_interview_by_employee(instance_options[:for_user]).interviewer,
       { serializer: UserSerializer }
     )
   end
 
-  def interview_status_sentence
-    return nil unless instance_options[:for_user]
-
-    generate_interviews_status_sentence(
-      manager_interview: get_manager_interview(instance_options[:for_user]),
-      employee_interview: get_employee_interview(instance_options[:for_user]),
-      crossed_interview: get_crossed_interview(instance_options[:for_user])
-    )
-  end
+  # def interview_status_sentence
+  #   return nil unless instance_options[:for_user]
+  #
+  #   generate_interviews_status_sentence(
+  #     manager_interview: get_manager_interview_by_employee(instance_options[:for_user]),
+  #     employee_interview: get_employee_interview_by_employee(instance_options[:for_user]),
+  #     crossed_interview: get_crossed_interview_by_employee(instance_options[:for_user])
+  #   )
+  # end
 
   def manager_interview
-    return nil unless instance_options[:for_user]
+    return nil unless instance_options[:for_user] && instance_options[:schema] != 'manager'
 
-    interview = get_manager_interview(instance_options[:for_user])
+    interview = get_manager_interview_by_employee(instance_options[:for_user])
     {
       id: interview.id,
       bg: interview_status_bg_class(interview),
@@ -65,21 +66,26 @@ class CampaignSerializer < ActiveModel::Serializer
 
 
   def employee_interview
-    return nil unless instance_options[:for_user]
+    return nil unless instance_options[:for_user] && instance_options[:schema] != 'manager'
 
-    interview = get_employee_interview(instance_options[:for_user])
+    interview = get_employee_interview_by_employee(instance_options[:for_user])
     {
       id: interview.id,
       status: interview.status,
       bg: interview_status_bg_class(interview),
-      color: interview_status_color_class(interview)
+      color: interview_status_color_class(interview),
+      status_sentence: generate_interviews_status_sentence(
+        manager_interview: get_manager_interview_by_employee(instance_options[:for_user]),
+        employee_interview: interview,
+        crossed_interview: get_crossed_interview_by_employee(instance_options[:for_user])
+      )
     }
   end
 
   def crossed_interview
-    return nil unless instance_options[:for_user]
+    return nil unless instance_options[:for_user] && instance_options[:schema] != 'manager'
 
-    interview = get_crossed_interview(instance_options[:for_user])
+    interview = get_crossed_interview_by_employee(instance_options[:for_user])
     {
       id: interview.id,
       bg: interview_status_bg_class(interview),
@@ -87,21 +93,39 @@ class CampaignSerializer < ActiveModel::Serializer
     }
   end
 
+  def employees_interviews
+    return nil unless instance_options[:for_user] && instance_options[:schema] == 'manager'
+
+    users = User
+              .joins(:interviews)
+              .where(interviews: { campaign: object, interviewer: instance_options[:for_user] })
+              .distinct
+              .order(lastname: :asc)
+    users.map do |user|
+      {
+        employee: user,
+        employee_interview: Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Employee'),
+        manager_interview: Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Manager'),
+        crossed_interview: Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Crossed'),
+      }
+    end
+  end
+
   private
 
-  def get_manager_interview(for_user)
+  def get_manager_interview_by_employee(for_user)
     object.interviews
           .where(employee: for_user)
           .find(&:manager?)
   end
 
-  def get_employee_interview(for_user)
+  def get_employee_interview_by_employee(for_user)
     object.interviews
           .where(employee: for_user)
           .find(&:employee?)
   end
 
-  def get_crossed_interview(for_user)
+  def get_crossed_interview_by_employee(for_user)
     object.interviews
           .where(employee: for_user)
           .find(&:crossed?)

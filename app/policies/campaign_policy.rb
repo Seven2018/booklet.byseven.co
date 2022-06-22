@@ -35,11 +35,15 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def my_interviews_list?
-    true
+    my_interviews?
   end
 
   def my_team_interviews?
     user.access_level_int.to_sym != :employee
+  end
+
+  def my_team_interviews_list?
+    my_team_interviews?
   end
 
   def send_notification_email?

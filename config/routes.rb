@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   get :my_interviews, controller: :campaigns
   get :my_interviews_list, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
+  get :my_team_interviews_list, controller: :campaigns
   match '/send_notification_email/:id' => 'campaigns#send_notification_email', as: :send_notification_email, via: [:get]
   get :campaign_select_owner, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
