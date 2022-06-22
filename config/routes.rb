@@ -299,4 +299,7 @@ Rails.application.routes.draw do
   # design pages
   get '/design', to: 'design#index'
   get '/guidelines', to: 'design#guidelines'
+
+  # actioncable -> anycable
+  resources :anycabletest, only: %i[index]
 end

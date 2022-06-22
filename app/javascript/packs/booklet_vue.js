@@ -58,6 +58,7 @@ import CustomToggleForErbForm from '../vue/components/CustomToggleForErbForm'
 import CampaignIndex from '../vue/pages/interview_app/campaigns'
 import InterviewTemplateIndex from '../vue/pages/interview_app/templates'
 import InterviewReportIndex from '../vue/pages/interview_app/reports'
+import Anhycabletest from '../vue/pages/anycabletest'
 
 let app = null
 let vuejsOpt = {
@@ -74,6 +75,7 @@ let vuejsOpt = {
     ObjectiveTemplateNewTargetView,
     CustomToggleForErbForm,
     CampaignIndex,
+    Anycabletest,
     InterviewTemplateIndex,
     InterviewReportIndex,
   }

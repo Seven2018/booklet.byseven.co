@@ -75,4 +75,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'http://localhost:3000' }
 
+  # Anycable websocket
+  config.action_cable.url = "ws://localhost:8080/cable"
 end

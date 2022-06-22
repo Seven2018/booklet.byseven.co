@@ -48,6 +48,9 @@ services:
       - RAILS_ENV=development
       - REDISCLOUD_URL=redis://redis:6379
       - DOCKER_BKT=true
+      - ACTION_CABLE_ADAPTER=anycable
+      - ANYCABLE_RPC_HOST=0.0.0.0:50051
+      - ANYCABLE_BROADCAST_ADAPTER=redis
     volumes:
       - ".:/app"
       - "/app/tmp"
@@ -71,6 +74,41 @@ services:
       - DOCKER_BKT=true
     networks:
       - seven_booklet
+
+  anycable:
+    build: .
+    command: bash -c "cd /app && bundle install && bundle exec anycable"
+    environment:
+      - ANYCABLE_REDIS_URL=redis://redis:6379
+      - ANYCABLE_RPC_HOST=0.0.0.0:50051
+    ports:
+      - '50051'
+    volumes:
+      - ".:/app"
+    depends_on:
+      - redis
+    networks:
+      - seven_booklet
+
+  ws:
+    image: 'anycable/anycable-go:1.2'
+    ports:
+      - '8080:8080'
+    environment:
+      - ANYCABLE_HOST=0.0.0.0
+      - ANYCABLE_PORT=8080
+      - ANYCABLE_REDIS_URL=redis://redis:6379
+      - ANYCABLE_RPC_HOST=anycable:50051
+    depends_on:
+      - redis
+      - anycable
+    networks:
+      - seven_booklet
+    healthcheck:
+      test: curl -s http://0.0.0.0:8080/health > /dev/null; ; if [[ $$? == 0 ]]; then echo 0; else echo 1; fi
+      timeout: 10s
+      interval: 30s
+      retries: 5
 
 networks:
   seven_booklet:

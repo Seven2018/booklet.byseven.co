@@ -9,6 +9,7 @@ gem 'pg'
 gem 'puma'
 gem 'rails', '6.0.0'
 gem 'redis'
+gem 'anycable-rails'
 
 gem 'autoprefixer-rails'
 gem 'font-awesome-sass', '~> 5.15.1'

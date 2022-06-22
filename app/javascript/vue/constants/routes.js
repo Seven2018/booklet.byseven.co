@@ -1,5 +1,6 @@
 
 const routes = {
+  anycabletest: '/anycabletest',
   objective_new: '/objective/elements/new',
   objective_list: '/objective/elements/list',
   objective_user_show: '/objective/users/{id}',
