@@ -4,7 +4,7 @@
       :headers="headers"
       :tableData="genericFetchEntity.data.users"
       :pagination="genericFetchEntity.pagination"
-      @fetch-page="fetchPage"
+      @fetch-page="fetchPage($event, 'objective_list')"
   >
     <template v-slot="{id, firstname, lastname, picture, job_title, access_level_int, manager, objectives_count}">
       <td>
@@ -92,14 +92,6 @@ export default {
 )
   },
   methods: {
-    fetchPage(page) {
-      store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'objective_list',
-        params: {
-          'page[number]': page,
-        }
-      })
-    }
   },
   components: {
     UserInfoInTable,

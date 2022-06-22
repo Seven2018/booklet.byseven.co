@@ -56,9 +56,9 @@ export default {
     goto(key, id = null) {
       window.location.href = routes.generate(key, {id})
     },
-    fetchPage(page) {
+    fetchPage(page, pathKey) {
       store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'interview_forms_list',
+        pathKey: pathKey,
         params: {
           'page[number]': page,
         }

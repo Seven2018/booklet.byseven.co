@@ -5,7 +5,7 @@
       :table-data="genericFetchEntity.data['interview_reports']"
       :pagination="genericFetchEntity.pagination"
       :without-hover="true"
-      @fetch-page="fetchPage"
+      @fetch-page="fetchPage($event, 'interviews_reports')"
   >
     <template v-slot="{id, creator, created_at, mode, start_time, end_time, processing, csv_path, xlsx_path}">
       <td>
