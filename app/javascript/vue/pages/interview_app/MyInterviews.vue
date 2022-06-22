@@ -3,15 +3,25 @@
   <div class="width-70 mt-5 mx-auto">
     <bkt-switcher
         v-if="genericFetchEntity.data"
-        :current-nbr="1"
-        :archived-nbr="0"
+        :current-nbr="genericFetchEntity.data.current_campaigns.campaigns.length"
+        :archived-nbr="genericFetchEntity.data.archived_campaigns.campaigns.length"
         title="interviews"
     >
       <template v-slot:current>
-        current
+        <my-interview-card
+            v-for="campaign in genericFetchEntity.data.current_campaigns.campaigns"
+            :key="campaign.id"
+            :campaign="campaign"
+            type="current"
+        ></my-interview-card>
       </template>
       <template v-slot:archived>
-        archived
+        <my-interview-card
+            v-for="campaign in genericFetchEntity.data.archived_campaigns.campaigns"
+            :key="campaign.id"
+            :campaign="campaign"
+            type="archived"
+        ></my-interview-card>
       </template>
     </bkt-switcher>
   </div>
@@ -21,6 +31,7 @@
 import BktBanner from "../../components/BktBanner";
 import BktSwitcher from "../../components/BktSwitcher";
 import store from "../../store";
+import MyInterviewCard from "./MyInterviewCard";
 
 export default {
   props: ['bannerLink'],
@@ -32,6 +43,6 @@ export default {
   created() {
     store.dispatch('genericFetchEntity/fetch', {pathKey: 'my_interviews_list'})
   },
-  components: {BktSwitcher, BktBanner},
+  components: {MyInterviewCard, BktSwitcher, BktBanner},
 }
 </script>

@@ -134,8 +134,12 @@ class CampaignsController < ApplicationController
     @archived_campaigns = @campaigns.where_exists(:interviews, id: archived_interviews.map(&:id))
 
     render json: {
-      current_campaigns: ActiveModelSerializers::SerializableResource.new(@ongoing_campaigns, {each_serializer: CampaignSerializer}),
-      archived_campaigns: ActiveModelSerializers::SerializableResource.new(@archived_campaigns, {each_serializer: CampaignSerializer}),
+      current_campaigns: ActiveModelSerializers::SerializableResource.new(
+        @ongoing_campaigns, {each_serializer: CampaignSerializer, for_user: current_user}
+      ),
+      archived_campaigns: ActiveModelSerializers::SerializableResource.new(
+        @archived_campaigns, {each_serializer: CampaignSerializer, for_user: current_user}
+      ),
     }, status: :ok
   end
 

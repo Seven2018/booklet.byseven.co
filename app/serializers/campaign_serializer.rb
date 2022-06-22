@@ -5,7 +5,12 @@ class CampaignSerializer < ActiveModel::Serializer
     :campaign_type,
     :employees_count,
     :completion,
-    :deadline
+    :deadline,
+    :manager,
+    :interview_status_sentence,
+    :manager_interview,
+    :employee_interview,
+    :crossed_interview,
   )
 
   has_many :categories
@@ -28,4 +33,126 @@ class CampaignSerializer < ActiveModel::Serializer
     # ).round
   end
 
+  def manager
+    return nil unless instance_options[:for_user]
+
+    ActiveModelSerializers::SerializableResource.new(
+      get_manager_interview(instance_options[:for_user]).interviewer,
+      { serializer: UserSerializer }
+    )
+  end
+
+  def interview_status_sentence
+    return nil unless instance_options[:for_user]
+
+    generate_interviews_status_sentence(
+      manager_interview: get_manager_interview(instance_options[:for_user]),
+      employee_interview: get_employee_interview(instance_options[:for_user]),
+      crossed_interview: get_crossed_interview(instance_options[:for_user])
+    )
+  end
+
+  def manager_interview
+    return nil unless instance_options[:for_user]
+
+    interview = get_manager_interview(instance_options[:for_user])
+    {
+      id: interview.id,
+      bg: interview_status_bg_class(interview),
+      color: interview_status_color_class(interview),
+    }
+  end
+
+
+  def employee_interview
+    return nil unless instance_options[:for_user]
+
+    interview = get_employee_interview(instance_options[:for_user])
+    {
+      id: interview.id,
+      status: interview.status,
+      bg: interview_status_bg_class(interview),
+      color: interview_status_color_class(interview)
+    }
+  end
+
+  def crossed_interview
+    return nil unless instance_options[:for_user]
+
+    interview = get_crossed_interview(instance_options[:for_user])
+    {
+      id: interview.id,
+      bg: interview_status_bg_class(interview),
+      color: interview_status_color_class(interview),
+    }
+  end
+
+  private
+
+  def get_manager_interview(for_user)
+    object.interviews
+          .where(employee: for_user)
+          .find(&:manager?)
+  end
+
+  def get_employee_interview(for_user)
+    object.interviews
+          .where(employee: for_user)
+          .find(&:employee?)
+  end
+
+  def get_crossed_interview(for_user)
+    object.interviews
+          .where(employee: for_user)
+          .find(&:crossed?)
+  end
+
+  def generate_interviews_status_sentence(employee_interview: nil, manager_interview: nil, crossed_interview: nil)
+    if employee_interview&.not_started? && manager_interview&.not_started? ||
+      employee_interview&.not_started? && manager_interview.nil? ||
+      manager_interview&.not_started? && employee_interview.nil?
+      'No interview started'
+    elsif employee_interview&.in_progress? && manager_interview&.status&.to_sym != :in_progress || manager_interview&.in_progress? && employee_interview&.status&.to_sym != :in_progress
+      '1 interview in progress'
+    elsif employee_interview&.in_progress? && manager_interview&.in_progress?
+      '2 interview in progress'
+    elsif employee_interview&.submitted? && manager_interview&.in_progress? || employee_interview&.in_progress? && manager_interview&.submitted?
+      '1 interview submitted and 1 interview in progress'
+    elsif employee_interview&.submitted? && manager_interview&.not_started? || employee_interview&.not_started? && manager_interview&.submitted?
+      '1 interview submitted'
+    elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.not_started?
+      '2 interviews submitted, Cross Review available'
+    elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.in_progress?
+      '2 interviews submitted, Cross Review in progress'
+    elsif employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview&.submitted? ||
+      employee_interview&.submitted? && manager_interview.nil? && crossed_interview.nil? ||
+      employee_interview.nil? && manager_interview&.submitted? && crossed_interview.nil? ||
+      employee_interview&.submitted? && manager_interview&.submitted? && crossed_interview.nil?
+      'All interviews submitted'
+    else
+      'no status to show'
+    end
+  end
+
+  def interview_status_bg_class(interview)
+    case interview.status.to_sym
+    when :not_available_yet then 'bkt-bg-light-grey5'
+    when :not_started then 'bkt-bg-red'
+    when :in_progress then 'bkt-bg-yellow'
+    when :submitted then 'bkt-bg-green'
+    else
+      'bkt-bg-black'
+    end
+  end
+
+  def interview_status_color_class(interview)
+    case interview.status.to_sym
+    when :not_available_yet then 'bkt-light-grey5'
+    when :not_started then 'bkt-red'
+    when :in_progress then 'bkt-yellow'
+    when :submitted then 'bkt-green'
+    else
+      'bkt-black'
+    end
+  end
 end

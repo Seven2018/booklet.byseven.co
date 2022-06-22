@@ -64,5 +64,18 @@ export default {
         }
       })
     },
+    myInterviewCampaignButtonSentence(campaign) {
+      if (campaign.employee_interview.status === 'not_started')
+        return 'Start my interview'
+      else if (campaign.employee_interview.status === 'in_progress')
+        return 'Continue my interview'
+      else if (campaign.crossed_interview && campaign.crossed_interview.status === 'submitted')
+        return 'View cross review answers'
+      else if (campaign.employee_interview.status === 'submitted')
+        return 'View my answers'
+    },
+    isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
   }
 }
