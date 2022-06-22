@@ -1,4 +1,5 @@
 class Campaigns::InterviewSetsController < Campaigns::BaseController
+
   def create
     raise Pundit::NotAuthorizedError unless
       CampaignPolicy.new(current_user, campaign).add_interview_set?
@@ -7,11 +8,27 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
     @status = InterviewSets::Create.call(params_set).present?
 
     respond_to do |format|
-      format.html { redirect_to campaign_path(@campaign) }
+      format.html { redirect_back(fallback_location: campaign_path(@campaign)) }
       format.js {
-        @campaign = campaign.decorate
-        @employees = campaign.employees.order(lastname: :asc).uniq
+        redirect_to request.referrer, format: 'js'
       }
+    end
+  end
+
+  def update
+    raise Pundit::NotAuthorizedError unless
+      CampaignPolicy.new(current_user, campaign).add_interview_set?
+
+    @campaign = @campaign.decorate
+    @employee = User.find(params.dig(:interview_set, :employee_id))
+
+    @campaign.interviews_for(params.dig(:interview_set, :employee_id)).each do |interview|
+      interview.update interviewer_id: params.dig(:interview_set, :interviewer_id)
+    end
+
+    respond_to do |format|
+      format.html { redirect_back(fallback_location: campaign_path(@campaign)) }
+      format.js
     end
   end
 

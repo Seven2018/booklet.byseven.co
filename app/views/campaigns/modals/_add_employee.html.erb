@@ -24,7 +24,7 @@
 
       <div class="modal-body action-modal__body width-50rem height-14rem overflow-y-visible">
 
-        <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-1rem">Choose the employee you wish to add:</p>
+        <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-1rem">Choose the employee you wish to add</p>
 
         <%= render_component(Tools::SelectAutocompleteComponent.new(path: users_search_path,
                                                                     additional_params: "not_campaign_id=#{campaign.id}",
@@ -68,7 +68,13 @@
 
       <div class="modal-footer action-modal__footer">
 
-        <%= f.submit 'Add employee', class: 'button-next disabled bkt-btn-blue width-100', disabled: true %>
+        <div class="button-next disabled bkt-btn-blue width-100"
+             data-action="click->tools--multi-step-form#submit"
+             disabled>
+          Add employee
+        </div>
+
+        <%= f.submit '', class: 'hidden' %>
 
       </div>
 
