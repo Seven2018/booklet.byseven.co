@@ -55,6 +55,8 @@ services:
       - db
     networks:
       - seven_booklet
+    tty: true
+    stdin_open: true
 
   webpack:
     build: .

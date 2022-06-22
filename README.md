@@ -10,3 +10,10 @@ then you can run
 > docker-compose up
 ```
 now you can go to the website [http://localhost:3000](http://localhost:3000)
+
+### To enable pry debugging on rails with docker:
+```shell
+Win#1 > docker-compose up
+Win#2 > docker attach $(docker-compose ps -q rails)
+```
+Any `binding.pry` will be handle on the attachement window.
