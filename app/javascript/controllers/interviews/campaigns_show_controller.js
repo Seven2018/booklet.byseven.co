@@ -33,6 +33,7 @@ export default class extends Controller {
 
       this.timer = setTimeout(() => {
         this.searchSubmitTarget.click()
+        document.querySelector('body').classList.add('wait')
       }, this.waitTime);
 
     } else {

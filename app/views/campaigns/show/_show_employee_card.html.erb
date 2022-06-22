@@ -1,0 +1,197 @@
+<% overview = @controller_action == :campaigns_overview %>
+
+<% employee_id = employee.id %>
+
+<% interviews = campaign.interviews_for(employee_id).compact %>
+
+<% employee_interview,
+    manager_interview,
+    crossed_interview =
+      campaign.interviews_for(employee_id) %>
+
+<% template = interviews.first.interview_form %>
+<% interviewer = interviews.first.interviewer %>
+
+<a class="stretched-link"
+   style="right: 5rem;"
+   data-toggle="modal"
+   data-target="#interviewSetShow-<%= employee_id %>"></a>
+
+<div class="d-flex align-items-center width-20 min-width-20 fs-1_6rem font-weight-700 bkt-light-grey6">
+
+  <%= render_component Image::UserAvatar.new(user: employee, klasses: 'avatar') %>
+
+  <div class="ml-0_75rem">
+    <p class="fs-1_6rem font-weight-500 bkt-dark-grey pr-0_75rem"><%= employee.fullname %></p>
+    <p class="fs-1_4rem font-weight-500 bkt-light-grey6 pr-0_75rem"><%= employee.job_title %></p>
+  </div>
+
+</div>
+
+<div class="width-20 min-width-20 fs-1_6rem font-weight-500 bkt-light-grey6 pr-0_75rem">
+  <%= template.title %>
+</div>
+
+<div class="d-flex align-items-center width-20 min-width-20 fs-1_6rem font-weight-500
+            bkt-light-grey6 pr-0_75rem">
+
+  <% if interviewer.picture.present? %>
+
+    <img class='avatar'
+         src="<%= interviewer.picture %>"
+         onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+
+  <% else %>
+
+    <%= image_tag 'empty-avatar.png', class: 'avatar' %>
+
+  <% end %>
+
+  <div class="ml-0_75rem">
+    <p class="fs-1_6rem font-weight-500 bkt-dark-grey pr-0_75rem"><%= interviewer.fullname %></p>
+    <p class="fs-1_4rem font-weight-500 bkt-light-grey6 pr-0_75rem"><%= interviewer.job_title %></p>
+  </div>
+
+</div>
+
+<div class="d-flex align-items-center width-20 min-width-20 fs-1_6rem font-weight-500
+            bkt-light-grey6 pr-0_75rem">
+
+  <% template.categories.order(title: :asc).pluck(:title).each do |tag| %>
+
+    <p class="d-flex align-items-center height-2_4rem-forced fs-1rem font-weight-600 px-1rem py-0_5rem
+              bkt-blue bkt-bg-light-blue mr-1rem rounded-15px">
+      <%= tag.capitalize %>
+    </p>
+
+  <% end %>
+
+</div>
+
+<div class="width-20 min-width-20 fs-1_6rem font-weight-500 bkt-light-grey6 pr-3rem">
+
+  <div class="flex-row-start-centered ">
+
+    <% if employee_interview %>
+
+      <div class="flex-column mr-5">
+        IE <span class="height-1rem width-1rem inline-block <%= employee_interview.get_status_bg_class %>"></span>
+      </div>
+
+    <% end %>
+
+    <% if manager_interview %>
+
+      <div class="flex-column mr-5">
+        IR
+        <span class="height-1rem width-1rem inline-block <%= manager_interview.get_status_bg_class %>"></span>
+      </div>
+
+    <% end %>
+
+    <% if crossed_interview %>
+
+      <div class="flex-column mr-5 <%= crossed_interview.get_status_color_class if crossed_interview.not_available_yet? %>">
+        CR
+        <span class="height-1rem width-1rem inline-block <%= crossed_interview.get_status_bg_class %>"></span>
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+<div class="pos-abs"
+     style="top: calc(50% - 2rem); right: 1rem;">
+
+  <%= render_component Buttons::OptionsButton.new(vertical: true) do %>
+
+    <%= link_to 'See profile',
+          user_path(employee),
+          class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover width-100 p-3" %>
+
+    <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+              width-100 p-3"
+       data-toggle="modal"
+       data-target="#updateInterviewer-<%= employee_id %>">
+       Select another interviewer
+    </a>
+
+    <% unless overview %>
+
+      <%= link_to 'Send invitation email', send_notification_email_path(@campaign, user_id: employee_id, email_type: 'invite'), class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                    width-100 p-3",
+                      remote: true %>
+
+      <%= link_to 'Send reminder email', send_notification_email_path(@campaign, user_id: employee_id, email_type: 'remind'), class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                width-100 p-3",
+                remote: true %>
+
+    <% end %>
+
+    <% if (CampaignPolicy.new(current_user, campaign).remove_interview_set? ||
+        !interview_set.employee_interview&.submitted?) && overview%>
+
+      <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-negative-red-important
+                bkt-bg-light-grey10-hover width-100 p-3"
+         data-toggle="modal"
+         data-target="#removeEmployee-<%= employee_id %>">
+        Remove from campaign
+      </a>
+
+    <% end %>
+
+  <% end %>
+
+</div>
+
+
+<!------------>
+<!-- MODALS -->
+<!------------>
+
+<div id='interviewSetShow-<%= employee_id %>'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-keyboard="false"
+     data-backdrop="static">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
+    <%= render 'campaigns/modals/show_interviews_set', campaign: campaign, employee: employee, interviewer: interviewer, overview: overview %>
+  </div>
+
+</div>
+
+<div id='updateInterviewer-<%= employee_id %>'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-keyboard="false"
+     data-backdrop="static"
+     data-interviews--campaigns-show-target="updateInterviewerModal">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
+    <%= render 'campaigns/modals/update_interviewer', campaign: @campaign, employee_id: employee_id %>
+  </div>
+
+</div>
+
+<div id='removeEmployee-<%= employee_id %>'
+     class='modal ays-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-keyboard="false"
+     data-backdrop="static">
+
+  <div class='modal-dialog ays-modal__dialog'
+       role='document'>
+    <%= render 'campaigns/modals/remove_employee', campaign: campaign, employee: employee, interviewer_id: interviewer.id %>
+  </div>
+
+</div>
+
+<!------------>
