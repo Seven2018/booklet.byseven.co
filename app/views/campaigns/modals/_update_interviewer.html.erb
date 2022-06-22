@@ -1,0 +1,85 @@
+<div class="modal-content action-modal__content"
+     data-controller="tools--multi-step-form">
+
+  <%= simple_form_for :interview_set, url: campaigns_interview_set_path(@campaign),
+                                      method: :patch,
+                                      remote: true do |f| %>
+
+    <%= f.hidden_field :employee_id, value: employee_id %>
+
+    <div id="step-1"
+           class="step">
+      <div class="modal-header action-modal__header">
+
+        <h3 class="modal-title action-modal__title">Select another interviewer</h3>
+
+        <button type="button"
+                class="action-modal__close"
+                data-dismiss="modal"
+                aria-label="Close"
+                data-action="click->tools--multi-step-form#reset">
+          <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
+        </button>
+
+      </div>
+
+      <div class="modal-body action-modal__body width-50rem height-14rem overflow-y-visible">
+
+        <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-1rem">Choose a new interviewer</p>
+
+        <%= render_component(Tools::SelectAutocompleteComponent.new(path: users_search_path,
+                                                                    additional_params: "manager=true",
+                                                                    width: '100%',
+                                                                    menu_max_height: '22rem',
+                                                                    placeholder: 'Select an interviewer',
+                                                                    input_name: "interview_set[interviewer_id]",
+                                                                    data_action_select: 'click->tools--multi-step-form#allowNextStep')) %>
+
+      </div>
+
+      <div class="modal-footer action-modal__footer">
+
+        <a class="button-next bkt-btn-blue width-100 disabled"
+           data-action="click->tools--multi-step-form#nextStep"
+           disabled>
+          Apply
+        </a>
+
+      </div>
+
+    </div>
+
+    <div id="step-2"
+         class="step d-none">
+
+      <div class="modal-body ays-modal__body width-50rem height-14rem overflow-y-visible">
+
+        <h3>Are you sure you want to change the interviewer ?</h3>
+
+        <p>The previous interviewer will not be able to access this interview any longer.</p>
+
+      </div>
+
+      <div class="modal-footer ays-modal__footer">
+
+        <div class='bkt-btn-ays-blue'
+                data-action="click->tools--multi-step-form#submit">
+          Yes
+        </div>
+
+        <button class="bkt-btn-ays-dark-grey ays-close"
+                data-dismiss="modal"
+                aria-label="Close"
+                data-action="click->tools--multi-step-form#reset">
+          No
+        </button>
+
+      </div>
+
+    </div>
+
+    <%= f.submit '', class: 'hidden' %>
+
+  <% end %>
+
+</div>
