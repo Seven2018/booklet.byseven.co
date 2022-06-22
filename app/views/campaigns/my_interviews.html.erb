@@ -1,4 +1,3 @@
-
 <div class="">
 
   <div class="width-100 height-40rem black-gradient mb-5rem">
@@ -12,7 +11,7 @@
 
          <div class="d-flex justify-content-center align-items-center">
 
-          <h1 class="fs-3rem font-weight-600 bkt-white my-2rem text-center mr-1rem">
+          <h1 class="fs-1_4rem fs-sm-3rem font-weight-600 bkt-white my-2rem text-center mr-1rem">
             Hello, <%= current_user.firstname %> !
           </h1>
 
@@ -20,7 +19,7 @@
 
         </div>
 
-        <p class="fs-2_4rem font-weight-600 bkt-white text-center mb-3rem">
+        <p class="fs-1_2rem fs-sm-2_4rem font-weight-600 bkt-white text-center mb-3rem">
           Here are your interviews as interviewee.
         </p>
 
@@ -54,9 +53,7 @@
 </div>
 
 <div id="app">
-  <my-interviews
-    banner-link="<%= current_user.company.my_interviews_banner.attached? ? url_for(current_user.company.my_interviews_banner) : image_url('banners/my_interviews_banner.png') %>"
-  ></my-interviews>
+  <my-interviews></my-interviews>
 </div>
 
 <!--<div class='modal fade' id='interview-status-info' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">-->

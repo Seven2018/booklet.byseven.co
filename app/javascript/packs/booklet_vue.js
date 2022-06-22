@@ -59,6 +59,7 @@ import CampaignIndex from '../vue/pages/interview_app/campaigns'
 import InterviewTemplateIndex from '../vue/pages/interview_app/templates'
 import InterviewReportIndex from '../vue/pages/interview_app/reports'
 import MyInterviews from '../vue/pages/interview_app/MyInterviews'
+import MyTeamInterviews from '../vue/pages/interview_app/MyTeamInterviews'
 
 let app = null
 let vuejsOpt = {
@@ -77,7 +78,8 @@ let vuejsOpt = {
     CampaignIndex,
     InterviewTemplateIndex,
     InterviewReportIndex,
-    MyInterviews
+    MyInterviews,
+    MyTeamInterviews
   }
 }
 Vue.prototype.$routes = routes

@@ -34,7 +34,7 @@ import store from "../../store";
 import MyInterviewCard from "./MyInterviewCard";
 
 export default {
-  props: ['bannerLink'],
+  props: [''],
   data() {
     return {
       genericFetchEntity: store.state.genericFetchEntity
