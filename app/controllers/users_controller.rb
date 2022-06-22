@@ -1,5 +1,3 @@
-# Updated : 2021/07/19
-
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :reset_password, :edit, :update, :destroy, :add_tag_category_tags]
   before_action :set_current_user, only: [:import, :create]
@@ -120,33 +118,14 @@ class UsersController < ApplicationController
   # Update user profile (users/show)
   def update
     authorize @user
-    if params[:type] == 'address'
-      address = params[:user][:address].gsub(address.split(/\d+/)[-2], address.split(/\d+/)[-2][0..-2] + "\n")
-      @user.update(address: address)
-    else
-      @user.update(user_params)
-    end
 
-    if @user.save
-      if params[:access_level_int].present?
-        if params[:last_page] == "catalogue"
-          redirect_to catalogue_path
-        elsif ['campaigns', 'interview_forms'].include?(params[:last_page].split('-').first)
-          redirect_to campaigns_path
-        else
-          redirect_to root_path
-        end
-      else
-        respond_to do |format|
-          if params[:page] != 'show'
-            format.html { redirect_to user_path(@user) }
-          else
-            format.html { redirect_to organisation_path }
-            format.js
-          end
-        end
-      end
-    end
+    @user.update(user_params)
+
+    job_title_tag_category = @user.company.tag_categories.find_by(name: 'Job Title')
+    @user.update(job_title: UserTag.find_by(tag_category_id: job_title_tag_category.id,
+                                            user_id: @user.id).tag.tag_name) if job_title_tag_category.present?
+
+    redirect_to user_path(@user)
   end
 
   def add_tag_category_tags

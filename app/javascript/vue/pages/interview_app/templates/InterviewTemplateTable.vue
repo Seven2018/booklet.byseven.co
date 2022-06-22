@@ -4,7 +4,7 @@
       :headers="headers"
       :table-data="genericFetchEntity.data['interview_forms']"
       :pagination="genericFetchEntity.pagination"
-      @fetch-page="fetchPage"
+      @fetch-page="fetchPage($event, 'interview_forms_list')"
       @row-click="goto('interview_forms_id_edit', $event.id)"
   >
     <template v-slot="{id, title, template_type, categories, updated_at, interview_question_count}">

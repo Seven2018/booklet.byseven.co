@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   namespace :campaigns do
     # must stay before resources :campaigns
     resources :users, only: :index
-    resources :interview_sets, only: %i[create destroy]
+    resources :interview_sets, only: %i[create update destroy]
   end
   resources :campaigns, only: %i[index show update destroy] do
     collection do

@@ -7,6 +7,9 @@ export default class extends Controller {
 
   connect() {
     this.setup()
+
+    this.multiple_default_template = document.querySelector('#default_template')
+    this.multiple_default_template.querySelector('input[type="hidden"]').disabled = true
   }
 
   setup(force_disable = false) {
@@ -26,19 +29,25 @@ export default class extends Controller {
   chooseSingleTemplate() {
     this.multipleTemplateContainerTarget.classList.add('d-none')
     this.singleTemplateContainerTarget.classList.remove('d-none')
+    this.multiple_default_template.querySelector('input[type="hidden"]').disabled = true
+
     this.setup(true)
   }
 
   chooseMultipleTemplate() {
     this.singleTemplateContainerTarget.classList.add('d-none')
     this.multipleTemplateContainerTarget.classList.remove('d-none')
+    this.multiple_default_template.querySelector('input[type="hidden"]').disabled = false
+
     this.setup(true)
   }
 
   displayTagsCollection(e) {
     const path = this.categoriesResultsTarget.dataset.path
+    const campaign_draft_id = this.categoriesResultsTarget.dataset.campaignDraftId
     const query = e.currentTarget.dataset.value
-    const url = `${path}?search=${query}`
+    const url = `${path}?search=${query}&campaign_draft_id=${campaign_draft_id}`
+
     fetch(url)
       .then(response => response.text())
       .then(html => {
@@ -63,12 +72,10 @@ export default class extends Controller {
           })
         }
 
-        const default_template = document.querySelector('#default_template')
+        this.multiple_default_template.classList.remove('d-none')
+        this.multiple_default_template.classList.add('d-flex')
 
-        default_template.classList.remove('d-none')
-        default_template.classList.add('d-flex')
-
-        if (default_template.querySelector('input[type="hidden"]').value != '') { this.enableButton(true) }
+        if (this.multiple_default_template.querySelector('input[type="hidden"]').value != '') { this.enableButton(true) }
 
         this.showMissingTemplateModal()
       })

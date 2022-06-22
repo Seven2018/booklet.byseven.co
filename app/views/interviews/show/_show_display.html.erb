@@ -1,0 +1,200 @@
+<% visibility =
+     if @interview.crossed?
+       ['all', 'manager', 'employee']
+     elsif @interview.manager?
+       ['all', 'manager']
+     else
+       ['all', 'employee']
+     end %>
+
+<% fully_answered = @interview.fully_answered? %>
+
+<div class="d-none d-sm-flex justify-content-between interview-controls p-2rem bkt-bg-white bkt-box-shadow-light pos-fix z-index-150" style='top: 7.5rem; left: 0; right: 0; height: 9rem;'>
+
+  <% if @interview.locked? %>
+
+    <% fallback =
+        if current_user == @employee
+          my_interviews_path
+        elsif current_user == @manager
+          my_team_interviews_path
+        else
+          campaign_path(@interview.campaign)
+        end %>
+
+    <%= render_component Buttons::BackButton.new(fallback: fallback,) %>
+
+  <% else %>
+
+    <button
+      data-toggle='modal'
+      data-target='#confirmGoBack'
+      class="bkt-btn-white-dark-grey-light bkt-blue">
+
+      <span class="iconify mr-3" data-icon="bi:arrow-left"></span>
+      <p class="">Close and submit later</p>
+
+    </button>
+
+  <% end %>
+
+  <div class="flex-column">
+
+    <div class="interview-controls__buttons">
+
+      <%= link_to interview_path(@interview, format: :pdf), class: 'height-4rem flex-row-center-centered bkt-blue bkt-bg-light-grey4-hover rounded-5px p-2rem', id: 'interview-export-pdf', target: :_blank do %>
+        <span class="iconify" data-icon="bx:bx-download"></span>
+        <p>Download PDF</p>
+      <% end %>
+
+      <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
+
+        <p class="p-2 bkt-green mx-5" id="xhr-form-status-btn">Up to date</p>
+
+        <a href='<%= lock_interview_path(interview_id: @interview.id) if fully_answered %>'
+           id='submit-interview-link'
+           class='d-none'
+           data-url='<%= lock_interview_path(interview_id: @interview.id) %>'
+           data-remote="true">
+        </a>
+
+        <button id="submit-interview"
+                class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
+                data-toggle='modal'
+                data-target='#interviewConfirmSubmit'
+                <%= 'disabled' unless fully_answered %>>
+
+          <p>Submit</p>
+          <span class="iconify ml-2" data-icon="fluent:send-16-filled" style="color: white;"></span>
+
+        </button>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="interview-main">
+
+  <div class='interview-main__left bkt-bg-white py-3rem px-5rem border-right-bkt-light-grey pos-fix z-index-100' style='top: 16.5rem; left: 0;'>
+    <%= render 'interview_forms/edit/edit_show_summary', template: @template %>
+  </div>
+
+  <div class="interview-main__right">
+
+    <div class="flex-row-start-centered width-100">
+      <%= link_to :back, class: 'flex-row-center-centered d-sm-none height-5rem width-5rem' do %>
+        <i class="fas fa-angle-left fs-2_4rem"></i>
+      <% end %>
+    </div>
+
+
+    <h1 class="fs-2_4rem font-weight-700 mb-2rem"><%= @interview.campaign.title %></h1>
+
+    <div class="trix-display">
+      <%= sanitize @template.description %>
+    </div>
+
+    <% video = @template.video %>
+
+    <% if video.present? %>
+      <iframe class='mb-5rem' src="<%= VideoHelper.embed_video(@interview.interview_form.video) %>" style='width: 75%; aspect-ratio: 16 / 9;'></iframe>
+    <% end %>
+
+    <% question_num = 0 %>
+
+    <% QuestionDecorator.decorate_collection(
+        @interview.interview_form.interview_questions
+                  .order(position: :asc)
+                  .where(visible_for: visibility)
+      ).each do |question| %>
+
+      <% if question.separator? %>
+
+        <div class="interview-main__right-separator">
+          <p class='pb-1rem'><%= question.question %></p>
+        </div>
+
+        <div class="trix-display">
+          <%= sanitize question.description %>
+        </div>
+
+      <% end %>
+
+      <% next if question.separator? %>
+
+      <% question_num += 1 %>
+
+      <div class="interview-main__right-questions">
+
+        <div class="interview-main__right-question">
+
+          <a id="anchor-<%= question.id %>" style='position:absolute; top: -21.5rem;'></a>
+
+          <div title='<%= "Required" if question.required? %>' class='interview-main__right-question-title'>
+
+            <p><%= question_num %>. </p>
+            <span class="iconify" data-icon="<%= question.icon %>"></span>
+            <p><%= question.question %> <%= "*" if question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') %></p>
+
+          </div>
+
+          <div class="interview-main__right-question-description">
+            <%= sanitize question.description %>
+          </div>
+
+          <%= render 'interview_questions/show_interview_question_form',
+                     interview: @interview,
+                     question: question,
+                     manager: @manager,
+                     employee: @employee,
+                     read_only: (
+                       (@interview.employee? && @employee != current_user) ||
+                         (@interview.manager? && @manager != current_user) ||
+                         (@interview.simple? && @manager != current_user) ||
+                         @interview.locked?
+                     ),
+                     company: current_user.company %>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+<div class="interview-controls--mobile">
+
+  <div class="interview-controls__buttons--mobile">
+
+    <%= link_to interview_path(@interview, format: :pdf), class: 'bkt-btn-white-blue', id: 'interview-export-pdf', target: :_blank do %>
+      <span class="iconify" data-icon="bx:bx-download"></span>
+    <% end %>
+
+    <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
+
+      <button class="bkt-btn-white-blue" id="save-interview" onclick="saveButton();">
+        <span class="iconify" data-icon="fluent:save-16-regular"></span>
+        <p>Save</p>
+      </button>
+
+      <button id="submit-interview"
+              class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
+              data-toggle='modal'
+              data-target='#interviewConfirmSubmit'
+              <%= 'disabled' unless fully_answered %>>
+        <p>Submit</p>
+        <span class="iconify" data-icon="fluent:send-16-filled" style="color: white;"></span>
+      </button>
+
+    <% end %>
+
+  </div>
+
+</div>

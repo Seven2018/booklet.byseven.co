@@ -4,7 +4,7 @@
       :headers="headers"
       :table-data="genericFetchEntity.data['objective/elements']"
       :pagination="genericFetchEntity.pagination"
-      @fetch-page="fetchPage"
+      @fetch-page="fetchPage($event, 'objective_target_list')"
   >
     <template v-slot="{id, title, due_date, comments_count, objectivable, objective_indicator}">
       <td>
@@ -95,15 +95,6 @@ export default {
     )
   },
   methods: {
-    fetchPage(page) {
-      // ${path}?page[number]=${pagination.current_page}&page[size]=10`
-      store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'objective_target_list',
-        params: {
-          'page[number]': page,
-        }
-      })
-    }
   },
   components: {UserInfoInTable, IndexTable}
 }

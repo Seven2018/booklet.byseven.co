@@ -1,36 +1,11 @@
 class InterviewsController < ApplicationController
   before_action :show_navbar_campaign
 
-  ## OBSOLETE ? ##
-
-  # def create
-  #   authorize Interview.new
-
-  #   interview_form = InterviewForm.find params[:interview][:interview_form_id]
-  #   campaign = Campaign.find(params[:interview][:campaign_id])
-
-  #   unless
-  #     (campaign.crossed? &&
-  #     Interview.create(interview_params.merge(title: interview_form.title, label: 'Employee')) &&
-  #     Interview.create(interview_params.merge(title: interview_form.title, label: 'Manager')) &&
-  #     Interview.create(interview_params.merge(title: interview_form.title, label: 'Crossed', status: :not_available_yet))) ||
-  #     (campaign.simple? &&
-  #     Interview.create(interview_params.merge(title: interview_form.title, label: 'Simple')))
-
-  #     campaign&.destroy
-  #     # Sentry 2866617584 => params[:interview][:campaign_id].nil?
-  #     flash[:alert] = '/!\ Interviews NOT created - Campaign deleted - Please try again'
-  #   end
-
-  #   respond_to do |format|
-  #     format.js
-  #   end
-  # end
-
   def show
     @interview = Interview.find(params[:id])
     @employee = @interview.employee
-    @manager = @interview.campaign.owner
+    @manager = @interview.interviewer
+    @template = @interview.interview_form
     @questions = @interview.interview_questions.order(position: :asc)
     authorize @interview
 
@@ -38,11 +13,13 @@ class InterviewsController < ApplicationController
     if @interview.crossed?
       @interview.campaign.interviews.where(employee: @employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user == @manager
     end
-    flash[:alert] = "View mode only! New answers won't be saved!" unless
-      InterviewPolicy.new(current_user, @interview).answer_question?
 
     respond_to do |format|
-      format.html
+      format.html {
+        flash[:alert] = "View mode only! New answers won't be saved!" unless
+            InterviewPolicy.new(current_user, @interview).answer_question?
+      }
+      format.js
       format.pdf do
         render(
           pdf: "#{@interview.employee.fullname} - #{@interview.campaign.title}",

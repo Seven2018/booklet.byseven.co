@@ -57,7 +57,8 @@ class CampaignsController < ApplicationController
 
     @tag_categories = TagCategory.where(company_id: current_user.company_id).order(position: :asc)
 
-    @employees = @campaign.employees.order(lastname: :asc)
+    employees_ids = @campaign.employees.uniq.map(&:id)
+    @employees = User.where(id: employees_ids).order(lastname: :asc)
 
     filter_employees(campaign_id)
 
@@ -379,10 +380,15 @@ class CampaignsController < ApplicationController
       end
     end
 
-    @employees = @employees.select{|x| @campaign.completion_status(x) == search_completion} \
-      if ['not_started', 'in_progress', 'completed'].include?(search_completion)
+    if ['not_started', 'in_progress', 'completed'].include?(search_completion)
+      employees_ids = @employees.select{|x| @campaign.completion_status(x) == search_completion}.map(&:id)
+      @employees = @employees.where(id: employees_ids)
+    end
 
-    @employees = @employees.uniq
+    page_index = (params.dig(:search, :page).presence || 1).to_i
+    @total_employees_count = @employees.count
+    @employees = @employees.page(page_index)
+    @any_more = @employees.count * page_index < @total_employees_count
   end
 
   ############################

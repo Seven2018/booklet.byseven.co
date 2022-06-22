@@ -4,7 +4,7 @@
       :headers="headers"
       :table-data="genericFetchEntity.data['campaigns']"
       :pagination="genericFetchEntity.pagination"
-      @fetch-page="fetchPage"
+      @fetch-page="fetchPage($event, 'campaigns_list')"
       @row-click="goto('campaigns_id_overview', $event.id)"
       class="cursor-pointer"
   >
@@ -95,14 +95,6 @@ export default {
     // )
   },
   methods: {
-    fetchPage(page) {
-      store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'campaigns_list',
-        params: {
-          'page[number]': page,
-        }
-      })
-    },
     getClassByCompletion(completion) {
       if (completion == 0) {
         return 'bkt-bg-light-grey'

@@ -33,12 +33,13 @@ export default class extends Controller {
 
       this.timer = setTimeout(() => {
         this.searchSubmitTarget.click()
+        document.querySelector('body').classList.add('wait')
       }, this.waitTime);
 
     } else {
 
       this.searchSubmitTarget.click()
-
+      this.blockEvents()
     }
   }
 
@@ -58,6 +59,7 @@ export default class extends Controller {
     })
 
     this.searchSubmitTarget.click()
+    this.blockEvents()
   }
 
 
@@ -99,13 +101,18 @@ export default class extends Controller {
         }
     }).then(response => {
       if (response.status == '200') {
-        card.remove()
-
-        var count = parseInt(this.employeeCountTarget.innerText, 10)
-        this.employeeCountTarget.innerText = count - 1
+        this.searchSubmitTarget.click()
+        this.blockEvents()
       }
     })
   }
 
-  /////////////////////
+  ///////////
+  // TOOLS //
+  ///////////
+
+  blockEvents() {
+    document.getElementById('bkt-blockDiv').classList.toggle('d-none')
+    document.querySelector('body').classList.toggle('wait')
+  }
 }

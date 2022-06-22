@@ -8,6 +8,7 @@ export default class extends Controller {
   connect() {
     this.timer
     this.waitTime = 500
+    this.form = this.element.querySelector('form')
 
     this.element[
       (str => {
@@ -43,6 +44,11 @@ export default class extends Controller {
     next_step.classList.toggle('d-none')
   }
 
+  submit() {
+    this.form.querySelector('input[type="submit"]').click()
+    this.closeModal()
+  }
+
   reset() {
     this.element.querySelectorAll('.step').forEach((step) => {
       if (step.id == 'step-1') {
@@ -57,6 +63,14 @@ export default class extends Controller {
         input.value = ''
       }
     })
+  }
+
+  ///////////////////
+  // MODAL CONTROL //
+  ///////////////////
+
+  closeModal() {
+    this.element.querySelector('.action-modal__close').click()
   }
 
 }

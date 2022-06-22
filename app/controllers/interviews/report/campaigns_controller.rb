@@ -8,6 +8,7 @@ class Interviews::Report::CampaignsController < ApplicationController
       current_user.interview_report.update campaign_ids: [last_campaign_id]
     end
     partial = mode == :answers ? 'campaigns_radio_buttons' : 'campaigns_check_boxes'
+
     render partial: "interviews/reports/#{partial}", locals: { campaigns: campaigns, mode: mode }
   end
 
@@ -28,8 +29,8 @@ class Interviews::Report::CampaignsController < ApplicationController
 
   def campaigns
     campaign_model = current_user.company.campaigns
-    campaign_model = campaign_model.start_at(Date.parse(params[:date_start].to_s)) if params[:date_start]
-    campaign_model = campaign_model.end_at(Date.parse(params[:date_end].to_s)) if params[:date_end]
+    campaign_model = campaign_model.deadline_between(Date.parse(params[:start_date].to_s), Date.parse(params[:end_date].to_s)) \
+      if params[:start_date].present? && params[:end_date].present?
     return campaign_model.order(created_at: :desc) if params[:search].blank?
 
     Campaign.where(company_id: current_user.company.id).search_campaigns(params[:search])

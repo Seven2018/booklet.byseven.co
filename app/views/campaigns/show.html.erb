@@ -44,11 +44,11 @@
         <p>Participants</p>
 
         <div class="interviews-tab-control__counter flex-row-center-centered height-2rem
-              width-2rem rounded-10px ml-0_75rem">
+                    rounded-10px p-0_5rem ml-0_75rem">
 
           <p class="fs-1rem font-weight-600"
              data-interviews--campaigns-show-target="employeeCount">
-            <%= @employees.count %>
+            <%= @total_employees_count %>
           </p>
 
         </div>
@@ -61,7 +61,8 @@
          class="width-100">
 
       <div id="tab_participants"
-           class='booklet-tab bkt-box-shadow-light px-3rem py-2rem rounded-20px'>
+           class='booklet-tab bkt-box-shadow-light px-3rem py-2rem rounded-20px'
+           data-controller="change-page">
 
         <div class="d-flex justify-content-between align-items-start width-100">
 

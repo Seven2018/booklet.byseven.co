@@ -41,16 +41,8 @@ class Campaign < ApplicationRecord
 
   alias :manager :owner
 
-  def self.start_at(date)
-    joins(:interviews)
-      .where('date >= ?', date)
-      .distinct
-  end
-
-  def self.end_at(date)
-    joins(:interviews)
-      .where('date <= ?', date)
-      .distinct
+  def self.deadline_between(start_date, end_date)
+    where('deadline >= ? AND deadline <= ?', start_date, end_date)
   end
 
   def interview_sets(employee_id = nil)
