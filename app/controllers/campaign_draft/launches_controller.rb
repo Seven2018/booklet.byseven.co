@@ -9,7 +9,6 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
       new_campaign.update(interview_forms_list: campaign_draft.multi_templates_ids.join(',').to_h
                                                               .merge('default_template' => campaign_draft.default_template_id.to_s),
                           calendar_uuid: SecureRandom.hex(32))
-      campaign_draft.destroy
 
       if params[:send_email] == 'true'
         interviewers = new_campaign.interviewers.uniq
@@ -31,7 +30,7 @@ class CampaignDraft::LaunchesController < CampaignDraft::BaseController
         end
       end
 
-      redirect_to campaign_path(new_campaign)
+      redirect_to campaigns_path
 
     else
       flash[:alert] = validation_error_flash_message

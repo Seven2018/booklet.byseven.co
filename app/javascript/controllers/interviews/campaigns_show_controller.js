@@ -20,6 +20,15 @@ export default class extends Controller {
           .replace(/^\w/, c => c.toLowerCase())
       })(this.identifier)
     ] = this
+
+    this.setup()
+  }
+
+  setup(){
+    if (this.element.dataset.campaignInCreation === 'true') {
+      const button = document.getElementById('notifyAddParticipantsTrigger')
+      button.click()
+    }
   }
 
   ////////////

@@ -83,7 +83,7 @@ export default {
   mixins: [tools],
   data() {
     return {
-      headers: ['Campaign title', 'Campaign type', 'Tags', 'Employees', 'Completion', ''],
+      headers: ['Campaign title', 'Campaign type', 'Tags', 'Participants', 'Completion', ''],
       genericFetchEntity: store.state.genericFetchEntity
     }
   },
