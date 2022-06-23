@@ -46,6 +46,10 @@ class CampaignPolicy < ApplicationPolicy
     create?
   end
 
+  def update_interview_set?
+    create? || record.interviewers.include?(user)
+  end
+
   def remove_interview_set?
     create?
   end
