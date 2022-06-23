@@ -35,12 +35,20 @@ class CampaignSerializer < ActiveModel::Serializer
   end
 
   def manager
-    return nil unless instance_options[:for_user] && instance_options[:schema] != 'manager'
+    return nil unless instance_options[:for_user]
 
-    ActiveModelSerializers::SerializableResource.new(
-      get_manager_interview_by_employee(instance_options[:for_user]).interviewer,
-      { serializer: UserSerializer }
-    )
+    if instance_options[:schema] == 'manager'
+      ActiveModelSerializers::SerializableResource.new(
+        instance_options[:for_user],
+        { serializer: UserSerializer }
+      )
+    else
+      employee_interview = get_employee_interview_by_employee(instance_options[:for_user])
+      ActiveModelSerializers::SerializableResource.new(
+        employee_interview.interviewer,
+        { serializer: UserSerializer }
+      ) if employee_interview.present?
+    end
   end
 
   # def interview_status_sentence
@@ -59,11 +67,11 @@ class CampaignSerializer < ActiveModel::Serializer
     interview = get_manager_interview_by_employee(instance_options[:for_user])
     {
       id: interview.id,
+      status: interview.status,
       bg: interview_status_bg_class(interview),
       color: interview_status_color_class(interview),
-    }
+    } if interview.present?
   end
-
 
   def employee_interview
     return nil unless instance_options[:for_user] && instance_options[:schema] != 'manager'
@@ -88,9 +96,10 @@ class CampaignSerializer < ActiveModel::Serializer
     interview = get_crossed_interview_by_employee(instance_options[:for_user])
     {
       id: interview.id,
+      status: interview.status,
       bg: interview_status_bg_class(interview),
       color: interview_status_color_class(interview),
-    }
+    } if interview.present?
   end
 
   def employees_interviews
@@ -102,16 +111,33 @@ class CampaignSerializer < ActiveModel::Serializer
               .distinct
               .order(lastname: :asc)
     users.map do |user|
-      {
+      employee_interview = Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Employee')
+      manager_interview =  Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Manager')
+      crossed_interview = Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Crossed')
+        {
         employee: user,
-        employee_interview: Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Employee'),
-        manager_interview: Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Manager'),
-        crossed_interview: Interview.find_by(interviewer: instance_options[:for_user], employee: user, label: 'Crossed'),
+        employee_interview: interview_serializer(def_interview: employee_interview, manager_interview: manager_interview, employee_interview: employee_interview, crossed_interview: crossed_interview),
+        manager_interview: interview_serializer(def_interview: manager_interview, manager_interview: manager_interview, employee_interview: employee_interview, crossed_interview: crossed_interview),
+        crossed_interview: interview_serializer(def_interview: crossed_interview, manager_interview: manager_interview, employee_interview: employee_interview, crossed_interview: crossed_interview),
       }
     end
   end
 
   private
+
+  def interview_serializer(def_interview:, manager_interview:, employee_interview:, crossed_interview:)
+    {
+      id: def_interview.id,
+      status: def_interview.status,
+      bg: interview_status_bg_class(def_interview),
+      color: interview_status_color_class(def_interview),
+      status_sentence: generate_interviews_status_sentence(
+        manager_interview: manager_interview,
+        employee_interview: employee_interview,
+        crossed_interview: crossed_interview
+      )
+    } if def_interview.present?
+  end
 
   def get_manager_interview_by_employee(for_user)
     object.interviews

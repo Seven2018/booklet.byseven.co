@@ -17,14 +17,8 @@
           <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>
         </span>
       </p>
-      <div class="flex justify-between">
-        <p class="mr-4">IE <span class="width-1rem height-1rem d-inline-block ml-2"
-                                 :class="campaign.employee_interview.bg"></span></p>
-        <p class="mr-4">IR <span class="width-1rem height-1rem d-inline-block ml-2"
-                                 :class="campaign.manager_interview.bg"></span></p>
-        <p class="mr-4" :class="campaign.crossed_interview.color">CR <span
-            class="width-1rem height-1rem d-inline-block ml-2" :class="campaign.crossed_interview.bg"></span></p>
-      </div>
+
+      <interview-status :campaign="campaign"></interview-status>
 
       <button class="p-4 mt-4 text-center bkt-bg-blue bkt-white width-100 rounded-b-15px fs-1rem font-weight-600">
         {{ myInterviewCampaignButtonSentence(campaign) }}
@@ -60,41 +54,40 @@
         </div>
       </div>
 
-      <div class="mt-4 flex-row-between-centered">
-        <div class="flex-row-start-centered ">
-          <div class="width-30rem border-right-bkt-light-grey">
-            <user-info-in-table :user="{...campaign.manager.user, subtitle: 'interviewer'}"></user-info-in-table>
-          </div>
-          <div class="ml-3">
-            <p class="fs-1_2rem font-weight-500 flex-row-start-centered">
-              {{ campaign.employee_interview.status_sentence }}
-              <span @click="openInfo" class="cursor-pointer">
-                <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>
-              </span>
-            </p>
-            <div class="flex justify-between">
-              <p class="mr-4">IE <span class="width-1rem height-1rem d-inline-block ml-2"
-                                       :class="campaign.employee_interview.bg"></span></p>
-              <p class="mr-4">IR <span class="width-1rem height-1rem d-inline-block ml-2"
-                                       :class="campaign.manager_interview.bg"></span></p>
-              <p class="mr-4" :class="campaign.crossed_interview.color">CR <span
-                  class="width-1rem height-1rem d-inline-block ml-2" :class="campaign.crossed_interview.bg"></span></p>
-            </div>
-          </div>
-        </div>
+      <interview-sub-card
+          :left-user="campaign.manager.user"
+          :interviews="{employee_interview: campaign.employee_interview, manager_interview: campaign.manager_interview, crossed_interview: campaign.crossed_interview}"
+          user-kind="interviewer"
+      ></interview-sub-card>
+<!--      <div class="mt-4 flex-row-between-centered">-->
+<!--        <div class="flex-row-start-centered ">-->
+<!--          <div class="width-30rem border-right-bkt-light-grey">-->
+<!--            <user-info-in-table :user="{...campaign.manager.user, subtitle: 'interviewer'}"></user-info-in-table>-->
+<!--          </div>-->
+<!--          <div class="ml-3">-->
+<!--            <p class="fs-1_2rem font-weight-500 flex-row-start-centered">-->
+<!--              {{ campaign.employee_interview.status_sentence }}-->
+<!--              <span @click="openInfo" class="cursor-pointer">-->
+<!--                <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>-->
+<!--              </span>-->
+<!--            </p>-->
 
-        <div>
-          <bkt-button
-              iconify="akar-icons:arrow-right"
-              :left="false"
-              :type="campaign.crossed_interview && campaign.crossed_interview.status === 'submitted' || campaign.employee_interview.status === 'submitted' ? 'white' : 'interview'"
-              :href="$routes.generate('interviews_id', {id: campaign.crossed_interview && campaign.crossed_interview.status === 'submitted' ?
-              campaign.crossed_interview.id : campaign.employee_interview.id})"
-          >
-            {{ myInterviewCampaignButtonSentence(campaign) }}
-          </bkt-button>
-        </div>
-      </div>
+<!--            <interview-status :campaign="campaign"></interview-status>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--          <bkt-button-->
+<!--              iconify="akar-icons:arrow-right"-->
+<!--              :left="false"-->
+<!--              :type="campaign.crossed_interview && campaign.crossed_interview.status === 'submitted' || campaign.employee_interview.status === 'submitted' ? 'white' : 'interview'"-->
+<!--              :href="$routes.generate('interviews_id', {id: campaign.crossed_interview && campaign.crossed_interview.status === 'submitted' ?-->
+<!--              campaign.crossed_interview.id : campaign.employee_interview.id})"-->
+<!--          >-->
+<!--            {{ myInterviewCampaignButtonSentence(campaign) }}-->
+<!--          </bkt-button>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -106,6 +99,8 @@ import UserInfoInTable from "../../components/UserInfoInTable";
 import BktButton from "../../components/BktButton";
 import HTTP from "../../plugins/axios";
 import store from "../../store";
+import InterviewStatus from "../../components/interviews/InterviewStatus";
+import InterviewSubCard from "../../components/interviews/InterviewSubCard";
 
 export default {
   mixins: [tools],
@@ -136,6 +131,6 @@ export default {
       })
     }
   },
-  components: {BktButton, UserInfoInTable, BktDotsButton}
+  components: {InterviewSubCard, InterviewStatus, BktButton, UserInfoInTable, BktDotsButton}
 }
 </script>

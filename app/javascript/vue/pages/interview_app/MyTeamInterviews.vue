@@ -8,20 +8,20 @@
         title="campaigns"
     >
       <template v-slot:current>
-<!--        <my-interview-card-->
-<!--            v-for="campaign in genericFetchEntity.data.current_campaigns.campaigns"-->
-<!--            :key="campaign.id"-->
-<!--            :campaign="campaign"-->
-<!--            type="current"-->
-<!--        ></my-interview-card>-->
+        <my-team-interview-card
+            v-for="campaign in genericFetchEntity.data.current_campaigns.campaigns"
+            :key="campaign.id"
+            :campaign="campaign"
+            type="current"
+        ></my-team-interview-card>
       </template>
       <template v-slot:archived>
-<!--        <my-interview-card-->
-<!--            v-for="campaign in genericFetchEntity.data.archived_campaigns.campaigns"-->
-<!--            :key="campaign.id"-->
-<!--            :campaign="campaign"-->
-<!--            type="archived"-->
-<!--        ></my-interview-card>-->
+        <my-team-interview-card
+            v-for="campaign in genericFetchEntity.data.archived_campaigns.campaigns"
+            :key="campaign.id"
+            :campaign="campaign"
+            type="archived"
+        ></my-team-interview-card>
       </template>
     </bkt-switcher>
   </div>
@@ -31,6 +31,7 @@
 import BktSwitcher from "../../components/BktSwitcher";
 import store from "../../store";
 import MyInterviewCard from "./MyInterviewCard";
+import MyTeamInterviewCard from "./MyTeamInterviewCard";
 
 export default {
   props: [''],
@@ -42,6 +43,6 @@ export default {
   created() {
     store.dispatch('genericFetchEntity/fetch', {pathKey: 'my_team_interviews_list'})
   },
-  components: {MyInterviewCard, BktSwitcher},
+  components: {MyTeamInterviewCard, MyInterviewCard, BktSwitcher},
 }
 </script>

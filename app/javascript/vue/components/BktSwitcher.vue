@@ -15,13 +15,13 @@
       </button>
 
       <button
-          class="height-3_5rem pb-3 pl-3 fs-0_8rem fs-sm-1_2rem"
+          class="height-3_5rem pb-3 pl-3 fs-1_1rem fs-sm-1_6rem"
           :class="[!panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', !panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >
         Archived {{title}}
         <span
-            class="px-2 rounded-5px fs-1_2rem"
+            class="px-2 rounded-5px fs-0_8rem fs-sm-1_2rem"
             :class="[!panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', !panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
           {{archivedNbr || 0}}
         </span>
