@@ -131,7 +131,7 @@
     <% end %>
 
     <% if (CampaignPolicy.new(current_user, campaign).remove_interview_set? ||
-        !interview_set.employee_interview&.submitted?) && overview%>
+        !employee_interview&.submitted?) && overview %>
 
       <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-negative-red-important
                 bkt-bg-light-grey10-hover width-100 p-3"
