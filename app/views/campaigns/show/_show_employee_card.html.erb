@@ -111,12 +111,16 @@
           user_path(employee),
           class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover width-100 p-3" %>
 
-    <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
-              width-100 p-3"
-       data-toggle="modal"
-       data-target="#updateInterviewer-<%= employee_id %>">
-       Select another interviewer
-    </a>
+    <% unless manager_interview&.submitted? %>
+
+      <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                width-100 p-3"
+         data-toggle="modal"
+         data-target="#updateInterviewer-<%= employee_id %>">
+         Select another interviewer
+      </a>
+
+    <% end %>
 
     <% unless overview %>
 

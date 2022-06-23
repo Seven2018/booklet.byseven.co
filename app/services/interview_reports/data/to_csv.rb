@@ -11,6 +11,7 @@ module InterviewReports
             'Campaign Title',
             'Campaign URL',
             'Campaign Type',
+            'Template',
             'Interview Type',
             'Interviewer Email',
             'Interviewer Fullname',
@@ -18,7 +19,7 @@ module InterviewReports
             'Interviewee Fullname',
             'Interviewee Job Title',
             'Interviewee Completion',
-            'Interview Locked At',
+            'Interview Submitted At',
             'Deadline'] + tag_categories.map(&:name)
         CSV.generate(headers: true) do |csv|
           csv << columns
@@ -33,6 +34,7 @@ module InterviewReports
               line << campaign.title
               line << campaign_url(campaign, employee_id: employee.id, host: ENV['APP_DOMAIN'])
               line << campaign.campaign_type
+              line << interview.interview_form.title
               line << interview.label
               line << interviewer.email
               line << interviewer.fullname

@@ -24,9 +24,8 @@ module InterviewReports
 
     def campaigns
       @campaigns ||=
-        company.campaigns.where(id: @interview_report.campaign_ids).where_exists(
-          :interviews,
-          'date >= ? AND date <= ?',
+        company.campaigns.where(id: @interview_report.campaign_ids).where(
+          'deadline >= ? AND deadline <= ?',
           @interview_report.start_time,
           @interview_report.end_time
         )
