@@ -128,7 +128,7 @@
 
       <% question_num += 1 %>
 
-      <div class="interview-main__right-questions">
+      <div class="interview-main__right-questions bkt-box-shadow-medium">
 
         <div class="interview-main__right-question">
 
@@ -171,21 +171,21 @@
 
 <div class="interview-controls--mobile">
 
-  <div class="interview-controls__buttons--mobile">
+  <div class="interview-controls__buttons--mobile flex width-90">
 
-    <%= link_to interview_path(@interview, format: :pdf), class: 'bkt-btn-white-blue', id: 'interview-export-pdf', target: :_blank do %>
+    <%= link_to interview_path(@interview, format: :pdf), class: 'bkt-btn-white-blue p-3 flex-none', id: 'interview-export-pdf', target: :_blank, style: 'min-width: 4rem' do %>
       <span class="iconify" data-icon="bx:bx-download"></span>
     <% end %>
 
     <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
 
-      <button class="bkt-btn-white-blue" id="save-interview" onclick="saveButton();">
-        <span class="iconify" data-icon="fluent:save-16-regular"></span>
-        <p>Save</p>
-      </button>
+<!--      <button class="bkt-btn-white-blue" id="save-interview" onclick="saveButton();">-->
+<!--        <span class="iconify" data-icon="fluent:save-16-regular"></span>-->
+<!--        <p>Save</p>-->
+<!--      </button>-->
 
       <button id="submit-interview"
-              class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
+              class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %> flex-1 justify-content-center"
               data-toggle='modal'
               data-target='#interviewConfirmSubmit'
               <%= 'disabled' unless fully_answered %>>
