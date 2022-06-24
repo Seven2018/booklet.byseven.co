@@ -99,7 +99,12 @@ h6 {
 }
 
 p, i, span, li {
-  font-size: 1.6rem;
+  font-size: 1rem;
+}
+@include from-medium {
+  p, i, span, li {
+    font-size: 1.6rem;
+  }
 }
 
 li {

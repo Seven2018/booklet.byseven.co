@@ -17,15 +17,28 @@
       </div>
     </div>
 
-    <div>
+    <div class="flex-row-end-centered">
       <bkt-button
           iconify="akar-icons:arrow-right"
           :left="false"
           :type="interviews.crossed_interview && interviews.crossed_interview.status === 'submitted' || interviews.employee_interview.status === 'submitted' ? 'white' : 'interview'"
           :href="$routes.generate('interviews_id', {id: interviews.crossed_interview && interviews.crossed_interview.status === 'submitted' ?
-              interviews.crossed_interview.id : interviews.employee_interview.id})"
+              interviews.crossed_interview.id : (userKind === 'interviewer' ? interviews.employee_interview.id : interviews.manager_interview.id)})"
       >
-        {{ myInterviewCampaignButtonSentence(interviews) }}
+        {{ userKind === 'interviewer' ?
+          myInterviewCampaignButtonSentenceForEmployee(interviews) :
+          myInterviewCampaignButtonSentenceForManager(interviews)
+        }}
+      </bkt-button>
+      <bkt-button
+          iconify="akar-icons:arrow-right"
+          class="ml-3"
+          :left="false"
+          v-if="userKind !== 'interviewer' && interviews.crossed_interview && interviews.crossed_interview.status !== 'not_available_yet'"
+          :type="interviews.crossed_interview.status === 'submitted' ? 'white' : 'interview'"
+          :href="$routes.generate('interviews_id', {id: interviews.crossed_interview.id })"
+      >
+        {{ myInterviewCampaignButtonSentenceForCrossed(interviews) }}
       </bkt-button>
     </div>
   </div>

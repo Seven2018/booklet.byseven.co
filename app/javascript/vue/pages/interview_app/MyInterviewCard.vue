@@ -21,7 +21,7 @@
       <interview-status :campaign="campaign"></interview-status>
 
       <button class="p-4 mt-4 text-center bkt-bg-blue bkt-white width-100 rounded-b-15px fs-1rem font-weight-600">
-        {{ myInterviewCampaignButtonSentence(campaign) }}
+        {{ myInterviewCampaignButtonSentenceForEmployee(campaign) }}
       </button>
     </div>
 

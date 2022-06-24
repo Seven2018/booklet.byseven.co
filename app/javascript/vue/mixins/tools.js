@@ -64,7 +64,7 @@ export default {
         }
       })
     },
-    myInterviewCampaignButtonSentence(campaign) {
+    myInterviewCampaignButtonSentenceForEmployee(campaign) {
       if (campaign.employee_interview.status === 'not_started')
         return 'Start my interview'
       else if (campaign.employee_interview.status === 'in_progress')
@@ -73,6 +73,24 @@ export default {
         return 'View cross review answers'
       else if (campaign.employee_interview.status === 'submitted')
         return 'View my answers'
+    },
+    myInterviewCampaignButtonSentenceForManager(campaign) {
+      if (campaign.manager_interview.status === 'not_started')
+        return 'Start my interview'
+      else if (campaign.manager_interview.status === 'in_progress')
+        return 'Continue my interview'
+      else if (campaign.crossed_interview && campaign.crossed_interview.status === 'submitted')
+        return 'View cross review answers'
+      else if (campaign.manager_interview.status === 'submitted')
+        return 'View my answers'
+    },
+    myInterviewCampaignButtonSentenceForCrossed(campaign) {
+      if (campaign.crossed_interview.status === 'not_started')
+        return 'Start my cross interview'
+      else if (campaign.crossed_interview.status === 'in_progress')
+        return 'Continue my cross interview'
+      else if (campaign.crossed_interview.status === 'submitted')
+        return 'View my cross answers'
     },
     isMobile() {
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

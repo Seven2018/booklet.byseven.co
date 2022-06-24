@@ -2,7 +2,7 @@
   <div class="width-100 overflow-x-auto-mobile">
     <div class="height-3_6rem border-bottom-bkt-light-grey mb-4">
       <button
-          class="height-3_5rem pb-3 fs-1_1rem fs-sm-1_6rem"
+          class="height-3_5rem pb-3 fs-1rem fs-sm-1_6rem"
           :class="[panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >
@@ -15,7 +15,7 @@
       </button>
 
       <button
-          class="height-3_5rem pb-3 pl-3 fs-1_1rem fs-sm-1_6rem"
+          class="height-3_5rem pb-3 pl-3 fs-1rem fs-sm-1_6rem"
           :class="[!panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', !panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >
