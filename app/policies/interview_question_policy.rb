@@ -1,6 +1,7 @@
 class InterviewQuestionPolicy < ApplicationPolicy
+
   def create?
-    user.can_create_campaigns
+    user.can_create_templates
   end
 
   def update?
@@ -26,4 +27,5 @@ class InterviewQuestionPolicy < ApplicationPolicy
   def destroy?
     create?
   end
+
 end

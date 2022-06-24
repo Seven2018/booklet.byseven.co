@@ -367,9 +367,9 @@ class CampaignsController < ApplicationController
 
     return if user != current_user
 
-    calendar_create_event(instance, user, service)
+    date = calendar_create_event(instance, user, service).strftime('%Y/%m/%d')
 
-    redirect_to my_interviews_path
+    redirect_to "https://calendar.google.com/calendar/u/0/r/week/#{date}"
   end
 
   ##############
@@ -458,6 +458,8 @@ class CampaignsController < ApplicationController
     rescue
       service.insert_event('primary', event)
     end
+
+    return date
   end
 
   def calendar_delete_event(instance, user, service)

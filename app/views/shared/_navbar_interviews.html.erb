@@ -29,7 +29,7 @@
 
   <% end %>
 
-  <% if (admin_link = Navigation::InterviewsAdminLink.new(user: current_user).should_render?(campaigns_path, interview_forms_path, interviews_reports_path)) %>
+  <% if CampaignPolicy.new(current_user, nil).create? %>
 
     <%= link_to campaigns_path, class: "navbar-buttons width-11rem #{'navbar-buttons--active' if @controller_action == :campaigns_index}" do %>
 
@@ -37,11 +37,19 @@
 
     <% end %>
 
+  <% end %>
+
+  <% if InterviewFormPolicy.new(current_user, nil).create? %>
+
     <%= link_to interview_forms_path, class: "navbar-buttons width-10rem #{'navbar-buttons--active' if @controller_action == :interview_forms_index}" do %>
 
       <h4>Templates</h4>
 
     <% end %>
+
+  <% end %>
+
+  <% if current_user.can_create_interview_reports? %>
 
     <%= link_to interviews_reports_path, class: "navbar-buttons width-8rem #{'navbar-buttons--active' if @controller_action == :reports_index}" do %>
 

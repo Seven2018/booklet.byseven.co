@@ -7,7 +7,6 @@ module InterviewReports
 
       def call
         campaign = campaigns.first
-        interview_form_id = interview_form_ids.first
         interview_forms = campaign.interview_forms
         tag_categories = TagCategory.where(company: company).order(position: :asc)
         CSV.generate(headers: true) do |csv|
@@ -17,6 +16,7 @@ module InterviewReports
             employees = User.where_exists(:interviews, campaign: campaign, interview_form: interview_form)
 
             columns = ['Interview Type',
+                'Interview Template',
                 'Interview Label',
                 'Interviewer email',
                 'Interviewer fullname',
@@ -56,6 +56,7 @@ module InterviewReports
                 line = []
 
                 line << interview_type
+                line << interview_form.title
                 line << interview.label
                 line << interviewer_email
                 line << interviewer_fullname
