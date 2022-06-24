@@ -84,10 +84,6 @@ module CampaignDrafts
             .merge(interview_form: new_form, position: question.position)
         end
 
-        template.categories.each do |category|
-          new_form.categories << category
-        end
-
         return new_form
       end
 

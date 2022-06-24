@@ -9,7 +9,6 @@ class Interviews::ReportsController < ApplicationController
     interviewReports = InterviewReport.at_least_started.where(company: current_user.company)
     interviewReports = interviewReports.order(created_at: :desc)
 
-
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
     size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
     interviewReports = interviewReports.page(page).per(size)
@@ -32,6 +31,10 @@ class Interviews::ReportsController < ApplicationController
     end
 
     if interview_report.update interview_report_params
+
+      # FOR TESTING PURPOSES ONLY
+      # InterviewReports::GenerateData.call interview_report: interview_report
+
       InterviewReports::GenerateDataJob.perform_later interview_report.id
       flash[:notice] = "Generating report: refresh in 1 min !"
     else

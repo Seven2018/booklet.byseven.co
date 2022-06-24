@@ -57,10 +57,21 @@
 <div class="d-flex align-items-center width-20 min-width-20 fs-1_6rem font-weight-500
             bkt-light-grey6 pr-0_75rem">
 
-  <% template.categories.order(title: :asc).pluck(:title).each do |tag| %>
+  <% tags = template.categories.order(title: :asc).pluck(:title) %>
+
+  <% tags.each_with_index do |tag, ind| %>
+
+    <% if ind > 2 %>
+      <p class="d-flex align-items-center height-2_4rem-forced fs-1rem font-weight-600 px-1rem
+                py-0_5rem bkt-blue bkt-bg-light-blue mr-1rem rounded-15px text-nowrap">
+        + <%= tags.count - 3 %>
+      </p>
+
+      <% break %>
+    <% end %>
 
     <p class="d-flex align-items-center height-2_4rem-forced fs-1rem font-weight-600 px-1rem py-0_5rem
-              bkt-blue bkt-bg-light-blue mr-1rem rounded-15px">
+              bkt-blue bkt-bg-light-blue mr-1rem rounded-15px text-nowrap">
       <%= tag.capitalize %>
     </p>
 
@@ -111,12 +122,16 @@
           user_path(employee),
           class: "flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover width-100 p-3" %>
 
-    <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
-              width-100 p-3"
-       data-toggle="modal"
-       data-target="#updateInterviewer-<%= employee_id %>">
-       Select another interviewer
-    </a>
+    <% unless manager_interview&.submitted? %>
+
+      <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-bg-light-grey10-hover
+                width-100 p-3"
+         data-toggle="modal"
+         data-target="#updateInterviewer-<%= employee_id %>">
+         Select another interviewer
+      </a>
+
+    <% end %>
 
     <% unless overview %>
 
@@ -131,7 +146,7 @@
     <% end %>
 
     <% if (CampaignPolicy.new(current_user, campaign).remove_interview_set? ||
-        !interview_set.employee_interview&.submitted?) && overview%>
+        !employee_interview&.submitted?) && overview %>
 
       <a class="flex-row-start-centered fs-1_6rem font-weight-500 bkt-negative-red-important
                 bkt-bg-light-grey10-hover width-100 p-3"
