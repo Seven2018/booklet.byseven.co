@@ -3,20 +3,28 @@
 
   <div class='organisation__users-card user-card-<%= user.id %>' name="chk">
 
-    <div class='organisation__users-card__inner d-flex flex-row'>
+    <div class='organisation__users-card__inner d-flex flex-row height-100 pos-rel'>
+
       <% user = @user if @user.present? %>
-      <div class="organisation__users-info">
+
+      <%= link_to '', user_path(user), class: 'stretched-link' %>
+
+      <div class="d-flex align-items-center ml-1rem z-index-50">
+
         <div class="organisation__user-checkbox-container">
           <input class='select-user hidden' id='checkbox-<%= user.id %>' type="checkbox" value="<%= user.id %>" data-action="change->employees-list#toggleUser">
           <div class="organisation__user-checkbox" onclick="selectUser(this);"></div>
         </div>
+
       </div>
-      <div class="organisation__users-info streched-link">
-        <%= link_to user_path(user) do %>
+
+      <div class="organisation__users-info">
+
           <img src="<%= user.picture %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           <p class='organisation__user-name' data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname.titleize %> <%= user.firstname %></p>
-        <% end %>
+
       </div>
+
       <div class="organisation__users-info">
         <% job_title = UserTag.joins(:tag_category).find_by(tag_categories: {name: 'Job Title'}, user_id: user.id)&.tag&.tag_name %>
         <p data-toggle="tooltip" title="<%= job_title %>"><%= job_title %></p>

@@ -1,9 +1,8 @@
-
 <template>
   <div class="flex-column-centered font-weight-500 bkt-dark-grey">
     <h1 class="fs-2_4rem  my-5">Filter by tags</h1>
     <p class=" mb-3" style="line-height: 3em">
-      Tags are use to filter your index.<br>
+      Tags are used to filter your index.<br>
       You can create, modify and delete tags to classify your items.<br>
       Each tags can be contained in a category, click on<br>
     </p>

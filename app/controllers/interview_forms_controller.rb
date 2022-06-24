@@ -186,7 +186,7 @@ class InterviewFormsController < ApplicationController
     skip_authorization
 
     @templates =
-      InterviewForm.unused.where(company_id: current_user.company_id)
+      InterviewForm.unused.where(company_id: current_user.company_id).order(title: :asc)
 
     @templates = @templates.ransack(title_cont: params[:search]).result(distinct: true).map{|x| [x.id, x.title]}
 
