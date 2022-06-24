@@ -28,7 +28,12 @@ export default {
     return {
       searchText: null,
       status: '',
-      selectList: [{display: 'All', value: ''}, {display: 'Current', value: 'current'}, {display: 'Completed', value: 'completed'}],
+      selectList: [
+        {display: 'All', value: ''},
+        {display: 'Not started', value: 'not_started'},
+        {display: 'In progress', value: 'in_progress'},
+        {display: 'Submitted', value: 'submitted'}
+      ],
     }
   },
   methods: {
@@ -38,7 +43,8 @@ export default {
         status: this.status,
       })
       store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'campaigns_list',
+        pathKey: 'campaigns_id_data_show',
+        pathKeyArgs: {id: this.campaign.id}
       })
     },
     reset() {
