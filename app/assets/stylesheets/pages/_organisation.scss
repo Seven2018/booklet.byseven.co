@@ -356,7 +356,7 @@
 
 .organisation__users-info {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   min-width: 18rem;
   max-width: 18rem;
@@ -364,10 +364,6 @@
   margin-left: 3rem;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  &:first-of-type {
-    margin-left: 1rem;
-  }
 
   &:nth-of-type(2) {
     min-width: 25rem;

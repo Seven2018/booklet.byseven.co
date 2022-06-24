@@ -38,7 +38,8 @@
     } %>
 
     <% redirect =
-        redirections.select{|k,v| v.key(request.referer) }.values.first %>
+        redirections.select{|k,v| v.key(request.referer)}.values.first.presence \
+          || redirections[:my_interviews] %>
 
     <%= link_to "Go to ‘#{redirect[:title]}’", redirect[:path], class: 'bkt-btn-blue m-auto' %>
 

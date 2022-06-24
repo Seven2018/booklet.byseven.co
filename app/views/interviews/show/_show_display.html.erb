@@ -179,11 +179,6 @@
 
     <% if InterviewPolicy.new(current_user, @interview).answer_question? %>
 
-      <button class="bkt-btn-white-blue" id="save-interview" onclick="saveButton();">
-        <span class="iconify" data-icon="fluent:save-16-regular"></span>
-        <p>Save</p>
-      </button>
-
       <button id="submit-interview"
               class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
               data-toggle='modal'
