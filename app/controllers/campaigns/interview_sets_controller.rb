@@ -21,9 +21,13 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
 
     @campaign = @campaign.decorate
     @employee = User.find(params.dig(:interview_set, :employee_id))
+    interviewer_id = params.dig(:interview_set, :interviewer_id)
 
     @campaign.interviews_for(params.dig(:interview_set, :employee_id)).each do |interview|
-      interview.update interviewer_id: params.dig(:interview_set, :interviewer_id)
+      interview.update interviewer_id: interviewer_id
+
+      interview.interview_answers.update_all user_id: interviewer_id \
+        if ['Manager', 'Crossed'].include?(interview.label)
     end
 
     respond_to do |format|

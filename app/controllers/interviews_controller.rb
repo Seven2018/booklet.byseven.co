@@ -15,10 +15,7 @@ class InterviewsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html {
-        flash[:alert] = "View mode only! New answers won't be saved!" unless
-            InterviewPolicy.new(current_user, @interview).answer_question?
-      }
+      format.html
       format.js
       format.pdf do
         render(
