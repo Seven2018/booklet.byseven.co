@@ -1,17 +1,31 @@
 class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.hr_or_above?
+
       scope.where(company: user.company)
     end
+  end
+
+  def list?
+    true
   end
 
   def show?
     record.interviewers.uniq.include?(user) || create?
   end
 
+  def overview?
+    create?
+  end
+
   def create?
     user.can_create_campaigns
+  end
+
+  def update?
+    create?
   end
 
   def destroy?
@@ -34,6 +48,10 @@ class CampaignPolicy < ApplicationPolicy
     create?
   end
 
+  def update_interview_set?
+    create? || record.interviewers.include?(user)
+  end
+
   def remove_interview_set?
     create?
   end
@@ -47,6 +65,11 @@ class CampaignPolicy < ApplicationPolicy
     true
   end
 
+
+  ###########################
+  ## CATEGORIES MANAGEMENT ##
+  ###########################
+
   def toggle_tag?
     create?
   end
@@ -58,4 +81,15 @@ class CampaignPolicy < ApplicationPolicy
   def search_tags?
     create?
   end
+
+
+  ##############
+  ## CALENDAR ##
+  ##############
+
+  def redirect_calendar?
+    show?
+  end
+
+  ##############
 end

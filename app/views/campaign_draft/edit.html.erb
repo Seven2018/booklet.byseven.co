@@ -1,7 +1,7 @@
-<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start py-2rem'>
+<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pb-10rem'>
 
   <div class="from_medium__h-60vh"
-       style="position: sticky; top: 2rem;">
+       style="position: sticky; top: calc(25vh - 7.5rem);">
 
     <div class="bkt-progress">
 
@@ -26,7 +26,28 @@
   </div>
 
   <div style='margin: 0 5%;'></div>
-  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw pos-rel">
+
+  <div class="bkt-box-shadow p-4 bkt-bg-white rounded-20px min-w-40vw pos-rel"
+       style="margin-top: calc(25vh - 7.5rem);">
+
+    <div class="width-100 d-flex justify-content-center pos-abs"
+         style="top: calc(2rem - 12.5vh); left: 0; right: 0;">
+
+      <h1 class="fs-2_4rem font-weight-600 bkt-dark-grey">New campaign</h1>
+
+      <div class="pos-abs"
+           style="top: 0; right: 0;">
+        <%= render_component Buttons::BackButton.new(fallback: campaigns_path, force_fallback: true) do %>
+
+          <div class="d-flex justify-content-center align-items-center height-4rem width-4rem rounded-20px bkt-box-shadow-medium bkt-bg-white bkt-bg-light-grey5-hover">
+            <span class="iconify bkt-dark-grey-important m-0" data-icon="bi:x" data-width="35" data-height="35"></span>
+          </div>
+
+        <% end %>
+      </div>
+
+    </div>
+
     <%= form_with url: send("campaign_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
 
       <%= render "campaign_draft/form_#{controller_name}", campaign: @campaign %>
@@ -65,42 +86,23 @@
 
       <% else %>
 
-        <div class="d-flex justify-content-end pt-5">
-          <button class='bkt-btn-blue'><p class="mr-3">Next</p> <i class="fa fa-arrow-right"></i></button>
-        </div>
+        <% unless @controller_action == :templates_edit %>
+
+          <div class="d-flex justify-content-end pt-5">
+
+            <button id="submit-button"
+                    class='bkt-btn-blue'>
+              <p class="mr-3">Next</p> <i class="fa fa-arrow-right"></i>
+            </button>
+
+          </div>
+
+        <% end %>
+
 
       <% end %>
 
     <% end %>
-
-    <div id="users_search" class="pos-abs <%= 'd-none' unless @controller_action == :participants_edit %>" style='left: 1.5rem; bottom: 24rem;'>
-
-      <%= simple_form_for :search, html: { class: 'bkt-select-autocomplete' }, method: :get do |f| %>
-
-        <%= f.text_field :manager, placeholder: 'Search in Managers',
-                                   value: @campaign.default_interviewer&.fullname,
-                                   label: false,
-                                   data: {behavior: 'autocomplete'} %>
-
-      <% end %>
-
-    </div>
-
-    <div id="templates_search"
-         class="pos-abs <%= 'd-none' unless @controller_action == :templates_edit %>"
-         data-controller="tools--easyautocomplete"
-         style='left: 1.5rem; right: 1.5rem; bottom: 8rem;'>
-
-      <%= simple_form_for :search, html: { class: 'bkt-select-autocomplete width-100' }, method: :get do |f| %>
-
-        <%= f.text_field :template, placeholder: 'Search in Templates',
-                                   value: @campaign.default_template&.title || "",
-                                   label: false,
-                                   data: { behavior: 'autocomplete' } %>
-
-      <% end %>
-
-    </div>
 
   </div>
 
@@ -111,66 +113,3 @@
     <%= @campaign.data %>
   </div>
 <% end %>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
-
-<script>
-  $input_manager = $("#search_manager");
-  $input_template = $("#search_template");
-
-  var options_manager = {
-    listLocation: "users",
-    getValue: 'name',
-    url: function(phrase) {
-      return "/users_search.json?manager=true&search=" + phrase
-    },
-    list: {
-      onChooseEvent: function() {
-        user_id = $input_manager.getSelectedItemData().id
-        document.getElementById('default_interviewer_id').value = user_id
-      },
-      maxNumberOfElements: Infinity,
-      match: {
-        enabled: true
-      }
-    }
-  }
-
-  var options_template = {
-    listLocation: "templates",
-    getValue: 'title',
-    url: function(phrase) {
-      return "/templates_search.json?search=" + phrase
-    },
-    list: {
-      onChooseEvent: function() {
-        template_id = $input_template.getSelectedItemData().id
-        document.getElementById('default_template_id').value = template_id
-      },
-      maxNumberOfElements: Infinity,
-      match: {
-        enabled: true
-      }
-    }
-  }
-
-  $input_manager.easyAutocomplete(options_manager).click(function(){
-    $(this).triggerHandler(jQuery.Event("keyup", { keyCode: 65, which: 65}))
-  });
-
-  $input_manager.easyAutocomplete(options_manager).keyup(function(event){
-    if (event.which == 8 && $(this).val() == '') {
-      $(this).triggerHandler(jQuery.Event("keyup", { keyCode: 65, which: 65}))
-    }
-  });
-
-  $input_template.easyAutocomplete(options_template).click(function(){
-    $(this).triggerHandler(jQuery.Event("keyup", { keyCode: 65, which: 65}))
-  });
-
-  $input_template.easyAutocomplete(options_template).keyup(function(event){
-    if (event.which == 8 && $(this).val() == '') {
-      $(this).triggerHandler(jQuery.Event("keyup", { keyCode: 65, which: 65}))
-    }
-  });
-</script>

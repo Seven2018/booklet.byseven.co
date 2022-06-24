@@ -1,13 +1,34 @@
-<%= render_component FormSectionTitleComponent.new(title: 'Apply dates for your campaign') %>
+<div data-controller="interviews--campaign-drafts-dates">
 
-<%= render_component FormSectionSubtitleComponent.new do %>
-  Deadline is only informative, reviews can be done even if the <br><%# TODO improve  %>
-  deadline is outdated.
-<% end %>
+  <%= render_component FormSectionTitleComponent.new(title: 'Apply dates for your campaign') %>
 
-<%# TODO %>
-<%= date_field_tag(:date, @campaign.date&.strftime("%F"),
-                          placeholder: 'Select date',
-                          class: 'datepicker_ height-5rem bkt-bg-light-grey9-important mb-5rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem datepicker rounded-3px bkt-input-focus') %>
+  <%= render_component FormSectionSubtitleComponent.new do %>
+    Deadline is only informative, reviews can be done even if the <br><%# TODO improve  %>
+    deadline is outdated.
+  <% end %>
 
+  <div class="d-flex justify-content-start align-items-center mb-5rem"
+       data-interviews--campaign-drafts-dates-target="requiredInput">
+
+    <p class="fs-1_4rem font-weight-600 bkt-dark-grey mr-3rem">Campaign deadline :</p>
+
+
+    <div class="d-flex justify-content-center align-items-center">
+
+      <%= date_field_tag(:date, @campaign.date&.strftime("%F"),
+                                placeholder: 'Select date',
+                                class: 'datepicker_ height-3rem width-12rem fs-1_4rem p-1rem font-weight-400 rounded-3px text-center border-bkt-dark-grey-focus mr-1rem',
+                                data: { action: "change->interviews--campaign-drafts-dates#enableSubmit" }) %>
+
+      <div class="d-flex justify-content-center align-items-center height-3rem width-3rem bkt-bg-light-blue">
+
+        <span class="iconify bkt-blue fs-1_6rem" data-icon="bi:calendar"></span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 

@@ -44,7 +44,7 @@
         <div class="flex-row-start-centered">
           <div>
             <p class="bkt-light-grey font-weight-500 fs-1_2rem">Deadline
-              : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p>
+              : <%= campaign.deadline.strftime("%d/%m/%y") %></p>
           </div>
         </div>
 
@@ -138,7 +138,7 @@
         <%= campaign.completion_status_string(current_user) %>
       </p>
       <p class="bkt-dark-grey fs-1rem font-weight-100 mr-1rem">
-        <em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
+        <em>Deadline : <%= campaign.deadline.strftime("%d/%m/%y") %></em></p>
     </div>
     <div class="campaigns-my-interviews__card-left">
       <div class="campaigns-my-interviews__card-header mx-4">

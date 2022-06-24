@@ -26,10 +26,20 @@
       my_team_interviews: {
         title: 'My Team Interviews',
         path: my_team_interviews_url
+      },
+      campaigns_show: {
+        title: 'Campaign',
+        path: campaign_url(@interview.campaign)
+      },
+      campaigns_overview: {
+        title: 'Campaign overview',
+        path: overview_campaign_url(@interview.campaign)
       }
     } %>
 
-    <% redirect = request.referer == redirections[:my_interviews][:path] ? redirections[:my_interviews] : redirections[:my_team_interviews] %>
+    <% redirect =
+        redirections.select{|k,v| v.key(request.referer)}.values.first.presence \
+          || redirections[:my_interviews] %>
 
     <%= link_to "Go to ‘#{redirect[:title]}’", redirect[:path], class: 'bkt-btn-blue m-auto' %>
 

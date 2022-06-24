@@ -194,7 +194,7 @@
             input_html: {
               class: 'bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
               value: current_answer,
-              onkeyup: 'autoSave(this); enableSubmit();'
+              data: { action: 'keyup->interviews--interviews-show#autoSave keyup->interviews--interviews-show#enableSubmit' }
             },
             required: is_required,
             disabled: read_only %>
@@ -214,7 +214,8 @@
             id="<%= input_label_key %>"
             name="interview_answer[answer]"
             value="<%= stars_count %>"
-            onchange="autoSave(this); enableSubmit();"
+            data-action='change->interviews--interviews-show#autoSave
+                         change->interviews--interviews-show#enableSubmit'
             <% if current_answer.to_i == stars_count %> checked <% end %>
             <%= 'disabled' if read_only %>/>
 
@@ -240,7 +241,7 @@
             input_html: {
               class: 'bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
               value: current_comments,
-              onkeyup: 'autoSave(this);'
+              data: { action: 'keyup->interviews--interviews-show#autoSave' }
             },
             required: false) %>
 
@@ -254,23 +255,27 @@
         input_html: {
           class: 'bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
           value: current_objective,
-          onkeyup: 'autoSave(this); enableSubmit();'
+          onkeyup: 'enableSubmit();',
+          data: { action: 'keyup->interviews--interviews-show#autoSave' }
         },
         required: is_required,
         disabled: read_only
       ) if question.objective? %>
 
-      <div class="booklet-select__container" >
+      <div class="booklet-select__container"
+           data-controller="interviews--interviews-show-select">
 
-        <div class="booklet-select__selected" onclick="<%= 'BookletSelectExpand(this);' unless read_only %>">
+        <div class="booklet-select__selected"
+             data-interviews--interviews-show-select-target="selectDisplay"
+             data-action='<%= "click->interviews--interviews-show-select#bookletSelectExpand interviews--interviews-show-select:click:outside->interviews--interviews-show-select#bookletSelectCollapse" unless read_only %>'>
 
           <p><%= current_answer.present? ? current_answer : '' %></p>
 
           <div class="booklet-select__controls">
 
-            <% if !question.required_for?(@interview.label == 'Employee' ? 'employee' : 'manager') && current_answer == '' %>
-
-              <div class="booklet-select__controls-icon" onclick='BookletSelectRemoveAnswer(this);'>
+            <% if (!['all', (@interview.label == 'Employee' ? 'employee' : 'manager')].include?(question.required_for)) && current_answer != '' %>
+              <div class="booklet-select__controls-icon"
+                   data-action="click->interviews--interviews-show-select#bookletSelectRemoveAnswer">
                 <i class="fas fa-times"></i>
               </div>
 
@@ -284,11 +289,13 @@
 
         </div>
 
-        <div class="booklet-select__dropdown hidden">
+        <div class="booklet-select__dropdown hidden"
+             data-interviews--interviews-show-select-target="selectMenu">
 
           <% question.options.sort_by {|k, v| v}.each do |option| %>
 
-            <div class="booklet-select__option" onclick='BookletSelectSubmit(this);'>
+            <div class="booklet-select__option"
+                 data-action="click->interviews--interviews-show-select#bookletSelectSubmit">
               <p><%= option[0] %></p>
             </div>
 
@@ -310,7 +317,7 @@
             input_html: {
               class: 'bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
               value: current_comments,
-              onkeyup: 'autoSave(this);'
+              data: { action: 'keyup->interviews--interviews-show#autoSave' }
             },
             required: false,
             disabled: read_only) if question.allow_comments %>

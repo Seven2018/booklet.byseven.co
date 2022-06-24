@@ -6,7 +6,7 @@
             v-model="searchText"
             @input="update"
         ></bkt-search>
-        <input type="submit" value="Search" class="ml-5 bkt-bg-light-grey12-important px-4 py-3 rounded-5px border-none" @click="submit">
+<!--        <input type="submit" value="Search" class="ml-5 bkt-bg-light-grey12-important px-4 py-3 rounded-5px border-none" @click="submit">-->
         <select
             v-model="indicatorType"
             @change="update"
@@ -72,7 +72,17 @@ export default {
   created() {
   },
   methods: {
-    update(_) {
+    update() {
+      store.commit('genericFetchEntity/setSearch', {
+        title: this.searchText,
+        indicator_type: this.indicatorType,
+        indicator_status: this.indicatorStatus,
+        from: this.from,
+        to: this.to,
+      })
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'objective_target_list',
+      })
     },
     reset() {
       store.commit('genericFetchEntity/setSearch')
@@ -81,22 +91,23 @@ export default {
       this.indicatorStatus = null
       this.from = null
       this.to = null
+      store.commit('genericFetchEntity/setData', null)
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: 'objective_target_list',
       })
     },
-    submit() {
-      store.commit('genericFetchEntity/setSearch', {
-        'search[title]': this.searchText,
-        'search[indicator_type]': this.indicatorType,
-        'search[indicator_status]': this.indicatorStatus,
-        'search[from]': this.from,
-        'search[to]': this.to,
-      })
-      store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'objective_target_list',
-      })
-    }
+    // submit() {
+    //   store.commit('genericFetchEntity/setSearch', {
+    //     title: this.searchText,
+    //     indicator_type: this.indicatorType,
+    //     indicator_status: this.indicatorStatus,
+    //     from: this.from,
+    //     to: this.to,
+    //   })
+    //   store.dispatch('genericFetchEntity/fetch', {
+    //     pathKey: 'objective_target_list',
+    //   })
+    // }
   },
   components: {BktSearch}
 }

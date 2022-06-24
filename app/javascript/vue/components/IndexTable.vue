@@ -14,7 +14,7 @@
       <tr
           v-for="row in tableData" class="border-bottom-bkt-light-grey5-not-last-child"
           :key="row.id"
-          :class="{'bkt-bg-light-grey10-hover': withoutHover === false}"
+          :class="{'bkt-bg-light-grey10-hover cursor-pointer': withoutHover === false}"
           @click="$emit('row-click', row)"
       >
         <slot v-bind="row"></slot>
@@ -73,7 +73,7 @@
           v-if="pagination.next_page"
           type="white"
           custom-class="border-bkt-objective-blue position-absolute"
-          right="0px"
+          style="right: 0px"
           @click="$emit('fetch-page', pagination.next_page)"
       >Next
       </bkt-button>

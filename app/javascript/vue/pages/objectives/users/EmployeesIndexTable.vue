@@ -4,27 +4,11 @@
       :headers="headers"
       :tableData="genericFetchEntity.data.users"
       :pagination="genericFetchEntity.pagination"
-      @fetch-page="fetchPage"
+      @fetch-page="fetchPage($event, 'objective_list')"
   >
     <template v-slot="{id, firstname, lastname, picture, job_title, access_level_int, manager, objectives_count}">
       <td>
-        <div class="d-flex align-items-center">
-          <div class="flex-column ">
-            <img class="rounded-circle width-3rem height-3rem"
-                 :src="picture"
-                 onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
-                 alt="">
-          </div>
-
-          <div class="flex-column ml-3 width-25rem ">
-            <div class="flex-row-start-centered">
-              <p class="font-weight-500 text-truncate">{{ `${firstname} ${lastname}` }}</p>
-            </div>
-            <div class="flex-row-start-centered">
-              <p class="font-weight-500 fs-1_2rem bkt-light-grey6 text-truncate">{{ job_title }}</p>
-            </div>
-          </div>
-        </div>
+        <user-info-in-table :user="{picture, firstname, lastname, job_title}"></user-info-in-table>
       </td>
 
       <td>
@@ -91,6 +75,7 @@
 import IndexTable from "../../../components/IndexTable";
 import BktButton from "../../../components/BktButton";
 import store from "../../../store";
+import UserInfoInTable from "../../../components/UserInfoInTable";
 
 export default {
   data() {
@@ -107,16 +92,9 @@ export default {
 )
   },
   methods: {
-    fetchPage(page) {
-      store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'objective_list',
-        params: {
-          'page[number]': page,
-        }
-      })
-    }
   },
   components: {
+    UserInfoInTable,
     IndexTable,
     BktButton
   }

@@ -1,14 +1,37 @@
 class Campaigns::InterviewSetsController < Campaigns::BaseController
+
   def create
     raise Pundit::NotAuthorizedError unless
       CampaignPolicy.new(current_user, campaign).add_interview_set?
 
     params_set = interview_params
-    params_set[:interviewer] = User.find_by(id: params.dig(:add_to_interviewer_id)) || interview_params[:interviewer]
     @status = InterviewSets::Create.call(params_set).present?
-    filter_interviewees
+
     respond_to do |format|
-      format.html {redirect_to campaign_path(@campaign)}
+      format.html { redirect_back(fallback_location: campaign_path(@campaign)) }
+      format.js {
+        redirect_to request.referrer, format: 'js'
+      }
+    end
+  end
+
+  def update
+    raise Pundit::NotAuthorizedError unless
+      CampaignPolicy.new(current_user, campaign).add_interview_set?
+
+    @campaign = @campaign.decorate
+    @employee = User.find(params.dig(:interview_set, :employee_id))
+    interviewer_id = params.dig(:interview_set, :interviewer_id)
+
+    @campaign.interviews_for(params.dig(:interview_set, :employee_id)).each do |interview|
+      interview.update interviewer_id: interviewer_id
+
+      interview.interview_answers.update_all user_id: interviewer_id \
+        if ['Manager', 'Crossed'].include?(interview.label)
+    end
+
+    respond_to do |format|
+      format.html { redirect_back(fallback_location: campaign_path(@campaign)) }
       format.js
     end
   end
@@ -17,37 +40,38 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
     raise Pundit::NotAuthorizedError unless
       CampaignPolicy.new(current_user, campaign).remove_interview_set?
 
-    @user_name = employee.fullname
-    filter_interviewees
-    @campaign.interviews.where(employee_id: params[:user_id]).destroy_all
-    @campaign.destroy if @campaign.interviews.empty?
-    respond_to do |format|
-      format.html {redirect_to campaign_path(@campaign)}
-      format.js
-    end
+    campaign.interviews.where(employee_id: params[:user_id]).destroy_all
+    campaign.destroy if @campaign.interviews.empty?
+
+    head :ok
   end
 
   private
 
-  def last_campaign_interview
-    @last_campaign_interview ||= campaign.interviews.order(date: :desc).first
-  end
-
   def interview_params
     {
       employee: employee,
-      interviewer: (employee.manager.presence || campaign.owner),
-      interview_form: last_campaign_interview.interview_form,
+      interviewer: interviewer,
+      interview_form: interview_form,
       title: campaign.title,
-      date: last_campaign_interview.date,
-      starts_at: last_campaign_interview.starts_at,
-      ends_at: last_campaign_interview.ends_at,
       creator: campaign.owner,
       campaign: campaign
     }
   end
 
+  def interview_form
+    campaign_templates = campaign.interview_forms_list
+
+    user_tag = UserTag.find_by(user_id: params.dig(:interview_set, :user_id), tag_id: campaign_templates.keys)
+
+    interview_form = InterviewForm.find_by(id: (campaign_templates[(user_tag&.tag_id&.to_s.presence || 'default_template')]))
+  end
+
   def employee
-    @user ||= User.find params[:user_id]
+    User.find(params.dig(:interview_set, :user_id))
+  end
+
+  def interviewer
+    User.find_by(id: params.dig(:interview_set, :interviewer_id))
   end
 end

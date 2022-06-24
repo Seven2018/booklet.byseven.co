@@ -18,14 +18,14 @@
 
   <div class="modal-footer info-modal__footer">
 
-    <button class="bkt-btn-blue-border mr-3rem"
+    <button class="modal-close bkt-btn-blue-border mr-3rem"
             data-dismiss="modal"
             aria-label="Close">
       Maybe later
     </button>
 
     <button class="bkt-btn-blue"
-            onclick="submitAndLock()">
+            data-action="click->interviews--interviews-show#submit">
       Submit <span class="iconify ml-3" data-icon="bxs:lock"></span>
     </button>
 

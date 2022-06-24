@@ -5,7 +5,6 @@ class Interview < ApplicationRecord
   belongs_to :interviewer, class_name: "User"
   belongs_to :creator, class_name: "User"
   has_many :interview_answers, dependent: :destroy
-  before_create :ensure_date_presence
   validates :title, :label, presence: true
   validate :single_campaign_interview_set_per_employee
   validate :label_and_interview_form_match
@@ -148,11 +147,5 @@ class Interview < ApplicationRecord
 
   def not_locked
     errors.add(:base, 'a locked interview can not be changed') if locked? || unlocking
-  end
-
-  def ensure_date_presence
-    return if date.present?
-
-    self.date = Time.zone.today.end_of_month
   end
 end

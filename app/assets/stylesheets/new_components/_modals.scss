@@ -80,6 +80,7 @@
 }
 
 .action-modal__body {
+  justify-content: flex-start !important;
   min-height: 0;
   max-height: calc(100vh - 20rem);
   overflow-y: scroll;
@@ -150,7 +151,7 @@
 }
 
 .info-modal__body {
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   min-height: 0;
   padding: 0 3rem 2rem 3rem !important;
@@ -194,7 +195,6 @@
 .ays-modal__content {
   border-radius: 10px !important;
   border: none !important;
-  width: 43.5rem !important;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
   height: auto !important;
 }
@@ -227,7 +227,7 @@
 }
 
 .ays-modal__body {
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   min-height: 0;
   padding: 3rem 5rem !important;

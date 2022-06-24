@@ -1,0 +1,3 @@
+document.getElementById('interview-container').innerHTML = '<%= j render("interviews/show/show_display", interview: @interview, employee: @employee, manager: @manager, template: @template, questions: @questions) %>';
+
+document.querySelector('.modal.show').querySelector('.modal-close').click()

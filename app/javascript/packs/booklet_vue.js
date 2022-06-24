@@ -55,6 +55,9 @@ import ObjectiveTemplateIndex from '../vue/pages/objectives/templates'
 import ObjectiveTemplateNew from '../vue/pages/objectives/templates/new'
 import ObjectiveTemplateNewTargetView from '../vue/pages/objectives/templates/new_target_view'
 import CustomToggleForErbForm from '../vue/components/CustomToggleForErbForm'
+import CampaignIndex from '../vue/pages/interview_app/campaigns'
+import InterviewTemplateIndex from '../vue/pages/interview_app/templates'
+import InterviewReportIndex from '../vue/pages/interview_app/reports'
 
 let app = null
 let vuejsOpt = {
@@ -69,7 +72,10 @@ let vuejsOpt = {
     ObjectiveTemplateIndex,
     ObjectiveTemplateNew,
     ObjectiveTemplateNewTargetView,
-    CustomToggleForErbForm
+    CustomToggleForErbForm,
+    CampaignIndex,
+    InterviewTemplateIndex,
+    InterviewReportIndex,
   }
 }
 Vue.prototype.$routes = routes

@@ -3,7 +3,11 @@
 <% end %>
 
 <% content_for :subtitle do %>
-  Please enter your password.
+
+  <% if @user.invitation_token.nil? %>
+    Please enter your password.
+  <% end %>
+
 <% end %>
 
 <% wrong_password = false %>
@@ -50,9 +54,8 @@
 
   <div class="width-100 d-flex justify-content-end">
     <%= link_to 'Reset password',
-                u_reset_password_path(email: params.dig(:user, :email)),
-                class: 'fs-1rem font-weight-600 bkt-dark-grey underline',
-                remote: true if @user.invitation_token.nil? %>
+                u_check_path(user: {email: params.dig(:user, :email)}, reset: true), method: :post,
+                class: 'fs-1rem font-weight-600 bkt-dark-grey underline' if @user.invitation_token.nil? %>
   </div>
 
   <div class="">
@@ -65,41 +68,10 @@
     <% else %>
 
       <%= link_to 'Create password',
-                u_reset_password_path(email: params.dig(:user, :email)),
-                class: 'd-block width-100 bkt-bg-dark-grey-important bkt-white-important rounded-2px mt-4 p-3 text-center',
-                remote: true %>
+                u_check_path(user: {email: params.dig(:user, :email)}, reset: true), method: :post,
+                class: 'd-block width-100 bkt-bg-dark-grey-important bkt-white-important rounded-2px mt-4 p-3 text-center' %>
 
     <% end %>
   </div>
 
 <% end %>
-
-<!------------>
-<!-- HIDDEN -->
-<!------------>
-
-<a id="reset_password_email_sent"
-   class='d-none'
-   data-toggle='modal'
-   data-target='#resetPasswordEmailSent'></a>
-
-
-<!------------>
-<!-- MODALS -->
-<!------------>
-
-<div id='resetPasswordEmailSent'
-     class='modal fade'
-     tabindex='-1'
-     role='dialog'
-     data-keyboard="false"
-     data-backdrop="static">
-
-  <div class='modal-dialog'
-       role='document'>
-    <%= render 'users/modals/reset_password_email_sent' %>
-  </div>
-
-</div>
-
-<!------------>

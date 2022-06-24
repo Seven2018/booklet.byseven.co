@@ -115,6 +115,10 @@
       box-shadow: none;
       border: 1px solid $bkt-dark-grey !important;
     }
+
+    div {
+      white-space: nowrap;
+    }
   }
 
   .bkt-select-menu {
@@ -128,7 +132,7 @@
     overflow: scroll;
     z-index: 1000;
 
-    button {
+    div {
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -138,6 +142,7 @@
       font-size: 1.6rem;
       font-weight: 500;
       color: $bkt-dark-grey;
+      white-space: nowrap;
 
       &:hover {
         background-color: #F0F0F0 !important;

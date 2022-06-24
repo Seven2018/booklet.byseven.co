@@ -18,7 +18,29 @@ const routes = {
   objective_templates_list: '/objective/templates/list',
   objective_templates_id: '/objective/templates/{id}',
   objective_templates_edit: '/objective/templates/{id}/edit',
-  objective_templates_new_target_view: '/objective/templates/new_target_view'
+  objective_templates_new_target_view: '/objective/templates/new_target_view',
+  campaign_draft_edit: '/campaign_draft/settings/edit',
+  campaigns_list: '/campaigns/list',
+  send_notification_email: '/send_notification_email/{id}.json',
+  campaigns_id: '/campaigns/{id}',
+  campaigns_id_overview: '/campaigns/{id}/overview',
+  categories: '/categories',
+  categories_from_campaign: '/categories/from_campaign',
+  categories_from_template: '/categories/from_template',
+  campaigns_toggle_tag: '/campaigns/{id}/toggle_tag',
+  interview_forms_list: '/interview_forms/list',
+  interview_forms: '/interview_forms',
+  interview_forms_id: '/interview_forms/{id}',
+  interview_forms_id_edit: '/interview_forms/{id}/edit',
+  interview_forms_id_duplicate: '/interview_forms/{id}/duplicate',
+  interview_forms_toggle_tag: '/interview_forms/{id}/toggle_tag',
+  interviews_reports_edit: '/interviews/reports/edit',
+  interviews_reports: '/interviews/reports/list',
+  categories_groups: '/categories/groups',
+  categories_id: '/categories/{id}',
+  new_group_categories: '/categories/new_group',
+  group_categories_id: '/group_categories/{id}',
+  categories_search_v2: '/categories/search_v2'
 }
 
 export default {

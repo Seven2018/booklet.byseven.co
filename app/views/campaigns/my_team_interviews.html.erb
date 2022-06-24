@@ -1,13 +1,13 @@
 <div class="campaigns-my-interviews__container">
 
-  <div class="width-100 h-40vh black-gradient mb-5rem">
+  <div class="width-100 height-40rem black-gradient mb-5rem">
 
     <%= render_component AsClAssetComponent.new(model: current_user.company,
                                           asset: :my_team_interviews_banner,
-                                          class_name: 'width-100 h-40vh object-fit-cover',
+                                          class_name: 'width-100 h-inherit object-fit-cover',
                                           fallback: 'banners/my_team_interviews_banner.png') %>
 
-    <div class="width-100 h-40vh d-flex flex-column justify-content-center align-items-center pos-abs z-index-5"
+    <div class="width-100 height-100 d-flex flex-column justify-content-center align-items-center pos-abs z-index-5"
          style="top: 0; left: 0; right: 0;">
 
          <div class="d-flex justify-content-center align-items-center">

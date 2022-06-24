@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_02_163642) do
+ActiveRecord::Schema.define(version: 2022_06_17_132010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,9 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "campaign_type", default: 0, null: false
+    t.date "deadline"
+    t.string "calendar_uuid"
+    t.text "interview_forms_list"
     t.index ["company_id"], name: "index_campaigns_on_company_id"
     t.index ["interview_form_id"], name: "index_campaigns_on_interview_form_id"
     t.index ["owner_id"], name: "index_campaigns_on_owner_id"
@@ -120,7 +123,9 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "kind", default: 0
+    t.bigint "group_category_id"
     t.index ["company_id"], name: "index_categories_on_company_id"
+    t.index ["group_category_id"], name: "index_categories_on_group_category_id"
   end
 
   create_table "categories_interview_forms", id: false, force: :cascade do |t|
@@ -225,6 +230,15 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.index ["company_id"], name: "index_folders_on_company_id"
   end
 
+  create_table "group_categories", force: :cascade do |t|
+    t.string "name"
+    t.integer "kind", default: 0
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_group_categories_on_company_id"
+  end
+
   create_table "interview_answers", force: :cascade do |t|
     t.text "answer", default: "", null: false
     t.text "comments"
@@ -237,16 +251,6 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.index ["interview_id"], name: "index_interview_answers_on_interview_id"
     t.index ["interview_question_id"], name: "index_interview_answers_on_interview_question_id"
     t.index ["user_id"], name: "index_interview_answers_on_user_id"
-  end
-
-  create_table "interview_form_tags", force: :cascade do |t|
-    t.string "tag_name", default: "", null: false
-    t.bigint "interview_form_id"
-    t.bigint "tag_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["interview_form_id"], name: "index_interview_form_tags_on_interview_form_id"
-    t.index ["tag_id"], name: "index_interview_form_tags_on_tag_id"
   end
 
   create_table "interview_forms", force: :cascade do |t|
@@ -312,6 +316,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
     t.bigint "interviewer_id"
     t.integer "status", default: 0
     t.text "archived_for"
+    t.string "calendar_uuid"
     t.index ["campaign_id"], name: "index_interviews_on_campaign_id"
     t.index ["creator_id"], name: "index_interviews_on_creator_id"
     t.index ["employee_id"], name: "index_interviews_on_employee_id"
@@ -442,7 +447,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"
@@ -591,6 +596,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
   add_foreign_key "campaigns", "interview_forms"
   add_foreign_key "campaigns", "users", column: "owner_id"
   add_foreign_key "categories", "companies"
+  add_foreign_key "categories", "group_categories"
   add_foreign_key "content_categories", "categories"
   add_foreign_key "content_categories", "contents"
   add_foreign_key "content_folder_links", "contents"
@@ -607,8 +613,6 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
   add_foreign_key "interview_answers", "interview_questions"
   add_foreign_key "interview_answers", "interviews"
   add_foreign_key "interview_answers", "users"
-  add_foreign_key "interview_form_tags", "interview_forms"
-  add_foreign_key "interview_form_tags", "tags"
   add_foreign_key "interview_forms", "companies"
   add_foreign_key "interview_questions", "interview_forms"
   add_foreign_key "interview_reports", "companies"
@@ -621,6 +625,7 @@ ActiveRecord::Schema.define(version: 2022_06_02_163642) do
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "mods", "companies"
   add_foreign_key "objective_elements", "companies"
+  add_foreign_key "objective_elements", "users", column: "creator_id"
   add_foreign_key "objective_indicators", "objective_elements"
   add_foreign_key "objective_logs", "objective_elements"
   add_foreign_key "objective_logs", "objective_indicators"

@@ -1,5 +1,6 @@
 class Category < ApplicationRecord
   belongs_to :company
+  belongs_to :group_category
   has_many :content_categories, dependent: :destroy
   has_many :contents, through: :content_categories
   has_many :folder_categories, dependent: :destroy
@@ -11,4 +12,8 @@ class Category < ApplicationRecord
     interview: 0,
     training: 10,
   }
+
+  def self.of_kind(kind)
+    joins(:group_category).where(group_categories: {kind: kind})
+  end
 end

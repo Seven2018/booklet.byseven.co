@@ -5,7 +5,7 @@
       headerClass="bkt-light-grey6"
       :table-data="genericFetchEntity.data['objective/templates']"
       :pagination="genericFetchEntity.pagination"
-      @fetch-page="fetchPage"
+      @fetch-page="fetchPage($event, 'objective_templates_list')"
       @row-click="rowClick"
   >
     <template v-slot="{id, title, updated_at, objective_indicator}">
@@ -33,7 +33,15 @@
             {{objective_indicator.options.starting_value}}/{{objective_indicator.options.target_value}}
           </p>
           <p v-else-if="objective_indicator.indicator_type == 'percentage'">
-            {{objective_indicator.options.target_value}}
+            {{objective_indicator.options.target_value}    fetchPage(page) {
+      store.dispatch('genericFetchEntity/fetch', {
+        pathKey: 'objective_templates_list',
+        params: {
+          'page[number]': page,
+        }
+      })
+    },
+}
           </p>
           <p v-else-if="objective_indicator.indicator_type == 'multi_choice'">
             {{filterMultiChoiceCount(objective_indicator.options)}}
@@ -88,14 +96,6 @@ export default {
     )
   },
   methods: {
-    fetchPage(page) {
-      store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'objective_templates_list',
-        params: {
-          'page[number]': page,
-        }
-      })
-    },
     deleteTemplate(id) {
       store.dispatch('genericFetchEntity/delete', {
         pathKey: 'objective_templates_id',

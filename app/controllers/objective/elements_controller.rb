@@ -3,7 +3,6 @@ class Objective::ElementsController < ApplicationController
   before_action :set_objective_element, only: [:show, :update]
 
   skip_forgery_protection
-
   skip_after_action :verify_authorized, only: [
     :archive,
     :unarchive,
@@ -22,17 +21,14 @@ class Objective::ElementsController < ApplicationController
   end
 
   def list
-    if params[:search].blank?
-      @users = User.where(company: current_user.company)
-    else
-      @users = User.where(company: current_user.company).search_users(params[:search])
-    end
+    @users = User.where(company: current_user.company)
+    @users = User.where(company: current_user.company).search_users(params[:title]) if params[:title]
     @users = @users.order(lastname: :asc)
 
     authorize @users
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
 
     @users = @users.page(page).per(size)
 
@@ -98,13 +94,13 @@ class Objective::ElementsController < ApplicationController
     if changed_attributes && @objective.save
 
       changed_attributes.each do |k, v|
-        log_params = {title: "#{k.split('_').join(' ').capitalize} updated",
-                    owner: current_user,
-                    log_type: "#{k}_updated",
-                    initial_value: v,
-                    updated_value: objective_params[k],
-                    objective_element_id: @objective.id
-                   }
+        log_params = { title: "#{k.split('_').join(' ').capitalize} updated",
+                       owner: current_user,
+                       log_type: "#{k}_updated",
+                       initial_value: v,
+                       updated_value: objective_params[k],
+                       objective_element_id: @objective.id
+        }
 
         Objective::Log.create(log_params)
       end
@@ -133,23 +129,19 @@ class Objective::ElementsController < ApplicationController
   end
 
   def target_list
-    if params[:search]
-      elements = Objective::Element.where(company: current_user.company)
-      elements = elements.where('lower(title) LIKE ?', "%#{params[:search][:title].downcase}%") if params[:search][:title].present?
-      elements = elements
-                   .joins(:objective_indicator)
-                   .where(objective_indicators: {indicator_type: params[:search][:indicator_type]}) if params[:search][:indicator_type].present?
-      elements = elements
-                   .joins(:objective_indicator)
-                   .where(objective_indicators: {status: params[:search][:indicator_status]}) if params[:search][:indicator_status].present?
-      elements = elements.where('due_date >= ?', Date.parse(params[:search][:from].to_s)) if params[:search][:from].present?
-      elements = elements.where('due_date <= ?', Date.parse(params[:search][:to].to_s)) if params[:search][:to].present?
-    else
-      elements = Objective::Element.where(company: current_user.company)
-    end
+    elements = Objective::Element.where(company: current_user.company)
+    elements = elements.where('lower(title) LIKE ?', "%#{params[:title].downcase}%") if params[:title].present?
+    elements = elements
+                 .joins(:objective_indicator)
+                 .where(objective_indicators: { indicator_type: params[:indicator_type] }) if params[:indicator_type].present?
+    elements = elements
+                 .joins(:objective_indicator)
+                 .where(objective_indicators: { status: params[:indicator_status] }) if params[:indicator_status].present?
+    elements = elements.where('due_date >= ?', Date.parse(params[:from].to_s)) if params[:from].present?
+    elements = elements.where('due_date <= ?', Date.parse(params[:to].to_s)) if params[:to].present?
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
 
     elements = elements.page(page).per(size)
 

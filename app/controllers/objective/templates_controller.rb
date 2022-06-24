@@ -9,19 +9,15 @@ class Objective::TemplatesController < ApplicationController
   end
 
   def list
-    if params[:search].present? || params[:search_indicator_type].present?
       elements = Objective::Template.where(company: current_user.company)
-      elements = elements.where('lower(title) LIKE ?', "%#{params[:search].downcase}%") if params[:search].present?
+      elements = elements.where('lower(title) LIKE ?', "%#{params[:title].downcase}%") if params[:title].present?
       # elements = elements.search_elements(params[:search]) if params[:search].present? if params[:search].present?
       elements = elements
                    .joins(:objective_indicator)
                    .where(objective_indicators: {indicator_type: params[:search_indicator_type]}) if params[:search_indicator_type].present?
-    else
-      elements = Objective::Template.where(company: current_user.company)
-    end
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
-    size = params[:page] && params[:page][:size] ? params[:page][:size] : 10
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
 
     elements = elements.page(page).per(size)
 

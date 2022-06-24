@@ -71,10 +71,40 @@
 .booklet-tab-control {
   color: $bkt-dark-grey;
   border-bottom: .5px solid $bkt-light-grey5;
+  height: 33.5px !important;
+
+  .interviews-tab-control__counter {
+    background-color: $bkt-light-grey5;
+
+    p { color: $bkt-white; }
+  }
+}
+
+.booklet-tab-orange {
 
   &.active {
     color: $bkt-orange;
     border-bottom: .5px solid $bkt-orange;
+
+    .interviews-tab-control__counter {
+      background-color: $bkt-light-orange;
+
+      p { color: $bkt-orange; }
+    }
+  }
+}
+
+.booklet-tab-blue {
+
+  &.active {
+    color: $bkt-blue;
+    border-bottom: .5px solid $bkt-blue;
+
+    .interviews-tab-control__counter {
+      background-color: $bkt-light-blue;
+
+      p { color: $bkt-blue; }
+    }
   }
 }
 
@@ -94,7 +124,7 @@
     border-bottom: .5px solid $bkt-blue;
 
     .interviews-tab-control__counter {
-    background-color: $bkt-light-blue;
+      background-color: $bkt-light-blue;
 
       p { color: $bkt-blue; }
     }

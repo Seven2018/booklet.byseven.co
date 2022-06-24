@@ -29,25 +29,37 @@ Rails.application.routes.draw do
   namespace :campaigns do
     # must stay before resources :campaigns
     resources :users, only: :index
-    resources :interview_sets, only: %i[create destroy]
+    resources :interview_sets, only: %i[create update destroy]
   end
-  resources :campaigns, only: %i[index show destroy] do
+  resources :campaigns, only: %i[index show update destroy] do
+    collection do
+      get :list
+    end
     member do
-      post 'search_tags'
-      post 'toggle_tag'
-      delete 'remove_company_tag'
-      get 'index_line'
+      get :overview
+      post :search_tags
+      post :toggle_tag
+      delete :remove_company_tag
+      get :index_line
+    end
+    collection do
+      get :redirect_calendar
+      get :update_calendar
     end
   end
   get :my_interviews, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
-  get :send_notification_email, controller: :campaigns
+  match '/send_notification_email/:id' => 'campaigns#send_notification_email', as: :send_notification_email, via: [:get]
   get :campaign_select_owner, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
 
   namespace :interviews do
     resource :reports, only: %i[edit update]
-    resources :reports, only: %i[index show destroy]
+    resources :reports, only: %i[index show destroy] do
+      collection do
+        get :list
+      end
+    end
     namespace :report do
       resources :campaigns, only: :index
       resource :campaigns, only: :update
@@ -68,16 +80,15 @@ Rails.application.routes.draw do
   namespace :campaign_draft do
     resource :settings, only: %i[edit update]
     resource :participants, only: %i[edit update]
-    namespace :participants do
-      get :unselect_all
-      get :select_all
-    end
     resource :templates, only: %i[edit update]
     resource :dates, only: %i[edit update]
     resource :launches, only: %i[edit update]
     namespace :interviewees do
       resources :users, only: :index
       resource :ids, only: :update
+    end
+    namespace :templates do
+      resources :tags, only: :index
     end
   end
 
@@ -101,6 +112,16 @@ Rails.application.routes.draw do
 
   # CATEGORIES
   get :categories_search, controller: :categories
+  resources :categories, only: [:index, :update] do
+    collection do
+      get :from_campaign
+      get :from_template
+      get :groups
+      post :new_group
+      get :search_v2
+    end
+  end
+  resources :group_categories, only: [:destroy, :update]
 
   # COMPANIES
   resources :companies, only: %i[new create update destroy]
@@ -138,6 +159,9 @@ Rails.application.routes.draw do
 
   # INTERVIEW FORMS
   resources :interview_forms do
+    collection do
+      get :list
+    end
     member do
       post 'search_tags'
       post 'toggle_tag'
@@ -258,7 +282,6 @@ Rails.application.routes.draw do
   devise_scope :user do
     match '/sessions/user', to: 'users/sessions#create', via: :post
     post '/u/check', to: 'users/sessions#check', via: :post
-    get '/u/reset_password', to: 'users/sessions#reset_password'
     get '/u/resend_email', to: 'users/sessions#resend_email'
   end
 

@@ -1,225 +1,197 @@
-<div class="campaign-show__main"
-     data-controller="change-page">
+<% interviewers = @campaign.interviewers.distinct %>
 
-  <%= render_component BackComponent.new(fallback: campaigns_path) %>
+<div id="stimulus-interviews--campaigns-show-controller"
+     class="d-flex flex-column justify-content-start align-items-center pt-5rem"
+     data-controller="interviews--campaigns-show">
 
-  <div class="campaign-show__header">
+  <div class="d-flex justify-content-center align-items-center width-80 mb-5rem">
 
-    <div class="campaign-show__header-banner">
+    <div class="d-flex justify-content-start align-items-center width-100">
 
-      <div class="campaign-show__header-banner-text">
-        <h1 class="fs-3rem">Manage the campaign</h1>
-        <p>There are <%= @campaign.employees.distinct.count %> employees in this campaign.<br>
-          You can add or remove employees, change the reviews deadlines, <br>or change the campaign manager.
-        </p>
-      </div>
+      <h1 class="d-flex align-items-center fs-2_4rem font-weight-500 bkt-dark-grey mr-2rem">
+        <a href="<%= my_team_interviews_path %>" class="fs-2_4rem font-weight-500 bkt-dark-grey">My team Interviews</a>
+        <svg class="mx-1rem" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="2.4rem" height="2.4rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path fill="#787878" d="M96 220a12.2 12.2 0 0 1-8.5-3.5a12 12 0 0 1 0-17L159 128L87.5 56.5a12 12 0 0 1 17-17l80 80a12 12 0 0 1 0 17l-80 80A12.2 12.2 0 0 1 96 220Z"/></svg>
+        <%= @campaign.title %>
+      </h1>
 
-      <div class="campaign-show__header-banner-img">
+      <p class="d-flex align-items-center height-3rem fs-1_4rem font-weight-500 bkt-white px-2rem
+                py-0_75rem rounded-15px <%= @campaign.completion_status_color(:all) %>">
+        <%= @campaign.completion_status_string(:all) %>
+      </p>
 
-        <%= render_component AsClAssetComponent.new(model: current_user.company,
-                                          asset: :campaign_banner,
-                                          class_name: 'width-100 object-fit-cover rounded-r-30px') %>
+    </div>
+
+    <div class="d-flex flex-column align-items-center">
+
+      <p class="fs-1_6rem font-weight-600 bkt-dark-grey">Deadline :</p>
+      <p class="fs-1_6rem font-weight-500 bkt-light-grey6 text-nowrap">
+        <%= @campaign.deadline %>
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="width-80" data-controller='tabs' data-tabs-target='tabContainer'>
+
+    <div class="flex-row-start-centered width-100 mb-2rem border-bottom-bkt-light-grey5"
+         style='height: 32.5px;'>
+
+      <div id="control_participants"
+         class="booklet-tab-control booklet-tab-blue d-flex align-items-center fs-1_6rem px-1rem pb-0_75rem z-index-5 cursor-pointer active"
+         data-action='click->tabs#selectTab'>
+
+        <p>Participants</p>
+
+        <div class="interviews-tab-control__counter flex-row-center-centered height-2rem
+                    rounded-10px p-0_5rem ml-0_75rem">
+
+          <p class="fs-1rem font-weight-600"
+             data-interviews--campaigns-show-target="employeeCount">
+            <%= @total_employees_count %>
+          </p>
+
+        </div>
 
       </div>
 
     </div>
 
-    <div class="campaign-show__header-infos">
-      <%= render 'campaigns/show/show_header_infos', campaign: @campaign, selected_interviewer: @selected_interviewer %>
+    <div id="tab_attendees"
+         class="width-100">
+
+      <div id="tab_participants"
+           class='booklet-tab bkt-box-shadow-light px-3rem py-2rem rounded-20px'
+           data-controller="change-page">
+
+        <div class="d-flex justify-content-between align-items-start width-100">
+
+          <div id="searchbar-wrap"
+               class="d-flex justify-content-start align-items-start width-80 pos-rel">
+
+            <i class="fas fa-search searchbar-icon"></i>
+
+            <%= simple_form_for :search, url: campaign_path(@campaign),
+                                         method: :get, remote: true do |f| %>
+
+              <%= f.input :name, placeholder: 'Search',
+                                 input_html: {
+                                   autocomplete: 'off',
+                                   data: {
+                                    action: 'keyup->interviews--campaigns-show#searchSubmit'
+                                   }
+                                 },
+                                 label: false,
+                                 required: false %>
+
+              <div class="d-flex align-items-center flex-wrap">
+
+                <%= render_component(Tools::SelectComponent.new(width: '17rem',
+                                                            menu_max_height: '20rem',
+                                                            klasses: 'mb-1rem',
+                                                            input_name: 'search[completion]',
+                                                            title: 'All completions',
+                                                            collection: ['All completions', 'Not started', 'In progress', 'Completed'],
+                                                            data_action: 'click->interviews--campaigns-show#searchSubmit')) %>
+
+              </div>
+
+              <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
+
+              <%= f.submit '', class: 'hidden-submit d-none',
+                               data: {
+                                 interviews__campaigns_show_target: "searchSubmit",
+                                 remember_search_target: :submit,
+                                 change_page_target: :submit,
+                                 search_form: :submit
+                               } %>
+
+            <% end %>
+
+            <button class='btn-reset bkt-dark-grey'
+                    data-action="interviews--campaigns-show#searchReset">
+              Reset
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="d-flex justify-content-start align-items-center border-bottom-bkt-light-grey pb-2rem">
+
+          <div class="width-20 min-width-20 fs-1_6rem font-weight-700 bkt-light-grey6">
+            Interviewee
+          </div>
+          <div class="width-20 min-width-20 fs-1_6rem font-weight-700 bkt-light-grey6">
+            Template
+          </div>
+          <div class="width-20 min-width-20 fs-1_6rem font-weight-700 bkt-light-grey6">
+            Interviewer
+          </div>
+          <div class="width-20 min-width-20 fs-1_6rem font-weight-700 bkt-light-grey6">
+            Tags
+          </div>
+          <div class="width-20 min-width-20 fs-1_6rem font-weight-700 bkt-light-grey6">
+            Completion
+          </div>
+
+        </div>
+
+        <div id="employees-list">
+
+          <%= render 'campaigns/show/show_employees', campaign: @campaign, employees: @employees %>
+
+        </div>
+
+      </div>
+
     </div>
 
   </div>
 
-  <div class="campaign-show__interviews-list">
-    <%= render 'campaigns/show/show_interviews', campaign: @campaign,
-                                                 employees: @employees,
-                                                 selected_interviewer: @selected_interviewer %>
-  </div>
 
-</div>
+  <!------------>
+  <!-- HIDDEN -->
+  <!------------>
 
-
-<!------------>
-<!-- HIDDEN -->
-<!------------>
-
-<a id='campaignInfoMessageTrigger' class='hidden' data-toggle='modal' data-target='#campaignInfoMessage'></a>
-<a id='sendEmailSuccessTrigger' class='hidden' data-toggle='modal' data-target='#sendEmailSuccess'></a>
+  <a id='sendEmailSuccessTrigger' class='hidden' data-toggle='modal' data-target='#sendEmailSuccess'></a>
 
 
-<!------------>
-<!-- MODALS -->
-<!------------>
+  <!------------>
+  <!-- MODALS -->
+  <!------------>
 
-<% if CampaignPolicy.new(current_user, @campaign).add_interview_set? %>
-
-  <div id='addParticipant'
-       class='modal action-modal fade'
+  <div id='sendEmailSuccess'
+       class='modal fade'
        tabindex='-1'
        role='dialog'
        data-keyboard="false"
        data-backdrop="static">
 
-    <div id='add_participant-modal'
-         class='modal-dialog action-modal__dialog'
+    <div class='modal-dialog'
          role='document'>
-      <%= render 'campaigns/modals/add_participant', campaign: @campaign %>
+      <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
     </div>
 
   </div>
 
-<% end %>
+  <div id='addEmployee'
+       class='modal action-modal fade'
+       tabindex='-1'
+       role='dialog'
+       data-keyboard="false"
+       data-backdrop="static"
+       data-interviews--campaigns-show-target="addEmployeeModal">
 
-<div id='sendEmailSuccess'
-     class='modal fade'
-     tabindex='-1'
-     role='dialog'
-     data-keyboard="false"
-     data-backdrop="static">
+    <div class='modal-dialog action-modal__dialog'
+         role='document'>
+      <%= render 'campaigns/modals/add_employee', campaign: @campaign %>
+    </div>
 
-  <div class='modal-dialog'
-       role='document'>
-    <%= render 'campaigns/modals/send_notification_email_done', email_type: 'Invitation' %>
   </div>
 
-</div>
-
-<div id='campaignInfoMessage'
-     class='modal info-modal fade'
-     tabindex='-1'
-     role='dialog'
-     aria-labelledby='myModalLabel'
-     data-keyboard="false"
-     data-backdrop="static">
-
-  <div class='modal-dialog info-modal__dialog modal-sm'
-       role='document'>
-    <%= render 'campaigns/modals/campaign_info_message', message: '' %>
-  </div>
+  <!------------>
 
 </div>
 
 
-<!---------------->
-<!-- JAVASCRIPT -->
-<!---------------->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
-
-<script>
-
-  ///////////
-  // TOOLS //
-  ///////////
-
-  formGuardian = false;
-
-  function outsideClick(event, notelem) {
-    notelem = $(notelem); // jquerize (optional)
-    // check outside click for multiple elements
-    var clickedOut = true, i, len = notelem.length;
-    for (i = 0;i < len;i++)  {
-        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
-            clickedOut = false;
-        }
-    }
-    if (clickedOut) return true;
-    else return false;
-  }
-
-  function updateURLParameter(url, param, paramVal){
-    var newAdditionalURL = "";
-    var tempArray = url.split("?");
-    var baseURL = tempArray[0];
-    var additionalURL = tempArray[1];
-    var temp = "";
-    if (additionalURL) {
-        tempArray = additionalURL.split("&");
-        for (var i=0; i<tempArray.length; i++){
-            if(tempArray[i].split('=')[0] != param){
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
-    }
-    var rows_txt = temp + "" + param + "=" + paramVal;
-    return baseURL + "?" + newAdditionalURL + rows_txt;
-  }
-
-  function submitForm(element) {
-    element.closest('form').querySelector('.hidden-submit').click()
-  }
-
-  ///////////////////////
-  // CAMPAIGN DROPDOWN //
-  ///////////////////////
-
-  function openContentMenu(element) {
-    dropdown = element.parentNode.querySelector('.content-dropdown')
-    overlay = element.closest('.campaign-show__card').querySelector('.campaign-show__card-overlay')
-
-    if (!dropdown.classList.contains('hidden')) {
-      dropdown.classList.add('hidden')
-      overlay.classList.add('hidden')
-      return
-    }
-    dropdown.classList.remove('hidden')
-    overlay.classList.remove('hidden')
-    formGuardian = true
-    setTimeout(function(){
-      formGuardian = false
-    }, 1);
-    window.addEventListener('click', function(e) {
-      if (outsideClick(e, dropdown) && formGuardian == false) {
-        formGuardian = true
-        setTimeout(function(){
-          formGuardian = false
-        }, 1);
-        dropdown.classList.add('hidden')
-        overlay.classList.add('hidden')
-        this.removeEventListener('click', arguments.callee, false)
-      }
-    });
-  }
-
-
-  /////////////////
-  // SELECT DATE //
-  /////////////////
-
-  function selectInterviewDate(element) {
-    form = element.closest('form')
-    date_display = element.closest('.campaign-show__card').querySelector('.campaign-show__card-deadline')
-
-    date_display.innerText = '- Until ' + element.value
-    form.querySelector('.hidden-submit').click()
-    document.querySelector('.modal.show').querySelector('.cancel-close').click()
-  }
-
-
-  ///////////////////
-  // AUTO COMPLETE //
-  ///////////////////
-
-  $input_participant = $("#search_participant");
-
-  var options_participant = {
-    listLocation: "users",
-    getValue: 'name',
-    url: function(phrase) {
-      return `/campaigns/users.json?id=<%= @campaign.id %>&search=${phrase}`
-    },
-    list: {
-      onChooseEvent: function() {
-        user_id = $input_participant.getSelectedItemData().id
-        button = document.getElementById('add-participant-button')
-        button.href = updateURLParameter(button.href, 'user_id', user_id)
-      },
-      match: {
-        enabled: true
-      }
-    }
-  }
-
-  $input_participant.easyAutocomplete(options_participant);
-</script>

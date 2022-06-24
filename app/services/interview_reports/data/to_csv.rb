@@ -11,6 +11,7 @@ module InterviewReports
             'Campaign Title',
             'Campaign URL',
             'Campaign Type',
+            'Template',
             'Interview Type',
             'Interviewer Email',
             'Interviewer Fullname',
@@ -18,7 +19,7 @@ module InterviewReports
             'Interviewee Fullname',
             'Interviewee Job Title',
             'Interviewee Completion',
-            'Interview Locked At',
+            'Interview Submitted At',
             'Deadline'] + tag_categories.map(&:name)
         CSV.generate(headers: true) do |csv|
           csv << columns
@@ -33,6 +34,7 @@ module InterviewReports
               line << campaign.title
               line << campaign_url(campaign, employee_id: employee.id, host: ENV['APP_DOMAIN'])
               line << campaign.campaign_type
+              line << interview.interview_form.title
               line << interview.label
               line << interviewer.email
               line << interviewer.fullname
@@ -41,7 +43,7 @@ module InterviewReports
               line << employee.job_title
               line << campaign.completion_for(employee)
               line << interview.locked_at
-              line << interview.date.strftime('%d/%m/%Y')
+              line << (interview.date.presence || campaign.deadline).strftime('%d/%m/%Y')
               tag_categories.each do |tag_category|
                 tag = UserTag.find_by(tag_category: tag_category, user: employee)
                 tag = tag.present? ? tag.tag.tag_name : ' '

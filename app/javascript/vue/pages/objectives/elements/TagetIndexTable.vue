@@ -4,7 +4,7 @@
       :headers="headers"
       :table-data="genericFetchEntity.data['objective/elements']"
       :pagination="genericFetchEntity.pagination"
-      @fetch-page="fetchPage"
+      @fetch-page="fetchPage($event, 'objective_target_list')"
   >
     <template v-slot="{id, title, due_date, comments_count, objectivable, objective_indicator}">
       <td>
@@ -18,23 +18,7 @@
       </td>
 
       <td>
-        <div class="d-flex align-items-center">
-          <div class="flex-column ">
-            <img class="rounded-circle width-3rem height-3rem"
-                 :src="objectivable.picture"
-                 onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
-                 alt="">
-          </div>
-
-          <div class="flex-column ml-3 width-25rem ">
-            <div class="flex-row-start-centered">
-              <p class="font-weight-500 text-truncate">{{ `${objectivable.firstname} ${objectivable.lastname}` }}</p>
-            </div>
-            <div class="flex-row-start-centered">
-              <p class="font-weight-500 fs-1_2rem bkt-light-grey6 text-truncate">{{ objectivable.job_title }}</p>
-            </div>
-          </div>
-        </div>
+        <user-info-in-table :user="objectivable"></user-info-in-table>
       </td>
 
       <td>
@@ -93,6 +77,7 @@
 import tools from "../../../mixins/tools";
 import store from "../../../store";
 import IndexTable from "../../../components/IndexTable";
+import UserInfoInTable from "../../../components/UserInfoInTable";
 
 export default {
   mixins: [tools],
@@ -110,16 +95,7 @@ export default {
     )
   },
   methods: {
-    fetchPage(page) {
-      // ${path}?page[number]=${pagination.current_page}&page[size]=10`
-      store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'objective_target_list',
-        params: {
-          'page[number]': page,
-        }
-      })
-    }
   },
-  components: {IndexTable}
+  components: {UserInfoInTable, IndexTable}
 }
 </script>
