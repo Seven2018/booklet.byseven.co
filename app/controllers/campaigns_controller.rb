@@ -521,11 +521,17 @@ class CampaignsController < ApplicationController
     employee_ids.map do |employee_id|
       manager_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
       employee_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
-      crossed_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'crossed')
+      crossed_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
       {
-        manager_interview: manager_interview,
-        employee_interview: employee_interview,
-        crossed_interview: crossed_interview
+        manager_interview: ActiveModelSerializers::SerializableResource.new(
+          manager_interview, {serializer: InterviewSerializer}
+        ),
+        employee_interview: ActiveModelSerializers::SerializableResource.new(
+          employee_interview, {serializer: InterviewSerializer}
+        ),
+        crossed_interview: ActiveModelSerializers::SerializableResource.new(
+          crossed_interview, {serializer: InterviewSerializer}
+        )
       }
     end
   end
