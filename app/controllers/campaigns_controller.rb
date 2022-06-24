@@ -5,6 +5,7 @@ class CampaignsController < ApplicationController
   skip_forgery_protection
   skip_after_action :verify_authorized, only: [
     :destroy,
+    :data_show
   ]
 
   def index
@@ -45,6 +46,18 @@ class CampaignsController < ApplicationController
       format.html
       format.js
     end
+  end
+
+  def data_show
+    campaign = Campaign.find(params.require(:id))
+
+    # render json: campaigns, meta: pagination_dict(campaigns)
+    render json: {
+      campaign: ActiveModelSerializers::SerializableResource.new(
+        campaign, {for_user: current_user, schema: 'manager'}
+      ),
+      set_interviews: serialize_interview_set(campaign)
+    }, status: :ok
   end
 
   def overview
@@ -499,5 +512,19 @@ class CampaignsController < ApplicationController
 
   def campaign_params
     params.require(:campaign).permit(:deadline)
+  end
+
+  def serialize_interview_set(campaign)
+    employee_ids = campaign.employees.distinct.ids
+    employee_ids.map do |employee_id|
+      manager_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
+      employee_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
+      crossed_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'crossed')
+      {
+        manager_interview: manager_interview,
+        employee_interview: employee_interview,
+        crossed_interview: crossed_interview
+      }
+    end
   end
 end

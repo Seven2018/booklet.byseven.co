@@ -11,7 +11,8 @@ class CampaignSerializer < ActiveModel::Serializer
     :manager_interview,
     :employee_interview,
     :crossed_interview,
-    :employees_interviews
+    :employees_interviews,
+    :status
   )
 
   has_many :categories
@@ -121,6 +122,17 @@ class CampaignSerializer < ActiveModel::Serializer
         crossed_interview: interview_serializer(def_interview: crossed_interview, manager_interview: manager_interview, employee_interview: employee_interview, crossed_interview: crossed_interview),
       }
     end
+  end
+
+  def status
+    interviews_count = object.interviews.count
+    interviews_done = object.interviews.where(status: :submitted).count
+    return :submitted if interviews_count == interviews_done
+
+    interviews_not_started = object.interviews.where(status: [:not_started, :not_available_yet]).count
+    return :not_started if interviews_count == interviews_not_started
+
+    :in_progress
   end
 
   private

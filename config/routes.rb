@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       post :toggle_tag
       delete :remove_company_tag
       get :index_line
+      get :data_show
     end
     collection do
       get :redirect_calendar

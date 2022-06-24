@@ -15,6 +15,7 @@
       </button>
 
       <button
+          v-if="archivedNbr !== null"
           class="height-3_5rem pb-3 pl-3 fs-1rem fs-sm-1_6rem"
           :class="[!panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', !panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
@@ -62,7 +63,8 @@ export default {
   },
   methods: {
     togglePanelCurrentObjective() {
-      this.panelCurrentObjective = !this.panelCurrentObjective
+      if (this.archivedNbr !== null)
+        this.panelCurrentObjective = !this.panelCurrentObjective
     }
   },
 }

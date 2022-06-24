@@ -94,6 +94,11 @@ export default {
     },
     isMobile() {
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    },
+    getBgByCampaignStatus(status) {
+      if (status === 'not_started') return 'bkt-bg-red'
+      else if (status === 'in_progress') return 'bkt-bg-yellow'
+      else if (status === 'submitted') return 'bkt-bg-green'
     }
   }
 }

@@ -30,7 +30,7 @@ export default {
     }
   },
   actions: {
-    async fetch({commit, state}, {pathKey, params} = {}) {
+    async fetch({commit, state}, {pathKey, pathKeyArgs = null, params} = {}) {
       if (state.search) {
         params = { ...params, ...state.search, tags: state.tags}
       }
@@ -40,7 +40,7 @@ export default {
 
       try {
         const res = await HTTP.get(
-          routes.generate(pathKey),
+          routes.generate(pathKey, pathKeyArgs),
           {
             params
           }
