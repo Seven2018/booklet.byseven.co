@@ -1,7 +1,9 @@
 class CampaignPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      super
+      raise Pundit::NotAuthorizedError, 'not allowed to perform this action' unless
+        user.hr_or_above?
+
       scope.where(company: user.company)
     end
   end
