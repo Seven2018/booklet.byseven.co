@@ -22,6 +22,7 @@ class CampaignDraft < ApplicationRecord
 
   scope :launched, -> { where(state: :launches) }
   scope :processing, -> { where.not(state: :launches) }
+  scope :campaign, -> (owner_id, campaign_id) { where(user_id: owner_id).select{|draft| draft.data['campaign_id'].to_i == campaign_id} }
 
   jsonb_accessor :data,
                  title: :string,

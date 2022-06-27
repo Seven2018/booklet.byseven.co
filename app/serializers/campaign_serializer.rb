@@ -19,7 +19,11 @@ class CampaignSerializer < ActiveModel::Serializer
   # has_many :employees, through: :interviews
 
   def employees_count
-    object.employees.distinct.count
+    if CampaignDraft.campaign(object.owner_id, object.id).any?
+      'Adding participants...'
+    else
+      object.employees.distinct.count
+    end
   end
 
   def completion
