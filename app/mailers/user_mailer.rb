@@ -1,6 +1,6 @@
 class UserMailer < ApplicationMailer
   default from: CompanyInfo.no_reply
-  layout 'notification_mailer'
+  layout 'basic_mailer'
 
   def account_created(user, raw_token)
     @user = user
