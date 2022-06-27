@@ -14,18 +14,51 @@
     <div>
       <p class="fs-1_6rem font-weight-600 bkt-dark-grey mb-1rem">Select another interview</p>
 
-      <bkt-auto-suggestion @selected="autoSelect = $event" :link="$routes.generate('company_managers')"></bkt-auto-suggestion>
+      <bkt-auto-suggestion
+          class="mb-1rem"
+          :value="autoSelect"
+          @selected="preSetInterview"
+          :link="$routes.generate('company_managers')">
+      </bkt-auto-suggestion>
+
+      <bkt-button type="interview" class="mb-2" @click="setInterviewer">
+        Apply
+      </bkt-button>
     </div>
   </div>
 </template>
 <script>
 import BktAutoSuggestion from "../BktAutoSuggestion";
+import axios from "../../plugins/axios";
+import BktButton from "../BktButton";
 export default {
+  props: ['campaignId', 'employeeId'],
   data() {
     return {
-      autoSelect: null
+      autoSelect: null,
+      autoSelectId: null
     }
   },
-  components: {BktAutoSuggestion}
+  methods: {
+    preSetInterview(e){
+      this.autoSelect = `${e.firstname} ${e.lastname}`
+      this.autoSelectId = e.id
+    },
+    async setInterviewer() {
+      if (this.autoSelectId === null) return
+
+      try {
+        await axios.patch(`/campaigns/interview_sets/${this.campaignId}.json`, {
+          'employee_id': this.employeeId,
+          'interviewer_id': this.autoSelectId
+        })
+
+        this.$emit('close')
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  },
+  components: {BktButton, BktAutoSuggestion}
 }
 </script>

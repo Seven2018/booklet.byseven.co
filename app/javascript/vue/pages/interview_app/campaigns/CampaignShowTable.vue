@@ -42,9 +42,21 @@
             </button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
-                @click.stop="openSetAnotherInterviewer"
+                @click.stop="openSetAnotherInterviewer(employee_interview.interview.employee.id)"
             >
               set another interviewer
+            </button>
+            <button
+                class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
+                @click.stop="sendNotif('invite', employee_interview.interview.employee.id)"
+            >
+              Send invitation email
+            </button>
+            <button
+                class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
+                @click.stop="sendNotif('remind', employee_interview.interview.employee.id)"
+            >
+              Send reminder email
             </button>
           </bkt-dots-button>
         </div>
@@ -60,6 +72,8 @@ import UserInfoInTable from "../../../components/UserInfoInTable";
 import DisplayTagInIndex from "../../../components/DisplayTagInIndex";
 import InterviewStatus from "../../../components/interviews/InterviewStatus";
 import tools from "../../../mixins/tools";
+import store from "../../../store";
+import axios from "../../../plugins/axios";
 
 export default {
   mixins: [tools],
@@ -71,12 +85,48 @@ export default {
     }
   },
   methods: {
-    openSetAnotherInterviewer() {
+    openSetAnotherInterviewer(employeeId) {
+      // TODO: refactor next line
+      const campaignId = this.data.campaign.campaign.id
+
       this.$modal.open({
         type: 'custom',
         componentName: 'pop-up-set-another-interview',
         closable: false,
+        campaignId: this.data.campaign.campaign.id,
+        employeeId: employeeId,
+        close() {
+          store.dispatch('genericFetchEntity/fetch', {
+            pathKey: 'campaigns_id_data_show',
+            pathKeyArgs: {id: campaignId}
+          })
+        }
       })
+    },
+    sendNotif(emailType, employeeId) {
+      axios.get(`/send_notification_email/${this.data.campaign.campaign.id}?email_type=${emailType}&user_id=${employeeId}`)
+
+      if (emailType === 'invite') {
+        this.$modal.open({
+          type: 'action_done',
+          title: `invitation is on its way !`,
+          description: 'The employee will receive an email in a few moments.',
+          textConfirm: 'Great !',
+          confirm() {
+            this.$modal.close()
+          }
+        })
+      } else {
+        this.$modal.open({
+          type: 'action_done',
+          title: `Reminder is on its way !`,
+          description: 'The employee will receive an email in a few moments.',
+          textConfirm: 'Great !',
+          confirm() {
+            this.$modal.close()
+          }
+        })
+      }
     }
   }
 }

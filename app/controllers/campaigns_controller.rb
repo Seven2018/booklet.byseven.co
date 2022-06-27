@@ -53,13 +53,13 @@ class CampaignsController < ApplicationController
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
     size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
-    employees = campaign.employees.page(page).per(size)
+    employees = campaign.employees.distinct.page(page).per(size)
 
     render json: {
       campaign: ActiveModelSerializers::SerializableResource.new(
         campaign, {for_user: current_user, schema: 'manager'}
       ),
-      set_interviews: serialize_interview_set(employees, campaign.interviews),
+      set_interviews: serialize_interview_set(employees.ids, campaign.interviews),
       meta: pagination_dict(employees)
     }, status: :ok
   end
@@ -520,8 +520,7 @@ class CampaignsController < ApplicationController
     params.require(:campaign).permit(:deadline)
   end
 
-  def serialize_interview_set(employees, interviews)
-    employee_ids = employees.distinct.ids
+  def serialize_interview_set(employee_ids, interviews)
     employee_ids.map do |employee_id|
       manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
       employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
@@ -538,6 +537,6 @@ class CampaignsController < ApplicationController
           crossed_interview, {serializer: InterviewSerializer
         }) if crossed_interview)
       }
-    end
+    end.select { |interview| interview[:employee_interview].present? }
   end
 end

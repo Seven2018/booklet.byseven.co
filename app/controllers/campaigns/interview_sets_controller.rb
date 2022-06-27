@@ -1,4 +1,5 @@
 class Campaigns::InterviewSetsController < Campaigns::BaseController
+  skip_forgery_protection
 
   def create
     raise Pundit::NotAuthorizedError unless
@@ -33,6 +34,7 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
     respond_to do |format|
       format.html { redirect_back(fallback_location: campaign_path(@campaign)) }
       format.js
+      format.json {head :ok}
     end
   end
 
