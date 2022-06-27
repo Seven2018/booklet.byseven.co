@@ -72,7 +72,7 @@ class InterviewsController < ApplicationController
     interviewee = interview.employee
     campaign = interview.campaign
 
-    unless interview.fully_answered?
+    unless interview.fully_answered? || interview.crossed?
       flash[:error] = 'Interview not completed'
       raise
     end
