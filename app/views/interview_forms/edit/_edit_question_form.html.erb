@@ -24,7 +24,8 @@
   </div>
 
   <div class="flex-row-between-centered">
-    <% if CampaignPolicy.new(current_user, nil).create? && !params[:content_access].present? %>
+
+    <% if InterviewFormPolicy.new(current_user, nil).create? && !params[:content_access].present? %>
 
       <% if first_question %>
 
@@ -63,6 +64,7 @@
       <% end %>
 
     <% end %>
+
   </div>
 
 </div>
