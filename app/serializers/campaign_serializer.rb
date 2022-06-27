@@ -71,10 +71,12 @@ class CampaignSerializer < ActiveModel::Serializer
 
     interview = get_manager_interview_by_employee(instance_options[:for_user])
     {
-      id: interview.id,
-      status: interview.status,
-      bg: interview_status_bg_class(interview),
-      color: interview_status_color_class(interview),
+      interview: {
+        id: interview.id,
+        status: interview.status,
+        bg: interview_status_bg_class(interview),
+        color: interview_status_color_class(interview),
+      }
     } if interview.present?
   end
 
@@ -83,15 +85,17 @@ class CampaignSerializer < ActiveModel::Serializer
 
     interview = get_employee_interview_by_employee(instance_options[:for_user])
     {
-      id: interview.id,
-      status: interview.status,
-      bg: interview_status_bg_class(interview),
-      color: interview_status_color_class(interview),
-      status_sentence: generate_interviews_status_sentence(
-        manager_interview: get_manager_interview_by_employee(instance_options[:for_user]),
-        employee_interview: interview,
-        crossed_interview: get_crossed_interview_by_employee(instance_options[:for_user])
-      )
+      interview: {
+        id: interview.id,
+        status: interview.status,
+        bg: interview_status_bg_class(interview),
+        color: interview_status_color_class(interview),
+        status_sentence: generate_interviews_status_sentence(
+          manager_interview: get_manager_interview_by_employee(instance_options[:for_user]),
+          employee_interview: interview,
+          crossed_interview: get_crossed_interview_by_employee(instance_options[:for_user])
+        )
+      }
     }
   end
 
@@ -100,10 +104,12 @@ class CampaignSerializer < ActiveModel::Serializer
 
     interview = get_crossed_interview_by_employee(instance_options[:for_user])
     {
-      id: interview.id,
-      status: interview.status,
-      bg: interview_status_bg_class(interview),
-      color: interview_status_color_class(interview),
+      interview: {
+        id: interview.id,
+        status: interview.status,
+        bg: interview_status_bg_class(interview),
+        color: interview_status_color_class(interview),
+      }
     } if interview.present?
   end
 

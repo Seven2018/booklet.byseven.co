@@ -301,6 +301,7 @@ Rails.application.routes.draw do
   post :import_users, controller: :users
   get :users_search, controller: :users
   get :campaign_draft_users, controller: :users
+  get :managers_search, controller: :users
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]

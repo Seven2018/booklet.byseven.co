@@ -16,11 +16,13 @@
       </div>
     </template>
 
-    <template v-if="genericFetchEntity.data" v-slot:create-index>
-      <p class="bkt-dark-grey font-weight-600">Dealine :</p>
-      <p class="font-weight-500 bkt-light-grey6">
-        {{genericFetchEntity.data.campaign.campaign.deadline | formatDate}}
-      </p>
+    <template v-slot:create-index>
+      <div v-if="genericFetchEntity.data">
+        <p class="bkt-dark-grey font-weight-600">Dealine :</p>
+        <p class="font-weight-500 bkt-light-grey6">
+          {{genericFetchEntity.data.campaign.campaign.deadline | formatDate}}
+        </p>
+      </div>
     </template>
 
     <template v-slot:body>

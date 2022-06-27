@@ -65,31 +65,31 @@ export default {
       })
     },
     myInterviewCampaignButtonSentenceForEmployee(campaign) {
-      if (campaign.employee_interview.status === 'not_started')
+      if (campaign.employee_interview.interview.status === 'not_started')
         return 'Start my interview'
-      else if (campaign.employee_interview.status === 'in_progress')
+      else if (campaign.employee_interview.interview.status === 'in_progress')
         return 'Continue my interview'
-      else if (campaign.crossed_interview && campaign.crossed_interview.status === 'submitted')
+      else if (campaign.crossed_interview.interview && campaign.crossed_interview.interview.status === 'submitted')
         return 'View cross review answers'
-      else if (campaign.employee_interview.status === 'submitted')
+      else if (campaign.employee_interview.interview.status === 'submitted')
         return 'View my answers'
     },
     myInterviewCampaignButtonSentenceForManager(campaign) {
-      if (campaign.manager_interview.status === 'not_started')
+      if (campaign.manager_interview.interview.status === 'not_started')
         return 'Start my interview'
-      else if (campaign.manager_interview.status === 'in_progress')
+      else if (campaign.manager_interview.interview.status === 'in_progress')
         return 'Continue my interview'
-      else if (campaign.crossed_interview && campaign.crossed_interview.status === 'submitted')
+      else if (campaign.crossed_interview.interview && campaign.crossed_interview.interview.status === 'submitted')
         return 'View cross review answers'
-      else if (campaign.manager_interview.status === 'submitted')
+      else if (campaign.manager_interview.interview.status === 'submitted')
         return 'View my answers'
     },
     myInterviewCampaignButtonSentenceForCrossed(campaign) {
-      if (campaign.crossed_interview.status === 'not_started')
+      if (campaign.crossed_interview.interview.status === 'not_started')
         return 'Start my cross interview'
-      else if (campaign.crossed_interview.status === 'in_progress')
+      else if (campaign.crossed_interview.interview.status === 'in_progress')
         return 'Continue my cross interview'
-      else if (campaign.crossed_interview.status === 'submitted')
+      else if (campaign.crossed_interview.interview.status === 'submitted')
         return 'View my cross answers'
     },
     isMobile() {
@@ -99,6 +99,14 @@ export default {
       if (status === 'not_started') return 'bkt-bg-red'
       else if (status === 'in_progress') return 'bkt-bg-yellow'
       else if (status === 'submitted') return 'bkt-bg-green'
+      else if (status === 'not_available_yet') return 'bkt-bg-light-grey'
+    },
+
+    getColorByCampaignStatus(status) {
+      if (status === 'not_started') return 'bkt-red'
+      else if (status === 'in_progress') return 'bkt-yellow'
+      else if (status === 'submitted') return 'bkt-green'
+      else if (status === 'not_available_yet') return 'bkt-light-grey'
     }
   }
 }

@@ -239,6 +239,15 @@ class UsersController < ApplicationController
     render partial: 'shared/tools/select_autocomplete', locals: { elements: @users }
   end
 
+  def managers_search
+    skip_authorization
+
+    users = User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin])
+    users = users.search_users(params[:text]) if params[:text].present?
+
+    render json: users, status: :ok
+  end
+
 
   #########################
 

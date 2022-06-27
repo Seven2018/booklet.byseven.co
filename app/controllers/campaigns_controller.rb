@@ -523,15 +523,16 @@ class CampaignsController < ApplicationController
       employee_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
       crossed_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
       {
-        manager_interview: ActiveModelSerializers::SerializableResource.new(
+        manager_interview: (ActiveModelSerializers::SerializableResource.new(
           manager_interview, {serializer: InterviewSerializer}
-        ),
-        employee_interview: ActiveModelSerializers::SerializableResource.new(
-          employee_interview, {serializer: InterviewSerializer}
-        ),
-        crossed_interview: ActiveModelSerializers::SerializableResource.new(
-          crossed_interview, {serializer: InterviewSerializer}
-        )
+        ) if manager_interview),
+        employee_interview: (ActiveModelSerializers::SerializableResource.new(
+          employee_interview, {
+          serializer: InterviewSerializer, include: %w[interview_form.categories employee interviewer]
+        }) if employee_interview),
+        crossed_interview: (ActiveModelSerializers::SerializableResource.new(
+          crossed_interview, {serializer: InterviewSerializer
+        }) if crossed_interview)
       }
     end
   end

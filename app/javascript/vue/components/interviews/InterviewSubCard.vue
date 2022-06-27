@@ -7,13 +7,13 @@
       </div>
       <div class="ml-3">
         <p class="fs-1_2rem font-weight-500 flex-row-start-centered">
-          {{ interviews.employee_interview.status_sentence }}
+          {{ interviews.employee_interview.interview.status_sentence }}
           <span @click="openInfo" class="cursor-pointer">
                 <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>
               </span>
         </p>
 
-        <interview-status :campaign="interviews"></interview-status>
+        <interview-status :set-interview="interviews"></interview-status>
       </div>
     </div>
 
@@ -21,9 +21,9 @@
       <bkt-button
           iconify="akar-icons:arrow-right"
           :left="false"
-          :type="interviews.crossed_interview && interviews.crossed_interview.status === 'submitted' || interviews.employee_interview.status === 'submitted' ? 'white' : 'interview'"
-          :href="$routes.generate('interviews_id', {id: interviews.crossed_interview && interviews.crossed_interview.status === 'submitted' ?
-              interviews.crossed_interview.id : (userKind === 'interviewer' ? interviews.employee_interview.id : interviews.manager_interview.id)})"
+          :type="interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' || interviews.employee_interview.interview.status === 'submitted' ? 'white' : 'interview'"
+          :href="$routes.generate('interviews_id', {id: interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' ?
+              interviews.crossed_interview.interview.id : (userKind === 'interviewer' ? interviews.employee_interview.interview.id : interviews.manager_interview.interview.id)})"
       >
         {{ userKind === 'interviewer' ?
           myInterviewCampaignButtonSentenceForEmployee(interviews) :
@@ -34,9 +34,9 @@
           iconify="akar-icons:arrow-right"
           class="ml-3"
           :left="false"
-          v-if="userKind !== 'interviewer' && interviews.crossed_interview && interviews.crossed_interview.status !== 'not_available_yet'"
-          :type="interviews.crossed_interview.status === 'submitted' ? 'white' : 'interview'"
-          :href="$routes.generate('interviews_id', {id: interviews.crossed_interview.id })"
+          v-if="userKind !== 'interviewer' && interviews.crossed_interview && interviews.crossed_interview.interview.status !== 'not_available_yet'"
+          :type="interviews.crossed_interview.interview.status === 'submitted' ? 'white' : 'interview'"
+          :href="$routes.generate('interviews_id', {id: interviews.crossed_interview.interview.id })"
       >
         {{ myInterviewCampaignButtonSentenceForCrossed(interviews) }}
       </bkt-button>

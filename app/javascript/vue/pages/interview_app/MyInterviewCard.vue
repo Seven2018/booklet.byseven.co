@@ -12,13 +12,13 @@
       <user-info-in-table class="mt-4" :user="{...campaign.manager.user, subtitle: 'interviewer'}"></user-info-in-table>
 
       <p class="fs-1_2rem font-weight-500 flex-row-start-centered mt-4">
-        {{ campaign.interview_status_sentence }}
+        {{ campaign.employee_interview.interview.status_sentence }}
         <span @click="openInfo" class="cursor-pointer">
           <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>
         </span>
       </p>
 
-      <interview-status :campaign="campaign"></interview-status>
+      <interview-status :set-interview="campaign"></interview-status>
 
       <button class="p-4 mt-4 text-center bkt-bg-blue bkt-white width-100 rounded-b-15px fs-1rem font-weight-600">
         {{ myInterviewCampaignButtonSentenceForEmployee(campaign) }}

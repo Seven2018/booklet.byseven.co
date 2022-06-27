@@ -90,6 +90,7 @@ import BktPopUpFrame from "./BktPopUpFrame";
 import EditEntityTags from './EditEntityTags'
 import InfoFilterCategoryTags from "./InfoFilterCategoryTagsComponents/InfoFilterCategoryTags";
 import PopUpInfoInterviewStatus from './PopUpComponents/PopUpInfoInterviewStatus'
+import PopUpSetAnotherInterview from './PopUpComponents/PopUpSetAnotherInterviewer'
 
 export default {
   data() {
@@ -112,7 +113,8 @@ export default {
     BktPopUpFrame,
     EditEntityTags,
     InfoFilterCategoryTags,
-    PopUpInfoInterviewStatus
+    PopUpInfoInterviewStatus,
+    PopUpSetAnotherInterview
   },
 }
 </script>
