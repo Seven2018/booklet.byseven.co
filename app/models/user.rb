@@ -175,7 +175,7 @@ class User < ApplicationRecord
 
         user.firstname.present? && user.lastname.present? && user.invitation_created_at.nil? ? manager_invite = true : manager_invite = false
         update = user.update row_h
-        user.invite! if Rails.env == 'production' && send_invite && manager_invite
+        user.invite! if send_invite && manager_invite
 
       else
 
@@ -190,7 +190,7 @@ class User < ApplicationRecord
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
         user.manager_id = manager.id if manager.present?
-        Rails.env == 'production' && send_invite ? user.invite! : user.save(validate: false)
+        send_invite ? user.invite! : user.save(validate: false)
 
       end
 

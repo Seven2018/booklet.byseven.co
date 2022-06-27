@@ -160,7 +160,6 @@
 }
 
 
-
 /////////////////////////
 // SELECT AUTOCOMPLETE //
 /////////////////////////
@@ -201,6 +200,63 @@
 
     &:last-of-type {
       border-radius: 0 0 .5rem .5rem;
+    }
+  }
+}
+
+
+//////////////////////
+// COLLAPSIBLE MENU //
+//////////////////////
+
+.collapsible-menu-container {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 1rem;
+  max-height: 61px;
+  overflow: hidden;
+
+
+  .collapsible-menu-title {
+    height: 4rem;
+    margin-bottom: 1rem;
+
+
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      p {
+        margin-left: 2rem;
+      }
+
+      p, span {
+        font-weight: 700;
+      }
+    }
+
+    .collapsible-menu-button {
+      display: inherit;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        font-size: 1.2rem;
+        color: #F26419;
+        opacity: 0;
+        transition: opacity .25s ease-in-out;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .collapsible-menu-list {
+    margin-left: 27px;
+    overflow: scroll;
+
+    label {
+      padding-left: 1rem;
     }
   }
 }
