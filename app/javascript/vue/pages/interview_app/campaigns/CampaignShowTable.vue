@@ -2,9 +2,9 @@
 <template>
   <index-table
       :headers="headers"
-      :table-data="set_interviews"
-      :pagination="null"
-      @fetch-page=""
+      :table-data="data.set_interviews"
+      :pagination="data.meta"
+      @fetch-page="fetchPage($event, 'campaigns_id_data_show', {id: data.campaign.campaign.id})"
       @row-click=""
       class="cursor-pointer"
   >
@@ -64,7 +64,7 @@ import tools from "../../../mixins/tools";
 export default {
   mixins: [tools],
   components: {InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
-  props: ['set_interviews'],
+  props: ['data'],
   data() {
     return {
       headers: ['Interviewee', 'Template', 'Interviewer', 'Tags', 'Completion', ''],

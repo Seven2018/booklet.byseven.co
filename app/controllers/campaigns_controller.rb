@@ -51,12 +51,16 @@ class CampaignsController < ApplicationController
   def data_show
     campaign = Campaign.find(params.require(:id))
 
-    # render json: campaigns, meta: pagination_dict(campaigns)
+    page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
+    size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
+    employees = campaign.employees.page(page).per(size)
+
     render json: {
       campaign: ActiveModelSerializers::SerializableResource.new(
         campaign, {for_user: current_user, schema: 'manager'}
       ),
-      set_interviews: serialize_interview_set(campaign)
+      set_interviews: serialize_interview_set(employees, campaign.interviews),
+      meta: pagination_dict(employees)
     }, status: :ok
   end
 
@@ -516,12 +520,12 @@ class CampaignsController < ApplicationController
     params.require(:campaign).permit(:deadline)
   end
 
-  def serialize_interview_set(campaign)
-    employee_ids = campaign.employees.distinct.ids
+  def serialize_interview_set(employees, interviews)
+    employee_ids = employees.distinct.ids
     employee_ids.map do |employee_id|
-      manager_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
-      employee_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
-      crossed_interview = campaign.interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
+      manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
+      employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
+      crossed_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
       {
         manager_interview: (ActiveModelSerializers::SerializableResource.new(
           manager_interview, {serializer: InterviewSerializer}

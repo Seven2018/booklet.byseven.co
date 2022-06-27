@@ -37,7 +37,7 @@
               :campaign="genericFetchEntity.data.campaign.campaign"
           ></campaign-show-search>
           <campaign-show-table
-              :set_interviews="genericFetchEntity.data.set_interviews"
+              :data="genericFetchEntity.data"
           ></campaign-show-table>
         </template>
       </bkt-switcher>

@@ -56,9 +56,10 @@ export default {
     goto(key, id = null) {
       window.location.href = routes.generate(key, {id})
     },
-    fetchPage(page, pathKey) {
+    fetchPage(page, pathKey, pathKeyArgs = null) {
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: pathKey,
+        pathKeyArgs,
         params: {
           'page[number]': page,
         }
