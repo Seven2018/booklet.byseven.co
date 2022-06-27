@@ -122,7 +122,7 @@ class CampaignsController < ApplicationController
   end
 
   def my_team_interviews
-    @campaigns = policy_scope(Campaign).where(company: current_user.company).order(created_at: :desc)
+    @campaigns = Campaign.where(company: current_user.company).order(created_at: :desc)
     @campaigns = @campaigns.where_exists(:interviews, interviewer: current_user)
     authorize @campaigns
 
