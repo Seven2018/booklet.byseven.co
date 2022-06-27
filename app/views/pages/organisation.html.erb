@@ -302,8 +302,8 @@
   }
 
   function fileTransfer(element, send_invite) {
-    form = document.querySelector('.import_users_form')
-    submit_button = form.querySelector('button')
+    form = document.querySelector('.organisation-import-modal_users_form')
+    submit_button = form.querySelector('.hidden-submit')
     send_invite_input = form.querySelector('#send_invite')
     submit_button.value = 'import'
     if (send_invite) send_invite_input.value = true

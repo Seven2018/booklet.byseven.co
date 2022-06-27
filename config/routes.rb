@@ -5,6 +5,13 @@ Rails.application.routes.draw do
   authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
+
+  get '/(*path)', to: redirect { |path_params, request|
+                          "https://booklet.byseven.co/#{path_params[:path]}"
+                        },
+                  status: 301,
+                  constraints: { domain: 'seven-booklet.herokuapp.com' }
+
   root to: 'pages#home'
 
   # ASSESSMENTS

@@ -27,6 +27,19 @@ ActiveAdmin.register Company do
       end
 
       tab 'Assets' do
+        f.input :color1
+        f.input :color2
+
+        f.input(:banner_gif, as: :file,
+          hint: f.object.banner_gif_meta(:desktop).hint)
+        div do
+          if f.object.banner_gif.attached?
+            cl_image_tag(f.object.banner_gif.key, crop: :fit, gravity: :center,
+              width: f.object.banner_gif_meta(:desktop).width,
+              height: f.object.banner_gif_meta(:desktop).height)
+          end
+        end
+
         f.input(:home_banner, as: :file,
           hint: f.object.home_banner_meta(:desktop).hint)
         div do
@@ -135,6 +148,9 @@ ActiveAdmin.register Company do
   end
 
   permit_params :name, :address, :zipcode, :city, :logo, :siret, :auth_token,
+    :color1,
+    :color2,
+    :banner_gif,
     :home_banner,
     :my_interviews_banner,
     :my_team_interviews_banner,
