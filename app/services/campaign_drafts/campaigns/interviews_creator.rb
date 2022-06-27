@@ -38,9 +38,11 @@ module CampaignDrafts
       end
 
       def send_mail
-        owner = User.find_by(id: @campaign.owner_id)
-        CampaignMailer.campaign_interview_created(owner, @campaign)
-                      .deliver_later
+        unless Rails.env.development?
+          owner = User.find_by(id: @campaign.owner_id)
+          CampaignMailer.campaign_interview_created(owner, @campaign)
+                        .deliver_later
+        end
       end
 
       private

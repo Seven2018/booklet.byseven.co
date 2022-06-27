@@ -137,14 +137,14 @@ class CampaignMailer < ApplicationMailer
     @owner = owner
     @campaign = campaign
     @icon = '🚀'
-    @title = "Your campaign Annual Review #{Time.now.year} has been launched !"
-    @description = "All interviewers and interviewees can now acces their interviews in the campaign “Annual Review #{Time.now.year}”."
+    @title = "Your campaign #{campaign.title} has been launched !"
+    @description = "All interviewers and interviewees can now acces their interviews in the campaign “#{campaign.title}”."
     @button_text = "Go to campaign index"
     @button_link = campaigns_url
 
     @nb = "Please don't answer this email."
 
-    mail(to: @owner.email, subject: "Your campaign Annual Review #{Time.now.year} has been launched !")
+    mail(to: @owner.email, subject: "Your campaign #{campaign.title} has been launched !")
   end
 
   private
