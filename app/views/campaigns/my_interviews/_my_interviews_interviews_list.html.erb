@@ -57,7 +57,10 @@
         <div class="flex-row-start-centered">
 
           <div class="flex-column mr-3">
-            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='width-3_5rem height-3_5rem min-w-3_5rem min-h-3_5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>"
+                 class='width-3_5rem height-3_5rem min-w-3_5rem min-h-3_5rem rounded-circle'
+                 style='<%= "border: 2px solid #{current_company.color1}" if current_company.color1.present? %>'
+                 onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           </div>
 
           <div class="flex-column width-25rem border-right-bkt-light-grey-2px mr-4">
