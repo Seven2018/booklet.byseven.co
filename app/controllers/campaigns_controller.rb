@@ -50,16 +50,20 @@ class CampaignsController < ApplicationController
 
   def data_show
     campaign = Campaign.find(params.require(:id))
-
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
     size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
-    employees = campaign.employees.distinct.page(page).per(size)
+
+    employees = campaign.employees.distinct
+    employees = User.where(id: employees.ids).search_users(params[:text]) if params[:text].present?
+    employees = employees.page(page).per(size)
+    interview_sets = serialize_interview_set(employees.ids, campaign.interviews)
+    interview_sets = interview_sets.select {|interview_set| interview_set[:status] == params[:status].to_sym } if params[:status].present?
 
     render json: {
       campaign: ActiveModelSerializers::SerializableResource.new(
         campaign, {for_user: current_user, schema: 'manager'}
       ),
-      set_interviews: serialize_interview_set(employees.ids, campaign.interviews),
+      set_interviews: interview_sets,
       meta: pagination_dict(employees)
     }, status: :ok
   end
@@ -521,7 +525,6 @@ class CampaignsController < ApplicationController
   end
 
   def serialize_interview_set(employee_ids, interviews)
-    # TODO: create status interview set
     employee_ids.map do |employee_id|
       manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
       employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
@@ -536,8 +539,26 @@ class CampaignsController < ApplicationController
         }) if employee_interview),
         crossed_interview: (ActiveModelSerializers::SerializableResource.new(
           crossed_interview, {serializer: InterviewSerializer
-        }) if crossed_interview)
+        }) if crossed_interview),
+        status: interview_set_gen_status(employee_interview, manager_interview, crossed_interview)
       }
     end.select { |interview| interview[:employee_interview].present? }
+  end
+
+  def interview_set_gen_status(employee_interview, manager_interview, crossed_interview)
+    if (employee_interview.present? && employee_interview.not_started? && manager_interview.nil? && crossed_interview.nil?) ||
+      (employee_interview.present? && employee_interview.not_started? && manager_interview.present? && manager_interview.not_started? && crossed_interview.nil?) ||
+      (employee_interview.present? && employee_interview.not_started? && manager_interview.present? && manager_interview.not_started? && crossed_interview.present? && (crossed_interview.not_started? || crossed_interview.not_available_yet?))
+      :not_started
+    elsif (employee_interview.present? && employee_interview.in_progress? && manager_interview.nil? && crossed_interview.nil?) ||
+      (employee_interview.present? && employee_interview.submitted? && manager_interview.present? && !manager_interview.submitted? && crossed_interview.nil? ||
+        employee_interview.present? && !employee_interview.submitted? && manager_interview.present? && manager_interview.submitted? && crossed_interview.nil?) ||
+      (crossed_interview.present? && !crossed_interview.submitted?)
+      :in_progress
+    elsif (employee_interview.present? && employee_interview.submitted? && manager_interview.nil? && crossed_interview.nil?) ||
+      (employee_interview.present? && employee_interview.submitted? && manager_interview.present? && manager_interview.submitted? && crossed_interview.nil?) ||
+      (crossed_interview.present? && crossed_interview.submitted?)
+      :submitted
+    end
   end
 end

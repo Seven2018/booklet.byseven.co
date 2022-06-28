@@ -39,7 +39,7 @@ export default {
   methods: {
     update() {
       store.commit('genericFetchEntity/setSearch', {
-        title: this.searchText,
+        text: this.searchText,
         status: this.status,
       })
       store.dispatch('genericFetchEntity/fetch', {
@@ -59,7 +59,7 @@ export default {
     },
     submit() {
       store.commit('genericFetchEntity/setSearch', {
-        title: this.searchText,
+        text: this.searchText,
         status: this.status,
       })
       store.dispatch('genericFetchEntity/fetch', {
