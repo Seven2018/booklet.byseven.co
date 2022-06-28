@@ -60,6 +60,7 @@ class User < ApplicationRecord
     },
     ignoring: :accents
 
+
   ################
   # ACCESS LEVEL #
   ################
