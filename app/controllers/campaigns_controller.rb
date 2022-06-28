@@ -63,9 +63,6 @@ class CampaignsController < ApplicationController
     interview_sets = interview_sets.select {|interview_set| interview_set[:status] == params[:status].to_sym } if params[:status].present?
 
     render json: {
-      campaign: ActiveModelSerializers::SerializableResource.new(
-        campaign, {for_user: current_user, schema: 'manager'}
-      ),
       set_interviews: interview_sets,
       meta: pagination_dict(employees)
     }, status: :ok

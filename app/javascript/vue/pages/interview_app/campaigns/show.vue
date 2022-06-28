@@ -31,8 +31,8 @@
       >
         <template v-slot:current>
           <campaign-show-search
-              v-if="genericFetchEntity.data"
-              :campaign="genericFetchEntity.data.campaign.campaign"
+              v-if="campaign"
+              :campaign="campaign"
           ></campaign-show-search>
           <campaign-show-table
               v-show="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length > 0"
