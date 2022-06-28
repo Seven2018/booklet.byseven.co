@@ -70,7 +70,7 @@ export default {
         return 'Start my interview'
       else if (campaign.employee_interview.interview.status === 'in_progress')
         return 'Continue my interview'
-      else if (campaign.crossed_interview.interview && campaign.crossed_interview.interview.status === 'submitted')
+      else if (campaign.crossed_interview && campaign.crossed_interview.interview.status === 'submitted')
         return 'View cross review answers'
       else if (campaign.employee_interview.interview.status === 'submitted')
         return 'View my answers'

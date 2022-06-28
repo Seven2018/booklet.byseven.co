@@ -149,15 +149,17 @@ class CampaignSerializer < ActiveModel::Serializer
 
   def interview_serializer(def_interview:, manager_interview:, employee_interview:, crossed_interview:)
     {
-      id: def_interview.id,
-      status: def_interview.status,
-      bg: interview_status_bg_class(def_interview),
-      color: interview_status_color_class(def_interview),
-      status_sentence: generate_interviews_status_sentence(
-        manager_interview: manager_interview,
-        employee_interview: employee_interview,
-        crossed_interview: crossed_interview
-      )
+      interview: {
+        id: def_interview.id,
+        status: def_interview.status,
+        bg: interview_status_bg_class(def_interview),
+        color: interview_status_color_class(def_interview),
+        status_sentence: generate_interviews_status_sentence(
+          manager_interview: manager_interview,
+          employee_interview: employee_interview,
+          crossed_interview: crossed_interview
+        )
+      }
     } if def_interview.present?
   end
 
