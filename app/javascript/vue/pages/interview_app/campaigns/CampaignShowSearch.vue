@@ -12,7 +12,8 @@
         @input="update"
     ></bkt-select>
     <div>
-      tag categories
+<!--      TODO: code-->
+      tag categories of company
     </div>
     <button class="flex-none ml-5 font-weight-500 fs-1_6rem" @click="reset">
       Reset
