@@ -1,10 +1,11 @@
 
 <template>
   <index-table
+      v-if="genericFetchEntity.data"
       :headers="headers"
-      :table-data="data.set_interviews"
-      :pagination="data.meta"
-      @fetch-page="fetchPage($event, 'campaigns_id_data_show', {id: data.campaign.campaign.id})"
+      :table-data="genericFetchEntity.data['set_interviews']"
+      :pagination="genericFetchEntity.data['meta']"
+      @fetch-page="fetchPage($event, 'campaigns_id_data_show', {id: genericFetchEntity.data['campaign'].campaign.id})"
       @row-click=""
       class="cursor-pointer"
   >
@@ -82,18 +83,19 @@ export default {
   data() {
     return {
       headers: ['Interviewee', 'Template', 'Interviewer', 'Tags', 'Completion', ''],
+      genericFetchEntity: store.state.genericFetchEntity
     }
   },
   methods: {
     openSetAnotherInterviewer(employeeId) {
       // TODO: refactor next line
-      const campaignId = this.data.campaign.campaign.id
+      const campaignId = this.genericFetchEntity.data['campaign'].campaign.id
 
       this.$modal.open({
         type: 'custom',
         componentName: 'pop-up-set-another-interview',
         closable: false,
-        campaignId: this.data.campaign.campaign.id,
+        campaignId: this.genericFetchEntity.data['campaign'].campaign.id,
         employeeId: employeeId,
         close() {
           store.dispatch('genericFetchEntity/fetch', {
@@ -104,7 +106,7 @@ export default {
       })
     },
     sendNotif(emailType, employeeId) {
-      axios.get(`/send_notification_email/${this.data.campaign.campaign.id}?email_type=${emailType}&user_id=${employeeId}`)
+      axios.get(`/send_notification_email/${this.genericFetchEntity.data['campaign'].campaign.id}?email_type=${emailType}&user_id=${employeeId}`)
 
       if (emailType === 'invite') {
         this.$modal.open({

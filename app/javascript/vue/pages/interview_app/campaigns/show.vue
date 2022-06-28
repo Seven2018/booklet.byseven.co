@@ -25,18 +25,22 @@
 
     <template v-slot:body>
       <bkt-switcher
-          v-if="genericFetchEntity.data"
-          :current-nbr="genericFetchEntity.data.set_interviews.length"
+          :current-nbr="genericFetchEntity.data ? genericFetchEntity.data.set_interviews.length : 0"
           :archived-nbr="null"
           title="Participants"
       >
         <template v-slot:current>
           <campaign-show-search
+              v-if="genericFetchEntity.data"
               :campaign="genericFetchEntity.data.campaign.campaign"
           ></campaign-show-search>
           <campaign-show-table
-              :data="genericFetchEntity.data"
+              v-show="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length > 0"
           ></campaign-show-table>
+          <bkt-no-entity-from-index
+              v-if="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length === 0 && genericFetchEntity.search"
+          ></bkt-no-entity-from-index>
+          <bkt-box-loader v-else-if="!genericFetchEntity.data" type="interview"></bkt-box-loader>
         </template>
       </bkt-switcher>
     </template>
@@ -51,6 +55,9 @@ import CampaignStatusChip from "../../../components/campaign/CampaignStatusChip"
 import BktSwitcher from "../../../components/BktSwitcher";
 import CampaignShowTable from "./CampaignShowTable";
 import CampaignShowSearch from "./CampaignShowSearch";
+import BktCreateEntityFromIndex from "../../../components/BktCreateEntityFromIndex";
+import BktNoEntityFromIndex from "../../../components/BktNoEntityFromIndex";
+import BktBoxLoader from "../../../components/BktBoxLoader";
 
 export default {
   props: ['campaignId'],
@@ -65,6 +72,10 @@ export default {
       pathKeyArgs: {id: this.campaignId}
     })
   },
-  components: {CampaignShowTable, BktSwitcher, CampaignStatusChip, BktIndexSkeleton, BktButton, CampaignShowSearch}
+  components: {
+    BktBoxLoader,
+    BktNoEntityFromIndex,
+    BktCreateEntityFromIndex,
+    CampaignShowTable, BktSwitcher, CampaignStatusChip, BktIndexSkeleton, BktButton, CampaignShowSearch}
 }
 </script>
