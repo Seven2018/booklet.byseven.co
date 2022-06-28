@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_17_132010) do
+ActiveRecord::Schema.define(version: 2022_06_27_081546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 2022_06_17_132010) do
     t.datetime "updated_at", precision: 6, null: false
     t.text "applications", default: [], array: true
     t.text "rating_logo", default: "<span class=\"iconify\" data-icon=\"clarity:star-solid\"></span>"
+    t.jsonb "data", default: {}
   end
 
   create_table "content_categories", force: :cascade do |t|

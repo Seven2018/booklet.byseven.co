@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def current_company
+    current_user.company
+  end
+
   def page
     params[:page] || 1
   end

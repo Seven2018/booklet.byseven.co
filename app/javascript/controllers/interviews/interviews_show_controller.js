@@ -56,11 +56,11 @@ export default class extends Controller {
     this.updateStatusMessage("Updating...")
     const form = event.currentTarget.closest('form')
 
-    clearTimeout(timer);
+    clearTimeout(this.timer);
 
-    timer = setTimeout(() => {
+    this.timer = setTimeout(() => {
       form.querySelector('.hidden-submit').click()
-    }, waitTime);
+    }, this.waitTime);
   }
 
 

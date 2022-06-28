@@ -164,7 +164,7 @@ class UsersController < ApplicationController
 
         if !user_row['email'].present? ||
           (user_row['email'].strip.downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).nil? ||
-          (user.company_id.present? && (user.company_id != current_user.company_id))
+          (user&.company_id.present? && (user&.company_id != current_user&.company_id))
 
           @errors << row
 

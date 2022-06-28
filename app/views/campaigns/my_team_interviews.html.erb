@@ -7,20 +7,24 @@
                                           class_name: 'width-100 h-inherit object-fit-cover',
                                           fallback: 'banners/my_team_interviews_banner.png') %>
 
-    <div class="width-100 height-100 d-flex flex-column justify-content-center align-items-center pos-abs z-index-5"
+    <div class="width-100 height-100 d-flex flex-column justify-content-center align-items-center
+                pos-abs z-index-5"
          style="top: 0; left: 0; right: 0;">
 
          <div class="d-flex justify-content-center align-items-center">
 
-          <h1 class="fs-1_4rem fs-sm-3rem font-weight-600 bkt-white my-2rem text-center mr-1rem">
+          <h1 class="fs-1_4rem fs-sm-3rem font-weight-600 bkt-white my-2rem text-center bkt-text-shadow mr-1rem">
             Hello, <%= current_user.firstname %> !
           </h1>
 
-          <%= image_tag 'noto_waving-hand.png', class: 'height-5rem' %>
+          <%= render_component AsClAssetComponent.new(model: current_user.company,
+                                          asset: :banner_gif,
+                                          class_name: 'height-5rem',
+                                          fallback: 'noto_waving-hand.png') %>
 
         </div>
 
-        <p class="fs-1_2rem fs-sm-2_4rem font-weight-600 bkt-white text-center mb-3rem">
+        <p class="fs-1_2rem fs-sm-2_4rem font-weight-600 bkt-white text-center bkt-text-shadow mb-3rem">
           Here are your interviews as interviewer.
         </p>
 
@@ -33,77 +37,17 @@
 
     </div>
 
+    <% if current_company.color2 != "#000000" %>
+
+      <div class="width-100 height-2rem"
+           style="background-color: <%= current_company.color2 %>;"></div>
+
+    <% end %>
+
   </div>
-
-<!--  <div class="campaigns-my-interviews__main">-->
-
-<!--    <div id="my_team_interviews_tabs"-->
-<!--         class="flex-row-start-centered height-2_4rem-forced width-100 pb-0_5rem-->
-<!--                mb-2rem border-bottom-bkt-light-grey5-0_5px">-->
-
-      <%#= render 'campaigns/my_interviews/my_team_interviews_tabs', ongoing_campaigns: @ongoing_campaigns, archived_campaigns: @archived_campaigns, active_tab: @active_tab %>
-
-<!--    </div>-->
-
-<!--    <div class="campaigns-my-interviews__tabs-display">-->
-
-<!--      <div class="campaigns-my-interviews__list">-->
-
-        <%#= render 'campaigns/my_interviews/my_team_interviews_interviews_list', campaigns: @campaigns, active_tab: @active_tab %>
-
-<!--      </div>-->
-
-<!--    </div>-->
-
-<!--  </div>-->
 
 </div>
 
 <div id="app">
   <my-team-interviews></my-team-interviews>
 </div>
-
-
-<!------------>
-<!-- MODALS -->
-<!------------>
-
-<!--<div id='interview-status-info'-->
-<!--     class='modal fade'-->
-<!--     tabindex='-1'-->
-<!--     role='dialog'-->
-<!--     data-keyboard="false">-->
-
-<!--  <div class='modal-dialog modal-content bkt-bg-white rounded-5px py-5'-->
-<!--       role='document' >-->
-
-<!--    <div class="flex-row-end-centered">-->
-<!--      <button class=" font-weight-500 mr-5 mb-5 fs-2rem" data-dismiss="modal" aria-label="Close">-->
-<!--        <span class="iconify" data-icon="akar-icons:cross"></span>-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div class="flex-row-center-centered">-->
-<!--      <span class="iconify" data-icon="noto:light-bulb" data-width="70" data-height="70"></span>-->
-<!--    </div>-->
-
-<!--    <div class="flex-row-center-centered text-center my-4 font-weight-600">-->
-<!--      <p>Up to 3 interviews can be requiere to submit :<br> Interviewee (IE), Interviewer (IR) and Cross Review (CR).</p>-->
-<!--    </div>-->
-
-<!--    <div class="flex-row-center-centered text-center my-4 d-block">-->
-<!--      <p>Their different states are :</p>-->
-<!--    </div>-->
-
-<!--    <div class="width-30 m-auto mb-4">-->
-
-<!--      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-light-grey"></span> Not available yet</p>-->
-<!--      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-red"></span> Not Started</p>-->
-<!--      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-yellow"></span> In Progress</p>-->
-<!--      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-green"></span> Submitted</p>-->
-
-<!--    </div>-->
-
-<!--  </div>-->
-
-<!--</div>-->

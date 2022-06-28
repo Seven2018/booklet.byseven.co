@@ -1,6 +1,6 @@
 class TrainingMailer < ApplicationMailer
   default from: CompanyInfo.no_reply
-  layout 'notification_mailer'
+  layout 'basic_mailer'
 
   def invite_attendee(attendee, training)
     @attendee = attendee
