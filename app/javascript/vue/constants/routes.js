@@ -23,6 +23,7 @@ const routes = {
   campaigns_list: '/campaigns/list',
   send_notification_email: '/send_notification_email/{id}.json',
   campaigns_id: '/campaigns/{id}',
+  campaigns: '/campaigns',
   campaigns_id_data_show: '/campaigns/{id}/data_show',
   campaigns_id_overview: '/campaigns/{id}/overview',
   categories: '/categories',

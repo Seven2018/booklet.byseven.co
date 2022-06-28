@@ -3,7 +3,9 @@
   <bkt-index-skeleton body-class="bkt-bg-white box-shadow-none">
     <template v-slot:title>
       <div v-if="campaign" class="flex-row-around-centered">
-        <bkt-button class="">
+        <bkt-button
+          :href="$routes.generate('campaigns')"
+          class="">
           <span class="fs-2_4rem font-weight-500 bkt-dark-grey">
             Campaigns
           </span>
