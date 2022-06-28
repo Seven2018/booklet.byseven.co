@@ -6,11 +6,13 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  get '/(*path)', to: redirect { |path_params, request|
-                          "https://booklet.byseven.co/#{path_params[:path]}"
-                        },
-                  status: 301,
-                  constraints: { domain: 'seven-booklet.herokuapp.com' }
+  if Rails.env.production?
+    constraints(:host => /^(?!seven-booklet.herokuapp.com)/i) do
+      match "/(*path)" => redirect {
+        |params, req| "https://booklet.byseven.co/#{params[:path]}"
+        },  via: [:get, :post]
+    end
+  end
 
   root to: 'pages#home'
 
