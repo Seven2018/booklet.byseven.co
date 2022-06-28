@@ -2,7 +2,7 @@
 <template>
   <bkt-index-skeleton body-class="bkt-bg-white box-shadow-none">
     <template v-slot:title>
-      <div v-if="genericFetchEntity.data" class="flex-row-around-centered">
+      <div v-if="campaign" class="flex-row-around-centered">
         <bkt-button class="">
           <span class="fs-2_4rem font-weight-500 bkt-dark-grey">
             Campaigns
@@ -10,16 +10,16 @@
         </bkt-button>
         <span class="iconify bkt-light-grey font-weight-600" data-icon="akar-icons:chevron-right" data-width="30" data-height="30"></span>
         <span class="fs-2_4rem font-weight-500 bkt-dark-grey mr-3">
-          {{genericFetchEntity.data.campaign.campaign.title}}
+          {{campaign.title}}
         </span>
-        <campaign-status-chip :status="genericFetchEntity.data.campaign.campaign.status"></campaign-status-chip>
+        <campaign-status-chip :status="campaign.status"></campaign-status-chip>
       </div>
     </template>
 
-    <template v-if="genericFetchEntity.data" v-slot:create-index>
+    <template v-if="campaign" v-slot:create-index>
         <p class="bkt-dark-grey font-weight-600">Dealine :</p>
         <p class="font-weight-500 bkt-light-grey6">
-          {{genericFetchEntity.data.campaign.campaign.deadline | formatDate}}
+          {{campaign.deadline | formatDate}}
         </p>
     </template>
 
@@ -58,19 +58,23 @@ import CampaignShowSearch from "./CampaignShowSearch";
 import BktCreateEntityFromIndex from "../../../components/BktCreateEntityFromIndex";
 import BktNoEntityFromIndex from "../../../components/BktNoEntityFromIndex";
 import BktBoxLoader from "../../../components/BktBoxLoader";
+import axios from "../../../plugins/axios";
 
 export default {
   props: ['campaignId'],
   data() {
     return {
-      genericFetchEntity: store.state.genericFetchEntity
+      genericFetchEntity: store.state.genericFetchEntity,
+      campaign: null
     }
   },
-  created() {
+  async created() {
     store.dispatch('genericFetchEntity/fetch', {
       pathKey: 'campaigns_id_data_show',
       pathKeyArgs: {id: this.campaignId}
     })
+
+    this.campaign = (await axios.get(this.$routes.generate('campaigns_id', {id: this.campaignId}) + '.json')).data.campaign
   },
   components: {
     BktBoxLoader,

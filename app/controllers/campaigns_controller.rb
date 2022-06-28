@@ -45,6 +45,9 @@ class CampaignsController < ApplicationController
     respond_to do |format|
       format.html
       format.js
+      format.json {
+        render json: @campaign, status: :ok, serializer: CampaignSerializer
+      }
     end
   end
 
