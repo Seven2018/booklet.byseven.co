@@ -2,6 +2,7 @@
   <bkt-button
       v-if="pagination.next_page"
       @click="method(pagination.next_page)"
+      type="none"
     >
       <div class="paginate__next-button paginate__button-blue">
         <p>Next</p>
