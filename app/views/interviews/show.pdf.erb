@@ -13,7 +13,7 @@
   <% fully_answered = @interview.fully_answered? %>
   <% employee = @interview.employee %>
   <% manager = @interview.interviewer %>
-  <% user = @interview.label == 'Employee' ? @interview.employee : @interview.owner %>
+  <% user = @interview.label == 'Employee' ? @interview.employee : @interview.interviewer %>
   <% icon = { 'open_question' => 'open-question-pdf.png',
               'mcq' => 'mcq-pdf.png',
               'objective' => 'objective-pdf.png',
@@ -77,11 +77,8 @@
                     interview_question: question
                   ) %>
 
-                  <% current_answer   = existing_answer&.answer || '' %>
-                  <% current_comments = existing_answer&.comments || '' %>
-                  <% current_objective = existing_answer&.objective || '' %>
-
                   <% if @interview.crossed? %>
+
                     <% employee_answer = InterviewAnswer.joins(:interview).find_by(
                         interview: @interview.campaign.employee_interview(employee.id),
                         interview_question: question,
@@ -92,6 +89,7 @@
                         interview_question: question,
                         user: manager
                       ) %>
+                    <% existing_answer = manager_answer.presence || employee_answer unless existing_answer.present? %>
 
                       <% if manager_answer.present? %>
 
@@ -216,6 +214,10 @@
                       <% end %>
 
                   <% end %>
+
+                  <% current_answer   = existing_answer&.answer || '' %>
+                  <% current_comments = existing_answer&.comments || '' %>
+                  <% current_objective = existing_answer&.objective || '' %>
 
                   <%= simple_form_for(:interview_answer,
                     url: answer_interview_question_path,

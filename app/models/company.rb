@@ -23,9 +23,14 @@ class Company < ApplicationRecord
   has_one_attached :my_team_interviews_bg_picture
   has_one_attached :my_trainings_bg_picture
   has_one_attached :my_team_trainings_bg_picture
+  has_one_attached :banner_gif
 
   before_save :clear_applications_params
   after_create :create_default_group_category
+
+  jsonb_accessor :data,
+                 color1: :string,
+                 color2: :string
 
   include Companies::AssetsMeta
   include Companies::Applications

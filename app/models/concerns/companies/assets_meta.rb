@@ -89,4 +89,13 @@ module Companies::AssetsMeta
       raise AssetMetableFormatError, "#{self.class} => #{id}"
     end
   end
+
+  def banner_gif_meta(size)
+    case size
+    when :desktop then AssetMeta.new(height: 500, width: 500)
+    when :mobile  then AssetMeta.new(height: 500, width: 500)
+    else
+      raise AssetMetableFormatError, "#{self.class} => #{id}"
+    end
+  end
 end

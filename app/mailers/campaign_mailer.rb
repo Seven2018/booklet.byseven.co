@@ -133,6 +133,20 @@ class CampaignMailer < ApplicationMailer
     mail(to: @interviewer.email, subject: "Campaign completed !")
   end
 
+  def campaign_interview_created(owner, campaign)
+    @owner = owner
+    @campaign = campaign
+    @icon = '🚀'
+    @title = "Your campaign #{campaign.title} has been launched !"
+    @description = "All interviewers and interviewees can now acces their interviews in the campaign “#{campaign.title}”."
+    @button_text = "Go to campaign index"
+    @button_link = campaigns_url
+
+    @nb = "Please don't answer this email."
+
+    mail(to: @owner.email, subject: "Your campaign #{campaign.title} has been launched !")
+  end
+
   private
 
   def interviewee_email_settings(interviewer, interviewee, interview)

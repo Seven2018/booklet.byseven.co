@@ -51,7 +51,7 @@
 
         <p class="p-2 bkt-green mx-5" id="xhr-form-status-btn">Up to date</p>
 
-        <a href='<%= lock_interview_path(interview_id: @interview.id) if fully_answered %>'
+        <a href='<%= lock_interview_path(interview_id: @interview.id) if fully_answered || @interview.crossed? %>'
            id='submit-interview-link'
            class='d-none'
            data-url='<%= lock_interview_path(interview_id: @interview.id) %>'
@@ -59,10 +59,10 @@
         </a>
 
         <button id="submit-interview"
-                class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered %>"
+                class="btn-blue btn-blue  <%= 'btn-blue-disabled' unless fully_answered || @interview.crossed? %>"
                 data-toggle='modal'
                 data-target='#interviewConfirmSubmit'
-                <%= 'disabled' unless fully_answered %>>
+                <%= 'disabled' unless fully_answered || @interview.crossed? %>>
 
           <p>Submit</p>
           <span class="iconify ml-2" data-icon="fluent:send-16-filled" style="color: white;"></span>
