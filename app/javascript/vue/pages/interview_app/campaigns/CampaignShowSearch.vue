@@ -11,6 +11,9 @@
         :items="selectList"
         @input="update"
     ></bkt-select>
+    <div>
+      tag categories
+    </div>
     <button class="flex-none ml-5 font-weight-500 fs-1_6rem" @click="reset">
       Reset
     </button>
@@ -23,7 +26,7 @@ import store from "../../../store";
 import BktSelect from "../../../components/BktSelect";
 
 export default {
-  props: ['campaign'],
+  props: ['campaign', 'overview'],
   data() {
     return {
       searchText: null,
@@ -57,16 +60,6 @@ export default {
         pathKeyArgs: {id: this.campaign.id}
       })
     },
-    submit() {
-      store.commit('genericFetchEntity/setSearch', {
-        text: this.searchText,
-        status: this.status,
-      })
-      store.dispatch('genericFetchEntity/fetch', {
-        pathKey: 'campaigns_id_data_show',
-        pathKeyArgs: {id: this.campaign.id}
-      })
-    }
   },
   components: {BktSelect, BktSearch}
 }

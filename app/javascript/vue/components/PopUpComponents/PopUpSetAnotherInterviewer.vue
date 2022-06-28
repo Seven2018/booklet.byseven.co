@@ -18,7 +18,8 @@
           class="mb-1rem"
           :value="autoSelect"
           @selected="preSetInterview"
-          :link="$routes.generate('company_managers')">
+          :link="`${$routes.generate('company_managers')}/?access_level_int[]=manager&access_level_int[]=hr&access_level_int[]=account_owner&access_level_int[]=account_owner`"
+      >
       </bkt-auto-suggestion>
 
       <bkt-button type="interview" class="mb-2" @click="setInterviewer">

@@ -45,7 +45,8 @@ const routes = {
   my_interviews_list: '/my_interviews_list',
   interviews_id: '/interviews/{id}',
   my_team_interviews_list: '/my_team_interviews_list',
-  company_managers: '/managers_search'
+  company_managers: '/managers_search',
+  users_id: '/users/{id}'
 }
 
 export default {

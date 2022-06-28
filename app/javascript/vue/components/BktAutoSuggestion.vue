@@ -7,7 +7,10 @@
         ref="selectText"
         @focus="toggleDisplay"
         @input="preSearch"
-        type="text" :value="text">
+        type="text"
+        :value="value"
+        :placeholder="placeholder"
+    >
     <div
         v-if="display"
         class="position-absolute bkt-bg-white rounded-2px bkt-box-shadow-medium z-index-5 max-h-30rem overflow-y-auto"
@@ -39,6 +42,12 @@ export default {
       }
     },
     value: {
+      type: String,
+      default() {
+        return null
+      }
+    },
+    placeholder: {
       type: String,
       default() {
         return null
@@ -84,7 +93,7 @@ export default {
     },
     manageSelected(item) {
       this.hide()
-      this.text = `${item.firstname} ${item.lastname}`
+      // this.text = `${item.firstname} ${item.lastname}`
       this.$emit('selected', item)
     }
   }

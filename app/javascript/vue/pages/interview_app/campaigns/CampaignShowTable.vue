@@ -79,7 +79,7 @@ import axios from "../../../plugins/axios";
 export default {
   mixins: [tools],
   components: {InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
-  props: ['data'],
+  props: ['campaign'],
   data() {
     return {
       headers: ['Interviewee', 'Template', 'Interviewer', 'Tags', 'Completion', ''],
@@ -89,13 +89,13 @@ export default {
   methods: {
     openSetAnotherInterviewer(employeeId) {
       // TODO: refactor next line
-      const campaignId = this.genericFetchEntity.data['campaign'].campaign.id
+      const campaignId = this.campaign.id
 
       this.$modal.open({
         type: 'custom',
-        componentName: 'pop-up-set-another-interview',
+        componentName: 'pop-up-set-another-interviewer',
         closable: false,
-        campaignId: this.genericFetchEntity.data['campaign'].campaign.id,
+        campaignId: campaignId,
         employeeId: employeeId,
         close() {
           store.dispatch('genericFetchEntity/fetch', {

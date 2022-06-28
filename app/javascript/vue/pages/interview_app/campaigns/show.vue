@@ -30,12 +30,45 @@
           title="Participants"
       >
         <template v-slot:current>
-          <campaign-show-search
-              v-if="campaign"
-              :campaign="campaign"
-          ></campaign-show-search>
+          <div class="flex-row-between-centered">
+            <campaign-show-search
+                v-if="campaign"
+                :campaign="campaign"
+                :overview="overview"
+            ></campaign-show-search>
+
+            <div v-if="overview" class="flex-row-end-centered width-30rem">
+              <bkt-dots-button>
+                <button
+                    class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                    @click="openAddParticipant"
+                >
+                  + Add participant
+                </button>
+                <button
+                    class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                    @click=""
+                >
+                  Edit deadline
+                </button>
+                <button
+                    class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                    @click=""
+                >
+                  Send invitation to all
+                </button>
+                <button
+                    class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                    @click=""
+                >
+                  Send reminder to all
+                </button>
+              </bkt-dots-button>
+            </div>
+          </div>
           <campaign-show-table
               v-show="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length > 0"
+              :campaign="campaign"
           ></campaign-show-table>
           <bkt-no-entity-from-index
               v-if="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length === 0 && genericFetchEntity.search"
@@ -59,9 +92,10 @@ import BktCreateEntityFromIndex from "../../../components/BktCreateEntityFromInd
 import BktNoEntityFromIndex from "../../../components/BktNoEntityFromIndex";
 import BktBoxLoader from "../../../components/BktBoxLoader";
 import axios from "../../../plugins/axios";
+import BktDotsButton from "../../../components/BktDotsButton";
 
 export default {
-  props: ['campaignId'],
+  props: ['campaignId', 'overview'],
   data() {
     return {
       genericFetchEntity: store.state.genericFetchEntity,
@@ -76,10 +110,28 @@ export default {
 
     this.campaign = (await axios.get(this.$routes.generate('campaigns_id', {id: this.campaignId}) + '.json')).data.campaign
   },
+  methods: {
+    openAddParticipant() {
+      const campaignId = this.campaign.id
+
+      this.$modal.open({
+        type: 'custom',
+        componentName: 'pop-up-set-another-interviewee',
+        closable: false,
+        campaignId: campaignId,
+        close() {
+          store.dispatch('genericFetchEntity/fetch', {
+            pathKey: 'campaigns_id_data_show',
+            pathKeyArgs: {id: campaignId}
+          })
+        }
+      })
+    }
+  },
   components: {
     BktBoxLoader,
     BktNoEntityFromIndex,
     BktCreateEntityFromIndex,
-    CampaignShowTable, BktSwitcher, CampaignStatusChip, BktIndexSkeleton, BktButton, CampaignShowSearch}
+    CampaignShowTable, BktSwitcher, CampaignStatusChip, BktIndexSkeleton, BktButton, CampaignShowSearch, BktDotsButton}
 }
 </script>
