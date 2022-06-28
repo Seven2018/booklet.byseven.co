@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static get targets () {
-    return [ 'employeeCount', 'searchSubmit', 'addEmployeeModal', 'deadlineDisplay' ]
+    return [ 'employeeCount', 'searchSubmit', 'addEmployeeModal', 'deadlineDisplay', 'tagContainer' ]
   }
 
   connect() {
@@ -29,6 +29,10 @@ export default class extends Controller {
       const button = document.getElementById('notifyAddParticipantsTrigger')
       button.click()
     }
+
+    this.tagContainerTargets.forEach((target) => {
+      this.hideOverflowingTags(target)
+    })
   }
 
   ////////////
@@ -119,6 +123,32 @@ export default class extends Controller {
   ///////////
   // TOOLS //
   ///////////
+
+  hideOverflowingTags(container) {
+    const tags = container.querySelectorAll('.bkt-tag')
+    var result = 0
+    var last_index = 0
+    var tooltip_content = ''
+
+    tags.forEach((tag, index) => {
+      result += tag.offsetWidth
+      tooltip_content += tag.innerText + '\n'
+      if (result > 150) {
+        tag.remove()
+      } else {
+        last_index = index
+      }
+    })
+
+    if (result > 150) {
+      var newDiv = document.createElement('div')
+      newDiv.classList.add('mr-2', 'rounded-15px', 'py-1', 'px-3', 'font-weight-500', 'bkt-bg-light-blue', 'bkt-blue')
+      newDiv.innerHTML = `<p class="fs-1_2rem">+${tags.length -(last_index + 1)}</p>`
+      newDiv.setAttribute('data-toggle', 'tooltip');
+      newDiv.setAttribute('title', tooltip_content)
+      container.appendChild(newDiv)
+    }
+  }
 
   blockEvents() {
     document.getElementById('bkt-blockDiv').classList.toggle('d-none')
