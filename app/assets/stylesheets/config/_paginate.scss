@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  cursor: default;
 
   .pagination {
 
@@ -66,6 +67,10 @@
 
   .paginate__button-blue {
     border: 2px solid $bkt-blue;
+
+    &:hover {
+      background-color: $bkt-light-blue;
+    }
 
     p, svg {
       color: $bkt-blue;

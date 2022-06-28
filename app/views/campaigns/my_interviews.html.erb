@@ -1,6 +1,6 @@
 <div class="">
 
-  <div class="width-100 height-40rem black-gradient mb-5rem">
+  <div class="width-100 height-40rem black-gradient">
     <%= render_component AsClAssetComponent.new(model: current_user.company,
                                           asset: :my_interviews_banner,
                                           class_name: 'width-100 h-inherit object-fit-cover',
@@ -39,7 +39,7 @@
 
   <% if current_company.color1 != "#000000" %>
 
-    <div class="width-100 height-2rem"
+    <div class="width-100 height-2rem mb-5rem"
          style="background-color: <%= current_company.color1 %>;"></div>
 
   <% end %>
