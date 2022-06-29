@@ -126,6 +126,7 @@ export default class extends Controller {
 
   hideOverflowingTags(container) {
     const tags = container.querySelectorAll('.bkt-tag')
+    const container_width = container.offsetWidth
     var result = 0
     var last_index = 0
     var tooltip_content = ''
@@ -133,14 +134,14 @@ export default class extends Controller {
     tags.forEach((tag, index) => {
       result += tag.offsetWidth
       tooltip_content += tag.innerText + '\n'
-      if (result > 150) {
+      if (result > (container_width - 50)) {
         tag.remove()
       } else {
         last_index = index
       }
     })
 
-    if (result > 150) {
+    if (result > (container_width - 50)) {
       var newDiv = document.createElement('div')
       newDiv.classList.add('mr-2', 'rounded-15px', 'py-1', 'px-3', 'font-weight-500', 'bkt-bg-light-blue', 'bkt-blue')
       newDiv.innerHTML = `<p class="fs-1_2rem">+${tags.length -(last_index + 1)}</p>`
