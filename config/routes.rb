@@ -6,13 +6,13 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  if Rails.env.production?
-    constraints(:host => /^(?!seven-booklet.herokuapp.com)/i) do
-      match "/(*path)" => redirect {
-        |params, req| "https://booklet.byseven.co/#{params[:path]}"
-        },  via: [:get, :post]
-    end
-  end
+  # if Rails.env.production?
+    # constraints(:host => /^(?!seven-booklet.herokuapp.com)/i) do
+    #   match "/(*path)" => redirect {
+    #     |params, req| "https://booklet.byseven.co/#{params[:path]}"
+    #     },  via: [:get, :post]
+    # end
+  # end
 
   root to: 'pages#home'
 
