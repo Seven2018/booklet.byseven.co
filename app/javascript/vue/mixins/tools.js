@@ -102,12 +102,14 @@ export default {
       else if (status === 'submitted') return 'bkt-bg-green'
       else if (status === 'not_available_yet') return 'bkt-bg-light-grey'
     },
-
     getColorByCampaignStatus(status) {
       if (status === 'not_started') return 'bkt-red'
       else if (status === 'in_progress') return 'bkt-yellow'
       else if (status === 'submitted') return 'bkt-green'
       else if (status === 'not_available_yet') return 'bkt-light-grey'
+    },
+    cleanUnderscoreAndCapitalize(str) {
+      return str.replace('_', ' ').trim().replace(/^\w/, (c) => c.toUpperCase())
     }
   }
 }
