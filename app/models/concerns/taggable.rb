@@ -5,9 +5,13 @@ module Taggable
   class_methods do
     def filter_by_tag_ids(tag_ids)
       tag_ids = tag_ids.map(&:to_i)
-      campaigns = joins(:categories).where(categories: {id: tag_ids})
-      campaigns = campaigns.select { |campaign| ((campaign.categories.pluck(:id) & tag_ids) == tag_ids) }
-      self.get_activerecord_relation(campaigns)
+      instances = self
+
+      tag_ids.each do |tag_id|
+        instances = instances.where_exists(:categories, id: tag_id)
+      end
+
+      instances
     end
   end
 end
