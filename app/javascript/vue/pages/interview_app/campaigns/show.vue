@@ -29,7 +29,8 @@
       <bkt-switcher
           :current-nbr="genericFetchEntity.data ? genericFetchEntity.data.set_interviews.length : 0"
           :archived-nbr="null"
-          title="Participants"
+          current-title="Participants"
+          theme="interview"
       >
         <template v-slot:current>
           <div class="flex-row-between-centered">

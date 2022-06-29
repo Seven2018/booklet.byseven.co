@@ -6,7 +6,7 @@
           :class="[panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >
-        Current {{title}}
+        {{currentTitle}}
         <span
             class="px-2 rounded-5px fs-0_8rem fs-sm-1_2rem"
             :class="[panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
@@ -20,7 +20,7 @@
           :class="[!panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-light-grey5', !panelCurrentObjective ? 'border-bottom-bkt-objective-blue' : '']"
           @click="togglePanelCurrentObjective"
       >
-        Archived {{title}}
+        {{archivedTitle}}
         <span
             class="px-2 rounded-5px fs-0_8rem fs-sm-1_2rem"
             :class="[!panelCurrentObjective ? 'bkt-bg-objective-blue2' : 'bkt-bg-light-grey5', !panelCurrentObjective ? 'bkt-objective-blue' : 'bkt-white']">
@@ -49,10 +49,22 @@ export default {
         return 0;
       }
     },
-    title: {
+    currentTitle: {
       type: String,
       default() {
-        return 'targets'
+        return 'Current targets'
+      }
+    },
+    archivedTitle: {
+      type: String,
+      default() {
+        return 'Archived targets'
+      }
+    },
+    theme: {
+      type: String,
+      default() {
+        return 'objective'
       }
     }
   },

@@ -5,7 +5,7 @@
         v-if="genericFetchEntity.data"
         :current-nbr="genericFetchEntity.data.current_campaigns.campaigns.length"
         :archived-nbr="genericFetchEntity.data.archived_campaigns.campaigns.length"
-        title="campaigns"
+        current-title="campaigns"
     >
       <template v-slot:current>
         <my-team-interview-card
