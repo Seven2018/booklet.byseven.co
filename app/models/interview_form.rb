@@ -24,9 +24,6 @@ class InterviewForm < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_templates,
     against: [ :title ],
-    associated_against: {
-      tags: :tag_name
-    },
     using: {
       tsearch: { prefix: true }
     },

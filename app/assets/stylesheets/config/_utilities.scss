@@ -225,6 +225,8 @@ a.disabled-link { pointer-events: none; }
 .width-75   { width: 75% !important; }
 .width-80   { width: 80% !important; }
 .width-90   { width: 90% !important; }
+.width-95   { width: 95% !important; }
+.width-98   { width: 98% !important; }
 .width-100  { width: 100% !important; }
 .width-auto { width: auto !important; }
 
@@ -295,16 +297,19 @@ a.disabled-link { pointer-events: none; }
 .max-h-14rem { max-height: 14rem }
 .max-h-16rem { max-height: 16rem }
 .max-h-20rem { max-height: 20rem }
+.max-h-30rem { max-height: 30rem }
 .max-h-40rem { max-height: 40rem }
 .max-h-100vh {max-height: 100vh}
 
 .w-10vw  { width: 10vw; }
 .w-20vw  { width: 20vw; }
+.w-sm-20vw  { @include from-medium {width: 20vw !important;}}
 .w-40vw  { width: 40vw; }
 .w-50vw  { width: 50vw; }
 .w-60vw  { width: 60vw; }
 .w-70vw  { width: 70vw; }
 .w-80vw  { width: 80vw; }
+.w-sm-80vw  { @include from-medium {width: 80vw !important;}}
 .w-90vw  { width: 90vw; }
 .w-100vw { width: 100vw; }
 

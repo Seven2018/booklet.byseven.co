@@ -350,10 +350,10 @@ ActiveRecord::Schema.define(version: 2022_06_27_081546) do
     t.bigint "objectivable_id"
     t.string "objectivable_type"
     t.bigint "company_id"
-    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
+    t.bigint "creator_id"
     t.boolean "template", default: false
     t.boolean "can_employee_edit", default: true
     t.boolean "can_employee_view", default: true

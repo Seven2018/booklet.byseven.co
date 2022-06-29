@@ -1,7 +1,6 @@
-<div class="campaigns-my-interviews__container">
+<div class="">
 
-  <div class="width-100 height-40rem black-gradient mb-5rem">
-
+  <div class="width-100 height-40rem black-gradient">
     <%= render_component AsClAssetComponent.new(model: current_user.company,
                                           asset: :my_interviews_banner,
                                           class_name: 'width-100 h-inherit object-fit-cover',
@@ -12,7 +11,7 @@
 
          <div class="d-flex justify-content-center align-items-center">
 
-          <h1 class="fs-3rem font-weight-600 bkt-white my-2rem text-center bkt-text-shadow mr-1rem">
+          <h1 class="fs-1_4rem fs-sm-3rem font-weight-600 bkt-white my-2rem text-center bkt-text-shadow mr-1rem">
             Hello, <%= current_user.firstname %> !
           </h1>
 
@@ -23,7 +22,7 @@
 
         </div>
 
-        <p class="fs-2_4rem font-weight-600 bkt-white text-center bkt-text-shadow mb-3rem">
+        <p class="fs-1_2rem fs-sm-2_4rem font-weight-600 bkt-white text-center bkt-text-shadow mb-3rem">
           Here are your interviews as interviewee.
         </p>
 
@@ -36,54 +35,17 @@
 
     </div>
 
-    <% if current_company.color1 != "#000000" %>
-
-      <div class="width-100 height-2rem"
-           style="background-color: <%= current_company.color1 %>;"></div>
-
-    <% end %>
-
   </div>
 
-  <div class="campaigns-my-interviews__main">
+  <% if current_company.color1 != "#000000" %>
 
-    <div id="my_interviews_tabs"
-         class="flex-row-start-centered height-2_4rem-forced width-100 pb-0_5rem mb-2rem border-bottom-bkt-light-grey5-0_5px">
+    <div class="width-100 height-2rem mb-5rem"
+         style="background-color: <%= current_company.color1 %>;"></div>
 
-      <%= render 'campaigns/my_interviews/my_interviews_tabs', ongoing_campaigns: @ongoing_campaigns, archived_campaigns: @archived_campaigns, active_tab: @active_tab %>
+  <% end %>
 
-    </div>
-
-    <div class="campaigns-my-interviews__tabs-display">
-      <div class="campaigns-my-interviews__list">
-        <%= render 'campaigns/my_interviews/my_interviews_interviews_list', campaigns: @campaigns %>
-      </div>
-    </div>
-
-  </div>
 </div>
 
-<div class='modal fade' id='interview-status-info' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-keyboard="false">
-  <div class='modal-dialog modal-content bkt-bg-white rounded-5px py-5' role='document' >
-    <div class="flex-row-end-centered">
-      <button class=" font-weight-500 mr-5 mb-5 fs-2rem" data-dismiss="modal" aria-label="Close">
-        <span class="iconify" data-icon="akar-icons:cross"></span>
-      </button>
-    </div>
-    <div class="flex-row-center-centered">
-      <span class="iconify" data-icon="noto:light-bulb" data-width="70" data-height="70"></span>
-    </div>
-    <div class="flex-row-center-centered text-center my-4 font-weight-600">
-      <p>Up to 3 interviews can be requiere to submit :<br> Interviewee (IE), Interviewer (IR) and Cross Review (CR).</p>
-    </div>
-    <div class="flex-row-center-centered text-center my-4 d-block">
-      <p>Their different states are :</p>
-    </div>
-    <div class="width-30 m-auto mb-4">
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-light-grey"></span> Not available yet</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-red"></span> Not Started</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-yellow"></span> In Progress</p>
-      <p class="flex-row-start-centered"><span class="h-2.5 w-2.5 inline-block mr-3 bkt-bg-green"></span> Submitted</p>
-    </div>
-  </div>
+<div id="app">
+  <my-interviews></my-interviews>
 </div>

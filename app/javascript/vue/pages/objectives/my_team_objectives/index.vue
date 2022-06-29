@@ -96,7 +96,7 @@
 <script>
 import BktButton from "../../../components/BktButton";
 import BktBackButton from "../../../components/BktBackButton";
-import ObjectiveSwitcher from "../../../components/ObjectiveSwitcher";
+import ObjectiveSwitcher from "../../../components/BktSwitcher";
 import MyTeamObjectivesTable from "./MyTeamObjectivesTable";
 import BktDotsButton from '../../../components/BktDotsButton'
 import tools from '../../../mixins/tools'

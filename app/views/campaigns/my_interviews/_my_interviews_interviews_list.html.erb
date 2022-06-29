@@ -59,7 +59,7 @@
           <div class="flex-column mr-3">
             <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>"
                  class='width-3_5rem height-3_5rem min-w-3_5rem min-h-3_5rem rounded-circle'
-                 style='<%= "border: 2px solid #{current_company.color1}" if current_company.color1 != "#000000" %>'
+                 style='<%= "border: 2px solid #{current_company.color1}" if ![nil,"#000000"].include?(current_company.color1) %>'
                  onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           </div>
 

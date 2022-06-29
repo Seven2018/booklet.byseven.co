@@ -48,7 +48,8 @@ export default {
         roadmap: "bkt-bg-objective-blue bkt-white-important rounded-5px p-3 font-weight-600 bkt-box-shadow-medium bkt-bg-light-blue2-hover",
         white: "bkt-bg-white bkt-objective-blue-important rounded-5px p-3 font-weight-600 bkt-box-shadow-medium bkt-bg-light-blue2-hover",
         interview: "bkt-bg-blue bkt-white-important rounded-5px p-3 font-weight-600 bkt-box-shadow-medium bkt-bg-light-blue2-hover",
-        'white-grey': 'bkt-light-grey6-important rounded-5px p-3 font-weight-600 bkt-box-shadow-medium'
+        'white-grey': 'bkt-light-grey6-important rounded-5px p-3 font-weight-600 bkt-box-shadow-medium',
+        none: ''
       }
     }
   },

@@ -49,7 +49,7 @@ class CampaignDecorator < Draper::Decorator
     poro_campaign = Poro::Campaign.new(campaign: self, employee_id: employee_id)
 
     %i[employee_interview manager_interview crossed_interview]
-      .map { |interview| poro_campaign.send interview }
+      .map { |interview| poro_campaign.send interview }.select(&:present?)
   end
 
   def employees_for(interviewer_id)

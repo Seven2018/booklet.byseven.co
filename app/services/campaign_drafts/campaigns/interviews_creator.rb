@@ -76,7 +76,7 @@ module CampaignDrafts
         template = InterviewForm.find template_id
 
         new_form = InterviewForm.create(
-          template.attributes.except('id', 'created_at', 'updated_at').merge(used: true, categories: template.categories)
+          template.attributes.except('id', 'created_at', 'updated_at').merge(used: true)
         )
 
         template.interview_questions.order(position: :asc).each do |question|
@@ -85,6 +85,8 @@ module CampaignDrafts
             .except('id', 'interview_form_id', 'position', 'created_at', 'updated_at')
             .merge(interview_form: new_form, position: question.position)
         end
+
+        new_form.categories = template.categories
 
         return new_form
       end

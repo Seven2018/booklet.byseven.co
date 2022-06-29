@@ -23,6 +23,8 @@ const routes = {
   campaigns_list: '/campaigns/list',
   send_notification_email: '/send_notification_email/{id}.json',
   campaigns_id: '/campaigns/{id}',
+  campaigns: '/campaigns',
+  campaigns_id_data_show: '/campaigns/{id}/data_show',
   campaigns_id_overview: '/campaigns/{id}/overview',
   categories: '/categories',
   categories_from_campaign: '/categories/from_campaign',
@@ -40,7 +42,11 @@ const routes = {
   categories_id: '/categories/{id}',
   new_group_categories: '/categories/new_group',
   group_categories_id: '/group_categories/{id}',
-  categories_search_v2: '/categories/search_v2'
+  categories_search_v2: '/categories/search_v2',
+  my_interviews_list: '/my_interviews_list',
+  interviews_id: '/interviews/{id}',
+  my_team_interviews_list: '/my_team_interviews_list',
+  company_managers: '/managers_search'
 }
 
 export default {

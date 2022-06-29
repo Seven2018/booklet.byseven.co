@@ -57,8 +57,7 @@
 
     </div>
 
-    <div id="tab_attendees"
-         class="width-100">
+    <div class="width-100 mb-5rem">
 
       <div id="tab_participants"
            class='booklet-tab bkt-box-shadow-light px-3rem py-2rem rounded-20px'
@@ -73,7 +72,6 @@
 
             <%= simple_form_for :search, url: campaign_path(@campaign),
                                          method: :get, remote: true do |f| %>
-
               <%= f.input :name, placeholder: 'Search',
                                  input_html: {
                                    autocomplete: 'off',
@@ -97,7 +95,6 @@
               </div>
 
               <%= f.hidden_field :page, value: '1', data: { change_page_target: :pageInput } %>
-
               <%= f.submit '', class: 'hidden-submit d-none',
                                data: {
                                  interviews__campaigns_show_target: "searchSubmit",
@@ -105,7 +102,6 @@
                                  change_page_target: :submit,
                                  search_form: :submit
                                } %>
-
             <% end %>
 
             <button class='btn-reset bkt-dark-grey'
@@ -193,5 +189,3 @@
   <!------------>
 
 </div>
-
-

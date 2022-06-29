@@ -89,6 +89,8 @@ import BktSpinner from './BktSpinner'
 import BktPopUpFrame from "./BktPopUpFrame";
 import EditEntityTags from './EditEntityTags'
 import InfoFilterCategoryTags from "./InfoFilterCategoryTagsComponents/InfoFilterCategoryTags";
+import PopUpInfoInterviewStatus from './PopUpComponents/PopUpInfoInterviewStatus'
+import PopUpSetAnotherInterview from './PopUpComponents/PopUpSetAnotherInterviewer'
 
 export default {
   data() {
@@ -110,7 +112,9 @@ export default {
     BktSpinner,
     BktPopUpFrame,
     EditEntityTags,
-    InfoFilterCategoryTags
+    InfoFilterCategoryTags,
+    PopUpInfoInterviewStatus,
+    PopUpSetAnotherInterview
   },
 }
 </script>

@@ -55,14 +55,15 @@
 </div>
 
 <div class="d-flex align-items-center width-20 min-width-20 fs-1_6rem font-weight-500
-            bkt-light-grey6 pr-0_75rem">
+            bkt-light-grey6 pr-0_75rem"
+     data-interviews--campaigns-show-target="tagContainer">
 
   <% tags = template.categories.order(title: :asc).pluck(:title) %>
 
   <% tags.each_with_index do |tag, ind| %>
 
     <% if ind > 2 %>
-      <p class="d-flex align-items-center height-2_4rem-forced fs-1rem font-weight-600 px-1rem
+      <p class="bkt-tag d-flex align-items-center height-2_4rem-forced fs-1rem font-weight-600 px-1rem
                 py-0_5rem bkt-blue bkt-bg-light-blue mr-1rem rounded-15px text-nowrap">
         + <%= tags.count - 3 %>
       </p>
@@ -70,7 +71,7 @@
       <% break %>
     <% end %>
 
-    <p class="d-flex align-items-center height-2_4rem-forced fs-1rem font-weight-600 px-1rem py-0_5rem
+    <p class="bkt-tag d-flex align-items-center height-2_4rem-forced fs-1rem font-weight-600 px-1rem py-0_5rem
               bkt-blue bkt-bg-light-blue mr-1rem rounded-15px text-nowrap">
       <%= tag.capitalize %>
     </p>

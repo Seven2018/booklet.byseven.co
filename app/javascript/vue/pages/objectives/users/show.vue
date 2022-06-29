@@ -83,7 +83,7 @@ import store from "../../../store";
 import BktButton from "../../../components/BktButton";
 import IndexTable from "../../../components/IndexTable";
 import ObjectivesUserTable from "./ObjectivesUserTable";
-import ObjectiveSwitcher from "../../../components/ObjectiveSwitcher";
+import ObjectiveSwitcher from "../../../components/BktSwitcher";
 import BktBackButton from "../../../components/BktBackButton";
 import BktDotsButton from '../../../components/BktDotsButton'
 import UserQuickIndo from "../../../components/UserQuickIndo";

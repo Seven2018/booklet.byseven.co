@@ -24,68 +24,35 @@
 
     <div
         v-if="pagination"
-        class="flex-row-center-centered mt-5 position-relative">
-      <bkt-button
-          v-if="pagination.prev_page"
-          type="white"
-          custom-class="border-bkt-objective-blue position-absolute"
-          left="0px"
-          @click="$emit('fetch-page', pagination.prev_page)"
-      >Prev
-      </bkt-button>
+        class="paginate-container paginate-container-blue">
 
-      <div class="d-flex">
-<!--        before-->
-        <a
-            class="bkt-objective-blue3-important mx-2"
-            v-for="n in makeRange(0, pagination.current_page)"
-            @click="$emit('fetch-page', n)"
-        >{{ n }}</a>
-        <span
-            v-if="makeRange(0, pagination.current_page).length && !makeRange(0, pagination.current_page).includes(pagination.current_page - 1)"
-            class="bkt-objective-blue3-important mx-2">...</span>
-<!--        current-->
-        <a
-            class="bkt-objective-blue-important mx-2"
-            @click="$emit('fetch-page', pagination.current_page)"
-        >
-          {{pagination.current_page}}</a>
-        <a
-            class="bkt-objective-blue3-important mx-2"
-            v-for="n in makeRange(pagination.current_page, pagination.total_pages)"
-            @click="$emit('fetch-page', n)"
-        >{{ n }}</a>
-<!--        last-->
-        <span
-            v-if="!makeRange(pagination.current_page, pagination.total_pages).includes(pagination.total_pages - 1)
-            && pagination.current_page != pagination.total_pages - 1
-            && pagination.current_page < pagination.total_pages"
-            class="bkt-objective-blue3-important mx-2">...</span>
-        <a
-            v-if="pagination.current_page < pagination.total_pages"
-            class="bkt-objective-blue3-important mx-2"
-            @click="$emit('fetch-page', pagination.total_pages)"
-        >
-          {{pagination.total_pages}}</a>
-      </div>
+      <previous-button
+        :method="fetchPage"
+        :pagination='pagination'
+      > </previous-button>
 
-      <bkt-button
-          v-if="pagination.next_page"
-          type="white"
-          custom-class="border-bkt-objective-blue position-absolute"
-          style="right: 0px"
-          @click="$emit('fetch-page', pagination.next_page)"
-      >Next
-      </bkt-button>
+      <between-number
+        :method="fetchPage"
+        :pagination='pagination'
+      >
+      </between-number>
+
+      <next-button
+        :method="fetchPage"
+        :pagination='pagination'
+      > </next-button>
     </div>
   </div>
 </template>
 
 <script>
 import BktButton from "./BktButton";
+import NextButton from "./table/pagination/NextButton";
+import PreviousButton from "./table/pagination/PreviousButton";
+import BetweenNumber from "./table/pagination/BetweenNumber";
 
 export default {
-  components: {BktButton},
+  components: {BktButton, NextButton, PreviousButton, BetweenNumber},
   props: {
     headers: Array,
     tableData: Array,
@@ -99,18 +66,8 @@ export default {
     pagination: Object,
   },
   methods: {
-    makeRange(from, to) {
-      let range = []
-      let loop = 0
-
-      for (let i = from + 1; i <= to - 1; i++) {
-        range.push(i)
-        loop++
-
-        if (loop > 1) break
-      }
-
-      return range
+    fetchPage(page) {
+      this.$emit('fetch-page', page)
     }
   }
 }
@@ -139,4 +96,7 @@ table td, table th {
   border: none;
 }
 
+a.thick {
+  font-weight: bold;
+}
 </style>

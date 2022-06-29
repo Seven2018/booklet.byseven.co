@@ -65,6 +65,7 @@
             v-for="(tag, tag_idx) in item.categories"
             class="mx-2 d-inline-block my-3 vertical-align-middle"
             :selected="tag.selected"
+            :key="tag.id"
             @click.stop="toggleTag(idx, tag_idx)"
         >{{ tag.title }}
         </bkt-tag>

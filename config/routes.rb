@@ -6,11 +6,13 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  get '/(*path)', to: redirect { |path_params, request|
-                          "https://booklet.byseven.co/#{path_params[:path]}"
-                        },
-                  status: 301,
-                  constraints: { domain: 'seven-booklet.herokuapp.com' }
+  if Rails.env.production?
+    constraints(:host => /^(?!seven-booklet.herokuapp.com)/i) do
+      match "/(*path)" => redirect {
+        |params, req| "https://booklet.byseven.co/#{params[:path]}"
+        },  via: [:get, :post]
+    end
+  end
 
   root to: 'pages#home'
 
@@ -48,6 +50,7 @@ Rails.application.routes.draw do
       post :toggle_tag
       delete :remove_company_tag
       get :index_line
+      get :data_show
     end
     collection do
       get :redirect_calendar
@@ -55,7 +58,9 @@ Rails.application.routes.draw do
     end
   end
   get :my_interviews, controller: :campaigns
+  get :my_interviews_list, controller: :campaigns
   get :my_team_interviews, controller: :campaigns
+  get :my_team_interviews_list, controller: :campaigns
   match '/send_notification_email/:id' => 'campaigns#send_notification_email', as: :send_notification_email, via: [:get]
   get :campaign_select_owner, controller: :campaigns
   get :campaign_edit_date, controller: :campaigns
@@ -305,6 +310,7 @@ Rails.application.routes.draw do
   post :import_users, controller: :users
   get :users_search, controller: :users
   get :campaign_draft_users, controller: :users
+  get :managers_search, controller: :users
 
   # WORKSHOPS
   resources :workshops, only: %i[show edit update]
