@@ -11,7 +11,8 @@
         :items="selectList"
         @input="update"
     ></bkt-select>
-    <div>
+
+    <div v-if="overview">
 <!--      TODO: code-->
       tag categories of company
     </div>
@@ -25,6 +26,7 @@
 import BktSearch from "../../../components/bktSearch";
 import store from "../../../store";
 import BktSelect from "../../../components/BktSelect";
+import axios from "../../../plugins/axios";
 
 export default {
   props: ['campaign', 'overview'],
@@ -40,11 +42,19 @@ export default {
       ],
     }
   },
+  async created() {
+    if (this.overview) {
+      const res = await axios.get('/companies/get_tags_and_categories')
+
+      console.log(res.data)
+    }
+  },
   methods: {
     update() {
       store.commit('genericFetchEntity/setSearch', {
         text: this.searchText,
         status: this.status,
+        from: this.overview ? 'overview' : 'normal'
       })
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: 'campaigns_id_data_show',
@@ -52,7 +62,9 @@ export default {
       })
     },
     reset() {
-      store.commit('genericFetchEntity/setSearch')
+      store.commit('genericFetchEntity/setSearch', {
+        from: this.overview ? 'overview' : 'normal'
+      })
       this.searchText = null
       this.status = null
       store.commit('genericFetchEntity/setData', null)

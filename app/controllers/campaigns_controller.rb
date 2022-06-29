@@ -525,6 +525,7 @@ class CampaignsController < ApplicationController
   end
 
   def serialize_interview_set(employee_ids, interviews)
+    # TODO: check from params for interviewer find, params[:from]
     employee_ids.map do |employee_id|
       manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
       employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')

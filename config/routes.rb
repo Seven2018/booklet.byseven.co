@@ -136,7 +136,11 @@ Rails.application.routes.draw do
   resources :group_categories, only: [:destroy, :update]
 
   # COMPANIES
-  resources :companies, only: %i[new create update destroy]
+  resources :companies, only: %i[new create update destroy] do
+    collection do
+      get :get_tags_and_categories
+    end
+  end
 
   # CONTENTS
   resources :contents, only: %i[create show edit update destroy] do
