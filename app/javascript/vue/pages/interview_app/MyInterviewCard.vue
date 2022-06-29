@@ -20,7 +20,13 @@
 
       <interview-status :set-interview="campaign"></interview-status>
 
-      <button class="p-4 mt-4 text-center bkt-bg-blue bkt-white width-100 rounded-b-15px fs-1rem font-weight-600">
+      <button
+          class="p-4 mt-4 text-center bkt-bg-blue bkt-white width-100 rounded-b-15px fs-1rem font-weight-600"
+          :class="[campaign.crossed_interview && campaign.crossed_interview.interview.status === 'submitted'
+          || campaign.employee_interview.interview.status === 'submitted' ? 'bkt-bg-white bkt-objective-blue-important bkt-bg-light-blue2-hover' : 'bkt-bg-blue bkt-white-important bkt-bg-light-blue2-hover']"
+          @click="goto('interviews_id', campaign.crossed_interview && campaign.crossed_interview.interview.status === 'submitted' ?
+              campaign.crossed_interview.interview.id : campaign.employee_interview.interview.id)"
+      >
         {{ myInterviewCampaignButtonSentenceForEmployee(campaign) }}
       </button>
     </div>
