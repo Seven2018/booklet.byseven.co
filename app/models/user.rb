@@ -159,7 +159,7 @@ class User < ApplicationRecord
         manager = User.find_by(email: manager_email)
 
         unless manager.present?
-          manager = User.new(email: manager_email, company_id: company_id, access_level_int: :manager)
+          manager = User.new(email: manager_email, company_id: company_id, access_level_int: 'manager')
           manager.save(validate: false)
         end
       else
