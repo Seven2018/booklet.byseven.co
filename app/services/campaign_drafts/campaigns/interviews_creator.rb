@@ -38,10 +38,28 @@ module CampaignDrafts
       end
 
       def send_mail
-        unless Rails.env.development?
-          owner = User.find_by(id: @campaign.owner_id)
-          CampaignMailer.campaign_interview_created(owner, @campaign)
-                        .deliver_later
+        owner = User.find_by(id: @campaign.owner_id)
+        CampaignMailer.campaign_interview_created(owner, @campaign)
+                      .deliver_later
+
+        if @campaign_draft.send_invitation
+          interviewers = @campaign.interviewers.uniq
+          interviewees = @campaign.employees.uniq
+
+          interviewers.each do |interviewer|
+            CampaignMailer.with(user: interviewer)
+              .invite_interviewer(interviewer, @campaign)
+              .deliver_later
+          end
+
+          interviewees.each do |interviewee|
+            interview = Interview.find_by(campaign: @campaign, employee: interviewee, label: 'Employee')
+            interviewer = interview.interviewer
+
+            CampaignMailer.with(user: interviewee)
+              .invite_employee(interviewer, interviewee, interview)
+              .deliver_later
+          end
         end
       end
 
