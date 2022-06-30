@@ -79,7 +79,7 @@ import axios from "../../../plugins/axios";
 export default {
   mixins: [tools],
   components: {InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
-  props: ['campaign'],
+  props: ['overview','campaign'],
   data() {
     return {
       headers: ['Interviewee', 'Template', 'Interviewer', 'Tags', 'Completion', ''],
@@ -135,6 +135,7 @@ export default {
         type: 'custom',
         componentName: 'pop-up-set-interview',
         closable: true,
+        overview: this.$props.overview,
         manager_interview: row['manager_interview'],
         crossed_interview: row['crossed_interview'],
         employee_interview: row['employee_interview'],

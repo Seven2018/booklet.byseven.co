@@ -72,6 +72,7 @@
           <group-category-filter entity-list-key="campaigns_id_data_show" :path-key-args="{id: campaignId}"></group-category-filter>
           <campaign-show-table
               v-show="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length > 0"
+              :overview="overview"
               :campaign="campaign"
           ></campaign-show-table>
           <bkt-no-entity-from-index
