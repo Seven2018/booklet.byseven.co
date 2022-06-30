@@ -525,11 +525,16 @@ class CampaignsController < ApplicationController
   end
 
   def serialize_interview_set(employee_ids, interviews)
-    # TODO: check from params for interviewer find, params[:from]
     employee_ids.map do |employee_id|
-      manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
-      employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
-      crossed_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
+      if params.require(:from) == 'overview'
+        manager_interview = interviews.find_by(employee_id: employee_id, label: 'Manager')
+        employee_interview = interviews.find_by(employee_id: employee_id, label: 'Employee')
+        crossed_interview = interviews.find_by(employee_id: employee_id, label: 'Crossed')
+      elsif params.require(:from) == 'normal'
+        manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
+        employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
+        crossed_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
+      end
       {
         manager_interview: (ActiveModelSerializers::SerializableResource.new(
           manager_interview, {serializer: InterviewSerializer}
