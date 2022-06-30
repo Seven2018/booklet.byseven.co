@@ -2,33 +2,16 @@
 
 class CampaignDraft::LaunchesController < CampaignDraft::BaseController
   def update
+    campaign_draft.update(send_invitation: params[:send_email] == 'true')
+
     new_campaign = CampaignDrafts::Campaigns::Launch.call(campaign_draft: campaign_draft)
+
     if new_campaign&.id.present?
       campaign_draft.launches_set!
 
       new_campaign.update(interview_forms_list: campaign_draft.multi_templates_ids.join(',').to_h
                                                               .merge('default_template' => campaign_draft.default_template_id.to_s),
                           calendar_uuid: SecureRandom.hex(32))
-
-      if params[:send_email] == 'true'
-        interviewers = new_campaign.interviewers.uniq
-        interviewees = new_campaign.employees.uniq
-
-        interviewers.each do |interviewer|
-          CampaignMailer.with(user: interviewer)
-            .invite_interviewer(interviewer, new_campaign)
-            .deliver_later
-        end
-
-        interviewees.each do |interviewee|
-          interview = Interview.find_by(campaign: new_campaign, employee: interviewee, label: 'Employee')
-          interviewer = interview.interviewer
-
-          CampaignMailer.with(user: interviewee)
-            .invite_employee(interviewer, interviewee, interview)
-            .deliver_later
-        end
-      end
 
       redirect_to campaigns_path
 
