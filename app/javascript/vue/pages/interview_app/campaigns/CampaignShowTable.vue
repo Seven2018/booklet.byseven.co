@@ -5,7 +5,7 @@
       :headers="headers"
       :table-data="genericFetchEntity.data['set_interviews']"
       :pagination="genericFetchEntity.data['meta']"
-      @fetch-page="fetchPage($event, 'campaigns_id_data_show', {id: genericFetchEntity.data['campaign'].campaign.id})"
+      @fetch-page="fetchPage($event, 'campaigns_id_data_show', {id: campaign.id})"
       @row-click="rowClick"
       class="cursor-pointer"
   >

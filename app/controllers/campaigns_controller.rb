@@ -60,7 +60,7 @@ class CampaignsController < ApplicationController
     employees = User.where(id: employees.ids).search_users(params[:text]) if params[:text].present?
     employees = check_user_categories(employees) if params[:userCategories].present?
 
-    interviews = campaign.interviews.where(interviewer: current_user, employee_id: employees.ids)
+    interviews = campaign.interviews.where(employee_id: employees.ids)
     interviews = interviews.where(status: params[:status]) if params[:status].present?
     interviews = interviews.where.not(id: interviews.ids_without_employee_interview)
     interviews = filter_tag_by_interview_set(interviews) if params[:tags].present?
