@@ -1,54 +1,70 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:update, :destroy]
+  skip_forgery_protection
+  skip_after_action :verify_policy_scoped
+  skip_after_action :verify_authorized
 
-  # Create a new category (contents/edit_mode or pages/catalogue)
-  def create
-    @category = Category.new(category_params)
-    authorize @category
-    @category.company_id = current_user.company_id
-    @category.title = 'Sans titre' if @category.title == ''
-    @page = params[:category][:page]
-    if @category.save
-      respond_to do |format|
-        format.js
-      end
-    end
+  def index
+    categories = current_user.company.categories.where(kind: params.require(:kind))
+    categories = categories.where('lower(title) LIKE ?', "%#{params[:title].downcase}%") if params[:title]
+
+    render json: categories, status: :ok
   end
 
-  # Update a category (contents/edit_mode or pages/catalogue)
   def update
-    authorize @category
-    @category.update(category_params)
-    if @category.save
-      if params[:category][:ajax].present?
-        respond_to do |format|
-          format.html {redirect_to catalogue_path}
-          format.js
-        end
-      else
-        redirect_to catalogue_path
-      end
+    tag_id = params.require(:id)
+    group_category_id = params.require(:group_category_id)
+
+    tag = Category.find(tag_id)
+
+    if tag.update(group_category_id: group_category_id)
+      head :ok
+    else
+      render json: {message: "Couldn't update group category"}, status: :unprocessable_entity
     end
   end
 
-  # Delete a category (contents/edit_mode or pages/catalogue)
-  def destroy
-    authorize @category
-    @page = params[:page]
-    @category.destroy
-    respond_to do |format|
-      format.js
+  def groups
+    kind = params.require(:kind)
+    raise ActionController::BadRequest, 'bad parameter' unless GroupCategory.kinds.include?(kind.to_sym)
+
+    render json: current_user.company.group_categories.of_kind(kind.to_sym), status: :ok
+  end
+
+  def new_group
+    group_name = params.require(:name)
+    kind = params.require(:kind)
+    group = current_user.company.group_categories.create(name: group_name, kind: kind)
+
+    if group.valid?
+      head :ok
+    else
+      render json: group.errors.messages, status: :unprocessable_entity
     end
+  end
+
+  def from_campaign
+    campaign = Campaign.find(params.require(:id))
+
+    render json: campaign.categories, status: :ok
+  end
+
+
+  def from_template
+    interview_form = InterviewForm.find(params.require(:id))
+
+    render json: interview_form.categories, status: :ok
   end
 
   # Search from categories with autocomplete
   def categories_search
     skip_authorization
+
     if params[:search].present?
       @categories = Category.where(company_id: current_user.company_id).ransack(title_cont: params[:search]).result(distinct: true)
     else
       @categories = Category.where(company_id: current_user.company_id)
     end
+
     respond_to do |format|
       format.json {
         @users = @categories.limit(5)
@@ -56,13 +72,12 @@ class CategoriesController < ApplicationController
     end
   end
 
-  private
+  def search_v2
+    categories = current_user.company.categories.where(kind: params.require(:kind))
+    categories = categories.ransack(title_cont: params[:search]).result(distinct: true) if params[:search].present?
+    categories = categories.where.not(group_category_id: params[:except_group_category_id]) if params[:except_group_category_id].present?
 
-  def set_category
-    @category = Category.find(params[:id])
+    render json: categories, status: :ok
   end
 
-  def category_params
-    params.require(:category).permit(:title)
-  end
 end

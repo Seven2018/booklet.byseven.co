@@ -5,7 +5,6 @@ class Interview < ApplicationRecord
   belongs_to :interviewer, class_name: "User"
   belongs_to :creator, class_name: "User"
   has_many :interview_answers, dependent: :destroy
-  before_create :ensure_date_presence
   validates :title, :label, presence: true
   validate :single_campaign_interview_set_per_employee
   validate :label_and_interview_form_match
@@ -19,6 +18,8 @@ class Interview < ApplicationRecord
     in_progress: 20,
     submitted: 30
   }
+
+  serialize :archived_for, Hash
 
   include PgSearch::Model
   pg_search_scope :search_interviews,
@@ -36,6 +37,12 @@ class Interview < ApplicationRecord
 
   scope :submitted, -> { where(status: :submitted) }
   scope :locked, -> { where.not(locked_at: nil) }
+  scope :ids_without_employee_interview, -> do
+    group_by(&:employee_id).map do |_, interv|
+      interv.map(&:label).include?('Employee') ? nil : interv.map(&:id)
+    end.flatten.compact
+  end
+  scope :employee_label, -> { where(label: 'Employee') }
 
   def set
     @set ||= Poro::Campaign.new(campaign: campaign, employee_id: employee_id)
@@ -107,6 +114,11 @@ class Interview < ApplicationRecord
     locked_at.present? && !will_save_change_to_locked_at?
   end
 
+  def update_archived_for(name, value)
+    archived_for[name] = value
+    update_column(:archived_for, archived_for)
+  end
+
   private
 
   def single_campaign_interview_set_per_employee
@@ -141,11 +153,5 @@ class Interview < ApplicationRecord
 
   def not_locked
     errors.add(:base, 'a locked interview can not be changed') if locked? || unlocking
-  end
-
-  def ensure_date_presence
-    return if date.present?
-
-    self.date = Time.zone.today.end_of_month
   end
 end

@@ -27,32 +27,34 @@ export default class extends Controller {
 
     const page = this.searchTarget.dataset.page // not currently used
     const mode = this.searchTarget.dataset.mode
-    const dateStart = document.querySelector('.search-inject-date-start') ?
+    const startDate = document.querySelector('.search-inject-date-start') ?
       document.querySelector('.search-inject-date-start').value : null // is not a controller target to avoid dates dependencies
-    const dateEnd = document.querySelector('.search-inject-date-end') ?
+    const endDate = document.querySelector('.search-inject-date-end') ?
       document.querySelector('.search-inject-date-end').value : null // is not a controller target to avoid dates dependencies
     const selected = this.hasSelectedTarget ? this.selectedTarget.value : null
     const path = this.searchTarget.dataset.path
     const query = this.searchTarget.value
-    const url = `${path}?search=${query}&page=${page}&mode=${mode}&date_start=${dateStart}&date_end=${dateEnd}&selected=${selected}`
+    const url = `${path}?search=${query}&page=${page}&mode=${mode}&start_date=${startDate}&end_date=${endDate}&selected=${selected}`
     fetch(url)
       .then(response => response.text())
       .then(html => {
         this.resultsTarget.innerHTML = html
         this._refreshFilteredCount()
 
-      // Check the select filtered accordingly
-      const select_filtered = document.getElementById('select_filtered')
-      if (this.resultsTarget.querySelectorAll('input[type="checkbox"]:not(:checked)').length > 0 && select_filtered != undefined) {
-        select_filtered.querySelector('svg').classList.add('hidden')
-        select_filtered.querySelector('input').checked = false
-      } else {
-        select_filtered.querySelector('svg').classList.remove('hidden')
-        select_filtered.querySelector('input').checked = true
-      }
+        // Check the select filtered accordingly
+        const select_filtered = document.getElementById('select_filtered')
+        if (this.resultsTarget.childElementCount == 0
+              || (this.resultsTarget.querySelectorAll('input[type="checkbox"]:not(:checked)').length > 0
+              && select_filtered != undefined)) {
+          select_filtered.querySelector('svg').classList.add('hidden')
+          select_filtered.querySelector('input').checked = false
+        } else {
+          select_filtered.querySelector('svg').classList.remove('hidden')
+          select_filtered.querySelector('input').checked = true
+        }
 
-      document.querySelector('body').classList.remove('wait')
-    })
+        document.querySelector('body').classList.remove('wait')
+      })
   }
 
   _refreshFilteredCount() {

@@ -1,22 +1,28 @@
-<div class="d-none d-sm-flex modal-content action-modal__content">
+<div class="d-none d-sm-flex modal-content info-modal__content">
 
-  <div class="modal-body action-modal__body" data-controller='tabs workshop-show' data-tabs-target='tabContainer'>
+  <div class="modal-header info-modal__header flex-row-end-centered">
 
     <div class="flex-row-center-centered">
       <span class="iconify mb-2rem" data-icon="fxemoji:trophy" style='font-size: 90px;'></span>
     </div>
 
-    <div class="text-center z-index-5 mb-5rem">
-      <p class="fs-2_4rem font-weight-700 bkt-dark-grey mb-1rem">Congratulations !</p>
-      <p class="fs-1_4rem font-weight-500 bkt-dark-grey">One more workshop finished, keep it up !</p>
-    </div>
-
-    <div class="flex-row-center-centered">
-      <button type="button" class="bkt-btn-orange-white" data-dismiss="modal" aria-label="Close">
-        Sure !
-      </button>
-    </div>
   </div>
+
+  <div class="modal-body info-modal__body">
+
+    <p class="fs-2_4rem font-weight-700 bkt-dark-grey mb-2rem">Congratulations !</p>
+    <p class="fs-1_4rem font-weight-500 bkt-dark-grey">One more workshop finished, keep it up !</p>
+
+  </div>
+
+  <div class="modal-footer info-modal__footer">
+
+    <button type="button" class="bkt-btn-white-orange" data-dismiss="modal" aria-label="Close">
+      Sure !
+    </button>
+
+  </div>
+
 </div>
 
 <div class="d-sm-none modal-content bkt-bg-white width-90-important m-auto" style="border-radius: 25px !important;">

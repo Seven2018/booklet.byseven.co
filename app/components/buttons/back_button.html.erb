@@ -2,12 +2,13 @@
   class="d-none d-sm-flex bkt-btn-back justify-content-start align-items-center cursor-pointer"
   data-controller='back'
   data-action='click->back#back'
-  data-fallback='<%= @fallback %>'>
+  data-fallback='<%= @fallback %>'
+  data-force-fallback='<%= @force_fallback.presence %>'>
 
   <% if content.present? %>
     <%= content %>
   <% else %>
-    <div class="d-flex justify-content-center align-items-center height-4rem width-4rem rounded-20px bkt-box-shadow-medium bkt-bg-light-grey5-hover">
+    <div class="d-flex justify-content-center align-items-center height-4rem width-4rem rounded-20px bkt-box-shadow-medium bkt-bg-white bkt-bg-light-grey5-hover">
       <span class="iconify bkt-dark-grey m-0" data-icon="eva:arrow-back-outline" data-width="25" data-height="25"></span>
     </div>
   <% end %>
@@ -18,7 +19,8 @@
   class="d-sm-none justify-content-start align-items-center cursor-pointer"
   data-controller='back'
   data-action='click->back#back'
-  data-fallback='<%= @fallback %>'>
+  data-fallback='<%= @fallback %>'
+  data-force-fallback='<%= @force_fallback.presence %>'>
 
   <% if content.present? %>
     <%= content %>

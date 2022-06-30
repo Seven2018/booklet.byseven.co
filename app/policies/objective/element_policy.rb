@@ -20,4 +20,16 @@ class Objective::ElementPolicy < ApplicationPolicy
   def my_team_objectives?
     user.access_level_int.to_sym != :employee
   end
+
+  def targets?
+    my_team_objectives?
+  end
+
+  def employees?
+    my_team_objectives?
+  end
+
+  def templates?
+    my_team_objectives?
+  end
 end

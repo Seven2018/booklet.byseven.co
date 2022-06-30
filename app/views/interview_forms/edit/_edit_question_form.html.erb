@@ -24,26 +24,35 @@
   </div>
 
   <div class="flex-row-between-centered">
-    <% if CampaignPolicy.new(current_user, nil).create? && !params[:content_access].present? %>
+
+    <% if InterviewFormPolicy.new(current_user, nil).create? && !params[:content_access].present? %>
 
       <% if first_question %>
+
         <a class='px-1' disabled style='cursor: default;'>
           <span class="iconify bkt-light-blue" data-icon="akar-icons:arrow-up"></span>
         </a>
+
       <% else %>
+
         <%= link_to move_up_interview_question_path(question), class: 'px-1', remote: true do %>
           <span class="iconify bkt-blue" data-icon="akar-icons:arrow-up"></span>
         <% end %>
+
       <% end %>
 
       <% if last_question %>
+
         <a class='px-1' disabled style='cursor: default;'>
           <span class="iconify bkt-light-blue" data-icon="akar-icons:arrow-down"></span>
         </a>
+
       <% else %>
+
         <%= link_to move_down_interview_question_path(question), class: 'px-1', remote: true do %>
           <span class="iconify bkt-blue" data-icon="akar-icons:arrow-down"></span>
         <% end %>
+
       <% end %>
 
       <%= link_to duplicate_interview_question_path(question), class: 'px-1', remote: true do %>
@@ -55,6 +64,7 @@
       <% end %>
 
     <% end %>
+
   </div>
 
 </div>
@@ -64,7 +74,7 @@
   <%= f.input(:question, {
       placeholder: 'Title (required)',
       input_html: {
-        class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem',
+        class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
         autocomplete: 'off',
         data: { action: 'keyup->interviews--interview-forms-edit#saveForm' }
       },
@@ -76,8 +86,8 @@
     name: 'interview_question[description]',
     value: question.description,
     placeholder: 'Description (optional)',
-    klasses: "bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem fs-1_4rem"
-  ) %>
+    hide_toolbar: false,
+    toolbar_within: true) %>
 
   <% if question.rating? %>
     <div class="flex-row-between-centered mb-2rem">

@@ -1,212 +1,104 @@
-.search {
+#searchbar, #searchbar-wrap {
+  position: relative;
+  margin-bottom: 2rem;
+
+  input:not([type=submit]), select {
+    height: 5rem;
+    border-radius: .5rem;
+    border: 1px solid #C4C4C4;
+    font-weight: 500;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+      border: 1px solid $bkt-dark-grey !important;
+    }
+  }
+
+  select {
+    color: #C4C4C4;
+  }
 
   .form-group {
     margin-bottom: 0 !important;
   }
-}
 
-.searchbar {
-  display: flex;
-  align-items: flex-end;
-  position: relative;
-  margin-right: 1rem;
-
-  form {
-    display: flex;
-    align-items: flex-end;
-  }
-
-  div {
-    margin: 0 1rem 0 0;
-  }
-
-  input, select {
-    height: 40px;
-    border-radius: 4px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
-    // margin: 0 1rem 0 0;
-
-    &:focus {
-      border-color: #ced4da;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, .25);
-    }
-  }
-
-  input {
-    position: relative;
-    // width: 30rem;
-    padding: 0 6rem 0 3.5rem;
-    font-style: normal;
-  }
-
-  [type="checkbox"] {
+  #search_title, #search_name {
+    width: 25rem;
+    padding: 0 4rem 0 1rem;
     margin-right: 1rem;
   }
 
-  #search_trainings_employee {
-    padding: 0 1rem;
-  }
-
-  .flatpickr-input {
-    padding: 1rem;
-    width: 10.5rem !important;
-  }
-
-  .btn-search, .btn-reset {
-    width: 75px;
+  .search_period {
+    height: 5rem;
+    width: 13rem;
     padding: 0;
-    font-weight: bold;
-  }
-
-  .searchbar__checkboxes-container {
+    margin-right: 1rem;
+    border-radius: .5rem;
+    overflow: hidden;
+    background-color: #FBFBFB;
     position: relative;
 
-    .searchbar__checkboxes-container-pseudo-input {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      margin: 0;
-      background-color: white;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-      color: #7a7a7a;
-      cursor: pointer;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-
-      p {
-        font-style: italic;
-      }
+    select {
+      padding: 5px 8px;
+      border: 1px solid #C4C4C4;
+      box-shadow: none;
+      background-color: transparent;
+      background-image: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
     }
 
-    .searchbar__checkboxes {
-      width: 20rem;
-      max-height: 20rem;
-      overflow-y: scroll;
-      padding: 1rem;
+    &:after {
+      top: 50%;
+      left: 85%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
       position: absolute;
-      top: 7rem;
-      left: 0;
-      margin: 10px 0 auto;
-      background-color: white;
-      border: 1px solid #ced4da;
-      border-radius: 2px;
-      color: #7a7a7a;
+      pointer-events: none;
+      border-color: rgba(0, 0, 0, 0);
+      border-top-color: #000000;
+      border-width: 5px;
+      margin-top: -2px;
       z-index: 100;
-
-      .searchbar__checkboxes-reset {
-        margin: 0 0 .5rem 2.4rem;
-        cursor: pointer;
-      }
-
-      .flex-row-center-centered:first-of-type {
-        height: 2.4rem;
-        margin: 0;
-      }
-
-      span {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-bottom: .5rem;
-      }
-
-      span:last-of-type {
-        margin: 0;
-      }
-
-      label {
-        margin: 0;
-        white-space: nowrap;
-      }
-    }
-  }
-}
-
-.searchbar {
-  width: calc(100vw - 6rem);
-  margin: 0 0 2rem 0;
-
-  @include from-medium {
-    width: auto;
-    margin: 0 1rem 0 0;
-  }
-
-  form {
-    flex-grow: 1;
-    max-width: 100%;
-    justify-content: space-between;
-
-    @include from-medium {
-      flex-grow: 0;
-      justify-content: flex-start;
     }
   }
 
-  .search_title, #search_title, #search_name {
-    flex-grow: 1;
-    max-width: calc(100vw - 12rem);
-
-    @include from-medium {
-      width: 30rem;
-      flex-grow: 0;
-    }
-  }
-
-  .search_period {
-    display: none;
-
-    @include from-medium {
-      display: block;
-    }
-  }
-
-  .btn-search {
-    display: none;
-
-    @include from-medium {
-      display: block;
-    }
-  }
-
-  .btn-search--mobile, .btn-reset--mobile {
+  .btn-search--mobile {
     display: block;
-    height: 5rem;
-    width: 5rem !important;
-    min-width: 5rem !important;
-    margin: 0 !important;
-    background-color: #D0D0D7;
-    border-radius: 4px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-
-    i {
-      color: black;
-    }
 
     @include from-medium {
       display: none;
     }
   }
 
-  .btn-reset {
-    display: none;
-
-    @include from-medium {
-      display: block;
-    }
+  .searchbar-icon {
+    position: absolute;
+    z-index: 150;
+    left: 22rem;
+    top: 16.6px;
+    color: #C4C4C4;
   }
 }
 
+#searchbar {
 
-
-.catalogue-controls__search-trainings-icon {
-  position: absolute;
-  z-index: 150;
-  left: 12px;
-  bottom: 11px;
-  color: #C4C4C4;
+  form {
+    display: flex;
+    align-items: center;
+  }
 }
 
+#searchbar-wrap {
+
+  form {
+    display: flex;
+    align-items: flex-start;
+  }
+}
 
 ////////////////////////
 // CAMPAIGN SEARCHBAR //

@@ -11,6 +11,16 @@ class CampaignDecorator < Draper::Decorator
     end
   end
 
+  def completion_status_color(employee = :all)
+    if completion_for(employee) == 0
+      'bkt-bg-negative-red'
+    elsif completion_for(employee) == 100
+      'bkt-bg-green'
+    else
+      'bkt-bg-yellow'
+    end
+  end
+
   def completion_status_string(employee = :all)
     completion_status(employee).capitalize.gsub(/_/, " ")
   end
@@ -39,7 +49,7 @@ class CampaignDecorator < Draper::Decorator
     poro_campaign = Poro::Campaign.new(campaign: self, employee_id: employee_id)
 
     %i[employee_interview manager_interview crossed_interview]
-      .map { |interview| poro_campaign.send interview }
+      .map { |interview| poro_campaign.send interview }.select(&:present?)
   end
 
   def employees_for(interviewer_id)

@@ -9,6 +9,10 @@ class InterviewReportPolicy < ApplicationPolicy
     end
   end
 
+  def list?
+    true
+  end
+
   def show?
     create?
   end

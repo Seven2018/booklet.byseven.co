@@ -22,6 +22,7 @@ class CampaignDraft < ApplicationRecord
 
   scope :launched, -> { where(state: :launches) }
   scope :processing, -> { where.not(state: :launches) }
+  scope :campaign, -> (owner_id, campaign_id) { where(user_id: owner_id).select{|draft| draft.data['campaign_id'].to_i == campaign_id} }
 
   jsonb_accessor :data,
                  title: :string,
@@ -34,6 +35,8 @@ class CampaignDraft < ApplicationRecord
                  ends_at: [:string, default: '10:00'],
                  default_interviewer_id: :integer,
                  default_template_id: :integer,
+                 multi_templates_category: :integer,
+                 multi_templates_ids: [:string, array: true, default: []],
                  interviewee_ids: [:string, array: true, default: []],
                  interview_sets: [:string, array: true, default: []]
 

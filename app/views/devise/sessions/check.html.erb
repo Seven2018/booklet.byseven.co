@@ -1,52 +1,76 @@
 <% content_for :title do %>
   Welcome on board !
 <% end %>
+
 <% content_for :subtitle do %>
-  Please enter your password.
+
+  <% if @user.invitation_token.nil? %>
+    Please enter your password.
+  <% end %>
+
 <% end %>
 
 <% wrong_password = false %>
+
 <% flash.each do |type, msg| %>
+
   <% if type == 'alert' && msg == 'Invalid Email or password.' %>
     <% wrong_password = true %>
   <% end %>
+
 <% end %>
 
 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), method: :post) do |f| %>
+
   <%= f.input :email,
               required: true,
               input_html: {
                 autocomplete: "email", class: 'bkt-bg-light-grey',
                 data: {
-                  controller: 'back',
-                  action: 'click->back#back'
+                  controller: 'back'
                 }
               },
               label_html: { class: 'font-weight-500' } %>
-  <%= f.input :password,
-              required: true,
-              autofocus: true,
-              input_html: { autocomplete: "current-password", class: wrong_password ? 'border-bkt-red' : '' },
-              label_html: { class: wrong_password ? 'font-weight-500 mb-3 bkt-red' : 'font-weight-500 mb-3' } %>
+
+  <% if @user.invitation_token.nil? %>
+
+    <%= f.input :password,
+                required: true,
+                autofocus: true,
+                input_html: { autocomplete: "current-password", class: wrong_password ? 'border-bkt-red' : '' },
+                label_html: { class: wrong_password ? 'font-weight-500 mb-3 bkt-red' : 'font-weight-500 mb-3' } %>
+
+  <% end %>
 
   <% if wrong_password %>
+
     <div class="flex-row-start-centered bkt-red mb-4">
       <span class="iconify mr-2" data-icon="ant-design:exclamation-circle-outlined"></span>
       Wrong password
     </div>
+
   <% end %>
 
-  <div class="flex-row-between-centered">
-<!--    <div class="">-->
-      <%#= f.input :remember_me, as: :boolean, label_html: { class: 'fs-1rem ml-1rem py-1' } if devise_mapping.rememberable? %>
-<!--    </div>-->
-    <div class="">
-      <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
-        <%# link_to "Forgot your password", new_password_path(resource_name), class: 'fs-1rem ml-2 py-1 font-weight-500 underline' %>
-      <% end %>
-    </div>
+  <div class="width-100 d-flex justify-content-end">
+    <%= link_to 'Reset password',
+                u_check_path(user: {email: params.dig(:user, :email)}, reset: true), method: :post,
+                class: 'fs-1rem font-weight-600 bkt-dark-grey underline' if @user.invitation_token.nil? %>
   </div>
+
   <div class="">
-    <%= f.button :submit, "Sign in", class: 'width-100 bkt-bg-dark-grey bkt-white rounded-2px mt-4 p-3' %>
+
+    <% if @user.invitation_token.nil? %>
+
+      <%= f.button :submit, "Sign in",
+            class: 'width-100 bkt-bg-dark-grey-important bkt-white-important rounded-2px mt-4 p-3' %>
+
+    <% else %>
+
+      <%= link_to 'Create password',
+                u_check_path(user: {email: params.dig(:user, :email)}, reset: true), method: :post,
+                class: 'd-block width-100 bkt-bg-dark-grey-important bkt-white-important rounded-2px mt-4 p-3 text-center' %>
+
+    <% end %>
   </div>
+
 <% end %>

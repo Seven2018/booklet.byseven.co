@@ -1,19 +1,9 @@
 <div class="organisation__container">
+
   <div class="organisation__main">
     <%= render 'pages/organisation/organisation_users_list', users: @users %>
   </div>
-  <div class="organisation__filter-container">
-    <div class="organisation__filter-background" onclick='closeFilter();'></div>
-    <div class="organisation__filter-dropright">
-      <%= render 'pages/organisation/organisation_filter_dropright' %>
-    </div>
-  </div>
-  <!-- <div class="organisation-manage-users-container">
-    <div class="organisation-manage-users-background" onclick='closeManager();'></div>
-    <div class="organisation-manage-users-dropright">
-      <%# render 'pages/organisation/organisation_manage_users_dropright', users: @users %>
-    </div>
-  </div> -->
+
 </div>
 
 <!------------>
@@ -38,22 +28,46 @@
   </div>
 </div>
 
-<div class='modal fade' id='importUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='importUsers'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
     <%= render 'users/modals/import' %>
   </div>
+
 </div>
 
-<div class='modal fade' id='importUsersInfos' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog modal-lg modal-import-infos' role='document' style='border-radius: 20px'>
-    <%= render 'users/partials/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
+<div id='importUsersInfos'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog action-modal__dialog modal-lg modal-import-infos min-w-60vw'
+       role='document'>
+    <%= render 'users/modals/import_infos', errors: [], creating: [], updating: [], deleting: [] %>
   </div>
+
 </div>
 
-<div class='modal fade' id='exportUsers' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'  data-backdrop="static" data-keyboard="false">
-  <div class='modal-dialog' role='document' style='border-radius: 20px'>
+<div id='exportUsers'
+     class='modal action-modal fade'
+     tabindex='-1'
+     role='dialog'
+     data-backdrop="static"
+     data-keyboard="false">
+
+  <div class='modal-dialog action-modal__dialog'
+       role='document'>
     <%= render 'users/modals/export' %>
   </div>
+
 </div>
 
 <!---------------->
@@ -89,83 +103,9 @@
   }
 
 
-  ///////////////
-  // SEARCHBAR //
-  ///////////////
-
-  function showResetMobile(element, boolean) {
-    search_button = element.querySelector('.btn-search--mobile')
-    reset_button = element.querySelector('.btn-reset--mobile')
-    if (boolean) {
-      search_button.classList.add('hidden')
-      reset_button.classList.remove('hidden')
-    } else {
-      search_button.classList.remove('hidden')
-      reset_button.classList.add('hidden')
-    }
-  }
-
-
   /////////////
   // FILTERS //
   /////////////
-
-  // function openForm(element) {
-  //   if (doubleClickGuardian == false) {
-  //     doubleClickGuardian = true
-  //     element.classList.toggle('hidden')
-  //     form = element.parentNode.querySelector('.hidden-form-category-ajax')
-  //     form.classList.toggle('hidden')
-  //     setTimeout(function(){doubleClickGuardian = false}, 10)
-
-  //     window.addEventListener('click', function(e) {
-  //       if (outsideClick(e, form) && doubleClickGuardian == false) {
-  //         form.classList.toggle('hidden')
-  //         element.classList.toggle('hidden')
-  //         this.removeEventListener('click', arguments.callee, false)
-  //       }
-  //     });
-  //   }
-  // }
-
-  // function openFilter() {
-  //   filter_container = document.querySelector('.organisation-filter-container');
-  //   filter_dropright = document.querySelector('.organisation-filter-dropright');
-  //   filter_container.style.display = 'flex';
-  //   setTimeout(function(){
-  //     filter_dropright.style.width = '400px';
-  //   }, 1);
-  //   document.querySelector('body').classList.add('filter-open')
-  // }
-
-  // function closeFilter() {
-  //   filter_container = document.querySelector('.organisation-filter-container');
-  //   filter_dropright = document.querySelector('.organisation-filter-dropright');
-  //   filter_dropright.style.width = '0px';
-  //   setTimeout(function(){
-  //     filter_container.style.display = 'none';
-  //   }, 250);
-  //   document.querySelector('body').classList.remove('filter-open')
-  // }
-
-  // function openManager() {
-  //   manage_users_container = document.querySelector('.organisation-manage-users-container');
-  //   manage_users_dropright = document.querySelector('.organisation-manage-users-dropright');
-  //   manage_users_container.style.display = 'flex';
-  //   setTimeout(function(){
-  //     manage_users_dropright.style.width = '400px';
-  //   }, 1);
-  // }
-
-  // function closeManager() {
-  //   filter_container = document.querySelector('.organisation-manage-users-container');
-  //   filter_dropright = document.querySelector('.organisation-manage-users-dropright');
-  //   filter_dropright.style.width = '0px';
-  //   setTimeout(function(){
-  //     filter_container.style.display = 'none';
-  //   }, 250);
-  // }
-
 
   function toggleTagCategoryDropdown(element) {
     caret = element.querySelector('i')
@@ -185,105 +125,6 @@
       block.classList.remove('active');
     }
   }
-
-  // function hideClearFilterButton() {
-  //   form = document.querySelector('.filter_user');
-  //   form.querySelectorAll('.organisation-filter-block').forEach((element) => {
-  //     checked = false;
-  //     element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-  //       if (checkbox.checked == true) {
-  //         checked = true;
-  //       }
-  //     })
-  //     if (checked == false) {
-  //       element.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '0';
-  //     }
-  //   })
-  // }
-
-  // function hideClearManagerButton() {
-  //   form = document.querySelector('.add_tags');
-  //   form.querySelectorAll('.organisation-manage-users-block').forEach((element) => {
-  //     checked = false;
-  //     element.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-  //       if (checkbox.checked == true) {
-  //         checked = true;
-  //       }
-  //     })
-  //     if (checked == false) {
-  //       element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '0';
-  //     } else {
-  //       element.querySelector('.organisation-manage-users-block-title-buttons').querySelector('p').style.opacity = '1';
-  //     }
-  //   })
-  // }
-
-  // function autoSubmit(element) {
-  //   element.parentNode.parentNode.parentNode.parentNode.querySelector('.organisation-filter-block-title-buttons').querySelector('p').style.opacity = '1';
-  //   hideClearFilterButton();
-  //   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
-  //   document.querySelector('body').classList.add('wait');
-  // }
-
-  // function clearFilter(element) {
-  //   block = element.parentNode.parentNode.parentNode.parentNode;
-  //   block.querySelectorAll('input.check_boxes').forEach((element) => {
-  //     if (element.checked == true) {
-  //       element.checked = false;
-  //     }
-  //   })
-  //   hideClearFilterButton();
-  //   document.querySelector('.filter_user').querySelector('.hidden-submit').click();
-  //   document.querySelector('body').classList.add('wait');
-  // }
-
-  // function clearFilterManager(element) {
-  //   block = element.parentNode.parentNode.parentNode.parentNode;
-  //   block.querySelectorAll('input.check_boxes').forEach((element) => {
-  //     if (element.checked == true) {
-  //       element.checked = false;
-  //     }
-  //   })
-  //   hideClearManagerButton();
-  // }
-
-  // function resetFilter() {
-  //   form = document.querySelector('.filter_user');
-  //   form.querySelectorAll('.check_boxes').forEach((element) => {
-  //     if (element.checked == true) {
-  //       element.checked = false;
-  //     }
-  //   })
-  //   hideClearFilterButton();
-  //   form.querySelector('.hidden-submit').click();
-  //   document.querySelector('body').classList.add('wait');
-  // }
-
-  // function removeJob(element) {
-  //   form = document.querySelector('.filter_user');
-  //   job = element.parentNode.getAttribute("name");
-  //   form.querySelector('.filter_user_job').querySelectorAll('input.check_boxes').forEach((checkbox) => {
-  //     if (checkbox.value == job) {
-  //       checkbox.checked = false;
-  //       form.querySelector('.hidden-submit').click();
-  //       document.querySelector('body').classList.add('wait');
-  //     }
-  //   })
-  // }
-
-  // function removeFilterTag(element) {
-  //   form = document.querySelector('.filter_user');
-  //   job = element.parentNode.getAttribute("name");
-  //   form.querySelectorAll('.filter_user_tag').forEach((category) => {
-  //     category.querySelectorAll('input.check_boxes').forEach((checkbox) => {
-  //       if (checkbox.parentNode.querySelector('label').innerText == job) {
-  //         checkbox.checked = false;
-  //         form.querySelector('.hidden-submit').click();
-  //         document.querySelector('body').classList.add('wait');
-  //       }
-  //     })
-  //   })
-  // }
 
   function selectUser(element) {
     ids = []
@@ -315,19 +156,10 @@
     unlink_href.searchParams.set('selected_users', ids.join(','))
     unlink_button.href = unlink_href.href
 
-    // document.querySelector('#add_tags_users').value = ids.join();
     if (ids.length == 0) {
-      // document.querySelectorAll('#manage-users-button').forEach((button) => {
-      //   button.classList.remove('flashing_button')
-      // })
-      // document.querySelector('.organisation-apply-to-user').classList.add('hidden')
       main_container.querySelector('#export-users-modal-link').innerHTML = 'Export All Users'
       unlink_button_interface.closest('li').classList.add('hidden')
     } else {
-      // document.querySelectorAll('#manage-users-button').forEach((button) => {
-      //   button.classList.add('flashing_button')
-      // })
-      // document.querySelector('.organisation-apply-to-user').classList.remove('hidden')
       main_container.querySelector('#export-users-modal-link').innerHTML = 'Export Selected Users'
       if (ids.length == 1) {
         unlink_button_interface.innerHTML = 'Remove Selected User'
@@ -337,65 +169,6 @@
       unlink_button_interface.closest('li').classList.remove('hidden')
     }
   }
-
-  // function fetchCategoryForm(element) {
-  //   if (doubleClickGuardian == false) {
-  //     doubleClickGuardian = true;
-  //     form = document.querySelector(element.getAttribute('data-target'));
-  //     initial_top = form.offsetTop
-  //     initial_left = form.offsetLeft
-  //     opened_blocks = []
-  //     document.querySelectorAll('.organisation-manage-users-block.active').forEach((block) => {
-  //       opened_blocks.push(block.getAttribute('data-category'));
-  //     })
-  //     form.querySelector('.hidden-submit').value = opened_blocks.join(',');
-  //     if (element.getAttribute('data-target').split('-')[0] == '#edit') {
-  //       controls = element.parentNode.parentNode
-  //       controls.style.opacity = 0
-  //       form.style.top = (controls.offsetTop - 1).toString() + 'px';
-  //       form.style.left = (controls.offsetLeft + 25).toString() + 'px'
-  //     } else if (element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
-  //       controls = element.parentNode.parentNode.querySelector('label')
-  //       controls.style.opacity = 0
-  //       form.style.top = (controls.offsetTop - 8).toString() + 'px';
-  //       form.style.left = (controls.offsetLeft + 8).toString() + 'px'
-  //     } else {
-  //       form.style.top = (element.offsetTop - 2).toString() + 'px';
-  //       form.style.left = (element.offsetLeft + 24).toString() + 'px'
-  //       element.parentNode.querySelector('p').style.opacity = '0';
-  //     }
-  //     form.classList.toggle('hidden');
-  //     target_input = form.querySelector('input')
-  //     target_input.focus()
-  //     val = target_input.value;
-  //     target_input.value = '';
-  //     target_input.value = val;
-  //     form.querySelector('input').addEventListener('keypress', function(e) {
-  //       if (event.which == '13') {
-  //         spinningLoader();
-  //       }
-  //     })
-  //     setTimeout(function(){
-  //       doubleClickGuardian = false;
-  //     }, 1);
-
-  //     window.addEventListener('click', function(e) {
-  //       if (outsideClick(e, form) && doubleClickGuardian == false) {
-  //         if (element.getAttribute('data-target').split('-')[0] == '#edit' || element.getAttribute('data-target').split('-')[0] == '#edit_tag') {
-  //           controls = element.parentNode.parentNode.querySelector('label')
-  //           controls.style.opacity = 1
-  //         } else {
-  //           form.querySelector('input').value = ''
-  //           element.parentNode.querySelector('p').style.opacity = '1';
-  //         }
-  //         form.style.top = initial_top.toString() + 'px';
-  //         form.style.left = initial_left.toString() + 'px';
-  //         form.classList.toggle('hidden');
-  //         this.removeEventListener('click', arguments.callee, false);
-  //       }
-  //     });
-  //   }
-  // }
 
   function removeTag(element) {
     opened_blocks = []
@@ -414,18 +187,6 @@
       }
     })
   }
-
-  // function showDelete(element) {
-  //   // element.parentNode.querySelector('.category-delete').classList.toggle('hidden');
-  //   controls = element.querySelectorAll('.tag_delete');
-  //   controls.forEach((control) => {
-  //     if (control.style.opacity == 0) {
-  //       control.style.opacity = 1;
-  //     } else {
-  //       control.style.opacity = 0;
-  //     }
-  //   })
-  // }
 
 
   /////////////////
@@ -451,12 +212,14 @@
 
   function exportUsers(element) {
     users_array = []
+    modal = element.closest('.modal-content')
+
     document.querySelectorAll('.select-user:checked').forEach((el) => {
       users_array.push(el.value)
     })
-    element.closest('form').querySelector('#csv_selected_users').value = users_array.join(',')
-    element.closest('.modal-content').querySelector('.action-modal__close').click()
-    element.parentNode.querySelector('.hidden-submit').click()
+    modal.querySelector('#csv_selected_users').value = users_array.join(',')
+    modal.querySelector('.action-modal__close').click()
+    modal.querySelector('.hidden-submit').click()
   }
 
   function selectCsvAttributes(element, color) {
@@ -516,14 +279,14 @@
 
   function importSummary(element) {
     document.querySelector('body').classList.add('wait')
-    element.classList.add('btn-orange__white-border-disabled')
+    element.classList.add('disabled')
     element.disabled = true
     element.closest('form').querySelector('.hidden-submit').click()
   }
 
   function fileTransfer(element, send_invite) {
-    form = document.querySelector('.import_users_form')
-    submit_button = form.querySelector('button')
+    form = document.querySelector('.organisation-import-modal_users_form')
+    submit_button = form.querySelector('.hidden-submit')
     send_invite_input = form.querySelector('#send_invite')
     submit_button.value = 'import'
     if (send_invite) send_invite_input.value = true

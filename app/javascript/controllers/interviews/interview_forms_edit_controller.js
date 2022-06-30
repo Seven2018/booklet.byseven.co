@@ -81,7 +81,7 @@ export default class extends Controller {
     const attribute = element.dataset.attribute
     const form = element.closest('form')
     const selected_display = element.closest('.booklet-select__template-edit-container').querySelector('.booklet-select__template-edit-selected')
-    const selected_value = element.querySelector('p').innerText
+    const selected_value = element.innerText
     const storage = form.querySelector('#interview_form_' + attribute)
 
     storage.value = selected_value.toLowerCase()

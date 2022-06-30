@@ -37,20 +37,20 @@ export default class extends Controller {
 
       if (toggle.dataset.initial) {
         if (input.checked && input.dataset.initialState == 'false') {
-          toggle.classList.add('bkt-bg-green')
-          container.classList.add('bkt-bg-transparent-green')
-          toggle.classList.remove('bkt-bg-negative-red')
-          container.classList.remove('bkt-bg-transparent-negative-red')
+          toggle.classList.add('bkt-bg-green-important')
+          container.classList.add('bkt-bg-transparent-green-important')
+          toggle.classList.remove('bkt-bg-negative-red-important')
+          container.classList.remove('bkt-bg-transparent-negative-red-important')
         } else if (!input.checked && input.dataset.initialState == 'true') {
-          toggle.classList.add('bkt-bg-negative-red')
-          container.classList.add('bkt-bg-transparent-negative-red')
-          toggle.classList.remove('bkt-bg-green')
-          container.classList.remove('bkt-bg-transparent-green')
+          toggle.classList.add('bkt-bg-negative-red-important')
+          container.classList.add('bkt-bg-transparent-negative-red-important')
+          toggle.classList.remove('bkt-bg-green-important')
+          container.classList.remove('bkt-bg-transparent-green-important')
         } else {
-          toggle.classList.remove('bkt-bg-negative-red')
-          container.classList.remove('bkt-bg-transparent-negative-red')
-          toggle.classList.remove('bkt-bg-green')
-          container.classList.remove('bkt-bg-transparent-green')
+          toggle.classList.remove('bkt-bg-negative-red-important')
+          container.classList.remove('bkt-bg-transparent-negative-red-important')
+          toggle.classList.remove('bkt-bg-green-important')
+          container.classList.remove('bkt-bg-transparent-green-important')
         }
       } else {
         toggle.dataset.initial = true

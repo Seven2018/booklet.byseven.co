@@ -1,4 +1,5 @@
 <% campaigns.each do |campaign| %>
+
   <% employee_interview = campaign.employee_interview(current_user.id)&.decorate %>
   <% manager_interview = campaign.manager_interview(current_user.id)&.decorate %>
   <% crossed_interview = campaign.crossed_interview(current_user.id)&.decorate %>
@@ -10,39 +11,71 @@
        [employee_interview, manager_interview, crossed_interview].find(&:present?).employee %>
 
   <%#:::::: VERSION DESKTOP START ::::::%>
-  <div class="bkt-bg-white rounded-20px p-5 mb-5">
+  <div class="bkt-bg-white rounded-20px p-5 mb-5 pos-rel">
+    <div class="pos-abs"
+         style="top: 3rem; right: 3rem;">
+
+      <%= render_component Buttons::OptionsButton.new(vertical: true) do %>
+
+        <%= link_to archive_interview_path(id: employee_interview.id),
+              class: "flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3",
+              remote: true do %>
+
+            <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span> <%= employee_interview.archived_for['Employee'] ? 'Unarchive interview' : 'Archive interview' %>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
 
     <div class="flex-row-start-centered">
+
       <div class="flex-column mr-3">
         <span class="iconify bkt-blue bkt-bg-light-blue p-2 rounded-5px" data-width="30" data-height="30" data-icon="<%= campaign.icon %>"></span>
       </div>
+
       <div class="flex-column">
+
         <div class="flex-row-start-centered">
           <p class="font-weight-600"><%= campaign.title %></p>
         </div>
+
         <div class="flex-row-start-centered">
           <div>
             <p class="bkt-light-grey font-weight-500 fs-1_2rem">Deadline
-              : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></p>
+              : <%= campaign.deadline.strftime("%d/%m/%y") %></p>
           </div>
         </div>
+
       </div>
+
     </div>
+
     <div class="flex-row-start-centered mt-5">
       <div class="flex-column">
         <div class="flex-row-start-centered">
-          <div class="flex-column  mr-3">
-            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>" class='width-3_5rem height-3_5rem min-w-3_5rem min-h-3_5rem rounded-circle' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
+
+          <div class="flex-column mr-3">
+            <img src="<%= manager.picture %>" alt="<%= current_user.fullname %>"
+                 class='width-3_5rem height-3_5rem min-w-3_5rem min-h-3_5rem rounded-circle'
+                 style='<%= "border: 2px solid #{current_company.color1}" if ![nil,"#000000"].include?(current_company.color1) %>'
+                 onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
           </div>
+
           <div class="flex-column width-25rem border-right-bkt-light-grey-2px mr-4">
+
             <div class="flex-row-start-centered">
               <p class="fs-1_2rem font-weight-600 text-truncate"><%= manager.fullname %></p>
             </div>
+
             <div class="flex-row-start-centered">
               <p class="fs-1_2rem font-weight-600 bkt-light-grey">Interviewer</p>
             </div>
+
           </div>
-          <div class="flex-column">
+
+          <div class="flex-column mr-3">
 
             <div class="flex-row-start-centered">
               <p class="fs-1_2rem font-weight-500">
@@ -86,11 +119,11 @@
               <span class="iconify ml-2" data-icon="bi:arrow-right"></span>
             <% end %>
           <% elsif employee_interview.submitted? && (crossed_interview.nil? || (crossed_interview&.status&.present? && crossed_interview&.status&.to_sym != :submitted)) %>
-            <%= link_to interview_path(employee_interview), class: 'bkt-btn-blue-white' do %>
+            <%= link_to interview_path(employee_interview), class: 'bkt-btn-blue-border' do %>
               View my answers
             <% end %>
           <% elsif crossed_interview&.submitted? %>
-            <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-white' do %>
+            <%= link_to interview_path(crossed_interview), class: 'bkt-btn-blue-border' do %>
               View cross review answers
             <% end %>
           <% end %>
@@ -108,7 +141,7 @@
         <%= campaign.completion_status_string(current_user) %>
       </p>
       <p class="bkt-dark-grey fs-1rem font-weight-100 mr-1rem">
-        <em>Deadline : <%= campaign.interviews.find_by(employee: current_user.id).date.strftime("%d/%m/%y") %></em></p>
+        <em>Deadline : <%= campaign.deadline.strftime("%d/%m/%y") %></em></p>
     </div>
     <div class="campaigns-my-interviews__card-left">
       <div class="campaigns-my-interviews__card-header mx-4">

@@ -26,21 +26,25 @@
 
             </div>
 
-            <div class="booklet-select__template-edit-dropdown bkt-bg-white rounded-5px bkt-box-shadow-compact z-index-150            pos-abs hidden"
+            <div class="booklet-select__template-edit-dropdown width-100 bkt-bg-white rounded-5px
+                        bkt-box-shadow-compact z-index-150 pos-abs hidden"
                  style='top: 3.5rem; left: 0;'
                  data-dropdown-target="menu">
 
-              <div data-action="click->interviews--interview-forms-edit#selectSubmit"
+              <div class="width-100 fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer"
+                   data-action="click->interviews--interview-forms-edit#selectSubmit"
                    data-attribute="answerable_by">
-                <p class='fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer' style='width: 110px;'>Both</p>
+                Both
               </div>
-              <div data-action="click->interviews--interview-forms-edit#selectSubmit"
+              <div class="width-100 fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer"
+                   data-action="click->interviews--interview-forms-edit#selectSubmit"
                    data-attribute="answerable_by">
-                <p class='fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer' style='width: 110px;'>Manager</p>
+                Manager
               </div>
-              <div data-action="click->interviews--interview-forms-edit#selectSubmit"
+              <div class="width-100 fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer"
+                   data-action="click->interviews--interview-forms-edit#selectSubmit"
                    data-attribute="answerable_by">
-                <p class='fs-1_4rem font-weight-500 p-1rem bkt-blue-hover cursor-pointer' style='width: 110px;'>Employee</p>
+                Employee
               </div>
 
             </div>
@@ -83,13 +87,26 @@
 
   <% end %>
 
+</div>
+
+<div class="bkt-bg-white mb-2rem p-2rem rounded-10px">
+
+  <div class='flex-row-between-centered mb-2rem pb-1rem border-bottom-bkt-light-grey5'>
+    <p>Template tags</p>
+  </div>
+
+  <p class='fs-1_4rem font-weight-500 bkt-light-grey5'>Add tags to your template in order to search through templates
+    efficiently and create accurate reports</p>
+
+  <%= render_component TagManagementComponent.new(
+    company_tags: @company_tags,
+    tags: @tags,
+    toggle_path: toggle_tag_interview_form_path,
+    remove_company_tag_path: remove_company_tag_interview_form_path,
+    search_tag_path: search_tags_interview_form_path,
+    color: 'bkt-blue',
+    background_color: 'bkt-bg-light-blue'
+  )%>
 
 </div>
 
-<%= render_component TagManagementComponent.new(
-  company_tags: @company_tags,
-  form_tags: @tags,
-  toggle_path: toggle_tag_interview_form_path,
-  remove_company_tag_path: remove_company_tag_interview_form_path,
-  search_tag_path: search_tags_interview_form_path
-)%>

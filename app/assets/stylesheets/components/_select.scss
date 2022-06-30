@@ -5,7 +5,7 @@
 
 .booklet-select__dropdown {
   position: absolute;
-  top: 4.5rem;
+  top: 100%;
   left: 0;
   right: 0;
   background: #FFFFFF;
@@ -17,18 +17,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 4.5rem;
+  height: auto;
   padding: 1rem 0 1rem 1rem;
-  background: rgba(49, 119, 183, 0.1);
-  border: 2px solid #3177B7;
+  background: $bkt-light-grey9;
+  border: 2px solid $bkt-dark-grey;
   border-radius: 3px;
+
+  p {
+    flex-grow: 1;
+    border-right: 2px solid #212529;
+  }
 }
 
 .booklet-select__option {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 4.5rem;
+  height: auto;
   padding: 1rem;
   cursor: pointer;
 
@@ -51,10 +56,6 @@
 
     &:first-of-type.fa-times {
       padding-right: 1rem;
-    }
-
-    &:last-of-type {
-      border-left: 2px solid #212529;
     }
   }
 

@@ -7,10 +7,6 @@ export default class extends Controller {
   }
 
   connect() {
-    this.doubleClickGuardian = false
-    this.timer
-    this.waitTime = 1000
-
     this.element[
       (str => {
         return str
@@ -219,11 +215,10 @@ export default class extends Controller {
     var elemLen = elem.value.length;
     // For IE Only
     if (document.selection) {
-        // Set focus
+
         elem.focus();
-        // Use IE Ranges
+
         var oSel = document.selection.createRange();
-        // Reset position to 0 & then set at end
         oSel.moveStart('character', -elemLen);
         oSel.moveStart('character', elemLen);
         oSel.moveEnd('character', 0);
@@ -234,6 +229,6 @@ export default class extends Controller {
         elem.selectionStart = elemLen;
         elem.selectionEnd = elemLen;
         elem.focus();
-    } // if
+    }
   }
 }

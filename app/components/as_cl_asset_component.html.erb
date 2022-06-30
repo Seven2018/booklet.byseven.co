@@ -1,4 +1,5 @@
 <% if @model.present? && asset.attached? %>
+
   <%= cl_image_tag asset.key, {
     crop: :fit,
     gravity: :center,
@@ -7,4 +8,9 @@
     class: @class_name
   }.merge(style: @style)
   %>
+
+<% elsif @fallback.present? %>
+
+  <%= image_tag @fallback, class: @class_name %>
+
 <% end %>

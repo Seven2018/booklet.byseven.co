@@ -60,6 +60,7 @@ class User < ApplicationRecord
     },
     ignoring: :accents
 
+
   ################
   # ACCESS LEVEL #
   ################
@@ -128,6 +129,14 @@ class User < ApplicationRecord
         .deliver_later
   end
 
+  def reset_password!
+    self.generate_invitation_token!
+
+    UserMailer.with(user: self)
+        .reset_password(self, self.raw_invitation_token)
+        .deliver_later
+  end
+
   def self.import(rows, company_id, invited_by_id, send_invite = false)
     present = []
     rows.each do |row_h|
@@ -150,7 +159,7 @@ class User < ApplicationRecord
         manager = User.find_by(email: manager_email)
 
         unless manager.present?
-          manager = User.new(email: manager_email, company_id: company_id, access_level_int: :manager)
+          manager = User.new(email: manager_email, company_id: company_id, access_level_int: 'manager')
           manager.save(validate: false)
         end
       else
@@ -161,13 +170,13 @@ class User < ApplicationRecord
 
         if user.company_id.nil?
           user.update(company_id: current_user.company_id)
-        elsif user.company_id != current_user.company_id
+        elsif user.company_id != company_id
           next
         end
 
         user.firstname.present? && user.lastname.present? && user.invitation_created_at.nil? ? manager_invite = true : manager_invite = false
         update = user.update row_h
-        user.invite! if Rails.env == 'production' && send_invite && manager_invite
+        user.invite! if send_invite && manager_invite
 
       else
 
@@ -182,7 +191,7 @@ class User < ApplicationRecord
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
         user.manager_id = manager.id if manager.present?
-        Rails.env == 'production' && send_invite ? user.invite! : user.save(validate: false)
+        send_invite ? user.invite! : user.save(validate: false)
 
       end
 

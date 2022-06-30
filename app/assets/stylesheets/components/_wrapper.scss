@@ -21,9 +21,10 @@ body.wait *, body.wait
 #booklet-container {
   width: 100vw;
   height: calc(100vh - 7.5rem);
+  min-height: calc(100vh - 7.5rem);
+  overflow-y: auto;
   background-color: #fff;
   position: relative;
-  transition: all 0.25s ease-in-out;
 
   @include from-medium {
     width: auto;
@@ -144,18 +145,6 @@ body.wait *, body.wait
   }
 
   #search_name{
-    height: 5rem;
-  }
-
-  .btn-search {
-    margin-left: 2rem;
-    width: 10rem;
-    height: 5rem;
-  }
-
-  .btn-reset {
-    font-size: 1.6rem !important;
-    width: 10rem;
     height: 5rem;
   }
 

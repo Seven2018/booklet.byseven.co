@@ -6,7 +6,7 @@
 
       <div class="pos-abs"
            style="top: 0; left: -10rem;">
-        <%= render_component Buttons::BackButton.new(fallback: trainings_reports_path) %>
+        <%= render_component Buttons::BackButton.new(fallback: organisation_path, force_fallback: true) %>
       </div>
 
       <img src="<%= @user.picture %>" alt="<%= @user.fullname %>" class='avatar-xlarge mr-2rem' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
@@ -206,25 +206,25 @@
 
     </div>
 
-    <div id='display__trainings-completed' class="display-tab width-100 hidden">
+    <div id='display__trainings-completed' class="display-tab width-100 mb-5rem hidden">
 
       <%= render 'users/show/show_trainings_list', trainings: @trainings_completed %>
 
     </div>
 
-    <div id='display__trainings-current' class="display-tab width-100 hidden">
+    <div id='display__trainings-current' class="display-tab width-100 mb-5rem hidden">
 
       <%= render 'users/show/show_trainings_list', trainings: @trainings_current %>
 
     </div>
 
-    <div id='display__campaigns-completed' class="display-tab width-100 hidden">
+    <div id='display__campaigns-completed' class="display-tab width-100 mb-5rem hidden">
 
       <%= render 'users/show/show_campaigns_list', campaigns: @campaigns_completed %>
 
     </div>
 
-    <div id='display__campaigns-current' class="display-tab width-100 hidden">
+    <div id='display__campaigns-current' class="display-tab width-100 mb-5rem hidden">
 
       <%= render 'users/show/show_campaigns_list', campaigns: @campaigns_current %>
 
@@ -240,28 +240,36 @@
   <!-- MODAL -->
   <!----------->
 
-<% if UserPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editUser" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="border-radius: 20px">
-      <%= render 'users/modals/edit', user: @user %>
-    </div>
-  </div>
-<% end %>
-
 <% if PermissionsPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editPermissions" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="border-radius: 20px">
+
+  <div id="editPermissions"
+       class="modal fade"
+       tabindex="-1"
+       role="dialog">
+
+    <div class="modal-dialog"
+         role="document">
       <%= render 'users/modals/edit_permissions', user: @user %>
     </div>
+
   </div>
+
 <% end %>
 
 <% if UserPolicy.new(current_user, @user).edit? %>
-  <div class="modal fade" id="editPassword" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="border-radius: 20px">
+
+  <div id="editPassword"
+       class="modal action-modal fade"
+       tabindex="-1"
+       role="dialog">
+
+    <div class="modal-dialog action-modal__dialog"
+         role="document">
       <%= render 'users/modals/changepassword', user: @user %>
     </div>
+
   </div>
+
 <% end %>
 
 

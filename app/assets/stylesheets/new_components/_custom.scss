@@ -60,3 +60,203 @@
      -moz-transform: translateX(100%);
           transform: translateX(100%);
 }
+
+
+/////////////
+// SELECT  //
+/////////////
+
+.bkt-select-container {
+  height: 5rem;
+  padding: 0;
+  margin-right: 1rem;
+  border-radius: .5rem;
+  background-color: transparent;
+  position: relative;
+
+  &:after {
+    top: 50%;
+    right: 1.2rem;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: #000000;
+    border-width: 5px;
+    margin-top: -2px;
+    z-index: 100;
+  }
+
+  .bkt-select-display {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 5rem;
+    padding: .5rem 3rem .5rem 1rem;
+    border-radius: .5rem;
+    border: 1px solid $bkt-light-grey;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: $bkt-light-grey;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+      border: 1px solid $bkt-dark-grey !important;
+    }
+
+    div {
+      white-space: nowrap;
+    }
+  }
+
+  .bkt-select-menu {
+    width: 100%;
+    position: absolute;
+    border-radius: .5rem;
+    border: 1px solid $bkt-light-grey;
+    top: 100%;
+    left: 0;
+    display: block;
+    overflow: scroll;
+    z-index: 1000;
+
+    div {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100% !important;
+      padding: 1rem;
+      background-color: $bkt-white;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: $bkt-dark-grey;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: #F0F0F0 !important;
+      }
+
+      &:first-of-type {
+        border-radius: .5rem .5rem 0 0;
+      }
+
+      &:last-of-type {
+        border-radius: 0 0 .5rem .5rem;
+      }
+    }
+  }
+}
+
+
+/////////////////////////
+// SELECT AUTOCOMPLETE //
+/////////////////////////
+
+.bkt-select-autocomplete {
+  width: 30rem;
+
+  input {
+    width: 100% !important;
+    height: 5rem;
+    font-size: 1.4rem !important;
+    border: 1px solid $bkt-light-grey !important;
+    border-radius: .5rem;
+    background: $bkt-light-grey9;
+
+    &::placeholder { color: $bkt-light-grey6 !important; font-size: 1.4rem !important;}
+    &::-webkit-input-placeholder { color: $bkt-light-grey6 !important; font-size: 1.4rem !important; }
+    &::-moz-placeholder { color: $bkt-light-grey6 !important; font-size: 1.4rem !important; }
+    &::-ms-placeholder { color: $bkt-light-grey6 !important; font-size: 1.4rem !important; }
+  }
+
+  .easy-autocomplete {
+    min-width: 100%;
+  }
+
+  .easy-autocomplete-container, .easy-autocomplete-container ul {
+    width: 100% !important;
+    max-height: 20.2rem;
+    border-radius: .5rem;
+  }
+
+  .easy-autocomplete-container li {
+    height: 4rem !important;
+
+    &:first-of-type {
+      border-radius: .5rem .5rem 0 0;
+    }
+
+    &:last-of-type {
+      border-radius: 0 0 .5rem .5rem;
+    }
+  }
+}
+
+
+//////////////////////
+// COLLAPSIBLE MENU //
+//////////////////////
+
+.collapsible-menu-container {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 1rem;
+  max-height: 61px;
+  overflow: hidden;
+
+
+  .collapsible-menu-title {
+    height: 4rem;
+    margin-bottom: 1rem;
+
+
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      p {
+        margin-left: 2rem;
+      }
+
+      p, span {
+        font-weight: 700;
+      }
+    }
+
+    .collapsible-menu-button {
+      display: inherit;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        font-size: 1.2rem;
+        color: #F26419;
+        opacity: 0;
+        transition: opacity .25s ease-in-out;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .collapsible-menu-list {
+    margin-left: 27px;
+    overflow: scroll;
+
+    label {
+      padding-left: 1rem;
+    }
+  }
+}

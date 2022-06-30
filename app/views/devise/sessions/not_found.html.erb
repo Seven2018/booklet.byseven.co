@@ -3,8 +3,8 @@
   is not registered 🧐
 <% end %>
 <% content_for :subtitle do %>
-  You may have miswrited your email, try <br/>
-  again or leave us a message so our hero<br/> team can help you !
+  You may have miswritten your email, please try
+  again or contact your manager
 <% end %>
 
 <div class="flew-row" data-controller="back">
@@ -14,13 +14,15 @@
   <div>
       <input id="email" class="fs-2rem bkt-bg-light-red width-100 p-2 pl-2 border-bkt-red rounded-2px" type="email" value="<%= email %>" disabled>
   </div>
-  <div >
-    <button class="flex-row-center-centered width-100 border-bkt-dark-grey rounded-2px mt-4 p-3" data-action="click->back#back">
+  <div>
+    <%= button_to new_user_session_path,
+                :class => "flex-row-center-centered width-100 border-bkt-dark-grey rounded-2px mt-4 p-3",
+                :method => :get do %>
       <span class="iconify mr-3" data-width="20" data-icon="bi:arrow-left"></span>
       <p class="fs-1_4rem">
         Try again
       </p>
-    </button>
+    <% end %>
   </div>
   <div class="">
     <a href="mailto:support.booklet@byseven.co" target='_blank'>

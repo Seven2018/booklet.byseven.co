@@ -7,10 +7,8 @@ module InterviewReports
             @interview_report.tag_category.name,
             'Employees count',
             'Interviews sets - Total',
-            'Interviews sets - Completed',
-            'Interviews sets - Completed/Total',
-            'Interviews sets - Locked',
-            'Interviews sets - Locked/Total',
+            'Interviews sets - Submitted',
+            'Interviews sets - Submitted/Total',
             'Interviews sets - In progress',
             'Interviews sets - In Progress/Total',
             'Interviews sets - Not started',
@@ -31,22 +29,19 @@ module InterviewReports
 
             interviews_sets_total = 0
             interviews_sets_completed = 0
-            interviews_sets_locked = 0
             interviews_sets_not_started = 0
             analytics_hash.each{|x, y| interviews_sets_total += y.count;
-                                  interviews_sets_completed += y.map{|z| z.map{|z1| z1.completed && z1.locked_at.nil?}.uniq == [true]}.select(&:itself).count;
-                                  interviews_sets_locked += y.map{|z| z.map{|z1| z1.locked_at.present?}.uniq == [true]}.select(&:itself).count;
-                                  interviews_sets_not_started += y.map{|z| z.map{|z1| z1.completed}.uniq == [false]}.select(&:itself).count;
+                                  interviews_sets_completed += y.map{|z| z.map{|z1| z1.submitted? && z1.locked_at.nil?}.uniq == [true]}.select(&:itself).count;
+                                  interviews_sets_not_started += y.map{|z| z.map{|z1| z1.submitted?}.uniq == [false]}.select(&:itself).count;
                                 }
             employees_count = 0
             analytics_hash.each{|x,y| employees_count += 1 if y.count > 0}
 
-            interviews_sets_in_progress = interviews_sets_total - interviews_sets_locked - interviews_sets_completed - interviews_sets_not_started
+            interviews_sets_in_progress = interviews_sets_total - interviews_sets_completed - interviews_sets_not_started
             interviews_sets_completed_by_total = interviews_sets_total > 0 ? (interviews_sets_completed.fdiv(interviews_sets_total)*100).round : 0
-            interviews_sets_locked_by_total = interviews_sets_total > 0 ? (interviews_sets_locked.fdiv(interviews_sets_total)*100).round : 0
             interviews_sets_not_started_by_total = interviews_sets_total > 0 ? (interviews_sets_not_started.fdiv(interviews_sets_total)*100).round : 0
             interviews_sets_in_progress_by_total = interviews_sets_total > 0 ? (interviews_sets_in_progress.fdiv(interviews_sets_total)*100).round : 0
-            interviews_set_total_ongoing = interviews_sets_in_progress_by_total + interviews_sets_completed_by_total + interviews_sets_locked_by_total
+            interviews_set_total_ongoing = interviews_sets_in_progress_by_total + interviews_sets_completed_by_total
 
             line = []
 
@@ -55,8 +50,6 @@ module InterviewReports
             line << interviews_sets_total
             line << interviews_sets_completed
             line << interviews_sets_completed_by_total.to_s + '%'
-            line << interviews_sets_locked
-            line << interviews_sets_locked_by_total.to_s + '%'
             line << interviews_sets_in_progress
             line << interviews_sets_in_progress_by_total.to_s + '%'
             line << interviews_sets_not_started

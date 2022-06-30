@@ -2,6 +2,7 @@ require 'csv'
 
 class Campaign < ApplicationRecord
   include Campaigns::Stats
+  include Taggable
   class AmbiguousInterviewQuery < StandardError; end
 
   belongs_to :company
@@ -10,8 +11,10 @@ class Campaign < ApplicationRecord
   has_many :interviews, dependent: :destroy
   has_many :employees, through: :interviews
   has_many :interviewers, through: :interviews
+  has_and_belongs_to_many :categories
 
   validates :title, presence: true
+  before_create :ensure_deadline_presence
 
   paginates_per 10
 
@@ -21,6 +24,8 @@ class Campaign < ApplicationRecord
     one_to_one: 20,
     feedback_360: 30
   }
+
+  serialize :interview_forms_list, Hash
 
   include PgSearch::Model
   pg_search_scope :search_campaigns,
@@ -36,26 +41,8 @@ class Campaign < ApplicationRecord
 
   alias :manager :owner
 
-  def self.start_at(date)
-    joins(:interviews)
-      .where('date >= ?', date)
-      .distinct
-  end
-
-  def self.end_at(date)
-    joins(:interviews)
-      .where('date <= ?', date)
-      .distinct
-  end
-
-  # @param [Array<String>] tags
-  # @return [Array<Campaign>] campaigns
-  def self.tag_matches(tags)
-    distinct.joins(interviews: {interview_form: :categories}).where(categories: {title: tags})
-  end
-
-  def deadline
-    interviews.order(date: :asc).first&.date
+  def self.deadline_between(start_date, end_date)
+    where('deadline >= ? AND deadline <= ?', start_date, end_date)
   end
 
   def interview_sets(employee_id = nil)
@@ -122,9 +109,11 @@ class Campaign < ApplicationRecord
     interviews.where(employee_id: employee_id).find(&:crossed?)
   end
 
-  def tags
-    return [] unless interviews.present? && interviews.first.interview_form.present?
+  private
 
-    interviews.first.interview_form.categories.pluck(:title)
+  def ensure_deadline_presence
+    return if deadline.present?
+
+    self.deadline = Time.zone.today.end_of_month
   end
 end

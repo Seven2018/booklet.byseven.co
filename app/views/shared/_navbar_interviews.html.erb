@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center align-items-center px-2rem">
+
+  <%= image_tag 'icons/interviews.svg', style: 'height: 22px;' %>
+  <p class="fs-2rem font-weight-500 bkt-dark-grey ml-1rem">Interview</p>
+
+</div>
+
+<div class="height-3rem border-right-bkt-dark-grey"></div>
+
+<div class="d-flex justify-content-start align-items-center px-1rem">
+
+  <% if CampaignPolicy.new(current_user, nil).my_interviews? %>
+
+    <%= link_to my_interviews_path, class: "navbar-buttons width-13rem #{'navbar-buttons--active' if @controller_action == :campaigns_my_interviews}" do %>
+
+      <h4>My interviews</h4>
+
+    <% end %>
+
+  <% end %>
+
+  <% if CampaignPolicy.new(current_user, nil).my_team_interviews? %>
+
+    <%= link_to my_team_interviews_path, class: "navbar-buttons width-17rem #{'navbar-buttons--active' if @controller_action == :campaigns_my_team_interviews}" do %>
+
+      <h4>My team interviews</h4>
+
+    <% end %>
+
+  <% end %>
+
+  <% if CampaignPolicy.new(current_user, nil).create? %>
+
+    <%= link_to campaigns_path, class: "navbar-buttons width-11rem #{'navbar-buttons--active' if @controller_action == :campaigns_index}" do %>
+
+      <h4>Campaigns</h4>
+
+    <% end %>
+
+  <% end %>
+
+  <% if InterviewFormPolicy.new(current_user, nil).create? %>
+
+    <%= link_to interview_forms_path, class: "navbar-buttons width-10rem #{'navbar-buttons--active' if @controller_action == :interview_forms_index}" do %>
+
+      <h4>Templates</h4>
+
+    <% end %>
+
+  <% end %>
+
+  <% if current_user.can_create_interview_reports? %>
+
+    <%= link_to interviews_reports_path, class: "navbar-buttons width-8rem #{'navbar-buttons--active' if @controller_action == :reports_index}" do %>
+
+      <h4>Reports</h4>
+
+    <% end %>
+
+  <% end %>
+
+</div>

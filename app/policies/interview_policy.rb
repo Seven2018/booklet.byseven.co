@@ -45,4 +45,12 @@ class InterviewPolicy < ApplicationPolicy
   def unlock_interview?
     user.can_create_campaigns
   end
+
+  def archive_interview?
+    user == record.employee || user == record.interviewer
+  end
+
+  def archive_interviewer_interviews?
+    record.where.not(interviewer: user).count == 0
+  end
 end

@@ -29,6 +29,7 @@ class Objective::IndicatorsController < ApplicationController
     log_params.merge!(updated_value: options[params[:selected_option]])
 
     @indicator.update options: options if options['current_value'] != initial_value
+    @indicator.update(status: :completed) if options['current_value'] == options['target_value']
     @objective = @objective.decorate
 
     Objective::Log.create(log_params.merge(updated_value: options['current_value'])) if options['current_value'] != initial_value

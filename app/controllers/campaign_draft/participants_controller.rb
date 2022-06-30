@@ -15,30 +15,6 @@ class CampaignDraft::ParticipantsController < CampaignDraft::BaseController
     end
   end
 
-  def select_all
-    users_ids = @users.ids
-
-    data = @draft.data
-    data['interviewee_ids'] = users_ids
-
-    @draft.update(data: data, interviewee_ids: users_ids)
-
-    respond_to do |format|
-      format.js {}
-    end
-  end
-
-  def unselect_all
-    data = @draft.data
-    data['interviewee_ids'] = []
-
-    @draft.update(data: data, interviewee_ids: [])
-
-    respond_to do |format|
-      format.js {}
-    end
-  end
-
   private
 
   def set_draft

@@ -1,29 +1,26 @@
 <template>
-  <div class="width-70 mt-5 mx-auto">
+  <div>
+    <div class="width-70 mt-5 mx-auto">
+      <div class="flex-row-center-centered pos-rel">
 
-    <div class="flex-row-center-centered pos-rel">
+        <bkt-back-button v-if="backButton"
+                         class="flex-column pos-abs-sm"
+                         style="top: 0; left: 0;">
+        </bkt-back-button>
 
-      <bkt-back-button v-if="backButton"
-                       class="flex-column pos-abs-sm"
-                       style="top: 0; left: 0;">
-      </bkt-back-button>
+        <h1 v-if="title" class="flex-column fs-2_4rem font-weight-500">{{title}}</h1>
+        <h1 v-else class="fs-2_4rem font-weight-500">My team Roadmap</h1>
 
-      <h1 v-if="title" class="flex-column fs-2_4rem font-weight-500">{{title}}</h1>
-      <h1 v-else class="fs-2_4rem font-weight-500">My team objectives</h1>
+      </div>
 
+      <user-quick-indo :user="myTeamObjectives.user"></user-quick-indo>
+
+      <div class="flex-row-end-centered mt-5">
+        <bkt-new-target-button></bkt-new-target-button>
+      </div>
     </div>
 
-    <user-quick-indo :user="myTeamObjectives.user"></user-quick-indo>
-
-    <div class="flex-row-end-centered mt-5">
-
-      <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" :href="$routes.generate('objective_new')">
-        New objective
-      </bkt-button>
-
-    </div>
-
-    <div class="flex-row-start-centered">
+    <div class="width-70 mt-5 mx-auto">
       <objective-switcher
           v-if="myTeamObjectives.employeesCurrent && myTeamObjectives.employeesArchived"
           :current-nbr="myTeamObjectives.employeesCurrent.length"
@@ -99,19 +96,20 @@
 <script>
 import BktButton from "../../../components/BktButton";
 import BktBackButton from "../../../components/BktBackButton";
-import ObjectiveSwitcher from "../../../components/ObjectiveSwitcher";
+import ObjectiveSwitcher from "../../../components/BktSwitcher";
 import MyTeamObjectivesTable from "./MyTeamObjectivesTable";
 import BktDotsButton from '../../../components/BktDotsButton'
 import tools from '../../../mixins/tools'
 import store from "../../../store";
 import UserQuickIndo from "../../../components/UserQuickIndo";
+import BktNewTargetButton from "../../../components/BktNewTargetButton";
 
 export default {
   mixins: [tools],
   props: ['userId', 'title', 'backButton'],
   data() {
     return {
-      headers: ['Employees', 'Objectives', 'Completion', 'Deadline', ''],
+      headers: ['Employees', 'Targets', 'Completion', 'Deadline', ''],
       myTeamObjectives: store.state.myTeamObjectives
     }
   },
@@ -177,7 +175,8 @@ export default {
     BktButton,
     BktBackButton,
     ObjectiveSwitcher,
-    BktDotsButton
+    BktDotsButton,
+    BktNewTargetButton
   }
 }
 </script>

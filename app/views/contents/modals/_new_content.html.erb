@@ -1,16 +1,25 @@
 <div class="modal-content action-modal__content" >
+
   <div class="modal-header action-modal__header">
-    <h5 class="modal-title action-modal__title">Create a new Workshop</h5>
+
+    <h3 class="modal-title action-modal__title">Create a new Workshop</h3>
+
     <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
     </button>
+
   </div>
+
   <%= simple_form_for Content.new do |f| %>
+
     <div class="modal-body action-modal__body" style='min-height: 0;'>
         <%= f.input :title, input_html: {autocomplete: 'off'} %>
     </div>
+
     <div class="modal-footer action-modal__footer">
       <button type="submit" class="bkt-btn-orange">Create</button>
     </div>
+
   <% end %>
+
 </div>

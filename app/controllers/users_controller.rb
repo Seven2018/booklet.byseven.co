@@ -1,7 +1,5 @@
-# Updated : 2021/07/19
-
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :add_tag_category_tags]
+  before_action :set_user, only: [:show, :reset_password, :edit, :update, :destroy, :add_tag_category_tags]
   before_action :set_current_user, only: [:import, :create]
   skip_before_action :verify_authenticity_token, only: [:update]
   before_action :show_navbar_home
@@ -47,7 +45,7 @@ class UsersController < ApplicationController
         end
 
         params[:tags].each do |tag_category_name, tag_name|
-          tag_category = TagCategory.find_by(name: tag_category_name)
+          tag_category = TagCategory.find_by(name: tag_category_name, company: current_user.company)
 
           UserTag.create(
             user: @user,
@@ -120,33 +118,14 @@ class UsersController < ApplicationController
   # Update user profile (users/show)
   def update
     authorize @user
-    if params[:type] == 'address'
-      address = params[:user][:address].gsub(address.split(/\d+/)[-2], address.split(/\d+/)[-2][0..-2] + "\n")
-      @user.update(address: address)
-    else
-      @user.update(user_params)
-    end
 
-    if @user.save
-      if params[:access_level_int].present?
-        if params[:last_page] == "catalogue"
-          redirect_to catalogue_path
-        elsif ['campaigns', 'interview_forms'].include?(params[:last_page].split('-').first)
-          redirect_to campaigns_path
-        else
-          redirect_to root_path
-        end
-      else
-        respond_to do |format|
-          if params[:page] != 'show'
-            format.html { redirect_to user_path(@user) }
-          else
-            format.html { redirect_to organisation_path }
-            format.js
-          end
-        end
-      end
-    end
+    @user.update(user_params)
+
+    job_title_tag_category = @user.company.tag_categories.find_by(name: 'Job Title')
+    @user.update(job_title: UserTag.find_by(tag_category_id: job_title_tag_category.id,
+                                            user_id: @user.id).tag.tag_name) if job_title_tag_category.present?
+
+    redirect_to user_path(@user)
   end
 
   def add_tag_category_tags
@@ -185,7 +164,7 @@ class UsersController < ApplicationController
 
         if !user_row['email'].present? ||
           (user_row['email'].strip.downcase =~ /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).nil? ||
-          (user.company_id.present? && (user.company_id != current_user.company_id))
+          (user&.company_id.present? && (user&.company_id != current_user&.company_id))
 
           @errors << row
 
@@ -233,26 +212,44 @@ class UsersController < ApplicationController
     end
   end
 
-  # Search from users with autocomplete
+
+  #########################
+  ## SEARCH AUTOCOMPLETE ##
+  #########################
+
   def users_search
     skip_authorization
 
     @users =
       if params[:manager].present?
-        User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :admin])
+        User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin])
       else
         User.where(company_id: current_user.company_id)
       end
 
-    @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true)
-
-    respond_to do |format|
-      format.html {}
-      format.json {
-        @users = @users.limit(5)
-      }
+    if params[:manager].present?
+      @users = User.where(id: Campaign.find(params[:campaign_id]).interviewers.uniq.map(&:id)) if params[:campaign_id].present?
+    else
+      @users = @users.where_exists(:interviews, campaign_id: params[:campaign_id]) if params[:campaign_id].present?
+      @users = @users.where_not_exists(:interviews, campaign_id: params[:not_campaign_id]) if params[:not_campaign_id].present?
     end
+
+    @users = @users.ransack(firstname_or_lastname_cont: params[:search]).result(distinct: true).map{|x| [x.id, x.fullname]}
+
+    render partial: 'shared/tools/select_autocomplete', locals: { elements: @users }
   end
+
+  def managers_search
+    skip_authorization
+
+    users = User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin])
+    users = users.search_users(params[:text]) if params[:text].present?
+
+    render json: users, status: :ok
+  end
+
+
+  #########################
 
   private
 

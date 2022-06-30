@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_11_134932) do
+ActiveRecord::Schema.define(version: 2022_06_27_081546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,9 +102,19 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "campaign_type", default: 0, null: false
+    t.date "deadline"
+    t.string "calendar_uuid"
+    t.text "interview_forms_list"
     t.index ["company_id"], name: "index_campaigns_on_company_id"
     t.index ["interview_form_id"], name: "index_campaigns_on_interview_form_id"
     t.index ["owner_id"], name: "index_campaigns_on_owner_id"
+  end
+
+  create_table "campaigns_categories", id: false, force: :cascade do |t|
+    t.bigint "campaign_id"
+    t.bigint "category_id"
+    t.index ["campaign_id"], name: "index_campaigns_categories_on_campaign_id"
+    t.index ["category_id"], name: "index_campaigns_categories_on_category_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -113,7 +123,9 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "kind", default: 0
+    t.bigint "group_category_id"
     t.index ["company_id"], name: "index_categories_on_company_id"
+    t.index ["group_category_id"], name: "index_categories_on_group_category_id"
   end
 
   create_table "categories_interview_forms", id: false, force: :cascade do |t|
@@ -135,6 +147,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.datetime "updated_at", precision: 6, null: false
     t.text "applications", default: [], array: true
     t.text "rating_logo", default: "<span class=\"iconify\" data-icon=\"clarity:star-solid\"></span>"
+    t.jsonb "data", default: {}
   end
 
   create_table "content_categories", force: :cascade do |t|
@@ -218,6 +231,15 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.index ["company_id"], name: "index_folders_on_company_id"
   end
 
+  create_table "group_categories", force: :cascade do |t|
+    t.string "name"
+    t.integer "kind", default: 0
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_group_categories_on_company_id"
+  end
+
   create_table "interview_answers", force: :cascade do |t|
     t.text "answer", default: "", null: false
     t.text "comments"
@@ -230,16 +252,6 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.index ["interview_id"], name: "index_interview_answers_on_interview_id"
     t.index ["interview_question_id"], name: "index_interview_answers_on_interview_question_id"
     t.index ["user_id"], name: "index_interview_answers_on_user_id"
-  end
-
-  create_table "interview_form_tags", force: :cascade do |t|
-    t.string "tag_name", default: "", null: false
-    t.bigint "interview_form_id"
-    t.bigint "tag_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["interview_form_id"], name: "index_interview_form_tags_on_interview_form_id"
-    t.index ["tag_id"], name: "index_interview_form_tags_on_tag_id"
   end
 
   create_table "interview_forms", force: :cascade do |t|
@@ -304,6 +316,8 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.datetime "locked_at"
     t.bigint "interviewer_id"
     t.integer "status", default: 0
+    t.text "archived_for"
+    t.string "calendar_uuid"
     t.index ["campaign_id"], name: "index_interviews_on_campaign_id"
     t.index ["creator_id"], name: "index_interviews_on_creator_id"
     t.index ["employee_id"], name: "index_interviews_on_employee_id"
@@ -336,10 +350,13 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
     t.bigint "objectivable_id"
     t.string "objectivable_type"
     t.bigint "company_id"
-    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
+    t.bigint "creator_id"
+    t.boolean "template", default: false
+    t.boolean "can_employee_edit", default: true
+    t.boolean "can_employee_view", default: true
     t.index ["company_id"], name: "index_objective_elements_on_company_id"
     t.index ["creator_id"], name: "index_objective_elements_on_creator_id"
   end
@@ -431,7 +448,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
 
   create_table "training_reports", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.jsonb "data", default: {}
+    t.jsonb "data", default: {}, null: false
     t.integer "state", default: 0, null: false
     t.integer "mode", default: 0, null: false
     t.datetime "start_time"
@@ -580,6 +597,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
   add_foreign_key "campaigns", "interview_forms"
   add_foreign_key "campaigns", "users", column: "owner_id"
   add_foreign_key "categories", "companies"
+  add_foreign_key "categories", "group_categories"
   add_foreign_key "content_categories", "categories"
   add_foreign_key "content_categories", "contents"
   add_foreign_key "content_folder_links", "contents"
@@ -596,8 +614,6 @@ ActiveRecord::Schema.define(version: 2022_05_11_134932) do
   add_foreign_key "interview_answers", "interview_questions"
   add_foreign_key "interview_answers", "interviews"
   add_foreign_key "interview_answers", "users"
-  add_foreign_key "interview_form_tags", "interview_forms"
-  add_foreign_key "interview_form_tags", "tags"
   add_foreign_key "interview_forms", "companies"
   add_foreign_key "interview_questions", "interview_forms"
   add_foreign_key "interview_reports", "companies"

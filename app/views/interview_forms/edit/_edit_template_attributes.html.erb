@@ -7,7 +7,7 @@
     <%= f.input :title,
                 label: false,
                 input_html:
-                  { class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px',
+                  { class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
                     autocomplete: "off",
                     data: { action: 'keyup->interviews--interview-forms-edit#saveForm' } },
                 placeholder: 'Untitled' %>
@@ -16,13 +16,13 @@
     name: 'interview_form[description]',
     value: template.description,
     placeholder: 'Description (optional)',
-    klasses: "bkt-bg-light-blue border-bkt-light-grey5-0_5px mb-2rem fs-1_4rem"
-  ) %>
+    hide_toolbar: false,
+    toolbar_within: true) %>
 
     <%= f.input :video,
                 label: false,
                 input_html:
-                  { class: 'bkt-bg-light-blue border-bkt-light-grey5-0_5px',
+                  { class: 'height-5rem bkt-bg-light-grey9-important mb-2rem p-input-lg border-transparent-1px fs-1_4rem font-weight-500 bkt-placeholder-dark-grey bkt-placeholder-fs-1_4rem rounded-3px bkt-input-focus',
                     autocomplete: "off",
                     data: { action: 'keyup->interviews--interview-forms-edit#checkVideoCompatibility' } },
                 placeholder: 'Video link (Youtube)' %>
@@ -31,32 +31,32 @@
 
   <% end %>
 
-  <div class="template-edit__content-right--mobile">
+<!--  <div class="template-edit__content-right--mobile">-->
 
-    <div class="template-show-infos-themes">
+<!--    <div class="template-show-infos-themes">-->
 
-      <p style='color:#808080;'><b>Tags</b></p>
+<!--      <p style='color:#808080;'><b>Tags</b></p>-->
 
-      <div class="theme-btns">
+<!--      <div class="theme-btns">-->
 
-        <% template.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
-          <p class="category-tag"><%= tag.tag_name %></p>
-        <% end %>
+        <%# template.tags.order(tag_name: :asc).group_by(&:tag_category_position).values.flatten.each do |tag| %>
+<!--          <p class="category-tag"><%#= tag.tag_name %></p>-->
+        <%# end %>
 
-        <a class='add-theme'
-           data-toggle='modal'
-           data-target='#addTags'
-           data-toggle='tooltip'
-           title='Add Theme'>
-           <i class="fas fa-plus" style='color:#3177B7;'></i>
-         </a>
+<!--        <a class='add-theme'-->
+<!--           data-toggle='modal'-->
+<!--           data-target='#addTags'-->
+<!--           data-toggle='tooltip'-->
+<!--           title='Add Theme'>-->
+<!--           <i class="fas fa-plus" style='color:#3177B7;'></i>-->
+<!--         </a>-->
 
-        <br>
+<!--        <br>-->
 
-      </div>
+<!--      </div>-->
 
-    </div>
+<!--    </div>-->
 
-  </div>
+<!--  </div>-->
 
 </div>

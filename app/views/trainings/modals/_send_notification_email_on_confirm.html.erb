@@ -1,17 +1,26 @@
 <div class="modal-content action-modal__content">
+
   <div class="modal-header action-modal__header">
-    <h5 class="modal-title action-modal__title">Send invitations emails</h5>
+
+    <h3 class="modal-title action-modal__title">Send invitations emails</h3>
+
     <button type="button" class="action-modal__close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true" class="action-modal__close-icon">&times;</span>
     </button>
+
   </div>
+
   <div class="modal-body action-modal__body">
+
     <p class ="text-center">Do you wish to send invitations by email<br> for this training ?</p>
-    <div class="modal-footer action-modal__footer">
-      <button type="button" class="bkt-btn-white" onclick='createTraining(this, false)'>NO, THANKS</button>
-      <button type="button" class="bkt-btn-orange" onclick='createTraining(this, true)'>YES, SEND BY EMAIL</button>
-    </div>
+
   </div>
+
+  <div class="modal-footer action-modal__footer">
+    <button type="button" class="bkt-btn-white-orange mr-3rem" onclick='createTraining(this, false)'>No, thanks</button>
+    <button type="button" class="bkt-btn-orange" onclick='createTraining(this, true)'>Yes, send by email</button>
+  </div>
+
 </div>
 
 <script>

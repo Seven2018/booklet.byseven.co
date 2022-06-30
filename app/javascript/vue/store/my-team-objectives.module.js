@@ -32,7 +32,7 @@ export default {
       try {
         const res = await axios.get(routes.generate('objective_user_info', {id: state.userId}))
 
-        commit('setUser', res.data)
+        commit('setUser', res.data.user)
       } catch (e) {
         commit('setError', e.message)
       }
@@ -41,7 +41,7 @@ export default {
       try {
         const res = await axios.get(routes.generate('objective_user_my_team_current_list', {id: state.userId}))
 
-        commit('setEmployeesCurrent', res.data)
+        commit('setEmployeesCurrent', res.data.users)
       } catch (e) {
         commit('setError', e.message)
       }
@@ -50,7 +50,7 @@ export default {
       try {
         const res = await axios.get(routes.generate('objective_user_my_team_archived_list', {id: state.userId}))
 
-        commit('setEmployeesArchived', res.data)
+        commit('setEmployeesArchived', res.data.users)
       } catch (e) {
         commit('setError', e.message)
       }

@@ -9,16 +9,14 @@
         </bkt-back-button>
 
         <h1 v-if="title" class="flex-column fs-2_4rem font-weight-500">{{title}}</h1>
-        <h1 v-else class="flex-column fs-2_4rem font-weight-500">My Objectives</h1>
+        <h1 v-else class="flex-column fs-2_4rem font-weight-500">My Roadmap</h1>
 
       </div>
 
       <user-quick-indo :user="objectiveUser.user"></user-quick-indo>
 
       <div class="flex-row-end-centered mt-5">
-        <bkt-button type="blue" iconify="ant-design:plus-circle-outlined" :href="$routes.generate('objective_new')">
-          New objective
-        </bkt-button>
+        <bkt-new-target-button></bkt-new-target-button>
       </div>
     </div>
 
@@ -85,16 +83,17 @@ import store from "../../../store";
 import BktButton from "../../../components/BktButton";
 import IndexTable from "../../../components/IndexTable";
 import ObjectivesUserTable from "./ObjectivesUserTable";
-import ObjectiveSwitcher from "../../../components/ObjectiveSwitcher";
+import ObjectiveSwitcher from "../../../components/BktSwitcher";
 import BktBackButton from "../../../components/BktBackButton";
 import BktDotsButton from '../../../components/BktDotsButton'
 import UserQuickIndo from "../../../components/UserQuickIndo";
+import BktNewTargetButton from "../../../components/BktNewTargetButton";
 
 export default {
   props: ['userId', 'title', 'backButton'],
   data() {
     return {
-      headers: ['Objectives', 'Completion', 'Deadline', ''],
+      headers: ['Targets', 'Completion', 'Deadline', ''],
       objectiveUser: store.state.objectiveUser,
       panelCurrentObjective: true,
     }
@@ -155,6 +154,7 @@ export default {
     }
   },
   components: {
+    BktNewTargetButton,
     UserQuickIndo,
     BktBackButton,
     ObjectiveSwitcher,

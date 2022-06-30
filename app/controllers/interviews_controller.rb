@@ -1,34 +1,11 @@
 class InterviewsController < ApplicationController
   before_action :show_navbar_campaign
 
-  def create
-    authorize Interview.new
-
-    interview_form = InterviewForm.find params[:interview][:interview_form_id]
-    campaign = Campaign.find(params[:interview][:campaign_id])
-
-    unless
-      (campaign.crossed? &&
-      Interview.create(interview_params.merge(title: interview_form.title, label: 'Employee')) &&
-      Interview.create(interview_params.merge(title: interview_form.title, label: 'Manager')) &&
-      Interview.create(interview_params.merge(title: interview_form.title, label: 'Crossed', status: :not_available_yet))) ||
-      (campaign.simple? &&
-      Interview.create(interview_params.merge(title: interview_form.title, label: 'Simple')))
-
-      campaign&.destroy
-      # Sentry 2866617584 => params[:interview][:campaign_id].nil?
-      flash[:alert] = '/!\ Interviews NOT created - Campaign deleted - Please try again'
-    end
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def show
     @interview = Interview.find(params[:id])
     @employee = @interview.employee
-    @manager = @interview.campaign.owner
+    @manager = @interview.interviewer
+    @template = @interview.interview_form
     @questions = @interview.interview_questions.order(position: :asc)
     authorize @interview
 
@@ -36,11 +13,10 @@ class InterviewsController < ApplicationController
     if @interview.crossed?
       @interview.campaign.interviews.where(employee: @employee, label: ['Employee', 'Manager']).update(locked_at: Time.zone.now) if current_user == @manager
     end
-    flash[:alert] = "View mode only! New answers won't be saved!" unless
-      InterviewPolicy.new(current_user, @interview).answer_question?
 
     respond_to do |format|
       format.html
+      format.js
       format.pdf do
         render(
           pdf: "#{@interview.employee.fullname} - #{@interview.campaign.title}",
@@ -96,7 +72,7 @@ class InterviewsController < ApplicationController
     interviewee = interview.employee
     campaign = interview.campaign
 
-    unless interview.fully_answered?
+    unless interview.fully_answered? || interview.crossed?
       flash[:error] = 'Interview not completed'
       raise
     end
@@ -155,6 +131,50 @@ class InterviewsController < ApplicationController
       format.js
     end
   end
+
+
+  ####################
+  ## ARCHIVE SYSTEM ##
+  ####################
+
+  def archive_interview
+    @interview = Interview.find(params[:id])
+    authorize @interview
+
+    if @interview.archived_for['Employee']
+      to_archive = false
+      tab = 'archived'
+    else
+      to_archive = true
+      tab = 'ongoing'
+    end
+
+    @interview.update_archived_for('Employee', to_archive)
+
+    redirect_to my_interviews_path(status: tab), format: 'js'
+  end
+
+  def archive_interviewer_interviews
+    @interviews = Interview.where(campaign_id: params[:campaign_id],
+                                  interviewer_id: params[:interviewer_id])
+    authorize @interviews
+
+    if @interviews.map{|x| x.archived_for['Manager']}.uniq == [true]
+      to_archive = false
+      tab = 'archived'
+    else
+      to_archive = true
+      tab = 'ongoing'
+    end
+
+    @interviews.each do |interview|
+     interview.update_archived_for('Manager', to_archive)
+    end
+
+    redirect_to my_team_interviews_path(status: tab), format: 'js'
+  end
+
+  ####################
 
   private
 

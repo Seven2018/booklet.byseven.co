@@ -7,18 +7,30 @@ class Company < ApplicationRecord
   has_many :interview_reports, dependent: :destroy
   has_many :training_reports, dependent: :destroy
   has_many :campaigns, dependent: :destroy
+  has_many :categories
+  has_many :group_categories
 
   validates :siret, presence: true, length: { is: 14 }
   validates :siret, uniqueness: true
 
+  has_one_attached :home_banner
+  has_one_attached :my_interviews_banner
+  has_one_attached :my_team_interviews_banner
+  has_one_attached :campaign_banner
   has_one_attached :clear_bg_logo
   has_one_attached :dark_bg_logo
   has_one_attached :my_interviews_bg_picture
   has_one_attached :my_team_interviews_bg_picture
   has_one_attached :my_trainings_bg_picture
   has_one_attached :my_team_trainings_bg_picture
+  has_one_attached :banner_gif
 
   before_save :clear_applications_params
+  after_create :create_default_group_category
+
+  jsonb_accessor :data,
+                 color1: :string,
+                 color2: :string
 
   include Companies::AssetsMeta
   include Companies::Applications
@@ -30,5 +42,10 @@ class Company < ApplicationRecord
 
   def applications_to_sym
     applications.map(&:to_sym)
+  end
+
+  def create_default_group_category
+    self.group_categories.create(name: 'others', kind: :interview)
+    self.group_categories.create(name: 'others', kind: :training)
   end
 end
