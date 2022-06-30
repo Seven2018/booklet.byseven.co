@@ -129,7 +129,7 @@ import BktButton from "./BktButton";
 import BktTag from "./BktTag";
 
 export default {
-  props: ['entityListKey'],
+  props: ['entityListKey', 'pathKeyArgs'],
   data() {
     return {
       groupTagModule: store.state.groupsTag,
@@ -270,6 +270,7 @@ export default {
       store.commit('genericFetchEntity/setTags', this.selectedTags)
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: this.entityListKey,
+        pathKeyArgs: this.pathKeyArgs
       })
     }
   },

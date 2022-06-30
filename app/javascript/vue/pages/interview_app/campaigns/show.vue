@@ -69,6 +69,7 @@
               </bkt-dots-button>
             </div>
           </div>
+          <group-category-filter entity-list-key="campaigns_id_data_show" :path-key-args="{id: campaignId}"></group-category-filter>
           <campaign-show-table
               v-show="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length > 0"
               :campaign="campaign"
@@ -96,6 +97,7 @@ import BktNoEntityFromIndex from "../../../components/BktNoEntityFromIndex";
 import BktBoxLoader from "../../../components/BktBoxLoader";
 import axios from "../../../plugins/axios";
 import BktDotsButton from "../../../components/BktDotsButton";
+import GroupCategoryFilter from "../../../components/GroupCategoryFilter";
 
 export default {
   props: ['campaignId', 'overview'],
@@ -106,10 +108,10 @@ export default {
     }
   },
   async created() {
-    store.dispatch('genericFetchEntity/fetch', {
-      pathKey: 'campaigns_id_data_show',
-      pathKeyArgs: {id: this.campaignId}
-    })
+    // store.dispatch('genericFetchEntity/fetch', {
+    //   pathKey: 'campaigns_id_data_show',
+    //   pathKeyArgs: {id: this.campaignId}
+    // })
 
     this.campaign = (await axios.get(this.$routes.generate('campaigns_id', {id: this.campaignId}) + '.json')).data.campaign
   },
@@ -132,6 +134,7 @@ export default {
     }
   },
   components: {
+    GroupCategoryFilter,
     BktBoxLoader,
     BktNoEntityFromIndex,
     BktCreateEntityFromIndex,

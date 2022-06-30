@@ -63,6 +63,7 @@ class CampaignsController < ApplicationController
     interviews = campaign.interviews.where(interviewer: current_user, employee_id: employees.ids)
     interviews = interviews.where(status: params[:status]) if params[:status].present?
     interviews = interviews.where.not(id: interviews.ids_without_employee_interview)
+    interviews = filter_tag_by_interview_set(interviews) if params[:tags].present?
 
     employee_interviews = interviews.employee_label
     employee_interviews = employee_interviews.page(page).per(size)
@@ -601,5 +602,11 @@ class CampaignsController < ApplicationController
     # end
 
     employees
+  end
+
+  def filter_tag_by_interview_set(interviews)
+    interview_form_ids = interviews.joins(:interview_form).distinct.pluck('interview_form_id')
+    interview_forms = InterviewForm.where(id: interview_form_ids).filter_by_tag_ids(params[:tags])
+    interviews.where(interview_form: interview_forms)
   end
 end
