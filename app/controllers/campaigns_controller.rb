@@ -55,19 +55,23 @@ class CampaignsController < ApplicationController
     campaign = Campaign.find(params.require(:id))
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
     size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
-
     employees = campaign.employees.distinct
     employees = User.where(id: employees.ids).search_users(params[:text]) if params[:text].present?
-    employees = employees.page(page).per(size)
-    interview_sets = serialize_interview_set(employees.ids, campaign.interviews)
-    interview_sets = interview_sets.select {|interview_set| interview_set[:status] == params[:status].to_sym } if params[:status].present?
+
+    interviews = campaign.interviews.where(interviewer: current_user, employee_id: employees.ids)
+    interviews = interviews.where(status: params[:status]) if params[:status].present?
+    interviews = interviews.where.not(id: interviews.ids_without_employee_interview)
+
+    employee_interviews = interviews.employee_label
+    employee_interviews = employee_interviews.page(page).per(size)
+    interview_sets = serialize_interview_set(employee_interviews.pluck(:employee_id), interviews)
 
     render json: {
       campaign: ActiveModelSerializers::SerializableResource.new(
         campaign, {for_user: current_user, schema: 'manager'}
       ),
       set_interviews: interview_sets,
-      meta: pagination_dict(employees)
+      meta: pagination_dict(employee_interviews)
     }, status: :ok
   end
 

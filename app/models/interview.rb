@@ -37,6 +37,12 @@ class Interview < ApplicationRecord
 
   scope :submitted, -> { where(status: :submitted) }
   scope :locked, -> { where.not(locked_at: nil) }
+  scope :ids_without_employee_interview, -> do
+    group_by(&:employee_id).map do |_, interv|
+      interv.map(&:label).include?('Employee') ? nil : interv.map(&:id)
+    end.flatten.compact
+  end
+  scope :employee_label, -> { where(label: 'Employee') }
 
   def set
     @set ||= Poro::Campaign.new(campaign: campaign, employee_id: employee_id)
