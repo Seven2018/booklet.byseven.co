@@ -103,11 +103,10 @@ const DEFAULT_LABEL = {
 
 export default {
   mixins: [tools],
-  props: ['manager_interview', 'crossed_interview', 'employee_interview'],
+  props: ['overview','manager_interview', 'crossed_interview', 'employee_interview'],
   data () {
     return {
       label: Object.assign({}, DEFAULT_LABEL),
-      overview: true
     }
   },
   components: { BktButton}
