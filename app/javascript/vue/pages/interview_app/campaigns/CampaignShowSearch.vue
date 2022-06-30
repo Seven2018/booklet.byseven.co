@@ -1,24 +1,33 @@
 <template>
-  <div class="flex width-100">
-    <bkt-search
-        v-model="searchText"
-        @input="update"
-        class="flex-1"
-    ></bkt-search>
-    <bkt-select
-        class="flex-none ml-5"
-        v-model="status"
-        :items="selectList"
-        @input="update"
-    ></bkt-select>
+  <div class=" align-items-start">
+<!--    <div class=" width-100 flex-row-between-centered">-->
+      <bkt-search
+          v-model="searchText"
+          @input="update"
+          class="d-inline-block"
+      ></bkt-search>
+      <bkt-select
+          class="mx-5 my-3 d-inline-block"
+          v-model="status"
+          :items="selectList"
+          @input="update"
+      ></bkt-select>
 
-    <div v-if="overview">
-<!--      TODO: code-->
-      tag categories of company
-    </div>
-    <button class="flex-none ml-5 font-weight-500 fs-1_6rem" @click="reset">
-      Reset
-    </button>
+<!--      <div v-if="overview">-->
+        <bkt-select
+            v-if="overview"
+            v-for="(categories, idx) in selectCategories"
+            :key="idx"
+            class="mr-5 mb-3 d-inline-block"
+            :items="categories"
+            @input="update"
+        ></bkt-select>
+<!--      </div>-->
+
+      <button class="flex-none ml-5 mt-4 font-weight-500 fs-1_6rem" @click="reset">
+        Reset
+      </button>
+<!--    </div>-->
   </div>
 </template>
 
@@ -40,16 +49,26 @@ export default {
         {display: 'In progress', value: 'in_progress'},
         {display: 'Submitted', value: 'submitted'}
       ],
+      selectCategories: []
     }
   },
   async created() {
     if (this.overview) {
       const res = await axios.get('/companies/get_tags_and_categories')
 
-      console.log(res.data)
+      console.log(res.data.tag_categories)
+      this.selectCategories = this.buildCategoriesSelect(res.data.tag_categories)
     }
   },
   methods: {
+    buildCategoriesSelect(categories) {
+      return categories.map(category => {
+        const list = [{display: `All ${category.name}`, value: ''}]
+
+        category.tags.forEach(tag => list.push({display: tag.tag_name, value: tag.tag_name}))
+        return list
+      })
+    },
     update() {
       store.commit('genericFetchEntity/setSearch', {
         text: this.searchText,

@@ -33,14 +33,14 @@
           theme="interview"
       >
         <template v-slot:current>
-          <div class="flex-row-between-centered">
+          <div class="flex-row-between-centered align-items-start">
             <campaign-show-search
                 v-if="campaign"
                 :campaign="campaign"
                 :overview="overview"
             ></campaign-show-search>
 
-            <div v-if="overview" class="flex-row-end-centered width-30rem">
+            <div v-if="overview" class="flex-row-end-centered width-30rem mt-4">
               <bkt-dots-button>
                 <button
                     class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
