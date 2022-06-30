@@ -4,10 +4,10 @@
     <template v-slot:title>
       <div v-if="campaign" class="flex-row-around-centered">
         <bkt-button
-          :href="$routes.generate('campaigns')"
+          :href="overview ? $routes.generate('campaigns') : $routes.generate('my_team_interviews')"
           class="">
           <span class="fs-2_4rem font-weight-500 bkt-dark-grey">
-            Campaigns
+            {{ overview ? 'Campaigns' : 'My team interview'}}
           </span>
         </bkt-button>
         <span class="iconify bkt-light-grey font-weight-600" data-icon="akar-icons:chevron-right" data-width="30" data-height="30"></span>
