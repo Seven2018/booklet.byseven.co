@@ -67,6 +67,7 @@ class CampaignsController < ApplicationController
     employee_interviews = interviews.employee_label
     employee_interviews = employee_interviews.page(page).per(size)
     interview_sets = serialize_interview_set(employee_interviews.pluck(:employee_id), interviews)
+    # interview_sets = interview_sets.select {|interview_set| interview_set[:status] == params[:status].to_sym } if params[:status].present?
 
     render json: {
       set_interviews: interview_sets,
@@ -532,11 +533,11 @@ class CampaignsController < ApplicationController
 
   def serialize_interview_set(employee_ids, interviews)
     employee_ids.map do |employee_id|
-      if params.require(:from) == 'overview'
+      if params[:from].present? && params[:from] == 'overview'
         manager_interview = interviews.find_by(employee_id: employee_id, label: 'Manager')
         employee_interview = interviews.find_by(employee_id: employee_id, label: 'Employee')
         crossed_interview = interviews.find_by(employee_id: employee_id, label: 'Crossed')
-      elsif params.require(:from) == 'normal'
+      else
         manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
         employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
         crossed_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
