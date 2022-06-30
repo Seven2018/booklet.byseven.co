@@ -578,22 +578,27 @@ class CampaignsController < ApplicationController
   def check_user_categories(employees)
     return employees unless params[:userCategories].present? && params[:userCategories].kind_of?(Array)
 
-    tag_categories_to_seek = []
-    tags_to_seek = []
+    # tag_categories_to_seek = []
+    # tags_to_seek = []
     params[:userCategories].each do |user_cat_json|
       user_cat = JSON.parse(user_cat_json)
-      selected_tag_category = TagCategory.find_by(name: user_cat['categoryName'], company: current_user)
-      selected_tag = Tag.find_by(tag_name: user_cat['selectedValue'], company: current_user)
+      selected_tag_category = TagCategory.find_by(name: user_cat['categoryName'], company: current_user.company)
+      selected_tag = Tag.find_by(tag_name: user_cat['selectedValue'], company: current_user.company)
 
       if selected_tag.present?
-        tag_categories_to_seek << selected_tag_category
-        tags_to_seek << selected_tag
+        # tag_categories_to_seek << selected_tag_category
+        # tags_to_seek << selected_tag
+        #
+        user_ids = UserTag.where(user_id: employees.ids, tag_category: selected_tag_category, tag: selected_tag).pluck(:user_id)
+        employees = User.where(id: user_ids)
       end
     end
 
-    if !tag_categories_to_seek.empty? && !tags_to_seek.empty?
-      employees = employees.where(tag_categories: tag_categories_to_seek, tags: tags_to_seek)
-    end
+    # if !tag_categories_to_seek.empty? && !tags_to_seek.empty?
+    #   # employees = employees.where(tag_categories: tag_categories_to_seek, tags: tags_to_seek)
+    #   user_ids = UserTag.where(user_id: employees.ids, tag_category: tag_categories_to_seek, tag: tags_to_seek).pluck(:user_id)
+    #   employees = User.where(id: user_ids)
+    # end
 
     employees
   end
