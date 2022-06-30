@@ -12,7 +12,8 @@ class CampaignSerializer < ActiveModel::Serializer
     :employee_interview,
     :crossed_interview,
     :employees_interviews,
-    :status
+    :status,
+    :set_interviews
   )
 
   has_many :categories
@@ -143,6 +144,14 @@ class CampaignSerializer < ActiveModel::Serializer
     return :not_started if interviews_count == interviews_not_started
 
     :in_progress
+  end
+
+  def set_interviews
+    return nil if instance_options[:for_user].nil?
+
+    employee_ids = instance_options[:schema] === 'manager' ? object.interviews.where(interviewer: instance_options[:for_user]).distinct.pluck(:employee_id) : [instance_options[:for_user].id]
+
+    CustomSerializer.serialize_interview_set(employee_ids, object.interviews, instance_options[:schema] === 'manager' ? instance_options[:for_user] : nil)
   end
 
   private

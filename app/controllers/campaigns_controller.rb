@@ -67,7 +67,9 @@ class CampaignsController < ApplicationController
 
     employee_interviews = interviews.employee_label
     employee_interviews = employee_interviews.page(page).per(size)
-    interview_sets = serialize_interview_set(employee_interviews.pluck(:employee_id), interviews)
+    interview_sets = CustomSerializer.serialize_interview_set(
+      employee_interviews.pluck(:employee_id), interviews, params[:from].present? && params[:from] == 'overview' ? nil : current_user
+    )
     # interview_sets = interview_sets.select {|interview_set| interview_set[:status] == params[:status].to_sym } if params[:status].present?
 
     render json: {
