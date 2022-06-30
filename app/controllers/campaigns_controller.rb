@@ -58,6 +58,7 @@ class CampaignsController < ApplicationController
 
     employees = campaign.employees.distinct
     employees = User.where(id: employees.ids).search_users(params[:text]) if params[:text].present?
+    employees = check_user_categories(employees) if params[:userCategories].present?
     employees = employees.page(page).per(size)
     interview_sets = serialize_interview_set(employees.ids, campaign.interviews)
     interview_sets = interview_sets.select {|interview_set| interview_set[:status] == params[:status].to_sym } if params[:status].present?
@@ -566,5 +567,28 @@ class CampaignsController < ApplicationController
       (crossed_interview.present? && crossed_interview.submitted?)
       :submitted
     end
+  end
+
+  def check_user_categories(employees)
+    return employees unless params[:userCategories].present? && params[:userCategories].kind_of?(Array)
+
+    tag_categories_to_seek = []
+    tags_to_seek = []
+    params[:userCategories].each do |user_cat_json|
+      user_cat = JSON.parse(user_cat_json)
+      selected_tag_category = TagCategory.find_by(name: user_cat['categoryName'], company: current_user)
+      selected_tag = Tag.find_by(tag_name: user_cat['selectedValue'], company: current_user)
+
+      if selected_tag.present?
+        tag_categories_to_seek << selected_tag_category
+        tags_to_seek << selected_tag
+      end
+    end
+
+    if !tag_categories_to_seek.empty? && !tags_to_seek.empty?
+      employees = employees.where(tag_categories: tag_categories_to_seek, tags: tags_to_seek)
+    end
+
+    employees
   end
 end

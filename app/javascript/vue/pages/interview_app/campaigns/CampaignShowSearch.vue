@@ -16,10 +16,11 @@
 <!--      <div v-if="overview">-->
         <bkt-select
             v-if="overview"
-            v-for="(categories, idx) in selectCategories"
+            v-for="(category, idx) in selectCategories"
             :key="idx"
             class="mr-5 mb-3 d-inline-block"
-            :items="categories"
+            v-model="category.selectedValue"
+            :items="category.list"
             @input="update"
         ></bkt-select>
 <!--      </div>-->
@@ -56,24 +57,40 @@ export default {
     if (this.overview) {
       const res = await axios.get('/companies/get_tags_and_categories')
 
-      console.log(res.data.tag_categories)
       this.selectCategories = this.buildCategoriesSelect(res.data.tag_categories)
     }
   },
   methods: {
     buildCategoriesSelect(categories) {
       return categories.map(category => {
-        const list = [{display: `All ${category.name}`, value: ''}]
+        // const list = [{display: `All ${category.name}`, value: ''}]
+        const obj = {
+          selectedValue: '',
+          categoryName: category.name,
+          list: [{display: `All ${category.name}`, value: ''}]
+        }
 
-        category.tags.forEach(tag => list.push({display: tag.tag_name, value: tag.tag_name}))
-        return list
+        category.tags.forEach(tag => obj.list.push({display: tag.tag_name, value: tag.tag_name}))
+        return obj
+      })
+    },
+    buildUserCatToSend() {
+      return this.selectCategories.map(cat => {
+        return {
+          categoryName: cat.categoryName,
+          selectedValue: cat.selectedValue,
+        }
       })
     },
     update() {
+      const userCatToSend = this.buildUserCatToSend()
+      console.log(this.selectCategories, userCatToSend)
+
       store.commit('genericFetchEntity/setSearch', {
         text: this.searchText,
         status: this.status,
-        from: this.overview ? 'overview' : 'normal'
+        from: this.overview ? 'overview' : 'normal',
+        userCategories: userCatToSend
       })
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: 'campaigns_id_data_show',
