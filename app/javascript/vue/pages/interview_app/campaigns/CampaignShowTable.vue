@@ -6,7 +6,7 @@
       :table-data="genericFetchEntity.data['set_interviews']"
       :pagination="genericFetchEntity.data['meta']"
       @fetch-page="fetchPage($event, 'campaigns_id_data_show', {id: genericFetchEntity.data['campaign'].campaign.id})"
-      @row-click=""
+      @row-click="rowClick"
       class="cursor-pointer"
   >
     <template v-slot="{manager_interview, employee_interview, crossed_interview}">
@@ -129,6 +129,16 @@ export default {
           }
         })
       }
+    },
+    rowClick(row) {
+      this.$modal.open({
+        type: 'custom',
+        componentName: 'pop-up-set-interview',
+        closable: true,
+        manager_interview: row['manager_interview'],
+        crossed_interview: row['crossed_interview'],
+        employee_interview: row['employee_interview'],
+      })
     }
   }
 }

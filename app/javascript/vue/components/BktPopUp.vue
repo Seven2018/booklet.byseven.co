@@ -92,6 +92,7 @@ import InfoFilterCategoryTags from "./InfoFilterCategoryTagsComponents/InfoFilte
 import PopUpInfoInterviewStatus from './PopUpComponents/PopUpInfoInterviewStatus'
 import PopUpSetAnotherInterviewer from './PopUpComponents/PopUpSetAnotherInterviewer'
 import PopUpSetAnotherInterviewee from "./PopUpComponents/PopUpSetAnotherInterviewee";
+import PopUpSetInterview from './PopUpComponents/PopUpSetInterview'
 
 export default {
   data() {
@@ -116,7 +117,8 @@ export default {
     InfoFilterCategoryTags,
     PopUpInfoInterviewStatus,
     PopUpSetAnotherInterviewer,
-    PopUpSetAnotherInterviewee
+    PopUpSetAnotherInterviewee,
+    PopUpSetInterview,
   },
 }
 </script>

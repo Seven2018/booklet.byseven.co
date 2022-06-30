@@ -36,6 +36,7 @@ const routes = {
   interview_forms_id_edit: '/interview_forms/{id}/edit',
   interview_forms_id_duplicate: '/interview_forms/{id}/duplicate',
   interview_forms_toggle_tag: '/interview_forms/{id}/toggle_tag',
+  interview_id: '/interviews/{id}',
   interviews_reports_edit: '/interviews/reports/edit',
   interviews_reports: '/interviews/reports/list',
   categories_groups: '/categories/groups',
