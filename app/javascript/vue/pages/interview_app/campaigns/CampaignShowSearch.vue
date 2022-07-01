@@ -84,7 +84,6 @@ export default {
     },
     update() {
       const userCatToSend = this.buildUserCatToSend()
-      console.log(this.selectCategories, userCatToSend)
 
       store.commit('genericFetchEntity/setSearch', {
         text: this.searchText,
@@ -103,6 +102,11 @@ export default {
       })
       this.searchText = null
       this.status = null
+      if (this.overview && this.selectCategories.length > 0) {
+        this.selectCategories = this.selectCategories.map(item => {
+          return {...item, selectedValue: ''}
+        })
+      }
       store.commit('genericFetchEntity/setData', null)
       store.dispatch('genericFetchEntity/fetch', {
         pathKey: 'campaigns_id_data_show',
