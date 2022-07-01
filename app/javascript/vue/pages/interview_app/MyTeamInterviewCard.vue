@@ -9,15 +9,26 @@
         <h1 class="font-weight-600 fs-1rem ml-3">{{ campaign.title }}</h1>
       </div>
       <p class="fs-0_8rem bkt-light-grey">{{ campaign.deadline | formatDate }}</p>
+
+      <div class="flex-row-end-centered width-100 mt-4">
+        <bkt-button
+            class=" width-100"
+            type="white-interview"
+            :href="$routes.generate('campaigns_id', {id: campaign.id})"
+        >
+          Manager campaign
+        </bkt-button>
+      </div>
+
       <div class="border-bottom-bkt-light-grey width-98 my-4" style="height: 1px"></div>
 
-      <div v-for="group_interview in campaign.employees_interviews"
+      <div v-for="group_interview in campaign.set_interviews"
            class="width-100 border-bottom-bkt-light-grey5-not-last-child flex-column-centered justify-content-center align-items-center">
         <user-info-in-table class="mt-4"
-                            :user="{...group_interview.employee, subtitle: 'interviewee'}"></user-info-in-table>
+                            :user="{...group_interview.employee_interview.interview.employee, subtitle: 'interviewee'}"></user-info-in-table>
 
         <p class="fs-1_2rem font-weight-500 flex-row-start-centered mt-4 mb-2">
-          {{ group_interview.employee_interview.interview.status_sentence }}
+          {{ generateInterviewsStatusSentence(...group_interview) }}
           <span @click="openInfo" class="cursor-pointer">
             <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>
           </span>
@@ -27,9 +38,9 @@
 
         <bkt-button
             class="my-5 width-95"
-            :type="group_interview.crossed_interview && group_interview.crossed_interview.interview.status === 'submitted' || group_interview.manager_interview.interview.status === 'submitted' ? 'white' : 'interview'"
+            :type="group_interview.crossed_interview && group_interview.crossed_interview.interview.status === 'submitted' || (group_interview.employee_interview && group_interview.employee_interview.interview.status === 'submitted') || (group_interview.manager_interview && group_interview.manager_interview.interview.status === 'submitted') ? 'white-interview' : 'interview'"
             :href="$routes.generate('interviews_id', {id: group_interview.crossed_interview && group_interview.crossed_interview.interview.status === 'submitted' ?
-              group_interview.crossed_interview.interview.id : group_interview.manager_interview.interview.id})"
+              group_interview.crossed_interview.interview.id : group_interview.manager_interview ? group_interview.manager_interview.interview.id : group_interview.employee_interview.interview.id})"
         >
           {{ myInterviewCampaignButtonSentenceForManager(group_interview) }}
         </bkt-button>
