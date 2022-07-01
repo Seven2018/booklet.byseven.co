@@ -19,7 +19,7 @@
           v-if="type === 'employee'"
           placeholder="Select an employee"
           class="mb-1rem"
-          :value="autoSelect"
+          v-model="autoSelect"
           @selected="preSetInterviewee"
           :link="`${$routes.generate('company_managers')}/?access_level_int[]=employee&access_level_int[]=manager&access_level_int[]=hr&access_level_int[]=account_owner&access_level_int[]=account_owner`"
       >
@@ -28,7 +28,7 @@
           v-else
           placeholder="Select an interviewer"
           class="mb-1rem"
-          :value="interviewerSelect"
+          v-model="interviewerSelect"
           @selected="preSetInterviewer"
           :link="`${$routes.generate('company_managers')}/?access_level_int[]=manager&access_level_int[]=hr&access_level_int[]=account_owner&access_level_int[]=account_owner`"
       >

@@ -14,7 +14,7 @@
     </div>
 
     <div class="d-flex justify-content-between align-items-center width-100 gap-2rem">
-      <div v-for="interview in [manager_interview, employee_interview, crossed_interview]">
+      <div v-for="interview in [employee_interview, manager_interview, crossed_interview]">
         <div v-if="interview">
           <div class="d-flex flex-column justify-content-start align-items-center width-25rem
                             border-bkt-light-grey5 rounded-5px p-1rem">
@@ -47,14 +47,13 @@
 
             <p class="fs-1_4rem font-weight-600 bkt-dark-grey my-1rem">{{ label[interview.interview.label] }}</p>
             <p :class="getColorByCampaignStatus(interview.interview.status)" class="fs-1_4rem font-weight-500 mb-1rem">
-            {{ cleanUnderscoreAndCapitalize(interview.interview.status) }}
+            {{ interview.interview.status | cleanUnderscore | capitalize }}
             </p>
 
-            <div v-if="interview.interview.label === 'Employee' || interview.interview.status === 'submitted' || overview ">
+            <div v-if="interview.interview.label === 'Employee' || interview.interview.status === 'submitted' ">
               <bkt-button
-                type="none"
-                :class="interview.interview.status === 'submitted' ? '' : 'disabled'"
-                class="bkt-btn-blue-border"
+                type="white-interview"
+                :disable="interview.interview.status !== 'submitted'"
                 :href="$routes.generate('interview_id', {id: interview.interview.id})"
                 >
                  View answers
@@ -63,8 +62,7 @@
 
             <div v-else-if="interview.interview.label === 'Manager'">
               <bkt-button
-                type="none"
-                class="bkt-btn-blue-border"
+                type="interview"
                 :href="$routes.generate('interview_id', {id: interview.interview.id})"
                 >
                 {{ interview.interview.status === 'not_started' ? 'Start interview' : 'Continue interview' }}
@@ -73,12 +71,10 @@
 
             <div v-else-if="interview.interview.label === 'Crossed'">
               <bkt-button
-                type="none"
-                class="bkt-btn-blue-border"
-                :class="interview.interview.status === 'not_available_yet' ? 'disabled' : ''"
+                type="interview"
+                :disable="interview.interview.status === 'not_available_yet'"
                 :href="$routes.generate('interview_id', {id: interview.interview.id})"
                 >
-                {{ interview.interview.status === 'not_available_yet' ? 'disabled' : '' }}
                 {{ interview.interview.status === 'in_progress' ? 'Continue' : 'Start' }}
               </bkt-button>
             </div>
@@ -87,7 +83,6 @@
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 

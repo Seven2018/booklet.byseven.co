@@ -5,22 +5,20 @@
       🤔
     </div>
     <p v-if="genericFetchEntity.search && genericFetchEntity.search.title" class="text-center">
-      Oops, it seems any items can be found with the search ‘<span >{{ genericFetchEntity.search.title }}</span>’.<br>
-      Please try something else.
+      Oops, it seems no item can be found with the search ‘<span >{{ genericFetchEntity.search.title }}</span>’.<br>
     </p>
     <p v-if="genericFetchEntity.tags && genericFetchEntity.tags.length > 0" class="text-center">
-      Oops, it seems any items can be found with the tags ‘<span >{{ genericFetchEntity.tags.map(tag => tag.title).join(', ') }}</span>’.<br>
-      Please try something else.
+      Oops, it seems no item can be found with the tags ‘<span >{{ genericFetchEntity.tags.map(tag => tag.title).join(', ') }}</span>’.<br>
     </p>
     <p v-if="genericFetchEntity.search && genericFetchEntity.search.status" class="text-center">
-      Oops, it seems any items can be found with the status ‘<span >{{ genericFetchEntity.search.status }}</span>’.<br>
-      Please try something else.
+      Oops, it seems no item can be found with the status ‘<span >{{ genericFetchEntity.search.status }}</span>’.<br>
     </p>
     <p v-if="genericFetchEntity.search && checkUserCategories(genericFetchEntity.search.userCategories)" class="text-center">
-      Oops, it seems any items can be found with the user categories.<br>
+      Oops, it seems no item can be found with the user categories.<br>
+    </p>
+    <p class="text-center">
       Please try something else.
     </p>
-    userCategories
   </div>
 </template>
 
@@ -42,7 +40,6 @@ export default {
         if (userCat.selectedValue !== '') ret = true
       })
       return ret
-
     }
   }
 }

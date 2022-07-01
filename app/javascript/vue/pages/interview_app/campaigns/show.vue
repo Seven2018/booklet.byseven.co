@@ -69,7 +69,7 @@
               </bkt-dots-button>
             </div>
           </div>
-          <group-category-filter entity-list-key="campaigns_id_data_show" :path-key-args="{id: campaignId}"></group-category-filter>
+          <group-category-filter v-if="overview" entity-list-key="campaigns_id_data_show" :path-key-args="{id: campaignId}"></group-category-filter>
           <campaign-show-table
               v-show="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length > 0"
               :overview="overview"
