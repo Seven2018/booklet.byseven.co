@@ -156,9 +156,9 @@ class CampaignMailer < ApplicationMailer
     @campaign = interview.campaign.decorate
   end
 
-  def interviewe_email_settings(interviewer, campaign)
+  def interviewer_email_settings(interviewer, campaign)
     @interviewer = interviewer
-    @campaign = interview.campaign.decorate
+    @campaign = campaign.decorate
   end
 
   def campaign_calendar_link(campaign, user)

@@ -242,7 +242,7 @@ class UsersController < ApplicationController
   def managers_search
     skip_authorization
 
-    users = User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin])
+    users = User.where(company_id: current_user.company_id, access_level_int: params.require(:access_level_int))
     users = users.search_users(params[:text]) if params[:text].present?
 
     render json: users, status: :ok

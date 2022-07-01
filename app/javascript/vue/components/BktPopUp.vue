@@ -90,7 +90,8 @@ import BktPopUpFrame from "./BktPopUpFrame";
 import EditEntityTags from './EditEntityTags'
 import InfoFilterCategoryTags from "./InfoFilterCategoryTagsComponents/InfoFilterCategoryTags";
 import PopUpInfoInterviewStatus from './PopUpComponents/PopUpInfoInterviewStatus'
-import PopUpSetAnotherInterview from './PopUpComponents/PopUpSetAnotherInterviewer'
+import PopUpSetAnotherInterviewer from './PopUpComponents/PopUpSetAnotherInterviewer'
+import PopUpSetAnotherInterviewee from "./PopUpComponents/PopUpSetAnotherInterviewee";
 import PopUpSetInterview from './PopUpComponents/PopUpSetInterview'
 
 export default {
@@ -115,8 +116,9 @@ export default {
     EditEntityTags,
     InfoFilterCategoryTags,
     PopUpInfoInterviewStatus,
+    PopUpSetAnotherInterviewer,
+    PopUpSetAnotherInterviewee,
     PopUpSetInterview,
-    PopUpSetAnotherInterview
   },
 }
 </script>
