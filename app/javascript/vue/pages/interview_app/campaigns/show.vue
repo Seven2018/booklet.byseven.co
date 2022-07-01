@@ -56,13 +56,13 @@
                 </button>
                 <button
                     class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
-                    @click=""
+                    @click="sendInvitationToAll(campaignId)"
                 >
                   Send invitation to all
                 </button>
                 <button
                     class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
-                    @click=""
+                    @click="sendReminderToAll(campaignId)"
                 >
                   Send reminder to all
                 </button>
@@ -132,7 +132,19 @@ export default {
           })
         }
       })
-    }
+    },
+    async sendReminderToAll(campaignId) {
+      try {
+        const res = await axios.get(this.$routes.generate('send_notification_email',{id: campaignId}), {params: { email_type: 'remind', format: 'json' }})
+      } catch (e) {
+      }
+    },
+    async sendInvitationToAll(campaignId) {
+      try {
+        const res = await axios.get(this.$routes.generate('send_notification_email',{id: campaignId}), {params: { email_type: 'invite', format: 'json' }})
+      } catch (e) {
+      }
+    },
   },
   components: {
     GroupCategoryFilter,
