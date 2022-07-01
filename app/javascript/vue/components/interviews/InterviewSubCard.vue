@@ -3,7 +3,9 @@
   <div class="mt-4 flex-row-between-centered">
     <div class="flex-row-start-centered ">
       <div class="width-30rem border-right-bkt-light-grey">
-        <user-info-in-table :user="{...leftUser, subtitle: userKind}"></user-info-in-table>
+        <user-info-in-table :user="{...leftUser, subtitle: userKind}"
+                            :submitted="interviews['employee_interview'] != null &&interviews['employee_interview'].interview.status === 'submitted'"
+                            :interview-id="interviews['employee_interview'] != null ? interviews['employee_interview'].interview.id : ''"></user-info-in-table>
       </div>
       <div class="ml-3">
         <p class="fs-1_2rem font-weight-500 flex-row-start-centered">
@@ -21,7 +23,7 @@
       <bkt-button
           iconify="akar-icons:arrow-right"
           :left="false"
-          :type="interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' || (interviews.employee_interview && interviews.employee_interview.interview.status === 'submitted') || (interviews.manager_interview && interviews.manager_interview.interview.status === 'submitted') ? 'white-interview' : 'interview'"
+          :type="(interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted') || (interviews.employee_interview && interviews.employee_interview.interview.status === 'submitted') || (interviews.manager_interview && interviews.manager_interview.interview.status === 'submitted') ? 'white-interview' : 'interview'"
           :href="$routes.generate('interviews_id', {id: interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' ?
               interviews.crossed_interview.interview.id : (userKind === 'interviewer' ? interviews.employee_interview.interview.id : (interviews.manager_interview ? interviews.manager_interview.interview.id : interviews.employee_interview.interview.id))})"
           :disable="!interviews.manager_interview && !interviews.crossed_interview && interviews.employee_interview.interview.status !== 'submitted'"
