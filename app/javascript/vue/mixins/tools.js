@@ -108,8 +108,5 @@ export default {
       else if (status === 'submitted') return 'bkt-green'
       else if (status === 'not_available_yet') return 'bkt-light-grey'
     },
-    cleanUnderscoreAndCapitalize(str) {
-      return str.replace('_', ' ').trim().replace(/^\w/, (c) => c.toUpperCase())
-    }
   }
 }
