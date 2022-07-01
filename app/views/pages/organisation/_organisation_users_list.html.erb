@@ -76,9 +76,9 @@
           <ul class="dropdown-menu dropdown-menu-right organisation__dropdown-menu" aria-labelledby="dropdownMenu">
             <li class="hidden"><a id='organisation-dropdown__create-user-redirect' data-toggle='modal' data-target='#userCreated'></a></li>
             <li class='hidden'><a id='organisation-dropdown__remove-user-redirect' data-toggle='modal' data-target='#removeUser'>Remove Selected User</a></li>
-            <% if current_user.admin? %>
+            <%# if current_user.admin? %>
               <li><a data-toggle='modal' data-target='#importUsers'>Import Users</a></li>
-            <% end %>
+            <%# end %>
             <li><a data-toggle='modal' data-target='#exportUsers' id="export-users-modal-link">Export All Users</a></li>
             <li class='hidden'><a id='organisation-dropdown__import-infos-link' data-toggle='modal' data-target='#importUsersInfos'></a></li>
           </ul>

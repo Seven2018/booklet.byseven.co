@@ -7,6 +7,12 @@ Vue.filter('capitalize', function (value) {
   return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
+Vue.filter('cleanUnderscore', function (value) {
+  if (!value) return ''
+
+  return value.replace(/_/g, ' ').trim()
+})
+
 Vue.filter('convert_hr', function (value) {
   if (!value) return ''
   if (value == 'hr') {

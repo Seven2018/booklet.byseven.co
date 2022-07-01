@@ -7,7 +7,10 @@
         ref="selectText"
         @focus="toggleDisplay"
         @input="preSearch"
-        type="text" :value="text">
+        type="text"
+        :value="value"
+        :placeholder="placeholder"
+    >
     <div
         v-if="display"
         class="position-absolute bkt-bg-white rounded-2px bkt-box-shadow-medium z-index-5 max-h-30rem overflow-y-auto"
@@ -43,6 +46,12 @@ export default {
       default() {
         return null
       }
+    },
+    placeholder: {
+      type: String,
+      default() {
+        return null
+      }
     }
   },
   data() {
@@ -52,14 +61,20 @@ export default {
       text: null
     }
   },
-  created() {
-    this.preSearch({value: ''})
+  async created() {
+    this.entities = await this.search()
+  },
+  async beforeUpdate() {
+    if (this.value === null) {
+      this.preSearch({target: {value: ''}})
+    }
   },
   computed: {
   },
   methods: {
     async preSearch(e) {
-      this.entities = await this.search(e.value)
+      this.$emit('input', e.target.value)
+      this.entities = await this.search(e.target.value)
     },
     async search(text = '') {
       try {
@@ -84,7 +99,7 @@ export default {
     },
     manageSelected(item) {
       this.hide()
-      this.text = `${item.firstname} ${item.lastname}`
+      // this.text = `${item.firstname} ${item.lastname}`
       this.$emit('selected', item)
     }
   }

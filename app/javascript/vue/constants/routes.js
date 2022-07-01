@@ -46,8 +46,11 @@ const routes = {
   categories_search_v2: '/categories/search_v2',
   my_interviews_list: '/my_interviews_list',
   interviews_id: '/interviews/{id}',
+  my_team_interviews: '/my_team_interviews',
   my_team_interviews_list: '/my_team_interviews_list',
-  company_managers: '/managers_search'
+  company_managers: '/managers_search',
+  send_notification_email: '/send_notification_email/{id}',
+  users_id: '/users/{id}'
 }
 
 export default {

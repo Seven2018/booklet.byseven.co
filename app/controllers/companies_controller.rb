@@ -36,6 +36,12 @@ class CompaniesController < ApplicationController
     redirect_to companies_path
   end
 
+  def get_tags_and_categories
+    skip_authorization
+
+    render json: current_user.company.tag_categories, status: :ok
+  end
+
   private
 
   def set_company
