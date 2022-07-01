@@ -71,4 +71,7 @@ export default {
 .slider-pagination-bullet-active {
   background-color: #3177B7 !important;
 }
+.slider-wrapper {
+  align-items: start !important;
+}
 </style>
