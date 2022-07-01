@@ -14,7 +14,7 @@
       <campaign-table v-show="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length > 0"></campaign-table>
       <bkt-create-entity-from-index
           v-if="genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && !genericFetchEntity.search && !genericFetchEntity.tags ||
-          genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && genericFetchEntity.search && !genericFetchEntity.search.title && !genericFetchEntity.tags"
+          genericFetchEntity.data && genericFetchEntity.data['campaigns'] && genericFetchEntity.data['campaigns'].length === 0 && genericFetchEntity.search && !genericFetchEntity.search.title && !genericFetchEntity.tags && !genericFetchEntity.search.status"
           type="interview"
           :href="$routes.generate('campaign_draft_edit')"
       >

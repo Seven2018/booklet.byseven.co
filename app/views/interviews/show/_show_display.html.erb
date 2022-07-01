@@ -86,7 +86,16 @@
   <div class="interview-main__right">
 
     <div class="flex-row-start-centered width-100">
-      <%= link_to :back, class: 'flex-row-center-centered d-sm-none height-5rem width-5rem' do %>
+      <% fallback =
+           if current_user == @employee
+             my_interviews_path
+           elsif current_user == @manager
+             my_team_interviews_path
+           else
+             my_interviews_path
+           end %>
+
+      <%= link_to fallback, class: 'flex-row-center-centered d-sm-none height-5rem width-5rem' do %>
         <i class="fas fa-angle-left fs-2_4rem"></i>
       <% end %>
     </div>

@@ -38,7 +38,8 @@ class CampaignDraft < ApplicationRecord
                  multi_templates_category: :integer,
                  multi_templates_ids: [:string, array: true, default: []],
                  interviewee_ids: [:string, array: true, default: []],
-                 interview_sets: [:string, array: true, default: []]
+                 interview_sets: [:string, array: true, default: []],
+                 send_invitation: :boolean
 
   def direct_manager?
     interviewer_selection_method == 'manager'

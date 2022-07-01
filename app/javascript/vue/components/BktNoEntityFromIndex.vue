@@ -12,6 +12,10 @@
       Oops, it seems any items can be found with the tags ‘<span >{{ genericFetchEntity.tags.map(tag => tag.title).join(', ') }}</span>’.<br>
       Please try something else.
     </p>
+    <p v-if="genericFetchEntity.search && genericFetchEntity.search.status" class="text-center">
+      Oops, it seems any items can be found with the status ‘<span >{{ genericFetchEntity.search.status }}</span>’.<br>
+      Please try something else.
+    </p>
   </div>
 </template>
 

@@ -91,6 +91,7 @@ import EditEntityTags from './EditEntityTags'
 import InfoFilterCategoryTags from "./InfoFilterCategoryTagsComponents/InfoFilterCategoryTags";
 import PopUpInfoInterviewStatus from './PopUpComponents/PopUpInfoInterviewStatus'
 import PopUpSetAnotherInterview from './PopUpComponents/PopUpSetAnotherInterviewer'
+import PopUpSetInterview from './PopUpComponents/PopUpSetInterview'
 
 export default {
   data() {
@@ -114,6 +115,7 @@ export default {
     EditEntityTags,
     InfoFilterCategoryTags,
     PopUpInfoInterviewStatus,
+    PopUpSetInterview,
     PopUpSetAnotherInterview
   },
 }

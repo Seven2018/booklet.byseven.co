@@ -1,6 +1,6 @@
 <div class="">
 
-  <div class="width-100 height-40rem black-gradient mb-5rem">
+  <div class="width-100 height-30rem height-sm-40rem black-gradient mb-5rem">
 
     <%= render_component AsClAssetComponent.new(model: current_user.company,
                                           asset: :my_team_interviews_banner,
@@ -19,7 +19,7 @@
 
           <%= render_component AsClAssetComponent.new(model: current_user.company,
                                           asset: :banner_gif,
-                                          class_name: 'height-5rem',
+                                          class_name: 'height-3rem height-sm-5rem',
                                           fallback: 'noto_waving-hand.png') %>
 
         </div>
@@ -39,7 +39,7 @@
 
     <% if current_company.color2 != "#000000" %>
 
-      <div class="width-100 height-2rem mb-5rem"
+      <div class="width-100 height-2rem mb-1rem"
            style="background-color: <%= current_company.color2 %>;"></div>
 
     <% end %>

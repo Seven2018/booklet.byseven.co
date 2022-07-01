@@ -1,6 +1,6 @@
 
 <template>
-  <div class="width-70 mt-5 mx-auto">
+  <div class="width-70 mt-1 mt-sm-5 mx-auto">
     <bkt-switcher
         v-if="genericFetchEntity.data"
         :current-nbr="genericFetchEntity.data.current_campaigns.campaigns.length"
