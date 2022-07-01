@@ -21,7 +21,7 @@
       <bkt-button
           iconify="akar-icons:arrow-right"
           :left="false"
-          :type="interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' || interviews.employee_interview.interview.status === 'submitted' ? 'white' : 'interview'"
+          :type="interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' || interviews.employee_interview.interview.status === 'submitted' ? 'white-interview' : 'interview'"
           :href="$routes.generate('interviews_id', {id: interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' ?
               interviews.crossed_interview.interview.id : (userKind === 'interviewer' ? interviews.employee_interview.interview.id : interviews.manager_interview.interview.id)})"
       >
@@ -35,7 +35,7 @@
           class="ml-3"
           :left="false"
           v-if="userKind !== 'interviewer' && interviews.crossed_interview && interviews.crossed_interview.interview.status !== 'not_available_yet'"
-          :type="interviews.crossed_interview.interview.status === 'submitted' ? 'white' : 'interview'"
+          :type="interviews.crossed_interview.interview.status === 'submitted' ? 'white-interview' : 'interview'"
           :href="$routes.generate('interviews_id', {id: interviews.crossed_interview.interview.id })"
       >
         {{ myInterviewCampaignButtonSentenceForCrossed(interviews) }}
