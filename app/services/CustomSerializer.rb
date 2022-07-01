@@ -25,7 +25,7 @@ class CustomSerializer
         }) if crossed_interview),
         status: interview_set_gen_status(employee_interview, manager_interview, crossed_interview)
       }
-    end.select { |interview| interview[:employee_interview].present? }
+    end.select { |interview| interview[:employee_interview].present? || interview[:manager_interview].present? }
   end
 
   def self.interview_set_gen_status(employee_interview, manager_interview, crossed_interview)

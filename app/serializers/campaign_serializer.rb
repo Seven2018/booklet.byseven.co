@@ -11,7 +11,7 @@ class CampaignSerializer < ActiveModel::Serializer
     :manager_interview,
     :employee_interview,
     :crossed_interview,
-    :employees_interviews,
+    # :employees_interviews,
     :status,
     :set_interviews
   )
