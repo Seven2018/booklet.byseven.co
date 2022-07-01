@@ -17,13 +17,13 @@
       <button
           v-if="archivedNbr !== null"
           class="height-3_5rem pb-3 pl-3 fs-1rem fs-sm-1_6rem"
-          :class="getColorByTheme()"
+          :class="getColorByTheme(true)"
           @click="togglePanelCurrentObjective"
       >
         {{archivedTitle}}
         <span
             class="px-2 rounded-5px fs-0_8rem fs-sm-1_2rem"
-            :class="getColorByTheme2()">
+            :class="getColorByTheme2(true)">
           {{archivedNbr || 0}}
         </span>
       </button>
@@ -78,30 +78,50 @@ export default {
       if (this.archivedNbr !== null)
         this.panelCurrentObjective = !this.panelCurrentObjective
     },
-    getColorByTheme() {
-      if (this.theme === 'interview' && this.panelCurrentObjective) {
+    getColorByTheme(reverse = false) {
+      if (!reverse && this.theme === 'interview' && this.panelCurrentObjective) {
         return 'bkt-blue border-bottom-bkt-blue'
-      } else if (this.theme === 'interview' && !this.panelCurrentObjective) {
+      } else if (!reverse && this.theme === 'interview' && !this.panelCurrentObjective) {
+        return 'bkt-light-grey5'
+      }
+      if (reverse && this.theme === 'interview' && !this.panelCurrentObjective) {
+        return 'bkt-blue border-bottom-bkt-blue'
+      } else if (reverse && this.theme === 'interview' && this.panelCurrentObjective) {
         return 'bkt-light-grey5'
       }
 
-      if (this.theme === 'objective' && this.panelCurrentObjective) {
+      if (!reverse && this.theme === 'objective' && this.panelCurrentObjective) {
         return 'bkt-objective-blue border-bottom-bkt-objective-blue'
-      } else if (this.theme === 'objective' && !this.panelCurrentObjective) {
+      } else if (!reverse && this.theme === 'objective' && !this.panelCurrentObjective) {
+        return 'bkt-light-grey5'
+      }
+      if (reverse && this.theme === 'objective' && !this.panelCurrentObjective) {
+        return 'bkt-objective-blue border-bottom-bkt-objective-blue'
+      } else if (reverse && this.theme === 'objective' && this.panelCurrentObjective) {
         return 'bkt-light-grey5'
       }
     },
 
-    getColorByTheme2() {
-      if (this.theme === 'interview' && this.panelCurrentObjective) {
+    getColorByTheme2(reverse = false) {
+      if (!reverse && this.theme === 'interview' && this.panelCurrentObjective) {
         return 'bkt-bg-blue bkt-white'
-      } else if (this.theme === 'interview' && !this.panelCurrentObjective) {
+      } else if (!reverse && this.theme === 'interview' && !this.panelCurrentObjective) {
+        return 'bkt-bg-light-grey5 bkt-white'
+      }
+      if (reverse && this.theme === 'interview' && !this.panelCurrentObjective) {
+        return 'bkt-bg-blue bkt-white'
+      } else if (reverse && this.theme === 'interview' && this.panelCurrentObjective) {
         return 'bkt-bg-light-grey5 bkt-white'
       }
 
-      if (this.theme === 'objective' && this.panelCurrentObjective) {
+      if (!reverse && this.theme === 'objective' && this.panelCurrentObjective) {
         return 'bkt-bg-objective-blue2 bkt-objective-blue'
-      } else if (this.theme === 'objective' && !this.panelCurrentObjective) {
+      } else if (!reverse && this.theme === 'objective' && !this.panelCurrentObjective) {
+        return 'bkt-bg-light-grey5 bkt-white'
+      }
+      if (reverse && this.theme === 'objective' && !this.panelCurrentObjective) {
+        return 'bkt-bg-objective-blue2 bkt-objective-blue'
+      } else if (reverse && this.theme === 'objective' && this.panelCurrentObjective) {
         return 'bkt-bg-light-grey5 bkt-white'
       }
     }
