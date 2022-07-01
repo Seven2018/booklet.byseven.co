@@ -98,7 +98,11 @@ export default {
         return 'View my answers'
     },
     myInterviewCampaignButtonSentenceForManager(interviews_set) {
-      if (interviews_set.manager_interview.interview.status === 'not_started')
+      if (!interviews_set.manager_interview && !interviews_set.crossed_interview && interviews_set.employee_interview.interview.status !== 'submitted')
+        return 'Employee has not submitted interview'
+      else if (!interviews_set.manager_interview && !interviews_set.crossed_interview && interviews_set.employee_interview.interview.status === 'submitted')
+        return 'View employee answers'
+      else if (interviews_set.manager_interview.interview.status === 'not_started')
         return 'Start my interview'
       else if (interviews_set.manager_interview.interview.status === 'in_progress')
         return 'Continue my interview'
