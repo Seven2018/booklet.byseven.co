@@ -49,6 +49,7 @@ const routes = {
   my_team_interviews: '/my_team_interviews',
   my_team_interviews_list: '/my_team_interviews_list',
   company_managers: '/managers_search',
+  send_notification_email: '/send_notification_email/{id}',
   users_id: '/users/{id}'
 }
 
