@@ -13,6 +13,7 @@ class Campaigns::InterviewSetsController < Campaigns::BaseController
       format.js {
         redirect_to request.referrer, format: 'js'
       }
+      format.json { head :ok }
     end
   end
 

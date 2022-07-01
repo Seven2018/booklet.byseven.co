@@ -90,8 +90,10 @@ import BktPopUpFrame from "./BktPopUpFrame";
 import EditEntityTags from './EditEntityTags'
 import InfoFilterCategoryTags from "./InfoFilterCategoryTagsComponents/InfoFilterCategoryTags";
 import PopUpInfoInterviewStatus from './PopUpComponents/PopUpInfoInterviewStatus'
-import PopUpSetAnotherInterview from './PopUpComponents/PopUpSetAnotherInterviewer'
+import PopUpSetAnotherInterviewer from './PopUpComponents/PopUpSetAnotherInterviewer'
+import PopUpSetAnotherInterviewee from "./PopUpComponents/PopUpSetAnotherInterviewee";
 import PopUpSetInterview from './PopUpComponents/PopUpSetInterview'
+import PopUpCampaignEditDeadline from './PopUpComponents/PopUpCampaignEditDeadline'
 
 export default {
   data() {
@@ -115,8 +117,10 @@ export default {
     EditEntityTags,
     InfoFilterCategoryTags,
     PopUpInfoInterviewStatus,
+    PopUpSetAnotherInterviewer,
+    PopUpSetAnotherInterviewee,
     PopUpSetInterview,
-    PopUpSetAnotherInterview
+    PopUpCampaignEditDeadline
   },
 }
 </script>

@@ -122,8 +122,11 @@ class UsersController < ApplicationController
     @user.update(user_params)
 
     job_title_tag_category = @user.company.tag_categories.find_by(name: 'Job Title')
-    @user.update(job_title: UserTag.find_by(tag_category_id: job_title_tag_category.id,
-                                            user_id: @user.id).tag.tag_name) if job_title_tag_category.present?
+    if job_title_tag_category.present?
+      user_tag = UserTag.find_by(tag_category_id: job_title_tag_category.id,
+                                 user_id: @user.id)
+      @user.update(job_title: user_tag.tag.tag_name) if user_tag.present?
+    end
 
     redirect_to user_path(@user)
   end
@@ -242,7 +245,7 @@ class UsersController < ApplicationController
   def managers_search
     skip_authorization
 
-    users = User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin])
+    users = User.where(company_id: current_user.company_id, access_level_int: params.require(:access_level_int))
     users = users.search_users(params[:text]) if params[:text].present?
 
     render json: users, status: :ok

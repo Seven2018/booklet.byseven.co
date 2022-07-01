@@ -55,21 +55,24 @@ class CampaignsController < ApplicationController
     campaign = Campaign.find(params.require(:id))
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
     size = params[:page] && params[:page][:size] ? params[:page][:size] : SIZE_PAGE_INDEX
+
     employees = campaign.employees.distinct
     employees = User.where(id: employees.ids).search_users(params[:text]) if params[:text].present?
+    employees = check_user_categories(employees) if params[:userCategories].present?
 
-    interviews = campaign.interviews.where(interviewer: current_user, employee_id: employees.ids)
+    interviews = campaign.interviews.where(employee_id: employees.ids)
     interviews = interviews.where(status: params[:status]) if params[:status].present?
     interviews = interviews.where.not(id: interviews.ids_without_employee_interview)
+    interviews = filter_tag_by_interview_set(interviews) if params[:tags].present?
 
     employee_interviews = interviews.employee_label
     employee_interviews = employee_interviews.page(page).per(size)
-    interview_sets = serialize_interview_set(employee_interviews.pluck(:employee_id), interviews)
+    interview_sets = CustomSerializer.serialize_interview_set(
+      employee_interviews.pluck(:employee_id), interviews, params[:from].present? && params[:from] == 'overview' ? nil : current_user
+    )
+    # interview_sets = interview_sets.select {|interview_set| interview_set[:status] == params[:status].to_sym } if params[:status].present?
 
     render json: {
-      campaign: ActiveModelSerializers::SerializableResource.new(
-        campaign, {for_user: current_user, schema: 'manager'}
-      ),
       set_interviews: interview_sets,
       meta: pagination_dict(employee_interviews)
     }, status: :ok
@@ -207,13 +210,19 @@ class CampaignsController < ApplicationController
 
   def my_team_interviews_list
     @campaigns = Campaign
+                   .where_exists(:interviews, interviewer: current_user)
+                   .or(Campaign.where(company: current_user.company).where_exists(:interviews, employee: current_user.employees))
                    .where(company: current_user.company)
-                   .where_exists(:interviews, interviewer: current_user).order(created_at: :desc)
+                   .order(created_at: :desc)
+    # @campaigns_not_mine = Campaign.where_exists(:interviews, employee: current_user.employees)
     authorize @campaigns
+    # @campaigns = @campaigns + @campaigns_not_mine
 
     ongoing_interviews = Interview.where(interviewer: current_user)
+                                  .or(Interview.where(employee: current_user.employees))
                                   .select{|x| !x.archived_for['Manager'].present?}
     archived_interviews = Interview.where(interviewer: current_user)
+                                   .or(Interview.where(employee: current_user.employees))
                                    .select{|x| x.archived_for['Manager'].present?}
 
     @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id)).distinct
@@ -533,9 +542,15 @@ class CampaignsController < ApplicationController
 
   def serialize_interview_set(employee_ids, interviews)
     employee_ids.map do |employee_id|
-      manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
-      employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
-      crossed_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
+      if params[:from].present? && params[:from] == 'overview'
+        manager_interview = interviews.find_by(employee_id: employee_id, label: 'Manager')
+        employee_interview = interviews.find_by(employee_id: employee_id, label: 'Employee')
+        crossed_interview = interviews.find_by(employee_id: employee_id, label: 'Crossed')
+      else
+        manager_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Manager')
+        employee_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Employee')
+        crossed_interview = interviews.find_by(interviewer: current_user, employee_id: employee_id, label: 'Crossed')
+      end
       {
         manager_interview: (ActiveModelSerializers::SerializableResource.new(
           manager_interview, {serializer: InterviewSerializer}
@@ -567,5 +582,39 @@ class CampaignsController < ApplicationController
       (crossed_interview.present? && crossed_interview.submitted?)
       :submitted
     end
+  end
+
+  def check_user_categories(employees)
+    return employees unless params[:userCategories].present? && params[:userCategories].kind_of?(Array)
+
+    # tag_categories_to_seek = []
+    # tags_to_seek = []
+    params[:userCategories].each do |user_cat_json|
+      user_cat = JSON.parse(user_cat_json)
+      selected_tag_category = TagCategory.find_by(name: user_cat['categoryName'], company: current_user.company)
+      selected_tag = Tag.find_by(tag_name: user_cat['selectedValue'], company: current_user.company)
+
+      if selected_tag.present?
+        # tag_categories_to_seek << selected_tag_category
+        # tags_to_seek << selected_tag
+        #
+        user_ids = UserTag.where(user_id: employees.ids, tag_category: selected_tag_category, tag: selected_tag).pluck(:user_id)
+        employees = User.where(id: user_ids)
+      end
+    end
+
+    # if !tag_categories_to_seek.empty? && !tags_to_seek.empty?
+    #   # employees = employees.where(tag_categories: tag_categories_to_seek, tags: tags_to_seek)
+    #   user_ids = UserTag.where(user_id: employees.ids, tag_category: tag_categories_to_seek, tag: tags_to_seek).pluck(:user_id)
+    #   employees = User.where(id: user_ids)
+    # end
+
+    employees
+  end
+
+  def filter_tag_by_interview_set(interviews)
+    interview_form_ids = interviews.joins(:interview_form).distinct.pluck('interview_form_id')
+    interview_forms = InterviewForm.where(id: interview_form_ids).filter_by_tag_ids(params[:tags])
+    interviews.where(interview_form: interview_forms)
   end
 end

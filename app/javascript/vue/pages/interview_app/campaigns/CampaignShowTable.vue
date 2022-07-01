@@ -5,7 +5,7 @@
       :headers="headers"
       :table-data="genericFetchEntity.data['set_interviews']"
       :pagination="genericFetchEntity.data['meta']"
-      @fetch-page="fetchPage($event, 'campaigns_id_data_show', {id: genericFetchEntity.data['campaign'].campaign.id})"
+      @fetch-page="fetchPage($event, 'campaigns_id_data_show', {id: campaign.id})"
       @row-click="rowClick"
       class="cursor-pointer"
   >
@@ -79,7 +79,7 @@ import axios from "../../../plugins/axios";
 export default {
   mixins: [tools],
   components: {InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
-  props: ['data'],
+  props: ['overview','campaign'],
   data() {
     return {
       headers: ['Interviewee', 'Template', 'Interviewer', 'Tags', 'Completion', ''],
@@ -89,13 +89,13 @@ export default {
   methods: {
     openSetAnotherInterviewer(employeeId) {
       // TODO: refactor next line
-      const campaignId = this.genericFetchEntity.data['campaign'].campaign.id
+      const campaignId = this.campaign.id
 
       this.$modal.open({
         type: 'custom',
-        componentName: 'pop-up-set-another-interview',
+        componentName: 'pop-up-set-another-interviewer',
         closable: false,
-        campaignId: this.genericFetchEntity.data['campaign'].campaign.id,
+        campaignId: campaignId,
         employeeId: employeeId,
         close() {
           store.dispatch('genericFetchEntity/fetch', {
@@ -135,6 +135,7 @@ export default {
         type: 'custom',
         componentName: 'pop-up-set-interview',
         closable: true,
+        overview: this.$props.overview,
         manager_interview: row['manager_interview'],
         crossed_interview: row['crossed_interview'],
         employee_interview: row['employee_interview'],

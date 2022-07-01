@@ -3,16 +3,16 @@
   <div
       v-if="items.length >= 1"
       v-click-outside="hide"
-      class="position-relative">
+      class="position-relative max-w-25rem">
     <p
         ref="selectText"
         @click.stop="toggleDisplay"
-        class="bkt-bg-light-grey3 border-bkt-light-grey pointer-event  bkt-white-onclick p-3 rounded-5px min-w-15rem">
+        class="bkt-bg-light-grey3 border-bkt-light-grey pointer-event  bkt-white-onclick p-3 rounded-5px min-w-15rem  pr-5">
       {{toDisplay}}
     </p>
     <div
         v-if="display"
-        class="position-absolute bkt-bg-white rounded-2px bkt-box-shadow-medium z-index-5 "
+        class="position-absolute bkt-bg-white rounded-2px bkt-box-shadow-medium z-index-5 overflow-y-auto max-h-30rem"
         style="left: 0; right: 0; width: inherit"
     >
       <button
@@ -21,7 +21,9 @@
           class="flex-row-start-centered width-100 p-3 fs-1_6rem bkt-bg-light-grey9-hover"
           @click="manageSelected(item)"
       >
-        {{item.display}}
+        <span class="d-inline-block text-truncate">
+          {{item.display}}
+        </span>
       </button>
     </div>
   </div>

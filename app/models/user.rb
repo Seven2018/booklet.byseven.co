@@ -16,6 +16,7 @@ class User < ApplicationRecord
   belongs_to :company, optional: true
   has_many :user_tags, dependent: :destroy
   has_many :tags, through: :user_tags
+  has_many :tag_categories, through: :user_tags
   has_many :user_forms, dependent: :destroy
   has_many :mods, through: :user_forms
   has_many :user_interests, dependent: :destroy
@@ -160,7 +161,7 @@ class User < ApplicationRecord
 
         unless manager.present?
           manager = User.new(email: manager_email, company_id: company_id, access_level_int: 'manager')
-          manager.save(validate: false)
+          send_invite && Rails.env.production? ? manager.invite! : manager.save(validate: false)
         end
       else
         manager = nil
@@ -174,9 +175,7 @@ class User < ApplicationRecord
           next
         end
 
-        user.firstname.present? && user.lastname.present? && user.invitation_created_at.nil? ? manager_invite = true : manager_invite = false
         update = user.update row_h
-        user.invite! if send_invite && manager_invite
 
       else
 
@@ -191,7 +190,7 @@ class User < ApplicationRecord
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
         user.manager_id = manager.id if manager.present?
-        send_invite ? user.invite! : user.save(validate: false)
+        send_invite && Rails.env.production? ? user.invite! : user.save(validate: false)
 
       end
 

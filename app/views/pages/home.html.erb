@@ -52,4 +52,58 @@
 
   <% end %>
 
+  <% if current_user.admin? || current_company.id == 2 %>
+
+    <a data-toggle="modal"
+       data-target="#informationsModal">
+
+      <div class="d-flex flex-column width-30rem height-24rem pos-rel rounded-b-10px
+                  bkt-box-shadow bkt-box-shadow-hover">
+
+        <%= image_tag "home/informations-card.png", class: "width-100 rounded-t-10px" %>
+
+        <div class="d-flex flex-column justify-content-between align-items-center flex-grow-1 height-12rem
+                    p-2rem">
+
+          <p class="fs-1_2rem font-weight-500">Looking for tutos or informations ?
+            Find it all here.</p>
+
+          <div class="d-flex justify-content-end width-100">
+
+            <div class="d-flex align-items-center">
+
+              <p class="fs-1_2rem font-weight-500 bkt-info-green mr-0_5rem">Go to informations</p>
+
+              <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.2rem" height="1.2rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="none" stroke="#96F4E3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16m-7-7l7 7l-7 7"/></svg>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </a>
+
+    <!------------>
+    <!-- MODALS -->
+    <!------------>
+
+    <div id='informationsModal'
+         class='modal info-modal fade'
+         tabindex='-1'
+         role='dialog'
+         data-keyboard="false"
+         data-backdrop="static">
+
+      <div class='modal-dialog info-modal__dialog'
+           role='document'>
+        <%= render 'pages/modals/informations' %>
+      </div>
+
+    </div>
+
+  <% end %>
+
 </div>

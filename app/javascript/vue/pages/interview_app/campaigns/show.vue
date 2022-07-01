@@ -4,10 +4,10 @@
     <template v-slot:title>
       <div v-if="campaign" class="flex-row-around-centered">
         <bkt-button
-          :href="$routes.generate('campaigns')"
+          :href="overview ? $routes.generate('campaigns') : $routes.generate('my_team_interviews')"
           class="">
           <span class="fs-2_4rem font-weight-500 bkt-dark-grey">
-            Campaigns
+            {{ overview ? 'Campaigns' : 'My team interview'}}
           </span>
         </bkt-button>
         <span class="iconify bkt-light-grey font-weight-600" data-icon="akar-icons:chevron-right" data-width="30" data-height="30"></span>
@@ -29,15 +29,51 @@
       <bkt-switcher
           :current-nbr="genericFetchEntity.data ? genericFetchEntity.data.set_interviews.length : 0"
           :archived-nbr="null"
-          title="Participants"
+          current-title="Participants"
+          theme="interview"
       >
         <template v-slot:current>
-          <campaign-show-search
-              v-if="genericFetchEntity.data"
-              :campaign="genericFetchEntity.data.campaign.campaign"
-          ></campaign-show-search>
+          <div class="flex-row-between-centered align-items-start">
+            <campaign-show-search
+                v-if="campaign"
+                :campaign="campaign"
+                :overview="overview"
+            ></campaign-show-search>
+
+            <div v-if="overview" class="flex-row-end-centered width-30rem mt-4">
+              <bkt-dots-button>
+                <button
+                    class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                    @click="openAddParticipant"
+                >
+                  + Add participant
+                </button>
+                <button
+                    class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                    @click="openEditDeadline"
+                >
+                  Edit deadline
+                </button>
+                <button
+                    class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                    @click="sendInvitationToAll(campaignId)"
+                >
+                  Send invitation to all
+                </button>
+                <button
+                    class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
+                    @click="sendReminderToAll(campaignId)"
+                >
+                  Send reminder to all
+                </button>
+              </bkt-dots-button>
+            </div>
+          </div>
+          <group-category-filter v-if="overview" entity-list-key="campaigns_id_data_show" :path-key-args="{id: campaignId}"></group-category-filter>
           <campaign-show-table
               v-show="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length > 0"
+              :overview="overview"
+              :campaign="campaign"
           ></campaign-show-table>
           <bkt-no-entity-from-index
               v-if="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length === 0 && genericFetchEntity.search"
@@ -61,27 +97,78 @@ import BktCreateEntityFromIndex from "../../../components/BktCreateEntityFromInd
 import BktNoEntityFromIndex from "../../../components/BktNoEntityFromIndex";
 import BktBoxLoader from "../../../components/BktBoxLoader";
 import axios from "../../../plugins/axios";
+import BktDotsButton from "../../../components/BktDotsButton";
+import GroupCategoryFilter from "../../../components/GroupCategoryFilter";
 
 export default {
-  props: ['campaignId'],
+  props: ['campaignId', 'overview'],
   data() {
     return {
       genericFetchEntity: store.state.genericFetchEntity,
       campaign: null
     }
   },
-  async created() {
-    store.dispatch('genericFetchEntity/fetch', {
-      pathKey: 'campaigns_id_data_show',
-      pathKeyArgs: {id: this.campaignId}
-    })
+  created() {
+    // store.dispatch('genericFetchEntity/fetch', {
+    //   pathKey: 'campaigns_id_data_show',
+    //   pathKeyArgs: {id: this.campaignId}
+    // })
 
-    this.campaign = (await axios.get(this.$routes.generate('campaigns_id', {id: this.campaignId}) + '.json')).data.campaign
+    this.fetchCampaign()
+  },
+  methods: {
+    openAddParticipant() {
+      const campaignId = this.campaign.id
+
+      this.$modal.open({
+        type: 'custom',
+        componentName: 'pop-up-set-another-interviewee',
+        closable: false,
+        campaignId: campaignId,
+        close() {
+          store.dispatch('genericFetchEntity/fetch', {
+            pathKey: 'campaigns_id_data_show',
+            pathKeyArgs: {id: campaignId}
+          })
+        }
+      })
+    },
+    openEditDeadline() {
+      // TODO: refactor
+      const campaignId = this.campaign.id
+      const self = this
+
+      this.$modal.open({
+        type: 'custom',
+        componentName: 'pop-up-campaign-edit-deadline',
+        closable: false,
+        campaignId: campaignId,
+        close() {
+          self.fetchCampaign()
+        }
+      })
+    },
+    async fetchCampaign() {
+      this.campaign = (await axios.get(this.$routes.generate('campaigns_id', {id: this.campaignId}) + '.json')).data.campaign
+    },
+    async sendReminderToAll(campaignId) {
+      try {
+        const res = await axios.get(this.$routes.generate('send_notification_email',{id: campaignId}), {params: { email_type: 'remind', format: 'json' }})
+      } catch (e) {
+      }
+    },
+    async sendInvitationToAll(campaignId) {
+      try {
+        const res = await axios.get(this.$routes.generate('send_notification_email',{id: campaignId}), {params: { email_type: 'invite', format: 'json' }})
+      } catch (e) {
+      }
+    },
   },
   components: {
+    GroupCategoryFilter,
     BktBoxLoader,
     BktNoEntityFromIndex,
     BktCreateEntityFromIndex,
-    CampaignShowTable, BktSwitcher, CampaignStatusChip, BktIndexSkeleton, BktButton, CampaignShowSearch}
+    CampaignShowTable, BktSwitcher, CampaignStatusChip, BktIndexSkeleton, BktButton, CampaignShowSearch, BktDotsButton}
 }
 </script>

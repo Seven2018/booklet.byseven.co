@@ -65,6 +65,28 @@ export default {
         }
       })
     },
+
+    generateInterviewsStatusSentence(employee_interview = null, manager_interview = null, crossed_interview = null) {
+      if ((employee_interview === null || employee_interview.interview.status === 'not_started') && (manager_interview === null || manager_interview.interview.status === 'not_started')) {
+        return 'No interview started'
+      } else if ((employee_interview != null && manager_interview != null) && (employee_interview.interview.status === 'in_progress' && manager_interview.interview.status === 'in_progress')) {
+        return '2 interview in progress'
+      } else if ((employee_interview !== null && employee_interview.interview.status === 'in_progress') || (manager_interview !== null && manager_interview.interview.status === 'in_progress')) {
+        return '1 interview in progress'
+      } else if ((employee_interview != null && manager_interview != null) && ((employee_interview.interview.status === 'submitted' && manager_interview.interview.status === 'in_progress') || (employee_interview.interview.status === 'in_progress' && manager_interview.interview.status === 'submitted'))) {
+        return '1 interview submitted and 1 interview in progress'
+      } else if ((employee_interview != null && manager_interview != null) && ((employee_interview.interview.status === 'submitted' && manager_interview.interview.status === 'not_started') || (employee_interview.interview.status === 'not_started' && manager_interview.interview.status === 'submitted'))) {
+        return '1 interview submitted'
+      } else if (crossed_interview != null && (employee_interview.interview.status === 'submitted' && manager_interview.interview.status === 'submitted' && crossed_interview.interview.status === 'not_started')) {
+        return '2 interviews submitted, Cross Review available'
+      } else if (crossed_interview != null && (employee_interview.interview.status === 'submitted' && manager_interview.interview.status === 'submitted' && (crossed_interview != null && crossed_interview.interview.status === 'in_progress'))) {
+        return '2 interviews submitted, Cross Review in progress'
+      } else if ([employee_interview, manager_interview, crossed_interview].filter(interview => interview != null).filter(interview => interview.interview.status === 'submitted').length == 3) {
+        return 'All interviews submitted'
+      } else {
+        return 'No status to show'
+      }
+    },
     myInterviewCampaignButtonSentenceForEmployee(campaign) {
       if (campaign.employee_interview.interview.status === 'not_started')
         return 'Start my interview'
@@ -75,14 +97,18 @@ export default {
       else if (campaign.employee_interview.interview.status === 'submitted')
         return 'View my answers'
     },
-    myInterviewCampaignButtonSentenceForManager(campaign) {
-      if (campaign.manager_interview.interview.status === 'not_started')
+    myInterviewCampaignButtonSentenceForManager(interviews_set) {
+      if (!interviews_set.manager_interview && !interviews_set.crossed_interview && interviews_set.employee_interview.interview.status !== 'submitted')
+        return 'Employee has not submitted interview'
+      else if (!interviews_set.manager_interview && !interviews_set.crossed_interview && interviews_set.employee_interview.interview.status === 'submitted')
+        return 'View employee answers'
+      else if (interviews_set.manager_interview.interview.status === 'not_started')
         return 'Start my interview'
-      else if (campaign.manager_interview.interview.status === 'in_progress')
+      else if (interviews_set.manager_interview.interview.status === 'in_progress')
         return 'Continue my interview'
-      else if (campaign.crossed_interview.interview && campaign.crossed_interview.interview.status === 'submitted')
+      else if (interviews_set.crossed_interview.interview && interviews_set.crossed_interview.interview.status === 'submitted')
         return 'View cross review answers'
-      else if (campaign.manager_interview.interview.status === 'submitted')
+      else if (interviews_set.manager_interview.interview.status === 'submitted')
         return 'View my answers'
     },
     myInterviewCampaignButtonSentenceForCrossed(campaign) {
@@ -108,8 +134,5 @@ export default {
       else if (status === 'submitted') return 'bkt-green'
       else if (status === 'not_available_yet') return 'bkt-light-grey'
     },
-    cleanUnderscoreAndCapitalize(str) {
-      return str.replace('_', ' ').trim().replace(/^\w/, (c) => c.toUpperCase())
-    }
   }
 }

@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     toggleDisplay() {
-      console.log('test')
       this.display = !this.display
     },
     hide() {

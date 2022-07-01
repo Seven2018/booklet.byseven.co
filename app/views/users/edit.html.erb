@@ -36,7 +36,7 @@
 
         <%= f.input :lastname, label: 'Last Name', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
 
-        <%#= f.input :email, label: 'Email', label_html: {class: 'bkt-light-grey'},  class: 'form-control' %>
+        <%= f.input :email, label: 'Email', label_html: {class: 'bkt-light-grey'},  class: 'form-control' %>
 
         <%= render 'users/access_level_input', f: f, user: @user %>
 
