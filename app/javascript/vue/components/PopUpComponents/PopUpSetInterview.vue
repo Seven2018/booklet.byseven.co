@@ -79,7 +79,7 @@
                 :href="$routes.generate('interview_id', {id: interview.interview.id})"
                 >
                 {{ interview.interview.status === 'not_available_yet' ? 'disabled' : '' }}
-                {{ interview.interview.status === 'in_progress' ? 'Continue cross interview' : 'Start cross interview' }}
+                {{ interview.interview.status === 'in_progress' ? 'Continue' : 'Start' }}
               </bkt-button>
             </div>
 

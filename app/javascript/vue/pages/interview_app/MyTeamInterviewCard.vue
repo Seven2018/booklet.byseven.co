@@ -81,9 +81,10 @@
       </div>
 
       <interview-sub-card
-          v-for="(item, idx) in campaign.employees_interviews"
+          v-for="(item, idx) in campaign.set_interviews"
           :key="idx"
-          :left-user="item.employee"
+          :left-user="item['employee_interview'] ? item['employee_interview'].interview.employee : item['manager_interview'].interview.employee"
+          :default-interview="item['employee_interview'] || item['manager_interview']"
           :interviews="item"
           user-kind="interviewee"
           class="py-4 border-bottom-bkt-light-grey5-not-last-child"

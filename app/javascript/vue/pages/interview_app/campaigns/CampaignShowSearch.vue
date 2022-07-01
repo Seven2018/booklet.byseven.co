@@ -84,7 +84,6 @@ export default {
     },
     update() {
       const userCatToSend = this.buildUserCatToSend()
-      console.log(this.selectCategories, userCatToSend)
 
       store.commit('genericFetchEntity/setSearch', {
         text: this.searchText,
