@@ -210,13 +210,19 @@ class CampaignsController < ApplicationController
 
   def my_team_interviews_list
     @campaigns = Campaign
+                   .where_exists(:interviews, interviewer: current_user)
+                   .or(Campaign.where(company: current_user.company).where_exists(:interviews, employee: current_user.employees))
                    .where(company: current_user.company)
-                   .where_exists(:interviews, interviewer: current_user).order(created_at: :desc)
+                   .order(created_at: :desc)
+    # @campaigns_not_mine = Campaign.where_exists(:interviews, employee: current_user.employees)
     authorize @campaigns
+    # @campaigns = @campaigns + @campaigns_not_mine
 
     ongoing_interviews = Interview.where(interviewer: current_user)
+                                  .or(Interview.where(employee: current_user.employees))
                                   .select{|x| !x.archived_for['Manager'].present?}
     archived_interviews = Interview.where(interviewer: current_user)
+                                   .or(Interview.where(employee: current_user.employees))
                                    .select{|x| x.archived_for['Manager'].present?}
 
     @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id)).distinct

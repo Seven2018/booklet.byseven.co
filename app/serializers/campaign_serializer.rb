@@ -149,9 +149,14 @@ class CampaignSerializer < ActiveModel::Serializer
   def set_interviews
     return nil if instance_options[:for_user].nil?
 
-    employee_ids = instance_options[:schema] === 'manager' ? object.interviews.where(interviewer: instance_options[:for_user]).distinct.pluck(:employee_id) : [instance_options[:for_user].id]
+    if instance_options[:schema] === 'manager'
+      employee_ids = object.interviews
+                           .distinct.pluck(:employee_id)
+    else
+      employee_ids = [instance_options[:for_user].id]
+    end
 
-    CustomSerializer.serialize_interview_set(employee_ids, object.interviews, instance_options[:schema] === 'manager' ? instance_options[:for_user] : nil)
+    CustomSerializer.serialize_interview_set(employee_ids, object.interviews, nil)
   end
 
   private

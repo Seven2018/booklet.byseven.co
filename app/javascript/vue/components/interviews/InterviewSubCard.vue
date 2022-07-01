@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="flex-row-end-centered">
+    <div v-if="campaign.manager.user.id === defaultInterview.interview.interviewer.id" class="flex-row-end-centered">
       <bkt-button
           iconify="akar-icons:arrow-right"
           :left="false"
@@ -42,6 +42,14 @@
         {{ myInterviewCampaignButtonSentenceForCrossed(interviews) }}
       </bkt-button>
     </div>
+    <div v-else class="flex-row-end-centered">
+      <bkt-button
+          type="transparent"
+          :disable="true"
+      >
+        You're not the interviewer
+      </bkt-button>
+    </div>
   </div>
 </template>
 <script>
@@ -52,7 +60,7 @@ import BktButton from "../BktButton";
 
 export default {
   mixins: [tools],
-  props: ['interviews', 'userKind', 'leftUser', 'defaultInterview'],
+  props: ['interviews', 'userKind', 'leftUser', 'defaultInterview', 'campaign'],
   methods: {
     openInfo() {
       this.$modal.open({

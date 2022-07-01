@@ -84,6 +84,7 @@
           v-for="(item, idx) in campaign.set_interviews"
           :key="idx"
           :left-user="item['employee_interview'] ? item['employee_interview'].interview.employee : item['manager_interview'].interview.employee"
+          :campaign="campaign"
           :default-interview="item['employee_interview'] || item['manager_interview']"
           :interviews="item"
           user-kind="interviewee"
