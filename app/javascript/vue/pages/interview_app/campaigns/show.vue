@@ -50,7 +50,7 @@
                 </button>
                 <button
                     class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
-                    @click=""
+                    @click="openEditDeadline"
                 >
                   Edit deadline
                 </button>
@@ -108,13 +108,13 @@ export default {
       campaign: null
     }
   },
-  async created() {
+  created() {
     // store.dispatch('genericFetchEntity/fetch', {
     //   pathKey: 'campaigns_id_data_show',
     //   pathKeyArgs: {id: this.campaignId}
     // })
 
-    this.campaign = (await axios.get(this.$routes.generate('campaigns_id', {id: this.campaignId}) + '.json')).data.campaign
+    this.fetchCampaign()
   },
   methods: {
     openAddParticipant() {
@@ -132,6 +132,24 @@ export default {
           })
         }
       })
+    },
+    openEditDeadline() {
+      // TODO: refactor
+      const campaignId = this.campaign.id
+      const self = this
+
+      this.$modal.open({
+        type: 'custom',
+        componentName: 'pop-up-campaign-edit-deadline',
+        closable: false,
+        campaignId: campaignId,
+        close() {
+          self.fetchCampaign()
+        }
+      })
+    },
+    async fetchCampaign() {
+      this.campaign = (await axios.get(this.$routes.generate('campaigns_id', {id: this.campaignId}) + '.json')).data.campaign
     }
   },
   components: {
