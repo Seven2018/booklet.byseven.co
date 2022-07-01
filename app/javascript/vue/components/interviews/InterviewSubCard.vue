@@ -7,10 +7,10 @@
       </div>
       <div class="ml-3">
         <p class="fs-1_2rem font-weight-500 flex-row-start-centered">
-          {{ interviews.employee_interview.interview.status_sentence }}
+          {{ generateInterviewsStatusSentence(interviews['employee_interview'], interviews['manager_interview'], interviews['crossed_interview']) }}
           <span @click="openInfo" class="cursor-pointer">
-                <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>
-              </span>
+            <span class="iconify bkt-light-grey ml-3" data-icon="akar-icons:question"></span>
+          </span>
         </p>
 
         <interview-status :set-interview="interviews"></interview-status>
@@ -21,9 +21,10 @@
       <bkt-button
           iconify="akar-icons:arrow-right"
           :left="false"
-          :type="interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' || interviews.employee_interview.interview.status === 'submitted' ? 'white-interview' : 'interview'"
+          :type="interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' || (interviews.employee_interview && interviews.employee_interview.interview.status === 'submitted') || (interviews.manager_interview && interviews.manager_interview.interview.status === 'submitted') ? 'white-interview' : 'interview'"
           :href="$routes.generate('interviews_id', {id: interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' ?
-              interviews.crossed_interview.interview.id : (userKind === 'interviewer' ? interviews.employee_interview.interview.id : interviews.manager_interview.interview.id)})"
+              interviews.crossed_interview.interview.id : (userKind === 'interviewer' ? interviews.employee_interview.interview.id : (interviews.manager_interview ? interviews.manager_interview.interview.id : interviews.employee_interview.interview.id))})"
+          :disable="!interviews.manager_interview && !interviews.crossed_interview && interviews.employee_interview.interview.status !== 'submitted'"
       >
         {{ userKind === 'interviewer' ?
           myInterviewCampaignButtonSentenceForEmployee(interviews) :
@@ -34,7 +35,7 @@
           iconify="akar-icons:arrow-right"
           class="ml-3"
           :left="false"
-          v-if="userKind !== 'interviewer' && interviews.crossed_interview && interviews.crossed_interview.interview.status !== 'not_available_yet'"
+          v-if="userKind !== 'interviewer' && interviews.crossed_interview && interviews.crossed_interview.interview.status !== 'not_available_yet' && interviews.crossed_interview.interview.status !== 'submitted'"
           :type="interviews.crossed_interview.interview.status === 'submitted' ? 'white-interview' : 'interview'"
           :href="$routes.generate('interviews_id', {id: interviews.crossed_interview.interview.id })"
       >
@@ -51,7 +52,7 @@ import BktButton from "../BktButton";
 
 export default {
   mixins: [tools],
-  props: ['interviews', 'userKind', 'leftUser'],
+  props: ['interviews', 'userKind', 'leftUser', 'defaultInterview'],
   methods: {
     openInfo() {
       this.$modal.open({
