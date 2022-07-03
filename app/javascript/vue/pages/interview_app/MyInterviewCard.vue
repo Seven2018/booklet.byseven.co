@@ -61,6 +61,8 @@
       </div>
 
       <interview-sub-card
+          :campaign="campaign"
+          :default-interview="campaign.set_interviews[0].employee_interview || campaign.set_interviews[0].employee_interview"
           :left-user="campaign.manager.user"
           :interviews="{employee_interview: campaign.employee_interview, manager_interview: campaign.manager_interview, crossed_interview: campaign.crossed_interview}"
           user-kind="interviewer"

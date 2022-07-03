@@ -3,9 +3,11 @@
   <div class="mt-4 flex-row-between-centered">
     <div class="flex-row-start-centered ">
       <div class="width-30rem border-right-bkt-light-grey">
-        <user-info-in-table :user="{...leftUser, subtitle: userKind}"
-                            :submitted="interviews['employee_interview'] != null &&interviews['employee_interview'].interview.status === 'submitted'"
-                            :interview-id="interviews['employee_interview'] != null ? interviews['employee_interview'].interview.id : ''"></user-info-in-table>
+        <user-info-in-table
+            :user="{...leftUser, subtitle: userKind}"
+            :show-interview="interviews['employee_interview'] != null && interviews['employee_interview'].interview.status === 'submitted' && userKind !== 'interviewer' ?
+              interviews['employee_interview'].interview.id : false"
+        ></user-info-in-table>
       </div>
       <div class="ml-3">
         <p class="fs-1_2rem font-weight-500 flex-row-start-centered">

@@ -24,8 +24,8 @@
           <p class="font-weight-500 text-truncate">{{ `${user.firstname} ${user.lastname}` }}</p>
         </div>
         <div class="flex-row-start-centered">
-          <a v-if="submitted"
-             :href="`/interviews/${interviewId}`"
+          <a v-if="showInterview"
+             :href="$routes.generate('interview_id', {id: showInterview})"
              class="fs-1_2rem font-weight-600 bkt-blue bkt-blue-hover border-bottom-bkt-blue">View interviewee answers</a>
           <p v-else
              class="font-weight-500 fs-1_2rem bkt-light-grey6 text-truncate">{{ user.job_title || user.subtitle }}</p>
@@ -40,6 +40,6 @@ import tools from "../mixins/tools";
 
 export default {
   mixins: [tools],
-  props: ['user', 'submitted', 'interviewId'],
+  props: ['user', 'showInterview'],
 }
 </script>
