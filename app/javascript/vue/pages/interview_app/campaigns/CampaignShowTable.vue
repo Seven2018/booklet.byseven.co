@@ -63,6 +63,9 @@
         </div>
       </td>
     </template>
+    <template v-slot:mobile-row="row">
+      <campaign-show-mobile-row :row="row"></campaign-show-mobile-row>
+    </template>
   </index-table>
 </template>
 
@@ -75,10 +78,11 @@ import InterviewStatus from "../../../components/interviews/InterviewStatus";
 import tools from "../../../mixins/tools";
 import store from "../../../store";
 import axios from "../../../plugins/axios";
+import CampaignShowMobileRow from "./CampaignShowMobileRow";
 
 export default {
   mixins: [tools],
-  components: {InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
+  components: {CampaignShowMobileRow, InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
   props: ['overview','campaign'],
   data() {
     return {

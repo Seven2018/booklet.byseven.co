@@ -71,9 +71,11 @@
 }
 
 .flex-sm-row-end-centered {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  @include from-medium {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }
 
 .flex-row-around-centered {

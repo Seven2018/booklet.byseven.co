@@ -156,6 +156,24 @@ class User < ApplicationRecord
 
       user = User.find_by(email: row_h['email'].downcase)
 
+      ###########################
+      ## TEMP BIG MAMMA IMPORT ##
+      ###########################
+
+      duplicate_user = false
+
+      if user.nil?
+        test_duplicate = User.where('lower(firstname) = ? AND lower(lastname) = ?', row_h['firstname']&.strip&.downcase, row_h['lastname']&.strip&.downcase)
+                             .select{|x| x.email.split('@').last != 'bigmamma.com'.strip.downcase}
+
+        if test_duplicate.count == 1 && row_h['email'].split('@').last.strip.downcase == 'bigmamma.com'
+          user = test_duplicate.first
+          duplicate_user = true
+        end
+      end
+
+      ###########################
+
       if manager_email.present?
         manager = User.find_by(email: manager_email)
 
