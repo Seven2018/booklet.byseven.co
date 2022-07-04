@@ -43,6 +43,12 @@ export default {
       default() {
         return null
       }
+    },
+    preventFetchOnMount: {
+      type: Boolean,
+      default() {
+        return false
+      }
     }
   },
   data() {
@@ -51,7 +57,7 @@ export default {
     }
   },
   mounted() {
-    if (!this.value)
+    if (!this.value && !this.preventFetchOnMount)
       this.$emit('input', this.items[0].value)
   },
   computed: {
