@@ -110,7 +110,7 @@ export default {
       })
     },
     sendNotif(emailType, employeeId) {
-      axios.get(`/send_notification_email/${this.genericFetchEntity.data['campaign'].campaign.id}?email_type=${emailType}&user_id=${employeeId}`)
+      axios.get(`/send_notification_email/${this.campaign.id}?email_type=${emailType}&user_id=${employeeId}&format=json`)
 
       if (emailType === 'invite') {
         this.$modal.open({

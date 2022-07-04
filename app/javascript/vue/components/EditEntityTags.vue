@@ -64,13 +64,20 @@ import routes from "../constants/routes";
 
 export default {
   components: {BktTag},
-  props: ['title', 'entityId', 'fetchTagsFromEntityPath', 'toggleTagFromEntityPath', 'refreshEntityListPath'],
+  props: [
+    'title',
+    'entityId',
+    'fetchTagsFromEntityPath',
+    'toggleTagFromEntityPath',
+    'refreshEntityListPath',
+    'genericDataKey'],
   data() {
     return {
       entityTags: [],
       tagsModule: store.state.tagsModule,
       searchText: '',
-      suggestToCreate: false
+      suggestToCreate: false,
+      genericFetchEntity: store.state.genericFetchEntity
     }
   },
   created() {
@@ -101,7 +108,7 @@ export default {
           .then(() => this.$refs.inputField.focus())
     },
     async createTag(text) {
-      await this.addTag({id: Math.floor(Math.random() * 100), title: text})
+      await this.addTag({title: text})
       this.searchText = ''
       this.suggestToCreate = false
       store.dispatch('tagsModule/fetch', {kind: 'interview'})
@@ -127,18 +134,26 @@ export default {
     },
     async removeTag(tag) {
       try {
-        await HTTP.post(
+        const res = await HTTP.post(
             routes.generate(this.toggleTagFromEntityPath, {id: this.entityId}) + '.json',
             {tag}
         )
 
         this.entityTags = this.entityTags.filter(campaignTag => campaignTag.title !== tag)
         store.dispatch('tagsModule/fetch', {kind: 'interview'})
-        store.dispatch('genericFetchEntity/fetch',
-            {
-              pathKey: this.refreshEntityListPath
-            }
-        )
+
+        for (const key in this.genericFetchEntity.data[this.genericDataKey]) {
+          if (this.genericFetchEntity.data[this.genericDataKey][key].id === this.entityId) {
+            this.genericFetchEntity
+                .data[this.genericDataKey][key]
+                .categories = this.genericFetchEntity.data[this.genericDataKey][key].categories.filter(cat => cat.id !== res.data.category.id)
+          }
+        }
+        // store.dispatch('genericFetchEntity/fetch',
+        //     {
+        //       pathKey: this.refreshEntityListPath
+        //     }
+        // )
       } catch (e) {
         console.log('error', e)
       }
@@ -146,17 +161,24 @@ export default {
     async addTag(tagObj) {
       this.searchText = ''
       try {
-        await HTTP.post(
+        const res = await HTTP.post(
             routes.generate(this.toggleTagFromEntityPath, {id: this.entityId}) + '.json',
             {tag: tagObj.title}
         )
 
-        this.entityTags.push(tagObj)
-        store.dispatch('genericFetchEntity/fetch',
-            {
-              pathKey: this.refreshEntityListPath
-            }
-        )
+        this.entityTags.push(res.data.category)
+
+        for (const key in this.genericFetchEntity.data[this.genericDataKey]) {
+          if (this.genericFetchEntity.data[this.genericDataKey][key].id === this.entityId) {
+            this.genericFetchEntity.data[this.genericDataKey][key].categories.push(res.data.category)
+          }
+        }
+        // store.commit('genericFetchEntity/setData', this.genericFetchEntity.data)
+        // store.dispatch('genericFetchEntity/fetch',
+        //     {
+        //       pathKey: this.refreshEntityListPath
+        //     }
+        // )
       } catch (e) {
         console.log('error', e)
       }
