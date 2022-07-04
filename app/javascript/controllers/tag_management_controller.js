@@ -50,7 +50,6 @@ export default class extends Controller {
         this.inputFilterTarget.focus()
 
         this.updateTagList(response)
-        this.updateCardTags()
       }
     })
 
@@ -116,7 +115,6 @@ export default class extends Controller {
         })
 
         this.updateTagList(response)
-        this.updateCardTags()
       }
     })
 
@@ -186,7 +184,7 @@ export default class extends Controller {
         })
 
         this.updateTagList(response)
-        this.updateCardTags(true)
+        this.closeModal()
       }
     })
   }
@@ -240,16 +238,24 @@ export default class extends Controller {
     }
   }
 
-  updateCardTags(all = false) {
-    const modal = document.querySelector('.modal.show')
-    var link = modal.querySelector('.update-line')
+  // updateCardTags(all = false) {
+  //   const modal = document.querySelector('.modal.show')
+  //   var link = modal.querySelector('.update-line')
 
-    if (all) {
-      link = modal.querySelector('.update-list')
-      modal.querySelector('.action-modal__close').click()
-    }
+  //   if (all) {
+  //     link = modal.querySelector('.update-list')
+  //     modal.querySelector('.action-modal__close').click()
+  //   }
 
-    link.click()
+  //   link.click()
+  // }
+
+  ///////////////////
+  // MODAL CONTROL //
+  ///////////////////
+
+  closeModal(event) {
+    this.modalTarget.classList.add('hidden')
   }
 }
 
