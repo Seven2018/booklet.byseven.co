@@ -1,4 +1,3 @@
-
 <template>
   <div class="bkt-box-shadow-medium p-4 rounded-5px">
     <user-info-in-table class="mt-4"
@@ -13,19 +12,32 @@
     <div v-for="objInterview in [row.employee_interview, row.manager_interview, row.crossed_interview]">
       <div v-if="objInterview" class="flex-row-between-centered mt-5">
         <div class="flex-row-between-centered">
-          <img class="rounded-circle width-3rem height-3rem"
+          <img v-if="objInterview.interview.label !== 'Crossed'" class="rounded-circle width-2rem height-2rem"
                :src="objInterview.interview.employee.picture"
                onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
                alt="">
-          <p class="font-weight-500 text-truncate fs-0_8rem">
-            {{userLabel[objInterview.interview.label]}}
+          <div v-else class="flex-row-between-centered">
+            <img class="rounded-circle width-2rem height-2rem"
+                 :src="objInterview.interview.employee.picture"
+                 onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
+                 alt="">
+            <span class="pos-abs">
+              <img class="rounded-circle width-2rem height-2rem pos-rel"
+                   style="left: 16px;"
+                   :src="objInterview.interview.interviewer.picture"
+                   onerror="this.onerror=null;this.src='//i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'"
+                   alt="">
+            </span>
+          </div>
+          <p class="font-weight-500 text-truncate fs-0_8rem ml-1" :class="{'ml-4': objInterview.interview.label === 'Crossed'}">
+            {{ userLabel[objInterview.interview.label] }}
           </p>
         </div>
         <div class="flex-row-between-centered">
           <p
               class="p-2 fs-0_8rem"
               :class="[getColorByCampaignStatus(objInterview.interview.status), getBorderColorByInterviewStatus(objInterview.interview.status)]">
-            {{objInterview.interview.status | cleanUnderscore | capitalize}}
+            {{ objInterview.interview.status | cleanUnderscore | capitalize }}
           </p>
 
           <bkt-button
@@ -47,6 +59,7 @@ import UserInfoInTable from "../../../components/UserInfoInTable";
 import tools from "../../../mixins/tools";
 import InterviewStatus from "../../../components/interviews/InterviewStatus";
 import BktButton from "../../../components/BktButton";
+
 export default {
   mixins: [tools],
   props: ['row'],
