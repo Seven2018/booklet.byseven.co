@@ -2,6 +2,8 @@ class InterviewSerializer < ActiveModel::Serializer
   attributes(
     :id,
     :label,
+    :starts_at,
+    :ends_at,
     :status
   )
 
