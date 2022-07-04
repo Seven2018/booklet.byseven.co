@@ -25,7 +25,7 @@
       <div v-for="group_interview in campaign.set_interviews"
            class="width-100 border-bottom-bkt-light-grey5-not-last-child flex-column-centered justify-content-center align-items-center">
         <user-info-in-table class="mt-4"
-                            :user="{...group_interview.employee_interview.interview.employee, subtitle: 'interviewee'}"></user-info-in-table>
+                            :user="{...(group_interview.employee_interview || group_interview.manager_interview).interview.employee, subtitle: 'interviewee'}"></user-info-in-table>
 
         <p class="fs-1_2rem font-weight-500 flex-row-start-centered mt-4 mb-2">
           {{ generateInterviewsStatusSentence(...group_interview) }}
