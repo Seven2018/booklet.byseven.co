@@ -1,5 +1,5 @@
 <template>
-  <div class="width-100 overflow-x-auto-mobile">
+  <div class="width-100 ">
     <div class="height-3_5rem border-bottom-bkt-light-grey mb-4">
       <button
           class="height-3_5rem pb-3 fs-1rem fs-sm-1_6rem"

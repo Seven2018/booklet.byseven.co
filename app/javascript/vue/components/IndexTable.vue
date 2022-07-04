@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!isMobile()">
-    <div>
+  <div>
+    <div v-if="!isMobile()">
       <table>
         <thead>
         <tr class="border-bottom-bkt-light-grey5 bkt-light-grey6" :class="headerClass">
@@ -44,13 +44,34 @@
         > </next-button>
       </div>
     </div>
-  </div>
-  <div v-else>
-    <slot
-        v-for="row in tableData"
-        v-bind="row"
-        name="mobile-row"
-    ></slot>
+    <div v-else>
+      <slot
+          v-for="row in tableData"
+          v-bind="row"
+          name="mobile-row"
+      ></slot>
+      <div
+          v-if="pagination"
+          class="paginate-container paginate-container-blue">
+
+        <previous-button
+            :method="fetchPage"
+            :pagination='pagination'
+        > </previous-button>
+
+<!--        <between-number-->
+<!--            :method="fetchPage"-->
+<!--            :pagination='pagination'-->
+<!--        >-->
+<!--        </between-number>-->
+
+        <next-button
+            :method="fetchPage"
+            :pagination='pagination'
+        > </next-button>
+      </div>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -79,7 +100,7 @@ export default {
   methods: {
     fetchPage(page) {
       this.$emit('fetch-page', page)
-    }
+    },
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="bkt-box-shadow-medium p-4 rounded-5px">
+  <div class="bkt-box-shadow-medium p-4 rounded-5px mt-5">
     <user-info-in-table class="mt-4"
                         :user="{...(row.employee_interview || row.manager_interview).interview.employee}"></user-info-in-table>
 
