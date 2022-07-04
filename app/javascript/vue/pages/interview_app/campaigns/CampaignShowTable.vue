@@ -11,21 +11,21 @@
   >
     <template v-slot="{manager_interview, employee_interview, crossed_interview}">
       <td>
-        <user-info-in-table :user="employee_interview.interview.employee"></user-info-in-table>
+        <user-info-in-table :user="(employee_interview || manager_interview).interview.employee"></user-info-in-table>
       </td>
 
       <td>
         <p class="fs-1_6rem font-weight-500 bkt-light-grey6">
-          {{employee_interview.interview.interview_form.title}}
+          {{(employee_interview || manager_interview).interview.interview_form.title}}
         </p>
       </td>
 
       <td>
-        <user-info-in-table :user="employee_interview.interview.interviewer"></user-info-in-table>
+        <user-info-in-table :user="(employee_interview || manager_interview).interview.interviewer"></user-info-in-table>
       </td>
 
       <td>
-        <display-tag-in-index :tags="employee_interview.interview.interview_form.categories"></display-tag-in-index>
+        <display-tag-in-index :tags="(employee_interview || manager_interview).interview.interview_form.categories"></display-tag-in-index>
       </td>
 
       <td>
@@ -37,25 +37,25 @@
           <bkt-dots-button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
-                @click.stop="goto('users_id', employee_interview.interview.employee.id)"
+                @click.stop="goto('users_id', (employee_interview || manager_interview).interview.employee.id)"
             >
               see interviewee profile
             </button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
-                @click.stop="openSetAnotherInterviewer(employee_interview.interview.employee.id)"
+                @click.stop="openSetAnotherInterviewer((employee_interview || manager_interview).interview.employee.id)"
             >
               set another interviewer
             </button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
-                @click.stop="sendNotif('invite', employee_interview.interview.employee.id)"
+                @click.stop="sendNotif('invite', (employee_interview || manager_interview).interview.employee.id)"
             >
               Send invitation email
             </button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
-                @click.stop="sendNotif('remind', employee_interview.interview.employee.id)"
+                @click.stop="sendNotif('remind', (employee_interview || manager_interview).interview.employee.id)"
             >
               Send reminder email
             </button>
