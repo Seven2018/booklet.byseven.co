@@ -316,6 +316,7 @@ a.disabled-link { pointer-events: none; }
 .w-sm-80vw  { @include from-medium {width: 80vw !important;}}
 .w-90vw  { width: 90vw; }
 .w-100vw { width: 100vw; }
+.w-100vw-mobile { @include small-down {width: 90vw !important;} }
 
 .h-10vh  { height: 10vh; }
 .h-20vh  { height: 20vh; }
