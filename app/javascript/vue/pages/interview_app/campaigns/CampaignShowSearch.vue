@@ -1,10 +1,10 @@
 <template>
-  <div class=" align-items-start">
+  <div class="flex-sm-row-end-centered align-items-start">
 <!--    <div class=" width-100 flex-row-between-centered">-->
       <bkt-search
           v-model="searchText"
           @input="update"
-          class="d-inline-block"
+          class=" my-sm-3 d-inline-block min-w-20rem"
       ></bkt-search>
       <bkt-select
           class="mx-sm-5 my-sm-3 mt-3 d-inline-block"
