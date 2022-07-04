@@ -22,7 +22,7 @@ class InterviewFormsController < ApplicationController
     interviewForms = InterviewForm.unused.where(company: current_user.company)
     interviewForms = interviewForms.search_templates(params[:title]) if params[:title].present?
     interviewForms = interviewForms.filter_by_tag_ids(params[:tags]) if params[:tags].present?
-    interviewForms = interviewForms.order(created_at: :desc)
+    interviewForms = interviewForms.order(title: :asc)
 
 
     page = params[:page] && params[:page][:number] ? params[:page][:number] : 1
@@ -120,12 +120,12 @@ class InterviewFormsController < ApplicationController
 
     if category.nil?
       def_group_category = current_user.company.group_categories.default_group_for(:interview)
-      new_category = Category.create(
+      category = Category.create(
         company_id: current_user.company_id,
         title: tag,
         kind: :interview,
         group_category: def_group_category)
-      @template.categories << new_category
+      @template.categories << category
     else
       if @template.categories.exists?(category.id)
         @template.categories.delete(category)
@@ -142,7 +142,9 @@ class InterviewFormsController < ApplicationController
       format.html {
         render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
       }
-      format.json {head :ok}
+      format.json {
+        render json: category
+      }
     end
   end
 
@@ -151,6 +153,10 @@ class InterviewFormsController < ApplicationController
     tag = params.require(:tag)
 
     Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
+
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:interview_forms)
+                              .order(title: :asc)
 
     render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
   end

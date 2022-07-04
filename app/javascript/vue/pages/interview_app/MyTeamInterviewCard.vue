@@ -12,11 +12,12 @@
 
       <div class="flex-row-end-centered width-100 mt-4">
         <bkt-button
+            v-if="manageLinkActive"
             class=" width-100"
             type="white-interview"
             :href="$routes.generate('campaigns_id', {id: campaign.id})"
         >
-          Manager campaign
+          Manage campaign
         </bkt-button>
       </div>
 
@@ -25,7 +26,7 @@
       <div v-for="group_interview in campaign.set_interviews"
            class="width-100 border-bottom-bkt-light-grey5-not-last-child flex-column-centered justify-content-center align-items-center">
         <user-info-in-table class="mt-4"
-                            :user="{...group_interview.employee_interview.interview.employee, subtitle: 'interviewee'}"></user-info-in-table>
+                            :user="{...(group_interview.employee_interview || group_interview.manager_interview).interview.employee, subtitle: 'interviewee'}"></user-info-in-table>
 
         <p class="fs-1_2rem font-weight-500 flex-row-start-centered mt-4 mb-2">
           {{ generateInterviewsStatusSentence(...group_interview) }}
@@ -84,7 +85,8 @@
       </div>
 
       <div class="flex-row-end-centered">
-        <a class="bkt-blue flex-row-start-centered align-items-center bkt-bg-light-grey4-hover p-1rem rounded-5px fs-1_6rem font-weight-600 "
+        <a v-if="manageLinkActive"
+           class="bkt-blue flex-row-start-centered align-items-center bkt-bg-light-grey4-hover p-1rem rounded-5px fs-1_6rem font-weight-600 "
            :href="$routes.generate('campaigns_id', {id: campaign.id})">
           <p class="d-flex mr-3">Manage campaign</p>
           <span class="iconify" data-icon="akar-icons:chevron-right"></span>
@@ -117,7 +119,7 @@ import BktButton from "../../components/BktButton";
 
 export default {
   mixins: [tools],
-  props: ['campaign', 'type'],
+  props: ['campaign', 'type', 'manageLinkActive'],
   methods: {
     async toggleArchive(campaign_id, interviewer_id) {
       try {

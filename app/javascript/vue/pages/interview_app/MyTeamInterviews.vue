@@ -14,6 +14,7 @@
             v-for="campaign in genericFetchEntity.data.current_campaigns.campaigns"
             :key="campaign.id"
             :campaign="campaign"
+            :manage-link-active="allowManageLink(campaign)"
             type="current"
         ></my-team-interview-card>
       </template>
@@ -22,6 +23,7 @@
             v-for="campaign in genericFetchEntity.data.archived_campaigns.campaigns"
             :key="campaign.id"
             :campaign="campaign"
+            :manage-link-active="allowManageLink(campaign)"
             type="archived"
         ></my-team-interview-card>
       </template>
@@ -44,6 +46,20 @@ export default {
   },
   created() {
     store.dispatch('genericFetchEntity/fetch', {pathKey: 'my_team_interviews_list'})
+  },
+  methods: {
+    allowManageLink(campaign) {
+      var active = false
+
+      campaign.set_interviews.forEach((set) => {
+        const default_interview = set.employee_interview || set.manager_interview
+        if (default_interview.interview.interviewer.id === campaign.manager.user.id) {
+          active = true
+        }
+      })
+
+      return active
+    }
   },
   components: {MyTeamInterviewCard, MyInterviewCard, BktSwitcher},
 }

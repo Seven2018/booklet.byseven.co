@@ -66,7 +66,7 @@ export default {
       } catch (e) {
         commit('setError', e.message)
       }
-    }
+    },
   }
 }
 

@@ -70,6 +70,9 @@
         </div>
       </td>
     </template>
+    <template v-slot:mobile-row="row">
+      <campaign-show-mobile-row :row="row"></campaign-show-mobile-row>
+    </template>
   </index-table>
 </template>
 
@@ -82,10 +85,11 @@ import InterviewStatus from "../../../components/interviews/InterviewStatus";
 import tools from "../../../mixins/tools";
 import store from "../../../store";
 import axios from "../../../plugins/axios";
+import CampaignShowMobileRow from "./CampaignShowMobileRow";
 
 export default {
   mixins: [tools],
-  components: {InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
+  components: {CampaignShowMobileRow, InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
   props: ['overview','campaign'],
   data() {
     return {
@@ -113,7 +117,7 @@ export default {
       })
     },
     sendNotif(emailType, employeeId) {
-      axios.get(`/send_notification_email/${this.genericFetchEntity.data['campaign'].campaign.id}?email_type=${emailType}&user_id=${employeeId}`)
+      axios.get(`/send_notification_email/${this.campaign.id}?email_type=${emailType}&user_id=${employeeId}&format=json`)
 
       if (emailType === 'invite') {
         this.$modal.open({

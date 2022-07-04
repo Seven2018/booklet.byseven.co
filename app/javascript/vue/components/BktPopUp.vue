@@ -61,10 +61,7 @@
         name="modal">
       <component
           :is="popUp.data.type"
-          :entity-id="popUp.data.entityId"
-          :fetch-tags-from-entity-path="popUp.data.fetchTagsFromEntityPath"
-          :toggle-tag-from-entity-path="popUp.data.toggleTagFromEntityPath"
-          :refresh-entity-list-path="popUp.data.refreshEntityListPath"
+          v-bind="popUp.data"
           @close="close"
       ></component>
     </bkt-pop-up-frame>

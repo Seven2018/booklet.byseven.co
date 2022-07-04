@@ -3,7 +3,7 @@
   <div
       v-if="items.length >= 1"
       v-click-outside="hide"
-      class="position-relative max-w-25rem">
+      class="position-relative max-w-25rem width-100">
     <p
         ref="selectText"
         @click.stop="toggleDisplay"
