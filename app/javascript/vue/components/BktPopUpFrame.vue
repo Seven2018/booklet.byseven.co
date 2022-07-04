@@ -2,8 +2,8 @@
 <template>
   <transition >
     <div class="modal-mask">
-      <div class="modal-wrapper container">
-        <div class="modal-container rounded-15px col-12 col-sm-4">
+      <div class="modal-wrapper">
+        <div class="modal-container rounded-15px w-100vw-mobile">
           <div class="flex-row-end-centered">
             <div v-if="closable" @click="$emit('close')" class="cursor-pointer">
               <span class="iconify" data-icon="charm:cross" data-width="25" data-height="25"></span>

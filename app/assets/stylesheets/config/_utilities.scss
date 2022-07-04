@@ -254,6 +254,7 @@ a.disabled-link { pointer-events: none; }
 .min-w-3_5rem  { min-width: 3.5rem; }
 .min-w-10rem   { min-width: 10rem; }
 .min-w-15rem   { min-width: 15rem; }
+.min-w-20rem   { min-width: 20rem; }
 .min-w-30rem   { min-width: 30rem; }
 .min-w-65rem   { min-width: 65rem; }
 
@@ -316,6 +317,7 @@ a.disabled-link { pointer-events: none; }
 .w-sm-80vw  { @include from-medium {width: 80vw !important;}}
 .w-90vw  { width: 90vw; }
 .w-100vw { width: 100vw; }
+.w-100vw-mobile { @include small-down {width: 90vw !important;} }
 
 .h-10vh  { height: 10vh; }
 .h-20vh  { height: 20vh; }

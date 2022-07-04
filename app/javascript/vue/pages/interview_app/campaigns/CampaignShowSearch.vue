@@ -1,13 +1,13 @@
 <template>
-  <div class=" align-items-start">
+  <div class="flex-sm-row-end-centered align-items-start">
 <!--    <div class=" width-100 flex-row-between-centered">-->
       <bkt-search
           v-model="searchText"
           @input="update"
-          class="d-inline-block"
+          class=" my-sm-3 d-inline-block min-w-20rem"
       ></bkt-search>
       <bkt-select
-          class="mx-5 my-3 d-inline-block"
+          class="mx-sm-5 my-sm-3 mt-3 d-inline-block"
           v-model="status"
           :items="selectList"
           @input="update"
@@ -18,7 +18,7 @@
             v-if="overview"
             v-for="(category, idx) in selectCategories"
             :key="idx"
-            class="mr-5 mb-3 d-inline-block"
+            class="mx-sm-5 my-sm-3 mt-3 d-inline-block"
             v-model="category.selectedValue"
             :items="category.list"
             @input="update"
