@@ -59,6 +59,13 @@
             >
               Send reminder email
             </button>
+            <button
+                v-if="crossed_interview"
+                class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
+                @click.stop="shiftCrossInterviewDate(crossed_interview.interview)"
+            >
+              Shift cross date
+            </button>
           </bkt-dots-button>
         </div>
       </td>
@@ -129,6 +136,24 @@ export default {
           }
         })
       }
+    },
+    shiftCrossInterviewDate(cross) {
+      const campaignId = this.campaign.id
+      this.$modal.open({
+        type: 'custom',
+        componentName: 'pop-up-shift-cross-interview-date',
+        closable: false,
+        campaignId: campaignId,
+        crossId: cross.id,
+        startDate: cross.starts_at,
+        endDate: cross.ends_at,
+        close() {
+          store.dispatch('genericFetchEntity/fetch', {
+            pathKey: 'campaigns_id_data_show',
+            pathKeyArgs: {id: campaignId}
+          })
+        }
+      })
     },
     rowClick(row) {
       this.$modal.open({

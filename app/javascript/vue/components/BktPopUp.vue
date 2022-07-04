@@ -94,6 +94,7 @@ import PopUpSetAnotherInterviewer from './PopUpComponents/PopUpSetAnotherIntervi
 import PopUpSetAnotherInterviewee from "./PopUpComponents/PopUpSetAnotherInterviewee";
 import PopUpSetInterview from './PopUpComponents/PopUpSetInterview'
 import PopUpCampaignEditDeadline from './PopUpComponents/PopUpCampaignEditDeadline'
+import PopUpShiftCrossInterviewDate from './PopUpComponents/PopUpShiftCrossInterviewDate'
 
 export default {
   data() {
@@ -120,6 +121,7 @@ export default {
     PopUpSetAnotherInterviewer,
     PopUpSetAnotherInterviewee,
     PopUpSetInterview,
+    PopUpShiftCrossInterviewDate,
     PopUpCampaignEditDeadline
   },
 }
