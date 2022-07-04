@@ -1,6 +1,6 @@
 
 <template>
-  <div class="width-65rem">
+  <div >
     <slider class="mt-4" ref="slider" :options="options">
       <slideritem v-for="(item,index) in someList" :key="index" >
         <component :is="item.component"></component>
