@@ -26,3 +26,8 @@ Vue.filter('convert_hr', function (value) {
 Vue.filter('formatDate', (value, formatStr = "DD MMM, YYYY") => {
   return moment(value).format(formatStr)
 })
+
+Vue.filter('truncateN', (value, n = 65) => {
+  if (!value) return ''
+  return value.slice(0, (n -1)) + '...'
+})
