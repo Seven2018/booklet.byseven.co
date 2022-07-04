@@ -152,6 +152,10 @@ class InterviewFormsController < ApplicationController
 
     Category.where(company_id: current_user.company_id, title: tag, kind: :interview).destroy_all
 
+    @displayed_tags = Category.where(company_id: current_user.company_id, kind: :interview)
+                              .where_exists(:interview_forms)
+                              .order(title: :asc)
+
     render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
   end
 
