@@ -120,12 +120,12 @@ class InterviewFormsController < ApplicationController
 
     if category.nil?
       def_group_category = current_user.company.group_categories.default_group_for(:interview)
-      new_category = Category.create(
+      category = Category.create(
         company_id: current_user.company_id,
         title: tag,
         kind: :interview,
         group_category: def_group_category)
-      @template.categories << new_category
+      @template.categories << category
     else
       if @template.categories.exists?(category.id)
         @template.categories.delete(category)
@@ -142,7 +142,9 @@ class InterviewFormsController < ApplicationController
       format.html {
         render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
       }
-      format.json {head :ok}
+      format.json {
+        render json: category
+      }
     end
   end
 
