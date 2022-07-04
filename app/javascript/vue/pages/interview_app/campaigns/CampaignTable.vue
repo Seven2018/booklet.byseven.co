@@ -146,7 +146,8 @@ export default {
         entityId: id,
         fetchTagsFromEntityPath: 'categories_from_campaign',
         toggleTagFromEntityPath: 'campaigns_toggle_tag',
-        refreshEntityListPath: 'campaigns_list'
+        refreshEntityListPath: 'campaigns_list',
+        genericDataKey: 'campaigns'
       })
     }
   },

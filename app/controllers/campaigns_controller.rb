@@ -296,12 +296,12 @@ class CampaignsController < ApplicationController
 
     if category.nil?
       def_group_category = current_user.company.group_categories.default_group_for(:interview)
-      new_category = Category.create(
+      category = Category.create(
         company_id: current_user.company_id,
         title: tag,
         kind: :interview,
         group_category: def_group_category)
-      @campaign.categories << new_category
+      @campaign.categories << category
     else
       if @campaign.categories.exists?(category.id)
         @campaign.categories.delete(category)
@@ -318,7 +318,9 @@ class CampaignsController < ApplicationController
       format.html {
         render partial: 'campaigns/index/index_campaigns_displayed_tags', locals: { displayed_tags: @displayed_tags }
       }
-      format.json {head :ok}
+      format.json {
+        render json: category, status: :ok
+      }
     end
   end
 

@@ -127,7 +127,8 @@ export default {
         entityId: id,
         fetchTagsFromEntityPath: 'categories_from_template',
         toggleTagFromEntityPath: 'interview_forms_toggle_tag',
-        refreshEntityListPath: 'interview_forms_list'
+        refreshEntityListPath: 'interview_forms_list',
+        genericDataKey: 'interview_forms'
       })
     }
   },
