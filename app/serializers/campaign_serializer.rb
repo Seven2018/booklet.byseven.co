@@ -150,7 +150,8 @@ class CampaignSerializer < ActiveModel::Serializer
     return nil if instance_options[:for_user].nil?
 
     if instance_options[:schema] === 'manager'
-      employee_ids = object.interviews
+      employee_ids = object.interviews.where(interviewer: instance_options[:for_user])
+                           .or(object.interviews.where_exists(:employee, manager_id: instance_options[:for_user].id))
                            .distinct.pluck(:employee_id)
     else
       employee_ids = [instance_options[:for_user].id]
