@@ -4,6 +4,7 @@ class InterviewSerializer < ActiveModel::Serializer
     :label,
     :starts_at,
     :ends_at,
+    :date,
     :status
   )
 
