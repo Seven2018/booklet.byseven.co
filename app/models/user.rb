@@ -154,14 +154,33 @@ class User < ApplicationRecord
       # Create new user for the company provided as argument.
       next if row_h['email'].blank?
 
-      user = User.find_by(email: row_h['email'].downcase)
+      user = User.find_by(email: row_h['email']&.strip&.downcase)
+
+      ###########################
+      ## TEMP BIG MAMMA IMPORT ##
+      ###########################
+
+      duplicate_user = false
+
+      if user.nil?
+        test_duplicate = User.where('lower(firstname) = ? AND lower(lastname) = ?', row_h['firstname']&.strip&.downcase, row_h['lastname']&.strip&.downcase)
+                             .select{|x| x.email.split('@').last != 'bigmamma.com'.strip.downcase}
+
+        if test_duplicate.count == 1 && row_h['email'].split('@').last.strip.downcase == 'bigmamma.com'
+          user = test_duplicate.first
+          duplicate_user = true
+        end
+      end
+
+      ###########################
 
       if manager_email.present?
         manager = User.find_by(email: manager_email)
 
         unless manager.present?
           manager = User.new(email: manager_email, company_id: company_id, access_level_int: 'manager')
-          send_invite && Rails.env.production? ? manager.invite! : manager.save(validate: false)
+          # send_invite && Rails.env.production? ? manager.invite! : manager.save(validate: false)
+          user.save(validate: false)
         end
       else
         manager = nil
@@ -169,13 +188,19 @@ class User < ApplicationRecord
 
       if user.present?
 
-        if user.company_id.nil?
-          user.update(company_id: current_user.company_id)
-        elsif user.company_id != company_id
-          next
-        end
+        ###########################
+        ## TEMP BIG MAMMA IMPORT ##
+        ###########################
 
-        update = user.update row_h
+        # if user.company_id.nil?
+          # user.update(company_id: company_id)
+        # elsif user.company_id != company_id
+          # next
+        # end
+
+        ###########################
+
+        update = user.update row_h.merge(manager: User.find_by(email: manager_email), company_id: company_id)
 
       else
 
@@ -190,11 +215,13 @@ class User < ApplicationRecord
         user.picture = 'https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
         user.invited_by_id = invited_by_id
         user.manager_id = manager.id if manager.present?
-        send_invite && Rails.env.production? ? user.invite! : user.save(validate: false)
+        # send_invite && Rails.env.production? ? user.invite! : user.save(validate: false)
+        user.save(validate: false)
 
       end
 
       present << user.id
+
       # Create tag_categories if necessary, correctly setting its position
       tag_category_last_position = TagCategory.where(company_id: company_id)&.order(position: :asc)&.last&.position
       tag_category_last_position = 0 if tag_category_last_position.nil?
@@ -236,6 +263,14 @@ class User < ApplicationRecord
         end
       end
     end
+
+    ###########################
+    ## TEMP BIG MAMMA IMPORT ##
+    ###########################
+
+    (User.where(company_id: company_id) - User.where(id: present)).each{|x| x.update company_id: 5}
+
+    ###########################
   end
 
   def self.to_csv(attributes, tag_categories, cost, trainings, start_date, end_date)

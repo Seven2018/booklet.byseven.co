@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative">
+  <div class="position-relative min-w-20rem">
     <input
         placeholder="Search"
         class="p-3 bkt-bg-light-grey3 rounded-5px border-bkt-dark-grey-focus width-100"

@@ -25,6 +25,17 @@
         </p>
     </template>
 
+    <template v-if="campaign" v-slot:mobile-header>
+      <div class="flex-column text-center">
+        <p class="fs-1_4rem font-weight-700">
+          {{ campaign.title}}
+        </p>
+        <p class="fs-0_8rem font-weight-600 bkt-light-grey6">
+          {{campaign.deadline}}
+        </p>
+      </div>
+    </template>
+
     <template v-slot:body>
       <bkt-switcher
           :current-nbr="genericFetchEntity.data ? genericFetchEntity.data.set_interviews.length : 0"
@@ -40,7 +51,7 @@
                 :overview="overview"
             ></campaign-show-search>
 
-            <div v-if="overview" class="flex-row-end-centered width-30rem mt-4">
+            <div v-if="overview && !isMobile()" class="flex-row-end-centered width-30rem mt-4">
               <bkt-dots-button>
                 <button
                     class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
@@ -69,7 +80,7 @@
               </bkt-dots-button>
             </div>
           </div>
-          <group-category-filter v-if="overview" entity-list-key="campaigns_id_data_show" :path-key-args="{id: campaignId}"></group-category-filter>
+          <group-category-filter v-if="overview &&!isMobile()" entity-list-key="campaigns_id_data_show" :path-key-args="{id: campaignId}"></group-category-filter>
           <campaign-show-table
               v-show="genericFetchEntity.data && genericFetchEntity.data['set_interviews'] && genericFetchEntity.data['set_interviews'].length > 0"
               :overview="overview"
@@ -99,8 +110,10 @@ import BktBoxLoader from "../../../components/BktBoxLoader";
 import axios from "../../../plugins/axios";
 import BktDotsButton from "../../../components/BktDotsButton";
 import GroupCategoryFilter from "../../../components/GroupCategoryFilter";
+import tools from "../../../mixins/tools";
 
 export default {
+  mixins: [tools],
   props: ['campaignId', 'overview'],
   data() {
     return {

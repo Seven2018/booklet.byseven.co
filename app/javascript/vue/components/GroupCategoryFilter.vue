@@ -47,6 +47,7 @@
               <p>Rename</p>
             </li>
             <li
+                v-if="item.name !== 'others'"
                 @click="removeGroupCat(idx)"
                 class="flex-row-start-centered align-items-center p-2 bkt-bg-light-grey9-hover bkt-red mb-0 cursor-pointer">
               <span class="iconify mr-2" data-icon="akar-icons:trash-can"></span>

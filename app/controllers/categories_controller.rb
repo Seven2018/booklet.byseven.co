@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
     kind = params.require(:kind)
     raise ActionController::BadRequest, 'bad parameter' unless GroupCategory.kinds.include?(kind.to_sym)
 
-    render json: current_user.company.group_categories.of_kind(kind.to_sym), status: :ok
+    render json: current_user.company.group_categories.of_kind(kind.to_sym).order(position: :desc), status: :ok
   end
 
   def new_group

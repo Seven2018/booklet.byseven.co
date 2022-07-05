@@ -1,46 +1,76 @@
 <template>
   <div>
-    <table>
-      <thead>
-      <tr class="border-bottom-bkt-light-grey5 bkt-light-grey6" :class="headerClass">
-        <th v-for="col in headers" class="px-2">
-          <p class="font-weight-600">
-            {{ col }}
-          </p>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-          v-for="row in tableData" class="border-bottom-bkt-light-grey5-not-last-child"
-          :key="row.id"
-          :class="{'bkt-bg-light-grey10-hover cursor-pointer': withoutHover === false}"
-          @click="$emit('row-click', row)"
-      >
-        <slot v-bind="row"></slot>
-      </tr>
-      </tbody>
-    </table>
+    <div v-if="!isMobile()">
+      <table>
+        <thead>
+        <tr class="border-bottom-bkt-light-grey5 bkt-light-grey6" :class="headerClass">
+          <th v-for="col in headers" class="px-2">
+            <p class="font-weight-600">
+              {{ col }}
+            </p>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            v-for="row in tableData" class="border-bottom-bkt-light-grey5-not-last-child"
+            :key="row.id"
+            :class="{'bkt-bg-light-grey10-hover cursor-pointer': withoutHover === false}"
+            @click="$emit('row-click', row)"
+        >
+          <slot v-bind="row"></slot>
+        </tr>
+        </tbody>
+      </table>
 
-    <div
-        v-if="pagination"
-        class="paginate-container paginate-container-blue">
+      <div
+          v-if="pagination"
+          class="paginate-container paginate-container-blue">
 
-      <previous-button
-        :method="fetchPage"
-        :pagination='pagination'
-      > </previous-button>
+        <previous-button
+            :method="fetchPage"
+            :pagination='pagination'
+        > </previous-button>
 
-      <between-number
-        :method="fetchPage"
-        :pagination='pagination'
-      >
-      </between-number>
+        <between-number
+            :method="fetchPage"
+            :pagination='pagination'
+        >
+        </between-number>
 
-      <next-button
-        :method="fetchPage"
-        :pagination='pagination'
-      > </next-button>
+        <next-button
+            :method="fetchPage"
+            :pagination='pagination'
+        > </next-button>
+      </div>
+    </div>
+    <div v-else>
+      <slot
+          v-for="row in tableData"
+          v-bind="row"
+          name="mobile-row"
+      ></slot>
+      <div
+          v-if="pagination"
+          class="paginate-container paginate-container-blue">
+
+        <previous-button
+            :method="fetchPage"
+            :pagination='pagination'
+        > </previous-button>
+
+<!--        <between-number-->
+<!--            :method="fetchPage"-->
+<!--            :pagination='pagination'-->
+<!--        >-->
+<!--        </between-number>-->
+
+        <next-button
+            :method="fetchPage"
+            :pagination='pagination'
+        > </next-button>
+      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -50,8 +80,10 @@ import BktButton from "./BktButton";
 import NextButton from "./table/pagination/NextButton";
 import PreviousButton from "./table/pagination/PreviousButton";
 import BetweenNumber from "./table/pagination/BetweenNumber";
+import tools from "../mixins/tools";
 
 export default {
+  mixins: [tools],
   components: {BktButton, NextButton, PreviousButton, BetweenNumber},
   props: {
     headers: Array,
@@ -68,7 +100,7 @@ export default {
   methods: {
     fetchPage(page) {
       this.$emit('fetch-page', page)
-    }
+    },
   }
 }
 

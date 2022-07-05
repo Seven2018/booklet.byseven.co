@@ -147,6 +147,23 @@ class CampaignMailer < ApplicationMailer
     mail(to: @owner.email, subject: "Your campaign #{campaign.title} has been launched !")
   end
 
+  def cross_review_schedule(owner, campaign, interview)
+    @owner = owner
+    @campaign = campaign
+    @icon = '🚀'
+    @title = "Your crossed review has been scheduled !"
+    @description = "You're invited to the cross review in the campaign “#{campaign.title}”."
+
+    @optional_text = "Your crossed review has been scheduled"
+    @optional_button_text = "Save it to Google Calendar"
+    @optional_button_link = redirect_calendar_campaigns_url(instance_id: interview.id, user_id: owner.id, mode: 'interview')
+    @button_text = "Go to campaign"
+    @button_link = campaign_url(@campaign)
+
+    @nb = "Please don't answer this email."
+
+    mail(to: @owner.email, subject: "You're invited to a cross review in the campaign “#{campaign.title}“")
+  end
   private
 
   def interviewee_email_settings(interviewer, interviewee, interview)

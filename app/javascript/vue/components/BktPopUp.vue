@@ -61,10 +61,7 @@
         name="modal">
       <component
           :is="popUp.data.type"
-          :entity-id="popUp.data.entityId"
-          :fetch-tags-from-entity-path="popUp.data.fetchTagsFromEntityPath"
-          :toggle-tag-from-entity-path="popUp.data.toggleTagFromEntityPath"
-          :refresh-entity-list-path="popUp.data.refreshEntityListPath"
+          v-bind="popUp.data"
           @close="close"
       ></component>
     </bkt-pop-up-frame>
@@ -94,6 +91,7 @@ import PopUpSetAnotherInterviewer from './PopUpComponents/PopUpSetAnotherIntervi
 import PopUpSetAnotherInterviewee from "./PopUpComponents/PopUpSetAnotherInterviewee";
 import PopUpSetInterview from './PopUpComponents/PopUpSetInterview'
 import PopUpCampaignEditDeadline from './PopUpComponents/PopUpCampaignEditDeadline'
+import PopUpShiftCrossInterviewDate from './PopUpComponents/PopUpShiftCrossInterviewDate'
 
 export default {
   data() {
@@ -120,6 +118,7 @@ export default {
     PopUpSetAnotherInterviewer,
     PopUpSetAnotherInterviewee,
     PopUpSetInterview,
+    PopUpShiftCrossInterviewDate,
     PopUpCampaignEditDeadline
   },
 }
