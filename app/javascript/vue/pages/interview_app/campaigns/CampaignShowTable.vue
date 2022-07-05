@@ -59,9 +59,19 @@
             >
               Send reminder email
             </button>
+            <button
+                v-if="crossed_interview"
+                class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
+                @click.stop="shiftCrossInterviewDate(crossed_interview.interview)"
+            >
+              Shift cross date
+            </button>
           </bkt-dots-button>
         </div>
       </td>
+    </template>
+    <template v-slot:mobile-row="row">
+      <campaign-show-mobile-row :row="row"></campaign-show-mobile-row>
     </template>
   </index-table>
 </template>
@@ -75,10 +85,11 @@ import InterviewStatus from "../../../components/interviews/InterviewStatus";
 import tools from "../../../mixins/tools";
 import store from "../../../store";
 import axios from "../../../plugins/axios";
+import CampaignShowMobileRow from "./CampaignShowMobileRow";
 
 export default {
   mixins: [tools],
-  components: {InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
+  components: {CampaignShowMobileRow, InterviewStatus, DisplayTagInIndex, UserInfoInTable, IndexTable, BktDotsButton},
   props: ['overview','campaign'],
   data() {
     return {
@@ -106,7 +117,7 @@ export default {
       })
     },
     sendNotif(emailType, employeeId) {
-      axios.get(`/send_notification_email/${this.genericFetchEntity.data['campaign'].campaign.id}?email_type=${emailType}&user_id=${employeeId}`)
+      axios.get(`/send_notification_email/${this.campaign.id}?email_type=${emailType}&user_id=${employeeId}&format=json`)
 
       if (emailType === 'invite') {
         this.$modal.open({
@@ -129,6 +140,24 @@ export default {
           }
         })
       }
+    },
+    shiftCrossInterviewDate(cross) {
+      const campaignId = this.campaign.id
+      this.$modal.open({
+        type: 'custom',
+        componentName: 'pop-up-shift-cross-interview-date',
+        closable: false,
+        campaignId: campaignId,
+        crossId: cross.id,
+        startDate: cross.starts_at,
+        endDate: cross.ends_at,
+        close() {
+          store.dispatch('genericFetchEntity/fetch', {
+            pathKey: 'campaigns_id_data_show',
+            pathKeyArgs: {id: campaignId}
+          })
+        }
+      })
     },
     rowClick(row) {
       this.$modal.open({

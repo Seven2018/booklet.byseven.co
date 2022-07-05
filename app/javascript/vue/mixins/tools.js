@@ -106,7 +106,7 @@ export default {
         return 'Start my interview'
       else if (interviews_set.manager_interview.interview.status === 'in_progress')
         return 'Continue my interview'
-      else if (interviews_set.crossed_interview.interview && interviews_set.crossed_interview.interview.status === 'submitted')
+      else if (interviews_set.crossed_interview && interviews_set.crossed_interview.interview.status === 'submitted')
         return 'View cross review answers'
       else if (interviews_set.manager_interview.interview.status === 'submitted')
         return 'View my answers'
@@ -133,6 +133,12 @@ export default {
       else if (status === 'in_progress') return 'bkt-yellow'
       else if (status === 'submitted') return 'bkt-green'
       else if (status === 'not_available_yet') return 'bkt-light-grey'
+    },
+    getBorderColorByInterviewStatus(status) {
+      if (status === 'not_started') return 'border-bkt-red'
+      else if (status === 'in_progress') return 'border-bkt-yellow'
+      else if (status === 'submitted') return 'border-bkt-green'
+      else if (status === 'not_available_yet') return 'border-bkt-light-grey'
     },
   }
 }

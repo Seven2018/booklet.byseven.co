@@ -1,5 +1,9 @@
 class InterviewsController < ApplicationController
   before_action :show_navbar_campaign
+  skip_forgery_protection
+  skip_after_action :verify_authorized, only: [
+    :update,
+  ]
 
   def show
     @interview = Interview.find(params[:id])
@@ -29,6 +33,28 @@ class InterviewsController < ApplicationController
           zoom: 1,
         )
       end
+    end
+  end
+
+  def update
+    interview = Interview.find(params[:id])
+    if interview.label == 'Crossed'
+      date_params = JSON.parse(params['interview']).with_indifferent_access.tap do |attr|
+        attr[:year] = attr[:year]
+        attr[:month] = attr[:month]
+        attr[:day] = attr[:day]
+        attr[:min] = attr[:min]
+        attr[:hour] = attr[:hour]
+        attr[:duration] = attr[:duration] || 120
+      end
+      starts_at = Time.new(date_params[:year], date_params[:month], date_params[:day], date_params[:hour], date_params[:min]).utc
+      ends_at = starts_at + date_params[:duration].to_i.minutes
+      interview.update(starts_at: starts_at.to_datetime, ends_at: ends_at.to_datetime)
+      CampaignMailer.with(user:current_user).cross_review_schedule(current_user, interview.campaign, interview).deliver_later
+      CampaignMailer.with(user:interview.employee).cross_review_schedule(current_user, interview.campaign, interview).deliver_later
+    end
+    respond_to do |format|
+      format.json { head :ok }
     end
   end
 
