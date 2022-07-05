@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!isMobile()">
+    <div v-if="!isMobile()" style="padding-bottom: 50px !important;">
       <table>
         <thead>
         <tr class="border-bottom-bkt-light-grey5 bkt-light-grey6" :class="headerClass">

@@ -16,6 +16,7 @@
 <!--      <div v-if="overview">-->
         <bkt-select
             v-if="overview"
+            :preventFetchOnMount="true"
             v-for="(category, idx) in selectCategories"
             :key="idx"
             class="mx-sm-5 my-sm-3 mt-3 d-inline-block"
@@ -58,6 +59,7 @@ export default {
       const res = await axios.get('/companies/get_tags_and_categories')
 
       this.selectCategories = this.buildCategoriesSelect(res.data.tag_categories)
+      this.update()
     }
   },
   methods: {
