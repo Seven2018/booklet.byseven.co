@@ -29,5 +29,9 @@ Vue.filter('formatDate', (value, formatStr = "DD MMM, YYYY") => {
 
 Vue.filter('truncateN', (value, n = 65) => {
   if (!value) return ''
-  return value.slice(0, (n -1)) + '...'
+  if (value.length > n) {
+    return value.slice(0, (n -1)) + '...'
+  } else {
+    return value
+  }
 })
