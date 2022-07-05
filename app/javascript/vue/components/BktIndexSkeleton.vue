@@ -1,6 +1,6 @@
 
 <template>
-  <div class="width-80 py-5 mx-auto">
+  <div class="width-80 pt-5 mx-auto">
     <div v-if="!isMobile()" class="flex-row-between-centered mb-5">
       <div class="flex-column">
         <h1 class="font-weight-700 fs-2_4rem">

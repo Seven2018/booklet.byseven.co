@@ -2,9 +2,9 @@
   <div>
     <div class="flex-row-between-centered my-4 pb-4">
       <p>
-      Shift cross review date
+      Set cross review date
       </p>
-      <div  @click="$emit('close')" class="cursor-pointer">
+      <div @click="$emit('close')" class="cursor-pointer">
         <span class="iconify" data-icon="charm:cross" data-width="25" data-height="25"></span>
       </div>
     </div>
