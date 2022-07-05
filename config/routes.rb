@@ -122,7 +122,7 @@ Rails.application.routes.draw do
 
   # CATEGORIES
   get :categories_search, controller: :categories
-  resources :categories, only: [:index, :update] do
+  resources :categories, only: [:index, :update, :destroy] do
     collection do
       get :from_campaign
       get :from_template
