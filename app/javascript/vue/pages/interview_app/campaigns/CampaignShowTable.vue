@@ -64,7 +64,7 @@
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
                 @click.stop="shiftCrossInterviewDate(crossed_interview.interview)"
             >
-              Set cross review date
+              Schedule a meeting
             </button>
           </bkt-dots-button>
         </div>
@@ -151,6 +151,7 @@ export default {
         crossId: cross.id,
         startDate: cross.starts_at,
         endDate: cross.ends_at,
+        date: cross.date,
         close() {
           store.dispatch('genericFetchEntity/fetch', {
             pathKey: 'campaigns_id_data_show',

@@ -68,7 +68,7 @@
             :selected="tag.selected"
             :key="tag.id"
             @click.stop="toggleTag(idx, tag_idx)"
-        >{{ tag.title }}
+        >{{ tag.title | truncateN }}
         </bkt-tag>
         <p
             v-if="showGroups.length > 1 && item.showCatSuggestion && item.showInputCatSuggestion === false"
