@@ -5,7 +5,7 @@
       <p style="font-weight: bold;">
       Schedule a meeting for the cross review
       </p>
-      <div  @click="$emit('close')" class="cursor-pointer">
+      <div @click="$emit('close')" class="cursor-pointer">
         <span class="iconify" data-icon="charm:cross" data-width="25" data-height="25"></span>
       </div>
     </div>
