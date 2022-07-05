@@ -37,24 +37,35 @@ class InterviewsController < ApplicationController
   end
 
   def update
-    interview = Interview.find(params[:id])
+    date_params = JSON.parse(params['interview'] || {}).with_indifferent_access
+    campaign = Campaign.find(date_params[:campaign_id])
+    interview = campaign.interviews.find(params[:id])
+    success = false
     if interview.label == 'Crossed'
-      date_params = JSON.parse(params['interview']).with_indifferent_access.tap do |attr|
-        attr[:year] = attr[:year]
-        attr[:month] = attr[:month]
-        attr[:day] = attr[:day]
-        attr[:min] = attr[:min]
-        attr[:hour] = attr[:hour]
-        attr[:duration] = attr[:duration] || 120
-      end
-      starts_at = Time.new(date_params[:year], date_params[:month], date_params[:day], date_params[:hour], date_params[:min]).utc
-      ends_at = starts_at + date_params[:duration].to_i.minutes
-      interview.update(starts_at: starts_at.to_datetime, ends_at: ends_at.to_datetime)
+      starts_at = begin
+                    Time.new(date_params[:year],
+                             date_params[:month],
+                             date_params[:day],
+                             date_params[:hour],
+                             date_params[:min]).utc
+                  rescue
+                    nil
+                  end
+      ends_at = begin
+                  starts_at + date_params[:duration].to_i.minutes
+                rescue
+                  nil
+                end
+      success = interview.update(starts_at: starts_at.to_time,
+                                 date: starts_at,
+                                 ends_at: ends_at.to_time) if starts_at && ends_at
+    end
+    if success
       CampaignMailer.with(user:current_user).cross_review_schedule(current_user, interview.campaign, interview).deliver_later
       CampaignMailer.with(user:interview.employee).cross_review_schedule(current_user, interview.campaign, interview).deliver_later
-    end
-    respond_to do |format|
-      format.json { head :ok }
+      render json: { head: :ok }
+    else
+      render json: { errors: "could't update review"}, head: :unprocessable_entity
     end
   end
 
