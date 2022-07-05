@@ -69,6 +69,7 @@
     <bkt-pop-up-frame
         v-else-if="popUp.data.type === 'custom'"
         :closable="popUp.data.closable"
+        :title="popUp.data.title"
         @close="close"
     >
       <component
@@ -92,6 +93,7 @@ import PopUpSetAnotherInterviewee from "./PopUpComponents/PopUpSetAnotherIntervi
 import PopUpSetInterview from './PopUpComponents/PopUpSetInterview'
 import PopUpCampaignEditDeadline from './PopUpComponents/PopUpCampaignEditDeadline'
 import PopUpShiftCrossInterviewDate from './PopUpComponents/PopUpShiftCrossInterviewDate'
+import PopUpRenameTag from './PopUpComponents/PopUpRenameTag'
 
 export default {
   data() {
@@ -119,7 +121,8 @@ export default {
     PopUpSetAnotherInterviewee,
     PopUpSetInterview,
     PopUpShiftCrossInterviewDate,
-    PopUpCampaignEditDeadline
+    PopUpCampaignEditDeadline,
+    PopUpRenameTag
   },
 }
 </script>

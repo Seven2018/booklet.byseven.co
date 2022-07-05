@@ -4,7 +4,9 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container rounded-15px w-100vw-mobile">
-          <div class="flex-row-end-centered">
+          <div class="flex-row-end-centered" :class="title ? 'flex-row-between-centered border-bottom-bkt-light-grey p-3 mb-3' : ''">
+            <p v-if="title" class="font-weight-600 fs-1_8rem mr-5">{{title}}</p>
+
             <div v-if="closable" @click="$emit('close')" class="cursor-pointer">
               <span class="iconify" data-icon="charm:cross" data-width="25" data-height="25"></span>
             </div>
@@ -21,7 +23,7 @@ import store from "../store";
 import BktSpinner from './BktSpinner'
 
 export default {
-  props: ['closable'],
+  props: ['closable', 'title'],
   data() {
     return {
       popUp: store.state.popUp

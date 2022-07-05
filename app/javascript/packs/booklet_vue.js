@@ -61,6 +61,7 @@ import InterviewReportIndex from '../vue/pages/interview_app/reports'
 import MyInterviews from '../vue/pages/interview_app/MyInterviews'
 import MyTeamInterviews from '../vue/pages/interview_app/MyTeamInterviews'
 import CampaignShow from '../vue/pages/interview_app/campaigns/show'
+import EditTemplateTags from '../vue/pages/interview_app/templates/show/EditTemplateTags'
 
 let app = null
 let vuejsOpt = {
@@ -81,7 +82,8 @@ let vuejsOpt = {
     InterviewReportIndex,
     MyInterviews,
     MyTeamInterviews,
-    CampaignShow
+    CampaignShow,
+    EditTemplateTags
   }
 }
 Vue.prototype.$routes = routes
