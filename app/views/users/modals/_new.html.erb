@@ -40,7 +40,7 @@
                     input_html: { autocomplete: 'off'},
                     required: true %>
 
-        <%= render 'users/access_level_input', f: f, user: User.new %>
+        <%#= render 'users/access_level_input', f: f, user: User.new %>
 
         <%= f.input :manager_id,
                     collection: User.where(company_id: current_user.company_id, access_level_int: [:manager, :hr, :account_owner, :admin]).order(lastname: :asc),

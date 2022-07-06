@@ -40,14 +40,14 @@ class InterviewsController < ApplicationController
     date_params = JSON.parse(params['interview'] || {}).with_indifferent_access
     campaign = Campaign.find(date_params[:campaign_id])
     interview = campaign.interviews.find(params[:id])
-    success = false
+
     if interview.label == 'Crossed'
+      date = Date.new(date_params[:year].to_i,
+                             date_params[:month].to_i,
+                             date_params[:day].to_i)
       starts_at = begin
-                    Time.new(date_params[:year],
-                             date_params[:month],
-                             date_params[:day],
-                             date_params[:hour],
-                             date_params[:min]).utc
+                    Time.new(2000,1,1, date_params[:hour].to_i,
+                             date_params[:min].to_i)
                   rescue
                     nil
                   end
@@ -56,13 +56,15 @@ class InterviewsController < ApplicationController
                 rescue
                   nil
                 end
-      success = interview.update(starts_at: starts_at.to_time,
-                                 date: starts_at,
-                                 ends_at: ends_at.to_time) if starts_at && ends_at
+
+      interview.update(starts_at: starts_at,
+                                 date: date,
+                                 ends_at: ends_at) if starts_at && ends_at
     end
-    if success
+
+    if params[:send_email].present?
       CampaignMailer.with(user:current_user).cross_review_schedule(current_user, interview.campaign, interview).deliver_later
-      CampaignMailer.with(user:interview.employee).cross_review_schedule(current_user, interview.campaign, interview).deliver_later
+      CampaignMailer.with(user:interview.employee).cross_review_schedule(interview.employee, interview.campaign, interview).deliver_later
       render json: { head: :ok }
     else
       render json: { errors: "could't update review"}, head: :unprocessable_entity
@@ -194,9 +196,13 @@ class InterviewsController < ApplicationController
   def archive_interviewer_interviews
     @interviews = Interview.where(campaign_id: params[:campaign_id],
                                   interviewer_id: params[:interviewer_id])
+
+    @interviews_as_manager = Interview.where(campaign_id: params[:campaign_id],
+                                  employee_id: current_user.employees.ids)
+
     authorize @interviews
 
-    if @interviews.map{|x| x.archived_for['Manager']}.uniq == [true]
+    if (@interviews.map{|x| x.archived_for['Interviewer']}.uniq == [true]) || @interviews_as_manager.map{|x| x.archived_for['Manager']}.uniq == [true]
       to_archive = false
       tab = 'archived'
     else
@@ -205,6 +211,10 @@ class InterviewsController < ApplicationController
     end
 
     @interviews.each do |interview|
+     interview.update_archived_for('Interviewer', to_archive)
+    end
+
+    @interviews_as_manager.each do |interview|
      interview.update_archived_for('Manager', to_archive)
     end
 

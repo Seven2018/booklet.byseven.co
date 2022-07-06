@@ -18,7 +18,7 @@
         v-for="(item, idx) in showGroups"
         :key="item.id"
         :ref="loopCatSuggestionRef + idx"
-        class="flex-row-between-centered mt-5 align-items-start pos-rel">
+        class="flex-row-between-centered align-items-start pos-rel">
 
       <input
           v-if="item.inputRenameGroupCat"
@@ -29,31 +29,34 @@
           type="text">
       <bkt-button
           v-else-if="item.inputRenameGroupCat === false && showGroups.length !== 1"
-              @click.stop="showGroupOptions(idx)"
-              v-click-outside="hideGroupOptions"
-              type="transparent"
-              class="mr-2 width-25 min-h-5rem" style="display: flex; justify-content: flex-start; align-items: center;"
-          >
-            {{ item.name | capitalize }}
-          </bkt-button>
-      <ul
-          v-if="item.groupOptions"
-              :tabindex="idx"
-              class="position-absolute left-0 bkt-bg-white bkt-box-shadow-medium width-25 rounded-5px z-index-5" style="top: 5rem">
-            <li
-                @click="showRenameGroupCat(idx)"
-                class="flex-row-start-centered align-items-center p-2 bkt-bg-light-grey9-hover mb-0 cursor-pointer">
-              <span class="iconify mr-2" data-icon="jam:write"></span>
-              <p>Rename</p>
-            </li>
-            <li
-                v-if="item.name !== 'others'"
-                @click="removeGroupCat(idx)"
-                class="flex-row-start-centered align-items-center p-2 bkt-bg-light-grey9-hover bkt-red mb-0 cursor-pointer">
-              <span class="iconify mr-2" data-icon="akar-icons:trash-can"></span>
-              <p>Delete</p>
-            </li>
-          </ul>
+          @click.stop="showGroupOptions(idx)"
+          v-click-outside="hideGroupOptions"
+          type="transparent"
+          class="mr-2 width-25 min-h-5rem" style="display: flex; justify-content: flex-start; align-items: center;"
+      >
+        {{ item.name | capitalize }}
+      </bkt-button>
+      <transition name="cat-options">
+        <ul
+            v-if="item.groupOptions"
+            :tabindex="idx"
+            class="position-absolute left-0 bkt-bg-white bkt-box-shadow-medium width-25 rounded-5px z-index-5"
+            style="top: 5rem">
+          <li
+              @click="showRenameGroupCat(idx)"
+              class="flex-row-start-centered align-items-center p-2 bkt-bg-light-grey9-hover mb-0 cursor-pointer">
+            <span class="iconify mr-2" data-icon="jam:write"></span>
+            <p>Rename</p>
+          </li>
+          <li
+              v-if="item.name !== 'others'"
+              @click="removeGroupCat(idx)"
+              class="flex-row-start-centered align-items-center p-2 bkt-bg-light-grey9-hover bkt-red mb-0 cursor-pointer">
+            <span class="iconify mr-2" data-icon="akar-icons:trash-can"></span>
+            <p>Delete</p>
+          </li>
+        </ul>
+      </transition>
 
       <div
           class=" ml-2 px-3 py-2 rounded-5px width-75 min-h-5rem "
@@ -88,15 +91,20 @@
               class="fs-1_2rem border-none bg-transparent input-cat-suggestion d-inline-block my-3"
           >
           <ul class="position-absolute left-0 height-35rem width-100 bkt-bg-white bkt-box-shadow-medium z-index-5 max-h-16rem overflow-y-auto">
-            <li v-if="groupTagModule.suggestionTag && groupTagModule.suggestionTag.length === 0" class="px-2 bkt-light-grey6 fs-1_2rem mt-2">This tag doesn’t exist.</li>
-            <li v-else-if="groupTagModule.suggestionTag && groupTagModule.suggestionTag.length > 0" class="px-2 bkt-light-grey6 fs-1_2rem mt-2">Select existing tag</li>
+            <li v-if="groupTagModule.suggestionTag && groupTagModule.suggestionTag.length === 0"
+                class="px-2 bkt-light-grey6 fs-1_2rem mt-2">This tag doesn’t exist.
+            </li>
+            <li v-else-if="groupTagModule.suggestionTag && groupTagModule.suggestionTag.length > 0"
+                class="px-2 bkt-light-grey6 fs-1_2rem mt-2">Select existing tag
+            </li>
+
             <li
                 v-for="tagObj in groupTagModule.suggestionTag"
                 :key="tagObj.id"
                 class="px-2 bkt-bg-light-grey9-hover cursor-pointer"
                 @click.stop="changeTagOfGroup(tagObj, item)"
             >
-              <bkt-tag :selected="false">{{tagObj.title}}</bkt-tag>
+              <bkt-tag :selected="false">{{ tagObj.title }}</bkt-tag>
             </li>
           </ul>
         </div>
@@ -104,21 +112,23 @@
     </div>
 
     <div class="flex-row-start-centered my-4 height-4rem">
-      <input
-          v-if="showNewCatInput"
-          @blur="showNewCatInput = false"
-          v-on:keyup.enter="createNewGroupCat"
-          ref="showNewCatInput"
-          class="p-3 rounded-5px border-bkt-dark-grey-focus fs-1_6rem "
-          type="text">
-      <bkt-button
-          v-else
-          iconify="ant-design:plus-circle-outlined"
-          type="transparent"
-          @click="displayNewCatInput"
-      >
-        Create category
-      </bkt-button>
+      <transition name="create-cat" mode="out-in">
+        <input
+            v-if="showNewCatInput"
+            @blur="showNewCatInput = false"
+            v-on:keyup.enter="createNewGroupCat"
+            ref="showNewCatInput"
+            class="p-3 rounded-5px border-bkt-dark-grey-focus fs-1_6rem "
+            type="text">
+        <bkt-button
+            v-else
+            iconify="ant-design:plus-circle-outlined"
+            type="transparent"
+            @click="displayNewCatInput"
+        >
+          Create category
+        </bkt-button>
+      </transition>
     </div>
     <div class="w-100 bkt-bg-light-grey5" style="height: 1px"></div>
   </div>
@@ -151,7 +161,13 @@ export default {
           item.categories = item.categories.map(tag => {
             return {...tag, selected: false}
           })
-          return {...item, showCatSuggestion: false, showInputCatSuggestion: false, groupOptions: false, inputRenameGroupCat: false}
+          return {
+            ...item,
+            showCatSuggestion: false,
+            showInputCatSuggestion: false,
+            groupOptions: false,
+            inputRenameGroupCat: false
+          }
         })
       }
       return this.groupTagModule.groups
@@ -194,7 +210,9 @@ export default {
     displayNewCatInput() {
       this.showNewCatInput = true;
       this.$nextTick(() => {
-        this.$refs.showNewCatInput.focus()
+        setTimeout(() => {
+          this.$refs.showNewCatInput.focus()
+        }, 350)
       })
     },
     createNewGroupCat(e) {
@@ -209,7 +227,7 @@ export default {
       store.dispatch('groupsTag/renameGroup', {name: groupName, group_id: item.id, kind: 'interview'})
     },
     showGroupOptions(arrayIdx) {
-      this.groupTagModule.groups[arrayIdx].groupOptions = true
+      this.groupTagModule.groups[arrayIdx].groupOptions = !this.groupTagModule.groups[arrayIdx].groupOptions
     },
     hideGroupOptions() {
       this.groupTagModule.groups = this.groupTagModule.groups.map(item => {
@@ -278,3 +296,37 @@ export default {
   components: {BktTag, BktButton},
 }
 </script>
+
+<style>
+.create-cat-enter-active,
+.create-cat-leave-active {
+  transition: all 0.3s ease;
+}
+
+.create-cat-enter,
+.create-cat-leave-to {
+  transform: scale(0);
+}
+
+.create-cat-enter-to {
+  /*opacity: 1;*/
+  /*transform: translate(0px);*/
+}
+
+
+.cat-options-enter-active,
+.cat-options-leave-active {
+  transition: all 0.3s ease;
+}
+
+.cat-options-enter,
+.cat-options-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.cat-options-enter-to {
+  /*opacity: 1;*/
+  /*transform: translate(0px);*/
+}
+</style>

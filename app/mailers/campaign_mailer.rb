@@ -5,32 +5,42 @@ class CampaignMailer < ApplicationMailer
   def invite_employee(interviewer, interviewee, interview)
     interviewee_email_settings(interviewer, interviewee, interview)
     @icon = '🏃'
-    @title = '3,2,1 Start !'
-    @description = "The campaign #{@campaign.title} has just begun !\n #{@interviewer.firstname} #{@interviewer.lastname} invites you to complete your interview."
+    @icon2 = '🏃‍♀️'
+    @title = '3,2,1 Go !'
+    @description = "🚀 #{@campaign.title} 🚀"
     @button_text = "Go to my interview"
     @button_link = interview_url(@interview)
+    @button_text_fr = "Pour compléter ton entretien, c’est ici"
 
-    campaign_calendar_link(@campaign, @interviewee)
+    campaign_calendar_link_no_calendar(@campaign, @interviewee)
+    campaign_calendar_link_with_fr(@campaign, @interviewee)
 
     @nb = "Please don't answer this email."
 
     mail(to: @interviewee.email, subject: "You are invited to the campaign '#{@campaign.title}' !")
   end
 
-  def invite_interviewer(interviewer, campaign)
+  def invite_interviewer(interviewer, campaign, interview)
+    @interview = interview
     interviewer_email_settings(interviewer, campaign)
 
     @icon = '🏃'
+    @icon2 = '🏃‍♀️'
     @title = '3,2,1 Start !'
-    @description = "The campaign #{@campaign.title} has just begun !\n"
-    @button_text = "Go to the campaign"
-    @button_link = campaign_url(@campaign)
+    @description = "🚀 #{@campaign.title} 🚀"
+    @button_text_fr = "Pour compléter les entretiens de ton équipe, c’est ici"
+    @button_text_fr2 = "Pour compléter ton entretien, c’est là"
+    @button_text = "Go to my interview"
+    @button_link = interview_url(@interview)
+    @button_text2 = "Go to my team interviews"
+    @button_link2 = my_team_interviews_url
 
-    campaign_calendar_link(@campaign, @interviewer)
+    campaign_calendar_link_no_calendar(@campaign, @interviewer)
+    campaign_calendar_link_with_fr(@campaign, @interviewer)
 
     @nb = "Please don't answer this email."
 
-    mail(to: @interviewer.email, subject: "You are now interviewer for the campaign '#{@campaign.title}' !")
+    mail(to: @interviewer.email, subject: "#{interviewer.firstname}, you are an interviewer for the campaign '#{@campaign.title}' !")
   end
 
   def interview_reminder(interviewer, interviewee, interview)
@@ -137,14 +147,16 @@ class CampaignMailer < ApplicationMailer
     @owner = owner
     @campaign = campaign
     @icon = '🚀'
-    @title = "Your campaign #{campaign.title} has been launched !"
-    @description = "All interviewers and interviewees can now access their interviews in the campaign “#{campaign.title}”."
-    @button_text = "Go to campaign index"
+    @title = "#{campaign.title}"
+    @description_fr = "Votre campagne a bien été lancée. Toutes les personnes concernées ont reçu un mail d’invitation à leurs interviews."
+    @description = "Your campaign has been launched. All people involved received an invitation email to their interview."
+    @button_text_fr = "Suivez votre campagne ici"
+    @button_text = "Go to your campaign here"
     @button_link = campaigns_url
 
     @nb = "Please don't answer this email."
 
-    mail(to: @owner.email, subject: "Your campaign #{campaign.title} has been launched !")
+    mail(to: @owner.email, subject: "#{owner.firstname}, #{campaign.title} has been launched !")
   end
 
   def cross_review_schedule(owner, campaign, interview)
@@ -178,9 +190,18 @@ class CampaignMailer < ApplicationMailer
     @campaign = campaign.decorate
   end
 
+  def campaign_calendar_link_no_calendar(campaign, user)
+    @optional_text = "The deadline for this campaign is set on #{campaign.deadline}"
+    @optional_button_link = redirect_calendar_campaigns_url(instance_id: campaign.id, user_id: user.id, mode: 'campaign')
+  end
+
   def campaign_calendar_link(campaign, user)
     @optional_text = "The deadline for this campaign is set on #{campaign.deadline}"
     @optional_button_text = "Save it to Google Calendar"
     @optional_button_link = redirect_calendar_campaigns_url(instance_id: campaign.id, user_id: user.id, mode: 'campaign')
+  end
+
+  def campaign_calendar_link_with_fr(campaign, user)
+    @optional_text_fr = "La date de fin de cette campagne est le #{campaign.deadline}"
   end
 end

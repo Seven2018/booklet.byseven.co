@@ -5,8 +5,20 @@ class CampaignDraft::BaseController < ApplicationController
   before_action :set_multi_step_form_navbar_content, :authorize_campaign_draft
   before_action :previous_steps_completed, only: :edit
 
+  skip_forgery_protection
+
   def edit
     render template: "campaign_draft/edit"
+  end
+
+  def destroy
+    campaign_draft = CampaignDraft.find(params.require(:id))
+
+    if campaign_draft.destroy
+      head :ok
+    else
+      render json: 'error while destroying campaign draft'
+    end
   end
 
   private

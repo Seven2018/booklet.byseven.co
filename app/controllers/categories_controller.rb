@@ -12,14 +12,25 @@ class CategoriesController < ApplicationController
 
   def update
     tag_id = params.require(:id)
-    group_category_id = params.require(:group_category_id)
+    args = params.permit(:group_category_id, :title)
 
     tag = Category.find(tag_id)
 
-    if tag.update(group_category_id: group_category_id)
+    if tag.update(args)
       head :ok
     else
       render json: {message: "Couldn't update group category"}, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    tag_id = params.require(:id)
+    tag = Category.find(tag_id)
+
+    if tag.destroy
+      head :ok
+    else
+      render json: {message: "Couldn't delete tag"}, status: :unprocessable_entity
     end
   end
 

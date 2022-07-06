@@ -3,29 +3,31 @@
   <div
       v-if="items.length >= 1"
       v-click-outside="hide"
-      class="position-relative max-w-25rem width-100">
+      class="position-relative max-w-25rem">
     <p
         ref="selectText"
         @click.stop="toggleDisplay"
         class="bkt-bg-light-grey3 border-bkt-light-grey pointer-event  bkt-white-onclick p-3 rounded-5px min-w-15rem  pr-5">
       {{toDisplay}}
     </p>
-    <div
-        v-if="display"
-        class="position-absolute bkt-bg-white rounded-2px bkt-box-shadow-medium z-index-5 overflow-y-auto max-h-30rem"
-        style="left: 0; right: 0; width: inherit"
-    >
-      <button
-          v-for="(item, idx) in items"
-          :key="idx"
-          class="flex-row-start-centered width-100 p-3 fs-1_6rem bkt-bg-light-grey9-hover"
-          @click="manageSelected(item)"
+    <transition>
+      <div
+          v-if="display"
+          class="position-absolute bkt-bg-white rounded-2px bkt-box-shadow-medium z-index-5 overflow-y-auto max-h-30rem"
+          style="left: 0; right: 0; width: inherit"
       >
-        <span class="d-inline-block text-truncate">
-          {{item.display}}
-        </span>
-      </button>
-    </div>
+        <button
+            v-for="(item, idx) in items"
+            :key="idx"
+            class="flex-row-start-centered width-100 p-3 fs-1_6rem bkt-bg-light-grey9-hover"
+            @click="manageSelected(item)"
+        >
+          <span class="d-inline-block text-truncate">
+            {{item.display}}
+          </span>
+        </button>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -107,4 +109,20 @@ p.select-arrow-active:after {
   top: 13px;
 }
 
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-enter,
+.v-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+  /*transform: scale(0)*/
+}
+
+.v-enter-to {
+  /*opacity: 1;*/
+  /*transform: translate(0px);*/
+}
 </style>

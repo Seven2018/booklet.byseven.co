@@ -6,7 +6,7 @@
 
     <div class="pos-abs"
          style="top: 0; left: -10rem;">
-      <%= render_component Buttons::BackButton.new(fallback: user_path(@user), force_fallback: true) %>
+      <%= render_component Buttons::BackButton.new(fallback: nil, force_fallback: false) %>
     </div>
 
     <div class="d-flex justify-content-center align-items-center mb-4">
@@ -76,6 +76,8 @@
 
     <%= simple_form_for @user, url: user_permissions_path(@user), method: :patch, local: true do |f| %>
 
+      <input id="customAccessLevelIntField" name="user[access_level_int]" type="hidden">
+
       <div class="pos-rel">
 
         <% User::PERMISSIONS_DISPLAY.each do |group| %>
@@ -101,7 +103,7 @@
         <% end %>
 
         <input
-          type="texr"
+          type="text"
           name="user[strong_params_passer]"
           class="hidden"
           value='true'

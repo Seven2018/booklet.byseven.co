@@ -1,7 +1,10 @@
 <template>
   <div v-if="popUp && popUp.data.open">
-    <bkt-pop-up-frame v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
-                      name="modal">
+    <bkt-pop-up-frame
+        @close="close"
+        v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
+        box-style="padding: 5rem"
+    >
       <div v-if="popUp.data.title" class="flex-row-center-centered">
         <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
       </div>
@@ -10,7 +13,7 @@
       </div>
 
       <div v-if="popUp.data.textClose && popUp.data.textConfirm" class="flex-row-around-centered mt-5 fs-1_8rem">
-        <button class="border-bkt-dark-grey width-15rem rounded-2px py-2" @click="close">{{ popUp.data.textClose }}
+        <button class="border-bkt-dark-grey min-w-15rem rounded-2px p-2" @click="close">{{ popUp.data.textClose }}
         </button>
         <button
             class="min-w-15rem rounded-2px border-bkt-objective-blue py-2"
@@ -36,7 +39,8 @@
     <bkt-pop-up-frame v-else-if="popUp && popUp.data.open && popUp.data.type == 'action_done' " name="modal">
       <div class="flex-row-center-centered justify-content-center">
         <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_newtztyc.json" background="transparent"
-                       speed="1" style="width: 200px; height: 200px; margin-top: -3rem;" loop autoplay></lottie-player>
+                       speed="1" style="width: 200px; height: 200px; margin-top: -3rem;" loop
+                       autoplay></lottie-player>
       </div>
 
       <div v-if="popUp.data.title" class="flex-row-center-centered">
@@ -65,10 +69,11 @@
           @close="close"
       ></component>
     </bkt-pop-up-frame>
-<!--    INFO: GENERIC MODAL-->
+    <!--    INFO: GENERIC MODAL-->
     <bkt-pop-up-frame
         v-else-if="popUp.data.type === 'custom'"
         :closable="popUp.data.closable"
+        :title="popUp.data.title"
         @close="close"
     >
       <component
@@ -92,6 +97,7 @@ import PopUpSetAnotherInterviewee from "./PopUpComponents/PopUpSetAnotherIntervi
 import PopUpSetInterview from './PopUpComponents/PopUpSetInterview'
 import PopUpCampaignEditDeadline from './PopUpComponents/PopUpCampaignEditDeadline'
 import PopUpShiftCrossInterviewDate from './PopUpComponents/PopUpShiftCrossInterviewDate'
+import PopUpRenameTag from './PopUpComponents/PopUpRenameTag'
 
 export default {
   data() {
@@ -119,7 +125,8 @@ export default {
     PopUpSetAnotherInterviewee,
     PopUpSetInterview,
     PopUpShiftCrossInterviewDate,
-    PopUpCampaignEditDeadline
+    PopUpCampaignEditDeadline,
+    PopUpRenameTag
   },
 }
 </script>
@@ -188,4 +195,5 @@ export default {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+
 </style>

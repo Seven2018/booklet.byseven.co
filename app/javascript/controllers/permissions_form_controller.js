@@ -6,6 +6,8 @@ export default class extends Controller {
   }
 
   select(e){
+    document.querySelector('#customAccessLevelIntField').value = e.currentTarget.dataset.interviewReportParam
+
     JSON.parse(e.currentTarget.dataset.cans).forEach((can) => {
       const label = document.querySelector(`[data-label-for='user[${can}]']`)
       const input = document.querySelector(`input[id='user[${can}]']`)

@@ -233,10 +233,10 @@ ActiveRecord::Schema.define(version: 2022_07_04_175455) do
 
   create_table "group_categories", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.integer "kind", default: 0
     t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.integer "position", default: 0
     t.index ["company_id"], name: "index_group_categories_on_company_id"
   end
@@ -351,10 +351,10 @@ ActiveRecord::Schema.define(version: 2022_07_04_175455) do
     t.bigint "objectivable_id"
     t.string "objectivable_type"
     t.bigint "company_id"
-    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
+    t.bigint "creator_id"
     t.boolean "template", default: false
     t.boolean "can_employee_edit", default: true
     t.boolean "can_employee_view", default: true
