@@ -196,9 +196,13 @@ class InterviewsController < ApplicationController
   def archive_interviewer_interviews
     @interviews = Interview.where(campaign_id: params[:campaign_id],
                                   interviewer_id: params[:interviewer_id])
+
+    @interviews_as_manager = Interview.where(campaign_id: params[:campaign_id],
+                                  employee_id: current_user.employees.ids)
+
     authorize @interviews
 
-    if @interviews.map{|x| x.archived_for['Manager']}.uniq == [true]
+    if (@interviews.map{|x| x.archived_for['Interviewer']}.uniq == [true]) || @interviews_as_manager.map{|x| x.archived_for['Manager']}.uniq == [true]
       to_archive = false
       tab = 'archived'
     else
@@ -207,6 +211,10 @@ class InterviewsController < ApplicationController
     end
 
     @interviews.each do |interview|
+     interview.update_archived_for('Interviewer', to_archive)
+    end
+
+    @interviews_as_manager.each do |interview|
      interview.update_archived_for('Manager', to_archive)
     end
 
