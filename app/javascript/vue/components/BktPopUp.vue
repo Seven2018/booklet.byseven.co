@@ -1,6 +1,5 @@
 <template>
-  <transition>
-    <div v-if="popUp && popUp.data.open">
+  <div v-if="popUp && popUp.data.open">
     <bkt-pop-up-frame
         v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
         name="modal">
@@ -82,7 +81,6 @@
       ></component>
     </bkt-pop-up-frame>
   </div>
-  </transition>
 </template>
 
 <script>
@@ -196,20 +194,4 @@ export default {
   transform: scale(1.1);
 }
 
-.v-enter-active,
-.v-leave-active {
-  transition: all 0.5s ease;
-}
-
-.v-enter,
-.v-leave-to {
-  opacity: 0;
-  transform: translate(20px);
-  /*transform: scale(0)*/
-}
-
-.v-enter-to {
-  /*opacity: 1;*/
-  /*transform: translate(0px);*/
-}
 </style>

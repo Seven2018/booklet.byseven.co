@@ -62,6 +62,7 @@ import MyInterviews from '../vue/pages/interview_app/MyInterviews'
 import MyTeamInterviews from '../vue/pages/interview_app/MyTeamInterviews'
 import CampaignShow from '../vue/pages/interview_app/campaigns/show'
 import EditTemplateTags from '../vue/pages/interview_app/templates/show/EditTemplateTags'
+import EditCampaignDraft from '../vue/pages/interview_app/campaign_drafts/edit'
 
 import VueFlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
@@ -87,7 +88,8 @@ let vuejsOpt = {
     MyInterviews,
     MyTeamInterviews,
     CampaignShow,
-    EditTemplateTags
+    EditTemplateTags,
+    EditCampaignDraft,
   }
 }
 Vue.prototype.$routes = routes

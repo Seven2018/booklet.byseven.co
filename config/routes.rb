@@ -88,6 +88,7 @@ Rails.application.routes.draw do
   end
 
   namespace :campaign_draft do
+    resources :base, only: [:destroy]
     resource :settings, only: %i[edit update]
     resource :participants, only: %i[edit update]
     resource :templates, only: %i[edit update]
