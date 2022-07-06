@@ -15,9 +15,9 @@
 
     <div class="d-flex justify-content-center">
 
-      <flat-pickr v-model="selectedDate"
+      <vue-flat-pickr v-model="selectedDate"
                   :config="configDate"
-                  class="hidden"></flat-pickr>
+                  class="hidden"></vue-flat-pickr>
 
     </div>
 
@@ -28,9 +28,9 @@
 
         <label class="fs-1_6rem font-weight-500 bkt-dark-grey mb-0 mr-1rem">From</label>
 
-        <flat-pickr v-model="startSelectedDate"
+        <vue-flat-pickr v-model="startSelectedDate"
                     :config="configTime"
-                    class="timepicker-mini width-7rem text-center"></flat-pickr>
+                    class="timepicker-mini width-7rem text-center"></vue-flat-pickr>
 
       </div>
 
@@ -38,9 +38,9 @@
 
         <label class="fs-1_6rem font-weight-500 bkt-dark-grey mb-0 mr-1rem">to</label>
 
-        <flat-pickr v-model="endSelectedDate"
+        <vue-flat-pickr v-model="endSelectedDate"
                     :config="configTime"
-                    class="timepicker-mini width-7rem text-center"></flat-pickr>
+                    class="timepicker-mini width-7rem text-center"></vue-flat-pickr>
 
       </div>
 
@@ -96,6 +96,7 @@
 <script>
   import axios from "../../plugins/axios";
   import BktButton from "../BktButton";
+  import VueFlatPickr from 'vue-flatpickr-component';
 
   export default {
     props: ['campaignId', 'crossId', 'startDate', 'endDate', 'date'],
@@ -179,6 +180,6 @@
         }
       }
     },
-    components: {BktButton}
+    components: {BktButton, VueFlatPickr}
   }
 </script>
