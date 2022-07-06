@@ -61,6 +61,9 @@ import InterviewReportIndex from '../vue/pages/interview_app/reports'
 import MyInterviews from '../vue/pages/interview_app/MyInterviews'
 import MyTeamInterviews from '../vue/pages/interview_app/MyTeamInterviews'
 import CampaignShow from '../vue/pages/interview_app/campaigns/show'
+import VueFlatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+Vue.use(VueFlatPickr);
 
 let app = null
 let vuejsOpt = {
