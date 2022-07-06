@@ -7,7 +7,7 @@ class User < ApplicationRecord
   include Users::Access
   acts_as_token_authenticatable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable,
-    :validatable, :omniauthable, :invitable, omniauth_providers: [:google_oauth2]
+    :validatable, :omniauthable, :invitable, omniauth_providers: [:google_oauth2, :facebook]
 
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills

@@ -1,10 +1,20 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
+  def facebook
+    omniauth_perform('Facebook')
+  end
+
   def google_oauth2
+    omniauth_perform('Google')
+  end
+
+  private
+
+  def omniauth_perform(kind)
     @user = User.from_omniauth(request.env['omniauth.auth'])
 
     if @user&.persisted?
-      flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
+      flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: kind
 
       image = request.env['omniauth.auth'].info.image
 
@@ -12,10 +22,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       sign_in_and_redirect @user, event: :authentication
     else
-      flash[:alert] = I18n.t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: 'errors were encountered'
+      flash[:alert] = I18n.t 'devise.omniauth_callbacks.failure', kind: kind, reason: 'errors were encountered'
       redirect_to(root_path)
     end
   end
+
 
   # # Linkedin Auth (not used atm)
   # def linkedin

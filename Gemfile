@@ -28,6 +28,7 @@ gem 'google-api-client', require: 'google/apis/calendar_v3'
 gem 'oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'devise_invitable', '~> 2.0.0'
 

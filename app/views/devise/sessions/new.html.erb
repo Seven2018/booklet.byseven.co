@@ -25,4 +25,10 @@
     <span class="iconify mr-3" data-width="20" data-height="20" data-icon="flat-color-icons:google"></span>
     Sign in with Google
   <% end %>
+  <%= button_to user_facebook_omniauth_authorize_path,
+                :class => "flex-row-center-centered border-bkt-light-grey fs-1_6rem bkt-box-shadow-light width-100 bkt-bg-white bkt-dark-grey rounded-2px mt-4 p-3",
+                :method => :post do %>
+    <span class="iconify mr-3" data-width="20" data-height="20" data-icon="flat-color-icons:facebook"></span>
+    Sign in with Facebook
+  <% end %>
 </div>
