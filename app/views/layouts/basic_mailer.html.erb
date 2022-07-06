@@ -177,10 +177,45 @@
 
     <p style="font-size: 1rem; font-weight: 500; margin-bottom: 1rem; white-space: pre-wrap;"><%= @description %></p>
 
+    <% if @button_text_fr.present?  %>
+    <a href="<%= @button_link %>"
+       style="font-size: 1rem !important; font-weight: 600; color: #5C95FF; text-decoration: none; margin-bottom: 2rem;">
+       ➡️ <%= @button_text_fr %>
+    </a>
+    <% end %>
+
+    <% if @button_text_fr2.present?  %>
+      <br/>
+      <br/>
+    <a href="<%= @button_link2 %>"
+       style="font-size: 1rem !important; font-weight: 600; color: #5C95FF; text-decoration: none; margin-bottom: 2rem;">
+       ➡️ <%= @button_text_fr2 %>
+    </a>
+    <% end %>
+
+    <% if @optional_text_fr.present?  %>
+
+      <p style="font-size: .8rem; font-weight: 500; margin-top: 2rem;"><%= @optional_text_fr %></p>
+
+      <a href="<%= @optional_button_link %>" style="font-size: .8rem !important; font-weight: 500; color: #5C95FF; text-decoration: none;">
+        <%= @optional_button_text_fr %>
+      </a>
+
+    <% end %>
+
     <a href="<%= @button_link %>"
        style="font-size: 1rem !important; font-weight: 600; color: #5C95FF; text-decoration: none; margin-bottom: 2rem;">
        ➡️ <%= @button_text %>
     </a>
+
+    <% if @button_text2.present?  %>
+      <br/>
+      <br/>
+    <a href="<%= @button_link2 %>"
+       style="font-size: 1rem !important; font-weight: 600; color: #5C95FF; text-decoration: none; margin-bottom: 2rem;">
+       ➡️ <%= @button_text2 %>
+    </a>
+    <% end %>
 
     <% if @optional_text.present?  %>
 

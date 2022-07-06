@@ -47,8 +47,9 @@ module CampaignDrafts
           interviewees = @campaign.employees.uniq
 
           interviewers.each do |interviewer|
+            interview = Interview.find_by(campaign: @campaign, employee: interviewer, label: 'Manager')
             CampaignMailer.with(user: interviewer)
-              .invite_interviewer(interviewer, @campaign)
+              .invite_interviewer(interviewer, @campaign, interview)
               .deliver_later
           end
 
