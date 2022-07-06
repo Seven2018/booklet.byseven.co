@@ -172,7 +172,7 @@
   <body width="100%" bgcolor="white" style="margin: 0; mso-line-height-rule: exactly;">
 
     <h1 style="font-size: 1rem; font-weight: 600; margin-bottom: 2rem;">
-      <%= @icon %> <%= @title %> <%= @icon %>
+      <%= @icon %> <%= @title %> <%= @icon2.present? ? @icon2 : @icon %>
     </h1>
 
     <% if @description_fr.present? %>
@@ -211,6 +211,11 @@
       <p style="font-size: 1rem; font-weight: 500; margin-bottom: 1rem; white-space: pre-wrap;"><%= @description %></p>
     <% end %>
 
+    <% if @optional_text_fr.present?  %>
+      <br/>
+      <br/>
+      <br/>
+    <% end %>
     <a href="<%= @button_link %>"
        style="font-size: 1rem !important; font-weight: 600; color: #5C95FF; text-decoration: none; margin-bottom: 2rem;">
        ➡️ <%= @button_text %>

@@ -5,6 +5,7 @@ class CampaignMailer < ApplicationMailer
   def invite_employee(interviewer, interviewee, interview)
     interviewee_email_settings(interviewer, interviewee, interview)
     @icon = '🏃'
+    @icon2 = '🏃‍♀️'
     @title = '3,2,1 Go !'
     @description = "🚀 #{@campaign.title} 🚀"
     @button_text = "Go to my interview"
@@ -24,6 +25,7 @@ class CampaignMailer < ApplicationMailer
     interviewer_email_settings(interviewer, campaign)
 
     @icon = '🏃'
+    @icon2 = '🏃‍♀️'
     @title = '3,2,1 Start !'
     @description = "🚀 #{@campaign.title} 🚀"
     @button_text_fr = "Pour compléter les entretiens de ton équipe, c’est ici"
@@ -38,7 +40,7 @@ class CampaignMailer < ApplicationMailer
 
     @nb = "Please don't answer this email."
 
-    mail(to: @interviewer.email, subject: "#{interviewer.firstname}, you are now interviewer for the campaign '#{@campaign.title}' !")
+    mail(to: @interviewer.email, subject: "#{interviewer.firstname}, you are an interviewer for the campaign '#{@campaign.title}' !")
   end
 
   def interview_reminder(interviewer, interviewee, interview)
