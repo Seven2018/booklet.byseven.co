@@ -175,7 +175,11 @@
       <%= @icon %> <%= @title %> <%= @icon %>
     </h1>
 
-    <p style="font-size: 1rem; font-weight: 500; margin-bottom: 1rem; white-space: pre-wrap;"><%= @description %></p>
+    <% if @description_fr.present? %>
+      <p style="font-size: 1rem; font-weight: 500; margin-bottom: 1rem; white-space: pre-wrap;"><%= @description_fr %></p>
+    <% else %>
+      <p style="font-size: 1rem; font-weight: 500; margin-bottom: 1rem; white-space: pre-wrap;"><%= @description %></p>
+    <% end %>
 
     <% if @button_text_fr.present?  %>
     <a href="<%= @button_link %>"
@@ -201,6 +205,10 @@
         <%= @optional_button_text_fr %>
       </a>
 
+    <% end %>
+
+    <% if @description_fr.present? %>
+      <p style="font-size: 1rem; font-weight: 500; margin-bottom: 1rem; white-space: pre-wrap;"><%= @description %></p>
     <% end %>
 
     <a href="<%= @button_link %>"
