@@ -17,7 +17,7 @@ export default {
       this.$modal.open({
         type: 'delete',
         title: `Are you sure you want to delete this campaign draft ?<br> (This is a permanent action)`,
-        textClose: 'No',
+        textClose: 'No, keep it for later',
         textConfirm: 'Yes, delete',
         textLoading: 'Deleting ...',
         close() {

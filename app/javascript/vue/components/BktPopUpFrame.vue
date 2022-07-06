@@ -1,7 +1,7 @@
 <template>
   <div class="modal-mask">
-    <div class="modal-wrapper">
-      <div class="modal-container rounded-15px w-100vw-mobile">
+    <div class="modal-wrapper" @click="byPassCallBackClose">
+      <div class="modal-container rounded-15px w-100vw-mobile" :style="boxStyle" >
         <div class="flex-row-end-centered"
              :class="title ? 'flex-row-between-centered border-bottom-bkt-light-grey p-3 mb-3' : ''">
           <p v-if="title" class="font-weight-600 fs-1_8rem mr-5">{{ title }}</p>
@@ -21,7 +21,7 @@ import store from "../store";
 import BktSpinner from './BktSpinner'
 
 export default {
-  props: ['closable', 'title'],
+  props: ['closable', 'title', 'boxStyle'],
   data() {
     return {
       popUp: store.state.popUp
@@ -35,6 +35,9 @@ export default {
     confirm(loading = true) {
       store.commit('popUp/update', {loading: loading})
       this.popUp.data.confirm()
+    },
+    byPassCallBackClose() {
+      store.commit('popUp/update', {open: false})
     }
   },
   components: {BktSpinner},
