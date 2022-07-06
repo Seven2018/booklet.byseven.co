@@ -15,9 +15,9 @@
 
     <div class="d-flex justify-content-center">
 
-      <flat-pickr v-model="selectedDate"
+      <vue-flat-pickr v-model="selectedDate"
                   :config="configDate"
-                  class="hidden"></flat-pickr>
+                  class="hidden"></vue-flat-pickr>
 
     </div>
 
@@ -28,9 +28,9 @@
 
         <label class="fs-1_6rem font-weight-500 bkt-dark-grey mb-0 mr-1rem">From</label>
 
-        <flat-pickr v-model="startSelectedDate"
+        <vue-flat-pickr v-model="startSelectedDate"
                     :config="configTime"
-                    class="timepicker-mini width-7rem text-center"></flat-pickr>
+                    class="timepicker-mini width-7rem text-center"></vue-flat-pickr>
 
       </div>
 
@@ -38,9 +38,9 @@
 
         <label class="fs-1_6rem font-weight-500 bkt-dark-grey mb-0 mr-1rem">to</label>
 
-        <flat-pickr v-model="endSelectedDate"
+        <vue-flat-pickr v-model="endSelectedDate"
                     :config="configTime"
-                    class="timepicker-mini width-7rem text-center"></flat-pickr>
+                    class="timepicker-mini width-7rem text-center"></vue-flat-pickr>
 
       </div>
 
@@ -96,17 +96,20 @@
 <script>
   import axios from "../../plugins/axios";
   import BktButton from "../BktButton";
+  import VueFlatPickr from 'vue-flatpickr-component';
 
   export default {
     props: ['campaignId', 'crossId', 'startDate', 'endDate', 'date'],
     data() {
-      var offset = new Date().getTimezoneOffset();
+      var winter_offset = new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset();
+      var offset = winter_offset == new Date().getTimezoneOffset() ? winter_offset : new Date().getTimezoneOffset() - (Math.sign(winter_offset) * 60)
 
-      var preStartDate = (this.startDate != null) ? new Date(this.startDate) : Date.now()
-      preStartDate = preStartDate.setHours(preStartDate.getHours() - (offset / 60 / 2))
-      var preEndDate = (this.endDate != null) ? new Date(this.endDate) : Date.now()
-      preEndDate = preEndDate.setHours(preEndDate.getHours() - (offset / 60 / 2))
-      const preDate = (this.date != null) ? new Date(this.date) : Date.now()
+      var preStartDate = (this.startDate != null) ? new Date(this.startDate) : new Date()
+      console.log(preStartDate)
+      preStartDate = preStartDate.setHours(preStartDate.getHours() - (offset / 60))
+      var preEndDate = (this.endDate != null) ? new Date(this.endDate) : new Date()
+      preEndDate = preEndDate.setHours(preEndDate.getHours() - (offset / 60))
+      const preDate = (this.date != null) ? new Date(this.date) : new Date()
 
       return {
         showDatePicker: false,
@@ -147,11 +150,12 @@
         this.showDatePicker = false
       },
       async updateDate() {
-        var offset = new Date().getTimezoneOffset();
+        var winter_offset = new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset();
+        var offset = winter_offset == new Date().getTimezoneOffset() ? winter_offset : new Date().getTimezoneOffset() - (Math.sign(winter_offset) * 60)
 
-        const endHour = (parseInt(this.endSelectedDate.split(':')[0], 10) + (offset / 60 / 2)).toString()
+        const endHour = (parseInt(this.endSelectedDate.split(':')[0], 10) + (offset / 60)).toString()
         const endMin = this.endSelectedDate.split(':')[1]
-        const startHour = (parseInt(this.startSelectedDate.split(':')[0], 10) + (offset / 60 / 2)).toString()
+        const startHour = (parseInt(this.startSelectedDate.split(':')[0], 10) + (offset / 60)).toString()
         const startMin = this.startSelectedDate.split(':')[1]
 
 
@@ -179,6 +183,6 @@
         }
       }
     },
-    components: {BktButton}
+    components: {BktButton, VueFlatPickr}
   }
 </script>
