@@ -18,7 +18,7 @@
         v-for="(item, idx) in showGroups"
         :key="item.id"
         :ref="loopCatSuggestionRef + idx"
-        class="flex-row-between-centered mt-5 align-items-start pos-rel">
+        class="flex-row-between-centered align-items-start pos-rel">
 
       <input
           v-if="item.inputRenameGroupCat"
