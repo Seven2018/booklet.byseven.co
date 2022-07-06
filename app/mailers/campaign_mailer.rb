@@ -145,14 +145,16 @@ class CampaignMailer < ApplicationMailer
     @owner = owner
     @campaign = campaign
     @icon = '🚀'
-    @title = "Your campaign #{campaign.title} has been launched !"
-    @description = "All interviewers and interviewees can now access their interviews in the campaign “#{campaign.title}”."
-    @button_text = "Go to campaign index"
+    @title = "#{campaign.title}"
+    @description_fr = "Votre campagne a bien été lancée. Toutes les personnes concernées ont reçu un mail d’invitation à leurs interviews."
+    @description = "Your campaign has been launched. All people involved received an invitation email to their interview."
+    @button_text_fr = "Suivez votre campagne ici"
+    @button_text = "Go to your campaign here"
     @button_link = campaigns_url
 
     @nb = "Please don't answer this email."
 
-    mail(to: @owner.email, subject: "Your campaign #{campaign.title} has been launched !")
+    mail(to: @owner.email, subject: "#{owner.firstname}, #{campaign.title} has been launched !")
   end
 
   def cross_review_schedule(owner, campaign, interview)
