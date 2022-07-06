@@ -39,6 +39,7 @@ export default {
       }
 
       try {
+        document.querySelector('body').classList.add('wait')
         const res = await HTTP.get(
           routes.generate(pathKey, pathKeyArgs),
           {
@@ -51,6 +52,7 @@ export default {
       } catch (e) {
         commit('setError', e.message)
       }
+      document.querySelector('body').classList.remove('wait')
     },
     async delete({commit, state}, {pathKey, id, dataKind, addToPath = null}) {
       try {

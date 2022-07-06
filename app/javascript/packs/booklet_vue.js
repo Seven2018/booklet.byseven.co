@@ -64,9 +64,6 @@ import CampaignShow from '../vue/pages/interview_app/campaigns/show'
 import EditTemplateTags from '../vue/pages/interview_app/templates/show/EditTemplateTags'
 import EditCampaignDraft from '../vue/pages/interview_app/campaign_drafts/edit'
 
-import VueFlatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
-Vue.use(VueFlatPickr);
 
 let app = null
 let vuejsOpt = {
