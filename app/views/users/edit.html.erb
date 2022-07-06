@@ -1,6 +1,6 @@
 <div class="row width-80 m-auto">
 
-  <div class="col-4 ml-0"><%= render_component BackComponent.new(fallback: edit_user_path) %></div>
+  <div class="col-4 ml-0 mt-5"><%= render_component Buttons::BackButton.new(fallback: user_path(@user), force_fallback: true) %></div>
 
   <div class="col-4 mt-4rem flex-column justify-content-center ml-0">
 
@@ -32,13 +32,13 @@
                           },
                           namespace: 'mobile-user-form' do |f| %>
 
+        <%= render 'users/access_level_input', f: f, user: @user %>
+
         <%= f.input :firstname, label: 'First Name', label_html: { class: 'bkt-light-grey' }, class: 'form-control', required: true %>
 
         <%= f.input :lastname, label: 'Last Name', label_html: { class: 'bkt-light-grey' }, class: 'form-control' %>
 
         <%= f.input :email, label: 'Email', label_html: {class: 'bkt-light-grey'},  class: 'form-control' %>
-
-        <%= render 'users/access_level_input', f: f, user: @user %>
 
         <%= f.input :manager_id, collection: User.where(company_id: @user.company_id, access_level_int: [:manager, :hr, :admin]).where.not(id: @user.id).order(lastname: :asc), label_method: lambda { |k| k.fullname }, label_html: { class: 'bkt-light-grey' } %>
 

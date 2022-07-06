@@ -113,7 +113,6 @@ export default {
       this.suggestToCreate = false
       store.dispatch('tagsModule/fetch', {kind: 'interview'})
       store.dispatch('groupsTag/fetch', {kind: 'interview'})
-
     },
     focusInput() {
       this.$refs.inputField.focus()

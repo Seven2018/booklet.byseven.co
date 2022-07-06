@@ -32,7 +32,8 @@ class PermissionsController < ApplicationController
       :can_read_employees,
       :can_create_employees,
       :can_edit_employees,
-      :can_edit_permissions
+      :can_edit_permissions,
+      :access_level_int
     )
   end
 end

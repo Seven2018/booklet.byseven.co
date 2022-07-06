@@ -49,7 +49,7 @@
           <bkt-dots-button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 p-3"
-                @click="toggleArchive(campaign.employee_interview.id)"
+                @click="toggleArchive(campaign.set_interviews[0].employee_interview.interview.id)"
             >
               <span class="iconify fs-2rem mr-0_5rem" data-icon="fluent:archive-48-regular"></span>
               <span v-if="type === 'current'" class="mr-1">Archive </span>
