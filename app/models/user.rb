@@ -231,9 +231,9 @@ class User < ApplicationRecord
         category = TagCategory.create(company_id: company_id, name: 'Job Title', position: tag_category_last_position + 1)
         tag_category_last_position += 1
       end
-      tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: row_h['job_title'])
+      tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: row_h['job_title'].strip.capitalize)
       unless tag.present?
-        tag = Tag.create(company_id: company_id, tag_category: category, tag_name: row_h['job_title'].strip, tag_category_position: category.position)
+        tag = Tag.create(company_id: company_id, tag_category: category, tag_name: row_h['job_title'].strip.capitalize, tag_category_position: category.position)
       end
       previous_job = UserTag.find_by(user: user, tag_category: category)
       update_job = update.present? && previous_job.present?
@@ -243,12 +243,13 @@ class User < ApplicationRecord
         UserTag.create(user: user, tag_id: tag.id, tag_category: category)
       end
       tag_categories_to_create_user.each do |x|
+
         category = TagCategory.find_by(company_id: company_id, name: x.strip)
         unless category.present?
           category = TagCategory.create(company_id: company_id, name: x.strip, position: tag_category_last_position + 1)
           tag_category_last_position += 1
         end
-        tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x])
+        tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip])
         unless tag.present?
           tag = Tag.create(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip], tag_category_position: category.position)
         end

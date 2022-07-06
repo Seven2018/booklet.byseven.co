@@ -219,10 +219,10 @@ class CampaignsController < ApplicationController
 
     ongoing_interviews = Interview.where(interviewer: current_user)
                                   .or(Interview.where(employee: current_user.employees))
-                                  .select{|x| !x.archived_for['Manager'].present?}
+                                  .select{|x| !x.archived_for['Manager'].present? && !x.archived_for['Interviewer'].present?}
     archived_interviews = Interview.where(interviewer: current_user)
                                    .or(Interview.where(employee: current_user.employees))
-                                   .select{|x| x.archived_for['Manager'].present?}
+                                   .select{|x| x.archived_for['Manager'].present? || x.archived_for['Interviewer'].present?}
 
     @ongoing_campaigns = @campaigns.where_exists(:interviews, id: ongoing_interviews.map(&:id)).distinct
     @archived_campaigns = @campaigns.where_exists(:interviews, id: archived_interviews.map(&:id)).distinct

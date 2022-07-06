@@ -5,6 +5,7 @@ class CampaignMailer < ApplicationMailer
   def invite_employee(interviewer, interviewee, interview)
     interviewee_email_settings(interviewer, interviewee, interview)
     @icon = '🏃'
+    @icon2 = '🏃‍♀️'
     @title = '3,2,1 Go !'
     @description = "🚀 #{@campaign.title} 🚀"
     @button_text = "Go to my interview"
@@ -24,6 +25,7 @@ class CampaignMailer < ApplicationMailer
     interviewer_email_settings(interviewer, campaign)
 
     @icon = '🏃'
+    @icon2 = '🏃‍♀️'
     @title = '3,2,1 Start !'
     @description = "🚀 #{@campaign.title} 🚀"
     @button_text_fr = "Pour compléter les entretiens de ton équipe, c’est ici"
@@ -38,7 +40,7 @@ class CampaignMailer < ApplicationMailer
 
     @nb = "Please don't answer this email."
 
-    mail(to: @interviewer.email, subject: "#{interviewer.firstname}, you are now interviewer for the campaign '#{@campaign.title}' !")
+    mail(to: @interviewer.email, subject: "#{interviewer.firstname}, you are an interviewer for the campaign '#{@campaign.title}' !")
   end
 
   def interview_reminder(interviewer, interviewee, interview)
@@ -145,14 +147,16 @@ class CampaignMailer < ApplicationMailer
     @owner = owner
     @campaign = campaign
     @icon = '🚀'
-    @title = "Your campaign #{campaign.title} has been launched !"
-    @description = "All interviewers and interviewees can now access their interviews in the campaign “#{campaign.title}”."
-    @button_text = "Go to campaign index"
+    @title = "#{campaign.title}"
+    @description_fr = "Votre campagne a bien été lancée. Toutes les personnes concernées ont reçu un mail d’invitation à leurs interviews."
+    @description = "Your campaign has been launched. All people involved received an invitation email to their interview."
+    @button_text_fr = "Suivez votre campagne ici"
+    @button_text = "Go to your campaign here"
     @button_link = campaigns_url
 
     @nb = "Please don't answer this email."
 
-    mail(to: @owner.email, subject: "Your campaign #{campaign.title} has been launched !")
+    mail(to: @owner.email, subject: "#{owner.firstname}, #{campaign.title} has been launched !")
   end
 
   def cross_review_schedule(owner, campaign, interview)
