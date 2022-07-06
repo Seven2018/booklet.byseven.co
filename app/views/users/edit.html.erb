@@ -1,6 +1,6 @@
 <div class="row width-80 m-auto">
 
-  <div class="col-4 ml-0"><%= render_component BackComponent.new(fallback: edit_user_path) %></div>
+  <div class="col-4 ml-0 mt-5"><%= render_component Buttons::BackButton.new(fallback: user_path(@user), force_fallback: true) %></div>
 
   <div class="col-4 mt-4rem flex-column justify-content-center ml-0">
 
