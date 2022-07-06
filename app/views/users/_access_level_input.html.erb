@@ -1,8 +1,13 @@
 <% if UserPolicy.new(current_user, nil).create? %>
-  <%= f.input :access_level_int,
+  <%#= f.input :access_level_int,
     label: 'Access Level:',
     collection: User::ACCESS_LEVEL_LABELS.slice(:employee, :manager, :hr).invert,
     include_blank: false,
     selected: user.access_level_int
   %>
+
+  <div class="mb-3">
+    <p class="bkt-light-grey mb-1 fs-1_4rem">Access Level:</p>
+    <p><%= @user&.access_level_int.present? ? @user.access_level_int.capitalize : '' %></p>
+  </div>
 <% end %>
