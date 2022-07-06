@@ -1,8 +1,10 @@
 <template>
   <div v-if="popUp && popUp.data.open">
     <bkt-pop-up-frame
+        @close="close"
         v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
-        name="modal">
+        box-style="padding: 5rem"
+    >
       <div v-if="popUp.data.title" class="flex-row-center-centered">
         <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
       </div>
@@ -11,7 +13,7 @@
       </div>
 
       <div v-if="popUp.data.textClose && popUp.data.textConfirm" class="flex-row-around-centered mt-5 fs-1_8rem">
-        <button class="border-bkt-dark-grey width-15rem rounded-2px py-2" @click="close">{{ popUp.data.textClose }}
+        <button class="border-bkt-dark-grey min-w-15rem rounded-2px p-2" @click="close">{{ popUp.data.textClose }}
         </button>
         <button
             class="min-w-15rem rounded-2px border-bkt-objective-blue py-2"
