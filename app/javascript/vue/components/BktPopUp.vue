@@ -1,7 +1,9 @@
 <template>
-  <div v-if="popUp && popUp.data.open">
-    <bkt-pop-up-frame v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
-                      name="modal">
+  <transition>
+    <div v-if="popUp && popUp.data.open">
+    <bkt-pop-up-frame
+        v-if="(popUp && popUp.data.open) && (popUp.data.type == 'normal' || popUp.data.type == 'delete')"
+        name="modal">
       <div v-if="popUp.data.title" class="flex-row-center-centered">
         <h1 class="fs-1_8rem font-weight-700 text-center" v-html="popUp.data.title"></h1>
       </div>
@@ -36,7 +38,8 @@
     <bkt-pop-up-frame v-else-if="popUp && popUp.data.open && popUp.data.type == 'action_done' " name="modal">
       <div class="flex-row-center-centered justify-content-center">
         <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_newtztyc.json" background="transparent"
-                       speed="1" style="width: 200px; height: 200px; margin-top: -3rem;" loop autoplay></lottie-player>
+                       speed="1" style="width: 200px; height: 200px; margin-top: -3rem;" loop
+                       autoplay></lottie-player>
       </div>
 
       <div v-if="popUp.data.title" class="flex-row-center-centered">
@@ -65,7 +68,7 @@
           @close="close"
       ></component>
     </bkt-pop-up-frame>
-<!--    INFO: GENERIC MODAL-->
+    <!--    INFO: GENERIC MODAL-->
     <bkt-pop-up-frame
         v-else-if="popUp.data.type === 'custom'"
         :closable="popUp.data.closable"
@@ -79,6 +82,7 @@
       ></component>
     </bkt-pop-up-frame>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -190,5 +194,22 @@ export default {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-enter,
+.v-leave-to {
+  opacity: 0;
+  transform: translate(20px);
+  /*transform: scale(0)*/
+}
+
+.v-enter-to {
+  /*opacity: 1;*/
+  /*transform: translate(0px);*/
 }
 </style>
