@@ -227,7 +227,7 @@ export default {
       store.dispatch('groupsTag/renameGroup', {name: groupName, group_id: item.id, kind: 'interview'})
     },
     showGroupOptions(arrayIdx) {
-      this.groupTagModule.groups[arrayIdx].groupOptions = true
+      this.groupTagModule.groups[arrayIdx].groupOptions = !this.groupTagModule.groups[arrayIdx].groupOptions
     },
     hideGroupOptions() {
       this.groupTagModule.groups = this.groupTagModule.groups.map(item => {
