@@ -101,13 +101,15 @@
   export default {
     props: ['campaignId', 'crossId', 'startDate', 'endDate', 'date'],
     data() {
-      var offset = new Date().getTimezoneOffset();
+      var winter_offset = new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset();
+      var offset = winter_offset == new Date().getTimezoneOffset() ? winter_offset : new Date().getTimezoneOffset() - (Math.sign(winter_offset) * 60)
 
-      var preStartDate = (this.startDate != null) ? new Date(this.startDate) : Date.now()
-      preStartDate = preStartDate.setHours(preStartDate.getHours() - (offset / 60 / 2))
-      var preEndDate = (this.endDate != null) ? new Date(this.endDate) : Date.now()
-      preEndDate = preEndDate.setHours(preEndDate.getHours() - (offset / 60 / 2))
-      const preDate = (this.date != null) ? new Date(this.date) : Date.now()
+      var preStartDate = (this.startDate != null) ? new Date(this.startDate) : new Date()
+      console.log(preStartDate)
+      preStartDate = preStartDate.setHours(preStartDate.getHours() - (offset / 60))
+      var preEndDate = (this.endDate != null) ? new Date(this.endDate) : new Date()
+      preEndDate = preEndDate.setHours(preEndDate.getHours() - (offset / 60))
+      const preDate = (this.date != null) ? new Date(this.date) : new Date()
 
       return {
         showDatePicker: false,
@@ -148,11 +150,12 @@
         this.showDatePicker = false
       },
       async updateDate() {
-        var offset = new Date().getTimezoneOffset();
+        var winter_offset = new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset();
+        var offset = winter_offset == new Date().getTimezoneOffset() ? winter_offset : new Date().getTimezoneOffset() - (Math.sign(winter_offset) * 60)
 
-        const endHour = (parseInt(this.endSelectedDate.split(':')[0], 10) + (offset / 60 / 2)).toString()
+        const endHour = (parseInt(this.endSelectedDate.split(':')[0], 10) + (offset / 60)).toString()
         const endMin = this.endSelectedDate.split(':')[1]
-        const startHour = (parseInt(this.startSelectedDate.split(':')[0], 10) + (offset / 60 / 2)).toString()
+        const startHour = (parseInt(this.startSelectedDate.split(':')[0], 10) + (offset / 60)).toString()
         const startMin = this.startSelectedDate.split(':')[1]
 
 

@@ -1,35 +1,84 @@
 <template>
-  <div class="flex-sm-row-end-centered align-items-start">
-<!--    <div class=" width-100 flex-row-between-centered">-->
-      <bkt-search
-          v-model="searchText"
-          @input="update"
-          class=" my-sm-3 d-inline-block min-w-20rem"
-      ></bkt-search>
-      <bkt-select
-          class="mx-sm-5 my-sm-3 mt-3 d-inline-block"
-          v-model="status"
-          :items="selectList"
-          @input="update"
-      ></bkt-select>
+  <div>
+    <div v-if="isMobile()">
 
-<!--      <div v-if="overview">-->
+      <div class="d-flex flex-column align-items-center">
+
+          <bkt-search
+              v-model="searchText"
+              @input="update"
+              class="my-sm-3 d-inline-block min-w-20rem"
+          ></bkt-search>
+
+          <button class="flex-none mt-4 font-weight-500 fs-1_6rem" @click="reset">
+            Reset
+          </button>
+
+          <bkt-select
+              class="mx-1rem my-sm-3 mt-3 d-inline-block"
+              v-model="status"
+              :items="selectList"
+              @input="update"
+          ></bkt-select>
+
+      </div>
+
+      <div v-if="overview"
+           class="d-flex flex-column align-items-center"">
+
         <bkt-select
-            v-if="overview"
             :preventFetchOnMount="true"
             v-for="(category, idx) in selectCategories"
             :key="idx"
-            class="mx-sm-5 my-sm-3 mt-3 d-inline-block"
+            class="mx-1rem my-sm-3 mt-3 d-inline-block"
             v-model="category.selectedValue"
             :items="category.list"
             @input="update"
         ></bkt-select>
-<!--      </div>-->
 
-      <button class="flex-none ml-5 mt-4 font-weight-500 fs-1_6rem" @click="reset">
-        Reset
-      </button>
-<!--    </div>-->
+      </div>
+
+    </div>
+
+    <div v-else>
+
+      <div class="flex-sm-row-betweend-centered align-items-start">
+    <!--    <div class=" width-100 flex-row-between-centered">-->
+          <bkt-search
+              v-model="searchText"
+              @input="update"
+              class="my-sm-3 d-inline-block min-w-20rem"
+          ></bkt-search>
+          <bkt-select
+              class="mx-1rem my-sm-3 mt-3 d-inline-block"
+              v-model="status"
+              :items="selectList"
+              @input="update"
+          ></bkt-select>
+
+          <button class="flex-none ml-5 mt-4 font-weight-500 fs-1_6rem" @click="reset">
+            Reset
+          </button>
+    <!--    </div>-->
+      </div>
+
+      <div v-if="overview"
+           class="d-flex justify-content-start width-100 flex-wrap">
+
+        <bkt-select
+            :preventFetchOnMount="true"
+            v-for="(category, idx) in selectCategories"
+            :key="idx"
+            class="mr-1rem my-sm-3 mt-3 d-inline-block"
+            v-model="category.selectedValue"
+            :items="category.list"
+            @input="update"
+        ></bkt-select>
+
+      </div>
+
+    </div>
+
   </div>
 </template>
 
@@ -38,8 +87,10 @@ import BktSearch from "../../../components/bktSearch";
 import store from "../../../store";
 import BktSelect from "../../../components/BktSelect";
 import axios from "../../../plugins/axios";
+import tools from "../../../mixins/tools";
 
 export default {
+  mixins: [tools],
   props: ['campaign', 'overview'],
   data() {
     return {
