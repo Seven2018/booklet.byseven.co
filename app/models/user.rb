@@ -180,7 +180,7 @@ class User < ApplicationRecord
         unless manager.present?
           manager = User.new(email: manager_email, company_id: company_id, access_level_int: 'manager')
           # send_invite && Rails.env.production? ? manager.invite! : manager.save(validate: false)
-          user.save(validate: false)
+          manager.save(validate: false)
         end
       else
         manager = nil
@@ -244,14 +244,14 @@ class User < ApplicationRecord
       end
       tag_categories_to_create_user.each do |x|
 
-        category = TagCategory.find_by(company_id: company_id, name: x.strip)
+        category = TagCategory.find_by(company_id: company_id, name: x.strip.capitalize)
         unless category.present?
-          category = TagCategory.create(company_id: company_id, name: x.strip, position: tag_category_last_position + 1)
+          category = TagCategory.create(company_id: company_id, name: x.strip.capitalize, position: tag_category_last_position + 1)
           tag_category_last_position += 1
         end
-        tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip])
+        tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip.gsub('-',' ').capitalize])
         unless tag.present?
-          tag = Tag.create(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip], tag_category_position: category.position)
+          tag = Tag.create(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip.gsub('-',' ').capitalize].strip.gsub('-',' ').capitalize, tag_category_position: category.position)
         end
         previous_tag = UserTag.find_by(user: user, tag_category: category)
         update = update.present? && previous_tag.present?

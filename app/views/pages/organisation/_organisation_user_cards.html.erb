@@ -21,7 +21,11 @@
       <div class="organisation__users-info">
 
           <img src="<%= user.picture %>" class='avatar-sm' onerror='this.onerror=null;this.src="<%= asset_url('empty-avatar.png', type: :image) %>";'>
-          <p class='organisation__user-name' data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname.titleize %> <%= user.firstname %></p>
+
+          <div>
+            <p class='organisation__user-name' data-toggle="tooltip" title="<%= user.fullname %>"><%= user.lastname.upcase %></p>
+            <p class='organisation__user-name' data-toggle="tooltip" title="<%= user.fullname %>"><%= user.firstname.titleize %></p>
+          </div>
 
       </div>
 
