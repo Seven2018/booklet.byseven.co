@@ -6,6 +6,9 @@
     >
       {{tag.title}}
     </bkt-tag>
+
+    <bkt-tag v-if="remainingTags > 0"
+             class="bkt-tag">+{{remainingTags}}</bkt-tag>
   </div>
 </template>
 
@@ -14,11 +17,13 @@ import BktTag from "./BktTag";
 export default {
   components: {BktTag},
   props: ['tags'],
+  data() {
+    return {remainingTags: 0}
+  },
   mounted() {
     this.hideOverflowingTags();
   },
   methods: {
-
     hideOverflowingTags() {
       const container = this.$el
       const tags = container.querySelectorAll('.bkt-tag')
@@ -29,20 +34,15 @@ export default {
       tags.forEach((tag, index) => {
         result += tag.offsetWidth
         tooltip_content += tag.innerText + '\n'
-        if (result > 150) {
+        if (result > 220) {
           tag.remove()
         } else {
           last_index = index
         }
       })
 
-      if (result > 150) {
-        var newDiv = document.createElement('div')
-        newDiv.classList.add('mr-2', 'rounded-15px', 'py-1', 'px-3', 'font-weight-500', 'bkt-bg-light-blue', 'bkt-blue')
-        newDiv.innerHTML = `<p class="fs-1_2rem">+${tags.length -(last_index + 1)}</p>`
-        newDiv.setAttribute('data-toggle', 'tooltip');
-        newDiv.setAttribute('title', tooltip_content)
-        container.appendChild(newDiv)
+      if (result > 220) {
+        this.remainingTags = tags.length -(last_index + 1)
       }
     }
 

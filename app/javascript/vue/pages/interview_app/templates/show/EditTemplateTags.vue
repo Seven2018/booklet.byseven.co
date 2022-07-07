@@ -14,7 +14,7 @@
             :key="idx"
             :cancelable="true"
             @close="removeTag(tag.title)"
-            class="d-inline-block"
+            class="d-inline-block mb-0_5rem"
         >
           {{tag.title}}
         </bkt-tag>
