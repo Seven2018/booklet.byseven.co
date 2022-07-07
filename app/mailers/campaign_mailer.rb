@@ -17,7 +17,7 @@ class CampaignMailer < ApplicationMailer
 
     @nb = "Please don't answer this email."
 
-    mail(to: @interviewee.email, subject: "#{interviewer.firstname}, you are invited to an interview! ")
+    mail(to: @interviewee.email, subject: "#{interviewee.firstname}, you are invited to an interview! ")
   end
 
   def invite_interviewer(interviewer, campaign)
