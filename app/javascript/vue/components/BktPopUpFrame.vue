@@ -1,6 +1,6 @@
 <template>
   <div class="modal-mask">
-    <div class="modal-wrapper" @click="byPassCallBackClose">
+    <div class="modal-wrapper">
       <div class="modal-container rounded-15px w-100vw-mobile" :style="boxStyle" >
         <div class="flex-row-end-centered"
              :class="title ? 'flex-row-between-centered border-bottom-bkt-light-grey p-3 mb-3' : ''">
