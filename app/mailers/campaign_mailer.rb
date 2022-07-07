@@ -28,7 +28,7 @@ class CampaignMailer < ApplicationMailer
     @title = '3,2,1 Start !'
     @description = "🚀 #{@campaign.title} 🚀"
     @button_text_fr = "Pour compléter les entretiens de ton équipe, c’est ici"
-    @button_text = "Go to my interview"
+    @button_text = "Go to my team interviews"
     @button_link = campaign_url(@campaign)
 
     campaign_calendar_link_no_calendar(@campaign, @interviewer)
