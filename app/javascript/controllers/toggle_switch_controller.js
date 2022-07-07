@@ -7,6 +7,13 @@ export default class extends Controller {
 
   connect() {
     this.toggle()
+    const form = document.querySelector('form')
+    console.log(form)
+    form.addEventListener("submit", () => {
+      const div = document.querySelector('#control-buttons')
+
+      div.classList.add('hidden')
+    }, false);
   }
 
   toggle() {
