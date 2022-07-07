@@ -20,8 +20,7 @@ class CampaignMailer < ApplicationMailer
     mail(to: @interviewee.email, subject: "#{interviewer.firstname}, you are invited to an interview! ")
   end
 
-  def invite_interviewer(interviewer, campaign, interview)
-    @interview = interview
+  def invite_interviewer(interviewer, campaign)
     interviewer_email_settings(interviewer, campaign)
 
     @icon = '🏃'
@@ -29,11 +28,8 @@ class CampaignMailer < ApplicationMailer
     @title = '3,2,1 Start !'
     @description = "🚀 #{@campaign.title} 🚀"
     @button_text_fr = "Pour compléter les entretiens de ton équipe, c’est ici"
-    @button_text_fr2 = "Pour compléter ton entretien, c’est là"
     @button_text = "Go to my interview"
-    @button_link = interview_url(@interview)
-    @button_text2 = "Go to my team interviews"
-    @button_link2 = my_team_interviews_url
+    @button_link = campaign_url(@campaign)
 
     campaign_calendar_link_no_calendar(@campaign, @interviewer)
     campaign_calendar_link_with_fr(@campaign, @interviewer)
@@ -152,7 +148,7 @@ class CampaignMailer < ApplicationMailer
     @description = "Your campaign has been launched. All people involved received an invitation email to their interview."
     @button_text_fr = "Suivez votre campagne ici"
     @button_text = "Go to your campaign here"
-    @button_link = campaigns_url(@campaign)
+    @button_link = campaign_url(@campaign)
 
     @nb = "Please don't answer this email."
 

@@ -35,10 +35,10 @@
       </bkt-auto-suggestion>
 
       <bkt-button v-if="type === 'employee'" type="interview" class="mb-2" @click="setInterviewee">
-        continue
+        Continue
       </bkt-button>
       <bkt-button v-else type="interview" class="mb-2" @click="setInterviewer">
-        add employee
+        Add employee
       </bkt-button>
     </div>
   </div>

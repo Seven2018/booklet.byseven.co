@@ -49,7 +49,7 @@ module CampaignDrafts
           interviewers.each do |interviewer|
             interview = Interview.find_by(campaign: @campaign, employee: interviewer, label: 'Manager')
             CampaignMailer.with(user: interviewer)
-              .invite_interviewer(interviewer, @campaign, interview)
+              .invite_interviewer(interviewer, @campaign)
               .deliver_later
           end
 

@@ -39,13 +39,13 @@
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
                 @click.stop="goto('users_id', (employee_interview || manager_interview).interview.employee.id)"
             >
-              see interviewee profile
+              See interviewee profile
             </button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
                 @click.stop="openSetAnotherInterviewer((employee_interview || manager_interview).interview.employee.id)"
             >
-              set another interviewer
+              Set another interviewer
             </button>
             <button
                 class="flex-row-start-centered fs-1_4rem bkt-bg-light-grey10-hover width-100 pl-3 pr-3 p-3"
