@@ -148,7 +148,7 @@ class CampaignMailer < ApplicationMailer
     @description = "Your campaign has been launched. All people involved received an invitation email to their interview."
     @button_text_fr = "Suivez votre campagne ici"
     @button_text = "Go to your campaign here"
-    @button_link = campaign_url(@campaign)
+    @button_link = overview_campaign_url(@campaign)
 
     @nb = "Please don't answer this email."
 
