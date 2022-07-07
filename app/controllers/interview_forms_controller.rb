@@ -84,9 +84,9 @@ class InterviewFormsController < ApplicationController
     new_template = InterviewForm.new(@template.attributes.except("id", "created_at", "updated_at"))
     new_template.title = new_template.title + ' - Duplicate'
     new_template.save
-    @template.interview_form_tags.each do |tag|
-      InterviewFormTag.create(tag_id: tag.tag_id, tag_name: tag.tag_name, interview_form_id: new_template.id)
-    end
+
+    new_template.categories = @template.categories
+
     i = 1
     @template.interview_questions.order(position: :asc).each do |question|
       new_question = InterviewQuestion.new(question.attributes.except("id", "created_at", "updated_at", "interview_form_id"))
@@ -95,7 +95,8 @@ class InterviewFormsController < ApplicationController
       new_question.save
       i += 1
     end
-    redirect_to interview_form_path(new_template)
+
+    redirect_to edit_interview_form_path(new_template)
   end
 
   def destroy

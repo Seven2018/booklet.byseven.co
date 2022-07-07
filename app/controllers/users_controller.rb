@@ -122,10 +122,11 @@ class UsersController < ApplicationController
     @user.update(user_params)
 
     job_title_tag_category = @user.company.tag_categories.find_by(name: 'Job Title')
+
     if job_title_tag_category.present?
       user_tag = UserTag.find_by(tag_category_id: job_title_tag_category.id,
                                  user_id: @user.id)
-      @user.update(job_title: user_tag.tag.tag_name) if user_tag.present?
+      @user.update(job_title: user_tag&.tag&.tag_name) if user_tag.present?
     end
 
     redirect_to user_path(@user)

@@ -34,7 +34,7 @@
         </p>
       </td>
 
-      <td>
+      <td class="width-24rem">
         <display-tag-in-index :tags="categories"></display-tag-in-index>
       </td>
 
