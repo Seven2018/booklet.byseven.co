@@ -17,7 +17,7 @@ class CampaignMailer < ApplicationMailer
 
     @nb = "Please don't answer this email."
 
-    mail(to: @interviewee.email, subject: "You are invited to the campaign '#{@campaign.title}' !")
+    mail(to: @interviewee.email, subject: "#{interviewer.firstname}, you are invited to an interview! ")
   end
 
   def invite_interviewer(interviewer, campaign, interview)
@@ -40,7 +40,7 @@ class CampaignMailer < ApplicationMailer
 
     @nb = "Please don't answer this email."
 
-    mail(to: @interviewer.email, subject: "#{interviewer.firstname}, you are an interviewer for the campaign '#{@campaign.title}' !")
+    mail(to: @interviewer.email, subject: "#{interviewer.firstname}, you are an interviewer for “#{@campaign.title}“ !")
   end
 
   def interview_reminder(interviewer, interviewee, interview)
@@ -156,7 +156,7 @@ class CampaignMailer < ApplicationMailer
 
     @nb = "Please don't answer this email."
 
-    mail(to: @owner.email, subject: "#{owner.firstname}, #{campaign.title} has been launched !")
+    mail(to: @owner.email, subject: "#{owner.firstname}, “#{campaign.title}“ has been launched !")
   end
 
   def cross_review_schedule(owner, campaign, interview)
