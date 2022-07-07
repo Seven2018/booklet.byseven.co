@@ -74,7 +74,7 @@
       Manage granted access
     </div>
 
-    <%= simple_form_for @user, url: user_permissions_path(@user), method: :patch, local: true do |f| %>
+    <%= simple_form_for @user, url: user_permissions_path(@user), method: :patch, remote: true do |f| %>
 
       <input id="customAccessLevelIntField" name="user[access_level_int]" type="hidden">
 

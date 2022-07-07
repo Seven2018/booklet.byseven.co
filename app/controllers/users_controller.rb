@@ -111,6 +111,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    cancel_cache
     authorize @user
     @tag_categories = TagCategory.distinct.where(company: @user.company).joins(:tags)
   end
