@@ -251,7 +251,7 @@ class User < ApplicationRecord
         end
         tag = Tag.find_by(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip.gsub('-',' ').capitalize])
         unless tag.present?
-          tag = Tag.create(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x.strip.gsub('-',' ').capitalize].strip.gsub('-',' ').capitalize, tag_category_position: category.position)
+          tag = Tag.create(company_id: company_id, tag_category: category, tag_name: tag_categories_to_create_user_h[x&.strip&.gsub('-',' ')&.capitalize], tag_category_position: category.position)
         end
         previous_tag = UserTag.find_by(user: user, tag_category: category)
         update = update.present? && previous_tag.present?
