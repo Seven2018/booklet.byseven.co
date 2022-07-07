@@ -10,7 +10,7 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def show?
-    return true if user.can_create_campaigns
+    return true if user.can_create_campaigns && user.company == record.campaign.company
 
     case
     when record.employee?
