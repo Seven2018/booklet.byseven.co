@@ -7,8 +7,11 @@ export default class extends Controller {
 
   connect() {
     this.submit_button = document.getElementById('submit-button')
-    this.submit_button.disabled = true
-    this.submit_button.classList.add('disabled')
+
+    if (this.element.dataset.date == '') {
+      this.submit_button.disabled = true
+      this.submit_button.classList.add('disabled')
+    }
   }
 
   enableSubmit(event) {

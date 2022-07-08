@@ -19,7 +19,7 @@ export default class extends Controller {
     this.directManagerTextTarget.classList.add('d-block')
     this.interviewerTextTarget.classList.remove('d-block')
     this.interviewerTextTarget.classList.add('d-none')
-    document.querySelector('#editCampaignDraftParticipantSelectManager').placeholder = 'Select a default interviewer'
+    document.querySelector('#autocomplete_input').placeholder = 'Select a default interviewer'
   }
 
   choseInterviewerText(event) {
@@ -27,7 +27,7 @@ export default class extends Controller {
     this.interviewerTextTarget.classList.add('d-block')
     this.directManagerTextTarget.classList.remove('d-block')
     this.directManagerTextTarget.classList.add('d-none')
-    document.querySelector('#editCampaignDraftParticipantSelectManager').placeholder = 'Select the Interviewer'
+    document.querySelector('#autocomplete_input').placeholder = 'Select the Interviewer'
   }
 
   enableSubmit(event) {

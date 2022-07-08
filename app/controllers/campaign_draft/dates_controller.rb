@@ -3,9 +3,10 @@
 class CampaignDraft::DatesController < CampaignDraft::BaseController
   def update
     campaign_draft.update campaign_draft_params
+
     if current_params_persisted?
       campaign_draft.dates_set!
-      redirect_to edit_campaign_draft_launches_path
+      redirect_to (params[:redirect_url].presence || edit_campaign_draft_launches_path)
     else
       flash[:alert] = validation_error_flash_message
       redirect_to edit_campaign_draft_dates_path

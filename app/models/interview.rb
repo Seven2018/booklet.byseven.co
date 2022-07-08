@@ -126,13 +126,13 @@ class Interview < ApplicationRecord
 
   VALID_LABELS = {
     answerable_by_employee_not_crossed: %w[Employee],
-    # answerable_by_manager_not_crossed: %w[Manager],
-    # answerable_by_both_not_crossed: %w[Manager Employee],
-    # answerable_by_both_crossed: %w[Manager Employee Crossed]
+    answerable_by_manager_not_crossed: %w[Manager],
+    answerable_by_both_not_crossed: %w[Manager Employee],
+    answerable_by_both_crossed: %w[Manager Employee Crossed]
     # temp TODO harmonize legacy Simple start
-    answerable_by_manager_not_crossed: %w[Manager Simple],
-    answerable_by_both_not_crossed: %w[Manager Simple Employee],
-    answerable_by_both_crossed: %w[Manager Simple Employee Crossed]
+    # answerable_by_manager_not_crossed: %w[Manager Simple],
+    # answerable_by_both_not_crossed: %w[Manager Simple Employee],
+    # answerable_by_both_crossed: %w[Manager Simple Employee Crossed]
     # temp TODO harmonize legacy Simple end
   }.freeze
 

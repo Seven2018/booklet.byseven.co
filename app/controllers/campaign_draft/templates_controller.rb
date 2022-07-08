@@ -8,9 +8,10 @@ class CampaignDraft::TemplatesController < CampaignDraft::BaseController
     multi_templates_category = params[:templates_selection_method] == 'single' ? \
       '' : params[:multi_templates_category]
     campaign_draft.update campaign_draft_params.merge(multi_templates_category: multi_templates_category, multi_templates_ids: multi_templates_ids)
+
     if current_params_persisted?
       campaign_draft.templates_set!
-      redirect_to edit_campaign_draft_dates_path
+      redirect_to (params[:redirect_url].presence || edit_campaign_draft_dates_path)
     else
       flash[:alert] = validation_error_flash_message
       redirect_to edit_campaign_draft_participants_path

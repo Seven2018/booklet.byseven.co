@@ -1,4 +1,6 @@
-<div class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center align-items-start pb-10rem'>
+<div data-controller="interviews--campaign-drafts-base"
+     class='bkt-bg-light-grey2 bkt-page-container-min-height d-flex justify-content-center
+            align-items-start pb-10rem'>
 
   <div class="from_medium__h-60vh"
        style="position: sticky; top: calc(25vh - 7.5rem);">
@@ -9,7 +11,9 @@
 
       <% CampaignDraft::PROGRESS_STATES.each do |state, state_label| %>
 
-        <%= link_to send "edit_campaign_draft_#{state}_path".to_sym do %>
+        <%# link_to send "edit_campaign_draft_#{state}_path".to_sym do %>
+        <button data-url='<%= send "edit_campaign_draft_#{state}_path".to_sym %>'
+                data-action="click->interviews--campaign-drafts-base#submitAndRedirect">
 
           <div class="bkt-progress-pearl bkt-progress-pearl-blue <%= @campaign.progress_state_klass(state, controller_name) %>" data-title='<%= state_label %>'>
             <% if @campaign.state_set_or_above?(state) %>
@@ -17,7 +21,8 @@
             <% end %>
           </div>
 
-        <% end %>
+        </button>
+        <%# end %>
 
       <% end %>
 
@@ -54,6 +59,8 @@
     <%= form_with url: send("campaign_draft_#{controller_name}_path".to_sym), method: :patch, local: true do |f| %>
 
       <%= render "campaign_draft/form_#{controller_name}", campaign: @campaign %>
+
+      <%= f.hidden_field :redirect_url, data: {interviews__campaign_drafts_base_target: 'redirectUrlInput'} %>
 
       <% if @controller_action.to_sym == :launches_edit %>
 
@@ -101,7 +108,6 @@
           </div>
 
         <% end %>
-
 
       <% end %>
 

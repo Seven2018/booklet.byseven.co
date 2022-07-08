@@ -3,15 +3,15 @@
      data-path="<%= @path %>"
      data-additional-params="<%= @additional_params %>">
 
-    <input
-      id="editCampaignDraftParticipantSelectManager"
-      class="bkt-select-display bkt-dark-grey-important"
+    <input id="autocomplete_input"
+           class="bkt-select-display bkt-dark-grey-important"
            style="width:  <%= @width %>;"
            type="text"
+           autocomplete="off"
            value="<%= @default_value.last %>"
            placeholder="<%= @placeholder %>"
            data-action="click->tools--select#toggle tools--select:click:outside->tools--select#hide
-                        keydown->tools--select-autocomplete#search <%= @data_action_input %>"
+                        keyup->tools--select-autocomplete#search <%= @data_action_input %>"
            data-tools--select-autocomplete-target='input'>
 
 
@@ -27,7 +27,7 @@
 
     <input type="hidden"
            name="<%= @input_name %>"
-           value="<%= @default_value.first %>"
+           value="<%= @default_value.first.to_s %>"
            data-tools--select-autocomplete-target='hiddenInput'>
 
   <% end %>

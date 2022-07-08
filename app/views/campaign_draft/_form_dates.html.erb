@@ -1,4 +1,5 @@
-<div data-controller="interviews--campaign-drafts-dates">
+<div data-controller="interviews--campaign-drafts-dates"
+     data-date="<%= campaign.date %>">
 
   <%= render_component FormSectionTitleComponent.new(title: 'Apply dates for your campaign') %>
 
@@ -15,7 +16,7 @@
 
     <div class="d-flex justify-content-center align-items-center">
 
-      <%= date_field_tag(:date, @campaign.date&.strftime("%F"),
+      <%= date_field_tag(:date, @campaign.date,
                                 placeholder: 'Select date',
                                 class: 'datepicker_ height-3rem width-12rem fs-1_4rem p-1rem font-weight-400 rounded-3px text-center border-bkt-dark-grey-focus mr-1rem',
                                 data: { action: "change->interviews--campaign-drafts-dates#enableSubmit" }) %>
@@ -31,4 +32,3 @@
   </div>
 
 </div>
-

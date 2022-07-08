@@ -6,9 +6,10 @@ class CampaignDraft::ParticipantsController < CampaignDraft::BaseController
 
   def update
     campaign_draft.update campaign_draft_params
+
     if current_params_persisted?
       campaign_draft.participants_set!
-      redirect_to edit_campaign_draft_templates_path
+      redirect_to (params[:redirect_url].presence || edit_campaign_draft_templates_path)
     else
       flash[:alert] = validation_error_flash_message
       redirect_to edit_campaign_draft_participants_path
