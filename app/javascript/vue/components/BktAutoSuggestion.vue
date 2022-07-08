@@ -5,7 +5,7 @@
     <input
         class="d-block bkt-bg-light-grey3 border-bkt-light-grey pointer-event  bkt-white-onclick p-3 rounded-5px min-w-15rem width-100"
         ref="selectText"
-        @focus="toggleDisplay"
+        @focus="displaySugg"
         @input="preSearch"
         type="text"
         :value="value"
@@ -58,12 +58,16 @@ export default {
     return {
       entities: null,
       display: false,
-      text: null
+      text: null,
+      timer: null,
+      loading: false
     }
   },
-  // created() {
-  //   this.preSearch({target: {value: ''}})
-  // },
+  created() {
+    // this.preSearch({target: {value: ''}})
+
+    if (this.entities === null) this.preSearch({target: {value: ''}})
+  },
   // async beforeUpdate() {
   //   if (this.value === null) {
   //     this.preSearch({target: {value: ''}})
@@ -79,22 +83,27 @@ export default {
     // }
   },
   methods: {
-    async preSearch(e) {
+    preSearch(e) {
       this.$emit('input', e.target.value)
-      this.entities = await this.search(e.target.value)
+      if (this.loading) return
+      
+      this.search(e.target.value)
     },
     async search(text = '') {
-      try {
-        document.querySelector('body').classList.add('wait')
-        const res = await axios.get(this.link, {params: {text}})
+      if (this.timer) clearTimeout(this.timer)
 
-        document.querySelector('body').classList.remove('wait')
-        return res.data.users
-      } catch (e) {
-        console.log(e)
-        document.querySelector('body').classList.remove('wait')
-        return null
-      }
+      this.timer = setTimeout(async () => {
+        try {
+          this.onLoading()
+          const res = await axios.get(this.link, {params: {text}})
+
+          this.entities = res.data.users
+        } catch (e) {
+          console.log(e)
+          this.entities = null
+        }
+        this.unLoading()
+      }, 200)
     },
     hide() {
       this.$refs.selectText.classList.remove('border-bkt-dark-grey')
@@ -102,17 +111,26 @@ export default {
 
       this.display = false
     },
-    toggleDisplay() {
+    displaySugg() {
       if (this.entities === null) this.preSearch({target: {value: ''}})
 
       this.$refs.selectText.classList.add('border-bkt-dark-grey')
       this.$refs.selectText.classList.add('select-arrow-active')
-      this.display = !this.display
+      this.display = true
+      // this.$refs.selectText.click()
     },
     manageSelected(item) {
       this.hide()
       // this.text = `${item.firstname} ${item.lastname}`
       this.$emit('selected', item)
+    },
+    onLoading() {
+      document.querySelector('body').classList.add('wait')
+      this.loading = true
+    },
+    unLoading() {
+      document.querySelector('body').classList.remove('wait')
+      this.loading = false
     }
   }
 }
