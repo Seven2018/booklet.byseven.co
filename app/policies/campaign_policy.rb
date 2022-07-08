@@ -49,15 +49,16 @@ class CampaignPolicy < ApplicationPolicy
   end
 
   def send_notification_email?
-    create?
+    # TODO: change to hr and is user is an interviewer in the campaign
+    true
   end
 
   def add_interview_set?
-    create?
+    true
   end
 
   def update_interview_set?
-    create? || record.interviewers.include?(user)
+    true || record.interviewers.include?(user)
   end
 
   def remove_interview_set?

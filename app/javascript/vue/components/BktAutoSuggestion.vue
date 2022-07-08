@@ -61,15 +61,22 @@ export default {
       text: null
     }
   },
-  async created() {
-    this.entities = await this.search()
-  },
-  async beforeUpdate() {
-    if (this.value === null) {
-      this.preSearch({target: {value: ''}})
-    }
-  },
+  // created() {
+  //   this.preSearch({target: {value: ''}})
+  // },
+  // async beforeUpdate() {
+  //   if (this.value === null) {
+  //     this.preSearch({target: {value: ''}})
+  //   }
+  // },
   computed: {
+    // inputValue() {
+    //   console.log('in computed')
+    //   // if (this.entities === null) {
+    //   //   this.preSearch({target: {value: ''}})
+    //   // }
+    //   return this.value
+    // }
   },
   methods: {
     async preSearch(e) {
@@ -78,11 +85,14 @@ export default {
     },
     async search(text = '') {
       try {
+        document.querySelector('body').classList.add('wait')
         const res = await axios.get(this.link, {params: {text}})
 
+        document.querySelector('body').classList.remove('wait')
         return res.data.users
       } catch (e) {
         console.log(e)
+        document.querySelector('body').classList.remove('wait')
         return null
       }
     },
@@ -93,6 +103,8 @@ export default {
       this.display = false
     },
     toggleDisplay() {
+      if (this.entities === null) this.preSearch({target: {value: ''}})
+
       this.$refs.selectText.classList.add('border-bkt-dark-grey')
       this.$refs.selectText.classList.add('select-arrow-active')
       this.display = !this.display
