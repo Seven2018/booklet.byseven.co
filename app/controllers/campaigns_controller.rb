@@ -59,14 +59,14 @@ class CampaignsController < ApplicationController
     employees = campaign.employees.distinct
     employees = User.where(id: employees.ids).search_users(params[:text]) if params[:text].present?
     employees = check_user_categories(employees) if params[:userCategories].present?
-    employees = employees.page(page).per(size) if !params[:status].present? && !params[:tags].present?
+    # employees = employees.page(page).per(size) if !params[:status].present? && !params[:tags].present?
 
     interviews = campaign.interviews.where(employee_id: employees.ids)
     interviews = interviews.where(status: params[:status]) if params[:status].present?
     interviews = filter_tag_by_interview_set(interviews) if params[:tags].present?
 
     employee_interviews = interviews.employee_label.presence || interviews.manager_label
-    employee_interviews = employee_interviews.page(page).per(size) if params[:status].present? || params[:tags].present?
+    employee_interviews = employee_interviews.page(page).per(size)
     interview_sets = CustomSerializer.serialize_interview_set(
       employee_interviews.pluck(:employee_id), interviews, params[:from].present? && params[:from] == 'overview' ? nil : current_user
     )
