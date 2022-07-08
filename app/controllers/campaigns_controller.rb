@@ -59,6 +59,7 @@ class CampaignsController < ApplicationController
     employees = campaign.employees.distinct
     employees = User.where(id: employees.ids).search_users(params[:text]) if params[:text].present?
     employees = check_user_categories(employees) if params[:userCategories].present?
+    # employees = employees.page(page).per(size) if !params[:status].present? && !params[:tags].present?
 
     interviews = campaign.interviews.where(employee_id: employees.ids)
     interviews = interviews.where(status: params[:status]) if params[:status].present?
