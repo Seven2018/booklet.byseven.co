@@ -10,3 +10,14 @@ then you can run
 > docker-compose up
 ```
 now you can go to the website [http://localhost:3000](http://localhost:3000)
+
+### To import prod db
+```shell
+# save last version
+$ heroku pg:backups capture
+# then download it
+curl $(heroku pg:backups public-url -r prod) -o latest.dump
+# import locally
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d booklet_byseven_co_development latest.dump
+```
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d booklet_byseven_co_development latest.dump
