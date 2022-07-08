@@ -1,4 +1,6 @@
 class Workplace::GatherMembers
+  EMPTY_AVATAR='http://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
+
   def initialize
     @company = Company.find(2) 
   end
@@ -10,7 +12,7 @@ class Workplace::GatherMembers
   end
 
   def add_missing_pictures
-    @company.users.where(picture: [nil, '']).each do |user|
+    @company.users.where(picture: [nil, '', EMPTY_AVATAR]).each do |user|
       member = Workplace::Req::Member.new(nil, {email: user.email})
       user.update(picture: member.picture) if member.picture
     end
