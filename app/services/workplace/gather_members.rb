@@ -1,5 +1,6 @@
 class Workplace::GatherMembers
-  EMPTY_AVATAR='http://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
+  EMPTY_AVATAR='https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png'
+
 
   def initialize
     @company = Company.find(2) 
