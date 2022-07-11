@@ -1,4 +1,5 @@
 class CampaignsController < ApplicationController
+  GOOGLE_CALENDAR_LINK='https://calendar.google.com/calendar'
   before_action :set_campaign, only: %i[show overview update send_notification_email destroy toggle_tag remove_company_tag search_tags index_line]
   before_action :show_navbar_campaign
 
@@ -373,9 +374,14 @@ class CampaignsController < ApplicationController
   def redirect_calendar
     skip_authorization
 
-    client = Signet::OAuth2::Client.new(client_options)
-    client.update!(state: Base64.encode64("instance_id:#{params[:instance_id]},user_id:#{params[:user_id]},mode:#{params[:mode]}"))
-    redirect_to client.authorization_uri.to_s
+    begin
+      client = Signet::OAuth2::Client.new(client_options)
+      client.update!(state: Base64.encode64("instance_id:#{params[:instance_id]},user_id:#{params[:user_id]},mode:#{params[:mode]}"))
+      link = client.authorization_uri.to_s
+    rescue
+      link = GOOGLE_CALENDAR_LINK
+    end
+    redirect_to link
   end
 
   def update_calendar
