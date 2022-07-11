@@ -11,7 +11,7 @@
 
   <% separator_number = 1 %>
 
-  <% template.interview_questions.order(position: :asc).each do |question| %>
+  <% template.interview_questions.where(visible_for: visibility).order(position: :asc).each do |question| %>
 
     <a href="#anchor-<%= question.id %>" class='bkt-light-grey6-hover'>
 

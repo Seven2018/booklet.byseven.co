@@ -47,7 +47,7 @@ class InterviewsController < ApplicationController
                              date_params[:day].to_i)
       starts_at = begin
                     Time.new(2000,1,1, date_params[:hour].to_i,
-                             date_params[:min].to_i)
+                             date_params[:min].to_i, 0, Time.now.strftime("%:z"))
                   rescue
                     nil
                   end

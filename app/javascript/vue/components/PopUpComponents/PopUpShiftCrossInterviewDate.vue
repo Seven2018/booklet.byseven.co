@@ -101,14 +101,13 @@
   export default {
     props: ['campaignId', 'crossId', 'startDate', 'endDate', 'date'],
     data() {
-      var winter_offset = new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset();
-      var offset = winter_offset == new Date().getTimezoneOffset() ? winter_offset : new Date().getTimezoneOffset() - (Math.sign(winter_offset) * 60)
+      var today = new Date()
 
-      var preStartDate = (this.startDate != null) ? new Date(this.startDate) : new Date()
+      var preStartDate = (this.startDate != null) ? this.createDateAsUTC(new Date(this.startDate)) : this.createDateAsUTC(today)
       console.log(preStartDate)
-      preStartDate = preStartDate.setHours(preStartDate.getHours() - (offset / 60))
-      var preEndDate = (this.endDate != null) ? new Date(this.endDate) : new Date()
-      preEndDate = preEndDate.setHours(preEndDate.getHours() - (offset / 60))
+      preStartDate = preStartDate.setHours(preStartDate.getHours())
+      var preEndDate = (this.endDate != null) ? this.createDateAsUTC(new Date(this.endDate)) : this.createDateAsUTC(today)
+      preEndDate = preEndDate.setHours(preEndDate.getHours())
       const preDate = (this.date != null) ? new Date(this.date) : new Date()
 
       return {
@@ -131,6 +130,9 @@
       }
     },
     methods: {
+      createDateAsUTC(date) {
+        return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
+      },
       sendEmail() {
         const input = this.$refs.sendEmailInput
         const svg = this.$refs.sendEmailSvg
@@ -150,18 +152,13 @@
         this.showDatePicker = false
       },
       async updateDate() {
-        var winter_offset = new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset();
-        var offset = winter_offset == new Date().getTimezoneOffset() ? winter_offset : new Date().getTimezoneOffset() - (Math.sign(winter_offset) * 60)
-
-        const endHour = (parseInt(this.endSelectedDate.split(':')[0], 10) + (offset / 60)).toString()
+        const endHour = (parseInt(this.endSelectedDate.split(':')[0], 10)).toString()
         const endMin = this.endSelectedDate.split(':')[1]
-        const startHour = (parseInt(this.startSelectedDate.split(':')[0], 10) + (offset / 60)).toString()
+        const startHour = (parseInt(this.startSelectedDate.split(':')[0], 10)).toString()
         const startMin = this.startSelectedDate.split(':')[1]
-
 
         const minDuration = Math.abs(Number(endMin) - Number(startMin))
         const hourDuration = Math.abs(Number(endHour) - Number(startHour))
-
 
         const year = this.$options.filters.formatDate(this.selectedDate, 'YYYY')
         const month = this.$options.filters.formatDate(this.selectedDate, 'M')
