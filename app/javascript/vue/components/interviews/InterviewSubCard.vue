@@ -28,7 +28,7 @@
           :type="(interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted') || (interviews.employee_interview && interviews.employee_interview.interview.status === 'submitted') || (interviews.manager_interview && interviews.manager_interview.interview.status === 'submitted') ? 'white-interview' : 'interview'"
           :href="$routes.generate('interviews_id', {id: interviews.crossed_interview && interviews.crossed_interview.interview.status === 'submitted' ?
               interviews.crossed_interview.interview.id : (userKind === 'interviewer' ? interviews.employee_interview.interview.id : (interviews.manager_interview ? interviews.manager_interview.interview.id : interviews.employee_interview.interview.id))})"
-          :disable="!interviews.manager_interview && !interviews.crossed_interview && interviews.employee_interview.interview.status !== 'submitted'"
+          :disable="!interviews.manager_interview && !interviews.crossed_interview && interviews.employee_interview.interview.status !== 'submitted' && userKind === 'interviewee'"
       >
         {{ userKind === 'interviewer' ?
           myInterviewCampaignButtonSentenceForEmployee(interviews) :
