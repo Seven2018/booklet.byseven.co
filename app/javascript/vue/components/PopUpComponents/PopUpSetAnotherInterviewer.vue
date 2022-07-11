@@ -16,7 +16,7 @@
 
       <bkt-auto-suggestion
           class="mb-1rem"
-          :value="autoSelect"
+          v-model="autoSelect"
           @selected="preSetInterview"
           :link="`${$routes.generate('company_managers')}/?access_level_int[]=manager&access_level_int[]=hr&access_level_int[]=account_owner&access_level_int[]=account_owner`"
       >

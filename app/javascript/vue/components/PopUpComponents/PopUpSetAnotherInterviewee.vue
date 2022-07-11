@@ -16,7 +16,7 @@
       <p v-else class="fs-1_6rem font-weight-600 bkt-dark-grey mb-1rem">Choose an interviewer from this campaign</p>
 
       <bkt-auto-suggestion
-          v-if="type === 'employee'"
+          v-show="type === 'employee'"
           placeholder="Select an employee"
           class="mb-1rem"
           v-model="autoSelect"
@@ -25,7 +25,7 @@
       >
       </bkt-auto-suggestion>
       <bkt-auto-suggestion
-          v-else
+          v-show="type !== 'employee'"
           placeholder="Select an interviewer"
           class="mb-1rem"
           v-model="interviewerSelect"
